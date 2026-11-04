@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import {
+  DEFAULT_FLEETCHART_OPTIONS,
+  FleetchartGroups,
   FleetchartLayouts,
   FleetchartModes,
   FleetchartViewpoints,
@@ -10,10 +12,28 @@ import {
 describe("fleetchart store", () => {
   beforeEach(() => setActivePinia(createPinia()));
 
-  it("starts in columns", () => {
+  it("merges changed options over the defaults, per chart", () => {
+    const store = useFleetchartStore();
+    store.updateOptions({
+      namespace: "hangar",
+      options: { group: FleetchartGroups.STATUS },
+    });
+    store.updateOptions({ namespace: "hangar", options: { scaleBar: true } });
+
+    expect(store.fleetchartOptions("hangar")).toEqual({
+      ...DEFAULT_FLEETCHART_OPTIONS,
+      group: FleetchartGroups.STATUS,
+      scaleBar: true,
+    });
+    expect(store.fleetchartOptions("fleet")).toEqual(
+      DEFAULT_FLEETCHART_OPTIONS,
+    );
+  });
+
+  it("starts packed", () => {
     const store = useFleetchartStore();
 
-    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.COLUMNS);
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.PACKED);
   });
 
   it("reads a persisted classic mode as the classic layout", () => {
@@ -47,7 +67,7 @@ describe("fleetchart store", () => {
       (state as { layout?: unknown }).layout = undefined;
     });
 
-    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.COLUMNS);
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.PACKED);
 
     store.updateLayout({
       namespace: "hangar",

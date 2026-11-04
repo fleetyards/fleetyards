@@ -14,27 +14,41 @@ import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
+import FleetchartCanvasSettings from "./Settings/index.vue";
 import {
   PIXELS_PER_METRE,
   modelOf,
   shipGeometry,
   shipLabelOf,
   type FleetchartEntry,
+  type FleetchartShipGeometry,
 } from "@/frontend/components/Fleetchart/geometry";
 import {
   arrangeClassic,
   arrangeColumns,
+  arrangePacked,
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  groupHeadings,
+  withHeadings,
+  type FleetchartHeadingAlign,
+  SHIP_PADDING,
   withRowWidth,
 } from "@/frontend/components/Fleetchart/layouts";
+import {
+  groupTitleOf,
+  sortEntries,
+} from "@/frontend/components/Fleetchart/options";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FleetchartFacings,
+  FleetchartGroups,
   FleetchartLayouts,
   FleetchartScreenHeights,
+  FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -52,7 +66,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const SCENE_PADDING = 40;
 const SCREEN_MARGIN = 120;
-const MIN_ZOOM = 0.2;
+const MIN_ZOOM = 0.02;
+// An export is always drawn at full size, so its grid cannot follow the zoom.
+const EXPORT_GRID_CELL = gridCellFor(PIXELS_PER_METRE);
+const EXPORT_IMAGE_TIMEOUT = 15000;
+const FIT_MARGIN_TOP = 70;
+const FIT_MARGIN_BOTTOM = 80;
 const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
@@ -68,6 +87,14 @@ const FIXED_SCREEN_HEIGHT_FACTORS: Record<
   "3x": 3,
   "4x": 4,
 };
+
+const SPACING_FACTORS: Record<FleetchartSpacings, number> = {
+  [FleetchartSpacings.COMPACT]: 0.4,
+  [FleetchartSpacings.NORMAL]: 1,
+  [FleetchartSpacings.WIDE]: 3,
+};
+
+const SOLID_EXPORT_BACKGROUND = "#111";
 
 const { t } = useI18n();
 
@@ -92,6 +119,10 @@ const showLabels = computed(() => fleetchartStore.showLabels(props.namespace));
 const colored = computed(() => fleetchartStore.colored(props.namespace));
 
 const extended = computed(() => fleetchartStore.extendedState(props.namespace));
+
+const options = computed(() =>
+  fleetchartStore.fleetchartOptions(props.namespace),
+);
 
 const selectedScreenHeight = computed(() =>
   fleetchartStore.fleetchartScreenHeight(props.namespace),
@@ -160,28 +191,76 @@ const labelRoom = (entry: FleetchartEntry) => {
   };
 };
 
+// Read one by one so that a toggle unrelated to the layout, such as the scale bar,
+// does not lay out the whole fleet again.
+const sort = computed(() => options.value.sort);
+const group = computed(() => options.value.group);
+const spacing = computed(() => options.value.spacing);
+const facing = computed(() => options.value.facing);
+
+const turned = computed(
+  () =>
+    facing.value === FleetchartFacings.TOP ||
+    facing.value === FleetchartFacings.BOTTOM,
+);
+
+// What a layout makes room for. A ship's own box is as tall as its tallest view
+// so nothing moves between viewpoints, but a packed or turned chart is about using
+// the space, so there only the view being drawn counts.
+const boxOf = (geometry: FleetchartShipGeometry) => {
+  const drawn = geometry.imageHeight || geometry.height;
+
+  if (turned.value) {
+    return { width: drawn, height: geometry.length };
+  }
+
+  return {
+    width: geometry.length,
+    height: layout.value === FleetchartLayouts.PACKED ? drawn : geometry.height,
+  };
+};
+
+const groupTitle = (entry: FleetchartEntry) => {
+  if (group.value === FleetchartGroups.NONE) {
+    return undefined;
+  }
+
+  return (
+    groupTitleOf(entry, group.value, t) ||
+    t("labels.fleetchartApp.groupOptions.none")
+  );
+};
+
 const ships = computed(() =>
-  props.items.flatMap((entry) => {
-    const geometry = shipGeometry(entry, viewpoint.value, {
-      extended: extended.value,
-      colored: colored.value,
-    });
+  sortEntries(props.items, sort.value, group.value, extended.value).flatMap(
+    (entry) => {
+      const geometry = shipGeometry(entry, viewpoint.value, {
+        extended: extended.value,
+        colored: colored.value,
+      });
 
-    if (!geometry) {
-      return [];
-    }
+      if (!geometry) {
+        return [];
+      }
 
-    return [
-      {
-        id: entry.id,
-        entry,
-        geometry,
-        width: geometry.length,
-        height: geometry.height,
-        ...labelRoom(entry),
-      },
-    ];
-  }),
+      const group = groupTitle(entry);
+
+      return [
+        {
+          id: entry.id,
+          entry,
+          geometry,
+          ...boxOf(geometry),
+          group,
+          headingWidth: group
+            ? labelMeasure.value.width(group) / PIXELS_PER_METRE
+            : 0,
+          padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
+          ...labelRoom(entry),
+        },
+      ];
+    },
+  ),
 );
 
 const columnHeightFor = (factor: number) =>
@@ -201,14 +280,41 @@ const classicRowWidth = computed(
   () => (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
 );
 
-const positions = computed(() =>
-  layout.value === FleetchartLayouts.CLASSIC
-    ? arrangeClassic(ships.value, classicRowWidth.value)
-    : arrangeColumns(ships.value, columnHeightFor(screenHeightFactor.value)),
+const positions = computed(() => {
+  switch (layout.value) {
+    case FleetchartLayouts.CLASSIC:
+      return arrangeClassic(ships.value, classicRowWidth.value);
+    case FleetchartLayouts.PACKED:
+      return arrangePacked(
+        ships.value,
+        screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
+      );
+    default:
+      return arrangeColumns(
+        ships.value,
+        columnHeightFor(screenHeightFactor.value),
+        { centred: turned.value },
+      );
+  }
+});
+
+const headingAlign = computed<FleetchartHeadingAlign>(() => {
+  if (layout.value !== FleetchartLayouts.COLUMNS) {
+    return "left";
+  }
+
+  return turned.value ? "centre" : "right";
+});
+
+const headings = computed(() =>
+  groupHeadings(ships.value, positions.value, headingAlign.value),
 );
 
 const bounds = computed(() => {
-  const covered = boundsOf(ships.value, positions.value);
+  const covered = withHeadings(
+    boundsOf(ships.value, positions.value),
+    headings.value,
+  );
 
   return layout.value === FleetchartLayouts.CLASSIC
     ? withRowWidth(covered, classicRowWidth.value)
@@ -233,7 +339,7 @@ const gridCell = computed(() =>
 // The on-screen grid is a sibling of the scene, so an export needs its own copy.
 const exportGridStyle = computed(() => {
   const line = "rgba(255, 255, 255, 0.5) 1px, transparent 1px";
-  const cell = gridCell.value * PIXELS_PER_METRE;
+  const cell = EXPORT_GRID_CELL * PIXELS_PER_METRE;
   const offset = (position: number) => ((position % cell) + cell) % cell;
 
   return {
@@ -242,6 +348,35 @@ const exportGridStyle = computed(() => {
     backgroundPosition: `${offset(sceneX(0))}px ${offset(sceneY(0))}px`,
   };
 });
+
+const scaleBarWidth = computed(
+  () => gridCell.value * PIXELS_PER_METRE * transform.value.scale,
+);
+
+const settingsOpen = ref(false);
+
+const exporting = ref(false);
+
+// The images drawn while zoomed out are too small for a full-size export, so the
+// larger ones are only fetched for as long as an export needs them.
+const prepareExport = async () => {
+  exporting.value = true;
+
+  await nextTick();
+
+  const images = [...(scene.value?.querySelectorAll("img") ?? [])];
+
+  await Promise.race([
+    Promise.all(images.map((image) => image.decode().catch(() => {}))),
+    new Promise((resolve) => {
+      setTimeout(resolve, EXPORT_IMAGE_TIMEOUT);
+    }),
+  ]);
+};
+
+const finishExport = () => {
+  exporting.value = false;
+};
 
 const gridCanvas = ref<HTMLCanvasElement>();
 
@@ -289,6 +424,8 @@ const scene = ref<HTMLElement>();
 
 let panzoomInstance: PanZoom | undefined;
 
+let restoreTimer: ReturnType<typeof setTimeout> | undefined;
+
 const persistZoom = debounce(() => {
   fleetchartStore.updateZoomData({
     namespace: props.namespace,
@@ -317,6 +454,13 @@ const setupPanzoom = () => {
   panzoomInstance.on("zoom", persistZoom);
   panzoomInstance.on("pan", persistZoom);
 
+  // A packed chart always opens whole, as its size depends on the fleet and screen.
+  if (isPacked.value) {
+    fitToScreen();
+
+    return;
+  }
+
   const { scale, x, y } = savedZoom.value;
 
   if (scale) {
@@ -324,13 +468,43 @@ const setupPanzoom = () => {
 
     // Zooming moves the scene around the given point, so the saved position only
     // holds once that has settled.
-    setTimeout(() => {
+    restoreTimer = setTimeout(() => {
       panzoomInstance?.moveTo(x, y);
     }, 300);
   }
 };
 
+const isPacked = computed(() => layout.value === FleetchartLayouts.PACKED);
+
+// Packing is only worth anything when the whole of it can be seen at once.
+const fitToScreen = () => {
+  clearTimeout(restoreTimer);
+
+  const room = screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM;
+  const scale = Math.min(
+    1,
+    screen.width / sceneSize.value.width,
+    room / sceneSize.value.height,
+  );
+
+  panzoomInstance?.zoomAbs(0, 0, scale);
+  panzoomInstance?.moveTo(
+    (screen.width - sceneSize.value.width * scale) / 2,
+    FIT_MARGIN_TOP + (room - sceneSize.value.height * scale) / 2,
+  );
+
+  persistZoom();
+};
+
 const resetZoom = () => {
+  clearTimeout(restoreTimer);
+
+  if (isPacked.value) {
+    fitToScreen();
+
+    return;
+  }
+
   panzoomInstance?.zoomAbs(0, 0, 1);
   panzoomInstance?.moveTo(0, 0);
 
@@ -339,6 +513,12 @@ const resetZoom = () => {
 
 // A position from one layout can leave another one entirely off screen.
 watch(layout, resetZoom);
+
+watch([() => sceneSize.value.width, () => sceneSize.value.height], () => {
+  if (isPacked.value) {
+    fitToScreen();
+  }
+});
 
 // deviceorientation fires continuously on a phone, which would keep a plain
 // debounce from ever running.
@@ -373,6 +553,7 @@ onMounted(() => {
 onUnmounted(() => {
   stopStatusListener?.();
 
+  clearTimeout(restoreTimer);
   persistZoom.flush();
   handleResize.cancel();
 
@@ -465,11 +646,26 @@ const toggleLabels = () => {
         <i class="fa-duotone fa-palette" />
       </Btn>
 
+      <Btn
+        :active="settingsOpen"
+        :aria-label="t('labels.fleetchartApp.options')"
+        data-test="fleetchart-options"
+        @click="settingsOpen = !settingsOpen"
+      >
+        <i class="fa-duotone fa-sliders" />
+      </Btn>
+
       <BtnDropdown>
         <template v-if="downloadName">
           <DownloadScreenshotBtn
             element="#fleetchart"
             :filename="downloadName"
+            :background-color="
+              options.solidExport ? SOLID_EXPORT_BACKGROUND : null
+            "
+            ignore-transform
+            :prepare="prepareExport"
+            :finish="finishExport"
           />
 
           <hr />
@@ -488,6 +684,20 @@ const toggleLabels = () => {
           <span>{{ t("actions.resetZoom") }}</span>
         </Btn>
       </BtnDropdown>
+    </div>
+
+    <FleetchartCanvasSettings v-if="settingsOpen" :namespace="namespace" />
+
+    <div
+      v-if="options.scaleBar"
+      class="fleetchart-canvas__scale"
+      data-test="fleetchart-scale"
+    >
+      <span
+        class="fleetchart-canvas__scale-bar"
+        :style="{ width: `${scaleBarWidth}px` }"
+      />
+      {{ gridCell }} m
     </div>
 
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
@@ -510,6 +720,19 @@ const toggleLabels = () => {
           :style="exportGridStyle"
         />
 
+        <div
+          v-for="heading in headings"
+          :key="heading.title"
+          class="fleetchart-canvas__heading"
+          :style="{
+            left: `${sceneX(heading.x)}px`,
+            top: `${sceneY(heading.y)}px`,
+          }"
+          data-test="fleetchart-group-heading"
+        >
+          {{ heading.title }}
+        </div>
+
         <FleetchartCanvasItem
           v-for="ship in ships"
           :key="ship.id"
@@ -518,12 +741,26 @@ const toggleLabels = () => {
           :left="sceneX(positions[ship.id].x - ship.width / 2)"
           :top="sceneY(positions[ship.id].y - ship.height / 2)"
           :viewpoint="viewpoint"
-          :zoom="savedZoom.scale || 1"
+          :zoom="exporting ? 1 : savedZoom.scale || 1"
           :show-label="showLabels"
           :show-status="showStatus"
           :colored="colored"
           :extended="extended"
+          :box-width="ship.width"
+          :box-height="ship.height"
+          :facing="options.facing"
         />
+
+        <div
+          v-if="options.scaleBar"
+          class="fleetchart-canvas__export-only fleetchart-canvas__export-scale"
+        >
+          <span
+            class="fleetchart-canvas__scale-bar"
+            :style="{ width: `${EXPORT_GRID_CELL * PIXELS_PER_METRE}px` }"
+          />
+          {{ EXPORT_GRID_CELL }} m
+        </div>
 
         <div
           class="fleetchart-canvas__export-only fleetchart-canvas__export-logo"

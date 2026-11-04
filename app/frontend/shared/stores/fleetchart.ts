@@ -25,9 +25,58 @@ export enum FleetchartModes {
 export enum FleetchartLayouts {
   COLUMNS = "columns",
   CLASSIC = "classic",
+  PACKED = "packed",
 }
 
+export enum FleetchartSorts {
+  LENGTH_ASC = "lengthAsc",
+  LENGTH_DESC = "lengthDesc",
+  NAME = "name",
+  LIST = "list",
+}
+
+export enum FleetchartGroups {
+  NONE = "none",
+  MANUFACTURER = "manufacturer",
+  CLASSIFICATION = "classification",
+  STATUS = "status",
+}
+
+export enum FleetchartSpacings {
+  COMPACT = "compact",
+  NORMAL = "normal",
+  WIDE = "wide",
+}
+
+export enum FleetchartFacings {
+  LEFT = "left",
+  TOP = "top",
+  RIGHT = "right",
+  BOTTOM = "bottom",
+}
+
+export interface FleetchartOptions {
+  sort: FleetchartSorts;
+  group: FleetchartGroups;
+  spacing: FleetchartSpacings;
+  scaleBar: boolean;
+  solidExport: boolean;
+  facing: FleetchartFacings;
+}
+
+export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
+  sort: FleetchartSorts.LENGTH_ASC,
+  group: FleetchartGroups.NONE,
+  spacing: FleetchartSpacings.NORMAL,
+  scaleBar: false,
+  solidExport: false,
+  facing: FleetchartFacings.LEFT,
+};
+
 type FleetchartState = {
+  options: {
+    [key: string]: Partial<FleetchartOptions>;
+  };
   layout: {
     [key: string]: FleetchartLayouts;
   };
@@ -54,6 +103,7 @@ type FleetchartState = {
 
 export const useFleetchartStore = defineStore("fleetchart", {
   state: (): FleetchartState => ({
+    options: {},
     layout: {},
     visible: [],
     zoomData: {},
@@ -81,8 +131,8 @@ export const useFleetchartStore = defineStore("fleetchart", {
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
     },
-    // A browser that last chose a mode keeps its arrangement. `layout` can also
-    // be missing altogether from state persisted before it existed.
+    // Somebody who chose a mode keeps its arrangement. `layout` can also be missing
+    // altogether from state persisted before it existed.
     fleetchartLayout: (state) => {
       return (namespace: string) => {
         const layout = state.layout?.[namespace];
@@ -91,10 +141,21 @@ export const useFleetchartStore = defineStore("fleetchart", {
           return layout;
         }
 
-        return state.mode[namespace] === FleetchartModes.CLASSIC
-          ? FleetchartLayouts.CLASSIC
-          : FleetchartLayouts.COLUMNS;
+        switch (state.mode[namespace]) {
+          case FleetchartModes.CLASSIC:
+            return FleetchartLayouts.CLASSIC;
+          case FleetchartModes.PANZOOM:
+            return FleetchartLayouts.COLUMNS;
+          default:
+            return FleetchartLayouts.PACKED;
+        }
       };
+    },
+    fleetchartOptions: (state) => {
+      return (namespace: string): FleetchartOptions => ({
+        ...DEFAULT_FLEETCHART_OPTIONS,
+        ...state.options?.[namespace],
+      });
     },
     fleetchartScreenHeight: (state) => {
       return (namespace: string) =>
@@ -172,6 +233,18 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
       this.layout = { ...this.layout, [payload.namespace]: payload.layout };
+    },
+    updateOptions(payload: {
+      namespace: string;
+      options: Partial<FleetchartOptions>;
+    }) {
+      this.options = {
+        ...this.options,
+        [payload.namespace]: {
+          ...this.options?.[payload.namespace],
+          ...payload.options,
+        },
+      };
     },
     updateScale(payload: { namespace: string; scale: number }) {
       this.scale[payload.namespace] = payload.scale;

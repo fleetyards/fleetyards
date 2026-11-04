@@ -511,10 +511,41 @@
           "front": "Front"
         },
         "gridSize": "%{size} Meter pro Rasterfeld",
+        "options": "Optionen",
+        "sort": "Sortierung",
+        "sortOptions": {
+          "lengthAsc": "Länge, kürzeste zuerst",
+          "lengthDesc": "Länge, längste zuerst",
+          "name": "Name",
+          "list": "Listenreihenfolge"
+        },
+        "group": "Gruppe",
+        "groupOptions": {
+          "none": "Keine",
+          "manufacturer": "Hersteller",
+          "classification": "Klassifizierung",
+          "status": "Produktionsstatus"
+        },
+        "spacing": "Abstand",
+        "spacingOptions": {
+          "compact": "Kompakt",
+          "normal": "Normal",
+          "wide": "Weit"
+        },
+        "facing": "Ausrichtung",
+        "facingOptions": {
+          "left": "Links",
+          "top": "Oben",
+          "right": "Rechts",
+          "bottom": "Unten"
+        },
+        "scaleBar": "Maßstabsleiste",
+        "solidExport": "Fester Hintergrund im PNG",
         "layout": "Layout",
         "layoutOptions": {
           "columns": "Spalten",
-          "classic": "Klassisch"
+          "classic": "Klassisch",
+          "packed": "Gepackt"
         },
         "mode": "Modus",
         "modeOptions": {

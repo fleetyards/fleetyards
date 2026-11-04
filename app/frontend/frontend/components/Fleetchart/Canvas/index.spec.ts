@@ -4,6 +4,7 @@ import { createPinia, setActivePinia } from "pinia";
 import FleetchartCanvas from "./index.vue";
 import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry";
 import {
+  FleetchartFacings,
   FleetchartLayouts,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -64,6 +65,13 @@ const mountCanvas = (items: FleetchartEntry[]) =>
     },
   });
 
+const showInColumns = () => {
+  useFleetchartStore().updateLayout({
+    namespace: "hangar",
+    layout: FleetchartLayouts.COLUMNS,
+  });
+};
+
 const shipPositions = (wrapper: ReturnType<typeof mountCanvas>) =>
   wrapper.findAll("[data-test='fleetchart-ship']").map((ship) => {
     const { left, top } = (ship.element as HTMLElement).style;
@@ -83,8 +91,9 @@ describe("FleetchartCanvas", () => {
     const ships = wrapper.findAll("[data-test='fleetchart-ship']");
 
     expect(ships).toHaveLength(2);
-    expect((ships[0].element as HTMLElement).style.width).toBe("400px");
-    expect((ships[1].element as HTMLElement).style.width).toBe("200px");
+    expect(
+      ships.map((ship) => (ship.element as HTMLElement).style.width).sort(),
+    ).toEqual(["200px", "400px"]);
   });
 
   it("leaves out a ship whose views have not arrived", () => {
@@ -112,6 +121,8 @@ describe("FleetchartCanvas", () => {
   });
 
   it("rearranges the same ships when the layout changes", async () => {
+    showInColumns();
+
     const wrapper = mountCanvas(
       Array.from({ length: 6 }, (_, index) => entry(`${index}`)),
     );
@@ -142,7 +153,108 @@ describe("FleetchartCanvas", () => {
     expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
   });
 
+  it("turns a ship and lays it out by its turned size", async () => {
+    const wrapper = mountCanvas([entry("a", 100)]);
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { facing: FleetchartFacings.TOP },
+    });
+    await nextTick();
+
+    const ship = wrapper.get("[data-test='fleetchart-ship']");
+    const { width, height } = (ship.element as HTMLElement).style;
+
+    expect(width).toBe("200px");
+    expect(height).toBe("400px");
+    expect(ship.find(".fleetchart-canvas-item__frame--top").exists()).toBe(
+      true,
+    );
+  });
+
+  it("mirrors a ship facing right, keeping its size", async () => {
+    const wrapper = mountCanvas([entry("a", 100)]);
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { facing: FleetchartFacings.RIGHT },
+    });
+    await nextTick();
+
+    const ship = wrapper.get("[data-test='fleetchart-ship']");
+
+    expect((ship.element as HTMLElement).style.width).toBe("400px");
+    expect(ship.find(".fleetchart-canvas-item__frame--right").exists()).toBe(
+      true,
+    );
+  });
+
+  it("takes less room packed than in columns", async () => {
+    showInColumns();
+
+    const wrapper = mountCanvas([
+      entry("large", 400),
+      ...Array.from({ length: 8 }, (_, index) => entry(`small-${index}`, 20)),
+    ]);
+    const area = () => {
+      const { width, height } = (
+        wrapper.get("#fleetchart").element as HTMLElement
+      ).style;
+
+      return parseFloat(width) * parseFloat(height);
+    };
+    const columnsArea = area();
+
+    useFleetchartStore().updateLayout({
+      namespace: "hangar",
+      layout: FleetchartLayouts.PACKED,
+    });
+    await nextTick();
+
+    expect(area()).toBeLessThan(columnsArea);
+  });
+
+  it("opens a packed chart zoomed out to fit the screen", () => {
+    panzoomInstance.zoomAbs.mockClear();
+
+    mountCanvas([entry("large", 2000)]);
+
+    const [, , scale] = panzoomInstance.zoomAbs.mock.lastCall as number[];
+
+    expect(scale).toBeLessThan(1);
+    expect(8000 * scale).toBeLessThanOrEqual(window.innerWidth);
+  });
+
+  it("keeps the view when a toggle leaves the chart's size alone", async () => {
+    mountCanvas([entry("a")]);
+    panzoomInstance.zoomAbs.mockClear();
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { scaleBar: true },
+    });
+    await nextTick();
+
+    expect(panzoomInstance.zoomAbs).not.toHaveBeenCalled();
+  });
+
+  it("ignores a saved position when opening packed", () => {
+    useFleetchartStore().updateZoomData({
+      namespace: "hangar",
+      zoomData: { x: -5000, y: -5000, scale: 3 },
+    });
+    panzoomInstance.moveTo.mockClear();
+
+    mountCanvas([entry("a")]);
+
+    const [x] = panzoomInstance.moveTo.mock.lastCall as number[];
+
+    expect(x).toBeGreaterThan(-5000);
+  });
+
   it("offers the screen height only where it means anything", async () => {
+    showInColumns();
+
     const wrapper = mountCanvas([entry("a")]);
     const label = "labels.fleetchartApp.screenHeight";
 

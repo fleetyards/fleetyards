@@ -1,8 +1,5 @@
 .fleetchart-canvas-item {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   filter: drop-shadow(2px 4px 6px black);
   transition:
     left $transition-base-speed ease,
@@ -14,6 +11,31 @@
 
   &.status-in-production {
     filter: opacity(0.5) drop-shadow(0 0 0 #06f);
+  }
+}
+
+// Only the ship turns: the item keeps its own box for the layout and the label.
+.fleetchart-canvas-item__frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transform: translate(-50%, -50%);
+
+  &--top {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  // Mirrored rather than turned by 180 degrees, which would stand a side view on
+  // its head.
+  &--right {
+    transform: translate(-50%, -50%) scaleX(-1);
+  }
+
+  &--bottom {
+    transform: translate(-50%, -50%) rotate(-90deg);
   }
 }
 

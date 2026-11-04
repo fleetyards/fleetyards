@@ -113,6 +113,50 @@ describe("DownloadScreenshotBtn", () => {
     expect(html2canvas.mock.calls[0][1].scale).toBe(2);
   });
 
+  it("captures at full size when told to ignore the zoom", async () => {
+    const element = chart(435, 6250);
+    Object.defineProperty(element, "offsetWidth", { value: 1740 });
+    Object.defineProperty(element, "offsetHeight", { value: 25000 });
+    html2canvas.mockResolvedValue(canvas(new Blob(["png"])));
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { element: "#fleetchart", ignoreTransform: true },
+    });
+    mounted.push(wrapper);
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    const { scale, onclone } = html2canvas.mock.calls[0][1];
+    const clone = document.createElement("div");
+    clone.style.transform = "scale(0.25)";
+    onclone(document, clone);
+
+    expect(clone.style.transform).toBe("none");
+    expect(25000 * scale).toBeLessThanOrEqual(16_384);
+  });
+
+  it("captures only once prepared, and finishes even after a failure", async () => {
+    chart(1000, 500);
+    html2canvas.mockRejectedValue(new Error("no"));
+
+    const order: string[] = [];
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        element: "#fleetchart",
+        prepare: async () => {
+          order.push(`prepare:${html2canvas.mock.calls.length}`);
+        },
+        finish: () => order.push("finish"),
+      },
+    });
+    mounted.push(wrapper);
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(order).toEqual(["prepare:0", "finish"]);
+    expect(html2canvas).toHaveBeenCalled();
+  });
+
   it("tells the user and reports it when the chart cannot be drawn", async () => {
     const element = chart(1000, 500);
     const error = new Error("boom");

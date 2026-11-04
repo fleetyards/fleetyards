@@ -8,7 +8,21 @@ export interface FleetchartLayoutShip {
   // Room for a label to the left of the ship, and the height that label needs.
   gutter?: number;
   minHeight?: number;
+  // Ships of one group stay together, under a heading this wide.
+  group?: string;
+  headingWidth?: number;
+  // Overrides the spacing around this ship.
+  padding?: number;
 }
+
+export interface FleetchartGroupHeading {
+  title: string;
+  x: number;
+  y: number;
+  width: number;
+}
+
+export type FleetchartHeadingAlign = "left" | "centre" | "right";
 
 export interface FleetchartPosition {
   x: number;
@@ -31,25 +45,36 @@ export interface FleetchartScreen {
 
 // At 4 pixels per metre these are the chart's established 20px padding around a
 // ship and 30px between columns.
-const SHIP_PADDING = 5;
-const COLUMN_GAP = 7.5;
+export const SHIP_PADDING = 5;
+const COLUMN_GAP_RATIO = 1.5;
+const HEADING_ROOM = 15;
 
 const MIN_FACTOR = 1;
 const MAX_FACTOR = 20;
 const FACTOR_STEP = 0.25;
 
+const paddingOf = (ship: FleetchartLayoutShip) => ship.padding ?? SHIP_PADDING;
+
 const boxWidth = (ship: FleetchartLayoutShip) =>
-  ship.width + (ship.gutter || 0) + SHIP_PADDING;
+  ship.width + (ship.gutter || 0) + paddingOf(ship);
 
 const boxHeight = (ship: FleetchartLayoutShip) =>
-  Math.max(ship.height, ship.minHeight || 0) + SHIP_PADDING;
+  Math.max(ship.height, ship.minHeight || 0) + paddingOf(ship);
+
+const columnGapOf = (ships: FleetchartLayoutShip[]) =>
+  (ships[0]?.padding ?? SHIP_PADDING) * COLUMN_GAP_RATIO;
+
+const columnWidthOf = (column: FleetchartLayoutShip[]) =>
+  Math.max(
+    ...column.map((ship) => Math.max(boxWidth(ship), ship.headingWidth || 0)),
+  );
 
 const placeInBox = (
   ship: FleetchartLayoutShip,
   boxRight: number,
   centreY: number,
 ): FleetchartPosition => ({
-  x: boxRight - SHIP_PADDING / 2 - ship.width / 2,
+  x: boxRight - paddingOf(ship) / 2 - ship.width / 2,
   y: centreY,
 });
 
@@ -61,9 +86,11 @@ const splitColumns = (
   let columnHeight = 0;
 
   ships.forEach((ship) => {
+    const column = columns[columns.length - 1];
     const fits =
-      columns.length > 0 &&
-      columnHeight + boxHeight(ship) - SHIP_PADDING <= maxColumnHeight;
+      !!column &&
+      column[0].group === ship.group &&
+      columnHeight + boxHeight(ship) - paddingOf(ship) <= maxColumnHeight;
 
     if (!fits) {
       columns.push([]);
@@ -78,9 +105,7 @@ const splitColumns = (
 };
 
 const columnsSize = (columns: FleetchartLayoutShip[][]) => {
-  const widths = columns.map((column) =>
-    Math.max(...column.map((ship) => boxWidth(ship))),
-  );
+  const widths = columns.map(columnWidthOf);
   const heights = columns.map((column) =>
     column.reduce((sum, ship) => sum + boxHeight(ship), 0),
   );
@@ -88,7 +113,7 @@ const columnsSize = (columns: FleetchartLayoutShip[][]) => {
   return {
     width:
       widths.reduce((sum, width) => sum + width, 0) +
-      COLUMN_GAP * Math.max(columns.length - 1, 0),
+      columnGapOf(columns[0] ?? []) * Math.max(columns.length - 1, 0),
     height: Math.max(0, ...heights),
   };
 };
@@ -132,25 +157,31 @@ export const autoScreenHeightFactor = (
 export const arrangeColumns = (
   ships: FleetchartLayoutShip[],
   maxColumnHeight: number,
+  { centred = false }: { centred?: boolean } = {},
 ): FleetchartPositions => {
   const positions: FleetchartPositions = {};
+  const headingRoom = ships.some((ship) => ship.group) ? HEADING_ROOM : 0;
   let columnLeft = 0;
 
   splitColumns(ships, maxColumnHeight).forEach((column) => {
-    const columnWidth = Math.max(...column.map((ship) => boxWidth(ship)));
-    let top = 0;
+    const columnWidth = columnWidthOf(column);
+    let top = headingRoom;
 
     [...column].reverse().forEach((ship) => {
+      const boxRight = centred
+        ? columnLeft + (columnWidth + boxWidth(ship)) / 2
+        : columnLeft + columnWidth;
+
       positions[ship.id] = placeInBox(
         ship,
-        columnLeft + columnWidth,
+        boxRight,
         top + boxHeight(ship) / 2,
       );
 
       top += boxHeight(ship);
     });
 
-    columnLeft += columnWidth + COLUMN_GAP;
+    columnLeft += columnWidth + columnGapOf(ships);
   });
 
   return positions;
@@ -167,7 +198,13 @@ export const arrangeClassic = (
   let rowWidth = 0;
 
   ships.forEach((ship) => {
-    if (!rows.length || rowWidth + boxWidth(ship) > maxRowWidth) {
+    const row = rows[rows.length - 1];
+
+    if (
+      !row ||
+      row[0].group !== ship.group ||
+      rowWidth + boxWidth(ship) > maxRowWidth
+    ) {
       rows.push([]);
       rowWidth = 0;
     }
@@ -179,7 +216,11 @@ export const arrangeClassic = (
   const positions: FleetchartPositions = {};
   let top = 0;
 
-  rows.forEach((row) => {
+  rows.forEach((row, index) => {
+    if (row[0].group && row[0].group !== rows[index - 1]?.[0].group) {
+      top += HEADING_ROOM;
+    }
+
     const width = row.reduce((sum, ship) => sum + boxWidth(ship), 0);
     const height = Math.max(...row.map((ship) => boxHeight(ship)));
     let left = Math.max((maxRowWidth - width) / 2, 0);
@@ -190,6 +231,203 @@ export const arrangeClassic = (
     });
 
     top += height;
+  });
+
+  return positions;
+};
+
+interface SkylineSegment {
+  x: number;
+  y: number;
+  width: number;
+}
+
+const raiseSkyline = (
+  skyline: SkylineSegment[],
+  x: number,
+  width: number,
+  y: number,
+) => {
+  const raised = skyline.flatMap((segment) => {
+    const end = segment.x + segment.width;
+
+    if (end <= x || segment.x >= x + width) {
+      return [segment];
+    }
+
+    return [
+      ...(segment.x < x ? [{ ...segment, width: x - segment.x }] : []),
+      ...(end > x + width
+        ? [{ x: x + width, y: segment.y, width: end - x - width }]
+        : []),
+    ];
+  });
+
+  return [...raised, { x, y, width }]
+    .sort((a, b) => a.x - b.x)
+    .reduce<SkylineSegment[]>((merged, segment) => {
+      const previous = merged[merged.length - 1];
+
+      if (previous && previous.y === segment.y) {
+        previous.width += segment.width;
+      } else {
+        merged.push({ ...segment });
+      }
+
+      return merged;
+    }, []);
+};
+
+interface PackedBox {
+  id: string;
+  width: number;
+  height: number;
+}
+
+interface Packing {
+  spots: Record<string, { x: number; y: number }>;
+  width: number;
+  height: number;
+}
+
+// Drops each box onto the lowest free spot along the top edge of what is already
+// placed, which is what fills the space beside and under a large one. Tallest
+// first is what keeps that tight.
+const packAt = (boxes: PackedBox[], width: number): Packing => {
+  const spots: Packing["spots"] = {};
+  let skyline: SkylineSegment[] = [{ x: 0, y: 0, width }];
+  let usedWidth = 0;
+
+  [...boxes]
+    .sort((a, b) => b.height - a.height || b.width - a.width)
+    .forEach((box) => {
+      let spot: { x: number; y: number } | undefined;
+
+      skyline.forEach((segment) => {
+        if (segment.x + box.width > width) {
+          return;
+        }
+
+        const y = Math.max(
+          ...skyline
+            .filter(
+              (other) =>
+                other.x < segment.x + box.width &&
+                other.x + other.width > segment.x,
+            )
+            .map((other) => other.y),
+        );
+
+        if (!spot || y < spot.y) {
+          spot = { x: segment.x, y };
+        }
+      });
+
+      const { x, y } = spot as { x: number; y: number };
+
+      spots[box.id] = { x, y };
+      usedWidth = Math.max(usedWidth, x + box.width);
+      skyline = raiseSkyline(skyline, x, box.width, y + box.height);
+    });
+
+  return {
+    spots,
+    width: usedWidth,
+    height: Math.max(...skyline.map((segment) => segment.y)),
+  };
+};
+
+const PACKED_WIDTH_FACTORS = [0.8, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5];
+
+// Tries a range of widths and keeps the packing that draws largest once fitted to
+// the screen, and of those the one taking the least area.
+const bestPacking = (boxes: PackedBox[], aspectRatio: number): Packing => {
+  const widest = Math.max(...boxes.map((box) => box.width));
+  const area = boxes.reduce((sum, box) => sum + box.width * box.height, 0);
+  const ideal = Math.sqrt(area * aspectRatio);
+
+  const fit = ({ width, height }: Packing) =>
+    Math.max(width, height * aspectRatio);
+
+  return [
+    widest,
+    ...PACKED_WIDTH_FACTORS.map((factor) => ideal * factor),
+    ...PACKED_WIDTH_FACTORS.map((factor) => widest * factor),
+  ]
+    .filter((width) => width >= widest)
+    .map((width) => packAt(boxes, width))
+    .reduce((best, packing) => {
+      const difference = fit(packing) - fit(best);
+
+      if (Math.abs(difference) < fit(best) * 0.01) {
+        return packing.width * packing.height < best.width * best.height
+          ? packing
+          : best;
+      }
+
+      return difference < 0 ? packing : best;
+    });
+};
+
+// Fills the available space rather than keeping to any order, so the sort option
+// does not apply. Each group is packed into a block of its own under its heading,
+// and the blocks are packed the same way, so a small group can sit beside a large
+// one.
+export const arrangePacked = (
+  ships: FleetchartLayoutShip[],
+  aspectRatio: number,
+): FleetchartPositions => {
+  if (!ships.length) {
+    return {};
+  }
+
+  const byGroup = new Map<string, FleetchartLayoutShip[]>();
+
+  ships.forEach((ship) => {
+    const key = ship.group ?? "";
+
+    byGroup.set(key, [...(byGroup.get(key) ?? []), ship]);
+  });
+
+  const toBox = (ship: FleetchartLayoutShip): PackedBox => ({
+    id: ship.id,
+    width: boxWidth(ship),
+    height: boxHeight(ship),
+  });
+
+  const blocks = [...byGroup].map(([key, members]) => ({
+    key,
+    members,
+    packing: bestPacking(members.map(toBox), aspectRatio),
+    headingRoom: key ? HEADING_ROOM : 0,
+    headingWidth: members[0].headingWidth || 0,
+  }));
+
+  const groupGap = byGroup.size > 1 ? SHIP_PADDING * 2 : 0;
+
+  const layoutOfBlocks = bestPacking(
+    blocks.map((block) => ({
+      id: block.key,
+      width: Math.max(block.packing.width, block.headingWidth) + groupGap,
+      height: block.packing.height + block.headingRoom + groupGap,
+    })),
+    aspectRatio,
+  );
+
+  const positions: FleetchartPositions = {};
+
+  blocks.forEach(({ key, members, packing, headingRoom }) => {
+    const origin = layoutOfBlocks.spots[key];
+
+    members.forEach((ship) => {
+      const { x, y } = packing.spots[ship.id];
+
+      positions[ship.id] = placeInBox(
+        ship,
+        origin.x + x + boxWidth(ship),
+        origin.y + headingRoom + y + boxHeight(ship) / 2,
+      );
+    });
   });
 
   return positions;
@@ -211,11 +449,13 @@ export const boundsOf = (
     positions[ship.id].x -
     ship.width / 2 -
     (ship.gutter || 0) -
-    SHIP_PADDING / 2;
+    paddingOf(ship) / 2;
   const right = (ship: FleetchartLayoutShip) =>
-    positions[ship.id].x + ship.width / 2 + SHIP_PADDING / 2;
+    positions[ship.id].x + ship.width / 2 + paddingOf(ship) / 2;
   const top = (ship: FleetchartLayoutShip) =>
-    positions[ship.id].y - boxHeight(ship) / 2;
+    positions[ship.id].y -
+    boxHeight(ship) / 2 -
+    (ship.group ? HEADING_ROOM : 0);
   const bottom = (ship: FleetchartLayoutShip) =>
     positions[ship.id].y + boxHeight(ship) / 2;
 
@@ -228,6 +468,53 @@ export const boundsOf = (
     width: Math.max(...placed.map(right)) - minX,
     height: Math.max(...placed.map(bottom)) - minY,
   };
+};
+
+// One heading per group, above its ships, aligned the way the layout placed them.
+export const groupHeadings = (
+  ships: FleetchartLayoutShip[],
+  positions: FleetchartPositions,
+  align: FleetchartHeadingAlign = "left",
+): FleetchartGroupHeading[] => {
+  const groups = new Map<string, FleetchartLayoutShip[]>();
+
+  ships.forEach((ship) => {
+    if (ship.group && positions[ship.id]) {
+      groups.set(ship.group, [...(groups.get(ship.group) ?? []), ship]);
+    }
+  });
+
+  return [...groups].map(([title, members]) => {
+    const { minX, minY, width } = boundsOf(members, positions);
+    const headingWidth = members[0].headingWidth || 0;
+    const room = width - headingWidth;
+
+    return {
+      title,
+      x: minX + (align === "left" ? 0 : align === "centre" ? room / 2 : room),
+      y: minY + HEADING_ROOM / 2,
+      width: headingWidth,
+    };
+  });
+};
+
+// Widens the bounds to any heading reaching past the ships, so it cannot be cut
+// off at the edge of the scene or an export.
+export const withHeadings = (
+  bounds: FleetchartBounds,
+  headings: FleetchartGroupHeading[],
+): FleetchartBounds => {
+  if (!headings.length) {
+    return bounds;
+  }
+
+  const minX = Math.min(bounds.minX, ...headings.map((heading) => heading.x));
+  const maxX = Math.max(
+    bounds.minX + bounds.width,
+    ...headings.map((heading) => heading.x + heading.width),
+  );
+
+  return { ...bounds, minX, width: maxX - minX };
 };
 
 // Widens the bounds to a full row, so rows stay centred on the screen rather than

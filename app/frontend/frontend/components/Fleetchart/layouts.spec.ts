@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   arrangeClassic,
   arrangeColumns,
+  arrangePacked,
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  groupHeadings,
+  withHeadings,
   withRowWidth,
   type FleetchartLayoutShip,
 } from "./layouts";
@@ -125,6 +128,240 @@ describe("boundsOf", () => {
       width: 0,
       height: 0,
     });
+  });
+});
+
+describe("arrangePacked", () => {
+  const overlaps = (
+    ships: FleetchartLayoutShip[],
+    positions: ReturnType<typeof arrangePacked>,
+  ) =>
+    ships.some((a, index) =>
+      ships.slice(index + 1).some((b) => {
+        const dx = Math.abs(positions[a.id].x - positions[b.id].x);
+        const dy = Math.abs(positions[a.id].y - positions[b.id].y);
+
+        return dx < (a.width + b.width) / 2 && dy < (a.height + b.height) / 2;
+      }),
+    );
+
+  const mixed = [
+    ship("large", 300, 100),
+    ship("tall", 40, 200),
+    ...Array.from({ length: 30 }, (_, index) =>
+      ship(`small-${index}`, 20 + (index % 5) * 10, 10 + (index % 4) * 8),
+    ),
+  ];
+
+  it("places every ship without any overlapping", () => {
+    const positions = arrangePacked(mixed, 16 / 9);
+
+    expect(Object.keys(positions)).toHaveLength(mixed.length);
+    expect(overlaps(mixed, positions)).toBe(false);
+  });
+
+  it("takes less area than columns do", () => {
+    const area = (positions: ReturnType<typeof arrangePacked>) => {
+      const { width, height } = boundsOf(mixed, positions);
+
+      return width * height;
+    };
+
+    expect(area(arrangePacked(mixed, 16 / 9))).toBeLessThan(
+      area(arrangeColumns(mixed, 250)),
+    );
+  });
+
+  it("puts small ships in the space beside a large one", () => {
+    const ships = [
+      ship("large", 300, 100),
+      ship("wide", 400, 10),
+      ship("small-a", 40, 20),
+      ship("small-b", 40, 20),
+    ];
+    const positions = arrangePacked(ships, 1);
+
+    expect(positions["small-a"].y).toBeLessThan(positions.large.y + 50);
+    expect(positions["small-a"].x).toBeGreaterThan(positions.large.x + 150);
+  });
+
+  it("follows the screen's proportions", () => {
+    const shape = (ratio: number) => {
+      const { width, height } = boundsOf(mixed, arrangePacked(mixed, ratio));
+
+      return width / height;
+    };
+
+    expect(shape(3)).toBeGreaterThan(shape(0.5));
+  });
+
+  it("keeps groups apart and without overlaps", () => {
+    const grouped = mixed.map((entry, index) => ({
+      ...entry,
+      group: index % 2 ? "one" : "two",
+    }));
+    const positions = arrangePacked(grouped, 16 / 9);
+    const area = (group: string) =>
+      boundsOf(
+        grouped.filter((entry) => entry.group === group),
+        positions,
+      );
+    const one = area("one");
+    const two = area("two");
+
+    expect(overlaps(grouped, positions)).toBe(false);
+    expect(
+      one.minX < two.minX + two.width &&
+        two.minX < one.minX + one.width &&
+        one.minY < two.minY + two.height &&
+        two.minY < one.minY + one.height,
+    ).toBe(false);
+  });
+
+  it("sets a small group beside a large one rather than under it", () => {
+    const grouped = [
+      { ...ship("large", 100, 800), group: "large" },
+      { ...ship("small", 100, 40), group: "small" },
+    ];
+    const positions = arrangePacked(grouped, 16 / 9);
+
+    expect(positions.small.x).toBeGreaterThan(positions.large.x);
+    expect(positions.small.y).toBeLessThan(positions.large.y);
+  });
+
+  it("is empty without ships", () => {
+    expect(arrangePacked([], 16 / 9)).toEqual({});
+  });
+});
+
+describe("columns facing up or down", () => {
+  it("centres ships in their column", () => {
+    const positions = arrangeColumns([ship("a", 40), ship("b", 100)], 500, {
+      centred: true,
+    });
+
+    expect(positions.a.x).toBe(positions.b.x);
+  });
+});
+
+describe("groups", () => {
+  const grouped = (id: string, group: string) => ({ ...ship(id), group });
+
+  it("starts a new column for a new group, even with room left", () => {
+    const positions = arrangeColumns(
+      [grouped("a", "one"), grouped("b", "one"), grouped("c", "two")],
+      500,
+    );
+
+    expect(positions.a.x).toBe(positions.b.x);
+    expect(positions.c.x).toBeGreaterThan(positions.a.x);
+  });
+
+  it("starts a new row for a new group, even with room left", () => {
+    const positions = arrangeClassic(
+      [grouped("a", "one"), grouped("b", "one"), grouped("c", "two")],
+      5000,
+    );
+
+    expect(positions.a.y).toBe(positions.b.y);
+    expect(positions.c.y).toBeGreaterThan(positions.a.y);
+  });
+
+  it("widens a column to fit its heading", () => {
+    const positions = arrangeColumns(
+      [{ ...grouped("a", "one"), headingWidth: 400 }, grouped("b", "two")],
+      500,
+    );
+
+    expect(positions.b.x - 50).toBeGreaterThan(400);
+  });
+
+  it("keeps a wide heading inside a right-aligned column", () => {
+    const ships = [
+      { ...grouped("a", "one"), headingWidth: 400 },
+      grouped("b", "two"),
+    ];
+    const positions = arrangeColumns(ships, 500);
+    const [heading] = groupHeadings(ships, positions, "right");
+
+    expect(heading.x).toBeGreaterThanOrEqual(0);
+    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+  });
+
+  it("keeps a wide heading inside a centred column", () => {
+    const ships = [
+      { ...grouped("a", "one"), headingWidth: 400 },
+      grouped("b", "two"),
+    ];
+    const positions = arrangeColumns(ships, 500, { centred: true });
+    const [heading] = groupHeadings(ships, positions, "centre");
+
+    expect(heading.x).toBeGreaterThanOrEqual(0);
+    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+  });
+
+  it("starts a packed heading at its block, which has room for it", () => {
+    const ships = [{ ...grouped("a", "one"), headingWidth: 400 }];
+    const positions = arrangePacked(ships, 16 / 9);
+    const [heading] = groupHeadings(ships, positions);
+
+    expect(heading.x).toBe(boundsOf(ships, positions).minX);
+  });
+
+  it("widens the bounds to a heading reaching past the ships", () => {
+    const bounds = withHeadings({ minX: 0, minY: 0, width: 100, height: 50 }, [
+      { title: "long", x: -20, y: 0, width: 300 },
+    ]);
+
+    expect(bounds.minX).toBe(-20);
+    expect(bounds.width).toBe(300);
+  });
+
+  it("places one heading per group, clear above its ships", () => {
+    const ships = [
+      grouped("a", "one"),
+      grouped("b", "one"),
+      grouped("c", "two"),
+    ];
+    const positions = arrangeClassic(ships, 5000);
+    const headings = groupHeadings(ships, positions);
+
+    expect(headings.map((heading) => heading.title)).toEqual(["one", "two"]);
+    expect(headings[1].y).toBeLessThan(positions.c.y - 10);
+    expect(headings[1].y).toBeGreaterThan(positions.a.y + 10);
+  });
+
+  it("counts a heading as part of the area to draw", () => {
+    const ships = [grouped("a", "one")];
+    const positions = arrangeColumns(ships, 500);
+    const [heading] = groupHeadings(ships, positions);
+
+    expect(boundsOf(ships, positions).minY).toBeLessThan(heading.y);
+  });
+
+  it("has no headings without groups", () => {
+    expect(groupHeadings([ship("a")], { a: { x: 0, y: 0 } })).toEqual([]);
+  });
+});
+
+describe("spacing", () => {
+  it("moves ships apart with more padding", () => {
+    const tight = arrangeClassic(
+      [
+        { ...ship("a"), padding: 2 },
+        { ...ship("b"), padding: 2 },
+      ],
+      5000,
+    );
+    const wide = arrangeClassic(
+      [
+        { ...ship("a"), padding: 20 },
+        { ...ship("b"), padding: 20 },
+      ],
+      5000,
+    );
+
+    expect(wide.b.x - wide.a.x).toBeGreaterThan(tight.b.x - tight.a.x);
   });
 });
 

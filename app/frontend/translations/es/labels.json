@@ -511,10 +511,41 @@
           "front": "Frontal"
         },
         "gridSize": "%{size} metro por cuadrícula",
+        "options": "Opciones",
+        "sort": "Orden",
+        "sortOptions": {
+          "lengthAsc": "Longitud, más corta primero",
+          "lengthDesc": "Longitud, más larga primero",
+          "name": "Nombre",
+          "list": "Orden de la lista"
+        },
+        "group": "Grupo",
+        "groupOptions": {
+          "none": "Ninguno",
+          "manufacturer": "Fabricante",
+          "classification": "Clasificación",
+          "status": "Estado de producción"
+        },
+        "spacing": "Espaciado",
+        "spacingOptions": {
+          "compact": "Compacto",
+          "normal": "Normal",
+          "wide": "Amplio"
+        },
+        "facing": "Orientación",
+        "facingOptions": {
+          "left": "Izquierda",
+          "top": "Arriba",
+          "right": "Derecha",
+          "bottom": "Abajo"
+        },
+        "scaleBar": "Barra de escala",
+        "solidExport": "Fondo sólido en PNG",
         "layout": "Disposición",
         "layoutOptions": {
           "columns": "Columnas",
-          "classic": "Clásico"
+          "classic": "Clásico",
+          "packed": "Compacto"
         },
         "mode": "Modo",
         "modeOptions": {

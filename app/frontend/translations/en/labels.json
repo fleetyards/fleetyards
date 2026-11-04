@@ -511,10 +511,41 @@
           "front": "Front"
         },
         "gridSize": "%{size} meter per grid box",
+        "options": "Options",
+        "sort": "Sort",
+        "sortOptions": {
+          "lengthAsc": "Length, shortest first",
+          "lengthDesc": "Length, longest first",
+          "name": "Name",
+          "list": "List order"
+        },
+        "group": "Group",
+        "groupOptions": {
+          "none": "None",
+          "manufacturer": "Manufacturer",
+          "classification": "Classification",
+          "status": "Production status"
+        },
+        "spacing": "Spacing",
+        "spacingOptions": {
+          "compact": "Compact",
+          "normal": "Normal",
+          "wide": "Wide"
+        },
+        "facing": "Facing",
+        "facingOptions": {
+          "left": "Left",
+          "top": "Top",
+          "right": "Right",
+          "bottom": "Bottom"
+        },
+        "scaleBar": "Scale bar",
+        "solidExport": "Solid background in PNG",
         "layout": "Layout",
         "layoutOptions": {
           "columns": "Columns",
-          "classic": "Classic"
+          "classic": "Classic",
+          "packed": "Packed"
         },
         "mode": "Mode",
         "modeOptions": {

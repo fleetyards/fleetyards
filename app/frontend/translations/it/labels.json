@@ -511,10 +511,41 @@
           "front": "Fronte"
         },
         "gridSize": "%{size} metro per cella della griglia",
+        "options": "Opzioni",
+        "sort": "Ordine",
+        "sortOptions": {
+          "lengthAsc": "Lunghezza, prima la più corta",
+          "lengthDesc": "Lunghezza, prima la più lunga",
+          "name": "Nome",
+          "list": "Ordine della lista"
+        },
+        "group": "Gruppo",
+        "groupOptions": {
+          "none": "Nessuno",
+          "manufacturer": "Produttore",
+          "classification": "Classificazione",
+          "status": "Stato di produzione"
+        },
+        "spacing": "Spaziatura",
+        "spacingOptions": {
+          "compact": "Compatta",
+          "normal": "Normale",
+          "wide": "Ampia"
+        },
+        "facing": "Orientamento",
+        "facingOptions": {
+          "left": "Sinistra",
+          "top": "Alto",
+          "right": "Destra",
+          "bottom": "Basso"
+        },
+        "scaleBar": "Barra di scala",
+        "solidExport": "Sfondo pieno nel PNG",
         "layout": "Disposizione",
         "layoutOptions": {
           "columns": "Colonne",
-          "classic": "Classico"
+          "classic": "Classico",
+          "packed": "Compatto"
         },
         "mode": "Modalità",
         "modeOptions": {

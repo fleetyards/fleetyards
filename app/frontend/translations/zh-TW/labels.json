@@ -511,10 +511,41 @@
           "front": "正面"
         },
         "gridSize": "每格 %{size} 公尺",
+        "options": "選項",
+        "sort": "排序",
+        "sortOptions": {
+          "lengthAsc": "長度,由短到長",
+          "lengthDesc": "長度,由長到短",
+          "name": "名稱",
+          "list": "清單順序"
+        },
+        "group": "分組",
+        "groupOptions": {
+          "none": "無",
+          "manufacturer": "製造商",
+          "classification": "分類",
+          "status": "生產狀態"
+        },
+        "spacing": "間距",
+        "spacingOptions": {
+          "compact": "緊湊",
+          "normal": "正常",
+          "wide": "寬鬆"
+        },
+        "facing": "朝向",
+        "facingOptions": {
+          "left": "左",
+          "top": "上",
+          "right": "右",
+          "bottom": "下"
+        },
+        "scaleBar": "比例尺",
+        "solidExport": "PNG 使用純色背景",
         "layout": "版面配置",
         "layoutOptions": {
           "columns": "分欄",
-          "classic": "經典"
+          "classic": "經典",
+          "packed": "緊密"
         },
         "mode": "模式",
         "modeOptions": {
