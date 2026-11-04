@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./invites.vue";
 
-const leaveFleet = vi.fn();
+const withdrawMembership = vi.fn();
 const displayConfirm = vi.fn();
 const displaySuccess = vi.fn();
 const displayAlert = vi.fn();
@@ -22,7 +22,7 @@ vi.mock("@/services/fyApi", async () => {
     useFleetInvites: () => ({ data: ref(invites), isLoading: ref(false) }),
     useAcceptFleetMembership: () => ({ mutateAsync: vi.fn() }),
     useDeclineFleetMembership: () => ({ mutateAsync: vi.fn() }),
-    useLeaveFleet: () => ({ mutateAsync: leaveFleet }),
+    useWithdrawFleetMembership: () => ({ mutateAsync: withdrawMembership }),
   };
 });
 
@@ -70,7 +70,7 @@ describe("FleetInvites", () => {
     vi.mocked(useQueryClient).mockReturnValue({
       invalidateQueries,
     } as unknown as ReturnType<typeof useQueryClient>);
-    leaveFleet.mockResolvedValue(undefined);
+    withdrawMembership.mockResolvedValue(undefined);
     displayConfirm.mockImplementation(({ onConfirm }) => onConfirm());
   });
 
@@ -86,20 +86,32 @@ describe("FleetInvites", () => {
     expect(wrapper.find(withdrawBtn).exists()).toBe(false);
   });
 
+  it("leaves the buttons usable when the confirmation is never answered", async () => {
+    displayConfirm.mockImplementation(() => {});
+    const wrapper = await mountPage("requested");
+
+    await wrapper.find(withdrawBtn).trigger("click");
+    await flushPromises();
+
+    expect(wrapper.find(withdrawBtn).attributes("disabled")).toBeUndefined();
+  });
+
   it("withdraws the request and refreshes the fleets", async () => {
     const wrapper = await mountPage("requested");
 
     await wrapper.find(withdrawBtn).trigger("click");
     await flushPromises();
 
-    expect(leaveFleet).toHaveBeenCalledWith({ fleetSlug: "other-fleet" });
+    expect(withdrawMembership).toHaveBeenCalledWith({
+      fleetSlug: "other-fleet",
+    });
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ["fleets"] });
     expect(displaySuccess).toHaveBeenCalled();
     expect(displayAlert).not.toHaveBeenCalled();
   });
 
-  it("says so when the request could not be withdrawn", async () => {
-    leaveFleet.mockRejectedValue(new Error("nope"));
+  it("says so and re-reads the list when the request could not be withdrawn", async () => {
+    withdrawMembership.mockRejectedValue(new Error("nope"));
     vi.spyOn(console, "error").mockImplementation(() => {});
     const wrapper = await mountPage("requested");
 
@@ -108,5 +120,6 @@ describe("FleetInvites", () => {
 
     expect(displayAlert).toHaveBeenCalled();
     expect(displaySuccess).not.toHaveBeenCalled();
+    expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ["fleets"] });
   });
 });

@@ -20,7 +20,7 @@ import {
   useFleetInvites as useFleetInvitesQuery,
   useAcceptFleetMembership as useAcceptFleetMembershipMutation,
   useDeclineFleetMembership as useDeclineFleetMembershipMutation,
-  useLeaveFleet as useLeaveFleetMutation,
+  useWithdrawFleetMembership as useWithdrawFleetMembershipMutation,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -58,6 +58,8 @@ const accept = async (invite: FleetMember) => {
     .then(async () => {
       comlink.emit("fleet-update");
 
+      void refreshFleets();
+
       displaySuccess({
         text: t("messages.fleet.invites.accept.success"),
       });
@@ -82,20 +84,18 @@ const accept = async (invite: FleetMember) => {
 
 const declineMutation = useDeclineFleetMembershipMutation();
 
-const decline = async (invite: FleetMember) => {
-  submitting.value = true;
-
+const decline = (invite: FleetMember) => {
   displayConfirm({
     text: t("messages.confirm.fleet.invites.decline"),
     onConfirm: async () => {
+      submitting.value = true;
+
       await declineMutation
         .mutateAsync({
           fleetSlug: invite.fleetSlug,
         })
-        .then(async () => {
+        .then(() => {
           comlink.emit("fleet-update");
-
-          await refreshFleets();
 
           displaySuccess({
             text: t("messages.fleet.invites.decline.success"),
@@ -109,30 +109,27 @@ const decline = async (invite: FleetMember) => {
         })
         .finally(() => {
           submitting.value = false;
+
+          void refreshFleets();
         });
-    },
-    onClose: () => {
-      submitting.value = false;
     },
   });
 };
 
-const withdrawMutation = useLeaveFleetMutation();
+const withdrawMutation = useWithdrawFleetMembershipMutation();
 
 const withdraw = (invite: FleetMember) => {
-  submitting.value = true;
-
   displayConfirm({
     text: t("messages.confirm.fleet.invites.withdraw"),
     onConfirm: async () => {
+      submitting.value = true;
+
       await withdrawMutation
         .mutateAsync({
           fleetSlug: invite.fleetSlug,
         })
-        .then(async () => {
+        .then(() => {
           comlink.emit("fleet-update");
-
-          await refreshFleets();
 
           displaySuccess({
             text: t("messages.fleet.invites.withdraw.success"),
@@ -146,10 +143,11 @@ const withdraw = (invite: FleetMember) => {
         })
         .finally(() => {
           submitting.value = false;
+
+          // A failure usually means the request moved on, so re-read it rather
+          // than leave a button that keeps failing.
+          void refreshFleets();
         });
-    },
-    onClose: () => {
-      submitting.value = false;
     },
   });
 };
