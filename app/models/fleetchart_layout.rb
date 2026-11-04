@@ -37,7 +37,7 @@ class FleetchartLayout < ApplicationRecord
   # Sharing a layout is the owner showing it to someone, so everything placed in it
   # comes along, whatever the hangar's own privacy settings say about those ships.
   def shared_vehicles
-    user.vehicles.where(id: placements.pluck("vehicle_id"))
+    user.vehicles.where(id: placements.reject { |placement| placement["removed"] }.pluck("vehicle_id"))
   end
 
   # Ships the owner tried out without having them, each placement drawing its own copy.
@@ -101,6 +101,7 @@ class FleetchartLayout < ApplicationRecord
       allowed?(placement["viewpoint"], VIEWPOINTS) &&
       allowed?(placement["state"], STATES) &&
       (placement["order"].nil? || placement["order"].is_a?(Numeric)) &&
+      [nil, true, false].include?(placement["removed"]) &&
       (placement["heading"].nil? || (placement["heading"].is_a?(String) && placement["heading"].length <= MAX_HEADING_LENGTH))
   end
 

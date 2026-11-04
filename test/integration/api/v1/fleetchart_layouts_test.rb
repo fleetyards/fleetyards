@@ -278,6 +278,30 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_equal %w[a], response.parsed_body["cataloguePlacements"].map { |placement| placement["id"] }
   end
 
+  test "a ship removed from a layout stays saved as removed and is not shared" do
+    sign_in @user
+    removed = create(:vehicle, user: @user, public: true)
+
+    post "/api/v1/hangar/fleetchart-layouts",
+      params: {name: "Without", placements: [placement_for(@vehicle), placement_for(removed, removed: true)]},
+      as: :json
+
+    assert_response :created
+    assert_equal(
+      [[@vehicle.id, nil], [removed.id, true]],
+      response.parsed_body["placements"].map { |placement| placement.values_at("vehicleId", "removed") }
+    )
+
+    layout = FleetchartLayout.find(response.parsed_body["id"])
+    layout.share!
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_response :success
+    assert_equal [@vehicle.id], response.parsed_body["vehicles"].map { |vehicle| vehicle["id"] }
+    assert_equal [@vehicle.id], response.parsed_body["placements"].map { |placement| placement["vehicleId"] }
+  end
+
   test "a user only reaches their own layouts" do
     other = create(:fleetchart_layout)
     mine = create(:fleetchart_layout, user: @user)

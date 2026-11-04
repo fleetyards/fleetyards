@@ -35329,6 +35329,12 @@ components:
           type:
           - string
           - 'null'
+        removed:
+          type:
+          - boolean
+          - 'null'
+          description: Kept out of the chart, where a ship without a placement would
+            show as not placed yet
       required:
       - vehicleId
       - x
