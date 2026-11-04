@@ -30,7 +30,7 @@ const { currentUser } = storeToRefs(useSessionStore());
 
 <template>
   <Teleport to="#header-right">
-    <SupportBtn :size="BtnSizesEnum.MD" page />
+    <SupportBtn :size="BtnSizesEnum.MD" />
   </Teleport>
 
   <div class="home-dashboard__head">

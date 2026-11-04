@@ -105,7 +105,7 @@ useScrollSettle(() =>
     <HomeBuildPills class="home-landing__pills" />
   </Teleport>
   <Teleport to="#header-right">
-    <SupportBtn :size="BtnSizesEnum.MD" page />
+    <SupportBtn :size="BtnSizesEnum.MD" />
   </Teleport>
 
   <LandingSection hero data-test="home-landing">

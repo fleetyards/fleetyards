@@ -392,8 +392,8 @@ const setLocale = (locale: string) => {
             </Btn>
           </BtnDropdown>
 
-          <!-- The support button lives here, not in AppFooter: it opens a
-               frontend modal, and the footer also renders in admin and docs. -->
+          <!-- The support button lives here, not in AppFooter: it links to a
+               frontend route, and the footer also renders in admin and docs. -->
           <template #actions>
             <SupportBtn :variant="BtnVariantsEnum.BARE">
               {{ t("labels.supportUs") }}
