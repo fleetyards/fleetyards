@@ -2,6 +2,7 @@
 
 json.groups @groups do |group|
   json.type group.type
+  json.has_more group.has_more
   json.items group.items do |result|
     json.type result.type
     json.name result.name

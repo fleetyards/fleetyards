@@ -81,6 +81,14 @@ module Catalogue
       assert_equal Search::PER_TYPE, search("ore").size
     end
 
+    test "says when a catalogue has more than it offers" do
+      5.times { |n| create(:commodity, name: "Ore #{n}") }
+      assert_equal [false], Search.new.call("ore").map(&:has_more)
+
+      create(:commodity, name: "Ore 5")
+      assert_equal [true], Search.new.call("ore").map(&:has_more)
+    end
+
     test "carries the picture an item has, and a blueprint none without an angled render to draw" do
       component = create(:component, :with_store_image, name: "Omni Cannon")
       create(:blueprint, name: "Omni Cannon", craftable: component)

@@ -10,10 +10,11 @@ module V1
         type: :object,
         properties: {
           type: {type: :string},
-          items: {type: :array, items: ::V1::Schemas::SearchResult}
+          items: {type: :array, items: ::V1::Schemas::SearchResult},
+          hasMore: {type: :boolean, description: "Whether the catalogue has matches beyond these items"}
         },
         additionalProperties: false,
-        required: %w[type items]
+        required: %w[type items hasMore]
       })
     end
   end

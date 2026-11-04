@@ -57,6 +57,7 @@ describe("HomeSearch", () => {
     groups = [
       {
         type: "Location",
+        hasMore: false,
         items: [
           {
             type: "Location",
@@ -68,6 +69,7 @@ describe("HomeSearch", () => {
       },
       {
         type: "Component",
+        hasMore: false,
         items: [
           {
             type: "Component",
@@ -174,6 +176,7 @@ describe("HomeSearch", () => {
     groups = [
       {
         type: "Blueprint",
+        hasMore: false,
         items: [
           {
             type: "Blueprint",
@@ -207,6 +210,7 @@ describe("HomeSearch", () => {
     groups = [
       {
         type: "Location",
+        hasMore: false,
         items: [
           {
             type: "Location",

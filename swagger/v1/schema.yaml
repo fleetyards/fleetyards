@@ -48059,10 +48059,14 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/SearchResult"
+        hasMore:
+          type: boolean
+          description: Whether the catalogue has matches beyond these items
       additionalProperties: false
       required:
       - type
       - items
+      - hasMore
       title: SearchGroup
     SearchResult:
       type: object

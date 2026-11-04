@@ -40,7 +40,7 @@ module Catalogue
     # A place drawn rather than pictured: a body as a globe, a star as a sun,
     # and a system as its star.
     Appearance = Data.define(:kind, :color, :body_type, :flare)
-    Group = Data.define(:type, :items)
+    Group = Data.define(:type, :items, :has_more)
 
     def call(query)
       query = query.to_s.strip
@@ -59,8 +59,10 @@ module Catalogue
     end
 
     private def group(prefix, escaped)
-      items = matches(prefix, escaped)
-      return if items.empty?
+      found = matches(prefix, escaped)
+      return if found.empty?
+
+      items = found.first(PER_TYPE)
 
       slugs = items.map(&:slug)
       images = images_for(prefix, slugs)
@@ -68,7 +70,8 @@ module Catalogue
 
       Group.new(
         type: items.first.type,
-        items: items.map { |item| item.with(image: images[item.slug], appearance: appearances[item.slug]) }
+        items: items.map { |item| item.with(image: images[item.slug], appearance: appearances[item.slug]) },
+        has_more: found.size > PER_TYPE
       )
     end
 
@@ -159,7 +162,6 @@ module Catalogue
       rows.each_with_index
         .map { |(row_name, slug), index| Result.new(type: klass.name, name: row_name, slug:, detail: details[index], image: nil, appearance: nil) }
         .uniq { |result| [result.name.downcase, result.detail] }
-        .first(PER_TYPE)
     end
 
     # The same ranking the query orders a catalogue by.
