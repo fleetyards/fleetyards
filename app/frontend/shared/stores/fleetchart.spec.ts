@@ -30,6 +30,16 @@ describe("fleetchart store", () => {
     );
   });
 
+  it("offers a chart that cannot arrange packed instead of free", () => {
+    const store = useFleetchartStore();
+    store.updateLayout({ namespace: "hangar", layout: FleetchartLayouts.FREE });
+
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.FREE);
+    expect(store.fleetchartLayout("hangar", false)).toBe(
+      FleetchartLayouts.PACKED,
+    );
+  });
+
   it("keeps placements per chart", () => {
     const store = useFleetchartStore();
     store.updatePlacements({

@@ -147,8 +147,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
     // Somebody who chose a mode keeps its arrangement. `layout` can also be missing
     // altogether from state persisted before it existed.
     fleetchartLayout: (state) => {
-      return (namespace: string) => {
+      return (namespace: string, canArrange = true) => {
         const layout = state.layout?.[namespace];
+
+        // The hangar's namespace is shared with lists that have nothing to arrange.
+        if (layout === FleetchartLayouts.FREE && !canArrange) {
+          return FleetchartLayouts.PACKED;
+        }
 
         if (layout) {
           return layout;
