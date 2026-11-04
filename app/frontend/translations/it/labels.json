@@ -511,6 +511,11 @@
           "front": "Fronte"
         },
         "gridSize": "%{size} metro per cella della griglia",
+        "layout": "Disposizione",
+        "layoutOptions": {
+          "columns": "Colonne",
+          "classic": "Classico"
+        },
         "mode": "Modalità",
         "modeOptions": {
           "classic": "Classico",

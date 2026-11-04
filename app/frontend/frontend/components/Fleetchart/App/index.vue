@@ -7,17 +7,24 @@ export default {
 <script lang="ts" setup>
 import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
 import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
+import FleetchartCanvas from "@/frontend/components/Fleetchart/Canvas/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type Vehicle,
+  type Model,
+  type VehiclePublic,
+} from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useOverlayStore } from "@/shared/stores/overlay";
-import { FleetchartModes } from "@/shared/stores/fleetchart";
+import { FleetchartLayouts, FleetchartModes } from "@/shared/stores/fleetchart";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFleetchartViews } from "@/frontend/composables/useFleetchartViews";
@@ -70,6 +77,20 @@ const visible = computed(() => {
 const mode = computed(() => {
   return fleetchartStore.fleetchartMode(props.namespace);
 });
+
+const { isFeatureEnabled } = useFeatures();
+
+const layoutsEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.FLEETCHART_LAYOUTS),
+);
+
+const layout = computed(() =>
+  fleetchartStore.fleetchartLayout(props.namespace),
+);
+
+const setLayout = (option: FleetchartLayouts) => {
+  fleetchartStore.updateLayout({ namespace: props.namespace, layout: option });
+};
 
 // An item is either a ship or something holding one, which is the same shape the
 // item component resolves.
@@ -300,7 +321,26 @@ const closeFleetchart = async () => {
       }"
     >
       <div class="fleetchart-app-controls">
-        <BtnDropdown>
+        <BtnDropdown v-if="layoutsEnabled" data-test="fleetchart-layout">
+          <template #label>
+            <template v-if="!mobile">
+              {{ t("labels.fleetchartApp.layout") }}:
+            </template>
+            {{ t(`labels.fleetchartApp.layoutOptions.${layout}`) }}
+          </template>
+          <Btn
+            v-for="option in FleetchartLayouts"
+            :key="option"
+            :active="layout === option"
+            :data-test="`fleetchart-layout-${option}`"
+            variant="bare"
+            @click="setLayout(option)"
+          >
+            {{ t(`labels.fleetchartApp.layoutOptions.${option}`) }}
+          </Btn>
+        </BtnDropdown>
+
+        <BtnDropdown v-else>
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.mode") }}:
@@ -362,8 +402,14 @@ const closeFleetchart = async () => {
       </div>
 
       <template v-if="innerItems.length">
+        <FleetchartCanvas
+          v-if="layoutsEnabled"
+          :items="innerItems"
+          :namespace="namespace"
+          :download-name="downloadName"
+        />
         <FleetchartListPanzoom
-          v-if="mode == 'panzoom'"
+          v-else-if="mode == 'panzoom'"
           :items="innerItems"
           :my-ship="myShip"
           :namespace="namespace"

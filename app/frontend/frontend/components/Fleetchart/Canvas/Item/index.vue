@@ -1,0 +1,112 @@
+<script lang="ts">
+export default {
+  name: "FleetchartCanvasItem",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  PIXELS_PER_METRE,
+  imageUrlFor,
+  modelOf,
+  shipLabelOf,
+  viewFor,
+  type FleetchartEntry,
+  type FleetchartShipGeometry,
+} from "@/frontend/components/Fleetchart/geometry";
+import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
+
+type Props = {
+  entry: FleetchartEntry;
+  geometry: FleetchartShipGeometry;
+  left: number;
+  top: number;
+  viewpoint: FleetchartViewpoints;
+  zoom?: number;
+  showLabel?: boolean;
+  showStatus?: boolean;
+  colored?: boolean;
+  extended?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  zoom: 1,
+  showLabel: false,
+  showStatus: false,
+  colored: false,
+  extended: false,
+});
+
+const { t } = useI18n();
+
+const model = computed(() => modelOf(props.entry));
+
+const label = computed(() => shipLabelOf(props.entry));
+
+const productionStatus = computed(() =>
+  t(`labels.model.productionStatus.${model.value.productionStatus}`),
+);
+
+const cssClasses = computed(() => [
+  `fleetchart-item-${model.value.slug}`,
+  props.showStatus ? `status-${model.value.productionStatus}` : undefined,
+]);
+
+const view = computed(() =>
+  viewFor(props.entry, props.viewpoint, {
+    extended: props.extended,
+    colored: props.colored,
+  }),
+);
+
+const imageWidth = computed(() => props.geometry.imageWidth * PIXELS_PER_METRE);
+
+const image = computed(() => {
+  if (!view.value) {
+    return undefined;
+  }
+
+  const renderedWidth =
+    props.geometry.length *
+    PIXELS_PER_METRE *
+    props.zoom *
+    (window.devicePixelRatio || 1);
+
+  return imageUrlFor(view.value, renderedWidth);
+});
+</script>
+
+<template>
+  <div
+    class="fleetchart-canvas-item"
+    :class="cssClasses"
+    :style="{
+      left: `${left}px`,
+      top: `${top}px`,
+      width: `${geometry.length * PIXELS_PER_METRE}px`,
+      height: `${geometry.height * PIXELS_PER_METRE}px`,
+    }"
+    data-test="fleetchart-ship"
+  >
+    <div v-if="showLabel" class="fleetchart-canvas-item__label">
+      <span>{{ label.title }}</span>
+      <small v-if="label.subtitle">{{ label.subtitle }}</small>
+      <small v-if="showStatus">{{ productionStatus }}</small>
+    </div>
+    <img
+      v-if="image"
+      :src="image"
+      :alt="label.title"
+      :style="{
+        width: `${imageWidth}px`,
+        'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
+      }"
+      class="fleetchart-canvas-item__image"
+    />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

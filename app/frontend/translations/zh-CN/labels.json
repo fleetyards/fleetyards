@@ -511,6 +511,11 @@
           "front": "正面"
         },
         "gridSize": "每格 %{size} 米",
+        "layout": "布局",
+        "layoutOptions": {
+          "columns": "分栏",
+          "classic": "经典"
+        },
         "mode": "模式",
         "modeOptions": {
           "classic": "经典",

@@ -511,6 +511,11 @@
           "front": "Front"
         },
         "gridSize": "%{size} meter per grid box",
+        "layout": "Layout",
+        "layoutOptions": {
+          "columns": "Columns",
+          "classic": "Classic"
+        },
         "mode": "Mode",
         "modeOptions": {
           "classic": "Classic",
