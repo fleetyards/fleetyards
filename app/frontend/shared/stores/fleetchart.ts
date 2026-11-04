@@ -26,6 +26,7 @@ export enum FleetchartLayouts {
   COLUMNS = "columns",
   CLASSIC = "classic",
   PACKED = "packed",
+  FREE = "free",
 }
 
 export enum FleetchartSorts {
@@ -73,7 +74,18 @@ export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   facing: FleetchartFacings.LEFT,
 };
 
+export interface FleetchartPlacement {
+  x: number;
+  y: number;
+  facing?: FleetchartFacings;
+}
+
+export type FleetchartPlacements = Record<string, FleetchartPlacement>;
+
 type FleetchartState = {
+  placements: {
+    [key: string]: FleetchartPlacements;
+  };
   options: {
     [key: string]: Partial<FleetchartOptions>;
   };
@@ -103,6 +115,7 @@ type FleetchartState = {
 
 export const useFleetchartStore = defineStore("fleetchart", {
   state: (): FleetchartState => ({
+    placements: {},
     options: {},
     layout: {},
     visible: [],
@@ -150,6 +163,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
             return FleetchartLayouts.PACKED;
         }
       };
+    },
+    fleetchartPlacements: (state) => {
+      return (namespace: string): FleetchartPlacements =>
+        state.placements?.[namespace] ?? {};
     },
     fleetchartOptions: (state) => {
       return (namespace: string): FleetchartOptions => ({
@@ -233,6 +250,15 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
       this.layout = { ...this.layout, [payload.namespace]: payload.layout };
+    },
+    updatePlacements(payload: {
+      namespace: string;
+      placements: FleetchartPlacements;
+    }) {
+      this.placements = {
+        ...this.placements,
+        [payload.namespace]: payload.placements,
+      };
     },
     updateOptions(payload: {
       namespace: string;

@@ -30,6 +30,17 @@ describe("fleetchart store", () => {
     );
   });
 
+  it("keeps placements per chart", () => {
+    const store = useFleetchartStore();
+    store.updatePlacements({
+      namespace: "hangar",
+      placements: { a: { x: 1, y: 2 } },
+    });
+
+    expect(store.fleetchartPlacements("hangar")).toEqual({ a: { x: 1, y: 2 } });
+    expect(store.fleetchartPlacements("fleet")).toEqual({});
+  });
+
   it("starts packed", () => {
     const store = useFleetchartStore();
 
