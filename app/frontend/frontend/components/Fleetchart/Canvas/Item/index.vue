@@ -77,8 +77,7 @@ const image = computed(() => {
   const renderedWidth =
     props.geometry.length *
     PIXELS_PER_METRE *
-    // Never below full size: an export draws at that size whatever the zoom.
-    Math.max(props.zoom, 1) *
+    props.zoom *
     (window.devicePixelRatio || 1);
 
   return imageUrlFor(view.value, renderedWidth);

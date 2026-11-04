@@ -67,6 +67,9 @@ const props = withDefaults(defineProps<Props>(), {
 const SCENE_PADDING = 40;
 const SCREEN_MARGIN = 120;
 const MIN_ZOOM = 0.02;
+// An export is always drawn at full size, so its grid cannot follow the zoom.
+const EXPORT_GRID_CELL = gridCellFor(PIXELS_PER_METRE);
+const EXPORT_IMAGE_TIMEOUT = 15000;
 const FIT_MARGIN_TOP = 70;
 const FIT_MARGIN_BOTTOM = 80;
 const MAX_ZOOM = 20;
@@ -336,7 +339,7 @@ const gridCell = computed(() =>
 // The on-screen grid is a sibling of the scene, so an export needs its own copy.
 const exportGridStyle = computed(() => {
   const line = "rgba(255, 255, 255, 0.5) 1px, transparent 1px";
-  const cell = gridCell.value * PIXELS_PER_METRE;
+  const cell = EXPORT_GRID_CELL * PIXELS_PER_METRE;
   const offset = (position: number) => ((position % cell) + cell) % cell;
 
   return {
@@ -351,6 +354,29 @@ const scaleBarWidth = computed(
 );
 
 const settingsOpen = ref(false);
+
+const exporting = ref(false);
+
+// The images drawn while zoomed out are too small for a full-size export, so the
+// larger ones are only fetched for as long as an export needs them.
+const prepareExport = async () => {
+  exporting.value = true;
+
+  await nextTick();
+
+  const images = [...(scene.value?.querySelectorAll("img") ?? [])];
+
+  await Promise.race([
+    Promise.all(images.map((image) => image.decode().catch(() => {}))),
+    new Promise((resolve) => {
+      setTimeout(resolve, EXPORT_IMAGE_TIMEOUT);
+    }),
+  ]);
+};
+
+const finishExport = () => {
+  exporting.value = false;
+};
 
 const gridCanvas = ref<HTMLCanvasElement>();
 
@@ -641,6 +667,8 @@ const toggleLabels = () => {
               options.solidExport ? SOLID_EXPORT_BACKGROUND : null
             "
             ignore-transform
+            :prepare="prepareExport"
+            :finish="finishExport"
           />
 
           <hr />
@@ -716,7 +744,7 @@ const toggleLabels = () => {
           :left="sceneX(positions[ship.id].x - ship.width / 2)"
           :top="sceneY(positions[ship.id].y - ship.height / 2)"
           :viewpoint="viewpoint"
-          :zoom="savedZoom.scale || 1"
+          :zoom="exporting ? 1 : savedZoom.scale || 1"
           :show-label="showLabels"
           :show-status="showStatus"
           :colored="colored"
@@ -732,9 +760,9 @@ const toggleLabels = () => {
         >
           <span
             class="fleetchart-canvas__scale-bar"
-            :style="{ width: `${gridCell * PIXELS_PER_METRE}px` }"
+            :style="{ width: `${EXPORT_GRID_CELL * PIXELS_PER_METRE}px` }"
           />
-          {{ gridCell }} m
+          {{ EXPORT_GRID_CELL }} m
         </div>
 
         <div

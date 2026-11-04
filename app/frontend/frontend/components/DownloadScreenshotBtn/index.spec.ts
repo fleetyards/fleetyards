@@ -135,6 +135,28 @@ describe("DownloadScreenshotBtn", () => {
     expect(25000 * scale).toBeLessThanOrEqual(16_384);
   });
 
+  it("captures only once prepared, and finishes even after a failure", async () => {
+    chart(1000, 500);
+    html2canvas.mockRejectedValue(new Error("no"));
+
+    const order: string[] = [];
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        element: "#fleetchart",
+        prepare: async () => {
+          order.push(`prepare:${html2canvas.mock.calls.length}`);
+        },
+        finish: () => order.push("finish"),
+      },
+    });
+    mounted.push(wrapper);
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(order).toEqual(["prepare:0", "finish"]);
+    expect(html2canvas).toHaveBeenCalled();
+  });
+
   it("tells the user and reports it when the chart cannot be drawn", async () => {
     const element = chart(1000, 500);
     const error = new Error("boom");

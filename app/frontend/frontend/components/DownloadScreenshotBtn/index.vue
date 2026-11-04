@@ -26,6 +26,9 @@ type Props = {
   backgroundColor?: string | null;
   /** Captures the element at its full size, whatever it is currently zoomed to. */
   ignoreTransform?: boolean;
+  /** Runs before the capture, for what only an export needs. */
+  prepare?: () => Promise<void>;
+  finish?: () => void;
 };
 
 // Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
@@ -75,6 +78,8 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   backgroundColor: null,
   ignoreTransform: false,
+  prepare: undefined,
+  finish: undefined,
 });
 
 const { t } = useI18n();
@@ -109,6 +114,8 @@ const download = async () => {
   const parentNode = element.parentNode as HTMLElement;
 
   try {
+    await props.prepare?.();
+
     const canvas = await html2canvas(element, {
       backgroundColor: props.backgroundColor,
       useCORS: true,
@@ -128,6 +135,7 @@ const download = async () => {
     displayAlert({ text: t("messages.fleetchartScreenshot.failure") });
   } finally {
     element.classList.remove("fleetchart-download");
+    props.finish?.();
     downloading.value = false;
   }
 };
