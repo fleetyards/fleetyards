@@ -9,6 +9,7 @@ import { useDebounceFn, useElementBounding, useWindowSize } from "@vueuse/core";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import AppIcon from "@/shared/components/AppIcon/index.vue";
+import HomeSearchResultAction from "@/frontend/components/Home/Search/ResultAction/index.vue";
 import HomeSearchResultLabel from "@/frontend/components/Home/Search/ResultLabel/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
@@ -349,8 +350,14 @@ const popoverStyle = computed(() => ({
                   @mouseenter="active = indexOf(result)"
                 >
                   <HomeSearchResultLabel
+                    class="home-search__option-label"
                     :result="result"
                     :query="searchedFor"
+                  />
+                  <HomeSearchResultAction
+                    :result="result"
+                    @opened="open = false"
+                    @unavailable="pick(result)"
                   />
                 </li>
                 <li
@@ -564,6 +571,10 @@ const popoverStyle = computed(() => ({
   &--active {
     background: var(--color-control-hover, rgb(52 58 64 / 0.95));
   }
+}
+
+.home-search__option-label {
+  flex: 1 1 auto;
 }
 
 .home-search__more {
