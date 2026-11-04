@@ -17,6 +17,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   FleetchartViewpoints,
+  LEGACY_FLEETCHART_VIEWPOINTS,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
 import { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
@@ -224,7 +225,7 @@ const drawGridLines = async () => {
             {{ t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
           </template>
           <Btn
-            v-for="(option, index) in FleetchartViewpoints"
+            v-for="(option, index) in LEGACY_FLEETCHART_VIEWPOINTS"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
             :active="viewpoint === option"
             @click="setViewpoint(option)"

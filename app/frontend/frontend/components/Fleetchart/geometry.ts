@@ -25,13 +25,25 @@ export interface FleetchartShipGeometry {
   imageHeight: number;
 }
 
-type ViewName = "angledView" | "frontView" | "portView" | "topView";
+type ViewName =
+  | "angledRearView"
+  | "angledView"
+  | "bottomView"
+  | "frontView"
+  | "portView"
+  | "rearView"
+  | "starboardView"
+  | "topView";
 
 const VIEW_BY_VIEWPOINT: Record<FleetchartViewpoints, ViewName> = {
   [FleetchartViewpoints.ANGLED]: "angledView",
   [FleetchartViewpoints.FRONT]: "frontView",
   [FleetchartViewpoints.PORT]: "portView",
   [FleetchartViewpoints.TOP]: "topView",
+  [FleetchartViewpoints.ANGLED_REAR]: "angledRearView",
+  [FleetchartViewpoints.BOTTOM]: "bottomView",
+  [FleetchartViewpoints.REAR]: "rearView",
+  [FleetchartViewpoints.STARBOARD]: "starboardView",
 };
 
 // The front view is not among them: it would stretch a ship's box, and every

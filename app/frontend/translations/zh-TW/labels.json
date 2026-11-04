@@ -508,7 +508,11 @@
           "port": "左舷",
           "top": "頂部",
           "angled": "斜角",
-          "front": "正面"
+          "front": "正面",
+          "starboard": "右舷",
+          "bottom": "底部",
+          "angledRear": "後方斜視",
+          "rear": "後方"
         },
         "gridSize": "每格 %{size} 公尺",
         "options": "選項",

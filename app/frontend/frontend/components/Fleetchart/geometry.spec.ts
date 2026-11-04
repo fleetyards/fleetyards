@@ -106,6 +106,28 @@ describe("viewFor", () => {
     ).toBe("extended-colored.png");
   });
 
+  it("finds the rear views, colored and extended too", () => {
+    const entry = model({
+      rearView: view("rear"),
+      rearViewColored: view("rear-colored"),
+      extendedStarboardView: view("starboard-extended"),
+      starboardView: view("starboard"),
+      bottomView: view("bottom"),
+      angledRearView: view("angled-rear"),
+    });
+
+    expect(
+      viewFor(entry, FleetchartViewpoints.REAR, { colored: true })?.url,
+    ).toBe("rear-colored.png");
+    expect(
+      viewFor(entry, FleetchartViewpoints.STARBOARD, { extended: true })?.url,
+    ).toBe("starboard-extended.png");
+    expect(viewFor(entry, FleetchartViewpoints.BOTTOM)?.url).toBe("bottom.png");
+    expect(viewFor(entry, FleetchartViewpoints.ANGLED_REAR)?.url).toBe(
+      "angled-rear.png",
+    );
+  });
+
   it("skips a colored view without a file", () => {
     expect(
       viewFor(

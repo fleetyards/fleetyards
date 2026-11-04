@@ -32,6 +32,7 @@ import {
 import {
   FleetchartScreenHeights,
   FleetchartViewpoints,
+  LEGACY_FLEETCHART_VIEWPOINTS,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
 
@@ -562,7 +563,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
             {{ t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`) }}
           </template>
           <Btn
-            v-for="(option, index) in FleetchartViewpoints"
+            v-for="(option, index) in LEGACY_FLEETCHART_VIEWPOINTS"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
             :active="viewpoint === option"
             @click="setViewpoint(option)"

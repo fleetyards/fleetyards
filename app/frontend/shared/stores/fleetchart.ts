@@ -6,7 +6,19 @@ export enum FleetchartViewpoints {
   PORT = "port",
   ANGLED = "angled",
   FRONT = "front",
+  STARBOARD = "starboard",
+  BOTTOM = "bottom",
+  ANGLED_REAR = "angledRear",
+  REAR = "rear",
 }
+
+// What the charts behind the flag know how to draw.
+export const LEGACY_FLEETCHART_VIEWPOINTS = [
+  FleetchartViewpoints.TOP,
+  FleetchartViewpoints.PORT,
+  FleetchartViewpoints.ANGLED,
+  FleetchartViewpoints.FRONT,
+];
 
 export enum FleetchartScreenHeights {
   AUTO = "auto",
@@ -115,6 +127,7 @@ type FleetchartState = {
     [key: string]: number;
   };
   color: string[];
+  plain: string[];
   extended: string[];
 };
 
@@ -131,6 +144,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     mode: {},
     scale: {},
     color: [],
+    plain: [],
     extended: [],
   }),
   getters: {
@@ -142,6 +156,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     colored: (state) => {
       return (namespace: string) => state.color.includes(namespace);
+    },
+    // Colored unless somebody chose otherwise, which `colored` does not assume.
+    coloredByDefault: (state) => {
+      return (namespace: string) => !(state.plain || []).includes(namespace);
     },
     extendedState: (state) => {
       return (namespace: string) => (state.extended || []).includes(namespace);
@@ -231,6 +249,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
       } else {
         this.color.push(namespace);
       }
+    },
+    togglePlain(namespace: string) {
+      const current = this.plain || [];
+
+      this.plain = current.includes(namespace)
+        ? current.filter((item) => item !== namespace)
+        : [...current, namespace];
     },
     toggleExtended(namespace: string) {
       const current = this.extended || [];

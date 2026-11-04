@@ -508,7 +508,11 @@
           "port": "Backbord",
           "top": "Oben",
           "angled": "Schräg",
-          "front": "Front"
+          "front": "Front",
+          "starboard": "Steuerbord",
+          "bottom": "Unten",
+          "angledRear": "Schräg hinten",
+          "rear": "Heck"
         },
         "gridSize": "%{size} Meter pro Rasterfeld",
         "options": "Optionen",

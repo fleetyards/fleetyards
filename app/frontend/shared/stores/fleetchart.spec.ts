@@ -51,6 +51,21 @@ describe("fleetchart store", () => {
     expect(store.fleetchartPlacements("fleet")).toEqual({});
   });
 
+  it("draws colored until somebody turns it off", () => {
+    const store = useFleetchartStore();
+
+    expect(store.coloredByDefault("hangar")).toBe(true);
+
+    store.togglePlain("hangar");
+
+    expect(store.coloredByDefault("hangar")).toBe(false);
+    expect(store.coloredByDefault("fleet")).toBe(true);
+  });
+
+  it("leaves the colored setting of the older charts alone", () => {
+    expect(useFleetchartStore().colored("hangar")).toBe(false);
+  });
+
   it("starts packed", () => {
     const store = useFleetchartStore();
 

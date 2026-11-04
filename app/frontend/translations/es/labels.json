@@ -508,7 +508,11 @@
           "port": "Babor",
           "top": "Superior",
           "angled": "Angular",
-          "front": "Frontal"
+          "front": "Frontal",
+          "starboard": "Estribor",
+          "bottom": "Abajo",
+          "angledRear": "Popa en ángulo",
+          "rear": "Popa"
         },
         "gridSize": "%{size} metro por cuadrícula",
         "options": "Opciones",

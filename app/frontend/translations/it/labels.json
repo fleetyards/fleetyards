@@ -508,7 +508,11 @@
           "port": "Sinistra",
           "top": "Alto",
           "angled": "Angolato",
-          "front": "Fronte"
+          "front": "Fronte",
+          "starboard": "Dritta",
+          "bottom": "Sotto",
+          "angledRear": "Poppa angolata",
+          "rear": "Poppa"
         },
         "gridSize": "%{size} metro per cella della griglia",
         "options": "Opzioni",

@@ -508,7 +508,11 @@
           "port": "Port",
           "top": "Top",
           "angled": "Angled",
-          "front": "Front"
+          "front": "Front",
+          "starboard": "Starboard",
+          "bottom": "Bottom",
+          "angledRear": "Angled rear",
+          "rear": "Rear"
         },
         "gridSize": "%{size} meter per grid box",
         "options": "Options",

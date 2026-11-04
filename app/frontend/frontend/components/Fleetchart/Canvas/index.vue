@@ -132,7 +132,9 @@ const viewpoint = computed(() =>
 
 const showLabels = computed(() => fleetchartStore.showLabels(props.namespace));
 
-const colored = computed(() => fleetchartStore.colored(props.namespace));
+const colored = computed(() =>
+  fleetchartStore.coloredByDefault(props.namespace),
+);
 
 const extended = computed(() => fleetchartStore.extendedState(props.namespace));
 
@@ -1138,7 +1140,7 @@ const toggleGrid = () => {
 };
 
 const toggleColored = () => {
-  fleetchartStore.toggleColored(props.namespace);
+  fleetchartStore.togglePlain(props.namespace);
 };
 
 const toggleLabels = () => {

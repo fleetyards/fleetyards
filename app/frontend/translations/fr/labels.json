@@ -508,7 +508,11 @@
           "port": "Bâbord",
           "top": "Haut",
           "angled": "En biais",
-          "front": "Face"
+          "front": "Face",
+          "starboard": "Tribord",
+          "bottom": "Dessous",
+          "angledRear": "Arrière incliné",
+          "rear": "Arrière"
         },
         "gridSize": "%{size} mètre par zone de grille",
         "options": "Options",
