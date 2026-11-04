@@ -155,8 +155,7 @@ const labelRoom = (entry: FleetchartEntry) => {
   const { width, lineHeight } = labelMeasure.value;
 
   return {
-    gutter:
-      (Math.max(...lines.map(width)) + LABEL_MARGIN) / PIXELS_PER_METRE,
+    gutter: (Math.max(...lines.map(width)) + LABEL_MARGIN) / PIXELS_PER_METRE,
     minHeight: (lines.length * lineHeight) / PIXELS_PER_METRE,
   };
 };
