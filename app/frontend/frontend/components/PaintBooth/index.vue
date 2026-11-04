@@ -188,7 +188,7 @@ const cards = computed(() => [
 // behind the hull and a glow on the floor under its pedestal.
 .paint-booth__stage {
   position: relative;
-  height: min(60vh, 40rem);
+  height: min(45vh, 40rem);
   min-height: 20rem;
   border-radius: 4px;
   background:
@@ -205,6 +205,8 @@ const cards = computed(() => [
     );
 
   @media (min-width: $desktop-breakpoint) {
+    position: sticky;
+    top: 1rem;
     height: min(72vh, 48rem);
   }
 }
@@ -235,11 +237,6 @@ const cards = computed(() => [
 .paint-booth__paints {
   display: flex;
   flex-direction: column;
-  min-height: 0;
-
-  @media (min-width: $desktop-breakpoint) {
-    max-height: min(72vh, 48rem);
-  }
 }
 
 .paint-booth__title {
@@ -261,15 +258,29 @@ const cards = computed(() => [
   color: $gray-lighter;
 }
 
+// A paint is judged on the ship, so picking one must not scroll the ship away:
+// a strip under the stage on a phone, a two-column rail beside it on a desktop.
 .paint-booth__list {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
+  gap: 10px;
   margin: 0;
-  // Room for the selected card's frame and focus ring at the scroll edges.
-  padding: 2px 6px 2px 2px;
-  overflow-y: auto;
+  padding: 0 0 6px;
+  overflow-x: auto;
   list-style: none;
+  scroll-snap-type: x proximity;
+
+  > li {
+    flex: 0 0 12rem;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: $desktop-breakpoint) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    padding: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
 }
 </style>
