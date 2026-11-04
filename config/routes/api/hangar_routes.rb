@@ -43,6 +43,13 @@ resource :hangar, only: %i[show destroy] do
     end
   end
 
+  resources :fleetchart_layouts, path: "fleetchart-layouts", only: %i[index show create update destroy] do
+    member do
+      put :share
+      delete :share, action: :unshare
+    end
+  end
+
   resources :hangar_plans, path: "plans", only: %i[index show create update destroy] do
     member do
       get :summary
@@ -110,6 +117,8 @@ namespace :public do
   end
 
   resources :wishlists, param: :username, only: %i[show]
+
+  resources :fleetchart_layouts, path: "fleetchart-layouts", param: :token, only: %i[show]
 
   resources :hangar_plans, path: "hangar-plans", param: :token, only: %i[show] do
     get :summary, on: :member

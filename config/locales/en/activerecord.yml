@@ -306,6 +306,10 @@ en:
         announcement_limit_reached: "Your fleet already has %{count} announcements up. Remove one before posting another."
         already_passed: "has already passed"
       models:
+        fleetchart_layout:
+          attributes:
+            base:
+              layout_limit_reached: "can hold at most %{count} layouts"
         hangar_plan:
           attributes:
             base:

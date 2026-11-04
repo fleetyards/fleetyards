@@ -304,6 +304,10 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        fleetchart_layout:
+          attributes:
+            base:
+              layout_limit_reached: "kann höchstens %{count} Layouts enthalten"
         hangar_plan:
           attributes:
             base:

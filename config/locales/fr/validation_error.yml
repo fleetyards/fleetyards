@@ -137,6 +137,9 @@ fr:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.
       destroy: L'entrée d'inventaire n'a pas pu être détruite.
+    fleetchart_layouts:
+      create: "Impossible d'enregistrer la disposition"
+      update: "Impossible de mettre à jour la disposition"
     hangar_plans:
       create: "Le plan n'a pas pu être créé."
       update: "Le plan n'a pas pu être mis à jour."

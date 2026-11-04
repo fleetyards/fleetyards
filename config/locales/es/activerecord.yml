@@ -304,6 +304,10 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        fleetchart_layout:
+          attributes:
+            base:
+              layout_limit_reached: "puede contener como máximo %{count} disposiciones"
         hangar_plan:
           attributes:
             base:

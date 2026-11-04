@@ -1277,6 +1277,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_04_180000) do
     t.index ["vehicle_id"], name: "index_fleet_vehicles_on_vehicle_id"
   end
 
+  create_table "fleetchart_layouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name", null: false
+    t.jsonb "placements", default: [], null: false
+    t.boolean "colored", default: true, null: false
+    t.string "share_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["share_token"], name: "index_fleetchart_layouts_on_share_token", unique: true
+    t.index ["user_id", "name"], name: "index_fleetchart_layouts_on_user_id_and_name", unique: true
+  end
+
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "fid"
     t.string "slug"
@@ -3367,6 +3379,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_04_180000) do
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
   add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
+  add_foreign_key "fleetchart_layouts", "users"
   add_foreign_key "fleets", "locations", column: "headquarters_location_id", on_delete: :nullify
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade

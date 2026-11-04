@@ -137,6 +137,9 @@ it:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.
       destroy: Impossibile eliminare la voce di inventario.
+    fleetchart_layouts:
+      create: "Impossibile salvare la disposizione"
+      update: "Impossibile aggiornare la disposizione"
     hangar_plans:
       create: "Impossibile creare il piano."
       update: "Impossibile aggiornare il piano."

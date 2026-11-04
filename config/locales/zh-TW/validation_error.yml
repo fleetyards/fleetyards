@@ -136,6 +136,9 @@ zh-TW:
       create: 無法建立庫存記錄。
       update: 無法更新庫存記錄。
       destroy: 無法刪除庫存記錄。
+    fleetchart_layouts:
+      create: "無法儲存版面配置"
+      update: "無法更新版面配置"
     hangar_plans:
       create: "無法建立計畫。"
       update: "無法更新計畫。"
