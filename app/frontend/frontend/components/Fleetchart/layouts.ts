@@ -154,6 +154,7 @@ export const autoScreenHeightFactor = (
 export const arrangeColumns = (
   ships: FleetchartLayoutShip[],
   maxColumnHeight: number,
+  { centred = false }: { centred?: boolean } = {},
 ): FleetchartPositions => {
   const positions: FleetchartPositions = {};
   const headingRoom = ships.some((ship) => ship.group) ? HEADING_ROOM : 0;
@@ -164,9 +165,13 @@ export const arrangeColumns = (
     let top = headingRoom;
 
     [...column].reverse().forEach((ship) => {
+      const boxRight = centred
+        ? columnLeft + (columnWidth + boxWidth(ship)) / 2
+        : columnLeft + columnWidth;
+
       positions[ship.id] = placeInBox(
         ship,
-        columnLeft + columnWidth,
+        boxRight,
         top + boxHeight(ship) / 2,
       );
 
@@ -223,6 +228,203 @@ export const arrangeClassic = (
     });
 
     top += height;
+  });
+
+  return positions;
+};
+
+interface SkylineSegment {
+  x: number;
+  y: number;
+  width: number;
+}
+
+const raiseSkyline = (
+  skyline: SkylineSegment[],
+  x: number,
+  width: number,
+  y: number,
+) => {
+  const raised = skyline.flatMap((segment) => {
+    const end = segment.x + segment.width;
+
+    if (end <= x || segment.x >= x + width) {
+      return [segment];
+    }
+
+    return [
+      ...(segment.x < x ? [{ ...segment, width: x - segment.x }] : []),
+      ...(end > x + width
+        ? [{ x: x + width, y: segment.y, width: end - x - width }]
+        : []),
+    ];
+  });
+
+  return [...raised, { x, y, width }]
+    .sort((a, b) => a.x - b.x)
+    .reduce<SkylineSegment[]>((merged, segment) => {
+      const previous = merged[merged.length - 1];
+
+      if (previous && previous.y === segment.y) {
+        previous.width += segment.width;
+      } else {
+        merged.push({ ...segment });
+      }
+
+      return merged;
+    }, []);
+};
+
+interface PackedBox {
+  id: string;
+  width: number;
+  height: number;
+}
+
+interface Packing {
+  spots: Record<string, { x: number; y: number }>;
+  width: number;
+  height: number;
+}
+
+// Drops each box onto the lowest free spot along the top edge of what is already
+// placed, which is what fills the space beside and under a large one. Tallest
+// first is what keeps that tight.
+const packAt = (boxes: PackedBox[], width: number): Packing => {
+  const spots: Packing["spots"] = {};
+  let skyline: SkylineSegment[] = [{ x: 0, y: 0, width }];
+  let usedWidth = 0;
+
+  [...boxes]
+    .sort((a, b) => b.height - a.height || b.width - a.width)
+    .forEach((box) => {
+      let spot: { x: number; y: number } | undefined;
+
+      skyline.forEach((segment) => {
+        if (segment.x + box.width > width) {
+          return;
+        }
+
+        const y = Math.max(
+          ...skyline
+            .filter(
+              (other) =>
+                other.x < segment.x + box.width &&
+                other.x + other.width > segment.x,
+            )
+            .map((other) => other.y),
+        );
+
+        if (!spot || y < spot.y) {
+          spot = { x: segment.x, y };
+        }
+      });
+
+      const { x, y } = spot as { x: number; y: number };
+
+      spots[box.id] = { x, y };
+      usedWidth = Math.max(usedWidth, x + box.width);
+      skyline = raiseSkyline(skyline, x, box.width, y + box.height);
+    });
+
+  return {
+    spots,
+    width: usedWidth,
+    height: Math.max(...skyline.map((segment) => segment.y)),
+  };
+};
+
+const PACKED_WIDTH_FACTORS = [0.8, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5];
+
+// Tries a range of widths and keeps the packing that draws largest once fitted to
+// the screen, and of those the one taking the least area.
+const bestPacking = (boxes: PackedBox[], aspectRatio: number): Packing => {
+  const widest = Math.max(...boxes.map((box) => box.width));
+  const area = boxes.reduce((sum, box) => sum + box.width * box.height, 0);
+  const ideal = Math.sqrt(area * aspectRatio);
+
+  const fit = ({ width, height }: Packing) =>
+    Math.max(width, height * aspectRatio);
+
+  return [
+    widest,
+    ...PACKED_WIDTH_FACTORS.map((factor) => ideal * factor),
+    ...PACKED_WIDTH_FACTORS.map((factor) => widest * factor),
+  ]
+    .filter((width) => width >= widest)
+    .map((width) => packAt(boxes, width))
+    .reduce((best, packing) => {
+      const difference = fit(packing) - fit(best);
+
+      if (Math.abs(difference) < fit(best) * 0.01) {
+        return packing.width * packing.height < best.width * best.height
+          ? packing
+          : best;
+      }
+
+      return difference < 0 ? packing : best;
+    });
+};
+
+// Fills the available space rather than keeping to any order, so the sort option
+// does not apply. Each group is packed into a block of its own under its heading,
+// and the blocks are packed the same way, so a small group can sit beside a large
+// one.
+export const arrangePacked = (
+  ships: FleetchartLayoutShip[],
+  aspectRatio: number,
+): FleetchartPositions => {
+  if (!ships.length) {
+    return {};
+  }
+
+  const byGroup = new Map<string, FleetchartLayoutShip[]>();
+
+  ships.forEach((ship) => {
+    const key = ship.group ?? "";
+
+    byGroup.set(key, [...(byGroup.get(key) ?? []), ship]);
+  });
+
+  const toBox = (ship: FleetchartLayoutShip): PackedBox => ({
+    id: ship.id,
+    width: boxWidth(ship),
+    height: boxHeight(ship),
+  });
+
+  const blocks = [...byGroup].map(([key, members]) => ({
+    key,
+    members,
+    packing: bestPacking(members.map(toBox), aspectRatio),
+    headingRoom: key ? HEADING_ROOM : 0,
+    headingWidth: members[0].headingWidth || 0,
+  }));
+
+  const groupGap = byGroup.size > 1 ? SHIP_PADDING * 2 : 0;
+
+  const layoutOfBlocks = bestPacking(
+    blocks.map((block) => ({
+      id: block.key,
+      width: Math.max(block.packing.width, block.headingWidth) + groupGap,
+      height: block.packing.height + block.headingRoom + groupGap,
+    })),
+    aspectRatio,
+  );
+
+  const positions: FleetchartPositions = {};
+
+  blocks.forEach(({ key, members, packing, headingRoom }) => {
+    const origin = layoutOfBlocks.spots[key];
+
+    members.forEach((ship) => {
+      const { x, y } = packing.spots[ship.id];
+
+      positions[ship.id] = placeInBox(
+        ship,
+        origin.x + x + boxWidth(ship),
+        origin.y + headingRoom + y + boxHeight(ship) / 2,
+      );
+    });
   });
 
   return positions;
