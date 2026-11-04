@@ -199,7 +199,6 @@
         "happens": "What happens",
         "meltCredit": "%{value} credit",
         "leaves": "Leaves your hangar",
-        "notOwned": "Not in your hangar",
         "lead": "Every ship you own on the left, every ship the plan needs on the right, and what happens in between.",
         "anotherPlan": "Compare with another plan",
         "tallies": {

@@ -199,7 +199,6 @@
         "happens": "會發生什麼",
         "meltCredit": "%{value} 信用點",
         "leaves": "離開你的機庫",
-        "notOwned": "不在你的機庫中",
         "lead": "左邊是你擁有的每艘飛船，右邊是方案需要的每艘飛船，中間是會發生的事。",
         "anotherPlan": "與其他方案比較",
         "tallies": {

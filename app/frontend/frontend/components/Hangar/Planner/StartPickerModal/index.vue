@@ -20,7 +20,11 @@ import {
   manufacturerText,
   usePlanMoney,
 } from "@/frontend/components/Hangar/Planner/format";
-import { reaches } from "@/frontend/components/Hangar/Planner/reach";
+import {
+  canLeave,
+  reaches,
+  startHolder,
+} from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
@@ -89,7 +93,9 @@ const unreachedShips = (from: HangarPlanModel) =>
     .filter((ship) => !reaches(from, ship));
 
 const reachesSlot = (from: HangarPlanModel) =>
-  unreachedShips(from).length < props.slot.candidates.length;
+  props.slot.candidates.length
+    ? unreachedShips(from).length < props.slot.candidates.length
+    : canLeave(from);
 
 const excludes = (from: HangarPlanModel) => {
   if (target.value) return undefined;
@@ -298,27 +304,29 @@ const startItems = computed<PickListItem[]>(() =>
 
 const close = () => comlink.emit("close-modal", true);
 
-// A slot still choosing its ship keeps the start on the ship it comes closest
-// to, and moves it to whichever ship the slot settles on later; nothing is
-// decided by picking a start.
-const holder = (model?: HangarPlanModel) => {
-  const reachable = props.slot.candidates.filter(
-    (candidate) => !model || reaches(model, candidate.model),
-  );
-
-  return (
-    reachable.find((candidate) => candidate.model.id === model?.id) ??
-    [...reachable].sort(
-      (a, b) => (a.model.pledgePrice ?? 0) - (b.model.pledgePrice ?? 0),
-    )[0]
-  );
-};
-
 const chooseStart = async (item: PickListItem) => {
   const option = options.value.find((entry) => entry.item.id === item.id);
   if (!option) return;
 
-  const candidate = props.candidate ?? holder(option.model);
+  // A slot with no ship yet has nothing to keep a start on, so its ship is
+  // picked next and both are saved together.
+  if (!props.candidate && !props.slot.candidates.length) {
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
+      props: {
+        planId: props.planId,
+        slot: props.slot,
+        start: option.start,
+        startModel: option.model,
+      },
+      wide: true,
+    });
+    return;
+  }
+
+  const candidate =
+    props.candidate ?? startHolder(props.slot.candidates, option.model);
   if (!candidate) return;
 
   if (await pairStart(candidate, option.start, props.acquisition)) close();

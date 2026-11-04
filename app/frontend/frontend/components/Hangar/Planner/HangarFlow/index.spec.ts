@@ -235,6 +235,24 @@ describe("Hangar/Planner/HangarFlow", () => {
     ]);
   });
 
+  it("picks a start for a slot with no ship yet", async () => {
+    const empty = slot("Hauler", HangarPlanSlotStateEnum.OPEN);
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: { ...plan, slots: [empty] },
+        comparison: { ...comparison, vehicles: [] },
+      },
+    });
+
+    const row = wrapper.find('[data-test="hangar-plan-flow-open"]');
+    expect(row.text()).toContain("Pick a start");
+    await row
+      .find('[data-test="hangar-plan-flow-pick-start"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("start")).toEqual([[{ slot: empty }]]);
+  });
+
   it("lists ships needing a decision before ships that should change", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {

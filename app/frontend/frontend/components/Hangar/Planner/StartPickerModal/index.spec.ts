@@ -129,8 +129,10 @@ vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
   }),
 }));
 
+const comlinkEmit = vi.hoisted(() => vi.fn());
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));
 
 const candidate = (shipModel: HangarPlanModel): HangarPlanCandidate => ({
@@ -222,6 +224,39 @@ describe("Hangar/Planner/StartPickerModal", () => {
       mining,
       { kind: "buyback", pledgeId: "buyback-aurora", modelId: "Aurora MR" },
       undefined,
+    );
+  });
+
+  it("picks the ship next for a slot with no ship yet", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([]) },
+    });
+
+    // Any ship RSI sells upgrades out of, never the Idris.
+    expect(titles(wrapper)).toEqual([
+      "Buy new on the store",
+      "Earn in game",
+      "Standalone Ship - Aurora MR",
+      "Cutlass Black",
+      "Prospector",
+      "Vulture",
+    ]);
+
+    pairStart.mockClear();
+    await use(wrapper, "Vulture");
+
+    // Nothing is saved until the ship is picked.
+    expect(pairStart).not.toHaveBeenCalled();
+    expect(comlinkEmit).toHaveBeenLastCalledWith(
+      "open-modal",
+      expect.objectContaining({
+        wide: true,
+        props: expect.objectContaining({
+          planId: "plan",
+          start: { kind: "owned", vehicleId: "vehicle-vulture" },
+          startModel: vulture,
+        }),
+      }),
     );
   });
 

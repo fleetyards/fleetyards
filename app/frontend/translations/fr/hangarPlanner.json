@@ -199,7 +199,6 @@
         "happens": "Ce qui se passe",
         "meltCredit": "%{value} de crédit",
         "leaves": "Quitte votre hangar",
-        "notOwned": "Pas dans votre hangar",
         "lead": "À gauche chaque vaisseau que vous possédez, à droite chaque vaisseau dont le plan a besoin, et entre les deux ce qui se passe.",
         "anotherPlan": "Comparer avec un autre plan",
         "tallies": {

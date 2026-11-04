@@ -199,7 +199,6 @@
         "happens": "Was passiert",
         "meltCredit": "%{value} Guthaben",
         "leaves": "Verlässt deinen Hangar",
-        "notOwned": "Nicht in deinem Hangar",
         "lead": "Links jedes Schiff, das du hast, rechts jedes Schiff, das der Plan braucht, und dazwischen, was passiert.",
         "anotherPlan": "Mit einem anderen Plan vergleichen",
         "tallies": {
