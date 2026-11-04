@@ -1,17 +1,14 @@
-.fleetchart-canvas-ship-controls__count {
-  padding: 0 6px;
-  color: darken($text-color, 20%);
-}
-
+// Plain buttons with the gap of the chart's other control rows, and no surface of
+// their own.
 .fleetchart-canvas-ship-controls {
   position: absolute;
   z-index: 950;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
+  gap: 10px;
   white-space: nowrap;
-  background: rgba(17, 17, 17, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+}
+
+.fleetchart-canvas-ship-controls__count {
+  text-shadow: 0 0 2px black;
 }

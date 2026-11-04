@@ -52,7 +52,7 @@ const { t } = useI18n();
       {{ count }}
     </span>
 
-    <BtnDropdown size="sm" data-test="fleetchart-ship-view">
+    <BtnDropdown data-test="fleetchart-ship-view">
       <template #label>
         {{
           viewpoint
@@ -73,7 +73,7 @@ const { t } = useI18n();
       </Btn>
     </BtnDropdown>
 
-    <BtnDropdown size="sm" data-test="fleetchart-ship-facing">
+    <BtnDropdown data-test="fleetchart-ship-facing">
       <template #label>
         {{
           facing
@@ -97,7 +97,6 @@ const { t } = useI18n();
       v-tooltip="t('labels.fleetchartApp.bringToFront')"
       :aria-label="t('labels.fleetchartApp.bringToFront')"
       data-test="fleetchart-bring-to-front"
-      size="sm"
       @click="emit('stack', 'front')"
     >
       <i class="fa-duotone fa-bring-front" />
@@ -106,7 +105,6 @@ const { t } = useI18n();
       v-tooltip="t('labels.fleetchartApp.sendToBack')"
       :aria-label="t('labels.fleetchartApp.sendToBack')"
       data-test="fleetchart-send-to-back"
-      size="sm"
       @click="emit('stack', 'back')"
     >
       <i class="fa-duotone fa-send-back" />
@@ -117,7 +115,6 @@ const { t } = useI18n();
       v-tooltip="t('labels.fleetchartApp.groupShips')"
       :aria-label="t('labels.fleetchartApp.groupShips')"
       data-test="fleetchart-group-ships"
-      size="sm"
       @click="emit('group')"
     >
       <i class="fa-duotone fa-object-group" />
@@ -127,7 +124,6 @@ const { t } = useI18n();
       v-tooltip="t('labels.fleetchartApp.ungroupShips')"
       :aria-label="t('labels.fleetchartApp.ungroupShips')"
       data-test="fleetchart-ungroup-ships"
-      size="sm"
       @click="emit('ungroup')"
     >
       <i class="fa-duotone fa-object-ungroup" />
