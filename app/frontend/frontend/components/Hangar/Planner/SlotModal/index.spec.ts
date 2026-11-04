@@ -47,20 +47,20 @@ describe("Hangar/Planner/SlotModal", () => {
     defineRule("required", required);
   });
 
-  it("adds a slot by its name alone, numbered when left blank", async () => {
+  it("adds a slot with its count and filters, numbered when left blank", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan" },
     });
 
-    expect(wrapper.find('[name="quantity"]').exists()).toBe(false);
-    expect(wrapper.find(".slot-filters").exists()).toBe(false);
+    expect(wrapper.find('[name="quantity"]').exists()).toBe(true);
+    expect(wrapper.find(".slot-filters").exists()).toBe(true);
 
     await wrapper.find("form").trigger("submit");
     await flushPromises();
 
     expect(createMutate).toHaveBeenLastCalledWith({
       hangarPlanId: "plan",
-      data: { label: "Slot 4" },
+      data: { label: "Slot 4", description: null, quantity: 1, filters: {} },
     });
   });
 
