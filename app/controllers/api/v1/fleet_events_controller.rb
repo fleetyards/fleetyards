@@ -6,6 +6,7 @@ module Api
   module V1
     class FleetEventsController < ::Api::BaseController
       include SquadronVisibilityConcern
+      include FleetEventScoped
 
       include FleetSubscriptionConcern
 
@@ -39,7 +40,7 @@ module Api
         end
         scope = (params[:upcoming] == "true") ? scope.upcoming : scope
         scope = scope.past if params[:past] == "true"
-        scope = narrow_to_squadron_access(scope) unless manages_events?
+        scope = reachable_fleet_events(scope)
 
         query_params = params.fetch(:q, {}).permit(:title_cont, :status_eq, :category_eq, :s)
         normalize_sort_params(query_params)
@@ -381,10 +382,6 @@ module Api
       # squadron ones they are not in, which they may well have created.
       private def guild_wide_visibility?(visibility)
         FleetEvent.new(visibility: visibility).discord_guild_wide?
-      end
-
-      private def manages_events?
-        allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
       end
 
       private def set_fleet

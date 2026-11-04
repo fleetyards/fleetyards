@@ -4,6 +4,7 @@ module Api
   module V1
     class FleetContractsController < ::Api::BaseController
       include SquadronVisibilityConcern
+      include FleetContractScoped
 
       include FleetSubscriptionConcern
 
@@ -26,7 +27,7 @@ module Api
       def index
         authorize! with: FleetContractPolicy, context: {fleet: @fleet}
 
-        scope = visible_scope
+        scope = visible_fleet_contracts
         # The caller's own board: what they are working, and what they worked.
         scope = scope.worked_by(current_resource_owner) if params[:mine].to_s == "true"
         # The work in hand rather than the history: an expired contract counts
@@ -178,16 +179,6 @@ module Api
       # it only lists for the people who could publish it -- the managers, and
       # the author of a personal one -- the same rule `FleetContractPolicy#show?`
       # applies to a single one.
-      private def visible_scope
-        scope = @fleet.fleet_contracts
-
-        return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
-
-        own_personal_drafts = scope.draft.personal.where(created_by: current_resource_owner)
-
-        narrow_to_squadron_access(scope.where.not(aasm_state: "draft").or(own_personal_drafts))
-      end
-
       # The model refuses a title whose slug is taken, but two saves racing onto
       # the same one both pass that check and only the unique index on
       # (fleet_id, slug) stops the second.
