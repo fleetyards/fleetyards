@@ -633,9 +633,7 @@ describe("FleetchartCanvas", () => {
         await nextTick();
 
         expect(
-          wrapper
-            .get("[data-test='fleetchart-undo']")
-            .attributes("disabled"),
+          wrapper.get("[data-test='fleetchart-undo']").attributes("disabled"),
         ).toBeDefined();
       });
 

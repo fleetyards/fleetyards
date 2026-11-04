@@ -299,12 +299,12 @@ const shipsFor = (kind: FleetchartLayouts) => {
   return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
     (entry) => {
       const shipState =
-      (free && placements.value[entry.id]?.state) || state.value;
-    const shipViewpoint = drawableViewpoint(
-      entry,
-      (free && placements.value[entry.id]?.viewpoint) || viewpoint.value,
-      shipState,
-    );
+        (free && placements.value[entry.id]?.state) || state.value;
+      const shipViewpoint = drawableViewpoint(
+        entry,
+        (free && placements.value[entry.id]?.viewpoint) || viewpoint.value,
+        shipState,
+      );
       const geometry = shipGeometry(entry, shipViewpoint, {
         state: shipState,
         colored: colored.value,
@@ -892,11 +892,17 @@ const shipControlsHalfWidth = ref(0);
 
 // Measured, as its width depends on the labels and the language.
 watch(
-  [selectedViewpoint, selectedFacing, selectedState, () => selectedShips.value.length],
+  [
+    selectedViewpoint,
+    selectedFacing,
+    selectedState,
+    () => selectedShips.value.length,
+  ],
   async () => {
     await nextTick();
 
-    shipControlsHalfWidth.value = (shipControls.value?.$el.offsetWidth ?? 0) / 2;
+    shipControlsHalfWidth.value =
+      (shipControls.value?.$el.offsetWidth ?? 0) / 2;
   },
 );
 
