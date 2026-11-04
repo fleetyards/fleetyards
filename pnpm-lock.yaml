@@ -440,7 +440,7 @@ importers:
         version: 3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0))
       orval:
         specifier: ^8.46.0
-        version: 8.46.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.105.0(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(zod@4.6.2)
+        version: 8.46.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.105.0(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))
       playwright:
         specifier: ^1.64.1
         version: 1.64.1
@@ -7413,9 +7413,6 @@ packages:
   zimmerframe@1.1.5:
     resolution: {integrity: sha512-msJxIvYDYcoNL+PJsu+7qmpDWsYmAxTY+2TNYXXF0hzBzBk0BMecOqDOG/EckUoKCuKwObfbugIl8QpqHDXeFA==}
 
-  zod@4.6.2:
-    resolution: {integrity: sha512-lh5RCAGFa1Cm2hjtNwLQhSs/AsqdWnTQaBER9fEwN/88pSh7KOtJavtBx/0VlkN/uFd61SwYmljLMDAsHlvzBQ==}
-
   zod@4.6.7:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
@@ -8873,21 +8870,21 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@orval/hono@8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
+  '@orval/hono@8.46.0(@faker-js/faker@10.6.0)':
     dependencies:
       '@orval/core': 8.46.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
       - zod
 
-  '@orval/mcp@8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
+  '@orval/mcp@8.46.0(@faker-js/faker@10.6.0)':
     dependencies:
       '@orval/core': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/fetch': 8.46.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - zod
@@ -8935,14 +8932,12 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@orval/zod@8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
+  '@orval/zod@8.46.0(@faker-js/faker@10.6.0)':
     dependencies:
       '@orval/core': 8.46.0(@faker-js/faker@10.6.0)
       globals: 17.13.0
       jsesc: 3.1.0
       typescript: 6.0.3
-    optionalDependencies:
-      zod: 4.6.2
     transitivePeerDependencies:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
@@ -12856,7 +12851,7 @@ snapshots:
 
   orderedmap@2.1.1: {}
 
-  orval@8.46.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.105.0(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(zod@4.6.2):
+  orval@8.46.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.105.0(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3)):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
       '@orval/angular': 8.46.0(@faker-js/faker@10.6.0)
@@ -12864,14 +12859,14 @@ snapshots:
       '@orval/core': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/effect': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/fetch': 8.46.0(@faker-js/faker@10.6.0)
-      '@orval/hono': 8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)
-      '@orval/mcp': 8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/hono': 8.46.0(@faker-js/faker@10.6.0)
+      '@orval/mcp': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/mock': 8.46.0(@faker-js/faker@10.6.0)(msw@3.0.3(@types/node@26.6.6)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.46.2)(yaml@2.9.0)))
       '@orval/pinia-colada': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/query': 8.46.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.105.0(vue@3.5.44(typescript@6.0.3)))
       '@orval/solid-start': 8.46.0(@faker-js/faker@10.6.0)
       '@orval/swr': 8.46.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/zod': 8.46.0(@faker-js/faker@10.6.0)
       '@scalar/json-magic': 0.16.1
       '@scalar/openapi-parser': 0.29.16
       '@scalar/openapi-types': 0.9.8
@@ -14798,8 +14793,5 @@ snapshots:
   yoctocolors@2.2.0: {}
 
   zimmerframe@1.1.5: {}
-
-  zod@4.6.2:
-    optional: true
 
   zod@4.6.7: {}
