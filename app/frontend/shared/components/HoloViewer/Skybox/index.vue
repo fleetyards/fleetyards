@@ -7,8 +7,9 @@ export default {
 <script lang="ts" setup>
 import { useTres } from "@tresjs/core";
 import { extrasLoadingManager } from "../gltfLoader";
+import { buildSky, disposeSky } from "../sky";
 import {
-  EquirectangularReflectionMapping,
+  RepeatWrapping,
   SRGBColorSpace,
   type Texture,
   TextureLoader,
@@ -23,15 +24,18 @@ const props = defineProps<Props>();
 
 const { scene, invalidate } = useTres();
 
-let texture: Texture | undefined;
+let panorama: Texture | undefined;
+let sky: ReturnType<typeof buildSky> | undefined;
 let unmounted = false;
 
 const release = () => {
-  if (texture && scene.value.background === texture) {
-    scene.value.background = null;
+  if (sky) {
+    scene.value.remove(sky);
+    disposeSky(sky);
   }
-  texture?.dispose();
-  texture = undefined;
+  panorama?.dispose();
+  sky = undefined;
+  panorama = undefined;
   invalidate();
 };
 
@@ -48,12 +52,13 @@ watch(
       return;
     }
 
-    loaded.mapping = EquirectangularReflectionMapping;
+    loaded.wrapS = RepeatWrapping;
     loaded.colorSpace = SRGBColorSpace;
 
     release();
-    texture = loaded;
-    scene.value.background = loaded;
+    panorama = loaded;
+    sky = buildSky(loaded);
+    scene.value.add(sky);
     invalidate();
   },
   { immediate: true },
