@@ -91,6 +91,10 @@
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .fleetchart-canvas__scale {
+    bottom: 120px;
+  }
+
   .fleetchart-canvas__grid-label {
     right: 10px;
     bottom: 90px;
