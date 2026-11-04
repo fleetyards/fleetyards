@@ -47,7 +47,13 @@ class HangarPlan < ApplicationRecord
   # The purchased ships a plan compares against: what a plan started from the
   # hangar copies. Loaners and bundled snub craft come with a ship and are never
   # planned on their own.
+  # Inactive models are no ships to plan with: a pledge's Geotack beacon is one.
   def live_vehicles
+    pledged_vehicles.where(model_id: Model.active.select(:id))
+  end
+
+  # Everything a pledge holds, which melting it takes along.
+  def pledged_vehicles
     user.vehicles.purchased.where(loaner: false, bundled: false, hidden: false)
   end
 

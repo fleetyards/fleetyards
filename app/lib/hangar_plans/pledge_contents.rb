@@ -14,7 +14,7 @@ module HangarPlans
       @ships = @items = {}
       return if pledges.empty?
 
-      @ships = plan.live_vehicles.where(rsi_pledge_id: pledges)
+      @ships = plan.pledged_vehicles.where(rsi_pledge_id: pledges)
         .includes(model: MODEL_PRELOAD).order(:created_at).group_by(&:rsi_pledge_id)
       @items = plan.user.hangar_pledge_items.where(rsi_pledge_id: pledges)
         .order(:kind, :name).group_by(&:rsi_pledge_id)

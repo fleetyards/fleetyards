@@ -135,6 +135,15 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal [@cutlass, @carrack], [upgrade.from_model, upgrade.to_model]
   end
 
+  test "an inactive model is no ship to plan with" do
+    beacon = create(:model, name: "Geotack-X Planetary Beacon", active: false)
+    create(:vehicle, user: @user, model: beacon)
+
+    assert_not_includes @plan.live_vehicles.map(&:model), beacon
+    assert_includes @plan.pledged_vehicles.map(&:model), beacon
+    assert_not_includes HangarPlans::Comparison.new(@plan).vehicles.map { |entry| entry.vehicle.model }, beacon
+  end
+
   private def slot_for(model, quantity: 1)
     slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
     create(:hangar_plan_candidate, slot:, model:)
