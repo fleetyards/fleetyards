@@ -43,6 +43,17 @@ class Api::V1::FleetsMyTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/my leaves out a fleet the user only asked to join or was invited to" do
+    member_fleet = create(:fleet, members: [@user])
+    create(:fleet_membership, :requested, fleet: create(:fleet, members: [create(:user)]), user: @user)
+    create(:fleet_membership, :invited, fleet: create(:fleet, members: [create(:user)]), user: @user)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal [member_fleet.slug], parsed_body.pluck("slug")
+    end
+  end
+
   test "GET /fleets/my returns 401 when not signed in" do
     assert_api_response :get, 401
   end
