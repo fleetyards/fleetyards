@@ -35370,6 +35370,41 @@ components:
     FleetchartViewMedia:
       type: object
       properties:
+        angledExtents:
+          type: object
+          description: How wide each state's angled pictures are, as a share of the
+            ship's length
+          properties:
+            flight:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
+            extended:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
+            landed:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
         angledView:
           "$ref": "#/components/schemas/MediaFile"
         angledViewColored:

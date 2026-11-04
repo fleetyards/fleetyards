@@ -83,6 +83,27 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
     assert_equal [drawable.id], response.parsed_body["items"].map { |model| model["id"] }
   end
 
+  test "GET /models/fleetchart-views carries each state's measured angled widths" do
+    require "vips"
+
+    model = create(:model)
+    alpha = ::Vips::Image.black(100, 100).invert
+    image = ::Vips::Image.black(100, 100, bands: 3).bandjoin(alpha).cast(:uchar).copy(interpretation: :srgb)
+
+    model.top_view.attach(io: StringIO.new(image.write_to_buffer(".png")), filename: "top.png", content_type: "image/png")
+    model.top_view.blob.analyze
+
+    get "/api/v1/models/fleetchart-views", params: {q: {slugIn: [model.slug]}}
+
+    assert_response :success
+
+    extents = response.parsed_body.first.dig("media", "angledExtents")
+
+    assert_in_delta 1.414, extents.dig("flight", "angled"), 0.02
+    assert_in_delta 1.405, extents.dig("flight", "angledRear"), 0.02
+    assert_nil extents["landed"]
+  end
+
   test "GET /models/fleetchart-views caps how many slugs it answers" do
     models = create_list(:model, 3)
 
