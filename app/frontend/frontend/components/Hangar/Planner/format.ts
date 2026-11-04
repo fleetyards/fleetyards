@@ -23,11 +23,18 @@ export const usePlanMoney = () => {
   const range = (min: number, max: number) =>
     min === max ? amount(min) : `${amount(min)} – ${amount(max)}`;
 
+  // A plan whose credit outweighs its spend hands money back, which reads
+  // better as credit than as a range of two negative costs.
+  const net = (min: number, max: number) =>
+    max < 0
+      ? t("hangarPlanner.comparison.meltCredit", { value: range(-max, -min) })
+      : range(min, max);
+
   // Units without a start, from their cheapest start to the store price.
   const startRange = (min?: number | null, max?: number | null) =>
     typeof min === "number" && typeof max === "number"
       ? range(min, max)
       : money(max);
 
-  return { money, amount, range, startRange };
+  return { money, amount, range, net, startRange };
 };

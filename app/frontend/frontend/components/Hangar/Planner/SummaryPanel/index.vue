@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const { amount, range } = usePlanMoney();
+const { amount, range, net } = usePlanMoney();
 
 const totals = computed(() => props.summary?.totals);
 
@@ -62,7 +62,7 @@ const rows = computed(() => {
           },
         ]
       : []),
-    { key: "net", value: range(value.netMin, value.netMax) },
+    { key: "net", value: net(value.netMin, value.netMax) },
     {
       key: "cashNeeded",
       value: range(value.cashNeededMin, value.cashNeededMax),

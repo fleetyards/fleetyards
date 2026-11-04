@@ -26,7 +26,7 @@ import {
 
 const route = useRoute();
 const { t } = useI18n();
-const { range } = usePlanMoney();
+const { range, net } = usePlanMoney();
 
 const planId = computed(() => String(route.params.id));
 const otherId = computed(() => String(route.params.otherId));
@@ -46,7 +46,10 @@ const totalRows: {
 ];
 
 const value = (totals: HangarPlanTotals, row: (typeof totalRows)[number]) =>
-  range(totals[row.min] as number, totals[row.max] as number);
+  (row.key === "net" ? net : range)(
+    totals[row.min] as number,
+    totals[row.max] as number,
+  );
 
 const changed = computed(() =>
   (compare.value?.models ?? []).filter(
