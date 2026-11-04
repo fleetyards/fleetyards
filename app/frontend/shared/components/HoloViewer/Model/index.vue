@@ -41,6 +41,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { extrasLoadingManager, prepareGltfLoader } from "../gltfLoader";
+import { gridScale } from "../gridScale";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -1016,7 +1017,7 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   const size = box.getSize(new Vector3());
 
   if (props.onGrid && props.model.length) {
-    const scale = props.model.length / size.x;
+    const scale = gridScale(size, props.model.length);
     scene.scale.setScalar(scale);
     size.multiplyScalar(scale);
   }
