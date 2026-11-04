@@ -34,7 +34,13 @@ describe("shipGeometry", () => {
         model({ portView: view("port"), topView: view("top", 1000, 800) }),
         FleetchartViewpoints.PORT,
       ),
-    ).toEqual({ length: 100, height: 80, imageWidth: 100, imageHeight: 50 });
+    ).toEqual({
+      length: 100,
+      height: 80,
+      imageWidth: 100,
+      imageHeight: 50,
+      frameWidth: 100,
+    });
   });
 
   it("uses the beam when it exceeds the length", () => {
@@ -66,6 +72,22 @@ describe("shipGeometry", () => {
     expect(shipGeometry(entry, FleetchartViewpoints.PORT)?.imageWidth).toBe(
       100,
     );
+  });
+
+  it("makes room for a front view wider and taller than the flight box", () => {
+    const geometry = shipGeometry(
+      model(
+        {
+          portView: view("port", 1000, 100),
+          frontView: view("front", 100, 100),
+        },
+        { fleetchartOffsetBeam: 150 },
+      ),
+      FleetchartViewpoints.FRONT,
+    );
+
+    expect(geometry?.frameWidth).toBe(150);
+    expect(geometry?.height).toBe(150);
   });
 
   it("uses the landed length and views in the landed state", () => {
@@ -146,7 +168,13 @@ describe("shipGeometry", () => {
   it("draws no image for a viewpoint the ship lacks, but keeps its box", () => {
     expect(
       shipGeometry(model({ portView: view("port") }), FleetchartViewpoints.TOP),
-    ).toEqual({ length: 100, height: 50, imageWidth: 0, imageHeight: 0 });
+    ).toEqual({
+      length: 100,
+      height: 50,
+      imageWidth: 0,
+      imageHeight: 0,
+      frameWidth: 100,
+    });
   });
 });
 

@@ -234,7 +234,7 @@ const boxOf = (
   const drawnHeight = geometry.imageHeight || geometry.height;
   const drawnWidth = tight
     ? geometry.imageWidth || geometry.length
-    : geometry.length;
+    : geometry.frameWidth;
 
   if (
     shipFacing === FleetchartFacings.TOP ||

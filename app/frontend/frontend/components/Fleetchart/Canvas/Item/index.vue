@@ -86,7 +86,7 @@ const image = computed(() => {
   }
 
   const renderedWidth =
-    props.geometry.length *
+    (props.geometry.imageWidth || props.geometry.length) *
     PIXELS_PER_METRE *
     props.zoom *
     (window.devicePixelRatio || 1);
@@ -120,7 +120,7 @@ const image = computed(() => {
         { 'fleetchart-canvas-item__frame--tight': tight },
       ]"
       :style="{
-        width: `${geometry.length * PIXELS_PER_METRE}px`,
+        width: `${geometry.frameWidth * PIXELS_PER_METRE}px`,
         height: `${geometry.height * PIXELS_PER_METRE}px`,
       }"
     >

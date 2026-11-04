@@ -26,6 +26,8 @@ export interface FleetchartShipGeometry {
   // How tall the current view draws, which can be far less than `height`: that is
   // the tallest of the ship's views, so the box holds when the viewpoint changes.
   imageHeight: number;
+  // A front or rear view of a ship wider than it is long is wider than its length.
+  frameWidth: number;
 }
 
 type ViewName =
@@ -201,7 +203,13 @@ export const shipGeometry = (
       ? (imageWidth * source.height) / source.width
       : 0;
 
-  return { length, height, imageWidth, imageHeight };
+  return {
+    length,
+    height: Math.max(height, imageHeight),
+    imageWidth,
+    imageHeight,
+    frameWidth: Math.max(length, imageWidth),
+  };
 };
 
 export const shipLabelOf = (entry: FleetchartEntry) => {
