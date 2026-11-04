@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useQueryClient } from "@tanstack/vue-query";
+import { shortUrl } from "@/frontend/utils/shortUrl";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -28,9 +30,12 @@ import {
 interface Props {
   placements: FleetchartPlacement[];
   colored: boolean;
+  // False while the fleet is loading, when there is nothing yet that could be saved
+  // and overwriting a layout would empty it.
+  ready?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { ready: true });
 
 const emit = defineEmits<{ open: [layout: FleetchartLayout] }>();
 
@@ -51,14 +56,15 @@ const { data: layouts } = useFleetchartLayouts();
 const refresh = () =>
   queryClient.invalidateQueries({ queryKey: getFleetchartLayoutsQueryKey() });
 
-const mutation = {
-  mutation: {
-    onSuccess: refresh,
-    onError: () => {
-      displayAlert({ text: t("labels.fleetchartApp.savedLayoutFailed") });
-    },
-  },
+const showFailure = (error: unknown) => {
+  displayAlert({
+    text:
+      firstErrorMessageFrom(error) ||
+      t("labels.fleetchartApp.savedLayoutFailed"),
+  });
 };
+
+const mutation = { mutation: { onSuccess: refresh, onError: showFailure } };
 
 const createLayout = useCreateFleetchartLayout(mutation);
 const updateLayout = useUpdateFleetchartLayout(mutation);
@@ -66,40 +72,53 @@ const destroyLayout = useDestroyFleetchartLayout(mutation);
 const shareLayout = useShareFleetchartLayout(mutation);
 const unshareLayout = useUnshareFleetchartLayout(mutation);
 
-const save = async () => {
+const save = () => {
   const trimmed = name.value.trim();
 
-  if (!trimmed) {
+  if (!trimmed || !props.ready) {
     return;
   }
 
-  await createLayout.mutateAsync({
-    data: {
-      name: trimmed,
-      colored: props.colored,
-      placements: props.placements,
+  createLayout.mutate(
+    {
+      data: {
+        name: trimmed,
+        colored: props.colored,
+        placements: props.placements,
+      },
     },
-  });
-
-  name.value = "";
+    {
+      onSuccess: () => {
+        name.value = "";
+      },
+    },
+  );
 };
 
-const overwrite = async (layout: FleetchartLayout) => {
-  await updateLayout.mutateAsync({
-    id: layout.id,
-    data: { colored: props.colored, placements: props.placements },
-  });
-
-  displaySuccess({ text: t("labels.fleetchartApp.savedLayoutUpdated") });
+const overwrite = (layout: FleetchartLayout) => {
+  updateLayout.mutate(
+    {
+      id: layout.id,
+      data: { colored: props.colored, placements: props.placements },
+    },
+    {
+      onSuccess: () => {
+        displaySuccess({ text: t("labels.fleetchartApp.savedLayoutUpdated") });
+      },
+    },
+  );
 };
 
-const shareUrl = (token: string) => {
+const shareUrl = ({ username, shareToken }: FleetchartLayout) => {
   const { href } = router.resolve({
     name: "hangar-fleetchart-layout-shared",
-    params: { token },
+    params: { username, token: shareToken },
   });
 
-  return new URL(href, window.location.origin).href;
+  return (
+    shortUrl(`/h/${username}/fleetchart/${shareToken}`) ??
+    new URL(href, window.location.origin).href
+  );
 };
 </script>
 
@@ -121,7 +140,7 @@ const shareUrl = (token: string) => {
         />
         <Btn
           type="submit"
-          :disabled="!name.trim()"
+          :disabled="!name.trim() || !ready"
           :loading="createLayout.isPending.value"
           data-test="fleetchart-save-layout"
         >
@@ -151,6 +170,7 @@ const shareUrl = (token: string) => {
         <Btn
           v-tooltip="t('labels.fleetchartApp.updateLayout')"
           :aria-label="t('labels.fleetchartApp.updateLayout')"
+          :disabled="!ready"
           data-test="fleetchart-update-layout"
           @click="overwrite(layout)"
         >
@@ -158,7 +178,7 @@ const shareUrl = (token: string) => {
         </Btn>
         <template v-if="layout.shareToken">
           <ShareBtn
-            :url="shareUrl(layout.shareToken)"
+            :url="shareUrl(layout)"
             :title="layout.name"
             :container="root"
             no-label

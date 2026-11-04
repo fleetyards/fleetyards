@@ -68,6 +68,7 @@ const canvasStubs = {
   },
   BtnGroup: { template: "<div><slot /></div>" },
   DownloadScreenshotBtn: true,
+  FleetchartCanvasSavedLayouts: true,
   FleetChartStatusBtn: true,
   CommunityLogo: true,
 };
@@ -337,6 +338,10 @@ describe("FleetchartCanvas", () => {
       expect(wrapper.find("[data-test='fleetchart-options']").exists()).toBe(
         false,
       );
+      expect(wrapper.text()).not.toContain("labels.fleetchartApp.viewpoint");
+      expect(wrapper.text()).not.toContain("actions.showLabels");
+      expect(wrapper.text()).toContain("actions.resetZoom");
+      expect(wrapper.find("[data-test='fleetchart-grid']").exists()).toBe(true);
     });
   });
 
@@ -842,6 +847,36 @@ describe("FleetchartCanvas", () => {
         expect(placement("a").facing).toBe(FleetchartFacings.TOP);
         expect(placement("b").facing).toBe(FleetchartFacings.TOP);
       });
+    });
+
+    it("saves the stacking as it is drawn, whatever the sort", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper
+        .get("[data-test='fleetchart-saved-layouts']")
+        .trigger("click");
+
+      const saved = wrapper
+        .findComponent({ name: "FleetchartCanvasSavedLayouts" })
+        .props("placements") as { vehicleId: string; order: number }[];
+
+      expect(saved.map(({ order }) => order).sort()).toEqual([0, 1]);
+    });
+
+    it("shows one panel at a time", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+      expect(wrapper.find("[data-test='fleetchart-settings']").exists()).toBe(
+        true,
+      );
+
+      await wrapper
+        .get("[data-test='fleetchart-saved-layouts']")
+        .trigger("click");
+      expect(wrapper.find("[data-test='fleetchart-settings']").exists()).toBe(
+        false,
+      );
     });
 
     it("clears a ship's angle on reset", async () => {

@@ -49,6 +49,7 @@ import {
 } from "@/frontend/components/Fleetchart/options";
 import {
   placementsFromLayout,
+  stackingOrders,
   type FleetchartPlacementInput,
 } from "@/frontend/components/Fleetchart/savedLayouts";
 import type { FleetchartLayout } from "@/services/fyApi";
@@ -876,10 +877,22 @@ const stackSelected = (direction: "front" | "back") => {
 
 const savedLayoutsOpen = ref(false);
 
+// The panels share one spot, so only one can be open.
+const togglePanel = (open: boolean, panel: "saved" | "settings") => {
+  savedLayoutsOpen.value = panel === "saved" && !open;
+  settingsOpen.value = panel === "settings" && !open;
+};
+
 // A saved layout has to look the same without this chart's own view and state, so
 // each ship carries what it is actually drawn with.
-const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
-  Object.entries(placements.value).map(([vehicleId, placement]) => {
+const placementsToSave = computed<FleetchartPlacementInput[]>(() => {
+  const drawn = ships.value.map(({ id }) => id);
+  const notDrawn = Object.keys(placements.value).filter(
+    (id) => !drawn.includes(id),
+  );
+  const orders = stackingOrders([...notDrawn, ...drawn], orderOf);
+
+  return Object.entries(placements.value).map(([vehicleId, placement]) => {
     const ship = ships.value.find(({ id }) => id === vehicleId);
 
     return {
@@ -889,11 +902,11 @@ const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
       facing: ship?.facing ?? placement.facing,
       viewpoint: ship?.viewpoint ?? placement.viewpoint,
       state: ship?.state ?? placement.state,
-      order: placement.order,
+      order: orders[vehicleId],
       groupId: placement.groupId,
     };
-  }),
-);
+  });
+});
 
 const openSavedLayout = (saved: FleetchartLayout) => {
   changePlacements(placementsFromLayout(saved.placements));
@@ -1294,7 +1307,7 @@ const toggleLabels = () => {
           :active="savedLayoutsOpen"
           :aria-label="t('labels.fleetchartApp.savedLayouts')"
           data-test="fleetchart-saved-layouts"
-          @click="savedLayoutsOpen = !savedLayoutsOpen"
+          @click="togglePanel(savedLayoutsOpen, 'saved')"
         >
           <i class="fa-duotone fa-bookmark" />
         </Btn>
@@ -1339,7 +1352,7 @@ const toggleLabels = () => {
         </Btn>
       </BtnDropdown>
 
-      <BtnDropdown>
+      <BtnDropdown v-if="!readOnly">
         <template #label>
           <template v-if="!mobile">
             {{ t("labels.fleetchartApp.viewpoint") }}:
@@ -1374,7 +1387,7 @@ const toggleLabels = () => {
         :active="settingsOpen"
         :aria-label="t('labels.fleetchartApp.options')"
         data-test="fleetchart-options"
-        @click="settingsOpen = !settingsOpen"
+        @click="togglePanel(settingsOpen, 'settings')"
       >
         <i class="fa-duotone fa-sliders" />
       </Btn>
@@ -1395,7 +1408,7 @@ const toggleLabels = () => {
           <hr />
         </template>
 
-        <Btn @click="toggleLabels">
+        <Btn v-if="!readOnly" @click="toggleLabels">
           <i class="fa-duotone fa-tags" />
           <span v-if="showLabels">{{ t("actions.hideLabels") }}</span>
           <span v-else>{{ t("actions.showLabels") }}</span>
@@ -1435,6 +1448,7 @@ const toggleLabels = () => {
     <FleetchartCanvasSavedLayouts
       v-if="arranging && savedLayoutsOpen"
       :placements="placementsToSave"
+      :ready="arrangeReady && placementsToSave.length > 0"
       :colored="colored"
       @open="openSavedLayout"
     />

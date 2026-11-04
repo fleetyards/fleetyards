@@ -17,6 +17,7 @@ const layouts = ref([
     name: "Parade",
     colored: true,
     shareToken: null,
+    username: "pilot",
     placements: [],
   },
   {
@@ -24,13 +25,13 @@ const layouts = ref([
     name: "Shared one",
     colored: true,
     shareToken: "token",
+    username: "pilot",
     placements: [],
   },
 ]);
 
 const hook = (run: ReturnType<typeof vi.fn>) => () => ({
   mutate: run,
-  mutateAsync: run,
   isPending: ref(false),
 });
 
@@ -51,8 +52,8 @@ vi.mock("@tanstack/vue-query", () => ({
 vi.mock("vue-router", async (importOriginal) => ({
   ...(await importOriginal<typeof import("vue-router")>()),
   useRouter: () => ({
-    resolve: ({ params }: { params: { token: string } }) => ({
-      href: `/hangar/fleetchart/shared/${params.token}/`,
+    resolve: ({ params }: { params: { username: string; token: string } }) => ({
+      href: `/hangar/${params.username}/fleetchart/${params.token}/`,
     }),
   }),
 }));
@@ -70,9 +71,9 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 
 const placements: FleetchartPlacement[] = [{ vehicleId: "a", x: 1, y: 2 }];
 
-const mountPanel = () =>
+const mountPanel = (extra: { ready?: boolean } = {}) =>
   mount(SavedLayouts, {
-    props: { placements, colored: false },
+    props: { placements, colored: false, ...extra },
     global: {
       directives: { tooltip: {} },
       stubs: {
@@ -111,9 +112,13 @@ describe("FleetchartCanvasSavedLayouts", () => {
     await wrapper.get("form").trigger("submit");
     await flushPromises();
 
-    expect(mutations.create).toHaveBeenCalledWith({
+    expect(mutations.create.mock.calls[0][0]).toEqual({
       data: { name: "New one", colored: false, placements },
     });
+
+    mutations.create.mock.calls[0][1].onSuccess();
+    await flushPromises();
+
     expect((wrapper.get("input").element as HTMLInputElement).value).toBe("");
   });
 
@@ -134,10 +139,24 @@ describe("FleetchartCanvasSavedLayouts", () => {
       .trigger("click");
     await flushPromises();
 
-    expect(mutations.update).toHaveBeenCalledWith({
+    expect(mutations.update.mock.calls[0][0]).toEqual({
       id: "1",
       data: { colored: false, placements },
     });
+  });
+
+  it("cannot save or overwrite before the fleet has loaded", async () => {
+    const wrapper = mountPanel({ ready: false });
+
+    await wrapper.get("input").setValue("New one");
+    await wrapper.get("form").trigger("submit");
+
+    expect(mutations.create).not.toHaveBeenCalled();
+    expect(
+      wrapper
+        .get("[data-test='fleetchart-update-layout']")
+        .attributes("disabled"),
+    ).toBeDefined();
   });
 
   it("hands a layout to the chart to open", async () => {
@@ -156,7 +175,19 @@ describe("FleetchartCanvasSavedLayouts", () => {
     expect(mutations.share).toHaveBeenCalledWith({ id: "1" });
     expect(
       wrapper.get("[data-test='share-link']").attributes("href"),
-    ).toContain("/hangar/fleetchart/shared/token/");
+    ).toContain("/hangar/pilot/fleetchart/token/");
+  });
+
+  it("links the short domain where there is one", () => {
+    window.SHORT_DOMAIN = "fly.test";
+
+    const wrapper = mountPanel();
+
+    delete (window as { SHORT_DOMAIN?: string }).SHORT_DOMAIN;
+
+    expect(wrapper.get("[data-test='share-link']").attributes("href")).toMatch(
+      /\/\/fly\.test\/h\/pilot\/fleetchart\/token$/,
+    );
   });
 
   it("stops sharing", async () => {
