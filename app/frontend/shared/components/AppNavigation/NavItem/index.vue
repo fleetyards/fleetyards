@@ -240,7 +240,13 @@ const showFlyout = async (pin = false) => {
   clearCloseTimer();
 
   pinned.value = pinned.value || pin;
-  openFlyout.value = ownPath.value;
+
+  // Already on the path, it may have a sub-section's panel open: focus bubbles
+  // here from a row in there, and cutting the path back would close that panel
+  // under the press before it can become a click.
+  if (!openFlyout.value.includes(flyoutId)) {
+    openFlyout.value = ownPath.value;
+  }
 
   if (flyoutOpen.value) {
     return;
@@ -360,7 +366,9 @@ const onFocusOut = (event: FocusEvent) => {
 
   const next = event.relatedTarget as Node | null;
 
-  if (next && (event.currentTarget as HTMLElement).contains(next)) {
+  // No target is not the keyboard moving on: it is a press on something in the
+  // panel that takes no focus, or the window losing it.
+  if (!next || (event.currentTarget as HTMLElement).contains(next)) {
     return;
   }
 

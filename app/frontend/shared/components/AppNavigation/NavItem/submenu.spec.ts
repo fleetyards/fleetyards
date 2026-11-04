@@ -371,4 +371,87 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
   });
+
+  describe("two sub-sections, one under the other", () => {
+    const mountSiblings = () =>
+      mountWithDefaults<typeof NavItem>(NavItem, {
+        props: { label: "Hangar", menuKey: "hangar-menu" },
+        slots: {
+          submenu: () =>
+            ["assets", "pledge"].map((key) =>
+              h(
+                NavItem,
+                { label: key, menuKey: key },
+                {
+                  submenu: () => [
+                    h(NavItem, { to: { name: "components" }, label: key }),
+                  ],
+                },
+              ),
+            ),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+        initialState: { nav: { slim: true } },
+        plugins: [buildRouter()],
+        attachTo: document.body,
+      });
+
+    const title = (wrapper: VueWrapper) =>
+      wrapper.findAll(".nav-flyout__title").map((item) => item.text());
+
+    const assetsOpenWithPanelAt = async (wrapper: VueWrapper) => {
+      await wrapper
+        .get('[data-test="nav-hangar-menu"] > button')
+        .trigger("click");
+      await wrapper.get('[data-test="nav-assets"]').trigger("pointerenter");
+      await wrapper.vm.$nextTick();
+
+      const panel = wrapper.findAll(".nav-flyout")[1].element;
+
+      panel.getBoundingClientRect = () =>
+        ({ left: 300, top: 100, bottom: 220 }) as DOMRect;
+    };
+
+    it("stays open when a press in the panel takes the focus nowhere", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await wrapper
+        .get('[data-test="nav-assets"]')
+        .trigger("focusout", { relatedTarget: null });
+
+      expect(title(wrapper)).toEqual(["Hangar", "assets"]);
+
+      wrapper.unmount();
+    });
+
+    it("closes when the keyboard moves on to something outside", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await wrapper
+        .get('[data-test="nav-assets"]')
+        .trigger("focusout", { relatedTarget: document.body });
+
+      expect(title(wrapper)).toEqual([]);
+
+      wrapper.unmount();
+    });
+
+    // Focus bubbles, so the press that focuses a row also reaches the section
+    // around it -- which must not reclaim the panel the row is in before the
+    // press has become a click.
+    it("keeps a sub-section's panel when a row in it takes the focus", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await wrapper
+        .get('[data-test="nav-assets"] .nav-flyout a')
+        .trigger("focusin");
+
+      expect(title(wrapper)).toEqual(["Hangar", "assets"]);
+
+      wrapper.unmount();
+    });
+  });
 });
