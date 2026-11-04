@@ -249,13 +249,14 @@ class ModelTest < ActiveSupport::TestCase
   end
 
   # A hangar filtering on a model column turns every `includes` below the
-  # vehicle into one joined query, which drops any custom select.
+  # vehicle into one joined query, which drops any custom select. Joining only
+  # these, as all of `Vehicle.rendered_associations` passes Postgres' column limit.
   test "max cargo survives the cargo modules being eager loaded" do
     model = create(:model, cargo: 2.0, keep_cargo: true)
     create(:module_hardpoint, model:, slot: "hardpoint_module", model_module: create(:model_module, cargo: 6.0))
     vehicle = create(:vehicle, model:)
 
-    loaded = Vehicle.includes(Vehicle.rendered_associations).where(models: {id: model.id}).find(vehicle.id)
+    loaded = Vehicle.includes(model: {cargo_module_hardpoints: :model_module}).where(models: {id: model.id}).find(vehicle.id)
 
     assert_in_delta 8.0, loaded.model.max_cargo
   end
