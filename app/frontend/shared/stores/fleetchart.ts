@@ -22,7 +22,15 @@ export enum FleetchartModes {
   CLASSIC = "classic",
 }
 
+export enum FleetchartLayouts {
+  COLUMNS = "columns",
+  CLASSIC = "classic",
+}
+
 type FleetchartState = {
+  layout: {
+    [key: string]: FleetchartLayouts;
+  };
   visible: string[];
   zoomData: {
     [key: string]: Transform;
@@ -46,6 +54,7 @@ type FleetchartState = {
 
 export const useFleetchartStore = defineStore("fleetchart", {
   state: (): FleetchartState => ({
+    layout: {},
     visible: [],
     zoomData: {},
     viewpoint: {},
@@ -71,6 +80,21 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
+    },
+    // A browser that last chose a mode keeps its arrangement. `layout` can also
+    // be missing altogether from state persisted before it existed.
+    fleetchartLayout: (state) => {
+      return (namespace: string) => {
+        const layout = state.layout?.[namespace];
+
+        if (layout) {
+          return layout;
+        }
+
+        return state.mode[namespace] === FleetchartModes.CLASSIC
+          ? FleetchartLayouts.CLASSIC
+          : FleetchartLayouts.COLUMNS;
+      };
     },
     fleetchartScreenHeight: (state) => {
       return (namespace: string) =>
@@ -145,6 +169,9 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     updateMode(payload: { namespace: string; mode: FleetchartModes }) {
       this.mode[payload.namespace] = payload.mode;
+    },
+    updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
+      this.layout = { ...this.layout, [payload.namespace]: payload.layout };
     },
     updateScale(payload: { namespace: string; scale: number }) {
       this.scale[payload.namespace] = payload.scale;
