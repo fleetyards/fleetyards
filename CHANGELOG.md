@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.39.0](https://github.com/fleetyards/fleetyards/compare/v9.38.0...v9.39.0) (2026-11-04)
+
+
+### Features
+
+* **catalogue:** card layout for the component and equipment lists ([#6178](https://github.com/fleetyards/fleetyards/issues/6178)) ([861cfad](https://github.com/fleetyards/fleetyards/commit/861cfad8f46a0002d19ecd5bf20afd8732e3060a))
+* **fleetchart:** add catalogue ships, remove ships, and clear or reset a free arrangement ([#6180](https://github.com/fleetyards/fleetyards/issues/6180)) ([7ba8ea9](https://github.com/fleetyards/fleetyards/commit/7ba8ea97e9b61867e30e16e12620cdb9e5275aec))
+* **fleetchart:** free layout with drag, rotate and undo on the hangar chart ([#6173](https://github.com/fleetyards/fleetyards/issues/6173)) ([93cca39](https://github.com/fleetyards/fleetyards/commit/93cca39ed87d11a9a08228f41be2532ca0d885ec))
+* **fleetchart:** one renderer with columns and classic layouts behind a flag ([#6167](https://github.com/fleetyards/fleetyards/issues/6167)) ([d08cb18](https://github.com/fleetyards/fleetyards/commit/d08cb188104bc372635a6bd70b561f0d175d3159))
+* **fleetchart:** options, a packed layout and ship facing ([#6171](https://github.com/fleetyards/fleetyards/issues/6171)) ([f3909b1](https://github.com/fleetyards/fleetyards/commit/f3909b1bd760066e1113562ca68db1b94263b107))
+* **fleetchart:** saved layouts, shareable by link ([#6175](https://github.com/fleetyards/fleetyards/issues/6175)) ([a2dab1f](https://github.com/fleetyards/fleetyards/commit/a2dab1f72f3b30dd2b20efab1ffef8ba6f6f309b))
+* **hangar-planner:** fold melted ships and list finished routes last ([f0dcce3](https://github.com/fleetyards/fleetyards/commit/f0dcce3c3e569a1886a8f2a389845c58f8325421))
+* **hangar-planner:** keep an undecided ship in one click ([b7284de](https://github.com/fleetyards/fleetyards/commit/b7284de5ffd3493cc226e7e241ff31b2f9de9c42))
+* **hangar-planner:** lead pick rows with the manufacturer's icon and tag what kind of pick they are ([0a29b29](https://github.com/fleetyards/fleetyards/commit/0a29b29d71c5b1063c06c0397c4a88ef5c04fb54))
+* **hangar-planner:** list ships needing a decision before ships that should change ([1d6b307](https://github.com/fleetyards/fleetyards/commit/1d6b3070cb9fc54d18601725897f9dd7cccfcee1))
+* **hangar-planner:** open the stats card from every ship name ([bb7f27f](https://github.com/fleetyards/fleetyards/commit/bb7f27fe4b9229f62a110cab0d67514111a943e8))
+* **hangar-planner:** price single-ship slots and show both totals ([5c5d91a](https://github.com/fleetyards/fleetyards/commit/5c5d91a84fa7a87a470c618b181bf367ba01593a))
+* **hangar-planner:** reach a ship upgraded into only from its variants from those alone ([51fdc1f](https://github.com/fleetyards/fleetyards/commit/51fdc1fa3d90515f9ad0ec8050f4b267447388f0))
+* **hangar-planner:** take a kept or melted ship back to undecided in one click ([67325a4](https://github.com/fleetyards/fleetyards/commit/67325a485de8541792aefed965749feb298ce0e7))
+* **support:** always send the support button to the support page ([cd146ac](https://github.com/fleetyards/fleetyards/commit/cd146acc5d4024d6df1497aaf7c4214791752504))
+* **supporters:** list every supporter on the support page ([ca3032e](https://github.com/fleetyards/fleetyards/commit/ca3032e61902141202821d54e434591c9ce5c2db))
+
+
+### Bug Fixes
+
+* answer store outages, forged ids and spoofed headers properly, and report vehicle menu failures ([#6169](https://github.com/fleetyards/fleetyards/issues/6169)) ([2a2055e](https://github.com/fleetyards/fleetyards/commit/2a2055e0d7ab826fcbd4e872fc6d59f9ecabba44))
+* **fleets:** let a user withdraw a join request, and keep pending fleets out of their own ([#6179](https://github.com/fleetyards/fleetyards/issues/6179)) ([6e775bb](https://github.com/fleetyards/fleetyards/commit/6e775bb22b44f8058743d72187cdc69162acf803))
+* **frontend:** show a message where WebGL is missing in the 3D viewers ([#6166](https://github.com/fleetyards/fleetyards/issues/6166)) ([10739c9](https://github.com/fleetyards/fleetyards/commit/10739c975b9a7152c9e2f5f2ff007270f510b73c))
+* **hangar-planner:** count undecided and empty slots in the summary ([565ce37](https://github.com/fleetyards/fleetyards/commit/565ce372f0149c99591f5d53d44eba6680af98f2))
+* **hangar-planner:** do not price an upgrade out of a ship marked to keep ([76614f2](https://github.com/fleetyards/fleetyards/commit/76614f2cc9a12fbd72786b7e4584a049febc8686))
+* **hangar-planner:** ignore inactive models such as the Geotack beacons ([3231f9a](https://github.com/fleetyards/fleetyards/commit/3231f9af8ff929c99b59f9c6c017aa07a1d95edb))
+* **hangar-planner:** keep a shared plan's free ships out of its summary ([9a138b4](https://github.com/fleetyards/fleetyards/commit/9a138b41d4191a33258fc2219acc3744e385a82f))
+* **hangar-planner:** keep an opt-out sent with a change to a buy-back ([5cc385f](https://github.com/fleetyards/fleetyards/commit/5cc385fb13088f8d34a1f8cf867ef9ce47f9b785))
+* **hangar-planner:** keep planned ships on inactive models from reading as lost ([6f22706](https://github.com/fleetyards/fleetyards/commit/6f227061b1c85afd4e781cb4d9e2ac986cfca9e1))
+* **hangar-planner:** leave ships already meant to go out of suggestions ([4cfcb00](https://github.com/fleetyards/fleetyards/commit/4cfcb0052c3d7216c83e302f6b6d801abb7ea897))
+* **hangar-planner:** let a tap on a ship name pick its row ([0c5242e](https://github.com/fleetyards/fleetyards/commit/0c5242e085bea3927752ed03f80be958c9d4e72f))
+* **hangar-planner:** let ships meant to stay fill a slot's unit first ([377e2e5](https://github.com/fleetyards/fleetyards/commit/377e2e55c0950ffc34b9b38975c72cd5caf493ea))
+* **hangar-planner:** make the maximum cover every unit without a route ([12f5873](https://github.com/fleetyards/fleetyards/commit/12f5873c7a64626b82eee71e55894f15a98d0c27))
+* **hangar-planner:** read a negative net cost as credit ([cbbc321](https://github.com/fleetyards/fleetyards/commit/cbbc32116aa695dd4d7516dc7daca853858f8167))
+* **hangar-planner:** send whether upgrades lead into and out of each store ship ([1cee769](https://github.com/fleetyards/fleetyards/commit/1cee769fa44b546716ed4dcae2d8950464a15b27))
+* **hangar-planner:** show an undecided slot as work still to do ([396dac0](https://github.com/fleetyards/fleetyards/commit/396dac04fd4a5c2947018268d4b0a79228adfbb2))
+* **hangar-planner:** spend buy-back tokens by default, the dearest first ([365928b](https://github.com/fleetyards/fleetyards/commit/365928b7e4ae90514fbeaf70c989e4bc2c65015f))
+* **holo:** draw the nebula backdrops with a shader ([#6168](https://github.com/fleetyards/fleetyards/issues/6168)) ([1eafd21](https://github.com/fleetyards/fleetyards/commit/1eafd21d7dc6dfb898efc903b5e6a5dcdca12723))
+* **holo:** scale a holo on the grid by its length, not its beam ([8576591](https://github.com/fleetyards/fleetyards/commit/8576591d2b48e0ffb1654df6f793fb5cab74f786))
+* **manufacturers:** stop misfiling equipment with no maker and clean up the table ([#6177](https://github.com/fleetyards/fleetyards/issues/6177)) ([31d3b55](https://github.com/fleetyards/fleetyards/commit/31d3b55f78260802283f67e6b710b9fd58826392))
+* **modal:** use one framed close button on modals and full screen views ([#6163](https://github.com/fleetyards/fleetyards/issues/6163)) ([78db44c](https://github.com/fleetyards/fleetyards/commit/78db44c82a2e0d3772eb30305fd485331d7f1973))
+* **paint-booth:** show every paint beside the ship without cutting the list ([2ef1aba](https://github.com/fleetyards/fleetyards/commit/2ef1aba3d05ef89164ec265bf3cddf782cedac5b))
+* stop reporting WebGL context errors and OAuth callbacks without session state ([#6164](https://github.com/fleetyards/fleetyards/issues/6164)) ([c2cb21c](https://github.com/fleetyards/fleetyards/commit/c2cb21ca921701455e72f3a0b0afb0904805a705))
+* **supporters:** stop naming a supporter whose account was deleted ([0c2e94b](https://github.com/fleetyards/fleetyards/commit/0c2e94b6b148325cc9df045b4e07acc6a08070bc))
+
+
+### Chores
+
+* **deploy:** raise the Discord bot's memory limit to 768m ([#6170](https://github.com/fleetyards/fleetyards/issues/6170)) ([becd521](https://github.com/fleetyards/fleetyards/commit/becd521a0277bd4fba0875ef0359fb4740c36991))
+* **deps-dev:** bump knip from 6.44.0 to 6.44.1 ([#6160](https://github.com/fleetyards/fleetyards/issues/6160)) ([61accfc](https://github.com/fleetyards/fleetyards/commit/61accfc5c73f2bf6dd80858bb0de7a5efcd2cc26))
+* **deps:** clear the open Dependabot security alerts ([#6161](https://github.com/fleetyards/fleetyards/issues/6161)) ([e7104e1](https://github.com/fleetyards/fleetyards/commit/e7104e1241dddaae824bc4c4003524c4dd7b0267))
+* **docker:** keep AppSignal off during the image build ([#6174](https://github.com/fleetyards/fleetyards/issues/6174)) ([6925c58](https://github.com/fleetyards/fleetyards/commit/6925c58c5a1f62334843788b50e72bb0dab26516))
+* **puma:** load the AppSignal plugin so Puma metrics are reported ([#6172](https://github.com/fleetyards/fleetyards/issues/6172)) ([b0effec](https://github.com/fleetyards/fleetyards/commit/b0effec737c542213ae9a719abb09ccaa47e9571))
+
 ## [9.38.0](https://github.com/fleetyards/fleetyards/compare/v9.37.0...v9.38.0) (2026-11-04)
 
 
