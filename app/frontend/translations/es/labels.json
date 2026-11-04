@@ -511,6 +511,11 @@
           "front": "Frontal"
         },
         "gridSize": "%{size} metro por cuadrícula",
+        "layout": "Disposición",
+        "layoutOptions": {
+          "columns": "Columnas",
+          "classic": "Clásico"
+        },
         "mode": "Modo",
         "modeOptions": {
           "classic": "Clásico",

@@ -511,6 +511,11 @@
           "front": "Front"
         },
         "gridSize": "%{size} Meter pro Rasterfeld",
+        "layout": "Layout",
+        "layoutOptions": {
+          "columns": "Spalten",
+          "classic": "Klassisch"
+        },
         "mode": "Modus",
         "modeOptions": {
           "classic": "Klassisch",

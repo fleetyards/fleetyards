@@ -1,0 +1,70 @@
+@import "../controls";
+
+.fleetchart-canvas__viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fleetchart-canvas__scene {
+  position: relative;
+  z-index: 1;
+  box-sizing: content-box;
+
+  &.fleetchart-download {
+    min-width: 160px;
+    padding-bottom: 160px;
+  }
+}
+
+.fleetchart-canvas__grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.fleetchart-canvas__grid-label {
+  position: fixed;
+  bottom: 70px;
+  left: 20px;
+  z-index: 900;
+  text-shadow: 0 0 2px black;
+}
+
+.fleetchart-canvas__export-only {
+  display: none;
+}
+
+.fleetchart-download .fleetchart-canvas__export-only {
+  display: block;
+}
+
+.fleetchart-canvas__export-logo {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+
+  img {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.fleetchart-canvas__export-grid {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-canvas__grid-label {
+    right: 10px;
+    bottom: 90px;
+    left: 10px;
+    text-align: center;
+  }
+}

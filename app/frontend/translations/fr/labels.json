@@ -511,6 +511,11 @@
           "front": "Face"
         },
         "gridSize": "%{size} mètre par zone de grille",
+        "layout": "Disposition",
+        "layoutOptions": {
+          "columns": "Colonnes",
+          "classic": "Classique"
+        },
         "mode": "Mode",
         "modeOptions": {
           "classic": "Classique",
