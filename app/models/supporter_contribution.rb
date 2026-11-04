@@ -122,8 +122,9 @@ class SupporterContribution < ApplicationRecord
   # agree with it.
   scope :listed, -> {
     left_joins(:user).where(
-      "users.supporter_listed = TRUE OR " \
-      "(users.supporter_listed IS NULL AND supporter_contributions.anonymous = FALSE)"
+      "(supporter_contributions.user_id IS NOT NULL OR supporter_contributions.linked_via IS NULL) AND " \
+      "(users.supporter_listed = TRUE OR " \
+      "(users.supporter_listed IS NULL AND supporter_contributions.anonymous = FALSE))"
     )
   }
 
@@ -238,7 +239,13 @@ class SupporterContribution < ApplicationRecord
   # donation at once. Per row it could not: each Ko-fi payment is a row of its
   # own, so a monthly supporter would be named again by every new payment.
   # Unanswered, the row keeps what the platform reported.
+  #
+  # Deleting an account nullifies `user_id` without callbacks, so `linked_via`
+  # surviving on an unlinked row is what marks it. Its name is what the payer
+  # typed at the platform, which must not resurface once the account is gone.
   def listed?
+    return false if user_id.nil? && linked_via.present?
+
     preference = user&.supporter_listed
     return !anonymous? if preference.nil?
 

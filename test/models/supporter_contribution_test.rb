@@ -283,6 +283,18 @@ class SupporterContributionTest < ActiveSupport::TestCase
       SupporterContribution.where(id: rows.map(&:id)).listed.pluck(:id).sort
   end
 
+  test "a contribution stops being listed when its account is deleted" do
+    user = create(:user, supporter_listed: true)
+    contribution = create(:supporter_contribution, name: "Real Name", user:)
+
+    user.destroy!
+    contribution.reload
+
+    refute contribution.listed?
+    assert_nil contribution.public_name
+    refute_includes SupporterContribution.listed, contribution
+  end
+
   test "the profile link only points at reachable hangars" do
     public_user = create(:user, :public_hangar)
     private_user = create(:user, :private_hangar)
