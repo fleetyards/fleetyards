@@ -14,7 +14,7 @@ type Props = {
   count?: number;
   details?: boolean;
   filterVisible?: boolean;
-  gridBase?: "2" | "3";
+  gridBase?: "2" | "3" | "compact";
   // What the cells of this grid hold. `panel` is a card - a photo with a title
   // over it and a frame around it. `summary` is the same card in the shape the
   // inventory grids use - see InventoryPanel - which carries no picture floor

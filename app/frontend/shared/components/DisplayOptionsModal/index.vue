@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -18,9 +19,16 @@ type Props = {
   // Names the two buttons for the list that opened this, the way every other
   // per-page control here is named.
   testPrefix: string;
+  // Offered only by a list whose cards hide figures until asked, the way the
+  // ship cards do.
+  detailsVisible?: boolean;
+  updateDetailsCallback?: (detailsVisible: boolean) => void;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  detailsVisible: false,
+  updateDetailsCallback: undefined,
+});
 
 const { t } = useI18n();
 
@@ -28,6 +36,10 @@ const { t } = useI18n();
 // props once, when it is opened, so reading the prop alone would leave both
 // buttons highlighting whatever was chosen before this one was opened.
 const active = ref(props.gridView);
+
+const details = ref(props.detailsVisible);
+
+watch(details, (next) => props.updateDetailsCallback?.(next));
 
 const select = (next: boolean) => {
   active.value = next;
@@ -59,5 +71,14 @@ const select = (next: boolean) => {
         {{ t("actions.showTableView") }}
       </Btn>
     </div>
+    <template v-if="updateDetailsCallback && active">
+      <hr />
+      <FormToggle
+        v-model="details"
+        name="detailsVisible"
+        :label="t('actions.showDetails')"
+        :data-test="`${testPrefix}-details`"
+      />
+    </template>
   </Modal>
 </template>

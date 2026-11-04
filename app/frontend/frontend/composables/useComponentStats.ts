@@ -111,6 +111,23 @@ export const useComponentStats = (
   ]);
 };
 
+// `toNumber` renders a falsy value as "N/A", which says nothing a missing figure
+// does not, so a list leaves those out.
+export const useAvailableComponentStats = (
+  component: MaybeRefOrGetter<Component | undefined>,
+) => {
+  const { t } = useI18n();
+  const stats = useComponentStats(component);
+
+  return computed<HardpointStat[]>(() => {
+    const unavailable = t("labels.notAvailable");
+
+    return stats.value.filter(
+      (stat) => stat.value && stat.value !== unavailable,
+    );
+  });
+};
+
 // The stats that describe one mode of the item -- a quantum drive's spline
 // jump -- collected into a titled group each, in the order they came in. A
 // detail page shows them as cards of their own; a compact card lists them with

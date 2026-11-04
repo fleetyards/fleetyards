@@ -97,4 +97,49 @@ describe("Equipment/Row", () => {
 
     expect(wrapper.text()).toContain("No longer in the current build");
   });
+
+  it("puts the manufacturer's logo before its name", async () => {
+    const wrapper = await mount({
+      manufacturer: {
+        name: "Behring",
+        slug: "behring",
+        icon: { smallUrl: "https://example.test/behring.png" },
+      },
+    } as Partial<Equipment>);
+
+    const link = wrapper.find(".row-list-item__sub a");
+
+    expect(link.text()).toBe("Behring");
+    expect(
+      link.find("[data-test='equipment-row-maker-logo']").attributes("src"),
+    ).toBe("https://example.test/behring.png");
+  });
+
+  it("names a manufacturer without a logo on its own", async () => {
+    const wrapper = await mount({
+      manufacturer: { name: "Behring", slug: "behring" },
+    } as Partial<Equipment>);
+
+    expect(
+      wrapper.find("[data-test='equipment-row-maker-logo']").exists(),
+    ).toBe(false);
+  });
+
+  it("fills the row with up to four figures", async () => {
+    const wrapper = await mount({
+      dps: 120,
+      alphaDamage: 30,
+      rateOfFire: 240,
+      range: 80,
+      volume: 1,
+    } as Partial<Equipment>);
+
+    expect(wrapper.findAll(".component-lead-metric__item")).toHaveLength(4);
+  });
+
+  it("does not lead with volume", async () => {
+    const wrapper = await mount({ volume: 1 } as Partial<Equipment>);
+
+    expect(wrapper.find(".component-lead-metric").exists()).toBe(false);
+  });
 });

@@ -10,9 +10,10 @@ import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import EquipmentLeadMetric from "@/frontend/components/Equipment/LeadMetric/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import { manufacturerMark } from "@/frontend/utils/manufacturerMark";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
-import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
+import { useEquipmentBadges } from "@/frontend/composables/useEquipmentBadges";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Equipment, InventoryItemTypeEnum } from "@/services/fyApi";
 
@@ -34,35 +35,11 @@ const filterLink = (key: string, value: string) => ({
   query: { ...route.query, page: undefined, [key]: value },
 });
 
-const badges = computed<RowListItemBadge[]>(() => {
-  const list: RowListItemBadge[] = [];
+const badges = useEquipmentBadges(() => props.equipment);
 
-  if (props.equipment.slotLabel) {
-    list.push({
-      key: "slot",
-      label: t("labels.equipment.slot"),
-      value: props.equipment.slotLabel,
-    });
-  }
-
-  if (props.equipment.size) {
-    list.push({
-      key: "size",
-      label: t("labels.equipment.size"),
-      value: props.equipment.size,
-    });
-  }
-
-  if (props.equipment.grade) {
-    list.push({
-      key: "grade",
-      label: t("labels.equipment.grade"),
-      value: props.equipment.grade,
-    });
-  }
-
-  return list;
-});
+const manufacturerLogo = computed(() =>
+  manufacturerMark(props.equipment.manufacturer),
+);
 </script>
 
 <template>
@@ -111,6 +88,14 @@ const badges = computed<RowListItemBadge[]>(() => {
         v-if="equipment.manufacturer?.slug"
         :to="filterLink('manufacturerSlugIn', equipment.manufacturer.slug)"
       >
+        <img
+          v-if="manufacturerLogo"
+          class="equipment-row__maker-logo"
+          :src="manufacturerLogo"
+          alt=""
+          loading="lazy"
+          data-test="equipment-row-maker-logo"
+        />
         {{ equipment.manufacturer.name }}
       </router-link>
       <router-link
@@ -172,9 +157,23 @@ const badges = computed<RowListItemBadge[]>(() => {
     border-radius: 4px;
   }
 
+  // Sized to the line it sits on, so a row with a logo is no taller than one
+  // without.
+  &__maker-logo {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    object-fit: contain;
+    vertical-align: -4px;
+  }
+
+  // May shrink, so four figures wrap in their own block before they push the
+  // row's facts onto a second line. The name keeps its floor.
   :deep(.component-lead-metric) {
     display: none;
-    flex: none;
+    flex: 0 1 auto;
+    min-width: 0;
 
     @media (min-width: 992px) {
       display: flex;

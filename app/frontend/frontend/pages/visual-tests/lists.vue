@@ -752,6 +752,16 @@ const toggleFilteredListEmpty = () => {
 
   <ComponentsList :components="catalogueComponents" />
 
+  <Heading :level="HeadingLevelEnum.H2">ItemCard | ComponentsList</Heading>
+  <p>
+    The same components as cards, the list's other layout. The picture fills the
+    card behind the heading, fitted rather than cropped; without one the
+    category icon stands in. With details on, as here, size and grade are tiles
+    and the lead figures sit under them.
+  </p>
+
+  <ComponentsList :components="catalogueComponents" grid-view details-visible />
+
   <Heading :level="HeadingLevelEnum.H2">RowList | BlueprintsList</Heading>
   <p>
     The same <code>RowListItem</code>, carrying what a recipe is made of. The
