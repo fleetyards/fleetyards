@@ -530,6 +530,13 @@
           "classification": "Klassifizierung",
           "status": "Produktionsstatus"
         },
+        "background": "Hintergrund",
+        "backgroundOptions": {
+          "dark": "Dunkel",
+          "stanton": "Stanton-Nebel",
+          "crusader": "Crusader-Nebel",
+          "pyro": "Pyro-Nebel"
+        },
         "spacing": "Abstand",
         "spacingOptions": {
           "compact": "Kompakt",

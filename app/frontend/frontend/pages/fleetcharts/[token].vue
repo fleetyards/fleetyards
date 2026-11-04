@@ -15,6 +15,7 @@ import { placementsFromLayout } from "@/frontend/components/Fleetchart/savedLayo
 import { usePublicFleetchartLayout } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  type FleetchartBackgrounds,
   FleetchartLayouts,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -77,6 +78,11 @@ watch(
         shared.placements,
         shared.cataloguePlacements,
       ),
+    });
+
+    fleetchartStore.updateOptions({
+      namespace: NAMESPACE,
+      options: { background: shared.background as FleetchartBackgrounds },
     });
 
     if (shared.colored !== fleetchartStore.coloredByDefault(NAMESPACE)) {

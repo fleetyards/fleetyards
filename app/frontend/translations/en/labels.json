@@ -530,6 +530,13 @@
           "classification": "Classification",
           "status": "Production status"
         },
+        "background": "Background",
+        "backgroundOptions": {
+          "dark": "Dark",
+          "stanton": "Stanton Nebula",
+          "crusader": "Crusader Nebula",
+          "pyro": "Pyro Nebula"
+        },
         "spacing": "Spacing",
         "spacingOptions": {
           "compact": "Compact",

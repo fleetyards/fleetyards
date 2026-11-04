@@ -15,6 +15,7 @@ import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
+import { FleetchartBackgrounds } from "@/shared/stores/fleetchart";
 import {
   getFleetchartLayoutsQueryKey,
   useCreateFleetchartLayout,
@@ -32,6 +33,7 @@ interface Props {
   placements: FleetchartPlacement[];
   cataloguePlacements?: FleetchartCataloguePlacement[];
   colored: boolean;
+  background?: FleetchartBackgrounds;
   // False while the fleet is loading, when there is nothing yet that could be saved
   // and overwriting a layout would empty it.
   ready?: boolean;
@@ -39,6 +41,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   cataloguePlacements: () => [],
+  background: FleetchartBackgrounds.DARK,
   ready: true,
 });
 
@@ -89,6 +92,7 @@ const save = () => {
       data: {
         name: trimmed,
         colored: props.colored,
+        background: props.background,
         placements: props.placements,
         cataloguePlacements: props.cataloguePlacements,
       },
@@ -107,6 +111,7 @@ const overwrite = (layout: FleetchartLayout) => {
       id: layout.id,
       data: {
         colored: props.colored,
+        background: props.background,
         placements: props.placements,
         cataloguePlacements: props.cataloguePlacements,
       },

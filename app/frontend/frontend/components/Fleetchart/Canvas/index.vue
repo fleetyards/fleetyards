@@ -12,6 +12,9 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
+import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
+import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
@@ -63,6 +66,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
   FleetchartLayouts,
@@ -131,6 +135,12 @@ const SPACING_FACTORS: Record<FleetchartSpacings, number> = {
 };
 
 const SOLID_EXPORT_BACKGROUND = "#111";
+
+const BACKGROUND_IMAGES: Partial<Record<FleetchartBackgrounds, string>> = {
+  [FleetchartBackgrounds.STANTON]: stantonNebula,
+  [FleetchartBackgrounds.CRUSADER]: crusaderNebula,
+  [FleetchartBackgrounds.PYRO]: pyroNebula,
+};
 
 const { t } = useI18n();
 
@@ -479,6 +489,12 @@ const exportGridStyle = computed(() => {
     backgroundSize: `${cell}px ${cell}px`,
     backgroundPosition: `${offset(sceneX(0))}px ${offset(sceneY(0))}px`,
   };
+});
+
+const backgroundStyle = computed(() => {
+  const image = BACKGROUND_IMAGES[options.value.background];
+
+  return image ? { backgroundImage: `url(${image})` } : undefined;
 });
 
 const scaleBarWidth = computed(
@@ -1170,6 +1186,11 @@ const openSavedLayout = (saved: FleetchartLayout) => {
     fleetchartStore.togglePlain(props.namespace);
   }
 
+  fleetchartStore.updateOptions({
+    namespace: props.namespace,
+    options: { background: saved.background as FleetchartBackgrounds },
+  });
+
   selectedIds.value = [];
   fitToScreen();
 };
@@ -1755,6 +1776,7 @@ const toggleLabels = () => {
       :catalogue-placements="cataloguePlacementsToSave"
       :ready="arrangeReady && allPlacementsToSave.length > 0"
       :colored="colored"
+      :background="options.background"
       @open="openSavedLayout"
     />
 
@@ -1781,6 +1803,13 @@ const toggleLabels = () => {
 
     <div class="fleetchart-canvas__viewport" @pointerdown="handleViewportPress">
       <div
+        v-if="backgroundStyle"
+        class="fleetchart-canvas__background"
+        :style="backgroundStyle"
+        data-test="fleetchart-background"
+      />
+
+      <div
         v-if="marquee"
         class="fleetchart-canvas__marquee"
         :style="{
@@ -1801,6 +1830,12 @@ const toggleLabels = () => {
           height: `${sceneSize.height}px`,
         }"
       >
+        <div
+          v-if="backgroundStyle"
+          class="fleetchart-canvas__export-only fleetchart-canvas__background fleetchart-canvas__export-background"
+          :style="backgroundStyle"
+        />
+
         <div
           v-if="gridEnabled"
           class="fleetchart-canvas__export-only fleetchart-canvas__export-grid"

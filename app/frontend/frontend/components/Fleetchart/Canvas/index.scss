@@ -33,6 +33,23 @@
   text-shadow: 0 0 2px black;
 }
 
+// A far-off sky: it stays put while the ships pan and zoom in front of it.
+.fleetchart-canvas__background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-position: center;
+  background-size: cover;
+  pointer-events: none;
+}
+
+// Under every ship, however far back one was sent.
+.fleetchart-canvas__export-background {
+  z-index: -100000;
+}
+
 .fleetchart-canvas__export-only {
   display: none;
 }

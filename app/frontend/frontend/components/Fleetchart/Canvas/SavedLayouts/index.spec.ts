@@ -143,6 +143,7 @@ describe("FleetchartCanvasSavedLayouts", () => {
       data: {
         name: "New one",
         colored: false,
+        background: "dark",
         placements,
         cataloguePlacements: [],
       },
@@ -173,7 +174,12 @@ describe("FleetchartCanvasSavedLayouts", () => {
 
     expect(mutations.update.mock.calls[0][0]).toEqual({
       id: "1",
-      data: { colored: false, placements, cataloguePlacements: [] },
+      data: {
+        colored: false,
+        background: "dark",
+        placements,
+        cataloguePlacements: [],
+      },
     });
   });
 
