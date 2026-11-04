@@ -562,6 +562,8 @@
         "sharedLayoutMissing": "此布局不存在或已不再分享。",
         "sharedLayoutBy": "由 %{username} 分享",
         "sharedLayoutEmpty": "此布局中没有公开的舰船。",
+        "arrange": "排列",
+        "arrangeSelected": "排列所选 %{count} 艘",
         "facing": "朝向",
         "facingOptions": {
           "left": "左",

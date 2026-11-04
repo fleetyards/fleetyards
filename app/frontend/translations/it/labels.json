@@ -562,6 +562,8 @@
         "sharedLayoutMissing": "Questa disposizione non esiste o non è più condivisa.",
         "sharedLayoutBy": "Condivisa da %{username}",
         "sharedLayoutEmpty": "Nessuna nave di questa disposizione è pubblica.",
+        "arrange": "Disponi",
+        "arrangeSelected": "Disponi %{count} selezionate",
         "facing": "Orientamento",
         "facingOptions": {
           "left": "Sinistra",

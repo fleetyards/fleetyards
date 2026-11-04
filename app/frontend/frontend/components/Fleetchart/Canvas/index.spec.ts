@@ -863,6 +863,106 @@ describe("FleetchartCanvas", () => {
       expect(saved.map(({ order }) => order).sort()).toEqual([0, 1]);
     });
 
+    describe("arranging", () => {
+      const seed = () => {
+        const store = useFleetchartStore();
+
+        store.updateLayout({
+          namespace: "hangar",
+          layout: FleetchartLayouts.FREE,
+        });
+        store.updatePlacements({
+          namespace: "hangar",
+          placements: {
+            a: { x: 0, y: 0, facing: FleetchartFacings.TOP },
+            b: { x: 1000, y: 1000, viewpoint: FleetchartViewpoints.TOP },
+            c: { x: 2000, y: 2000 },
+          },
+        });
+      };
+
+      const selectFirstTwo = async (
+        wrapper: ReturnType<typeof mountCanvas>,
+      ) => {
+        const ships = wrapper.findAll("[data-test='fleetchart-ship']");
+
+        for (const [index, shiftKey] of [
+          [0, false],
+          [1, true],
+        ] as const) {
+          const down = new Event("pointerdown", { bubbles: true });
+
+          Object.assign(down, {
+            button: 0,
+            pointerType: "mouse",
+            clientX: 0,
+            clientY: 0,
+            shiftKey,
+          });
+          ships[index].element.dispatchEvent(down);
+          window.dispatchEvent(new Event("pointerup"));
+          await nextTick();
+        }
+      };
+
+      it("arranges the whole chart, each ship keeping its own settings", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-packed']")
+          .trigger("click");
+
+        expect(placement("c").x).not.toBe(2000);
+        expect(Math.abs(placement("c").y - placement("a").y)).toBeLessThan(
+          1000,
+        );
+        expect(placement("a").facing).toBe(FleetchartFacings.TOP);
+        expect(placement("b").viewpoint).toBe(FleetchartViewpoints.TOP);
+      });
+
+      it("arranges only the selected ships, leaving the rest", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+        const before = {
+          a: placement("a"),
+          b: placement("b"),
+          c: placement("c"),
+        };
+
+        await selectFirstTwo(wrapper);
+        await wrapper
+          .get("[data-test='fleetchart-arrange-classic']")
+          .trigger("click");
+
+        const moved = (["a", "b", "c"] as const).filter(
+          (id) => placement(id).x !== before[id].x,
+        );
+
+        expect(moved.length).toBeGreaterThan(0);
+        expect(moved.length).toBeLessThan(3);
+      });
+
+      it("can be undone", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+        const before = placement("c");
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-columns']")
+          .trigger("click");
+        window.dispatchEvent(
+          new KeyboardEvent("keydown", { key: "z", ctrlKey: true }),
+        );
+        await nextTick();
+
+        expect(placement("c")).toEqual(before);
+      });
+    });
+
     it("shows one panel at a time", async () => {
       const wrapper = await mountFree();
 

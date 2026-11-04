@@ -303,17 +303,19 @@ const drawableViewpoint = (
 
 // The ships as a given layout sees them, which is not only the active one: a free
 // arrangement starts from the layout before it, whose boxes and groups differ.
-const shipsFor = (kind: FleetchartLayouts) => {
+const shipsFor = (kind: FleetchartLayouts, keepShipSettings = false) => {
   const free = kind === FleetchartLayouts.FREE;
+  const ownSettings = free || keepShipSettings;
   const tight = fillsSpaceIn(kind);
 
   return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
     (entry) => {
       const shipState =
-        (free && placements.value[entry.id]?.state) || state.value;
+        (ownSettings && placements.value[entry.id]?.state) || state.value;
       const shipViewpoint = drawableViewpoint(
         entry,
-        (free && placements.value[entry.id]?.viewpoint) || viewpoint.value,
+        (ownSettings && placements.value[entry.id]?.viewpoint) ||
+          viewpoint.value,
         shipState,
       );
       const geometry = shipGeometry(entry, shipViewpoint, {
@@ -325,13 +327,15 @@ const shipsFor = (kind: FleetchartLayouts) => {
         return [];
       }
 
-      const shipFacing = free ? facingOf(entry.id) : facing.value;
+      const shipFacing = ownSettings ? facingOf(entry.id) : facing.value;
       const placed = !!placements.value[entry.id];
       const shipGroup = free
         ? placed
           ? undefined
           : t("labels.fleetchartApp.unplaced")
-        : groupTitle(entry);
+        : keepShipSettings
+          ? undefined
+          : groupTitle(entry);
 
       return [
         {
@@ -736,6 +740,50 @@ watch(
   },
   { immediate: true },
 );
+
+const ARRANGEMENTS = [
+  FleetchartLayouts.COLUMNS,
+  FleetchartLayouts.CLASSIC,
+  FleetchartLayouts.PACKED,
+];
+
+// Applies a layout to what is selected, where it stands, or else to everything. Only
+// the places change: each ship keeps the angle, facing and state it was given.
+const arrangeAs = (kind: FleetchartLayouts) => {
+  const selected = selectedShips.value;
+  const list = shipsFor(kind, true).filter(
+    ({ id }) => !selected.length || selectedIds.value.includes(id),
+  );
+  const from = arrange(kind, list);
+  const current = selected.length
+    ? boundsOf(selected, positions.value)
+    : undefined;
+  const arranged = boundsOf(list, from);
+  const offsetX = current ? current.minX - arranged.minX : 0;
+  const offsetY = current ? current.minY - arranged.minY : 0;
+
+  const moved = Object.fromEntries(
+    list.map(({ id }) => [
+      id,
+      {
+        ...placements.value[id],
+        x: from[id].x + offsetX,
+        y: from[id].y + offsetY,
+      },
+    ]),
+  );
+
+  if (selected.length) {
+    holdingView(() => {
+      changePlacements({ ...placements.value, ...moved });
+    });
+
+    return;
+  }
+
+  changePlacements({ ...placements.value, ...moved });
+  fitToScreen();
+};
 
 const resetArrangement = () => {
   // Merged, as ships hidden by a filter keep their place.
@@ -1302,6 +1350,26 @@ const toggleLabels = () => {
   <div class="fleetchart-wrapper" data-test="fleetchart-canvas">
     <div class="fleetchart-controls">
       <template v-if="arranging">
+        <BtnDropdown data-test="fleetchart-arrange">
+          <template #label>
+            {{
+              selectedShips.length
+                ? t("labels.fleetchartApp.arrangeSelected", {
+                    count: selectedShips.length,
+                  })
+                : t("labels.fleetchartApp.arrange")
+            }}
+          </template>
+          <Btn
+            v-for="option in ARRANGEMENTS"
+            :key="option"
+            :data-test="`fleetchart-arrange-${option}`"
+            variant="bare"
+            @click="arrangeAs(option)"
+          >
+            {{ t(`labels.fleetchartApp.layoutOptions.${option}`) }}
+          </Btn>
+        </BtnDropdown>
         <Btn
           v-tooltip="t('labels.fleetchartApp.savedLayouts')"
           :active="savedLayoutsOpen"
