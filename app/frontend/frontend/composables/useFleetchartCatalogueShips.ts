@@ -18,10 +18,18 @@ export const useFleetchartCatalogueShips = (
 ) => {
   const fleetchartStore = useFleetchartStore();
 
-  const placed = computed(() =>
-    toValue(enabled)
-      ? cataloguePlacementsIn(fleetchartStore.fleetchartPlacements(namespace))
-      : [],
+  // Compared as text, as moving a ship changes the placements but not these, and
+  // the chart lays out the whole fleet again whenever its list of ships changes.
+  const placedKey = computed(() =>
+    JSON.stringify(
+      toValue(enabled)
+        ? cataloguePlacementsIn(fleetchartStore.fleetchartPlacements(namespace))
+        : [],
+    ),
+  );
+
+  const placed = computed<{ id: string; modelId: string }[]>(() =>
+    JSON.parse(placedKey.value),
   );
 
   const modelIds = computed(() =>
@@ -29,7 +37,7 @@ export const useFleetchartCatalogueShips = (
   );
 
   // Adding a ship must not take the ones already drawn away until it has arrived.
-  const { data, isPending } = useModels(
+  const { data } = useModels(
     computed(() => ({ perPage: MAX_MODELS, q: { idIn: modelIds.value } })),
     {
       query: {
@@ -43,7 +51,5 @@ export const useFleetchartCatalogueShips = (
     catalogueEntriesFrom(placed.value, data.value?.items ?? []),
   );
 
-  const loaded = computed(() => !modelIds.value.length || !isPending.value);
-
-  return { entries, loaded };
+  return entries;
 };

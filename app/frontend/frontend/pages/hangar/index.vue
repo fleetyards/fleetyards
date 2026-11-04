@@ -137,8 +137,11 @@ const {
   { query: { enabled: arrangingFleetchart } },
 );
 
-const { entries: catalogueShips, loaded: catalogueShipsLoaded } =
-  useFleetchartCatalogueShips("hangar", arrangingFleetchart);
+// Not waited for: their placements are saved whether or not they have been drawn.
+const catalogueShips = useFleetchartCatalogueShips(
+  "hangar",
+  arrangingFleetchart,
+);
 
 const arrangeItems = computed(() => [
   ...(wholeHangar.value?.items || []),
@@ -732,7 +735,7 @@ const { activeFilters } = useShipFilterSummary(() =>
       <FleetchartApp
         :items="vehicles?.items || []"
         :arrange-items="arrangeItems"
-        :arrange-loaded="wholeHangarLoaded && catalogueShipsLoaded"
+        :arrange-loaded="wholeHangarLoaded"
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"
