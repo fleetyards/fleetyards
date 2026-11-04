@@ -82,6 +82,41 @@ module Maintenance
       assert_equal "b28a5c61", keep.reload.sc_ref
     end
 
+    test "#process merges the misspelled Kruger row into the one holding the ships" do
+      keep = create(:manufacturer, name: "Kruger Intergalactic", code: "KRIG", rsi_id: 19, sc_ref: nil)
+      drop = create(:manufacturer, name: "Kruger Intergalatic", code: "KRI", sc_ref: "7b5d1ed3")
+      component = create(:component, manufacturer: drop)
+
+      run_task(dry_run: false)
+
+      assert_nil Manufacturer.find_by(code: "KRI")
+      assert_equal keep, component.reload.manufacturer
+      assert_equal "7b5d1ed3", keep.reload.sc_ref
+    end
+
+    test "#process releases what a nil ref filed under Gallenson and drops the row" do
+      misfiled = create(:manufacturer, name: "Gallenson Tactical", code: nil, sc_ref: nil)
+      real = create(:manufacturer, name: "Gallenson Tactical Systems", code: "GAT", sc_ref: "a834198a")
+      equipment = create(:equipment, manufacturer: misfiled)
+      component = create(:component, manufacturer: real)
+
+      run_task(dry_run: false)
+
+      assert_nil Manufacturer.find_by(id: misfiled.id)
+      assert_nil equipment.reload.manufacturer_id
+      assert_equal real, component.reload.manufacturer
+    end
+
+    test "#process reports the abandoned rows on a dry run without touching them" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil)
+
+      output = run_task(dry_run: true)
+
+      assert Manufacturer.exists?(row.id)
+      assert_includes output, "dropping max-ox"
+      assert_includes output, "abandoned 1"
+    end
+
     test "#process reports the alias merge on a dry run" do
       create(:manufacturer, name: "MISC", code: "MISC", rsi_id: 4)
       create(:manufacturer, name: "Musashi Industrial & Starflight Concern", code: "MIS")

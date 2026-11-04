@@ -7,7 +7,8 @@
 # also defines the record's own `manufacturer_Name<CODE>` key the parser prefers
 # that and needs no help here; this file covers the records where it does not.
 #
-# `name:` replaces the resolved name. `skip: true` drops the record entirely.
+# `name:` replaces the resolved name, `icon:` the logo path, and `skip: true`
+# drops the record entirely.
 #
 # Delete an entry once CIG fixes the record upstream -- the parser prefers the
 # export whenever the record's own key exists, so a fixed record makes its entry
@@ -42,3 +43,10 @@ GEND:
   skip: true
 GENF:
   skip: true
+
+# The export gives UEE no logo and the Navy its question-mark placeholder, while
+# the UEE emblem sits in its brand logos under a name no record points at.
+UEE:
+  icon: ui/textures/vector/general/brandlogos/icon_brand_uee.svg
+NVY:
+  icon: ui/textures/vector/general/brandlogos/icon_brand_uee.svg

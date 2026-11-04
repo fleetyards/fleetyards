@@ -17,6 +17,19 @@ module Manufacturers
       allow_duplicate_manufacturer_slugs
     end
 
+    # Counted off the notification because the suite runs on the Sidekiq adapter,
+    # which the Active Job test helpers refuse.
+    private def purges_enqueued
+      count = 0
+      callback = lambda do |*, payload|
+        count += 1 if payload[:job].is_a?(ActiveStorage::PurgeJob)
+      end
+
+      ActiveSupport::Notifications.subscribed(callback, "enqueue.active_job") { yield }
+
+      count
+    end
+
     test "#call renames a record the export mislabelled" do
       manufacturer = create(:manufacturer, code: "MXOX", name: "Aegis Dynamics")
 
@@ -53,6 +66,179 @@ module Manufacturers
 
       assert_equal manufacturer, Manufacturer.find_by(code: "TRAS")
       assert_empty result.dropped
+    end
+
+    test "#call takes equipment off a row a nil ref filed it under" do
+      misfiled = create(:manufacturer, name: "Gallenson Tactical", sc_ref: nil)
+      equipment = create(:equipment, manufacturer: misfiled)
+      build = create(:equipment_build, equipment:, manufacturer: misfiled, version: "9.9.9-live.1")
+
+      result = ::Manufacturers::Deduplicator.new(misfiled_slugs: ["gallenson-tactical"]).call
+
+      assert_nil equipment.reload.manufacturer_id
+      assert_nil build.reload.manufacturer_id
+      assert_equal ["gallenson-tactical"], result.released
+    end
+
+    test "#call leaves the equipment of a row the export points at" do
+      maker = create(:manufacturer, name: "Gallenson Tactical", sc_ref: "00000000-0000-0000-0000-0000000000aa")
+      equipment = create(:equipment, manufacturer: maker)
+
+      result = ::Manufacturers::Deduplicator.new(misfiled_slugs: ["gallenson-tactical"]).call
+
+      assert_equal maker, equipment.reload.manufacturer
+      assert_empty result.released
+    end
+
+    test "#call drops a released row listed as abandoned" do
+      misfiled = create(:manufacturer, name: "Gallenson Tactical", code: nil, sc_ref: nil)
+      create(:equipment, manufacturer: misfiled)
+
+      result = ::Manufacturers::Deduplicator.new(
+        misfiled_slugs: ["gallenson-tactical"],
+        abandoned_slugs: ["gallenson-tactical"]
+      ).call
+
+      assert_nil Manufacturer.find_by(id: misfiled.id)
+      assert_equal ["gallenson-tactical"], result.abandoned
+    end
+
+    test "#call drops an abandoned row with nothing on it" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil)
+
+      result = ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert_nil Manufacturer.find_by(id: row.id)
+      assert_equal ["max-ox"], result.abandoned
+    end
+
+    test "#call keeps an abandoned row something points at" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil)
+      create(:component, manufacturer: row)
+
+      result = ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert Manufacturer.exists?(row.id)
+      assert_empty result.abandoned
+    end
+
+    test "#call keeps an abandoned row the RSI sync would recreate" do
+      row = create(:manufacturer, name: "Xi'An", code: nil, sc_ref: nil, rsi_id: 20)
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["xi-an"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call keeps an abandoned row holding an uploaded logo" do
+      row = create(:manufacturer, name: "Talon Weapon Systems", code: nil, sc_ref: nil, rsi_id: nil)
+      row.logo.attach(io: StringIO.new("logo"), filename: "logo.png", content_type: "image/png")
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["talon-weapon-systems"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call keeps an abandoned row with written text" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil, description: "Coolers.")
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call drops an abandoned row whose description is empty" do
+      row = create(:manufacturer, name: "Quirinus Tech", code: nil, sc_ref: nil, rsi_id: nil, description: "")
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["quirinus-tech"]).call
+
+      assert_nil Manufacturer.find_by(id: row.id)
+    end
+
+    test "#call keeps an abandoned row whose icon an admin uploaded" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil, icon_overridden: true)
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call clears the placeholder from a row with no code" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      row = create(:manufacturer, name: "Max Ox", code: nil, icon_path: placeholder)
+
+      ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder, placeholder_icon_keepers: ["UNKN"]).call
+
+      assert_nil row.reload.icon_path
+    end
+
+    test "#call takes the attached placeholder off the maker" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder)
+      maker.icon.attach(io: StringIO.new("icon"), filename: "icon.png", content_type: "image/png")
+
+      purges = purges_enqueued { ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder).call }
+
+      assert_equal 1, purges
+      assert_not maker.reload.icon.attached?
+    end
+
+    test "#plan leaves the attached placeholder in place and enqueues no purge" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder)
+      maker.icon.attach(io: StringIO.new("icon"), filename: "icon.png", content_type: "image/png")
+
+      purges = purges_enqueued { ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder).plan }
+
+      assert_equal 0, purges
+      assert_predicate maker.reload.icon, :attached?
+      assert_equal placeholder, maker.icon_path
+    end
+
+    test "#plan runs every phase the real run does" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil)
+
+      plan = ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).plan
+
+      assert_equal ["max-ox"], plan[:abandoned]
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call warns when an alias merge loses the export ref" do
+      create(:manufacturer, code: "MISC", name: "MISC", sc_ref: "00000000-0000-0000-0000-0000000000aa")
+      create(:manufacturer, code: "MIS", name: "Musashi", sc_ref: "00000000-0000-0000-0000-0000000000bb")
+      lines = []
+
+      ::Manufacturers::Deduplicator.new(
+        aliased_codes: {"MIS" => "MISC"},
+        logger: ->(message) { lines << message }
+      ).call
+
+      assert(lines.any? { |line| line.include?("WARNING") && line.include?("0000000000bb") })
+    end
+
+    test "#call clears the placeholder icon path from a maker" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder)
+      unknown = create(:manufacturer, code: "UNKN", icon_path: placeholder)
+
+      result = ::Manufacturers::Deduplicator.new(
+        placeholder_icon: placeholder,
+        placeholder_icon_keepers: ["UNKN"]
+      ).call
+
+      assert_nil maker.reload.icon_path
+      assert_equal placeholder, unknown.reload.icon_path
+      assert_equal ["VPW"], result.icons_cleared
+    end
+
+    test "#call leaves a placeholder path on a maker whose icon an admin set" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder, icon_overridden: true)
+
+      ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder).call
+
+      assert_equal placeholder, maker.reload.icon_path
     end
 
     test "#call merges two manufacturers sharing a name onto one row" do

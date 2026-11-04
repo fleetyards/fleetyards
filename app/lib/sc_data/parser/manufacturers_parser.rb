@@ -3,6 +3,16 @@ module ScData
     class ManufacturersParser < ScData::Parser::BaseParser
       OVERRIDES_PATH = "config/sc_data/manufacturer_overrides.yml"
 
+      # A question mark the export names as the logo of makers it has no art for.
+      PLACEHOLDER_ICON = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+
+      # The one record the question mark is true of.
+      PLACEHOLDER_ICON_KEEPERS = %w[UNKN].freeze
+
+      def self.placeholder_icon?(icon, code)
+        icon&.downcase == PLACEHOLDER_ICON && PLACEHOLDER_ICON_KEEPERS.exclude?(code)
+      end
+
       def all
         manufacturers = load_manufacturer_data.filter_map do |item|
           parse_manufacturer(item[:values])
@@ -30,10 +40,16 @@ module ScData
           name: value_or_nil(name),
           short_name: value_or_nil(localize_name(values.dig("Localization", "ShortName"))),
           description: value_or_nil(description),
-          # Downcased to match the icon paths equipment and commodities record,
-          # since whatever resolves one of them has to resolve all three.
-          icon: value_or_nil(values.dig("Logo"))&.downcase
+          icon: icon_path(values, code, override)
         }
+      end
+
+      # Downcased to match the icon paths equipment and commodities record, since
+      # whatever resolves one of them has to resolve all three.
+      private def icon_path(values, code, override)
+        icon = (override["icon"].presence || value_or_nil(values.dig("Logo")))&.downcase
+
+        self.class.placeholder_icon?(icon, code) ? nil : icon
       end
 
       # Readable without building a parser, which needs the raw export on disk --

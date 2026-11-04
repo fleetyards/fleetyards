@@ -126,9 +126,16 @@ module ScData
           alpha_damage: equipment_data["alpha_damage"],
           dps: equipment_data["dps"],
           hidden: equipment_data["hidden"],
-          family_key: equipment_data["family_key"],
-          manufacturer: lookup_manufacturer(equipment_data["manufacturer_ref"])
-        }
+          family_key: equipment_data["family_key"]
+        }.merge(manufacturer_params(equipment_data))
+      end
+
+      # Only written when the record names a maker we have. Most of what names
+      # none is corrected by hand, and a load must not undo that.
+      private def manufacturer_params(equipment_data)
+        manufacturer = lookup_manufacturer(equipment_data["manufacturer_ref"])
+
+        manufacturer.present? ? {manufacturer:} : {}
       end
     end
   end

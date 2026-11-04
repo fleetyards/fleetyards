@@ -18,6 +18,36 @@ module ScData
         fixture_loader(::ScData::Loader::ManufacturersLoader)
       end
 
+      def load_export(*records)
+        subject = loader
+        subject.define_singleton_method(:load_items) { |_path| records.map(&:with_indifferent_access) }
+        subject.all
+      end
+
+      test "#all does not take a record with no ref for a curated row" do
+        curated = create(:manufacturer, name: "Curated", sc_ref: nil, code: "CURA", description: "Kept.")
+        export = {"code" => "NEWC", "name" => "Brand New", "ref" => nil, "description" => "Theirs."}
+
+        load_export(export)
+
+        assert_equal "Kept.", curated.reload.description
+        assert_equal "CURA", curated.code
+      end
+
+      test "#all ignores the placeholder logo from a tree parsed before the parser did" do
+        maker = create(:manufacturer, code: "NVY", sc_ref: "d133f90d", icon_path: "ui/brand/uee.svg")
+        export = {
+          "code" => "NVY",
+          "ref" => "d133f90d",
+          "name" => maker.name,
+          "icon" => ::ScData::Parser::ManufacturersParser::PLACEHOLDER_ICON
+        }
+
+        load_export(export)
+
+        assert_equal "ui/brand/uee.svg", maker.reload.icon_path
+      end
+
       # How much of the catalogue arrives is a question for the contract test.
       # That a load produces one row per company, with the codes unique, is this
       # one -- ROO and SASU are both Sakura Sun, so seven files are six rows.

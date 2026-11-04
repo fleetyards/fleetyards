@@ -225,6 +225,32 @@ module ScData
         assert overrides.dig("GENF", "skip")
       end
 
+      test "#parse_manufacturer drops the question-mark placeholder logo" do
+        record = record("VPW").merge("Logo" => "UI/SharedAssets/ManufacturerLogos/UnknownManufacturer_256.tif")
+
+        assert_nil @parser.parse_manufacturer(record)[:icon]
+      end
+
+      test "#parse_manufacturer keeps the question mark on the unknown maker" do
+        record = record("UNKN").merge("Logo" => "UI/SharedAssets/ManufacturerLogos/UnknownManufacturer_256.tif")
+
+        assert_equal ::ScData::Parser::ManufacturersParser::PLACEHOLDER_ICON,
+          @parser.parse_manufacturer(record)[:icon]
+      end
+
+      test "#parse_manufacturer takes the logo an override names over the record's" do
+        override("NVY" => {"icon" => "UI/Textures/Brand/UEE.svg"})
+
+        assert_equal "ui/textures/brand/uee.svg", @parser.parse_manufacturer(record("NVY"))[:icon]
+      end
+
+      test "the UEE and its navy carry the emblem the export has no record pointing at" do
+        overrides = ::ScData::Parser::ManufacturersParser.overrides
+
+        assert_equal overrides.dig("UEE", "icon"), overrides.dig("NVY", "icon")
+        assert_match(/icon_brand_uee/, overrides.dig("UEE", "icon"))
+      end
+
       # Seeds the memo `#overrides` fills from config, so a test names its own
       # corrections without touching the shipped file.
       private def override(entries)

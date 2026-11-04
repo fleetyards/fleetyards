@@ -203,7 +203,12 @@ module ScData
         end
       end
 
+      # Blank is answered here rather than left to the query: `sc_ref: nil` matches
+      # every curated row, so a record naming no maker would be filed under
+      # whichever of them the database returned first.
       def lookup_manufacturer(ref)
+        return if ref.blank?
+
         Manufacturer.find_by(sc_ref: ref)
       end
 

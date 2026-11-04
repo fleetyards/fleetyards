@@ -24,14 +24,26 @@ module Manufacturers
       Model, Component, ComponentBuild, Equipment, EquipmentBuild, ModelModule
     ].freeze
 
-    Result = Struct.new(:renamed, :dropped, :aliased, :merged)
+    Result = Struct.new(:renamed, :dropped, :aliased, :merged, :released, :abandoned, :icons_cleared)
 
-    def initialize(corrections: {}, dropped_codes: [], aliased_codes: {}, logger: nil)
+    def initialize(
+      corrections: {},
+      dropped_codes: [],
+      aliased_codes: {},
+      misfiled_slugs: [],
+      abandoned_slugs: [],
+      placeholder_icon: nil,
+      placeholder_icon_keepers: [],
+      logger: nil
+    )
       @corrections = corrections
       @dropped_codes = dropped_codes
       @aliased_codes = aliased_codes
+      @misfiled_slugs = misfiled_slugs
+      @abandoned_slugs = abandoned_slugs
+      @placeholder_icon = placeholder_icon
+      @placeholder_icon_keepers = placeholder_icon_keepers
       @logger = logger
-      @result = Result.new([], [], [], [])
     end
 
     # All or nothing. The phases feed each other -- a correction takes a row out
@@ -47,11 +59,16 @@ module Manufacturers
     # requires_new so it is a savepoint inside a surrounding transaction: #plan
     # wraps it in one to roll the whole thing back, and the tests run in one.
     def call
+      @result = Result.new(*Result.members.map { [] })
+
       assert_every_association_covered!
 
       Manufacturer.transaction(requires_new: true) do
         apply_corrections
         drop_records
+        release_misfiled_equipment
+        drop_abandoned_rows
+        clear_placeholder_icons
         merge_aliases
         merge_collisions
       end
@@ -74,12 +91,11 @@ module Manufacturers
       Manufacturer.transaction do
         before = Manufacturer.count
 
-        result = self.class.new(
-          corrections: @corrections,
-          dropped_codes: @dropped_codes,
-          aliased_codes: @aliased_codes,
-          logger: ->(message) { lines << message }
-        ).call
+        # A copy rather than a second list of the options, so a rehearsal cannot
+        # run with fewer phases than the real thing.
+        rehearsal = dup
+        rehearsal.logger = ->(message) { lines << message }
+        result = rehearsal.call
 
         summary = {
           before:,
@@ -88,7 +104,10 @@ module Manufacturers
           renamed: result.renamed,
           dropped: result.dropped,
           aliased: result.aliased,
-          merged: result.merged
+          merged: result.merged,
+          released: result.released,
+          abandoned: result.abandoned,
+          icons_cleared: result.icons_cleared
         }
 
         raise ActiveRecord::Rollback
@@ -115,6 +134,8 @@ module Manufacturers
       ASSOCIATED_MODELS.sum { |model| model.where(manufacturer_id: manufacturer.id).count }
     end
 
+    protected attr_writer :logger
+
     private def apply_corrections
       @corrections.each do |code, name|
         manufacturer = Manufacturer.find_by(code:)
@@ -134,18 +155,107 @@ module Manufacturers
     # rather than deleted.
     private def drop_records
       Manufacturer.where(code: @dropped_codes).find_each do |manufacturer|
-        count = self.class.association_count(manufacturer)
+        drop_unless_kept(manufacturer, manufacturer.code, @result.dropped, referenced_reason(manufacturer))
+      end
+    end
 
-        if count.positive?
-          log "keeping #{manufacturer.code}: #{count} records still point at it"
-          next
+    private def drop_unless_kept(manufacturer, label, bucket, reason)
+      if reason
+        log "keeping #{label}: #{reason}"
+        return
+      end
+
+      log "dropping #{label}"
+
+      manufacturer.destroy!
+      bucket << label
+    end
+
+    private def referenced_reason(manufacturer)
+      count = self.class.association_count(manufacturer)
+
+      "#{count} records still point at it" if count.positive?
+    end
+
+    # Equipment a load filed under a row by accident: a record naming no maker
+    # used to look its manufacturer up by a nil ref, which matched the first
+    # curated row. Nothing the export says connects them, so the items go back to
+    # having no maker rather than moving to another row.
+    #
+    # A row carrying an sc_ref is one the export really does point at, so its
+    # items are left alone even if a slug listed here comes to belong to one.
+    private def release_misfiled_equipment
+      Manufacturer.where(slug: @misfiled_slugs, sc_ref: nil).find_each do |manufacturer|
+        released = [Equipment, EquipmentBuild].sum do |model|
+          model.where(manufacturer_id: manufacturer.id)
+            .update_all(manufacturer_id: nil, updated_at: Time.current)
         end
 
-        log "dropping #{manufacturer.code}"
+        log "releasing #{released} equipment records from #{manufacturer.slug}"
 
-        manufacturer.destroy!
-        @result.dropped << manufacturer.code
+        @result.released << manufacturer.slug
       end
+    end
+
+    # Rows from before the export, under a name it has since replaced. They have
+    # no code, so `dropped_codes` cannot name them.
+    #
+    # Anything somebody could have curated keeps the row: the RSI sync matches on
+    # rsi_id and would recreate it, and uploaded art or written text is not ours
+    # to discard.
+    private def drop_abandoned_rows
+      Manufacturer.where(slug: @abandoned_slugs).find_each do |manufacturer|
+        drop_unless_kept(manufacturer, manufacturer.slug, @result.abandoned, abandoned_row_keeper(manufacturer))
+      end
+    end
+
+    private def abandoned_row_keeper(manufacturer)
+      referenced_reason(manufacturer) || curated_reason(manufacturer)
+    end
+
+    private def curated_reason(manufacturer)
+      return "it carries code #{manufacturer.code}" if manufacturer.code.present?
+      return "it carries an sc_ref" if manufacturer.sc_ref.present?
+      return "it carries an rsi_id" if manufacturer.rsi_id.present?
+      return "it carries an uploaded logo" if manufacturer.logo.attached?
+      return "it carries an uploaded icon" if manufacturer.icon_overridden?
+      return "it carries a description" if manufacturer.description.present?
+      return "it carries a known_for" if manufacturer.known_for.present?
+
+      "it names a shipyard location" if manufacturer.shipyard_location_id.present?
+    end
+
+    # The export points several makers at its question-mark placeholder, and a
+    # placeholder is worse than no logo: without one a card shows the code. The
+    # parser no longer reads the path, and the loader never blanks an icon, so
+    # the copies already attached are taken off here.
+    private def clear_placeholder_icons
+      return if @placeholder_icon.blank?
+
+      Manufacturer.where(icon_path: @placeholder_icon, icon_overridden: false).find_each do |manufacturer|
+        next if @placeholder_icon_keepers.include?(manufacturer.code)
+
+        label = manufacturer.code || manufacturer.slug
+
+        log "clearing the placeholder icon from #{label}"
+
+        purge_icon_after_commit(manufacturer)
+        manufacturer.update!(icon_path: nil)
+
+        @result.icons_cleared << label
+      end
+    end
+
+    # After the commit, because a purge job running sooner still sees the
+    # attachment and quietly gives up, and a dry run must not enqueue one at all.
+    private def purge_icon_after_commit(manufacturer)
+      return unless manufacturer.icon.attached?
+
+      blob = manufacturer.icon.blob
+
+      manufacturer.icon.detach
+
+      ActiveRecord.after_all_transactions_commit { blob.purge_later }
     end
 
     # Grouped by slug rather than by name, because the table holds both kinds of
@@ -206,6 +316,11 @@ module Manufacturers
 
         log "#{from_code} -> #{to_code}: keeping #{winner.name.inspect} " \
             "(#{self.class.association_count(loser)} records move across)"
+
+        # The next load would not recognise the ref that is lost here.
+        if winner.sc_ref.present? && loser.sc_ref.present? && winner.sc_ref != loser.sc_ref
+          log "  WARNING: #{to_code} keeps its sc_ref, so #{loser.sc_ref} from #{from_code} is dropped"
+        end
 
         absorb(loser, winner)
 
