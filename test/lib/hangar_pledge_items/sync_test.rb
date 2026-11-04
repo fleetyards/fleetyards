@@ -5,7 +5,7 @@ require "test_helper"
 class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
   setup do
     @user = create(:user)
-    @paint = create(:model_paint, model: create(:model, name: "Nomad"), name: "Ice Break")
+    @paint = create(:model_paint, model: create(:model, name: "Nomad"), name: "IceBreak")
   end
 
   test "links each synced paint to the catalogue paint it is" do

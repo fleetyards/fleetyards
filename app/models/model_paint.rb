@@ -22,6 +22,10 @@ class ModelPaint < ApplicationRecord
 
   paginates_per 24
 
+  # The importer and the pledge resolver look a paint up by its exact name, so a
+  # stray space makes it a different paint to them.
+  normalizes :name, with: ->(name) { name.squish }
+
   belongs_to :model, optional: true, touch: true, counter_cache: true
 
   # The record the game files carry for this paint, where there is one. Absent

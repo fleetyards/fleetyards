@@ -5,7 +5,7 @@ require "test_helper"
 class HangarPledgeItems::PaintLinkerTest < ActiveSupport::TestCase
   setup do
     @model = create(:model, name: "Nomad")
-    @paint = create(:model_paint, model: @model, name: "Ice Break")
+    @paint = create(:model_paint, model: @model, name: "IceBreak")
   end
 
   test "links a paint pledge to its catalogue paint" do
