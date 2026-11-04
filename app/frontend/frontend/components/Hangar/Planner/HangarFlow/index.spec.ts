@@ -252,10 +252,6 @@ describe("Hangar/Planner/HangarFlow", () => {
     ]);
   });
 
-  it("picks a route's start on the left and its end on the right", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: { plan, comparison },
-    });
   it("opens the route of a buy-back bought as it is, for its token", async () => {
     const [explorer, ...rest] = plan.slots;
     const [candidate] = explorer.candidates;
@@ -287,6 +283,10 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(wrapper.emitted("route")).toHaveLength(1);
   });
 
+  it("picks a route's start on the left and its end on the right", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { plan, comparison },
+    });
 
     const purchase = wrapper.find('[data-test="hangar-plan-flow-purchase"]');
     await purchase
@@ -429,41 +429,6 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
 
-  it("picks a start for an undecided slot, and opens its ships from the card", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: { plan, comparison },
-    });
-
-    const undecided = wrapper.find('[data-test="hangar-plan-flow-undecided"]');
-    expect(
-      undecided.find('[data-test="hangar-plan-flow-route"]').exists(),
-    ).toBe(false);
-
-    await undecided
-      .find('[data-test="hangar-plan-flow-pick-start"]')
-      .trigger("click");
-    await undecided
-      .find('[data-test="hangar-plan-flow-edit-slot"]')
-      .trigger("click");
-
-    expect(wrapper.emitted("start")).toEqual([[{ slot: plan.slots[2] }]]);
-    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]]]);
-  });
-
-  it("asks for another start where no upgrade leads to the slot's ship", async () => {
-    const idris = {
-      ...model("Idris-P"),
-      pledgePrice: 1500,
-      ccuInto: "none" as const,
-      ccuOutOf: "none" as const,
-    };
-    const [explorer, ...rest] = plan.slots;
-    const wrapper = await mountWithDefaults(Component, {
-      props: {
-        plan: {
-          ...plan,
-          slots: [
-            {
   it("prices a slot's units without a start, outside the total", async () => {
     const [explorer, ...rest] = plan.slots;
     const props = {
@@ -504,6 +469,44 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(await gapText({})).toContain("not in the total");
   });
 
+  it("picks a start for an undecided slot, and opens its ships from the card", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { plan, comparison },
+    });
+
+    const undecided = wrapper.find('[data-test="hangar-plan-flow-undecided"]');
+    // It still waits on a choice, so it reads as work and not as a purchase.
+    expect(undecided.text()).toContain("Choose a ship");
+    expect(undecided.find(".hangar-flow__action--gap").exists()).toBe(true);
+
+    await undecided
+      .find('[data-test="hangar-plan-flow-pick-start"]')
+      .trigger("click");
+    await undecided
+      .find('[data-test="hangar-plan-flow-edit-slot"]')
+      .trigger("click");
+    await undecided
+      .find('[data-test="hangar-plan-flow-route"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("start")).toEqual([[{ slot: plan.slots[2] }]]);
+    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]], [plan.slots[2]]]);
+  });
+
+  it("asks for another start where no upgrade leads to the slot's ship", async () => {
+    const idris = {
+      ...model("Idris-P"),
+      pledgePrice: 1500,
+      ccuInto: "none" as const,
+      ccuOutOf: "none" as const,
+    };
+    const [explorer, ...rest] = plan.slots;
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: {
+          ...plan,
+          slots: [
+            {
               ...explorer,
               candidates: [
                 {
@@ -620,7 +623,7 @@ describe("Hangar/Planner/HangarFlow", () => {
 
     const row = wrapper.find('[data-test="hangar-plan-vehicle-waiting"]');
     expect(row.text()).toContain("Cutlass Black");
-    expect(row.text()).toContain("Choose the slot's ship");
+    expect(row.text()).toContain("Choose a ship");
     expect(row.text()).toContain("Prospector / MOLE");
     // Its one unit has a start, so no row asks for one any more.
     expect(

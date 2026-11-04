@@ -449,7 +449,7 @@
         },
         "filters": "Affiner les départs",
         "saveFilters": "Enregistrer les filtres pour cet emplacement",
-        "chooseShip": "Choisir le vaisseau de l'emplacement",
+        "chooseShip": "Choisir un vaisseau",
         "earnInGame": "Gagner en jeu",
         "newSlot": "Nouvel emplacement",
         "endSources": {

@@ -595,15 +595,16 @@ const gapDetail = (slot: HangarPlanSlot) => {
         testId: "hangar-plan-flow-undecided",
         leftNone: t("hangarPlanner.pick.pickStart"),
         action: {
-          kind: "buy",
-          icon: "fa-light fa-cart-shopping",
-          label: t("hangarPlanner.startKinds.store"),
+          kind: "gap",
+          icon: "fa-light fa-scale-balanced",
+          label: t("hangarPlanner.pick.chooseShip"),
           detail: cost ? range(cost.minCost, cost.maxCost) : undefined,
         },
         right: undecidedCard(slot),
         start: { slot },
         slot,
       };
+        chooseIn: slot,
     });
 
   const open = props.plan.slots
