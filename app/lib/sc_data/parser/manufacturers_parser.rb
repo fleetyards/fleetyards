@@ -9,6 +9,10 @@ module ScData
       # The one record the question mark is true of.
       PLACEHOLDER_ICON_KEEPERS = %w[UNKN].freeze
 
+      def self.placeholder_icon?(icon, code)
+        icon&.downcase == PLACEHOLDER_ICON && PLACEHOLDER_ICON_KEEPERS.exclude?(code)
+      end
+
       def all
         manufacturers = load_manufacturer_data.filter_map do |item|
           parse_manufacturer(item[:values])
@@ -45,9 +49,7 @@ module ScData
       private def icon_path(values, code, override)
         icon = (override["icon"].presence || value_or_nil(values.dig("Logo")))&.downcase
 
-        return if icon == PLACEHOLDER_ICON && PLACEHOLDER_ICON_KEEPERS.exclude?(code)
-
-        icon
+        self.class.placeholder_icon?(icon, code) ? nil : icon
       end
 
       # Readable without building a parser, which needs the raw export on disk --

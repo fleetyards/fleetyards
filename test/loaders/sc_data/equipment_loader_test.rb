@@ -146,6 +146,15 @@ module ScData
         assert_equal manufacturer, curated.lookup_manufacturer(manufacturer.sc_ref)
       end
 
+      test "#one keeps a maker set by hand when the record names none" do
+        manufacturer = create(:manufacturer)
+        equipment = create(:equipment, sc_key: "cds_combat_helmet_01", manufacturer:)
+
+        curated.one({"key" => equipment.sc_key, "name" => "BUL-H4 Helmet", "manufacturer_ref" => nil})
+
+        assert_equal manufacturer, equipment.reload.manufacturer
+      end
+
       test "#all resolves the manufacturer from the record" do
         fixture_loader(::ScData::Loader::ManufacturersLoader).all
 

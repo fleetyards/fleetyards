@@ -4,6 +4,14 @@ module ScData
       def all
         load_items("manufacturers").each do |manufacturer_data|
           name = manufacturer_data["name"]
+          ref = manufacturer_data["ref"]
+          code = manufacturer_data["code"]
+
+          # Read here as well as in the parser, because live and ptu share these
+          # rows: a tree parsed before the parser learned this would otherwise put
+          # the question mark back with its next load.
+          icon = manufacturer_data["icon"]
+          icon = nil if ::ScData::Parser::ManufacturersParser.placeholder_icon?(icon, code)
 
           # Matched on the slug the name would produce rather than on the name
           # itself, because the slug is what the rest of the site identifies a
@@ -14,8 +22,10 @@ module ScData
           # minted a second row that collides with the first.
           slug = Manufacturer.slug_for(name)
 
-          manufacturer = Manufacturer.find_by(sc_ref: manufacturer_data["ref"])
-          manufacturer = Manufacturer.find_by(code: manufacturer_data["code"], sc_ref: nil) if manufacturer.blank?
+          # Guarded because `sc_ref: nil` matches every curated row, and a record
+          # would overwrite whichever came first.
+          manufacturer = Manufacturer.find_by(sc_ref: ref) if ref.present?
+          manufacturer = Manufacturer.find_by(code:, sc_ref: nil) if manufacturer.blank? && code.present?
           manufacturer = Manufacturer.find_by(slug:, sc_ref: nil) if manufacturer.blank? && slug.present?
 
           # Last resort, and the one that stops the table growing a second row
@@ -36,22 +46,22 @@ module ScData
             # -- so following the export unconditionally would drop the picture
             # depending on which record was loaded last.
             update_params = {}
-            update_params[:icon_path] = manufacturer_data["icon"] if manufacturer_data["icon"].present?
+            update_params[:icon_path] = icon if icon.present?
 
             # Only claimed while free. A row matched on slug can already hold a
             # different ref -- the export gives Sakura Sun both ROO and SASU --
             # and overwriting would leave the two codes trading the column on
             # every import.
-            if manufacturer.sc_ref.blank? && manufacturer_data["ref"].present?
-              update_params[:sc_ref] = manufacturer_data["ref"]
+            if manufacturer.sc_ref.blank? && ref.present?
+              update_params[:sc_ref] = ref
             end
 
             if manufacturer.description.blank? && manufacturer_data["description"].present?
               update_params[:description] = manufacturer_data["description"]
             end
 
-            if manufacturer.code.blank? && manufacturer_data["code"].present?
-              update_params[:code] = manufacturer_data["code"]
+            if manufacturer.code.blank? && code.present?
+              update_params[:code] = code
             end
 
             apply(manufacturer, update_params)
@@ -67,19 +77,19 @@ module ScData
             # checksum that differs from the parsed file means either that the
             # export changed or that somebody overrode it, and guessing wrong
             # in either direction loses work.
-            attach_icon(manufacturer, :icon, manufacturer_data["icon"]) unless manufacturer.icon_overridden?
+            attach_icon(manufacturer, :icon, icon) unless manufacturer.icon_overridden?
 
             manufacturer
           elsif name.present?
             created = apply(Manufacturer.new, {
-              sc_ref: manufacturer_data["ref"],
+              sc_ref: ref,
               name:,
-              code: manufacturer_data["code"],
+              code:,
               description: manufacturer_data["description"],
-              icon_path: manufacturer_data["icon"]
+              icon_path: icon
             })
 
-            attach_icon(created, :icon, manufacturer_data["icon"])
+            attach_icon(created, :icon, icon)
 
             created
           end

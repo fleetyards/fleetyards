@@ -183,9 +183,11 @@ module ScData
       # Emptied per source folder rather than per icons root, because every
       # catalogue writes into the same root: clearing that would leave whichever
       # parser ran last as the only one with artwork. The folders themselves do
-      # not overlap -- manufacturer logos live under ManufacturerLogos, commodity
-      # icons under textures/vector -- so each is still swept of what its own
-      # records stopped naming.
+      # not overlap -- manufacturer logos live under ManufacturerLogos, the two
+      # the overrides name under textures/vector/general/brandlogos, commodity
+      # icons elsewhere under textures/vector -- so each is still swept of what
+      # its own records stopped naming. A second catalogue naming a folder one
+      # already writes would wipe the other's files.
       private def save_icon(icon_path)
         icon_path = asset_path(icon_path)
         source = raw_asset(icon_path)
