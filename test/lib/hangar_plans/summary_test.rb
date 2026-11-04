@@ -294,6 +294,17 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     @plan.update!(buyback_tokens: 0)
     assert_equal 550, HangarPlans::Summary.new(@plan.reload).buyback_cash
   end
+  test "a start changed to a buy-back keeps an explicit opt-out" do
+    candidate = decided_slot(@carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
+
+    route = HangarPlanAcquisition.find(route.id)
+    route.update!(start_kind: "buyback", buyback_pledge: create(:buyback_pledge, user: @user, price: 550),
+      uses_buyback_token: false)
+
+    assert_not route.uses_buyback_token
+  end
+
 
   test "marked beyond the tokens held, the dearest buy-back keeps its token" do
     @plan.update!(starting_credit: 0, buyback_tokens: 1)

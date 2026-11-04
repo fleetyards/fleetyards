@@ -33,7 +33,7 @@ class HangarPlanAcquisition < ApplicationRecord
   before_validation -> {
     if start_kind != "buyback"
       self.uses_buyback_token = false
-    elsif start_kind_changed? && !uses_buyback_token_changed?
+    elsif start_kind_changed? && !uses_buyback_token_came_from_user?
       self.uses_buyback_token = true
     end
   }
