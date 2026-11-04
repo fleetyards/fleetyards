@@ -24,14 +24,27 @@ module Manufacturers
       Model, Component, ComponentBuild, Equipment, EquipmentBuild, ModelModule
     ].freeze
 
-    Result = Struct.new(:renamed, :dropped, :aliased, :merged)
+    Result = Struct.new(:renamed, :dropped, :aliased, :merged, :released, :abandoned, :icons_cleared)
 
-    def initialize(corrections: {}, dropped_codes: [], aliased_codes: {}, logger: nil)
+    def initialize(
+      corrections: {},
+      dropped_codes: [],
+      aliased_codes: {},
+      misfiled_slugs: [],
+      abandoned_slugs: [],
+      placeholder_icon: nil,
+      placeholder_icon_keepers: [],
+      logger: nil
+    )
       @corrections = corrections
       @dropped_codes = dropped_codes
       @aliased_codes = aliased_codes
+      @misfiled_slugs = misfiled_slugs
+      @abandoned_slugs = abandoned_slugs
+      @placeholder_icon = placeholder_icon
+      @placeholder_icon_keepers = placeholder_icon_keepers
       @logger = logger
-      @result = Result.new([], [], [], [])
+      @result = Result.new([], [], [], [], [], [], [])
     end
 
     # All or nothing. The phases feed each other -- a correction takes a row out
@@ -52,6 +65,9 @@ module Manufacturers
       Manufacturer.transaction(requires_new: true) do
         apply_corrections
         drop_records
+        release_misfiled_equipment
+        drop_abandoned_rows
+        clear_placeholder_icons
         merge_aliases
         merge_collisions
       end
@@ -78,6 +94,10 @@ module Manufacturers
           corrections: @corrections,
           dropped_codes: @dropped_codes,
           aliased_codes: @aliased_codes,
+          misfiled_slugs: @misfiled_slugs,
+          abandoned_slugs: @abandoned_slugs,
+          placeholder_icon: @placeholder_icon,
+          placeholder_icon_keepers: @placeholder_icon_keepers,
           logger: ->(message) { lines << message }
         ).call
 
@@ -88,7 +108,10 @@ module Manufacturers
           renamed: result.renamed,
           dropped: result.dropped,
           aliased: result.aliased,
-          merged: result.merged
+          merged: result.merged,
+          released: result.released,
+          abandoned: result.abandoned,
+          icons_cleared: result.icons_cleared
         }
 
         raise ActiveRecord::Rollback
@@ -146,6 +169,78 @@ module Manufacturers
         manufacturer.destroy!
         @result.dropped << manufacturer.code
       end
+    end
+
+    # Equipment a load filed under a row by accident: a record naming no maker
+    # used to look its manufacturer up by a nil ref, which matched the first
+    # curated row. Nothing the export says connects them, so the items go back to
+    # having no maker rather than moving to another row.
+    #
+    # A row carrying an sc_ref is one the export really does point at, so its
+    # items are left alone even if a slug listed here comes to belong to one.
+    private def release_misfiled_equipment
+      Manufacturer.where(slug: @misfiled_slugs, sc_ref: nil).find_each do |manufacturer|
+        released = [Equipment, EquipmentBuild].sum do |model|
+          model.where(manufacturer_id: manufacturer.id)
+            .update_all(manufacturer_id: nil, updated_at: Time.current)
+        end
+
+        log "releasing #{released} equipment records from #{manufacturer.slug}"
+
+        @result.released << manufacturer.slug
+      end
+    end
+
+    # Rows from before the export, under a name it has since replaced. They have
+    # no code, so `dropped_codes` cannot name them.
+    #
+    # Anything somebody could have curated keeps the row: the RSI sync matches on
+    # rsi_id and would recreate it, and an uploaded logo is not ours to discard.
+    private def drop_abandoned_rows
+      Manufacturer.where(slug: @abandoned_slugs).find_each do |manufacturer|
+        reason = abandoned_row_keeper(manufacturer)
+
+        if reason
+          log "keeping #{manufacturer.slug}: #{reason}"
+          next
+        end
+
+        log "dropping #{manufacturer.slug}"
+
+        manufacturer.destroy!
+        @result.abandoned << manufacturer.slug
+      end
+    end
+
+    private def abandoned_row_keeper(manufacturer)
+      count = self.class.association_count(manufacturer)
+
+      return "#{count} records still point at it" if count.positive?
+      return "it carries code #{manufacturer.code}" if manufacturer.code.present?
+      return "it carries an sc_ref" if manufacturer.sc_ref.present?
+      return "it carries an rsi_id" if manufacturer.rsi_id.present?
+
+      "it carries an uploaded logo" if manufacturer.logo.attached?
+    end
+
+    # The export points several makers at its question-mark placeholder, and a
+    # placeholder is worse than no logo: without one a card shows the code. The
+    # parser no longer reads the path, and the loader never blanks an icon, so
+    # the copies already attached are taken off here.
+    private def clear_placeholder_icons
+      return if @placeholder_icon.blank?
+
+      Manufacturer
+        .where(icon_path: @placeholder_icon, icon_overridden: false)
+        .where.not(code: @placeholder_icon_keepers)
+        .find_each do |manufacturer|
+          log "clearing the placeholder icon from #{manufacturer.code}"
+
+          manufacturer.icon.purge_later if manufacturer.icon.attached?
+          manufacturer.update!(icon_path: nil)
+
+          @result.icons_cleared << manufacturer.code
+        end
     end
 
     # Grouped by slug rather than by name, because the table holds both kinds of
