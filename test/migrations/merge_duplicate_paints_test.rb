@@ -81,6 +81,46 @@ class MergeDuplicatePaintsTest < ActiveSupport::TestCase
     assert_equal [clean.id], vehicle.reload.model_paint_ids
   end
 
+  test "keeps the visible copy when the clean one is hidden" do
+    hammerhead = create(:model, name: "Hammerhead")
+    component = create(:component, category: "paints", name: "Hammerhead Stormbringer Livery")
+    hidden = create(:model_paint, model: hammerhead, name: "Stormbringer", hidden: true, component:)
+    visible = create(:model_paint, model: hammerhead, name: "Stormbringer", hidden: false)
+    store_raw_name(visible, " Stormbringer ")
+    vehicle = create(:vehicle, model: hammerhead)
+    VehiclePaint.create!(vehicle:, model_paint: visible)
+    item = create(:hangar_pledge_item, name: "Hammerhead - Stormbringer Paint")
+    HangarPledgeItemModelPaint.create!(hangar_pledge_item: item, model_paint: hidden)
+
+    MergeDuplicatePaints.new.up
+
+    assert_not ModelPaint.exists?(hidden.id)
+    assert_equal "Stormbringer", visible.reload.name
+    assert_not visible.hidden
+    assert_equal component.id, visible.component_id
+    assert_equal [visible.id], vehicle.reload.model_paint_ids
+    assert_equal [visible.id], item.reload.model_paints.pluck(:id)
+  end
+
+  test "renames a misspelt paint that also has stray whitespace" do
+    paint = create(:model_paint, model: @model, name: "Ice Break")
+    store_raw_name(paint, " Ice Break\u00A0")
+    @old.destroy!
+
+    MergeDuplicatePaints.new.up
+
+    assert_not ModelPaint.exists?(paint.id)
+    assert_equal ["IceBreak"], @model.reload.paints.pluck(:name)
+  end
+
+  test "touches the kept paint so its cached payload refreshes" do
+    @kept.update_columns(updated_at: 1.day.ago)
+
+    MergeDuplicatePaints.new.up
+
+    assert_operator @kept.reload.updated_at, :>, 1.hour.ago
+  end
+
   test "trims a paint with stray whitespace and no clean copy" do
     explorer = create(:model, name: "600i Explorer")
     tabbed = create(:model_paint, model: explorer, name: "Foundation Festival")

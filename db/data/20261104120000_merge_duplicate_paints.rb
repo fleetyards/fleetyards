@@ -6,27 +6,21 @@
 # rows saved with stray whitespace in the name never matched the clean name the
 # importer looked up, so it created a second row beside them.
 class MergeDuplicatePaints < ActiveRecord::Migration[8.1]
+  # Relinking rewrites every paint pledge's links, and a hangar sync writing the
+  # same rows would wait on all of them until a wrapping transaction committed.
+  disable_ddl_transaction!
+
   RENAMES = {"Ice Break" => "IceBreak"}.freeze
-  WHITESPACE = " \t\r\n"
+  WHITESPACE = " \t\r\n\u00A0"
 
   def up
-    paint_ids = misnamed_paints.find_each.map do |paint|
-      name = RENAMES.fetch(paint.name, paint.name.strip)
-      kept = ModelPaint.find_by(model_id: paint.model_id, name:)
-
-      if kept.present?
-        merge(paint, kept)
-        kept.id
-      else
-        paint.update!(name:)
-        paint.id
-      end
+    ModelPaint.transaction do
+      refresh_vehicles(misnamed_paints.find_each.map { |paint| fix(paint) })
     end
 
     # A pledge resolves to a paint by its exact name, so it may now reach a paint
     # it could not before: the Caterpillar's and Mustang's IceBreak, for one.
     HangarPledgeItems::PaintLinker.new.link_all
-    refresh_vehicles(paint_ids)
   end
 
   def down
@@ -38,21 +32,39 @@ class MergeDuplicatePaints < ActiveRecord::Migration[8.1]
     ModelPaint.where("name <> btrim(name, ?)", WHITESPACE).or(ModelPaint.where(name: RENAMES.keys))
   end
 
-  private def merge(paint, kept)
-    owners = VehiclePaint.where(model_paint_id: kept.id).select(:vehicle_id)
-    VehiclePaint.where(model_paint_id: paint.id, vehicle_id: owners).delete_all
-    VehiclePaint.where(model_paint_id: paint.id).update_all(model_paint_id: kept.id)
+  private def fix(paint)
+    stripped = paint.name.squish
+    name = RENAMES.fetch(stripped, stripped)
+    other = ModelPaint.find_by(model_id: paint.model_id, name:)
 
-    paint.picture_vehicles.update_all(picture_id: kept.id)
-    HangarPlanCandidate.where(model_paint_id: paint.id).update_all(model_paint_id: kept.id)
+    if other.blank?
+      paint.update!(name:)
+      return paint.id
+    end
+
+    # Admins hid the clean copy where the misnamed one was already in use. That one
+    # holds the owners and the chosen image, and keeping the hidden copy would take
+    # the paint out of the catalogue.
+    kept, duplicate = (other.hidden && !paint.hidden) ? [paint, other] : [other, paint]
+    merge(duplicate, kept, name)
+    kept.id
+  end
+
+  private def merge(duplicate, kept, name)
+    owners = VehiclePaint.where(model_paint_id: kept.id).select(:vehicle_id)
+    VehiclePaint.where(model_paint_id: duplicate.id, vehicle_id: owners).delete_all
+    VehiclePaint.where(model_paint_id: duplicate.id).update_all(model_paint_id: kept.id)
+
+    duplicate.picture_vehicles.update_all(picture_id: kept.id)
+    HangarPlanCandidate.where(model_paint_id: duplicate.id).update_all(model_paint_id: kept.id)
 
     attached = ActiveStorage::Attachment.where(record: kept).select(:name)
-    ActiveStorage::Attachment.where(record: paint).where.not(name: attached).update_all(record_id: kept.id)
+    ActiveStorage::Attachment.where(record: duplicate).where.not(name: attached).update_all(record_id: kept.id)
 
-    component_id = kept.component_id || paint.component_id
+    component_id = kept.component_id || duplicate.component_id
 
-    paint.destroy!
-    kept.update!(component_id:)
+    duplicate.destroy!
+    kept.update!(name:, component_id:, updated_at: Time.current)
   end
 
   private def refresh_vehicles(paint_ids)
