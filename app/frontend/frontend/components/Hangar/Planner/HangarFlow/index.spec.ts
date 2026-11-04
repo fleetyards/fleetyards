@@ -252,6 +252,37 @@ describe("Hangar/Planner/HangarFlow", () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { plan, comparison },
     });
+  it("opens the route of a buy-back bought as it is, for its token", async () => {
+    const [explorer, ...rest] = plan.slots;
+    const [candidate] = explorer.candidates;
+    const buyback = {
+      ...candidate.acquisitions[0],
+      startKind: HangarPlanStartKindEnum.BUYBACK,
+    };
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        comparison,
+        plan: {
+          ...plan,
+          slots: [
+            {
+              ...explorer,
+              candidates: [{ ...candidate, acquisitions: [buyback] }],
+            },
+            ...rest,
+          ],
+        },
+      },
+    });
+
+    await wrapper
+      .find('[data-test="hangar-plan-flow-purchase"]')
+      .find('[data-test="hangar-plan-flow-route"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("route")).toHaveLength(1);
+  });
+
 
     const purchase = wrapper.find('[data-test="hangar-plan-flow-purchase"]');
     await purchase

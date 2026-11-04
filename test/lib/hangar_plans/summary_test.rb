@@ -245,11 +245,36 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal 150, summary.cash_needed_min
   end
 
-  test "a buy-back the user does not mark stays new money with tokens to spare" do
+  test "buy-backs spend the tokens held without being marked, the dearest first" do
+    @plan.update!(starting_credit: 1000, buyback_tokens: 2)
+    candidate = decided_slot(@carrack, quantity: 3)
+    [550, 120, 300].each do |price|
+      pledge = create(:buyback_pledge, user: @user, price:)
+      @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    end
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 120, summary.buyback_cash
+    assert_equal 1, summary.buybacks_without_token_count
+  end
+
+  test "a start changed to a buy-back spends a token too" do
+    candidate = decided_slot(@carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
+    assert_not route.uses_buyback_token
+
+    route.update!(start_kind: "buyback", buyback_pledge: create(:buyback_pledge, user: @user, price: 550))
+
+    assert route.uses_buyback_token
+  end
+
+  test "a buy-back the user opts out of stays new money with tokens to spare" do
     @plan.update!(starting_credit: 1000, buyback_tokens: 2)
     candidate = decided_slot(@carrack)
     pledge = create(:buyback_pledge, user: @user, price: 550)
-    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
+      uses_buyback_token: false)
 
     summary = HangarPlans::Summary.new(@plan)
 

@@ -35,6 +35,7 @@ import {
   type HangarPlanSlotCost,
   HangarPlanSlotStateEnum,
   useChooseHangarPlanSlotCandidate,
+  HangarPlanStartKindEnum,
   useDestroyHangarPlanAcquisition,
   useDestroyHangarPlanCandidate,
   useDestroyHangarPlanSlot,
@@ -196,13 +197,15 @@ const pickStart = (candidate: HangarPlanCandidate) =>
   );
 
 // Upgrades are planned between two different ships they can join; a ship
-// kept or bought as it is has none.
+// kept or bought as it is has none, though a buy-back still has its token to
+// settle.
 const chainable = (
   candidate: HangarPlanCandidate,
   acquisition: HangarPlanAcquisition,
 ) =>
-  acquisition.startModel.id !== candidate.model.id &&
-  reaches(acquisition.startModel, candidate.model);
+  acquisition.startModel.id === candidate.model.id
+    ? acquisition.startKind === HangarPlanStartKindEnum.BUYBACK
+    : reaches(acquisition.startModel, candidate.model);
 
 // Units no start was picked for yet.
 const startless = computed(() =>

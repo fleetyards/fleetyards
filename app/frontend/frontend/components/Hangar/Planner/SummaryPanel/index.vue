@@ -112,7 +112,9 @@ const gaps = computed(() => {
 
       <Alert
         v-if="
-          totals && totals.buybackTokensUsed > totals.buybackTokensAvailable
+          totals &&
+          totals.buybackTokensAvailable > 0 &&
+          totals.buybackTokensUsed > totals.buybackTokensAvailable
         "
         variant="warning"
         :size="AlertSizesEnum.COMPACT"

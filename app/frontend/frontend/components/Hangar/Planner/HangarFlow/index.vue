@@ -260,7 +260,12 @@ const unroutedAction = (route: PlannedRoute) =>
 // that upgrades can join, another start where none can, and nowhere for a
 // ship kept or bought as it is.
 const middle = (route: PlannedRoute) => {
-  if (route.acquisition.startModel.id === route.model.id) return {};
+  if (route.acquisition.startModel.id === route.model.id) {
+    // A buy-back has its token to settle, even with no upgrade to plan.
+    return route.acquisition.startKind === HangarPlanStartKindEnum.BUYBACK
+      ? { route: routeTarget(route) }
+      : {};
+  }
 
   return routable(route)
     ? { route: { candidate: route.candidate, acquisition: route.acquisition } }

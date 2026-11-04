@@ -404,6 +404,7 @@ const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
 });
 
 const setSource = (index: number, sourceKind: HangarPlanUpgradeSourceEnum) => {
+  usesBuybackToken: true,
   if (steps.value[index].sourceKind === sourceKind) return;
 
   steps.value[index] = { ...draft(sourceKind), key: steps.value[index].key };

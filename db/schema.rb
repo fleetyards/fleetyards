@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_04_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1581,7 +1581,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_170000) do
     t.decimal "price_snapshot", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "uses_buyback_token", default: false, null: false
+    t.boolean "uses_buyback_token", default: true, null: false
     t.index ["hangar_plan_candidate_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_candidate_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_acquisitions_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
     t.index ["hangar_plan_id", "source_vehicle_id"], name: "index_hangar_plan_acquisitions_on_plan_and_vehicle", unique: true, where: "(source_vehicle_id IS NOT NULL)"
@@ -1636,7 +1636,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_170000) do
     t.decimal "price_snapshot", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "uses_buyback_token", default: false, null: false
+    t.boolean "uses_buyback_token", default: true, null: false
     t.index ["hangar_plan_acquisition_id"], name: "index_hangar_plan_upgrade_steps_on_hangar_plan_acquisition_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_upgrade_steps_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
   end

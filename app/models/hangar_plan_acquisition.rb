@@ -28,8 +28,15 @@ class HangarPlanAcquisition < ApplicationRecord
   validate :chain_resources_available
 
   before_validation :assign_start_model
-  # Only a buy-back can spend a buy-back token.
-  before_validation -> { self.uses_buyback_token = false unless start_kind == "buyback" }
+  # Only a buy-back can spend a buy-back token, and one spends it unless the
+  # user says otherwise, so a start changed to a buy-back starts out marked too.
+  before_validation -> {
+    if start_kind != "buyback"
+      self.uses_buyback_token = false
+    elsif start_kind_changed? && !uses_buyback_token_changed?
+      self.uses_buyback_token = true
+    end
+  }
   before_create -> { self.price_snapshot ||= list_price }
   # A route that starts somewhere else was planned anew, so its price as planned
   # is what the new start costs today.
