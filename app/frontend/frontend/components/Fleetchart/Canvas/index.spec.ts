@@ -69,6 +69,7 @@ const canvasStubs = {
   BtnGroup: { template: "<div><slot /></div>" },
   DownloadScreenshotBtn: true,
   FleetchartCanvasSavedLayouts: true,
+  FleetchartCanvasAddShips: true,
   FleetChartStatusBtn: true,
   CommunityLogo: true,
 };
@@ -861,6 +862,161 @@ describe("FleetchartCanvas", () => {
         .props("placements") as { vehicleId: string; order: number }[];
 
       expect(saved.map(({ order }) => order).sort()).toEqual([0, 1]);
+    });
+
+    describe("catalogue ships", () => {
+      const catalogueEntry = (id: string) =>
+        ({
+          ...entry("hornet"),
+          id,
+          notOwned: true,
+        }) as unknown as FleetchartEntry;
+
+      const mountWithCatalogueShip = async () => {
+        const store = useFleetchartStore();
+
+        store.updateLayout({
+          namespace: "hangar",
+          layout: FleetchartLayouts.FREE,
+        });
+        store.updatePlacements({
+          namespace: "hangar",
+          placements: {
+            a: { x: 0, y: 0 },
+            tried: { x: 100, y: 100, modelId: "hornet-id" },
+          },
+        });
+
+        const wrapper = mountCanvas([entry("a"), catalogueEntry("tried")]);
+
+        await nextTick();
+
+        return wrapper;
+      };
+
+      const press = async (
+        wrapper: ReturnType<typeof mountCanvas>,
+        index: number,
+      ) => {
+        const down = new Event("pointerdown", { bubbles: true });
+
+        Object.assign(down, {
+          button: 0,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+        });
+        wrapper
+          .findAll("[data-test='fleetchart-ship']")
+          [index].element.dispatchEvent(down);
+        window.dispatchEvent(new Event("pointerup"));
+        await nextTick();
+      };
+
+      const tryingOut = (wrapper: ReturnType<typeof mountCanvas>) =>
+        wrapper
+          .findAll("[data-test='fleetchart-ship']")
+          .findIndex((ship) =>
+            ship.find("[data-test='fleetchart-ship-not-owned']").exists(),
+          );
+
+      it("adds a ship in front of the others, selected, with its own id", async () => {
+        const wrapper = await mountFree();
+
+        placement("a").order = 5;
+
+        await wrapper
+          .get("[data-test='fleetchart-add-ships']")
+          .trigger("click");
+        wrapper
+          .findComponent({ name: "FleetchartCanvasAddShips" })
+          .vm.$emit("add", { id: "hornet-id", slug: "hornet" });
+        wrapper
+          .findComponent({ name: "FleetchartCanvasAddShips" })
+          .vm.$emit("add", { id: "hornet-id", slug: "hornet" });
+        await nextTick();
+
+        const added = Object.entries(
+          useFleetchartStore().fleetchartPlacements("hangar"),
+        ).filter(([, { modelId }]) => modelId === "hornet-id");
+
+        expect(added).toHaveLength(2);
+        expect(added[0][1].order).toBe(6);
+        expect(added[1][1].order).toBe(7);
+        expect(added[0][1].x).not.toBe(added[1][1].x);
+      });
+
+      it("marks only the ship that is not owned", async () => {
+        const wrapper = await mountWithCatalogueShip();
+
+        expect(
+          wrapper.findAll("[data-test='fleetchart-ship-not-owned']"),
+        ).toHaveLength(1);
+      });
+
+      it("offers removal for that ship only, and undo brings it back", async () => {
+        const wrapper = await mountWithCatalogueShip();
+        const remove = "[data-test='fleetchart-remove-ship']";
+        const owned = tryingOut(wrapper) === 0 ? 1 : 0;
+
+        await press(wrapper, owned);
+
+        expect(wrapper.find(remove).exists()).toBe(false);
+
+        await press(wrapper, tryingOut(wrapper));
+        await wrapper.get(remove).trigger("click");
+
+        expect(placement("tried")).toBeUndefined();
+        expect(placement("a")).toBeDefined();
+
+        await wrapper.get("[data-test='fleetchart-undo']").trigger("click");
+
+        expect(placement("tried").modelId).toBe("hornet-id");
+      });
+
+      it("stays a catalogue ship when moved or reset", async () => {
+        const wrapper = await mountWithCatalogueShip();
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-packed']")
+          .trigger("click");
+
+        expect(placement("tried").modelId).toBe("hornet-id");
+
+        await wrapper
+          .get("[data-test='fleetchart-reset-arrangement']")
+          .trigger("click");
+
+        expect(placement("tried").modelId).toBe("hornet-id");
+        expect(placement("a").modelId).toBeUndefined();
+      });
+
+      it("saves owned and catalogue ships apart, stacked as one chart", async () => {
+        const wrapper = await mountWithCatalogueShip();
+
+        await wrapper
+          .get("[data-test='fleetchart-saved-layouts']")
+          .trigger("click");
+
+        const panel = wrapper.findComponent({
+          name: "FleetchartCanvasSavedLayouts",
+        });
+        const owned = panel.props("placements") as {
+          vehicleId: string;
+          order: number;
+        }[];
+        const tried = panel.props("cataloguePlacements") as {
+          id: string;
+          modelId: string;
+          order: number;
+        }[];
+
+        expect(owned.map(({ vehicleId }) => vehicleId)).toEqual(["a"]);
+        expect(tried.map(({ id, modelId }) => [id, modelId])).toEqual([
+          ["tried", "hornet-id"],
+        ]);
+        expect([owned[0].order, tried[0].order].sort()).toEqual([0, 1]);
+      });
     });
 
     describe("arranging", () => {

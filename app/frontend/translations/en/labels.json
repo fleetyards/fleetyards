@@ -550,6 +550,12 @@
           "extended": "Extended",
           "landed": "Landed"
         },
+        "addShips": "Add ships",
+        "searchShips": "Search the catalogue",
+        "addShipsHint": "Try out ships you don't own. They are saved with the layout and marked as not owned.",
+        "noShipsFound": "No ships found",
+        "notOwned": "Not owned",
+        "removeShip": "Remove from the chart",
         "savedLayouts": "Saved layouts",
         "layoutName": "Layout name",
         "saveLayout": "Save as new",

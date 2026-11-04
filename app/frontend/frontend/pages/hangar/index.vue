@@ -33,6 +33,7 @@ import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useFleetchartCatalogueShips } from "@/frontend/composables/useFleetchartCatalogueShips";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -135,6 +136,14 @@ const {
   computed(() => ({ perPage: "all", q: getQuery() })),
   { query: { enabled: arrangingFleetchart } },
 );
+
+const { entries: catalogueShips, loaded: catalogueShipsLoaded } =
+  useFleetchartCatalogueShips("hangar", arrangingFleetchart);
+
+const arrangeItems = computed(() => [
+  ...(wholeHangar.value?.items || []),
+  ...catalogueShips.value,
+]);
 
 const hangarStatsQueryParams = computed(() => {
   return { q: getQuery() };
@@ -722,8 +731,8 @@ const { activeFilters } = useShipFilterSummary(() =>
 
       <FleetchartApp
         :items="vehicles?.items || []"
-        :arrange-items="wholeHangar?.items || []"
-        :arrange-loaded="wholeHangarLoaded"
+        :arrange-items="arrangeItems"
+        :arrange-loaded="wholeHangarLoaded && catalogueShipsLoaded"
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"

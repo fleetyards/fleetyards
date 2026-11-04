@@ -26,6 +26,7 @@ interface Props {
   availableStates: FleetchartShipStates[];
   canGroup?: boolean;
   canUngroup?: boolean;
+  canRemove?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -34,6 +35,7 @@ withDefaults(defineProps<Props>(), {
   state: undefined,
   canGroup: false,
   canUngroup: false,
+  canRemove: false,
 });
 
 const emit = defineEmits<{
@@ -43,6 +45,7 @@ const emit = defineEmits<{
   stack: [direction: "front" | "back"];
   group: [];
   ungroup: [];
+  remove: [];
 }>();
 
 const { t } = useI18n();
@@ -154,6 +157,15 @@ const { t } = useI18n();
         @click="emit('ungroup')"
       >
         <i class="fa-duotone fa-object-ungroup" />
+      </Btn>
+      <Btn
+        v-if="canRemove"
+        v-tooltip="t('labels.fleetchartApp.removeShip')"
+        :aria-label="t('labels.fleetchartApp.removeShip')"
+        data-test="fleetchart-remove-ship"
+        @click="emit('remove')"
+      >
+        <i class="fa-duotone fa-trash" />
       </Btn>
     </BtnGroup>
   </div>

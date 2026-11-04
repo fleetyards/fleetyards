@@ -13,6 +13,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
+import FleetchartCanvasAddShips from "./AddShips/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
@@ -43,6 +44,7 @@ import {
   withRowWidth,
   type FleetchartPositions,
 } from "@/frontend/components/Fleetchart/layouts";
+import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
 import {
   groupTitleOf,
   sortEntries,
@@ -52,7 +54,11 @@ import {
   stackingOrders,
   type FleetchartPlacementInput,
 } from "@/frontend/components/Fleetchart/savedLayouts";
-import type { FleetchartLayout } from "@/services/fyApi";
+import type {
+  FleetchartCataloguePlacement,
+  FleetchartLayout,
+  Model,
+} from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -103,6 +109,9 @@ const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
 const LABEL_MARGIN = 20;
+// Ships added one after another would otherwise land exactly on top of each other.
+const ADDED_SHIP_OFFSET = 8;
+const ADDED_SHIP_OFFSETS = 6;
 
 const FIXED_SCREEN_HEIGHT_FACTORS: Record<
   Exclude<FleetchartScreenHeights, FleetchartScreenHeights.AUTO>,
@@ -719,6 +728,9 @@ const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
         ...from[ship.id],
         facing: facing.value,
         ...(ship.group ? { heading: ship.group } : {}),
+        ...(isCatalogueEntry(ship.entry)
+          ? { modelId: placements.value[ship.id]?.modelId }
+          : {}),
       },
     ]),
   );
@@ -954,40 +966,115 @@ const stackSelected = (direction: "front" | "back") => {
 
 const savedLayoutsOpen = ref(false);
 
+const addShipsOpen = ref(false);
+
 // The panels share one spot, so only one can be open.
-const togglePanel = (open: boolean, panel: "saved" | "settings") => {
+const togglePanel = (open: boolean, panel: "add" | "saved" | "settings") => {
+  addShipsOpen.value = panel === "add" && !open;
   savedLayoutsOpen.value = panel === "saved" && !open;
   settingsOpen.value = panel === "settings" && !open;
 };
 
+const metresAtX = (pixels: number) =>
+  (pixels - transform.value.x) / transform.value.scale / PIXELS_PER_METRE -
+  SCENE_PADDING / PIXELS_PER_METRE +
+  bounds.value.minX;
+
+const metresAtY = (pixels: number) =>
+  (pixels - transform.value.y) / transform.value.scale / PIXELS_PER_METRE -
+  SCENE_PADDING / PIXELS_PER_METRE +
+  bounds.value.minY;
+
+let shipsAdded = 0;
+
+// In the middle of what is on screen and in front of everything else, selected so
+// that it can be moved straight away.
+const addShip = (model: Model) => {
+  const id = crypto.randomUUID();
+  const offset = (shipsAdded % ADDED_SHIP_OFFSETS) * ADDED_SHIP_OFFSET;
+
+  shipsAdded += 1;
+
+  holdingView(() => {
+    changePlacements({
+      ...placements.value,
+      [id]: {
+        x: metresAtX(screen.width / 2) + offset,
+        y: metresAtY(screen.height / 2) + offset,
+        facing: facing.value,
+        order: Math.max(0, ...Object.keys(placements.value).map(orderOf)) + 1,
+        modelId: model.id,
+      },
+    });
+  });
+
+  selectedIds.value = [id];
+};
+
+const selectedCatalogueShips = computed(() =>
+  selectedShips.value.filter((ship) => isCatalogueEntry(ship.entry)),
+);
+
+const removeSelectedCatalogueShips = () => {
+  const removed = selectedCatalogueShips.value.map(({ id }) => id);
+
+  holdingView(() => {
+    changePlacements(
+      Object.fromEntries(
+        Object.entries(placements.value).filter(
+          ([id]) => !removed.includes(id),
+        ),
+      ),
+    );
+  });
+
+  selectedIds.value = selectedIds.value.filter((id) => !removed.includes(id));
+};
+
 // A saved layout has to look the same without this chart's own view and state, so
 // each ship carries what it is actually drawn with.
-const placementsToSave = computed<FleetchartPlacementInput[]>(() => {
+const allPlacementsToSave = computed(() => {
   const drawn = ships.value.map(({ id }) => id);
   const notDrawn = Object.keys(placements.value).filter(
     (id) => !drawn.includes(id),
   );
   const orders = stackingOrders([...notDrawn, ...drawn], orderOf);
 
-  return Object.entries(placements.value).map(([vehicleId, placement]) => {
-    const ship = ships.value.find(({ id }) => id === vehicleId);
+  return Object.entries(placements.value).map(([id, placement]) => {
+    const ship = ships.value.find((drawnShip) => drawnShip.id === id);
 
     return {
-      vehicleId,
+      id,
+      modelId: placement.modelId,
       x: placement.x,
       y: placement.y,
       facing: ship?.facing ?? placement.facing,
       viewpoint: ship?.viewpoint ?? placement.viewpoint,
       state: ship?.state ?? placement.state,
-      order: orders[vehicleId],
+      order: orders[id],
       groupId: placement.groupId,
       heading: placement.heading,
     };
   });
 });
 
+const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
+  allPlacementsToSave.value.flatMap(
+    ({ id, modelId, ...placement }) =>
+      modelId ? [] : [{ vehicleId: id, ...placement }],
+  ),
+);
+
+const cataloguePlacementsToSave = computed<FleetchartCataloguePlacement[]>(() =>
+  allPlacementsToSave.value.flatMap(({ id, modelId, ...placement }) =>
+    modelId ? [{ id, modelId, ...placement }] : [],
+  ),
+);
+
 const openSavedLayout = (saved: FleetchartLayout) => {
-  changePlacements(placementsFromLayout(saved.placements));
+  changePlacements(
+    placementsFromLayout(saved.placements, saved.cataloguePlacements),
+  );
 
   if (saved.colored !== colored.value) {
     fleetchartStore.togglePlain(props.namespace);
@@ -1080,15 +1167,6 @@ const startMarquee = (event: PointerEvent) => {
   const startY = event.clientY - origin.top;
   const additions = [...selectedIds.value];
 
-  const metresX = (pixels: number) =>
-    (pixels - transform.value.x) / transform.value.scale / PIXELS_PER_METRE -
-    SCENE_PADDING / PIXELS_PER_METRE +
-    bounds.value.minX;
-  const metresY = (pixels: number) =>
-    (pixels - transform.value.y) / transform.value.scale / PIXELS_PER_METRE -
-    SCENE_PADDING / PIXELS_PER_METRE +
-    bounds.value.minY;
-
   const onMove = (move: PointerEvent) => {
     const x = move.clientX - origin.left;
     const y = move.clientY - origin.top;
@@ -1117,10 +1195,10 @@ const startMarquee = (event: PointerEvent) => {
       return;
     }
 
-    const left = metresX(box.left);
-    const right = metresX(box.left + box.width);
-    const top = metresY(box.top);
-    const bottom = metresY(box.top + box.height);
+    const left = metresAtX(box.left);
+    const right = metresAtX(box.left + box.width);
+    const top = metresAtY(box.top);
+    const bottom = metresAtY(box.top + box.height);
 
     const inside = ships.value
       .filter((ship) => {
@@ -1416,6 +1494,15 @@ const toggleLabels = () => {
           </Btn>
         </BtnDropdown>
         <Btn
+          v-tooltip="t('labels.fleetchartApp.addShips')"
+          :active="addShipsOpen"
+          :aria-label="t('labels.fleetchartApp.addShips')"
+          data-test="fleetchart-add-ships"
+          @click="togglePanel(addShipsOpen, 'add')"
+        >
+          <i class="fa-duotone fa-plus" />
+        </Btn>
+        <Btn
           v-tooltip="t('labels.fleetchartApp.savedLayouts')"
           :active="savedLayoutsOpen"
           :aria-label="t('labels.fleetchartApp.savedLayouts')"
@@ -1561,10 +1648,13 @@ const toggleLabels = () => {
     <FleetchartCanvasSavedLayouts
       v-if="arranging && savedLayoutsOpen"
       :placements="placementsToSave"
-      :ready="arrangeReady && placementsToSave.length > 0"
+      :catalogue-placements="cataloguePlacementsToSave"
+      :ready="arrangeReady && allPlacementsToSave.length > 0"
       :colored="colored"
       @open="openSavedLayout"
     />
+
+    <FleetchartCanvasAddShips v-if="arranging && addShipsOpen" @add="addShip" />
 
     <FleetchartCanvasShipControls
       ref="shipControls"
@@ -1577,6 +1667,7 @@ const toggleLabels = () => {
       :available-states="selectedShipStates"
       :can-group="canGroupSelected"
       :can-ungroup="canUngroupSelected"
+      :can-remove="selectedCatalogueShips.length > 0"
       :style="shipControlsStyle"
       @update:viewpoint="setSelectedViewpoint"
       @update:facing="setSelectedFacing"
@@ -1584,6 +1675,7 @@ const toggleLabels = () => {
       @stack="stackSelected"
       @group="groupSelected"
       @ungroup="ungroupSelected"
+      @remove="removeSelectedCatalogueShips"
     />
 
     <div class="fleetchart-canvas__viewport" @pointerdown="handleViewportPress">

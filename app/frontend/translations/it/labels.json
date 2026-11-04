@@ -550,6 +550,12 @@
           "extended": "Esteso",
           "landed": "Atterrato"
         },
+        "addShips": "Aggiungi navi",
+        "searchShips": "Cerca nel catalogo",
+        "addShipsHint": "Prova navi che non possiedi. Vengono salvate con la disposizione e contrassegnate come non possedute.",
+        "noShipsFound": "Nessuna nave trovata",
+        "notOwned": "Non posseduta",
+        "removeShip": "Rimuovi dal grafico",
         "savedLayouts": "Disposizioni salvate",
         "layoutName": "Nome della disposizione",
         "saveLayout": "Salva come nuova",

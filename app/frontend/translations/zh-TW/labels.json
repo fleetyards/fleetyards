@@ -550,6 +550,12 @@
           "extended": "展開",
           "landed": "著陸"
         },
+        "addShips": "新增艦船",
+        "searchShips": "搜尋目錄",
+        "addShipsHint": "試用你未擁有的艦船。它們會隨版面配置儲存，並標示為未擁有。",
+        "noShipsFound": "找不到艦船",
+        "notOwned": "未擁有",
+        "removeShip": "從圖表中移除",
         "savedLayouts": "已儲存的版面配置",
         "layoutName": "版面配置名稱",
         "saveLayout": "另存為新配置",
