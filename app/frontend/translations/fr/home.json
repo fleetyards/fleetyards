@@ -12,6 +12,7 @@
         "searchResults": "Résultats de recherche",
         "searchNoResults": "Aucun résultat pour « %{query} »",
         "searchNoResultsHint": "Essayez un vaisseau, un composant, une mission ou un lieu.",
+        "searchShowMore": "Afficher plus",
         "searching": "Recherche…",
         "searchKeys": {
           "move": "pour naviguer",

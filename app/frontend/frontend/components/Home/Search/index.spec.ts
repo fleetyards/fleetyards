@@ -20,6 +20,7 @@ const router = async () => {
       { path: "/", name: "home", component: blank },
       { path: "/ships", name: "ships", component: blank },
       { path: "/components", name: "components", component: blank },
+      { path: "/places", name: "locations-places", component: blank },
       { path: "/components/:slug", name: "component", component: blank },
       { path: "/locations/:slug", name: "location", component: blank },
     ],
@@ -99,6 +100,55 @@ describe("HomeSearch", () => {
       "Components",
     ]);
     expect(wrapper.text()).toContain("S2 · Behring");
+  });
+
+  describe("when a catalogue has more than it offers", () => {
+    beforeEach(() => {
+      groups[0].hasMore = true;
+    });
+
+    it("links to the list only for that catalogue", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        plugins: [await router()],
+      });
+
+      await typeInto(wrapper, "port");
+
+      const rows = wrapper.findAll(".home-search__group");
+      expect(rows[0].find("[data-test='home-search-more']").text()).toBe(
+        "Show more",
+      );
+      expect(rows[1].find("[data-test='home-search-more']").exists()).toBe(
+        false,
+      );
+    });
+
+    it("opens the catalogue's list filtered by the search", async () => {
+      const instance = await router();
+      const wrapper = await mountWithDefaults(Component, {
+        plugins: [instance],
+      });
+
+      await typeInto(wrapper, "port");
+      await wrapper.find("[data-test='home-search-more']").trigger("mousedown");
+      await flushPromises();
+
+      expect(instance.currentRoute.value.name).toBe("locations-places");
+      expect(instance.currentRoute.value.query).toEqual({ nameCont: "port" });
+    });
+
+    it("is reached by the keyboard, after that catalogue's matches", async () => {
+      const instance = await router();
+      const wrapper = await mountWithDefaults(Component, {
+        plugins: [instance],
+      });
+
+      await typeInto(wrapper, "port");
+      await press(wrapper, "ArrowDown");
+      await submit(wrapper);
+
+      expect(instance.currentRoute.value.name).toBe("locations-places");
+    });
   });
 
   describe("on a catalogue's pages", () => {

@@ -12,6 +12,7 @@
         "searchResults": "Resultados de búsqueda",
         "searchNoResults": "Nada coincide con «%{query}»",
         "searchNoResultsHint": "Prueba con una nave, un componente, una misión o un lugar.",
+        "searchShowMore": "Mostrar más",
         "searching": "Buscando…",
         "searchKeys": {
           "move": "para moverte",

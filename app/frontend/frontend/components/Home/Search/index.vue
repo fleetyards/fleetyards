@@ -67,6 +67,19 @@ const LIST_PAGE_GROUPS: Record<string, string> = {
   "locations-places": "Location",
 };
 
+// Where a catalogue lists everything, and the filter that narrows it by name.
+// Ships take the name filter over their wider header search because it is the
+// one their filter form shows.
+const LISTS: Record<string, { name: string; filter: string }> = {
+  Model: { name: "ships", filter: "nameCont" },
+  Component: { name: "components", filter: "searchNameCont" },
+  Equipment: { name: "equipment", filter: "nameOrSlugCont" },
+  Commodity: { name: "commodities", filter: "nameCont" },
+  Blueprint: { name: "blueprints", filter: "nameCont" },
+  GameMission: { name: "missions", filter: "nameCont" },
+  Location: { name: "locations-places", filter: "nameCont" },
+};
+
 const MIN_LENGTH = 2;
 
 const searchQuery = ref<string | undefined>();
@@ -86,10 +99,21 @@ const groups = computed(() => {
   ];
 });
 
-// In list order, for the keyboard to step through across the groups.
-const results = computed(() => groups.value.flatMap((group) => group.items));
+// A row of the list: a match, or a group standing for its "show more".
+type Step = SearchResult | SearchGroup;
 
-const indexOf = (result: SearchResult) => results.value.indexOf(result);
+const hasMoreLink = (group: SearchGroup) =>
+  group.hasMore && !!LISTS[group.type];
+
+// In list order, for the keyboard to step through across the groups.
+const steps = computed<Step[]>(() =>
+  groups.value.flatMap((group) => [
+    ...group.items,
+    ...(hasMoreLink(group) ? [group] : []),
+  ]),
+);
+
+const indexOf = (step: Step) => steps.value.indexOf(step);
 
 const answered = computed(() => searchedFor.value === query.value);
 
@@ -127,7 +151,7 @@ const searchNow = async (text: string) => {
   searchedFor.value = trimmed;
   // The best match is highlighted from the start, so what Enter opens is
   // always on screen.
-  active.value = results.value.length ? 0 : -1;
+  active.value = steps.value.length ? 0 : -1;
 };
 
 const runSearch = useDebounceFn(searchNow, 200);
@@ -139,8 +163,16 @@ const onInput = (value?: string | number | null) => {
   void runSearch(searchQuery.value ?? "");
 };
 
-const pick = async (result: SearchResult) => {
-  const target = catalogueItemRoute(result);
+const targetOf = (step: Step) => {
+  if (!("items" in step)) return catalogueItemRoute(step);
+
+  const { name, filter } = LISTS[step.type];
+
+  return { name, query: { [filter]: searchedFor.value } };
+};
+
+const pick = async (step: Step) => {
+  const target = targetOf(step);
   if (!target) return;
 
   open.value = false;
@@ -165,8 +197,8 @@ const submit = async () => {
     return;
   }
 
-  const result = results.value[active.value];
-  if (result) await pick(result);
+  const step = steps.value[active.value];
+  if (step) await pick(step);
 };
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -175,15 +207,14 @@ const onKeydown = (event: KeyboardEvent) => {
     return;
   }
 
-  if (!open.value || !results.value.length) return;
+  if (!open.value || !steps.value.length) return;
 
   if (event.key === "ArrowDown") {
     event.preventDefault();
-    active.value = (active.value + 1) % results.value.length;
+    active.value = (active.value + 1) % steps.value.length;
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
-    active.value =
-      (active.value - 1 + results.value.length) % results.value.length;
+    active.value = (active.value - 1 + steps.value.length) % steps.value.length;
   }
 };
 
@@ -269,7 +300,7 @@ const popoverStyle = computed(() => ({
         </div>
 
         <div
-          v-else-if="!results.length"
+          v-else-if="!steps.length"
           class="home-search__state home-search__state--empty"
           aria-live="polite"
           data-test="home-search-empty"
@@ -321,6 +352,21 @@ const popoverStyle = computed(() => ({
                     :result="result"
                     :query="searchedFor"
                   />
+                </li>
+                <li
+                  v-if="hasMoreLink(group)"
+                  role="option"
+                  :aria-selected="indexOf(group) === active"
+                  class="home-search__option home-search__more"
+                  :class="{
+                    'home-search__option--active': indexOf(group) === active,
+                  }"
+                  data-test="home-search-more"
+                  @mousedown.prevent="pick(group)"
+                  @mouseenter="active = indexOf(group)"
+                >
+                  {{ t("home.landing.searchShowMore") }}
+                  <i class="fa-light fa-arrow-right" aria-hidden="true" />
                 </li>
               </ul>
             </li>
@@ -508,12 +554,24 @@ const popoverStyle = computed(() => ({
 }
 
 .home-search__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
 
   &--active {
     background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  }
+}
+
+.home-search__more {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.8125rem;
+
+  &.home-search__option--active {
+    color: var(--color-lifted, #eee);
   }
 }
 

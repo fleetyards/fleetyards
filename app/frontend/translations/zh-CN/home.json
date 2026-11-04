@@ -12,6 +12,7 @@
         "searchResults": "搜索结果",
         "searchNoResults": "没有与“%{query}”匹配的结果",
         "searchNoResultsHint": "试试舰船、组件、任务或地点。",
+        "searchShowMore": "显示更多",
         "searching": "正在搜索…",
         "searchKeys": {
           "move": "移动",

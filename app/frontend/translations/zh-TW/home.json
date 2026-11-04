@@ -12,6 +12,7 @@
         "searchResults": "搜尋結果",
         "searchNoResults": "沒有與「%{query}」相符的結果",
         "searchNoResultsHint": "試試艦船、組件、任務或地點。",
+        "searchShowMore": "顯示更多",
         "searching": "搜尋中…",
         "searchKeys": {
           "move": "移動",
