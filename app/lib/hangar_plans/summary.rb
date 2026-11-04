@@ -10,7 +10,7 @@ module HangarPlans
   class Summary
     ISSUE_KINDS = %w[missing_price not_on_sale].freeze
 
-    SlotCost = Data.define(:slot_id, :state, :min_cost, :max_cost, :store_cost_min, :store_cost, :unresolved_count, :complete)
+    SlotCost = Data.define(:slot_id, :state, :min_cost, :max_cost, :store_cost_min, :store_cost, :uncounted_max, :unresolved_count, :complete)
     Issue = Data.define(:kind, :name, :slot_id)
 
     attr_reader :plan, :slot_costs, :issues, :melt_credit, :estimated_melts_count
@@ -78,9 +78,9 @@ module HangarPlans
     def routed_spend = slot_costs.select { |cost| cost.state == "decided" }.sum(&:min_cost)
 
     # The most the plan can come to: every undecided slot at its dearest ship and
-    # every unit without a start bought in the store. A slot with no ship yet has
-    # nothing to price.
-    def max_spend = spend_max + slot_costs.sum { |cost| cost.store_cost || 0 }
+    # every unit without a finished route bought in the store. A slot with no
+    # ship yet, or a ship with no price, has nothing to add and is reported.
+    def max_spend = spend_max + slot_costs.sum(&:uncounted_max)
 
     def melt_credit_at(snapshot: false)
       credited_melts.sum { |melt| (snapshot ? melt.snapshot_value : melt.value) || 0 }
@@ -141,7 +141,7 @@ module HangarPlans
     private def cost_for(slot)
       case slot.state
       when "open"
-        SlotCost.new(slot_id: slot.id, state: "open", min_cost: 0, max_cost: 0, store_cost_min: 0, store_cost: 0,
+        SlotCost.new(slot_id: slot.id, state: "open", min_cost: 0, max_cost: 0, store_cost_min: 0, store_cost: 0, uncounted_max: 0,
           unresolved_count: slot.quantity, complete: false)
       when "decided" then decided_cost(slot)
       else undecided_cost(slot)
@@ -156,7 +156,8 @@ module HangarPlans
       unresolved = slot.quantity - acquisitions.size
 
       SlotCost.new(slot_id: slot.id, state: "decided", min_cost: total, max_cost: total,
-        store_cost_min: cheapest_start(slot, candidate), store_cost: store_cost(slot, candidate), unresolved_count: unresolved, complete: unresolved.zero? && costs.none?(&:nil?))
+        store_cost_min: cheapest_start(slot, candidate), store_cost: store_cost(slot, candidate),
+        uncounted_max: uncounted_max(slot, candidate), unresolved_count: unresolved, complete: unresolved.zero? && costs.none?(&:nil?))
     end
 
     # Nil when the ship or anything fitted to it has no price. A start without
@@ -167,7 +168,13 @@ module HangarPlans
       return 0 if missing.zero?
 
       unit = unit_price(candidate)
+      issue("missing_price", candidate.model.name, slot.id) if unit.nil?
       unit && missing * unit
+    end
+
+    # A start on another ship can only lower what the store asks for the unit.
+    private def uncounted_max(slot, candidate)
+      (unit_price(candidate) || 0) * (slot.quantity - routed(candidate, slot).size)
     end
 
     # The least those units could come to from the ships still free: one of the
@@ -234,7 +241,7 @@ module HangarPlans
 
       costs = options.map { |option| option[:cost] }
       SlotCost.new(slot_id: slot.id, state: "undecided", min_cost: costs.min || 0, max_cost: costs.max || 0,
-        store_cost_min: 0, store_cost: 0, unresolved_count: 0, complete: false)
+        store_cost_min: 0, store_cost: 0, uncounted_max: 0, unresolved_count: 0, complete: false)
     end
 
     # A start whose route to the slot's ship is still to be planned holds a unit

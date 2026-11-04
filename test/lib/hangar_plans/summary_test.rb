@@ -123,6 +123,23 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal 350, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
   end
 
+  test "the maximum covers every unit without a finished route" do
+    slot = decided_slot(@carrack, quantity: 3)
+    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)
+
+    assert_equal 1800, HangarPlans::Summary.new(@plan).max_spend
+  end
+
+  test "a gap's unknown price is reported, not counted as nothing" do
+    decided_slot(create(:model, name: "Unpriced", pledge_price: nil))
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 0, summary.max_spend
+    assert_includes summary.issues.map(&:name), "Unpriced"
+  end
+
   test "a free ship serves one unit, and one of the same model costs nothing" do
     create(:vehicle, user: @user, model: @carrack)
     decided_slot(@carrack, quantity: 2)
@@ -269,6 +286,17 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert route.uses_buyback_token
   end
 
+  test "a start changed to a buy-back keeps an explicit opt-out" do
+    candidate = decided_slot(@carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
+
+    route = HangarPlanAcquisition.find(route.id)
+    route.update!(start_kind: "buyback", buyback_pledge: create(:buyback_pledge, user: @user, price: 550),
+      uses_buyback_token: false)
+
+    assert_not route.uses_buyback_token
+  end
+
   test "a buy-back the user opts out of stays new money with tokens to spare" do
     @plan.update!(starting_credit: 1000, buyback_tokens: 2)
     candidate = decided_slot(@carrack)
@@ -294,17 +322,6 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     @plan.update!(buyback_tokens: 0)
     assert_equal 550, HangarPlans::Summary.new(@plan.reload).buyback_cash
   end
-  test "a start changed to a buy-back keeps an explicit opt-out" do
-    candidate = decided_slot(@carrack)
-    route = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
-
-    route = HangarPlanAcquisition.find(route.id)
-    route.update!(start_kind: "buyback", buyback_pledge: create(:buyback_pledge, user: @user, price: 550),
-      uses_buyback_token: false)
-
-    assert_not route.uses_buyback_token
-  end
-
 
   test "marked beyond the tokens held, the dearest buy-back keeps its token" do
     @plan.update!(starting_credit: 0, buyback_tokens: 1)
