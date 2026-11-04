@@ -38,6 +38,7 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 
 // A touch screen has no arrow keys to hint at.
 const touch = useLowPowerDevice();
@@ -53,15 +54,37 @@ const GROUP_LABELS: Record<string, string> = {
   Location: "nav.locations",
 };
 
+// The catalogue a list page shows, whose matches lead the results there. An
+// item's own page keeps the server's ranking.
+const LIST_PAGE_GROUPS: Record<string, string> = {
+  ships: "Model",
+  components: "Component",
+  equipment: "Equipment",
+  commodities: "Commodity",
+  blueprints: "Blueprint",
+  missions: "GameMission",
+  locations: "Location",
+  "locations-places": "Location",
+};
+
 const MIN_LENGTH = 2;
 
 const searchQuery = ref<string | undefined>();
-const groups = ref<SearchGroup[]>([]);
+const rankedGroups = ref<SearchGroup[]>([]);
 const searchedFor = ref<string | undefined>();
 const open = ref(false);
 const active = ref(-1);
 
 const query = computed(() => searchQuery.value?.trim() ?? "");
+
+const groups = computed(() => {
+  const listed = LIST_PAGE_GROUPS[route.name as string];
+
+  return [
+    ...rankedGroups.value.filter((group) => group.type === listed),
+    ...rankedGroups.value.filter((group) => group.type !== listed),
+  ];
+});
 
 // In list order, for the keyboard to step through across the groups.
 const results = computed(() => groups.value.flatMap((group) => group.items));
@@ -91,7 +114,7 @@ const searchNow = async (text: string) => {
   const trimmed = text.trim();
 
   if (trimmed.length < MIN_LENGTH) {
-    groups.value = [];
+    rankedGroups.value = [];
     searchedFor.value = undefined;
     return;
   }
@@ -100,7 +123,7 @@ const searchNow = async (text: string) => {
 
   if (request !== latestSearch) return;
 
-  groups.value = response?.groups ?? [];
+  rankedGroups.value = response?.groups ?? [];
   searchedFor.value = trimmed;
   // The best match is highlighted from the start, so what Enter opens is
   // always on screen.
@@ -125,7 +148,7 @@ const pick = async (result: SearchResult) => {
 
   // In the page header the field outlives the navigation it started.
   searchQuery.value = undefined;
-  groups.value = [];
+  rankedGroups.value = [];
   searchedFor.value = undefined;
 };
 

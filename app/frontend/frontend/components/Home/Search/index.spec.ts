@@ -19,6 +19,7 @@ const router = async () => {
     routes: [
       { path: "/", name: "home", component: blank },
       { path: "/ships", name: "ships", component: blank },
+      { path: "/components", name: "components", component: blank },
       { path: "/components/:slug", name: "component", component: blank },
       { path: "/locations/:slug", name: "location", component: blank },
     ],
@@ -96,6 +97,52 @@ describe("HomeSearch", () => {
       "Components",
     ]);
     expect(wrapper.text()).toContain("S2 · Behring");
+  });
+
+  describe("on a catalogue's pages", () => {
+    const mountOn = async (name: string) => {
+      const instance = await router();
+      await instance.push({ name, params: { slug: "gvsr-s2" } });
+
+      return mountWithDefaults(Component, { plugins: [instance] });
+    };
+
+    const groupLabels = (wrapper: Wrapper) =>
+      wrapper.findAll(".home-search__group-label").map((label) => label.text());
+
+    it("leads with the catalogue a list page shows", async () => {
+      const wrapper = await mountOn("components");
+
+      await typeInto(wrapper, "port");
+
+      expect(groupLabels(wrapper)).toEqual(["Components", "Locations"]);
+    });
+
+    it("highlights the first match of that catalogue for Enter", async () => {
+      const wrapper = await mountOn("components");
+
+      await typeInto(wrapper, "port");
+
+      expect(wrapper.find(".home-search__option--active").text()).toContain(
+        "GVSR Repeater",
+      );
+    });
+
+    it("keeps the server's order on an item's own page", async () => {
+      const wrapper = await mountOn("component");
+
+      await typeInto(wrapper, "port");
+
+      expect(groupLabels(wrapper)).toEqual(["Locations", "Components"]);
+    });
+
+    it("keeps the server's order where the list's catalogue has no match", async () => {
+      const wrapper = await mountOn("ships");
+
+      await typeInto(wrapper, "port");
+
+      expect(groupLabels(wrapper)).toEqual(["Locations", "Components"]);
+    });
   });
 
   it("shows an item's picture, and its catalogue's icon where it has none", async () => {
