@@ -15,10 +15,11 @@ module V1
               colored: {type: :boolean},
               shareToken: {type: [:string, :null]},
               placements: {type: :array, items: FleetchartPlacement},
+              cataloguePlacements: {type: :array, items: FleetchartCataloguePlacement},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
-            required: %w[id name colored placements createdAt updatedAt]
+            required: %w[id name colored placements cataloguePlacements createdAt updatedAt]
           })
         end
       end

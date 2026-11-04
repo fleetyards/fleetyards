@@ -181,6 +181,84 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_equal [@vehicle.id], response.parsed_body["placements"].map { |placement| placement["vehicleId"] }
   end
 
+  test "a layout can hold ships from the catalogue, several of one model among them" do
+    sign_in @user
+    model = create(:model)
+
+    post "/api/v1/hangar/fleetchart-layouts",
+      params: {
+        name: "What if",
+        placements: [placement_for(@vehicle)],
+        cataloguePlacements: [
+          {id: "first", modelId: model.id, x: 1, y: 2, facing: "top", viewpoint: "rear", state: "landed", order: 3, groupId: "g1", heading: "Anvil"},
+          {id: "second", modelId: model.id, x: 3, y: 4}
+        ]
+      },
+      as: :json
+
+    assert_response :created
+
+    first, second = response.parsed_body["cataloguePlacements"]
+
+    assert_equal(
+      {"id" => "first", "modelId" => model.id, "x" => 1, "y" => 2, "facing" => "top", "viewpoint" => "rear",
+       "state" => "landed", "order" => 3, "groupId" => "g1", "heading" => "Anvil"},
+      first
+    )
+    assert_equal ["second", model.id], second.values_at("id", "modelId")
+    assert_equal [@vehicle.id], response.parsed_body["placements"].map { |placement| placement["vehicleId"] }
+  end
+
+  test "saving drops catalogue ships that are not listed" do
+    sign_in @user
+    hidden = create(:model, hidden: true)
+
+    post "/api/v1/hangar/fleetchart-layouts",
+      params: {name: "Hidden", cataloguePlacements: [{id: "a", modelId: hidden.id, x: 1, y: 2}]},
+      as: :json
+
+    assert_response :created
+    assert_empty response.parsed_body["cataloguePlacements"]
+  end
+
+  test "POST rejects catalogue ships sharing an id" do
+    sign_in @user
+    model = create(:model)
+
+    post "/api/v1/hangar/fleetchart-layouts",
+      params: {
+        name: "Broken",
+        cataloguePlacements: [{id: "a", modelId: model.id, x: 1, y: 2}, {id: "a", modelId: model.id, x: 3, y: 4}]
+      },
+      as: :json
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].map { |error| error["attribute"] }, "cataloguePlacements"
+  end
+
+  test "a shared layout brings along its catalogue ships and only those" do
+    model = create(:model)
+    other = create(:model)
+    hidden = create(:model)
+    layout = create(:fleetchart_layout, user: @user, catalogue_placements: [
+      {"id" => "a", "model_id" => model.id, "x" => 1, "y" => 1},
+      {"id" => "b", "model_id" => model.id, "x" => 2, "y" => 2},
+      {"id" => "c", "model_id" => hidden.id, "x" => 3, "y" => 3}
+    ])
+    layout.share!
+    hidden.update!(hidden: true)
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_response :success
+    body = response.parsed_body
+
+    assert_equal %w[a b], body["cataloguePlacements"].map { |placement| placement["id"] }
+    assert_equal [model.id], body["models"].map { |listed| listed["id"] }
+    assert_not_includes response.body, other.id
+    assert_not_includes response.body, hidden.id
+  end
+
   test "a user only reaches their own layouts" do
     other = create(:fleetchart_layout)
     mine = create(:fleetchart_layout, user: @user)

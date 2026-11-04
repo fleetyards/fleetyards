@@ -5,6 +5,7 @@ class FleetchartLayout < ApplicationRecord
   MAX_PER_USER = 50
   MAX_PLACEMENTS = 5000
   MAX_HEADING_LENGTH = 100
+  MAX_CATALOGUE_ID_LENGTH = 64
 
   VIEWPOINTS = %w[top port angled front starboard bottom angledRear rear].freeze
   FACINGS = %w[left top right bottom].freeze
@@ -17,6 +18,7 @@ class FleetchartLayout < ApplicationRecord
   validate :placements_shape
 
   before_validation :keep_placements_of_owned_vehicles
+  before_validation :keep_catalogue_placements_of_listed_models
 
   def shared?
     share_token.present?
@@ -36,6 +38,11 @@ class FleetchartLayout < ApplicationRecord
     user.vehicles.where(id: placements.pluck("vehicle_id"))
   end
 
+  # Ships the owner tried out without having them, each placement drawing its own copy.
+  def shared_models
+    Model.visible.active.where(id: catalogue_placements.pluck("model_id"))
+  end
+
   private def keep_placements_of_owned_vehicles
     return unless placements.is_a?(Array) && user
 
@@ -44,8 +51,21 @@ class FleetchartLayout < ApplicationRecord
     self.placements = placements.select { |placement| owned.include?(vehicle_id_of(placement)) }
   end
 
+  private def keep_catalogue_placements_of_listed_models
+    return unless catalogue_placements.is_a?(Array)
+
+    model_ids = catalogue_placements.filter_map { |placement| model_id_of(placement) }
+    listed = Model.visible.active.where(id: model_ids).pluck(:id).to_set
+
+    self.catalogue_placements = catalogue_placements.select { |placement| listed.include?(model_id_of(placement)) }
+  end
+
   private def vehicle_id_of(placement)
     placement["vehicle_id"] if placement.is_a?(Hash)
+  end
+
+  private def model_id_of(placement)
+    placement["model_id"] if placement.is_a?(Hash)
   end
 
   private def layout_limit
@@ -55,12 +75,22 @@ class FleetchartLayout < ApplicationRecord
   end
 
   private def placements_shape
-    unless placements.is_a?(Array) && placements.size <= MAX_PLACEMENTS
+    unless placements.is_a?(Array) && catalogue_placements.is_a?(Array) &&
+        placements.size + catalogue_placements.size <= MAX_PLACEMENTS
       errors.add(:placements, :invalid)
       return
     end
 
     errors.add(:placements, :invalid) unless placements.all? { |placement| valid_placement?(placement) }
+    errors.add(:catalogue_placements, :invalid) unless valid_catalogue_placements?
+  end
+
+  private def valid_catalogue_placements?
+    ids = catalogue_placements.pluck("id")
+
+    ids.uniq.size == ids.size &&
+      ids.all? { |id| id.is_a?(String) && id.present? && id.length <= MAX_CATALOGUE_ID_LENGTH } &&
+      catalogue_placements.all? { |placement| valid_placement?(placement) }
   end
 
   private def valid_placement?(placement)
