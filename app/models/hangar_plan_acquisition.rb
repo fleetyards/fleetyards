@@ -88,7 +88,7 @@ class HangarPlanAcquisition < ApplicationRecord
   def live_source_vehicle
     return if source_vehicle.blank?
 
-    source_vehicle if hangar_plan.live_vehicle_ids.include?(source_vehicle.id)
+    source_vehicle if hangar_plan.pledged_vehicle_ids.include?(source_vehicle.id)
   end
 
   private def start_changed?

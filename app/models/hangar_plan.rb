@@ -57,9 +57,10 @@ class HangarPlan < ApplicationRecord
     user.vehicles.purchased.where(loaner: false, bundled: false, hidden: false)
   end
 
-  # Asked once per route and melt when a plan renders, so it is held.
-  def live_vehicle_ids
-    @live_vehicle_ids ||= live_vehicles.pluck(:id).to_set
+  # Whether a planned ship is still there, which a model going inactive does not
+  # change. Asked once per route and melt when a plan renders, so it is held.
+  def pledged_vehicle_ids
+    @pledged_vehicle_ids ||= pledged_vehicles.pluck(:id).to_set
   end
 
   def used_vehicle_ids

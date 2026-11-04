@@ -135,6 +135,29 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal [@cutlass, @carrack], [upgrade.from_model, upgrade.to_model]
   end
 
+  test "a planned ship whose model goes inactive is not lost" do
+    model = create(:model, on_sale: true)
+    melted = create(:vehicle, user: @user, model:)
+    melt = create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
+
+    model.update!(active: false)
+
+    assert_not HangarPlan.find(@plan.id).melts.find(melt.id).vehicle_missing?
+  end
+
+  test "a keep mark on an inactive model does not block melting its pledge" do
+    beacon = create(:model)
+    ship = create(:vehicle, user: @user, model: create(:model), rsi_pledge_id: "pledge")
+    kept = create(:vehicle, user: @user, model: beacon, rsi_pledge_id: "pledge")
+    @plan.vehicle_marks.create!(vehicle: kept, mark: "keep")
+
+    assert_not build(:hangar_plan_melt, hangar_plan: @plan, vehicle: ship).valid?
+
+    beacon.update!(active: false)
+
+    assert build(:hangar_plan_melt, hangar_plan: @plan, vehicle: ship).valid?
+  end
+
   test "an inactive model is no ship to plan with" do
     beacon = create(:model, name: "Geotack-X Planetary Beacon", active: false)
     create(:vehicle, user: @user, model: beacon)

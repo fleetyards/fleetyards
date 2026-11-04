@@ -33,7 +33,7 @@ class HangarPlanMelt < ApplicationRecord
   end
 
   def vehicle_missing?
-    vehicle.nil? || hangar_plan.live_vehicle_ids.exclude?(vehicle.id)
+    vehicle.nil? || hangar_plan.pledged_vehicle_ids.exclude?(vehicle.id)
   end
 
   def vehicle_changed?
@@ -60,7 +60,8 @@ class HangarPlanMelt < ApplicationRecord
   private def kept_in_pledge?
     return false if vehicle.rsi_pledge_id.blank?
 
-    hangar_plan.vehicle_marks.where(mark: "keep").where.not(vehicle_id:)
+    # A mark on a ship the planner no longer lists is one nobody can clear.
+    hangar_plan.vehicle_marks.where(mark: "keep", model_id: Model.active.select(:id)).where.not(vehicle_id:)
       .joins(:vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
   end
 end
