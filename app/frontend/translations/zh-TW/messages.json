@@ -162,6 +162,9 @@
         "failure": "匯出失敗，請稍後再試。"
       },
       "vehicle": {
+        "destroy": {
+          "failure": "無法移除該艦船。"
+        },
         "move": {
           "failure": "無法儲存順序。"
         },

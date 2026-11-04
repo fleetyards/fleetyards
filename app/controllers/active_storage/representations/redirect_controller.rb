@@ -12,10 +12,17 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
 
   rescue_from ActiveStorage::FileNotFoundError, with: :representation_not_found
 
+  # Processing a variant for the first time reads and writes the store in the
+  # before_action, ahead of the probe in `show`. rescue_from resolves these names
+  # lazily, so they are safe on a Disk-backed environment.
+  rescue_from(*UNAVAILABLE_ERRORS, with: :handle_store_error)
+
   def show
     reprocess_representation unless representation_exists?
 
-    expires_in ActiveStorage.service_urls_expire_in
+    # A failed upload leaves a variant record with no object, so a redirect the
+    # store could not vouch for must not outlive the outage in a client's cache.
+    expires_in ActiveStorage.service_urls_expire_in unless @store_unverified
     redirect_to url_with_origin_param(@representation.url(disposition: params[:disposition])), allow_other_host: true
   end
 
@@ -32,9 +39,43 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
   rescue => error
     raise unless store_unavailable?(error)
 
+    # A refused credential still redirects, as the bucket serves the object
+    # publicly either way, but it is not going to pass and has to be seen.
+    Appsignal.report_error(error) unless transient_store_error?(error)
+    count_store_failure(error)
     Rails.logger.warn("representation probe skipped, #{error.class}: #{error.message}")
 
-    true
+    @store_unverified = true
+  end
+
+  # A store that is down or overloaded is not something a request can fix, so the
+  # client is told to come back. A refused credential or a missing bucket is not
+  # going to pass on a retry, and has to reach the error tracker.
+  def handle_store_error(error)
+    raise error unless transient_store_error?(error)
+
+    count_store_failure(error)
+    Rails.logger.warn("representation not processed, #{error.class}: #{error.message}")
+
+    response.headers["Retry-After"] = "30"
+    head :service_unavailable
+  end
+
+  # S3 generates a class per error code, so the status is what they have in
+  # common. RequestTimeout is the one transient code it answers with a 400.
+  def transient_store_error?(error)
+    return true unless error.respond_to?(:context)
+    return true if error.code == "RequestTimeout"
+
+    status = error.context&.http_response&.status_code.to_i
+
+    status >= 500 || status == 429
+  end
+
+  # Without an incident per failure, this is what an outage, or a wrong endpoint
+  # that looks like one, shows up as.
+  def count_store_failure(error)
+    Appsignal.increment_counter("storage_unavailable", 1, error: error.class.name)
   end
 
   def store_unavailable?(error)

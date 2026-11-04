@@ -10,6 +10,7 @@ module Api
     include Pagination
     include ScDataSource
     include PresenceReadableConcern
+    include RejectsInvalidSignedIds
     include SquadronReadableConcern
 
     helper_method :combined_fragment_cache_key

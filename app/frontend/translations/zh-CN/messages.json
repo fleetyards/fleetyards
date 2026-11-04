@@ -162,6 +162,9 @@
         "failure": "导出失败，请稍后再试。"
       },
       "vehicle": {
+        "destroy": {
+          "failure": "无法移除该舰船。"
+        },
         "move": {
           "failure": "无法保存顺序。"
         },

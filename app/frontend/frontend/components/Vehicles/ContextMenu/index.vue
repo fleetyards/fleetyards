@@ -19,6 +19,10 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  firstErrorMessageFrom,
+  standardErrorFrom,
+} from "@/shared/utils/ApiErrors";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
@@ -89,6 +93,17 @@ const vehicle = computed(() => props.vehicle);
 
 const updateMutation = useUpdateMutation(vehicle);
 
+const { displayAlert, displayConfirm } = useAppNotifications();
+
+const alertFailure = (error: unknown, fallback: string) => {
+  displayAlert({
+    text:
+      firstErrorMessageFrom(error) ??
+      standardErrorFrom(error).message ??
+      t(fallback),
+  });
+};
+
 const addToWishlist = async () => {
   if (!props.vehicle) {
     return;
@@ -103,9 +118,14 @@ const addToWishlist = async () => {
         wanted: true,
       },
     })
-    .then(() => {
-      comlink.emit("vehicle-save", props.vehicle.id);
-    })
+    .then(
+      () => {
+        comlink.emit("vehicle-save", props.vehicle.id);
+      },
+      (error) => {
+        alertFailure(error, "messages.vehicleOverview.setting.failure");
+      },
+    )
     .catch((error) => {
       console.error(error);
     })
@@ -128,9 +148,14 @@ const addToHangar = async () => {
         wanted: false,
       },
     })
-    .then(() => {
-      comlink.emit("vehicle-save", props.vehicle.id);
-    })
+    .then(
+      () => {
+        comlink.emit("vehicle-save", props.vehicle.id);
+      },
+      (error) => {
+        alertFailure(error, "messages.vehicleOverview.setting.failure");
+      },
+    )
     .catch((error) => {
       console.error(error);
     })
@@ -158,9 +183,14 @@ const toggleHidden = async () => {
         hiddenByUser: !props.vehicle.hiddenByUser,
       },
     })
-    .then(() => {
-      comlink.emit("vehicle-save", props.vehicle.id);
-    })
+    .then(
+      () => {
+        comlink.emit("vehicle-save", props.vehicle.id);
+      },
+      (error) => {
+        alertFailure(error, "messages.vehicleOverview.setting.failure");
+      },
+    )
     .catch((error) => {
       console.error(error);
     })
@@ -168,8 +198,6 @@ const toggleHidden = async () => {
       updating.value = false;
     });
 };
-
-const { displayConfirm } = useAppNotifications();
 
 const remove = () => {
   deleting.value = true;
@@ -197,9 +225,14 @@ const destroy = async () => {
     .mutateAsync({
       id: props.vehicle.id,
     })
-    .then(() => {
-      comlink.emit("vehicle-destroy", props.vehicle.id);
-    })
+    .then(
+      () => {
+        comlink.emit("vehicle-destroy", props.vehicle.id);
+      },
+      (error) => {
+        alertFailure(error, "messages.vehicle.destroy.failure");
+      },
+    )
     .catch((error) => {
       console.error(error);
     })

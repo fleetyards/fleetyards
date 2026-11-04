@@ -168,6 +168,9 @@
         "failure": "Export fehlgeschlagen. Bitte versuche es später erneut."
       },
       "vehicle": {
+        "destroy": {
+          "failure": "Das Schiff konnte nicht entfernt werden."
+        },
         "move": {
           "failure": "Die Reihenfolge konnte nicht gespeichert werden."
         },

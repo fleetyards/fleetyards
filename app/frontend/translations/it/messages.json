@@ -168,6 +168,9 @@
         "failure": "Esportazione fallita. Per favore riprova più tardi."
       },
       "vehicle": {
+        "destroy": {
+          "failure": "Non è stato possibile rimuovere la nave."
+        },
         "move": {
           "failure": "Impossibile salvare l'ordine."
         },
