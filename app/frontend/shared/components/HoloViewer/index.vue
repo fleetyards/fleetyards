@@ -32,12 +32,9 @@ import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
 import Skybox from "./Skybox/index.vue";
-import pyroNebula from "@/images/skyboxes/pyro_nebula_4k.webp";
-import pyroNebulaSmall from "@/images/skyboxes/pyro_nebula_2k.webp";
-import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_4k.webp";
-import stantonNebulaSmall from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
-import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_4k.webp";
-import crusaderNebulaSmall from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
+import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
+import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
@@ -391,11 +388,11 @@ const BACKGROUND_ICONS: Record<Background, string> = {
   light: "fa-light fa-sun",
 };
 
-// Panoramas from the game's own skies, the smaller cut on a low power device.
-const SKYBOXES: Partial<Record<Background, { src: string; small: string }>> = {
-  stanton: { src: stantonNebula, small: stantonNebulaSmall },
-  crusader: { src: crusaderNebula, small: crusaderNebulaSmall },
-  pyro: { src: pyroNebula, small: pyroNebulaSmall },
+// Panoramas from the game's own skies, which give ./sky.ts its shapes and colours.
+const SKYBOXES: Partial<Record<Background, string>> = {
+  stanton: stantonNebula,
+  crusader: crusaderNebula,
+  pyro: pyroNebula,
 };
 
 const background = ref<Background>("dark");
@@ -403,13 +400,9 @@ const background = ref<Background>("dark");
 const backgroundName = (name: Background) =>
   t(`labels.holoViewer.background.${name}`);
 
-const skybox = computed(() => {
-  if (!props.backgrounds) return undefined;
-
-  const sky = SKYBOXES[background.value];
-
-  return sky && (lowPower.value ? sky.small : sky.src);
-});
+const skybox = computed(() =>
+  props.backgrounds ? SKYBOXES[background.value] : undefined,
+);
 
 // Hidden only: the model stays scaled and set down as it is on the grid.
 const gridVisible = ref(true);
