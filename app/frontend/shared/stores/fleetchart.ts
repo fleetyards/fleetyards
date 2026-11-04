@@ -74,6 +74,13 @@ export enum FleetchartShipStates {
   LANDED = "landed",
 }
 
+export enum FleetchartBackgrounds {
+  DARK = "dark",
+  STANTON = "stanton",
+  CRUSADER = "crusader",
+  PYRO = "pyro",
+}
+
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
@@ -82,6 +89,7 @@ export interface FleetchartOptions {
   solidExport: boolean;
   facing: FleetchartFacings;
   state: FleetchartShipStates;
+  background: FleetchartBackgrounds;
 }
 
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
@@ -92,6 +100,7 @@ export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   solidExport: false,
   facing: FleetchartFacings.LEFT,
   state: FleetchartShipStates.FLIGHT,
+  background: FleetchartBackgrounds.DARK,
 };
 
 export interface FleetchartPlacement {

@@ -11,6 +11,7 @@ module V1
           properties: {
             name: {type: :string},
             colored: {type: :boolean},
+            background: ::V1::Schemas::Enums::FleetchartBackgroundEnum,
             placements: {type: :array, items: ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartPlacement},
             cataloguePlacements: {type: :array, items: ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartCataloguePlacement}
           },

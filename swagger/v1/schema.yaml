@@ -35245,6 +35245,19 @@ components:
       - meta
       - items
       title: FleetWantedBlueprints
+    FleetchartBackgroundEnum:
+      type: string
+      enum:
+      - dark
+      - stanton
+      - crusader
+      - pyro
+      x-enumNames:
+      - DARK
+      - STANTON
+      - CRUSADER
+      - PYRO
+      title: FleetchartBackgroundEnum
     FleetchartCataloguePlacement:
       type: object
       properties:
@@ -35311,6 +35324,8 @@ components:
           type: string
         colored:
           type: boolean
+        background:
+          "$ref": "#/components/schemas/FleetchartBackgroundEnum"
         shareToken:
           type:
           - string
@@ -35333,6 +35348,7 @@ components:
       - id
       - name
       - colored
+      - background
       - placements
       - cataloguePlacements
       - createdAt
@@ -35345,6 +35361,8 @@ components:
           type: string
         colored:
           type: boolean
+        background:
+          "$ref": "#/components/schemas/FleetchartBackgroundEnum"
         placements:
           type: array
           items:
@@ -48128,6 +48146,8 @@ components:
           type: string
         colored:
           type: boolean
+        background:
+          "$ref": "#/components/schemas/FleetchartBackgroundEnum"
         username:
           type:
           - string
@@ -48153,6 +48173,7 @@ components:
       required:
       - name
       - colored
+      - background
       - username
       - publicHangar
       - placements

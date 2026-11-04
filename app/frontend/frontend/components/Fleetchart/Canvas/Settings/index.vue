@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
   FleetchartLayouts,
@@ -56,6 +57,12 @@ const sortable = computed(
 const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
 
 const choices = computed(() => [
+  {
+    name: "background" as const,
+    labelKey: "background",
+    optionsKey: "backgroundOptions",
+    values: Object.values(FleetchartBackgrounds) as string[],
+  },
   {
     name: "state" as const,
     labelKey: "state",

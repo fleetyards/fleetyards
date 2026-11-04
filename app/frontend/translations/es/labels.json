@@ -530,6 +530,13 @@
           "classification": "Clasificación",
           "status": "Estado de producción"
         },
+        "background": "Fondo",
+        "backgroundOptions": {
+          "dark": "Oscuro",
+          "stanton": "Nebulosa de Stanton",
+          "crusader": "Nebulosa de Crusader",
+          "pyro": "Nebulosa de Pyro"
+        },
         "spacing": "Espaciado",
         "spacingOptions": {
           "compact": "Compacto",

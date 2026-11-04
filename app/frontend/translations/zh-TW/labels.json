@@ -530,6 +530,13 @@
           "classification": "分類",
           "status": "生產狀態"
         },
+        "background": "背景",
+        "backgroundOptions": {
+          "dark": "深色",
+          "stanton": "Stanton 星雲",
+          "crusader": "Crusader 星雲",
+          "pyro": "Pyro 星雲"
+        },
         "spacing": "間距",
         "spacingOptions": {
           "compact": "緊湊",
