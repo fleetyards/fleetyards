@@ -34,6 +34,27 @@ class RepresentationStoreOutageTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  # Processing a variant for the first time reads and writes the store before
+  # `show` runs, so the probe's rescue never sees these.
+  test "a variant that cannot be stored answers 503 with a retry hint" do
+    ActiveStorage::Blob.service.stubs(:upload)
+      .raises(Aws::S3::Errors::Http503Error.new(nil, "Service Unavailable"))
+
+    get representation_path
+
+    assert_response :service_unavailable
+    assert_equal "30", response.headers["Retry-After"]
+  end
+
+  test "a networking failure while storing a variant answers the same way" do
+    ActiveStorage::Blob.service.stubs(:upload)
+      .raises(Seahorse::Client::NetworkingError.new(Net::ReadTimeout.new))
+
+    get representation_path
+
+    assert_response :service_unavailable
+  end
+
   # The rescue is there for a store that cannot answer, not as a blanket guard
   # over the probe.
   test "an error the store did not raise is left alone" do

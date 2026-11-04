@@ -12,6 +12,12 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
 
   rescue_from ActiveStorage::FileNotFoundError, with: :representation_not_found
 
+  # Processing a variant for the first time reads and writes the store in the
+  # before_action, ahead of the probe in `show`. A store that is failing is not
+  # something a request can fix, so this tells the client to come back. rescue_from
+  # resolves these names lazily, so they are safe on a Disk-backed environment.
+  rescue_from(*UNAVAILABLE_ERRORS, with: :respond_store_unavailable)
+
   def show
     reprocess_representation unless representation_exists?
 
@@ -35,6 +41,13 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
     Rails.logger.warn("representation probe skipped, #{error.class}: #{error.message}")
 
     true
+  end
+
+  def respond_store_unavailable(error)
+    Rails.logger.warn("representation not processed, #{error.class}: #{error.message}")
+
+    response.headers["Retry-After"] = "30"
+    head :service_unavailable
   end
 
   def store_unavailable?(error)
