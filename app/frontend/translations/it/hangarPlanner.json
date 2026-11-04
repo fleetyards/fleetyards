@@ -255,6 +255,10 @@
               "one": "%{count} tenuta così com'è",
               "other": "%{count} tenute così come sono"
             },
+            "melted": {
+              "one": "%{count} sciolta",
+              "other": "%{count} sciolte"
+            },
             "unassigned": {
               "one": "%{count} nave non nel piano",
               "other": "%{count} navi non nel piano"

@@ -68,13 +68,13 @@ type Card = {
   tone?: "warning";
 };
 
-type RowGroup = "slots" | "ships" | "kept" | "unassigned";
+type RowGroup = "slots" | "ships" | "routed" | "kept" | "melted" | "unassigned";
 
 type Row = {
   key: string;
   group: RowGroup;
-  // Where the row stands in its group: slots in the plan's order, ships in the
-  // hangar's, so deciding on one never moves it.
+  // Where the row stands in its group: slots and finished routes in the plan's
+  // order, ships in the hangar's.
   order: number;
   testId: string;
   left?: Card;
@@ -300,10 +300,14 @@ const routedShipRow = (
   const upgraded = route.acquisition.steps.length > 0;
   const left = hangarCard(entry.name, entry.model);
 
+  const rowGroup: RowGroup = unrouted ? "ships" : upgraded ? "routed" : "kept";
   return {
     key: entry.vehicleId,
-    group: unrouted || upgraded ? "ships" : "kept",
-    order: shipOrder(entry.vehicleId),
+    group: rowGroup,
+    order:
+      rowGroup === "routed"
+        ? slotOrder(route.slot.id) + route.index
+        : shipOrder(entry.vehicleId),
     testId: unrouted
       ? "hangar-plan-vehicle-unrouted"
       : "hangar-plan-vehicle-status",
@@ -329,7 +333,7 @@ const meltedRow = (entry: HangarPlanVehicleStatus): Row => {
 
   return {
     key: entry.vehicleId,
-    group: "ships",
+    group: "melted",
     order: shipOrder(entry.vehicleId),
     testId: "hangar-plan-vehicle-status",
     left: hangarCard(entry.name, entry.model),
@@ -492,7 +496,7 @@ const gapDetail = (slot: HangarPlanSlot) => {
 
       return {
         key: acquisition.id,
-        group: "slots",
+        group: acquisition.routeComplete ? "routed" : "slots",
         order: slotOrder(route.slot.id) + route.index,
         testId: acquisition.routeComplete
           ? "hangar-plan-flow-purchase"
@@ -623,12 +627,19 @@ const gapDetail = (slot: HangarPlanSlot) => {
   return [...bought, ...gaps, ...waiting, ...undecided, ...open];
 });
 
-// The plan's slots come first, so one just added shows above the ships; then
-// the ships being worked on. Ships kept as they are, and those the plan has no
-// use for, wait folded.
-const groupOrder: RowGroup[] = ["slots", "ships", "kept", "unassigned"];
+// What still needs a decision comes first: the plan's unsettled slots, so one
+// just added shows above the ships, then the ships being worked on. Finished
+// routes follow, and ships kept, melted or of no use to the plan wait folded.
+const groupOrder: RowGroup[] = [
+  "slots",
+  "ships",
+  "routed",
+  "kept",
+  "melted",
+  "unassigned",
+];
 
-const folded: RowGroup[] = ["kept", "unassigned"];
+const folded: RowGroup[] = ["kept", "melted", "unassigned"];
 
 const groups = computed<Group[]>(() => {
   const rows = [...shipRows.value, ...neededRows.value];
@@ -1117,8 +1128,8 @@ const imageOf = (model?: HangarPlanModel) =>
   }
 }
 
-// A melted ship sits among the ships still being planned, so it reads as
-// leaving: its card fades and its tag takes the colour of the fire.
+// A melted ship reads as leaving: its card fades and its tag takes the colour
+// of the fire.
 .hangar-flow__row--melted {
   .hangar-flow__card:first-child {
     opacity: 0.55;

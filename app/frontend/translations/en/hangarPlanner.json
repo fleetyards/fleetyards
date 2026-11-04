@@ -255,6 +255,10 @@
               "one": "%{count} kept as it is",
               "other": "%{count} kept as they are"
             },
+            "melted": {
+              "one": "%{count} melted",
+              "other": "%{count} melted"
+            },
             "unassigned": {
               "one": "%{count} ship not in the plan",
               "other": "%{count} ships not in the plan"

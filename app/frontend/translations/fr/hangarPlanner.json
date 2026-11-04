@@ -255,6 +255,10 @@
               "one": "%{count} gardé tel quel",
               "other": "%{count} gardés tels quels"
             },
+            "melted": {
+              "one": "%{count} melté",
+              "other": "%{count} meltés"
+            },
             "unassigned": {
               "one": "%{count} vaisseau hors du plan",
               "other": "%{count} vaisseaux hors du plan"

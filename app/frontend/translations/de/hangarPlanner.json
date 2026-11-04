@@ -255,6 +255,10 @@
               "one": "%{count} Schiff unverändert behalten",
               "other": "%{count} Schiffe unverändert behalten"
             },
+            "melted": {
+              "one": "%{count} gemeltet",
+              "other": "%{count} gemeltet"
+            },
             "unassigned": {
               "one": "%{count} Schiff nicht im Plan",
               "other": "%{count} Schiffe nicht im Plan"

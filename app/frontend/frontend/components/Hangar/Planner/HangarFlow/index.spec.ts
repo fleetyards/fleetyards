@@ -157,11 +157,10 @@ describe("Hangar/Planner/HangarFlow", () => {
       props: { plan, comparison },
     });
 
-    // Slots in the plan's order, then the melted ship; kept and left out fold.
+    // What needs a decision, then the finished route; the rest folds.
     expect(rowTests(wrapper)).toEqual([
-      "hangar-plan-flow-purchase",
       "hangar-plan-flow-undecided",
-      "hangar-plan-vehicle-status",
+      "hangar-plan-flow-purchase",
     ]);
     expect(wrapper.text()).not.toContain("Aurora MR");
     expect(wrapper.text()).not.toContain("Vulture");
@@ -173,6 +172,12 @@ describe("Hangar/Planner/HangarFlow", () => {
       '[data-test="hangar-plan-flow-toggle-unassigned"]',
     );
     expect(toggle.text()).toContain("1 ship not in the plan");
+
+    const melted = wrapper.find('[data-test="hangar-plan-flow-toggle-melted"]');
+    expect(melted.text()).toContain("1 melted");
+    expect(wrapper.text()).not.toContain("Avenger Titan");
+    await melted.trigger("click");
+    expect(wrapper.text()).toContain("Avenger Titan");
 
     await toggle.trigger("click");
     expect(wrapper.text()).toContain("Aurora MR");
@@ -201,13 +206,12 @@ describe("Hangar/Planner/HangarFlow", () => {
       },
     });
 
-    // The melted Titan comes before both, as it does in the hangar.
+    // Both stay above the finished route, in their hangar order.
     expect(rowTests(wrapper)).toEqual([
-      "hangar-plan-flow-purchase",
       "hangar-plan-flow-undecided",
-      "hangar-plan-vehicle-status",
       "hangar-plan-vehicle-review",
       "hangar-plan-vehicle-review",
+      "hangar-plan-flow-purchase",
     ]);
 
     const [change, pending] = wrapper.findAll(

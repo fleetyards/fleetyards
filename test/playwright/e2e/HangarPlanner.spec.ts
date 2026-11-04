@@ -112,6 +112,7 @@ test.describe("Hangar Planner", () => {
       page.getByTestId("hangar-plan-summary-meltCredit"),
     ).toContainText("30");
 
+    await page.getByTestId("hangar-plan-flow-toggle-melted").click();
     await expect(statuses.filter({ hasText: "Aurora MR" })).toContainText(
       "Melted",
     );

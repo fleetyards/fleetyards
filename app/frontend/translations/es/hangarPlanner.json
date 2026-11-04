@@ -255,6 +255,10 @@
               "one": "%{count} conservada tal cual",
               "other": "%{count} conservadas tal cual"
             },
+            "melted": {
+              "one": "%{count} fundida",
+              "other": "%{count} fundidas"
+            },
             "unassigned": {
               "one": "%{count} nave fuera del plan",
               "other": "%{count} naves fuera del plan"

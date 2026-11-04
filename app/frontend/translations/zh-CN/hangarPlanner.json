@@ -255,6 +255,10 @@
               "one": "%{count} 艘原样保留",
               "other": "%{count} 艘原样保留"
             },
+            "melted": {
+              "one": "%{count} 艘已熔毁",
+              "other": "%{count} 艘已熔毁"
+            },
             "unassigned": {
               "one": "%{count} 艘飞船不在方案中",
               "other": "%{count} 艘飞船不在方案中"
