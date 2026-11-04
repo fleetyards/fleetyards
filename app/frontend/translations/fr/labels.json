@@ -511,6 +511,29 @@
           "front": "Face"
         },
         "gridSize": "%{size} mètre par zone de grille",
+        "options": "Options",
+        "sort": "Tri",
+        "sortOptions": {
+          "lengthAsc": "Longueur, la plus courte d'abord",
+          "lengthDesc": "Longueur, la plus longue d'abord",
+          "name": "Nom",
+          "list": "Ordre de la liste"
+        },
+        "group": "Groupe",
+        "groupOptions": {
+          "none": "Aucun",
+          "manufacturer": "Fabricant",
+          "classification": "Classification",
+          "status": "Statut de production"
+        },
+        "spacing": "Espacement",
+        "spacingOptions": {
+          "compact": "Compact",
+          "normal": "Normal",
+          "wide": "Large"
+        },
+        "scaleBar": "Barre d'échelle",
+        "solidExport": "Fond uni dans le PNG",
         "layout": "Disposition",
         "layoutOptions": {
           "columns": "Colonnes",

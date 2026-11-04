@@ -511,6 +511,29 @@
           "front": "正面"
         },
         "gridSize": "每格 %{size} 米",
+        "options": "选项",
+        "sort": "排序",
+        "sortOptions": {
+          "lengthAsc": "长度,由短到长",
+          "lengthDesc": "长度,由长到短",
+          "name": "名称",
+          "list": "列表顺序"
+        },
+        "group": "分组",
+        "groupOptions": {
+          "none": "无",
+          "manufacturer": "制造商",
+          "classification": "分类",
+          "status": "生产状态"
+        },
+        "spacing": "间距",
+        "spacingOptions": {
+          "compact": "紧凑",
+          "normal": "正常",
+          "wide": "宽松"
+        },
+        "scaleBar": "比例尺",
+        "solidExport": "PNG 使用纯色背景",
         "layout": "布局",
         "layoutOptions": {
           "columns": "分栏",

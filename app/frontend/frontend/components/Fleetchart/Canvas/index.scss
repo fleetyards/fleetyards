@@ -60,6 +60,36 @@
   left: 0;
 }
 
+.fleetchart-canvas__heading {
+  position: absolute;
+  color: darken($text-color, 10%);
+  font-size: 120%;
+  font-family: "Orbitron", sans-serif;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.fleetchart-canvas__scale {
+  position: fixed;
+  bottom: 96px;
+  left: 20px;
+  z-index: 900;
+  text-shadow: 0 0 2px black;
+}
+
+.fleetchart-canvas__scale-bar {
+  display: block;
+  height: 4px;
+  margin-bottom: 4px;
+  background: $text-color;
+}
+
+.fleetchart-canvas__export-scale {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-canvas__grid-label {
     right: 10px;

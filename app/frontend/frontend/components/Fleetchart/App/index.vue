@@ -186,6 +186,10 @@ onMounted(async () => {
   }
 });
 
+watch(layoutsEnabled, () => {
+  updateItems();
+});
+
 const toggleFilter = () => {
   filtersStore.toggle(props.namespace);
 };
@@ -206,6 +210,13 @@ const withViews = (items: (Vehicle | Model | VehiclePublic)[]) => {
 };
 
 const updateItems = () => {
+  // The renderer sorts by the chosen option, and one option is the list's order.
+  if (layoutsEnabled.value) {
+    innerItems.value = withViews(JSON.parse(JSON.stringify(props.items)));
+
+    return;
+  }
+
   // The comparator takes the full item union now: it used to receive `any` from
   // `JSON.parse`, and going through `withViews` gives the array a real type.
   innerItems.value = withViews(JSON.parse(JSON.stringify(props.items))).sort(

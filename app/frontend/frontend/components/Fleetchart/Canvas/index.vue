@@ -14,6 +14,7 @@ import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
+import FleetchartCanvasSettings from "./Settings/index.vue";
 import {
   PIXELS_PER_METRE,
   modelOf,
@@ -27,14 +28,22 @@ import {
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  groupHeadings,
+  SHIP_PADDING,
   withRowWidth,
 } from "@/frontend/components/Fleetchart/layouts";
+import {
+  groupTitleOf,
+  sortEntries,
+} from "@/frontend/components/Fleetchart/options";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FleetchartGroups,
   FleetchartLayouts,
   FleetchartScreenHeights,
+  FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -69,6 +78,14 @@ const FIXED_SCREEN_HEIGHT_FACTORS: Record<
   "4x": 4,
 };
 
+const SPACING_FACTORS: Record<FleetchartSpacings, number> = {
+  [FleetchartSpacings.COMPACT]: 0.4,
+  [FleetchartSpacings.NORMAL]: 1,
+  [FleetchartSpacings.WIDE]: 3,
+};
+
+const SOLID_EXPORT_BACKGROUND = "#111";
+
 const { t } = useI18n();
 
 const mobile = useMobile();
@@ -92,6 +109,10 @@ const showLabels = computed(() => fleetchartStore.showLabels(props.namespace));
 const colored = computed(() => fleetchartStore.colored(props.namespace));
 
 const extended = computed(() => fleetchartStore.extendedState(props.namespace));
+
+const options = computed(() =>
+  fleetchartStore.fleetchartOptions(props.namespace),
+);
 
 const selectedScreenHeight = computed(() =>
   fleetchartStore.fleetchartScreenHeight(props.namespace),
@@ -160,28 +181,48 @@ const labelRoom = (entry: FleetchartEntry) => {
   };
 };
 
+const groupTitle = (entry: FleetchartEntry) => {
+  if (options.value.group === FleetchartGroups.NONE) {
+    return undefined;
+  }
+
+  return (
+    groupTitleOf(entry, options.value.group, t) ||
+    t("labels.fleetchartApp.groupOptions.none")
+  );
+};
+
 const ships = computed(() =>
-  props.items.flatMap((entry) => {
-    const geometry = shipGeometry(entry, viewpoint.value, {
-      extended: extended.value,
-      colored: colored.value,
-    });
+  sortEntries(props.items, options.value.sort, options.value.group).flatMap(
+    (entry) => {
+      const geometry = shipGeometry(entry, viewpoint.value, {
+        extended: extended.value,
+        colored: colored.value,
+      });
 
-    if (!geometry) {
-      return [];
-    }
+      if (!geometry) {
+        return [];
+      }
 
-    return [
-      {
-        id: entry.id,
-        entry,
-        geometry,
-        width: geometry.length,
-        height: geometry.height,
-        ...labelRoom(entry),
-      },
-    ];
-  }),
+      const group = groupTitle(entry);
+
+      return [
+        {
+          id: entry.id,
+          entry,
+          geometry,
+          width: geometry.length,
+          height: geometry.height,
+          group,
+          headingWidth: group
+            ? labelMeasure.value.width(group) / PIXELS_PER_METRE
+            : 0,
+          padding: SHIP_PADDING * SPACING_FACTORS[options.value.spacing],
+          ...labelRoom(entry),
+        },
+      ];
+    },
+  ),
 );
 
 const columnHeightFor = (factor: number) =>
@@ -215,6 +256,8 @@ const bounds = computed(() => {
     : covered;
 });
 
+const headings = computed(() => groupHeadings(ships.value, positions.value));
+
 const sceneX = (metres: number) =>
   (metres - bounds.value.minX) * PIXELS_PER_METRE + SCENE_PADDING;
 
@@ -242,6 +285,12 @@ const exportGridStyle = computed(() => {
     backgroundPosition: `${offset(sceneX(0))}px ${offset(sceneY(0))}px`,
   };
 });
+
+const scaleBarWidth = computed(
+  () => gridCell.value * PIXELS_PER_METRE * transform.value.scale,
+);
+
+const settingsOpen = ref(false);
 
 const gridCanvas = ref<HTMLCanvasElement>();
 
@@ -465,11 +514,23 @@ const toggleLabels = () => {
         <i class="fa-duotone fa-palette" />
       </Btn>
 
+      <Btn
+        :active="settingsOpen"
+        :aria-label="t('labels.fleetchartApp.options')"
+        data-test="fleetchart-options"
+        @click="settingsOpen = !settingsOpen"
+      >
+        <i class="fa-duotone fa-sliders" />
+      </Btn>
+
       <BtnDropdown>
         <template v-if="downloadName">
           <DownloadScreenshotBtn
             element="#fleetchart"
             :filename="downloadName"
+            :background-color="
+              options.solidExport ? SOLID_EXPORT_BACKGROUND : null
+            "
           />
 
           <hr />
@@ -488,6 +549,20 @@ const toggleLabels = () => {
           <span>{{ t("actions.resetZoom") }}</span>
         </Btn>
       </BtnDropdown>
+    </div>
+
+    <FleetchartCanvasSettings v-if="settingsOpen" :namespace="namespace" />
+
+    <div
+      v-if="options.scaleBar"
+      class="fleetchart-canvas__scale"
+      data-test="fleetchart-scale"
+    >
+      <span
+        class="fleetchart-canvas__scale-bar"
+        :style="{ width: `${scaleBarWidth}px` }"
+      />
+      {{ gridCell }} m
     </div>
 
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
@@ -510,6 +585,19 @@ const toggleLabels = () => {
           :style="exportGridStyle"
         />
 
+        <div
+          v-for="heading in headings"
+          :key="heading.title"
+          class="fleetchart-canvas__heading"
+          :style="{
+            left: `${sceneX(heading.x)}px`,
+            top: `${sceneY(heading.y)}px`,
+          }"
+          data-test="fleetchart-group-heading"
+        >
+          {{ heading.title }}
+        </div>
+
         <FleetchartCanvasItem
           v-for="ship in ships"
           :key="ship.id"
@@ -524,6 +612,17 @@ const toggleLabels = () => {
           :colored="colored"
           :extended="extended"
         />
+
+        <div
+          v-if="options.scaleBar"
+          class="fleetchart-canvas__export-only fleetchart-canvas__export-scale"
+        >
+          <span
+            class="fleetchart-canvas__scale-bar"
+            :style="{ width: `${gridCell * PIXELS_PER_METRE}px` }"
+          />
+          {{ gridCell }} m
+        </div>
 
         <div
           class="fleetchart-canvas__export-only fleetchart-canvas__export-logo"
