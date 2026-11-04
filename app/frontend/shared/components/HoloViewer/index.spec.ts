@@ -1,7 +1,9 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable: () => true }));
+const webglAvailable = vi.hoisted(() => vi.fn(() => true));
+
+vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable }));
 
 vi.mock("@tresjs/core", () => ({
   TresCanvas: {
@@ -40,6 +42,17 @@ const mount = (size: number) =>
 describe("HoloViewer", () => {
   beforeEach(() => {
     setViewport(true);
+    webglAvailable.mockReturnValue(true);
+  });
+
+  it("tells its parent where the probe finds no WebGL", async () => {
+    webglAvailable.mockReturnValue(false);
+
+    const wrapper = await mount(MB);
+
+    expect(wrapper.find("[data-test='webgl-fallback']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='canvas']").exists()).toBe(false);
+    expect(wrapper.emitted("unavailable")).toHaveLength(1);
   });
 
   it("asks a phone before loading a holo past the limit", async () => {
