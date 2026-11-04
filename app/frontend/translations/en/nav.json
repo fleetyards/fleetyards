@@ -42,6 +42,7 @@
         "vehicleLog": "Captain's Log",
         "shipComponents": "Ship Components",
         "plans": "Planner",
+        "sharedFleetchartLayout": "Shared Layout",
         "sharedPlan": "Shared Plan"
       },
       "login": "Login",

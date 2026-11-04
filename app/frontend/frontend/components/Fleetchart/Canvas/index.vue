@@ -14,6 +14,7 @@ import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
+import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
 import FleetchartCanvasShipControls from "./ShipControls/index.vue";
 import {
@@ -46,6 +47,11 @@ import {
   groupTitleOf,
   sortEntries,
 } from "@/frontend/components/Fleetchart/options";
+import {
+  placementsFromLayout,
+  type FleetchartPlacementInput,
+} from "@/frontend/components/Fleetchart/savedLayouts";
+import type { FleetchartLayout } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -68,6 +74,7 @@ interface Props {
   downloadName?: string;
   // Whether this chart offers the free layout, which needs a whole fleet to work on.
   canArrange?: boolean;
+  readOnly?: boolean;
   // False until `items` holds everything that can be arranged.
   arrangeReady?: boolean;
 }
@@ -76,6 +83,7 @@ const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   downloadName: undefined,
   canArrange: false,
+  readOnly: false,
   arrangeReady: true,
 });
 
@@ -250,6 +258,8 @@ const fillsSpaceIn = (kind: FleetchartLayouts) =>
   kind === FleetchartLayouts.FREE || kind === FleetchartLayouts.PACKED;
 
 const isFree = computed(() => layout.value === FleetchartLayouts.FREE);
+
+const arranging = computed(() => isFree.value && !props.readOnly);
 
 const fillsSpace = computed(() => fillsSpaceIn(layout.value));
 
@@ -541,7 +551,7 @@ const setupPanzoom = () => {
   panzoomInstance = panzoom(scene.value, {
     // A press on a ship moves that ship, and one with Shift draws a selection.
     beforeMouseDown: (event) =>
-      isFree.value &&
+      arranging.value &&
       (event.shiftKey ||
         (event.target as Element).closest("[data-test='fleetchart-ship']"))
         ? true
@@ -711,10 +721,10 @@ watch(
 );
 
 watch(
-  [isFree, () => props.arrangeReady, () => ships.value.length],
+  [arranging, () => props.arrangeReady, () => ships.value.length],
   () => {
     if (
-      isFree.value &&
+      arranging.value &&
       props.arrangeReady &&
       ships.value.length &&
       !Object.keys(placements.value).length
@@ -733,7 +743,7 @@ const resetArrangement = () => {
 };
 
 const selectedShips = computed(() =>
-  isFree.value
+  arranging.value
     ? ships.value.filter((ship) => selectedIds.value.includes(ship.id))
     : [],
 );
@@ -862,6 +872,38 @@ const stackSelected = (direction: "front" | "back") => {
       : Math.min(0, ...orders) - sorted.length;
 
   changeShips(sorted, (ship) => ({ order: start + sorted.indexOf(ship) }));
+};
+
+const savedLayoutsOpen = ref(false);
+
+// A saved layout has to look the same without this chart's own view and state, so
+// each ship carries what it is actually drawn with.
+const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
+  Object.entries(placements.value).map(([vehicleId, placement]) => {
+    const ship = ships.value.find(({ id }) => id === vehicleId);
+
+    return {
+      vehicleId,
+      x: placement.x,
+      y: placement.y,
+      facing: ship?.facing ?? placement.facing,
+      viewpoint: ship?.viewpoint ?? placement.viewpoint,
+      state: ship?.state ?? placement.state,
+      order: placement.order,
+      groupId: placement.groupId,
+    };
+  }),
+);
+
+const openSavedLayout = (saved: FleetchartLayout) => {
+  changePlacements(placementsFromLayout(saved.placements));
+
+  if (saved.colored !== colored.value) {
+    fleetchartStore.togglePlain(props.namespace);
+  }
+
+  selectedIds.value = [];
+  fitToScreen();
 };
 
 const canGroupSelected = computed(
@@ -1023,7 +1065,7 @@ const handleViewportPress = (event: PointerEvent) => {
     return;
   }
 
-  if (isFree.value && event.shiftKey && event.button === 0) {
+  if (arranging.value && event.shiftKey && event.button === 0) {
     event.preventDefault();
     startMarquee(event);
   } else {
@@ -1050,7 +1092,7 @@ const selectForPress = (id: string, additive: boolean) => {
 };
 
 const startDrag = (id: string, event: PointerEvent) => {
-  if (!isFree.value || event.pointerType === "touch" || event.button !== 0) {
+  if (!arranging.value || event.pointerType === "touch" || event.button !== 0) {
     return;
   }
 
@@ -1165,7 +1207,7 @@ const isEditable = (target: EventTarget | null) =>
     ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName));
 
 const handleArrangeKeys = (event: KeyboardEvent) => {
-  if (!isFree.value || isEditable(event.target)) {
+  if (!arranging.value || isEditable(event.target)) {
     return;
   }
 
@@ -1246,7 +1288,16 @@ const toggleLabels = () => {
 <template>
   <div class="fleetchart-wrapper" data-test="fleetchart-canvas">
     <div class="fleetchart-controls">
-      <template v-if="isFree">
+      <template v-if="arranging">
+        <Btn
+          v-tooltip="t('labels.fleetchartApp.savedLayouts')"
+          :active="savedLayoutsOpen"
+          :aria-label="t('labels.fleetchartApp.savedLayouts')"
+          data-test="fleetchart-saved-layouts"
+          @click="savedLayoutsOpen = !savedLayoutsOpen"
+        >
+          <i class="fa-duotone fa-bookmark" />
+        </Btn>
         <Btn
           v-tooltip="t('labels.fleetchartApp.undo')"
           :aria-label="t('labels.fleetchartApp.undo')"
@@ -1319,6 +1370,7 @@ const toggleLabels = () => {
       </Btn>
 
       <Btn
+        v-if="!readOnly"
         :active="settingsOpen"
         :aria-label="t('labels.fleetchartApp.options')"
         data-test="fleetchart-options"
@@ -1379,6 +1431,13 @@ const toggleLabels = () => {
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
     </div>
+
+    <FleetchartCanvasSavedLayouts
+      v-if="arranging && savedLayoutsOpen"
+      :placements="placementsToSave"
+      :colored="colored"
+      @open="openSavedLayout"
+    />
 
     <FleetchartCanvasShipControls
       ref="shipControls"
@@ -1459,7 +1518,7 @@ const toggleLabels = () => {
           :box-height="ship.height"
           :facing="ship.facing"
           :selected="isFree && !exporting && selectedIds.includes(ship.id)"
-          :arranging="isFree"
+          :arranging="arranging"
           :order="isFree ? placements[ship.id]?.order : undefined"
           @pointerdown="startDrag(ship.id, $event)"
         />

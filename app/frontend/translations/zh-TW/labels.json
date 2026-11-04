@@ -550,6 +550,18 @@
           "extended": "展開",
           "landed": "著陸"
         },
+        "savedLayouts": "已儲存的版面配置",
+        "layoutName": "版面配置名稱",
+        "saveLayout": "另存為新配置",
+        "openLayout": "開啟",
+        "updateLayout": "儲存此配置的變更",
+        "shareLayout": "透過連結分享",
+        "stopSharingLayout": "停止分享",
+        "savedLayoutUpdated": "版面配置已儲存",
+        "savedLayoutFailed": "操作失敗。名稱是否已被使用?",
+        "sharedLayoutMissing": "此配置不存在或已不再分享。",
+        "sharedLayoutBy": "由 %{username} 分享",
+        "sharedLayoutEmpty": "此配置中沒有公開的艦船。",
         "facing": "朝向",
         "facingOptions": {
           "left": "左",

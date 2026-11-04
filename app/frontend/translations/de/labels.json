@@ -550,6 +550,18 @@
           "extended": "Ausgefahren",
           "landed": "Gelandet"
         },
+        "savedLayouts": "Gespeicherte Layouts",
+        "layoutName": "Name des Layouts",
+        "saveLayout": "Als neu speichern",
+        "openLayout": "Öffnen",
+        "updateLayout": "Änderungen in diesem Layout speichern",
+        "shareLayout": "Per Link teilen",
+        "stopSharingLayout": "Nicht mehr teilen",
+        "savedLayoutUpdated": "Layout gespeichert",
+        "savedLayoutFailed": "Das hat nicht geklappt. Ist der Name schon vergeben?",
+        "sharedLayoutMissing": "Dieses Layout gibt es nicht oder es wird nicht mehr geteilt.",
+        "sharedLayoutBy": "Geteilt von %{username}",
+        "sharedLayoutEmpty": "Keines der Schiffe in diesem Layout ist öffentlich.",
         "facing": "Ausrichtung",
         "facingOptions": {
           "left": "Links",

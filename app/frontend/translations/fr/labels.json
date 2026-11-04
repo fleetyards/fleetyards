@@ -550,6 +550,18 @@
           "extended": "Déployé",
           "landed": "Posé"
         },
+        "savedLayouts": "Dispositions enregistrées",
+        "layoutName": "Nom de la disposition",
+        "saveLayout": "Enregistrer comme nouvelle",
+        "openLayout": "Ouvrir",
+        "updateLayout": "Enregistrer les modifications",
+        "shareLayout": "Partager par lien",
+        "stopSharingLayout": "Arrêter le partage",
+        "savedLayoutUpdated": "Disposition enregistrée",
+        "savedLayoutFailed": "Cela n'a pas fonctionné. Le nom est-il déjà pris ?",
+        "sharedLayoutMissing": "Cette disposition n'existe pas ou n'est plus partagée.",
+        "sharedLayoutBy": "Partagée par %{username}",
+        "sharedLayoutEmpty": "Aucun vaisseau de cette disposition n'est public.",
         "facing": "Orientation",
         "facingOptions": {
           "left": "Gauche",

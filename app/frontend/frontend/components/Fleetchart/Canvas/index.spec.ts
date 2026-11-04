@@ -282,6 +282,64 @@ describe("FleetchartCanvas", () => {
     expect(x).toBeGreaterThan(-5000);
   });
 
+  describe("a shared layout", () => {
+    it("shows the arrangement but cannot change it", async () => {
+      const store = useFleetchartStore();
+
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      store.updatePlacements({
+        namespace: "hangar",
+        placements: { a: { x: 500, y: 500 } },
+      });
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: {
+            namespace: "hangar",
+            items: [entry("a")],
+            canArrange: true,
+            readOnly: true,
+          },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+      const ship = wrapper.get("[data-test='fleetchart-ship']");
+      const down = new Event("pointerdown", { bubbles: true });
+
+      Object.assign(down, {
+        button: 0,
+        pointerType: "mouse",
+        clientX: 0,
+        clientY: 0,
+      });
+      ship.element.dispatchEvent(down);
+
+      const move = new Event("pointermove");
+
+      Object.assign(move, { clientX: 40, clientY: 0 });
+      window.dispatchEvent(move);
+      window.dispatchEvent(new Event("pointerup"));
+      await nextTick();
+
+      expect(store.fleetchartPlacements("hangar").a.x).toBe(500);
+      expect(wrapper.find("[data-test='fleetchart-undo']").exists()).toBe(
+        false,
+      );
+      expect(
+        wrapper.find("[data-test='fleetchart-saved-layouts']").exists(),
+      ).toBe(false);
+      expect(
+        wrapper.find("[data-test='fleetchart-ship-controls']").exists(),
+      ).toBe(false);
+      expect(wrapper.find("[data-test='fleetchart-options']").exists()).toBe(
+        false,
+      );
+    });
+  });
+
   describe("free layout", () => {
     const mountFree = async () => {
       useFleetchartStore().updateLayout({

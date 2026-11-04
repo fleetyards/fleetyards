@@ -62,6 +62,7 @@
         "vehicleLog": "Logbuch",
         "shipComponents": "Schiffskomponenten",
         "plans": "Hangar-Planer",
+        "sharedFleetchartLayout": "Geteiltes Fleetchart-Layout",
         "sharedPlan": "Geteilter Hangar-Plan"
       },
       "requestPassword": "Passwort anfordern",

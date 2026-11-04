@@ -62,6 +62,7 @@
         "vehicleLog": "舰长日志",
         "shipComponents": "飞船部件",
         "plans": "机库规划器",
+        "sharedFleetchartLayout": "已分享的舰队图布局",
         "sharedPlan": "共享机库计划"
       },
       "requestPassword": "请求密码",

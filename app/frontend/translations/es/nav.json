@@ -42,6 +42,7 @@
         "vehicleLog": "Cuaderno de bitácora",
         "shipComponents": "Componentes de nave",
         "plans": "Planificador",
+        "sharedFleetchartLayout": "Disposición compartida",
         "sharedPlan": "Plan compartido"
       },
       "login": "Iniciar sesión",

@@ -42,6 +42,7 @@
         "vehicleLog": "Logbuch",
         "shipComponents": "Schiffskomponenten",
         "plans": "Planer",
+        "sharedFleetchartLayout": "Geteiltes Layout",
         "sharedPlan": "Geteilter Plan"
       },
       "login": "Anmelden",
