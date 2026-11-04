@@ -276,6 +276,16 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET resources says whether upgrades lead into and out of each store ship" do
+    @carrack.update!(created_at: 1.year.ago)
+    @cutlass.update!(created_at: 1.year.ago, ccu_target_seen_at: 1.month.ago)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      assert_equal [["Cutlass Black", "sales_only", "known"], ["Carrack", "none", "none"]],
+        parsed_body["storeModels"].map { |model| model.values_at("name", "ccuInto", "ccuOutOf") }
+    end
+  end
+
   test "GET resources names the ships a buy-back returns, and lists only ships, packages and upgrades" do
     create(:buyback_pledge, user: @user, kind: "package", name: "Explorer Pack", ship_names: ["Carrack", "Cutlass Black"], lifetime_insurance: true)
     create(:buyback_pledge, user: @user, name: "Standalone Ship - Cutlass Black", upgraded: true, contained: "Carrack")
