@@ -179,6 +179,18 @@ describe("VehicleContextMenu", () => {
       });
     });
 
+    it("gives the reason of a refusal that names no field", async () => {
+      mocks.updateVehicle.mockReset().mockRejectedValue({
+        isAxiosError: true,
+        response: { data: { code: "forbidden", message: "Not yours." } },
+      });
+
+      await mount();
+      await click("vehicle-add-to-wishlist");
+
+      expect(mocks.displayAlert).toHaveBeenCalledWith({ text: "Not yours." });
+    });
+
     it("says so when the ship could not be removed", async () => {
       await mount();
       await click("vehicle-remove");
