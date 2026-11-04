@@ -34974,6 +34974,38 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedTopViewColored:
           "$ref": "#/components/schemas/MediaFile"
+        angledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        rearView:
+          "$ref": "#/components/schemas/MediaFile"
+        rearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
       title: FleetchartViewMedia
     FleetchartViewQuery:
       type: object

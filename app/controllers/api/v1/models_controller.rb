@@ -56,7 +56,7 @@ module Api
       def fleetchart_views
         slugs = Array(model_views_params).first(Model.max_per_page)
 
-        @models = Model.where(slug: slugs).includes(Model.list_attachment_preloads)
+        @models = Model.where(slug: slugs).includes(Model.fleetchart_view_preloads)
       end
 
       def slugs

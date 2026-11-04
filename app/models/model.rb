@@ -420,6 +420,20 @@ class Model < ApplicationRecord
     ] + list_attachment_preloads
   end
 
+  # Every view a fleetchart can draw, in each state and colouring it offers.
+  FLEETCHART_VIEW_ATTACHMENT_NAMES = %i[
+    angled_view angled_rear_view bottom_view front_view
+    port_view rear_view starboard_view top_view
+  ].flat_map { |view|
+    [view, :"#{view}_colored", :"extended_#{view}", :"extended_#{view}_colored"]
+  }.freeze
+
+  def self.fleetchart_view_preloads
+    names = FLEETCHART_VIEW_ATTACHMENT_NAMES.map { |name| :"#{name}_attachment" }
+
+    attachment_preloads.select { |preload| names.include?(preload.keys.first) }
+  end
+
   def self.list_attachment_preloads
     detail_only = (DETAIL_ATTACHMENT_NAMES + LOADOUT_PREVIEW_ATTACHMENT_NAMES).map { |name| :"#{name}_attachment" }
 
