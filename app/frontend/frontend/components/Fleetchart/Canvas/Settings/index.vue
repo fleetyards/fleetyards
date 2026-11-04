@@ -19,6 +19,7 @@ import {
 
 interface Props {
   namespace: string;
+  canArrange?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -40,7 +41,7 @@ const update = (changes: Partial<FleetchartOptions>) => {
 
 // Packing decides the order itself, so a sort would do nothing there.
 const layout = computed(() =>
-  fleetchartStore.fleetchartLayout(props.namespace),
+  fleetchartStore.fleetchartLayout(props.namespace, props.canArrange),
 );
 
 const sortable = computed(
@@ -49,7 +50,8 @@ const sortable = computed(
     layout.value !== FleetchartLayouts.FREE,
 );
 
-// Ships in a free arrangement stay where they were put.
+// Ships in a free arrangement stay where they were put, facing the way they were
+// turned.
 const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
 
 const choices = computed(() => [
@@ -63,14 +65,14 @@ const choices = computed(() => [
         },
       ]
     : []),
-  {
-    name: "facing" as const,
-    labelKey: "facing",
-    optionsKey: "facingOptions",
-    values: Object.values(FleetchartFacings) as string[],
-  },
   ...(groupable.value
     ? [
+        {
+          name: "facing" as const,
+          labelKey: "facing",
+          optionsKey: "facingOptions",
+          values: Object.values(FleetchartFacings) as string[],
+        },
         {
           name: "group" as const,
           labelKey: "group",

@@ -60,6 +60,8 @@ interface Props {
   namespace: string;
   items?: FleetchartEntry[];
   downloadName?: string;
+  // Whether this chart offers the free layout, which needs a whole fleet to work on.
+  canArrange?: boolean;
   // False until `items` holds everything that can be arranged.
   arrangeReady?: boolean;
 }
@@ -67,6 +69,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   downloadName: undefined,
+  canArrange: false,
   arrangeReady: true,
 });
 
@@ -113,7 +116,7 @@ const comlink = useComlink();
 const fleetchartStore = useFleetchartStore();
 
 const layout = computed(() =>
-  fleetchartStore.fleetchartLayout(props.namespace),
+  fleetchartStore.fleetchartLayout(props.namespace, props.canArrange),
 );
 
 const viewpoint = computed(() =>
@@ -216,6 +219,7 @@ const turned = computed(
 const boxOf = (
   geometry: FleetchartShipGeometry,
   shipFacing: FleetchartFacings,
+  tight: boolean,
 ) => {
   const drawn = geometry.imageHeight || geometry.height;
 
@@ -226,17 +230,15 @@ const boxOf = (
     return { width: drawn, height: geometry.length };
   }
 
-  return {
-    width: geometry.length,
-    height: fillsSpace.value ? drawn : geometry.height,
-  };
+  return { width: geometry.length, height: tight ? drawn : geometry.height };
 };
+
+const fillsSpaceIn = (kind: FleetchartLayouts) =>
+  kind === FleetchartLayouts.FREE || kind === FleetchartLayouts.PACKED;
 
 const isFree = computed(() => layout.value === FleetchartLayouts.FREE);
 
-const fillsSpace = computed(
-  () => isFree.value || layout.value === FleetchartLayouts.PACKED,
-);
+const fillsSpace = computed(() => fillsSpaceIn(layout.value));
 
 const placements = computed(() =>
   fleetchartStore.fleetchartPlacements(props.namespace),
@@ -245,12 +247,6 @@ const placements = computed(() =>
 const facingOf = (id: string) => placements.value[id]?.facing ?? facing.value;
 
 const groupTitle = (entry: FleetchartEntry) => {
-  if (isFree.value) {
-    return placements.value[entry.id]
-      ? undefined
-      : t("labels.fleetchartApp.unplaced");
-  }
-
   if (group.value === FleetchartGroups.NONE) {
     return undefined;
   }
@@ -261,51 +257,68 @@ const groupTitle = (entry: FleetchartEntry) => {
   );
 };
 
-const ships = computed(() =>
-  sortEntries(props.items, sort.value, group.value, extended.value).flatMap(
-    (entry) => {
-      const geometry = shipGeometry(entry, viewpoint.value, {
-        extended: extended.value,
-        colored: colored.value,
-      });
+// The ships as a given layout sees them, which is not only the active one: a free
+// arrangement starts from the layout before it, whose boxes and groups differ.
+const shipsFor = (kind: FleetchartLayouts) => {
+  const free = kind === FleetchartLayouts.FREE;
 
-      if (!geometry) {
-        return [];
-      }
+  return sortEntries(
+    props.items,
+    sort.value,
+    group.value,
+    extended.value,
+  ).flatMap((entry) => {
+    const geometry = shipGeometry(entry, viewpoint.value, {
+      extended: extended.value,
+      colored: colored.value,
+    });
 
-      const group = groupTitle(entry);
+    if (!geometry) {
+      return [];
+    }
 
-      return [
-        {
-          id: entry.id,
-          entry,
-          geometry,
-          ...boxOf(geometry, isFree.value ? facingOf(entry.id) : facing.value),
-          facing: isFree.value ? facingOf(entry.id) : facing.value,
-          group,
-          headingWidth: group
-            ? labelMeasure.value.width(group) / PIXELS_PER_METRE
-            : 0,
-          padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
-          ...labelRoom(entry),
-        },
-      ];
-    },
-  ),
-);
+    const shipFacing = free ? facingOf(entry.id) : facing.value;
+    const placed = !!placements.value[entry.id];
+    const shipGroup = free
+      ? placed
+        ? undefined
+        : t("labels.fleetchartApp.unplaced")
+      : groupTitle(entry);
+
+    return [
+      {
+        id: entry.id,
+        entry,
+        geometry,
+        ...boxOf(geometry, shipFacing, fillsSpaceIn(kind)),
+        facing: shipFacing,
+        group: shipGroup,
+        headingWidth: shipGroup
+          ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
+          : 0,
+        padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
+        ...labelRoom(entry),
+      },
+    ];
+  });
+};
+
+type CanvasShip = ReturnType<typeof shipsFor>[number];
+
+const ships = computed(() => shipsFor(layout.value));
 
 const columnHeightFor = (factor: number) =>
   (screen.height * factor - SCREEN_MARGIN) / PIXELS_PER_METRE;
 
-const screenHeightFactor = computed(() => {
+const screenHeightFactorFor = (list: CanvasShip[]) => {
   const selected = selectedScreenHeight.value;
 
   if (selected !== FleetchartScreenHeights.AUTO) {
     return FIXED_SCREEN_HEIGHT_FACTORS[selected];
   }
 
-  return autoScreenHeightFactor(ships.value, screen, columnHeightFor);
-});
+  return autoScreenHeightFactor(list, screen, columnHeightFor);
+};
 
 const classicRowWidth = computed(
   () => (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
@@ -315,35 +328,37 @@ const packedAspect = computed(
   () => screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
 );
 
-const arrange = (kind: FleetchartLayouts) => {
+const arrange = (kind: FleetchartLayouts, list: CanvasShip[]) => {
   switch (kind) {
     case FleetchartLayouts.CLASSIC:
-      return arrangeClassic(ships.value, classicRowWidth.value);
+      return arrangeClassic(list, classicRowWidth.value);
     case FleetchartLayouts.PACKED:
-      return arrangePacked(ships.value, packedAspect.value);
+      return arrangePacked(list, packedAspect.value);
     case FleetchartLayouts.COLUMNS:
       return arrangeColumns(
-        ships.value,
-        columnHeightFor(screenHeightFactor.value),
-        { centred: turned.value },
+        list,
+        columnHeightFor(screenHeightFactorFor(list)),
+        {
+          centred: turned.value,
+        },
       );
     default:
-      return arrangeFree(ships.value, placements.value, classicRowWidth.value);
+      return arrangeFree(list, placements.value, classicRowWidth.value);
   }
 };
 
 const dragged = shallowRef<{ id: string; x: number; y: number }>();
 
-const positions = computed(() => {
-  const arranged = arrange(layout.value);
+const arranged = computed(() => arrange(layout.value, ships.value));
 
-  return dragged.value
+const positions = computed(() =>
+  dragged.value
     ? {
-        ...arranged,
+        ...arranged.value,
         [dragged.value.id]: { x: dragged.value.x, y: dragged.value.y },
       }
-    : arranged;
-});
+    : arranged.value,
+);
 
 const headingAlign = computed<FleetchartHeadingAlign>(() => {
   if (layout.value !== FleetchartLayouts.COLUMNS) {
@@ -584,23 +599,24 @@ const handleResize = debounce(
   { maxWait: 1000 },
 );
 
-// The scene is drawn from its bounds, so growing them to the left or top would
-// shift every ship on screen. Moving the view the other way holds them still.
-watch(
-  [() => bounds.value.minX, () => bounds.value.minY],
-  ([minX, minY], [previousX, previousY]) => {
-    if (!isFree.value || !panzoomInstance) {
-      return;
-    }
+// The scene is drawn from its bounds, so an edit growing them to the left or top
+// would shift every ship on screen. Moving the view the other way holds them still.
+const holdingView = (edit: () => void) => {
+  const { minX, minY } = bounds.value;
 
-    const { x, y, scale } = panzoomInstance.getTransform();
+  edit();
 
-    panzoomInstance.moveTo(
-      x + (minX - previousX) * PIXELS_PER_METRE * scale,
-      y + (minY - previousY) * PIXELS_PER_METRE * scale,
-    );
-  },
-);
+  if (!panzoomInstance) {
+    return;
+  }
+
+  const { x, y, scale } = panzoomInstance.getTransform();
+
+  panzoomInstance.moveTo(
+    x + (bounds.value.minX - minX) * PIXELS_PER_METRE * scale,
+    y + (bounds.value.minY - minY) * PIXELS_PER_METRE * scale,
+  );
+};
 
 const FACING_CYCLE = Object.values(FleetchartFacings);
 const UNDO_LIMIT = 50;
@@ -628,20 +644,18 @@ const undo = () => {
   if (previous) {
     undoStack.value = undoStack.value.slice(0, -1);
 
-    savePlacements(previous);
+    holdingView(() => savePlacements(previous));
   }
 };
 
-// Every ship gets a place at once, so the arrangement starts out as the layout that
-// was showing and no ship moves when the first one is dragged.
-const placeAll = (kind: FleetchartLayouts) => {
-  const arranged = arrange(kind);
+// Every ship gets a place at once, as the given layout has it, so the arrangement
+// starts out as what was showing and no ship moves when the first one is dragged.
+const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
+  const list = shipsFor(kind);
+  const from = arrange(kind, list);
 
   return Object.fromEntries(
-    ships.value.map((ship) => [
-      ship.id,
-      { ...arranged[ship.id], facing: facing.value },
-    ]),
+    list.map((ship) => [ship.id, { ...from[ship.id], facing: facing.value }]),
   );
 };
 
@@ -667,13 +681,15 @@ watch(
       !Object.keys(placements.value).length
     ) {
       savePlacements(placeAll(seedLayout));
+      fitToScreen();
     }
   },
   { immediate: true },
 );
 
 const resetArrangement = () => {
-  changePlacements(placeAll(seedLayout));
+  // Merged, as ships hidden by a filter keep their place.
+  changePlacements({ ...placements.value, ...placeAll(seedLayout) });
   fitToScreen();
 };
 
@@ -687,15 +703,19 @@ const rotateSelected = () => {
 
   const index = FACING_CYCLE.indexOf(facingOf(id));
 
-  changePlacements({
-    ...placements.value,
-    [id]: {
-      x: current.x,
-      y: current.y,
-      facing: FACING_CYCLE[(index + 1) % FACING_CYCLE.length],
-    },
+  holdingView(() => {
+    changePlacements({
+      ...placements.value,
+      [id]: {
+        x: current.x,
+        y: current.y,
+        facing: FACING_CYCLE[(index + 1) % FACING_CYCLE.length],
+      },
+    });
   });
 };
+
+let stopDrag: (() => void) | undefined;
 
 const startDrag = (id: string, event: PointerEvent) => {
   if (!isFree.value || event.pointerType === "touch" || event.button !== 0) {
@@ -712,44 +732,72 @@ const startDrag = (id: string, event: PointerEvent) => {
     return;
   }
 
-  const metresPerPixel = 1 / (PIXELS_PER_METRE * transform.value.scale);
+  stopDrag?.();
+
+  // Keeps the drag alive when the pointer leaves the window.
+  (event.target as Element).setPointerCapture?.(event.pointerId);
+
   const { clientX, clientY } = event;
 
   const onMove = (move: PointerEvent) => {
+    const metresPerPixel = 1 / (PIXELS_PER_METRE * transform.value.scale);
     const moved = {
       x: start.x + (move.clientX - clientX) * metresPerPixel,
       y: start.y + (move.clientY - clientY) * metresPerPixel,
     };
 
-    dragged.value = {
-      id,
-      ...(gridEnabled.value ? snapToGrid(moved, ship, gridCell.value) : moved),
-    };
+    holdingView(() => {
+      dragged.value = {
+        id,
+        ...(gridEnabled.value
+          ? snapToGrid(moved, ship, gridCell.value)
+          : moved),
+      };
+    });
   };
 
   const onUp = () => {
+    const dropped = dragged.value;
+
+    stopDrag?.();
+
+    if (dropped) {
+      holdingView(() => {
+        dragged.value = undefined;
+        changePlacements({
+          ...placements.value,
+          [id]: { x: dropped.x, y: dropped.y, facing: facingOf(id) },
+        });
+      });
+    }
+  };
+
+  const onCancel = () => {
+    stopDrag?.();
+    holdingView(() => {
+      dragged.value = undefined;
+    });
+  };
+
+  stopDrag = () => {
     window.removeEventListener("pointermove", onMove);
     window.removeEventListener("pointerup", onUp);
-
-    if (dragged.value) {
-      changePlacements({
-        ...placements.value,
-        [id]: {
-          x: dragged.value.x,
-          y: dragged.value.y,
-          facing: facingOf(id),
-        },
-      });
-      dragged.value = undefined;
-    }
+    window.removeEventListener("pointercancel", onCancel);
+    stopDrag = undefined;
   };
 
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onCancel);
 };
 
+const isEditable = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName));
+
 const handleArrangeKeys = (event: KeyboardEvent) => {
-  if (!isFree.value) {
+  if (!isFree.value || isEditable(event.target)) {
     return;
   }
 
@@ -785,6 +833,7 @@ onUnmounted(() => {
   stopStatusListener?.();
 
   clearTimeout(restoreTimer);
+  stopDrag?.();
   persistZoom.flush();
   handleResize.cancel();
 
@@ -947,7 +996,11 @@ const toggleLabels = () => {
       </BtnDropdown>
     </div>
 
-    <FleetchartCanvasSettings v-if="settingsOpen" :namespace="namespace" />
+    <FleetchartCanvasSettings
+      v-if="settingsOpen"
+      :namespace="namespace"
+      :can-arrange="canArrange"
+    />
 
     <div
       v-if="options.scaleBar"
@@ -1010,7 +1063,7 @@ const toggleLabels = () => {
           :box-width="ship.width"
           :box-height="ship.height"
           :facing="ship.facing"
-          :selected="isFree && selectedId === ship.id"
+          :selected="isFree && !exporting && selectedId === ship.id"
           :arranging="isFree"
           @pointerdown="startDrag(ship.id, $event)"
         />

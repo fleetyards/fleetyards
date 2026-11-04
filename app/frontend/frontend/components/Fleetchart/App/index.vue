@@ -92,10 +92,11 @@ const layoutsEnabled = computed(() =>
 );
 
 const layout = computed(() =>
-  fleetchartStore.fleetchartLayout(props.namespace),
+  fleetchartStore.fleetchartLayout(props.namespace, canArrange.value),
 );
 
-const canArrange = computed(() => !!props.arrangeItems);
+// Arranging takes a mouse for now, so a phone is not offered it.
+const canArrange = computed(() => !!props.arrangeItems && !mobile.value);
 
 const layoutOptions = computed(() =>
   Object.values(FleetchartLayouts).filter(
@@ -107,8 +108,11 @@ const arranging = computed(
   () => layout.value === FleetchartLayouts.FREE && canArrange.value,
 );
 
+// The page stays up until the whole fleet has arrived.
 const sourceItems = computed(() =>
-  arranging.value ? props.arrangeItems || [] : props.items,
+  arranging.value && props.arrangeLoaded
+    ? props.arrangeItems || []
+    : props.items,
 );
 
 const setLayout = (option: FleetchartLayouts) => {
@@ -141,7 +145,7 @@ const extendedTooltip = computed(() => {
 });
 
 const hasExtendedItems = computed(() => {
-  return props.items.some((item) => {
+  return sourceItems.value.some((item) => {
     const model = (item as Vehicle).model || (item as Model | VehiclePublic);
     return Boolean(
       model.metrics?.extendedLength ||
@@ -436,6 +440,7 @@ const closeFleetchart = async () => {
           :items="innerItems"
           :namespace="namespace"
           :download-name="downloadName"
+          :can-arrange="canArrange"
           :arrange-ready="!arranging || arrangeLoaded"
         />
         <FleetchartListPanzoom

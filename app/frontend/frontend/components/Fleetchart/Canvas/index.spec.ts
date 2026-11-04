@@ -70,7 +70,7 @@ const track = <T extends { unmount: () => void }>(wrapper: T) => {
 const mountCanvas = (items: FleetchartEntry[]) =>
   track(
     mount(FleetchartCanvas, {
-      props: { namespace: "hangar", items },
+      props: { namespace: "hangar", items, canArrange: true },
       global: {
         stubs: canvasStubs,
         directives: { tooltip: {} },
@@ -326,6 +326,7 @@ describe("FleetchartCanvas", () => {
           props: {
             namespace: "hangar",
             items: [entry("a")],
+            canArrange: true,
             arrangeReady: false,
           },
           global: { stubs: canvasStubs, directives: { tooltip: {} } },
@@ -337,6 +338,132 @@ describe("FleetchartCanvas", () => {
 
       await wrapper.setProps({ arrangeReady: true });
       expect(placement("a")).toBeDefined();
+    });
+
+    it("leaves the arrangement alone on a chart that cannot arrange", async () => {
+      useFleetchartStore().updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: { namespace: "hangar", items: [entry("a")] },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+
+      await drag(wrapper, 40);
+
+      expect(placement("a")).toBeUndefined();
+    });
+
+    it("keeps the place of a ship hidden by a filter on reset", async () => {
+      const store = useFleetchartStore();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      store.updatePlacements({
+        namespace: "hangar",
+        placements: { hidden: { x: 500, y: 500 }, a: { x: 1, y: 1 } },
+      });
+
+      const wrapper = mountCanvas([entry("a")]);
+
+      await wrapper
+        .get("[data-test='fleetchart-reset-arrangement']")
+        .trigger("click");
+
+      expect(placement("hidden")).toEqual({ x: 500, y: 500 });
+      expect(placement("a").x).not.toBe(1);
+    });
+
+    it("puts a rotated ship back as it faces by default on reset", async () => {
+      const store = useFleetchartStore();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      store.updatePlacements({
+        namespace: "hangar",
+        placements: { a: { x: 1, y: 1, facing: FleetchartFacings.TOP } },
+      });
+
+      const wrapper = mountCanvas([entry("a", 100)]);
+
+      await wrapper
+        .get("[data-test='fleetchart-reset-arrangement']")
+        .trigger("click");
+
+      const ship = wrapper.get("[data-test='fleetchart-ship']");
+
+      expect(placement("a").facing).toBe(FleetchartFacings.LEFT);
+      expect((ship.element as HTMLElement).style.width).toBe("400px");
+    });
+
+    it("starts from the layout before it, boxes and groups included", async () => {
+      const store = useFleetchartStore();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.COLUMNS,
+      });
+
+      mountCanvas([entry("a"), entry("b")]);
+
+      const expected = useFleetchartStore().fleetchartPlacements("hangar");
+
+      expect(expected).toEqual({});
+
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      await nextTick();
+
+      expect(placement("a").x).toBe(placement("b").x);
+    });
+
+    it("does not rotate while typing in a field", async () => {
+      const wrapper = await mountFree();
+      const input = document.createElement("input");
+      document.body.appendChild(input);
+
+      await drag(wrapper, 0);
+      const before = { ...placement("a") };
+
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "r", bubbles: true }),
+      );
+      await nextTick();
+      input.remove();
+
+      expect(placement("a")).toEqual(before);
+    });
+
+    it("drops a drag when the pointer is cancelled", async () => {
+      const wrapper = await mountFree();
+      const before = { ...placement("a") };
+      const ship = wrapper.findAll("[data-test='fleetchart-ship']")[0];
+      const down = new Event("pointerdown", { bubbles: true });
+
+      Object.assign(down, {
+        button: 0,
+        pointerType: "mouse",
+        clientX: 0,
+        clientY: 0,
+      });
+      ship.element.dispatchEvent(down);
+
+      const move = new Event("pointermove");
+
+      Object.assign(move, { clientX: 40, clientY: 0 });
+      window.dispatchEvent(move);
+      window.dispatchEvent(new Event("pointercancel"));
+      window.dispatchEvent(new Event("pointerup"));
+      await nextTick();
+
+      expect(placement("a")).toEqual(before);
     });
 
     it("moves a dragged ship by the distance in metres", async () => {
