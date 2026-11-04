@@ -270,6 +270,26 @@ const groupTitle = (entry: FleetchartEntry) => {
   );
 };
 
+// Not every ship has every view, and one without the chosen view is shown from one
+// it has rather than left blank.
+const drawableViewpoint = (
+  entry: FleetchartEntry,
+  wanted: FleetchartViewpoints,
+  shipState: FleetchartShipStates,
+) => {
+  const has = (option: FleetchartViewpoints) =>
+    viewFor(entry, option, { state: shipState, colored: colored.value });
+
+  return (
+    [
+      wanted,
+      FleetchartViewpoints.PORT,
+      FleetchartViewpoints.TOP,
+      FleetchartViewpoints.ANGLED,
+    ].find(has) ?? wanted
+  );
+};
+
 // The ships as a given layout sees them, which is not only the active one: a free
 // arrangement starts from the layout before it, whose boxes and groups differ.
 const shipsFor = (kind: FleetchartLayouts) => {
@@ -278,10 +298,13 @@ const shipsFor = (kind: FleetchartLayouts) => {
 
   return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
     (entry) => {
-      const shipViewpoint =
-        (free && placements.value[entry.id]?.viewpoint) || viewpoint.value;
       const shipState =
-        (free && placements.value[entry.id]?.state) || state.value;
+      (free && placements.value[entry.id]?.state) || state.value;
+    const shipViewpoint = drawableViewpoint(
+      entry,
+      (free && placements.value[entry.id]?.viewpoint) || viewpoint.value,
+      shipState,
+    );
       const geometry = shipGeometry(entry, shipViewpoint, {
         state: shipState,
         colored: colored.value,

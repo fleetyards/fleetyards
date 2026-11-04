@@ -864,6 +864,20 @@ describe("FleetchartCanvas", () => {
     });
   });
 
+  it("shows a ship from a view it has when it lacks the chosen one", async () => {
+    const wrapper = mountCanvas([entry("a")]);
+
+    useFleetchartStore().updateViewpoint({
+      namespace: "hangar",
+      viewpoint: FleetchartViewpoints.REAR,
+    });
+    await nextTick();
+
+    expect(
+      wrapper.get("[data-test='fleetchart-ship'] img").attributes("src"),
+    ).toContain("a");
+  });
+
   it("offers the screen height only where it means anything", async () => {
     showInColumns();
 
