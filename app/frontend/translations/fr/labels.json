@@ -544,6 +544,12 @@
         "ungroupShips": "Dissocier les vaisseaux",
         "undo": "Annuler",
         "resetArrangement": "Réinitialiser la disposition",
+        "state": "État",
+        "stateOptions": {
+          "flight": "Vol",
+          "extended": "Déployé",
+          "landed": "Posé"
+        },
         "facing": "Orientation",
         "facingOptions": {
           "left": "Gauche",

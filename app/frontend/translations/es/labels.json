@@ -544,6 +544,12 @@
         "ungroupShips": "Desagrupar naves",
         "undo": "Deshacer",
         "resetArrangement": "Restablecer disposición",
+        "state": "Estado",
+        "stateOptions": {
+          "flight": "Vuelo",
+          "extended": "Extendido",
+          "landed": "Aterrizado"
+        },
         "facing": "Orientación",
         "facingOptions": {
           "left": "Izquierda",

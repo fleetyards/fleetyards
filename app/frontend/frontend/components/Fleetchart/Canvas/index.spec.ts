@@ -6,6 +6,7 @@ import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry"
 import {
   FleetchartFacings,
   FleetchartLayouts,
+  FleetchartShipStates,
   FleetchartViewpoints,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -65,6 +66,7 @@ const canvasStubs = {
     props: ["disabled"],
     template: '<button :disabled="disabled"><slot /></button>',
   },
+  BtnGroup: { template: "<div><slot /></div>" },
   DownloadScreenshotBtn: true,
   FleetChartStatusBtn: true,
   CommunityLogo: true,
@@ -514,6 +516,43 @@ describe("FleetchartCanvas", () => {
             .get("[data-test='fleetchart-ship-view-front']")
             .attributes("disabled"),
         ).toBeDefined();
+      });
+
+      it("set one ship's state, leaving the others", async () => {
+        const store = useFleetchartStore();
+        store.updateLayout({
+          namespace: "hangar",
+          layout: FleetchartLayouts.FREE,
+        });
+
+        const landed = (id: string) => {
+          const base = entry(id) as unknown as { media: object };
+
+          base.media = {
+            ...base.media,
+            landedPortView: {
+              url: `${id}-landed.png`,
+              mediumUrl: `${id}-landed.png`,
+              width: 1000,
+              height: 500,
+            },
+          };
+
+          return base as unknown as FleetchartEntry;
+        };
+        const wrapper = mountCanvas([landed("a"), landed("b")]);
+
+        await nextTick();
+        await drag(wrapper, 0);
+        await wrapper
+          .get("[data-test='fleetchart-ship-state-landed']")
+          .trigger("click");
+
+        const states = [placement("a").state, placement("b").state];
+
+        expect(states).toContain(FleetchartShipStates.LANDED);
+        expect(states).toContain(undefined);
+        expect(wrapper.html()).toContain("-landed.png");
       });
 
       it("set the facing from the dropdown", async () => {

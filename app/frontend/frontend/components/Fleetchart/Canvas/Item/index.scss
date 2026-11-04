@@ -38,6 +38,11 @@
   justify-content: flex-end;
   transform: translate(-50%, -50%);
 
+  // The box is only as wide as the view, so the view has to sit in its middle.
+  &--tight {
+    justify-content: center;
+  }
+
   &--top {
     transform: translate(-50%, -50%) rotate(90deg);
   }

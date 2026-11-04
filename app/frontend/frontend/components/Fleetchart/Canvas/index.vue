@@ -20,6 +20,7 @@ import {
   PIXELS_PER_METRE,
   modelOf,
   shipGeometry,
+  hasStateViews,
   shipLabelOf,
   viewFor,
   type FleetchartEntry,
@@ -53,6 +54,7 @@ import {
   FleetchartGroups,
   FleetchartLayouts,
   FleetchartScreenHeights,
+  FleetchartShipStates,
   FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
@@ -136,8 +138,6 @@ const colored = computed(() =>
   fleetchartStore.coloredByDefault(props.namespace),
 );
 
-const extended = computed(() => fleetchartStore.extendedState(props.namespace));
-
 const options = computed(() =>
   fleetchartStore.fleetchartOptions(props.namespace),
 );
@@ -215,6 +215,7 @@ const sort = computed(() => options.value.sort);
 const group = computed(() => options.value.group);
 const spacing = computed(() => options.value.spacing);
 const facing = computed(() => options.value.facing);
+const state = computed(() => options.value.state);
 
 const turned = computed(
   () =>
@@ -230,16 +231,19 @@ const boxOf = (
   shipFacing: FleetchartFacings,
   tight: boolean,
 ) => {
-  const drawn = geometry.imageHeight || geometry.height;
+  const drawnHeight = geometry.imageHeight || geometry.height;
+  const drawnWidth = tight
+    ? geometry.imageWidth || geometry.length
+    : geometry.length;
 
   if (
     shipFacing === FleetchartFacings.TOP ||
     shipFacing === FleetchartFacings.BOTTOM
   ) {
-    return { width: drawn, height: geometry.length };
+    return { width: drawnHeight, height: drawnWidth };
   }
 
-  return { width: geometry.length, height: tight ? drawn : geometry.height };
+  return { width: drawnWidth, height: tight ? drawnHeight : geometry.height };
 };
 
 const fillsSpaceIn = (kind: FleetchartLayouts) =>
@@ -270,49 +274,51 @@ const groupTitle = (entry: FleetchartEntry) => {
 // arrangement starts from the layout before it, whose boxes and groups differ.
 const shipsFor = (kind: FleetchartLayouts) => {
   const free = kind === FleetchartLayouts.FREE;
+  const tight = fillsSpaceIn(kind);
 
-  return sortEntries(
-    props.items,
-    sort.value,
-    group.value,
-    extended.value,
-  ).flatMap((entry) => {
-    const shipViewpoint =
-      (free && placements.value[entry.id]?.viewpoint) || viewpoint.value;
-    const geometry = shipGeometry(entry, shipViewpoint, {
-      extended: extended.value,
-      colored: colored.value,
-    });
+  return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
+    (entry) => {
+      const shipViewpoint =
+        (free && placements.value[entry.id]?.viewpoint) || viewpoint.value;
+      const shipState =
+        (free && placements.value[entry.id]?.state) || state.value;
+      const geometry = shipGeometry(entry, shipViewpoint, {
+        state: shipState,
+        colored: colored.value,
+      });
 
-    if (!geometry) {
-      return [];
-    }
+      if (!geometry) {
+        return [];
+      }
 
-    const shipFacing = free ? facingOf(entry.id) : facing.value;
-    const placed = !!placements.value[entry.id];
-    const shipGroup = free
-      ? placed
-        ? undefined
-        : t("labels.fleetchartApp.unplaced")
-      : groupTitle(entry);
+      const shipFacing = free ? facingOf(entry.id) : facing.value;
+      const placed = !!placements.value[entry.id];
+      const shipGroup = free
+        ? placed
+          ? undefined
+          : t("labels.fleetchartApp.unplaced")
+        : groupTitle(entry);
 
-    return [
-      {
-        id: entry.id,
-        entry,
-        geometry,
-        ...boxOf(geometry, shipFacing, fillsSpaceIn(kind)),
-        facing: shipFacing,
-        viewpoint: shipViewpoint,
-        group: shipGroup,
-        headingWidth: shipGroup
-          ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
-          : 0,
-        padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
-        ...labelRoom(entry),
-      },
-    ];
-  });
+      return [
+        {
+          id: entry.id,
+          entry,
+          geometry,
+          ...boxOf(geometry, shipFacing, tight),
+          tight,
+          state: shipState,
+          facing: shipFacing,
+          viewpoint: shipViewpoint,
+          group: shipGroup,
+          headingWidth: shipGroup
+            ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
+            : 0,
+          padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
+          ...labelRoom(entry),
+        },
+      ];
+    },
+  );
 };
 
 type CanvasShip = ReturnType<typeof shipsFor>[number];
@@ -737,7 +743,7 @@ const selectedFacing = computed(() =>
 
 const hasView = (ship: CanvasShip, option: FleetchartViewpoints) =>
   !!viewFor(ship.entry, option, {
-    extended: extended.value,
+    state: ship.state,
     colored: colored.value,
   });
 
@@ -782,6 +788,23 @@ const setSelectedViewpoint = (option: FleetchartViewpoints) => {
   changeShips(
     selectedShips.value.filter((ship) => hasView(ship, option)),
     () => ({ viewpoint: option }),
+  );
+};
+
+const selectedState = computed(() =>
+  sharedValue(selectedShips.value.map((ship) => ship.state)),
+);
+
+const selectedShipStates = computed(() =>
+  Object.values(FleetchartShipStates).filter((option) =>
+    selectedShips.value.some((ship) => hasStateViews(ship.entry, option)),
+  ),
+);
+
+const setSelectedState = (option: FleetchartShipStates) => {
+  changeShips(
+    selectedShips.value.filter((ship) => hasStateViews(ship.entry, option)),
+    () => ({ state: option }),
   );
 };
 
@@ -1291,11 +1314,14 @@ const toggleLabels = () => {
       :viewpoint="selectedViewpoint"
       :available="selectedShipViewpoints"
       :facing="selectedFacing"
+      :state="selectedState"
+      :available-states="selectedShipStates"
       :can-group="canGroupSelected"
       :can-ungroup="canUngroupSelected"
       :style="shipControlsStyle"
       @update:viewpoint="setSelectedViewpoint"
       @update:facing="setSelectedFacing"
+      @update:state="setSelectedState"
       @stack="stackSelected"
       @group="groupSelected"
       @ungroup="ungroupSelected"
@@ -1354,7 +1380,8 @@ const toggleLabels = () => {
           :show-label="showLabels"
           :show-status="showStatus"
           :colored="colored"
-          :extended="extended"
+          :state="ship.state"
+          :tight="ship.tight"
           :box-width="ship.width"
           :box-height="ship.height"
           :facing="ship.facing"

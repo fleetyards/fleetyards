@@ -68,6 +68,12 @@ export enum FleetchartFacings {
   BOTTOM = "bottom",
 }
 
+export enum FleetchartShipStates {
+  FLIGHT = "flight",
+  EXTENDED = "extended",
+  LANDED = "landed",
+}
+
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
@@ -75,6 +81,7 @@ export interface FleetchartOptions {
   scaleBar: boolean;
   solidExport: boolean;
   facing: FleetchartFacings;
+  state: FleetchartShipStates;
 }
 
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
@@ -84,6 +91,7 @@ export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   scaleBar: false,
   solidExport: false,
   facing: FleetchartFacings.LEFT,
+  state: FleetchartShipStates.FLIGHT,
 };
 
 export interface FleetchartPlacement {
@@ -91,6 +99,7 @@ export interface FleetchartPlacement {
   y: number;
   facing?: FleetchartFacings;
   viewpoint?: FleetchartViewpoints;
+  state?: FleetchartShipStates;
   // Stacking order among ships placed on top of each other.
   order?: number;
   // Ships sharing one are selected and moved together.
@@ -199,6 +208,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     fleetchartOptions: (state) => {
       return (namespace: string): FleetchartOptions => ({
         ...DEFAULT_FLEETCHART_OPTIONS,
+        // Somebody who had turned on the extended toggle keeps seeing that.
+        ...((state.extended || []).includes(namespace)
+          ? { state: FleetchartShipStates.EXTENDED }
+          : {}),
         ...state.options?.[namespace],
       });
     },

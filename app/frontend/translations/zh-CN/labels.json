@@ -544,6 +544,12 @@
         "ungroupShips": "取消组合",
         "undo": "撤销",
         "resetArrangement": "重置排列",
+        "state": "状态",
+        "stateOptions": {
+          "flight": "飞行",
+          "extended": "展开",
+          "landed": "着陆"
+        },
         "facing": "朝向",
         "facingOptions": {
           "left": "左",

@@ -544,6 +544,12 @@
         "ungroupShips": "Gruppe auflösen",
         "undo": "Rückgängig",
         "resetArrangement": "Anordnung zurücksetzen",
+        "state": "Zustand",
+        "stateOptions": {
+          "flight": "Flug",
+          "extended": "Ausgefahren",
+          "landed": "Gelandet"
+        },
         "facing": "Ausrichtung",
         "facingOptions": {
           "left": "Links",

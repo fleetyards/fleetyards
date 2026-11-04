@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { MediaFile } from "@/services/fyApi";
-import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 import {
+  FleetchartShipStates,
+  FleetchartViewpoints,
+} from "@/shared/stores/fleetchart";
+import {
+  hasStateViews,
   imageUrlFor,
   shipGeometry,
   viewFor,
@@ -45,6 +49,52 @@ describe("shipGeometry", () => {
     ).toBe(150);
   });
 
+  it("draws a front or rear view as wide as the beam, not the length", () => {
+    const entry = model(
+      {
+        portView: view("port", 1000, 400),
+        rearView: view("rear", 800, 400),
+        frontView: view("front", 800, 400),
+      },
+      { fleetchartOffsetBeam: 30 },
+    );
+
+    expect(shipGeometry(entry, FleetchartViewpoints.REAR)?.imageWidth).toBe(30);
+    expect(shipGeometry(entry, FleetchartViewpoints.FRONT)?.imageHeight).toBe(
+      15,
+    );
+    expect(shipGeometry(entry, FleetchartViewpoints.PORT)?.imageWidth).toBe(
+      100,
+    );
+  });
+
+  it("uses the landed length and views in the landed state", () => {
+    const entry = model(
+      { portView: view("port"), landedPortView: view("landed") },
+      { landedLength: 120 },
+    );
+    const options = { state: FleetchartShipStates.LANDED };
+
+    expect(
+      shipGeometry(entry, FleetchartViewpoints.PORT, options)?.length,
+    ).toBe(120);
+    expect(viewFor(entry, FleetchartViewpoints.PORT, options)?.url).toBe(
+      "landed.png",
+    );
+  });
+
+  it("falls back to the flight view for a state a ship has no picture of", () => {
+    const entry = model({ portView: view("port") });
+
+    expect(
+      viewFor(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.LANDED,
+      })?.url,
+    ).toBe("port.png");
+    expect(hasStateViews(entry, FleetchartShipStates.LANDED)).toBe(false);
+    expect(hasStateViews(entry, FleetchartShipStates.FLIGHT)).toBe(true);
+  });
+
   it("keeps the box when the viewpoint changes", () => {
     const entry = model({
       portView: view("port", 1000, 200),
@@ -64,8 +114,9 @@ describe("shipGeometry", () => {
 
     expect(shipGeometry(entry, FleetchartViewpoints.PORT)?.length).toBe(100);
     expect(
-      shipGeometry(entry, FleetchartViewpoints.PORT, { extended: true })
-        ?.length,
+      shipGeometry(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.length,
     ).toBe(200);
   });
 
@@ -96,11 +147,13 @@ describe("viewFor", () => {
       viewFor(entry, FleetchartViewpoints.PORT, { colored: true })?.url,
     ).toBe("port-colored.png");
     expect(
-      viewFor(entry, FleetchartViewpoints.PORT, { extended: true })?.url,
+      viewFor(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.url,
     ).toBe("extended.png");
     expect(
       viewFor(entry, FleetchartViewpoints.PORT, {
-        extended: true,
+        state: FleetchartShipStates.EXTENDED,
         colored: true,
       })?.url,
     ).toBe("extended-colored.png");
@@ -120,7 +173,9 @@ describe("viewFor", () => {
       viewFor(entry, FleetchartViewpoints.REAR, { colored: true })?.url,
     ).toBe("rear-colored.png");
     expect(
-      viewFor(entry, FleetchartViewpoints.STARBOARD, { extended: true })?.url,
+      viewFor(entry, FleetchartViewpoints.STARBOARD, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.url,
     ).toBe("starboard-extended.png");
     expect(viewFor(entry, FleetchartViewpoints.BOTTOM)?.url).toBe("bottom.png");
     expect(viewFor(entry, FleetchartViewpoints.ANGLED_REAR)?.url).toBe(

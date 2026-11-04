@@ -11,6 +11,7 @@ import {
   FleetchartFacings,
   FleetchartGroups,
   FleetchartLayouts,
+  FleetchartShipStates,
   FleetchartSorts,
   FleetchartSpacings,
   useFleetchartStore,
@@ -55,6 +56,12 @@ const sortable = computed(
 const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
 
 const choices = computed(() => [
+  {
+    name: "state" as const,
+    labelKey: "state",
+    optionsKey: "stateOptions",
+    values: Object.values(FleetchartShipStates) as string[],
+  },
   ...(sortable.value
     ? [
         {

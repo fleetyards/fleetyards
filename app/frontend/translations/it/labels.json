@@ -544,6 +544,12 @@
         "ungroupShips": "Separa le navi",
         "undo": "Annulla",
         "resetArrangement": "Ripristina disposizione",
+        "state": "Stato",
+        "stateOptions": {
+          "flight": "Volo",
+          "extended": "Esteso",
+          "landed": "Atterrato"
+        },
         "facing": "Orientamento",
         "facingOptions": {
           "left": "Sinistra",

@@ -544,6 +544,12 @@
         "ungroupShips": "Ungroup ships",
         "undo": "Undo",
         "resetArrangement": "Reset arrangement",
+        "state": "State",
+        "stateOptions": {
+          "flight": "Flight",
+          "extended": "Extended",
+          "landed": "Landed"
+        },
         "facing": "Facing",
         "facingOptions": {
           "left": "Left",

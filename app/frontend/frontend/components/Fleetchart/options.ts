@@ -4,7 +4,11 @@ import {
   shipLabelOf,
   type FleetchartEntry,
 } from "@/frontend/components/Fleetchart/geometry";
-import { FleetchartGroups, FleetchartSorts } from "@/shared/stores/fleetchart";
+import {
+  FleetchartGroups,
+  FleetchartShipStates,
+  FleetchartSorts,
+} from "@/shared/stores/fleetchart";
 
 const groupKeyOf = (entry: FleetchartEntry, group: FleetchartGroups) => {
   const model = modelOf(entry);
@@ -33,9 +37,8 @@ export const groupTitleOf = (
     : key;
 };
 
-const comparatorFor = (sort: FleetchartSorts, extended: boolean) => {
-  const lengthOf = (entry: FleetchartEntry) =>
-    metricsOf(entry, extended).length;
+const comparatorFor = (sort: FleetchartSorts, state: FleetchartShipStates) => {
+  const lengthOf = (entry: FleetchartEntry) => metricsOf(entry, state).length;
 
   switch (sort) {
     case FleetchartSorts.LENGTH_ASC:
@@ -58,9 +61,9 @@ export const sortEntries = (
   entries: FleetchartEntry[],
   sort: FleetchartSorts,
   group: FleetchartGroups = FleetchartGroups.NONE,
-  extended = false,
+  state: FleetchartShipStates = FleetchartShipStates.FLIGHT,
 ) => {
-  const comparator = comparatorFor(sort, extended);
+  const comparator = comparatorFor(sort, state);
 
   return [...entries].sort(
     (a, b) =>

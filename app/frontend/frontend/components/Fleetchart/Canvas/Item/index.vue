@@ -17,6 +17,7 @@ import {
 } from "@/frontend/components/Fleetchart/geometry";
 import {
   FleetchartFacings,
+  FleetchartShipStates,
   FleetchartViewpoints,
 } from "@/shared/stores/fleetchart";
 
@@ -30,7 +31,8 @@ interface Props {
   showLabel?: boolean;
   showStatus?: boolean;
   colored?: boolean;
-  extended?: boolean;
+  state?: FleetchartShipStates;
+  tight?: boolean;
   boxWidth: number;
   boxHeight: number;
   facing?: FleetchartFacings;
@@ -44,7 +46,8 @@ const props = withDefaults(defineProps<Props>(), {
   showLabel: false,
   showStatus: false,
   colored: false,
-  extended: false,
+  state: FleetchartShipStates.FLIGHT,
+  tight: false,
   facing: FleetchartFacings.LEFT,
   selected: false,
   arranging: false,
@@ -70,7 +73,7 @@ const cssClasses = computed(() => [
 
 const view = computed(() =>
   viewFor(props.entry, props.viewpoint, {
-    extended: props.extended,
+    state: props.state,
     colored: props.colored,
   }),
 );
@@ -112,7 +115,10 @@ const image = computed(() => {
     </div>
     <div
       class="fleetchart-canvas-item__frame"
-      :class="`fleetchart-canvas-item__frame--${facing}`"
+      :class="[
+        `fleetchart-canvas-item__frame--${facing}`,
+        { 'fleetchart-canvas-item__frame--tight': tight },
+      ]"
       :style="{
         width: `${geometry.length * PIXELS_PER_METRE}px`,
         height: `${geometry.height * PIXELS_PER_METRE}px`,

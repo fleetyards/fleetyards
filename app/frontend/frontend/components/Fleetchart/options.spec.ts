@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { FleetchartEntry } from "./geometry";
 import { groupTitleOf, sortEntries } from "./options";
-import { FleetchartGroups, FleetchartSorts } from "@/shared/stores/fleetchart";
+import {
+  FleetchartGroups,
+  FleetchartShipStates,
+  FleetchartSorts,
+} from "@/shared/stores/fleetchart";
 
 const ship = (
   name: string,
@@ -57,7 +61,7 @@ describe("sortEntries", () => {
           [folding, ship("fixed", 50)],
           FleetchartSorts.LENGTH_DESC,
           FleetchartGroups.NONE,
-          true,
+          FleetchartShipStates.EXTENDED,
         ),
       ),
     ).toEqual(["folding", "fixed"]);

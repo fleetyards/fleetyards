@@ -392,7 +392,7 @@ const closeFleetchart = async () => {
         </BtnDropdown>
 
         <Btn
-          v-if="hasExtendedItems"
+          v-if="hasExtendedItems && !layoutsEnabled"
           v-tooltip="extendedTooltip"
           :active="extended"
           @click="toggleExtended"

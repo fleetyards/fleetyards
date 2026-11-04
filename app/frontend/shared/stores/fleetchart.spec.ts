@@ -5,6 +5,7 @@ import {
   FleetchartGroups,
   FleetchartLayouts,
   FleetchartModes,
+  FleetchartShipStates,
   FleetchartViewpoints,
   useFleetchartStore,
 } from "./fleetchart";
@@ -49,6 +50,29 @@ describe("fleetchart store", () => {
 
     expect(store.fleetchartPlacements("hangar")).toEqual({ a: { x: 1, y: 2 } });
     expect(store.fleetchartPlacements("fleet")).toEqual({});
+  });
+
+  it("starts in flight, or extended for those who had turned that on", () => {
+    const store = useFleetchartStore();
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.FLIGHT,
+    );
+
+    store.toggleExtended("hangar");
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.EXTENDED,
+    );
+
+    store.updateOptions({
+      namespace: "hangar",
+      options: { state: FleetchartShipStates.LANDED },
+    });
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.LANDED,
+    );
   });
 
   it("draws colored until somebody turns it off", () => {
