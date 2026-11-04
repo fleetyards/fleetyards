@@ -643,6 +643,11 @@ const groupOrder: RowGroup[] = [
 
 const folded: RowGroup[] = ["kept", "melted", "unassigned"];
 
+// Among the ships being worked on, those still undecided lead, then those
+// marked to change, then the rest.
+const actionRank = (row: Row) =>
+  ({ pending: 0, change: 1 })[row.action.kind] ?? 2;
+
 const groups = computed<Group[]>(() => {
   const rows = [...shipRows.value, ...neededRows.value];
 
@@ -651,7 +656,7 @@ const groups = computed<Group[]>(() => {
       key,
       rows: rows
         .filter((row) => row.group === key)
-        .sort((a, b) => a.order - b.order),
+        .sort((a, b) => actionRank(a) - actionRank(b) || a.order - b.order),
       collapsible: folded.includes(key),
     }))
     .filter((group) => group.rows.length);

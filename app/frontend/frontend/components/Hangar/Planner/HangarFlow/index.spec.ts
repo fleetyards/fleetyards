@@ -183,7 +183,7 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(wrapper.text()).toContain("Aurora MR");
   });
 
-  it("keeps each ship in its hangar place, whatever was decided for it", async () => {
+  it("lists ships needing a decision before ships that should change", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         plan,
@@ -206,7 +206,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       },
     });
 
-    // Both stay above the finished route, in their hangar order.
+    // Both stay above the finished route, the undecided one first.
     expect(rowTests(wrapper)).toEqual([
       "hangar-plan-flow-undecided",
       "hangar-plan-vehicle-review",
@@ -214,7 +214,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       "hangar-plan-flow-purchase",
     ]);
 
-    const [change, pending] = wrapper.findAll(
+    const [pending, change] = wrapper.findAll(
       '[data-test="hangar-plan-vehicle-review"]',
     );
     expect(change.text()).toContain("Should change");
