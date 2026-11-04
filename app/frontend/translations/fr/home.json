@@ -15,6 +15,8 @@
         "searchShowMore": "Afficher plus",
         "searching": "Recherche…",
         "searchKeys": {
+          "add": "pour ajouter",
+          "scope": "pour changer de recherche",
           "move": "pour naviguer",
           "open": "pour ouvrir",
           "close": "pour fermer"

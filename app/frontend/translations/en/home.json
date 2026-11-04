@@ -15,6 +15,8 @@
         "searchShowMore": "Show more",
         "searching": "Searching…",
         "searchKeys": {
+          "add": "to add",
+          "scope": "to switch search",
           "move": "to move",
           "open": "to open",
           "close": "to close"

@@ -17,11 +17,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
-import {
-  search as fetchSearch,
-  type SearchGroup,
-  type SearchResult,
-} from "@/services/fyApi";
+import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
+import { useSearchScopes } from "@/frontend/components/Home/Search/useSearchScopes";
+import { type SearchGroup, type SearchResult } from "@/services/fyApi";
 
 type Props = {
   autofocus?: boolean;
@@ -40,6 +38,14 @@ withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
+
+const {
+  scopes,
+  current: scope,
+  select: selectScope,
+  step: stepScope,
+} = useSearchScopes();
+const { canAdd, add } = useSearchResultAdd();
 
 // A touch screen has no arrow keys to hint at.
 const touch = useLowPowerDevice();
@@ -144,7 +150,7 @@ const searchNow = async (text: string) => {
     return;
   }
 
-  const response = await fetchSearch({ q: trimmed }).catch(() => undefined);
+  const response = await scope.value.search(trimmed).catch(() => undefined);
 
   if (request !== latestSearch) return;
 
@@ -156,6 +162,20 @@ const searchNow = async (text: string) => {
 };
 
 const runSearch = useDebounceFn(searchNow, 200);
+
+watch(
+  () => scope.value.key,
+  () => searchNow(query.value),
+);
+
+const clear = () => {
+  searchQuery.value = undefined;
+  rankedGroups.value = [];
+  searchedFor.value = undefined;
+};
+
+// In the page header the field outlives every navigation, not just its own.
+watch(() => route.path, clear);
 
 const onInput = (value?: string | number | null) => {
   searchQuery.value =
@@ -179,10 +199,7 @@ const pick = async (step: Step) => {
   open.value = false;
   await router.push(target);
 
-  // In the page header the field outlives the navigation it started.
-  searchQuery.value = undefined;
-  rankedGroups.value = [];
-  searchedFor.value = undefined;
+  clear();
 };
 
 // Enter opens the highlighted match and nothing else. Pressed before the list
@@ -202,9 +219,48 @@ const submit = async () => {
   if (step) await pick(step);
 };
 
+const activeResult = computed(() => {
+  const step = steps.value[active.value];
+
+  return step && !("items" in step) ? step : undefined;
+});
+
+const addable = computed(
+  () => !!activeResult.value && canAdd(activeResult.value),
+);
+
+const addActive = async () => {
+  const result = activeResult.value;
+  if (!result || !addable.value) return;
+
+  const outcome = await add(result);
+
+  if (outcome === "opened") open.value = false;
+  if (outcome === "unavailable") await pick(result);
+};
+
+const canSwitchScope = computed(() => scopes.value.length > 1);
+
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
     open.value = false;
+    return;
+  }
+
+  if (
+    event.key === "Tab" &&
+    showList.value &&
+    canSwitchScope.value &&
+    (event.target as HTMLElement).tagName === "INPUT"
+  ) {
+    event.preventDefault();
+    stepScope(event.shiftKey ? -1 : 1);
+    return;
+  }
+
+  if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+    event.preventDefault();
+    if (open.value) void addActive();
     return;
   }
 
@@ -239,6 +295,8 @@ const onBlur = () => {
 };
 
 const showList = computed(() => open.value && query.value.length >= MIN_LENGTH);
+
+const addKey = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl";
 
 // The hero sits the field halfway down the screen, so a height measured from
 // the top of the viewport runs the list off the bottom of it.
@@ -290,6 +348,27 @@ const popoverStyle = computed(() => ({
         :style="popoverStyle"
         data-test="home-search-results"
       >
+        <div
+          v-if="canSwitchScope"
+          class="home-search__scopes"
+          role="tablist"
+          :aria-label="t('home.landing.searchResults')"
+        >
+          <button
+            v-for="option in scopes"
+            :key="option.key"
+            type="button"
+            role="tab"
+            class="home-search__scope"
+            :class="{ 'home-search__scope--active': option.key === scope.key }"
+            :aria-selected="option.key === scope.key"
+            data-test="home-search-scope"
+            @mousedown.prevent="selectScope(option.key)"
+          >
+            {{ t(option.labelKey) }}
+          </button>
+        </div>
+
         <div
           v-if="!answered"
           class="home-search__state"
@@ -383,6 +462,13 @@ const popoverStyle = computed(() => ({
               <kbd>↑</kbd><kbd>↓</kbd> {{ t("home.landing.searchKeys.move") }}
             </span>
             <span><kbd>↵</kbd> {{ t("home.landing.searchKeys.open") }}</span>
+            <span v-if="addable" data-test="home-search-key-add">
+              <kbd>{{ addKey }}</kbd
+              ><kbd>↵</kbd> {{ t("home.landing.searchKeys.add") }}
+            </span>
+            <span v-if="canSwitchScope" data-test="home-search-key-scope">
+              <kbd>tab</kbd> {{ t("home.landing.searchKeys.scope") }}
+            </span>
             <span><kbd>esc</kbd> {{ t("home.landing.searchKeys.close") }}</span>
           </div>
         </template>
@@ -586,10 +672,38 @@ const popoverStyle = computed(() => ({
   }
 }
 
+.home-search__scopes {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 6px 6px 0;
+}
+
+.home-search__scope {
+  padding: 4px 10px;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.8125rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-lifted, #eee);
+  }
+
+  &--active {
+    color: var(--color-lifted, #eee);
+    background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
+}
+
 .home-search__keys {
   display: flex;
   flex: 0 0 auto;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   padding: 8px 16px;
   color: var(--color-text-dim, #959595);
   font-size: 0.71875rem;

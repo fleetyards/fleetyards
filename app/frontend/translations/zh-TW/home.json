@@ -15,6 +15,8 @@
         "searchShowMore": "顯示更多",
         "searching": "搜尋中…",
         "searchKeys": {
+          "add": "新增",
+          "scope": "切換搜尋",
           "move": "移動",
           "open": "開啟",
           "close": "關閉"

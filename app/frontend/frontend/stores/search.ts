@@ -7,11 +7,13 @@ type SearchHistoryEntry = {
 
 type SearchState = {
   history: SearchHistoryEntry[];
+  scope: string;
 };
 
 export const useSearchStore = defineStore("search", {
   state: (): SearchState => ({
     history: [],
+    scope: "catalogue",
   }),
   actions: {
     save(payload: SearchHistoryEntry) {

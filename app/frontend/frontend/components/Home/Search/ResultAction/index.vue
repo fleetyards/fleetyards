@@ -10,21 +10,11 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { catalogueSelection } from "@/frontend/components/Logistics/selection";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useComlink } from "@/shared/composables/useComlink";
+import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { useSessionStore } from "@/frontend/stores/session";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import {
-  blueprint,
-  commodity,
-  component,
-  equipmentItem,
-  model,
-  type SearchResult,
-} from "@/services/fyApi";
+import { type SearchResult } from "@/services/fyApi";
 
 type Props = {
   result: SearchResult;
@@ -40,23 +30,15 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const comlink = useComlink();
-const { displayAlert } = useAppNotifications();
-const sessionStore = useSessionStore();
+const { canAdd, add } = useSearchResultAdd();
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
-
-const INVENTORY_TYPES = ["Component", "Equipment", "Commodity"];
 
 const addsToHangar = computed(() =>
   ["Model", "Blueprint"].includes(props.result.type),
 );
 
-const visible = computed(
-  () =>
-    sessionStore.isAuthenticated &&
-    (addsToHangar.value || INVENTORY_TYPES.includes(props.result.type)),
-);
+const visible = computed(() => canAdd(props.result));
 
 const label = computed(() => {
   if (props.result.type === "Blueprint") {
@@ -78,67 +60,17 @@ const marked = computed(
     ),
 );
 
-const openInventoryModal = (
-  entry: Parameters<typeof catalogueSelection>[0],
-) => {
-  if (entry.record.retired) {
-    emit("unavailable");
-    return;
-  }
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Logistics/InventoryItemModal/index.vue"),
-    props: { item: catalogueSelection(entry) },
-  });
-  emit("opened");
-};
-
-const openModal = async () => {
-  const { slug, type } = props.result;
-
-  if (type === "Component") {
-    openInventoryModal({ type, record: await component(slug) });
-  } else if (type === "Equipment") {
-    openInventoryModal({ type, record: await equipmentItem(slug) });
-  } else if (type === "Commodity") {
-    openInventoryModal({ type, record: await commodity(slug) });
-  } else if (type === "Blueprint") {
-    comlink.emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Blueprints/AddToHangar/Modal/index.vue"),
-      props: { blueprint: await blueprint(slug) },
-    });
-    emit("opened");
-  } else {
-    const record = await model(slug);
-
-    if (!record.playerOwnable) {
-      emit("unavailable");
-      return;
-    }
-
-    comlink.emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Models/AddToHangar/Modal/index.vue"),
-      props: { model: record },
-    });
-    emit("opened");
-  }
-};
-
 const loading = ref(false);
 
 const open = async () => {
   loading.value = true;
 
-  try {
-    await openModal();
-  } catch {
-    displayAlert({ text: t("messages.error.default") });
-  } finally {
-    loading.value = false;
-  }
+  const outcome = await add(props.result);
+
+  loading.value = false;
+
+  if (outcome === "opened") emit("opened");
+  if (outcome === "unavailable") emit("unavailable");
 };
 </script>
 
