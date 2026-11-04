@@ -395,6 +395,8 @@ const scene = ref<HTMLElement>();
 
 let panzoomInstance: PanZoom | undefined;
 
+let restoreTimer: ReturnType<typeof setTimeout> | undefined;
+
 const persistZoom = debounce(() => {
   fleetchartStore.updateZoomData({
     namespace: props.namespace,
@@ -437,7 +439,7 @@ const setupPanzoom = () => {
 
     // Zooming moves the scene around the given point, so the saved position only
     // holds once that has settled.
-    setTimeout(() => {
+    restoreTimer = setTimeout(() => {
       panzoomInstance?.moveTo(x, y);
     }, 300);
   }
@@ -447,6 +449,8 @@ const isPacked = computed(() => layout.value === FleetchartLayouts.PACKED);
 
 // Packing is only worth anything when the whole of it can be seen at once.
 const fitToScreen = () => {
+  clearTimeout(restoreTimer);
+
   const room = screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM;
   const scale = Math.min(
     1,
@@ -464,6 +468,8 @@ const fitToScreen = () => {
 };
 
 const resetZoom = () => {
+  clearTimeout(restoreTimer);
+
   if (isPacked.value) {
     fitToScreen();
 
@@ -521,6 +527,7 @@ onMounted(() => {
 onUnmounted(() => {
   stopStatusListener?.();
 
+  clearTimeout(restoreTimer);
   persistZoom.flush();
   handleResize.cancel();
 
