@@ -43,11 +43,11 @@ describe("shipGeometry", () => {
     });
   });
 
-  it("uses the beam when it exceeds the length", () => {
+  it("makes room for a beam that exceeds the length", () => {
     expect(
       shipGeometry(
         model(
-          { topView: view("top", 1000, 1000) },
+          { topView: view("top", 1000, 1500) },
           { fleetchartOffsetBeam: 150 },
         ),
         FleetchartViewpoints.TOP,
@@ -215,6 +215,34 @@ describe("shipGeometry", () => {
       expect(
         shipGeometry(railen, FleetchartViewpoints.TOP)?.height,
       ).toBeCloseTo(67.16, 1);
+    });
+
+    it("widens an angled view by the beam, so spread and folded wings match", () => {
+      const clipper = {
+        metrics: {
+          fleetchartOffsetLength: 26.99,
+          fleetchartOffsetBeam: 49.48,
+          landedLength: 26.99,
+          landedBeam: 21.14,
+        },
+        media: {
+          angledView: picture(3840, 2162),
+          angledRearView: picture(3840, 2162),
+          landedAngledView: picture(3825, 3840),
+        },
+      } as unknown as FleetchartEntry;
+
+      expect(
+        shipGeometry(clipper, FleetchartViewpoints.ANGLED)?.imageWidth,
+      ).toBeCloseTo(47.6, 1);
+      expect(
+        shipGeometry(clipper, FleetchartViewpoints.ANGLED, {
+          state: FleetchartShipStates.LANDED,
+        })?.imageWidth,
+      ).toBeCloseTo(33.87, 1);
+      expect(
+        shipGeometry(clipper, FleetchartViewpoints.ANGLED_REAR)?.imageWidth,
+      ).toBeCloseTo(53.48, 1);
     });
 
     it("keeps a borrowed flight picture at its flight size", () => {

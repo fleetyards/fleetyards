@@ -164,21 +164,6 @@ export const metricsOf = (
   return flight;
 };
 
-// Seen from ahead or behind, a ship's width on screen is its beam, not its length.
-const BEAM_VIEWS: FleetchartViewpoints[] = [
-  FleetchartViewpoints.FRONT,
-  FleetchartViewpoints.REAR,
-];
-
-// In these a picture's width is the ship's length, whatever the picture's shape: a
-// ship seen from the side can be taller than it is long.
-const LENGTH_VIEWS: ViewName[] = [
-  "bottomView",
-  "portView",
-  "starboardView",
-  "topView",
-];
-
 // A state without a picture of this view borrows the flight one, which only stays at
 // the chart's scale at the flight size.
 const metricsOfPicture = (
@@ -198,6 +183,31 @@ const metricsOfPicture = (
   );
 };
 
+// The cameras are turned by a fixed angle, so these pictures are as wide as a share
+// of the length plus a share of the beam. Fitted to the pictures themselves: both
+// spread wings and folded ones then draw at the same scale.
+const ANGLED_VIEW_SHARES: Partial<
+  Record<ViewName, { length: number; beam: number }>
+> = {
+  angledView: { length: 0.875, beam: 0.485 },
+  angledRearView: { length: 0.731, beam: 0.682 },
+};
+
+// Seen from ahead or behind a picture is as wide as the ship's beam, and from the side
+// or above as wide as its length, however tall the picture is.
+const pictureWidth = (
+  view: ViewName,
+  { length, beam }: { length: number; beam: number },
+) => {
+  const shares = ANGLED_VIEW_SHARES[view];
+
+  if ((view === "frontView" || view === "rearView") && beam) {
+    return beam;
+  }
+
+  return shares && beam ? shares.length * length + shares.beam * beam : length;
+};
+
 // A ship's box in metres, or undefined when there is nothing to draw it from:
 // the views have not arrived, or the ship has none.
 export const shipGeometry = (
@@ -206,56 +216,41 @@ export const shipGeometry = (
   options: FleetchartViewOptions = {},
 ): FleetchartShipGeometry | undefined => {
   const state = options.state ?? FleetchartShipStates.FLIGHT;
-  const sizing = SIZING_VIEWS.flatMap((view) => {
-    const picture = resolveView(entry, view, options);
 
-    return picture?.width && picture?.height ? [{ view, picture }] : [];
+  const drawnSize = (view: ViewName, picture?: MediaFile) => {
+    if (!picture?.width || !picture?.height) {
+      return undefined;
+    }
+
+    const width = pictureWidth(
+      view,
+      metricsOfPicture(entry, view, picture, state),
+    );
+
+    return { width, height: (width * picture.height) / picture.width };
+  };
+
+  const sizing = SIZING_VIEWS.flatMap((view) => {
+    const size = drawnSize(view, resolveView(entry, view, options));
+
+    return size ? [size] : [];
   });
 
   if (!sizing.length) {
     return undefined;
   }
 
-  const { length, beam } = metricsOf(entry, state);
-  const maxWidth = Math.max(...sizing.map(({ picture }) => picture.width || 0));
-  const maxHeight = Math.max(
-    ...sizing.map(({ picture }) => picture.height || 0),
+  const { length } = metricsOf(entry, state);
+  const drawn = drawnSize(
+    VIEW_BY_VIEWPOINT[viewpoint],
+    viewFor(entry, viewpoint, options),
   );
-  const fittedHeight = (Math.max(length, beam) * maxHeight) / maxWidth;
-  const trueHeights = sizing
-    .filter(({ view }) => LENGTH_VIEWS.includes(view))
-    .map(
-      ({ view, picture }) =>
-        (metricsOfPicture(entry, view, picture, state).length *
-          (picture.height || 0)) /
-        (picture.width || 1),
-    );
-
-  const view = VIEW_BY_VIEWPOINT[viewpoint];
-  const source = viewFor(entry, viewpoint, options);
-  let imageWidth = 0;
-  let imageHeight = 0;
-
-  if (source?.width && source?.height) {
-    const drawn = metricsOfPicture(entry, view, source, state);
-
-    if (BEAM_VIEWS.includes(viewpoint) && drawn.beam) {
-      imageWidth = drawn.beam;
-    } else if (LENGTH_VIEWS.includes(view)) {
-      imageWidth = drawn.length;
-    } else {
-      imageWidth = Math.min(
-        (fittedHeight * source.width) / source.height,
-        drawn.length,
-      );
-    }
-
-    imageHeight = (imageWidth * source.height) / source.width;
-  }
+  const imageWidth = drawn?.width ?? 0;
+  const imageHeight = drawn?.height ?? 0;
 
   return {
     length,
-    height: Math.max(fittedHeight, imageHeight, ...trueHeights),
+    height: Math.max(imageHeight, ...sizing.map(({ height }) => height)),
     imageWidth,
     imageHeight,
     frameWidth: Math.max(length, imageWidth),
