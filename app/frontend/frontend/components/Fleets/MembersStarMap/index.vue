@@ -11,7 +11,9 @@ import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { TresCanvas, useLoop } from "@tresjs/core";
 import { OrbitControls, Html } from "@tresjs/cientos";
+import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import type { FleetMember } from "@/services/fyApi";
 import {
   starSystems,
@@ -27,6 +29,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const mobile = useMobile();
+
+const { webglSupported } = useWebglSupport();
 
 const dpr = computed(() =>
   mobile.value
@@ -202,6 +206,7 @@ const ResolutionUpdater = defineComponent({
 <template>
   <div class="members-starmap">
     <TresCanvas
+      v-if="webglSupported"
       :clear-alpha="0"
       :shadows="false"
       :dpr="dpr"
@@ -291,9 +296,10 @@ const ResolutionUpdater = defineComponent({
         </Html>
       </TresGroup>
     </TresCanvas>
+    <WebglFallback v-else />
 
     <!-- Legend -->
-    <div class="starmap-legend">
+    <div v-if="webglSupported" class="starmap-legend">
       <div class="legend-item">
         <span class="legend-dot legend-dot-active" />
         Active System

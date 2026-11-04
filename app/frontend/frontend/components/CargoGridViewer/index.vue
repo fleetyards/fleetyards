@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import WebglFallback from "@/shared/components/WebglFallback/index.vue";
+import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, Grid, Html } from "@tresjs/cientos";
 import type { Group } from "three";
@@ -38,6 +40,8 @@ const dpr = computed(() =>
 const powerPreference = computed<WebGLPowerPreference>(() =>
   mobile.value ? "low-power" : "default",
 );
+
+const { webglSupported } = useWebglSupport();
 
 type Props = {
   cargoHolds: CargoHold[];
@@ -1184,10 +1188,15 @@ const onDragEnd = (_shipIndex: number) => {
     data-test="cargo-grid-viewer"
   >
     <div class="cargo-grid-viewer__canvas">
-      <Btn class="cargo-grid-viewer__reset" @click="resetCamera">
+      <Btn
+        v-if="webglSupported"
+        class="cargo-grid-viewer__reset"
+        @click="resetCamera"
+      >
         <i class="fa-light fa-crosshairs" />
       </Btn>
       <TresCanvas
+        v-if="webglSupported"
         :key="canvasKey"
         :clear-alpha="0"
         :shadows="!mobile"
@@ -1377,6 +1386,7 @@ const onDragEnd = (_shipIndex: number) => {
           </TresGroup>
         </template>
       </TresCanvas>
+      <WebglFallback v-else />
     </div>
 
     <!-- Single-ship stats -->
