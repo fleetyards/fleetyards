@@ -3796,3 +3796,4 @@ PUT /notifications/{id}/archive added the new `raffle_email_missing` enum value 
 PUT /notifications/{id}/read added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
+GET /hangar/plans/{id}/comparison added the new `unrouted` enum value to the `vehicles/items/status` response property for the response status `200`
