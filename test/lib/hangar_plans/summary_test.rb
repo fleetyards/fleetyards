@@ -123,6 +123,14 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal 350, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
   end
 
+  test "a ship marked to keep is no upgrade source" do
+    kept = create(:vehicle, user: @user, model: @constellation)
+    @plan.vehicle_marks.create!(vehicle: kept, mark: "keep")
+    decided_slot(@carrack)
+
+    assert_equal 600, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
+  end
+
   test "the maximum covers every unit without a finished route" do
     slot = decided_slot(@carrack, quantity: 3)
     @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @carrack)

@@ -195,7 +195,7 @@ module HangarPlans
     end
 
     private def cost_from_free_ship(model, unit)
-      held = free_ships.index { |free| free.id == model.id }
+      held = free_ships.index { |free| free.model_id == model.id }
       if held
         free_ships.delete_at(held)
         return 0
@@ -204,19 +204,23 @@ module HangarPlans
       source = upgrade_source(model)
       return unit if source.nil?
 
-      free_ships.delete_at(free_ships.index(source))
-      unit - source.pledge_price
+      free_ships.delete(source)
+      unit - source.model.pledge_price
     end
 
-    private def upgrade_source(model)
-      return if model.pledge_price.nil? || !model.ccu_into?
+    # A ship marked to keep stays as it is, so nothing upgrades out of it.
+    private def upgrade_source(target)
+      return if target.pledge_price.nil? || !target.ccu_into?
 
-      free_ships.select { |free| free.pledge_price && free.pledge_price < model.pledge_price && free.ccu_out_of? }
-        .max_by(&:pledge_price)
+      kept = plan.vehicle_marks.where(mark: "keep").pluck(:vehicle_id)
+      free_ships.reject { |free| kept.include?(free.id) }.select do |free|
+        price = free.model.pledge_price
+        price && price < target.pledge_price && free.model.ccu_out_of?
+      end.max_by { |free| free.model.pledge_price }
     end
 
     private def free_ships
-      @free_ships ||= plan.live_vehicles.where.not(id: plan.used_vehicle_ids).includes(:model).map(&:model)
+      @free_ships ||= plan.live_vehicles.where.not(id: plan.used_vehicle_ids).includes(:model).to_a
     end
 
     # A ship already held covers one unit of one slot only: the cheapest
