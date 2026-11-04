@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.38.0](https://github.com/fleetyards/fleetyards/compare/v9.37.0...v9.38.0) (2026-11-04)
+
+
+### Features
+
+* **dressing-room:** armour set presets, and the Antium Jet helmet's name ([#6155](https://github.com/fleetyards/fleetyards/issues/6155)) ([609e328](https://github.com/fleetyards/fleetyards/commit/609e328189687855cc7c4cc29453783e757684b9))
+* **dressing-room:** draw the textured character bodies ([#6156](https://github.com/fleetyards/fleetyards/issues/6156)) ([af5cfe0](https://github.com/fleetyards/fleetyards/commit/af5cfe0e2f6b53320d7687e8dbc27134a7695e6a))
+* **dressing-room:** pick pieces and armour sets from the catalogue modal ([#6158](https://github.com/fleetyards/fleetyards/issues/6158)) ([24524f7](https://github.com/fleetyards/fleetyards/commit/24524f7e270b345f49f8c985493dc94b75f01dfb))
+* **equipment:** combat and tool stats for FPS gear ([#6152](https://github.com/fleetyards/fleetyards/issues/6152)) ([7b50d3e](https://github.com/fleetyards/fleetyards/commit/7b50d3e2bff4fb7bd390593914d88d850180ba56))
+* **hangar-planner:** pick start and end ships in the flow rows ([#6065](https://github.com/fleetyards/fleetyards/issues/6065)) ([e9f223b](https://github.com/fleetyards/fleetyards/commit/e9f223b09c1b49077e73ffd776a60e41bad4da8d))
+* **hangar:** lead a card's details with the figures the list is sorted or filtered by ([#6151](https://github.com/fleetyards/fleetyards/issues/6151)) ([7e9e600](https://github.com/fleetyards/fleetyards/commit/7e9e600a4a0a8909a2c6bf84d8863f72d1d08fb7))
+* **overlay:** picture ships by their angled render and add item thumbs ([#6154](https://github.com/fleetyards/fleetyards/issues/6154)) ([c6a1095](https://github.com/fleetyards/fleetyards/commit/c6a10955b28d53cfb99fb0dcb01f7b298d2e6da6))
+* **picker:** overlay a card's name on its picture across all selectors ([#6157](https://github.com/fleetyards/fleetyards/issues/6157)) ([1ad4481](https://github.com/fleetyards/fleetyards/commit/1ad44819697c17c0753c2615ac9f158ff6f34f99))
+
+
+### Bug Fixes
+
+* **paints:** merge duplicate paints and stop creating them ([#6159](https://github.com/fleetyards/fleetyards/issues/6159)) ([9f5e6b6](https://github.com/fleetyards/fleetyards/commit/9f5e6b6b490cb5c42d34000f1939f57ec70d58f8))
+
 ## [9.37.0](https://github.com/fleetyards/fleetyards/compare/v9.36.0...v9.37.0) (2026-11-03)
 
 
