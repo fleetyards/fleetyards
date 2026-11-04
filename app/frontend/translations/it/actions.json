@@ -144,6 +144,7 @@
       "hideStatusColor": "Nascondi stato come colori",
       "addToHangar": "Aggiungi all'hangar",
       "blueprint": {
+        "addToAssets": "Aggiungi ai beni",
         "apply": "Applica",
         "discard": "Scarta",
         "removeCrafting": "Rimuovi la fabbricazione",

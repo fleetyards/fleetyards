@@ -89,6 +89,18 @@ describe("HomeSearchResultAction", () => {
     },
   );
 
+  it.each([
+    ["Model", "Add to Hangar"],
+    ["Blueprint", "Add to Assets"],
+    ["Commodity", "Add to Inventory"],
+  ])("names what a %s is added to", async (type, label) => {
+    const wrapper = await mount({ type });
+
+    expect(
+      wrapper.find("[data-test='home-search-action']").attributes("aria-label"),
+    ).toBe(label);
+  });
+
   it("opens the blueprint's own modal with its full record", async () => {
     const record = { id: "id", owned: false };
     vi.mocked(blueprint).mockResolvedValue(record as never);

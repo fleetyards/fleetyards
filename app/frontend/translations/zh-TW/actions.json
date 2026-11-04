@@ -144,6 +144,7 @@
       "hideStatusColor": "隱藏狀態顏色",
       "addToHangar": "新增至機庫",
       "blueprint": {
+        "addToAssets": "新增至資產",
         "apply": "套用",
         "discard": "放棄",
         "removeCrafting": "移除製作",

@@ -61,11 +61,11 @@ const open = () => {
      outlined otherwise, and a click asks which of the two it is. -->
 <template>
   <Btn
-    v-tooltip.bottom="t('actions.addToHangar')"
+    v-tooltip.bottom="t('actions.blueprint.addToAssets')"
     :variant="BtnVariantsEnum.BARE"
     :size="btnSize"
     data-test="blueprint-add-to-hangar"
-    :aria-label="t('actions.addToHangar')"
+    :aria-label="t('actions.blueprint.addToAssets')"
     @click.stop.prevent="open"
   >
     <i v-if="marked" class="fa fa-bookmark" />

@@ -144,6 +144,7 @@
       "hideStatusColor": "Masquer le statut en tant que couleur",
       "addToHangar": "Ajouter à votre Hangar",
       "blueprint": {
+        "addToAssets": "Ajouter aux actifs",
         "apply": "Appliquer",
         "discard": "Annuler",
         "removeCrafting": "Retirer la fabrication",

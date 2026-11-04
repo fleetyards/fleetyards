@@ -273,7 +273,7 @@
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
       "myVehicleLoadouts": "%{vehicle} 的配装",
       "addToHangar": "Add \"%{model}\" to your Hangar",
-      "blueprintAddToHangar": "将“%{blueprint}”添加到你的机库",
+      "blueprintAddToHangar": "将“%{blueprint}”添加到你的资产",
       "impressum": "法律声明",
       "privacy": "隐私政策",
       "cookie": "Cookie policy",

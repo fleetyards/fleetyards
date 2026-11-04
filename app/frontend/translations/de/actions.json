@@ -144,6 +144,7 @@
       "hideStatusColor": "Status als Farbe ausblenden",
       "addToHangar": "Zum Hangar hinzufügen",
       "blueprint": {
+        "addToAssets": "Zum Bestand hinzufügen",
         "apply": "Übernehmen",
         "discard": "Verwerfen",
         "removeCrafting": "Herstellung entfernen",

@@ -144,6 +144,7 @@
       "hideStatusColor": "隐藏状态颜色",
       "addToHangar": "添加到机库",
       "blueprint": {
+        "addToAssets": "添加到资产",
         "apply": "应用",
         "discard": "放弃",
         "removeCrafting": "移除制作",

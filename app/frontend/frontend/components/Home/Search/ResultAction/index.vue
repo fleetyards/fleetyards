@@ -58,11 +58,15 @@ const visible = computed(
     (addsToHangar.value || INVENTORY_TYPES.includes(props.result.type)),
 );
 
-const label = computed(() =>
-  addsToHangar.value
+const label = computed(() => {
+  if (props.result.type === "Blueprint") {
+    return t("actions.blueprint.addToAssets");
+  }
+
+  return addsToHangar.value
     ? t("actions.addToHangar")
-    : t("actions.logistics.addToInventory"),
-);
+    : t("actions.logistics.addToInventory");
+});
 
 // Only ships can say so up front: both lists are kept in the session, while a
 // blueprint's marks arrive with its full record.
