@@ -126,6 +126,9 @@ const addToWishlist = async () => {
         alertFailure(error, "messages.vehicleOverview.setting.failure");
       },
     )
+    .catch((error) => {
+      console.error(error);
+    })
     .finally(() => {
       updating.value = false;
     });
@@ -153,6 +156,9 @@ const addToHangar = async () => {
         alertFailure(error, "messages.vehicleOverview.setting.failure");
       },
     )
+    .catch((error) => {
+      console.error(error);
+    })
     .finally(() => {
       updating.value = false;
     });
@@ -185,6 +191,9 @@ const toggleHidden = async () => {
         alertFailure(error, "messages.vehicleOverview.setting.failure");
       },
     )
+    .catch((error) => {
+      console.error(error);
+    })
     .finally(() => {
       updating.value = false;
     });
@@ -224,6 +233,9 @@ const destroy = async () => {
         alertFailure(error, "messages.vehicle.destroy.failure");
       },
     )
+    .catch((error) => {
+      console.error(error);
+    })
     .finally(() => {
       deleting.value = false;
     });

@@ -1,3 +1,4 @@
+import { useComlink } from "@/shared/composables/useComlink";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -189,6 +190,52 @@ describe("VehicleContextMenu", () => {
       await click("vehicle-add-to-wishlist");
 
       expect(mocks.displayAlert).toHaveBeenCalledWith({ text: "Not yours." });
+    });
+
+    it("does not call a save that worked a failure when a listener throws", async () => {
+      const consoleError = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => undefined);
+      const comlink = useComlink();
+      const listener = () => {
+        throw new Error("listener");
+      };
+
+      const unbind = comlink.on("vehicle-save", listener);
+      mocks.updateVehicle.mockReset().mockResolvedValue({});
+
+      await mount();
+      await click("vehicle-add-to-wishlist");
+
+      unbind();
+
+      expect(mocks.displayAlert).not.toHaveBeenCalled();
+      expect(consoleError).toHaveBeenCalledOnce();
+
+      consoleError.mockRestore();
+    });
+
+    it("finishes the removal when a listener throws, so the dialog can close", async () => {
+      const consoleError = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => undefined);
+      const comlink = useComlink();
+      const listener = () => {
+        throw new Error("listener");
+      };
+
+      const unbind = comlink.on("vehicle-destroy", listener);
+      mocks.destroyVehicle.mockReset().mockResolvedValue({});
+
+      await mount();
+      await click("vehicle-remove");
+
+      unbind();
+
+      expect(mocks.displayAlert).not.toHaveBeenCalled();
+      expect(consoleError).toHaveBeenCalledOnce();
+
+      consoleError.mockRestore();
     });
 
     it("says so when the ship could not be removed", async () => {
