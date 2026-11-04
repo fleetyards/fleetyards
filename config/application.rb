@@ -99,6 +99,8 @@ module Fleetyards
         ENV["TRUSTED_PROXY_IPS"].split(",").map { |ip| IPAddr.new(ip.strip) }
     end
 
+    config.action_dispatch.rescue_responses["ActionDispatch::RemoteIp::IpSpoofAttackError"] = :bad_request
+
     config.middleware.use Rack::Deflater
     config.middleware.use Middleware::TransformParameters
     config.middleware.use Middleware::ResetLocale
