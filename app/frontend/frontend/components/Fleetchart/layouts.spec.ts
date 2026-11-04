@@ -309,10 +309,9 @@ describe("groups", () => {
   });
 
   it("widens the bounds to a heading reaching past the ships", () => {
-    const bounds = withHeadings(
-      { minX: 0, minY: 0, width: 100, height: 50 },
-      [{ title: "long", x: -20, y: 0, width: 300 }],
-    );
+    const bounds = withHeadings({ minX: 0, minY: 0, width: 100, height: 50 }, [
+      { title: "long", x: -20, y: 0, width: 300 },
+    ]);
 
     expect(bounds.minX).toBe(-20);
     expect(bounds.width).toBe(300);

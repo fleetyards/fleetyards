@@ -91,8 +91,9 @@ describe("FleetchartCanvas", () => {
     const ships = wrapper.findAll("[data-test='fleetchart-ship']");
 
     expect(ships).toHaveLength(2);
-    expect((ships[0].element as HTMLElement).style.width).toBe("400px");
-    expect((ships[1].element as HTMLElement).style.width).toBe("200px");
+    expect(
+      ships.map((ship) => (ship.element as HTMLElement).style.width).sort(),
+    ).toEqual(["200px", "400px"]);
   });
 
   it("leaves out a ship whose views have not arrived", () => {

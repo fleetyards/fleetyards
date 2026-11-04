@@ -514,14 +514,11 @@ const resetZoom = () => {
 // A position from one layout can leave another one entirely off screen.
 watch(layout, resetZoom);
 
-watch(
-  [() => sceneSize.value.width, () => sceneSize.value.height],
-  () => {
-    if (isPacked.value) {
-      fitToScreen();
-    }
-  },
-);
+watch([() => sceneSize.value.width, () => sceneSize.value.height], () => {
+  if (isPacked.value) {
+    fitToScreen();
+  }
+});
 
 // deviceorientation fires continuously on a phone, which would keep a plain
 // debounce from ever running.
