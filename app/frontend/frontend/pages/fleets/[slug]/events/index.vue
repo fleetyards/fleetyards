@@ -13,6 +13,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import TitleFilterForm from "@/frontend/components/Fleets/TitleFilterForm/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
@@ -114,7 +115,12 @@ const toggleListCalendar = (next: "list" | "calendar") => {
   else setView(view.value === "week" ? "week" : "month");
 };
 
+const titleCont = computed(() =>
+  typeof route.query.titleCont === "string" ? route.query.titleCont : undefined,
+);
+
 const queryParams = computed(() => ({
+  q: titleCont.value ? { titleCont: titleCont.value } : undefined,
   upcoming: tab.value === "upcoming" ? true : undefined,
   past: tab.value === "past" ? true : undefined,
   archived: tab.value === "archived" ? true : undefined,
@@ -439,7 +445,12 @@ const openDisplayOptionsModal = () => {
     :async-status="asyncStatus"
     :hide-empty="!gridView"
     :placeholders="!gridView"
+    :is-filter-selected="!!titleCont"
   >
+    <template #filter>
+      <TitleFilterForm />
+    </template>
+
     <!-- Only the grid needs placeholder cards. In table view the slot is gone,
          which hands the wait to `placeholders` above: the table draws its own
          header and a page of placeholder rows out of an empty record set,

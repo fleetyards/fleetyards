@@ -14,6 +14,7 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import TitleFilterForm from "@/frontend/components/Fleets/TitleFilterForm/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ContractPanel from "@/frontend/components/Fleets/Contracts/ContractPanel/index.vue";
 import ContractTable from "@/frontend/components/Fleets/Contracts/ContractTable/index.vue";
@@ -108,13 +109,21 @@ const scopeLink = (next: ContractScope) => {
 
 const sortParam = useSortParam<FleetContractSortEnum>();
 
+const titleCont = computed(() =>
+  typeof route.query.titleCont === "string" ? route.query.titleCont : undefined,
+);
+
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
   inHand: props.view.inHand ? true : undefined,
   personal: scope.value.personal,
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
-  q: { stateIn: props.view.states, ...sortParam.value },
+  q: {
+    stateIn: props.view.states,
+    ...sortParam.value,
+    ...(titleCont.value ? { titleCont: titleCont.value } : {}),
+  },
 }));
 
 const {
@@ -147,7 +156,12 @@ onUnmounted(() => {
     :records="contractList"
     :async-status="asyncStatus"
     :hide-empty="!gridView"
+    :is-filter-selected="!!titleCont"
   >
+    <template #filter>
+      <TitleFilterForm />
+    </template>
+
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"

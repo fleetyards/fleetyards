@@ -3900,6 +3900,13 @@ paths:
         schema:
           type: boolean
         required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetEventQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -8748,6 +8755,38 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/search":
+    get:
+      summary: Search one fleet
+      tags:
+      - Search
+      operationId: fleetSearch
+      parameters:
+      - name: fleetSlug
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SearchResults"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/shopping-lists":
     parameters:
     - name: fleetSlug
@@ -14777,6 +14816,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/search":
+    get:
+      summary: Search the current user's hangar
+      tags:
+      - Search
+      operationId: hangarSearch
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SearchResults"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/ship-components":
     get:
       summary: Hangar Ship Components
@@ -31310,6 +31376,19 @@ components:
       required:
       - date
       title: FleetEventOccurrenceUpdateInput
+    FleetEventQuery:
+      type: object
+      properties:
+        titleCont:
+          type: string
+        statusEq:
+          type: string
+        categoryEq:
+          type: string
+        s:
+          type: string
+      additionalProperties: false
+      title: FleetEventQuery
     FleetEventRecurrenceIntervalEnum:
       type: string
       enum:
