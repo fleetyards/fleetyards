@@ -20,6 +20,9 @@ export interface FleetchartShipGeometry {
   length: number;
   height: number;
   imageWidth: number;
+  // How tall the current view draws, which can be far less than `height`: that is
+  // the tallest of the ship's views, so the box holds when the viewpoint changes.
+  imageHeight: number;
 }
 
 type ViewName = "angledView" | "frontView" | "portView" | "topView";
@@ -120,7 +123,12 @@ export const shipGeometry = (
       ? Math.min((height * source.width) / source.height, length)
       : 0;
 
-  return { length, height, imageWidth };
+  const imageHeight =
+    source?.width && source?.height
+      ? (imageWidth * source.height) / source.width
+      : 0;
+
+  return { length, height, imageWidth, imageHeight };
 };
 
 export const shipLabelOf = (entry: FleetchartEntry) => {
