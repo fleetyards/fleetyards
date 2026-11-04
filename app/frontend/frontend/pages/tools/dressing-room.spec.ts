@@ -117,6 +117,7 @@ const ARMOR_SETS: ArmorSet[] = [
     manufacturerName: "Clark Defense Systems",
     itemType: "heavy_armor",
     itemTypeLabel: "Heavy Armor",
+    image: null,
     pieces: [
       { slot: OutfitSlotEnum.TORSO, slug: "adp-core", name: "ADP Core" },
       { slot: OutfitSlotEnum.LEGS, slug: "adp-legs", name: "ADP Legs" },
@@ -138,7 +139,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
         : Promise.reject(new Error("not found")),
   }),
   useCharacterBodies: () => ({ data: bodies }),
-  useArmorSets: () => ({ data: ref(ARMOR_SETS), isLoading: ref(false) }),
 }));
 
 const copied = vi.fn((_text: string) => Promise.resolve());
@@ -540,6 +540,10 @@ describe("ToolsDressingRoomPage", () => {
   });
 
   it("puts on an armour set, keeping the undersuit and weapons and taking off the rest of the old armour", async () => {
+    const opened = vi.fn();
+    const { useComlink } = await import("@/shared/composables/useComlink");
+    const stop = useComlink().on("open-modal", opened);
+
     const { wrapper, router } = await mount({
       helmet: "old-helmet",
       torso: "painted-core",
@@ -550,9 +554,11 @@ describe("ToolsDressingRoomPage", () => {
     await wrapper
       .find('[data-test="dressing-room-open-armor-sets"]')
       .trigger("click");
-    await wrapper
-      .find('[data-test="dressing-room-armor-set-adp-core"]')
-      .trigger("click");
+
+    const { props: modal } = opened.mock.calls[0]?.[0] as {
+      props: { onSelect: (set: ArmorSet) => void };
+    };
+    modal.onSelect(ARMOR_SETS[0] as ArmorSet);
     await flushPromises();
 
     expect(router.currentRoute.value.query).toMatchObject({
@@ -562,21 +568,35 @@ describe("ToolsDressingRoomPage", () => {
       primary: "p4-ar",
     });
     expect(router.currentRoute.value.query.helmet).toBeUndefined();
-    expect(
-      wrapper.find('[data-test="dressing-room-armor-sets"]').exists(),
-    ).toBe(false);
+
+    stop();
   });
 
-  it("marks the armour set that is worn", async () => {
-    const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
+  it("picks a slot's piece from the modal", async () => {
+    const opened = vi.fn();
+    const { useComlink } = await import("@/shared/composables/useComlink");
+    const stop = useComlink().on("open-modal", opened);
+
+    const { wrapper, router } = await mount({ legs: "adp-legs" });
 
     await wrapper
-      .find('[data-test="dressing-room-open-armor-sets"]')
+      .find('[data-test="dressing-room-pick-torso"]')
       .trigger("click");
 
-    expect(
-      wrapper.find('[data-test="dressing-room-armor-set-adp-core"]').classes(),
-    ).toContain("armor-sets__item--selected");
+    const { props: modal } = opened.mock.calls[0]?.[0] as {
+      props: { slot: string; onSelect: (item: Equipment) => void };
+    };
+    expect(modal.slot).toBe("torso");
+
+    modal.onSelect(EQUIPMENT["adp-core"] as Equipment);
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toMatchObject({
+      torso: "adp-core",
+      legs: "adp-legs",
+    });
+
+    stop();
   });
 
   it("shows how to start with nothing to draw", async () => {

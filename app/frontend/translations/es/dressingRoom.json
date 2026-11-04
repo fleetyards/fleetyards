@@ -13,9 +13,7 @@
         "secondary": "Secundaria",
         "sidearm": "Arma corta"
       },
-      "search": "Buscar %{slot}",
       "size": "S%{size}",
-      "noResults": "No se encontró nada para esta ranura.",
       "choose": "Elegir…",
       "remove": "Quitar",
       "openItem": "Abrir la página del objeto",
@@ -59,8 +57,10 @@
       },
       "armorSets": {
         "open": "Conjuntos de armadura",
-        "search": "Buscar conjuntos de armadura",
-        "noResults": "No se encontró ningún conjunto de armadura."
+        "count": {
+          "one": "%{count} conjunto",
+          "other": "%{count} conjuntos"
+        }
       }
     }
   }

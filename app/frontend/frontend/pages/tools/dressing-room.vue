@@ -14,11 +14,10 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
-import SlotPicker from "@/frontend/components/DressingRoom/SlotPicker/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
-import ArmorSets from "@/frontend/components/DressingRoom/ArmorSets/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 import copyText from "@/shared/utils/CopyText";
 import {
   type ArmorSet,
@@ -135,27 +134,23 @@ const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
   });
 };
 
-const picking = ref<OutfitSlotEnum>();
-
-const pickingSet = ref(false);
-
-const openSlot = (slot: OutfitSlotEnum) => {
-  pickingSet.value = false;
-  picking.value = slot;
-};
+const comlink = useComlink();
 
 const openArmorSets = () => {
-  picking.value = undefined;
-  pickingSet.value = true;
-};
-
-const chooseArmorSet = (set: ArmorSet) => {
-  pickingSet.value = false;
-  void navigate(wearArmorSet(selection.value, set));
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/DressingRoom/ArmorSetsModal/index.vue"),
+    props: {
+      selection: selection.value,
+      onSelect: (set: ArmorSet) => {
+        void navigate(wearArmorSet(selection.value, set));
+      },
+    },
+    wide: true,
+  });
 };
 
 const choose = (slot: OutfitSlotEnum, item: Equipment) => {
-  picking.value = undefined;
   void navigate({ ...selection.value, [slot]: item.slug });
 };
 
@@ -163,9 +158,21 @@ const clear = (slot: OutfitSlotEnum) => {
   void navigate({ ...selection.value, [slot]: undefined });
 };
 
+const openSlot = (slot: OutfitSlotEnum) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/DressingRoom/SlotPickerModal/index.vue"),
+    props: {
+      slot,
+      selectedSlug: () => selection.value[slot],
+      fit: () => slotFits.value[slot],
+      onSelect: (item: Equipment) => choose(slot, item),
+    },
+    wide: true,
+  });
+};
+
 const reset = () => {
-  picking.value = undefined;
-  pickingSet.value = false;
   void navigate({}, { outfit: undefined, pose: undefined, held: undefined });
 };
 
@@ -178,8 +185,6 @@ const toggleHeld = (slot: OutfitSlotEnum) => {
 };
 
 const loadOutfit = (outfit: Outfit) => {
-  picking.value = undefined;
-  pickingSet.value = false;
   void navigate(
     Object.fromEntries(
       outfit.items.map((item) => [item.slot, item.equipment.slug]),
@@ -591,21 +596,7 @@ const copyShareLink = () => {
       </div>
 
       <aside class="dressing-room__side dressing-room__side--pieces">
-        <SlotPicker
-          v-if="picking"
-          :slot="picking"
-          :selected-slug="selection[picking]"
-          :fit="slotFits[picking]"
-          @select="choose(picking, $event)"
-          @close="picking = undefined"
-        />
-        <ArmorSets
-          v-else-if="pickingSet"
-          :selection="selection"
-          @select="chooseArmorSet"
-          @close="pickingSet = false"
-        />
-        <div v-else class="dressing-room__groups">
+        <div class="dressing-room__groups">
           <section
             v-for="group in SLOT_GROUPS"
             :key="group.key"

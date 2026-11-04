@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
+import { type SlotFit } from "@/frontend/utils/dressingRoomFit";
 
 const fetchEquipment = vi.fn((_params: unknown) =>
   Promise.resolve({
@@ -14,9 +15,35 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   equipment: (params: unknown) => fetchEquipment(params),
 }));
 
+const closed = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("@/shared/composables/useComlink")>();
+
+  return {
+    ...actual,
+    useComlink: () => {
+      const comlink = actual.useComlink();
+
+      return {
+        ...comlink,
+        emit: (event: string, ...args: unknown[]) => {
+          if (event === "close-modal") closed();
+
+          return (comlink.emit as (...params: unknown[]) => unknown)(
+            event,
+            ...args,
+          );
+        },
+      };
+    },
+  };
+});
+
 const { default: SlotPicker } = await import("./index.vue");
 
-describe("DressingRoomSlotPicker", () => {
+describe("DressingRoomSlotPickerModal", () => {
   it("offers only armour and undersuits that fit the slot", async () => {
     const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
       props: { slot: "torso" },
@@ -33,12 +60,58 @@ describe("DressingRoomSlotPicker", () => {
     );
 
     await wrapper
-      .find('[data-test="dressing-room-option-adp-core"]')
+      .find('[data-test="dressing-room-option-adp-core"] button')
       .trigger("click");
 
     expect(wrapper.emitted("select")?.[0]?.[0]).toMatchObject({
       slug: "adp-core",
     });
+    expect(closed).toHaveBeenCalled();
+  });
+
+  it("greys out what the worn pieces leave no room for, even once they load after it opened", async () => {
+    fetchEquipment.mockResolvedValueOnce({
+      items: [
+        {
+          id: "heavy",
+          name: "Heavy Pack",
+          slug: "heavy-pack",
+          media: {},
+          size: "3",
+          fit: { type: "Char_Armor_Backpack" },
+        },
+      ],
+      meta: { pagination: { currentPage: 1, totalPages: 1 } },
+    } as never);
+
+    const fit = ref<SlotFit>({ kind: "open" });
+    const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "backpack", fit: () => fit.value },
+    });
+    await flushPromises();
+
+    const card = wrapper.find('[data-test="dressing-room-option-heavy-pack"]');
+    expect(card.classes()).not.toContain("picker-card--disabled");
+
+    fit.value = {
+      kind: "ports",
+      ports: [
+        {
+          name: "backpack",
+          types: [{ type: "Char_Armor_Backpack" }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+      providers: [{ name: "Light Core" }],
+    };
+    await flushPromises();
+
+    expect(card.classes()).toContain("picker-card--disabled");
+    expect(card.text()).toContain("Light Core");
+
+    const describedBy = card.find("button").attributes("aria-describedby");
+    expect(card.find(`[id="${describedBy}"]`).text()).toContain("Light Core");
   });
 
   it("shows a weapon's size beside its maker and type", async () => {

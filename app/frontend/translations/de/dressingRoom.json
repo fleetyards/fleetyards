@@ -13,9 +13,7 @@
         "secondary": "Zweitwaffe",
         "sidearm": "Seitenwaffe"
       },
-      "search": "%{slot} suchen",
       "size": "S%{size}",
-      "noResults": "Für diesen Slot wurde nichts gefunden.",
       "choose": "Auswählen…",
       "remove": "Entfernen",
       "openItem": "Gegenstand öffnen",
@@ -59,8 +57,10 @@
       },
       "armorSets": {
         "open": "Rüstungssets",
-        "search": "Rüstungssets durchsuchen",
-        "noResults": "Kein Rüstungsset gefunden."
+        "count": {
+          "one": "%{count} Set",
+          "other": "%{count} Sets"
+        }
       }
     }
   }

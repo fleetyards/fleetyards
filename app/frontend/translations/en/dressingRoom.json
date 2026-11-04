@@ -13,9 +13,7 @@
         "secondary": "Secondary",
         "sidearm": "Sidearm"
       },
-      "search": "Search %{slot}",
       "size": "S%{size}",
-      "noResults": "Nothing found for this slot.",
       "choose": "Choose…",
       "remove": "Remove",
       "openItem": "Open item page",
@@ -59,8 +57,10 @@
       },
       "armorSets": {
         "open": "Armour sets",
-        "search": "Search armour sets",
-        "noResults": "No armour set found."
+        "count": {
+          "one": "%{count} Set",
+          "other": "%{count} Sets"
+        }
       }
     }
   }
