@@ -129,6 +129,19 @@ describe("FleetchartCanvas", () => {
     expect(classic).not.toEqual(columns);
   });
 
+  it("starts a newly chosen layout from the top left", async () => {
+    mountCanvas([entry("a")]);
+    panzoomInstance.moveTo.mockClear();
+
+    useFleetchartStore().updateLayout({
+      namespace: "hangar",
+      layout: FleetchartLayouts.CLASSIC,
+    });
+    await nextTick();
+
+    expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
+  });
+
   it("offers the screen height only where it means anything", async () => {
     const wrapper = mountCanvas([entry("a")]);
     const label = "labels.fleetchartApp.screenHeight";

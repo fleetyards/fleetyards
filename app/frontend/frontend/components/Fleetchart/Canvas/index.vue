@@ -351,7 +351,12 @@ const setupPanzoom = () => {
 const resetZoom = () => {
   panzoomInstance?.zoomAbs(0, 0, 1);
   panzoomInstance?.moveTo(0, 0);
+
+  persistZoom();
 };
+
+// A position from one layout can leave another one entirely off screen.
+watch(layout, resetZoom);
 
 // deviceorientation fires continuously on a phone, which would keep a plain
 // debounce from ever running.
