@@ -39,11 +39,11 @@ import {
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
 
-type Props = {
+interface Props {
   namespace: string;
   items?: FleetchartEntry[];
   downloadName?: string;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   items: () => [],

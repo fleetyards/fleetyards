@@ -17,7 +17,7 @@ import {
 } from "@/frontend/components/Fleetchart/geometry";
 import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
-type Props = {
+interface Props {
   entry: FleetchartEntry;
   geometry: FleetchartShipGeometry;
   left: number;
@@ -28,7 +28,7 @@ type Props = {
   showStatus?: boolean;
   colored?: boolean;
   extended?: boolean;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   zoom: 1,
