@@ -19,7 +19,10 @@ export interface FleetchartGroupHeading {
   title: string;
   x: number;
   y: number;
+  width: number;
 }
+
+export type FleetchartHeadingAlign = "left" | "centre" | "right";
 
 export interface FleetchartPosition {
   x: number;
@@ -467,10 +470,11 @@ export const boundsOf = (
   };
 };
 
-// One heading per group, above the top left of the space its ships take.
+// One heading per group, above its ships, aligned the way the layout placed them.
 export const groupHeadings = (
   ships: FleetchartLayoutShip[],
   positions: FleetchartPositions,
+  align: FleetchartHeadingAlign = "left",
 ): FleetchartGroupHeading[] => {
   const groups = new Map<string, FleetchartLayoutShip[]>();
 
@@ -483,15 +487,34 @@ export const groupHeadings = (
   return [...groups].map(([title, members]) => {
     const { minX, minY, width } = boundsOf(members, positions);
     const headingWidth = members[0].headingWidth || 0;
+    const room = width - headingWidth;
 
     return {
       title,
-      // A heading wider than its ships ends where they do, as they sit at the
-      // right of their column and it would otherwise reach into the next one.
-      x: Math.min(minX, minX + width - headingWidth),
+      x: minX + (align === "left" ? 0 : align === "centre" ? room / 2 : room),
       y: minY + HEADING_ROOM / 2,
+      width: headingWidth,
     };
   });
+};
+
+// Widens the bounds to any heading reaching past the ships, so it cannot be cut
+// off at the edge of the scene or an export.
+export const withHeadings = (
+  bounds: FleetchartBounds,
+  headings: FleetchartGroupHeading[],
+): FleetchartBounds => {
+  if (!headings.length) {
+    return bounds;
+  }
+
+  const minX = Math.min(bounds.minX, ...headings.map((heading) => heading.x));
+  const maxX = Math.max(
+    bounds.minX + bounds.width,
+    ...headings.map((heading) => heading.x + heading.width),
+  );
+
+  return { ...bounds, minX, width: maxX - minX };
 };
 
 // Widens the bounds to a full row, so rows stay centred on the screen rather than

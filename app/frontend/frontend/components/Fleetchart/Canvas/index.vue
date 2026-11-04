@@ -31,6 +31,8 @@ import {
   boundsOf,
   gridCellFor,
   groupHeadings,
+  withHeadings,
+  type FleetchartHeadingAlign,
   SHIP_PADDING,
   withRowWidth,
 } from "@/frontend/components/Fleetchart/layouts";
@@ -283,15 +285,28 @@ const positions = computed(() => {
   }
 });
 
+const headingAlign = computed<FleetchartHeadingAlign>(() => {
+  if (layout.value !== FleetchartLayouts.COLUMNS) {
+    return "left";
+  }
+
+  return turned.value ? "centre" : "right";
+});
+
+const headings = computed(() =>
+  groupHeadings(ships.value, positions.value, headingAlign.value),
+);
+
 const bounds = computed(() => {
-  const covered = boundsOf(ships.value, positions.value);
+  const covered = withHeadings(
+    boundsOf(ships.value, positions.value),
+    headings.value,
+  );
 
   return layout.value === FleetchartLayouts.CLASSIC
     ? withRowWidth(covered, classicRowWidth.value)
     : covered;
 });
-
-const headings = computed(() => groupHeadings(ships.value, positions.value));
 
 const sceneX = (metres: number) =>
   (metres - bounds.value.minX) * PIXELS_PER_METRE + SCENE_PADDING;

@@ -7,6 +7,7 @@ import {
   boundsOf,
   gridCellFor,
   groupHeadings,
+  withHeadings,
   withRowWidth,
   type FleetchartLayoutShip,
 } from "./layouts";
@@ -275,15 +276,46 @@ describe("groups", () => {
     expect(positions.b.x - 50).toBeGreaterThan(400);
   });
 
-  it("keeps a wide heading inside its column", () => {
+  it("keeps a wide heading inside a right-aligned column", () => {
     const ships = [
       { ...grouped("a", "one"), headingWidth: 400 },
       grouped("b", "two"),
     ];
     const positions = arrangeColumns(ships, 500);
+    const [heading] = groupHeadings(ships, positions, "right");
+
+    expect(heading.x).toBeGreaterThanOrEqual(0);
+    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+  });
+
+  it("keeps a wide heading inside a centred column", () => {
+    const ships = [
+      { ...grouped("a", "one"), headingWidth: 400 },
+      grouped("b", "two"),
+    ];
+    const positions = arrangeColumns(ships, 500, { centred: true });
+    const [heading] = groupHeadings(ships, positions, "centre");
+
+    expect(heading.x).toBeGreaterThanOrEqual(0);
+    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+  });
+
+  it("starts a packed heading at its block, which has room for it", () => {
+    const ships = [{ ...grouped("a", "one"), headingWidth: 400 }];
+    const positions = arrangePacked(ships, 16 / 9);
     const [heading] = groupHeadings(ships, positions);
 
-    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+    expect(heading.x).toBe(boundsOf(ships, positions).minX);
+  });
+
+  it("widens the bounds to a heading reaching past the ships", () => {
+    const bounds = withHeadings(
+      { minX: 0, minY: 0, width: 100, height: 50 },
+      [{ title: "long", x: -20, y: 0, width: 300 }],
+    );
+
+    expect(bounds.minX).toBe(-20);
+    expect(bounds.width).toBe(300);
   });
 
   it("places one heading per group, clear above its ships", () => {
