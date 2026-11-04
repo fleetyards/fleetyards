@@ -35,6 +35,22 @@ describe("AppModalInner", () => {
     expect(filled.get(".modal-body").classes()).toContain("modal-body--fill");
   });
 
+  it("has a framed close button that closes the dialog", async () => {
+    const onClose = vi.fn();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { onClose },
+    });
+
+    const close = wrapper.get("button.close");
+
+    expect(close.classes()).toContain("btn--solid");
+    expect(close.attributes("aria-label")).toBe("Close");
+
+    await close.trigger("click");
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   describe("as a sheet on a phone", () => {
     // jsdom has no matchMedia.
     const sheetWidth = (matches: boolean) =>

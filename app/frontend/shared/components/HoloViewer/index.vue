@@ -9,6 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
@@ -822,14 +823,12 @@ defineExpose({
       [`holo-viewer--${background}`]: backgrounds,
     }"
   >
-    <Btn
+    <AppModalCloseBtn
       v-if="internalFullscreen"
       class="holo-viewer__close"
+      data-test="holo-viewer-close"
       @click.prevent.stop="disableFullscreen"
-      variant="bare"
-    >
-      <i class="fa-light fa-times" />
-    </Btn>
+    />
     <BtnGroup
       v-if="controllable || internalFullscreen"
       class="holo-viewer__actions"

@@ -6,11 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import AppModalFooter from "@/shared/components/AppModal/Footer/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/shared/composables/useI18n";
 
 export type ModalProps = {
   title?: string;
@@ -48,8 +46,6 @@ const props = withDefaults(defineProps<ModalProps>(), {
 const slots = useSlots();
 
 const comlink = useComlink();
-
-const { t } = useI18n();
 
 const titleId = useId();
 
@@ -169,15 +165,11 @@ const onDragEnd = (event: PointerEvent) => {
           @pointercancel="onDragEnd"
         >
           <slot name="hero" />
-          <Btn
+          <AppModalCloseBtn
             v-if="!fixed"
             class="close modal-hero__close"
-            :variant="BtnVariantsEnum.GHOST"
-            :aria-label="t('actions.close')"
             @click="close"
-          >
-            <i class="fa-light fa-times" />
-          </Btn>
+          />
         </div>
         <div
           v-else
@@ -203,15 +195,7 @@ const onDragEnd = (event: PointerEvent) => {
           <div v-if="$slots['header-actions']" class="modal-header-actions">
             <slot name="header-actions" />
           </div>
-          <Btn
-            v-if="!fixed"
-            class="close"
-            :variant="BtnVariantsEnum.GHOST"
-            :aria-label="t('actions.close')"
-            @click="close"
-          >
-            <i class="fa-light fa-times" />
-          </Btn>
+          <AppModalCloseBtn v-if="!fixed" class="close" @click="close" />
         </div>
         <div
           class="modal-body"
