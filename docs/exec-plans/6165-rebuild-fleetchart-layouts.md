@@ -59,6 +59,7 @@ None blocking. The user has not yet confirmed the option list in the issue's acc
 
 - **Fleet-owned layouts** — needs edit rules. Becomes its own issue.
 - **Touch dragging** — follows once mouse dragging has proven itself. Becomes its own issue.
+- **Group by hangar group or squadron** — a vehicle can be in several hangar groups, so it needs a rule. Becomes its own issue.
 - **Embed** — separate implementation; drop unless requested.
 
 ## Discovery Log
@@ -70,10 +71,13 @@ None blocking. The user has not yet confirmed the option list in the issue's acc
 - **2026-11-04** `html2canvas` spike: rotation at 90° and 45° and 1px grid lines export correctly; `drop-shadow` is dropped, as it already is today. The export approach stands.
 - **2026-11-04** Browser check on 48 ships against the old chart: Columns differs only where the corrected height moves a wide ship to another column. A very long ship pushed every Classic row off the opening view until rows centred on the screen instead of the widest row.
 
+- **2026-11-04** Rotation alone saved nothing: a ship's box is as tall as its tallest view, and straight columns leave the space under a large ship empty. Packed layout and tight boxes took the same 48 ships from 1713 to 686 (scene area, 10k px).
+- **2026-11-04** Exports followed the zoom, so fit-to-screen produced a 170px PNG. Exports now ignore the transform and images never pick below full size.
+
 ## Progress
 
 - [x] Phase 1
-- [ ] Phase 2
+- [x] Phase 2
 - [ ] Phase 3
 - [ ] Phase 4
 - [ ] Phase 5
