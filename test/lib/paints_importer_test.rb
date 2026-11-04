@@ -40,6 +40,15 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal nomad.paints.pluck(:id), item.reload.model_paints.pluck(:id)
   end
 
+  test "#run files both of RSI's names for a paint under one paint" do
+    nomad = create(:model, name: "Nomad")
+    hangar_sync("Nomad IceBreak Livery", "Nomad - IceBreak Paint")
+
+    PaintsImporter.new.run
+
+    assert_equal ["IceBreak"], nomad.paints.pluck(:name)
+  end
+
   test "#run skips syncs without a list and items that are not skins with an image" do
     arrow = create(:model, name: "Arrow")
     create(:import, :hangar_sync, input: {"error" => "unreadable"})

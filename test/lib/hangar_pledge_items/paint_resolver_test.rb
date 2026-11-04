@@ -9,14 +9,14 @@ class HangarPledgeItems::PaintResolverTest < ActiveSupport::TestCase
 
   test "resolves a ship and paint pledge to that ship's paint" do
     model = create(:model, name: "Nomad")
-    paint = create(:model_paint, model:, name: "Ice Break")
+    paint = create(:model_paint, model:, name: "IceBreak")
 
     assert_equal [paint.id], resolve("Nomad IceBreak Livery")
   end
 
   test "resolves a series pledge to the paint on every model of the series" do
     paints = %w[100i 125a 135c].map do |name|
-      create(:model_paint, model: create(:model, name:), name: "Ice Break")
+      create(:model_paint, model: create(:model, name:), name: "IceBreak")
     end
 
     assert_equal paints.map(&:id).sort, resolve("100 Series IceBreak Livery")

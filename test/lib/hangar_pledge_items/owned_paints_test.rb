@@ -6,7 +6,7 @@ class HangarPledgeItems::OwnedPaintsTest < ActiveSupport::TestCase
   setup do
     @user = create(:user)
     @model = create(:model, name: "Nomad")
-    @ice_break = create(:model_paint, model: @model, name: "Ice Break")
+    @ice_break = create(:model_paint, model: @model, name: "IceBreak")
     @other = create(:model_paint, model: @model, name: "Deck the Hull")
   end
 
