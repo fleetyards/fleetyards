@@ -131,8 +131,8 @@ export const useFleetchartStore = defineStore("fleetchart", {
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
     },
-    // A browser that last chose a mode keeps its arrangement. `layout` can also
-    // be missing altogether from state persisted before it existed.
+    // Somebody who chose a mode keeps its arrangement. `layout` can also be missing
+    // altogether from state persisted before it existed.
     fleetchartLayout: (state) => {
       return (namespace: string) => {
         const layout = state.layout?.[namespace];
@@ -141,9 +141,14 @@ export const useFleetchartStore = defineStore("fleetchart", {
           return layout;
         }
 
-        return state.mode[namespace] === FleetchartModes.CLASSIC
-          ? FleetchartLayouts.CLASSIC
-          : FleetchartLayouts.COLUMNS;
+        switch (state.mode[namespace]) {
+          case FleetchartModes.CLASSIC:
+            return FleetchartLayouts.CLASSIC;
+          case FleetchartModes.PANZOOM:
+            return FleetchartLayouts.COLUMNS;
+          default:
+            return FleetchartLayouts.PACKED;
+        }
       };
     },
     fleetchartOptions: (state) => {

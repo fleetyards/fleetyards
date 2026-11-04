@@ -30,10 +30,10 @@ describe("fleetchart store", () => {
     );
   });
 
-  it("starts in columns", () => {
+  it("starts packed", () => {
     const store = useFleetchartStore();
 
-    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.COLUMNS);
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.PACKED);
   });
 
   it("reads a persisted classic mode as the classic layout", () => {
@@ -67,7 +67,7 @@ describe("fleetchart store", () => {
       (state as { layout?: unknown }).layout = undefined;
     });
 
-    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.COLUMNS);
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.PACKED);
 
     store.updateLayout({
       namespace: "hangar",

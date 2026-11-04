@@ -401,6 +401,13 @@ const setupPanzoom = () => {
   panzoomInstance.on("zoom", persistZoom);
   panzoomInstance.on("pan", persistZoom);
 
+  // A packed chart always opens whole, as its size depends on the fleet and screen.
+  if (isPacked.value) {
+    fitToScreen();
+
+    return;
+  }
+
   const { scale, x, y } = savedZoom.value;
 
   if (scale) {
