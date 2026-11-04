@@ -129,7 +129,7 @@ Already wired in `config/deploy.yml`. The `discord_bot` role:
 - Runs `bin/discord-bot` under Kamal. The script boots Rails, which
   decrypts credentials with the existing `RAILS_MASTER_KEY` env, so
   the role doesn't need any extra `env.secret` entries.
-- 512 MB memory cap.
+- 768 MB memory cap.
 - Pinned to a single host in each destination config — the first web IP
   returned by `.kamal/server-ips web <dest>`, override via
   `KAMAL_DISCORD_BOT_HOST`. Any override has to be a host the deploy job

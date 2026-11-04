@@ -24,7 +24,7 @@ servers:
     # not scale this role above 1. Host comes from the destination config.
     cmd: bin/discord-bot
     options:
-      memory: 512m
+      memory: 768m
     # Bot token + application_id come from Rails encrypted credentials
     # via RAILS_MASTER_KEY (already in env.secret), no extra env vars
     # needed.
