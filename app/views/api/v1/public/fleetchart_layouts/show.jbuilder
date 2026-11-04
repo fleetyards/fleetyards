@@ -2,6 +2,7 @@
 
 json.name @fleetchart_layout.name
 json.colored @fleetchart_layout.colored
+json.background @fleetchart_layout.background
 owner = @fleetchart_layout.user
 
 json.username(owner.hide_owner? ? nil : owner.username)

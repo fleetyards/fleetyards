@@ -10,10 +10,12 @@ class FleetchartLayout < ApplicationRecord
   VIEWPOINTS = %w[top port angled front starboard bottom angledRear rear].freeze
   FACINGS = %w[left top right bottom].freeze
   STATES = %w[flight extended landed].freeze
+  BACKGROUNDS = %w[dark stanton crusader pyro].freeze
 
   belongs_to :user
 
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
+  validates :background, inclusion: {in: BACKGROUNDS}
   validate :layout_limit, on: :create
   validate :placements_shape
 

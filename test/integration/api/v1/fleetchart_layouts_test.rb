@@ -302,6 +302,32 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_equal [@vehicle.id], response.parsed_body["placements"].map { |placement| placement["vehicleId"] }
   end
 
+  test "a layout keeps its background, and shares it" do
+    sign_in @user
+
+    post "/api/v1/hangar/fleetchart-layouts", params: {name: "Sky", background: "pyro"}, as: :json
+
+    assert_response :created
+    assert_equal "pyro", response.parsed_body["background"]
+
+    layout = FleetchartLayout.find(response.parsed_body["id"])
+    layout.share!
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_equal "pyro", response.parsed_body["background"]
+  end
+
+  test "a layout starts on the dark background, and only takes known ones" do
+    sign_in @user
+
+    post "/api/v1/hangar/fleetchart-layouts", params: {name: "Plain"}, as: :json
+
+    assert_equal "dark", response.parsed_body["background"]
+
+    assert_not build(:fleetchart_layout, user: @user, background: "sunset").valid?
+  end
+
   test "a user only reaches their own layouts" do
     other = create(:fleetchart_layout)
     mine = create(:fleetchart_layout, user: @user)

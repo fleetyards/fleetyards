@@ -13,13 +13,14 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               colored: {type: :boolean},
+              background: ::V1::Schemas::Enums::FleetchartBackgroundEnum,
               shareToken: {type: [:string, :null]},
               placements: {type: :array, items: FleetchartPlacement},
               cataloguePlacements: {type: :array, items: FleetchartCataloguePlacement},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
-            required: %w[id name colored placements cataloguePlacements createdAt updatedAt]
+            required: %w[id name colored background placements cataloguePlacements createdAt updatedAt]
           })
         end
       end
