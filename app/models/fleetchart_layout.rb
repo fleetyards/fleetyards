@@ -18,7 +18,9 @@ class FleetchartLayout < ApplicationRecord
   validate :placements_shape
 
   before_validation :keep_placements_of_owned_vehicles
-  before_validation :keep_catalogue_placements_of_listed_models
+  # Only when they change: a model hidden for now must not vanish from a layout
+  # because it was renamed or shared meanwhile.
+  before_validation :keep_catalogue_placements_of_listed_models, if: :catalogue_placements_changed?
 
   def shared?
     share_token.present?

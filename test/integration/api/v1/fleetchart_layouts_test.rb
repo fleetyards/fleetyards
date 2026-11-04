@@ -259,6 +259,25 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, hidden.id
   end
 
+  test "a model hidden for now comes back once it is listed again" do
+    model = create(:model)
+    layout = create(:fleetchart_layout, user: @user, catalogue_placements: [{"id" => "a", "model_id" => model.id, "x" => 1, "y" => 1}])
+
+    model.update!(hidden: true)
+    layout.update!(name: "Renamed")
+    layout.share!
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_empty response.parsed_body["cataloguePlacements"]
+
+    model.update!(hidden: false)
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_equal %w[a], response.parsed_body["cataloguePlacements"].map { |placement| placement["id"] }
+  end
+
   test "a user only reaches their own layouts" do
     other = create(:fleetchart_layout)
     mine = create(:fleetchart_layout, user: @user)
