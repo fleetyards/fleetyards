@@ -194,6 +194,15 @@ const ownedValue = computed({
       />
     </Teleport>
 
+    <FormInput
+      v-else
+      v-model="form.nameCont"
+      name="blueprint-name"
+      translation-key="filters.blueprints.name"
+      :no-label="true"
+      :clearable="true"
+    />
+
     <BaseSelect
       v-model="form.craftableTypeIn"
       name="craftableType"

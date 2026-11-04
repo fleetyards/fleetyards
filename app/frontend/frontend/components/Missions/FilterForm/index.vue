@@ -192,6 +192,15 @@ const releasedValue = computed({
       />
     </Teleport>
 
+    <FormInput
+      v-else
+      v-model="form.nameCont"
+      name="mission-name"
+      translation-key="filters.missions.name"
+      :no-label="true"
+      :clearable="true"
+    />
+
     <BaseSelect
       v-model="form.systemIn"
       name="system"
