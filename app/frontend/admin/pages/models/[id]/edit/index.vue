@@ -18,6 +18,7 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
@@ -54,6 +55,7 @@ const initialValues = ref<ModelUpdateInput>({
   classification: props.model.classification,
   foci: props.model.foci,
   stealth: props.model.stealth,
+  ccuOverride: props.model.ccuOverride ?? null,
   storeImage: undefined,
   brochure: undefined,
 });
@@ -89,6 +91,34 @@ const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
 const [foci, fociProps] = defineField("foci");
 const [stealth, stealthProps] = defineField("stealth");
+const [ccuOverride, ccuOverrideProps] = defineField("ccuOverride");
+
+const ccuOverrideOptions = computed(() =>
+  ["allowed", "none"].map((value) => ({
+    value,
+    label: t(`labels.model.ccuOverrides.${value}`),
+  })),
+);
+
+// What the stores and synced hangars showed, which the override stands over.
+const ccuEvidence = computed(
+  () =>
+    [
+      props.model.ccuOnSale ? t("labels.model.ccuEvidence.onSale") : undefined,
+      props.model.ccuTargetSeenAt
+        ? t("labels.model.ccuEvidence.into", {
+            date: new Date(props.model.ccuTargetSeenAt).toLocaleDateString(),
+          })
+        : undefined,
+      props.model.ccuSourceSeenAt
+        ? t("labels.model.ccuEvidence.outOf", {
+            date: new Date(props.model.ccuSourceSeenAt).toLocaleDateString(),
+          })
+        : undefined,
+    ]
+      .filter(Boolean)
+      .join(" · ") || t("labels.model.ccuEvidence.none"),
+);
 const [storeImage, storeImageProps] = defineField("storeImage");
 const [brochure, brochureProps] = defineField("brochure");
 
@@ -205,6 +235,20 @@ const sourceFoci = computed(() =>
               translation-key="model.adiMap"
               v-bind="adiMapProps"
               name="adiMap"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <BaseSelect
+              v-model="ccuOverride"
+              v-bind="ccuOverrideProps"
+              name="ccuOverride"
+              :label="t('labels.model.ccuOverride')"
+              :options="ccuOverrideOptions"
+              :info="ccuEvidence"
+              nullable
+              data-test="model-ccu-override"
             />
           </div>
         </div>

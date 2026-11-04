@@ -7,6 +7,7 @@ import {
   type HangarPlanCandidate,
   type HangarPlanSlot,
 } from "@/services/fyApi";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 
 const candidate = (
@@ -21,6 +22,8 @@ const candidate = (
     name,
     slug: name.toLowerCase(),
     onSale: true,
+    ccuInto: "on_sale",
+    ccuOutOf: "known",
     pledgePrice,
   },
   modelModuleIds: [],
@@ -82,7 +85,19 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 const mount = () =>
-  mountWithDefaults(Component, { props: { planId: "plan", slot } });
+  mountWithDefaults(Component, {
+    props: { planId: "plan", slot },
+    plugins: [router],
+  });
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: ["home", "compare"].map((name) => ({
+    path: name === "home" ? "/" : `/${name}/`,
+    name,
+    component: { render: () => null },
+  })),
+});
 
 describe("Hangar/Planner/SlotShipsModal", () => {
   beforeEach(() => {
@@ -105,6 +120,16 @@ describe("Hangar/Planner/SlotShipsModal", () => {
     expect(
       wrapper.findAll('[data-test="hangar-plan-slot-ship-choose"]'),
     ).toHaveLength(2);
+  });
+
+  it("links to the compare page with the slot's ships", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper
+        .find('[data-test="hangar-plan-slot-ships-compare"]')
+        .attributes("href"),
+    ).toBe("#/compare/?models=hull+a&models=caterpillar");
   });
 
   it("keeps the chosen ship and closes", async () => {

@@ -67,7 +67,7 @@ module HangarPlans
     def decided_spend(snapshot: false)
       slots.select { |slot| slot.state == "decided" }.sum do |slot|
         candidate = slot.candidates.first
-        candidate.acquisitions.first(slot.quantity).sum do |acquisition|
+        routed(candidate, slot).sum do |acquisition|
           route_cost(acquisition, candidate, snapshot:, record: false) || 0
         end
       end
@@ -91,7 +91,7 @@ module HangarPlans
     # and whether the user spends a token on it.
     private def buybacks
       @buybacks ||= slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
-        slot.candidates.first.acquisitions.first(slot.quantity).flat_map do |acquisition|
+        routed(slot.candidates.first, slot).flat_map do |acquisition|
           start = (acquisition.start_kind == "buyback") ? [acquisition] : []
           steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
           (start + steps).filter_map do |record|
@@ -141,7 +141,7 @@ module HangarPlans
 
     private def decided_cost(slot)
       candidate = slot.candidates.first
-      acquisitions = candidate.acquisitions.first(slot.quantity)
+      acquisitions = routed(candidate, slot)
       costs = acquisitions.map { |acquisition| route_cost(acquisition, candidate, slot_id: slot.id) }
       total = costs.compact.sum(0)
       unresolved = slot.quantity - acquisitions.size
@@ -173,6 +173,12 @@ module HangarPlans
       costs = options.map { |option| option[:cost] }
       SlotCost.new(slot_id: slot.id, state: "undecided", min_cost: costs.min || 0, max_cost: costs.max || 0,
         unresolved_count: 0, complete: false)
+    end
+
+    # A start whose route to the slot's ship is still to be planned holds a unit
+    # without saying what it costs, so it stays unresolved.
+    private def routed(candidate, slot)
+      candidate.acquisitions.first(slot.quantity).select(&:route_complete?)
     end
 
     # Nil when any part of the route has no price, after reporting which.

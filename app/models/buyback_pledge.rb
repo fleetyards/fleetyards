@@ -72,6 +72,24 @@ class BuybackPledge < ApplicationRecord
 
   scope :model_slug_eq, ->(slug) { obtaining_model(slug) }
 
+  STANDALONE_PREFIX = /\AStandalone\s+Ships?\s+-\s+/i
+  TITLE_SUFFIX = /\s+(-|–|plus)\s+.*\z/i
+  CONTAINED_SUFFIX = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
+
+  # The ships buying the pledge back returns, downcased: the names its detail
+  # page lists, else its contents line, else a standalone ship's title. An
+  # upgraded pledge comes back as first bought, so its contents line, which
+  # names the upgrade's target, is skipped. Mirrors `obtaining_model`.
+  def returned_ship_names
+    return [] if kind == "upgrade"
+
+    names = Array(ship_names).compact_blank
+    names = [contained.sub(CONTAINED_SUFFIX, "")] if names.empty? && contained.present? && !upgraded
+    names = [name.sub(STANDALONE_PREFIX, "").sub(TITLE_SUFFIX, "")] if names.empty? && kind == "ship"
+
+    names.map { |entry| entry.squish.downcase }.compact_blank
+  end
+
   # A pack of several ships is listed as "2 ships and 4 items", or "2 ships"
   # alone, naming none of them, so only its detail page can say which ships it
   # holds.

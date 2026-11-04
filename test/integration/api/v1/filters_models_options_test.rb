@@ -82,6 +82,34 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
   end
 
   # The filters a hangar plan slot opens the picker on.
+  test "GET /filters/models/options offers a slot only ships a plan can get" do
+    user = create(:user)
+    priced = create(:model, pledge_price: 300)
+    held = create(:model, pledge_price: nil)
+    unobtainable = create(:model, pledge_price: nil)
+    npc = create(:model, pledge_price: 50, player_ownable: false)
+    create(:vehicle, user:, model: held)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"plannable" => true, "playerOwnableEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, priced.name
+      assert_includes names, held.name
+      assert_not_includes names, unobtainable.name
+      assert_not_includes names, npc.name
+    end
+  end
+
+  test "GET /filters/models/options offers as upgrade targets only dearer ships a CCU leads into" do
+    target = create(:model, pledge_price: 300, ccu_target_seen_at: 1.year.ago, created_at: 2.years.ago)
+    create(:model, pledge_price: 900, created_at: 2.years.ago)
+    create(:model, pledge_price: 100, ccu_on_sale: true)
+
+    assert_api_response :get, 200, params: {q: {"ccuTarget" => true, "pledgePriceGt" => 200}} do
+      assert_equal [target.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /filters/models/options filters by cargo, price and sale" do
     fits = create(:model, :with_store_image, cargo: 96, pledge_price: 200, on_sale: true)
     create(:model, :with_store_image, cargo: 6, pledge_price: 200, on_sale: true)

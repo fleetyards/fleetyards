@@ -48,6 +48,19 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/hangar/plans/{id}/suggestions" do
+    parameter(**ID)
+
+    get("Hangar Plan Suggestions") do
+      operationId "hangarPlanSuggestions"
+      tags "HangarPlans"
+      produces "application/json"
+      security READ_SECURITY
+
+      response(200, "successful") { schema ::V1::Schemas::Hangar::Plans::HangarPlanSuggestions }
+    end
+  end
+
   api_path "/hangar/plans/{id}/compare/{otherId}" do
     parameter(**ID)
     parameter name: "otherId", in: :path, schema: {type: :string, format: :uuid}, required: true
@@ -254,6 +267,8 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
   test "GET resources lists the store's priced ships, cheapest first" do
     create(:model, name: "Unpriced", pledge_price: nil)
     create(:model, name: "Hidden", pledge_price: 50, hidden: true)
+    create(:model, name: "Not ownable", pledge_price: 50, player_ownable: false)
+    create(:model, name: "In game only", pledge_price: 50, ingame_only: true)
 
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
       assert_equal [["Cutlass Black", 100.0], ["Carrack", 600.0]],
@@ -274,6 +289,20 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
       assert_equal ["Cutlass Black"], models["Standalone Ship - Cutlass Black"]
       assert_equal({"Explorer Pack" => true, "Standalone Ship - Cutlass Black" => false},
         parsed_body["buybacks"].to_h { |entry| [entry["name"], entry["lifetimeInsurance"]] })
+    end
+  end
+
+  test "GET suggestions names the ships the planned hangar holds twice" do
+    gladius = create(:model, name: "Gladius", pledge_price: 90, classification: "combat", size: "small", foci: %w[light_fighter])
+    first = create(:vehicle, user: @user, model: gladius, name: "Red Five")
+    create(:vehicle, user: @user, model: gladius)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/suggestions", path_params: {id: @plan.id} do
+      duplicate = parsed_body["redundancies"].find { |entry| entry["kind"] == "duplicate" && entry.dig("model", "name") == "Gladius" }
+      assert_equal "Light Fighter", duplicate["focusLabel"]
+      named = duplicate["entries"].find { |entry| entry["vehicleId"] == first.id }
+      assert_equal "Red Five", named["vehicleName"]
+      assert_equal "unassigned", named["vehicleStatus"]
     end
   end
 end

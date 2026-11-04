@@ -16,12 +16,6 @@ module HangarPlans
     # ship to plan with.
     BUYBACK_KINDS = %w[ship package upgrade].freeze
 
-    UPGRADE_NAME = /\A(?:Upgrade\s*-\s*)?(.+?)\s+to\s+(.+)\z/i
-    SALE_SUFFIX = /\s+(-\s*)?(warbond(\s+edition)?|standard\s+edition|best\s+in\s+show(\s+edition)?(\s+\d{4})?)\z/i
-    STANDALONE_PREFIX = /\AStandalone\s+Ships?\s+-\s+/i
-    TITLE_SUFFIX = /\s+(-|–|plus)\s+.*\z/i
-    CONTAINED_SUFFIX = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
-
     attr_reader :plan
 
     def initialize(plan)
@@ -60,9 +54,11 @@ module HangarPlans
 
     # Every ship the pledge store prices, for a route that buys its start or an
     # upgrade there. Unpriced ships are left out: the store has no figure to
-    # plan with.
+    # plan with. So are ships no player can own and those only earned in game,
+    # which the store never sells.
     def store_models
-      Model.visible.active.where.not(pledge_price: nil).includes(:manufacturer).order(:pledge_price, :name)
+      Model.visible.active.where(player_ownable: true, ingame_only: false).where.not(pledge_price: nil)
+        .includes(:manufacturer).order(:pledge_price, :name)
     end
 
     def buybacks
@@ -71,7 +67,7 @@ module HangarPlans
 
       pledges = plan.user.buyback_pledges.where(kind: BUYBACK_KINDS)
         .includes(upgrade_from_model: MODEL_PRELOAD, upgrade_to_model: MODEL_PRELOAD).order(reclaimed_on: :desc, name: :asc).to_a
-      names = pledges.to_h { |pledge| [pledge.id, ship_names(pledge)] }
+      names = pledges.to_h { |pledge| [pledge.id, pledge.returned_ship_names] }
       models = models_by_name(names.values.flatten)
 
       pledges.map do |pledge|
@@ -80,41 +76,8 @@ module HangarPlans
       end
     end
 
-    # The ships a buy-back returns, by the names its detail page lists, else its
-    # contents line, else a standalone ship's title. An upgraded pledge comes
-    # back as first bought, so its contents line, which names the upgrade's
-    # target, is skipped. Mirrors `BuybackPledge.obtaining_model`.
-    private def ship_names(pledge)
-      return [] if pledge.kind == "upgrade"
+    private def upgrade_names(name) = Rsi::UpgradeTitles.ship_names(name)
 
-      names = Array(pledge.ship_names).compact_blank
-      names = [pledge.contained.sub(CONTAINED_SUFFIX, "")] if names.empty? && pledge.contained.present? && !pledge.upgraded
-      if names.empty? && pledge.kind == "ship"
-        names = [pledge.name.sub(STANDALONE_PREFIX, "").sub(TITLE_SUFFIX, "")]
-      end
-
-      names.map { |name| name.squish.downcase }.compact_blank
-    end
-
-    # The two ship names an RSI upgrade title carries, downcased, with how the
-    # upgrade was sold taken off the target.
-    private def upgrade_names(name)
-      match = UPGRADE_NAME.match(name.to_s.squish)
-      return [] if match.nil?
-
-      [match[1], match[2].sub(SALE_SUFFIX, "")].map { |part| part.strip.downcase }
-    end
-
-    private def models_by_name(names)
-      return {} if names.empty?
-
-      aliases = Rsi::ShipNames::MAPPING.to_h { |rsi_name, name| [rsi_name.downcase, name.downcase] }
-      lookup = names.uniq.index_with { |name| aliases.fetch(name, name) }
-      found = Model.visible.active.includes(MODEL_PRELOAD).where("lower(models.name) IN (:names) OR lower(models.rsi_name) IN (:names)", names: lookup.values.uniq).to_a
-
-      lookup.transform_values do |name|
-        found.find { |model| model.name.downcase == name } || found.find { |model| model.rsi_name&.downcase == name }
-      end
-    end
+    private def models_by_name(names) = Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD)
   end
 end

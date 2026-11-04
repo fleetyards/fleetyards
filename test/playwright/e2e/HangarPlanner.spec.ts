@@ -37,22 +37,36 @@ test.describe("Hangar Planner", () => {
     const summary = page.getByTestId("hangar-plan-summary");
     await expect(summary).toContainText("1 ship without a route");
 
-    // The Cutlass in the hangar becomes the Carrack through the upgrade the
-    // RSI hangar already holds, so the route costs nothing more.
+    // The Cutlass in the hangar is picked as the start for the Carrack, then
+    // becomes it through the upgrade the RSI hangar already holds, so the route
+    // costs nothing more.
     await page
       .getByTestId("hangar-plan-gap")
-      .getByTestId("hangar-plan-flow-add-route")
+      .getByTestId("hangar-plan-flow-pick-start")
+      .click();
+    await page.getByTestId("modal").waitFor({ state: "visible" });
+
+    const paired = page.waitForResponse(
+      (response) =>
+        response.url().includes("/acquisitions") &&
+        response.request().method() === "POST",
+    );
+    await page
+      .getByTestId("modal")
+      .getByTestId("pick-list-row")
+      .filter({ hasText: "Cutlass Black" })
+      .click();
+    await paired;
+    await page.getByTestId("modal").waitFor({ state: "hidden" });
+
+    await page
+      .getByTestId("hangar-plan-vehicle-unrouted")
+      .filter({ hasText: "Cutlass Black" })
+      .getByTestId("hangar-plan-flow-route")
       .click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
 
     const modal = page.getByTestId("modal");
-    await modal.getByTestId("hangar-plan-route-start-owned").click();
-    await modal
-      .getByTestId("pick-list-sourceVehicleId")
-      .getByRole("button", { name: /Cutlass Black/ })
-      .click();
-
-    // The step opens on the RSI hangar, which holds an upgrade from the Cutlass.
     await modal
       .getByTestId("pick-list-steps.0.upgrade")
       .getByRole("button", { name: /Carrack/ })
@@ -61,13 +75,13 @@ test.describe("Hangar Planner", () => {
       "The route ends on the Carrack.",
     );
 
-    const routeCreated = page.waitForResponse(
+    const routeSaved = page.waitForResponse(
       (response) =>
         response.url().includes("/acquisitions") &&
-        response.request().method() === "POST",
+        response.request().method() === "PUT",
     );
     await page.getByTestId("hangar-plan-route-save").click();
-    await routeCreated;
+    await routeSaved;
     await page.getByTestId("modal").waitFor({ state: "hidden" });
 
     const statuses = page.getByTestId("hangar-plan-vehicle-status");

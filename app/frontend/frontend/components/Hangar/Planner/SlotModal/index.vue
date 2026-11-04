@@ -28,6 +28,7 @@ import {
   type HangarPlanSlot,
   type HangarPlanSlotFilters,
   useCreateHangarPlanSlot,
+  useHangarPlan,
   useUpdateHangarPlanSlot,
 } from "@/services/fyApi";
 
@@ -123,26 +124,37 @@ const filterValues = (values: typeof initialValues): HangarPlanSlotFilters => {
 const createMutation = useCreateHangarPlanSlot();
 const updateMutation = useUpdateHangarPlanSlot();
 
+const { data: plan } = useHangarPlan(() => props.planId);
+
+// A new slot only needs a name, and gets a numbered one when left blank; its
+// ships and the filters they are picked with are set from its row.
+const newLabel = (value: string) =>
+  value.trim() ||
+  t("hangarPlanner.slotNumber", {
+    number: (plan.value?.slots.length ?? 0) + 1,
+  });
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  const data = {
-    label: values.label,
-    description: values.description || null,
-    quantity: Number(values.quantity) || 1,
-    filters: filterValues(values),
-  };
-
   try {
-    const plan = props.slot
+    const saved = props.slot
       ? await updateMutation.mutateAsync({
           hangarPlanId: props.planId,
           id: props.slot.id,
-          data,
+          data: {
+            label: values.label,
+            description: values.description || null,
+            quantity: Number(values.quantity) || 1,
+            filters: filterValues(values),
+          },
         })
-      : await createMutation.mutateAsync({ hangarPlanId: props.planId, data });
+      : await createMutation.mutateAsync({
+          hangarPlanId: props.planId,
+          data: { label: newLabel(values.label) },
+        });
 
-    updatePlan(plan);
+    updatePlan(saved);
     comlink.emit("close-modal", true);
   } catch {
     displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
@@ -161,88 +173,96 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="label"
         v-bind="labelProps"
         name="label"
-        rules="required"
+        :rules="slot ? 'required' : undefined"
         :label="t('hangarPlanner.fields.slotLabel')"
-        :placeholder="t('hangarPlanner.fields.slotLabelPlaceholder')"
+        :placeholder="
+          slot ? t('hangarPlanner.fields.slotLabelPlaceholder') : newLabel('')
+        "
       />
-      <FormInput
-        v-model="quantity"
-        v-bind="quantityProps"
-        name="quantity"
-        :type="InputTypesEnum.NUMBER"
-        :min="1"
-        :max="999"
-        :step="1"
-        :label="t('hangarPlanner.fields.quantity')"
-        no-placeholder
-      />
-      <FormTextarea
-        v-model="description"
-        v-bind="descriptionProps"
-        name="description"
-        :label="t('hangarPlanner.fields.slotDescription')"
-      />
+      <template v-if="slot">
+        <FormInput
+          v-model="quantity"
+          v-bind="quantityProps"
+          name="quantity"
+          :type="InputTypesEnum.NUMBER"
+          :min="1"
+          :max="999"
+          :step="1"
+          :label="t('hangarPlanner.fields.quantity')"
+          no-placeholder
+        />
+        <FormTextarea
+          v-model="description"
+          v-bind="descriptionProps"
+          name="description"
+          :label="t('hangarPlanner.fields.slotDescription')"
+        />
 
-      <fieldset class="slot-filters">
-        <legend>{{ t("hangarPlanner.fields.filters") }}</legend>
-        <p class="slot-filters__hint">
-          {{ t("hangarPlanner.fields.filtersInfo") }}
-        </p>
-        <ClassificationSelect
-          v-model="lists.classificationIn"
-          name="classificationIn"
-          :no-label="false"
-        />
-        <FocusSelect v-model="lists.focusIn" name="focusIn" :no-label="false" />
-        <SizeSelect v-model="lists.sizeIn" name="sizeIn" :no-label="false" />
-        <ManufacturerSelect
-          v-model="lists.manufacturerIn"
-          name="manufacturerIn"
-          :no-label="false"
-        />
-        <ProductionStatusSelect
-          v-model="lists.productionStatusIn"
-          name="productionStatusIn"
-          :no-label="false"
-        />
-        <div class="slot-filters__row">
-          <FormInput
-            v-model="pledgePriceGteq"
-            v-bind="pledgePriceGteqProps"
-            name="pledgePriceGteq"
-            :type="InputTypesEnum.NUMBER"
-            :min="0"
-            prefix="$"
-            :label="t('hangarPlanner.fields.priceFrom')"
-            no-placeholder
+        <fieldset class="slot-filters">
+          <legend>{{ t("hangarPlanner.fields.filters") }}</legend>
+          <p class="slot-filters__hint">
+            {{ t("hangarPlanner.fields.filtersInfo") }}
+          </p>
+          <ClassificationSelect
+            v-model="lists.classificationIn"
+            name="classificationIn"
+            :no-label="false"
           />
-          <FormInput
-            v-model="pledgePriceLteq"
-            v-bind="pledgePriceLteqProps"
-            name="pledgePriceLteq"
-            :type="InputTypesEnum.NUMBER"
-            :min="0"
-            prefix="$"
-            :label="t('hangarPlanner.fields.priceTo')"
-            no-placeholder
+          <FocusSelect
+            v-model="lists.focusIn"
+            name="focusIn"
+            :no-label="false"
           />
-          <FormInput
-            v-model="cargoGteq"
-            v-bind="cargoGteqProps"
-            name="cargoGteq"
-            :type="InputTypesEnum.NUMBER"
-            :min="0"
-            suffix="SCU"
-            :label="t('hangarPlanner.fields.minCargo')"
-            no-placeholder
+          <SizeSelect v-model="lists.sizeIn" name="sizeIn" :no-label="false" />
+          <ManufacturerSelect
+            v-model="lists.manufacturerIn"
+            name="manufacturerIn"
+            :no-label="false"
           />
-        </div>
-        <FormCheckbox
-          v-model="onSaleEq"
-          name="onSaleEq"
-          :label="t('hangarPlanner.fields.onSaleOnly')"
-        />
-      </fieldset>
+          <ProductionStatusSelect
+            v-model="lists.productionStatusIn"
+            name="productionStatusIn"
+            :no-label="false"
+          />
+          <div class="slot-filters__row">
+            <FormInput
+              v-model="pledgePriceGteq"
+              v-bind="pledgePriceGteqProps"
+              name="pledgePriceGteq"
+              :type="InputTypesEnum.NUMBER"
+              :min="0"
+              prefix="$"
+              :label="t('hangarPlanner.fields.priceFrom')"
+              no-placeholder
+            />
+            <FormInput
+              v-model="pledgePriceLteq"
+              v-bind="pledgePriceLteqProps"
+              name="pledgePriceLteq"
+              :type="InputTypesEnum.NUMBER"
+              :min="0"
+              prefix="$"
+              :label="t('hangarPlanner.fields.priceTo')"
+              no-placeholder
+            />
+            <FormInput
+              v-model="cargoGteq"
+              v-bind="cargoGteqProps"
+              name="cargoGteq"
+              :type="InputTypesEnum.NUMBER"
+              :min="0"
+              suffix="SCU"
+              :label="t('hangarPlanner.fields.minCargo')"
+              no-placeholder
+            />
+          </div>
+          <FormCheckbox
+            v-model="onSaleEq"
+            name="onSaleEq"
+            :label="t('hangarPlanner.fields.onSaleOnly')"
+          />
+        </fieldset>
+      </template>
     </form>
 
     <template #footer>

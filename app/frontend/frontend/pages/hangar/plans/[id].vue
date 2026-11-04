@@ -34,6 +34,10 @@ import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import type {
+  HangarFlowEnd,
+  HangarFlowStart,
+} from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -102,6 +106,11 @@ const tallies = computed(() =>
     },
     { key: "kept", value: countOf(HangarPlanVehicleStatusEnum.KEPT) },
     { key: "upgraded", value: countOf(HangarPlanVehicleStatusEnum.UPGRADED) },
+    {
+      key: "unrouted",
+      variant: PillVariantsEnum.WARNING,
+      value: countOf(HangarPlanVehicleStatusEnum.UNROUTED),
+    },
     { key: "melted", value: countOf(HangarPlanVehicleStatusEnum.MELTED) },
     {
       key: "toAcquire",
@@ -125,7 +134,8 @@ const { deciding, decide, keep, pendingIds } = useHangarPlanDecisions(
 const openModal = (
   component: () => Promise<Component>,
   props: Record<string, unknown> = {},
-) => comlink.emit("open-modal", { component, props });
+  options: { wide?: boolean } = {},
+) => comlink.emit("open-modal", { component, props, ...options });
 
 const editPlan = () =>
   openModal(
@@ -141,7 +151,7 @@ const addSlot = (label?: string) =>
 
 const openRoute = (
   candidate: HangarPlanCandidate,
-  acquisition?: HangarPlanAcquisition,
+  acquisition: HangarPlanAcquisition,
 ) =>
   comlink.emit("open-modal", {
     component: () =>
@@ -150,11 +160,26 @@ const openRoute = (
     wide: true,
   });
 
+const pickStart = (start: HangarFlowStart) =>
+  openModal(
+    () =>
+      import("@/frontend/components/Hangar/Planner/StartPickerModal/index.vue"),
+    { planId: planId.value, ...start },
+  );
+
+const pickEnd = (end: HangarFlowEnd) =>
+  openModal(
+    () =>
+      import("@/frontend/components/Hangar/Planner/EndPickerModal/index.vue"),
+    { planId: planId.value, ...end },
+  );
+
 const pickShips = (slot: HangarPlanSlot) =>
   openModal(
     () =>
       import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
     { planId: planId.value, slot },
+    { wide: true },
   );
 
 const editSlot = (slot: HangarPlanSlot) =>
@@ -312,6 +337,13 @@ const onDestroy = async () => {
         <i class="fa-light fa-grid-2" />
         {{ t("hangarPlanner.editSlots") }}
       </Btn>
+      <Btn
+        :to="{ name: 'hangar-plan-suggestions', params: { id: plan.id } }"
+        data-test="hangar-plan-suggestions"
+      >
+        <i class="fa-light fa-lightbulb" />
+        {{ t("hangarPlanner.suggestions.title") }}
+      </Btn>
       <BtnDropdown data-test="hangar-plan-more">
         <Btn :variant="BtnVariantsEnum.BARE" @click="editPlan">
           <i class="fa-light fa-pen" />
@@ -428,6 +460,8 @@ const onDestroy = async () => {
           :summary="summary"
           @decide="decide"
           @route="openRoute"
+          @start="pickStart"
+          @end="pickEnd"
           @pick="pickShips"
           @edit="editSlot"
         />

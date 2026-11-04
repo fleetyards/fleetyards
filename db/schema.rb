@@ -2530,6 +2530,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_170000) do
     t.string "foci", default: [], null: false, array: true
     t.boolean "stealth", default: false, null: false
     t.string "sc_role"
+    t.datetime "ccu_source_seen_at"
+    t.datetime "ccu_target_seen_at"
+    t.boolean "ccu_on_sale", default: false, null: false
+    t.string "ccu_override"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["foci"], name: "index_models_on_foci", using: :gin

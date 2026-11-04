@@ -24,6 +24,7 @@ import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusS
 import ModelCard from "@/frontend/components/Models/PickerModal/ModelCard/index.vue";
 import {
   type ModelPickerBadge,
+  type ModelPickerFilters,
   type ModelPickerSelection,
 } from "@/frontend/components/Models/PickerModal/types";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -337,6 +338,16 @@ const filtersActive = computed(
     !!containerFit.value,
 );
 
+const pickedFilters = computed<ModelPickerFilters>(() => ({
+  manufacturerIn: manufacturerIn.value,
+  classificationIn: classificationIn.value,
+  focusIn: focusIn.value,
+  sizeIn: sizeIn.value,
+  productionStatusIn: productionStatusOffered.value
+    ? productionStatusIn.value
+    : [],
+}));
+
 const resetFilters = () => {
   search.value = "";
   searchTerm.value = "";
@@ -625,6 +636,7 @@ useModalDirty(() => !props.single && selection.value.length > 0);
           >
             {{ t("modelPicker.actions.resetFilters") }}
           </Btn>
+          <slot name="filter-actions" :filters="pickedFilters" />
         </div>
       </div>
 

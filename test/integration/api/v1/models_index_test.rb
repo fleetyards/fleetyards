@@ -141,6 +141,54 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by playerOwnableEq" do
+    ownable = create(:model)
+    npc = create(:model, player_ownable: false)
+
+    assert_api_response :get, 200, params: {q: {"playerOwnableEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, ownable.name
+      assert_not_includes names, npc.name
+    end
+  end
+
+  test "GET /models narrows to the dearer ships an upgrade can lead into" do
+    target = create(:model, pledge_price: 300, ccu_target_seen_at: 1.year.ago, created_at: 2.years.ago)
+    create(:model, pledge_price: 900, created_at: 2.years.ago)
+    create(:model, pledge_price: 100, ccu_on_sale: true)
+
+    assert_api_response :get, 200, params: {q: {"ccuTarget" => true, "pledgePriceGt" => 200}} do
+      assert_equal [target.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /models narrows to the ships a plan can get, the user's own among them" do
+    user = create(:user)
+    priced = create(:model, pledge_price: 300)
+    earned = create(:model, pledge_price: nil, ingame_only: true)
+    held = create(:model, pledge_price: nil)
+    bought_back = create(:model, name: "Galaxy Executive", pledge_price: nil)
+    unobtainable = create(:model, pledge_price: nil)
+    create(:vehicle, user:, model: held)
+    create(:buyback_pledge, user:, name: "Standalone Ship - Galaxy Executive")
+
+    assert_api_response :get, 200, params: {q: {"plannable" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, priced.name
+      assert_includes names, earned.name
+      assert_not_includes names, held.name
+    end
+
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"plannable" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, held.name
+      assert_includes names, bought_back.name
+      assert_not_includes names, unobtainable.name
+    end
+  end
+
   test "GET /models accepts a containerFit map" do
     create_list(:model, 2)
 

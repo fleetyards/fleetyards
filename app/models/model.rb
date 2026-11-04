@@ -106,6 +106,79 @@ class Model < ApplicationRecord
   end
   alias_method :in_game, :in_game?
 
+  # Whether RSI sells upgrades (CCUs) into and out of a ship. The store only
+  # lists the ones on sale today, and many come back only for a sale, so a CCU
+  # once seen anywhere - the store, a synced hangar, a buy-back - counts for
+  # good. A ship nobody has seen one for is not upgradable once it has been
+  # listed long enough for one to show up; an admin overrides either way.
+  CCU_OVERRIDES = %w[allowed none].freeze
+  CCU_TARGET_STATUSES = %w[on_sale sales_only unknown none].freeze
+  CCU_SOURCE_STATUSES = %w[known unknown none].freeze
+  CCU_UNKNOWN_FOR = 90.days
+
+  validates :ccu_override, inclusion: {in: CCU_OVERRIDES}, allow_nil: true
+
+  def ccu_target_status
+    return "none" if ccu_out_of_store? || ccu_override == "none"
+    return "on_sale" if ccu_on_sale
+    return "sales_only" if ccu_override == "allowed" || ccu_target_seen_at.present?
+
+    ccu_unseen_status
+  end
+
+  # Whatever a CCU can reach can be upgraded further, so a ship seen as a
+  # target counts as a source too.
+  def ccu_source_status
+    return "none" if ccu_out_of_store? || ccu_override == "none"
+    return "known" if ccu_override == "allowed" || ccu_source_seen_at.present? || ccu_target_seen_at.present?
+
+    ccu_unseen_status
+  end
+
+  def ccu_into? = ccu_target_status != "none"
+
+  # The ships a hangar plan can get: sold on the store at a price, or earned
+  # in game; else one the user already holds or can buy back.
+  def self.plannable_for(user)
+    gettable = where.not(pledge_price: nil).or(where(ingame_only: true))
+    return gettable if user.blank?
+
+    pledges = user.buyback_pledges
+    bought_back = Rsi::UpgradeTitles.models_by_name(
+      pledges.where(kind: %w[ship package other]).flat_map(&:returned_ship_names)
+    ).values.compact.map(&:id)
+
+    gettable
+      .or(where(id: user.vehicles.purchased.where(loaner: false).select(:model_id)))
+      .or(where(id: bought_back))
+      .or(where(rsi_id: pledges.where(kind: "upgrade").select(:upgrade_to_ship_id)))
+  end
+
+  # The ships `ccu_into?` holds for, in SQL: the store sells them, no admin
+  # ruled them out, and an upgrade into them was seen or they are too new to
+  # tell.
+  scope :ccu_target, ->(flag = true) {
+    condition = sanitize_sql_array([<<~SQL.squish, CCU_UNKNOWN_FOR.ago])
+      models.player_ownable AND NOT models.ingame_only
+      AND models.ccu_override IS DISTINCT FROM 'none'
+      AND (models.ccu_on_sale OR models.ccu_override = 'allowed' OR models.ccu_target_seen_at IS NOT NULL
+        OR models.created_at IS NULL OR models.created_at > ?)
+    SQL
+
+    ActiveModel::Type::Boolean.new.cast(flag) ? where(condition) : where.not(condition)
+  }
+
+  def ccu_out_of? = ccu_source_status != "none"
+
+  # The store sells upgrades only for ships a player can pledge for there.
+  private def ccu_out_of_store?
+    ingame_only || !player_ownable
+  end
+
+  private def ccu_unseen_status
+    (created_at.nil? || created_at > CCU_UNKNOWN_FOR.ago) ? "unknown" : "none"
+  end
+
   # The filter keeps its name -- a ransacker wins over a same-named column -- so
   # `inGameEq` needs no API change. An `EXISTS` rather than the correlated
   # subquery the fact filters use, because this asks whether a row is there
@@ -871,7 +944,7 @@ class Model < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target"]
   end
 
   # A ship offers a berth either because one is built into it or because a

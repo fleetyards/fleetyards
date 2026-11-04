@@ -5,7 +5,7 @@ module Api
     class HangarPlansController < ::Api::BaseController
       include HangarPlannerFeatureConcern
 
-      READ_ACTIONS = %i[index show summary comparison compare drift resources].freeze
+      READ_ACTIONS = %i[index show summary comparison suggestions compare drift resources].freeze
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
@@ -64,6 +64,10 @@ module Api
 
       def comparison
         @comparison = HangarPlans::Comparison.new(@hangar_plan)
+      end
+
+      def suggestions
+        @suggestions = HangarPlans::Suggestions.new(@hangar_plan)
       end
 
       def compare

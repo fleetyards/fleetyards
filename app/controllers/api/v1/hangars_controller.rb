@@ -49,7 +49,7 @@ module Api
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(Vehicle.rendered_associations)
+          .preload(Vehicle.rendered_associations)
           .preload(Vehicle::PICTURE_PRELOADS)
           .joins(model: [:manufacturer])
 

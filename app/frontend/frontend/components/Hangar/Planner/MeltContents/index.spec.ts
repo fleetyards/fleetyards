@@ -1,13 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { HangarPledgeItemKindEnum } from "@/services/fyApi";
+import {
+  HangarPledgeItemKindEnum,
+  type HangarPlanModel,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
-const carrack = {
+const carrack: HangarPlanModel = {
   id: "carrack",
   name: "Carrack",
   slug: "carrack",
   onSale: true,
+  ccuInto: "on_sale",
+  ccuOutOf: "known",
   pledgePrice: 600,
 };
 

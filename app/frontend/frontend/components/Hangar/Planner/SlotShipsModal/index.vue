@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import type { Component } from "vue";
+import { useRouter } from "vue-router";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
@@ -55,6 +56,23 @@ const undecided = computed(
 );
 
 const { specs } = useCandidateSpecs(() => current.value.candidates);
+
+const router = useRouter();
+
+// Side by side on the compare page, in a tab of its own so the plan stays
+// where it was.
+const compareHref = computed(() =>
+  current.value.candidates.length > 1
+    ? router.resolve({
+        name: "compare",
+        query: {
+          models: current.value.candidates.map(
+            (candidate) => candidate.model.slug,
+          ),
+        },
+      }).href
+    : undefined,
+);
 
 const meta = (candidate: HangarPlanCandidate) =>
   [
@@ -115,16 +133,18 @@ const removeSlot = () =>
     true,
   );
 
-const openModal = (component: () => Promise<Component>) =>
+const openModal = (component: () => Promise<Component>, wide = false) =>
   comlink.emit("open-modal", {
     component,
     props: { planId: props.planId, slot: current.value },
+    wide,
   });
 
 const addShips = () =>
   openModal(
     () =>
       import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
+    true,
   );
 
 const editSettings = () =>
@@ -237,6 +257,14 @@ const editSettings = () =>
       </Btn>
     </template>
     <template #footer>
+      <Btn
+        v-if="compareHref"
+        :href="compareHref"
+        data-test="hangar-plan-slot-ships-compare"
+      >
+        <i class="fa-light fa-code-compare" />
+        {{ t("actions.compare.ships") }}
+      </Btn>
       <Btn data-test="hangar-plan-slot-ships-settings" @click="editSettings">
         <i class="fa-light fa-sliders" />
         {{ t("hangarPlanner.slotSettings") }}

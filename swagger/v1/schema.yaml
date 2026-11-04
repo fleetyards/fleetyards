@@ -13415,6 +13415,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     delete:
       summary: Destroy Hangar Plan Acquisition
       tags:
@@ -14391,6 +14397,36 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/suggestions":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Suggestions
+      tags:
+      - HangarPlans
+      operationId: hangarPlanSuggestions
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanSuggestions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/plans/{id}/summary":
@@ -36430,6 +36466,10 @@ components:
           - number
           - 'null'
           description: What starting this way costs in USD; null when unknown
+        routeComplete:
+          type: boolean
+          description: Whether the start and its upgrades end on the slot's ship;
+            false while the route has yet to be planned
         sourceMissing:
           type: boolean
         usesBuybackToken:
@@ -36445,6 +36485,7 @@ components:
       - id
       - startKind
       - startModel
+      - routeComplete
       - sourceMissing
       - usesBuybackToken
       - steps
@@ -36491,6 +36532,10 @@ components:
     HangarPlanAcquisitionUpdateInput:
       type: object
       properties:
+        candidateId:
+          type: string
+          format: uuid
+          description: Moves the route to another ship of the plan
         startKind:
           "$ref": "#/components/schemas/HangarPlanStartKindEnum"
         sourceVehicleId:
@@ -36667,6 +36712,30 @@ components:
             format: uuid
       additionalProperties: false
       title: HangarPlanCandidateUpdateInput
+    HangarPlanCcuIntoEnum:
+      type: string
+      enum:
+      - on_sale
+      - sales_only
+      - unknown
+      - none
+      x-enumNames:
+      - ON_SALE
+      - SALES_ONLY
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuIntoEnum
+    HangarPlanCcuOutOfEnum:
+      type: string
+      enum:
+      - known
+      - unknown
+      - none
+      x-enumNames:
+      - KNOWN
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuOutOfEnum
     HangarPlanCompare:
       type: object
       properties:
@@ -36833,6 +36902,38 @@ components:
       - currentTotal
       - drifted
       title: HangarPlanDrift
+    HangarPlanFleetEntry:
+      type: object
+      description: 'One ship of the hangar once the plan is carried out: a unit of
+        a slot, or a hangar ship the plan leaves alone'
+      properties:
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        slotId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        slotLabel:
+          type:
+          - string
+          - 'null'
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The hangar ship that is or becomes this ship
+        vehicleName:
+          type:
+          - string
+          - 'null'
+        vehicleStatus:
+          "$ref": "#/components/schemas/HangarPlanVehicleStatusEnum"
+      additionalProperties: false
+      required:
+      - model
+      title: HangarPlanFleetEntry
     HangarPlanGap:
       type: object
       properties:
@@ -37095,6 +37196,10 @@ components:
           description: Store price in USD; null when unknown
         onSale:
           type: boolean
+        ccuInto:
+          "$ref": "#/components/schemas/HangarPlanCcuIntoEnum"
+        ccuOutOf:
+          "$ref": "#/components/schemas/HangarPlanCcuOutOfEnum"
         crew:
           type:
           - integer
@@ -37111,6 +37216,8 @@ components:
       - name
       - slug
       - onSale
+      - ccuInto
+      - ccuOutOf
       title: HangarPlanModel
     HangarPlanModelChangeEnum:
       type: string
@@ -37200,6 +37307,45 @@ components:
       - id
       - model
       title: HangarPlanPledgeShip
+    HangarPlanRedundancy:
+      type: object
+      description: 'Ships of the planned hangar that do the same job: one model more
+        than once, or several models of one role'
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanRedundancyKindEnum"
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        classificationLabel:
+          type:
+          - string
+          - 'null'
+        sizeLabel:
+          type:
+          - string
+          - 'null'
+        focusLabel:
+          type:
+          - string
+          - 'null'
+        entries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanFleetEntry"
+      additionalProperties: false
+      required:
+      - kind
+      - entries
+      title: HangarPlanRedundancy
+    HangarPlanRedundancyKindEnum:
+      type: string
+      enum:
+      - duplicate
+      - role
+      x-enumNames:
+      - DUPLICATE
+      - ROLE
+      title: HangarPlanRedundancyKindEnum
     HangarPlanResources:
       type: object
       properties:
@@ -37449,6 +37595,17 @@ components:
       - INGAME
       - BUYBACK
       title: HangarPlanStartKindEnum
+    HangarPlanSuggestions:
+      type: object
+      properties:
+        redundancies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanRedundancy"
+      additionalProperties: false
+      required:
+      - redundancies
+      title: HangarPlanSuggestions
     HangarPlanSummary:
       type: object
       properties:
@@ -37819,6 +37976,7 @@ components:
       enum:
       - kept
       - upgraded
+      - unrouted
       - melted
       - pending
       - change
@@ -37826,6 +37984,7 @@ components:
       x-enumNames:
       - KEPT
       - UPGRADED
+      - UNROUTED
       - MELTED
       - PENDING
       - CHANGE
@@ -43317,6 +43476,15 @@ components:
           type: boolean
         playerOwnableEq:
           type: boolean
+        ccuTarget:
+          type: boolean
+          description: Ships RSI sells upgrades into, today or during sales
+        plannable:
+          type: boolean
+          description: 'Ships a hangar plan can get: sold on the store at a price,
+            earned in game, or held or bought back by the signed-in user'
+        pledgePriceGt:
+          type: number
         pledgePriceGteq:
           type: number
         pledgePriceLteq:

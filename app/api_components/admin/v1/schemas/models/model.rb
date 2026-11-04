@@ -25,9 +25,13 @@ module Admin
               # keys. Not shown publicly, where only the keys are.
               rsiFocus: {type: [:string, :null]},
               scRole: {type: [:string, :null]},
+              ccuOverride: {type: [:string, :null], enum: ::Model::CCU_OVERRIDES + [nil]},
+              ccuOnSale: {type: :boolean, description: "The store sells an upgrade into the ship today"},
+              ccuSourceSeenAt: {type: [:string, :null], format: :"date-time", description: "When an upgrade out of the ship was first seen"},
+              ccuTargetSeenAt: {type: [:string, :null], format: :"date-time", description: "When an upgrade into the ship was first seen"},
               media: AdminModelMedia
             },
-            required: %w[hidden keepCargo active media]
+            required: %w[hidden keepCargo active media ccuOnSale]
           })
         end
       end

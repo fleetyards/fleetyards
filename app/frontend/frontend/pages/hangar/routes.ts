@@ -308,6 +308,18 @@ export const routes: RouteRecordRaw[] = [
       feature: FeatureFlagName.HANGAR_PLANNER,
     },
   },
+  {
+    path: "plans/:id/suggestions/",
+    name: "hangar-plan-suggestions",
+    component: () =>
+      import("@/frontend/pages/hangar/plans/[id]/suggestions.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.plans",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_PLANNER,
+    },
+  },
   // The plan page is the comparison with the hangar; this path still resolves
   // for links saved to it.
   {
