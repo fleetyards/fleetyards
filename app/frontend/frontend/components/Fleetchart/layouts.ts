@@ -248,7 +248,9 @@ export const boundsOf = (
   const right = (ship: FleetchartLayoutShip) =>
     positions[ship.id].x + ship.width / 2 + paddingOf(ship) / 2;
   const top = (ship: FleetchartLayoutShip) =>
-    positions[ship.id].y - boxHeight(ship) / 2;
+    positions[ship.id].y -
+    boxHeight(ship) / 2 -
+    (ship.group ? HEADING_ROOM : 0);
   const bottom = (ship: FleetchartLayoutShip) =>
     positions[ship.id].y + boxHeight(ship) / 2;
 
@@ -285,7 +287,7 @@ export const groupHeadings = (
       // A heading wider than its ships ends where they do, as they sit at the
       // right of their column and it would otherwise reach into the next one.
       x: Math.min(minX, minX + width - headingWidth),
-      y: minY - HEADING_ROOM / 2,
+      y: minY + HEADING_ROOM / 2,
     };
   });
 };

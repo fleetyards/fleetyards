@@ -186,6 +186,14 @@ describe("groups", () => {
     expect(headings[1].y).toBeGreaterThan(positions.a.y + 10);
   });
 
+  it("counts a heading as part of the area to draw", () => {
+    const ships = [grouped("a", "one")];
+    const positions = arrangeColumns(ships, 500);
+    const [heading] = groupHeadings(ships, positions);
+
+    expect(boundsOf(ships, positions).minY).toBeLessThan(heading.y);
+  });
+
   it("has no headings without groups", () => {
     expect(groupHeadings([ship("a")], { a: { x: 0, y: 0 } })).toEqual([]);
   });
