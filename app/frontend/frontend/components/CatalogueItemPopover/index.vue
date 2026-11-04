@@ -63,6 +63,8 @@ type Props = {
   linkLabel?: string;
   // Off for the same list-row name: the row's own link is the focus stop.
   focusable?: boolean;
+  // Leaves a tap to the control around the trigger.
+  tapThrough?: boolean;
   // A crafted part: the card adds the stats its recipe and grades give.
   crafted?: InventoryCraftedRef;
 };
@@ -73,6 +75,7 @@ const props = withDefaults(defineProps<Props>(), {
   linkClass: undefined,
   linkLabel: undefined,
   focusable: true,
+  tapThrough: false,
   crafted: undefined,
 });
 
@@ -307,6 +310,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
     v-if="hasCard"
     :label="label"
     :focusable="focusable"
+    :tap-through="tapThrough"
     @open="requested = true"
   >
     <router-link

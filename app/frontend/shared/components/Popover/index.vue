@@ -25,6 +25,9 @@ type Props = {
   // Off where the trigger sits inside a link of its own -- a list row's name --
   // since a focus stop inside an anchor is one the keyboard lands on twice.
   focusable?: boolean;
+  // Leaves a tap to the control around the trigger, for one whose own action
+  // the card cannot offer: picking a row. Touch then has no card here.
+  tapThrough?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   openDelay: 300,
   closeDelay: 150,
   focusable: true,
+  tapThrough: false,
 });
 
 const emit = defineEmits<{ open: []; close: [] }>();
@@ -265,6 +269,7 @@ const onMouseleave = () => {
  */
 const onClickCapture = (event: MouseEvent) => {
   if (props.disabled || event.detail === 0) return;
+  if (props.tapThrough && tapDriven()) return;
 
   if (!tapDriven()) {
     close();

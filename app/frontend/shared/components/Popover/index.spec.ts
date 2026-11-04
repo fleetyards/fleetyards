@@ -120,6 +120,27 @@ describe("Popover with a mouse", () => {
 });
 
 describe("Popover on touch", () => {
+  it("leaves a tap to the control around it when told to", async () => {
+    const wrapper = mount(Popover, {
+      attachTo: document.body,
+      props: { label: "Glacier", tapThrough: true },
+      slots: {
+        default: () => "Glacier",
+        content: () => h("div", "Glacier stats"),
+      },
+    });
+    wrappers.push(wrapper);
+
+    const clicked = vi.fn();
+    document.body.addEventListener("click", clicked);
+    tap(wrapper.find("[data-test='popover-trigger']").element);
+    await wrapper.vm.$nextTick();
+    document.body.removeEventListener("click", clicked);
+
+    expect(clicked).toHaveBeenCalledTimes(1);
+    expect(panel()).toBeNull();
+  });
+
   it("opens on the first tap instead of following the link", async () => {
     const wrapper = mountPopover();
     const trigger = wrapper.find("[data-test='popover-trigger']");

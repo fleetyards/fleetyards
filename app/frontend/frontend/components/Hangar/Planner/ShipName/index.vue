@@ -10,7 +10,8 @@ import type { HangarPlanModel } from "@/services/fyApi";
 
 type Props = {
   ship: Pick<HangarPlanModel, "slug" | "name">;
-  // Off inside a button: the button is already the focus stop.
+  // Off inside a button: the button is already the focus stop, and a tap on the
+  // name has to reach it.
   focusable?: boolean;
 };
 
@@ -24,6 +25,7 @@ withDefaults(defineProps<Props>(), {
     :item="{ type: 'Model', slug: ship.slug, name: ship.name }"
     :link="false"
     :focusable="focusable"
+    :tap-through="!focusable"
   >
     <slot>{{ ship.name }}</slot>
   </CatalogueItemPopover>
