@@ -946,6 +946,40 @@ describe("FleetchartCanvas", () => {
         expect(added[0][1].x).not.toBe(added[1][1].x);
       });
 
+      it("holds the view when an added ship arrives and grows the scene", async () => {
+        const wrapper = await mountFree();
+
+        wrapper.get("[data-test='fleetchart-add-ships']").trigger("click");
+        await nextTick();
+        wrapper
+          .findComponent({ name: "FleetchartCanvasAddShips" })
+          .vm.$emit("add", { id: "hornet-id", slug: "hornet" });
+
+        const store = useFleetchartStore();
+        const [id] = Object.entries(store.fleetchartPlacements("hangar")).find(
+          ([, { modelId }]) => modelId === "hornet-id",
+        ) as [string, unknown];
+
+        store.updatePlacements({
+          namespace: "hangar",
+          placements: {
+            ...store.fleetchartPlacements("hangar"),
+            [id]: { x: -1000, y: -1000, modelId: "hornet-id" },
+          },
+        });
+        await nextTick();
+        panzoomInstance.moveTo.mockClear();
+
+        await wrapper.setProps({
+          items: [entry("a"), entry("b"), catalogueEntry(id)],
+        });
+
+        const [x, y] = panzoomInstance.moveTo.mock.lastCall as number[];
+
+        expect(x).toBeLessThan(-3000);
+        expect(y).toBeLessThan(-3000);
+      });
+
       it("marks only the ship that is not owned", async () => {
         const wrapper = await mountWithCatalogueShip();
 

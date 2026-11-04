@@ -987,6 +987,38 @@ const metresAtY = (pixels: number) =>
 
 let shipsAdded = 0;
 
+// A catalogue ship is drawn once its model and pictures have arrived, and only then
+// can it grow the scene. So the view is held, or the chart fitted, at that moment.
+const arriving = new Set<string>();
+
+let fitOnArrival = false;
+
+watch([() => ships.value.length, bounds], ([, now], [, before]) => {
+  const arrived = ships.value.filter(({ id }) => arriving.has(id));
+
+  if (!arrived.length) {
+    return;
+  }
+
+  arrived.forEach(({ id }) => arriving.delete(id));
+
+  if (fitOnArrival) {
+    fitOnArrival = arriving.size > 0;
+    fitToScreen();
+
+    return;
+  }
+
+  if (panzoomInstance) {
+    const { x, y, scale } = panzoomInstance.getTransform();
+
+    panzoomInstance.moveTo(
+      x + (now.minX - before.minX) * PIXELS_PER_METRE * scale,
+      y + (now.minY - before.minY) * PIXELS_PER_METRE * scale,
+    );
+  }
+});
+
 // In the middle of what is on screen and in front of everything else, selected so
 // that it can be moved straight away.
 const addShip = (model: Model) => {
@@ -994,18 +1026,18 @@ const addShip = (model: Model) => {
   const offset = (shipsAdded % ADDED_SHIP_OFFSETS) * ADDED_SHIP_OFFSET;
 
   shipsAdded += 1;
+  fitOnArrival = false;
+  arriving.add(id);
 
-  holdingView(() => {
-    changePlacements({
-      ...placements.value,
-      [id]: {
-        x: metresAtX(screen.width / 2) + offset,
-        y: metresAtY(screen.height / 2) + offset,
-        facing: facing.value,
-        order: Math.max(0, ...Object.keys(placements.value).map(orderOf)) + 1,
-        modelId: model.id,
-      },
-    });
+  changePlacements({
+    ...placements.value,
+    [id]: {
+      x: metresAtX(screen.width / 2) + offset,
+      y: metresAtY(screen.height / 2) + offset,
+      facing: facing.value,
+      order: Math.max(0, ...Object.keys(placements.value).map(orderOf)) + 1,
+      modelId: model.id,
+    },
   });
 
   selectedIds.value = [id];
@@ -1059,9 +1091,8 @@ const allPlacementsToSave = computed(() => {
 });
 
 const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
-  allPlacementsToSave.value.flatMap(
-    ({ id, modelId, ...placement }) =>
-      modelId ? [] : [{ vehicleId: id, ...placement }],
+  allPlacementsToSave.value.flatMap(({ id, modelId, ...placement }) =>
+    modelId ? [] : [{ vehicleId: id, ...placement }],
   ),
 );
 
@@ -1075,6 +1106,10 @@ const openSavedLayout = (saved: FleetchartLayout) => {
   changePlacements(
     placementsFromLayout(saved.placements, saved.cataloguePlacements),
   );
+
+  arriving.clear();
+  (saved.cataloguePlacements ?? []).forEach(({ id }) => arriving.add(id));
+  fitOnArrival = arriving.size > 0;
 
   if (saved.colored !== colored.value) {
     fleetchartStore.togglePlain(props.namespace);
@@ -1497,6 +1532,7 @@ const toggleLabels = () => {
           v-tooltip="t('labels.fleetchartApp.addShips')"
           :active="addShipsOpen"
           :aria-label="t('labels.fleetchartApp.addShips')"
+          :disabled="!arrangeReady"
           data-test="fleetchart-add-ships"
           @click="togglePanel(addShipsOpen, 'add')"
         >
@@ -1654,7 +1690,10 @@ const toggleLabels = () => {
       @open="openSavedLayout"
     />
 
-    <FleetchartCanvasAddShips v-if="arranging && addShipsOpen" @add="addShip" />
+    <FleetchartCanvasAddShips
+      v-if="arranging && addShipsOpen && arrangeReady"
+      @add="addShip"
+    />
 
     <FleetchartCanvasShipControls
       ref="shipControls"

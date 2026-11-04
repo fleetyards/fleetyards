@@ -446,7 +446,8 @@ const closeFleetchart = async () => {
         <slot v-if="!mobile && !arranging" name="pagination" />
       </div>
 
-      <template v-if="innerItems.length">
+      <!-- A free arrangement can start empty, as ships can be added to it. -->
+      <template v-if="innerItems.length || (layoutsEnabled && arranging)">
         <FleetchartCanvas
           v-if="layoutsEnabled"
           :items="innerItems"
