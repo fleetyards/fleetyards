@@ -412,6 +412,7 @@
         }
       },
       "decisions": {
+        "keep": "Garder tel quel",
         "melt": "Fondre",
         "change": "Marquer comme doit changer",
         "pending": "Remettre à décider",

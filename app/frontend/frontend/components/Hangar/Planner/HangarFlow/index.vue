@@ -438,11 +438,16 @@ const shipRows = computed<Row[]>(() =>
                   // Nothing can be upgraded out of it, so changing it means
                   // melting it.
                   rightNone: t("hangarPlanner.pick.onlyMelt"),
-                  decisions: ["melt", "pending"] as HangarFlowDecision[],
+                  decisions: [
+                    "keep",
+                    "melt",
+                    "pending",
+                  ] as HangarFlowDecision[],
                 }
               : {
                   rightNone: t("hangarPlanner.pick.pickEnd"),
                   decisions: [
+                    "keep",
                     "melt",
                     change ? "pending" : "change",
                   ] as HangarFlowDecision[],

@@ -412,6 +412,7 @@
         }
       },
       "decisions": {
+        "keep": "Keep as it is",
         "melt": "Melt",
         "change": "Mark as should change",
         "pending": "Back to undecided",

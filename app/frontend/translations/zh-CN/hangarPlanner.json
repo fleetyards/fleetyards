@@ -412,6 +412,7 @@
         }
       },
       "decisions": {
+        "keep": "原样保留",
         "melt": "熔炼",
         "change": "标记为应更换",
         "pending": "改回待决定",

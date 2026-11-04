@@ -412,6 +412,7 @@
         }
       },
       "decisions": {
+        "keep": "Tieni così com'è",
         "melt": "Fondi",
         "change": "Segna come da cambiare",
         "pending": "Torna da decidere",

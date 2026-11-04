@@ -412,6 +412,7 @@
         }
       },
       "decisions": {
+        "keep": "Behalten, wie es ist",
         "melt": "Melten",
         "change": "Als „soll sich ändern“ markieren",
         "pending": "Wieder offen",

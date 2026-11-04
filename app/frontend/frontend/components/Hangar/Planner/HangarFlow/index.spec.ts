@@ -222,11 +222,9 @@ describe("Hangar/Planner/HangarFlow", () => {
       change.find('[data-test="hangar-plan-decide-change"]').exists(),
     ).toBe(false);
     expect(pending.text()).toContain("Needs a decision");
-    // Keeping or upgrading a ship is picking where it ends up.
-    expect(pending.find('[data-test="hangar-plan-decide-keep"]').exists()).toBe(
-      false,
-    );
-
+    await pending
+      .find('[data-test="hangar-plan-decide-keep"]')
+      .trigger("click");
     await pending
       .find('[data-test="hangar-plan-decide-change"]')
       .trigger("click");
@@ -238,6 +236,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       .trigger("click");
 
     expect(wrapper.emitted("decide")).toEqual([
+      ["vehicle-gladius", "keep"],
       ["vehicle-gladius", "change"],
       ["vehicle-cutlass", "pending"],
     ]);
@@ -573,7 +572,11 @@ describe("Hangar/Planner/HangarFlow", () => {
       row
         .findAll('[data-test^="hangar-plan-decide-"]')
         .map((button) => button.attributes("data-test")),
-    ).toEqual(["hangar-plan-decide-melt", "hangar-plan-decide-pending"]);
+    ).toEqual([
+      "hangar-plan-decide-keep",
+      "hangar-plan-decide-melt",
+      "hangar-plan-decide-pending",
+    ]);
   });
 
   it("shows a start picked for an undecided slot as waiting for its ship", async () => {

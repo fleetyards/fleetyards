@@ -75,6 +75,9 @@ export const useHangarPlanDecisions = (
     if (deciding.value) return;
 
     switch (decision) {
+      case "keep":
+        void keep([vehicleId]);
+        break;
       case "change":
         void mark(vehicleId, HangarPlanVehicleMarkEnum.CHANGE);
         break;

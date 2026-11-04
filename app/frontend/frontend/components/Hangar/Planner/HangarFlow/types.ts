@@ -5,9 +5,10 @@ import type {
   HangarPlanSlot,
 } from "@/services/fyApi";
 
-export type HangarFlowDecision = "melt" | "change" | "pending";
+export type HangarFlowDecision = "keep" | "melt" | "change" | "pending";
 
 export const hangarFlowDecisionIcons: Record<HangarFlowDecision, string> = {
+  keep: "fa-light fa-check",
   melt: "fa-light fa-fire",
   change: "fa-light fa-arrows-rotate",
   pending: "fa-light fa-rotate-left",
