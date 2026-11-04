@@ -45,6 +45,8 @@ type Props = {
    *  layout when given, as it cannot work on one page of a list. */
   arrangeItems?: (Vehicle | Model | VehiclePublic)[];
   arrangeLoaded?: boolean;
+  /** Shows a saved arrangement as it is, for someone it was shared with. */
+  readOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   shareTitle: undefined,
   arrangeItems: undefined,
   arrangeLoaded: false,
+  readOnly: false,
 });
 
 const { t } = useI18n();
@@ -87,8 +90,10 @@ const mode = computed(() => {
 
 const { isFeatureEnabled } = useFeatures();
 
-const layoutsEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.FLEETCHART_LAYOUTS),
+// The flag is the owner's: a shared layout was checked when it was fetched, and the
+// person opening the link does not need it themselves.
+const layoutsEnabled = computed(
+  () => props.readOnly || isFeatureEnabled(FeatureFlagName.FLEETCHART_LAYOUTS),
 );
 
 const layout = computed(() =>
@@ -96,7 +101,9 @@ const layout = computed(() =>
 );
 
 // Arranging takes a mouse for now, so a phone is not offered it.
-const canArrange = computed(() => !!props.arrangeItems && !mobile.value);
+const canArrange = computed(
+  () => props.readOnly || (!!props.arrangeItems && !mobile.value),
+);
 
 const layoutOptions = computed(() =>
   Object.values(FleetchartLayouts).filter(
@@ -354,7 +361,12 @@ const closeFleetchart = async () => {
       }"
     >
       <div class="fleetchart-app-controls">
-        <BtnDropdown v-if="layoutsEnabled" data-test="fleetchart-layout">
+        <slot name="title" />
+
+        <BtnDropdown
+          v-if="layoutsEnabled && !readOnly"
+          data-test="fleetchart-layout"
+        >
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.layout") }}:
@@ -373,7 +385,7 @@ const closeFleetchart = async () => {
           </Btn>
         </BtnDropdown>
 
-        <BtnDropdown v-else>
+        <BtnDropdown v-else-if="!readOnly">
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.mode") }}:
@@ -441,6 +453,7 @@ const closeFleetchart = async () => {
           :namespace="namespace"
           :download-name="downloadName"
           :can-arrange="canArrange"
+          :read-only="readOnly"
           :arrange-ready="!arranging || arrangeLoaded"
         />
         <FleetchartListPanzoom

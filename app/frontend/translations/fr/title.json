@@ -62,6 +62,7 @@
         "vehicleLog": "Journal de bord",
         "shipComponents": "Composants de vaisseau",
         "plans": "Planificateur de hangar",
+        "sharedFleetchartLayout": "Disposition de Fleetchart partagée",
         "sharedPlan": "Plan de hangar partagé"
       },
       "requestPassword": "Demander un mot de passe",

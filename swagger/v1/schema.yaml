@@ -11852,6 +11852,237 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/fleetchart-layouts":
+    get:
+      summary: Fleetchart Layouts
+      tags:
+      - FleetchartLayouts
+      operationId: fleetchartLayouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayoutsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Create Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: createFleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetchartLayoutInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayout"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/fleetchart-layouts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: fleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayout"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: updateFleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetchartLayoutInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayout"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: destroyFleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/fleetchart-layouts/{id}/share":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Share Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: shareFleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayout"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Unshare Fleetchart Layout
+      tags:
+      - FleetchartLayouts
+      operationId: unshareFleetchartLayout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetchartLayout"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups":
     post:
       summary: HangarGroup create
@@ -19118,6 +19349,33 @@ paths:
                 "$ref": "#/components/schemas/PayoutTransfer"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleetchart-layouts/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Shared Fleetchart Layout
+      tags:
+      - FleetchartLayoutsPublic
+      operationId: publicFleetchartLayout
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SharedFleetchartLayout"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -34928,6 +35186,122 @@ components:
       - meta
       - items
       title: FleetWantedBlueprints
+    FleetchartFacingEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - left
+      - top
+      - right
+      - bottom
+      -
+      x-enumNames:
+      - LEFT
+      - TOP
+      - RIGHT
+      - BOTTOM
+      - 'NULL'
+      title: FleetchartFacingEnum
+    FleetchartLayout:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        colored:
+          type: boolean
+        shareToken:
+          type:
+          - string
+          - 'null'
+        placements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartPlacement"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - colored
+      - placements
+      - createdAt
+      - updatedAt
+      title: FleetchartLayout
+    FleetchartLayoutInput:
+      type: object
+      properties:
+        name:
+          type: string
+        colored:
+          type: boolean
+        placements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartPlacement"
+      additionalProperties: false
+      title: FleetchartLayoutInput
+    FleetchartLayoutsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetchartLayout"
+      title: FleetchartLayoutsList
+    FleetchartPlacement:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          format: uuid
+        x:
+          type: number
+        "y":
+          type: number
+        facing:
+          "$ref": "#/components/schemas/FleetchartFacingEnum"
+        viewpoint:
+          "$ref": "#/components/schemas/FleetchartViewpointEnum"
+        state:
+          "$ref": "#/components/schemas/FleetchartShipStateEnum"
+        order:
+          type:
+          - number
+          - 'null'
+        groupId:
+          type:
+          - string
+          - 'null'
+        heading:
+          type:
+          - string
+          - 'null'
+      required:
+      - vehicleId
+      - x
+      - "y"
+      additionalProperties: false
+      title: FleetchartPlacement
+    FleetchartShipStateEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - flight
+      - extended
+      - landed
+      -
+      x-enumNames:
+      - FLIGHT
+      - EXTENDED
+      - LANDED
+      - 'NULL'
+      title: FleetchartShipStateEnum
     FleetchartView:
       type: object
       properties:
@@ -35047,6 +35421,31 @@ components:
           items:
             type: string
       title: FleetchartViewQuery
+    FleetchartViewpointEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - top
+      - port
+      - angled
+      - front
+      - starboard
+      - bottom
+      - angledRear
+      - rear
+      -
+      x-enumNames:
+      - TOP
+      - PORT
+      - ANGLED
+      - FRONT
+      - STARBOARD
+      - BOTTOM
+      - ANGLED_REAR
+      - REAR
+      - 'NULL'
+      title: FleetchartViewpointEnum
     FleetchartViewsList:
       type: array
       items:
@@ -47567,6 +47966,35 @@ components:
           type: string
       additionalProperties: false
       title: SetupOtpInput
+    SharedFleetchartLayout:
+      type: object
+      properties:
+        name:
+          type: string
+        colored:
+          type: boolean
+        username:
+          type:
+          - string
+          - 'null'
+        publicHangar:
+          type: boolean
+        placements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartPlacement"
+        vehicles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehiclePublic"
+      required:
+      - name
+      - colored
+      - username
+      - publicHangar
+      - placements
+      - vehicles
+      title: SharedFleetchartLayout
     ShipModel:
       type: object
       properties:

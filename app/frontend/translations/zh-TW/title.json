@@ -62,6 +62,7 @@
         "vehicleLog": "艦長日誌",
         "shipComponents": "飛船部件",
         "plans": "機庫規劃器",
+        "sharedFleetchartLayout": "已分享的艦隊圖配置",
         "sharedPlan": "共享機庫計畫"
       },
       "requestPassword": "請求密碼",

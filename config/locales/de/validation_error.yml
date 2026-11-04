@@ -144,6 +144,9 @@ de:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.
       destroy: Inventareintrag konnte nicht gelöscht werden.
+    fleetchart_layouts:
+      create: "Das Layout konnte nicht gespeichert werden"
+      update: "Das Layout konnte nicht aktualisiert werden"
     hangar_plans:
       create: "Plan konnte nicht erstellt werden."
       update: "Plan konnte nicht aktualisiert werden."

@@ -68,6 +68,7 @@ const canvasStubs = {
   },
   BtnGroup: { template: "<div><slot /></div>" },
   DownloadScreenshotBtn: true,
+  FleetchartCanvasSavedLayouts: true,
   FleetChartStatusBtn: true,
   CommunityLogo: true,
 };
@@ -280,6 +281,68 @@ describe("FleetchartCanvas", () => {
     const [x] = panzoomInstance.moveTo.mock.lastCall as number[];
 
     expect(x).toBeGreaterThan(-5000);
+  });
+
+  describe("a shared layout", () => {
+    it("shows the arrangement but cannot change it", async () => {
+      const store = useFleetchartStore();
+
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      store.updatePlacements({
+        namespace: "hangar",
+        placements: { a: { x: 500, y: 500 } },
+      });
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: {
+            namespace: "hangar",
+            items: [entry("a")],
+            canArrange: true,
+            readOnly: true,
+          },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+      const ship = wrapper.get("[data-test='fleetchart-ship']");
+      const down = new Event("pointerdown", { bubbles: true });
+
+      Object.assign(down, {
+        button: 0,
+        pointerType: "mouse",
+        clientX: 0,
+        clientY: 0,
+      });
+      ship.element.dispatchEvent(down);
+
+      const move = new Event("pointermove");
+
+      Object.assign(move, { clientX: 40, clientY: 0 });
+      window.dispatchEvent(move);
+      window.dispatchEvent(new Event("pointerup"));
+      await nextTick();
+
+      expect(store.fleetchartPlacements("hangar").a.x).toBe(500);
+      expect(wrapper.find("[data-test='fleetchart-undo']").exists()).toBe(
+        false,
+      );
+      expect(
+        wrapper.find("[data-test='fleetchart-saved-layouts']").exists(),
+      ).toBe(false);
+      expect(
+        wrapper.find("[data-test='fleetchart-ship-controls']").exists(),
+      ).toBe(false);
+      expect(wrapper.find("[data-test='fleetchart-options']").exists()).toBe(
+        false,
+      );
+      expect(wrapper.text()).not.toContain("labels.fleetchartApp.viewpoint");
+      expect(wrapper.text()).not.toContain("actions.showLabels");
+      expect(wrapper.text()).toContain("actions.resetZoom");
+      expect(wrapper.find("[data-test='fleetchart-grid']").exists()).toBe(true);
+    });
   });
 
   describe("free layout", () => {
@@ -784,6 +847,173 @@ describe("FleetchartCanvas", () => {
         expect(placement("a").facing).toBe(FleetchartFacings.TOP);
         expect(placement("b").facing).toBe(FleetchartFacings.TOP);
       });
+    });
+
+    it("saves the stacking as it is drawn, whatever the sort", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper
+        .get("[data-test='fleetchart-saved-layouts']")
+        .trigger("click");
+
+      const saved = wrapper
+        .findComponent({ name: "FleetchartCanvasSavedLayouts" })
+        .props("placements") as { vehicleId: string; order: number }[];
+
+      expect(saved.map(({ order }) => order).sort()).toEqual([0, 1]);
+    });
+
+    describe("arranging", () => {
+      const seed = () => {
+        const store = useFleetchartStore();
+
+        store.updateLayout({
+          namespace: "hangar",
+          layout: FleetchartLayouts.FREE,
+        });
+        store.updatePlacements({
+          namespace: "hangar",
+          placements: {
+            a: { x: 0, y: 0, facing: FleetchartFacings.TOP },
+            b: { x: 1000, y: 1000, viewpoint: FleetchartViewpoints.TOP },
+            c: { x: 2000, y: 2000 },
+          },
+        });
+      };
+
+      const selectFirstTwo = async (
+        wrapper: ReturnType<typeof mountCanvas>,
+      ) => {
+        const ships = wrapper.findAll("[data-test='fleetchart-ship']");
+
+        for (const [index, shiftKey] of [
+          [0, false],
+          [1, true],
+        ] as const) {
+          const down = new Event("pointerdown", { bubbles: true });
+
+          Object.assign(down, {
+            button: 0,
+            pointerType: "mouse",
+            clientX: 0,
+            clientY: 0,
+            shiftKey,
+          });
+          ships[index].element.dispatchEvent(down);
+          window.dispatchEvent(new Event("pointerup"));
+          await nextTick();
+        }
+      };
+
+      it("arranges the whole chart, each ship keeping its own settings", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-packed']")
+          .trigger("click");
+
+        expect(placement("c").x).not.toBe(2000);
+        expect(Math.abs(placement("c").y - placement("a").y)).toBeLessThan(
+          1000,
+        );
+        expect(placement("a").facing).toBe(FleetchartFacings.TOP);
+        expect(placement("b").viewpoint).toBe(FleetchartViewpoints.TOP);
+      });
+
+      it("arranges only the selected ships, leaving the rest", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+        const before = {
+          a: placement("a"),
+          b: placement("b"),
+          c: placement("c"),
+        };
+
+        await selectFirstTwo(wrapper);
+        await wrapper
+          .get("[data-test='fleetchart-arrange-classic']")
+          .trigger("click");
+
+        const moved = (["a", "b", "c"] as const).filter(
+          (id) => placement(id).x !== before[id].x,
+        );
+
+        expect(moved.length).toBeGreaterThan(0);
+        expect(moved.length).toBeLessThan(3);
+      });
+
+      it("groups by manufacturer with headings, stored on each ship", async () => {
+        seed();
+
+        const brand = (id: string, name: string) =>
+          ({
+            ...(entry(id) as object),
+            manufacturer: { code: "X", name },
+          }) as FleetchartEntry;
+        const wrapper = mountCanvas([
+          brand("a", "Anvil"),
+          brand("b", "Anvil"),
+          brand("c", "Drake"),
+        ]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-group-manufacturer']")
+          .trigger("click");
+
+        expect(placement("a").heading).toBe("Anvil");
+        expect(placement("c").heading).toBe("Drake");
+        expect(
+          wrapper
+            .findAll("[data-test='fleetchart-group-heading']")
+            .map((heading) => heading.text())
+            .sort(),
+        ).toEqual(["Anvil", "Drake"]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-group-none']")
+          .trigger("click");
+
+        expect(placement("a").heading).toBeUndefined();
+        expect(
+          wrapper.findAll("[data-test='fleetchart-group-heading']"),
+        ).toHaveLength(0);
+      });
+
+      it("can be undone", async () => {
+        seed();
+
+        const wrapper = mountCanvas([entry("a"), entry("b"), entry("c")]);
+        const before = placement("c");
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-columns']")
+          .trigger("click");
+        window.dispatchEvent(
+          new KeyboardEvent("keydown", { key: "z", ctrlKey: true }),
+        );
+        await nextTick();
+
+        expect(placement("c")).toEqual(before);
+      });
+    });
+
+    it("shows one panel at a time", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+      expect(wrapper.find("[data-test='fleetchart-settings']").exists()).toBe(
+        true,
+      );
+
+      await wrapper
+        .get("[data-test='fleetchart-saved-layouts']")
+        .trigger("click");
+      expect(wrapper.find("[data-test='fleetchart-settings']").exists()).toBe(
+        false,
+      );
     });
 
     it("clears a ship's angle on reset", async () => {

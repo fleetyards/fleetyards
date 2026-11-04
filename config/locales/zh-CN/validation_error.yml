@@ -136,6 +136,9 @@ zh-CN:
       create: 无法创建库存记录。
       update: 无法更新库存记录。
       destroy: 无法删除库存记录。
+    fleetchart_layouts:
+      create: "无法保存布局"
+      update: "无法更新布局"
     hangar_plans:
       create: "无法创建计划。"
       update: "无法更新计划。"

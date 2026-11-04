@@ -91,6 +91,7 @@ namespace :frontend, **frontend_options do
     }
   end
 
+  get "fleetcharts/:token", to: "base#index", as: :fleetchart_layout
   get "hangar", to: "hangar#index", as: :hangar
   get "hangar/:username", to: "hangar#public", as: :public_hangar
   get "hangar/:username/fleetchart", to: "hangar#public", as: :public_hangar_fleetchart

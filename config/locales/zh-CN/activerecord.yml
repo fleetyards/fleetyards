@@ -304,6 +304,10 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        fleetchart_layout:
+          attributes:
+            base:
+              layout_limit_reached: "最多可保存 %{count} 个布局"
         hangar_plan:
           attributes:
             base:

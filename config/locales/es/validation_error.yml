@@ -140,6 +140,9 @@ es:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.
       destroy: No se pudo eliminar la entrada de inventario.
+    fleetchart_layouts:
+      create: "No se pudo guardar la disposición"
+      update: "No se pudo actualizar la disposición"
     hangar_plans:
       create: "No se pudo crear el plan."
       update: "No se pudo actualizar el plan."

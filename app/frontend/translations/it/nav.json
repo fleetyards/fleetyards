@@ -42,6 +42,7 @@
         "vehicleLog": "Diario di bordo",
         "shipComponents": "Componenti di nave",
         "plans": "Pianificatore",
+        "sharedFleetchartLayout": "Disposizione condivisa",
         "sharedPlan": "Piano condiviso"
       },
       "login": "Accedi",
