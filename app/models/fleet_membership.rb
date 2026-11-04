@@ -516,6 +516,16 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  # Under the same lock as answering one, so a request accepted a moment earlier
+  # is reported as no longer pending rather than ending the new membership.
+  def withdraw_request
+    with_lock do
+      next :not_pending unless kept? && requested?
+
+      discard ? :done : :failed
+    end
+  end
+
   # What a player asking to join gets: a request, unless they hold the fleet's
   # join role in its Discord server.
   def request_or_join!

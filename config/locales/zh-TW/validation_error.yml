@@ -73,6 +73,7 @@ zh-TW:
       destroy: 無法離開艦隊。
       accept: 艦隊邀請無法接受。
       decline: 艦隊邀請無法拒絕。
+      withdraw: 無法撤回加入申請。
       demote_not_permitted: 您不能降級永久艦隊角色的最後一個成員。
       update: 無法更新艦隊成員資格。
       nothing_to_verify: "該成員已無需再針對艦隊的 RSI 組織進行驗證。"

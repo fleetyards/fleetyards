@@ -15,10 +15,10 @@ module Api
         only: %i[show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create_by_invite accept_invitation decline_invitation update destroy]
+        only: %i[create_by_invite accept_invitation decline_invitation withdraw_request update destroy]
 
-      before_action :set_fleet, only: %i[create show update accept_invitation decline_invitation destroy]
-      before_action :set_membership, only: %i[show update accept_invitation decline_invitation destroy]
+      before_action :set_fleet, only: %i[create show update accept_invitation decline_invitation withdraw_request destroy]
+      before_action :set_membership, only: %i[show update accept_invitation decline_invitation withdraw_request destroy]
 
       def show
         @member = @membership
@@ -55,6 +55,14 @@ module Api
         unless @membership.decline!
           render json: ValidationError.new("fleet_memberships.decline", errors: @membership.errors), status: :bad_request
         end
+      end
+
+      # Not the leave endpoint: on a page opened before an officer answered, that
+      # would take a member who only meant to cancel a request out of the fleet.
+      def withdraw_request
+        return if @membership.withdraw_request == :done
+
+        render json: ValidationError.new("fleet_memberships.withdraw", errors: @membership.errors), status: :bad_request
       end
 
       def destroy

@@ -80,6 +80,7 @@ en:
       destroy: Fleet could not be leaved.
       accept: Fleet Invitation could not be accepted.
       decline: Fleet Invitation could not be declined.
+      withdraw: Join request could not be withdrawn.
       demote_not_permitted: You can't demote the last Member of a permanent Fleet Role.
       update: Fleet membership could not be updated.
       nothing_to_verify: "This member has nothing left to verify against the fleet's RSI organisation."

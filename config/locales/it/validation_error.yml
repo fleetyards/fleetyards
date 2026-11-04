@@ -73,6 +73,7 @@ it:
       destroy: Impossibile lasciare la flotta.
       accept: L'invito alla flotta non è stato accettato.
       decline: L'invito alla flotta non è stato rifiutato.
+      withdraw: La richiesta di adesione non è stata ritirata.
       demote_not_permitted: Non puoi degradare l'ultimo membro di un ruolo flotta
         permanente.
       update: Impossibile aggiornare l'iscrizione alla flotta.

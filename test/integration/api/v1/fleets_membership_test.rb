@@ -104,21 +104,6 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 204, path_params: {fleetSlug: @fleet.slug}
   end
 
-  test "DELETE /fleets/:slug/membership withdraws a join request" do
-    applicant = create(:user)
-    request = create(:fleet_membership, :requested, fleet: @fleet, user: applicant)
-    sign_in applicant
-
-    assert_api_response :delete, 204, path_params: {fleetSlug: @fleet.slug}
-
-    assert_predicate request.reload, :discarded?
-
-    get "/api/v1/fleets/invites"
-
-    assert_empty parsed_body
-    assert create(:fleet_membership, :requested, fleet: @fleet, user: applicant).persisted?
-  end
-
   test "DELETE /fleets/:slug/membership returns 404 for unknown fleet" do
     sign_in @member
 

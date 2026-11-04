@@ -73,6 +73,7 @@ fr:
       destroy: Impossible de quitter la flotte.
       accept: L'invitation à la flotte n'a pas pu être acceptée.
       decline: L'invitation à la flotte n'a pas pu être refusée.
+      withdraw: "La demande d'adhésion n'a pas pu être retirée."
       demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
         rôle de flotte permanent.
       update: Impossible de mettre à jour l'adhésion à la flotte.

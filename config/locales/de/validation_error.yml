@@ -80,6 +80,7 @@ de:
       destroy: Flotte konnte nicht verlassen werden.
       accept: Flotteneinladung konnte nicht angenommen werden.
       decline: Flotteneinladung konnte nicht abgelehnt werden.
+      withdraw: Beitrittsanfrage konnte nicht zurückgezogen werden.
       demote_not_permitted: Sie können das letzte Mitglied einer permanenten Flottenrolle
         nicht degradieren.
       update: Flottenmitgliedschaft konnte nicht aktualisiert werden.

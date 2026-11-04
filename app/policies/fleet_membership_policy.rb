@@ -1,6 +1,10 @@
 class FleetMembershipPolicy < FleetBasePolicy
   alias_rule :accept_invitation?, :decline_invitation?, to: :show?
 
+  def withdraw_request?
+    record.user_id == user.id
+  end
+
   def index?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:read"])
   end

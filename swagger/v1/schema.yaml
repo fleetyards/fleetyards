@@ -7587,6 +7587,52 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/membership/withdraw":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    put:
+      summary: Withdraw Join Request
+      tags:
+      - FleetMembership
+      operationId: withdrawFleetMembership
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/missions":
     parameters:
     - name: fleetSlug

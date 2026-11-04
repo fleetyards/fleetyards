@@ -31,6 +31,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   resource :fleet_membership, path: "membership", only: %i[show update destroy] do
     put :accept, to: "fleet_memberships#accept_invitation"
     put :decline, to: "fleet_memberships#decline_invitation"
+    put :withdraw, to: "fleet_memberships#withdraw_request"
   end
 
   resources :fleet_invite_urls, path: "invite-urls", param: :token, only: %i[index create destroy]

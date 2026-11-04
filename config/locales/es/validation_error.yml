@@ -76,6 +76,7 @@ es:
       destroy: No se pudo abandonar la flota.
       accept: La invitación de flota no pudo ser aceptada.
       decline: La invitación de flota no pudo ser rechazada.
+      withdraw: La solicitud para unirse no pudo ser retirada.
       demote_not_permitted: No puede degradar al último miembro de un rol de flota
         permanente.
       update: No se pudo actualizar la membresía de la flota.
