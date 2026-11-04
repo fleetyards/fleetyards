@@ -56,7 +56,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const { money, range } = usePlanMoney();
+const { money, range, startRange } = usePlanMoney();
 
 type Card = {
   title: string;
@@ -473,6 +473,15 @@ const neededRows = computed<Row[]>(() => {
       const left: Card = {
         title: acquisition.startModel.name,
         sub: t(`hangarPlanner.startKinds.${acquisition.startKind}`),
+// What the slot's units without a start could come to.
+const gapDetail = (slot: HangarPlanSlot) => {
+  const cost = slotCost(slot);
+
+  return cost
+    ? startRange(cost.storeCostMin, cost.storeCost)
+    : t("hangarPlanner.comparison.flow.notCounted");
+};
+
         model: acquisition.startModel,
       };
 
@@ -527,7 +536,7 @@ const neededRows = computed<Row[]>(() => {
           kind: "gap",
           icon: "fa-light fa-route",
           label: t("hangarPlanner.comparison.flow.noRoute"),
-          detail: t("hangarPlanner.comparison.flow.notCounted"),
+          detail: gapDetail(slot),
         },
         right: {
           title: `${gap.count} × ${gap.model.name}`,

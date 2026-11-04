@@ -9,6 +9,8 @@ json.slots @summary.slot_costs do |cost|
   json.state cost.state
   json.min_cost cost.min_cost.to_f
   json.max_cost cost.max_cost.to_f
+  json.store_cost_min cost.store_cost_min&.to_f
+  json.store_cost cost.store_cost&.to_f
   json.unresolved_count cost.unresolved_count
   json.complete cost.complete
 end

@@ -90,6 +90,76 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_not summary.complete?
   end
 
+  test "units without a start report their store price, outside the totals" do
+    slot = decided_slot(@carrack, quantity: 3)
+    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 600, summary.slot_costs.first.store_cost
+    assert_equal 600, summary.spend_max
+  end
+
+  test "the routed spend covers routes only, the maximum every slot with a ship" do
+    decided = decided_slot(@carrack, quantity: 2)
+    @plan.acquisitions.create!(candidate: decided, start_kind: "store", start_model: @carrack)
+    undecided = create(:hangar_plan_slot, hangar_plan: @plan)
+    create(:hangar_plan_candidate, slot: undecided, model: @cutlass)
+    create(:hangar_plan_candidate, slot: undecided, model: @constellation)
+    create(:hangar_plan_slot, hangar_plan: @plan)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 600, summary.routed_spend
+    assert_equal 600 + 600 + 250, summary.max_spend
+  end
+
+  test "a unit's cheapest start is an upgrade from the dearest free ship that can reach it" do
+    create(:vehicle, user: @user, model: @cutlass)
+    create(:vehicle, user: @user, model: @constellation)
+    decided_slot(@carrack)
+
+    assert_equal 350, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
+  end
+
+  test "a free ship serves one unit, and one of the same model costs nothing" do
+    create(:vehicle, user: @user, model: @carrack)
+    decided_slot(@carrack, quantity: 2)
+
+    cost = HangarPlans::Summary.new(@plan).slot_costs.first
+
+    assert_equal 600, cost.store_cost_min
+    assert_equal 1200, cost.store_cost
+  end
+
+  test "a ship the plan already melts is no start" do
+    melted = create(:vehicle, user: @user, model: @constellation)
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
+    decided_slot(@carrack)
+
+    assert_equal 600, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
+  end
+
+  test "a unit's store price includes what is fitted to it" do
+    slot = decided_slot(@carrack)
+    slot.update!(model_paint: create(:model_paint, model: @carrack, pledge_price: 20))
+
+    assert_equal 620, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost
+  end
+
+  test "a unit without a known store price reports none, and an undecided slot none at all" do
+    decided_slot(create(:model, pledge_price: nil))
+    undecided = create(:hangar_plan_slot, hangar_plan: @plan)
+    create(:hangar_plan_candidate, slot: undecided, model: @cutlass)
+    create(:hangar_plan_candidate, slot: undecided, model: @carrack)
+
+    costs = HangarPlans::Summary.new(@plan).slot_costs
+
+    assert_nil costs.first.store_cost
+    assert_equal 0, costs.last.store_cost
+  end
+
   test "a start without its route counts as unresolved, not at its price" do
     slot = decided_slot(@carrack)
     @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)

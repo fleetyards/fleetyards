@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const { money, range } = usePlanMoney();
+const { money, range, startRange } = usePlanMoney();
 const acquisitionNodes = useAcquisitionNodes();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
@@ -106,6 +106,26 @@ const filterChips = computed(() => {
 
 const decided = computed(
   () => props.slot.state === HangarPlanSlotStateEnum.DECIDED,
+// A slot whose units all lack a start has spent nothing yet, so its store price
+// says more than a counted $0.00.
+const countedCost = computed(() => {
+  const { cost, slot } = props;
+  if (!cost || slot.state === HangarPlanSlotStateEnum.OPEN) return undefined;
+  if (cost.storeCost !== 0 && cost.maxCost === 0) return undefined;
+
+  return range(cost.minCost, cost.maxCost);
+});
+
+const uncountedCost = computed(() => {
+  const { cost } = props;
+  if (!cost || cost.storeCost === 0) return undefined;
+
+  return [
+    `${countedCost.value ? "+ " : ""}${startRange(cost.storeCostMin, cost.storeCost)}`,
+    t("hangarPlanner.comparison.flow.onlyInMax"),
+  ].join(" · ");
+});
+
 );
 
 const decidedCandidate = computed(() =>
@@ -253,10 +273,14 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
           {{ t(`hangarPlanner.states.${slot.state}`) }}
         </Pill>
         <span
-          v-if="cost && slot.state !== HangarPlanSlotStateEnum.OPEN"
-          class="plan-slot__cost"
+          v-if="uncountedCost"
+          class="plan-slot__meta"
+          data-test="hangar-plan-slot-store-cost"
         >
-          {{ range(cost.minCost, cost.maxCost) }}
+        <span v-if="countedCost" class="plan-slot__cost">
+          {{ countedCost }}
+        </span>
+          {{ uncountedCost }}
         </span>
       </template>
       <template v-if="!readonly" #actions>

@@ -26,6 +26,8 @@ const cost = (slotId: string, unresolvedCount: number): HangarPlanSlotCost => ({
   state: HangarPlanSlotStateEnum.DECIDED,
   minCost: 0,
   maxCost: 0,
+  storeCostMin: 0,
+  storeCost: 0,
   unresolvedCount,
   complete: unresolvedCount === 0,
 });

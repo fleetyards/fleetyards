@@ -197,6 +197,73 @@ describe("Hangar/Planner/SlotCard", () => {
     expect(cards[1].text()).toContain("576 SCU");
   });
 
+  describe("a decided slot's cost", () => {
+    const mountCost = (
+      minCost: number,
+      storeCost: number | null,
+      storeCostMin = storeCost,
+    ) =>
+      mountWithDefaults(Component, {
+        props: {
+          planId: "plan",
+          slot: slot({
+            state: HangarPlanSlotStateEnum.DECIDED,
+            candidates: [candidate("Carrack")],
+          }),
+          cost: {
+            slotId: "slot",
+            state: HangarPlanSlotStateEnum.DECIDED,
+            minCost,
+            maxCost: minCost,
+            storeCostMin,
+            storeCost,
+            unresolvedCount: 1,
+            complete: false,
+          },
+        },
+      });
+    const shown = (wrapper: Awaited<ReturnType<typeof mountCost>>) => [
+      wrapper.find(".plan-slot__cost").exists()
+        ? wrapper.find(".plan-slot__cost").text()
+        : undefined,
+      wrapper.find('[data-test="hangar-plan-slot-store-cost"]').exists()
+        ? wrapper.find('[data-test="hangar-plan-slot-store-cost"]').text()
+        : undefined,
+    ];
+
+    it("shows the store price where nothing has a start", async () => {
+      expect(shown(await mountCost(0, 600))).toEqual([
+        undefined,
+        "$600 · only in the maximum",
+      ]);
+    });
+
+    it("adds the store price to what the routes cost", async () => {
+      expect(shown(await mountCost(600, 600))).toEqual([
+        "$600",
+        "+ $600 · only in the maximum",
+      ]);
+    });
+
+    it("runs from the cheapest start to the store price", async () => {
+      expect(shown(await mountCost(0, 600, 150))).toEqual([
+        undefined,
+        "$150 – $600 · only in the maximum",
+      ]);
+    });
+
+    it("says so where the store price is unknown", async () => {
+      expect(shown(await mountCost(0, null))).toEqual([
+        undefined,
+        "Unknown · only in the maximum",
+      ]);
+    });
+
+    it("shows only the routes' cost once every unit has a start", async () => {
+      expect(shown(await mountCost(0, 0))).toEqual(["$0.00", undefined]);
+    });
+  });
+
   it("offers no edits on a shared plan", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {

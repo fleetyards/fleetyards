@@ -151,6 +151,9 @@
       "summary": {
         "title": "Costes",
         "spend": "Gasto nuevo",
+        "routedSpend": "Gasto con vía",
+        "maxSpend": "Máximo posible",
+        "upTo": "hasta %{value}",
         "meltCredit": "Crédito de los melts",
         "startingCredit": "Crédito de tienda",
         "net": "Coste neto",
@@ -245,6 +248,7 @@
           "noUpgrade": "No hay mejora posible",
           "pickOtherStart": "elige otro inicio",
           "notCounted": "no está en el total",
+          "onlyInMax": "solo en el máximo",
           "noShip": "aún sin nave",
           "folded": {
             "kept": {

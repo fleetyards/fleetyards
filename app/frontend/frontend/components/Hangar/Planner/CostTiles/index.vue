@@ -26,7 +26,13 @@ const tiles = computed(() => [
   {
     key: "spend",
     icon: "fa-duotone fa-cart-shopping",
-    value: range(props.totals.spendMin, props.totals.spendMax),
+    value: amount(props.totals.routedSpend),
+    note:
+      props.totals.maxSpend !== props.totals.routedSpend
+        ? t("hangarPlanner.summary.upTo", {
+            value: amount(props.totals.maxSpend),
+          })
+        : undefined,
   },
   {
     key: "meltCredit",
@@ -56,15 +62,26 @@ const tiles = computed(() => [
       :outer-spacing="false"
     >
       <template #value>
-        <span :data-test="`hangar-plan-tile-${tile.key}`">{{
-          tile.value
-        }}</span>
+        <span :data-test="`hangar-plan-tile-${tile.key}`">
+          {{ tile.value }}
+          <small v-if="tile.note" class="plan-cost-tiles__note">
+            {{ tile.note }}
+          </small>
+        </span>
       </template>
     </StatsPanel>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.plan-cost-tiles__note {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-dim);
+}
+
 .plan-cost-tiles {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -151,6 +151,9 @@
       "summary": {
         "title": "Costs",
         "spend": "New spend",
+        "routedSpend": "Spend with routes",
+        "maxSpend": "Most it can come to",
+        "upTo": "up to %{value}",
         "meltCredit": "Credit from melts",
         "startingCredit": "Store credit",
         "net": "Net cost",
@@ -245,6 +248,7 @@
           "noUpgrade": "No upgrade possible",
           "pickOtherStart": "pick another start",
           "notCounted": "not in the total",
+          "onlyInMax": "only in the maximum",
           "noShip": "no ship yet",
           "folded": {
             "kept": {

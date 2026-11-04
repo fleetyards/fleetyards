@@ -37,7 +37,10 @@ const rows = computed(() => {
   const value = totals.value;
 
   return [
-    { key: "spend", value: range(value.spendMin, value.spendMax) },
+    { key: "routedSpend", value: amount(value.routedSpend) },
+    ...(value.maxSpend !== value.routedSpend
+      ? [{ key: "maxSpend", value: amount(value.maxSpend) }]
+      : []),
     {
       key: "meltCredit",
       value: amount(value.meltCredit),

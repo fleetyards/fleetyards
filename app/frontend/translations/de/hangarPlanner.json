@@ -151,6 +151,9 @@
       "summary": {
         "title": "Kosten",
         "spend": "Neue Ausgaben",
+        "routedSpend": "Ausgaben mit Weg",
+        "maxSpend": "Höchstens insgesamt",
+        "upTo": "bis zu %{value}",
         "meltCredit": "Guthaben aus Melts",
         "startingCredit": "Store-Guthaben",
         "net": "Nettokosten",
@@ -245,6 +248,7 @@
           "noUpgrade": "Kein Upgrade möglich",
           "pickOtherStart": "anderen Start wählen",
           "notCounted": "nicht in der Summe",
+          "onlyInMax": "nur im Höchstwert",
           "noShip": "noch kein Schiff",
           "folded": {
             "kept": {

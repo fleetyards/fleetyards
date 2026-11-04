@@ -9,6 +9,7 @@ import {
   type HangarPlanMetrics,
   type HangarPlanModel,
   type HangarPlanSlot,
+  type HangarPlanSummary,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -428,6 +429,46 @@ describe("Hangar/Planner/HangarFlow", () => {
           ...plan,
           slots: [
             {
+  it("prices a slot's units without a start, outside the total", async () => {
+    const [explorer, ...rest] = plan.slots;
+    const props = {
+      plan: { ...plan, slots: [{ ...explorer, quantity: 2 }, ...rest] },
+      comparison: {
+        ...comparison,
+        gaps: [
+          { slotId: "Explorer", label: "Explorer", model: carrack, count: 1 },
+        ],
+      },
+    };
+    const summary = (storeCost: number | null, storeCostMin = storeCost) => ({
+      totals: {} as HangarPlanSummary["totals"],
+      issues: [],
+      slots: [
+        {
+          slotId: "Explorer",
+          state: HangarPlanSlotStateEnum.DECIDED,
+          minCost: 600,
+          maxCost: 600,
+          storeCostMin,
+          storeCost,
+          unresolvedCount: 1,
+          complete: false,
+        },
+      ],
+    });
+    const gapText = async (attrs: { summary?: HangarPlanSummary }) =>
+      (await mountWithDefaults(Component, { props: { ...props, ...attrs } }))
+        .find('[data-test="hangar-plan-gap"]')
+        .text();
+
+    expect(await gapText({ summary: summary(600) })).toContain("$600");
+    expect(await gapText({ summary: summary(null) })).toContain("Unknown");
+    expect(await gapText({ summary: summary(600, 150) })).toContain(
+      "$150 – $600",
+    );
+    expect(await gapText({})).toContain("not in the total");
+  });
+
               ...explorer,
               candidates: [
                 {

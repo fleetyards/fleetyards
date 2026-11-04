@@ -2,6 +2,8 @@
 
 json.spend_min summary.spend_min.to_f
 json.spend_max summary.spend_max.to_f
+json.routed_spend summary.routed_spend.to_f
+json.max_spend summary.max_spend.to_f
 json.melt_credit summary.melt_credit.to_f
 json.starting_credit summary.starting_credit.to_f
 json.credit_total summary.credit_total.to_f

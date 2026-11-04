@@ -13,6 +13,8 @@ module V1
             properties: {
               spendMin: {type: :number},
               spendMax: {type: :number},
+              routedSpend: {type: :number, description: "What the routes planned for decided slots cost"},
+              maxSpend: {type: :number, description: "The most the plan can cost: undecided slots at their dearest ship, and units without a start at the store price"},
               meltCredit: {type: :number},
               startingCredit: {type: :number},
               creditTotal: {type: :number},
@@ -34,7 +36,7 @@ module V1
               complete: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[spendMin spendMax meltCredit startingCredit creditTotal buybackCash buybacksWithoutTokenCount buybackTokensUsed buybackTokensAvailable netMin netMax cashNeededMin cashNeededMax remainingCreditMin remainingCreditMax estimatedMeltsCount openSlotsCount decidedSlotsCount undecidedSlotsCount unresolvedCount complete]
+            required: %w[spendMin spendMax routedSpend maxSpend meltCredit startingCredit creditTotal buybackCash buybacksWithoutTokenCount buybackTokensUsed buybackTokensAvailable netMin netMax cashNeededMin cashNeededMax remainingCreditMin remainingCreditMax estimatedMeltsCount openSlotsCount decidedSlotsCount undecidedSlotsCount unresolvedCount complete]
           })
         end
       end

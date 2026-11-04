@@ -151,6 +151,9 @@
       "summary": {
         "title": "費用",
         "spend": "新增支出",
+        "routedSpend": "已有途徑的支出",
+        "maxSpend": "最高可能支出",
+        "upTo": "最高 %{value}",
         "meltCredit": "熔毀所得點數",
         "startingCredit": "商店點數",
         "net": "淨成本",
@@ -245,6 +248,7 @@
           "noUpgrade": "無法升級",
           "pickOtherStart": "請選擇其他起點",
           "notCounted": "未計入總額",
+          "onlyInMax": "僅計入最高額",
           "noShip": "尚無飛船",
           "folded": {
             "kept": {
