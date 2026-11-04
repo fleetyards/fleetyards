@@ -109,16 +109,13 @@ const overwrite = (layout: FleetchartLayout) => {
   );
 };
 
-const shareUrl = ({ username, shareToken }: FleetchartLayout) => {
+const shareUrl = (token: string) => {
   const { href } = router.resolve({
-    name: "hangar-fleetchart-layout-shared",
-    params: { username, token: shareToken },
+    name: "fleetchart-layout",
+    params: { token },
   });
 
-  return (
-    shortUrl(`/h/${username}/fleetchart/${shareToken}`) ??
-    new URL(href, window.location.origin).href
-  );
+  return shortUrl(`/fc/${token}`) ?? new URL(href, window.location.origin).href;
 };
 </script>
 
@@ -178,7 +175,7 @@ const shareUrl = ({ username, shareToken }: FleetchartLayout) => {
         </Btn>
         <template v-if="layout.shareToken">
           <ShareBtn
-            :url="shareUrl(layout)"
+            :url="shareUrl(layout.shareToken)"
             :title="layout.name"
             :container="root"
             no-label

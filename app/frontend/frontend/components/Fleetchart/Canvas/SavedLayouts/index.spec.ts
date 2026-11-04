@@ -17,7 +17,6 @@ const layouts = ref([
     name: "Parade",
     colored: true,
     shareToken: null,
-    username: "pilot",
     placements: [],
   },
   {
@@ -25,7 +24,6 @@ const layouts = ref([
     name: "Shared one",
     colored: true,
     shareToken: "token",
-    username: "pilot",
     placements: [],
   },
 ]);
@@ -52,8 +50,8 @@ vi.mock("@tanstack/vue-query", () => ({
 vi.mock("vue-router", async (importOriginal) => ({
   ...(await importOriginal<typeof import("vue-router")>()),
   useRouter: () => ({
-    resolve: ({ params }: { params: { username: string; token: string } }) => ({
-      href: `/hangar/${params.username}/fleetchart/${params.token}/`,
+    resolve: ({ params }: { params: { token: string } }) => ({
+      href: `/fleetcharts/${params.token}/`,
     }),
   }),
 }));
@@ -175,7 +173,7 @@ describe("FleetchartCanvasSavedLayouts", () => {
     expect(mutations.share).toHaveBeenCalledWith({ id: "1" });
     expect(
       wrapper.get("[data-test='share-link']").attributes("href"),
-    ).toContain("/hangar/pilot/fleetchart/token/");
+    ).toContain("/fleetcharts/token/");
   });
 
   it("links the short domain where there is one", () => {
@@ -186,7 +184,7 @@ describe("FleetchartCanvasSavedLayouts", () => {
     delete (window as { SHORT_DOMAIN?: string }).SHORT_DOMAIN;
 
     expect(wrapper.get("[data-test='share-link']").attributes("href")).toMatch(
-      /\/\/fly\.test\/h\/pilot\/fleetchart\/token$/,
+      /\/\/fly\.test\/fc\/token$/,
     );
   });
 

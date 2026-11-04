@@ -12,7 +12,7 @@ module V1
             properties: {
               name: {type: :string},
               colored: {type: :boolean},
-              username: {type: :string},
+              username: {type: [:string, :null]},
               publicHangar: {type: :boolean},
               placements: {type: :array, items: FleetchartPlacement},
               vehicles: {type: :array, items: ::V1::Schemas::Vehicles::VehiclePublic}

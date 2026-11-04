@@ -20,8 +20,8 @@ module Short
       redirect_to with_query(frontend_public_hangar_fleetchart_url(username: params[:username])), allow_other_host: true
     end
 
-    def hangar_fleetchart_layout
-      redirect_to frontend_public_hangar_fleetchart_layout_url(username: params[:username], token: params[:token]), allow_other_host: true
+    def fleetchart_layout
+      redirect_to frontend_fleetchart_layout_url(token: params[:token]), allow_other_host: true
     end
 
     def fleet_invite

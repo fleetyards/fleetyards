@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HangarFleetchartSharedPage",
+  name: "FleetchartLayoutPage",
 };
 </script>
 
@@ -54,15 +54,6 @@ watch(
       return;
     }
 
-    // The token decides what opens, so an address naming someone else is corrected
-    // rather than presenting this layout as theirs.
-    if (String(route.params.username) !== shared.username) {
-      void router.replace({
-        name: "hangar-fleetchart-layout-shared",
-        params: { username: shared.username, token: token.value },
-      });
-    }
-
     fleetchartStore.updateLayout({
       namespace: NAMESPACE,
       layout: FleetchartLayouts.FREE,
@@ -93,7 +84,7 @@ const leave = () => {
   }
 
   void router.push(
-    layout.value.publicHangar
+    layout.value.publicHangar && layout.value.username
       ? { name: "hangar-public", params: { username: layout.value.username } }
       : { name: "home" },
   );
@@ -137,14 +128,14 @@ onBeforeUnmount(() => {
       :namespace="NAMESPACE"
       :arrange-items="layout.vehicles"
       :arrange-loaded="true"
-      :download-name="`layout-${layout.username}`"
+      download-name="shared-layout"
       read-only
       @fleetchart-closed="leave"
     >
       <template #title>
         <div class="fleetchart-shared__title">
           <strong>{{ layout.name }}</strong>
-          <small>
+          <small v-if="layout.username">
             {{
               t("labels.fleetchartApp.sharedLayoutBy", {
                 username: layout.username,

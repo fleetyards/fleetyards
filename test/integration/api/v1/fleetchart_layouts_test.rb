@@ -142,7 +142,6 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     body = response.parsed_body
 
     assert_equal "Parade", body["name"]
-    assert_equal @user.username, body["username"]
     assert_equal false, body["colored"]
     assert_equal(
       {"vehicleId" => @vehicle.id, "x" => 12.5, "y" => -4, "facing" => "top", "viewpoint" => "rear",
@@ -230,6 +229,24 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, unplaced.id
     assert_nil body["id"]
     assert_nil body["shareToken"]
+  end
+
+  test "a shared layout names its owner, unless they hide their name" do
+    layout = create(:fleetchart_layout, user: @user)
+    layout.share!
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_equal @user.username, response.parsed_body["username"]
+    assert_equal true, response.parsed_body["publicHangar"]
+
+    @user.update!(hide_owner: true)
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_nil response.parsed_body["username"]
+    assert_equal false, response.parsed_body["publicHangar"]
+    assert_not_includes response.body, @user.username
   end
 
   test "a ship sold since the layout was saved drops out of the shared layout" do

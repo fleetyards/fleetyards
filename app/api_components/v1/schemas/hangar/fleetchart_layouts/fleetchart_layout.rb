@@ -14,12 +14,11 @@ module V1
               name: {type: :string},
               colored: {type: :boolean},
               shareToken: {type: [:string, :null]},
-              username: {type: :string},
               placements: {type: :array, items: FleetchartPlacement},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
-            required: %w[id name colored username placements createdAt updatedAt]
+            required: %w[id name colored placements createdAt updatedAt]
           })
         end
       end

@@ -35217,8 +35217,6 @@ components:
           type:
           - string
           - 'null'
-        username:
-          type: string
         placements:
           type: array
           items:
@@ -35233,7 +35231,6 @@ components:
       - id
       - name
       - colored
-      - username
       - placements
       - createdAt
       - updatedAt
@@ -47973,7 +47970,9 @@ components:
         colored:
           type: boolean
         username:
-          type: string
+          type:
+          - string
+          - 'null'
         publicHangar:
           type: boolean
         placements:

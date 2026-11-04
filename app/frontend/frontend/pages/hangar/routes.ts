@@ -277,15 +277,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: ":username/fleetchart/:token/",
-    name: "hangar-fleetchart-layout-shared",
-    component: () => import("@/frontend/pages/hangar/fleetchart/shared.vue"),
-    meta: {
-      title: "hangar.sharedFleetchartLayout",
-      backgroundImage: "bg-5",
-    },
-  },
-  {
     path: "plans/shared/:token/",
     name: "hangar-plan-shared",
     component: () => import("@/frontend/pages/hangar/plans/shared.vue"),

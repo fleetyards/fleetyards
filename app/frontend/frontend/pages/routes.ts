@@ -77,6 +77,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/fleetcharts/:token/",
+    name: "fleetchart-layout",
+    component: () => import("@/frontend/pages/fleetcharts/[token].vue"),
+    meta: {
+      title: "hangar.sharedFleetchartLayout",
+    },
+  },
+  {
     path: "/hangar/",
     component: () => import("@/frontend/pages/hangar.vue"),
     children: hangarRoutes,
