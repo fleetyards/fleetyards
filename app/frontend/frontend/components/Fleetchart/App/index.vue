@@ -28,6 +28,7 @@ import { FleetchartLayouts, FleetchartModes } from "@/shared/stores/fleetchart";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFleetchartViews } from "@/frontend/composables/useFleetchartViews";
+import { modelOf } from "@/frontend/components/Fleetchart/geometry";
 
 type Props = {
   namespace: string;
@@ -91,11 +92,6 @@ const layout = computed(() =>
 const setLayout = (option: FleetchartLayouts) => {
   fleetchartStore.updateLayout({ namespace: props.namespace, layout: option });
 };
-
-// An item is either a ship or something holding one, which is the same shape the
-// item component resolves.
-const modelOf = (item: Vehicle | Model | VehiclePublic) =>
-  ((item as Vehicle).model as Model | undefined) ?? (item as Model);
 
 const slugs = computed(() =>
   props.items.map((item) => modelOf(item)?.slug).filter(Boolean),
