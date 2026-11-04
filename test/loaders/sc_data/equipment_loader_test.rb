@@ -133,6 +133,19 @@ module ScData
           "visible duplicates: #{duplicated.keys.sort.join(", ")}"
       end
 
+      test "#lookup_manufacturer finds no maker for a record that names none" do
+        create(:manufacturer, sc_ref: nil)
+
+        assert_nil curated.lookup_manufacturer(nil)
+        assert_nil curated.lookup_manufacturer("")
+      end
+
+      test "#lookup_manufacturer finds the maker a record names" do
+        manufacturer = create(:manufacturer, sc_ref: "00000000-0000-0000-0000-0000000000aa")
+
+        assert_equal manufacturer, curated.lookup_manufacturer(manufacturer.sc_ref)
+      end
+
       test "#all resolves the manufacturer from the record" do
         fixture_loader(::ScData::Loader::ManufacturersLoader).all
 
