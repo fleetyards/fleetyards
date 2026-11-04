@@ -2,7 +2,7 @@
 
 # The ship views a fleetchart draws with, keyed by slug so a caller can match them
 # against a list it already holds.
-#
+
 json.slug model.slug
 
 json.media do

@@ -51,8 +51,8 @@ const VIEW_BY_VIEWPOINT: Record<FleetchartViewpoints, ViewName> = {
   [FleetchartViewpoints.STARBOARD]: "starboardView",
 };
 
-// The front view is not among them: it would stretch a ship's box, and every
-// viewpoint has to keep the same box so switching does not move anything.
+// The front view is not among them: it would stretch a ship's box, and outside the
+// layouts that fit each view tightly, a ship's box should hold between viewpoints.
 const SIZING_VIEWS: ViewName[] = ["angledView", "portView", "topView"];
 
 export const modelOf = (entry: FleetchartEntry): Model =>
