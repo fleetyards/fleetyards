@@ -361,6 +361,8 @@ const closeFleetchart = async () => {
       }"
     >
       <div class="fleetchart-app-controls">
+        <slot name="title" />
+
         <BtnDropdown
           v-if="layoutsEnabled && !readOnly"
           data-test="fleetchart-layout"

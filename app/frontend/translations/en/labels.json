@@ -561,11 +561,6 @@
         "savedLayoutFailed": "That did not work. Is the name already taken?",
         "sharedLayoutMissing": "This layout does not exist, or is no longer shared.",
         "sharedLayoutBy": "Shared by %{username}",
-        "sharedLayoutShips": {
-          "one": "%{count} ship",
-          "other": "%{count} ships"
-        },
-        "sharedLayoutHangar": "Hangar",
         "sharedLayoutEmpty": "None of the ships in this layout are public.",
         "facing": "Facing",
         "facingOptions": {

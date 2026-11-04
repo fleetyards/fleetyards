@@ -8,11 +8,8 @@ export default {
 import { useRoute, useRouter } from "vue-router";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import { placementsFromLayout } from "@/frontend/components/Fleetchart/savedLayouts";
 import { usePublicFleetchartLayout } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -48,13 +45,7 @@ const isMissing = computed(
         404),
 );
 
-const open = () => {
-  fleetchartStore.show(NAMESPACE);
-};
-
-// Opens by itself once, as a background refetch must not bring back a chart the
-// viewer closed.
-const openedFor = ref<string>();
+let opened = false;
 
 watch(
   layout,
@@ -85,15 +76,17 @@ watch(
       fleetchartStore.togglePlain(NAMESPACE);
     }
 
-    if (shared.vehicles.length && openedFor.value !== token.value) {
-      openedFor.value = token.value;
-      open();
+    // Only the first time: a background refetch must not bring back a chart that
+    // is already on its way out.
+    if (shared.vehicles.length && !opened) {
+      opened = true;
+      fleetchartStore.show(NAMESPACE);
     }
   },
   { immediate: true },
 );
 
-// There is nothing to go back to behind a shared chart, so closing it moves on.
+// The chart is the whole page, so closing it has to go somewhere.
 const leave = () => {
   if (isMissing.value || !layout.value) {
     return;
@@ -119,103 +112,82 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Loader :loading="isLoading" />
+  <div class="fleetchart-shared" data-test="fleetchart-shared">
+    <Loader :loading="isLoading" />
 
-  <Alert
-    v-if="isMissing"
-    variant="neutral"
-    data-test="fleetchart-shared-missing"
-  >
-    {{ t("labels.fleetchartApp.sharedLayoutMissing") }}
-  </Alert>
-
-  <template v-if="layout && !isMissing">
-    <Heading size="hero" hero>{{ layout.name }}</Heading>
-
-    <div class="fleetchart-shared__intro">
-      <p class="fleetchart-shared__byline">
+    <div
+      v-if="isMissing || layout?.vehicles.length === 0"
+      class="fleetchart-shared__notice"
+    >
+      <Alert variant="neutral" data-test="fleetchart-shared-notice">
         {{
-          t("labels.fleetchartApp.sharedLayoutBy", {
-            username: layout.username,
-          })
+          isMissing
+            ? t("labels.fleetchartApp.sharedLayoutMissing")
+            : t("labels.fleetchartApp.sharedLayoutEmpty")
         }}
-        <template v-if="layout.vehicles.length">
-          ·
-          {{
-            t("labels.fleetchartApp.sharedLayoutShips", {
-              count: layout.vehicles.length,
-            })
-          }}
-        </template>
-      </p>
-
-      <div class="fleetchart-shared__actions">
-        <Btn
-          v-if="layout.vehicles.length"
-          data-test="fleetchart-shared-open"
-          @click="open"
-        >
-          <i class="fa-duotone fa-grid-2" />
-          <span>{{ t("labels.fleetchart") }}</span>
-        </Btn>
-        <Btn
-          v-if="layout.publicHangar"
-          :to="{
-            name: 'hangar-public',
-            params: { username: layout.username },
-          }"
-          data-test="fleetchart-shared-hangar"
-        >
-          <i class="fa-duotone fa-warehouse" />
-          <span>{{ t("labels.fleetchartApp.sharedLayoutHangar") }}</span>
-        </Btn>
-      </div>
+      </Alert>
+      <Btn :to="{ name: 'home' }" data-test="fleetchart-shared-home">
+        {{ t("nav.home") }}
+      </Btn>
     </div>
 
-    <Alert
-      v-if="!layout.vehicles.length"
-      variant="neutral"
-      data-test="fleetchart-shared-empty"
+    <FleetchartApp
+      v-else-if="layout"
+      :items="layout.vehicles"
+      :namespace="NAMESPACE"
+      :arrange-items="layout.vehicles"
+      :arrange-loaded="true"
+      :download-name="`layout-${layout.username}`"
+      read-only
+      @fleetchart-closed="leave"
     >
-      {{ t("labels.fleetchartApp.sharedLayoutEmpty") }}
-    </Alert>
-
-    <template v-else>
-      <Grid :records="layout.vehicles" :filter-visible="false" primary-key="id">
-        <template #default="{ record }">
-          <VehiclePanel :vehicle="record" :details="false" :editable="false" />
-        </template>
-      </Grid>
-
-      <FleetchartApp
-        :items="layout.vehicles"
-        :namespace="NAMESPACE"
-        :arrange-items="layout.vehicles"
-        :arrange-loaded="true"
-        :download-name="`layout-${layout.username}`"
-        read-only
-        @fleetchart-closed="leave"
-      />
-    </template>
-  </template>
+      <template #title>
+        <div class="fleetchart-shared__title">
+          <strong>{{ layout.name }}</strong>
+          <small>
+            {{
+              t("labels.fleetchartApp.sharedLayoutBy", {
+                username: layout.username,
+              })
+            }}
+          </small>
+        </div>
+      </template>
+    </FleetchartApp>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.fleetchart-shared__intro {
+// On the chart's own layer and in its colour, so the app around it never shows.
+.fleetchart-shared {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background-color: #111;
+}
+
+.fleetchart-shared__notice {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  justify-content: center;
+  height: 100%;
+  padding: 16px;
 }
 
-.fleetchart-shared__byline {
-  margin: 0;
-}
-
-.fleetchart-shared__actions {
+.fleetchart-shared__title {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  text-shadow: 0 0 2px black;
+
+  strong {
+    font-size: 150%;
+    font-family: "Orbitron", sans-serif;
+  }
+
+  small {
+    color: darken($text-color, 20%);
+  }
 }
 </style>
