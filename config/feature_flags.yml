@@ -107,3 +107,6 @@ dressing_room:
 
 paint_booth:
   description: "Paint booth — a ship's textured holo in every paint it has, on a turntable; the holo also needs holo_textured"
+
+fleetchart_layouts:
+  description: "Rebuilt fleetchart with one renderer, selectable layouts and saved layouts"

@@ -28727,6 +28727,7 @@ components:
       - fleet_mission_builder
       - fleet_subscriptions
       - fleet_tours
+      - fleetchart_layouts
       - hangar_planner
       - holo_ar
       - holo_phone
@@ -28749,6 +28750,7 @@ components:
       - FLEET_MISSION_BUILDER
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
+      - FLEETCHART_LAYOUTS
       - HANGAR_PLANNER
       - HOLO_AR
       - HOLO_PHONE
