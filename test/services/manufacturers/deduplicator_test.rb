@@ -17,6 +17,19 @@ module Manufacturers
       allow_duplicate_manufacturer_slugs
     end
 
+    # Counted off the notification because the suite runs on the Sidekiq adapter,
+    # which the Active Job test helpers refuse.
+    private def purges_enqueued
+      count = 0
+      callback = lambda do |*, payload|
+        count += 1 if payload[:job].is_a?(ActiveStorage::PurgeJob)
+      end
+
+      ActiveSupport::Notifications.subscribed(callback, "enqueue.active_job") { yield }
+
+      count
+    end
+
     test "#call renames a record the export mislabelled" do
       manufacturer = create(:manufacturer, code: "MXOX", name: "Aegis Dynamics")
 
@@ -124,6 +137,84 @@ module Manufacturers
       ::Manufacturers::Deduplicator.new(abandoned_slugs: ["talon-weapon-systems"]).call
 
       assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call keeps an abandoned row with written text" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil, description: "Coolers.")
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call drops an abandoned row whose description is empty" do
+      row = create(:manufacturer, name: "Quirinus Tech", code: nil, sc_ref: nil, rsi_id: nil, description: "")
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["quirinus-tech"]).call
+
+      assert_nil Manufacturer.find_by(id: row.id)
+    end
+
+    test "#call keeps an abandoned row whose icon an admin uploaded" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil, icon_overridden: true)
+
+      ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).call
+
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call clears the placeholder from a row with no code" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      row = create(:manufacturer, name: "Max Ox", code: nil, icon_path: placeholder)
+
+      ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder, placeholder_icon_keepers: ["UNKN"]).call
+
+      assert_nil row.reload.icon_path
+    end
+
+    test "#call takes the attached placeholder off the maker" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder)
+      maker.icon.attach(io: StringIO.new("icon"), filename: "icon.png", content_type: "image/png")
+
+      purges = purges_enqueued { ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder).call }
+
+      assert_equal 1, purges
+      assert_not maker.reload.icon.attached?
+    end
+
+    test "#plan leaves the attached placeholder in place and enqueues no purge" do
+      placeholder = "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
+      maker = create(:manufacturer, code: "VPW", icon_path: placeholder)
+      maker.icon.attach(io: StringIO.new("icon"), filename: "icon.png", content_type: "image/png")
+
+      purges = purges_enqueued { ::Manufacturers::Deduplicator.new(placeholder_icon: placeholder).plan }
+
+      assert_equal 0, purges
+      assert_predicate maker.reload.icon, :attached?
+      assert_equal placeholder, maker.icon_path
+    end
+
+    test "#plan runs every phase the real run does" do
+      row = create(:manufacturer, name: "Max Ox", code: nil, sc_ref: nil, rsi_id: nil)
+
+      plan = ::Manufacturers::Deduplicator.new(abandoned_slugs: ["max-ox"]).plan
+
+      assert_equal ["max-ox"], plan[:abandoned]
+      assert Manufacturer.exists?(row.id)
+    end
+
+    test "#call warns when an alias merge loses the export ref" do
+      create(:manufacturer, code: "MISC", name: "MISC", sc_ref: "00000000-0000-0000-0000-0000000000aa")
+      create(:manufacturer, code: "MIS", name: "Musashi", sc_ref: "00000000-0000-0000-0000-0000000000bb")
+      lines = []
+
+      ::Manufacturers::Deduplicator.new(
+        aliased_codes: {"MIS" => "MISC"},
+        logger: ->(message) { lines << message }
+      ).call
+
+      assert(lines.any? { |line| line.include?("WARNING") && line.include?("0000000000bb") })
     end
 
     test "#call clears the placeholder icon path from a maker" do
