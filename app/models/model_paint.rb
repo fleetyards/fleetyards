@@ -24,7 +24,7 @@ class ModelPaint < ApplicationRecord
 
   # The importer and the pledge resolver look a paint up by its exact name, so a
   # stray space makes it a different paint to them.
-  normalizes :name, with: ->(name) { name.strip }
+  normalizes :name, with: ->(name) { name.squish }
 
   belongs_to :model, optional: true, touch: true, counter_cache: true
 
