@@ -15,18 +15,23 @@ import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/i
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
+import FleetchartCanvasShipControls from "./ShipControls/index.vue";
 import {
   PIXELS_PER_METRE,
   modelOf,
   shipGeometry,
+  hasStateViews,
   shipLabelOf,
+  viewFor,
   type FleetchartEntry,
   type FleetchartShipGeometry,
 } from "@/frontend/components/Fleetchart/geometry";
 import {
   arrangeClassic,
   arrangeColumns,
+  arrangeFree,
   arrangePacked,
+  snapToGrid,
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
@@ -35,6 +40,7 @@ import {
   type FleetchartHeadingAlign,
   SHIP_PADDING,
   withRowWidth,
+  type FleetchartPositions,
 } from "@/frontend/components/Fleetchart/layouts";
 import {
   groupTitleOf,
@@ -48,20 +54,29 @@ import {
   FleetchartGroups,
   FleetchartLayouts,
   FleetchartScreenHeights,
+  FleetchartShipStates,
   FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
+  type FleetchartPlacement,
+  type FleetchartPlacements,
 } from "@/shared/stores/fleetchart";
 
 interface Props {
   namespace: string;
   items?: FleetchartEntry[];
   downloadName?: string;
+  // Whether this chart offers the free layout, which needs a whole fleet to work on.
+  canArrange?: boolean;
+  // False until `items` holds everything that can be arranged.
+  arrangeReady?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   downloadName: undefined,
+  canArrange: false,
+  arrangeReady: true,
 });
 
 const SCENE_PADDING = 40;
@@ -70,6 +85,9 @@ const MIN_ZOOM = 0.02;
 // An export is always drawn at full size, so its grid cannot follow the zoom.
 const EXPORT_GRID_CELL = gridCellFor(PIXELS_PER_METRE);
 const EXPORT_IMAGE_TIMEOUT = 15000;
+const SHIP_CONTROLS_GAP = 10;
+const SHIP_CONTROLS_MARGIN = 10;
+const SHIP_CONTROLS_MIN_TOP = 130;
 const FIT_MARGIN_TOP = 70;
 const FIT_MARGIN_BOTTOM = 80;
 const MAX_ZOOM = 20;
@@ -107,7 +125,7 @@ const comlink = useComlink();
 const fleetchartStore = useFleetchartStore();
 
 const layout = computed(() =>
-  fleetchartStore.fleetchartLayout(props.namespace),
+  fleetchartStore.fleetchartLayout(props.namespace, props.canArrange),
 );
 
 const viewpoint = computed(() =>
@@ -116,9 +134,9 @@ const viewpoint = computed(() =>
 
 const showLabels = computed(() => fleetchartStore.showLabels(props.namespace));
 
-const colored = computed(() => fleetchartStore.colored(props.namespace));
-
-const extended = computed(() => fleetchartStore.extendedState(props.namespace));
+const colored = computed(() =>
+  fleetchartStore.coloredByDefault(props.namespace),
+);
 
 const options = computed(() =>
   fleetchartStore.fleetchartOptions(props.namespace),
@@ -197,6 +215,7 @@ const sort = computed(() => options.value.sort);
 const group = computed(() => options.value.group);
 const spacing = computed(() => options.value.spacing);
 const facing = computed(() => options.value.facing);
+const state = computed(() => options.value.state);
 
 const turned = computed(
   () =>
@@ -207,18 +226,38 @@ const turned = computed(
 // What a layout makes room for. A ship's own box is as tall as its tallest view
 // so nothing moves between viewpoints, but a packed or turned chart is about using
 // the space, so there only the view being drawn counts.
-const boxOf = (geometry: FleetchartShipGeometry) => {
-  const drawn = geometry.imageHeight || geometry.height;
+const boxOf = (
+  geometry: FleetchartShipGeometry,
+  shipFacing: FleetchartFacings,
+  tight: boolean,
+) => {
+  const drawnHeight = geometry.imageHeight || geometry.height;
+  const drawnWidth = tight
+    ? geometry.imageWidth || geometry.length
+    : geometry.frameWidth;
 
-  if (turned.value) {
-    return { width: drawn, height: geometry.length };
+  if (
+    shipFacing === FleetchartFacings.TOP ||
+    shipFacing === FleetchartFacings.BOTTOM
+  ) {
+    return { width: drawnHeight, height: drawnWidth };
   }
 
-  return {
-    width: geometry.length,
-    height: layout.value === FleetchartLayouts.PACKED ? drawn : geometry.height,
-  };
+  return { width: drawnWidth, height: tight ? drawnHeight : geometry.height };
 };
+
+const fillsSpaceIn = (kind: FleetchartLayouts) =>
+  kind === FleetchartLayouts.FREE || kind === FleetchartLayouts.PACKED;
+
+const isFree = computed(() => layout.value === FleetchartLayouts.FREE);
+
+const fillsSpace = computed(() => fillsSpaceIn(layout.value));
+
+const placements = computed(() =>
+  fleetchartStore.fleetchartPlacements(props.namespace),
+);
+
+const facingOf = (id: string) => placements.value[id]?.facing ?? facing.value;
 
 const groupTitle = (entry: FleetchartEntry) => {
   if (group.value === FleetchartGroups.NONE) {
@@ -231,11 +270,43 @@ const groupTitle = (entry: FleetchartEntry) => {
   );
 };
 
-const ships = computed(() =>
-  sortEntries(props.items, sort.value, group.value, extended.value).flatMap(
+// Not every ship has every view, and one without the chosen view is shown from one
+// it has rather than left blank.
+const drawableViewpoint = (
+  entry: FleetchartEntry,
+  wanted: FleetchartViewpoints,
+  shipState: FleetchartShipStates,
+) => {
+  const has = (option: FleetchartViewpoints) =>
+    viewFor(entry, option, { state: shipState, colored: colored.value });
+
+  return (
+    [
+      wanted,
+      FleetchartViewpoints.PORT,
+      FleetchartViewpoints.TOP,
+      FleetchartViewpoints.ANGLED,
+    ].find(has) ?? wanted
+  );
+};
+
+// The ships as a given layout sees them, which is not only the active one: a free
+// arrangement starts from the layout before it, whose boxes and groups differ.
+const shipsFor = (kind: FleetchartLayouts) => {
+  const free = kind === FleetchartLayouts.FREE;
+  const tight = fillsSpaceIn(kind);
+
+  return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
     (entry) => {
-      const geometry = shipGeometry(entry, viewpoint.value, {
-        extended: extended.value,
+      const shipState =
+        (free && placements.value[entry.id]?.state) || state.value;
+      const shipViewpoint = drawableViewpoint(
+        entry,
+        (free && placements.value[entry.id]?.viewpoint) || viewpoint.value,
+        shipState,
+      );
+      const geometry = shipGeometry(entry, shipViewpoint, {
+        state: shipState,
         colored: colored.value,
       });
 
@@ -243,60 +314,89 @@ const ships = computed(() =>
         return [];
       }
 
-      const group = groupTitle(entry);
+      const shipFacing = free ? facingOf(entry.id) : facing.value;
+      const placed = !!placements.value[entry.id];
+      const shipGroup = free
+        ? placed
+          ? undefined
+          : t("labels.fleetchartApp.unplaced")
+        : groupTitle(entry);
 
       return [
         {
           id: entry.id,
           entry,
           geometry,
-          ...boxOf(geometry),
-          group,
-          headingWidth: group
-            ? labelMeasure.value.width(group) / PIXELS_PER_METRE
+          ...boxOf(geometry, shipFacing, tight),
+          tight,
+          state: shipState,
+          facing: shipFacing,
+          viewpoint: shipViewpoint,
+          group: shipGroup,
+          headingWidth: shipGroup
+            ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
             : 0,
           padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
           ...labelRoom(entry),
         },
       ];
     },
-  ),
-);
+  );
+};
+
+type CanvasShip = ReturnType<typeof shipsFor>[number];
+
+const ships = computed(() => shipsFor(layout.value));
 
 const columnHeightFor = (factor: number) =>
   (screen.height * factor - SCREEN_MARGIN) / PIXELS_PER_METRE;
 
-const screenHeightFactor = computed(() => {
+const screenHeightFactorFor = (list: CanvasShip[]) => {
   const selected = selectedScreenHeight.value;
 
   if (selected !== FleetchartScreenHeights.AUTO) {
     return FIXED_SCREEN_HEIGHT_FACTORS[selected];
   }
 
-  return autoScreenHeightFactor(ships.value, screen, columnHeightFor);
-});
+  return autoScreenHeightFactor(list, screen, columnHeightFor);
+};
 
 const classicRowWidth = computed(
   () => (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
 );
 
-const positions = computed(() => {
-  switch (layout.value) {
+const packedAspect = computed(
+  () => screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
+);
+
+const arrange = (kind: FleetchartLayouts, list: CanvasShip[]) => {
+  switch (kind) {
     case FleetchartLayouts.CLASSIC:
-      return arrangeClassic(ships.value, classicRowWidth.value);
+      return arrangeClassic(list, classicRowWidth.value);
     case FleetchartLayouts.PACKED:
-      return arrangePacked(
-        ships.value,
-        screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
+      return arrangePacked(list, packedAspect.value);
+    case FleetchartLayouts.COLUMNS:
+      return arrangeColumns(
+        list,
+        columnHeightFor(screenHeightFactorFor(list)),
+        {
+          centred: turned.value,
+        },
       );
     default:
-      return arrangeColumns(
-        ships.value,
-        columnHeightFor(screenHeightFactor.value),
-        { centred: turned.value },
-      );
+      return arrangeFree(list, placements.value, classicRowWidth.value);
   }
-});
+};
+
+const draggedPositions = shallowRef<FleetchartPositions>();
+
+const arranged = computed(() => arrange(layout.value, ships.value));
+
+const positions = computed(() =>
+  draggedPositions.value
+    ? { ...arranged.value, ...draggedPositions.value }
+    : arranged.value,
+);
 
 const headingAlign = computed<FleetchartHeadingAlign>(() => {
   if (layout.value !== FleetchartLayouts.COLUMNS) {
@@ -439,6 +539,13 @@ const setupPanzoom = () => {
   }
 
   panzoomInstance = panzoom(scene.value, {
+    // A press on a ship moves that ship, and one with Shift draws a selection.
+    beforeMouseDown: (event) =>
+      isFree.value &&
+      (event.shiftKey ||
+        (event.target as Element).closest("[data-test='fleetchart-ship']"))
+        ? true
+        : undefined,
     maxZoom: MAX_ZOOM,
     minZoom: MIN_ZOOM,
     zoomSpeed: 0.5,
@@ -454,8 +561,8 @@ const setupPanzoom = () => {
   panzoomInstance.on("zoom", persistZoom);
   panzoomInstance.on("pan", persistZoom);
 
-  // A packed chart always opens whole, as its size depends on the fleet and screen.
-  if (isPacked.value) {
+  // These always open whole, as their size depends on the fleet and the screen.
+  if (fillsSpace.value) {
     fitToScreen();
 
     return;
@@ -499,7 +606,7 @@ const fitToScreen = () => {
 const resetZoom = () => {
   clearTimeout(restoreTimer);
 
-  if (isPacked.value) {
+  if (fillsSpace.value) {
     fitToScreen();
 
     return;
@@ -531,6 +638,547 @@ const handleResize = debounce(
   { maxWait: 1000 },
 );
 
+// The scene is drawn from its bounds, so an edit growing them to the left or top
+// would shift every ship on screen. Moving the view the other way holds them still.
+const holdingView = (edit: () => void) => {
+  const { minX, minY } = bounds.value;
+
+  edit();
+
+  if (!panzoomInstance) {
+    return;
+  }
+
+  const { x, y, scale } = panzoomInstance.getTransform();
+
+  panzoomInstance.moveTo(
+    x + (bounds.value.minX - minX) * PIXELS_PER_METRE * scale,
+    y + (bounds.value.minY - minY) * PIXELS_PER_METRE * scale,
+  );
+};
+
+const FACING_CYCLE = Object.values(FleetchartFacings);
+const UNDO_LIMIT = 50;
+
+const selectedIds = ref<string[]>([]);
+
+const undoStack = shallowRef<FleetchartPlacements[]>([]);
+
+const savePlacements = (next: FleetchartPlacements) => {
+  fleetchartStore.updatePlacements({
+    namespace: props.namespace,
+    placements: next,
+  });
+};
+
+const changePlacements = (next: FleetchartPlacements) => {
+  undoStack.value = [...undoStack.value, placements.value].slice(-UNDO_LIMIT);
+
+  savePlacements(next);
+};
+
+const undo = () => {
+  const previous = undoStack.value[undoStack.value.length - 1];
+
+  if (previous) {
+    undoStack.value = undoStack.value.slice(0, -1);
+
+    holdingView(() => savePlacements(previous));
+  }
+};
+
+// Every ship gets a place at once, as the given layout has it, so the arrangement
+// starts out as what was showing and no ship moves when the first one is dragged.
+const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
+  const list = shipsFor(kind);
+  const from = arrange(kind, list);
+
+  return Object.fromEntries(
+    list.map((ship) => [ship.id, { ...from[ship.id], facing: facing.value }]),
+  );
+};
+
+let seedLayout = FleetchartLayouts.PACKED;
+
+watch(
+  layout,
+  (_current, previous) => {
+    if (previous && previous !== FleetchartLayouts.FREE) {
+      seedLayout = previous;
+    }
+  },
+  { flush: "sync" },
+);
+
+watch(
+  [isFree, () => props.arrangeReady, () => ships.value.length],
+  () => {
+    if (
+      isFree.value &&
+      props.arrangeReady &&
+      ships.value.length &&
+      !Object.keys(placements.value).length
+    ) {
+      savePlacements(placeAll(seedLayout));
+      fitToScreen();
+    }
+  },
+  { immediate: true },
+);
+
+const resetArrangement = () => {
+  // Merged, as ships hidden by a filter keep their place.
+  changePlacements({ ...placements.value, ...placeAll(seedLayout) });
+  fitToScreen();
+};
+
+const selectedShips = computed(() =>
+  isFree.value
+    ? ships.value.filter((ship) => selectedIds.value.includes(ship.id))
+    : [],
+);
+
+// Picking a ship picks everything grouped with it.
+const withGroupMembers = (ids: string[]) => {
+  const groupIds = new Set(
+    ids.map((id) => placements.value[id]?.groupId).filter(Boolean),
+  );
+
+  return ships.value
+    .filter(
+      ({ id }) =>
+        ids.includes(id) || groupIds.has(placements.value[id]?.groupId),
+    )
+    .map(({ id }) => id);
+};
+
+// What all the selected ships share, for the controls to show as current.
+const sharedValue = <T,>(values: T[]) =>
+  values.every((value) => value === values[0]) ? values[0] : undefined;
+
+const selectedViewpoint = computed(() =>
+  sharedValue(selectedShips.value.map((ship) => ship.viewpoint)),
+);
+
+const selectedFacing = computed(() =>
+  sharedValue(selectedShips.value.map((ship) => ship.facing)),
+);
+
+const hasView = (ship: CanvasShip, option: FleetchartViewpoints) =>
+  !!viewFor(ship.entry, option, {
+    state: ship.state,
+    colored: colored.value,
+  });
+
+// An angle with no picture would leave a ship blank, so one is offered as long as
+// a selected ship has it, and given only to those that do.
+const selectedShipViewpoints = computed(() =>
+  Object.values(FleetchartViewpoints).filter((option) =>
+    selectedShips.value.some((ship) => hasView(ship, option)),
+  ),
+);
+
+const changeShips = (
+  list: CanvasShip[],
+  changes: (ship: CanvasShip) => Partial<FleetchartPlacement>,
+) => {
+  if (!list.length) {
+    return;
+  }
+
+  const updated = Object.fromEntries(
+    list.flatMap((ship) => {
+      const current = positions.value[ship.id];
+
+      return current
+        ? [
+            [
+              ship.id,
+              {
+                ...placements.value[ship.id],
+                x: current.x,
+                y: current.y,
+                ...changes(ship),
+              },
+            ],
+          ]
+        : [];
+    }),
+  );
+
+  holdingView(() => {
+    changePlacements({ ...placements.value, ...updated });
+  });
+};
+
+const setSelectedViewpoint = (option: FleetchartViewpoints) => {
+  changeShips(
+    selectedShips.value.filter((ship) => hasView(ship, option)),
+    () => ({ viewpoint: option }),
+  );
+};
+
+const selectedState = computed(() =>
+  sharedValue(selectedShips.value.map((ship) => ship.state)),
+);
+
+const selectedShipStates = computed(() =>
+  Object.values(FleetchartShipStates).filter((option) =>
+    selectedShips.value.some((ship) => hasStateViews(ship.entry, option)),
+  ),
+);
+
+const setSelectedState = (option: FleetchartShipStates) => {
+  changeShips(
+    selectedShips.value.filter((ship) => hasStateViews(ship.entry, option)),
+    () => ({ state: option }),
+  );
+};
+
+const setSelectedFacing = (option: FleetchartFacings) => {
+  changeShips(selectedShips.value, () => ({ facing: option }));
+};
+
+const rotateSelected = () => {
+  changeShips(selectedShips.value, (ship) => ({
+    facing:
+      FACING_CYCLE[
+        (FACING_CYCLE.indexOf(ship.facing) + 1) % FACING_CYCLE.length
+      ],
+  }));
+};
+
+const orderOf = (id: string) => placements.value[id]?.order ?? 0;
+
+// Keeps the selected ships' order among themselves.
+const stackSelected = (direction: "front" | "back") => {
+  const orders = Object.keys(placements.value).map(orderOf);
+  const sorted = [...selectedShips.value].sort(
+    (a, b) => orderOf(a.id) - orderOf(b.id),
+  );
+  const start =
+    direction === "front"
+      ? Math.max(0, ...orders) + 1
+      : Math.min(0, ...orders) - sorted.length;
+
+  changeShips(sorted, (ship) => ({ order: start + sorted.indexOf(ship) }));
+};
+
+const canGroupSelected = computed(
+  () =>
+    selectedShips.value.length > 1 &&
+    (!sharedValue(
+      selectedShips.value.map((ship) => placements.value[ship.id]?.groupId),
+    ) as boolean),
+);
+
+const canUngroupSelected = computed(() =>
+  selectedShips.value.some((ship) => placements.value[ship.id]?.groupId),
+);
+
+const groupSelected = () => {
+  const groupId = crypto.randomUUID();
+
+  changeShips(selectedShips.value, () => ({ groupId }));
+};
+
+const ungroupSelected = () => {
+  changeShips(selectedShips.value, () => ({ groupId: undefined }));
+};
+
+const shipControls = ref<{ $el: HTMLElement }>();
+
+const shipControlsHalfWidth = ref(0);
+
+// Measured, as its width depends on the labels and the language.
+watch(
+  [
+    selectedViewpoint,
+    selectedFacing,
+    selectedState,
+    () => selectedShips.value.length,
+  ],
+  async () => {
+    await nextTick();
+
+    shipControlsHalfWidth.value =
+      (shipControls.value?.$el.offsetWidth ?? 0) / 2;
+  },
+);
+
+// Drawn over the scene rather than in it, so it stays readable at any zoom and
+// never reaches an export.
+const shipControlsStyle = computed(() => {
+  const placed = selectedShips.value.filter((ship) => positions.value[ship.id]);
+
+  if (!placed.length) {
+    return undefined;
+  }
+
+  const covered = boundsOf(placed, positions.value);
+  const { x, y, scale } = transform.value;
+  const top = y + sceneY(covered.minY) * scale;
+  const bottom = y + sceneY(covered.minY + covered.height) * scale;
+  const above = top > SHIP_CONTROLS_MIN_TOP;
+  const centre = x + sceneX(covered.minX + covered.width / 2) * scale;
+
+  return {
+    left: `${Math.min(
+      Math.max(centre, shipControlsHalfWidth.value + SHIP_CONTROLS_MARGIN),
+      screen.width - shipControlsHalfWidth.value - SHIP_CONTROLS_MARGIN,
+    )}px`,
+    top: `${above ? top - SHIP_CONTROLS_GAP : bottom + SHIP_CONTROLS_GAP}px`,
+    transform: `translate(-50%, ${above ? "-100%" : "0"})`,
+  };
+});
+
+const marquee = shallowRef<{
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}>();
+
+let stopMarquee: (() => void) | undefined;
+
+const startMarquee = (event: PointerEvent) => {
+  const origin = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const startX = event.clientX - origin.left;
+  const startY = event.clientY - origin.top;
+  const additions = [...selectedIds.value];
+
+  const metresX = (pixels: number) =>
+    (pixels - transform.value.x) / transform.value.scale / PIXELS_PER_METRE -
+    SCENE_PADDING / PIXELS_PER_METRE +
+    bounds.value.minX;
+  const metresY = (pixels: number) =>
+    (pixels - transform.value.y) / transform.value.scale / PIXELS_PER_METRE -
+    SCENE_PADDING / PIXELS_PER_METRE +
+    bounds.value.minY;
+
+  const onMove = (move: PointerEvent) => {
+    const x = move.clientX - origin.left;
+    const y = move.clientY - origin.top;
+
+    marquee.value = {
+      left: Math.min(startX, x),
+      top: Math.min(startY, y),
+      width: Math.abs(x - startX),
+      height: Math.abs(y - startY),
+    };
+  };
+
+  const onCancel = () => {
+    stopMarquee?.();
+    marquee.value = undefined;
+  };
+
+  const onUp = () => {
+    stopMarquee?.();
+
+    const box = marquee.value;
+
+    marquee.value = undefined;
+
+    if (!box) {
+      return;
+    }
+
+    const left = metresX(box.left);
+    const right = metresX(box.left + box.width);
+    const top = metresY(box.top);
+    const bottom = metresY(box.top + box.height);
+
+    const inside = ships.value
+      .filter((ship) => {
+        const position = positions.value[ship.id];
+
+        return (
+          position &&
+          position.x + ship.width / 2 > left &&
+          position.x - ship.width / 2 < right &&
+          position.y + ship.height / 2 > top &&
+          position.y - ship.height / 2 < bottom
+        );
+      })
+      .map((ship) => ship.id);
+
+    selectedIds.value = withGroupMembers([...additions, ...inside]);
+  };
+
+  stopMarquee = () => {
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+    window.removeEventListener("pointercancel", onCancel);
+    stopMarquee = undefined;
+  };
+
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onCancel);
+};
+
+const handleViewportPress = (event: PointerEvent) => {
+  if ((event.target as Element).closest("[data-test='fleetchart-ship']")) {
+    return;
+  }
+
+  if (isFree.value && event.shiftKey && event.button === 0) {
+    event.preventDefault();
+    startMarquee(event);
+  } else {
+    selectedIds.value = [];
+  }
+};
+
+let stopDrag: (() => void) | undefined;
+
+const selectForPress = (id: string, additive: boolean) => {
+  const picked = withGroupMembers([id]);
+
+  if (!additive) {
+    if (!selectedIds.value.includes(id)) {
+      selectedIds.value = picked;
+    }
+
+    return;
+  }
+
+  selectedIds.value = selectedIds.value.includes(id)
+    ? selectedIds.value.filter((selected) => !picked.includes(selected))
+    : [...selectedIds.value, ...picked];
+};
+
+const startDrag = (id: string, event: PointerEvent) => {
+  if (!isFree.value || event.pointerType === "touch" || event.button !== 0) {
+    return;
+  }
+
+  event.preventDefault();
+
+  selectForPress(id, event.shiftKey || event.metaKey || event.ctrlKey);
+
+  if (!selectedIds.value.includes(id)) {
+    return;
+  }
+
+  const moving = selectedShips.value;
+  const lead = moving.find((ship) => ship.id === id);
+
+  if (!lead) {
+    return;
+  }
+
+  const starts = Object.fromEntries(
+    moving.map((ship) => [ship.id, positions.value[ship.id]]),
+  );
+
+  stopDrag?.();
+
+  // Keeps the drag alive when the pointer leaves the window.
+  (event.target as Element).setPointerCapture?.(event.pointerId);
+
+  const { clientX, clientY } = event;
+  const additive = event.shiftKey || event.metaKey || event.ctrlKey;
+
+  const onMove = (move: PointerEvent) => {
+    const metresPerPixel = 1 / (PIXELS_PER_METRE * transform.value.scale);
+    const moved = {
+      x: starts[id].x + (move.clientX - clientX) * metresPerPixel,
+      y: starts[id].y + (move.clientY - clientY) * metresPerPixel,
+    };
+    // The grid applies to the ship being held; the rest keep their distance to it.
+    const landed = gridEnabled.value
+      ? snapToGrid(moved, lead, gridCell.value)
+      : moved;
+    const deltaX = landed.x - starts[id].x;
+    const deltaY = landed.y - starts[id].y;
+
+    holdingView(() => {
+      draggedPositions.value = Object.fromEntries(
+        moving.map((ship) => [
+          ship.id,
+          {
+            x: starts[ship.id].x + deltaX,
+            y: starts[ship.id].y + deltaY,
+          },
+        ]),
+      );
+    });
+  };
+
+  const onUp = () => {
+    const dropped = draggedPositions.value;
+
+    stopDrag?.();
+
+    // A press without a move on one of several selected ships means just that ship.
+    if (!dropped && !additive) {
+      selectedIds.value = withGroupMembers([id]);
+    }
+
+    if (dropped) {
+      holdingView(() => {
+        draggedPositions.value = undefined;
+        changePlacements({
+          ...placements.value,
+          ...Object.fromEntries(
+            Object.entries(dropped as FleetchartPositions).map(
+              ([shipId, { x, y }]) => [
+                shipId,
+                {
+                  ...placements.value[shipId],
+                  x,
+                  y,
+                  facing: facingOf(shipId),
+                },
+              ],
+            ),
+          ),
+        });
+      });
+    }
+  };
+
+  const onCancel = () => {
+    stopDrag?.();
+    holdingView(() => {
+      draggedPositions.value = undefined;
+    });
+  };
+
+  stopDrag = () => {
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+    window.removeEventListener("pointercancel", onCancel);
+    stopDrag = undefined;
+  };
+
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onCancel);
+};
+
+const isEditable = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName));
+
+const handleArrangeKeys = (event: KeyboardEvent) => {
+  if (!isFree.value || isEditable(event.target)) {
+    return;
+  }
+
+  if ((event.metaKey || event.ctrlKey) && event.key === "z") {
+    event.preventDefault();
+    undo();
+  } else if (event.key === "Escape") {
+    selectedIds.value = [];
+  } else if (event.key === "r" && !event.metaKey && !event.ctrlKey) {
+    rotateSelected();
+  }
+};
+
 const toggleStatus = () => {
   showStatus.value = !showStatus.value;
 };
@@ -546,6 +1194,7 @@ onMounted(() => {
 
   setupPanzoom();
 
+  window.addEventListener("keydown", handleArrangeKeys);
   window.addEventListener("resize", handleResize);
   window.addEventListener("deviceorientation", handleResize);
 });
@@ -554,12 +1203,15 @@ onUnmounted(() => {
   stopStatusListener?.();
 
   clearTimeout(restoreTimer);
+  stopDrag?.();
+  stopMarquee?.();
   persistZoom.flush();
   handleResize.cancel();
 
   panzoomInstance?.dispose();
   panzoomInstance = undefined;
 
+  window.removeEventListener("keydown", handleArrangeKeys);
   window.removeEventListener("resize", handleResize);
   window.removeEventListener("deviceorientation", handleResize);
 });
@@ -583,7 +1235,7 @@ const toggleGrid = () => {
 };
 
 const toggleColored = () => {
-  fleetchartStore.toggleColored(props.namespace);
+  fleetchartStore.togglePlain(props.namespace);
 };
 
 const toggleLabels = () => {
@@ -594,6 +1246,26 @@ const toggleLabels = () => {
 <template>
   <div class="fleetchart-wrapper" data-test="fleetchart-canvas">
     <div class="fleetchart-controls">
+      <template v-if="isFree">
+        <Btn
+          v-tooltip="t('labels.fleetchartApp.undo')"
+          :aria-label="t('labels.fleetchartApp.undo')"
+          :disabled="!undoStack.length"
+          data-test="fleetchart-undo"
+          @click="undo"
+        >
+          <i class="fa-duotone fa-rotate-left" />
+        </Btn>
+        <Btn
+          v-tooltip="t('labels.fleetchartApp.resetArrangement')"
+          :aria-label="t('labels.fleetchartApp.resetArrangement')"
+          data-test="fleetchart-reset-arrangement"
+          @click="resetArrangement"
+        >
+          <i class="fa-duotone fa-arrows-rotate" />
+        </Btn>
+      </template>
+
       <BtnDropdown v-if="layout === FleetchartLayouts.COLUMNS">
         <template #label>
           <template v-if="!mobile">
@@ -686,7 +1358,11 @@ const toggleLabels = () => {
       </BtnDropdown>
     </div>
 
-    <FleetchartCanvasSettings v-if="settingsOpen" :namespace="namespace" />
+    <FleetchartCanvasSettings
+      v-if="settingsOpen"
+      :namespace="namespace"
+      :can-arrange="canArrange"
+    />
 
     <div
       v-if="options.scaleBar"
@@ -704,7 +1380,39 @@ const toggleLabels = () => {
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
     </div>
 
-    <div class="fleetchart-canvas__viewport">
+    <FleetchartCanvasShipControls
+      ref="shipControls"
+      v-if="selectedShips.length && !draggedPositions && !exporting"
+      :count="selectedShips.length"
+      :viewpoint="selectedViewpoint"
+      :available="selectedShipViewpoints"
+      :facing="selectedFacing"
+      :state="selectedState"
+      :available-states="selectedShipStates"
+      :can-group="canGroupSelected"
+      :can-ungroup="canUngroupSelected"
+      :style="shipControlsStyle"
+      @update:viewpoint="setSelectedViewpoint"
+      @update:facing="setSelectedFacing"
+      @update:state="setSelectedState"
+      @stack="stackSelected"
+      @group="groupSelected"
+      @ungroup="ungroupSelected"
+    />
+
+    <div class="fleetchart-canvas__viewport" @pointerdown="handleViewportPress">
+      <div
+        v-if="marquee"
+        class="fleetchart-canvas__marquee"
+        :style="{
+          left: `${marquee.left}px`,
+          top: `${marquee.top}px`,
+          width: `${marquee.width}px`,
+          height: `${marquee.height}px`,
+        }"
+        data-test="fleetchart-marquee"
+      />
+
       <div
         id="fleetchart"
         ref="scene"
@@ -740,15 +1448,20 @@ const toggleLabels = () => {
           :geometry="ship.geometry"
           :left="sceneX(positions[ship.id].x - ship.width / 2)"
           :top="sceneY(positions[ship.id].y - ship.height / 2)"
-          :viewpoint="viewpoint"
+          :viewpoint="ship.viewpoint"
           :zoom="exporting ? 1 : savedZoom.scale || 1"
           :show-label="showLabels"
           :show-status="showStatus"
           :colored="colored"
-          :extended="extended"
+          :state="ship.state"
+          :tight="ship.tight"
           :box-width="ship.width"
           :box-height="ship.height"
-          :facing="options.facing"
+          :facing="ship.facing"
+          :selected="isFree && !exporting && selectedIds.includes(ship.id)"
+          :arranging="isFree"
+          :order="isFree ? placements[ship.id]?.order : undefined"
+          @pointerdown="startDrag(ship.id, $event)"
         />
 
         <div

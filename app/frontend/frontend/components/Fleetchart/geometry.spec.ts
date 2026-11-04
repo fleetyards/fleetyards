@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { MediaFile } from "@/services/fyApi";
-import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 import {
+  FleetchartShipStates,
+  FleetchartViewpoints,
+} from "@/shared/stores/fleetchart";
+import {
+  hasStateViews,
   imageUrlFor,
   shipGeometry,
   viewFor,
@@ -30,7 +34,13 @@ describe("shipGeometry", () => {
         model({ portView: view("port"), topView: view("top", 1000, 800) }),
         FleetchartViewpoints.PORT,
       ),
-    ).toEqual({ length: 100, height: 80, imageWidth: 100, imageHeight: 50 });
+    ).toEqual({
+      length: 100,
+      height: 80,
+      imageWidth: 100,
+      imageHeight: 50,
+      frameWidth: 100,
+    });
   });
 
   it("uses the beam when it exceeds the length", () => {
@@ -43,6 +53,87 @@ describe("shipGeometry", () => {
         FleetchartViewpoints.TOP,
       )?.height,
     ).toBe(150);
+  });
+
+  it("draws a front or rear view as wide as the beam, not the length", () => {
+    const entry = model(
+      {
+        portView: view("port", 1000, 400),
+        rearView: view("rear", 800, 400),
+        frontView: view("front", 800, 400),
+      },
+      { fleetchartOffsetBeam: 30 },
+    );
+
+    expect(shipGeometry(entry, FleetchartViewpoints.REAR)?.imageWidth).toBe(30);
+    expect(shipGeometry(entry, FleetchartViewpoints.FRONT)?.imageHeight).toBe(
+      15,
+    );
+    expect(shipGeometry(entry, FleetchartViewpoints.PORT)?.imageWidth).toBe(
+      100,
+    );
+  });
+
+  it("makes room for a front view wider and taller than the flight box", () => {
+    const geometry = shipGeometry(
+      model(
+        {
+          portView: view("port", 1000, 100),
+          frontView: view("front", 100, 100),
+        },
+        { fleetchartOffsetBeam: 150 },
+      ),
+      FleetchartViewpoints.FRONT,
+    );
+
+    expect(geometry?.frameWidth).toBe(150);
+    expect(geometry?.height).toBe(150);
+  });
+
+  it("uses the landed length and views in the landed state", () => {
+    const entry = model(
+      { portView: view("port"), landedPortView: view("landed") },
+      { landedLength: 120 },
+    );
+    const options = { state: FleetchartShipStates.LANDED };
+
+    expect(
+      shipGeometry(entry, FleetchartViewpoints.PORT, options)?.length,
+    ).toBe(120);
+    expect(viewFor(entry, FleetchartViewpoints.PORT, options)?.url).toBe(
+      "landed.png",
+    );
+  });
+
+  it("keeps a ship's flight size when it has no picture of the state", () => {
+    const entry = model({ portView: view("port") }, { landedLength: 500 });
+
+    expect(
+      shipGeometry(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.LANDED,
+      })?.length,
+    ).toBe(100);
+  });
+
+  it("does not count a holo as a picture of a state", () => {
+    const entry = model({
+      portView: view("port"),
+      landedHolo: { url: "landed.glb" },
+    });
+
+    expect(hasStateViews(entry, FleetchartShipStates.LANDED)).toBe(false);
+  });
+
+  it("falls back to the flight view for a state a ship has no picture of", () => {
+    const entry = model({ portView: view("port") });
+
+    expect(
+      viewFor(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.LANDED,
+      })?.url,
+    ).toBe("port.png");
+    expect(hasStateViews(entry, FleetchartShipStates.LANDED)).toBe(false);
+    expect(hasStateViews(entry, FleetchartShipStates.FLIGHT)).toBe(true);
   });
 
   it("keeps the box when the viewpoint changes", () => {
@@ -58,14 +149,15 @@ describe("shipGeometry", () => {
 
   it("uses the extended length only in the extended state", () => {
     const entry = model(
-      { portView: view("port") },
+      { portView: view("port"), extendedPortView: view("extended") },
       { extendedFleetchartOffsetLength: 200 },
     );
 
     expect(shipGeometry(entry, FleetchartViewpoints.PORT)?.length).toBe(100);
     expect(
-      shipGeometry(entry, FleetchartViewpoints.PORT, { extended: true })
-        ?.length,
+      shipGeometry(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.length,
     ).toBe(200);
   });
 
@@ -76,7 +168,13 @@ describe("shipGeometry", () => {
   it("draws no image for a viewpoint the ship lacks, but keeps its box", () => {
     expect(
       shipGeometry(model({ portView: view("port") }), FleetchartViewpoints.TOP),
-    ).toEqual({ length: 100, height: 50, imageWidth: 0, imageHeight: 0 });
+    ).toEqual({
+      length: 100,
+      height: 50,
+      imageWidth: 0,
+      imageHeight: 0,
+      frameWidth: 100,
+    });
   });
 });
 
@@ -96,14 +194,40 @@ describe("viewFor", () => {
       viewFor(entry, FleetchartViewpoints.PORT, { colored: true })?.url,
     ).toBe("port-colored.png");
     expect(
-      viewFor(entry, FleetchartViewpoints.PORT, { extended: true })?.url,
+      viewFor(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.url,
     ).toBe("extended.png");
     expect(
       viewFor(entry, FleetchartViewpoints.PORT, {
-        extended: true,
+        state: FleetchartShipStates.EXTENDED,
         colored: true,
       })?.url,
     ).toBe("extended-colored.png");
+  });
+
+  it("finds the rear views, colored and extended too", () => {
+    const entry = model({
+      rearView: view("rear"),
+      rearViewColored: view("rear-colored"),
+      extendedStarboardView: view("starboard-extended"),
+      starboardView: view("starboard"),
+      bottomView: view("bottom"),
+      angledRearView: view("angled-rear"),
+    });
+
+    expect(
+      viewFor(entry, FleetchartViewpoints.REAR, { colored: true })?.url,
+    ).toBe("rear-colored.png");
+    expect(
+      viewFor(entry, FleetchartViewpoints.STARBOARD, {
+        state: FleetchartShipStates.EXTENDED,
+      })?.url,
+    ).toBe("starboard-extended.png");
+    expect(viewFor(entry, FleetchartViewpoints.BOTTOM)?.url).toBe("bottom.png");
+    expect(viewFor(entry, FleetchartViewpoints.ANGLED_REAR)?.url).toBe(
+      "angled-rear.png",
+    );
   });
 
   it("skips a colored view without a file", () => {

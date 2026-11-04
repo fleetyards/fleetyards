@@ -508,7 +508,11 @@
           "port": "Port",
           "top": "Top",
           "angled": "Angled",
-          "front": "Front"
+          "front": "Front",
+          "starboard": "Starboard",
+          "bottom": "Bottom",
+          "angledRear": "Angled rear",
+          "rear": "Rear"
         },
         "gridSize": "%{size} meter per grid box",
         "options": "Options",
@@ -532,6 +536,20 @@
           "normal": "Normal",
           "wide": "Wide"
         },
+        "unplaced": "Not placed yet",
+        "shipControls": "Selected ship",
+        "bringToFront": "Bring to front",
+        "sendToBack": "Send to back",
+        "groupShips": "Group ships",
+        "ungroupShips": "Ungroup ships",
+        "undo": "Undo",
+        "resetArrangement": "Reset arrangement",
+        "state": "State",
+        "stateOptions": {
+          "flight": "Flight",
+          "extended": "Extended",
+          "landed": "Landed"
+        },
         "facing": "Facing",
         "facingOptions": {
           "left": "Left",
@@ -545,7 +563,8 @@
         "layoutOptions": {
           "columns": "Columns",
           "classic": "Classic",
-          "packed": "Packed"
+          "packed": "Packed",
+          "free": "Free"
         },
         "mode": "Mode",
         "modeOptions": {

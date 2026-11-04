@@ -41,6 +41,10 @@ type Props = {
    *  open. */
   shareUrl?: string;
   shareTitle?: string;
+  /** Everything a free arrangement can hold, once `arrangeLoaded`. Offers the free
+   *  layout when given, as it cannot work on one page of a list. */
+  arrangeItems?: (Vehicle | Model | VehiclePublic)[];
+  arrangeLoaded?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,6 +53,8 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   shareUrl: undefined,
   shareTitle: undefined,
+  arrangeItems: undefined,
+  arrangeLoaded: false,
 });
 
 const { t } = useI18n();
@@ -86,7 +92,27 @@ const layoutsEnabled = computed(() =>
 );
 
 const layout = computed(() =>
-  fleetchartStore.fleetchartLayout(props.namespace),
+  fleetchartStore.fleetchartLayout(props.namespace, canArrange.value),
+);
+
+// Arranging takes a mouse for now, so a phone is not offered it.
+const canArrange = computed(() => !!props.arrangeItems && !mobile.value);
+
+const layoutOptions = computed(() =>
+  Object.values(FleetchartLayouts).filter(
+    (option) => option !== FleetchartLayouts.FREE || canArrange.value,
+  ),
+);
+
+const arranging = computed(
+  () => layout.value === FleetchartLayouts.FREE && canArrange.value,
+);
+
+// The page stays up until the whole fleet has arrived.
+const sourceItems = computed(() =>
+  arranging.value && props.arrangeLoaded
+    ? props.arrangeItems || []
+    : props.items,
 );
 
 const setLayout = (option: FleetchartLayouts) => {
@@ -94,7 +120,7 @@ const setLayout = (option: FleetchartLayouts) => {
 };
 
 const slugs = computed(() =>
-  props.items.map((item) => modelOf(item)?.slug).filter(Boolean),
+  sourceItems.value.map((item) => modelOf(item)?.slug).filter(Boolean),
 );
 
 // Fetched only while the chart is open: the lists no longer carry the views, and
@@ -119,7 +145,7 @@ const extendedTooltip = computed(() => {
 });
 
 const hasExtendedItems = computed(() => {
-  return props.items.some((item) => {
+  return sourceItems.value.some((item) => {
     const model = (item as Vehicle).model || (item as Model | VehiclePublic);
     return Boolean(
       model.metrics?.extendedLength ||
@@ -186,7 +212,7 @@ onMounted(async () => {
   }
 });
 
-watch(layoutsEnabled, () => {
+watch([layoutsEnabled, sourceItems], () => {
   updateItems();
 });
 
@@ -212,7 +238,7 @@ const withViews = (items: (Vehicle | Model | VehiclePublic)[]) => {
 const updateItems = () => {
   // The renderer sorts by the chosen option, and one option is the list's order.
   if (layoutsEnabled.value) {
-    innerItems.value = withViews(JSON.parse(JSON.stringify(props.items)));
+    innerItems.value = withViews(JSON.parse(JSON.stringify(sourceItems.value)));
 
     return;
   }
@@ -336,7 +362,7 @@ const closeFleetchart = async () => {
             {{ t(`labels.fleetchartApp.layoutOptions.${layout}`) }}
           </template>
           <Btn
-            v-for="option in FleetchartLayouts"
+            v-for="option in layoutOptions"
             :key="option"
             :active="layout === option"
             :data-test="`fleetchart-layout-${option}`"
@@ -366,7 +392,7 @@ const closeFleetchart = async () => {
         </BtnDropdown>
 
         <Btn
-          v-if="hasExtendedItems"
+          v-if="hasExtendedItems && !layoutsEnabled"
           v-tooltip="extendedTooltip"
           :active="extended"
           @click="toggleExtended"
@@ -405,7 +431,7 @@ const closeFleetchart = async () => {
           </span>
         </Btn>
 
-        <slot v-if="!mobile" name="pagination" />
+        <slot v-if="!mobile && !arranging" name="pagination" />
       </div>
 
       <template v-if="innerItems.length">
@@ -414,6 +440,8 @@ const closeFleetchart = async () => {
           :items="innerItems"
           :namespace="namespace"
           :download-name="downloadName"
+          :can-arrange="canArrange"
+          :arrange-ready="!arranging || arrangeLoaded"
         />
         <FleetchartListPanzoom
           v-else-if="mode == 'panzoom'"

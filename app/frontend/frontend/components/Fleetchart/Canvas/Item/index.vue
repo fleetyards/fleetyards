@@ -17,6 +17,7 @@ import {
 } from "@/frontend/components/Fleetchart/geometry";
 import {
   FleetchartFacings,
+  FleetchartShipStates,
   FleetchartViewpoints,
 } from "@/shared/stores/fleetchart";
 
@@ -30,10 +31,14 @@ interface Props {
   showLabel?: boolean;
   showStatus?: boolean;
   colored?: boolean;
-  extended?: boolean;
+  state?: FleetchartShipStates;
+  tight?: boolean;
   boxWidth: number;
   boxHeight: number;
   facing?: FleetchartFacings;
+  selected?: boolean;
+  arranging?: boolean;
+  order?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,8 +46,12 @@ const props = withDefaults(defineProps<Props>(), {
   showLabel: false,
   showStatus: false,
   colored: false,
-  extended: false,
+  state: FleetchartShipStates.FLIGHT,
+  tight: false,
   facing: FleetchartFacings.LEFT,
+  selected: false,
+  arranging: false,
+  order: undefined,
 });
 
 const { t } = useI18n();
@@ -58,11 +67,13 @@ const productionStatus = computed(() =>
 const cssClasses = computed(() => [
   `fleetchart-item-${model.value.slug}`,
   props.showStatus ? `status-${model.value.productionStatus}` : undefined,
+  props.selected ? "fleetchart-canvas-item--selected" : undefined,
+  props.arranging ? "fleetchart-canvas-item--arranging" : undefined,
 ]);
 
 const view = computed(() =>
   viewFor(props.entry, props.viewpoint, {
-    extended: props.extended,
+    state: props.state,
     colored: props.colored,
   }),
 );
@@ -75,7 +86,7 @@ const image = computed(() => {
   }
 
   const renderedWidth =
-    props.geometry.length *
+    (props.geometry.imageWidth || props.geometry.length) *
     PIXELS_PER_METRE *
     props.zoom *
     (window.devicePixelRatio || 1);
@@ -89,6 +100,7 @@ const image = computed(() => {
     class="fleetchart-canvas-item"
     :class="cssClasses"
     :style="{
+      zIndex: order,
       left: `${left}px`,
       top: `${top}px`,
       width: `${boxWidth * PIXELS_PER_METRE}px`,
@@ -103,9 +115,12 @@ const image = computed(() => {
     </div>
     <div
       class="fleetchart-canvas-item__frame"
-      :class="`fleetchart-canvas-item__frame--${facing}`"
+      :class="[
+        `fleetchart-canvas-item__frame--${facing}`,
+        { 'fleetchart-canvas-item__frame--tight': tight },
+      ]"
       :style="{
-        width: `${geometry.length * PIXELS_PER_METRE}px`,
+        width: `${geometry.frameWidth * PIXELS_PER_METRE}px`,
         height: `${geometry.height * PIXELS_PER_METRE}px`,
       }"
     >
@@ -113,6 +128,7 @@ const image = computed(() => {
         v-if="image"
         :src="image"
         :alt="label.title"
+        draggable="false"
         :style="{
           width: `${imageWidth}px`,
           'max-height': `${geometry.height * PIXELS_PER_METRE}px`,

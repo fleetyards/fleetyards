@@ -508,7 +508,11 @@
           "port": "Bâbord",
           "top": "Haut",
           "angled": "En biais",
-          "front": "Face"
+          "front": "Face",
+          "starboard": "Tribord",
+          "bottom": "Dessous",
+          "angledRear": "Arrière incliné",
+          "rear": "Arrière"
         },
         "gridSize": "%{size} mètre par zone de grille",
         "options": "Options",
@@ -532,6 +536,20 @@
           "normal": "Normal",
           "wide": "Large"
         },
+        "unplaced": "Pas encore placés",
+        "shipControls": "Vaisseau sélectionné",
+        "bringToFront": "Mettre au premier plan",
+        "sendToBack": "Mettre à l'arrière-plan",
+        "groupShips": "Grouper les vaisseaux",
+        "ungroupShips": "Dissocier les vaisseaux",
+        "undo": "Annuler",
+        "resetArrangement": "Réinitialiser la disposition",
+        "state": "État",
+        "stateOptions": {
+          "flight": "Vol",
+          "extended": "Déployé",
+          "landed": "Posé"
+        },
         "facing": "Orientation",
         "facingOptions": {
           "left": "Gauche",
@@ -545,7 +563,8 @@
         "layoutOptions": {
           "columns": "Colonnes",
           "classic": "Classique",
-          "packed": "Compact"
+          "packed": "Compact",
+          "free": "Libre"
         },
         "mode": "Mode",
         "modeOptions": {

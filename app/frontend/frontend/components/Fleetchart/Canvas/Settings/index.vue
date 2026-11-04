@@ -11,6 +11,7 @@ import {
   FleetchartFacings,
   FleetchartGroups,
   FleetchartLayouts,
+  FleetchartShipStates,
   FleetchartSorts,
   FleetchartSpacings,
   useFleetchartStore,
@@ -19,6 +20,7 @@ import {
 
 interface Props {
   namespace: string;
+  canArrange?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -39,13 +41,27 @@ const update = (changes: Partial<FleetchartOptions>) => {
 };
 
 // Packing decides the order itself, so a sort would do nothing there.
-const sortable = computed(
-  () =>
-    fleetchartStore.fleetchartLayout(props.namespace) !==
-    FleetchartLayouts.PACKED,
+const layout = computed(() =>
+  fleetchartStore.fleetchartLayout(props.namespace, props.canArrange),
 );
 
+const sortable = computed(
+  () =>
+    layout.value !== FleetchartLayouts.PACKED &&
+    layout.value !== FleetchartLayouts.FREE,
+);
+
+// Ships in a free arrangement stay where they were put, facing the way they were
+// turned.
+const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
+
 const choices = computed(() => [
+  {
+    name: "state" as const,
+    labelKey: "state",
+    optionsKey: "stateOptions",
+    values: Object.values(FleetchartShipStates) as string[],
+  },
   ...(sortable.value
     ? [
         {
@@ -56,24 +72,32 @@ const choices = computed(() => [
         },
       ]
     : []),
-  {
-    name: "facing" as const,
-    labelKey: "facing",
-    optionsKey: "facingOptions",
-    values: Object.values(FleetchartFacings) as string[],
-  },
-  {
-    name: "group" as const,
-    labelKey: "group",
-    optionsKey: "groupOptions",
-    values: Object.values(FleetchartGroups) as string[],
-  },
-  {
-    name: "spacing" as const,
-    labelKey: "spacing",
-    optionsKey: "spacingOptions",
-    values: Object.values(FleetchartSpacings) as string[],
-  },
+  ...(groupable.value
+    ? [
+        {
+          name: "facing" as const,
+          labelKey: "facing",
+          optionsKey: "facingOptions",
+          values: Object.values(FleetchartFacings) as string[],
+        },
+        {
+          name: "group" as const,
+          labelKey: "group",
+          optionsKey: "groupOptions",
+          values: Object.values(FleetchartGroups) as string[],
+        },
+      ]
+    : []),
+  ...(groupable.value
+    ? [
+        {
+          name: "spacing" as const,
+          labelKey: "spacing",
+          optionsKey: "spacingOptions",
+          values: Object.values(FleetchartSpacings) as string[],
+        },
+      ]
+    : []),
 ]);
 </script>
 

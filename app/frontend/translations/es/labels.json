@@ -508,7 +508,11 @@
           "port": "Babor",
           "top": "Superior",
           "angled": "Angular",
-          "front": "Frontal"
+          "front": "Frontal",
+          "starboard": "Estribor",
+          "bottom": "Abajo",
+          "angledRear": "Popa en ángulo",
+          "rear": "Popa"
         },
         "gridSize": "%{size} metro por cuadrícula",
         "options": "Opciones",
@@ -532,6 +536,20 @@
           "normal": "Normal",
           "wide": "Amplio"
         },
+        "unplaced": "Sin colocar",
+        "shipControls": "Nave seleccionada",
+        "bringToFront": "Traer al frente",
+        "sendToBack": "Enviar al fondo",
+        "groupShips": "Agrupar naves",
+        "ungroupShips": "Desagrupar naves",
+        "undo": "Deshacer",
+        "resetArrangement": "Restablecer disposición",
+        "state": "Estado",
+        "stateOptions": {
+          "flight": "Vuelo",
+          "extended": "Extendido",
+          "landed": "Aterrizado"
+        },
         "facing": "Orientación",
         "facingOptions": {
           "left": "Izquierda",
@@ -545,7 +563,8 @@
         "layoutOptions": {
           "columns": "Columnas",
           "classic": "Clásico",
-          "packed": "Compacto"
+          "packed": "Compacto",
+          "free": "Libre"
         },
         "mode": "Modo",
         "modeOptions": {

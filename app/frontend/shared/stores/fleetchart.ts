@@ -6,7 +6,19 @@ export enum FleetchartViewpoints {
   PORT = "port",
   ANGLED = "angled",
   FRONT = "front",
+  STARBOARD = "starboard",
+  BOTTOM = "bottom",
+  ANGLED_REAR = "angledRear",
+  REAR = "rear",
 }
+
+// What the charts behind the flag know how to draw.
+export const LEGACY_FLEETCHART_VIEWPOINTS = [
+  FleetchartViewpoints.TOP,
+  FleetchartViewpoints.PORT,
+  FleetchartViewpoints.ANGLED,
+  FleetchartViewpoints.FRONT,
+];
 
 export enum FleetchartScreenHeights {
   AUTO = "auto",
@@ -26,6 +38,7 @@ export enum FleetchartLayouts {
   COLUMNS = "columns",
   CLASSIC = "classic",
   PACKED = "packed",
+  FREE = "free",
 }
 
 export enum FleetchartSorts {
@@ -55,6 +68,12 @@ export enum FleetchartFacings {
   BOTTOM = "bottom",
 }
 
+export enum FleetchartShipStates {
+  FLIGHT = "flight",
+  EXTENDED = "extended",
+  LANDED = "landed",
+}
+
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
@@ -62,6 +81,7 @@ export interface FleetchartOptions {
   scaleBar: boolean;
   solidExport: boolean;
   facing: FleetchartFacings;
+  state: FleetchartShipStates;
 }
 
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
@@ -71,9 +91,27 @@ export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   scaleBar: false,
   solidExport: false,
   facing: FleetchartFacings.LEFT,
+  state: FleetchartShipStates.FLIGHT,
 };
 
+export interface FleetchartPlacement {
+  x: number;
+  y: number;
+  facing?: FleetchartFacings;
+  viewpoint?: FleetchartViewpoints;
+  state?: FleetchartShipStates;
+  // Stacking order among ships placed on top of each other.
+  order?: number;
+  // Ships sharing one are selected and moved together.
+  groupId?: string;
+}
+
+export type FleetchartPlacements = Record<string, FleetchartPlacement>;
+
 type FleetchartState = {
+  placements: {
+    [key: string]: FleetchartPlacements;
+  };
   options: {
     [key: string]: Partial<FleetchartOptions>;
   };
@@ -98,11 +136,13 @@ type FleetchartState = {
     [key: string]: number;
   };
   color: string[];
+  plain: string[];
   extended: string[];
 };
 
 export const useFleetchartStore = defineStore("fleetchart", {
   state: (): FleetchartState => ({
+    placements: {},
     options: {},
     layout: {},
     visible: [],
@@ -113,6 +153,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     mode: {},
     scale: {},
     color: [],
+    plain: [],
     extended: [],
   }),
   getters: {
@@ -125,6 +166,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     colored: (state) => {
       return (namespace: string) => state.color.includes(namespace);
     },
+    // Colored unless somebody chose otherwise, which `colored` does not assume.
+    coloredByDefault: (state) => {
+      return (namespace: string) => !(state.plain || []).includes(namespace);
+    },
     extendedState: (state) => {
       return (namespace: string) => (state.extended || []).includes(namespace);
     },
@@ -134,8 +179,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
     // Somebody who chose a mode keeps its arrangement. `layout` can also be missing
     // altogether from state persisted before it existed.
     fleetchartLayout: (state) => {
-      return (namespace: string) => {
+      return (namespace: string, canArrange = true) => {
         const layout = state.layout?.[namespace];
+
+        // The hangar's namespace is shared with lists that have nothing to arrange.
+        if (layout === FleetchartLayouts.FREE && !canArrange) {
+          return FleetchartLayouts.PACKED;
+        }
 
         if (layout) {
           return layout;
@@ -151,9 +201,17 @@ export const useFleetchartStore = defineStore("fleetchart", {
         }
       };
     },
+    fleetchartPlacements: (state) => {
+      return (namespace: string): FleetchartPlacements =>
+        state.placements?.[namespace] ?? {};
+    },
     fleetchartOptions: (state) => {
       return (namespace: string): FleetchartOptions => ({
         ...DEFAULT_FLEETCHART_OPTIONS,
+        // Somebody who had turned on the extended toggle keeps seeing that.
+        ...((state.extended || []).includes(namespace)
+          ? { state: FleetchartShipStates.EXTENDED }
+          : {}),
         ...state.options?.[namespace],
       });
     },
@@ -205,6 +263,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
         this.color.push(namespace);
       }
     },
+    togglePlain(namespace: string) {
+      const current = this.plain || [];
+
+      this.plain = current.includes(namespace)
+        ? current.filter((item) => item !== namespace)
+        : [...current, namespace];
+    },
     toggleExtended(namespace: string) {
       const current = this.extended || [];
       if (current.includes(namespace)) {
@@ -233,6 +298,15 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
       this.layout = { ...this.layout, [payload.namespace]: payload.layout };
+    },
+    updatePlacements(payload: {
+      namespace: string;
+      placements: FleetchartPlacements;
+    }) {
+      this.placements = {
+        ...this.placements,
+        [payload.namespace]: payload.placements,
+      };
     },
     updateOptions(payload: {
       namespace: string;

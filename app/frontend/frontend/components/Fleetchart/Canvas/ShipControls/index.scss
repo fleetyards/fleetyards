@@ -1,0 +1,10 @@
+// Plain buttons with the gap of the chart's other control rows, and no surface of
+// their own.
+.fleetchart-canvas-ship-controls {
+  position: absolute;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}

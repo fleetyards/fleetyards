@@ -56,6 +56,18 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
     assert_equal [hidden.slug], response.parsed_body.map { |entry| entry["slug"] }
   end
 
+  test "GET /models/fleetchart-views serves the rear views" do
+    model = create(:model)
+    png = Base64.decode64("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==")
+
+    model.rear_view.attach(io: StringIO.new(png), filename: "rear.png", content_type: "image/png")
+
+    get "/api/v1/models/fleetchart-views", params: {q: {slugIn: [model.slug]}}
+
+    assert_response :success
+    assert response.parsed_body.first.dig("media", "rearView", "url").present?
+  end
+
   test "GET /models/fleetchart-views caps how many slugs it answers" do
     models = create_list(:model, 3)
 

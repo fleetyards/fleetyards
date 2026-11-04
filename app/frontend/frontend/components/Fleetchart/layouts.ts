@@ -532,6 +532,48 @@ export const withRowWidth = (
   };
 };
 
+// Moves a ship so its top left corner lands on the grid.
+export const snapToGrid = (
+  position: FleetchartPosition,
+  size: { width: number; height: number },
+  cell: number,
+): FleetchartPosition => ({
+  x: Math.round((position.x - size.width / 2) / cell) * cell + size.width / 2,
+  y: Math.round((position.y - size.height / 2) / cell) * cell + size.height / 2,
+});
+
+// Placed ships stay exactly where they were put. Ships without a place yet, such as
+// ones bought since, wait in a row under the rest rather than landing on top of them.
+export const arrangeFree = (
+  ships: FleetchartLayoutShip[],
+  placements: Record<string, FleetchartPosition>,
+  rowWidth: number,
+): FleetchartPositions => {
+  const placed = ships.filter((ship) => placements[ship.id]);
+  const unplaced = ships.filter((ship) => !placements[ship.id]);
+  const positions: FleetchartPositions = {};
+
+  placed.forEach((ship) => {
+    positions[ship.id] = {
+      x: placements[ship.id].x,
+      y: placements[ship.id].y,
+    };
+  });
+
+  const covered = boundsOf(placed, positions);
+  const offsetY = covered.minY + covered.height + HEADING_ROOM;
+  const waiting = arrangeClassic(unplaced, rowWidth);
+
+  unplaced.forEach((ship) => {
+    positions[ship.id] = {
+      x: waiting[ship.id].x + covered.minX,
+      y: waiting[ship.id].y + offsetY,
+    };
+  });
+
+  return positions;
+};
+
 const GRID_CELLS = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000];
 
 // The smallest round cell, in metres, that stays readable at this zoom.

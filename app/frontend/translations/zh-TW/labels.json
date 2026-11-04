@@ -508,7 +508,11 @@
           "port": "左舷",
           "top": "頂部",
           "angled": "斜角",
-          "front": "正面"
+          "front": "正面",
+          "starboard": "右舷",
+          "bottom": "底部",
+          "angledRear": "後方斜視",
+          "rear": "後方"
         },
         "gridSize": "每格 %{size} 公尺",
         "options": "選項",
@@ -532,6 +536,20 @@
           "normal": "正常",
           "wide": "寬鬆"
         },
+        "unplaced": "尚未放置",
+        "shipControls": "所選艦船",
+        "bringToFront": "移到最前",
+        "sendToBack": "移到最後",
+        "groupShips": "組合艦船",
+        "ungroupShips": "取消組合",
+        "undo": "復原",
+        "resetArrangement": "重設排列",
+        "state": "狀態",
+        "stateOptions": {
+          "flight": "飛行",
+          "extended": "展開",
+          "landed": "著陸"
+        },
         "facing": "朝向",
         "facingOptions": {
           "left": "左",
@@ -545,7 +563,8 @@
         "layoutOptions": {
           "columns": "分欄",
           "classic": "經典",
-          "packed": "緊密"
+          "packed": "緊密",
+          "free": "自由"
         },
         "mode": "模式",
         "modeOptions": {

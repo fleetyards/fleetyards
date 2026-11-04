@@ -5,6 +5,7 @@ import {
   FleetchartGroups,
   FleetchartLayouts,
   FleetchartModes,
+  FleetchartShipStates,
   FleetchartViewpoints,
   useFleetchartStore,
 } from "./fleetchart";
@@ -28,6 +29,65 @@ describe("fleetchart store", () => {
     expect(store.fleetchartOptions("fleet")).toEqual(
       DEFAULT_FLEETCHART_OPTIONS,
     );
+  });
+
+  it("offers a chart that cannot arrange packed instead of free", () => {
+    const store = useFleetchartStore();
+    store.updateLayout({ namespace: "hangar", layout: FleetchartLayouts.FREE });
+
+    expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.FREE);
+    expect(store.fleetchartLayout("hangar", false)).toBe(
+      FleetchartLayouts.PACKED,
+    );
+  });
+
+  it("keeps placements per chart", () => {
+    const store = useFleetchartStore();
+    store.updatePlacements({
+      namespace: "hangar",
+      placements: { a: { x: 1, y: 2 } },
+    });
+
+    expect(store.fleetchartPlacements("hangar")).toEqual({ a: { x: 1, y: 2 } });
+    expect(store.fleetchartPlacements("fleet")).toEqual({});
+  });
+
+  it("starts in flight, or extended for those who had turned that on", () => {
+    const store = useFleetchartStore();
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.FLIGHT,
+    );
+
+    store.toggleExtended("hangar");
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.EXTENDED,
+    );
+
+    store.updateOptions({
+      namespace: "hangar",
+      options: { state: FleetchartShipStates.LANDED },
+    });
+
+    expect(store.fleetchartOptions("hangar").state).toBe(
+      FleetchartShipStates.LANDED,
+    );
+  });
+
+  it("draws colored until somebody turns it off", () => {
+    const store = useFleetchartStore();
+
+    expect(store.coloredByDefault("hangar")).toBe(true);
+
+    store.togglePlain("hangar");
+
+    expect(store.coloredByDefault("hangar")).toBe(false);
+    expect(store.coloredByDefault("fleet")).toBe(true);
+  });
+
+  it("leaves the colored setting of the older charts alone", () => {
+    expect(useFleetchartStore().colored("hangar")).toBe(false);
   });
 
   it("starts packed", () => {
