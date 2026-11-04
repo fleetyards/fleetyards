@@ -27,6 +27,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
 import { useResizeObserver, useDebounceFn } from "@vueuse/core";
+import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
@@ -194,9 +195,13 @@ const awaitingConfirmation = computed(
 
 const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
 
-watch(webglSupported, (supported) => {
-  if (!supported) emit("unavailable");
-});
+watch(
+  webglSupported,
+  (supported) => {
+    if (!supported) emit("unavailable");
+  },
+  { immediate: true },
+);
 
 const dpr = computed(() =>
   lowPower.value
@@ -885,10 +890,7 @@ defineExpose({
       :progress="progress"
     />
     <input v-if="debug" v-model="modelColor" type="color" />
-    <div v-if="!webglSupported" class="holo-viewer__fallback">
-      <i class="fa-light fa-cube" />
-      <p>{{ t("messages.holoViewer.webglNotSupported") }}</p>
-    </div>
+    <WebglFallback v-if="!webglSupported" />
     <div
       v-else-if="awaitingConfirmation"
       class="holo-viewer__fallback"
