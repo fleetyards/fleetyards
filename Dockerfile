@@ -86,6 +86,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN --mount=type=secret,id=RAILS_MASTER_KEY \
     RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
     SECRET_KEY_BASE_DUMMY=1 \
+    APPSIGNAL_ACTIVE=false \
     VITE_RUBY_ASSET_HOST="${CDN_ENDPOINT}" \
     bin/rails assets:precompile
 
