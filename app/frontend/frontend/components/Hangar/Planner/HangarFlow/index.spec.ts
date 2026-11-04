@@ -183,6 +183,58 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(wrapper.text()).toContain("Aurora MR");
   });
 
+  it("takes a kept or melted ship back to undecided in one click", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: {
+          ...plan,
+          melts: [
+            {
+              id: "melt-titan",
+              vehicleId: "vehicle-titan",
+              model: model("Avenger Titan"),
+              value: 50,
+              estimated: false,
+              vehicleMissing: false,
+              pledgeShips: [],
+              pledgeItems: [],
+            },
+          ],
+        },
+        comparison,
+      },
+    });
+
+    await wrapper
+      .find('[data-test="hangar-plan-flow-toggle-kept"]')
+      .trigger("click");
+    await wrapper
+      .find('[data-test="hangar-plan-flow-toggle-melted"]')
+      .trigger("click");
+
+    const [kept, melted] = wrapper
+      .findAll('[data-test="hangar-plan-vehicle-status"]')
+      .filter((row) =>
+        row.find('[data-test="hangar-plan-decide-pending"]').exists(),
+      );
+    expect(kept.text()).toContain("Vulture");
+    // Keeping a ship costs nothing, which "Kept" already says.
+    expect(kept.text()).not.toContain("Free");
+    expect(melted.text()).toContain("Avenger Titan");
+
+    await kept
+      .find('[data-test="hangar-plan-decide-pending"]')
+      .trigger("click");
+    await melted
+      .find('[data-test="hangar-plan-decide-pending"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("decide")).toEqual([
+      ["vehicle-vulture", "pending"],
+      ["vehicle-titan", "pending"],
+    ]);
+  });
+
   it("lists ships needing a decision before ships that should change", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {

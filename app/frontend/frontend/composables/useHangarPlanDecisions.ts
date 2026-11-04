@@ -11,6 +11,8 @@ import {
   HangarPlanVehicleStatusEnum,
   useCreateHangarPlanKeep,
   useCreateHangarPlanVehicleMark,
+  useDestroyHangarPlanAcquisition,
+  useDestroyHangarPlanMelt,
   useUpdateHangarPlanVehicleMark,
 } from "@/services/fyApi";
 
@@ -30,6 +32,8 @@ export const useHangarPlanDecisions = (
   const keepMutation = useCreateHangarPlanKeep();
   const createMark = useCreateHangarPlanVehicleMark();
   const updateMark = useUpdateHangarPlanVehicleMark();
+  const destroyMelt = useDestroyHangarPlanMelt();
+  const destroyAcquisition = useDestroyHangarPlanAcquisition();
 
   const deciding = ref(false);
 
@@ -37,8 +41,10 @@ export const useHangarPlanDecisions = (
     deciding.value = true;
     try {
       updatePlan(await request());
+      return true;
     } catch {
       displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
+      return false;
     } finally {
       deciding.value = false;
     }
@@ -71,6 +77,40 @@ export const useHangarPlanDecisions = (
     );
   };
 
+  // Takes back whatever settled the ship, a melt or the route it starts, so
+  // the plan asks about it again.
+  const undecide = async (vehicleId: string) => {
+    const current = toValue(plan);
+    const melt = current?.melts.find((entry) => entry.vehicleId === vehicleId);
+    const acquisition = current?.slots
+      .flatMap((slot) => slot.candidates)
+      .flatMap((candidate) => candidate.acquisitions)
+      .find((entry) => entry.sourceVehicleId === vehicleId);
+
+    if (
+      melt &&
+      !(await save(() =>
+        destroyMelt.mutateAsync({ hangarPlanId: toValue(planId), id: melt.id }),
+      ))
+    ) {
+      return;
+    }
+
+    if (
+      acquisition &&
+      !(await save(() =>
+        destroyAcquisition.mutateAsync({
+          hangarPlanId: toValue(planId),
+          id: acquisition.id,
+        }),
+      ))
+    ) {
+      return;
+    }
+
+    await mark(vehicleId, HangarPlanVehicleMarkEnum.PENDING);
+  };
+
   const decide = (vehicleId: string, decision: HangarFlowDecision) => {
     if (deciding.value) return;
 
@@ -82,7 +122,7 @@ export const useHangarPlanDecisions = (
         void mark(vehicleId, HangarPlanVehicleMarkEnum.CHANGE);
         break;
       case "pending":
-        void mark(vehicleId, HangarPlanVehicleMarkEnum.PENDING);
+        void undecide(vehicleId);
         break;
       case "melt":
         comlink.emit("open-modal", {

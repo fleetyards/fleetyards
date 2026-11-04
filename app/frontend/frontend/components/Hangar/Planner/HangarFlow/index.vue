@@ -287,7 +287,7 @@ const routedAction = (route: PlannedRoute) => {
           count: steps,
           price: money(routeCost(route.acquisition)),
         })
-      : money(0),
+      : undefined,
   };
 };
 
@@ -323,6 +323,9 @@ const routedShipRow = (
       acquisition: route.acquisition,
       slot: route.slot,
     },
+    ...(rowGroup === "kept"
+      ? { vehicleId: entry.vehicleId, decisions: ["pending"] }
+      : {}),
     ...middle(route),
   };
 };
@@ -354,6 +357,8 @@ const meltedRow = (entry: HangarPlanVehicleStatus): Row => {
         : undefined,
     },
     rightNone: t("hangarPlanner.comparison.leaves"),
+    // A ship melted with its pledge has no melt of its own to take back.
+    ...(melt ? { vehicleId: entry.vehicleId, decisions: ["pending"] } : {}),
   };
 };
 
@@ -406,9 +411,9 @@ const shipRows = computed<Row[]>(() =>
             action: {
               kind: "kept",
               label: t("hangarPlanner.vehicleStatuses.kept"),
-              detail: money(0),
             },
             right: { ...left, sub: t("hangarPlanner.pick.same") },
+            decisions: ["pending"],
             end,
           },
         ];
