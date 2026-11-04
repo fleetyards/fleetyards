@@ -234,15 +234,15 @@ describe("shipGeometry", () => {
 
       expect(
         shipGeometry(clipper, FleetchartViewpoints.ANGLED)?.imageWidth,
-      ).toBeCloseTo(47.6, 1);
+      ).toBeCloseTo(39.85, 1);
       expect(
         shipGeometry(clipper, FleetchartViewpoints.ANGLED, {
           state: FleetchartShipStates.LANDED,
         })?.imageWidth,
-      ).toBeCloseTo(33.87, 1);
+      ).toBeCloseTo(24.24, 1);
       expect(
         shipGeometry(clipper, FleetchartViewpoints.ANGLED_REAR)?.imageWidth,
-      ).toBeCloseTo(53.48, 1);
+      ).toBeCloseTo(42.2, 1);
     });
 
     it("keeps a borrowed flight picture at its flight size", () => {

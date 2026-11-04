@@ -183,14 +183,15 @@ const metricsOfPicture = (
   );
 };
 
-// The cameras are turned by a fixed angle, so these pictures are as wide as a share
-// of the length plus a share of the beam. Fitted to the pictures themselves: both
-// spread wings and folded ones then draw at the same scale.
+// How far the angled cameras are turned, fitted to the pictures themselves. A picture
+// is as wide as the ship's outline from above seen at that angle. Taken as an ellipse
+// of length by beam, as a ship does not fill the corners of a box unless its wings are
+// spread, so a box would draw folded wings too large.
 const ANGLED_VIEW_SHARES: Partial<
   Record<ViewName, { length: number; beam: number }>
 > = {
-  angledView: { length: 0.875, beam: 0.485 },
-  angledRearView: { length: 0.731, beam: 0.682 },
+  angledView: { length: 0.707, beam: 0.707 },
+  angledRearView: { length: 0.623, beam: 0.783 },
 };
 
 // Seen from ahead or behind a picture is as wide as the ship's beam, and from the side
@@ -205,7 +206,9 @@ const pictureWidth = (
     return beam;
   }
 
-  return shares && beam ? shares.length * length + shares.beam * beam : length;
+  return shares && beam
+    ? Math.hypot(shares.length * length, shares.beam * beam)
+    : length;
 };
 
 // A ship's box in metres, or undefined when there is nothing to draw it from:
