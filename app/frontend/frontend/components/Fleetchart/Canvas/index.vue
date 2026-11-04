@@ -374,7 +374,7 @@ onMounted(() => {
 onUnmounted(() => {
   stopStatusListener?.();
 
-  persistZoom.cancel();
+  persistZoom.flush();
   handleResize.cancel();
 
   panzoomInstance?.dispose();
