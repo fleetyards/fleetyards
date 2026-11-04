@@ -14,7 +14,7 @@ type Props = {
   limit?: number;
 };
 
-const props = withDefaults(defineProps<Props>(), { limit: 2 });
+const props = withDefaults(defineProps<Props>(), { limit: 4 });
 
 const { t } = useI18n();
 
@@ -34,9 +34,16 @@ const stats = useComponentStats(() => props.component);
 const leadStats = computed(() => {
   const unavailable = t("labels.notAvailable");
 
-  return stats.value
-    .filter((stat) => stat.primary && stat.value && stat.value !== unavailable)
-    .slice(0, props.limit);
+  const available = stats.value.filter(
+    (stat) => stat.value && stat.value !== unavailable,
+  );
+
+  // The headline figures first, then whatever else it has, so a part with one
+  // headline figure still fills the row.
+  return [
+    ...available.filter((stat) => stat.primary),
+    ...available.filter((stat) => !stat.primary),
+  ].slice(0, props.limit);
 });
 </script>
 

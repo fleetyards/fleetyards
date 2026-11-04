@@ -30,6 +30,17 @@
     border-radius: 4px;
   }
 
+  // Sized to the line it sits on, so a row with a logo is no taller than one
+  // without.
+  &__maker-logo {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    object-fit: contain;
+    vertical-align: -4px;
+  }
+
   :deep(.component-lead-metric) {
     display: none;
     flex: none;

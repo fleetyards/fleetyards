@@ -13,13 +13,13 @@ type Props = {
   limit?: number;
 };
 
-const props = withDefaults(defineProps<Props>(), { limit: 2 });
+const props = withDefaults(defineProps<Props>(), { limit: 4 });
 
 const stats = useEquipmentStats(() => props.equipment);
 
-const leadStats = computed(() =>
-  stats.value.filter((stat) => stat.primary).slice(0, props.limit),
-);
+// The headline figures come first in `stats`, so whatever else the item has
+// fills the rest of the row.
+const leadStats = computed(() => stats.value.slice(0, props.limit));
 </script>
 
 <template>
