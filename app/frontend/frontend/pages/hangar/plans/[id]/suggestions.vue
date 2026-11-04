@@ -17,6 +17,7 @@ import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/ty
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -156,7 +157,7 @@ const openSlot = (entry: HangarPlanFleetEntry) => {
                 loading="lazy"
               />
               <span class="plan-suggestion__text">
-                <strong>{{ entry.model.name }}</strong>
+                <strong><ShipName :ship="entry.model" /></strong>
                 <span class="plan-suggestions__muted">{{ origin(entry) }}</span>
               </span>
               <span class="plan-suggestion__price">

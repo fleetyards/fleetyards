@@ -216,6 +216,7 @@ const storeItem = (
 ): PickListItem => ({
   id: model.id,
   title: model.name,
+  ship: model,
   meta:
     [
       model.manufacturerName,
@@ -320,6 +321,7 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
         {
           id: item.id,
           title: item.toModel?.name ?? item.name,
+          ship: item.toModel ?? undefined,
           // The RSI title only says more than the ship when we could not
           // match the ship it names.
           meta: [
@@ -355,6 +357,7 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
         {
           id: pledge.id,
           title: pledge.upgradeToModel?.name ?? pledge.name,
+          ship: pledge.upgradeToModel ?? undefined,
           meta: pledge.upgradeToModel ? undefined : pledge.name,
           keywords: pledge.name,
           price: money(pledge.price),
@@ -401,10 +404,10 @@ const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
   hangarPledgeItemId: null,
   buybackPledgeId: null,
   priceOverride: "",
+  usesBuybackToken: true,
 });
 
 const setSource = (index: number, sourceKind: HangarPlanUpgradeSourceEnum) => {
-  usesBuybackToken: true,
   if (steps.value[index].sourceKind === sourceKind) return;
 
   steps.value[index] = { ...draft(sourceKind), key: steps.value[index].key };
@@ -617,12 +620,14 @@ const nodes = computed<RouteChainNode[]>(() => [
     key: "start",
     kind: t(`hangarPlanner.startKinds.${startKind.value}`),
     ship: startName.value,
+    model: props.acquisition.startModel,
     price: money(startPrice.value),
   },
   ...steps.value.map((step, index) => ({
     key: String(step.key),
     kind: t("hangarPlanner.stepNumber", { number: index + 1 }),
     ship: nameOf(step.toModelId) ?? "…",
+    model: step.toModelId ? models.value.get(step.toModelId) : undefined,
     link: {
       source: t(`hangarPlanner.upgradeSources.${step.sourceKind}`),
       price: money(stepPrices.value[index]),

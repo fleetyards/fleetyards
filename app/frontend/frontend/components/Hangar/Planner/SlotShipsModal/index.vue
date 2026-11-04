@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import type { Component } from "vue";
 import { useRouter } from "vue-router";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
@@ -176,7 +177,7 @@ const editSettings = () =>
           loading="lazy"
         />
         <span class="slot-ship__title">
-          <strong>{{ candidate.model.name }}</strong>
+          <strong><ShipName :ship="candidate.model" /></strong>
           <span
             v-if="candidate.model.manufacturerName"
             class="slot-ship__muted"

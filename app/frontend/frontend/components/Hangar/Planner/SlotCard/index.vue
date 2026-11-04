@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import type { Component } from "vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -34,8 +35,8 @@ import {
   type HangarPlanSlot,
   type HangarPlanSlotCost,
   HangarPlanSlotStateEnum,
-  useChooseHangarPlanSlotCandidate,
   HangarPlanStartKindEnum,
+  useChooseHangarPlanSlotCandidate,
   useDestroyHangarPlanAcquisition,
   useDestroyHangarPlanCandidate,
   useDestroyHangarPlanSlot,
@@ -105,8 +106,6 @@ const filterChips = computed(() => {
   return chips;
 });
 
-const decided = computed(
-  () => props.slot.state === HangarPlanSlotStateEnum.DECIDED,
 // A slot whose units all lack a start has spent nothing yet, so its store price
 // says more than a counted $0.00.
 const countedCost = computed(() => {
@@ -127,6 +126,8 @@ const uncountedCost = computed(() => {
   ].join(" · ");
 });
 
+const decided = computed(
+  () => props.slot.state === HangarPlanSlotStateEnum.DECIDED,
 );
 
 const decidedCandidate = computed(() =>
@@ -275,14 +276,14 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
         <Pill :variant="stateVariant" data-test="hangar-plan-slot-state">
           {{ t(`hangarPlanner.states.${slot.state}`) }}
         </Pill>
+        <span v-if="countedCost" class="plan-slot__cost">
+          {{ countedCost }}
+        </span>
         <span
           v-if="uncountedCost"
           class="plan-slot__meta"
           data-test="hangar-plan-slot-store-cost"
         >
-        <span v-if="countedCost" class="plan-slot__cost">
-          {{ countedCost }}
-        </span>
           {{ uncountedCost }}
         </span>
       </template>
@@ -366,7 +367,7 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
           />
           <div class="plan-slot__candidate-body">
             <div class="plan-slot__candidate-title">
-              <strong>{{ candidate.model.name }}</strong>
+              <strong><ShipName :ship="candidate.model" /></strong>
               <span
                 v-if="candidate.model.manufacturerName"
                 class="plan-slot__meta"

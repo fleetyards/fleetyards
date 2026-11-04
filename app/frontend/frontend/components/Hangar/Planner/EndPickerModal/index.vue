@@ -136,6 +136,7 @@ const items = computed<PickListItem[]>(() => [
         {
           id: SAME,
           title: t("hangarPlanner.pick.same"),
+          ship: props.startModel,
           meta: props.startModel.name,
           price: money(0),
           sortPrice: 0,
@@ -146,6 +147,7 @@ const items = computed<PickListItem[]>(() => [
   ...(shows("plan") ? ends.value : []).map(({ slot, candidate }) => ({
     id: candidate.id,
     title: candidate.model.name,
+    ship: candidate.model,
     meta: [slot.label, upgradeNote(candidate.model)]
       .filter(Boolean)
       .join(" · "),
@@ -160,6 +162,7 @@ const items = computed<PickListItem[]>(() => [
   ...(shows("catalogue") ? catalogue.value : []).map((model) => ({
     id: `${MODEL}${model.id}`,
     title: model.name,
+    ship: model,
     meta: [
       model.manufacturerName,
       t("hangarPlanner.pick.newSlot"),

@@ -122,6 +122,7 @@ const vehicleItems = computed<PickListItem[]>(() =>
   meltable.value.map((vehicle) => ({
     id: vehicle.id,
     title: vehicle.name || vehicle.model.name,
+    ship: vehicle.model,
     meta:
       [vehicle.name ? vehicle.model.name : undefined, packageLabel(vehicle)]
         .filter(Boolean)

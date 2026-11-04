@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RouteChainNode } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 
@@ -53,7 +54,12 @@ const lastIndex = computed(() => props.nodes.length - 1);
         }"
       >
         <span class="route-chain__kind">{{ node.kind }}</span>
-        <span class="route-chain__ship">{{ node.ship }}</span>
+        <span class="route-chain__ship">
+          <ShipName v-if="node.model" :ship="node.model">
+            {{ node.ship }}
+          </ShipName>
+          <template v-else>{{ node.ship }}</template>
+        </span>
         <span v-if="node.price" class="route-chain__price">
           {{ node.price }}
         </span>

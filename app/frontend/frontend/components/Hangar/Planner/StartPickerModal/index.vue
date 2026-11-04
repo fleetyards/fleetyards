@@ -288,7 +288,9 @@ const shown = (option: StartOption) =>
     (option.status !== undefined && statuses.value.includes(option.status)));
 
 const startItems = computed<PickListItem[]>(() =>
-  options.value.filter(shown).map((option) => option.item),
+  options.value
+    .filter(shown)
+    .map((option) => ({ ...option.item, ship: option.model })),
 );
 
 const close = () => comlink.emit("close-modal", true);

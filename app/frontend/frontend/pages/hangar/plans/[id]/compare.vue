@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import { useRoute } from "vue-router";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -122,7 +123,7 @@ const changed = computed(() =>
             <Pill variant="neutral">
               {{ t(`hangarPlanner.changes.${diff.change}`) }}
             </Pill>
-            {{ diff.model.name }}
+            <ShipName :ship="diff.model" />
             <span class="plan-compare__muted">
               {{ diff.leftCount }} → {{ diff.rightCount }}
             </span>

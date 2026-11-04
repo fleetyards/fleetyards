@@ -15,12 +15,16 @@ import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
+import type { HangarPlanModel } from "@/services/fyApi";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export type PickListItem = {
   id: string;
   title: string;
+  // The ship the row stands for, whose stats open from its title.
+  ship?: HangarPlanModel;
   meta?: string;
   price?: string;
   badge?: string;
@@ -162,7 +166,12 @@ const choose = (item: PickListItem) => {
       :data-test="`pick-list-chosen-${name}`"
     >
       <span class="pick-list__text">
-        <span class="pick-list__title">{{ chosen.title }}</span>
+        <span class="pick-list__title">
+          <ShipName v-if="chosen.ship" :ship="chosen.ship">
+            {{ chosen.title }}
+          </ShipName>
+          <template v-else>{{ chosen.title }}</template>
+        </span>
         <span v-if="chosen.meta" class="pick-list__meta">{{
           chosen.meta
         }}</span>
@@ -217,7 +226,12 @@ const choose = (item: PickListItem) => {
             @click="choose(item)"
           >
             <span class="pick-list__text">
-              <span class="pick-list__title">{{ item.title }}</span>
+              <span class="pick-list__title">
+                <ShipName v-if="item.ship" :ship="item.ship" :focusable="false">
+                  {{ item.title }}
+                </ShipName>
+                <template v-else>{{ item.title }}</template>
+              </span>
               <span v-if="item.meta" class="pick-list__meta">{{
                 item.meta
               }}</span>

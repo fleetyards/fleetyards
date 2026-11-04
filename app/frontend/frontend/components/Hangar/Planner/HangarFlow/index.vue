@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
+import CardTitle from "@/frontend/components/Hangar/Planner/HangarFlow/CardTitle.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -60,8 +61,8 @@ const { money, range, startRange } = usePlanMoney();
 
 type Card = {
   title: string;
-  // Every ship the card stands for, where the title runs them together.
-  ships?: string[];
+  // Every ship the card stands for, where it stands for more than one.
+  ships?: HangarPlanModel[];
   sub?: string;
   model?: HangarPlanModel;
   pill?: { variant: `${PillVariantsEnum}`; label: string };
@@ -161,7 +162,7 @@ type WaitingStart = (typeof waitingStarts.value)[number];
 
 const undecidedCard = (slot: HangarPlanSlot): Card => ({
   title: slot.candidates.map((candidate) => candidate.model.name).join(" / "),
-  ships: slot.candidates.map((candidate) => candidate.model.name),
+  ships: slot.candidates.map((candidate) => candidate.model),
   sub: slot.label,
   model: slot.candidates[0]?.model,
   pill: {
@@ -299,8 +300,8 @@ const routedShipRow = (
   const unrouted = !route.acquisition.routeComplete;
   const upgraded = route.acquisition.steps.length > 0;
   const left = hangarCard(entry.name, entry.model);
-
   const rowGroup: RowGroup = unrouted ? "ships" : upgraded ? "routed" : "kept";
+
   return {
     key: entry.vehicleId,
     group: rowGroup,
@@ -472,6 +473,15 @@ const shipRows = computed<Row[]>(() =>
 const slotCost = (slot: HangarPlanSlot) =>
   props.summary?.slots.find((cost) => cost.slotId === slot.id);
 
+// What the slot's units without a start could come to.
+const gapDetail = (slot: HangarPlanSlot) => {
+  const cost = slotCost(slot);
+
+  return cost
+    ? startRange(cost.storeCostMin, cost.storeCost)
+    : t("hangarPlanner.comparison.flow.notCounted");
+};
+
 const neededRows = computed<Row[]>(() => {
   const bought = routes.value
     .filter(
@@ -482,15 +492,6 @@ const neededRows = computed<Row[]>(() => {
       const left: Card = {
         title: acquisition.startModel.name,
         sub: t(`hangarPlanner.startKinds.${acquisition.startKind}`),
-// What the slot's units without a start could come to.
-const gapDetail = (slot: HangarPlanSlot) => {
-  const cost = slotCost(slot);
-
-  return cost
-    ? startRange(cost.storeCostMin, cost.storeCost)
-    : t("hangarPlanner.comparison.flow.notCounted");
-};
-
         model: acquisition.startModel,
       };
 
@@ -603,8 +604,8 @@ const gapDetail = (slot: HangarPlanSlot) => {
         right: undecidedCard(slot),
         start: { slot },
         slot,
-      };
         chooseIn: slot,
+      };
     });
 
   const open = props.plan.slots
@@ -799,9 +800,15 @@ const imageOf = (model?: HangarPlanModel) =>
                 data-test="hangar-plan-flow-pick-start"
                 @click="pickStart(row)"
               >
-                {{ row.left.title }}
+                <CardTitle
+                  :title="row.left.title"
+                  :model="row.left.model"
+                  :focusable="false"
+                />
               </button>
-              <strong v-else>{{ row.left.title }}</strong>
+              <strong v-else>
+                <CardTitle :title="row.left.title" :model="row.left.model" />
+              </strong>
               <span v-if="row.left.sub" class="hangar-flow__muted">
                 {{ row.left.sub }}
               </span>
@@ -889,11 +896,6 @@ const imageOf = (model?: HangarPlanModel) =>
             <button
               v-if="rightLabel(row)"
               type="button"
-              v-tooltip="{
-                content: (row.right.ships ?? [row.right.title]).join('\n'),
-                multiline: true,
-                preserveLineBreaks: true,
-              }"
               class="hangar-flow__card-action"
               :aria-label="rightLabel(row)"
               :data-test="
@@ -903,9 +905,20 @@ const imageOf = (model?: HangarPlanModel) =>
               "
               @click="pickEnd(row)"
             >
-              {{ row.right.title }}
+              <CardTitle
+                :title="row.right.title"
+                :model="row.right.model"
+                :ships="row.right.ships"
+                :focusable="false"
+              />
             </button>
-            <strong v-else>{{ row.right.title }}</strong>
+            <strong v-else>
+              <CardTitle
+                :title="row.right.title"
+                :model="row.right.model"
+                :ships="row.right.ships"
+              />
+            </strong>
             <span v-if="row.right.sub" class="hangar-flow__muted">
               {{ row.right.sub }}
             </span>

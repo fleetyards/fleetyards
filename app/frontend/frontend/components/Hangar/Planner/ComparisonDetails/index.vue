@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -94,7 +95,7 @@ const unchangedCount = computed(
                   loading="lazy"
                 />
                 <span class="comparison-details__change-text">
-                  <strong>{{ diff.model.name }}</strong>
+                  <strong><ShipName :ship="diff.model" /></strong>
                   <span class="comparison-details__muted">
                     {{ t(`hangarPlanner.changes.${diff.change}`) }} ·
                     {{ diff.leftCount }} → {{ diff.rightCount }}

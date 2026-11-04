@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import type {
   HangarPlanPledgeItem,
   HangarPlanPledgeShip,
@@ -27,12 +28,14 @@ const entries = computed(() => [
   ...props.ships.map((ship) => ({
     id: ship.id,
     name: ship.name ? `${ship.name} (${ship.model.name})` : ship.model.name,
+    ship: ship.model,
     quantity: 1,
     icon: "fa-light fa-rocket",
   })),
   ...props.items.map((item) => ({
     id: item.id,
     name: item.name,
+    ship: undefined,
     quantity: item.quantity,
     icon: "fa-light fa-box",
   })),
@@ -43,7 +46,10 @@ const entries = computed(() => [
   <ul class="melt-contents">
     <li v-for="entry in entries" :key="entry.id" class="melt-contents__item">
       <i :class="entry.icon" aria-hidden="true" />
-      <span>{{ entry.name }}</span>
+      <ShipName v-if="entry.ship" :ship="entry.ship">
+        <span>{{ entry.name }}</span>
+      </ShipName>
+      <span v-else>{{ entry.name }}</span>
       <span v-if="entry.quantity > 1" class="melt-contents__dim">
         ×{{ entry.quantity }}
       </span>
