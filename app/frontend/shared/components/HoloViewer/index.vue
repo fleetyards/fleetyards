@@ -371,14 +371,7 @@ const toggleZoom = () => {
   zoom.value = !zoom.value;
 };
 
-const BACKGROUNDS = [
-  "dark",
-  "space",
-  "stanton",
-  "crusader",
-  "pyro",
-  "light",
-] as const;
+const BACKGROUNDS = ["dark", "space", "stanton", "crusader", "pyro"] as const;
 
 type Background = (typeof BACKGROUNDS)[number];
 
@@ -388,7 +381,6 @@ const BACKGROUND_ICONS: Record<Background, string> = {
   stanton: "fa-light fa-galaxy",
   crusader: "fa-light fa-planet-moon",
   pyro: "fa-light fa-fire",
-  light: "fa-light fa-sun",
 };
 
 // Panoramas from the game's own skies, the smaller cut on a low power device.
