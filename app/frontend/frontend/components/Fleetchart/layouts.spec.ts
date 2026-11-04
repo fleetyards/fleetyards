@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   arrangeClassic,
   arrangeColumns,
+  arrangeFree,
   arrangePacked,
+  snapToGrid,
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
@@ -231,6 +233,39 @@ describe("arrangePacked", () => {
 
   it("is empty without ships", () => {
     expect(arrangePacked([], 16 / 9)).toEqual({});
+  });
+});
+
+describe("arrangeFree", () => {
+  it("leaves placed ships exactly where they were put", () => {
+    expect(arrangeFree([ship("a")], { a: { x: -40, y: 900 } }, 500).a).toEqual({
+      x: -40,
+      y: 900,
+    });
+  });
+
+  it("keeps unplaced ships clear of the placed ones", () => {
+    const positions = arrangeFree(
+      [ship("a"), ship("new")],
+      { a: { x: 0, y: 0 } },
+      500,
+    );
+
+    expect(positions.new.y - 10).toBeGreaterThan(positions.a.y + 10);
+  });
+
+  it("copes with nothing placed yet", () => {
+    expect(arrangeFree([ship("a")], {}, 500).a).toBeDefined();
+  });
+});
+
+describe("snapToGrid", () => {
+  it("lands the ship's top left corner on the grid", () => {
+    const size = { width: 30, height: 12 };
+    const { x, y } = snapToGrid({ x: 27, y: 18 }, size, 10);
+
+    expect((x - 15) % 10).toBe(0);
+    expect((y - 6) % 10).toBe(0);
   });
 });
 
