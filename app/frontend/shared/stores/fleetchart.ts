@@ -79,6 +79,10 @@ export interface FleetchartPlacement {
   y: number;
   facing?: FleetchartFacings;
   viewpoint?: FleetchartViewpoints;
+  // Stacking order among ships placed on top of each other.
+  order?: number;
+  // Ships sharing one are selected and moved together.
+  groupId?: string;
 }
 
 export type FleetchartPlacements = Record<string, FleetchartPlacement>;

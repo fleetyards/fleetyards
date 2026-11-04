@@ -36,6 +36,7 @@ interface Props {
   facing?: FleetchartFacings;
   selected?: boolean;
   arranging?: boolean;
+  order?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   facing: FleetchartFacings.LEFT,
   selected: false,
   arranging: false,
+  order: undefined,
 });
 
 const { t } = useI18n();
@@ -95,6 +97,7 @@ const image = computed(() => {
     class="fleetchart-canvas-item"
     :class="cssClasses"
     :style="{
+      zIndex: order,
       left: `${left}px`,
       top: `${top}px`,
       width: `${boxWidth * PIXELS_PER_METRE}px`,

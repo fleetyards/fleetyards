@@ -60,6 +60,14 @@
   left: 0;
 }
 
+.fleetchart-canvas__marquee {
+  position: absolute;
+  z-index: 2;
+  background: rgba($primary, 0.15);
+  border: 1px solid $primary;
+  pointer-events: none;
+}
+
 .fleetchart-canvas__heading {
   position: absolute;
   color: darken($text-color, 10%);

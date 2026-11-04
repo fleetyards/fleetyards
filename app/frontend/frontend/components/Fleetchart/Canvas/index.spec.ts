@@ -49,6 +49,13 @@ const entry = (id: string, length = 100): FleetchartEntry =>
         width: 1000,
         height: 500,
       },
+      topView: {
+        url: `${id}-top.png`,
+        largeUrl: `${id}-top-large.png`,
+        mediumUrl: `${id}-top-medium.png`,
+        width: 1000,
+        height: 500,
+      },
     },
   }) as unknown as FleetchartEntry;
 
@@ -509,17 +516,187 @@ describe("FleetchartCanvas", () => {
         ).toBeDefined();
       });
 
-      it("rotate from the toolbar", async () => {
+      it("set the facing from the dropdown", async () => {
         const wrapper = await mountFree();
 
         await drag(wrapper, 0);
         await wrapper
-          .get("[data-test='fleetchart-rotate-ship']")
+          .get("[data-test='fleetchart-ship-facing-bottom']")
           .trigger("click");
 
         expect([placement("a").facing, placement("b").facing]).toContain(
-          FleetchartFacings.TOP,
+          FleetchartFacings.BOTTOM,
         );
+      });
+    });
+
+    describe("several ships", () => {
+      const ids = () => ["a", "b"];
+
+      const shipElement = (
+        wrapper: ReturnType<typeof mountCanvas>,
+        index: number,
+      ) => wrapper.findAll("[data-test='fleetchart-ship']")[index].element;
+
+      const press = (element: Element, init: { shiftKey?: boolean } = {}) => {
+        const down = new Event("pointerdown", { bubbles: true });
+
+        Object.assign(down, {
+          button: 0,
+          pointerType: "mouse",
+          clientX: 0,
+          clientY: 0,
+          ...init,
+        });
+        element.dispatchEvent(down);
+      };
+
+      const release = async (distance = 0) => {
+        if (distance) {
+          const move = new Event("pointermove");
+
+          Object.assign(move, { clientX: distance, clientY: 0 });
+          window.dispatchEvent(move);
+        }
+
+        window.dispatchEvent(new Event("pointerup"));
+        await nextTick();
+      };
+
+      const selectBoth = async (wrapper: ReturnType<typeof mountCanvas>) => {
+        press(shipElement(wrapper, 0));
+        await release();
+        press(shipElement(wrapper, 1), { shiftKey: true });
+        await release();
+      };
+
+      it("moves every selected ship by the same distance", async () => {
+        const wrapper = await mountFree();
+        const before = ids().map((id) => ({ ...placement(id) }));
+
+        await selectBoth(wrapper);
+        press(shipElement(wrapper, 0));
+        await release(40);
+
+        expect(placement("a").x).toBe(before[0].x + 10);
+        expect(placement("b").x).toBe(before[1].x + 10);
+      });
+
+      it("applies a change to every selected ship", async () => {
+        const wrapper = await mountFree();
+
+        await selectBoth(wrapper);
+        await wrapper
+          .get("[data-test='fleetchart-ship-facing-top']")
+          .trigger("click");
+
+        expect(placement("a").facing).toBe(FleetchartFacings.TOP);
+        expect(placement("b").facing).toBe(FleetchartFacings.TOP);
+      });
+
+      it("drops a ship from the selection on a second Shift press", async () => {
+        const wrapper = await mountFree();
+
+        await selectBoth(wrapper);
+        press(shipElement(wrapper, 1), { shiftKey: true });
+        await release();
+        await wrapper
+          .get("[data-test='fleetchart-ship-facing-top']")
+          .trigger("click");
+
+        expect([placement("a").facing, placement("b").facing].sort()).toEqual([
+          FleetchartFacings.LEFT,
+          FleetchartFacings.TOP,
+        ]);
+      });
+
+      it("brings a ship to the front and sends it to the back", async () => {
+        const wrapper = await mountFree();
+
+        press(shipElement(wrapper, 0));
+        await release();
+        await wrapper
+          .get("[data-test='fleetchart-bring-to-front']")
+          .trigger("click");
+
+        const shipStyle = () => (shipElement(wrapper, 0) as HTMLElement).style;
+        const front = Number(shipStyle().zIndex);
+
+        await wrapper
+          .get("[data-test='fleetchart-send-to-back']")
+          .trigger("click");
+
+        expect(front).toBeGreaterThan(0);
+        expect(Number(shipStyle().zIndex)).toBeLessThan(0);
+      });
+
+      it("selects and moves grouped ships as one", async () => {
+        const wrapper = await mountFree();
+        const before = ids().map((id) => ({ ...placement(id) }));
+
+        await selectBoth(wrapper);
+        await wrapper
+          .get("[data-test='fleetchart-group-ships']")
+          .trigger("click");
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        await nextTick();
+
+        press(shipElement(wrapper, 0));
+        await release(40);
+
+        expect(placement("a").groupId).toBe(placement("b").groupId);
+        expect(placement("a").x).toBe(before[0].x + 10);
+        expect(placement("b").x).toBe(before[1].x + 10);
+      });
+
+      it("moves one ship alone again once ungrouped", async () => {
+        const wrapper = await mountFree();
+
+        await selectBoth(wrapper);
+        await wrapper
+          .get("[data-test='fleetchart-group-ships']")
+          .trigger("click");
+        await wrapper
+          .get("[data-test='fleetchart-ungroup-ships']")
+          .trigger("click");
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        await nextTick();
+
+        const before = ids().map((id) => ({ ...placement(id) }));
+
+        press(shipElement(wrapper, 0));
+        await release(40);
+
+        const moved = ids().filter(
+          (id, index) => placement(id).x !== before[index].x,
+        );
+
+        expect(moved).toHaveLength(1);
+      });
+
+      it("selects the ships inside a box drawn with Shift", async () => {
+        const wrapper = await mountFree();
+        const viewport = wrapper.get(".fleetchart-canvas__viewport").element;
+
+        press(viewport, { shiftKey: true });
+
+        const move = new Event("pointermove");
+
+        Object.assign(move, { clientX: 5000, clientY: 5000 });
+        window.dispatchEvent(move);
+        await nextTick();
+
+        expect(wrapper.find("[data-test='fleetchart-marquee']").exists()).toBe(
+          true,
+        );
+
+        await release();
+        await wrapper
+          .get("[data-test='fleetchart-ship-facing-top']")
+          .trigger("click");
+
+        expect(placement("a").facing).toBe(FleetchartFacings.TOP);
+        expect(placement("b").facing).toBe(FleetchartFacings.TOP);
       });
     });
 

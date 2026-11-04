@@ -6,19 +6,36 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
+import {
+  FleetchartFacings,
+  FleetchartViewpoints,
+} from "@/shared/stores/fleetchart";
 
 interface Props {
-  viewpoint: FleetchartViewpoints;
+  count: number;
+  // Undefined when the selected ships differ.
+  viewpoint?: FleetchartViewpoints;
   available: FleetchartViewpoints[];
+  facing?: FleetchartFacings;
+  canGroup?: boolean;
+  canUngroup?: boolean;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  viewpoint: undefined,
+  facing: undefined,
+  canGroup: false,
+  canUngroup: false,
+});
 
 const emit = defineEmits<{
-  rotate: [];
   "update:viewpoint": [viewpoint: FleetchartViewpoints];
+  "update:facing": [facing: FleetchartFacings];
+  stack: [direction: "front" | "back"];
+  group: [];
+  ungroup: [];
 }>();
 
 const { t } = useI18n();
@@ -31,25 +48,89 @@ const { t } = useI18n();
     :aria-label="t('labels.fleetchartApp.shipControls')"
     data-test="fleetchart-ship-controls"
   >
+    <span v-if="count > 1" class="fleetchart-canvas-ship-controls__count">
+      {{ count }}
+    </span>
+
+    <BtnDropdown size="sm" data-test="fleetchart-ship-view">
+      <template #label>
+        {{
+          viewpoint
+            ? t(`labels.fleetchartApp.viewpointOptions.${viewpoint}`)
+            : t("labels.fleetchartApp.viewpoint")
+        }}
+      </template>
+      <Btn
+        v-for="option in FleetchartViewpoints"
+        :key="option"
+        :active="viewpoint === option"
+        :disabled="!available.includes(option)"
+        :data-test="`fleetchart-ship-view-${option}`"
+        variant="bare"
+        @click="emit('update:viewpoint', option)"
+      >
+        {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
+      </Btn>
+    </BtnDropdown>
+
+    <BtnDropdown size="sm" data-test="fleetchart-ship-facing">
+      <template #label>
+        {{
+          facing
+            ? t(`labels.fleetchartApp.facingOptions.${facing}`)
+            : t("labels.fleetchartApp.facing")
+        }}
+      </template>
+      <Btn
+        v-for="option in FleetchartFacings"
+        :key="option"
+        :active="facing === option"
+        :data-test="`fleetchart-ship-facing-${option}`"
+        variant="bare"
+        @click="emit('update:facing', option)"
+      >
+        {{ t(`labels.fleetchartApp.facingOptions.${option}`) }}
+      </Btn>
+    </BtnDropdown>
+
     <Btn
-      v-for="option in FleetchartViewpoints"
-      :key="option"
-      :active="viewpoint === option"
-      :disabled="!available.includes(option)"
-      :data-test="`fleetchart-ship-view-${option}`"
+      v-tooltip="t('labels.fleetchartApp.bringToFront')"
+      :aria-label="t('labels.fleetchartApp.bringToFront')"
+      data-test="fleetchart-bring-to-front"
       size="sm"
-      @click="emit('update:viewpoint', option)"
+      @click="emit('stack', 'front')"
     >
-      {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
+      <i class="fa-duotone fa-bring-front" />
     </Btn>
     <Btn
-      v-tooltip="t('labels.fleetchartApp.rotateShip')"
-      :aria-label="t('labels.fleetchartApp.rotateShip')"
-      data-test="fleetchart-rotate-ship"
+      v-tooltip="t('labels.fleetchartApp.sendToBack')"
+      :aria-label="t('labels.fleetchartApp.sendToBack')"
+      data-test="fleetchart-send-to-back"
       size="sm"
-      @click="emit('rotate')"
+      @click="emit('stack', 'back')"
     >
-      <i class="fa-duotone fa-rotate-right" />
+      <i class="fa-duotone fa-send-back" />
+    </Btn>
+
+    <Btn
+      v-if="canGroup"
+      v-tooltip="t('labels.fleetchartApp.groupShips')"
+      :aria-label="t('labels.fleetchartApp.groupShips')"
+      data-test="fleetchart-group-ships"
+      size="sm"
+      @click="emit('group')"
+    >
+      <i class="fa-duotone fa-object-group" />
+    </Btn>
+    <Btn
+      v-if="canUngroup"
+      v-tooltip="t('labels.fleetchartApp.ungroupShips')"
+      :aria-label="t('labels.fleetchartApp.ungroupShips')"
+      data-test="fleetchart-ungroup-ships"
+      size="sm"
+      @click="emit('ungroup')"
+    >
+      <i class="fa-duotone fa-object-ungroup" />
     </Btn>
   </div>
 </template>
