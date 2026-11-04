@@ -166,6 +166,9 @@
         "failure": "Échec de l'exportation, veuillez réessayer plus tard."
       },
       "vehicle": {
+        "destroy": {
+          "failure": "Le vaisseau n'a pas pu être retiré."
+        },
         "move": {
           "failure": "L'ordre n'a pas pu être enregistré."
         },

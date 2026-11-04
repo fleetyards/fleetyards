@@ -19,6 +19,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
@@ -89,6 +90,12 @@ const vehicle = computed(() => props.vehicle);
 
 const updateMutation = useUpdateMutation(vehicle);
 
+const { displayAlert, displayConfirm } = useAppNotifications();
+
+const alertFailure = (error: unknown, fallback: string) => {
+  displayAlert({ text: firstErrorMessageFrom(error) ?? t(fallback) });
+};
+
 const addToWishlist = async () => {
   if (!props.vehicle) {
     return;
@@ -107,7 +114,7 @@ const addToWishlist = async () => {
       comlink.emit("vehicle-save", props.vehicle.id);
     })
     .catch((error) => {
-      console.error(error);
+      alertFailure(error, "messages.vehicleOverview.setting.failure");
     })
     .finally(() => {
       updating.value = false;
@@ -132,7 +139,7 @@ const addToHangar = async () => {
       comlink.emit("vehicle-save", props.vehicle.id);
     })
     .catch((error) => {
-      console.error(error);
+      alertFailure(error, "messages.vehicleOverview.setting.failure");
     })
     .finally(() => {
       updating.value = false;
@@ -162,14 +169,12 @@ const toggleHidden = async () => {
       comlink.emit("vehicle-save", props.vehicle.id);
     })
     .catch((error) => {
-      console.error(error);
+      alertFailure(error, "messages.vehicleOverview.setting.failure");
     })
     .finally(() => {
       updating.value = false;
     });
 };
-
-const { displayConfirm } = useAppNotifications();
 
 const remove = () => {
   deleting.value = true;
@@ -201,7 +206,7 @@ const destroy = async () => {
       comlink.emit("vehicle-destroy", props.vehicle.id);
     })
     .catch((error) => {
-      console.error(error);
+      alertFailure(error, "messages.vehicle.destroy.failure");
     })
     .finally(() => {
       deleting.value = false;

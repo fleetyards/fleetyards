@@ -162,6 +162,9 @@
         "failure": "Falló la exportación, por favor inténtalo más tarde."
       },
       "vehicle": {
+        "destroy": {
+          "failure": "No se pudo eliminar la nave."
+        },
         "move": {
           "failure": "No se pudo guardar el orden."
         },

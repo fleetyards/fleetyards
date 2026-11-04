@@ -1,5 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, describe, expect, it } from "vitest";
+import { flushPromises } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import {
@@ -8,6 +9,26 @@ import {
   ModelProductionStatusEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
+
+const mocks = vi.hoisted(() => ({
+  updateVehicle: vi.fn(),
+  destroyVehicle: vi.fn(),
+  displayAlert: vi.fn(),
+}));
+
+vi.mock("@/frontend/composables/useVehicleMutations", () => ({
+  useVehicleMutations: () => ({
+    useUpdateMutation: () => ({ mutateAsync: mocks.updateVehicle }),
+    useDestroyMutation: () => ({ mutateAsync: mocks.destroyVehicle }),
+  }),
+}));
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displayAlert: mocks.displayAlert,
+    displayConfirm: ({ onConfirm }: { onConfirm: () => void }) => onConfirm(),
+  }),
+}));
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
@@ -101,6 +122,71 @@ describe("VehicleContextMenu", () => {
   afterEach(() => {
     mounted.forEach((wrapper) => wrapper.unmount());
     mounted = [];
+  });
+
+  describe("when the server refuses", () => {
+    const refusal = {
+      isAxiosError: true,
+      response: {
+        data: {
+          errors: [
+            { attribute: "wanted", messages: [{ message: "It is on loan." }] },
+          ],
+        },
+      },
+    };
+
+    const click = async (item: string) => {
+      document.body
+        .querySelector<HTMLElement>(`[data-test="${item}"]`)
+        ?.click();
+      await flushPromises();
+    };
+
+    beforeEach(() => {
+      mocks.displayAlert.mockReset();
+      mocks.updateVehicle.mockReset().mockRejectedValue(new Error("refused"));
+      mocks.destroyVehicle.mockReset().mockRejectedValue(new Error("refused"));
+    });
+
+    it.each(["vehicle-toggle-hidden", "vehicle-add-to-wishlist"])(
+      "says so for %s",
+      async (item) => {
+        await mount();
+        await click(item);
+
+        expect(mocks.displayAlert).toHaveBeenCalledWith({
+          text: "The setting could not be saved",
+        });
+      },
+    );
+
+    it("says so when moving a wishlist ship to the hangar", async () => {
+      await mount({ vehicle: vehicle({ wanted: true }), wishlist: true });
+      await click("vehicle-add-to-hangar");
+
+      expect(mocks.displayAlert).toHaveBeenCalledOnce();
+    });
+
+    it("gives the server's own reason where it has one", async () => {
+      mocks.updateVehicle.mockReset().mockRejectedValue(refusal);
+
+      await mount();
+      await click("vehicle-add-to-wishlist");
+
+      expect(mocks.displayAlert).toHaveBeenCalledWith({
+        text: "It is on loan.",
+      });
+    });
+
+    it("says so when the ship could not be removed", async () => {
+      await mount();
+      await click("vehicle-remove");
+
+      expect(mocks.displayAlert).toHaveBeenCalledWith({
+        text: "The ship could not be removed.",
+      });
+    });
   });
 
   it("orders a hangar card's menu as database, edits, management, organization, removal", async () => {

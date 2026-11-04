@@ -172,6 +172,9 @@
         "failure": "Export failed, Please try again later."
       },
       "vehicle": {
+        "destroy": {
+          "failure": "The ship could not be removed."
+        },
         "move": {
           "failure": "The order could not be saved."
         },
