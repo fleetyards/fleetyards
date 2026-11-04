@@ -61,7 +61,7 @@ const sortFields = useMissionSortFields();
     :view-keys="['ship']"
   >
     <template #filter>
-      <FilterForm hide-quicksearch />
+      <FilterForm />
     </template>
 
     <template #pagination-top>

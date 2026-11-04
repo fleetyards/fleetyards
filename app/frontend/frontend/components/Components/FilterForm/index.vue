@@ -9,7 +9,6 @@ import { keptOptions } from "@/frontend/utils/Filters";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
@@ -21,14 +20,6 @@ import {
   useComponentSizesFilters,
   useComponentSubTypesFilters,
 } from "@/services/fyApi";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
 
 const { t } = useI18n();
 
@@ -157,17 +148,13 @@ watch(grades, (options) => pruneToOptions("gradeIn", options), {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- The name search belongs in the header, where every other list puts it. -->
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.searchNameCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.components.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      v-model="form.searchNameCont"
+      name="searchNameCont"
+      translation-key="filters.components.name"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <FormInput
       v-model="form.descriptionCont"

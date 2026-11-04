@@ -8,19 +8,10 @@ export default {
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type NotificationQuery, NotificationTypeEnum } from "@/services/fyApi";
 import { useNotificationFilters } from "@/frontend/composables/useNotificationFilters";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
 
 const { t } = useI18n();
 
@@ -68,17 +59,13 @@ watch(
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.searchCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.notifications.search"
-        :no-label="true"
-        :clearable="true"
-        inline
-      />
-    </Teleport>
+    <FormInput
+      v-model="form.searchCont"
+      name="searchCont"
+      translation-key="filters.notifications.search"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <RadioList
       v-model="form.readAtNull"

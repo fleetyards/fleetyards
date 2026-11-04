@@ -8,7 +8,6 @@ export default {
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useBlueprintFilters } from "@/frontend/composables/useBlueprintFilters";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -20,13 +19,11 @@ import {
 } from "@/services/fyApi";
 
 type Props = {
-  hideQuicksearch?: boolean;
   /** On a list that is already one of the reader's own marks. */
   hideOwned?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
   hideOwned: false,
 });
 
@@ -182,20 +179,7 @@ const ownedValue = computed({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- The name search belongs in the header, where every other list puts it. -->
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.nameCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.blueprints.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
-
     <FormInput
-      v-else
       v-model="form.nameCont"
       name="blueprint-name"
       translation-key="filters.blueprints.name"

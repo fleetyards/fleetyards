@@ -74,7 +74,6 @@ const mountAt = async (query: Record<string, string | string[]> = {}) => {
   await router.isReady();
 
   const wrapper = await mountWithDefaults(Component, {
-    props: { hideQuicksearch: true },
     plugins: [router],
   });
 

@@ -8,7 +8,6 @@ export default {
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
 import ModelPickerSelect from "@/frontend/components/Models/PickerSelect/index.vue";
@@ -25,14 +24,6 @@ import {
   useFiltersGameMissionsStandings,
   useFiltersGameMissionsSystems,
 } from "@/services/fyApi";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
 
 const { t } = useI18n();
 
@@ -180,20 +171,7 @@ const releasedValue = computed({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- The name search belongs in the header, where every other list puts it. -->
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.nameCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.missions.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
-
     <FormInput
-      v-else
       v-model="form.nameCont"
       name="mission-name"
       translation-key="filters.missions.name"

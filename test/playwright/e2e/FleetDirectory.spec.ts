@@ -17,7 +17,8 @@ test.describe("Fleet directory", () => {
   test("finds a fleet by its SID and opens its page", async ({ page }) => {
     await page.goto("/fleets/directory/");
 
-    await page.locator("input[name='search']").fill("digdeep");
+    await page.getByRole("button", { name: "Show Filters" }).click();
+    await page.locator("input[name='directorySearch']").fill("digdeep");
 
     await expect(page.getByTestId("fleet-directory-card")).toHaveCount(1);
     await expect(page.getByTestId("fleet-directory-card")).toContainText(

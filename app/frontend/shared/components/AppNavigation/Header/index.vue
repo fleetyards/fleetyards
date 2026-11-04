@@ -11,7 +11,9 @@ import BackButton from "@/shared/components/AppNavigation/BackButton/index.vue";
 <template>
   <header class="navigation-header">
     <BackButton class="navigation-header__back" />
-    <div id="header-left" class="navigation-header__left"></div>
+    <div id="header-left" class="navigation-header__left">
+      <slot name="left" />
+    </div>
     <div id="header-right" class="navigation-header__right"></div>
   </header>
 </template>

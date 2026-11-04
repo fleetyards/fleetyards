@@ -413,7 +413,7 @@ useSubscription({
         :share-title="t('headlines.hangar.public', { user: usernamePlural })"
       >
         <template #filter>
-          <FilterForm hide-quicksearch />
+          <FilterForm />
         </template>
         <template #pagination>
           <Paginator

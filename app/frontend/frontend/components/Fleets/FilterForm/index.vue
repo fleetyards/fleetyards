@@ -20,7 +20,6 @@ import FleetMemberSelect from "@/frontend/components/base/FleetMemberSelect/inde
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
@@ -105,16 +104,14 @@ const hasGroupFilters = (keys: string[]) =>
 
 <template>
   <form @submit.prevent="submit">
-    <Teleport to="#header-left">
-      <FormInput
-        name="search"
-        :size="InputSizesEnum.MEDIUM"
-        v-model="form.searchCont"
-        translation-key="filters.models.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      name="searchCont"
+      v-model="form.searchCont"
+      translation-key="filters.models.name"
+      :no-label="true"
+      :clearable="true"
+    />
+
     <FilterGroup
       :label="t('filteredList.groups.ship')"
       :active="

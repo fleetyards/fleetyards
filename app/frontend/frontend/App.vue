@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
+import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
@@ -330,7 +331,11 @@ const setLocale = (locale: string) => {
             'main-inner--with-primary-action': route.meta.primaryAction,
           }"
         >
-          <AppNavigationHeader />
+          <AppNavigationHeader>
+            <template #left>
+              <HomeSearch v-if="!route.meta.hideHeaderSearch" compact />
+            </template>
+          </AppNavigationHeader>
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">

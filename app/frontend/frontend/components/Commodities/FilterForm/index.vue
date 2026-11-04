@@ -9,21 +9,12 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCommodityFilters } from "@/frontend/composables/useCommodityFilters";
 import {
   type CommodityQuery,
   useCommodityTypesFilters,
 } from "@/services/fyApi";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
 
 const { t } = useI18n();
 
@@ -73,17 +64,13 @@ const { data: types } = useCommodityTypesFilters();
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- The name search belongs in the header, where every other list puts it. -->
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.nameCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.commodities.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      v-model="form.nameCont"
+      name="nameCont"
+      translation-key="filters.commodities.name"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <FormInput
       v-model="form.descriptionCont"

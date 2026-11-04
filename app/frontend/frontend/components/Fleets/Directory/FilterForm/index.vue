@@ -9,7 +9,6 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetDirectoryFilters } from "@/frontend/composables/useFleetDirectoryFilters";
 import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
@@ -93,16 +92,13 @@ const timezoneOptions = TIMEZONE_OPTIONS.map((timezone) => ({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#header-left">
-      <FormInput
-        v-model="form.search"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.fleetDirectory.search"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      v-model="form.search"
+      name="directorySearch"
+      translation-key="filters.fleetDirectory.search"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <FormInput
       v-model="form.memberCountGteq"
