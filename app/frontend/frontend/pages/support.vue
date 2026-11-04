@@ -5,12 +5,20 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AllSupporters from "@/frontend/components/AllSupporters/index.vue";
 import SupportContent from "@/frontend/components/SupportContent/index.vue";
+import { useSupporters } from "@/services/fyApi";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
+
+const { data: overview } = useSupporters();
+
+const hasSupporters = computed(
+  () => !!overview.value?.supporters.length || !!overview.value?.anonymousCount,
+);
 </script>
 
 <template>
@@ -19,6 +27,14 @@ const { t } = useI18n();
 
     <Panel inset>
       <SupportContent standalone class="support-page__content" />
+    </Panel>
+
+    <Panel v-if="overview && hasSupporters" inset>
+      <AllSupporters
+        :supporters="overview.supporters"
+        :anonymous-count="overview.anonymousCount"
+        class="support-page__content"
+      />
     </Panel>
   </div>
 </template>

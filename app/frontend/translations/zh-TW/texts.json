@@ -11,6 +11,10 @@
         "code": "剛接觸星際公民？使用此邀請碼可獲得 5000 UEC 初始資金：",
         "thisMonth": "本月目標 %{goal}",
         "subline": "直接支持我們",
+        "anonymousSupporters": {
+          "one": "%{count} 位匿名支持者",
+          "other": "%{count} 位匿名支持者"
+        },
         "otherWays": "其他協助方式"
       },
       "appUpdate": {

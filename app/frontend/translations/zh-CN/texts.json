@@ -11,6 +11,10 @@
         "code": "刚接触星际公民？使用此邀请码可获得 5000 UEC 初始资金：",
         "thisMonth": "本月目标 %{goal}",
         "subline": "直接支持我们",
+        "anonymousSupporters": {
+          "one": "%{count} 位匿名支持者",
+          "other": "%{count} 位匿名支持者"
+        },
         "otherWays": "其他帮助方式"
       },
       "appUpdate": {

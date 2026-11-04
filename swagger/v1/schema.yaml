@@ -21526,6 +21526,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+  "/supporters":
+    get:
+      summary: Public list of everyone who has supported the project
+      tags:
+      - Supporters
+      operationId: supporters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupportersOverview"
   "/supporters/progress":
     get:
       summary: Public Supporters Progress
@@ -48423,6 +48436,17 @@ components:
       - monthlyTotal
       - contributions
       title: SupportProgress
+    Supporter:
+      type: object
+      properties:
+        displayName:
+          type: string
+        username:
+          type: string
+      additionalProperties: false
+      required:
+      - displayName
+      title: Supporter
     SupporterClaimKey:
       type: object
       properties:
@@ -48444,6 +48468,20 @@ components:
       - fleetId
       additionalProperties: false
       title: SupporterNominationInput
+    SupportersOverview:
+      type: object
+      properties:
+        supporters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Supporter"
+        anonymousCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - supporters
+      - anonymousCount
+      title: SupportersOverview
     SyncRsiBuybackDetailsInput:
       type: object
       properties:

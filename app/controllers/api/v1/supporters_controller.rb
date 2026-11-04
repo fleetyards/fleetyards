@@ -7,6 +7,11 @@ module Api
 
       before_action :authenticate_user!, only: []
 
+      def index
+        @supporters = SupporterContribution.all_time_supporters
+        @anonymous_count = SupporterContribution.anonymous_supporter_count
+      end
+
       def progress
         today = Date.current
         @goals = FundingGoal.active_for_month(today)

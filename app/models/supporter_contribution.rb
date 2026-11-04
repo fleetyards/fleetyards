@@ -190,6 +190,27 @@ class SupporterContribution < ApplicationRecord
     active_now(date).sum(:amount_cents)
   end
 
+  # One contribution per person, because each Ko-fi payment is a row of its own.
+  # People are told apart by the name shown: there is no other identity to go on
+  # for an unlinked payment, and two entries reading the same say nothing more.
+  def self.all_time_supporters(date = Date.current)
+    listed
+      .where(started_at: ..date)
+      .includes(:user)
+      .select(&:public_name)
+      .group_by { |contribution| contribution.public_name.strip.downcase }
+      .map { |_name, contributions| contributions.find(&:public_profile_username) || contributions.first }
+      .sort_by { |contribution| contribution.public_name.strip.downcase }
+  end
+
+  # Approximate by nature: a payer who never linked an account is only known by
+  # the name they typed, so the same person paying under two names counts twice.
+  def self.anonymous_supporter_count(date = Date.current)
+    named, hidden = where(started_at: ..date).includes(:user).partition(&:public_name)
+
+    (hidden.map(&:supporter_identity).uniq - named.map(&:supporter_identity)).size
+  end
+
   # The field an admin filled in wins over a key found in the donation message:
   # the message is what the donor wrote, the field is what an admin read it as.
   def claim_key_for_linking
@@ -225,6 +246,12 @@ class SupporterContribution < ApplicationRecord
     return started_at.between?(month_start, month_end) unless recurring?
 
     started_at <= month_end && (ended_at.nil? || ended_at >= month_start)
+  end
+
+  def supporter_identity
+    return "user-#{user_id}" if user_id
+
+    name&.strip&.downcase.presence || "contribution-#{id}"
   end
 
   def formatted_amount

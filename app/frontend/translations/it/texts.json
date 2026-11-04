@@ -11,6 +11,10 @@
         "code": "Nuovo su Star Citizen? Usa questo codice per 5000 UEC iniziali:",
         "thisMonth": "su %{goal} questo mese",
         "subline": "Sostienici direttamente",
+        "anonymousSupporters": {
+          "one": "%{count} sostenitore anonimo",
+          "other": "%{count} sostenitori anonimi"
+        },
         "otherWays": "Altri modi per aiutare"
       },
       "appUpdate": {
