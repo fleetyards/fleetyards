@@ -561,6 +561,8 @@
         "savedLayoutFailed": "操作失败。名称是否已被使用?",
         "sharedLayoutMissing": "此布局不存在或已不再分享。",
         "sharedLayoutBy": "由 %{username} 分享",
+        "sharedLayoutShips": "%{count} 艘舰船",
+        "sharedLayoutHangar": "机库",
         "sharedLayoutEmpty": "此布局中没有公开的舰船。",
         "facing": "朝向",
         "facingOptions": {

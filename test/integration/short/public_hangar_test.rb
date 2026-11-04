@@ -28,6 +28,13 @@ class Short::PublicHangarTest < ActionDispatch::IntegrationTest
     assert_match(%r{/hangar/data/fleetchart/\z}, response.location)
   end
 
+  test "redirects a shared fleetchart layout to its page under the hangar" do
+    get "/h/data/fleetchart/abc-123_x"
+
+    assert_response :found
+    assert_match(%r{/hangar/data/fleetchart/abc-123_x/\z}, response.location)
+  end
+
   test "carries a share token through to the public hangar" do
     get "/h/data", params: {share: "abc123"}
 

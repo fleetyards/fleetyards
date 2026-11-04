@@ -13,10 +13,11 @@ module V1
               name: {type: :string},
               colored: {type: :boolean},
               username: {type: :string},
+              publicHangar: {type: :boolean},
               placements: {type: :array, items: FleetchartPlacement},
               vehicles: {type: :array, items: ::V1::Schemas::Vehicles::VehiclePublic}
             },
-            required: %w[name colored username placements vehicles]
+            required: %w[name colored username publicHangar placements vehicles]
           })
         end
       end

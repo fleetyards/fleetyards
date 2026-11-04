@@ -35217,6 +35217,8 @@ components:
           type:
           - string
           - 'null'
+        username:
+          type: string
         placements:
           type: array
           items:
@@ -35231,6 +35233,7 @@ components:
       - id
       - name
       - colored
+      - username
       - placements
       - createdAt
       - updatedAt
@@ -47971,6 +47974,8 @@ components:
           type: boolean
         username:
           type: string
+        publicHangar:
+          type: boolean
         placements:
           type: array
           items:
@@ -47983,6 +47988,7 @@ components:
       - name
       - colored
       - username
+      - publicHangar
       - placements
       - vehicles
       title: SharedFleetchartLayout
