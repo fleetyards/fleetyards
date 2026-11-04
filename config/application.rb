@@ -4,6 +4,7 @@ require "rails/all"
 require "ipaddr"
 require_relative "../lib/middleware/scrub_header_encoding"
 require_relative "../lib/middleware/reject_malformed_form_body"
+require_relative "../lib/middleware/reject_spoofed_client_ip"
 require_relative "../lib/middleware/transform_parameters"
 require_relative "../lib/middleware/reset_locale"
 require_relative "../lib/middleware/service_worker_cache_control"
@@ -98,8 +99,6 @@ module Fleetyards
       config.action_dispatch.trusted_proxies =
         ENV["TRUSTED_PROXY_IPS"].split(",").map { |ip| IPAddr.new(ip.strip) }
     end
-
-    config.action_dispatch.rescue_responses["ActionDispatch::RemoteIp::IpSpoofAttackError"] = :bad_request
 
     config.middleware.use Rack::Deflater
     config.middleware.use Middleware::TransformParameters

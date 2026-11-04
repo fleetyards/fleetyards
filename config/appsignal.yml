@@ -10,7 +10,6 @@ production:
       - ActionDispatch::Http::MimeNegotiation::InvalidType
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
-      - ActionDispatch::RemoteIp::IpSpoofAttackError
       # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
       # nightly db-backup (03:00 UTC) runs on the same host as the Redis
       # accessory. The timeouts that follow are handled by Sidekiq itself --
@@ -31,7 +30,6 @@ staging:
       - ActionDispatch::Http::MimeNegotiation::InvalidType
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
-      - ActionDispatch::RemoteIp::IpSpoofAttackError
       # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
       # nightly db-backup (03:00 UTC) runs on the same host as the Redis
       # accessory. The timeouts that follow are handled by Sidekiq itself --
