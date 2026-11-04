@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import {
+  DEFAULT_FLEETCHART_OPTIONS,
+  FleetchartGroups,
   FleetchartLayouts,
   FleetchartModes,
   FleetchartViewpoints,
@@ -9,6 +11,24 @@ import {
 
 describe("fleetchart store", () => {
   beforeEach(() => setActivePinia(createPinia()));
+
+  it("merges changed options over the defaults, per chart", () => {
+    const store = useFleetchartStore();
+    store.updateOptions({
+      namespace: "hangar",
+      options: { group: FleetchartGroups.STATUS },
+    });
+    store.updateOptions({ namespace: "hangar", options: { scaleBar: true } });
+
+    expect(store.fleetchartOptions("hangar")).toEqual({
+      ...DEFAULT_FLEETCHART_OPTIONS,
+      group: FleetchartGroups.STATUS,
+      scaleBar: true,
+    });
+    expect(store.fleetchartOptions("fleet")).toEqual(
+      DEFAULT_FLEETCHART_OPTIONS,
+    );
+  });
 
   it("starts in columns", () => {
     const store = useFleetchartStore();

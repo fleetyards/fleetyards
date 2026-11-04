@@ -27,7 +27,46 @@ export enum FleetchartLayouts {
   CLASSIC = "classic",
 }
 
+export enum FleetchartSorts {
+  LENGTH_ASC = "lengthAsc",
+  LENGTH_DESC = "lengthDesc",
+  NAME = "name",
+  LIST = "list",
+}
+
+export enum FleetchartGroups {
+  NONE = "none",
+  MANUFACTURER = "manufacturer",
+  CLASSIFICATION = "classification",
+  STATUS = "status",
+}
+
+export enum FleetchartSpacings {
+  COMPACT = "compact",
+  NORMAL = "normal",
+  WIDE = "wide",
+}
+
+export interface FleetchartOptions {
+  sort: FleetchartSorts;
+  group: FleetchartGroups;
+  spacing: FleetchartSpacings;
+  scaleBar: boolean;
+  solidExport: boolean;
+}
+
+export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
+  sort: FleetchartSorts.LENGTH_ASC,
+  group: FleetchartGroups.NONE,
+  spacing: FleetchartSpacings.NORMAL,
+  scaleBar: false,
+  solidExport: false,
+};
+
 type FleetchartState = {
+  options: {
+    [key: string]: Partial<FleetchartOptions>;
+  };
   layout: {
     [key: string]: FleetchartLayouts;
   };
@@ -54,6 +93,7 @@ type FleetchartState = {
 
 export const useFleetchartStore = defineStore("fleetchart", {
   state: (): FleetchartState => ({
+    options: {},
     layout: {},
     visible: [],
     zoomData: {},
@@ -95,6 +135,12 @@ export const useFleetchartStore = defineStore("fleetchart", {
           ? FleetchartLayouts.CLASSIC
           : FleetchartLayouts.COLUMNS;
       };
+    },
+    fleetchartOptions: (state) => {
+      return (namespace: string): FleetchartOptions => ({
+        ...DEFAULT_FLEETCHART_OPTIONS,
+        ...state.options?.[namespace],
+      });
     },
     fleetchartScreenHeight: (state) => {
       return (namespace: string) =>
@@ -172,6 +218,18 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
       this.layout = { ...this.layout, [payload.namespace]: payload.layout };
+    },
+    updateOptions(payload: {
+      namespace: string;
+      options: Partial<FleetchartOptions>;
+    }) {
+      this.options = {
+        ...this.options,
+        [payload.namespace]: {
+          ...this.options?.[payload.namespace],
+          ...payload.options,
+        },
+      };
     },
     updateScale(payload: { namespace: string; scale: number }) {
       this.scale[payload.namespace] = payload.scale;
