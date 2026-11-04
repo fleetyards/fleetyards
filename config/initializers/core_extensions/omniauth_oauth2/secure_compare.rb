@@ -2,23 +2,21 @@
 
 require "omniauth-oauth2"
 
-# omniauth-oauth2 1.9.0 compares the callback's state against one it deletes
-# from the session, which is nil on a reloaded callback or a lost cookie. The
-# comparison then raises instead of returning false, so the callback fails with
-# the NoMethodError's text as its reason, shown to the user, rather than as
-# csrf_detected.
+# omniauth-oauth2 compares the callback's state against one it deletes from the
+# session, and raises unless both are strings: a nil from a reloaded callback or
+# a lost cookie, an array from `state[]=`. The NoMethodError then fails the
+# callback as an unexpected error rather than as csrf_detected.
 #
-# A newer release may handle this itself, so it has to be checked against this
-# before the patch is kept.
-unless OmniAuth::OAuth2::VERSION == "1.9.0"
-  raise "omniauth-oauth2 #{OmniAuth::OAuth2::VERSION} is not the version #{__FILE__} guards secure_compare for"
-end
-
+# csrf_detected is not reported, so a missing session state is logged instead.
+# It is what a session cookie regression looks like: every sign-in failing with
+# nothing in the error tracker.
 module CoreExtensions
   module OmniauthOAuth2
     module SecureCompare
-      def secure_compare(string_a, string_b)
-        return false if string_a.nil? || string_b.nil?
+      protected def secure_compare(string_a, string_b)
+        Rails.logger.warn("OAuth callback without a session state, strategy: #{name}") if string_b.nil?
+
+        return false unless string_a.is_a?(String) && string_b.is_a?(String)
 
         super
       end
