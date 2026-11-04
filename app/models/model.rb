@@ -425,7 +425,9 @@ class Model < ApplicationRecord
     angled_view angled_rear_view bottom_view front_view
     port_view rear_view starboard_view top_view
   ].flat_map { |view|
-    [view, :"#{view}_colored", :"extended_#{view}", :"extended_#{view}_colored"]
+    ["", "extended_", "landed_"].flat_map { |state|
+      [:"#{state}#{view}", :"#{state}#{view}_colored"]
+    }
   }.freeze
 
   def self.fleetchart_view_preloads

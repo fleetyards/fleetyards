@@ -35006,6 +35006,38 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedStarboardViewColored:
           "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedPortView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedPortViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopViewColored:
+          "$ref": "#/components/schemas/MediaFile"
       title: FleetchartViewMedia
     FleetchartViewQuery:
       type: object

@@ -41,7 +41,23 @@ module V1
             extendedRearView: ::Shared::V1::Schemas::MediaFile,
             extendedRearViewColored: ::Shared::V1::Schemas::MediaFile,
             extendedStarboardView: ::Shared::V1::Schemas::MediaFile,
-            extendedStarboardViewColored: ::Shared::V1::Schemas::MediaFile
+            extendedStarboardViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedAngledRearView: ::Shared::V1::Schemas::MediaFile,
+            landedAngledRearViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedAngledView: ::Shared::V1::Schemas::MediaFile,
+            landedAngledViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedBottomView: ::Shared::V1::Schemas::MediaFile,
+            landedBottomViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedFrontView: ::Shared::V1::Schemas::MediaFile,
+            landedFrontViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedPortView: ::Shared::V1::Schemas::MediaFile,
+            landedPortViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedRearView: ::Shared::V1::Schemas::MediaFile,
+            landedRearViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedStarboardView: ::Shared::V1::Schemas::MediaFile,
+            landedStarboardViewColored: ::Shared::V1::Schemas::MediaFile,
+            landedTopView: ::Shared::V1::Schemas::MediaFile,
+            landedTopViewColored: ::Shared::V1::Schemas::MediaFile
           }
         })
       end
