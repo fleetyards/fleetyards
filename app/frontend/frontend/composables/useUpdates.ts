@@ -117,8 +117,11 @@ export const useUpdates = () => {
     });
   };
 
-  const { invalidate: invalidateNotifications, invalidateFidClaims } =
-    useNotificationInvalidation();
+  const {
+    invalidate: invalidateNotifications,
+    invalidateFidClaims,
+    invalidateMyFleets,
+  } = useNotificationInvalidation();
 
   const { dismiss: dismissNotificationToasts } = useNotificationToasts();
 
@@ -141,6 +144,7 @@ export const useUpdates = () => {
     }
 
     invalidateFidClaims(message);
+    invalidateMyFleets(message);
     void followMovedFleet(message);
 
     displayMessage({

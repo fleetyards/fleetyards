@@ -36,6 +36,13 @@ const mutations = {
   declineFriendship: vi.fn(),
 };
 
+const invalidateQueries = vi.fn();
+
+vi.mock("@tanstack/vue-query", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  useQueryClient: () => ({ invalidateQueries }),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useFleetMembership: () => queries.ownMembership,
@@ -116,6 +123,9 @@ describe("useNotificationRecordActions", () => {
     await actions.value[0].run();
 
     expect(mutations.acceptFleetMembership).toHaveBeenCalledWith("test-fleet");
+    expect(invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["fleets", "my"],
+    });
   });
 
   it("answers a friend request through the friendship endpoint", async () => {

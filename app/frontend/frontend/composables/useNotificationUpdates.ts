@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   getFriendsPendingCountQueryKey,
+  getMyFleetsQueryKey,
   getNotificationsQueryKey,
   getNotificationsUnreadCountQueryKey,
   type Notification,
@@ -40,6 +41,19 @@ export const useNotificationInvalidation = () => {
     });
   };
 
+  // A fleet only joins the reader's list once a request is answered, and the
+  // answer comes from somebody else.
+  const invalidateMyFleets = (notification: Notification) => {
+    if (
+      notification.notificationType !== "fleet_request_accepted" &&
+      notification.notificationType !== "fleet_joined_by_discord_role"
+    ) {
+      return;
+    }
+
+    void queryClient.invalidateQueries({ queryKey: getMyFleetsQueryKey() });
+  };
+
   const invalidate = () => {
     void queryClient.invalidateQueries({
       queryKey: getNotificationsQueryKey(),
@@ -77,6 +91,7 @@ export const useNotificationInvalidation = () => {
     invalidateUnreadCount,
     invalidatePendingFriendRequests,
     invalidateFidClaims,
+    invalidateMyFleets,
     patchCached,
   };
 };

@@ -15,6 +15,7 @@ import {
 import {
   getFleetInvitesQueryKey,
   getMyFleetSummariesQueryKey,
+  getMyFleetsQueryKey,
   useAcceptFleetMembership,
   useDeclineFleetMembership,
   useFleetInvites,
@@ -40,6 +41,7 @@ const busy = ref<string | undefined>();
 const refresh = () =>
   Promise.all([
     queryClient.invalidateQueries({ queryKey: getFleetInvitesQueryKey() }),
+    queryClient.invalidateQueries({ queryKey: getMyFleetsQueryKey() }),
     queryClient.invalidateQueries({
       queryKey: getMyFleetSummariesQueryKey(),
     }),

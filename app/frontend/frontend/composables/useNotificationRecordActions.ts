@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/vue-query";
 import {
   acceptFleetMember,
   acceptFleetMembership,
@@ -7,6 +8,7 @@ import {
   declineFleetMembership,
   FleetEventSignupStatusEnum,
   FleetMembershipStatusEnum,
+  getMyFleetsQueryKey,
   NotificationTypeEnum,
   signupFleetEvent,
   syncRsiHangar,
@@ -62,6 +64,8 @@ const lookupFor = (notification?: Notification): Lookup | undefined =>
 export const useNotificationRecordActions = (
   notification: Ref<Notification | undefined>,
 ) => {
+  const queryClient = useQueryClient();
+
   const record = computed(() => notification.value?.record);
   const lookup = computed(() => lookupFor(notification.value));
 
@@ -145,7 +149,12 @@ export const useNotificationRecordActions = (
         return membershipActions(
           queries.ownMembership.data.value?.status,
           FleetMembershipStatusEnum.INVITED,
-          () => acceptFleetMembership(fleetSlug.value),
+          async () => {
+            await acceptFleetMembership(fleetSlug.value);
+            await queryClient.invalidateQueries({
+              queryKey: getMyFleetsQueryKey(),
+            });
+          },
           () => declineFleetMembership(fleetSlug.value),
         );
 
