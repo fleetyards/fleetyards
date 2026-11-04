@@ -31,7 +31,7 @@ module Fleetyards
     # devise's initializer reads it -- and its constant is OmniAuth, which no
     # inflection of the directory name produces. Zeitwerk would look for
     # Omniauth::Strategies::Patreon and fail eager loading.
-    config.autoload_lib(ignore: %w[assets omniauth])
+    config.autoload_lib(ignore: %w[assets omniauth fleetchart_top_view_analyzer.rb])
 
     # Configuration for the application, engines, and railties goes here.
     #
