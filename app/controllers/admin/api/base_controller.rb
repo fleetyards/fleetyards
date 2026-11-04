@@ -8,6 +8,7 @@ module Admin
       include RansackHelper
       include Pagination
       include PresenceReadableConcern
+      include RejectsInvalidSignedIds
 
       helper_method :combined_fragment_cache_key
       helper_method :view_cache_dependencies

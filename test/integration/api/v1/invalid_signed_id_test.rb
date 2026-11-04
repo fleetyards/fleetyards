@@ -14,4 +14,15 @@ class Api::V1::InvalidSignedIdTest < ActionDispatch::IntegrationTest
     assert_equal "invalid_signed_id", response.parsed_body["code"]
     assert_not fleet.reload.logo.attached?
   end
+
+  test "the admin API answers the same way" do
+    admin = create(:admin_user, resource_access: [:fleets])
+    fleet = create(:fleet)
+    sign_in admin
+
+    put "/admin/api/v1/fleets/#{fleet.id}", params: {logo: "forged--0000"}, as: :json
+
+    assert_response :bad_request
+    assert_equal "invalid_signed_id", response.parsed_body["code"]
+  end
 end

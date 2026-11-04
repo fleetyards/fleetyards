@@ -10,6 +10,7 @@ module Api
     include Pagination
     include ScDataSource
     include PresenceReadableConcern
+    include RejectsInvalidSignedIds
     include SquadronReadableConcern
 
     helper_method :combined_fragment_cache_key
@@ -55,11 +56,6 @@ module Api
 
     rescue_from ActionController::InvalidAuthenticityToken do |_exception|
       render json: {code: "invalid_authenticity_token", message: I18n.t("error_pages.unprocessable_entity")}, status: :unprocessable_entity
-    end
-
-    # A signed id that does not verify was altered, or signed under another key.
-    rescue_from ActiveSupport::MessageVerifier::InvalidSignature do |_exception|
-      render json: {code: "invalid_signed_id", message: I18n.t("error_pages.unprocessable_entity")}, status: :bad_request
     end
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
