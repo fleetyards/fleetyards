@@ -1,7 +1,6 @@
 .holo-viewer-modal {
   // What is shown, at the top as on the ship page, with the close button;
-  // the scene's own controls are the viewer's, bottom right. Buttons rather
-  // than bare icons, so they read on the light backdrop too.
+  // the scene's own controls are the viewer's, bottom right.
   &__controls {
     position: absolute;
     top: 15px;

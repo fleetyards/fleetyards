@@ -9,6 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
@@ -371,14 +372,7 @@ const toggleZoom = () => {
   zoom.value = !zoom.value;
 };
 
-const BACKGROUNDS = [
-  "dark",
-  "space",
-  "stanton",
-  "crusader",
-  "pyro",
-  "light",
-] as const;
+const BACKGROUNDS = ["dark", "space", "stanton", "crusader", "pyro"] as const;
 
 type Background = (typeof BACKGROUNDS)[number];
 
@@ -388,7 +382,6 @@ const BACKGROUND_ICONS: Record<Background, string> = {
   stanton: "fa-light fa-galaxy",
   crusader: "fa-light fa-planet-moon",
   pyro: "fa-light fa-fire",
-  light: "fa-light fa-sun",
 };
 
 // Panoramas from the game's own skies, the smaller cut on a low power device.
@@ -830,14 +823,12 @@ defineExpose({
       [`holo-viewer--${background}`]: backgrounds,
     }"
   >
-    <Btn
+    <AppModalCloseBtn
       v-if="internalFullscreen"
       class="holo-viewer__close"
+      data-test="holo-viewer-close"
       @click.prevent.stop="disableFullscreen"
-      variant="bare"
-    >
-      <i class="fa-light fa-times" />
-    </Btn>
+    />
     <BtnGroup
       v-if="controllable || internalFullscreen"
       class="holo-viewer__actions"

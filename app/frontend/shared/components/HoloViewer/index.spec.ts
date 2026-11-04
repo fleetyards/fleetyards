@@ -115,6 +115,22 @@ describe("HoloViewer", () => {
     expect(wrapper.find(".holo-viewer--fullscreen").exists()).toBe(false);
   });
 
+  it("closes full screen from a labelled button", async () => {
+    setViewport(false);
+    const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+      props: { models: [{ path: "/holo.gltf" }], fullscreen: true },
+    });
+
+    const close = wrapper.find("[data-test='holo-viewer-close']");
+
+    expect(close.classes()).toContain("btn--solid");
+    expect(close.attributes("aria-label")).toBe("Close");
+
+    await close.trigger("click");
+
+    expect(wrapper.find(".holo-viewer--fullscreen").exists()).toBe(false);
+  });
+
   it("never asks a desktop", async () => {
     setViewport(false);
 

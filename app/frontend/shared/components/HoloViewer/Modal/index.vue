@@ -8,10 +8,9 @@ export default {
 import HoloViewer, {
   type HoloModel,
 } from "@/shared/components/HoloViewer/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   models: HoloModel[];
@@ -25,8 +24,6 @@ withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{ unavailable: [] }>();
-
-const { t } = useI18n();
 
 const comlink = useComlink();
 
@@ -43,14 +40,7 @@ const close = () => {
       <slot name="groups" />
       <BtnGroup>
         <slot name="controls" />
-        <Btn
-          :aria-label="t('actions.close')"
-          v-tooltip="t('actions.close')"
-          data-test="holo-viewer-modal-close"
-          @click="close"
-        >
-          <i class="fa-light fa-times" />
-        </Btn>
+        <AppModalCloseBtn data-test="holo-viewer-modal-close" @click="close" />
       </BtnGroup>
     </div>
     <HoloViewer

@@ -8,6 +8,7 @@ export default {
 import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
 import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
@@ -335,9 +336,11 @@ const closeFleetchart = async () => {
         />
       </div>
 
-      <Btn class="fleetchart-app-close" @click="hide" size="lg" variant="bare">
-        <i class="fa-light fa-times" />
-      </Btn>
+      <AppModalCloseBtn
+        class="fleetchart-app-close"
+        data-test="fleetchart-app-close"
+        @click="hide"
+      />
 
       <div class="fleetchart-app__filter">
         <Btn
