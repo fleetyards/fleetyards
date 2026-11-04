@@ -54,7 +54,10 @@ const entry = (id: string, length = 100): FleetchartEntry =>
 
 const canvasStubs = {
   BtnDropdown: { template: "<div><slot name='label' /><slot /></div>" },
-  Btn: { template: "<button><slot /></button>" },
+  Btn: {
+    props: ["disabled"],
+    template: '<button :disabled="disabled"><slot /></button>',
+  },
   DownloadScreenshotBtn: true,
   FleetChartStatusBtn: true,
   CommunityLogo: true,
@@ -487,6 +490,23 @@ describe("FleetchartCanvas", () => {
         await drag(wrapper, 40);
 
         expect(placement(id).viewpoint).toBe(FleetchartViewpoints.TOP);
+      });
+
+      it("offer only the angles a ship has a picture for", async () => {
+        const wrapper = await mountFree();
+
+        await drag(wrapper, 0);
+
+        expect(
+          wrapper
+            .get("[data-test='fleetchart-ship-view-port']")
+            .attributes("disabled"),
+        ).toBeUndefined();
+        expect(
+          wrapper
+            .get("[data-test='fleetchart-ship-view-front']")
+            .attributes("disabled"),
+        ).toBeDefined();
       });
 
       it("rotate from the toolbar", async () => {

@@ -11,6 +11,7 @@ import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
 interface Props {
   viewpoint: FleetchartViewpoints;
+  available: FleetchartViewpoints[];
 }
 
 defineProps<Props>();
@@ -34,6 +35,7 @@ const { t } = useI18n();
       v-for="option in FleetchartViewpoints"
       :key="option"
       :active="viewpoint === option"
+      :disabled="!available.includes(option)"
       :data-test="`fleetchart-ship-view-${option}`"
       size="sm"
       @click="emit('update:viewpoint', option)"

@@ -21,6 +21,7 @@ import {
   modelOf,
   shipGeometry,
   shipLabelOf,
+  viewFor,
   type FleetchartEntry,
   type FleetchartShipGeometry,
 } from "@/frontend/components/Fleetchart/geometry";
@@ -706,6 +707,20 @@ const selectedShip = computed(() =>
     : undefined,
 );
 
+// An angle with no picture would leave the ship blank.
+const selectedShipViewpoints = computed(() => {
+  const ship = selectedShip.value;
+
+  return Object.values(FleetchartViewpoints).filter(
+    (option) =>
+      ship &&
+      viewFor(ship.entry, option, {
+        extended: extended.value,
+        colored: colored.value,
+      }),
+  );
+});
+
 const changeSelected = (changes: {
   facing?: FleetchartFacings;
   viewpoint?: FleetchartViewpoints;
@@ -1075,6 +1090,7 @@ const toggleLabels = () => {
     <FleetchartCanvasShipControls
       v-if="selectedShip && !dragged && !exporting"
       :viewpoint="selectedShip.viewpoint"
+      :available="selectedShipViewpoints"
       :style="shipControlsStyle"
       @rotate="rotateSelected"
       @update:viewpoint="changeSelected({ viewpoint: $event })"
