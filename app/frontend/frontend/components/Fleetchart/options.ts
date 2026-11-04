@@ -1,12 +1,10 @@
 import {
+  metricsOf,
   modelOf,
   shipLabelOf,
   type FleetchartEntry,
 } from "@/frontend/components/Fleetchart/geometry";
 import { FleetchartGroups, FleetchartSorts } from "@/shared/stores/fleetchart";
-
-const lengthOf = (entry: FleetchartEntry) =>
-  modelOf(entry).metrics?.length ?? 0;
 
 const groupKeyOf = (entry: FleetchartEntry, group: FleetchartGroups) => {
   const model = modelOf(entry);
@@ -35,13 +33,23 @@ export const groupTitleOf = (
     : key;
 };
 
-const COMPARATORS: Partial<
-  Record<FleetchartSorts, (a: FleetchartEntry, b: FleetchartEntry) => number>
-> = {
-  [FleetchartSorts.LENGTH_ASC]: (a, b) => lengthOf(a) - lengthOf(b),
-  [FleetchartSorts.LENGTH_DESC]: (a, b) => lengthOf(b) - lengthOf(a),
-  [FleetchartSorts.NAME]: (a, b) =>
-    shipLabelOf(a).title.localeCompare(shipLabelOf(b).title),
+const comparatorFor = (sort: FleetchartSorts, extended: boolean) => {
+  const lengthOf = (entry: FleetchartEntry) =>
+    metricsOf(entry, extended).length;
+
+  switch (sort) {
+    case FleetchartSorts.LENGTH_ASC:
+      return (a: FleetchartEntry, b: FleetchartEntry) =>
+        lengthOf(a) - lengthOf(b);
+    case FleetchartSorts.LENGTH_DESC:
+      return (a: FleetchartEntry, b: FleetchartEntry) =>
+        lengthOf(b) - lengthOf(a);
+    case FleetchartSorts.NAME:
+      return (a: FleetchartEntry, b: FleetchartEntry) =>
+        shipLabelOf(a).title.localeCompare(shipLabelOf(b).title);
+    default:
+      return undefined;
+  }
 };
 
 // A copy in the chosen order, with each group's ships together. The list order
@@ -50,8 +58,9 @@ export const sortEntries = (
   entries: FleetchartEntry[],
   sort: FleetchartSorts,
   group: FleetchartGroups = FleetchartGroups.NONE,
+  extended = false,
 ) => {
-  const comparator = COMPARATORS[sort];
+  const comparator = comparatorFor(sort, extended);
 
   return [...entries].sort(
     (a, b) =>

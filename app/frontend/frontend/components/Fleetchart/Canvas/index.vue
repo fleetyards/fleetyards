@@ -232,7 +232,7 @@ const groupTitle = (entry: FleetchartEntry) => {
 };
 
 const ships = computed(() =>
-  sortEntries(props.items, sort.value, group.value).flatMap(
+  sortEntries(props.items, sort.value, group.value, extended.value).flatMap(
     (entry) => {
       const geometry = shipGeometry(entry, viewpoint.value, {
         extended: extended.value,

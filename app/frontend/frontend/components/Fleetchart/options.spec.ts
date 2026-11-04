@@ -14,7 +14,7 @@ const ship = (
     name,
     productionStatus,
     manufacturer: { code: "X", name: manufacturer },
-    metrics: { length },
+    metrics: { fleetchartOffsetLength: length },
   }) as unknown as FleetchartEntry;
 
 const names = (entries: FleetchartEntry[]) =>
@@ -42,6 +42,25 @@ describe("sortEntries", () => {
       "b",
       "c",
     ]);
+  });
+
+  it("sorts by the extended length in the extended state", () => {
+    const folding = {
+      id: "folding",
+      name: "folding",
+      metrics: { fleetchartOffsetLength: 5, extendedLength: 100 },
+    } as unknown as FleetchartEntry;
+
+    expect(
+      names(
+        sortEntries(
+          [folding, ship("fixed", 50)],
+          FleetchartSorts.LENGTH_DESC,
+          FleetchartGroups.NONE,
+          true,
+        ),
+      ),
+    ).toEqual(["folding", "fixed"]);
   });
 
   it("keeps the list's order", () => {

@@ -78,7 +78,7 @@ export const viewFor = (
   options: FleetchartViewOptions = {},
 ) => resolveView(entry, VIEW_BY_VIEWPOINT[viewpoint], options);
 
-const metricsOf = (entry: FleetchartEntry, extended: boolean) => {
+export const metricsOf = (entry: FleetchartEntry, extended: boolean) => {
   const { metrics } = modelOf(entry);
 
   return {
