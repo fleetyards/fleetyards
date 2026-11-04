@@ -37179,6 +37179,12 @@ components:
           type:
           - string
           - 'null'
+        manufacturerIcon:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The manufacturer's square icon
         classification:
           type:
           - string

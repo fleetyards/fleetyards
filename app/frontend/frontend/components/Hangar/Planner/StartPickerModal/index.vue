@@ -16,7 +16,10 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
-import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import {
+  manufacturerText,
+  usePlanMoney,
+} from "@/frontend/components/Hangar/Planner/format";
 import { reaches } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -151,12 +154,12 @@ const vehicleOptions = computed<StartOption[]>(() =>
       item: {
         id: `vehicle:${vehicle.id}`,
         title: vehicle.name || vehicle.model.name,
-        meta: [
-          vehicle.name ? vehicle.model.name : vehicle.model.manufacturerName,
-          status ? t(`hangarPlanner.vehicleStatuses.${status}`) : undefined,
-        ]
-          .filter(Boolean)
-          .join(" · "),
+        meta: vehicle.name
+          ? vehicle.model.name
+          : manufacturerText(vehicle.model),
+        tags: status
+          ? [{ label: t(`hangarPlanner.vehicleStatuses.${status}`) }]
+          : [],
         price: money(vehicle.model.pledgePrice),
         sortPrice: vehicle.model.pledgePrice,
         badge:

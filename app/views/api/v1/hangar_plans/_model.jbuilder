@@ -4,6 +4,7 @@ json.id model.id
 json.name model.name
 json.slug model.slug
 json.manufacturer_name model.manufacturer&.name
+json.manufacturer_icon((model.manufacturer&.icon&.attached? && rails_blob_url(model.manufacturer.icon)) || nil)
 json.classification model.classification
 json.size model.size
 json.production_status model.production_status

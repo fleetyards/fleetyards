@@ -20,12 +20,20 @@ import type { HangarPlanModel } from "@/services/fyApi";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
+export type PickListTag = {
+  label: string;
+  variant?: `${PillVariantsEnum}`;
+};
+
 export type PickListItem = {
   id: string;
   title: string;
-  // The ship the row stands for, whose stats open from its title.
+  // The ship the row stands for, whose stats open from its title and whose
+  // manufacturer's icon leads the row.
   ship?: HangarPlanModel;
   meta?: string;
+  // What kind of pick the row is, such as a new slot or a CCU seen only in sales.
+  tags?: PickListTag[];
   price?: string;
   badge?: string;
   // Text the search matches beyond the title, such as the ships a pledge holds.
@@ -100,7 +108,13 @@ const visible = computed(() => {
   if (!query) return props.items;
 
   return props.items.filter((item) =>
-    [item.title, item.meta, item.keywords]
+    [
+      item.title,
+      item.meta,
+      item.ship?.manufacturerName,
+      ...(item.tags ?? []).map((tag) => tag.label),
+      item.keywords,
+    ]
       .filter(Boolean)
       .join(" ")
       .toLowerCase()
@@ -165,6 +179,13 @@ const choose = (item: PickListItem) => {
       :class="{ 'pick-list__row--compact': compact }"
       :data-test="`pick-list-chosen-${name}`"
     >
+      <img
+        v-if="chosen.ship?.manufacturerIcon"
+        :src="chosen.ship.manufacturerIcon"
+        :alt="chosen.ship.manufacturerName ?? ''"
+        :title="chosen.ship.manufacturerName ?? undefined"
+        class="pick-list__icon"
+      />
       <span class="pick-list__text">
         <span class="pick-list__title">
           <ShipName v-if="chosen.ship" :ship="chosen.ship">
@@ -225,6 +246,14 @@ const choose = (item: PickListItem) => {
             data-test="pick-list-row"
             @click="choose(item)"
           >
+            <img
+              v-if="item.ship?.manufacturerIcon"
+              :src="item.ship.manufacturerIcon"
+              :alt="item.ship.manufacturerName ?? ''"
+              :title="item.ship.manufacturerName ?? undefined"
+              class="pick-list__icon"
+              loading="lazy"
+            />
             <span class="pick-list__text">
               <span class="pick-list__title">
                 <ShipName v-if="item.ship" :ship="item.ship" :focusable="false">
@@ -232,9 +261,21 @@ const choose = (item: PickListItem) => {
                 </ShipName>
                 <template v-else>{{ item.title }}</template>
               </span>
-              <span v-if="item.meta" class="pick-list__meta">{{
-                item.meta
-              }}</span>
+              <span
+                v-if="item.meta || item.tags?.length"
+                class="pick-list__meta"
+              >
+                <span v-if="item.meta">{{ item.meta }}</span>
+                <Pill
+                  v-for="tag in item.tags"
+                  :key="tag.label"
+                  :variant="tag.variant ?? PillVariantsEnum.NEUTRAL"
+                  class="pick-list__tag"
+                  data-test="pick-list-tag"
+                >
+                  {{ tag.label }}
+                </Pill>
+              </span>
               <Pill
                 v-if="item.badge"
                 :variant="PillVariantsEnum.DEFAULT"
@@ -331,8 +372,19 @@ const choose = (item: PickListItem) => {
 }
 
 .pick-list__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
   font-size: 0.8rem;
   color: var(--color-text-dim);
+}
+
+.pick-list__icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .pick-list__badge {
@@ -358,6 +410,7 @@ const choose = (item: PickListItem) => {
 
   .pick-list__title,
   .pick-list__meta {
+    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
   }

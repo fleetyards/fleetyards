@@ -15,6 +15,7 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               manufacturerName: {type: [:string, :null]},
+              manufacturerIcon: {type: [:string, :null], format: :uri, description: "The manufacturer's square icon"},
               classification: {type: [:string, :null]},
               size: {type: [:string, :null]},
               productionStatus: {type: [:string, :null]},

@@ -1,4 +1,10 @@
 import { useI18n } from "@/shared/composables/useI18n";
+import type { HangarPlanModel } from "@/services/fyApi";
+
+// A pick row shows the manufacturer's icon, so it names the manufacturer only
+// where there is none.
+export const manufacturerText = (model: HangarPlanModel) =>
+  model.manufacturerIcon ? undefined : (model.manufacturerName ?? undefined);
 
 // Prices a plan cannot know stay visibly unknown, and a route that costs
 // nothing says so rather than reading as a missing value.

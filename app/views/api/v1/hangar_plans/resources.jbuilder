@@ -50,6 +50,7 @@ json.store_models @resources.store_models do |model|
   json.name model.name
   json.slug model.slug
   json.manufacturer_name model.manufacturer&.name
+  json.manufacturer_icon((model.manufacturer&.icon&.attached? && rails_blob_url(model.manufacturer.icon)) || nil)
   json.pledge_price model.pledge_price.to_f
   json.on_sale model.on_sale || false
   json.ccu_into model.ccu_target_status

@@ -24,7 +24,11 @@ import PickList, {
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
 import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
 import type { RouteChainNode } from "@/frontend/components/Hangar/Planner/RouteChain/types";
-import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import {
+  manufacturerText,
+  usePlanMoney,
+} from "@/frontend/components/Hangar/Planner/format";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import {
   canEnter,
   entersFrom,
@@ -224,14 +228,18 @@ const storeItem = (
   id: model.id,
   title: model.name,
   ship: model,
-  meta:
-    [
-      model.manufacturerName,
-      model.onSale ? undefined : t("hangarPlanner.notOnSale"),
-      upgradeInto && ccuNote(model) ? t(ccuNote(model) as string) : undefined,
-    ]
-      .filter(Boolean)
-      .join(" · ") || undefined,
+  meta: manufacturerText(model),
+  tags: [
+    ...(model.onSale ? [] : [{ label: t("hangarPlanner.notOnSale") }]),
+    ...(upgradeInto && ccuNote(model)
+      ? [
+          {
+            label: t(ccuNote(model) as string),
+            variant: PillVariantsEnum.WARNING,
+          },
+        ]
+      : []),
+  ],
   price: money(price),
   sortPrice: price,
   badge:

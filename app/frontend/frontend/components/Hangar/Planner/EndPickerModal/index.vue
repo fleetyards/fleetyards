@@ -14,10 +14,15 @@ import {
 } from "@/shared/components/base/Btn/types";
 import PickList, {
   type PickListItem,
+  type PickListTag,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
-import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import {
+  manufacturerText,
+  usePlanMoney,
+} from "@/frontend/components/Hangar/Planner/format";
 import {
   canLeave,
   ccuNote,
@@ -86,10 +91,12 @@ const ends = computed(() =>
 );
 
 // How sure an upgrade into an end is, for one the start becomes by upgrading.
-const upgradeNote = (model: HangarPlanModel) => {
+const upgradeTag = (model: HangarPlanModel): PickListTag[] => {
   const note = ccuNote(model);
 
-  return note && model.id !== props.startModel?.id ? t(note) : undefined;
+  return note && model.id !== props.startModel?.id
+    ? [{ label: t(note), variant: PillVariantsEnum.WARNING }]
+    : [];
 };
 
 const { data: resources, isLoading } = useHangarPlanResources(
@@ -148,9 +155,7 @@ const items = computed<PickListItem[]>(() => [
     id: candidate.id,
     title: candidate.model.name,
     ship: candidate.model,
-    meta: [slot.label, upgradeNote(candidate.model)]
-      .filter(Boolean)
-      .join(" · "),
+    tags: [{ label: slot.label }, ...upgradeTag(candidate.model)],
     price: money(candidate.model.pledgePrice),
     sortPrice: candidate.model.pledgePrice,
     badge:
@@ -163,13 +168,8 @@ const items = computed<PickListItem[]>(() => [
     id: `${MODEL}${model.id}`,
     title: model.name,
     ship: model,
-    meta: [
-      model.manufacturerName,
-      t("hangarPlanner.pick.newSlot"),
-      upgradeNote(model),
-    ]
-      .filter(Boolean)
-      .join(" · "),
+    meta: manufacturerText(model),
+    tags: [{ label: t("hangarPlanner.pick.newSlot") }, ...upgradeTag(model)],
     price: money(model.pledgePrice),
     sortPrice: model.pledgePrice,
   })),

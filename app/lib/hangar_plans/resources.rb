@@ -58,7 +58,7 @@ module HangarPlans
     # which the store never sells.
     def store_models
       Model.visible.active.where(player_ownable: true, ingame_only: false).where.not(pledge_price: nil)
-        .includes(:manufacturer).order(:pledge_price, :name)
+        .includes(manufacturer: {icon_attachment: :blob}).order(:pledge_price, :name)
     end
 
     def buybacks
