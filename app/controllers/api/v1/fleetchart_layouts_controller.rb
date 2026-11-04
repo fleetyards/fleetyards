@@ -33,15 +33,15 @@ module Api
 
         authorize! @fleetchart_layout, with: FleetchartLayoutPolicy
 
-        @fleetchart_layout.save!
-
-        render :show, status: :created
-      rescue ActiveRecord::RecordInvalid => e
-        render json: ValidationError.new("fleetchart_layouts.create", errors: e.record.errors), status: :bad_request
+        if saved_without_a_name_clash { @fleetchart_layout.save }
+          render :show, status: :created
+        else
+          render json: ValidationError.new("fleetchart_layouts.create", errors: @fleetchart_layout.errors), status: :bad_request
+        end
       end
 
       def update
-        if @fleetchart_layout.update(fleetchart_layout_params)
+        if saved_without_a_name_clash { @fleetchart_layout.update(fleetchart_layout_params) }
           render :show
         else
           render json: ValidationError.new("fleetchart_layouts.update", errors: @fleetchart_layout.errors), status: :bad_request
@@ -64,6 +64,15 @@ module Api
         @fleetchart_layout.unshare!
 
         render :show
+      end
+
+      # Two requests can both pass the uniqueness validation, and then only the
+      # database index notices.
+      private def saved_without_a_name_clash
+        yield
+      rescue ActiveRecord::RecordNotUnique
+        @fleetchart_layout.errors.add(:name, :taken)
+        false
       end
 
       private def set_fleetchart_layout

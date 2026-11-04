@@ -20,8 +20,15 @@ module Api
 
           @vehicles = @fleetchart_layout.shared_vehicles
             .includes({model: :manufacturer}, *Vehicle::LOADOUT_PRELOADS, :launch_port_location, :user)
+            # What the vehicle partial reads per vehicle, on an endpoint anyone with
+            # the link can reach.
+            .preload(
+              :model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob},
+              Vehicle::PICTURE_PRELOADS, user: {avatar_attachment: :blob}
+            )
+            .to_a
 
-          visible_ids = @vehicles.map(&:id)
+          visible_ids = @vehicles.to_set(&:id)
 
           @placements = @fleetchart_layout.placements.select { |placement| visible_ids.include?(placement["vehicle_id"]) }
         end

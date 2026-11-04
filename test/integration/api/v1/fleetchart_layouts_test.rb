@@ -142,6 +142,7 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     body = response.parsed_body
 
     assert_equal "Parade", body["name"]
+    assert_equal @user.username, body["username"]
     assert_equal false, body["colored"]
     assert_equal(
       {"vehicleId" => @vehicle.id, "x" => 12.5, "y" => -4, "facing" => "top", "viewpoint" => "rear",
@@ -209,13 +210,13 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "a shared layout shows only public ships, never the private ones placed in it" do
+  test "a shared layout shows every ship placed in it, whatever the hangar's settings" do
     private_ship = create(:vehicle, user: @user, public: false)
-    wanted = create(:vehicle, user: @user, public: true, wanted: true)
+    unplaced = create(:vehicle, user: @user, public: true)
+    @user.update!(public_hangar: false)
     layout = create(:fleetchart_layout, user: @user, placements: [
       {"vehicle_id" => @vehicle.id, "x" => 1, "y" => 1},
-      {"vehicle_id" => private_ship.id, "x" => 2, "y" => 2},
-      {"vehicle_id" => wanted.id, "x" => 3, "y" => 3}
+      {"vehicle_id" => private_ship.id, "x" => 2, "y" => 2}
     ])
     layout.share!
 
@@ -224,12 +225,25 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_response :success
     body = response.parsed_body
 
-    assert_equal [@vehicle.id], body["placements"].map { |placement| placement["vehicleId"] }
-    assert_equal [@vehicle.id], body["vehicles"].map { |vehicle| vehicle["id"] }
-    assert_not_includes response.body, private_ship.id
-    assert_not_includes response.body, wanted.id
+    assert_equal [@vehicle.id, private_ship.id].sort, body["placements"].map { |placement| placement["vehicleId"] }.sort
+    assert_equal [@vehicle.id, private_ship.id].sort, body["vehicles"].map { |vehicle| vehicle["id"] }.sort
+    assert_not_includes response.body, unplaced.id
     assert_nil body["id"]
     assert_nil body["shareToken"]
+  end
+
+  test "a ship sold since the layout was saved drops out of the shared layout" do
+    sold = create(:vehicle, user: @user, public: true)
+    layout = create(:fleetchart_layout, user: @user, placements: [
+      {"vehicle_id" => @vehicle.id, "x" => 1, "y" => 1},
+      {"vehicle_id" => sold.id, "x" => 2, "y" => 2}
+    ])
+    layout.share!
+    sold.destroy!
+
+    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
+
+    assert_equal [@vehicle.id], response.parsed_body["placements"].map { |placement| placement["vehicleId"] }
   end
 
   test "sharing again keeps the link, and unsharing closes it" do

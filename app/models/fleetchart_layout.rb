@@ -29,10 +29,10 @@ class FleetchartLayout < ApplicationRecord
     update!(share_token: nil)
   end
 
-  # Sharing a layout hands over its arrangement, not the ships a public hangar would
-  # not show: private ones and the wishlist stay out, even for someone with the link.
+  # Sharing a layout is the owner showing it to someone, so everything placed in it
+  # comes along, whatever the hangar's own privacy settings say about those ships.
   def shared_vehicles
-    user.vehicles.visible.purchased.public.where(id: placements.pluck("vehicle_id"))
+    user.vehicles.where(id: placements.pluck("vehicle_id"))
   end
 
   private def keep_placements_of_owned_vehicles
