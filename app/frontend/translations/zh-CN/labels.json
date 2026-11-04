@@ -532,12 +532,20 @@
           "normal": "正常",
           "wide": "宽松"
         },
+        "facing": "朝向",
+        "facingOptions": {
+          "left": "左",
+          "top": "上",
+          "right": "右",
+          "bottom": "下"
+        },
         "scaleBar": "比例尺",
         "solidExport": "PNG 使用纯色背景",
         "layout": "布局",
         "layoutOptions": {
           "columns": "分栏",
-          "classic": "经典"
+          "classic": "经典",
+          "packed": "紧密"
         },
         "mode": "模式",
         "modeOptions": {

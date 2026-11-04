@@ -25,6 +25,7 @@ export enum FleetchartModes {
 export enum FleetchartLayouts {
   COLUMNS = "columns",
   CLASSIC = "classic",
+  PACKED = "packed",
 }
 
 export enum FleetchartSorts {
@@ -47,12 +48,20 @@ export enum FleetchartSpacings {
   WIDE = "wide",
 }
 
+export enum FleetchartFacings {
+  LEFT = "left",
+  TOP = "top",
+  RIGHT = "right",
+  BOTTOM = "bottom",
+}
+
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
   spacing: FleetchartSpacings;
   scaleBar: boolean;
   solidExport: boolean;
+  facing: FleetchartFacings;
 }
 
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
@@ -61,6 +70,7 @@ export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   spacing: FleetchartSpacings.NORMAL,
   scaleBar: false,
   solidExport: false,
+  facing: FleetchartFacings.LEFT,
 };
 
 type FleetchartState = {

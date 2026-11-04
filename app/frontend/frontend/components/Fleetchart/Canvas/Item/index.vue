@@ -15,7 +15,10 @@ import {
   type FleetchartEntry,
   type FleetchartShipGeometry,
 } from "@/frontend/components/Fleetchart/geometry";
-import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
+import {
+  FleetchartFacings,
+  FleetchartViewpoints,
+} from "@/shared/stores/fleetchart";
 
 interface Props {
   entry: FleetchartEntry;
@@ -28,6 +31,9 @@ interface Props {
   showStatus?: boolean;
   colored?: boolean;
   extended?: boolean;
+  boxWidth: number;
+  boxHeight: number;
+  facing?: FleetchartFacings;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   showStatus: false,
   colored: false,
   extended: false,
+  facing: FleetchartFacings.LEFT,
 });
 
 const { t } = useI18n();
@@ -70,7 +77,8 @@ const image = computed(() => {
   const renderedWidth =
     props.geometry.length *
     PIXELS_PER_METRE *
-    props.zoom *
+    // Never below full size: an export draws at that size whatever the zoom.
+    Math.max(props.zoom, 1) *
     (window.devicePixelRatio || 1);
 
   return imageUrlFor(view.value, renderedWidth);
@@ -84,8 +92,8 @@ const image = computed(() => {
     :style="{
       left: `${left}px`,
       top: `${top}px`,
-      width: `${geometry.length * PIXELS_PER_METRE}px`,
-      height: `${geometry.height * PIXELS_PER_METRE}px`,
+      width: `${boxWidth * PIXELS_PER_METRE}px`,
+      height: `${boxHeight * PIXELS_PER_METRE}px`,
     }"
     data-test="fleetchart-ship"
   >
@@ -94,16 +102,25 @@ const image = computed(() => {
       <small v-if="label.subtitle">{{ label.subtitle }}</small>
       <small v-if="showStatus">{{ productionStatus }}</small>
     </div>
-    <img
-      v-if="image"
-      :src="image"
-      :alt="label.title"
+    <div
+      class="fleetchart-canvas-item__frame"
+      :class="`fleetchart-canvas-item__frame--${facing}`"
       :style="{
-        width: `${imageWidth}px`,
-        'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
+        width: `${geometry.length * PIXELS_PER_METRE}px`,
+        height: `${geometry.height * PIXELS_PER_METRE}px`,
       }"
-      class="fleetchart-canvas-item__image"
-    />
+    >
+      <img
+        v-if="image"
+        :src="image"
+        :alt="label.title"
+        :style="{
+          width: `${imageWidth}px`,
+          'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
+        }"
+        class="fleetchart-canvas-item__image"
+      />
+    </div>
   </div>
 </template>
 

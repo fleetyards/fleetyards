@@ -21,10 +21,12 @@ import {
   shipGeometry,
   shipLabelOf,
   type FleetchartEntry,
+  type FleetchartShipGeometry,
 } from "@/frontend/components/Fleetchart/geometry";
 import {
   arrangeClassic,
   arrangeColumns,
+  arrangePacked,
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
@@ -40,6 +42,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FleetchartFacings,
   FleetchartGroups,
   FleetchartLayouts,
   FleetchartScreenHeights,
@@ -61,7 +64,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const SCENE_PADDING = 40;
 const SCREEN_MARGIN = 120;
-const MIN_ZOOM = 0.2;
+const MIN_ZOOM = 0.02;
+const FIT_MARGIN_TOP = 70;
+const FIT_MARGIN_BOTTOM = 80;
 const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
@@ -181,6 +186,28 @@ const labelRoom = (entry: FleetchartEntry) => {
   };
 };
 
+const turned = computed(
+  () =>
+    options.value.facing === FleetchartFacings.TOP ||
+    options.value.facing === FleetchartFacings.BOTTOM,
+);
+
+// What a layout makes room for. A ship's own box is as tall as its tallest view
+// so nothing moves between viewpoints, but a packed or turned chart is about using
+// the space, so there only the view being drawn counts.
+const boxOf = (geometry: FleetchartShipGeometry) => {
+  const drawn = geometry.imageHeight || geometry.height;
+
+  if (turned.value) {
+    return { width: drawn, height: geometry.length };
+  }
+
+  return {
+    width: geometry.length,
+    height: layout.value === FleetchartLayouts.PACKED ? drawn : geometry.height,
+  };
+};
+
 const groupTitle = (entry: FleetchartEntry) => {
   if (options.value.group === FleetchartGroups.NONE) {
     return undefined;
@@ -211,8 +238,7 @@ const ships = computed(() =>
           id: entry.id,
           entry,
           geometry,
-          width: geometry.length,
-          height: geometry.height,
+          ...boxOf(geometry),
           group,
           headingWidth: group
             ? labelMeasure.value.width(group) / PIXELS_PER_METRE
@@ -242,11 +268,20 @@ const classicRowWidth = computed(
   () => (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
 );
 
-const positions = computed(() =>
-  layout.value === FleetchartLayouts.CLASSIC
-    ? arrangeClassic(ships.value, classicRowWidth.value)
-    : arrangeColumns(ships.value, columnHeightFor(screenHeightFactor.value)),
-);
+const positions = computed(() => {
+  switch (layout.value) {
+    case FleetchartLayouts.CLASSIC:
+      return arrangeClassic(ships.value, classicRowWidth.value);
+    case FleetchartLayouts.PACKED:
+      return arrangePacked(ships.value, screen.width / screen.height);
+    default:
+      return arrangeColumns(
+        ships.value,
+        columnHeightFor(screenHeightFactor.value),
+        { centred: turned.value },
+      );
+  }
+});
 
 const bounds = computed(() => {
   const covered = boundsOf(ships.value, positions.value);
@@ -379,7 +414,33 @@ const setupPanzoom = () => {
   }
 };
 
+const isPacked = computed(() => layout.value === FleetchartLayouts.PACKED);
+
+// Packing is only worth anything when the whole of it can be seen at once.
+const fitToScreen = () => {
+  const room = screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM;
+  const scale = Math.min(
+    1,
+    screen.width / sceneSize.value.width,
+    room / sceneSize.value.height,
+  );
+
+  panzoomInstance?.zoomAbs(0, 0, scale);
+  panzoomInstance?.moveTo(
+    (screen.width - sceneSize.value.width * scale) / 2,
+    FIT_MARGIN_TOP + (room - sceneSize.value.height * scale) / 2,
+  );
+
+  persistZoom();
+};
+
 const resetZoom = () => {
+  if (isPacked.value) {
+    fitToScreen();
+
+    return;
+  }
+
   panzoomInstance?.zoomAbs(0, 0, 1);
   panzoomInstance?.moveTo(0, 0);
 
@@ -388,6 +449,12 @@ const resetZoom = () => {
 
 // A position from one layout can leave another one entirely off screen.
 watch(layout, resetZoom);
+
+watch(sceneSize, () => {
+  if (isPacked.value) {
+    fitToScreen();
+  }
+});
 
 // deviceorientation fires continuously on a phone, which would keep a plain
 // debounce from ever running.
@@ -531,6 +598,7 @@ const toggleLabels = () => {
             :background-color="
               options.solidExport ? SOLID_EXPORT_BACKGROUND : null
             "
+            ignore-transform
           />
 
           <hr />
@@ -611,6 +679,9 @@ const toggleLabels = () => {
           :show-status="showStatus"
           :colored="colored"
           :extended="extended"
+          :box-width="ship.width"
+          :box-height="ship.height"
+          :facing="options.facing"
         />
 
         <div

@@ -8,7 +8,9 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  FleetchartFacings,
   FleetchartGroups,
+  FleetchartLayouts,
   FleetchartSorts,
   FleetchartSpacings,
   useFleetchartStore,
@@ -36,24 +38,41 @@ const update = (changes: Partial<FleetchartOptions>) => {
   });
 };
 
+// Packing decides the order itself, so a sort would do nothing there.
+const sortable = computed(
+  () =>
+    fleetchartStore.fleetchartLayout(props.namespace) !==
+    FleetchartLayouts.PACKED,
+);
+
 const choices = computed(() => [
+  ...(sortable.value
+    ? [
+        {
+          name: "sort" as const,
+          labelKey: "sort",
+          optionsKey: "sortOptions",
+          values: Object.values(FleetchartSorts) as string[],
+        },
+      ]
+    : []),
   {
-    name: "sort" as const,
-    labelKey: "sort",
-    optionsKey: "sortOptions",
-    values: Object.values(FleetchartSorts),
+    name: "facing" as const,
+    labelKey: "facing",
+    optionsKey: "facingOptions",
+    values: Object.values(FleetchartFacings) as string[],
   },
   {
     name: "group" as const,
     labelKey: "group",
     optionsKey: "groupOptions",
-    values: Object.values(FleetchartGroups),
+    values: Object.values(FleetchartGroups) as string[],
   },
   {
     name: "spacing" as const,
     labelKey: "spacing",
     optionsKey: "spacingOptions",
-    values: Object.values(FleetchartSpacings),
+    values: Object.values(FleetchartSpacings) as string[],
   },
 ]);
 </script>

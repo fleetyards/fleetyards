@@ -532,12 +532,20 @@
           "normal": "Normal",
           "wide": "Weit"
         },
+        "facing": "Ausrichtung",
+        "facingOptions": {
+          "left": "Links",
+          "top": "Oben",
+          "right": "Rechts",
+          "bottom": "Unten"
+        },
         "scaleBar": "Maßstabsleiste",
         "solidExport": "Fester Hintergrund im PNG",
         "layout": "Layout",
         "layoutOptions": {
           "columns": "Spalten",
-          "classic": "Klassisch"
+          "classic": "Klassisch",
+          "packed": "Gepackt"
         },
         "mode": "Modus",
         "modeOptions": {

@@ -532,12 +532,20 @@
           "normal": "Normale",
           "wide": "Ampia"
         },
+        "facing": "Orientamento",
+        "facingOptions": {
+          "left": "Sinistra",
+          "top": "Alto",
+          "right": "Destra",
+          "bottom": "Basso"
+        },
         "scaleBar": "Barra di scala",
         "solidExport": "Sfondo pieno nel PNG",
         "layout": "Disposizione",
         "layoutOptions": {
           "columns": "Colonne",
-          "classic": "Classico"
+          "classic": "Classico",
+          "packed": "Compatto"
         },
         "mode": "Modalità",
         "modeOptions": {

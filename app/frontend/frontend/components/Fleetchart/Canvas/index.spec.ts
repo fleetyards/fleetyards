@@ -4,6 +4,7 @@ import { createPinia, setActivePinia } from "pinia";
 import FleetchartCanvas from "./index.vue";
 import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry";
 import {
+  FleetchartFacings,
   FleetchartLayouts,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
@@ -140,6 +141,81 @@ describe("FleetchartCanvas", () => {
     await nextTick();
 
     expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
+  });
+
+  it("turns a ship and lays it out by its turned size", async () => {
+    const wrapper = mountCanvas([entry("a", 100)]);
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { facing: FleetchartFacings.TOP },
+    });
+    await nextTick();
+
+    const ship = wrapper.get("[data-test='fleetchart-ship']");
+    const { width, height } = (ship.element as HTMLElement).style;
+
+    expect(width).toBe("200px");
+    expect(height).toBe("400px");
+    expect(ship.find(".fleetchart-canvas-item__frame--top").exists()).toBe(
+      true,
+    );
+  });
+
+  it("mirrors a ship facing right, keeping its size", async () => {
+    const wrapper = mountCanvas([entry("a", 100)]);
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { facing: FleetchartFacings.RIGHT },
+    });
+    await nextTick();
+
+    const ship = wrapper.get("[data-test='fleetchart-ship']");
+
+    expect((ship.element as HTMLElement).style.width).toBe("400px");
+    expect(ship.find(".fleetchart-canvas-item__frame--right").exists()).toBe(
+      true,
+    );
+  });
+
+  it("takes less room packed than in columns", async () => {
+    const wrapper = mountCanvas([
+      entry("large", 400),
+      ...Array.from({ length: 8 }, (_, index) => entry(`small-${index}`, 20)),
+    ]);
+    const area = () => {
+      const { width, height } = (
+        wrapper.get("#fleetchart").element as HTMLElement
+      ).style;
+
+      return parseFloat(width) * parseFloat(height);
+    };
+    const columnsArea = area();
+
+    useFleetchartStore().updateLayout({
+      namespace: "hangar",
+      layout: FleetchartLayouts.PACKED,
+    });
+    await nextTick();
+
+    expect(area()).toBeLessThan(columnsArea);
+  });
+
+  it("zooms a packed chart out to fit the screen", async () => {
+    mountCanvas([entry("large", 2000)]);
+    panzoomInstance.zoomAbs.mockClear();
+
+    useFleetchartStore().updateLayout({
+      namespace: "hangar",
+      layout: FleetchartLayouts.PACKED,
+    });
+    await nextTick();
+
+    const [, , scale] = panzoomInstance.zoomAbs.mock.lastCall as number[];
+
+    expect(scale).toBeLessThan(1);
+    expect(8000 * scale).toBeLessThanOrEqual(window.innerWidth);
   });
 
   it("offers the screen height only where it means anything", async () => {
