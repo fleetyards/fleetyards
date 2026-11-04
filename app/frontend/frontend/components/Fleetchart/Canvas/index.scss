@@ -13,6 +13,7 @@
   box-sizing: content-box;
 
   &.fleetchart-download {
+    min-width: 160px;
     padding-bottom: 160px;
   }
 }
@@ -51,9 +52,12 @@
   }
 }
 
-.fleetchart-canvas__export-line {
+.fleetchart-canvas__export-grid {
   position: absolute;
-  background: rgba(255, 255, 255, 0.5);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 @media (max-width: $desktop-breakpoint) {

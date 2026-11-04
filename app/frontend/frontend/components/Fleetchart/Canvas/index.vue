@@ -231,33 +231,16 @@ const gridCell = computed(() =>
   gridCellFor(PIXELS_PER_METRE * transform.value.scale),
 );
 
-const metreLines = (min: number, extent: number) => {
-  const first = Math.ceil(min / gridCell.value);
-  const last = Math.floor((min + extent) / gridCell.value);
-
-  return Array.from(
-    { length: Math.max(last - first + 1, 0) },
-    (_, index) => (first + index) * gridCell.value,
-  );
-};
-
 // The on-screen grid is a sibling of the scene, so an export needs its own copy.
-const exportGridLines = computed(() => {
-  if (!gridEnabled.value) {
-    return { vertical: [], horizontal: [] };
-  }
-
-  const margin = SCENE_PADDING / PIXELS_PER_METRE;
+const exportGridStyle = computed(() => {
+  const line = "rgba(255, 255, 255, 0.5) 1px, transparent 1px";
+  const cell = gridCell.value * PIXELS_PER_METRE;
+  const offset = (position: number) => ((position % cell) + cell) % cell;
 
   return {
-    vertical: metreLines(
-      bounds.value.minX - margin,
-      bounds.value.width + margin * 2,
-    ).map(sceneX),
-    horizontal: metreLines(
-      bounds.value.minY - margin,
-      bounds.value.height + margin * 2,
-    ).map(sceneY),
+    backgroundImage: `linear-gradient(${line}), linear-gradient(90deg, ${line})`,
+    backgroundSize: `${cell}px ${cell}px`,
+    backgroundPosition: `${offset(sceneX(0))}px ${offset(sceneY(0))}px`,
   };
 });
 
@@ -522,30 +505,11 @@ const toggleLabels = () => {
           height: `${sceneSize.height}px`,
         }"
       >
-        <template v-if="gridEnabled">
-          <div
-            v-for="left in exportGridLines.vertical"
-            :key="`vertical-${left}`"
-            class="fleetchart-canvas__export-only fleetchart-canvas__export-line"
-            :style="{
-              left: `${left}px`,
-              top: 0,
-              bottom: 0,
-              width: '1px',
-            }"
-          />
-          <div
-            v-for="top in exportGridLines.horizontal"
-            :key="`horizontal-${top}`"
-            class="fleetchart-canvas__export-only fleetchart-canvas__export-line"
-            :style="{
-              top: `${top}px`,
-              left: 0,
-              right: 0,
-              height: '1px',
-            }"
-          />
-        </template>
+        <div
+          v-if="gridEnabled"
+          class="fleetchart-canvas__export-only fleetchart-canvas__export-grid"
+          :style="exportGridStyle"
+        />
 
         <FleetchartCanvasItem
           v-for="ship in ships"
