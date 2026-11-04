@@ -199,7 +199,6 @@
         "happens": "Qué pasa",
         "meltCredit": "%{value} de crédito",
         "leaves": "Sale de tu hangar",
-        "notOwned": "No está en tu hangar",
         "lead": "A la izquierda cada nave que tienes, a la derecha cada nave que necesita el plan, y en medio lo que pasa.",
         "anotherPlan": "Comparar con otro plan",
         "tallies": {

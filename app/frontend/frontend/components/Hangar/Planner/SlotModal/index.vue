@@ -126,8 +126,7 @@ const updateMutation = useUpdateHangarPlanSlot();
 
 const { data: plan } = useHangarPlan(() => props.planId);
 
-// A new slot only needs a name, and gets a numbered one when left blank; its
-// ships and the filters they are picked with are set from its row.
+// A new slot gets a numbered name when left blank.
 const newLabel = (value: string) =>
   value.trim() ||
   t("hangarPlanner.slotNumber", {
@@ -138,20 +137,21 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   try {
+    const data = {
+      description: values.description || null,
+      quantity: Number(values.quantity) || 1,
+      filters: filterValues(values),
+    };
+
     const saved = props.slot
       ? await updateMutation.mutateAsync({
           hangarPlanId: props.planId,
           id: props.slot.id,
-          data: {
-            label: values.label,
-            description: values.description || null,
-            quantity: Number(values.quantity) || 1,
-            filters: filterValues(values),
-          },
+          data: { ...data, label: values.label },
         })
       : await createMutation.mutateAsync({
           hangarPlanId: props.planId,
-          data: { label: newLabel(values.label) },
+          data: { ...data, label: newLabel(values.label) },
         });
 
     updatePlan(saved);
@@ -179,90 +179,84 @@ const onSubmit = handleSubmit(async (values) => {
           slot ? t('hangarPlanner.fields.slotLabelPlaceholder') : newLabel('')
         "
       />
-      <template v-if="slot">
-        <FormInput
-          v-model="quantity"
-          v-bind="quantityProps"
-          name="quantity"
-          :type="InputTypesEnum.NUMBER"
-          :min="1"
-          :max="999"
-          :step="1"
-          :label="t('hangarPlanner.fields.quantity')"
-          no-placeholder
-        />
-        <FormTextarea
-          v-model="description"
-          v-bind="descriptionProps"
-          name="description"
-          :label="t('hangarPlanner.fields.slotDescription')"
-        />
+      <FormInput
+        v-model="quantity"
+        v-bind="quantityProps"
+        name="quantity"
+        :type="InputTypesEnum.NUMBER"
+        :min="1"
+        :max="999"
+        :step="1"
+        :label="t('hangarPlanner.fields.quantity')"
+        no-placeholder
+      />
+      <FormTextarea
+        v-model="description"
+        v-bind="descriptionProps"
+        name="description"
+        :label="t('hangarPlanner.fields.slotDescription')"
+      />
 
-        <fieldset class="slot-filters">
-          <legend>{{ t("hangarPlanner.fields.filters") }}</legend>
-          <p class="slot-filters__hint">
-            {{ t("hangarPlanner.fields.filtersInfo") }}
-          </p>
-          <ClassificationSelect
-            v-model="lists.classificationIn"
-            name="classificationIn"
-            :no-label="false"
+      <fieldset class="slot-filters">
+        <legend>{{ t("hangarPlanner.fields.filters") }}</legend>
+        <p class="slot-filters__hint">
+          {{ t("hangarPlanner.fields.filtersInfo") }}
+        </p>
+        <ClassificationSelect
+          v-model="lists.classificationIn"
+          name="classificationIn"
+          :no-label="false"
+        />
+        <FocusSelect v-model="lists.focusIn" name="focusIn" :no-label="false" />
+        <SizeSelect v-model="lists.sizeIn" name="sizeIn" :no-label="false" />
+        <ManufacturerSelect
+          v-model="lists.manufacturerIn"
+          name="manufacturerIn"
+          :no-label="false"
+        />
+        <ProductionStatusSelect
+          v-model="lists.productionStatusIn"
+          name="productionStatusIn"
+          :no-label="false"
+        />
+        <div class="slot-filters__row">
+          <FormInput
+            v-model="pledgePriceGteq"
+            v-bind="pledgePriceGteqProps"
+            name="pledgePriceGteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            prefix="$"
+            :label="t('hangarPlanner.fields.priceFrom')"
+            no-placeholder
           />
-          <FocusSelect
-            v-model="lists.focusIn"
-            name="focusIn"
-            :no-label="false"
+          <FormInput
+            v-model="pledgePriceLteq"
+            v-bind="pledgePriceLteqProps"
+            name="pledgePriceLteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            prefix="$"
+            :label="t('hangarPlanner.fields.priceTo')"
+            no-placeholder
           />
-          <SizeSelect v-model="lists.sizeIn" name="sizeIn" :no-label="false" />
-          <ManufacturerSelect
-            v-model="lists.manufacturerIn"
-            name="manufacturerIn"
-            :no-label="false"
+          <FormInput
+            v-model="cargoGteq"
+            v-bind="cargoGteqProps"
+            name="cargoGteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            suffix="SCU"
+            :label="t('hangarPlanner.fields.minCargo')"
+            no-placeholder
           />
-          <ProductionStatusSelect
-            v-model="lists.productionStatusIn"
-            name="productionStatusIn"
-            :no-label="false"
-          />
-          <div class="slot-filters__row">
-            <FormInput
-              v-model="pledgePriceGteq"
-              v-bind="pledgePriceGteqProps"
-              name="pledgePriceGteq"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              prefix="$"
-              :label="t('hangarPlanner.fields.priceFrom')"
-              no-placeholder
-            />
-            <FormInput
-              v-model="pledgePriceLteq"
-              v-bind="pledgePriceLteqProps"
-              name="pledgePriceLteq"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              prefix="$"
-              :label="t('hangarPlanner.fields.priceTo')"
-              no-placeholder
-            />
-            <FormInput
-              v-model="cargoGteq"
-              v-bind="cargoGteqProps"
-              name="cargoGteq"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              suffix="SCU"
-              :label="t('hangarPlanner.fields.minCargo')"
-              no-placeholder
-            />
-          </div>
-          <FormCheckbox
-            v-model="onSaleEq"
-            name="onSaleEq"
-            :label="t('hangarPlanner.fields.onSaleOnly')"
-          />
-        </fieldset>
-      </template>
+        </div>
+        <FormCheckbox
+          v-model="onSaleEq"
+          name="onSaleEq"
+          :label="t('hangarPlanner.fields.onSaleOnly')"
+        />
+      </fieldset>
     </form>
 
     <template #footer>

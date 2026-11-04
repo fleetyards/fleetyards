@@ -19,18 +19,33 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
+import { startHolder } from "@/frontend/components/Hangar/Planner/reach";
 import {
+  type HangarPlanStart,
+  useHangarPlanPairing,
+} from "@/frontend/composables/useHangarPlanPairing";
+import {
+  type HangarPlan,
+  type HangarPlanModel,
   type HangarPlanSlot,
   useCreateHangarPlanCandidate,
+  useHangarPlan,
   useUpdateHangarPlanSlot,
 } from "@/services/fyApi";
 
 type Props = {
   planId: string;
   slot: HangarPlanSlot;
+  // A start picked for the slot before it had a ship, saved with the ship; its
+  // ship, where it is one already, bounds what the start can become.
+  start?: HangarPlanStart;
+  startModel?: HangarPlanModel;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  start: undefined,
+  startModel: undefined,
+});
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -47,11 +62,22 @@ const query = computed(() => ({
   ...props.slot.filters,
   playerOwnableEq: true,
   plannable: true,
+  ...(props.startModel
+    ? {
+        ccuTarget: true,
+        ...(typeof props.startModel.pledgePrice === "number"
+          ? { pledgePriceGt: props.startModel.pledgePrice }
+          : {}),
+      }
+    : {}),
 }));
 
 const taken = computed(() =>
   props.slot.candidates.map((candidate) => candidate.model.slug),
 );
+
+const { data: plan } = useHangarPlan(() => props.planId);
+const { pairStart } = useHangarPlanPairing(() => props.planId, plan);
 
 const updateSlot = useUpdateHangarPlanSlot();
 const savingFilters = ref(false);
@@ -94,14 +120,24 @@ const submit = async (selection: ModelPickerSelection[]) => {
   submitting.value = true;
 
   try {
+    let answer: HangarPlan | undefined;
     for (const { option } of selection) {
-      updatePlan(
-        await mutation.mutateAsync({
-          hangarPlanId: props.planId,
-          data: { slotId: props.slot.id, modelId: option.id },
-        }),
-      );
+      answer = await mutation.mutateAsync({
+        hangarPlanId: props.planId,
+        data: { slotId: props.slot.id, modelId: option.id },
+      });
+      updatePlan(answer);
     }
+
+    const holder = startHolder(
+      answer?.slots.find((slot) => slot.id === props.slot.id)?.candidates ?? [],
+      props.startModel,
+    );
+    if (props.start && holder) {
+      const paired = await pairStart(holder, props.start);
+      if (!paired) return;
+    }
+
     comlink.emit("close-modal", true);
   } catch {
     displayAlert({ text: t("hangarPlanner.messages.saveFailed") });

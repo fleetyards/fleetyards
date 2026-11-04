@@ -625,7 +625,8 @@ const neededRows = computed<Row[]>(() => {
       group: "slots",
       order: slotOrder(slot.id),
       testId: "hangar-plan-flow-open",
-      leftNone: t("hangarPlanner.comparison.notOwned"),
+      leftNone: t("hangarPlanner.pick.pickStart"),
+      start: { slot },
       action: {
         kind: "open",
         label: t("hangarPlanner.states.open"),
