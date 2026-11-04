@@ -12,7 +12,9 @@ import type { ComponentPublicInstance } from "vue";
 type Props = {
   records: T[];
   primaryKey: keyof T;
-  gridBase?: "2" | "3";
+  // `compact` holds a card more per row than `3` does, for records with less
+  // to show than a ship.
+  gridBase?: "2" | "3" | "compact";
   filterVisible?: boolean;
   // Drag to rearrange. The handle is a selector inside the card, so the card
   // itself stays a link rather than becoming something you cannot click.
@@ -34,6 +36,12 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
 
 const gridClasses = computed(() => {
+  if (props.gridBase === "compact") {
+    return props.filterVisible
+      ? "col-12 col-sm-6 col-md-4 col-lg-3 col-xxl-2"
+      : "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2";
+  }
+
   if (props.gridBase === "3") {
     return `col-12 col-md-6 col-lg-4 ${gridClassesWithFilter.value}`;
   }

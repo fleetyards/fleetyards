@@ -125,4 +125,41 @@ describe("BaseGrid", () => {
 
     expect(Array.from(container.children).indexOf(moved)).toBe(0);
   });
+
+  // Every step divides 12, so the page sizes (multiples of 12) fill each row.
+  describe("compact", () => {
+    const cellClasses = async (filterVisible: boolean) => {
+      const wrapper = (await mountWithDefaults(
+        Component as never,
+        {
+          props: {
+            records,
+            primaryKey: "id",
+            gridBase: "compact",
+            filterVisible,
+          },
+        } as never,
+      )) as unknown as GridWrapper;
+
+      return Array.from(
+        wrapper.element.querySelector(".base-grid__cell")?.classList || [],
+      );
+    };
+
+    it("holds four cards where the default grid holds three", async () => {
+      const classes = await cellClasses(false);
+
+      expect(classes).toContain("col-lg-3");
+      expect(classes).not.toContain("col-lg-4");
+    });
+
+    it("waits for a wider screen to reach six while the filter is open", async () => {
+      expect(await cellClasses(false)).toContain("col-xl-2");
+
+      const classes = await cellClasses(true);
+
+      expect(classes).not.toContain("col-xl-2");
+      expect(classes).toContain("col-xxl-2");
+    });
+  });
 });
