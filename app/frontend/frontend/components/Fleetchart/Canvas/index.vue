@@ -282,7 +282,10 @@ const positions = computed(() => {
     case FleetchartLayouts.CLASSIC:
       return arrangeClassic(ships.value, classicRowWidth.value);
     case FleetchartLayouts.PACKED:
-      return arrangePacked(ships.value, screen.width / screen.height);
+      return arrangePacked(
+        ships.value,
+        screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
+      );
     default:
       return arrangeColumns(
         ships.value,
