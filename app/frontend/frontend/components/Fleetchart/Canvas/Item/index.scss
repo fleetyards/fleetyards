@@ -14,8 +14,22 @@
   }
 }
 
+// A ship being dragged has to stay under the cursor rather than ease towards it.
+.fleetchart-canvas-item--arranging {
+  cursor: grab;
+  transition: none;
+}
+
+.fleetchart-canvas-item--selected {
+  outline: 2px solid $primary;
+  outline-offset: 4px;
+}
+
 // Only the ship turns: the item keeps its own box for the layout and the label.
 .fleetchart-canvas-item__frame {
+  // Taller than the box in a tight layout, where it would catch a press meant for
+  // the ship beside it.
+  pointer-events: none;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -40,6 +54,7 @@
 }
 
 .fleetchart-canvas-item__image {
+  user-select: none;
   flex: none;
   height: auto;
 }

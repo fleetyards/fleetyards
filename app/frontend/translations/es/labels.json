@@ -532,6 +532,10 @@
           "normal": "Normal",
           "wide": "Amplio"
         },
+        "unplaced": "Sin colocar",
+        "rotateShip": "Girar la nave seleccionada (R)",
+        "undo": "Deshacer",
+        "resetArrangement": "Restablecer disposición",
         "facing": "Orientación",
         "facingOptions": {
           "left": "Izquierda",
@@ -545,7 +549,8 @@
         "layoutOptions": {
           "columns": "Columnas",
           "classic": "Clásico",
-          "packed": "Compacto"
+          "packed": "Compacto",
+          "free": "Libre"
         },
         "mode": "Modo",
         "modeOptions": {

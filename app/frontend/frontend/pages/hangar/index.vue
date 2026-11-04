@@ -50,7 +50,10 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import {
+  FleetchartLayouts,
+  useFleetchartStore,
+} from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { useVehicleListFigures } from "@/frontend/composables/useVehicleListFigures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -117,6 +120,17 @@ const {
   refetch,
   ...asyncStatus
 } = useHangarQuery(hangarQueryParams);
+
+const arrangingFleetchart = computed(
+  () =>
+    fleetchartVisible.value &&
+    fleetchartStore.fleetchartLayout("hangar") === FleetchartLayouts.FREE,
+);
+
+const { data: wholeHangar, isSuccess: wholeHangarLoaded } = useHangarQuery(
+  computed(() => ({ perPage: "all", q: getQuery() })),
+  { query: { enabled: arrangingFleetchart } },
+);
 
 const hangarStatsQueryParams = computed(() => {
   return { q: getQuery() };
@@ -699,6 +713,8 @@ const { activeFilters } = useShipFilterSummary(() =>
 
       <FleetchartApp
         :items="vehicles?.items || []"
+        :arrange-items="wholeHangar?.items || []"
+        :arrange-loaded="wholeHangarLoaded"
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"

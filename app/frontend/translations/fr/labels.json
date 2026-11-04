@@ -532,6 +532,10 @@
           "normal": "Normal",
           "wide": "Large"
         },
+        "unplaced": "Pas encore placés",
+        "rotateShip": "Pivoter le vaisseau sélectionné (R)",
+        "undo": "Annuler",
+        "resetArrangement": "Réinitialiser la disposition",
         "facing": "Orientation",
         "facingOptions": {
           "left": "Gauche",
@@ -545,7 +549,8 @@
         "layoutOptions": {
           "columns": "Colonnes",
           "classic": "Classique",
-          "packed": "Compact"
+          "packed": "Compact",
+          "free": "Libre"
         },
         "mode": "Mode",
         "modeOptions": {

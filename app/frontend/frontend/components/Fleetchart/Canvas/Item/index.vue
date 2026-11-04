@@ -34,6 +34,8 @@ interface Props {
   boxWidth: number;
   boxHeight: number;
   facing?: FleetchartFacings;
+  selected?: boolean;
+  arranging?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,6 +45,8 @@ const props = withDefaults(defineProps<Props>(), {
   colored: false,
   extended: false,
   facing: FleetchartFacings.LEFT,
+  selected: false,
+  arranging: false,
 });
 
 const { t } = useI18n();
@@ -58,6 +62,8 @@ const productionStatus = computed(() =>
 const cssClasses = computed(() => [
   `fleetchart-item-${model.value.slug}`,
   props.showStatus ? `status-${model.value.productionStatus}` : undefined,
+  props.selected ? "fleetchart-canvas-item--selected" : undefined,
+  props.arranging ? "fleetchart-canvas-item--arranging" : undefined,
 ]);
 
 const view = computed(() =>
@@ -113,6 +119,7 @@ const image = computed(() => {
         v-if="image"
         :src="image"
         :alt="label.title"
+        draggable="false"
         :style="{
           width: `${imageWidth}px`,
           'max-height': `${geometry.height * PIXELS_PER_METRE}px`,

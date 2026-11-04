@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import FleetchartCanvas from "./index.vue";
@@ -51,19 +51,32 @@ const entry = (id: string, length = 100): FleetchartEntry =>
     },
   }) as unknown as FleetchartEntry;
 
+const canvasStubs = {
+  BtnDropdown: { template: "<div><slot name='label' /><slot /></div>" },
+  Btn: { template: "<button><slot /></button>" },
+  DownloadScreenshotBtn: true,
+  FleetChartStatusBtn: true,
+  CommunityLogo: true,
+};
+
+const mounted: { unmount: () => void }[] = [];
+
+const track = <T extends { unmount: () => void }>(wrapper: T) => {
+  mounted.push(wrapper);
+
+  return wrapper;
+};
+
 const mountCanvas = (items: FleetchartEntry[]) =>
-  mount(FleetchartCanvas, {
-    props: { namespace: "hangar", items },
-    global: {
-      stubs: {
-        BtnDropdown: { template: "<div><slot name='label' /><slot /></div>" },
-        Btn: { template: "<button><slot /></button>" },
-        DownloadScreenshotBtn: true,
-        FleetChartStatusBtn: true,
-        CommunityLogo: true,
+  track(
+    mount(FleetchartCanvas, {
+      props: { namespace: "hangar", items },
+      global: {
+        stubs: canvasStubs,
+        directives: { tooltip: {} },
       },
-    },
-  });
+    }),
+  );
 
 const showInColumns = () => {
   useFleetchartStore().updateLayout({
@@ -80,6 +93,10 @@ const shipPositions = (wrapper: ReturnType<typeof mountCanvas>) =>
   });
 
 describe("FleetchartCanvas", () => {
+  afterEach(() => {
+    mounted.splice(0).forEach((wrapper) => wrapper.unmount());
+  });
+
   beforeEach(() => {
     setActivePinia(createPinia());
     window.innerWidth = 1600;
@@ -250,6 +267,139 @@ describe("FleetchartCanvas", () => {
     const [x] = panzoomInstance.moveTo.mock.lastCall as number[];
 
     expect(x).toBeGreaterThan(-5000);
+  });
+
+  describe("free layout", () => {
+    const mountFree = async () => {
+      useFleetchartStore().updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+
+      const wrapper = mountCanvas([entry("a"), entry("b")]);
+
+      await nextTick();
+
+      return wrapper;
+    };
+
+    const placement = (id: string) =>
+      useFleetchartStore().fleetchartPlacements("hangar")[id];
+
+    const drag = async (
+      wrapper: ReturnType<typeof mountCanvas>,
+      distance: number,
+    ) => {
+      const ship = wrapper.findAll("[data-test='fleetchart-ship']")[0];
+
+      const down = new Event("pointerdown", { bubbles: true });
+      Object.assign(down, {
+        button: 0,
+        pointerType: "mouse",
+        clientX: 0,
+        clientY: 0,
+      });
+      ship.element.dispatchEvent(down);
+
+      const move = new Event("pointermove");
+      Object.assign(move, { clientX: distance, clientY: 0 });
+      window.dispatchEvent(move);
+      window.dispatchEvent(new Event("pointerup"));
+      await nextTick();
+    };
+
+    it("gives every ship a place, starting from the layout before it", async () => {
+      await mountFree();
+
+      expect(placement("a")).toBeDefined();
+      expect(placement("b")).toBeDefined();
+    });
+
+    it("waits for the whole fleet before placing anything", async () => {
+      useFleetchartStore().updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: {
+            namespace: "hangar",
+            items: [entry("a")],
+            arrangeReady: false,
+          },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+
+      await nextTick();
+      expect(placement("a")).toBeUndefined();
+
+      await wrapper.setProps({ arrangeReady: true });
+      expect(placement("a")).toBeDefined();
+    });
+
+    it("moves a dragged ship by the distance in metres", async () => {
+      const wrapper = await mountFree();
+      const before = { ...placement("a") };
+
+      await drag(wrapper, 40);
+
+      expect(placement("a").x).toBe(before.x + 10);
+      expect(placement("b")).toBeDefined();
+    });
+
+    it("leaves the ships alone while the chart is only being viewed", async () => {
+      useFleetchartStore().updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.PACKED,
+      });
+
+      const wrapper = mountCanvas([entry("a")]);
+
+      await drag(wrapper, 40);
+
+      expect(placement("a")).toBeUndefined();
+    });
+
+    it("undoes a move", async () => {
+      const wrapper = await mountFree();
+      const before = { ...placement("a") };
+
+      await drag(wrapper, 40);
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "z", ctrlKey: true }),
+      );
+      await nextTick();
+
+      expect(placement("a")).toEqual(before);
+    });
+
+    it("rotates only the selected ship", async () => {
+      const wrapper = await mountFree();
+
+      await drag(wrapper, 0);
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "r" }));
+      await nextTick();
+
+      const facings = [placement("a").facing, placement("b").facing];
+
+      expect(facings).toContain(FleetchartFacings.TOP);
+      expect(facings).toContain(FleetchartFacings.LEFT);
+    });
+
+    it("ignores keys outside the free layout", async () => {
+      useFleetchartStore().updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.PACKED,
+      });
+      mountCanvas([entry("a")]);
+
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "r" }));
+      await nextTick();
+
+      expect(placement("a")).toBeUndefined();
+    });
   });
 
   it("offers the screen height only where it means anything", async () => {

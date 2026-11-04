@@ -39,11 +39,18 @@ const update = (changes: Partial<FleetchartOptions>) => {
 };
 
 // Packing decides the order itself, so a sort would do nothing there.
+const layout = computed(() =>
+  fleetchartStore.fleetchartLayout(props.namespace),
+);
+
 const sortable = computed(
   () =>
-    fleetchartStore.fleetchartLayout(props.namespace) !==
-    FleetchartLayouts.PACKED,
+    layout.value !== FleetchartLayouts.PACKED &&
+    layout.value !== FleetchartLayouts.FREE,
 );
+
+// Ships in a free arrangement stay where they were put.
+const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
 
 const choices = computed(() => [
   ...(sortable.value
@@ -62,18 +69,26 @@ const choices = computed(() => [
     optionsKey: "facingOptions",
     values: Object.values(FleetchartFacings) as string[],
   },
-  {
-    name: "group" as const,
-    labelKey: "group",
-    optionsKey: "groupOptions",
-    values: Object.values(FleetchartGroups) as string[],
-  },
-  {
-    name: "spacing" as const,
-    labelKey: "spacing",
-    optionsKey: "spacingOptions",
-    values: Object.values(FleetchartSpacings) as string[],
-  },
+  ...(groupable.value
+    ? [
+        {
+          name: "group" as const,
+          labelKey: "group",
+          optionsKey: "groupOptions",
+          values: Object.values(FleetchartGroups) as string[],
+        },
+      ]
+    : []),
+  ...(groupable.value
+    ? [
+        {
+          name: "spacing" as const,
+          labelKey: "spacing",
+          optionsKey: "spacingOptions",
+          values: Object.values(FleetchartSpacings) as string[],
+        },
+      ]
+    : []),
 ]);
 </script>
 

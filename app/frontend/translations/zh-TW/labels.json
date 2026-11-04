@@ -532,6 +532,10 @@
           "normal": "正常",
           "wide": "寬鬆"
         },
+        "unplaced": "尚未放置",
+        "rotateShip": "旋轉所選艦船 (R)",
+        "undo": "復原",
+        "resetArrangement": "重設排列",
         "facing": "朝向",
         "facingOptions": {
           "left": "左",
@@ -545,7 +549,8 @@
         "layoutOptions": {
           "columns": "分欄",
           "classic": "經典",
-          "packed": "緊密"
+          "packed": "緊密",
+          "free": "自由"
         },
         "mode": "模式",
         "modeOptions": {
