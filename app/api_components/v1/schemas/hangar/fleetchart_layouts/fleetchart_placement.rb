@@ -17,7 +17,8 @@ module V1
               viewpoint: ::V1::Schemas::Enums::FleetchartViewpointEnum,
               state: ::V1::Schemas::Enums::FleetchartShipStateEnum,
               order: {type: [:number, :null]},
-              groupId: {type: [:string, :null]}
+              groupId: {type: [:string, :null]},
+              heading: {type: [:string, :null]}
             },
             required: %w[vehicleId x y],
             additionalProperties: false

@@ -127,7 +127,7 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
   end
 
   def placement_for(vehicle, **attributes)
-    {vehicleId: vehicle.id, x: 12.5, y: -4, facing: "top", viewpoint: "rear", state: "landed", order: 2, groupId: "g1"}
+    {vehicleId: vehicle.id, x: 12.5, y: -4, facing: "top", viewpoint: "rear", state: "landed", order: 2, groupId: "g1", heading: "Anvil"}
       .merge(attributes)
   end
 
@@ -145,7 +145,7 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_equal false, body["colored"]
     assert_equal(
       {"vehicleId" => @vehicle.id, "x" => 12.5, "y" => -4, "facing" => "top", "viewpoint" => "rear",
-       "state" => "landed", "order" => 2, "groupId" => "g1"},
+       "state" => "landed", "order" => 2, "groupId" => "g1", "heading" => "Anvil"},
       body["placements"].first
     )
   end

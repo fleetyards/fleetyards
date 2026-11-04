@@ -104,6 +104,8 @@ export interface FleetchartPlacement {
   order?: number;
   // Ships sharing one are selected and moved together.
   groupId?: string;
+  // The title of the group an arrangement put this ship in, as a layout shows it.
+  heading?: string;
 }
 
 export type FleetchartPlacements = Record<string, FleetchartPlacement>;

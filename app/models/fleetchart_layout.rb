@@ -4,6 +4,7 @@
 class FleetchartLayout < ApplicationRecord
   MAX_PER_USER = 50
   MAX_PLACEMENTS = 5000
+  MAX_HEADING_LENGTH = 100
 
   VIEWPOINTS = %w[top port angled front starboard bottom angledRear rear].freeze
   FACINGS = %w[left top right bottom].freeze
@@ -67,7 +68,8 @@ class FleetchartLayout < ApplicationRecord
       allowed?(placement["facing"], FACINGS) &&
       allowed?(placement["viewpoint"], VIEWPOINTS) &&
       allowed?(placement["state"], STATES) &&
-      (placement["order"].nil? || placement["order"].is_a?(Numeric))
+      (placement["order"].nil? || placement["order"].is_a?(Numeric)) &&
+      (placement["heading"].nil? || (placement["heading"].is_a?(String) && placement["heading"].length <= MAX_HEADING_LENGTH))
   end
 
   private def allowed?(value, values)

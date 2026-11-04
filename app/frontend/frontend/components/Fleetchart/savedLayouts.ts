@@ -28,7 +28,17 @@ export const placementsFromLayout = (
 ): FleetchartPlacements =>
   Object.fromEntries(
     placements.map(
-      ({ vehicleId, x, y, facing, viewpoint, state, order, groupId }) => [
+      ({
+        vehicleId,
+        x,
+        y,
+        facing,
+        viewpoint,
+        state,
+        order,
+        groupId,
+        heading,
+      }) => [
         vehicleId,
         {
           x,
@@ -40,6 +50,7 @@ export const placementsFromLayout = (
           ...(state ? { state: state as FleetchartShipStates } : {}),
           ...(order === null || order === undefined ? {} : { order }),
           ...(groupId ? { groupId } : {}),
+          ...(heading ? { heading } : {}),
         },
       ],
     ),

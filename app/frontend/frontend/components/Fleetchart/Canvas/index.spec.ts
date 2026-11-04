@@ -945,6 +945,43 @@ describe("FleetchartCanvas", () => {
         expect(moved.length).toBeLessThan(3);
       });
 
+      it("groups by manufacturer with headings, stored on each ship", async () => {
+        seed();
+
+        const brand = (id: string, name: string) =>
+          ({
+            ...(entry(id) as object),
+            manufacturer: { code: "X", name },
+          }) as FleetchartEntry;
+        const wrapper = mountCanvas([
+          brand("a", "Anvil"),
+          brand("b", "Anvil"),
+          brand("c", "Drake"),
+        ]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-group-manufacturer']")
+          .trigger("click");
+
+        expect(placement("a").heading).toBe("Anvil");
+        expect(placement("c").heading).toBe("Drake");
+        expect(
+          wrapper
+            .findAll("[data-test='fleetchart-group-heading']")
+            .map((heading) => heading.text())
+            .sort(),
+        ).toEqual(["Anvil", "Drake"]);
+
+        await wrapper
+          .get("[data-test='fleetchart-arrange-group-none']")
+          .trigger("click");
+
+        expect(placement("a").heading).toBeUndefined();
+        expect(
+          wrapper.findAll("[data-test='fleetchart-group-heading']"),
+        ).toHaveLength(0);
+      });
+
       it("can be undone", async () => {
         seed();
 

@@ -269,6 +269,16 @@ describe("snapToGrid", () => {
   });
 });
 
+describe("columns aligned for a heading", () => {
+  it("starts every ship at the column's left edge", () => {
+    const positions = arrangeColumns([ship("a", 40), ship("b", 100)], 500, {
+      leftAligned: true,
+    });
+
+    expect(positions.a.x - 20).toBe(positions.b.x - 50);
+  });
+});
+
 describe("columns facing up or down", () => {
   it("centres ships in their column", () => {
     const positions = arrangeColumns([ship("a", 40), ship("b", 100)], 500, {

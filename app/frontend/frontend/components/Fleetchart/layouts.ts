@@ -157,7 +157,10 @@ export const autoScreenHeightFactor = (
 export const arrangeColumns = (
   ships: FleetchartLayoutShip[],
   maxColumnHeight: number,
-  { centred = false }: { centred?: boolean } = {},
+  {
+    centred = false,
+    leftAligned = false,
+  }: { centred?: boolean; leftAligned?: boolean } = {},
 ): FleetchartPositions => {
   const positions: FleetchartPositions = {};
   const headingRoom = ships.some((ship) => ship.group) ? HEADING_ROOM : 0;
@@ -168,9 +171,11 @@ export const arrangeColumns = (
     let top = headingRoom;
 
     [...column].reverse().forEach((ship) => {
-      const boxRight = centred
-        ? columnLeft + (columnWidth + boxWidth(ship)) / 2
-        : columnLeft + columnWidth;
+      const boxRight = leftAligned
+        ? columnLeft + boxWidth(ship)
+        : centred
+          ? columnLeft + (columnWidth + boxWidth(ship)) / 2
+          : columnLeft + columnWidth;
 
       positions[ship.id] = placeInBox(
         ship,

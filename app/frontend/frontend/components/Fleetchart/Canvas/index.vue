@@ -331,11 +331,9 @@ const shipsFor = (kind: FleetchartLayouts, keepShipSettings = false) => {
       const placed = !!placements.value[entry.id];
       const shipGroup = free
         ? placed
-          ? undefined
+          ? placements.value[entry.id]?.heading
           : t("labels.fleetchartApp.unplaced")
-        : keepShipSettings
-          ? undefined
-          : groupTitle(entry);
+        : groupTitle(entry);
 
       return [
         {
@@ -384,7 +382,11 @@ const packedAspect = computed(
   () => screen.width / (screen.height - FIT_MARGIN_TOP - FIT_MARGIN_BOTTOM),
 );
 
-const arrange = (kind: FleetchartLayouts, list: CanvasShip[]) => {
+const arrange = (
+  kind: FleetchartLayouts,
+  list: CanvasShip[],
+  forFreeLayout = false,
+) => {
   switch (kind) {
     case FleetchartLayouts.CLASSIC:
       return arrangeClassic(list, classicRowWidth.value);
@@ -396,6 +398,8 @@ const arrange = (kind: FleetchartLayouts, list: CanvasShip[]) => {
         columnHeightFor(screenHeightFactorFor(list)),
         {
           centred: turned.value,
+          // Free draws a heading from a group's left edge, wherever its ships ended up.
+          leftAligned: forFreeLayout && list.some((ship) => ship.group),
         },
       );
     default:
@@ -706,10 +710,17 @@ const undo = () => {
 // starts out as what was showing and no ship moves when the first one is dragged.
 const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
   const list = shipsFor(kind);
-  const from = arrange(kind, list);
+  const from = arrange(kind, list, true);
 
   return Object.fromEntries(
-    list.map((ship) => [ship.id, { ...from[ship.id], facing: facing.value }]),
+    list.map((ship) => [
+      ship.id,
+      {
+        ...from[ship.id],
+        facing: facing.value,
+        ...(ship.group ? { heading: ship.group } : {}),
+      },
+    ]),
   );
 };
 
@@ -741,6 +752,17 @@ watch(
   { immediate: true },
 );
 
+const lastArrangement = ref(FleetchartLayouts.PACKED);
+
+const groupAndArrange = (option: FleetchartGroups) => {
+  fleetchartStore.updateOptions({
+    namespace: props.namespace,
+    options: { group: option },
+  });
+
+  arrangeAs(lastArrangement.value);
+};
+
 const ARRANGEMENTS = [
   FleetchartLayouts.COLUMNS,
   FleetchartLayouts.CLASSIC,
@@ -750,11 +772,13 @@ const ARRANGEMENTS = [
 // Applies a layout to what is selected, where it stands, or else to everything. Only
 // the places change: each ship keeps the angle, facing and state it was given.
 const arrangeAs = (kind: FleetchartLayouts) => {
+  lastArrangement.value = kind;
+
   const selected = selectedShips.value;
   const list = shipsFor(kind, true).filter(
     ({ id }) => !selected.length || selectedIds.value.includes(id),
   );
-  const from = arrange(kind, list);
+  const from = arrange(kind, list, true);
   const current = selected.length
     ? boundsOf(selected, positions.value)
     : undefined;
@@ -763,14 +787,19 @@ const arrangeAs = (kind: FleetchartLayouts) => {
   const offsetY = current ? current.minY - arranged.minY : 0;
 
   const moved = Object.fromEntries(
-    list.map(({ id }) => [
-      id,
-      {
-        ...placements.value[id],
-        x: from[id].x + offsetX,
-        y: from[id].y + offsetY,
-      },
-    ]),
+    list.map(({ id, group: heading }) => {
+      const { heading: _previous, ...placement } = placements.value[id] ?? {};
+
+      return [
+        id,
+        {
+          ...placement,
+          x: from[id].x + offsetX,
+          y: from[id].y + offsetY,
+          ...(heading ? { heading } : {}),
+        },
+      ];
+    }),
   );
 
   if (selected.length) {
@@ -952,6 +981,7 @@ const placementsToSave = computed<FleetchartPlacementInput[]>(() => {
       state: ship?.state ?? placement.state,
       order: orders[vehicleId],
       groupId: placement.groupId,
+      heading: placement.heading,
     };
   });
 });
@@ -1368,6 +1398,21 @@ const toggleLabels = () => {
             @click="arrangeAs(option)"
           >
             {{ t(`labels.fleetchartApp.layoutOptions.${option}`) }}
+          </Btn>
+          <hr />
+          <Btn
+            v-for="option in FleetchartGroups"
+            :key="option"
+            :active="group === option"
+            :data-test="`fleetchart-arrange-group-${option}`"
+            variant="bare"
+            @click="groupAndArrange(option)"
+          >
+            {{
+              t("labels.fleetchartApp.groupBy", {
+                group: t(`labels.fleetchartApp.groupOptions.${option}`),
+              })
+            }}
           </Btn>
         </BtnDropdown>
         <Btn

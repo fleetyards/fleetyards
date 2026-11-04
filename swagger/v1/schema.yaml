@@ -35277,6 +35277,10 @@ components:
           type:
           - string
           - 'null'
+        heading:
+          type:
+          - string
+          - 'null'
       required:
       - vehicleId
       - x

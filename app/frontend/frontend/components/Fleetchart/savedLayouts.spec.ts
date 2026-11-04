@@ -34,6 +34,7 @@ describe("placementsFromLayout", () => {
           state: "landed",
           order: 0,
           groupId: "g",
+          heading: "Anvil",
         },
       ] as FleetchartPlacement[]),
     ).toEqual({
@@ -45,6 +46,7 @@ describe("placementsFromLayout", () => {
         state: "landed",
         order: 0,
         groupId: "g",
+        heading: "Anvil",
       },
     });
   });
@@ -61,6 +63,7 @@ describe("placementsFromLayout", () => {
           state: null,
           order: null,
           groupId: null,
+          heading: null,
         },
       ] as FleetchartPlacement[]),
     ).toEqual({ a: { x: 1, y: 2 } });
