@@ -136,4 +136,10 @@ describe("Equipment/Row", () => {
 
     expect(wrapper.findAll(".component-lead-metric__item")).toHaveLength(4);
   });
+
+  it("does not lead with volume", async () => {
+    const wrapper = await mount({ volume: 1 } as Partial<Equipment>);
+
+    expect(wrapper.find(".component-lead-metric").exists()).toBe(false);
+  });
 });

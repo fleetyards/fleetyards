@@ -41,9 +41,12 @@
     vertical-align: -4px;
   }
 
+  // May shrink, so four figures wrap in their own block before they push the
+  // row's facts onto a second line. The name keeps its floor.
   :deep(.component-lead-metric) {
     display: none;
-    flex: none;
+    flex: 0 1 auto;
+    min-width: 0;
 
     @media (min-width: 992px) {
       display: flex;

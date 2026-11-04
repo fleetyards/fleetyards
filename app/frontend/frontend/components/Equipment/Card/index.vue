@@ -15,9 +15,17 @@ import {
   type ItemCardMaker,
 } from "@/shared/components/ItemCard/types";
 import { useEquipmentBadges } from "@/frontend/composables/useEquipmentBadges";
-import { useEquipmentStats } from "@/frontend/composables/useEquipmentStats";
+import {
+  equipmentCardReadsStats,
+  useEquipmentStats,
+} from "@/frontend/composables/useEquipmentStats";
+import { manufacturerMark } from "@/frontend/utils/manufacturerMark";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Equipment, InventoryItemTypeEnum } from "@/services/fyApi";
+import {
+  type Equipment,
+  InventoryItemTypeEnum,
+  useEquipmentItem as useEquipmentItemQuery,
+} from "@/services/fyApi";
 
 type Props = {
   equipment: Equipment;
@@ -39,18 +47,33 @@ const filterLink = (key: string, value: string) => ({
 
 const badges = useEquipmentBadges(() => props.equipment);
 
-const stats = useEquipmentStats(() => props.equipment);
+// A list leaves out what a tool, a medical item or a gadget reads off the detail
+// payload, so those fetch it once their figures are asked for. Everything else
+// is complete in the row it came with.
+const fetchesDetail = computed(
+  () =>
+    props.details &&
+    !!props.equipment.slug &&
+    equipmentCardReadsStats(props.equipment.equipmentType),
+);
+
+const { data: detail } = useEquipmentItemQuery(
+  computed(() => props.equipment.slug),
+  { query: { enabled: fetchesDetail } },
+);
+
+const stats = useEquipmentStats(() =>
+  fetchesDetail.value && detail.value ? detail.value : props.equipment,
+);
 
 const maker = computed<ItemCardMaker | undefined>(() => {
   const { manufacturer } = props.equipment;
   if (!manufacturer) return undefined;
 
-  const { icon, logo } = manufacturer;
-
   return {
     name: manufacturer.name,
     code: manufacturer.code || manufacturer.shortName || undefined,
-    logo: icon?.smallUrl || icon?.url || logo?.smallUrl || logo?.url,
+    logo: manufacturerMark(manufacturer),
     to: manufacturer.slug
       ? filterLink("manufacturerSlugIn", manufacturer.slug)
       : undefined,
@@ -97,7 +120,7 @@ const image = computed(
     :maker="maker"
     :categories="categories"
     :badges="badges"
-    :stats="stats"
+    :stats="details ? stats : []"
     :details="details"
   >
     <template #name>{{ equipment.name }}</template>

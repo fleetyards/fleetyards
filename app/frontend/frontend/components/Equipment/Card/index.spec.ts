@@ -44,9 +44,9 @@ const equipment = (attrs: Partial<Equipment> = {}) =>
     ...attrs,
   }) as Equipment;
 
-const mount = async (attrs: Partial<Equipment> = {}) =>
+const mount = async (attrs: Partial<Equipment> = {}, details = false) =>
   mountWithDefaults(Component, {
-    props: { equipment: equipment(attrs) },
+    props: { equipment: equipment(attrs), details },
     plugins: [await routerOnList()],
   });
 
@@ -106,14 +106,23 @@ describe("Equipment/Card", () => {
   });
 
   it("lists every figure the item has in its details", async () => {
-    const wrapper = await mount({
-      dps: 120,
-      alphaDamage: 30,
-      rateOfFire: 240,
-      range: 80,
-      volume: 1,
-    } as Partial<Equipment>);
+    const wrapper = await mount(
+      {
+        dps: 120,
+        alphaDamage: 30,
+        rateOfFire: 240,
+        range: 80,
+        volume: 1,
+      } as Partial<Equipment>,
+      true,
+    );
 
     expect(wrapper.findAll("[data-test='item-card-stat']")).toHaveLength(5);
+  });
+
+  it("works out no figures until details are on", async () => {
+    const wrapper = await mount({ dps: 120 } as Partial<Equipment>);
+
+    expect(wrapper.findAll("[data-test='item-card-stat']")).toHaveLength(0);
   });
 });

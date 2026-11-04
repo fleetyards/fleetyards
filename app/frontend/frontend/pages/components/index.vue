@@ -16,8 +16,7 @@ import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { useCatalogueLayoutStore } from "@/frontend/stores/catalogueLayout";
-import { useComlink } from "@/shared/composables/useComlink";
+import { useCatalogueLayout } from "@/frontend/composables/useCatalogueLayout";
 import { useComponentSortFields } from "@/frontend/composables/useComponentSortFields";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -26,33 +25,8 @@ import { useComponents as useComponentsQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const catalogueLayoutStore = useCatalogueLayoutStore();
-
-const gridView = computed(() => catalogueLayoutStore.componentsGridView);
-
-const detailsVisible = computed(
-  () => catalogueLayoutStore.componentsDetailsVisible,
-);
-
-const comlink = useComlink();
-
-const openDisplayOptionsModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/shared/components/DisplayOptionsModal/index.vue"),
-    props: {
-      gridView: gridView.value,
-      testPrefix: "components",
-      updateCallback: (next: boolean) => {
-        catalogueLayoutStore.componentsGridView = next;
-      },
-      detailsVisible: detailsVisible.value,
-      updateDetailsCallback: (next: boolean) => {
-        catalogueLayoutStore.componentsDetailsVisible = next;
-      },
-    },
-  });
-};
+const { gridView, detailsVisible, openDisplayOptionsModal } =
+  useCatalogueLayout("components");
 
 const componentsQueryParams = computed(() => ({
   page: page.value,
@@ -127,7 +101,7 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
       <GridSkeleton
         v-if="gridView"
         grid-base="compact"
-        :details="detailsVisible"
+        variant="summary"
         :filter-visible="filterVisible"
       />
       <RowsSkeleton v-else :count="count" icon meta trailing />

@@ -10,6 +10,7 @@ import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import EquipmentLeadMetric from "@/frontend/components/Equipment/LeadMetric/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import { manufacturerMark } from "@/frontend/utils/manufacturerMark";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import { useEquipmentBadges } from "@/frontend/composables/useEquipmentBadges";
@@ -36,11 +37,9 @@ const filterLink = (key: string, value: string) => ({
 
 const badges = useEquipmentBadges(() => props.equipment);
 
-const manufacturerLogo = computed(() => {
-  const { icon, logo } = props.equipment.manufacturer ?? {};
-
-  return icon?.smallUrl || icon?.url || logo?.smallUrl || logo?.url;
-});
+const manufacturerLogo = computed(() =>
+  manufacturerMark(props.equipment.manufacturer),
+);
 </script>
 
 <template>
@@ -169,9 +168,12 @@ const manufacturerLogo = computed(() => {
     vertical-align: -4px;
   }
 
+  // May shrink, so four figures wrap in their own block before they push the
+  // row's facts onto a second line. The name keeps its floor.
   :deep(.component-lead-metric) {
     display: none;
-    flex: none;
+    flex: 0 1 auto;
+    min-width: 0;
 
     @media (min-width: 992px) {
       display: flex;

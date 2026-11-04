@@ -8,6 +8,7 @@ export default {
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
+import { manufacturerMark } from "@/frontend/utils/manufacturerMark";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import { useComponentFacts } from "@/frontend/composables/useComponentFacts";
@@ -34,11 +35,9 @@ const filterLink = (key: string, value: string) => ({
 
 const { categoryLabel, badges } = useComponentFacts(() => props.component);
 
-const manufacturerLogo = computed(() => {
-  const { icon, logo } = props.component.manufacturer ?? {};
-
-  return icon?.smallUrl || icon?.url || logo?.smallUrl || logo?.url;
-});
+const manufacturerLogo = computed(() =>
+  manufacturerMark(props.component.manufacturer),
+);
 </script>
 
 <template>

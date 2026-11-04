@@ -73,18 +73,6 @@ const hasDetails = computed(
         'item-card__hero--joined': details && hasDetails,
       }"
     >
-      <img
-        v-if="image"
-        class="item-card__image"
-        :src="image"
-        alt=""
-        loading="lazy"
-        data-test="item-card-image"
-      />
-      <span v-else class="item-card__icon">
-        <slot name="icon" />
-      </span>
-
       <PanelHeading
         shadow="top"
         :level="HeadingLevelEnum.H2"
@@ -104,51 +92,67 @@ const hasDetails = computed(
         </template>
       </PanelHeading>
 
-      <!-- Over the picture's foot, as the ship card's focus sits: what it is
-           filed under on the left, who makes it on the right. Each narrows
-           the list. -->
-      <div
-        v-if="categories.length || slots.tags || maker"
-        class="item-card__overlay"
-      >
-        <span class="item-card__tags" data-test="item-card-categories">
-          <template v-for="category in categories" :key="category.key">
-            <router-link v-if="category.to" :to="category.to">
-              <Pill :variant="PillVariantsEnum.NEUTRAL">
-                {{ category.label }}
-              </Pill>
-            </router-link>
-            <Pill v-else :variant="PillVariantsEnum.NEUTRAL">
-              {{ category.label }}
-            </Pill>
-          </template>
-          <slot name="tags" />
+      <!-- Below the heading rather than behind it, so a long name takes room
+           from the picture instead of covering it. -->
+      <div class="item-card__stage">
+        <img
+          v-if="image"
+          class="item-card__image"
+          :src="image"
+          alt=""
+          loading="lazy"
+          data-test="item-card-image"
+        />
+        <span v-else class="item-card__icon">
+          <slot name="icon" />
         </span>
 
-        <component
-          :is="maker.to ? 'router-link' : 'span'"
-          v-if="maker"
-          v-tooltip="maker.name"
-          :to="maker.to"
-          :aria-label="maker.name"
-          class="item-card__maker"
-          data-test="item-card-maker"
+        <!-- Over the picture's foot, as the ship card's focus sits: what it is
+             filed under on the left, who makes it on the right. Each narrows
+             the list. -->
+        <div
+          v-if="categories.length || slots.tags || maker"
+          class="item-card__overlay"
         >
-          <!-- The mark on its own, or the short code in a pill where there is
-               none: the name in full ran into the category pills on a narrow
-               card, and the tooltip still gives it. -->
-          <img
-            v-if="maker.logo"
-            class="item-card__logo"
-            :src="maker.logo"
-            alt=""
-            loading="lazy"
-            data-test="item-card-logo"
-          />
-          <Pill v-else :variant="PillVariantsEnum.NEUTRAL">
-            {{ maker.code || maker.name }}
-          </Pill>
-        </component>
+          <span class="item-card__tags" data-test="item-card-categories">
+            <template v-for="category in categories" :key="category.key">
+              <router-link v-if="category.to" :to="category.to">
+                <Pill :variant="PillVariantsEnum.NEUTRAL">
+                  {{ category.label }}
+                </Pill>
+              </router-link>
+              <Pill v-else :variant="PillVariantsEnum.NEUTRAL">
+                {{ category.label }}
+              </Pill>
+            </template>
+            <slot name="tags" />
+          </span>
+
+          <component
+            :is="maker.to ? 'router-link' : 'span'"
+            v-if="maker"
+            v-tooltip="maker.name"
+            :to="maker.to"
+            :aria-label="maker.name"
+            class="item-card__maker"
+            data-test="item-card-maker"
+          >
+            <!-- The mark on its own, or the short code in a pill where there is
+                 none: the name in full ran into the category pills on a narrow
+                 card, and the tooltip still gives it. -->
+            <img
+              v-if="maker.logo"
+              class="item-card__logo"
+              :src="maker.logo"
+              alt=""
+              loading="lazy"
+              data-test="item-card-logo"
+            />
+            <Pill v-else :variant="PillVariantsEnum.NEUTRAL">
+              {{ maker.code || maker.name }}
+            </Pill>
+          </component>
+        </div>
       </div>
     </div>
 
@@ -192,13 +196,15 @@ const hasDetails = computed(
   flex-direction: column;
 }
 
-// One shape whatever the picture, so a grid row of cards closes on one line.
-// `min-height: 0` makes the ratio exact: on its own it is only a floor, and
-// content taller than it grows the box.
+// One shape for a card with a one-line name. The ratio is only a floor here on
+// purpose: a longer name grows the box rather than eating the picture, and the
+// grid stretches the row's other cards to match. The picture itself is out of
+// the flow in the stage, so however tall a render is it cannot grow anything.
 .item-card__hero {
-  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
   aspect-ratio: 4 / 3;
-  min-height: 0;
   overflow: hidden;
   // Lit from behind the item and falling off to the frame: the renders are
   // dark metal on a transparent ground, and flat near-black swallowed them.
@@ -215,14 +221,18 @@ const hasDetails = computed(
   border-bottom-right-radius: 0;
 }
 
-// Out of the flow, so the picture can only ever fill the box, never size it.
-// Held below the heading, where its scrim does not darken the item.
+// A floor so a narrow card with a two-line name still shows the item.
+.item-card__stage {
+  position: relative;
+  flex: 1 0 120px;
+}
+
 .item-card__image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  padding: 56px 16px 40px;
+  padding: 0 16px 16px;
   object-fit: contain;
 }
 
@@ -231,16 +241,12 @@ const hasDetails = computed(
   --equipment-icon-size: 64px;
 
   position: absolute;
-  inset: 44px 0 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-primary, #428bca);
   opacity: 0.8;
-}
-
-.item-card__heading {
-  z-index: 1;
 }
 
 .item-card__name {

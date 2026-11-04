@@ -13,8 +13,8 @@ import {
   type ItemCardMaker,
 } from "@/shared/components/ItemCard/types";
 import { useComponentFacts } from "@/frontend/composables/useComponentFacts";
-import { useComponentStats } from "@/frontend/composables/useComponentStats";
-import { useI18n } from "@/shared/composables/useI18n";
+import { useAvailableComponentStats } from "@/frontend/composables/useComponentStats";
+import { manufacturerMark } from "@/frontend/utils/manufacturerMark";
 import { type Component, InventoryItemTypeEnum } from "@/services/fyApi";
 
 type Props = {
@@ -33,32 +33,18 @@ const filterLink = (key: string, value: string) => ({
   query: { ...route.query, page: undefined, [key]: value },
 });
 
-const { t } = useI18n();
-
 const { categoryLabel, badges } = useComponentFacts(() => props.component);
 
-const allStats = useComponentStats(() => props.component);
-
-// `toNumber` renders a falsy value as "N/A", which says nothing a missing row
-// does not.
-const stats = computed(() => {
-  const unavailable = t("labels.notAvailable");
-
-  return allStats.value.filter(
-    (stat) => stat.value && stat.value !== unavailable,
-  );
-});
+const stats = useAvailableComponentStats(() => props.component);
 
 const maker = computed<ItemCardMaker | undefined>(() => {
   const { manufacturer } = props.component;
   if (!manufacturer) return undefined;
 
-  const { icon, logo } = manufacturer;
-
   return {
     name: manufacturer.name,
     code: manufacturer.code || manufacturer.shortName || undefined,
-    logo: icon?.smallUrl || icon?.url || logo?.smallUrl || logo?.url,
+    logo: manufacturerMark(manufacturer),
     to: manufacturer.slug
       ? filterLink("manufacturerSlugIn", manufacturer.slug)
       : undefined,
@@ -108,7 +94,7 @@ const image = computed(
     :maker="maker"
     :categories="categories"
     :badges="badges"
-    :stats="stats"
+    :stats="details ? stats : []"
     :details="details"
   >
     <template #name>{{ component.name }}</template>
