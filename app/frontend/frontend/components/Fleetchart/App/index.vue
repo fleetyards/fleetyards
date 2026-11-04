@@ -427,7 +427,7 @@ const closeFleetchart = async () => {
           </span>
         </Btn>
 
-        <slot v-if="!mobile" name="pagination" />
+        <slot v-if="!mobile && !arranging" name="pagination" />
       </div>
 
       <template v-if="innerItems.length">
