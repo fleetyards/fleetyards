@@ -33,7 +33,20 @@ const fleetchartStore = useFleetchartStore();
 
 const token = computed(() => String(route.params.token));
 
-const { data: layout, isLoading, isError } = usePublicFleetchartLayout(token);
+const {
+  data: layout,
+  isLoading,
+  error,
+} = usePublicFleetchartLayout(token, { query: { retry: false } });
+
+// A failed refresh keeps the layout on screen; only a 404 means the link has gone.
+const isMissing = computed(
+  () =>
+    !!error.value &&
+    (!layout.value ||
+      (error.value as { response?: { status?: number } }).response?.status ===
+        404),
+);
 
 const open = () => {
   fleetchartStore.show(NAMESPACE);
@@ -82,7 +95,7 @@ watch(
 
 // There is nothing to go back to behind a shared chart, so closing it moves on.
 const leave = () => {
-  if (isError.value || !layout.value) {
+  if (isMissing.value || !layout.value) {
     return;
   }
 
@@ -94,8 +107,8 @@ const leave = () => {
 };
 
 // Stopping to share reaches someone already looking at it on the next refetch.
-watch(isError, (failed) => {
-  if (failed) {
+watch(isMissing, (missing) => {
+  if (missing) {
     fleetchartStore.hide(NAMESPACE);
   }
 });
@@ -108,11 +121,15 @@ onBeforeUnmount(() => {
 <template>
   <Loader :loading="isLoading" />
 
-  <Alert v-if="isError" variant="neutral" data-test="fleetchart-shared-missing">
+  <Alert
+    v-if="isMissing"
+    variant="neutral"
+    data-test="fleetchart-shared-missing"
+  >
     {{ t("labels.fleetchartApp.sharedLayoutMissing") }}
   </Alert>
 
-  <template v-if="layout && !isError">
+  <template v-if="layout && !isMissing">
     <Heading size="hero" hero>{{ layout.name }}</Heading>
 
     <div class="fleetchart-shared__intro">

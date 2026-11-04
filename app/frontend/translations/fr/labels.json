@@ -561,7 +561,10 @@
         "savedLayoutFailed": "Cela n'a pas fonctionné. Le nom est-il déjà pris ?",
         "sharedLayoutMissing": "Cette disposition n'existe pas ou n'est plus partagée.",
         "sharedLayoutBy": "Partagée par %{username}",
-        "sharedLayoutShips": "%{count} vaisseaux",
+        "sharedLayoutShips": {
+          "one": "%{count} vaisseau",
+          "other": "%{count} vaisseaux"
+        },
         "sharedLayoutHangar": "Hangar",
         "sharedLayoutEmpty": "Aucun vaisseau de cette disposition n'est public.",
         "facing": "Orientation",
