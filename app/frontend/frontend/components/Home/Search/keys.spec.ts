@@ -38,6 +38,7 @@ vi.mock("@/frontend/components/Home/Search/useSearchScopes", async () => {
   );
 
   return {
+    CATALOGUE_SCOPE: "catalogue",
     useSearchScopes: () => ({
       scopes,
       current,
@@ -117,6 +118,23 @@ describe("HomeSearch keys", () => {
     await flushPromises();
 
     expect(catalogue).toHaveBeenCalledTimes(2);
+  });
+
+  it("offers the catalogue when nothing of a saved scope matches", async () => {
+    const { wrapper } = await mount();
+
+    await wrapper.find("input").trigger("keydown", { key: "Tab" });
+    await flushPromises();
+    expect(
+      wrapper.find("[data-test='home-search-in-catalogue']").exists(),
+    ).toBe(true);
+
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='home-search-result']").exists()).toBe(
+      true,
+    );
   });
 
   it("leaves tab alone once the overlay is closed", async () => {

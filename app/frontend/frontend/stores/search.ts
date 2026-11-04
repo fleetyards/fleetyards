@@ -8,12 +8,14 @@ type SearchHistoryEntry = {
 type SearchState = {
   history: SearchHistoryEntry[];
   scope: string;
+  fleetSlug?: string;
 };
 
 export const useSearchStore = defineStore("search", {
   state: (): SearchState => ({
     history: [],
     scope: "catalogue",
+    fleetSlug: undefined,
   }),
   actions: {
     save(payload: SearchHistoryEntry) {

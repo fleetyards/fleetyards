@@ -14,6 +14,13 @@
         "searchNoResultsHint": "Try a ship, a component, a mission or a place.",
         "searchShowMore": "Show more",
         "searching": "Searching…",
+        "searchInCatalogue": "Search the catalogue",
+        "searchScopes": {
+          "mine": "My stuff",
+          "fleet": "Fleet",
+          "minePlaceholder": "Your ships, blueprints, inventory…",
+          "fleetPlaceholder": "This fleet's members, events, contracts…"
+        },
         "searchKeys": {
           "add": "to add",
           "scope": "to switch search",

@@ -17,8 +17,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
+import { SEARCH_GROUPS } from "@/frontend/components/Home/Search/groups";
 import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
-import { useSearchScopes } from "@/frontend/components/Home/Search/useSearchScopes";
+import {
+  CATALOGUE_SCOPE,
+  useSearchScopes,
+} from "@/frontend/components/Home/Search/useSearchScopes";
 import { type SearchGroup, type SearchResult } from "@/services/fyApi";
 
 type Props = {
@@ -50,43 +54,6 @@ const { canAdd, add } = useSearchResultAdd();
 // A touch screen has no arrow keys to hint at.
 const touch = useLowPowerDevice();
 
-// What heads each catalogue's matches -- the catalogue's own name in the nav.
-const GROUP_LABELS: Record<string, string> = {
-  Model: "nav.ships.index",
-  Component: "nav.catalogue.components",
-  Equipment: "nav.catalogue.equipment",
-  Commodity: "nav.catalogue.commodities",
-  Blueprint: "nav.catalogue.blueprints",
-  GameMission: "nav.catalogue.missions",
-  Location: "nav.locations",
-};
-
-// The catalogue a list page shows, whose matches lead the results there. An
-// item's own page keeps the server's ranking.
-const LIST_PAGE_GROUPS: Record<string, string> = {
-  ships: "Model",
-  components: "Component",
-  equipment: "Equipment",
-  commodities: "Commodity",
-  blueprints: "Blueprint",
-  missions: "GameMission",
-  locations: "Location",
-  "locations-places": "Location",
-};
-
-// Where a catalogue lists everything, and the filter that narrows it by name.
-// Ships take the name filter over their wider header search because it is the
-// one their filter form shows.
-const LISTS: Record<string, { name: string; filter: string }> = {
-  Model: { name: "ships", filter: "nameCont" },
-  Component: { name: "components", filter: "searchNameCont" },
-  Equipment: { name: "equipment", filter: "nameOrSlugCont" },
-  Commodity: { name: "commodities", filter: "nameCont" },
-  Blueprint: { name: "blueprints", filter: "nameCont" },
-  GameMission: { name: "missions", filter: "nameCont" },
-  Location: { name: "locations-places", filter: "nameCont" },
-};
-
 const MIN_LENGTH = 2;
 
 const searchQuery = ref<string | undefined>();
@@ -97,20 +64,19 @@ const active = ref(-1);
 
 const query = computed(() => searchQuery.value?.trim() ?? "");
 
-const groups = computed(() => {
-  const listed = LIST_PAGE_GROUPS[route.name as string];
+const leads = (group: SearchGroup) =>
+  !!SEARCH_GROUPS[group.type]?.listPages.includes(route.name as string);
 
-  return [
-    ...rankedGroups.value.filter((group) => group.type === listed),
-    ...rankedGroups.value.filter((group) => group.type !== listed),
-  ];
-});
+const groups = computed(() => [
+  ...rankedGroups.value.filter(leads),
+  ...rankedGroups.value.filter((group) => !leads(group)),
+]);
 
 // A row of the list: a match, or a group standing for its "show more".
 type Step = SearchResult | SearchGroup;
 
 const hasMoreLink = (group: SearchGroup) =>
-  group.hasMore && !!LISTS[group.type];
+  group.hasMore && !!SEARCH_GROUPS[group.type];
 
 // In list order, for the keyboard to step through across the groups.
 const steps = computed<Step[]>(() =>
@@ -184,12 +150,32 @@ const onInput = (value?: string | number | null) => {
   void runSearch(searchQuery.value ?? "");
 };
 
+const listRoute = (group: SearchGroup, text?: string) => {
+  const list = SEARCH_GROUPS[group.type]?.list;
+  if (!list) return undefined;
+
+  const fleetSlug = scope.value.fleetSlug;
+
+  return {
+    name: list.name,
+    params: fleetSlug ? { slug: fleetSlug } : {},
+    query: { [list.filter]: text },
+  };
+};
+
+// What has no page of its own opens on its list, narrowed to it.
 const targetOf = (step: Step) => {
-  if (!("items" in step)) return catalogueItemRoute(step);
+  if ("items" in step) return listRoute(step, searchedFor.value);
 
-  const { name, filter } = LISTS[step.type];
+  const page = catalogueItemRoute({
+    ...step,
+    fleetSlug: scope.value.fleetSlug,
+  });
+  if (page) return page;
 
-  return { name, query: { [filter]: searchedFor.value } };
+  const group = groups.value.find(({ items }) => items.includes(step));
+
+  return group && listRoute(group, step.name);
 };
 
 const pick = async (step: Step) => {
@@ -212,6 +198,11 @@ const submit = async () => {
 
   if (!answered.value) {
     await searchNow(query.value);
+    return;
+  }
+
+  if (offersCatalogue.value) {
+    selectScope(CATALOGUE_SCOPE);
     return;
   }
 
@@ -238,6 +229,14 @@ const addActive = async () => {
   if (outcome === "opened") open.value = false;
   if (outcome === "unavailable") await pick(result);
 };
+
+// A saved scope can otherwise pass for an empty catalogue.
+const offersCatalogue = computed(
+  () =>
+    answered.value &&
+    !steps.value.length &&
+    scope.value.key !== CATALOGUE_SCOPE,
+);
 
 const canSwitchScope = computed(() => scopes.value.length > 1);
 
@@ -327,6 +326,7 @@ const popoverStyle = computed(() => ({
           :size="compact ? InputSizesEnum.MEDIUM : InputSizesEnum.LARGE"
           :autofocus="autofocus"
           translation-key="home.catalogueSearch"
+          :placeholder="scope.placeholderKey && t(scope.placeholderKey)"
           autocomplete="off"
           no-label
           clearable
@@ -390,7 +390,16 @@ const popoverStyle = computed(() => ({
             <div class="home-search__state-title">
               {{ t("home.landing.searchNoResults", { query: searchedFor }) }}
             </div>
-            <div>{{ t("home.landing.searchNoResultsHint") }}</div>
+            <button
+              v-if="offersCatalogue"
+              type="button"
+              class="home-search__try-term"
+              data-test="home-search-in-catalogue"
+              @mousedown.prevent="selectScope(CATALOGUE_SCOPE)"
+            >
+              {{ t("home.landing.searchInCatalogue") }} <kbd>↵</kbd>
+            </button>
+            <div v-else>{{ t("home.landing.searchNoResultsHint") }}</div>
           </div>
         </div>
 
@@ -412,7 +421,12 @@ const popoverStyle = computed(() => ({
                   :icon="catalogueTokenIcon(group.type)"
                   aria-hidden="true"
                 />
-                {{ t(GROUP_LABELS[group.type] || "nav.catalogue.index") }}
+                {{
+                  t(
+                    SEARCH_GROUPS[group.type]?.labelKey ||
+                      "nav.catalogue.index",
+                  )
+                }}
               </div>
               <ul class="home-search__options" role="group">
                 <li

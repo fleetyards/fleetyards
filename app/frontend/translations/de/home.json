@@ -14,6 +14,13 @@
         "searchNoResultsHint": "Versuch es mit einem Schiff, einer Komponente, einer Mission oder einem Ort.",
         "searchShowMore": "Mehr anzeigen",
         "searching": "Suche läuft…",
+        "searchInCatalogue": "Im Katalog suchen",
+        "searchScopes": {
+          "mine": "Meine Sachen",
+          "fleet": "Flotte",
+          "minePlaceholder": "Deine Schiffe, Blaupausen, Inventar…",
+          "fleetPlaceholder": "Mitglieder, Events, Aufträge dieser Flotte…"
+        },
         "searchKeys": {
           "add": "zum Hinzufügen",
           "scope": "zum Wechseln der Suche",

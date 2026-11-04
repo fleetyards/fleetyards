@@ -21,6 +21,7 @@ const router = async () => {
       { path: "/ships", name: "ships", component: blank },
       { path: "/components", name: "components", component: blank },
       { path: "/places", name: "locations-places", component: blank },
+      { path: "/hangar/paints", name: "hangar-paints", component: blank },
       { path: "/components/:slug", name: "component", component: blank },
       { path: "/locations/:slug", name: "location", component: blank },
     ],
@@ -149,6 +150,27 @@ describe("HomeSearch", () => {
 
       expect(instance.currentRoute.value.name).toBe("locations-places");
     });
+  });
+
+  it("opens an item with no page of its own on its list, narrowed to it", async () => {
+    groups = [
+      {
+        type: "Paint",
+        hasMore: false,
+        items: [{ type: "Paint", name: "Akuma", slug: "1" }],
+      },
+    ];
+    const instance = await router();
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [instance],
+    });
+
+    await typeInto(wrapper, "aku");
+    await wrapper.find("[data-test='home-search-result']").trigger("mousedown");
+    await flushPromises();
+
+    expect(instance.currentRoute.value.name).toBe("hangar-paints");
+    expect(instance.currentRoute.value.query).toEqual({ nameCont: "Akuma" });
   });
 
   describe("on a catalogue's pages", () => {

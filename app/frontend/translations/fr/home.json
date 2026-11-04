@@ -14,6 +14,13 @@
         "searchNoResultsHint": "Essayez un vaisseau, un composant, une mission ou un lieu.",
         "searchShowMore": "Afficher plus",
         "searching": "Recherche…",
+        "searchInCatalogue": "Rechercher dans le catalogue",
+        "searchScopes": {
+          "mine": "Mes affaires",
+          "fleet": "Flotte",
+          "minePlaceholder": "Vos vaisseaux, plans, inventaire…",
+          "fleetPlaceholder": "Membres, événements, contrats de cette flotte…"
+        },
         "searchKeys": {
           "add": "pour ajouter",
           "scope": "pour changer de recherche",

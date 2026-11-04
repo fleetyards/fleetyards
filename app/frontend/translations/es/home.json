@@ -14,6 +14,13 @@
         "searchNoResultsHint": "Prueba con una nave, un componente, una misión o un lugar.",
         "searchShowMore": "Mostrar más",
         "searching": "Buscando…",
+        "searchInCatalogue": "Buscar en el catálogo",
+        "searchScopes": {
+          "mine": "Lo mío",
+          "fleet": "Flota",
+          "minePlaceholder": "Tus naves, planos, inventario…",
+          "fleetPlaceholder": "Miembros, eventos, contratos de esta flota…"
+        },
         "searchKeys": {
           "add": "para añadir",
           "scope": "para cambiar de búsqueda",

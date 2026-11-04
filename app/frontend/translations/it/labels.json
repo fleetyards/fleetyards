@@ -2836,6 +2836,7 @@
           "rsiHandle": "Handle RSI"
         },
         "fleets": {
+          "titleFilter": "Cerca per titolo",
           "name": "Nome",
           "fid": "FID",
           "memberCountGteq": "Membri minimi",

@@ -14,6 +14,13 @@
         "searchNoResultsHint": "试试舰船、组件、任务或地点。",
         "searchShowMore": "显示更多",
         "searching": "正在搜索…",
+        "searchInCatalogue": "在目录中搜索",
+        "searchScopes": {
+          "mine": "我的物品",
+          "fleet": "舰队",
+          "minePlaceholder": "你的舰船、蓝图、库存…",
+          "fleetPlaceholder": "此舰队的成员、活动、合约…"
+        },
         "searchKeys": {
           "add": "添加",
           "scope": "切换搜索",

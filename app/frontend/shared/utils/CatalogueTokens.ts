@@ -66,6 +66,19 @@ const ICONS: Record<string, Icon> = {
   FleetEvent: "fa-duotone fa-calendar-day",
   User: "fa-duotone fa-user",
   FleetMember: "fa-duotone fa-user",
+  FleetMembership: "fa-duotone fa-user",
+  FleetInventoryItem: "fa-duotone fa-boxes-stacked",
+  Vehicle: SHIP_GLYPH,
+  HangarVehicle: "fa-duotone fa-warehouse",
+  WishlistVehicle: "fa-duotone fa-wand-sparkles",
+  OwnedBlueprint: "fa-duotone fa-notes",
+  InventoryItem: "fa-duotone fa-boxes-stacked",
+  Paint: "fa-duotone fa-paint-roller",
+  Flair: "fa-duotone fa-trophy-star",
+  PledgeEquipment: "fa-duotone fa-shirt",
+  PledgeComponent: "fa-duotone fa-microchip",
+  Upgrade: "fa-duotone fa-arrow-up",
+  Buyback: "fa-duotone fa-rotate-left",
 };
 
 export const catalogueTokenIcon = (typeOrPrefix?: string | null): Icon =>

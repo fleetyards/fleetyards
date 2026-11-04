@@ -14,6 +14,13 @@
         "searchNoResultsHint": "試試艦船、組件、任務或地點。",
         "searchShowMore": "顯示更多",
         "searching": "搜尋中…",
+        "searchInCatalogue": "在目錄中搜尋",
+        "searchScopes": {
+          "mine": "我的物品",
+          "fleet": "艦隊",
+          "minePlaceholder": "你的艦船、藍圖、庫存…",
+          "fleetPlaceholder": "此艦隊的成員、活動、合約…"
+        },
         "searchKeys": {
           "add": "新增",
           "scope": "切換搜尋",

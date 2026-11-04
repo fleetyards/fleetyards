@@ -2836,6 +2836,7 @@
           "rsiHandle": "RSI 用户名"
         },
         "fleets": {
+          "titleFilter": "按标题搜索",
           "name": "名称",
           "fid": "FID",
           "memberCountGteq": "最少成员数",
