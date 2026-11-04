@@ -188,10 +188,17 @@ const labelRoom = (entry: FleetchartEntry) => {
   };
 };
 
+// Read one by one so that a toggle unrelated to the layout, such as the scale bar,
+// does not lay out the whole fleet again.
+const sort = computed(() => options.value.sort);
+const group = computed(() => options.value.group);
+const spacing = computed(() => options.value.spacing);
+const facing = computed(() => options.value.facing);
+
 const turned = computed(
   () =>
-    options.value.facing === FleetchartFacings.TOP ||
-    options.value.facing === FleetchartFacings.BOTTOM,
+    facing.value === FleetchartFacings.TOP ||
+    facing.value === FleetchartFacings.BOTTOM,
 );
 
 // What a layout makes room for. A ship's own box is as tall as its tallest view
@@ -211,18 +218,18 @@ const boxOf = (geometry: FleetchartShipGeometry) => {
 };
 
 const groupTitle = (entry: FleetchartEntry) => {
-  if (options.value.group === FleetchartGroups.NONE) {
+  if (group.value === FleetchartGroups.NONE) {
     return undefined;
   }
 
   return (
-    groupTitleOf(entry, options.value.group, t) ||
+    groupTitleOf(entry, group.value, t) ||
     t("labels.fleetchartApp.groupOptions.none")
   );
 };
 
 const ships = computed(() =>
-  sortEntries(props.items, options.value.sort, options.value.group).flatMap(
+  sortEntries(props.items, sort.value, group.value).flatMap(
     (entry) => {
       const geometry = shipGeometry(entry, viewpoint.value, {
         extended: extended.value,
@@ -245,7 +252,7 @@ const ships = computed(() =>
           headingWidth: group
             ? labelMeasure.value.width(group) / PIXELS_PER_METRE
             : 0,
-          padding: SHIP_PADDING * SPACING_FACTORS[options.value.spacing],
+          padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
           ...labelRoom(entry),
         },
       ];
@@ -472,11 +479,14 @@ const resetZoom = () => {
 // A position from one layout can leave another one entirely off screen.
 watch(layout, resetZoom);
 
-watch(sceneSize, () => {
-  if (isPacked.value) {
-    fitToScreen();
-  }
-});
+watch(
+  [() => sceneSize.value.width, () => sceneSize.value.height],
+  () => {
+    if (isPacked.value) {
+      fitToScreen();
+    }
+  },
+);
 
 // deviceorientation fires continuously on a phone, which would keep a plain
 // debounce from ever running.

@@ -224,6 +224,19 @@ describe("FleetchartCanvas", () => {
     expect(8000 * scale).toBeLessThanOrEqual(window.innerWidth);
   });
 
+  it("keeps the view when a toggle leaves the chart's size alone", async () => {
+    mountCanvas([entry("a")]);
+    panzoomInstance.zoomAbs.mockClear();
+
+    useFleetchartStore().updateOptions({
+      namespace: "hangar",
+      options: { scaleBar: true },
+    });
+    await nextTick();
+
+    expect(panzoomInstance.zoomAbs).not.toHaveBeenCalled();
+  });
+
   it("ignores a saved position when opening packed", () => {
     useFleetchartStore().updateZoomData({
       namespace: "hangar",
