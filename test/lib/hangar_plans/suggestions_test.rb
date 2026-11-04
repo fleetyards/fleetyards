@@ -50,6 +50,29 @@ class HangarPlans::SuggestionsTest < ActiveSupport::TestCase
     assert_empty redundancies
   end
 
+  test "a ship marked to change no longer counts, one still undecided does" do
+    change = create(:vehicle, user: @user, model: @gladius)
+    create(:vehicle, user: @user, model: @gladius)
+    @plan.vehicle_marks.create!(vehicle: change, mark: "change")
+
+    assert_empty redundancies
+
+    @plan.vehicle_marks.find_by!(vehicle: change).update!(mark: "pending")
+
+    assert_equal 2, redundancies.sole.entries.size
+  end
+
+  test "a ship picked as the start of an undecided slot no longer counts" do
+    start = create(:vehicle, user: @user, model: @gladius)
+    create(:vehicle, user: @user, model: @gladius)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: @carrack)
+    create(:hangar_plan_candidate, slot:, model: @cutlass)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: start)
+
+    assert_empty redundancies
+  end
+
   private def redundancies
     HangarPlans::Suggestions.new(@plan).redundancies
   end

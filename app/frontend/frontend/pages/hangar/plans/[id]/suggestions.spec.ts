@@ -51,7 +51,7 @@ const suggestions = ref<HangarPlanSuggestions>({
           model: gladius,
           vehicleId: "vehicle-red-five",
           vehicleName: "Red Five",
-          vehicleStatus: HangarPlanVehicleStatusEnum.CHANGE,
+          vehicleStatus: HangarPlanVehicleStatusEnum.PENDING,
         },
         { model: gladius, vehicleId: "vehicle-gladius" },
       ],
@@ -105,7 +105,7 @@ describe("pages/hangar/plans/[id]/suggestions", () => {
     );
     expect(duplicate.text()).toContain("Gladius × 2");
     expect(duplicate.text()).toContain(
-      "Your hangar · Red Five · Should change",
+      "Your hangar · Red Five · Needs a decision",
     );
 
     const role = wrapper.find('[data-test="hangar-plan-redundancy-role"]');

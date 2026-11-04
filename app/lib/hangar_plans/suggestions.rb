@@ -3,9 +3,12 @@
 module HangarPlans
   # What a plan could do better, judged on the hangar it ends with: the units of
   # its decided slots and the hangar ships it leaves alone. Ships it melts or
-  # upgrades away are gone by then, so they never count.
+  # upgrades away are gone by then, so they never count, and neither does a ship
+  # already meant to go: one marked to change, or picked as the start of a slot
+  # still choosing its ship.
   class Suggestions
     REDUNDANCY_KINDS = %w[duplicate role].freeze
+    LEAVING_STATUSES = %w[change unrouted].freeze
 
     # Ships of one model, or of one role: the same classification, size and
     # most specific focus.
@@ -55,7 +58,9 @@ module HangarPlans
     end
 
     private def fleet
-      @fleet ||= comparison.fleet
+      @fleet ||= comparison.fleet.reject do |entry|
+        entry.slot.nil? && LEAVING_STATUSES.include?(status_of(entry.vehicle))
+      end
     end
 
     private def comparison
