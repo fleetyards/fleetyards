@@ -37,6 +37,7 @@ const placementFrom = ({
   order,
   groupId,
   heading,
+  removed,
 }: SavedPlacement) => ({
   x,
   y,
@@ -46,6 +47,7 @@ const placementFrom = ({
   ...(order === null || order === undefined ? {} : { order }),
   ...(groupId ? { groupId } : {}),
   ...(heading ? { heading } : {}),
+  ...(removed ? { removed } : {}),
 });
 
 export const placementsFromLayout = (

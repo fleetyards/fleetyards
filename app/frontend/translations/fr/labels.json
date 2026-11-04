@@ -543,6 +543,7 @@
         "groupShips": "Grouper les vaisseaux",
         "ungroupShips": "Dissocier les vaisseaux",
         "undo": "Annuler",
+        "clearArrangement": "Vider le graphique",
         "resetArrangement": "Réinitialiser la disposition",
         "state": "État",
         "stateOptions": {
@@ -551,10 +552,6 @@
           "landed": "Posé"
         },
         "addShips": "Ajouter des vaisseaux",
-        "searchShips": "Rechercher dans le catalogue",
-        "addShipsHint": "Essayez des vaisseaux que vous ne possédez pas. Ils sont enregistrés avec la disposition et marqués comme non possédés.",
-        "noShipsFound": "Aucun vaisseau trouvé",
-        "notOwned": "Non possédé",
         "removeShip": "Retirer du graphique",
         "savedLayouts": "Dispositions enregistrées",
         "layoutName": "Nom de la disposition",

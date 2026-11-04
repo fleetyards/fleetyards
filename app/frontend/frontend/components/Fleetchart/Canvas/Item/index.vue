@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   PIXELS_PER_METRE,
@@ -61,8 +60,6 @@ const model = computed(() => modelOf(props.entry));
 
 const label = computed(() => shipLabelOf(props.entry));
 
-const notOwned = computed(() => isCatalogueEntry(props.entry));
-
 const productionStatus = computed(() =>
   t(`labels.model.productionStatus.${model.value.productionStatus}`),
 );
@@ -72,7 +69,6 @@ const cssClasses = computed(() => [
   props.showStatus ? `status-${model.value.productionStatus}` : undefined,
   props.selected ? "fleetchart-canvas-item--selected" : undefined,
   props.arranging ? "fleetchart-canvas-item--arranging" : undefined,
-  notOwned.value ? "fleetchart-canvas-item--not-owned" : undefined,
 ]);
 
 const view = computed(() =>
@@ -112,13 +108,6 @@ const image = computed(() => {
     }"
     data-test="fleetchart-ship"
   >
-    <span
-      v-if="notOwned"
-      class="fleetchart-canvas-item__not-owned"
-      data-test="fleetchart-ship-not-owned"
-    >
-      {{ t("labels.fleetchartApp.notOwned") }}
-    </span>
     <div v-if="showLabel" class="fleetchart-canvas-item__label">
       <span>{{ label.title }}</span>
       <small v-if="label.subtitle">{{ label.subtitle }}</small>

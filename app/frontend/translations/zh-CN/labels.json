@@ -543,6 +543,7 @@
         "groupShips": "组合舰船",
         "ungroupShips": "取消组合",
         "undo": "撤销",
+        "clearArrangement": "清空图表",
         "resetArrangement": "重置排列",
         "state": "状态",
         "stateOptions": {
@@ -551,10 +552,6 @@
           "landed": "着陆"
         },
         "addShips": "添加舰船",
-        "searchShips": "搜索目录",
-        "addShipsHint": "试用你未拥有的舰船。它们会随布局保存，并标记为未拥有。",
-        "noShipsFound": "未找到舰船",
-        "notOwned": "未拥有",
         "removeShip": "从图表中移除",
         "savedLayouts": "已保存的布局",
         "layoutName": "布局名称",

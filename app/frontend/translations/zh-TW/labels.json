@@ -543,6 +543,7 @@
         "groupShips": "組合艦船",
         "ungroupShips": "取消組合",
         "undo": "復原",
+        "clearArrangement": "清空圖表",
         "resetArrangement": "重設排列",
         "state": "狀態",
         "stateOptions": {
@@ -551,10 +552,6 @@
           "landed": "著陸"
         },
         "addShips": "新增艦船",
-        "searchShips": "搜尋目錄",
-        "addShipsHint": "試用你未擁有的艦船。它們會隨版面配置儲存，並標示為未擁有。",
-        "noShipsFound": "找不到艦船",
-        "notOwned": "未擁有",
         "removeShip": "從圖表中移除",
         "savedLayouts": "已儲存的版面配置",
         "layoutName": "版面配置名稱",

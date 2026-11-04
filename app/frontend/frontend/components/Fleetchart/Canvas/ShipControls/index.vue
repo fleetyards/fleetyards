@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -26,7 +27,6 @@ interface Props {
   availableStates: FleetchartShipStates[];
   canGroup?: boolean;
   canUngroup?: boolean;
-  canRemove?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -35,7 +35,6 @@ withDefaults(defineProps<Props>(), {
   state: undefined,
   canGroup: false,
   canUngroup: false,
-  canRemove: false,
 });
 
 const emit = defineEmits<{
@@ -158,16 +157,18 @@ const { t } = useI18n();
       >
         <i class="fa-duotone fa-object-ungroup" />
       </Btn>
-      <Btn
-        v-if="canRemove"
-        v-tooltip="t('labels.fleetchartApp.removeShip')"
-        :aria-label="t('labels.fleetchartApp.removeShip')"
-        data-test="fleetchart-remove-ship"
-        @click="emit('remove')"
-      >
-        <i class="fa-duotone fa-trash" />
-      </Btn>
     </BtnGroup>
+
+    <BtnConfirm
+      v-tooltip="t('labels.fleetchartApp.removeShip')"
+      :aria-label="t('labels.fleetchartApp.removeShip')"
+      tone="danger"
+      hide-question
+      data-test="fleetchart-remove-ship"
+      @confirm="emit('remove')"
+    >
+      <i class="fa-duotone fa-trash" />
+    </BtnConfirm>
   </div>
 </template>
 

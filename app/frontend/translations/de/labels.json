@@ -543,6 +543,7 @@
         "groupShips": "Schiffe gruppieren",
         "ungroupShips": "Gruppe auflösen",
         "undo": "Rückgängig",
+        "clearArrangement": "Chart leeren",
         "resetArrangement": "Anordnung zurücksetzen",
         "state": "Zustand",
         "stateOptions": {
@@ -551,10 +552,6 @@
           "landed": "Gelandet"
         },
         "addShips": "Schiffe hinzufügen",
-        "searchShips": "Katalog durchsuchen",
-        "addShipsHint": "Probiere Schiffe aus, die du nicht besitzt. Sie werden mit dem Layout gespeichert und als nicht im Besitz markiert.",
-        "noShipsFound": "Keine Schiffe gefunden",
-        "notOwned": "Nicht im Besitz",
         "removeShip": "Aus dem Chart entfernen",
         "savedLayouts": "Gespeicherte Layouts",
         "layoutName": "Name des Layouts",

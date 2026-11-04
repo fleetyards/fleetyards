@@ -108,6 +108,8 @@ export interface FleetchartPlacement {
   heading?: string;
   // Set on a ship from the catalogue, which is placed without being owned.
   modelId?: string;
+  // Taken off the chart; without this it would come back as not placed yet.
+  removed?: boolean;
 }
 
 export type FleetchartPlacements = Record<string, FleetchartPlacement>;

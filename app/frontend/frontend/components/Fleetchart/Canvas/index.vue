@@ -9,11 +9,11 @@ import panzoom from "panzoom";
 import type { PanZoom, Transform } from "panzoom";
 import debounce from "lodash.debounce";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import FleetchartCanvasAddShips from "./AddShips/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
@@ -57,8 +57,8 @@ import {
 import type {
   FleetchartCataloguePlacement,
   FleetchartLayout,
-  Model,
 } from "@/services/fyApi";
+import type { ModelPickerSelection } from "@/frontend/components/Models/PickerModal/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -319,6 +319,10 @@ const shipsFor = (kind: FleetchartLayouts, keepShipSettings = false) => {
 
   return sortEntries(props.items, sort.value, group.value, state.value).flatMap(
     (entry) => {
+      if (ownSettings && placements.value[entry.id]?.removed) {
+        return [];
+      }
+
       const shipState =
         (ownSettings && placements.value[entry.id]?.state) || state.value;
       const shipViewpoint = drawableViewpoint(
@@ -718,7 +722,7 @@ const undo = () => {
 // Every ship gets a place at once, as the given layout has it, so the arrangement
 // starts out as what was showing and no ship moves when the first one is dragged.
 const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
-  const list = shipsFor(kind);
+  const list = shipsFor(kind).filter(({ entry }) => !isCatalogueEntry(entry));
   const from = arrange(kind, list, true);
 
   return Object.fromEntries(
@@ -728,9 +732,6 @@ const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
         ...from[ship.id],
         facing: facing.value,
         ...(ship.group ? { heading: ship.group } : {}),
-        ...(isCatalogueEntry(ship.entry)
-          ? { modelId: placements.value[ship.id]?.modelId }
-          : {}),
       },
     ]),
   );
@@ -826,10 +827,46 @@ const arrangeAs = (kind: FleetchartLayouts) => {
   fitToScreen();
 };
 
+// Back to the chart as it was before anything was done to it. Ships hidden by a
+// filter have no new place to go to, so they keep theirs.
 const resetArrangement = () => {
-  // Merged, as ships hidden by a filter keep their place.
-  changePlacements({ ...placements.value, ...placeAll(seedLayout) });
+  const owned = Object.entries(placements.value).flatMap(
+    ([id, { removed: _removed, ...placement }]) =>
+      placement.modelId ? [] : [[id, placement] as const],
+  );
+
+  changePlacements({
+    ...Object.fromEntries(owned),
+    ...placeAll(seedLayout),
+  });
+  selectedIds.value = [];
   fitToScreen();
+};
+
+const takenOff = (id: string) => ({
+  ...placements.value[id],
+  ...positions.value[id],
+  removed: true,
+});
+
+// Empty, to build up from. Owned ships are only marked, as a ship without a placement
+// would show as not placed yet.
+const clearArrangement = () => {
+  const owned = Object.entries(placements.value).filter(
+    ([, { modelId }]) => !modelId,
+  );
+
+  changePlacements(
+    Object.fromEntries(
+      [
+        ...owned.map(([id]) => id),
+        ...ships.value
+          .filter(({ entry }) => !isCatalogueEntry(entry))
+          .map(({ id }) => id),
+      ].map((id) => [id, takenOff(id)]),
+    ),
+  );
+  selectedIds.value = [];
 };
 
 const selectedShips = computed(() =>
@@ -966,11 +1003,8 @@ const stackSelected = (direction: "front" | "back") => {
 
 const savedLayoutsOpen = ref(false);
 
-const addShipsOpen = ref(false);
-
 // The panels share one spot, so only one can be open.
-const togglePanel = (open: boolean, panel: "add" | "saved" | "settings") => {
-  addShipsOpen.value = panel === "add" && !open;
+const togglePanel = (open: boolean, panel: "saved" | "settings") => {
   savedLayoutsOpen.value = panel === "saved" && !open;
   settingsOpen.value = panel === "settings" && !open;
 };
@@ -1020,47 +1054,66 @@ watch([() => ships.value.length, bounds], ([, now], [, before]) => {
 });
 
 // In the middle of what is on screen and in front of everything else, selected so
-// that it can be moved straight away.
-const addShip = (model: Model) => {
-  const id = crypto.randomUUID();
-  const offset = (shipsAdded % ADDED_SHIP_OFFSETS) * ADDED_SHIP_OFFSET;
+// that they can be moved straight away. One step to undo, however many there are.
+const addShips = (selection: ModelPickerSelection[]) => {
+  const centreX = metresAtX(screen.width / 2);
+  const centreY = metresAtY(screen.height / 2);
+  let order = Math.max(0, ...Object.keys(placements.value).map(orderOf));
 
-  shipsAdded += 1;
+  const added = selection.flatMap(({ option, quantity }) =>
+    Array.from({ length: quantity }, () => {
+      const offset = (shipsAdded % ADDED_SHIP_OFFSETS) * ADDED_SHIP_OFFSET;
+
+      shipsAdded += 1;
+      order += 1;
+
+      return [
+        crypto.randomUUID(),
+        {
+          x: centreX + offset,
+          y: centreY + offset,
+          facing: facing.value,
+          order,
+          modelId: option.id,
+        },
+      ] as const;
+    }),
+  );
+
   fitOnArrival = false;
-  arriving.add(id);
+  added.forEach(([id]) => arriving.add(id));
 
-  changePlacements({
-    ...placements.value,
-    [id]: {
-      x: metresAtX(screen.width / 2) + offset,
-      y: metresAtY(screen.height / 2) + offset,
-      facing: facing.value,
-      order: Math.max(0, ...Object.keys(placements.value).map(orderOf)) + 1,
-      modelId: model.id,
-    },
-  });
+  changePlacements({ ...placements.value, ...Object.fromEntries(added) });
 
-  selectedIds.value = [id];
+  selectedIds.value = added.map(([id]) => id);
 };
 
-const selectedCatalogueShips = computed(() =>
-  selectedShips.value.filter((ship) => isCatalogueEntry(ship.entry)),
-);
+const openAddShips = () => {
+  comlink.emit("open-modal", {
+    component: () => import("./AddShipsModal/index.vue"),
+    props: { add: addShips },
+    wide: true,
+  });
+};
 
-const removeSelectedCatalogueShips = () => {
-  const removed = selectedCatalogueShips.value.map(({ id }) => id);
+// A ship from the catalogue goes altogether; an owned one is only taken off the chart.
+const removeSelectedShips = () => {
+  const selected = selectedShips.value;
+  const remaining = Object.fromEntries(
+    Object.entries(placements.value).filter(
+      ([id]) => !selected.some((ship) => ship.id === id),
+    ),
+  );
+  const owned = selected.filter(({ entry }) => !isCatalogueEntry(entry));
 
   holdingView(() => {
-    changePlacements(
-      Object.fromEntries(
-        Object.entries(placements.value).filter(
-          ([id]) => !removed.includes(id),
-        ),
-      ),
-    );
+    changePlacements({
+      ...remaining,
+      ...Object.fromEntries(owned.map(({ id }) => [id, takenOff(id)])),
+    });
   });
 
-  selectedIds.value = selectedIds.value.filter((id) => !removed.includes(id));
+  selectedIds.value = [];
 };
 
 // A saved layout has to look the same without this chart's own view and state, so
@@ -1086,6 +1139,7 @@ const allPlacementsToSave = computed(() => {
       order: orders[id],
       groupId: placement.groupId,
       heading: placement.heading,
+      removed: placement.removed,
     };
   });
 });
@@ -1097,8 +1151,9 @@ const placementsToSave = computed<FleetchartPlacementInput[]>(() =>
 );
 
 const cataloguePlacementsToSave = computed<FleetchartCataloguePlacement[]>(() =>
-  allPlacementsToSave.value.flatMap(({ id, modelId, ...placement }) =>
-    modelId ? [{ id, modelId, ...placement }] : [],
+  allPlacementsToSave.value.flatMap(
+    ({ id, modelId, removed: _removed, ...placement }) =>
+      modelId ? [{ id, modelId, ...placement }] : [],
   ),
 );
 
@@ -1405,10 +1460,12 @@ const startDrag = (id: string, event: PointerEvent) => {
   window.addEventListener("pointercancel", onCancel);
 };
 
+// A modal opened over the chart keeps its keys to itself.
 const isEditable = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
   (target.isContentEditable ||
-    ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName));
+    ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName) ||
+    !!target.closest(".app-modal"));
 
 const handleArrangeKeys = (event: KeyboardEvent) => {
   if (!arranging.value || isEditable(event.target)) {
@@ -1530,13 +1587,12 @@ const toggleLabels = () => {
         </BtnDropdown>
         <Btn
           v-tooltip="t('labels.fleetchartApp.addShips')"
-          :active="addShipsOpen"
           :aria-label="t('labels.fleetchartApp.addShips')"
           :disabled="!arrangeReady"
           data-test="fleetchart-add-ships"
-          @click="togglePanel(addShipsOpen, 'add')"
+          @click="openAddShips"
         >
-          <i class="fa-duotone fa-plus" />
+          <i class="fa-solid fa-plus" />
         </Btn>
         <Btn
           v-tooltip="t('labels.fleetchartApp.savedLayouts')"
@@ -1556,14 +1612,26 @@ const toggleLabels = () => {
         >
           <i class="fa-duotone fa-rotate-left" />
         </Btn>
-        <Btn
+        <BtnConfirm
+          v-tooltip="t('labels.fleetchartApp.clearArrangement')"
+          :aria-label="t('labels.fleetchartApp.clearArrangement')"
+          :disabled="!arrangeReady"
+          hide-question
+          data-test="fleetchart-clear-arrangement"
+          @confirm="clearArrangement"
+        >
+          <i class="fa-duotone fa-eraser" />
+        </BtnConfirm>
+        <BtnConfirm
           v-tooltip="t('labels.fleetchartApp.resetArrangement')"
           :aria-label="t('labels.fleetchartApp.resetArrangement')"
+          :disabled="!arrangeReady"
+          hide-question
           data-test="fleetchart-reset-arrangement"
-          @click="resetArrangement"
+          @confirm="resetArrangement"
         >
           <i class="fa-duotone fa-arrows-rotate" />
-        </Btn>
+        </BtnConfirm>
       </template>
 
       <BtnDropdown v-if="layout === FleetchartLayouts.COLUMNS">
@@ -1690,11 +1758,6 @@ const toggleLabels = () => {
       @open="openSavedLayout"
     />
 
-    <FleetchartCanvasAddShips
-      v-if="arranging && addShipsOpen && arrangeReady"
-      @add="addShip"
-    />
-
     <FleetchartCanvasShipControls
       ref="shipControls"
       v-if="selectedShips.length && !draggedPositions && !exporting"
@@ -1706,7 +1769,6 @@ const toggleLabels = () => {
       :available-states="selectedShipStates"
       :can-group="canGroupSelected"
       :can-ungroup="canUngroupSelected"
-      :can-remove="selectedCatalogueShips.length > 0"
       :style="shipControlsStyle"
       @update:viewpoint="setSelectedViewpoint"
       @update:facing="setSelectedFacing"
@@ -1714,7 +1776,7 @@ const toggleLabels = () => {
       @stack="stackSelected"
       @group="groupSelected"
       @ungroup="ungroupSelected"
-      @remove="removeSelectedCatalogueShips"
+      @remove="removeSelectedShips"
     />
 
     <div class="fleetchart-canvas__viewport" @pointerdown="handleViewportPress">
