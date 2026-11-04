@@ -27,7 +27,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
 import { useResizeObserver, useDebounceFn } from "@vueuse/core";
-import { webglAvailable } from "@/shared/utils/Webgl";
+import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
@@ -156,7 +156,7 @@ const { displayAlert } = useAppNotifications();
 
 const lowPower = useLowPowerDevice();
 
-const webglSupported = ref(true);
+const { webglSupported } = useWebglSupport();
 
 // What was agreed to, in bytes: anything up to it -- the other pose of the same
 // ship, usually -- loads without asking again, and anything larger asks anew.
@@ -194,27 +194,8 @@ const awaitingConfirmation = computed(
 
 const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
 
-onMounted(() => {
-  webglSupported.value = webglAvailable();
-});
-
 watch(webglSupported, (supported) => {
   if (!supported) emit("unavailable");
-});
-
-// THREE throws while constructing the renderer, which TresCanvas's `on-error`
-// never sees: it comes out through Vue's error handler instead, which is how a
-// missing context got reported as an application error rather than showing the
-// fallback this component already has. Swallowing it is scoped to this
-// boundary, and a 3D viewer is the right place to decide that WebGL is absent.
-onErrorCaptured((error) => {
-  if (!(error instanceof Error) || !error.message.includes("WebGL")) {
-    return true;
-  }
-
-  webglSupported.value = false;
-
-  return false;
 });
 
 const dpr = computed(() =>
