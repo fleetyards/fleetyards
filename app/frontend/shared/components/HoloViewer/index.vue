@@ -525,7 +525,7 @@ const maxZoomDistance = computed(() =>
 );
 
 const starsVisible = computed(
-  () => props.backgrounds && background.value === "space",
+  () => props.backgrounds && (background.value === "space" || !!skybox.value),
 );
 
 const STARS_RADIUS = 1.5;
