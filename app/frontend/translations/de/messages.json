@@ -374,6 +374,10 @@
             "success": "Einladung angenommen.",
             "failure": "Einladung konnte nicht angenommen werden."
           },
+          "withdraw": {
+            "success": "Anfrage zurückgezogen.",
+            "failure": "Anfrage konnte nicht zurückgezogen werden."
+          },
           "decline": {
             "success": "Einladung abgelehnt.",
             "failure": "Einladung konnte nicht abgelehnt werden."
@@ -564,7 +568,8 @@
             "remove": "Möchtest du dieses Mitglied wirklich aus der Flotte entfernen?"
           },
           "invites": {
-            "decline": "Bist du sicher, dass du diese Einladung ablehnen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+            "decline": "Bist du sicher, dass du diese Einladung ablehnen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "withdraw": "Bist du sicher, dass du deine Beitrittsanfrage für diese Flotte zurückziehen möchtest?"
           }
         },
         "oauthApplication": {

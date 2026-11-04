@@ -299,11 +299,6 @@ class Fleet < ApplicationRecord
   after_create :setup_default_squadron_roles!
   after_create :setup_admin_user
 
-  def self.accepted
-    includes(:fleet_memberships).joins(:fleet_memberships)
-      .where(fleet_memberships: {aasm_state: :accepted})
-  end
-
   # Every fleet this one has an accepted alliance with. Scoped `.kept`: a fleet
   # is soft-deleted, so its alliances outlive it, and one with a discarded fleet
   # must admit nothing -- while staying intact if that fleet is restored.

@@ -368,6 +368,10 @@
             "success": "Invitación aceptada.",
             "failure": "No se pudo aceptar la Invitación."
           },
+          "withdraw": {
+            "success": "Solicitud retirada.",
+            "failure": "No se pudo retirar la solicitud."
+          },
           "decline": {
             "success": "Invitación rechazada.",
             "failure": "No se pudo rechazar la Invitación."
@@ -558,7 +562,8 @@
             "remove": "¿Seguro que quieres eliminar a este miembro de la flota?"
           },
           "invites": {
-            "decline": "¿Estás seguro de que quieres rechazar esta Invitación? Esta acción no se puede revertir."
+            "decline": "¿Estás seguro de que quieres rechazar esta Invitación? Esta acción no se puede revertir.",
+            "withdraw": "¿Estás seguro de que quieres retirar tu solicitud para unirte a esta flota?"
           }
         },
         "oauthApplication": {

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useQueryClient } from "@tanstack/vue-query";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -19,6 +20,7 @@ import {
   useFleetInvites as useFleetInvitesQuery,
   useAcceptFleetMembership as useAcceptFleetMembershipMutation,
   useDeclineFleetMembership as useDeclineFleetMembershipMutation,
+  useLeaveFleet as useLeaveFleetMutation,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -38,6 +40,11 @@ const requested = (invite: FleetMember) => {
 const comlink = useComlink();
 
 const router = useRouter();
+
+const queryClient = useQueryClient();
+
+const refreshFleets = () =>
+  queryClient.invalidateQueries({ queryKey: ["fleets"] });
 
 const acceptMutation = useAcceptFleetMembershipMutation();
 
@@ -85,8 +92,10 @@ const decline = async (invite: FleetMember) => {
         .mutateAsync({
           fleetSlug: invite.fleetSlug,
         })
-        .then(() => {
+        .then(async () => {
           comlink.emit("fleet-update");
+
+          await refreshFleets();
 
           displaySuccess({
             text: t("messages.fleet.invites.decline.success"),
@@ -96,6 +105,43 @@ const decline = async (invite: FleetMember) => {
           console.error(error);
           displayAlert({
             text: t("messages.fleet.invites.decline.failure"),
+          });
+        })
+        .finally(() => {
+          submitting.value = false;
+        });
+    },
+    onClose: () => {
+      submitting.value = false;
+    },
+  });
+};
+
+const withdrawMutation = useLeaveFleetMutation();
+
+const withdraw = (invite: FleetMember) => {
+  submitting.value = true;
+
+  displayConfirm({
+    text: t("messages.confirm.fleet.invites.withdraw"),
+    onConfirm: async () => {
+      await withdrawMutation
+        .mutateAsync({
+          fleetSlug: invite.fleetSlug,
+        })
+        .then(async () => {
+          comlink.emit("fleet-update");
+
+          await refreshFleets();
+
+          displaySuccess({
+            text: t("messages.fleet.invites.withdraw.success"),
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          displayAlert({
+            text: t("messages.fleet.invites.withdraw.failure"),
           });
         })
         .finally(() => {
@@ -155,10 +201,21 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
                 {{ t("actions.fleet.declineInvite") }}
               </Btn>
             </template>
-            <Btn v-else-if="requested(record)" :disabled="true">
-              <i class="fa-light fa-clock" />
-              {{ t("labels.fleet.awaitingConfirmation") }}
-            </Btn>
+            <template v-else-if="requested(record)">
+              <Btn :disabled="true">
+                <i class="fa-light fa-clock" />
+                {{ t("labels.fleet.awaitingConfirmation") }}
+              </Btn>
+              <Btn
+                :disabled="submitting"
+                :tone="BtnTonesEnum.DANGER"
+                data-test="fleet-request-withdraw"
+                @click="withdraw(record)"
+              >
+                <i class="fa-light fa-times" />
+                {{ t("actions.fleet.withdrawRequest") }}
+              </Btn>
+            </template>
           </template>
           <template #empty>
             <Empty :name="t('labels.blank.fleetInvites')" inline />

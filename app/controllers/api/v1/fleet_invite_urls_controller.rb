@@ -19,11 +19,8 @@ module Api
       def index
         authorize! with: FleetInviteUrlPolicy, context: {fleet: @fleet}
 
-        scope = authorized_scope(FleetInviteUrl.all)
-
-        scope.order(created_at: :desc)
-
-        @fleet_invite_urls = scope
+        @fleet_invite_urls = authorized_scope(@fleet.fleet_invite_urls)
+          .order(created_at: :desc)
           .page(page_params)
           .per(per_page(FleetInviteUrl))
       end

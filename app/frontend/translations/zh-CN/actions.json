@@ -312,6 +312,7 @@
         "starmap": "星图",
         "acceptInvite": "Accept Invitation",
         "declineInvite": "Decline Invitation",
+        "withdrawRequest": "撤回申请",
         "acceptRequest": "accept Request",
         "declineRequest": "Decline Request",
         "members": {

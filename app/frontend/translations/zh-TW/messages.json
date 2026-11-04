@@ -368,6 +368,10 @@
             "success": "邀請已接受。",
             "failure": "無法接受邀請。"
           },
+          "withdraw": {
+            "success": "申請已撤回。",
+            "failure": "無法撤回申請。"
+          },
           "decline": {
             "success": "邀請已拒絕。",
             "failure": "無法拒絕邀請。"
@@ -558,7 +562,8 @@
             "remove": "確定要將該成員從艦隊中移除嗎？"
           },
           "invites": {
-            "decline": "您確定要拒絕此邀請嗎？此操作無法復原。"
+            "decline": "您確定要拒絕此邀請嗎？此操作無法復原。",
+            "withdraw": "您確定要撤回加入此艦隊的申請嗎？"
           }
         },
         "oauthApplication": {

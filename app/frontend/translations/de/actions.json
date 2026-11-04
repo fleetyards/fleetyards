@@ -312,6 +312,7 @@
         "starmap": "Sternenkarte",
         "acceptInvite": "Einladung annehmen",
         "declineInvite": "Einladung ablehnen",
+        "withdrawRequest": "Anfrage zurückziehen",
         "acceptRequest": "Anfrage akzeptieren",
         "declineRequest": "Anfrage ablehnen",
         "members": {

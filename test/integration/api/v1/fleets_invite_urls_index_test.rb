@@ -57,6 +57,36 @@ class Api::V1::FleetsInviteUrlsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/invite-urls lists the newest first" do
+    newest = create(:fleet_invite_url, fleet: @fleet, user: @admin, created_at: 1.minute.from_now)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal newest.token, parsed_body.first["token"]
+    end
+  end
+
+  test "GET /fleets/:slug/invite-urls leaves out the urls of the reader's other fleets" do
+    other_fleet = create(:fleet, admins: [@admin])
+    create(:fleet_invite_url, fleet: other_fleet, user: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal @fleet.fleet_invite_urls.pluck(:token).sort, parsed_body.pluck("token").sort
+    end
+  end
+
+  test "GET /fleets/:slug/invite-urls leaves out the urls of a fleet the reader only asked to join" do
+    asked_fleet = create(:fleet, admins: [create(:user)])
+    create(:fleet_invite_url, fleet: asked_fleet, user: asked_fleet.fleet_memberships.first.user)
+    create(:fleet_membership, :requested, fleet: asked_fleet, user: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 4, parsed_body.count
+    end
+  end
+
   test "GET /fleets/:slug/invite-urls honours perPage" do
     sign_in @admin
 
