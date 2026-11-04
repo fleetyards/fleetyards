@@ -55,6 +55,30 @@ class RepresentationStoreOutageTest < ActionDispatch::IntegrationTest
     assert_response :service_unavailable
   end
 
+  test "a refused credential is not presented as an outage" do
+    ActiveStorage::Blob.service.stubs(:upload)
+      .raises(Aws::S3::Errors::AccessDenied.new(nil, "Access Denied"))
+
+    assert_raises(Aws::S3::Errors::AccessDenied) { get representation_path }
+  end
+
+  test "a redirect the store could not vouch for is not cached" do
+    ActiveStorage::Blob.service.stubs(:exist?)
+      .raises(Aws::S3::Errors::Http503Error.new(nil, "Service Unavailable"))
+
+    get representation_path
+
+    assert_response :redirect
+    assert_no_match(/max-age/, response.headers["Cache-Control"].to_s)
+  end
+
+  test "a redirect the store confirmed stays cacheable" do
+    get representation_path
+
+    assert_response :redirect
+    assert_match(/max-age/, response.headers["Cache-Control"].to_s)
+  end
+
   # The rescue is there for a store that cannot answer, not as a blanket guard
   # over the probe.
   test "an error the store did not raise is left alone" do

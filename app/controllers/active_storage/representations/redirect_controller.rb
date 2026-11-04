@@ -10,18 +10,35 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
     "Seahorse::Client::NetworkingError"
   ].freeze
 
+  # What a store that is down or overloaded answers. A refused credential or a
+  # missing bucket is left out: it is not something a retry can get past, and it
+  # has to reach the error tracker.
+  TRANSIENT_ERRORS = [
+    "Aws::S3::Errors::GatewayTimeout",
+    "Aws::S3::Errors::Http500Error",
+    "Aws::S3::Errors::Http502Error",
+    "Aws::S3::Errors::Http503Error",
+    "Aws::S3::Errors::Http504Error",
+    "Aws::S3::Errors::InternalError",
+    "Aws::S3::Errors::RequestTimeout",
+    "Aws::S3::Errors::ServiceUnavailable",
+    "Aws::S3::Errors::SlowDown",
+    "Seahorse::Client::NetworkingError"
+  ].freeze
+
   rescue_from ActiveStorage::FileNotFoundError, with: :representation_not_found
 
   # Processing a variant for the first time reads and writes the store in the
-  # before_action, ahead of the probe in `show`. A store that is failing is not
-  # something a request can fix, so this tells the client to come back. rescue_from
-  # resolves these names lazily, so they are safe on a Disk-backed environment.
-  rescue_from(*UNAVAILABLE_ERRORS, with: :respond_store_unavailable)
+  # before_action, ahead of the probe in `show`. rescue_from resolves these names
+  # lazily, so they are safe on a Disk-backed environment.
+  rescue_from(*TRANSIENT_ERRORS, with: :respond_store_unavailable)
 
   def show
     reprocess_representation unless representation_exists?
 
-    expires_in ActiveStorage.service_urls_expire_in
+    # A failed upload leaves a variant record with no object, so a redirect the
+    # store could not vouch for must not outlive the outage in a client's cache.
+    expires_in ActiveStorage.service_urls_expire_in unless @store_unverified
     redirect_to url_with_origin_param(@representation.url(disposition: params[:disposition])), allow_other_host: true
   end
 
@@ -40,7 +57,7 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
 
     Rails.logger.warn("representation probe skipped, #{error.class}: #{error.message}")
 
-    true
+    @store_unverified = true
   end
 
   def respond_store_unavailable(error)
