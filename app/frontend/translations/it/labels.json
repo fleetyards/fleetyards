@@ -533,6 +533,7 @@
           "wide": "Ampia"
         },
         "unplaced": "Non ancora posizionate",
+        "shipControls": "Nave selezionata",
         "rotateShip": "Ruota la nave selezionata (R)",
         "undo": "Annulla",
         "resetArrangement": "Ripristina disposizione",

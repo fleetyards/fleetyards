@@ -533,6 +533,7 @@
           "wide": "Large"
         },
         "unplaced": "Pas encore placés",
+        "shipControls": "Vaisseau sélectionné",
         "rotateShip": "Pivoter le vaisseau sélectionné (R)",
         "undo": "Annuler",
         "resetArrangement": "Réinitialiser la disposition",

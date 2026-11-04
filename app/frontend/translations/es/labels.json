@@ -533,6 +533,7 @@
           "wide": "Amplio"
         },
         "unplaced": "Sin colocar",
+        "shipControls": "Nave seleccionada",
         "rotateShip": "Girar la nave seleccionada (R)",
         "undo": "Deshacer",
         "resetArrangement": "Restablecer disposición",

@@ -15,6 +15,7 @@ import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/i
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
+import FleetchartCanvasShipControls from "./ShipControls/index.vue";
 import {
   PIXELS_PER_METRE,
   modelOf,
@@ -79,6 +80,9 @@ const MIN_ZOOM = 0.02;
 // An export is always drawn at full size, so its grid cannot follow the zoom.
 const EXPORT_GRID_CELL = gridCellFor(PIXELS_PER_METRE);
 const EXPORT_IMAGE_TIMEOUT = 15000;
+const SHIP_CONTROLS_GAP = 10;
+const SHIP_CONTROLS_MARGIN = 200;
+const SHIP_CONTROLS_MIN_TOP = 130;
 const FIT_MARGIN_TOP = 70;
 const FIT_MARGIN_BOTTOM = 80;
 const MAX_ZOOM = 20;
@@ -268,7 +272,9 @@ const shipsFor = (kind: FleetchartLayouts) => {
     group.value,
     extended.value,
   ).flatMap((entry) => {
-    const geometry = shipGeometry(entry, viewpoint.value, {
+    const shipViewpoint =
+      (free && placements.value[entry.id]?.viewpoint) || viewpoint.value;
+    const geometry = shipGeometry(entry, shipViewpoint, {
       extended: extended.value,
       colored: colored.value,
     });
@@ -292,6 +298,7 @@ const shipsFor = (kind: FleetchartLayouts) => {
         geometry,
         ...boxOf(geometry, shipFacing, fillsSpaceIn(kind)),
         facing: shipFacing,
+        viewpoint: shipViewpoint,
         group: shipGroup,
         headingWidth: shipGroup
           ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
@@ -693,26 +700,75 @@ const resetArrangement = () => {
   fitToScreen();
 };
 
-const rotateSelected = () => {
-  const id = selectedId.value;
+const selectedShip = computed(() =>
+  isFree.value
+    ? ships.value.find((ship) => ship.id === selectedId.value)
+    : undefined,
+);
+
+const changeSelected = (changes: {
+  facing?: FleetchartFacings;
+  viewpoint?: FleetchartViewpoints;
+}) => {
+  const id = selectedShip.value?.id;
   const current = id ? positions.value[id] : undefined;
 
   if (!id || !current) {
     return;
   }
 
-  const index = FACING_CYCLE.indexOf(facingOf(id));
-
   holdingView(() => {
     changePlacements({
       ...placements.value,
       [id]: {
+        ...placements.value[id],
         x: current.x,
         y: current.y,
-        facing: FACING_CYCLE[(index + 1) % FACING_CYCLE.length],
+        ...changes,
       },
     });
   });
+};
+
+const rotateSelected = () => {
+  if (selectedShip.value) {
+    const index = FACING_CYCLE.indexOf(selectedShip.value.facing);
+
+    changeSelected({
+      facing: FACING_CYCLE[(index + 1) % FACING_CYCLE.length],
+    });
+  }
+};
+
+// Drawn over the scene rather than in it, so it stays readable at any zoom and
+// never reaches an export.
+const shipControlsStyle = computed(() => {
+  const ship = selectedShip.value;
+  const position = ship ? positions.value[ship.id] : undefined;
+
+  if (!ship || !position) {
+    return undefined;
+  }
+
+  const { x, y, scale } = transform.value;
+  const top = y + sceneY(position.y - ship.height / 2) * scale;
+  const bottom = y + sceneY(position.y + ship.height / 2) * scale;
+  const above = top > SHIP_CONTROLS_MIN_TOP;
+
+  return {
+    left: `${Math.min(
+      Math.max(x + sceneX(position.x) * scale, SHIP_CONTROLS_MARGIN),
+      screen.width - SHIP_CONTROLS_MARGIN,
+    )}px`,
+    top: `${above ? top - SHIP_CONTROLS_GAP : bottom + SHIP_CONTROLS_GAP}px`,
+    transform: `translate(-50%, ${above ? "-100%" : "0"})`,
+  };
+});
+
+const deselectOutsideShip = (event: PointerEvent) => {
+  if (!(event.target as Element).closest("[data-test='fleetchart-ship']")) {
+    selectedId.value = undefined;
+  }
 };
 
 let stopDrag: (() => void) | undefined;
@@ -766,7 +822,12 @@ const startDrag = (id: string, event: PointerEvent) => {
         dragged.value = undefined;
         changePlacements({
           ...placements.value,
-          [id]: { x: dropped.x, y: dropped.y, facing: facingOf(id) },
+          [id]: {
+            ...placements.value[id],
+            x: dropped.x,
+            y: dropped.y,
+            facing: facingOf(id),
+          },
         });
       });
     }
@@ -804,6 +865,8 @@ const handleArrangeKeys = (event: KeyboardEvent) => {
   if ((event.metaKey || event.ctrlKey) && event.key === "z") {
     event.preventDefault();
     undo();
+  } else if (event.key === "Escape") {
+    selectedId.value = undefined;
   } else if (event.key === "r" && !event.metaKey && !event.ctrlKey) {
     rotateSelected();
   }
@@ -876,15 +939,6 @@ const toggleLabels = () => {
   <div class="fleetchart-wrapper" data-test="fleetchart-canvas">
     <div class="fleetchart-controls">
       <template v-if="isFree">
-        <Btn
-          v-tooltip="t('labels.fleetchartApp.rotateShip')"
-          :aria-label="t('labels.fleetchartApp.rotateShip')"
-          :disabled="!selectedId"
-          data-test="fleetchart-rotate-ship"
-          @click="rotateSelected"
-        >
-          <i class="fa-duotone fa-rotate-right" />
-        </Btn>
         <Btn
           v-tooltip="t('labels.fleetchartApp.undo')"
           :aria-label="t('labels.fleetchartApp.undo')"
@@ -1018,7 +1072,15 @@ const toggleLabels = () => {
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
     </div>
 
-    <div class="fleetchart-canvas__viewport">
+    <FleetchartCanvasShipControls
+      v-if="selectedShip && !dragged && !exporting"
+      :viewpoint="selectedShip.viewpoint"
+      :style="shipControlsStyle"
+      @rotate="rotateSelected"
+      @update:viewpoint="changeSelected({ viewpoint: $event })"
+    />
+
+    <div class="fleetchart-canvas__viewport" @pointerdown="deselectOutsideShip">
       <div
         id="fleetchart"
         ref="scene"
@@ -1054,7 +1116,7 @@ const toggleLabels = () => {
           :geometry="ship.geometry"
           :left="sceneX(positions[ship.id].x - ship.width / 2)"
           :top="sceneY(positions[ship.id].y - ship.height / 2)"
-          :viewpoint="viewpoint"
+          :viewpoint="ship.viewpoint"
           :zoom="exporting ? 1 : savedZoom.scale || 1"
           :show-label="showLabels"
           :show-status="showStatus"

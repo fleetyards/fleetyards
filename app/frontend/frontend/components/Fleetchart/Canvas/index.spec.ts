@@ -6,6 +6,7 @@ import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry"
 import {
   FleetchartFacings,
   FleetchartLayouts,
+  FleetchartViewpoints,
   useFleetchartStore,
 } from "@/shared/stores/fleetchart";
 
@@ -422,6 +423,104 @@ describe("FleetchartCanvas", () => {
       await nextTick();
 
       expect(placement("a").x).toBe(placement("b").x);
+    });
+
+    describe("controls on the selected ship", () => {
+      const controls = (wrapper: ReturnType<typeof mountCanvas>) =>
+        wrapper.find("[data-test='fleetchart-ship-controls']");
+
+      it("appear only once a ship is selected, outside the export", async () => {
+        const wrapper = await mountFree();
+
+        expect(controls(wrapper).exists()).toBe(false);
+
+        await drag(wrapper, 0);
+
+        expect(controls(wrapper).exists()).toBe(true);
+        expect(
+          wrapper
+            .get("#fleetchart")
+            .find("[data-test='fleetchart-ship-controls']")
+            .exists(),
+        ).toBe(false);
+      });
+
+      it("go away on Escape and on a press beside the ship", async () => {
+        const wrapper = await mountFree();
+
+        await drag(wrapper, 0);
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        await nextTick();
+
+        expect(controls(wrapper).exists()).toBe(false);
+
+        await drag(wrapper, 0);
+        await wrapper.get("#fleetchart").trigger("pointerdown");
+
+        expect(controls(wrapper).exists()).toBe(false);
+      });
+
+      it("show one ship from another angle and leave the others", async () => {
+        const wrapper = await mountFree();
+
+        await drag(wrapper, 0);
+        await wrapper
+          .get("[data-test='fleetchart-ship-view-top']")
+          .trigger("click");
+
+        const views = [placement("a").viewpoint, placement("b").viewpoint];
+
+        expect(views).toContain(FleetchartViewpoints.TOP);
+        expect(views).toContain(undefined);
+      });
+
+      it("keep a ship's angle when it is dragged", async () => {
+        const wrapper = await mountFree();
+
+        await drag(wrapper, 0);
+        await wrapper
+          .get("[data-test='fleetchart-ship-view-top']")
+          .trigger("click");
+
+        const id = placement("a").viewpoint ? "a" : "b";
+
+        await drag(wrapper, 40);
+
+        expect(placement(id).viewpoint).toBe(FleetchartViewpoints.TOP);
+      });
+
+      it("rotate from the toolbar", async () => {
+        const wrapper = await mountFree();
+
+        await drag(wrapper, 0);
+        await wrapper
+          .get("[data-test='fleetchart-rotate-ship']")
+          .trigger("click");
+
+        expect([placement("a").facing, placement("b").facing]).toContain(
+          FleetchartFacings.TOP,
+        );
+      });
+    });
+
+    it("clears a ship's angle on reset", async () => {
+      const store = useFleetchartStore();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      store.updatePlacements({
+        namespace: "hangar",
+        placements: { a: { x: 1, y: 1, viewpoint: FleetchartViewpoints.TOP } },
+      });
+
+      const wrapper = mountCanvas([entry("a")]);
+
+      await wrapper
+        .get("[data-test='fleetchart-reset-arrangement']")
+        .trigger("click");
+
+      expect(placement("a").viewpoint).toBeUndefined();
     });
 
     it("does not rotate while typing in a field", async () => {

@@ -533,6 +533,7 @@
           "wide": "Weit"
         },
         "unplaced": "Noch nicht platziert",
+        "shipControls": "Ausgewähltes Schiff",
         "rotateShip": "Ausgewähltes Schiff drehen (R)",
         "undo": "Rückgängig",
         "resetArrangement": "Anordnung zurücksetzen",

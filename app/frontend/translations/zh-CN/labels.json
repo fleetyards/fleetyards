@@ -533,6 +533,7 @@
           "wide": "宽松"
         },
         "unplaced": "尚未放置",
+        "shipControls": "所选舰船",
         "rotateShip": "旋转所选舰船 (R)",
         "undo": "撤销",
         "resetArrangement": "重置排列",

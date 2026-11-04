@@ -78,6 +78,7 @@ export interface FleetchartPlacement {
   x: number;
   y: number;
   facing?: FleetchartFacings;
+  viewpoint?: FleetchartViewpoints;
 }
 
 export type FleetchartPlacements = Record<string, FleetchartPlacement>;

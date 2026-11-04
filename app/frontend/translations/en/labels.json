@@ -533,6 +533,7 @@
           "wide": "Wide"
         },
         "unplaced": "Not placed yet",
+        "shipControls": "Selected ship",
         "rotateShip": "Rotate selected ship (R)",
         "undo": "Undo",
         "resetArrangement": "Reset arrangement",
