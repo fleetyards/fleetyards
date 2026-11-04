@@ -24,6 +24,8 @@ type Props = {
   size?: `${BtnSizesEnum}`;
   inline?: boolean;
   backgroundColor?: string | null;
+  /** Captures the element at its full size, whatever it is currently zoomed to. */
+  ignoreTransform?: boolean;
 };
 
 // Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
@@ -35,10 +37,13 @@ const MAX_CANVAS_SIDE = 16_384;
 
 // html2canvas sizes the canvas from the element's box, transform included, so
 // a zoomed panzoom chart is measured as it is shown.
-const canvasScale = (element: HTMLElement) => {
+const canvasScale = (element: HTMLElement, ignoreTransform: boolean) => {
   const box = element.getBoundingClientRect();
-  const width = Math.max(box.width, 1);
-  const height = Math.max(box.height, 1);
+  const width = Math.max(ignoreTransform ? element.offsetWidth : box.width, 1);
+  const height = Math.max(
+    ignoreTransform ? element.offsetHeight : box.height,
+    1,
+  );
 
   return Math.min(
     window.devicePixelRatio || 1,
@@ -69,6 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: undefined,
   inline: false,
   backgroundColor: null,
+  ignoreTransform: false,
 });
 
 const { t } = useI18n();
@@ -106,7 +112,12 @@ const download = async () => {
     const canvas = await html2canvas(element, {
       backgroundColor: props.backgroundColor,
       useCORS: true,
-      scale: canvasScale(element),
+      scale: canvasScale(element, props.ignoreTransform),
+      onclone: props.ignoreTransform
+        ? (_document, clone) => {
+            clone.style.transform = "none";
+          }
+        : undefined,
       windowWidth: parentNode.scrollWidth,
       windowHeight: parentNode.scrollHeight + 100,
     });
