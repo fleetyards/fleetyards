@@ -8,7 +8,6 @@ module HangarPlans
   # still choosing its ship.
   class Suggestions
     REDUNDANCY_KINDS = %w[duplicate role].freeze
-    LEAVING_STATUSES = %w[change unrouted].freeze
 
     # Ships of one model, or of one role: the same classification, size and
     # most specific focus.
@@ -59,7 +58,7 @@ module HangarPlans
 
     private def fleet
       @fleet ||= comparison.fleet.reject do |entry|
-        entry.slot.nil? && LEAVING_STATUSES.include?(status_of(entry.vehicle))
+        entry.slot.nil? && Comparison::LEAVING_STATUSES.include?(status_of(entry.vehicle))
       end
     end
 

@@ -7,6 +7,8 @@ module HangarPlans
   class Comparison
     VEHICLE_STATUSES = %w[kept upgraded unrouted melted pending change unassigned].freeze
     CHANGES = %w[added removed more fewer unchanged].freeze
+    # A ship the plan has not routed yet but already means to change.
+    LEAVING_STATUSES = %w[change unrouted].freeze
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
     ModelDiff = Data.define(:model, :left_count, :right_count, :change)
@@ -88,12 +90,14 @@ module HangarPlans
     # The hangar once the plan is carried out: the ships its decided slots hold,
     # and every ship the plan neither uses nor melts, which stays. A ship left
     # out fills a unit of its own model that has no route yet, rather than being
-    # counted twice.
+    # counted twice, and a ship meant to stay does so first.
     def fleet
       @fleet ||= begin
         open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
-        left_out = vehicles.reject { |entry| entry.status == "melted" || decided_routes.key?(entry.vehicle.id) }
-          .map(&:vehicle)
+        leaving, settled = vehicles
+          .reject { |entry| entry.status == "melted" || decided_routes.key?(entry.vehicle.id) }
+          .partition { |entry| LEAVING_STATUSES.include?(entry.status) }
+        left_out = (settled + leaving).map(&:vehicle)
 
         staying = left_out.reject do |vehicle|
           next false unless open_units[vehicle.model_id].positive?

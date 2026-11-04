@@ -62,6 +62,20 @@ class HangarPlans::SuggestionsTest < ActiveSupport::TestCase
     assert_equal 2, redundancies.sole.entries.size
   end
 
+  test "which ship is older does not decide whether a slot's unit is a duplicate" do
+    [%w[change pending], %w[pending change]].each do |marks|
+      plan = create(:hangar_plan, user: create(:user))
+      slot = create(:hangar_plan_slot, hangar_plan: plan)
+      create(:hangar_plan_candidate, slot:, model: @gladius)
+      marks.each do |mark|
+        vehicle = create(:vehicle, user: plan.user, model: @gladius)
+        plan.vehicle_marks.create!(vehicle:, mark:)
+      end
+
+      assert_empty HangarPlans::Suggestions.new(plan).redundancies
+    end
+  end
+
   test "a ship picked as the start of an undecided slot no longer counts" do
     start = create(:vehicle, user: @user, model: @gladius)
     create(:vehicle, user: @user, model: @gladius)
