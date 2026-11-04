@@ -312,6 +312,7 @@
         "starmap": "Carte stellaire",
         "acceptInvite": "Accepter l'invitation",
         "declineInvite": "Décliner l'invitation",
+        "withdrawRequest": "Retirer la demande",
         "acceptRequest": "Accepter la demande",
         "declineRequest": "Décliner la demande",
         "members": {

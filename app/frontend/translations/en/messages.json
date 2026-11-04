@@ -378,6 +378,10 @@
             "success": "Invite accepted.",
             "failure": "Could not accept Invite."
           },
+          "withdraw": {
+            "success": "Request withdrawn.",
+            "failure": "Could not withdraw Request."
+          },
           "decline": {
             "success": "Invite declined.",
             "failure": "Could not decline Invite."
@@ -568,7 +572,8 @@
             "remove": "Are you sure you want to remove this member from the fleet?"
           },
           "invites": {
-            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
+            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted.",
+            "withdraw": "Are you sure you want to withdraw your Request to join this Fleet?"
           }
         },
         "oauthApplication": {

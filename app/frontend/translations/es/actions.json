@@ -312,6 +312,7 @@
         "starmap": "Mapa estelar",
         "acceptInvite": "Aceptar invitación",
         "declineInvite": "Rechazar invitación",
+        "withdrawRequest": "Retirar solicitud",
         "acceptRequest": "Aceptar solicitud",
         "declineRequest": "Rechazar solicitud",
         "members": {

@@ -312,6 +312,7 @@
         "starmap": "Starmap",
         "acceptInvite": "Accept Invitation",
         "declineInvite": "Decline Invitation",
+        "withdrawRequest": "Withdraw Request",
         "acceptRequest": "accept Request",
         "declineRequest": "Decline Request",
         "members": {
