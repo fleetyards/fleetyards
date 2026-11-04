@@ -9,7 +9,13 @@ import { useRoute } from "vue-router";
 import type { RouteLocationNamedRaw, RouterLinkProps } from "vue-router";
 import NavItemInner from "./NavItemInner/index.vue";
 import type { Glyph } from "@/shared/components/DuotoneGlyph/glyph";
-import { FLYOUT_PATH, NAV_EXPANDED, openFlyout } from "./context";
+import {
+  FLYOUT_PATH,
+  NAV_EXPANDED,
+  aimsAtPanel,
+  flyoutPanels,
+  openFlyout,
+} from "./context";
 import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
@@ -171,6 +177,8 @@ const pinned = ref(false);
 
 const panelStyle = ref<Record<string, string>>({});
 
+const bridgeStyle = ref<Record<string, string>>({});
+
 /*
  * `position: fixed` is what lets the panel out of the rail: the wrapper around
  * it scrolls on one axis and clips on the other, and no `overflow: visible`
@@ -201,9 +209,19 @@ const positionPanel = () => {
   const rect = element.getBoundingClientRect();
   const height = panel.value?.offsetHeight ?? 0;
 
+  const top = Math.max(8, Math.min(rect.top, window.innerHeight - height - 8));
+
   panelStyle.value = {
-    top: `${Math.max(8, Math.min(rect.top, window.innerHeight - height - 8))}px`,
+    top: `${top}px`,
     left: `${rect.right}px`,
+  };
+
+  const bridgeTop = Math.min(top, rect.top);
+
+  bridgeStyle.value = {
+    top: `${bridgeTop}px`,
+    left: `${rect.right}px`,
+    height: `${Math.max(top + height, rect.bottom) - bridgeTop}px`,
   };
 };
 
@@ -224,8 +242,18 @@ const clearCloseTimer = () => {
  */
 const dismissed = ref(false);
 
+let takeOverTimer: ReturnType<typeof setTimeout> | undefined;
+
+const clearTakeOverTimer = () => {
+  if (takeOverTimer) {
+    clearTimeout(takeOverTimer);
+    takeOverTimer = undefined;
+  }
+};
+
 const closeFlyout = (deliberate = false) => {
   clearCloseTimer();
+  clearTakeOverTimer();
   dismissed.value = deliberate;
   pinned.value = false;
   flyoutOpen.value = false;
@@ -238,6 +266,7 @@ const closeFlyout = (deliberate = false) => {
 
 const showFlyout = async (pin = false) => {
   clearCloseTimer();
+  clearTakeOverTimer();
 
   pinned.value = pinned.value || pin;
 
@@ -306,16 +335,94 @@ const pointerWithinSection = () => {
   return !!under && !!root.value?.contains(under);
 };
 
+const pointerPosition = () => ({ x: pointerX, y: pointerY });
+
+/*
+ * Watches a pointer on its way to `target`, for as long as it keeps moving
+ * towards it. Stopping counts as having arrived wherever it is, however long the
+ * way has taken so far, so a slow pointer gets as long as it needs.
+ */
+const whilePointerAims = (
+  target: () => HTMLElement | null | undefined,
+  interval: number,
+  settled: () => void,
+  schedule: (timer: ReturnType<typeof setTimeout>) => void,
+) => {
+  const from = pointerPosition();
+  let last = from;
+
+  const check = () => {
+    schedule(
+      setTimeout(() => {
+        const now = pointerPosition();
+        const moved = now.x !== last.x || now.y !== last.y;
+        const element = target();
+
+        last = now;
+
+        if (
+          moved &&
+          element &&
+          aimsAtPanel(from, now, element.getBoundingClientRect())
+        ) {
+          check();
+
+          return;
+        }
+
+        settled();
+      }, interval),
+    );
+  };
+
+  check();
+};
+
 const scheduleClose = () => {
   clearCloseTimer();
 
-  closeTimer = setTimeout(() => {
-    if (pointerWithinSection()) {
-      return;
-    }
+  whilePointerAims(
+    () => panel.value,
+    350,
+    () => {
+      if (!pointerWithinSection()) {
+        closeFlyout();
+      }
+    },
+    (timer) => {
+      closeTimer = timer;
+    },
+  );
+};
 
-    closeFlyout();
-  }, 220);
+const rivalPanel = () => {
+  const rival = openFlyout.value[parentPath.value.length];
+
+  return rival && rival !== flyoutId ? flyoutPanels.get(rival) : undefined;
+};
+
+/*
+ * Replacing the panel at this level right away closes it under a pointer that
+ * is only crossing this row to reach it. A pointer that stops, or heads anywhere
+ * else, is asking for this row.
+ */
+const takeOverOncePointerSettles = () => {
+  if (!rivalPanel()) {
+    void showFlyout();
+
+    return;
+  }
+
+  whilePointerAims(
+    rivalPanel,
+    200,
+    () => {
+      void showFlyout();
+    },
+    (timer) => {
+      takeOverTimer = timer;
+    },
+  );
 };
 
 const onPointerEnter = (event: PointerEvent) => {
@@ -325,11 +432,13 @@ const onPointerEnter = (event: PointerEvent) => {
     return;
   }
 
-  void showFlyout();
+  clearTakeOverTimer();
+  takeOverOncePointerSettles();
 };
 
 const onPointerLeave = (event: PointerEvent) => {
   rememberPointer(event);
+  clearTakeOverTimer();
 
   if (!flyout.value || pinned.value) {
     return;
@@ -493,6 +602,14 @@ watch(flyoutOpen, (value) => {
   trackViewport(value);
 });
 
+watch(panel, (element) => {
+  if (element) {
+    flyoutPanels.set(flyoutId, element);
+  } else {
+    flyoutPanels.delete(flyoutId);
+  }
+});
+
 watch([() => route.fullPath, open, flyout], () => {
   void trackRailNode();
 });
@@ -558,6 +675,8 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   clearCloseTimer();
+  clearTakeOverTimer();
+  flyoutPanels.delete(flyoutId);
   trackViewport(false);
   listObserver?.disconnect();
 });
@@ -614,6 +733,7 @@ const toggleMenu = () => {
     :data-test="`nav-${navKey}`"
     class="nav-item nav-item__sub-menu"
     @pointerenter="onPointerEnter"
+    @pointermove="rememberPointer"
     @pointerleave="onPointerLeave"
     @focusin="onFocusIn"
     @focusout="onFocusOut"
@@ -662,6 +782,13 @@ const toggleMenu = () => {
     >
       <slot name="submenu" />
     </Collapsed>
+    <!-- Fills the gap between the row and its panel, which is no part of either:
+         a pointer resting there was outside the section, and closed it. -->
+    <div
+      v-if="flyout && flyoutOpen"
+      class="nav-flyout__bridge"
+      :style="bridgeStyle"
+    />
     <Transition name="nav-flyout">
       <div
         v-if="flyout && flyoutOpen"

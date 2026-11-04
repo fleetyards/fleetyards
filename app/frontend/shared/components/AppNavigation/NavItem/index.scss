@@ -344,6 +344,13 @@ $nav-active-glow: color-mix(
     backdrop-filter: none;
   }
 
+  // Wider than the panel's margin, to cover the border of a panel it opens from.
+  &__bridge {
+    position: fixed;
+    z-index: 1040;
+    width: 8px;
+  }
+
   &__title {
     padding: 10px 15px 6px;
     color: var(--color-text-dim, #959595);

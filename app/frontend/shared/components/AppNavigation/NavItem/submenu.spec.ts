@@ -412,6 +412,122 @@ describe("NavItem with a submenu", () => {
         ({ left: 300, top: 100, bottom: 220 }) as DOMRect;
     };
 
+    const pointer = async (
+      wrapper: VueWrapper,
+      row: string,
+      type: string,
+      x: number,
+      y: number,
+    ) => {
+      wrapper.get(`[data-test="nav-${row}"]`).element.dispatchEvent(
+        new MouseEvent(type, {
+          clientX: x,
+          clientY: y,
+          bubbles: type === "pointermove",
+        }),
+      );
+      await wrapper.vm.$nextTick();
+    };
+
+    const onPledge = async (wrapper: VueWrapper) => {
+      await pointer(wrapper, "assets", "pointerleave", 100, 130);
+      await pointer(wrapper, "pledge", "pointerenter", 110, 140);
+    };
+
+    const movePointer = (wrapper: VueWrapper, x: number, y: number) =>
+      pointer(wrapper, "pledge", "pointermove", x, y);
+
+    beforeEach(() => {
+      document.elementFromPoint = () => document.body;
+    });
+
+    it("keeps the open panel while the pointer crosses towards it", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await onPledge(wrapper);
+
+      for (let step = 1; step <= 8; step += 1) {
+        await movePointer(wrapper, 110 + step * 20, 140 + step * 2);
+        await vi.advanceTimersByTimeAsync(100);
+      }
+
+      expect(title(wrapper)).toEqual(["Hangar", "assets"]);
+
+      wrapper.unmount();
+    });
+
+    it("opens the row a pointer stops on", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await onPledge(wrapper);
+
+      await vi.advanceTimersByTimeAsync(250);
+      await wrapper.vm.$nextTick();
+
+      expect(title(wrapper)).toEqual(["Hangar", "pledge"]);
+
+      wrapper.unmount();
+    });
+
+    it("opens the row a pointer moves along instead of out", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await onPledge(wrapper);
+      await movePointer(wrapper, 105, 170);
+
+      await vi.advanceTimersByTimeAsync(250);
+      await wrapper.vm.$nextTick();
+
+      expect(title(wrapper)).toEqual(["Hangar", "pledge"]);
+
+      wrapper.unmount();
+    });
+
+    it("waits for a slow pointer however long it takes", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+      await onPledge(wrapper);
+
+      for (let step = 1; step <= 90; step += 1) {
+        await movePointer(wrapper, 110 + step * 2, 140 + (step % 2));
+        await vi.advanceTimersByTimeAsync(50);
+      }
+
+      expect(title(wrapper)).toEqual(["Hangar", "assets"]);
+
+      wrapper.unmount();
+    });
+
+    it("keeps every panel for a pointer resting between two of them", async () => {
+      const wrapper = await mountSiblings();
+
+      await assetsOpenWithPanelAt(wrapper);
+
+      const bridge = wrapper.get(
+        '[data-test="nav-assets"] .nav-flyout__bridge',
+      );
+
+      document.elementFromPoint = () => bridge.element;
+
+      wrapper
+        .findAll(".nav-flyout")[1]
+        .element.dispatchEvent(new MouseEvent("pointerleave"));
+      wrapper
+        .findAll(".nav-flyout")[0]
+        .element.dispatchEvent(new MouseEvent("pointerleave"));
+
+      await vi.advanceTimersByTimeAsync(2000);
+      await wrapper.vm.$nextTick();
+
+      expect(title(wrapper)).toEqual(["Hangar", "assets"]);
+
+      wrapper.unmount();
+    });
+
     it("stays open when a press in the panel takes the focus nowhere", async () => {
       const wrapper = await mountSiblings();
 
