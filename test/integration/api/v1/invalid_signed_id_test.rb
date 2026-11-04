@@ -7,6 +7,7 @@ class Api::V1::InvalidSignedIdTest < ActionDispatch::IntegrationTest
     admin = create(:user)
     fleet = create(:fleet, admins: [admin])
     sign_in admin
+    Rails.logger.expects(:warn).with(includes("does not verify")).once
 
     put "/api/v1/fleets/#{fleet.slug}", params: {logo: "forged--0000"}, as: :json
 

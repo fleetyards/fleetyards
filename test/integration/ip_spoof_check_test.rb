@@ -17,6 +17,12 @@ class IpSpoofCheckTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "a rejection leaves a log line, as it answers ahead of request logging" do
+    Rails.logger.expects(:warn).with(all_of(includes("1.2.3.4"), includes("5.6.7.8"))).at_least_once
+
+    get "/", headers: CONFLICTING
+  end
+
   test "a forwarded address alone is served" do
     get "/api/", headers: {"HTTP_ACCEPT" => "application/json", "HTTP_X_FORWARDED_FOR" => "5.6.7.8"}
 
