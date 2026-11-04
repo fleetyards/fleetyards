@@ -77,10 +77,11 @@ const rows = computed(() => {
 const gaps = computed(() => {
   if (!totals.value) return [];
 
-  // Open and undecided slots are counted in the plan's header already.
-  return [{ key: "unresolved", count: totals.value.unresolvedCount }].filter(
-    (gap) => gap.count > 0,
-  );
+  return [
+    { key: "unresolved", count: totals.value.unresolvedCount },
+    { key: "undecidedSlots", count: totals.value.undecidedSlotsCount },
+    { key: "openSlots", count: totals.value.openSlotsCount },
+  ].filter((gap) => gap.count > 0);
 });
 </script>
 
@@ -105,7 +106,11 @@ const gaps = computed(() => {
       </dl>
 
       <ul v-if="gaps.length" class="plan-summary__gaps">
-        <li v-for="gap in gaps" :key="gap.key">
+        <li
+          v-for="gap in gaps"
+          :key="gap.key"
+          :data-test="`hangar-plan-summary-gap-${gap.key}`"
+        >
           {{ t(`hangarPlanner.summary.${gap.key}`, { count: gap.count }) }}
         </li>
       </ul>
