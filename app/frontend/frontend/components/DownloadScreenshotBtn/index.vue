@@ -23,6 +23,7 @@ type Props = {
   variant?: `${BtnVariantsEnum}`;
   size?: `${BtnSizesEnum}`;
   inline?: boolean;
+  backgroundColor?: string | null;
 };
 
 // Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
@@ -67,6 +68,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: undefined,
   size: undefined,
   inline: false,
+  backgroundColor: null,
 });
 
 const { t } = useI18n();
@@ -102,7 +104,7 @@ const download = async () => {
 
   try {
     const canvas = await html2canvas(element, {
-      backgroundColor: null,
+      backgroundColor: props.backgroundColor,
       useCORS: true,
       scale: canvasScale(element),
       windowWidth: parentNode.scrollWidth,
