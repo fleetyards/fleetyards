@@ -12,12 +12,17 @@ export const canLeave = (model: HangarPlanModel) =>
 export const canEnter = (model: HangarPlanModel) =>
   model.ccuInto !== HangarPlanCcuIntoEnum.NONE;
 
+// Some ships are reached only from a variant of their own hull, like the
+// Kraken Privateer from the Kraken.
+export const entersFrom = (from: HangarPlanModel, to: HangarPlanModel) =>
+  !to.ccuIntoFrom || to.ccuIntoFrom.includes(from.id);
+
 // Whether a route can lead from one ship to another: it is the same ship, or
 // an upgrade towards a dearer one RSI sells upgrades out of and into. A ship
 // without a known price is kept, as nothing rules it out.
 export const reaches = (from: HangarPlanModel, to: HangarPlanModel) => {
   if (from.id === to.id) return true;
-  if (!canLeave(from) || !canEnter(to)) return false;
+  if (!canLeave(from) || !canEnter(to) || !entersFrom(from, to)) return false;
   if (typeof from.pledgePrice !== "number") return true;
   if (typeof to.pledgePrice !== "number") return true;
 

@@ -22,6 +22,11 @@ module V1
               onSale: {type: :boolean},
               ccuInto: ::V1::Schemas::Enums::HangarPlanCcuIntoEnum,
               ccuOutOf: ::V1::Schemas::Enums::HangarPlanCcuOutOfEnum,
+              ccuIntoFrom: {
+                type: [:array, :null],
+                items: {type: :string, format: :uuid},
+                description: "The only ships an upgrade leads into this one from, where every upgrade seen into it starts from a variant of its own hull; null when any ship can"
+              },
               crew: {type: [:integer, :null]},
               cargo: {type: [:number, :null]},
               image: ::Shared::V1::Schemas::MediaFile

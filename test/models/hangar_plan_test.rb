@@ -223,6 +223,22 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert @plan.acquisitions.new(candidate:, start_kind: "store", start_model: pioneer).valid?
   end
 
+  test "a store upgrade into a ship reached only from its variants starts from one of them" do
+    kraken = create(:model, pledge_price: 400, on_sale: true)
+    privateer = create(:model, pledge_price: 2000, on_sale: true, ccu_target_source_ids: [kraken.id])
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: privateer)
+
+    other = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
+    other.upgrade_steps.build(source_kind: "store", origin_model: @carrack, target_model: privateer, position: 0)
+    variant = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: kraken)
+    variant.upgrade_steps.build(source_kind: "store", origin_model: kraken, target_model: privateer, position: 0)
+
+    assert_not other.valid?
+    assert other.upgrade_steps.first.errors.of_kind?(:to_model_id, :not_upgradable)
+    assert variant.valid?
+  end
+
   test "an upgrade the user holds counts whatever the store sells" do
     pioneer = create(:model, pledge_price: 925, on_sale: true, created_at: 1.year.ago)
     slot = create(:hangar_plan_slot, hangar_plan: @plan)

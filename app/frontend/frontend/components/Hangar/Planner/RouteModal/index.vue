@@ -27,6 +27,7 @@ import type { RouteChainNode } from "@/frontend/components/Hangar/Planner/RouteC
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import {
   canEnter,
+  entersFrom,
   canLeave,
   ccuNote,
 } from "@/frontend/components/Hangar/Planner/reach";
@@ -194,6 +195,7 @@ const belowTarget = (model?: HangarPlanModel) => {
   if (!model) return true;
   if (model.id === target.value.id) return true;
   if (!canLeave(model) || !canEnter(target.value)) return false;
+  if (!entersFrom(model, target.value)) return false;
   if (targetPrice.value === null || typeof model.pledgePrice !== "number") {
     return true;
   }
@@ -203,6 +205,11 @@ const belowTarget = (model?: HangarPlanModel) => {
 const canLeaveId = (id?: string | null) => {
   const model = id ? models.value.get(id) : undefined;
   return !model || canLeave(model);
+};
+
+const entersFromId = (id: string | null | undefined, to: HangarPlanModel) => {
+  const model = id ? models.value.get(id) : undefined;
+  return !model || entersFrom(model, to);
 };
 
 const priceOf = (id?: string | null) =>
@@ -484,6 +491,7 @@ const storeStepItems = (index: number) => {
         model.id !== fromId &&
         canEnter(model) &&
         canLeaveId(fromId) &&
+        entersFromId(fromId, model) &&
         belowTarget(model) &&
         (typeof from !== "number" || (model.pledgePrice ?? 0) > from),
     )

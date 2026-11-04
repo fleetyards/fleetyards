@@ -69,6 +69,7 @@ class HangarPlanUpgradeStep < ApplicationRecord
   private def store_upgrade_exists
     errors.add(:from_model_id, :not_upgradable) if origin_model.present? && !origin_model.ccu_out_of?
     errors.add(:to_model_id, :not_upgradable) if target_model.present? && !target_model.ccu_into?
+    errors.add(:to_model_id, :not_upgradable) if target_model&.ccu_into? && origin_model.present? && !target_model.ccu_into_from?(origin_model)
   end
 
   private def upgrade_source

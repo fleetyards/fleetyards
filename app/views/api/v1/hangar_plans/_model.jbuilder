@@ -11,6 +11,7 @@ json.pledge_price model.pledge_price&.to_f
 json.on_sale model.on_sale || false
 json.ccu_into model.ccu_target_status
 json.ccu_out_of model.ccu_source_status
+json.ccu_into_from model.ccu_into_from_ids
 json.crew model.crew
 json.cargo model.cargo&.to_f
 

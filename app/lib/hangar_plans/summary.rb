@@ -215,7 +215,7 @@ module HangarPlans
       kept = plan.vehicle_marks.where(mark: "keep").pluck(:vehicle_id)
       free_ships.reject { |free| kept.include?(free.id) }.select do |free|
         price = free.model.pledge_price
-        price && price < target.pledge_price && free.model.ccu_out_of?
+        price && price < target.pledge_price && free.model.ccu_out_of? && target.ccu_into_from?(free.model)
       end.max_by { |free| free.model.pledge_price }
     end
 

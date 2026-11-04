@@ -1,0 +1,34 @@
+import { describe, expect, it } from "vitest";
+import {
+  HangarPlanCcuIntoEnum,
+  HangarPlanCcuOutOfEnum,
+  type HangarPlanModel,
+} from "@/services/fyApi";
+import { reaches } from "./reach";
+
+const model = (
+  name: string,
+  pledgePrice: number,
+  ccuIntoFrom?: string[],
+): HangarPlanModel => ({
+  id: name,
+  name,
+  slug: name.toLowerCase(),
+  onSale: false,
+  pledgePrice,
+  ccuInto: HangarPlanCcuIntoEnum.SALES_ONLY,
+  ccuOutOf: HangarPlanCcuOutOfEnum.KNOWN,
+  ccuIntoFrom,
+});
+
+describe("Hangar/Planner/reach", () => {
+  it("reaches a ship only its variants upgrade into from those alone", () => {
+    const kraken = model("Kraken", 1650);
+    const hull = model("Hull C", 500);
+    const privateer = model("Kraken Privateer", 2000, ["Kraken"]);
+
+    expect(reaches(kraken, privateer)).toBe(true);
+    expect(reaches(hull, privateer)).toBe(false);
+    expect(reaches(hull, model("Polaris", 975))).toBe(true);
+  });
+});

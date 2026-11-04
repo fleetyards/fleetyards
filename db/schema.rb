@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_04_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_04_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2534,6 +2534,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_04_100000) do
     t.datetime "ccu_target_seen_at"
     t.boolean "ccu_on_sale", default: false, null: false
     t.string "ccu_override"
+    t.uuid "ccu_target_source_ids", array: true
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["foci"], name: "index_models_on_foci", using: :gin

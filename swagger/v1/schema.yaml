@@ -37202,6 +37202,16 @@ components:
           "$ref": "#/components/schemas/HangarPlanCcuIntoEnum"
         ccuOutOf:
           "$ref": "#/components/schemas/HangarPlanCcuOutOfEnum"
+        ccuIntoFrom:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: The only ships an upgrade leads into this one from, where every
+            upgrade seen into it starts from a variant of its own hull; null when
+            any ship can
         crew:
           type:
           - integer

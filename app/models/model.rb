@@ -137,6 +137,17 @@ class Model < ApplicationRecord
 
   def ccu_into? = ccu_target_status != "none"
 
+  # Some upgrades exist only between variants of one hull, like the Kraken to
+  # the Kraken Privateer. Where every upgrade seen into a ship is one of those,
+  # only the ships they came from lead into it; nil means any ship does.
+  def ccu_into_from_ids
+    ccu_target_source_ids.presence unless ccu_override == "allowed"
+  end
+
+  def ccu_into_from?(model)
+    ccu_into? && (ccu_into_from_ids.nil? || ccu_into_from_ids.include?(model.id))
+  end
+
   # The ships a hangar plan can get: sold on the store at a price, or earned
   # in game; else one the user already holds or can buy back.
   def self.plannable_for(user)
