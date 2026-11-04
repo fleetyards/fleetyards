@@ -1,5 +1,7 @@
 import { flushPromises } from "@vue/test-utils";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { defineRule } from "vee-validate";
+import { required } from "@vee-validate/rules";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   HangarPlanSlotStateEnum,
@@ -41,6 +43,10 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 describe("Hangar/Planner/SlotModal", () => {
+  beforeAll(() => {
+    defineRule("required", required);
+  });
+
   it("adds a slot by its name alone, numbered when left blank", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan" },
