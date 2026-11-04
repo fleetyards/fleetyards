@@ -52,6 +52,7 @@ describe("sortEntries", () => {
     const folding = {
       id: "folding",
       name: "folding",
+      media: { extendedPortView: { url: "folded.png" } },
       metrics: { fleetchartOffsetLength: 5, extendedLength: 100 },
     } as unknown as FleetchartEntry;
 

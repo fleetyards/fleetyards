@@ -101,6 +101,26 @@ export const viewFor = (
   options: FleetchartViewOptions = {},
 ) => resolveView(entry, VIEW_BY_VIEWPOINT[viewpoint], options);
 
+// Whether a ship has any picture of its own for a state.
+export const hasStateViews = (
+  entry: FleetchartEntry,
+  state: FleetchartShipStates,
+) => {
+  if (state === FleetchartShipStates.FLIGHT) {
+    return true;
+  }
+
+  const media = (modelOf(entry).media ?? {}) as MediaLookup;
+
+  return Object.values(VIEW_BY_VIEWPOINT).some((view) => {
+    const name = `${state}${view[0].toUpperCase()}${view.slice(1)}`;
+
+    return media[name]?.url || media[`${name}Colored`]?.url;
+  });
+};
+
+// A ship with no picture of a state is drawn from its flight picture, which has to
+// keep its flight size to stay at the chart's scale.
 export const metricsOf = (
   entry: FleetchartEntry,
   state: FleetchartShipStates = FleetchartShipStates.FLIGHT,
@@ -110,6 +130,10 @@ export const metricsOf = (
     length: metrics.fleetchartOffsetLength || 0,
     beam: metrics.fleetchartOffsetBeam || 0,
   };
+
+  if (!hasStateViews(entry, state)) {
+    return flight;
+  }
 
   if (state === FleetchartShipStates.EXTENDED) {
     return {
@@ -137,17 +161,6 @@ export const metricsOf = (
 
   return flight;
 };
-
-// Whether a ship has any picture of its own for a state.
-export const hasStateViews = (
-  entry: FleetchartEntry,
-  state: FleetchartShipStates,
-) =>
-  state === FleetchartShipStates.FLIGHT ||
-  Object.entries(modelOf(entry).media ?? {}).some(
-    ([name, file]) =>
-      name.startsWith(state) && !!(file as MediaFile | null)?.url,
-  );
 
 // Seen from ahead or behind, a ship's width on screen is its beam, not its length.
 const BEAM_VIEWS: FleetchartViewpoints[] = [

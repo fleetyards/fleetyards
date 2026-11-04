@@ -83,6 +83,25 @@ describe("shipGeometry", () => {
     );
   });
 
+  it("keeps a ship's flight size when it has no picture of the state", () => {
+    const entry = model({ portView: view("port") }, { landedLength: 500 });
+
+    expect(
+      shipGeometry(entry, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.LANDED,
+      })?.length,
+    ).toBe(100);
+  });
+
+  it("does not count a holo as a picture of a state", () => {
+    const entry = model({
+      portView: view("port"),
+      landedHolo: { url: "landed.glb" },
+    });
+
+    expect(hasStateViews(entry, FleetchartShipStates.LANDED)).toBe(false);
+  });
+
   it("falls back to the flight view for a state a ship has no picture of", () => {
     const entry = model({ portView: view("port") });
 
@@ -108,7 +127,7 @@ describe("shipGeometry", () => {
 
   it("uses the extended length only in the extended state", () => {
     const entry = model(
-      { portView: view("port") },
+      { portView: view("port"), extendedPortView: view("extended") },
       { extendedFleetchartOffsetLength: 200 },
     );
 
