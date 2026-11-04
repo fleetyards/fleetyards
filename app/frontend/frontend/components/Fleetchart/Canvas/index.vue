@@ -16,6 +16,7 @@ import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index
 import FleetchartCanvasItem from "./Item/index.vue";
 import {
   PIXELS_PER_METRE,
+  modelOf,
   shipGeometry,
   shipLabelOf,
   type FleetchartEntry,
@@ -53,6 +54,7 @@ const SCREEN_MARGIN = 120;
 const MIN_ZOOM = 0.2;
 const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
+const LABEL_LINE_HEIGHT = 1.5;
 const LABEL_MARGIN = 20;
 
 const FIXED_SCREEN_HEIGHT_FACTORS: Record<
@@ -109,28 +111,53 @@ const gridEnabled = ref(false);
 
 const transform = shallowRef<Transform>({ x: 0, y: 0, scale: 1 });
 
-let labelContext: CanvasRenderingContext2D | null | undefined;
+const fontsLoaded = ref(false);
 
-const labelWidth = (entry: FleetchartEntry) => {
-  labelContext ??= document.createElement("canvas").getContext("2d");
+// Rebuilt once the webfont is in, as anything measured before used the fallback.
+const labelMeasure = computed(() => {
+  void fontsLoaded.value;
 
-  if (!labelContext) {
-    return 0;
-  }
-
+  const context = document.createElement("canvas").getContext("2d");
   const fontSize =
     parseFloat(getComputedStyle(document.body).fontSize) * LABEL_FONT_SCALE;
+  const widths = new Map<string, number>();
 
-  labelContext.font = `${fontSize}px Orbitron, sans-serif`;
+  if (context) {
+    context.font = `${fontSize}px Orbitron, sans-serif`;
+  }
+
+  return {
+    lineHeight: fontSize * LABEL_LINE_HEIGHT,
+    width: (text: string) => {
+      if (!widths.has(text)) {
+        widths.set(text, context?.measureText(text).width ?? 0);
+      }
+
+      return widths.get(text) as number;
+    },
+  };
+});
+
+const labelRoom = (entry: FleetchartEntry) => {
+  if (!showLabels.value) {
+    return { gutter: 0, minHeight: 0 };
+  }
 
   const { title, subtitle } = shipLabelOf(entry);
-  const context = labelContext;
+  const lines = [
+    title,
+    subtitle,
+    showStatus.value
+      ? t(`labels.model.productionStatus.${modelOf(entry).productionStatus}`)
+      : undefined,
+  ].filter(Boolean) as string[];
+  const { width, lineHeight } = labelMeasure.value;
 
-  return Math.max(
-    ...[title, subtitle].map((line) =>
-      line ? context.measureText(line).width : 0,
-    ),
-  );
+  return {
+    gutter:
+      (Math.max(...lines.map(width)) + LABEL_MARGIN) / PIXELS_PER_METRE,
+    minHeight: (lines.length * lineHeight) / PIXELS_PER_METRE,
+  };
 };
 
 const ships = computed(() =>
@@ -151,9 +178,7 @@ const ships = computed(() =>
         geometry,
         width: geometry.length,
         height: geometry.height,
-        gutter: showLabels.value
-          ? (labelWidth(entry) + LABEL_MARGIN) / PIXELS_PER_METRE
-          : 0,
+        ...labelRoom(entry),
       },
     ];
   }),
@@ -338,6 +363,10 @@ const toggleStatus = () => {
 let stopStatusListener: (() => void) | undefined;
 
 onMounted(() => {
+  void document.fonts?.ready.then(() => {
+    fontsLoaded.value = true;
+  });
+
   stopStatusListener = comlink.on("fleetchart-toggle-status", toggleStatus);
 
   setupPanzoom();

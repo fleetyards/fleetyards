@@ -5,8 +5,9 @@ export interface FleetchartLayoutShip {
   id: string;
   width: number;
   height: number;
-  // Room for a label to the left of the ship.
+  // Room for a label to the left of the ship, and the height that label needs.
   gutter?: number;
+  minHeight?: number;
 }
 
 export interface FleetchartPosition {
@@ -40,7 +41,8 @@ const FACTOR_STEP = 0.25;
 const boxWidth = (ship: FleetchartLayoutShip) =>
   ship.width + (ship.gutter || 0) + SHIP_PADDING;
 
-const boxHeight = (ship: FleetchartLayoutShip) => ship.height + SHIP_PADDING;
+const boxHeight = (ship: FleetchartLayoutShip) =>
+  Math.max(ship.height, ship.minHeight || 0) + SHIP_PADDING;
 
 const placeInBox = (
   ship: FleetchartLayoutShip,
@@ -60,7 +62,8 @@ const splitColumns = (
 
   ships.forEach((ship) => {
     const fits =
-      columns.length > 0 && columnHeight + ship.height <= maxColumnHeight;
+      columns.length > 0 &&
+      columnHeight + boxHeight(ship) - SHIP_PADDING <= maxColumnHeight;
 
     if (!fits) {
       columns.push([]);

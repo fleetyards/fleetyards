@@ -41,6 +41,18 @@ describe("arrangeColumns", () => {
     expect(positions.b.x).toBeGreaterThan(positions.a.x);
   });
 
+  it("spaces small ships far enough apart for their labels", () => {
+    const positions = arrangeColumns(
+      [
+        { ...ship("a", 100, 5), minHeight: 20 },
+        { ...ship("b", 100, 5), minHeight: 20 },
+      ],
+      500,
+    );
+
+    expect(positions.a.y - positions.b.y).toBe(25);
+  });
+
   it("widens a column for a label so it cannot reach the next column", () => {
     const without = arrangeColumns([ship("a"), ship("b")], 1);
     const withLabel = arrangeColumns([ship("a"), ship("b", 100, 20, 60)], 1);
