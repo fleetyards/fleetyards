@@ -25,4 +25,6 @@ activate_control_app
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
+plugin :appsignal
+
 preload_app!
