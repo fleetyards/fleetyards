@@ -5,6 +5,7 @@ import {
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  groupHeadings,
   withRowWidth,
   type FleetchartLayoutShip,
 } from "./layouts";
@@ -125,6 +126,89 @@ describe("boundsOf", () => {
       width: 0,
       height: 0,
     });
+  });
+});
+
+describe("groups", () => {
+  const grouped = (id: string, group: string) => ({ ...ship(id), group });
+
+  it("starts a new column for a new group, even with room left", () => {
+    const positions = arrangeColumns(
+      [grouped("a", "one"), grouped("b", "one"), grouped("c", "two")],
+      500,
+    );
+
+    expect(positions.a.x).toBe(positions.b.x);
+    expect(positions.c.x).toBeGreaterThan(positions.a.x);
+  });
+
+  it("starts a new row for a new group, even with room left", () => {
+    const positions = arrangeClassic(
+      [grouped("a", "one"), grouped("b", "one"), grouped("c", "two")],
+      5000,
+    );
+
+    expect(positions.a.y).toBe(positions.b.y);
+    expect(positions.c.y).toBeGreaterThan(positions.a.y);
+  });
+
+  it("widens a column to fit its heading", () => {
+    const positions = arrangeColumns(
+      [{ ...grouped("a", "one"), headingWidth: 400 }, grouped("b", "two")],
+      500,
+    );
+
+    expect(positions.b.x - 50).toBeGreaterThan(400);
+  });
+
+  it("keeps a wide heading inside its column", () => {
+    const ships = [
+      { ...grouped("a", "one"), headingWidth: 400 },
+      grouped("b", "two"),
+    ];
+    const positions = arrangeColumns(ships, 500);
+    const [heading] = groupHeadings(ships, positions);
+
+    expect(heading.x + 400).toBeLessThanOrEqual(positions.b.x - 50);
+  });
+
+  it("places one heading per group, clear above its ships", () => {
+    const ships = [
+      grouped("a", "one"),
+      grouped("b", "one"),
+      grouped("c", "two"),
+    ];
+    const positions = arrangeClassic(ships, 5000);
+    const headings = groupHeadings(ships, positions);
+
+    expect(headings.map((heading) => heading.title)).toEqual(["one", "two"]);
+    expect(headings[1].y).toBeLessThan(positions.c.y - 10);
+    expect(headings[1].y).toBeGreaterThan(positions.a.y + 10);
+  });
+
+  it("has no headings without groups", () => {
+    expect(groupHeadings([ship("a")], { a: { x: 0, y: 0 } })).toEqual([]);
+  });
+});
+
+describe("spacing", () => {
+  it("moves ships apart with more padding", () => {
+    const tight = arrangeClassic(
+      [
+        { ...ship("a"), padding: 2 },
+        { ...ship("b"), padding: 2 },
+      ],
+      5000,
+    );
+    const wide = arrangeClassic(
+      [
+        { ...ship("a"), padding: 20 },
+        { ...ship("b"), padding: 20 },
+      ],
+      5000,
+    );
+
+    expect(wide.b.x - wide.a.x).toBeGreaterThan(tight.b.x - tight.a.x);
   });
 });
 

@@ -8,6 +8,17 @@ export interface FleetchartLayoutShip {
   // Room for a label to the left of the ship, and the height that label needs.
   gutter?: number;
   minHeight?: number;
+  // Ships of one group stay together, under a heading this wide.
+  group?: string;
+  headingWidth?: number;
+  // Overrides the spacing around this ship.
+  padding?: number;
+}
+
+export interface FleetchartGroupHeading {
+  title: string;
+  x: number;
+  y: number;
 }
 
 export interface FleetchartPosition {
@@ -31,25 +42,36 @@ export interface FleetchartScreen {
 
 // At 4 pixels per metre these are the chart's established 20px padding around a
 // ship and 30px between columns.
-const SHIP_PADDING = 5;
-const COLUMN_GAP = 7.5;
+export const SHIP_PADDING = 5;
+const COLUMN_GAP_RATIO = 1.5;
+const HEADING_ROOM = 15;
 
 const MIN_FACTOR = 1;
 const MAX_FACTOR = 20;
 const FACTOR_STEP = 0.25;
 
+const paddingOf = (ship: FleetchartLayoutShip) => ship.padding ?? SHIP_PADDING;
+
 const boxWidth = (ship: FleetchartLayoutShip) =>
-  ship.width + (ship.gutter || 0) + SHIP_PADDING;
+  ship.width + (ship.gutter || 0) + paddingOf(ship);
 
 const boxHeight = (ship: FleetchartLayoutShip) =>
-  Math.max(ship.height, ship.minHeight || 0) + SHIP_PADDING;
+  Math.max(ship.height, ship.minHeight || 0) + paddingOf(ship);
+
+const columnGapOf = (ships: FleetchartLayoutShip[]) =>
+  (ships[0]?.padding ?? SHIP_PADDING) * COLUMN_GAP_RATIO;
+
+const columnWidthOf = (column: FleetchartLayoutShip[]) =>
+  Math.max(
+    ...column.map((ship) => Math.max(boxWidth(ship), ship.headingWidth || 0)),
+  );
 
 const placeInBox = (
   ship: FleetchartLayoutShip,
   boxRight: number,
   centreY: number,
 ): FleetchartPosition => ({
-  x: boxRight - SHIP_PADDING / 2 - ship.width / 2,
+  x: boxRight - paddingOf(ship) / 2 - ship.width / 2,
   y: centreY,
 });
 
@@ -61,9 +83,11 @@ const splitColumns = (
   let columnHeight = 0;
 
   ships.forEach((ship) => {
+    const column = columns[columns.length - 1];
     const fits =
-      columns.length > 0 &&
-      columnHeight + boxHeight(ship) - SHIP_PADDING <= maxColumnHeight;
+      !!column &&
+      column[0].group === ship.group &&
+      columnHeight + boxHeight(ship) - paddingOf(ship) <= maxColumnHeight;
 
     if (!fits) {
       columns.push([]);
@@ -78,9 +102,7 @@ const splitColumns = (
 };
 
 const columnsSize = (columns: FleetchartLayoutShip[][]) => {
-  const widths = columns.map((column) =>
-    Math.max(...column.map((ship) => boxWidth(ship))),
-  );
+  const widths = columns.map(columnWidthOf);
   const heights = columns.map((column) =>
     column.reduce((sum, ship) => sum + boxHeight(ship), 0),
   );
@@ -88,7 +110,7 @@ const columnsSize = (columns: FleetchartLayoutShip[][]) => {
   return {
     width:
       widths.reduce((sum, width) => sum + width, 0) +
-      COLUMN_GAP * Math.max(columns.length - 1, 0),
+      columnGapOf(columns[0] ?? []) * Math.max(columns.length - 1, 0),
     height: Math.max(0, ...heights),
   };
 };
@@ -134,11 +156,12 @@ export const arrangeColumns = (
   maxColumnHeight: number,
 ): FleetchartPositions => {
   const positions: FleetchartPositions = {};
+  const headingRoom = ships.some((ship) => ship.group) ? HEADING_ROOM : 0;
   let columnLeft = 0;
 
   splitColumns(ships, maxColumnHeight).forEach((column) => {
-    const columnWidth = Math.max(...column.map((ship) => boxWidth(ship)));
-    let top = 0;
+    const columnWidth = columnWidthOf(column);
+    let top = headingRoom;
 
     [...column].reverse().forEach((ship) => {
       positions[ship.id] = placeInBox(
@@ -150,7 +173,7 @@ export const arrangeColumns = (
       top += boxHeight(ship);
     });
 
-    columnLeft += columnWidth + COLUMN_GAP;
+    columnLeft += columnWidth + columnGapOf(ships);
   });
 
   return positions;
@@ -167,7 +190,13 @@ export const arrangeClassic = (
   let rowWidth = 0;
 
   ships.forEach((ship) => {
-    if (!rows.length || rowWidth + boxWidth(ship) > maxRowWidth) {
+    const row = rows[rows.length - 1];
+
+    if (
+      !row ||
+      row[0].group !== ship.group ||
+      rowWidth + boxWidth(ship) > maxRowWidth
+    ) {
       rows.push([]);
       rowWidth = 0;
     }
@@ -179,7 +208,11 @@ export const arrangeClassic = (
   const positions: FleetchartPositions = {};
   let top = 0;
 
-  rows.forEach((row) => {
+  rows.forEach((row, index) => {
+    if (row[0].group && row[0].group !== rows[index - 1]?.[0].group) {
+      top += HEADING_ROOM;
+    }
+
     const width = row.reduce((sum, ship) => sum + boxWidth(ship), 0);
     const height = Math.max(...row.map((ship) => boxHeight(ship)));
     let left = Math.max((maxRowWidth - width) / 2, 0);
@@ -211,9 +244,9 @@ export const boundsOf = (
     positions[ship.id].x -
     ship.width / 2 -
     (ship.gutter || 0) -
-    SHIP_PADDING / 2;
+    paddingOf(ship) / 2;
   const right = (ship: FleetchartLayoutShip) =>
-    positions[ship.id].x + ship.width / 2 + SHIP_PADDING / 2;
+    positions[ship.id].x + ship.width / 2 + paddingOf(ship) / 2;
   const top = (ship: FleetchartLayoutShip) =>
     positions[ship.id].y - boxHeight(ship) / 2;
   const bottom = (ship: FleetchartLayoutShip) =>
@@ -228,6 +261,33 @@ export const boundsOf = (
     width: Math.max(...placed.map(right)) - minX,
     height: Math.max(...placed.map(bottom)) - minY,
   };
+};
+
+// One heading per group, above the top left of the space its ships take.
+export const groupHeadings = (
+  ships: FleetchartLayoutShip[],
+  positions: FleetchartPositions,
+): FleetchartGroupHeading[] => {
+  const groups = new Map<string, FleetchartLayoutShip[]>();
+
+  ships.forEach((ship) => {
+    if (ship.group && positions[ship.id]) {
+      groups.set(ship.group, [...(groups.get(ship.group) ?? []), ship]);
+    }
+  });
+
+  return [...groups].map(([title, members]) => {
+    const { minX, minY, width } = boundsOf(members, positions);
+    const headingWidth = members[0].headingWidth || 0;
+
+    return {
+      title,
+      // A heading wider than its ships ends where they do, as they sit at the
+      // right of their column and it would otherwise reach into the next one.
+      x: Math.min(minX, minX + width - headingWidth),
+      y: minY - HEADING_ROOM / 2,
+    };
+  });
 };
 
 // Widens the bounds to a full row, so rows stay centred on the screen rather than
