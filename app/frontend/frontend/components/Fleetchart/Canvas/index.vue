@@ -27,6 +27,7 @@ import {
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  withRowWidth,
 } from "@/frontend/components/Fleetchart/layouts";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -197,16 +198,23 @@ const screenHeightFactor = computed(() => {
   return autoScreenHeightFactor(ships.value, screen, columnHeightFor);
 });
 
+const classicRowWidth = computed(
+  () => (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
+);
+
 const positions = computed(() =>
   layout.value === FleetchartLayouts.CLASSIC
-    ? arrangeClassic(
-        ships.value,
-        (screen.width - SCREEN_MARGIN) / PIXELS_PER_METRE,
-      )
+    ? arrangeClassic(ships.value, classicRowWidth.value)
     : arrangeColumns(ships.value, columnHeightFor(screenHeightFactor.value)),
 );
 
-const bounds = computed(() => boundsOf(ships.value, positions.value));
+const bounds = computed(() => {
+  const covered = boundsOf(ships.value, positions.value);
+
+  return layout.value === FleetchartLayouts.CLASSIC
+    ? withRowWidth(covered, classicRowWidth.value)
+    : covered;
+});
 
 const sceneX = (metres: number) =>
   (metres - bounds.value.minX) * PIXELS_PER_METRE + SCENE_PADDING;

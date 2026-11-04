@@ -5,6 +5,7 @@ import {
   autoScreenHeightFactor,
   boundsOf,
   gridCellFor,
+  withRowWidth,
   type FleetchartLayoutShip,
 } from "./layouts";
 
@@ -124,6 +125,20 @@ describe("boundsOf", () => {
       width: 0,
       height: 0,
     });
+  });
+});
+
+describe("withRowWidth", () => {
+  it("keeps the space beside a centred row", () => {
+    expect(
+      withRowWidth({ minX: 100, minY: 0, width: 50, height: 10 }, 400),
+    ).toEqual({ minX: 0, minY: 0, width: 400, height: 10 });
+  });
+
+  it("does not cut off a row wider than the screen", () => {
+    expect(
+      withRowWidth({ minX: 0, minY: 0, width: 900, height: 10 }, 400).width,
+    ).toBe(900);
   });
 });
 

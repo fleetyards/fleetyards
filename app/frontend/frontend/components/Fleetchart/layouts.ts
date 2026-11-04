@@ -230,6 +230,21 @@ export const boundsOf = (
   };
 };
 
+// Widens the bounds to a full row, so rows stay centred on the screen rather than
+// only on each other when the scene is drawn from its bounds.
+export const withRowWidth = (
+  bounds: FleetchartBounds,
+  rowWidth: number,
+): FleetchartBounds => {
+  const minX = Math.min(bounds.minX, 0);
+
+  return {
+    ...bounds,
+    minX,
+    width: Math.max(bounds.minX + bounds.width, rowWidth) - minX,
+  };
+};
+
 const GRID_CELLS = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000];
 
 // The smallest round cell, in metres, that stays readable at this zoom.
