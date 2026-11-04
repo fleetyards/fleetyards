@@ -1,4 +1,5 @@
 import type {
+  FleetchartViewMedia,
   MediaFile,
   Model,
   ModelModulePackage,
@@ -166,7 +167,7 @@ export const metricsOf = (
 
 // A state without a picture of this view borrows the flight one, which only stays at
 // the chart's scale at the flight size.
-const metricsOfPicture = (
+const stateOfPicture = (
   entry: FleetchartEntry,
   view: ViewName,
   picture: MediaFile,
@@ -175,18 +176,14 @@ const metricsOfPicture = (
   const media = (modelOf(entry).media ?? {}) as MediaLookup;
   const name = `${state}${view[0].toUpperCase()}${view.slice(1)}`;
 
-  return metricsOf(
-    entry,
-    picture === media[name] || picture === media[`${name}Colored`]
-      ? state
-      : FleetchartShipStates.FLIGHT,
-  );
+  return picture === media[name] || picture === media[`${name}Colored`]
+    ? state
+    : FleetchartShipStates.FLIGHT;
 };
 
-// How far the angled cameras are turned, fitted to the pictures themselves. A picture
-// is as wide as the ship's outline from above seen at that angle. Taken as an ellipse
-// of length by beam, as a ship does not fill the corners of a box unless its wings are
-// spread, so a box would draw folded wings too large.
+// How far the angled cameras are turned, for a picture not yet measured from the
+// ship's outline. Taken as an ellipse of length by beam, as a ship does not fill the
+// corners of a box unless its wings are spread.
 const ANGLED_VIEW_SHARES: Partial<
   Record<ViewName, { length: number; beam: number }>
 > = {
@@ -194,13 +191,32 @@ const ANGLED_VIEW_SHARES: Partial<
   angledRearView: { length: 0.623, beam: 0.783 },
 };
 
+const MEASURED_EXTENTS: Partial<Record<ViewName, "angled" | "angledRear">> = {
+  angledView: "angled",
+  angledRearView: "angledRear",
+};
+
 // Seen from ahead or behind a picture is as wide as the ship's beam, and from the side
 // or above as wide as its length, however tall the picture is.
 const pictureWidth = (
+  entry: FleetchartEntry,
   view: ViewName,
-  { length, beam }: { length: number; beam: number },
+  picture: MediaFile,
+  state: FleetchartShipStates,
 ) => {
+  const pictureState = stateOfPicture(entry, view, picture, state);
+  const { length, beam } = metricsOf(entry, pictureState);
+  const measured = MEASURED_EXTENTS[view];
+  const extent =
+    measured &&
+    (modelOf(entry).media as FleetchartViewMedia | undefined)?.angledExtents?.[
+      pictureState
+    ]?.[measured];
   const shares = ANGLED_VIEW_SHARES[view];
+
+  if (extent) {
+    return length * extent;
+  }
 
   if ((view === "frontView" || view === "rearView") && beam) {
     return beam;
@@ -225,10 +241,7 @@ export const shipGeometry = (
       return undefined;
     }
 
-    const width = pictureWidth(
-      view,
-      metricsOfPicture(entry, view, picture, state),
-    );
+    const width = pictureWidth(entry, view, picture, state);
 
     return { width, height: (width * picture.height) / picture.width };
   };

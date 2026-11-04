@@ -245,6 +245,45 @@ describe("shipGeometry", () => {
       ).toBeCloseTo(42.2, 1);
     });
 
+    it("uses an angled picture's measured width, in its own state", () => {
+      const measured = {
+        metrics: {
+          fleetchartOffsetLength: 26.99,
+          fleetchartOffsetBeam: 49.48,
+          landedLength: 30,
+          landedBeam: 21.14,
+        },
+        media: {
+          angledView: picture(3840, 2162),
+          landedAngledView: picture(3825, 3840),
+          angledRearView: picture(3840, 2162),
+          portView: picture(3840, 1853),
+          angledExtents: {
+            flight: { angled: 1.5, angledRear: 1.6 },
+            landed: { angled: 0.8, angledRear: 0.9 },
+          },
+        },
+      } as unknown as FleetchartEntry;
+
+      expect(
+        shipGeometry(measured, FleetchartViewpoints.ANGLED)?.imageWidth,
+      ).toBeCloseTo(40.49, 1);
+      expect(
+        shipGeometry(measured, FleetchartViewpoints.ANGLED_REAR)?.imageWidth,
+      ).toBeCloseTo(43.18, 1);
+      expect(
+        shipGeometry(measured, FleetchartViewpoints.ANGLED, {
+          state: FleetchartShipStates.LANDED,
+        })?.imageWidth,
+      ).toBeCloseTo(24, 1);
+      // Landed has no rear picture of its own, so it borrows flight's picture and size.
+      expect(
+        shipGeometry(measured, FleetchartViewpoints.ANGLED_REAR, {
+          state: FleetchartShipStates.LANDED,
+        })?.imageWidth,
+      ).toBeCloseTo(43.18, 1);
+    });
+
     it("keeps a borrowed flight picture at its flight size", () => {
       const scorpius = {
         metrics: {
