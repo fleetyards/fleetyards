@@ -6,7 +6,7 @@ import type { App } from "vue";
 let appsignal: Appsignal | null = null;
 
 // A fragment, as three prefixes the message and words it per failure.
-const IGNORED_MESSAGE_FRAGMENTS = ["Error creating WebGL context"];
+const IGNORED_MESSAGES = [/Error creating WebGL context/];
 
 function shouldIgnore(error: unknown): boolean {
   if (axios.isCancel(error)) return true;
@@ -17,12 +17,7 @@ function shouldIgnore(error: unknown): boolean {
     }
   }
 
-  return (
-    error instanceof Error &&
-    IGNORED_MESSAGE_FRAGMENTS.some((fragment) =>
-      error.message.includes(fragment),
-    )
-  );
+  return false;
 }
 
 export function setupAppsignal(app: App<Element>) {
@@ -30,6 +25,7 @@ export function setupAppsignal(app: App<Element>) {
     appsignal = new Appsignal({
       key: window.APPSIGNAL_KEY,
       revision: window.GIT_REVISION,
+      ignoreErrors: IGNORED_MESSAGES,
     });
 
     const defaultHandler = errorHandler(appsignal, app);

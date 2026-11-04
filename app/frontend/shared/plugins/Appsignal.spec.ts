@@ -1,44 +1,77 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createApp } from "vue";
-import { setupAppsignal } from "./Appsignal";
+import type Appsignal from "@appsignal/javascript";
+import { reportError, setupAppsignal } from "./Appsignal";
 
-const defaultHandler = vi.hoisted(() => vi.fn());
+const client = vi.hoisted(() => ({ current: undefined as unknown }));
 
-vi.mock("@appsignal/javascript", () => ({
-  default: class {
-    sendError = vi.fn();
+vi.mock("@appsignal/vue", () => ({
+  errorHandler: (appsignal: Appsignal) => {
+    client.current = appsignal;
+
+    return (error: Error) => appsignal.sendError(error);
   },
 }));
 
-vi.mock("@appsignal/vue", () => ({
-  errorHandler: () => defaultHandler,
-}));
+const WEBGL_MESSAGES = [
+  "THREE.WebGLRenderer: Error creating WebGL context.",
+  "THREE.WebGLRenderer: Error creating WebGL context with your selected attributes.",
+];
 
-const handle = (error: Error) => {
+const setup = () => {
   const app = createApp({});
 
+  window.APPSIGNAL_KEY = "key";
   setupAppsignal(app);
-  app.config.errorHandler?.(error, null, "setup function");
+
+  const { _api: transport } = client.current as unknown as {
+    _api: { push: (span: unknown) => Promise<unknown> };
+  };
+  const push = vi.spyOn(transport, "push").mockResolvedValue(undefined);
+
+  return { app, push };
 };
 
 describe("setupAppsignal", () => {
   beforeEach(() => {
-    defaultHandler.mockClear();
-    window.APPSIGNAL_KEY = "key";
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
   });
 
-  it.each([
-    "THREE.WebGLRenderer: Error creating WebGL context.",
-    "THREE.WebGLRenderer: Error creating WebGL context with your selected attributes.",
-  ])("does not report %s", (message) => {
-    handle(new Error(message));
-
-    expect(defaultHandler).not.toHaveBeenCalled();
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it("reports any other error", () => {
-    handle(new Error("Cannot read properties of null"));
+  it.each(WEBGL_MESSAGES)("does not send %s", async (message) => {
+    const { app, push } = setup();
 
-    expect(defaultHandler).toHaveBeenCalledOnce();
+    app.config.errorHandler?.(new Error(message), null, "setup function");
+    await flushPromises();
+
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it.each(WEBGL_MESSAGES)(
+    "does not send %s from a handled error",
+    async (message) => {
+      const { push } = setup();
+
+      reportError(new Error(message), "SomeComponent");
+      await flushPromises();
+
+      expect(push).not.toHaveBeenCalled();
+    },
+  );
+
+  it("sends any other error", async () => {
+    const { app, push } = setup();
+
+    app.config.errorHandler?.(
+      new Error("Cannot read properties of null"),
+      null,
+      "setup function",
+    );
+    await flushPromises();
+
+    expect(push).toHaveBeenCalledOnce();
   });
 });
+
+const flushPromises = () => new Promise((resolve) => setTimeout(resolve));
