@@ -11,4 +11,16 @@ json.media do
       json.partial! "api/v1/shared/file", record: model, attr: view
     end
   end
+
+  json.angled_extents do
+    {flight: "", extended: "extended_", landed: "landed_"}.each do |state, prefix|
+      top_view = [model.public_send("#{prefix}top_view"), model.public_send("#{prefix}top_view_colored")].find(&:attached?)
+      next unless top_view&.metadata&.key?(:angled_extent)
+
+      json.set! state do
+        json.angled top_view.metadata[:angled_extent]
+        json.angled_rear top_view.metadata[:angled_rear_extent]
+      end
+    end
+  end
 end

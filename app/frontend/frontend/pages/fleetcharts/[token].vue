@@ -10,6 +10,7 @@ import Alert from "@/shared/components/base/Alert/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { catalogueEntriesFrom } from "@/frontend/components/Fleetchart/catalogueShips";
 import { placementsFromLayout } from "@/frontend/components/Fleetchart/savedLayouts";
 import { usePublicFleetchartLayout } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -36,6 +37,18 @@ const {
   error,
 } = usePublicFleetchartLayout(token, { query: { retry: false } });
 
+const ships = computed(() =>
+  layout.value
+    ? [
+        ...layout.value.vehicles,
+        ...catalogueEntriesFrom(
+          layout.value.cataloguePlacements,
+          layout.value.models,
+        ),
+      ]
+    : [],
+);
+
 // A failed refresh keeps the layout on screen; only a 404 means the link has gone.
 const isMissing = computed(
   () =>
@@ -60,7 +73,10 @@ watch(
     });
     fleetchartStore.updatePlacements({
       namespace: NAMESPACE,
-      placements: placementsFromLayout(shared.placements),
+      placements: placementsFromLayout(
+        shared.placements,
+        shared.cataloguePlacements,
+      ),
     });
 
     if (shared.colored !== fleetchartStore.coloredByDefault(NAMESPACE)) {
@@ -69,7 +85,7 @@ watch(
 
     // Only the first time: a background refetch must not bring back a chart that
     // is already on its way out.
-    if (shared.vehicles.length && !opened) {
+    if (ships.value.length && !opened) {
       opened = true;
       fleetchartStore.show(NAMESPACE);
     }
@@ -107,7 +123,7 @@ onBeforeUnmount(() => {
     <Loader :loading="isLoading" />
 
     <div
-      v-if="isMissing || layout?.vehicles.length === 0"
+      v-if="isMissing || (layout && !ships.length)"
       class="fleetchart-shared__notice"
     >
       <Alert variant="neutral" data-test="fleetchart-shared-notice">
@@ -124,9 +140,9 @@ onBeforeUnmount(() => {
 
     <FleetchartApp
       v-else-if="layout"
-      :items="layout.vehicles"
+      :items="ships"
       :namespace="NAMESPACE"
-      :arrange-items="layout.vehicles"
+      :arrange-items="ships"
       :arrange-loaded="true"
       download-name="shared-layout"
       read-only

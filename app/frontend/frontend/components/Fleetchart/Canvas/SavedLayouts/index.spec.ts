@@ -103,6 +103,35 @@ describe("FleetchartCanvasSavedLayouts", () => {
     Object.values(mutations).forEach((run) => run.mockReset());
   });
 
+  it("saves catalogue ships along with the owned ones", async () => {
+    const cataloguePlacements = [{ id: "tried", modelId: "m", x: 3, y: 4 }];
+    const wrapper = mount(SavedLayouts, {
+      props: { placements, cataloguePlacements, colored: false },
+      global: {
+        directives: { tooltip: {} },
+        stubs: {
+          Btn: { template: "<button><slot /></button>" },
+          BtnConfirm: true,
+          FormInputGroup: { template: "<div><slot /></div>" },
+          FormInput: {
+            props: ["modelValue"],
+            emits: ["update:modelValue"],
+            template:
+              "<input :value='modelValue' @input=\"$emit('update:modelValue', $event.target.value)\" />",
+          },
+          ShareBtn: true,
+        },
+      },
+    });
+
+    await wrapper.get("input").setValue("What if");
+    await wrapper.get("form").trigger("submit");
+
+    expect(mutations.create.mock.calls[0][0].data.cataloguePlacements).toEqual(
+      cataloguePlacements,
+    );
+  });
+
   it("saves the current arrangement under a new name", async () => {
     const wrapper = mountPanel();
 
@@ -111,7 +140,12 @@ describe("FleetchartCanvasSavedLayouts", () => {
     await flushPromises();
 
     expect(mutations.create.mock.calls[0][0]).toEqual({
-      data: { name: "New one", colored: false, placements },
+      data: {
+        name: "New one",
+        colored: false,
+        placements,
+        cataloguePlacements: [],
+      },
     });
 
     mutations.create.mock.calls[0][1].onSuccess();
@@ -139,7 +173,7 @@ describe("FleetchartCanvasSavedLayouts", () => {
 
     expect(mutations.update.mock.calls[0][0]).toEqual({
       id: "1",
-      data: { colored: false, placements },
+      data: { colored: false, placements, cataloguePlacements: [] },
     });
   });
 

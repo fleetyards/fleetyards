@@ -11,7 +11,8 @@ module V1
           properties: {
             name: {type: :string},
             colored: {type: :boolean},
-            placements: {type: :array, items: ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartPlacement}
+            placements: {type: :array, items: ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartPlacement},
+            cataloguePlacements: {type: :array, items: ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartCataloguePlacement}
           },
           additionalProperties: false
         })

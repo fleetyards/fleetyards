@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -43,6 +44,7 @@ const emit = defineEmits<{
   stack: [direction: "front" | "back"];
   group: [];
   ungroup: [];
+  remove: [];
 }>();
 
 const { t } = useI18n();
@@ -156,6 +158,17 @@ const { t } = useI18n();
         <i class="fa-duotone fa-object-ungroup" />
       </Btn>
     </BtnGroup>
+
+    <BtnConfirm
+      v-tooltip="t('labels.fleetchartApp.removeShip')"
+      :aria-label="t('labels.fleetchartApp.removeShip')"
+      tone="danger"
+      hide-question
+      data-test="fleetchart-remove-ship"
+      @confirm="emit('remove')"
+    >
+      <i class="fa-duotone fa-trash" />
+    </BtnConfirm>
   </div>
 </template>
 

@@ -10,6 +10,17 @@ module V1
         schema({
           type: :object,
           properties: {
+            angledExtents: {
+              type: :object,
+              description: "How wide each state's angled pictures are, as a share of the ship's length",
+              properties: %w[flight extended landed].index_with {
+                {
+                  type: :object,
+                  properties: {angled: {type: :number}, angledRear: {type: :number}},
+                  required: %w[angled angledRear]
+                }
+              }
+            },
             angledView: ::Shared::V1::Schemas::MediaFile,
             angledViewColored: ::Shared::V1::Schemas::MediaFile,
             frontView: ::Shared::V1::Schemas::MediaFile,

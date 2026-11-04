@@ -20,6 +20,7 @@ import {
 } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -297,6 +298,25 @@ const emit = defineEmits(["fleetchart-opened", "fleetchart-closed"]);
 
 const overlayStore = useOverlayStore();
 
+const comlink = useComlink();
+
+// The chart stacks above the modal layer, which stacks below its own dropdowns, so
+// the chart is the one to step back while a modal is open.
+const behindModal = ref(false);
+
+const stopListening = [
+  comlink.on("open-modal", () => {
+    behindModal.value = true;
+  }),
+  comlink.on("modal-closed", () => {
+    behindModal.value = false;
+  }),
+];
+
+onBeforeUnmount(() => {
+  stopListening.forEach((stop) => stop());
+});
+
 const open = async () => {
   isShow.value = true;
 
@@ -344,6 +364,7 @@ const closeFleetchart = async () => {
     :class="{
       in: isOpen,
       show: isShow,
+      'fleetchart-app--behind-modal': behindModal,
     }"
   >
     <div
@@ -446,7 +467,8 @@ const closeFleetchart = async () => {
         <slot v-if="!mobile && !arranging" name="pagination" />
       </div>
 
-      <template v-if="innerItems.length">
+      <!-- A free arrangement can start empty, as ships can be added to it. -->
+      <template v-if="innerItems.length || (layoutsEnabled && arranging)">
         <FleetchartCanvas
           v-if="layoutsEnabled"
           :items="innerItems"

@@ -18,7 +18,8 @@ module V1
               state: ::V1::Schemas::Enums::FleetchartShipStateEnum,
               order: {type: [:number, :null]},
               groupId: {type: [:string, :null]},
-              heading: {type: [:string, :null]}
+              heading: {type: [:string, :null]},
+              removed: {type: [:boolean, :null], description: "Kept out of the chart, where a ship without a placement would show as not placed yet"}
             },
             required: %w[vehicleId x y],
             additionalProperties: false

@@ -1,4 +1,5 @@
 import type {
+  FleetchartViewMedia,
   MediaFile,
   Model,
   ModelModulePackage,
@@ -164,11 +165,67 @@ export const metricsOf = (
   return flight;
 };
 
-// Seen from ahead or behind, a ship's width on screen is its beam, not its length.
-const BEAM_VIEWS: FleetchartViewpoints[] = [
-  FleetchartViewpoints.FRONT,
-  FleetchartViewpoints.REAR,
-];
+// A state without a picture of this view borrows the flight one, which only stays at
+// the chart's scale at the flight size.
+const stateOfPicture = (
+  entry: FleetchartEntry,
+  view: ViewName,
+  picture: MediaFile,
+  state: FleetchartShipStates,
+) => {
+  const media = (modelOf(entry).media ?? {}) as MediaLookup;
+  const name = `${state}${view[0].toUpperCase()}${view.slice(1)}`;
+
+  return picture === media[name] || picture === media[`${name}Colored`]
+    ? state
+    : FleetchartShipStates.FLIGHT;
+};
+
+// How far the angled cameras are turned, for a picture not yet measured from the
+// ship's outline. Taken as an ellipse of length by beam, as a ship does not fill the
+// corners of a box unless its wings are spread.
+const ANGLED_VIEW_SHARES: Partial<
+  Record<ViewName, { length: number; beam: number }>
+> = {
+  angledView: { length: 0.707, beam: 0.707 },
+  angledRearView: { length: 0.623, beam: 0.783 },
+};
+
+const MEASURED_EXTENTS: Partial<Record<ViewName, "angled" | "angledRear">> = {
+  angledView: "angled",
+  angledRearView: "angledRear",
+};
+
+// Seen from ahead or behind a picture is as wide as the ship's beam, and from the side
+// or above as wide as its length, however tall the picture is.
+const pictureWidth = (
+  entry: FleetchartEntry,
+  view: ViewName,
+  picture: MediaFile,
+  state: FleetchartShipStates,
+) => {
+  const pictureState = stateOfPicture(entry, view, picture, state);
+  const { length, beam } = metricsOf(entry, pictureState);
+  const measured = MEASURED_EXTENTS[view];
+  const extent =
+    measured &&
+    (modelOf(entry).media as FleetchartViewMedia | undefined)?.angledExtents?.[
+      pictureState
+    ]?.[measured];
+  const shares = ANGLED_VIEW_SHARES[view];
+
+  if (extent) {
+    return length * extent;
+  }
+
+  if ((view === "frontView" || view === "rearView") && beam) {
+    return beam;
+  }
+
+  return shares && beam
+    ? Math.hypot(shares.length * length, shares.beam * beam)
+    : length;
+};
 
 // A ship's box in metres, or undefined when there is nothing to draw it from:
 // the views have not arrived, or the ship has none.
@@ -177,35 +234,39 @@ export const shipGeometry = (
   viewpoint: FleetchartViewpoints,
   options: FleetchartViewOptions = {},
 ): FleetchartShipGeometry | undefined => {
-  const sizing = SIZING_VIEWS.map((view) =>
-    resolveView(entry, view, options),
-  ).filter((view) => view?.width && view?.height) as MediaFile[];
+  const state = options.state ?? FleetchartShipStates.FLIGHT;
+
+  const drawnSize = (view: ViewName, picture?: MediaFile) => {
+    if (!picture?.width || !picture?.height) {
+      return undefined;
+    }
+
+    const width = pictureWidth(entry, view, picture, state);
+
+    return { width, height: (width * picture.height) / picture.width };
+  };
+
+  const sizing = SIZING_VIEWS.flatMap((view) => {
+    const size = drawnSize(view, resolveView(entry, view, options));
+
+    return size ? [size] : [];
+  });
 
   if (!sizing.length) {
     return undefined;
   }
 
-  const { length, beam } = metricsOf(entry, options.state);
-  const maxWidth = Math.max(...sizing.map((view) => view.width || 0));
-  const maxHeight = Math.max(...sizing.map((view) => view.height || 0));
-  const height = (Math.max(length, beam) * maxHeight) / maxWidth;
-
-  const source = viewFor(entry, viewpoint, options);
-  const fitted =
-    source?.width && source?.height
-      ? Math.min((height * source.width) / source.height, length)
-      : 0;
-  const imageWidth =
-    fitted && beam && BEAM_VIEWS.includes(viewpoint) ? beam : fitted;
-
-  const imageHeight =
-    source?.width && source?.height
-      ? (imageWidth * source.height) / source.width
-      : 0;
+  const { length } = metricsOf(entry, state);
+  const drawn = drawnSize(
+    VIEW_BY_VIEWPOINT[viewpoint],
+    viewFor(entry, viewpoint, options),
+  );
+  const imageWidth = drawn?.width ?? 0;
+  const imageHeight = drawn?.height ?? 0;
 
   return {
     length,
-    height: Math.max(height, imageHeight),
+    height: Math.max(imageHeight, ...sizing.map(({ height }) => height)),
     imageWidth,
     imageHeight,
     frameWidth: Math.max(length, imageWidth),

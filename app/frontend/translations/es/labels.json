@@ -543,6 +543,7 @@
         "groupShips": "Agrupar naves",
         "ungroupShips": "Desagrupar naves",
         "undo": "Deshacer",
+        "clearArrangement": "Vaciar el gráfico",
         "resetArrangement": "Restablecer disposición",
         "state": "Estado",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "Extendido",
           "landed": "Aterrizado"
         },
+        "addShips": "Añadir naves",
+        "removeShip": "Quitar del gráfico",
         "savedLayouts": "Disposiciones guardadas",
         "layoutName": "Nombre de la disposición",
         "saveLayout": "Guardar como nueva",

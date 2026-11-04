@@ -543,6 +543,7 @@
         "groupShips": "Grouper les vaisseaux",
         "ungroupShips": "Dissocier les vaisseaux",
         "undo": "Annuler",
+        "clearArrangement": "Vider le graphique",
         "resetArrangement": "Réinitialiser la disposition",
         "state": "État",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "Déployé",
           "landed": "Posé"
         },
+        "addShips": "Ajouter des vaisseaux",
+        "removeShip": "Retirer du graphique",
         "savedLayouts": "Dispositions enregistrées",
         "layoutName": "Nom de la disposition",
         "saveLayout": "Enregistrer comme nouvelle",

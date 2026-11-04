@@ -543,6 +543,7 @@
         "groupShips": "Schiffe gruppieren",
         "ungroupShips": "Gruppe auflösen",
         "undo": "Rückgängig",
+        "clearArrangement": "Chart leeren",
         "resetArrangement": "Anordnung zurücksetzen",
         "state": "Zustand",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "Ausgefahren",
           "landed": "Gelandet"
         },
+        "addShips": "Schiffe hinzufügen",
+        "removeShip": "Aus dem Chart entfernen",
         "savedLayouts": "Gespeicherte Layouts",
         "layoutName": "Name des Layouts",
         "saveLayout": "Als neu speichern",

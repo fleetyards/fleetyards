@@ -23,19 +23,24 @@ import {
   useShareFleetchartLayout,
   useUnshareFleetchartLayout,
   useUpdateFleetchartLayout,
+  type FleetchartCataloguePlacement,
   type FleetchartLayout,
   type FleetchartPlacement,
 } from "@/services/fyApi";
 
 interface Props {
   placements: FleetchartPlacement[];
+  cataloguePlacements?: FleetchartCataloguePlacement[];
   colored: boolean;
   // False while the fleet is loading, when there is nothing yet that could be saved
   // and overwriting a layout would empty it.
   ready?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { ready: true });
+const props = withDefaults(defineProps<Props>(), {
+  cataloguePlacements: () => [],
+  ready: true,
+});
 
 const emit = defineEmits<{ open: [layout: FleetchartLayout] }>();
 
@@ -85,6 +90,7 @@ const save = () => {
         name: trimmed,
         colored: props.colored,
         placements: props.placements,
+        cataloguePlacements: props.cataloguePlacements,
       },
     },
     {
@@ -99,7 +105,11 @@ const overwrite = (layout: FleetchartLayout) => {
   updateLayout.mutate(
     {
       id: layout.id,
-      data: { colored: props.colored, placements: props.placements },
+      data: {
+        colored: props.colored,
+        placements: props.placements,
+        cataloguePlacements: props.cataloguePlacements,
+      },
     },
     {
       onSuccess: () => {

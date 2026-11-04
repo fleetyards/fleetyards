@@ -543,6 +543,7 @@
         "groupShips": "Group ships",
         "ungroupShips": "Ungroup ships",
         "undo": "Undo",
+        "clearArrangement": "Clear the chart",
         "resetArrangement": "Reset arrangement",
         "state": "State",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "Extended",
           "landed": "Landed"
         },
+        "addShips": "Add ships",
+        "removeShip": "Remove from the chart",
         "savedLayouts": "Saved layouts",
         "layoutName": "Layout name",
         "saveLayout": "Save as new",

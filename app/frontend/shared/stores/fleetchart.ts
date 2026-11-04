@@ -106,6 +106,10 @@ export interface FleetchartPlacement {
   groupId?: string;
   // The title of the group an arrangement put this ship in, as a layout shows it.
   heading?: string;
+  // Set on a ship from the catalogue, which is placed without being owned.
+  modelId?: string;
+  // Taken off the chart; without this it would come back as not placed yet.
+  removed?: boolean;
 }
 
 export type FleetchartPlacements = Record<string, FleetchartPlacement>;

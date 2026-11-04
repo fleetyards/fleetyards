@@ -543,6 +543,7 @@
         "groupShips": "組合艦船",
         "ungroupShips": "取消組合",
         "undo": "復原",
+        "clearArrangement": "清空圖表",
         "resetArrangement": "重設排列",
         "state": "狀態",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "展開",
           "landed": "著陸"
         },
+        "addShips": "新增艦船",
+        "removeShip": "從圖表中移除",
         "savedLayouts": "已儲存的版面配置",
         "layoutName": "版面配置名稱",
         "saveLayout": "另存為新配置",

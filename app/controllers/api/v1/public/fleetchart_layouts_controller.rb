@@ -31,6 +31,12 @@ module Api
           visible_ids = @vehicles.to_set(&:id)
 
           @placements = @fleetchart_layout.placements.select { |placement| visible_ids.include?(placement["vehicle_id"]) }
+
+          @models = @fleetchart_layout.shared_models.includes(Model.rendered_associations).to_a
+
+          listed_ids = @models.to_set(&:id)
+
+          @catalogue_placements = @fleetchart_layout.catalogue_placements.select { |placement| listed_ids.include?(placement["model_id"]) }
         end
       end
     end

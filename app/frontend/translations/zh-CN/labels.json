@@ -543,6 +543,7 @@
         "groupShips": "组合舰船",
         "ungroupShips": "取消组合",
         "undo": "撤销",
+        "clearArrangement": "清空图表",
         "resetArrangement": "重置排列",
         "state": "状态",
         "stateOptions": {
@@ -550,6 +551,8 @@
           "extended": "展开",
           "landed": "着陆"
         },
+        "addShips": "添加舰船",
+        "removeShip": "从图表中移除",
         "savedLayouts": "已保存的布局",
         "layoutName": "布局名称",
         "saveLayout": "另存为新布局",

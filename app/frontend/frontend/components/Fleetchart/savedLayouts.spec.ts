@@ -69,3 +69,27 @@ describe("placementsFromLayout", () => {
     ).toEqual({ a: { x: 1, y: 2 } });
   });
 });
+
+describe("placementsFromLayout with catalogue ships", () => {
+  it("keeps them apart from owned ships by their model", () => {
+    expect(
+      placementsFromLayout(
+        [{ vehicleId: "owned", x: 1, y: 2 }],
+        [
+          {
+            id: "tried",
+            modelId: "m",
+            x: 3,
+            y: 4,
+            order: 0,
+            groupId: null,
+            heading: "Anvil",
+          },
+        ],
+      ),
+    ).toEqual({
+      owned: { x: 1, y: 2 },
+      tried: { x: 3, y: 4, order: 0, heading: "Anvil", modelId: "m" },
+    });
+  });
+});

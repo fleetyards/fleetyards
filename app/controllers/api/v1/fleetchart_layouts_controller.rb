@@ -84,10 +84,12 @@ module Api
       private def fleetchart_layout_params
         permitted = params.permit(
           :name, :colored,
-          placements: %i[vehicle_id x y facing viewpoint state order group_id heading]
+          placements: %i[vehicle_id x y facing viewpoint state order group_id heading removed],
+          catalogue_placements: %i[id model_id x y facing viewpoint state order group_id heading]
         ).to_h
 
         permitted[:placements] = permitted[:placements].map(&:to_h) if permitted[:placements]
+        permitted[:catalogue_placements] = permitted[:catalogue_placements].map(&:to_h) if permitted[:catalogue_placements]
 
         permitted
       end

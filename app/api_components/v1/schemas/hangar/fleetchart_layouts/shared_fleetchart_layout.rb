@@ -15,9 +15,11 @@ module V1
               username: {type: [:string, :null]},
               publicHangar: {type: :boolean},
               placements: {type: :array, items: FleetchartPlacement},
-              vehicles: {type: :array, items: ::V1::Schemas::Vehicles::VehiclePublic}
+              vehicles: {type: :array, items: ::V1::Schemas::Vehicles::VehiclePublic},
+              cataloguePlacements: {type: :array, items: FleetchartCataloguePlacement},
+              models: {type: :array, items: ::V1::Schemas::Models::Model}
             },
-            required: %w[name colored username publicHangar placements vehicles]
+            required: %w[name colored username publicHangar placements vehicles cataloguePlacements models]
           })
         end
       end

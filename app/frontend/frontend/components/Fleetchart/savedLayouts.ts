@@ -1,4 +1,7 @@
-import type { FleetchartPlacement as ApiPlacement } from "@/services/fyApi";
+import type {
+  FleetchartCataloguePlacement as ApiCataloguePlacement,
+  FleetchartPlacement as ApiPlacement,
+} from "@/services/fyApi";
 import {
   FleetchartFacings,
   FleetchartShipStates,
@@ -22,36 +25,45 @@ export const stackingOrders = (
       .map(({ id }, index) => [id, index]),
   );
 
+type SavedPlacement = Omit<ApiPlacement, "vehicleId">;
+
 // The API sends what was never set as null, where a placement leaves it out.
+const placementFrom = ({
+  x,
+  y,
+  facing,
+  viewpoint,
+  state,
+  order,
+  groupId,
+  heading,
+  removed,
+}: SavedPlacement) => ({
+  x,
+  y,
+  ...(facing ? { facing: facing as FleetchartFacings } : {}),
+  ...(viewpoint ? { viewpoint: viewpoint as FleetchartViewpoints } : {}),
+  ...(state ? { state: state as FleetchartShipStates } : {}),
+  ...(order === null || order === undefined ? {} : { order }),
+  ...(groupId ? { groupId } : {}),
+  ...(heading ? { heading } : {}),
+  ...(removed ? { removed } : {}),
+});
+
 export const placementsFromLayout = (
   placements: ApiPlacement[],
-): FleetchartPlacements =>
-  Object.fromEntries(
-    placements.map(
-      ({
-        vehicleId,
-        x,
-        y,
-        facing,
-        viewpoint,
-        state,
-        order,
-        groupId,
-        heading,
-      }) => [
-        vehicleId,
-        {
-          x,
-          y,
-          ...(facing ? { facing: facing as FleetchartFacings } : {}),
-          ...(viewpoint
-            ? { viewpoint: viewpoint as FleetchartViewpoints }
-            : {}),
-          ...(state ? { state: state as FleetchartShipStates } : {}),
-          ...(order === null || order === undefined ? {} : { order }),
-          ...(groupId ? { groupId } : {}),
-          ...(heading ? { heading } : {}),
-        },
-      ],
-    ),
-  );
+  cataloguePlacements: ApiCataloguePlacement[] = [],
+): FleetchartPlacements => ({
+  ...Object.fromEntries(
+    placements.map((placement) => [
+      placement.vehicleId,
+      placementFrom(placement),
+    ]),
+  ),
+  ...Object.fromEntries(
+    cataloguePlacements.map((placement) => [
+      placement.id,
+      { ...placementFrom(placement), modelId: placement.modelId },
+    ]),
+  ),
+});

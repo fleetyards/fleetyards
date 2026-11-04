@@ -35199,6 +35199,45 @@ components:
       - meta
       - items
       title: FleetWantedBlueprints
+    FleetchartCataloguePlacement:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 64
+        modelId:
+          type: string
+          format: uuid
+        x:
+          type: number
+        "y":
+          type: number
+        facing:
+          "$ref": "#/components/schemas/FleetchartFacingEnum"
+        viewpoint:
+          "$ref": "#/components/schemas/FleetchartViewpointEnum"
+        state:
+          "$ref": "#/components/schemas/FleetchartShipStateEnum"
+        order:
+          type:
+          - number
+          - 'null'
+        groupId:
+          type:
+          - string
+          - 'null'
+        heading:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - modelId
+      - x
+      - "y"
+      additionalProperties: false
+      title: FleetchartCataloguePlacement
     FleetchartFacingEnum:
       type:
       - string
@@ -35234,6 +35273,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetchartPlacement"
+        cataloguePlacements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartCataloguePlacement"
         createdAt:
           type: string
           format: date-time
@@ -35245,6 +35288,7 @@ components:
       - name
       - colored
       - placements
+      - cataloguePlacements
       - createdAt
       - updatedAt
       title: FleetchartLayout
@@ -35259,6 +35303,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetchartPlacement"
+        cataloguePlacements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartCataloguePlacement"
       additionalProperties: false
       title: FleetchartLayoutInput
     FleetchartLayoutsList:
@@ -35294,6 +35342,12 @@ components:
           type:
           - string
           - 'null'
+        removed:
+          type:
+          - boolean
+          - 'null'
+          description: Kept out of the chart, where a ship without a placement would
+            show as not placed yet
       required:
       - vehicleId
       - x
@@ -35329,6 +35383,41 @@ components:
     FleetchartViewMedia:
       type: object
       properties:
+        angledExtents:
+          type: object
+          description: How wide each state's angled pictures are, as a share of the
+            ship's length
+          properties:
+            flight:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
+            extended:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
+            landed:
+              type: object
+              properties:
+                angled:
+                  type: number
+                angledRear:
+                  type: number
+              required:
+              - angled
+              - angledRear
         angledView:
           "$ref": "#/components/schemas/MediaFile"
         angledViewColored:
@@ -43993,6 +44082,9 @@ components:
           type: boolean
         playerOwnableEq:
           type: boolean
+        hasFleetchartViews:
+          type: boolean
+          description: Ships a fleetchart can size and draw
         ccuTarget:
           type: boolean
           description: Ships RSI sells upgrades into, today or during sales
@@ -48000,6 +48092,14 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehiclePublic"
+        cataloguePlacements:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartCataloguePlacement"
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Model"
       required:
       - name
       - colored
@@ -48007,6 +48107,8 @@ components:
       - publicHangar
       - placements
       - vehicles
+      - cataloguePlacements
+      - models
       title: SharedFleetchartLayout
     ShipModel:
       type: object
