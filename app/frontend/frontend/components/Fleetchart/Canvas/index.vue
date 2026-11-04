@@ -86,7 +86,7 @@ const MIN_ZOOM = 0.02;
 const EXPORT_GRID_CELL = gridCellFor(PIXELS_PER_METRE);
 const EXPORT_IMAGE_TIMEOUT = 15000;
 const SHIP_CONTROLS_GAP = 10;
-const SHIP_CONTROLS_MARGIN = 200;
+const SHIP_CONTROLS_MARGIN = 10;
 const SHIP_CONTROLS_MIN_TOP = 130;
 const FIT_MARGIN_TOP = 70;
 const FIT_MARGIN_BOTTOM = 80;
@@ -782,6 +782,10 @@ const changeShips = (
   list: CanvasShip[],
   changes: (ship: CanvasShip) => Partial<FleetchartPlacement>,
 ) => {
+  if (!list.length) {
+    return;
+  }
+
   const updated = Object.fromEntries(
     list.flatMap((ship) => {
       const current = positions.value[ship.id];
@@ -882,6 +886,20 @@ const ungroupSelected = () => {
   changeShips(selectedShips.value, () => ({ groupId: undefined }));
 };
 
+const shipControls = ref<{ $el: HTMLElement }>();
+
+const shipControlsHalfWidth = ref(0);
+
+// Measured, as its width depends on the labels and the language.
+watch(
+  [selectedViewpoint, selectedFacing, selectedState, () => selectedShips.value.length],
+  async () => {
+    await nextTick();
+
+    shipControlsHalfWidth.value = (shipControls.value?.$el.offsetWidth ?? 0) / 2;
+  },
+);
+
 // Drawn over the scene rather than in it, so it stays readable at any zoom and
 // never reaches an export.
 const shipControlsStyle = computed(() => {
@@ -900,8 +918,8 @@ const shipControlsStyle = computed(() => {
 
   return {
     left: `${Math.min(
-      Math.max(centre, SHIP_CONTROLS_MARGIN),
-      screen.width - SHIP_CONTROLS_MARGIN,
+      Math.max(centre, shipControlsHalfWidth.value + SHIP_CONTROLS_MARGIN),
+      screen.width - shipControlsHalfWidth.value - SHIP_CONTROLS_MARGIN,
     )}px`,
     top: `${above ? top - SHIP_CONTROLS_GAP : bottom + SHIP_CONTROLS_GAP}px`,
     transform: `translate(-50%, ${above ? "-100%" : "0"})`,
@@ -914,6 +932,8 @@ const marquee = shallowRef<{
   width: number;
   height: number;
 }>();
+
+let stopMarquee: (() => void) | undefined;
 
 const startMarquee = (event: PointerEvent) => {
   const origin = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -942,9 +962,13 @@ const startMarquee = (event: PointerEvent) => {
     };
   };
 
+  const onCancel = () => {
+    stopMarquee?.();
+    marquee.value = undefined;
+  };
+
   const onUp = () => {
-    window.removeEventListener("pointermove", onMove);
-    window.removeEventListener("pointerup", onUp);
+    stopMarquee?.();
 
     const box = marquee.value;
 
@@ -976,8 +1000,16 @@ const startMarquee = (event: PointerEvent) => {
     selectedIds.value = withGroupMembers([...additions, ...inside]);
   };
 
+  stopMarquee = () => {
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+    window.removeEventListener("pointercancel", onCancel);
+    stopMarquee = undefined;
+  };
+
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onCancel);
 };
 
 const handleViewportPress = (event: PointerEvent) => {
@@ -1020,6 +1052,10 @@ const startDrag = (id: string, event: PointerEvent) => {
 
   selectForPress(id, event.shiftKey || event.metaKey || event.ctrlKey);
 
+  if (!selectedIds.value.includes(id)) {
+    return;
+  }
+
   const moving = selectedShips.value;
   const lead = moving.find((ship) => ship.id === id);
 
@@ -1037,6 +1073,7 @@ const startDrag = (id: string, event: PointerEvent) => {
   (event.target as Element).setPointerCapture?.(event.pointerId);
 
   const { clientX, clientY } = event;
+  const additive = event.shiftKey || event.metaKey || event.ctrlKey;
 
   const onMove = (move: PointerEvent) => {
     const metresPerPixel = 1 / (PIXELS_PER_METRE * transform.value.scale);
@@ -1068,6 +1105,11 @@ const startDrag = (id: string, event: PointerEvent) => {
     const dropped = draggedPositions.value;
 
     stopDrag?.();
+
+    // A press without a move on one of several selected ships means just that ship.
+    if (!dropped && !additive) {
+      selectedIds.value = withGroupMembers([id]);
+    }
 
     if (dropped) {
       holdingView(() => {
@@ -1156,6 +1198,7 @@ onUnmounted(() => {
 
   clearTimeout(restoreTimer);
   stopDrag?.();
+  stopMarquee?.();
   persistZoom.flush();
   handleResize.cancel();
 
@@ -1332,6 +1375,7 @@ const toggleLabels = () => {
     </div>
 
     <FleetchartCanvasShipControls
+      ref="shipControls"
       v-if="selectedShips.length && !draggedPositions && !exporting"
       :count="selectedShips.length"
       :viewpoint="selectedViewpoint"

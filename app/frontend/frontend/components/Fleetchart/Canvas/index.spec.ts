@@ -609,6 +609,55 @@ describe("FleetchartCanvas", () => {
         await release();
       };
 
+      it("narrows to one ship on a plain press without a move", async () => {
+        const wrapper = await mountFree();
+
+        await selectBoth(wrapper);
+        press(shipElement(wrapper, 0));
+        await release();
+        await wrapper
+          .get("[data-test='fleetchart-ship-facing-top']")
+          .trigger("click");
+
+        expect(
+          [placement("a").facing, placement("b").facing].filter(
+            (value) => value === FleetchartFacings.TOP,
+          ),
+        ).toHaveLength(1);
+      });
+
+      it("adds no undo step for a rotation of nothing", async () => {
+        const wrapper = await mountFree();
+
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "r" }));
+        await nextTick();
+
+        expect(
+          wrapper
+            .get("[data-test='fleetchart-undo']")
+            .attributes("disabled"),
+        ).toBeDefined();
+      });
+
+      it("drops a selection box when the pointer is cancelled", async () => {
+        const wrapper = await mountFree();
+        const viewport = wrapper.get(".fleetchart-canvas__viewport").element;
+
+        press(viewport, { shiftKey: true });
+
+        const move = new Event("pointermove");
+
+        Object.assign(move, { clientX: 500, clientY: 500 });
+        window.dispatchEvent(move);
+        await nextTick();
+        window.dispatchEvent(new Event("pointercancel"));
+        await nextTick();
+
+        expect(wrapper.find("[data-test='fleetchart-marquee']").exists()).toBe(
+          false,
+        );
+      });
+
       it("moves every selected ship by the same distance", async () => {
         const wrapper = await mountFree();
         const before = ids().map((id) => ({ ...placement(id) }));
