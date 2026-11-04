@@ -161,6 +161,85 @@ describe("shipGeometry", () => {
     ).toBe(200);
   });
 
+  describe("at the same scale in every state", () => {
+    const picture = (width: number, height: number) => ({
+      url: "view.png",
+      width,
+      height,
+    });
+
+    // A ship whose side view is taller than it is long in flight, as the Railen's is.
+    const railen = {
+      metrics: {
+        fleetchartOffsetLength: 49.9,
+        fleetchartOffsetBeam: 51.38,
+        landedLength: 60.47,
+        landedBeam: 51.38,
+      },
+      media: {
+        portView: picture(2853, 3840),
+        topView: picture(3730, 3840),
+        landedPortView: picture(3840, 2327),
+        landedTopView: picture(3840, 3263),
+      },
+    } as unknown as FleetchartEntry;
+
+    it("draws a side view as long as the ship, however tall the picture is", () => {
+      const flight = shipGeometry(railen, FleetchartViewpoints.PORT);
+
+      expect(flight?.imageWidth).toBeCloseTo(49.9);
+      expect(flight?.imageHeight).toBeCloseTo(67.16, 1);
+    });
+
+    it("gives a state its own length and its picture's shape", () => {
+      const landed = shipGeometry(railen, FleetchartViewpoints.PORT, {
+        state: FleetchartShipStates.LANDED,
+      });
+
+      expect(landed?.imageWidth).toBeCloseTo(60.47);
+      expect(landed?.imageHeight).toBeCloseTo(36.64, 1);
+    });
+
+    it("matches the beam from above, in flight and landed", () => {
+      expect(
+        shipGeometry(railen, FleetchartViewpoints.TOP)?.imageHeight,
+      ).toBeCloseTo(51.38, 0);
+      expect(
+        shipGeometry(railen, FleetchartViewpoints.TOP, {
+          state: FleetchartShipStates.LANDED,
+        })?.imageHeight,
+      ).toBeCloseTo(51.38, 0);
+    });
+
+    it("keeps the box tall enough for the tallest picture between viewpoints", () => {
+      expect(
+        shipGeometry(railen, FleetchartViewpoints.TOP)?.height,
+      ).toBeCloseTo(67.16, 1);
+    });
+
+    it("keeps a borrowed flight picture at its flight size", () => {
+      const scorpius = {
+        metrics: {
+          fleetchartOffsetLength: 23.01,
+          fleetchartOffsetBeam: 32.83,
+          landedLength: 29.96,
+          landedBeam: 13.3,
+        },
+        media: {
+          frontView: picture(3840, 1000),
+          portView: picture(3840, 2187),
+          landedPortView: picture(3840, 766),
+        },
+      } as unknown as FleetchartEntry;
+
+      expect(
+        shipGeometry(scorpius, FleetchartViewpoints.FRONT, {
+          state: FleetchartShipStates.LANDED,
+        })?.imageWidth,
+      ).toBeCloseTo(32.83);
+    });
+  });
+
   it("has nothing to draw before the views arrive", () => {
     expect(shipGeometry(model({}), FleetchartViewpoints.PORT)).toBeUndefined();
   });
