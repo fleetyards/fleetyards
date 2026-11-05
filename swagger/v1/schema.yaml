@@ -25500,6 +25500,7 @@ components:
       - Blueprint
       - GameMission
       - Location
+      - Faction
       - FleetContract
       - FleetEvent
       - User
@@ -25511,6 +25512,7 @@ components:
       - BLUEPRINT
       - GAME_MISSION
       - LOCATION
+      - FACTION
       - FLEET_CONTRACT
       - FLEET_EVENT
       - USER

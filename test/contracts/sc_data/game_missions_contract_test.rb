@@ -52,6 +52,12 @@ module ScData
         # Reputation is what a contract almost always pays, and so, it turns out,
         # is money: 2360 of the 2536 award currency.
         assert_operator GameMissionReward.of_kind("reputation").count, :>=, 2500
+
+        # Nearly every award names its ladder and outcome. A tree parsed before
+        # they existed names none, which a loader would load without a word.
+        assert_operator GameMissionReward.of_kind("reputation").where.not(ladder_name: nil).count, :>=, 2500
+        assert_operator GameMissionReward.of_kind("reputation").where(outcome: "completed").count, :>=, 2500
+        assert_operator GameMissionReward.of_kind("reputation").where(outcome: "not_completed").count, :>=, 1
         assert_operator GameMissionReward.of_kind("currency").count, :>=, 2300
 
         # The split is the point. 8 contracts state a figure and the rest leave
