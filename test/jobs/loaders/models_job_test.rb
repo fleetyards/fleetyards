@@ -151,12 +151,13 @@ module Loaders
     end
 
     test "#perform names what moved in the pledge store" do
-      model = create(:model, name: "Carrack", on_sale: true, ccu_on_sale: false)
+      model = create(:model, name: "Carrack")
 
       Rsi::ModelsLoader.any_instance.stubs(:all).with do
-        model.update!(on_sale: false, ccu_on_sale: true, ccu_target_seen_at: Time.current)
+        model.update!(on_sale: true, ccu_on_sale: true)
         true
       end
+      Rsi::PledgeStoreLoader.any_instance.stubs(:changed_fields).returns({model.id => %w[ccu_on_sale on_sale]})
 
       ::Loaders::ModelsJob.new.perform
 
@@ -168,12 +169,13 @@ module Loaders
     end
 
     test "#perform names a store move beside what the matrix changed" do
-      model = create(:model, name: "Idris P", mass: 40_000, rsi_mass: 40_000, cargo: 100, ccu_on_sale: false)
+      model = create(:model, name: "Idris P", mass: 40_000, rsi_mass: 40_000, cargo: 100)
 
       Rsi::ModelsLoader.any_instance.stubs(:all).with do
         model.update!(rsi_mass: 52_000, cargo: 120, ccu_on_sale: true)
         true
       end
+      Rsi::PledgeStoreLoader.any_instance.stubs(:changed_fields).returns({model.id => %w[ccu_on_sale]})
 
       ::Loaders::ModelsJob.new.perform
 
@@ -184,9 +186,30 @@ module Loaders
       assert_includes notification.body, "- **Idris P**: cargo (matrix only: mass; store: ccu_on_sale)"
     end
 
-    test "#perform names no store move for a model the run added" do
+    # `pledge_price` is audited, but it is the store that moved it, not the matrix.
+    test "#perform names an audited store column only under the store" do
+      model = create(:model, name: "Carrack", pledge_price: 400)
+
       Rsi::ModelsLoader.any_instance.stubs(:all).with do
-        create(:model, name: "Spirit C1", on_sale: true)
+        model.update!(pledge_price: 450, rsi_pledge_value: 45_000)
+        true
+      end
+      Rsi::PledgeStoreLoader.any_instance.stubs(:changed_fields).returns({model.id => %w[pledge_price rsi_pledge_value]})
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "- **Carrack**: store: pledge_price, rsi_pledge_value"
+    end
+
+    test "#perform does not credit the store with an edit it did not make" do
+      model = create(:model, name: "Carrack", on_sale: false)
+
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        model.update!(on_sale: true)
         true
       end
 
@@ -196,7 +219,7 @@ module Loaders
         admin_user: @admin_user, notification_type: "ship_matrix_import"
       )
 
-      assert_includes notification.body, "- **Spirit C1**"
+      assert_includes notification.body, "- **Carrack**"
       assert_not_includes notification.body, "store:"
     end
 
@@ -205,7 +228,8 @@ module Loaders
         job_class: ::Loaders::ModelsJob,
         import_class: Imports::ModelsImport,
         loader_class: Rsi::ModelsLoader,
-        loader_method: :all
+        loader_method: :all,
+        before_perform: -> { Rsi::ModelsLoader.new.stubs(:store_changes).returns({}) }
       )
     end
 

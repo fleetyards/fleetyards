@@ -36,5 +36,25 @@ module Rsi
       assert_not @model.reload.ccu_on_sale
       assert_equal seen, @model.ccu_target_seen_at
     end
+
+    test "names the columns a run moved" do
+      @model.update!(rsi_pledge_slug: "cutlass-black", rsi_pledge_value: 11000, pledge_price: 110, on_sale: false)
+      stub_request(:post, URL).to_return(status: 200, body: store_body([{id: 1, title: "Cutlass Black"}]))
+
+      loader = PledgeStoreLoader.new
+      loader.run(@model)
+
+      assert_equal %w[ccu_on_sale on_sale], loader.changed_fields[@model.id]
+    end
+
+    test "names nothing for a run that moved nothing" do
+      @model.update!(rsi_pledge_slug: "cutlass-black", rsi_pledge_value: 11000, pledge_price: 110, on_sale: true)
+      stub_request(:post, URL).to_return(status: 200, body: store_body([]))
+
+      loader = PledgeStoreLoader.new
+      loader.run(@model)
+
+      assert_empty loader.changed_fields
+    end
   end
 end
