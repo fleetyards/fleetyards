@@ -11,9 +11,12 @@ class HangarSearch
     "Upgrade" => :upgrades
   }.freeze
 
-  def initialize(vehicles:, wishlist:, blueprints:, inventory_items:, pledge_items:, buybacks:)
+  # `online` answers for one friend, by the rule that goes for the reader.
+  def initialize(vehicles:, wishlist:, friends:, blueprints:, inventory_items:, pledge_items:, buybacks:, online:)
     @vehicles = vehicles
     @wishlist = wishlist
+    @friends = friends
+    @online = online
     @blueprints = blueprints
     @inventory_items = inventory_items
     @pledge_items = pledge_items
@@ -28,6 +31,21 @@ class HangarSearch
     [
       vehicle_source("HangarVehicle", @vehicles),
       vehicle_source("WishlistVehicle", @wishlist),
+      ScopedSearch::Source.new(
+        type: "Friend",
+        scope: @friends.with_attached_avatar.order(:username),
+        filter: :username_or_display_name_cont,
+        item: lambda { |friend|
+          ScopedSearch.result(
+            type: "User",
+            name: friend.username,
+            slug: friend.username,
+            detail: friend.display_name.presence,
+            image: friend.avatar.attached? ? friend.avatar : nil,
+            online: @online.call(friend)
+          )
+        }
+      ),
       ScopedSearch::Source.new(
         type: "OwnedBlueprint",
         scope: @blueprints.order(Arel.sql(::Catalogue::TokenResolver.name_sql("blueprint"))),

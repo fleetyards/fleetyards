@@ -17,7 +17,9 @@ module V1
           # Absent where the catalogue keeps no picture, or this item has none.
           image: ::Shared::V1::Schemas::MediaFile,
           # Present for a place only.
-          appearance: ::V1::Schemas::SearchAppearance
+          appearance: ::V1::Schemas::SearchAppearance,
+          # Present for a person whose presence the reader may see.
+          online: {type: :boolean}
         },
         additionalProperties: false,
         required: %w[type name slug]

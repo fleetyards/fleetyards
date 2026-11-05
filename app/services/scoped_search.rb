@@ -13,8 +13,8 @@ class ScopedSearch
   # a `Catalogue::Search::Result`.
   Source = Data.define(:type, :scope, :filter, :item)
 
-  def self.result(type:, name:, slug:, detail: nil)
-    ::Catalogue::Search::Result.new(type:, name:, slug:, detail:, image: nil, appearance: nil)
+  def self.result(type:, name:, slug:, detail: nil, image: nil, online: nil)
+    ::Catalogue::Search::Result.new(type:, name:, slug:, detail:, image:, appearance: nil, online:)
   end
 
   def initialize(sources)

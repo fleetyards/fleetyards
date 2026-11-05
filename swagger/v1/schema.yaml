@@ -48180,6 +48180,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         appearance:
           "$ref": "#/components/schemas/SearchAppearance"
+        online:
+          type: boolean
       additionalProperties: false
       required:
       - type
@@ -48193,6 +48195,19 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/SearchGroup"
+        fleet:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+            logo:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+          required:
+          - name
+          - slug
       additionalProperties: false
       required:
       - groups

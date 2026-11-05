@@ -35,7 +35,10 @@ module Catalogue
     # `image` is the attachment itself, or nil where there is no picture.
     # `appearance` is how a place is drawn -- its kind and colour -- or nil for
     # anything else.
-    Result = Data.define(:type, :name, :slug, :detail, :image, :appearance)
+    #
+    # `online` is whether a person is around, or nil for anything else and for
+    # anyone whose presence the reader may not see.
+    Result = Data.define(:type, :name, :slug, :detail, :image, :appearance, :online)
 
     # A place drawn rather than pictured: a body as a globe, a star as a sun,
     # and a system as its star.
@@ -160,7 +163,7 @@ module Catalogue
       details = details_for(prefix, rows.map { |row| row.drop(2) })
 
       rows.each_with_index
-        .map { |(row_name, slug), index| Result.new(type: klass.name, name: row_name, slug:, detail: details[index], image: nil, appearance: nil) }
+        .map { |(row_name, slug), index| Result.new(type: klass.name, name: row_name, slug:, detail: details[index], image: nil, appearance: nil, online: nil) }
         .uniq { |result| [result.name.downcase, result.detail] }
     end
 

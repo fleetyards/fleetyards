@@ -15,6 +15,8 @@ module Api
           vehicles: authorized_scope(Vehicle.all).where(hidden: false).purchased
             .where(loaner: false, hidden_by_user: false),
           wishlist: authorized_scope(Vehicle.all).visible.wanted.where(loaner: false),
+          friends: current_resource_owner.friends,
+          online: method(:online_status_for),
           blueprints: Blueprint.with_facts(true)
             .where(id: current_resource_owner.user_blueprints.select(:blueprint_id)),
           inventory_items: InventoryItem.joins(:inventory).where(inventories: {holder: current_resource_owner}),

@@ -10,6 +10,7 @@ module Api
       include FleetEventScoped
       include FleetInventoryScoped
       include FleetSubscriptionConcern
+      include SquadronReadableConcern
       include SquadronVisibilityConcern
 
       before_action :authenticate_user!, only: []
@@ -19,6 +20,7 @@ module Api
 
       def index
         @groups = ScopedSearch.new(sources).call(params[:q])
+        @search_fleet = @fleet
 
         render "api/v1/search/index"
       end
@@ -32,15 +34,33 @@ module Api
 
         ScopedSearch::Source.new(
           type: "FleetMembership",
-          scope: @fleet.fleet_memberships.kept.accepted.includes(:user).references(:user).order("users.username"),
+          scope: @fleet.fleet_memberships.kept.accepted.joins(:user)
+            .preload(user: {avatar_attachment: :blob}, fleet_squadron_memberships: :fleet_squadron)
+            .order("users.username"),
           filter: :user_username_or_user_display_name_or_nickname_cont,
           item: lambda { |member|
             ScopedSearch.result(
-              type: "FleetMembership", name: member.user.username, slug: member.user.username,
-              detail: member.nickname.presence
+              type: "FleetMembership",
+              name: member.user.username,
+              slug: member.user.username,
+              detail: member_detail(member),
+              image: member.user.avatar.attached? ? member.user.avatar : nil,
+              online: online_status_for(member.user)
             )
           }
         )
+      end
+
+      private def member_detail(member)
+        [member.nickname.presence, member_squadron(member)&.name].compact.join(" · ").presence
+      end
+
+      # Their squadron rather than whichever team sorts first: a member holds at
+      # most one ordinary squadron.
+      private def member_squadron(member)
+        return unless squadrons_readable_in?(@fleet.id)
+
+        member.fleet_squadron_memberships.map(&:fleet_squadron).min_by { |squadron| [squadron.team? ? 1 : 0, squadron.rank] }
       end
 
       private def event_source

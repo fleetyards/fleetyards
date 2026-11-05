@@ -5,7 +5,7 @@
 module FleetEventScoped
   extend ActiveSupport::Concern
 
-  private def reachable_fleet_events(scope = @fleet.fleet_events)
+  private def reachable_fleet_events(scope)
     allowed_to?(:manage?, @fleet, with: FleetEventPolicy) ? scope : narrow_to_squadron_access(scope)
   end
 end

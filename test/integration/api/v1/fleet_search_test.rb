@@ -74,6 +74,22 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     search(@officer) { assert_equal ["omniofficer"], groups["FleetMembership"] }
   end
 
+  test "GET /fleets/:slug/search says which fleet answered" do
+    search(@member) { assert_equal @fleet.name, parsed_body["fleet"]["name"] }
+  end
+
+  test "GET /fleets/:slug/search shows a member's squadron to those who may read it" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Night Wing")
+    membership = @officer.fleet_memberships.find_by(fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: membership)
+
+    search(@officer) do
+      member = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_equal "Night Wing", member["detail"]
+    end
+  end
+
   test "GET /fleets/:slug/search refuses someone outside the fleet" do
     create(:fleet_event, fleet: @fleet, title: "Omni Raid")
 

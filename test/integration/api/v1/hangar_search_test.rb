@@ -88,6 +88,17 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search finds accepted friends only" do
+    create(:friendship, :accepted, requester: @user, addressee: create(:user, username: "omnifriend"))
+    create(:friendship, requester: @user, addressee: create(:user, username: "omnipending"))
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "omni"} do
+      assert_equal({"Friend" => ["omnifriend"]}, groups)
+      assert_equal "User", parsed_body["groups"].first["items"].first["type"]
+    end
+  end
+
   test "GET /hangar/search says when a list has more than it offers" do
     6.times { |n| create(:hangar_pledge_item, user: @user, kind: "paint", name: "Omni Paint #{n}") }
     sign_in @user
