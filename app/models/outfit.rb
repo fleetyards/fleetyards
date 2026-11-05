@@ -11,7 +11,7 @@ class Outfit < ApplicationRecord
   has_many :items, -> { order(:slot) },
     class_name: "OutfitItem", inverse_of: :outfit, dependent: :delete_all, autosave: true
 
-  has_many :stored_items,
+  has_many :stored_items, -> { order(:holder, :created_at) },
     class_name: "OutfitStoredItem", inverse_of: :outfit, dependent: :delete_all, autosave: true
 
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
