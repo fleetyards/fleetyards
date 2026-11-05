@@ -137,6 +137,18 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A query parameter replaces a body parameter of the same name, so a build
+  # selector called `source` would turn this into an empty plan.
+  test "POST /hangar/plans starts from the hangar while another build is selected" do
+    vehicle = create(:vehicle, user: @user, model: @gladius)
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: "/hangar/plans", params: {scDataSource: "ptu"},
+      body: {name: "From hangar", source: "hangar"} do
+      assert_equal [vehicle.id], parsed_body["vehicleMarks"].pluck("vehicleId")
+    end
+  end
+
   test "POST /hangar/plans duplicates another plan" do
     @plan.slots.create!(label: "Fighter").candidates.create!(model: @gladius)
     sign_in @user

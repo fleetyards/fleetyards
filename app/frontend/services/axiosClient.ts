@@ -30,7 +30,7 @@ export const axiosClient = <T>(config: AxiosRequestConfig): Promise<T> => {
     ...config,
     headers,
     params: scDataSource
-      ? { ...(config.params as object), source: scDataSource }
+      ? { ...(config.params as object), scDataSource }
       : config.params,
     cancelToken: source.token,
   }).then(({ data }) => data);
