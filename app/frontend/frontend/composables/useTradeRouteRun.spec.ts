@@ -92,6 +92,25 @@ describe("useTradeRouteRun", () => {
     });
   });
 
+  it("keeps runs grouped when filtering by start and target terminal", async () => {
+    expect(
+      await apiQueryFor({ from: "terminal-1", to: "terminal-2" }),
+    ).toMatchObject({
+      grouped: true,
+      originTerminalIdIn: ["terminal-1"],
+      destinationTerminalIdIn: ["terminal-2"],
+    });
+  });
+
+  it("lets a purchase's buyers win over the start terminal", async () => {
+    expect(
+      await apiQueryFor({ from: "terminal-1", origin: "terminal-3" }),
+    ).toMatchObject({
+      grouped: false,
+      originTerminalIdIn: ["terminal-3"],
+    });
+  });
+
   it("writes changes into the URL and keeps the rest of the run", async () => {
     const { run, router, unmount } = await setup({
       ship: "c2",

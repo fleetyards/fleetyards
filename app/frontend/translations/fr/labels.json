@@ -2973,6 +2973,11 @@
         "anySystem": "Tous",
         "commodity": "Marchandise",
         "allCommodities": "Toutes les marchandises",
+        "start": "Départ",
+        "target": "Arrivée",
+        "anyTerminal": "Tous les terminaux",
+        "fromTerminal": "Depuis %{terminal}",
+        "toTerminal": "Vers %{terminal}",
         "priceAge": "Prix de moins de",
         "priceAges": {
           "day": "24 h",

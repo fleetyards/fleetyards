@@ -17,7 +17,10 @@ import {
 } from "@/frontend/composables/useTradeRouteRun";
 import {
   type ModelExtended,
+  type FilterOption,
   useTradeRouteCommoditiesFilters,
+  useTradeRouteDestinationTerminalsFilters,
+  useTradeRouteOriginTerminalsFilters,
   useTradeRouteStarSystemsFilters,
 } from "@/services/fyApi";
 
@@ -41,11 +44,28 @@ const expanded = ref(false);
 
 const collapsed = computed(() => mobile.value && !expanded.value);
 
-const { modelSlug, budget, starSystem, commodity, priceAge, update } =
-  useTradeRouteRun();
+const {
+  modelSlug,
+  budget,
+  starSystem,
+  commodity,
+  priceAge,
+  startTerminal,
+  targetTerminal,
+  update,
+} = useTradeRouteRun();
 
 const { data: starSystems } = useTradeRouteStarSystemsFilters();
 const { data: commodities } = useTradeRouteCommoditiesFilters();
+const { data: startTerminals } = useTradeRouteOriginTerminalsFilters();
+const { data: targetTerminals } = useTradeRouteDestinationTerminalsFilters();
+
+// The system says where to buy, so a start elsewhere could never match.
+const startOptions = computed(() =>
+  (startTerminals.value ?? []).filter(
+    (option) => !starSystem.value || option.category === starSystem.value,
+  ),
+);
 
 const budgetInput = ref(budget.value ? String(budget.value) : "");
 
@@ -83,8 +103,35 @@ onUnmounted(() => {
 
 // A purchase's buyers are one terminal's view: another system leaves it.
 const setSystem = (system?: string) => {
-  void update({ system, origin: undefined });
+  const start = startTerminals.value?.find(
+    (option) => option.value === startTerminal.value,
+  );
+
+  void update({
+    system,
+    origin: undefined,
+    from:
+      !system || start?.category === system ? startTerminal.value : undefined,
+  });
 };
+
+// A start or target is a different question from one purchase's buyers.
+const startValue = computed({
+  get: () => startTerminal.value,
+  set: (value?: string) => {
+    void update({ from: value || undefined, origin: undefined });
+  },
+});
+
+const targetValue = computed({
+  get: () => targetTerminal.value,
+  set: (value?: string) => {
+    void update({ to: value || undefined, origin: undefined });
+  },
+});
+
+const terminalLabel = (options?: FilterOption[], id?: string) =>
+  options?.find((option) => option.value === id)?.label;
 
 const commodityValue = computed({
   get: () => commodity.value,
@@ -95,12 +142,23 @@ const commodityValue = computed({
   },
 });
 
-const summaryChips = computed(() => [
-  starSystem.value ?? t("labels.tradeRoutes.anySystem"),
-  priceAges.value.find((option) => option.value === priceAge.value)?.label,
-  commodities.value?.find((option) => option.value === commodity.value)
-    ?.label ?? t("labels.tradeRoutes.allCommodities"),
-]);
+const summaryChips = computed(() => {
+  const start = terminalLabel(startTerminals.value, startTerminal.value);
+  const target = terminalLabel(targetTerminals.value, targetTerminal.value);
+
+  return [
+    starSystem.value ?? t("labels.tradeRoutes.anySystem"),
+    priceAges.value.find((option) => option.value === priceAge.value)?.label,
+    commodities.value?.find((option) => option.value === commodity.value)
+      ?.label ?? t("labels.tradeRoutes.allCommodities"),
+    ...(start
+      ? [t("labels.tradeRoutes.fromTerminal", { terminal: start })]
+      : []),
+    ...(target
+      ? [t("labels.tradeRoutes.toTerminal", { terminal: target })]
+      : []),
+  ];
+});
 
 const priceAges = computed(() => [
   {
@@ -265,6 +323,35 @@ const priceAges = computed(() => [
           </BtnGroup>
         </div>
       </div>
+      <div class="run-bar__row run-bar__row--route">
+        <div class="run-bar__cell">
+          <span class="run-bar__label">{{
+            t("labels.tradeRoutes.start")
+          }}</span>
+          <BaseSelect
+            v-model="startValue"
+            name="start"
+            :options="startOptions"
+            :label="t('labels.tradeRoutes.anyTerminal')"
+            :no-label="true"
+            searchable
+          />
+        </div>
+
+        <div class="run-bar__cell">
+          <span class="run-bar__label">{{
+            t("labels.tradeRoutes.target")
+          }}</span>
+          <BaseSelect
+            v-model="targetValue"
+            name="target"
+            :options="targetTerminals ?? []"
+            :label="t('labels.tradeRoutes.anyTerminal')"
+            :no-label="true"
+            searchable
+          />
+        </div>
+      </div>
       <div v-if="mobile" class="run-bar__done">
         <Btn block @click="expanded = false">
           {{ t("actions.tradeRoutes.doneEditing") }}
@@ -295,6 +382,11 @@ const priceAges = computed(() => [
 
 .run-bar__row--trade {
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.run-bar__row--route {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid $gray-dark;
 }
 
 // Top-aligned: the select and the segmented groups differ by a few pixels in
@@ -427,7 +519,8 @@ const priceAges = computed(() => [
 
 @media (max-width: $desktop-breakpoint) {
   .run-bar__row--bring,
-  .run-bar__row--trade {
+  .run-bar__row--trade,
+  .run-bar__row--route {
     grid-template-columns: minmax(0, 1fr);
   }
 

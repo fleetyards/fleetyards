@@ -2973,6 +2973,11 @@
         "anySystem": "Any",
         "commodity": "Commodity",
         "allCommodities": "All commodities",
+        "start": "Start",
+        "target": "Target",
+        "anyTerminal": "Any terminal",
+        "fromTerminal": "From %{terminal}",
+        "toTerminal": "To %{terminal}",
         "priceAge": "Prices no older than",
         "priceAges": {
           "day": "24 h",

@@ -2973,6 +2973,11 @@
         "anySystem": "全部",
         "commodity": "商品",
         "allCommodities": "全部商品",
+        "start": "起點",
+        "target": "終點",
+        "anyTerminal": "全部終端",
+        "fromTerminal": "從 %{terminal}",
+        "toTerminal": "到 %{terminal}",
         "priceAge": "價格不早於",
         "priceAges": {
           "day": "24 小時",
