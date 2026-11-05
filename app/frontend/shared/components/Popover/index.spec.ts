@@ -296,6 +296,31 @@ describe("Popover", () => {
     expect(link.attributes("aria-describedby")).toBeUndefined();
   });
 
+  it("adds to what the control is already described by, and hands it back", async () => {
+    const wrapper = mountPopover();
+    const link = wrapper.find(".trigger-link");
+    link.element.setAttribute("aria-describedby", "own-details");
+
+    const matches = vi
+      .spyOn(HTMLElement.prototype, "matches")
+      .mockImplementation(function (this: HTMLElement, selector: string) {
+        return selector === ":focus-visible";
+      });
+
+    await link.trigger("focusin");
+    await vi.advanceTimersByTimeAsync(0);
+    matches.mockRestore();
+
+    expect(link.attributes("aria-describedby")).toBe(
+      `own-details ${panel()!.id}`,
+    );
+
+    await link.trigger("focusout", { relatedTarget: document.body });
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(link.attributes("aria-describedby")).toBe("own-details");
+  });
+
   it("keeps only one card open at a time", async () => {
     const first = mountPopover("link", "Glacier");
     const second = mountPopover("link", "Snowblind");

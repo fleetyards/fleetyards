@@ -182,9 +182,16 @@ const setDescribedBy = (on: boolean) => {
   const target = focusTarget();
   if (!target) return;
 
-  if (on) {
-    target.setAttribute("aria-describedby", id);
-  } else if (target.getAttribute("aria-describedby") === id) {
+  // The control may already be described by something of its own, which the card
+  // joins for as long as it is open.
+  const others = (target.getAttribute("aria-describedby") ?? "")
+    .split(/\s+/)
+    .filter((token) => token && token !== id);
+  const tokens = on ? [...others, id] : others;
+
+  if (tokens.length) {
+    target.setAttribute("aria-describedby", tokens.join(" "));
+  } else {
     target.removeAttribute("aria-describedby");
   }
 };
