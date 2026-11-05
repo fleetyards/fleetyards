@@ -13,7 +13,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import {
-  WEAPON_SUB_TYPES,
+  WEAPON_QUERIES,
   gearKind,
   isWeaponSlot,
 } from "@/frontend/utils/dressingRoom";
@@ -96,18 +96,19 @@ const noPort = computed(() => {
 const query = computed(() => {
   const gear = gearKind(props.slot);
   if (gear) {
-    return { equipmentTypeIn: gear.equipmentTypes, subTypeIn: gear.subTypes };
+    return {
+      equipmentTypeIn: gear.equipmentTypes,
+      subTypeIn: gear.subTypes,
+      ...(gear.sizes ? { sizeIn: gear.sizes } : {}),
+    };
   }
 
-  return isWeaponSlot(props.slot)
-    ? {
-        equipmentTypeIn: ["weapon"],
-        subTypeIn: WEAPON_SUB_TYPES[props.slot],
-      }
-    : {
-        slotIn: [props.slot as EquipmentSlotEnum],
-        equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
-      };
+  return (
+    WEAPON_QUERIES[props.slot] ?? {
+      slotIn: [props.slot as EquipmentSlotEnum],
+      equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
+    }
+  );
 });
 
 const pick = (item: CatalogueItem) => {

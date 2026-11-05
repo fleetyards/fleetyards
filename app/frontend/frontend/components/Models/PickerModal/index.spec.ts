@@ -145,7 +145,8 @@ describe("Models/PickerModal", () => {
       "Freelancer MAX",
     );
     expect(
-      card.find('[data-test="popover-trigger"] [data-test="catalogue-item-info"]')
+      card
+        .find('[data-test="popover-trigger"] [data-test="catalogue-item-info"]')
         .exists(),
     ).toBe(true);
 

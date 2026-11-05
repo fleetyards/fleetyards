@@ -678,6 +678,23 @@ describe("ToolsDressingRoomPage", () => {
       ).toBe(true);
     });
 
+    it("lays ammo, grenades and pens out in columns under the stage, and the rest with the other slots", async () => {
+      const { wrapper } = await mount({ torso: "gear-core" });
+      const columns = wrapper.find('[data-test="dressing-room-gear-columns"]');
+
+      expect(
+        columns.find('[data-test="dressing-room-slot-grenade_1"]').exists(),
+      ).toBe(true);
+      expect(
+        columns
+          .find('[data-test="dressing-room-pick-grenade_1"]')
+          .attributes("aria-label"),
+      ).toContain("Grenade 1");
+      expect(
+        wrapper.find('[data-test="dressing-room-gear-hint"]').exists(),
+      ).toBe(false);
+    });
+
     it("says so when what is worn offers no gear at all", async () => {
       const { wrapper } = await mount({ undersuit: "flight-suit" });
 
@@ -710,7 +727,7 @@ describe("ToolsDressingRoomPage", () => {
       ).toBe(false);
     });
 
-    it("offers the next port of what is worn, and hangs gear on its bone", async () => {
+    it("offers every port of what is worn, and hangs gear on its bone", async () => {
       const { wrapper } = await mount({
         torso: "gear-core",
         grenade_1: "mk-4",

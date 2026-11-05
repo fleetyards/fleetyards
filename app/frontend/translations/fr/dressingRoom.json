@@ -93,7 +93,13 @@
           "noRoom": "Plus assez de place"
         }
       },
-      "gearNone": "Ce que vous portez n'a pas d'emplacement d'équipement."
+      "gearNone": "Ce que vous portez n'a pas d'emplacement d'équipement.",
+      "gearColumns": {
+        "magazine": "Munitions",
+        "grenade": "Grenades",
+        "medpen": "Medpens",
+        "oxypen": "Oxypens"
+      }
     }
   }
 }

@@ -93,7 +93,13 @@
           "noRoom": "剩余空间不足"
         }
       },
-      "gearNone": "你所穿的部件没有装备槽位。"
+      "gearNone": "你所穿的部件没有装备槽位。",
+      "gearColumns": {
+        "magazine": "弹药",
+        "grenade": "手雷",
+        "medpen": "医疗笔",
+        "oxypen": "氧气笔"
+      }
     }
   }
 }

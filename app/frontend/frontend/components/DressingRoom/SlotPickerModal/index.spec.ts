@@ -73,6 +73,39 @@ describe("DressingRoomSlotPickerModal", () => {
     expect(closed).toHaveBeenCalled();
   });
 
+  it("offers the big multitools on a back mount, up to its size", async () => {
+    await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "secondary" },
+    });
+    await flushPromises();
+
+    expect(fetchEquipment).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({
+          equipmentTypeIn: ["weapon", "tool"],
+          subTypeIn: ["Medium", "Gadget"],
+          sizeIn: ["2", "3", "4"],
+        }),
+      }),
+    );
+  });
+
+  it("keeps the big multitools out of a utility slot", async () => {
+    await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "utility_1" },
+    });
+    await flushPromises();
+
+    expect(fetchEquipment).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({
+          subTypeIn: ["Knife", "Gadget"],
+          sizeIn: ["1"],
+        }),
+      }),
+    );
+  });
+
   it("offers a gear slot what its kind takes, under the slot's own name", async () => {
     const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
       props: { slot: "medpen_1", title: "Medpen 1" },
