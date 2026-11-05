@@ -305,6 +305,7 @@ const { height: windowHeight } = useWindowSize();
 
 const popoverStyle = computed(() => ({
   maxHeight: `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
+  "--scope-count": scopes.value.length,
 }));
 </script>
 
@@ -345,6 +346,7 @@ const popoverStyle = computed(() => ({
       <div
         v-if="showList"
         class="home-search__popover"
+        :class="{ 'home-search__popover--tabbed': canSwitchScope }"
         :style="popoverStyle"
         data-test="home-search-results"
       >
@@ -390,15 +392,16 @@ const popoverStyle = computed(() => ({
             <div class="home-search__state-title">
               {{ t("home.landing.searchNoResults", { query: searchedFor }) }}
             </div>
-            <button
+            <Btn
               v-if="offersCatalogue"
-              type="button"
-              class="home-search__try-term"
+              class="home-search__in-catalogue"
+              :size="BtnSizesEnum.MD"
               data-test="home-search-in-catalogue"
-              @mousedown.prevent="selectScope(CATALOGUE_SCOPE)"
+              @click="selectScope(CATALOGUE_SCOPE)"
             >
-              {{ t("home.landing.searchInCatalogue") }} <kbd>↵</kbd>
-            </button>
+              {{ t("home.landing.searchInCatalogue") }}
+              <span aria-hidden="true">↵</span>
+            </Btn>
             <div v-else>{{ t("home.landing.searchNoResultsHint") }}</div>
           </div>
         </div>
@@ -600,26 +603,36 @@ const popoverStyle = computed(() => ({
 
 .home-search__state {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 14px 16px;
   color: var(--color-text-dim, #959595);
   font-size: 0.8125rem;
 
   &--empty {
+    flex-direction: column;
     gap: 14px;
-    padding: 18px 16px;
+    padding: 24px 16px;
+    text-align: center;
 
     > i {
       color: var(--color-muted, #7a8288);
-      font-size: 1.5rem;
+      font-size: 2.5rem;
     }
   }
 }
 
 .home-search__state-title {
+  margin-bottom: 4px;
   color: var(--color-lifted, #eee);
+  font-size: 0.9375rem;
   font-weight: 600;
+}
+
+.home-search__in-catalogue {
+  margin-top: 12px;
 }
 
 .home-search__list {
@@ -686,20 +699,48 @@ const popoverStyle = computed(() => ({
   }
 }
 
+// Register cards on the overlay's edge. The chosen one takes the overlay's own
+// material and overlaps its frame, so the two read as one sheet.
+.home-search__popover--tabbed {
+  --scope-tab-height: 124px;
+  --scope-tab-gap: 4px;
+  --scope-tabs-top: 12px;
+
+  // Tall enough that the tabs never hang below a short answer.
+  min-height: calc(
+    var(--scope-count) * (var(--scope-tab-height) + var(--scope-tab-gap)) +
+      var(--scope-tabs-top) * 2
+  );
+}
+
 .home-search__scopes {
+  position: absolute;
+  top: var(--scope-tabs-top);
+  left: 100%;
   display: flex;
-  flex: 0 0 auto;
-  gap: 4px;
-  padding: 6px 6px 0;
+  flex-direction: column;
+  gap: var(--scope-tab-gap);
 }
 
 .home-search__scope {
-  padding: 4px 10px;
+  position: relative;
+  min-height: var(--scope-tab-height);
+  padding: 12px 9px;
   color: var(--color-text-dim, #959595);
-  font-size: 0.8125rem;
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 6px;
+  font-family: Orbitron, sans-serif;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  background: color-mix(in srgb, var(--color-gray-darker, #272b30) 70%, #000);
+  // The card's shadow falling on it: what is not chosen lies behind the sheet.
+  box-shadow: inset 8px 0 8px -6px rgb(0 0 0 / 0.65);
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
   cursor: pointer;
 
   &:hover {
@@ -707,9 +748,21 @@ const popoverStyle = computed(() => ({
   }
 
   &--active {
+    margin-left: -1px;
+    padding-left: 10px;
     color: var(--color-lifted, #eee);
-    background: var(--color-control-hover, rgb(52 58 64 / 0.95));
-    border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    background: var(--color-gray-darker, #272b30);
+    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+    box-shadow: 4px 2px 8px rgb(0 0 0 / 0.35);
+    // Outward only: on the card's side a shadow draws the seam it should hide.
+    clip-path: inset(-12px -12px -12px 0);
+  }
+}
+
+// No room beside the overlay on a phone: it gives up the width its tabs take.
+@media (max-width: $desktop-breakpoint) {
+  .home-search__popover--tabbed {
+    right: 36px;
   }
 }
 
