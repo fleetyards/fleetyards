@@ -78,6 +78,16 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     search(@member) { assert_equal @fleet.name, parsed_body["fleet"]["name"] }
   end
 
+  test "GET /fleets/:slug/search shows a member who hides their presence as offline" do
+    @officer.update!(show_online_status: false)
+
+    search(@member) do
+      member = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_equal false, member["online"]
+    end
+  end
+
   test "GET /fleets/:slug/search shows a member's squadron to those who may read it" do
     squadron = create(:fleet_squadron, fleet: @fleet, name: "Night Wing")
     membership = @officer.fleet_memberships.find_by(fleet: @fleet)
@@ -86,7 +96,20 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     search(@officer) do
       member = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
 
-      assert_equal "Night Wing", member["detail"]
+      assert_equal "Night Wing", member["squadron"]["name"]
+    end
+  end
+
+  test "GET /fleets/:slug/search leaves out a member's squadron for a reader who may not see it" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Night Wing")
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: @officer.fleet_memberships.find_by(fleet: @fleet))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    @fleet.fleet_memberships.find_by(user: @member).update!(fleet_role: role)
+
+    search(@member) do
+      item = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_not item.key?("squadron")
     end
   end
 

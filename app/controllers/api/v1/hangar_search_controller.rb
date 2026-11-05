@@ -15,7 +15,7 @@ module Api
           vehicles: authorized_scope(Vehicle.all).where(hidden: false).purchased
             .where(loaner: false, hidden_by_user: false),
           wishlist: authorized_scope(Vehicle.all).visible.wanted.where(loaner: false),
-          friends: current_resource_owner.friends,
+          friends: friends_readable? ? current_resource_owner.friends : User.none,
           online: method(:online_status_for),
           blueprints: Blueprint.with_facts(true)
             .where(id: current_resource_owner.user_blueprints.select(:blueprint_id)),
@@ -25,6 +25,12 @@ module Api
         ).call(params[:q])
 
         render "api/v1/search/index"
+      end
+
+      # A token this endpoint accepts for the hangar need not carry the scopes
+      # the friends list asks for.
+      private def friends_readable?
+        doorkeeper_token.nil? || doorkeeper_token.includes_scope?(*Doorkeeper.config.default_scopes)
       end
     end
   end

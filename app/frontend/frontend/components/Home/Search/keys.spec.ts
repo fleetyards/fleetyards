@@ -233,6 +233,17 @@ describe("HomeSearch keys", () => {
     expect(add).not.toHaveBeenCalled();
   });
 
+  it("does not add a row held from older text while the new text waits", async () => {
+    const { wrapper } = await mount();
+    const input = wrapper.find("input");
+
+    await input.setValue("ore");
+    await input.trigger("keydown", { key: "Enter", metaKey: true });
+    await flushPromises();
+
+    expect(add).not.toHaveBeenCalled();
+  });
+
   it("clears the field when the page changes", async () => {
     const { router, wrapper } = await mount();
 
@@ -240,5 +251,60 @@ describe("HomeSearch keys", () => {
     await flushPromises();
 
     expect(wrapper.find("input").element.value).toBe("");
+  });
+
+  it("drops an answer still on its way when the page changes", async () => {
+    let answer: (results: { groups: SearchGroup[] }) => void = () => {};
+    const { router, wrapper } = await mount();
+    const input = wrapper.find("input");
+
+    catalogue.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          answer = resolve;
+        }),
+    );
+    await input.setValue("orb");
+    await vi.advanceTimersByTimeAsync(300);
+
+    await router.push({ name: "other" });
+    await flushPromises();
+    answer({ groups });
+    await flushPromises();
+
+    await input.setValue("orb");
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='home-search-searching']").exists()).toBe(
+      true,
+    );
+  });
+
+  it("does not search for text cleared while the search waited", async () => {
+    const { router, wrapper } = await mount();
+
+    catalogue.mockClear();
+    await wrapper.find("input").setValue("orb");
+    await router.push({ name: "other" });
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(300);
+
+    expect(catalogue).not.toHaveBeenCalled();
+  });
+
+  it("switches scope from a tab activated without a pointer", async () => {
+    const { wrapper } = await mount();
+
+    await wrapper
+      .findAll("[data-test='home-search-scope']")[1]
+      .trigger("click");
+    await flushPromises();
+
+    expect(mine).toHaveBeenCalledWith("or");
+
+    await wrapper
+      .findAll("[data-test='home-search-scope']")[0]
+      .trigger("click");
+    await flushPromises();
   });
 });

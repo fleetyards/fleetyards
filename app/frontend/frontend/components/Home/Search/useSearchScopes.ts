@@ -9,7 +9,7 @@ import {
   type SearchResults,
 } from "@/services/fyApi";
 
-export type SearchScope = {
+export interface SearchScope {
   key: string;
   labelKey: string;
   icon: Icon;
@@ -17,7 +17,7 @@ export type SearchScope = {
   placeholderKey?: string;
   fleetSlug?: string;
   search: (q: string) => Promise<SearchResults>;
-};
+}
 
 export const CATALOGUE_SCOPE = "catalogue";
 

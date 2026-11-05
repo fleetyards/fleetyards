@@ -1,20 +1,25 @@
-type SearchGroupConfig = {
+interface SearchGroupConfig {
   // What heads the group: the list's own name in the nav.
   labelKey: string;
   // Where the group lists everything, and the filter that narrows it by name.
   // Ships take the name filter over their wider header search because it is the
-  // one their filter form shows.
-  list: { name: string; filter?: string };
+  // one their filter form shows. `view` opens the page on the view that filter
+  // applies to.
+  list: { name: string; filter?: string; view?: Record<string, string> };
   // The list pages this group leads on. An item's own page keeps the ranking.
   listPages: string[];
-};
+}
 
 const group = (
   labelKey: string,
   name: string,
   filter: string | undefined,
   listPages: string[] = [name],
-): SearchGroupConfig => ({ labelKey, list: { name, filter }, listPages });
+  view?: Record<string, string>,
+): SearchGroupConfig => ({ labelKey, list: { name, filter, view }, listPages });
+
+// An inventory page opens on its stock, which no filter narrows; only the log is.
+const LEDGER_LOG = { tab: "log" };
 
 export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
   Model: group("nav.ships.index", "ships", "nameCont"),
@@ -48,6 +53,7 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "hangar-inventories",
     "nameCont",
     ["hangar-inventories", "hangar-inventory"],
+    LEDGER_LOG,
   ),
   Paint: group("nav.hangar.paints", "hangar-paints", "nameCont"),
   Flair: group("nav.hangar.flair", "hangar-flair", "nameCont"),
@@ -79,5 +85,7 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "nav.fleets.logistics.index",
     "fleet-logistics",
     "nameCont",
+    ["fleet-logistics"],
+    LEDGER_LOG,
   ),
 };

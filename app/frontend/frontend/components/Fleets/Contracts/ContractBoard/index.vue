@@ -122,12 +122,9 @@ const queryParams = computed(() => ({
   q: {
     // A title search looks past the board, as the site search that links here
     // does. The caller's own board stays their own.
-    ...(titleCont.value && !props.view.mine
-      ? { titleCont: titleCont.value }
-      : {
-          stateIn: props.view.states,
-          ...(titleCont.value ? { titleCont: titleCont.value } : {}),
-        }),
+    stateIn:
+      titleCont.value && !props.view.mine ? undefined : props.view.states,
+    titleCont: titleCont.value,
     ...sortParam.value,
   },
 }));

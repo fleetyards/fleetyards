@@ -9,7 +9,9 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type TitleQuery = { titleCont?: string };
+interface TitleQuery {
+  titleCont?: string;
+}
 
 const { t } = useI18n();
 

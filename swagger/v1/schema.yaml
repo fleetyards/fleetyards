@@ -48147,6 +48147,20 @@ components:
       - kind
       - flare
       title: SearchAppearance
+    SearchFleet:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: SearchFleet
     SearchGroup:
       type: object
       properties:
@@ -48182,6 +48196,8 @@ components:
           "$ref": "#/components/schemas/SearchAppearance"
         online:
           type: boolean
+        squadron:
+          "$ref": "#/components/schemas/SearchSquadron"
       additionalProperties: false
       required:
       - type
@@ -48196,22 +48212,24 @@ components:
           items:
             "$ref": "#/components/schemas/SearchGroup"
         fleet:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
-            logo:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-          required:
-          - name
-          - slug
+          "$ref": "#/components/schemas/SearchFleet"
       additionalProperties: false
       required:
       - groups
       title: SearchResults
+    SearchSquadron:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        icon:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - name
+      title: SearchSquadron
     SessionInput:
       type: object
       properties:

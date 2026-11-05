@@ -99,6 +99,40 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search shows a friend who hides their presence as offline" do
+    hidden = create(:user, username: "omnihidden", show_online_status: false)
+    shown = create(:user, username: "omnishown")
+    create(:friendship, :accepted, requester: @user, addressee: hidden)
+    create(:friendship, :accepted, requester: @user, addressee: shown)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "omni"} do
+      items = parsed_body["groups"].first["items"].index_by { |item| item["name"] }
+
+      assert_equal false, items["omnihidden"]["online"]
+      assert_equal false, items["omnishown"]["online"]
+    end
+  end
+
+  test "GET /hangar/search shows a hangar token no friends without the friends list's scopes" do
+    create(:friendship, :accepted, requester: @user, addressee: create(:user, username: "omnifriend"))
+    create(:vehicle, user: @user, model: create(:model, name: "Omni Hauler"))
+    token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["hangar:read"])
+
+    assert_api_response :get, 200, params: {q: "omni"}, headers: {"Authorization" => "Bearer #{token.token}"} do
+      assert_equal({"HangarVehicle" => ["Omni Hauler"]}, groups)
+    end
+  end
+
+  test "GET /hangar/search shows friends to a token carrying the friends list's scopes" do
+    create(:friendship, :accepted, requester: @user, addressee: create(:user, username: "omnifriend"))
+    token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["hangar:read", "public"])
+
+    assert_api_response :get, 200, params: {q: "omni"}, headers: {"Authorization" => "Bearer #{token.token}"} do
+      assert_equal({"Friend" => ["omnifriend"]}, groups)
+    end
+  end
+
   test "GET /hangar/search says when a list has more than it offers" do
     6.times { |n| create(:hangar_pledge_item, user: @user, kind: "paint", name: "Omni Paint #{n}") }
     sign_in @user

@@ -194,7 +194,15 @@ describe("HomeSearch", () => {
       {
         type: "Friend",
         hasMore: false,
-        items: [{ type: "User", name: "omni", slug: "omni", online: true }],
+        items: [
+          {
+            type: "User",
+            name: "omni",
+            slug: "omni",
+            online: true,
+            squadron: { name: "Night Wing", color: "#123456" },
+          },
+        ],
       },
     ];
     const wrapper = await mountWithDefaults(Component, {
@@ -206,6 +214,9 @@ describe("HomeSearch", () => {
     expect(wrapper.find("[data-test='search-result-avatar']").exists()).toBe(
       true,
     );
+    expect(
+      wrapper.find("[data-test='search-result-squadron']").text(),
+    ).toContain("Night Wing");
   });
 
   it("says which fleet answered", async () => {

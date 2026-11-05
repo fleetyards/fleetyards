@@ -14,4 +14,11 @@ describe("SEARCH_GROUPS", () => {
       });
     },
   );
+
+  it.each(["InventoryItem", "FleetInventoryItem"])(
+    "%s opens on the log, the view its filter narrows",
+    (type) => {
+      expect(SEARCH_GROUPS[type].list.view).toEqual({ tab: "log" });
+    },
+  );
 });

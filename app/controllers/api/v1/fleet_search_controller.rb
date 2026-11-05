@@ -35,7 +35,7 @@ module Api
         ScopedSearch::Source.new(
           type: "FleetMembership",
           scope: @fleet.fleet_memberships.kept.accepted.joins(:user)
-            .preload(user: {avatar_attachment: :blob}, fleet_squadron_memberships: :fleet_squadron)
+            .preload(user: {avatar_attachment: :blob}, fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}})
             .order("users.username"),
           filter: :user_username_or_user_display_name_or_nickname_cont,
           item: lambda { |member|
@@ -43,16 +43,13 @@ module Api
               type: "FleetMembership",
               name: member.user.username,
               slug: member.user.username,
-              detail: member_detail(member),
+              detail: member.nickname.presence,
               image: member.user.avatar.attached? ? member.user.avatar : nil,
-              online: online_status_for(member.user)
+              online: online_status_for(member.user),
+              squadron: member_squadron(member)
             )
           }
         )
-      end
-
-      private def member_detail(member)
-        [member.nickname.presence, member_squadron(member)&.name].compact.join(" · ").presence
       end
 
       # Their squadron rather than whichever team sorts first: a member holds at

@@ -143,7 +143,8 @@ const searchNow = async (text: string) => {
   active.value = steps.value.length ? 0 : -1;
 };
 
-const runSearch = useDebounceFn(searchNow, 200);
+// Whatever the field holds once the wait is over: it may have been cleared.
+const runSearch = useDebounceFn(() => searchNow(query.value), 200);
 
 // The answer on screen is the previous scope's, and until the new one lands the
 // keys must not act on it.
@@ -156,6 +157,7 @@ watch(
 );
 
 const clear = () => {
+  latestSearch++;
   searchQuery.value = undefined;
   forgetAnswer();
 };
@@ -167,7 +169,7 @@ const onInput = (value?: string | number | null) => {
   searchQuery.value =
     value === undefined || value === null ? undefined : String(value);
   open.value = true;
-  void runSearch(searchQuery.value ?? "");
+  void runSearch();
 };
 
 const listRoute = (group: SearchGroup, text?: string) => {
@@ -179,7 +181,7 @@ const listRoute = (group: SearchGroup, text?: string) => {
   return {
     name: list.name,
     params: fleetSlug ? { slug: fleetSlug } : {},
-    query: list.filter ? { [list.filter]: text } : {},
+    query: { ...list.view, ...(list.filter ? { [list.filter]: text } : {}) },
   };
 };
 
@@ -230,7 +232,10 @@ const submit = async () => {
   if (step) await pick(step);
 };
 
+// Until the field's text has its answer, the rows held are for older text.
 const activeResult = computed(() => {
+  if (!answered.value) return undefined;
+
   const step = steps.value[active.value];
 
   return step && !("items" in step) ? step : undefined;
@@ -331,11 +336,15 @@ const field = useTemplateRef<HTMLElement>("field");
 const { bottom: fieldBottom } = useElementBounding(field);
 const { height: windowHeight } = useWindowSize();
 
-const popoverStyle = computed(() => ({
-  maxHeight: `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
-  "--scope-count": scopes.value.length,
-  "--popover-max-height": `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
-}));
+const popoverStyle = computed(() => {
+  const maxHeight = `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`;
+
+  return {
+    maxHeight,
+    "--scope-count": scopes.value.length,
+    "--popover-max-height": maxHeight,
+  };
+});
 </script>
 
 <template>
@@ -396,7 +405,8 @@ const popoverStyle = computed(() => ({
             :aria-label="t(option.labelKey)"
             v-tooltip.right="t(option.labelKey)"
             data-test="home-search-scope"
-            @mousedown.prevent="selectScope(option.key)"
+            @mousedown.prevent
+            @click="selectScope(option.key)"
           >
             <AppIcon :icon="option.icon" aria-hidden="true" />
           </button>
