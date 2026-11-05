@@ -92,13 +92,17 @@ const timezoneOptions = TIMEZONE_OPTIONS.map((timezone) => ({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <FormInput
-      v-model="form.search"
-      name="directorySearch"
-      translation-key="filters.fleetDirectory.search"
-      :no-label="true"
-      :clearable="true"
-    />
+    <!-- Above the list rather than in this panel, which starts collapsed: a
+         fleet to join is found by name, and no site search covers fleets. -->
+    <Teleport defer to="#fleet-directory-search">
+      <FormInput
+        v-model="form.search"
+        name="directorySearch"
+        translation-key="filters.fleetDirectory.search"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
 
     <FormInput
       v-model="form.memberCountGteq"

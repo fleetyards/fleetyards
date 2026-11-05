@@ -74,6 +74,7 @@ const openDisplayOptionsModal = () => {
 <template>
   <Heading hero mobile-hidden>{{ t("headlines.fleets.directory") }}</Heading>
   <p class="text-muted">{{ t("texts.fleets.directory") }}</p>
+  <div id="fleet-directory-search" class="fleet-directory-search" />
 
   <FilteredList
     name="fleet-directory"
@@ -140,3 +141,10 @@ const openDisplayOptionsModal = () => {
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.fleet-directory-search {
+  max-width: 400px;
+  margin-bottom: 15px;
+}
+</style>
