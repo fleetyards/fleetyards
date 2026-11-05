@@ -20,3 +20,13 @@
   border-radius: var(--radius-control, 8px);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
+
+.popover__trigger--fill {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+.popover--passive {
+  pointer-events: none;
+}

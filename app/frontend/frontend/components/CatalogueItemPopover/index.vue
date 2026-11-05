@@ -67,6 +67,10 @@ type Props = {
   tapThrough?: boolean;
   // A crafted part: the card adds the stats its recipe and grades give.
   crafted?: InventoryCraftedRef;
+  // The trigger is a card in a picker's grid, which is there to be picked: the
+  // card is only to read, the pointer goes through it to the cards it covers, and
+  // a tap stays the picker's.
+  pickerCell?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -77,6 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
   focusable: true,
   tapThrough: false,
   crafted: undefined,
+  pickerCell: false,
 });
 
 // A crafted part's card opens the catalogue page with its recipe and grades
@@ -92,6 +97,10 @@ const route = computed(() => {
     ? target
     : { ...target, query: craftedRouteQuery(props.crafted) };
 });
+
+const cardRoute = computed(() =>
+  props.pickerCell ? false : (route.value ?? false),
+);
 
 const slug = computed(() => props.item.slug || "");
 const fleetSlug = computed(() => props.item.fleetSlug || "");
@@ -300,7 +309,7 @@ const hasCard = computed(
     (!!props.record || !!route.value),
 );
 
-const linked = computed(() => props.link && !!route.value);
+const linked = computed(() => props.link && !props.pickerCell && !!route.value);
 
 const label = computed(() => props.item.name || props.linkLabel || "");
 </script>
@@ -310,7 +319,9 @@ const label = computed(() => props.item.name || props.linkLabel || "");
     v-if="hasCard"
     :label="label"
     :focusable="focusable"
-    :tap-through="tapThrough"
+    :tap-through="tapThrough || pickerCell"
+    :passive="pickerCell"
+    :fill="pickerCell"
     @open="requested = true"
   >
     <router-link
@@ -328,7 +339,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       <ComponentStatsCard
         v-if="isComponent"
         compact
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :component="craftedComponent ?? component"
         :stock="craftedComponent ? component : undefined"
@@ -338,7 +349,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       <EquipmentStatsCard
         v-else-if="isEquipment"
         compact
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :equipment="craftedEquipment ?? equipment"
         :stock="craftedEquipment ? equipment : undefined"
@@ -347,7 +358,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <ShipStatsCard
         v-else-if="isShip"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :model="ship"
         :loading="shipLoading"
@@ -355,7 +366,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <BlueprintStatsCard
         v-else-if="isBlueprint"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :blueprint="blueprint"
         :loading="blueprintLoading"
@@ -363,7 +374,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <MissionStatsCard
         v-else-if="isMission"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :mission="mission"
         :loading="missionLoading"
@@ -371,7 +382,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <ContractStatsCard
         v-else-if="isContract"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :contract="contract"
         :loading="contractLoading"
@@ -379,7 +390,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <EventStatsCard
         v-else-if="isEvent"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :event="event"
         :loading="eventLoading"
@@ -387,7 +398,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <UserStatsCard
         v-else-if="isUser"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :user="user"
         :loading="userLoading"
@@ -395,7 +406,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       />
       <LocationStatsCard
         v-else-if="isLocation"
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :location="location"
         :loading="locationLoading"
@@ -404,7 +415,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
       <CommodityStatsCard
         v-else
         compact
-        :to="route ?? false"
+        :to="cardRoute"
         :name="label"
         :commodity="commodity"
         :loading="commodityLoading"

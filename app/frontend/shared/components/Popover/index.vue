@@ -28,6 +28,12 @@ type Props = {
   // Leaves a tap to the control around the trigger, for one whose own action
   // the card cannot offer: picking a row. Touch then has no card here.
   tapThrough?: boolean;
+  // A card to read and nothing more: the pointer goes through it, for a trigger
+  // in a grid whose card would otherwise block the neighbours it covers.
+  passive?: boolean;
+  // The trigger fills the grid cell it sits in, and hands that size on to its
+  // content.
+  fill?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +43,8 @@ const props = withDefaults(defineProps<Props>(), {
   closeDelay: 150,
   focusable: true,
   tapThrough: false,
+  passive: false,
+  fill: false,
 });
 
 const emit = defineEmits<{ open: []; close: [] }>();
@@ -359,7 +367,7 @@ defineExpose({ open, show, close });
     v-bind="$attrs"
     ref="trigger"
     class="popover__trigger"
-    :class="{ 'popover__trigger--open': open }"
+    :class="{ 'popover__trigger--open': open, 'popover__trigger--fill': fill }"
     :tabindex="ownTabindex"
     aria-haspopup="dialog"
     :aria-expanded="open"
@@ -381,7 +389,7 @@ defineExpose({ open, show, close });
       :id="id"
       ref="panel"
       class="popover"
-      :class="`popover--${placed}`"
+      :class="[`popover--${placed}`, { 'popover--passive': passive }]"
       :style="{
         top: `${position.top}px`,
         left: `${position.left}px`,
