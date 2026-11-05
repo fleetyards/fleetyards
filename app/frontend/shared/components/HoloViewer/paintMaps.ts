@@ -46,7 +46,11 @@ export const preparePaintMap = (
 // cover the hull. Without a sheet the export's own stays: the maker's lettering.
 export const applyStencilMap = (scene: Group, map?: Texture) => {
   partMaterials(scene, STENCIL_SUFFIX).forEach((material) => {
-    const own = (material.userData.ownStencil ??= material.map) as Texture | null;
+    // Asked for by name: an own map of null has to stay remembered as null.
+    if (!("ownStencil" in material.userData)) {
+      material.userData.ownStencil = material.map;
+    }
+    const own = material.userData.ownStencil as Texture | null;
 
     if (map) preparePaintMap(map, own, SRGBColorSpace);
 

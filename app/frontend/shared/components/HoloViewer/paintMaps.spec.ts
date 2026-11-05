@@ -80,6 +80,15 @@ describe("applyStencilMap", () => {
     expect(stencil.map).toBe(own);
   });
 
+  it("goes back to no sheet on an export whose stencil has none", () => {
+    const { scene, stencil } = holo(null);
+
+    applyStencilMap(scene, new Texture());
+    applyStencilMap(scene);
+
+    expect(stencil.map).toBeNull();
+  });
+
   it("keeps the export's own sheet for a paint without one", () => {
     const { scene, stencil, own } = holo();
 
