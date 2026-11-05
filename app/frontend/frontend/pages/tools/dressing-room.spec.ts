@@ -246,6 +246,33 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>["wrapper"]) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("ToolsDressingRoomPage", () => {
+  describe("the stage's actions on a touch screen", () => {
+    const TAPPED = "dressing-room__stage--tapped";
+
+    it("are revealed by a tap on the stage and hidden by one elsewhere", async () => {
+      const { wrapper } = await mount();
+      const stage = wrapper.find('[data-test="dressing-room-stage"]');
+
+      expect(stage.classes()).not.toContain(TAPPED);
+
+      await stage.trigger("pointerdown", { pointerType: "touch" });
+      expect(stage.classes()).toContain(TAPPED);
+
+      window.dispatchEvent(new Event("pointerdown"));
+      document.body.click();
+      await flushPromises();
+      expect(stage.classes()).not.toContain(TAPPED);
+    });
+
+    it("leave a mouse to hover", async () => {
+      const { wrapper } = await mount();
+      const stage = wrapper.find('[data-test="dressing-room-stage"]');
+
+      await stage.trigger("pointerdown", { pointerType: "mouse" });
+      expect(stage.classes()).not.toContain(TAPPED);
+    });
+  });
+
   it("dresses the body in the rigged pieces the address names, standing idle", async () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 

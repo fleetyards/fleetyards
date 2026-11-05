@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useQueries } from "@tanstack/vue-query";
+import { onClickOutside } from "@vueuse/core";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -93,6 +94,19 @@ const HOLO_AZIMUTH = 180;
 const HOLO_ELEVATION = 8;
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
+
+const stage = ref<HTMLElement>();
+const stageTapped = ref(false);
+
+// Not every touch browser keeps :hover after a tap, and without it the stage's
+// actions could not be reached at all.
+const handleStagePointerDown = (event: PointerEvent) => {
+  if (event.pointerType === "touch") stageTapped.value = true;
+};
+
+onClickOutside(stage, () => {
+  stageTapped.value = false;
+});
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -767,7 +781,13 @@ const copyShareLink = () => {
     <p class="dressing-room-page__lead">{{ t("dressingRoom.lead") }}</p>
 
     <div class="dressing-room">
-      <div class="dressing-room__stage" data-test="dressing-room-stage">
+      <div
+        ref="stage"
+        class="dressing-room__stage"
+        :class="{ 'dressing-room__stage--tapped': stageTapped }"
+        data-test="dressing-room-stage"
+        @pointerdown.capture="handleStagePointerDown"
+      >
         <HoloViewer
           v-if="model"
           ref="viewer"
@@ -1069,20 +1089,18 @@ const copyShareLink = () => {
   right: 8px;
   display: flex;
   gap: 8px;
+  // Out of the figure's way until the stage is pointed at or tapped. Hidden
+  // buttons must not take taps: an unseen reset would wipe the outfit.
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
 }
 
-// Out of the figure's way until the stage is pointed at. A touch screen has no
-// hover to reveal them with, so they stay there.
-@media (hover: hover) {
-  .dressing-room__actions {
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-
-  .dressing-room__stage:hover .dressing-room__actions,
-  .dressing-room__actions:focus-within {
-    opacity: 1;
-  }
+.dressing-room__stage:hover .dressing-room__actions,
+.dressing-room__stage--tapped .dressing-room__actions,
+.dressing-room__actions:focus-within {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .dressing-room__side {
