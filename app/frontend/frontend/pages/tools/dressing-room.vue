@@ -994,11 +994,6 @@ const copyShareLink = () => {
 
 .dressing-room {
   display: grid;
-  grid-template-areas:
-    "stage"
-    "pieces"
-    "gear"
-    "outfit";
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
@@ -1018,7 +1013,6 @@ const copyShareLink = () => {
 // empty either side of it.
 .dressing-room__stage {
   position: relative;
-  grid-area: stage;
   height: min(70vh, 48rem);
   min-height: 24rem;
   border-radius: 4px;
@@ -1038,6 +1032,7 @@ const copyShareLink = () => {
     );
 
   @media (min-width: $desktop-breakpoint) {
+    grid-area: stage;
     height: min(78vh, 56rem);
     aspect-ratio: 3 / 4;
   }
@@ -1047,12 +1042,15 @@ const copyShareLink = () => {
 // column, and long item names here must not.
 .dressing-room__gear {
   display: grid;
-  grid-area: gear;
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: 1.25rem;
   align-items: start;
   width: 0;
   min-width: 100%;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: gear;
+  }
 }
 
 .dressing-room__gear-column {
@@ -1062,11 +1060,15 @@ const copyShareLink = () => {
 }
 
 .dressing-room__side--pieces {
-  grid-area: pieces;
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: pieces;
+  }
 }
 
 .dressing-room__side--outfit {
-  grid-area: outfit;
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: outfit;
+  }
 }
 
 .dressing-room__empty {
