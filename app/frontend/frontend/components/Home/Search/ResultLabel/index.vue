@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import AppIcon from "@/shared/components/AppIcon/index.vue";
+import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
@@ -25,7 +26,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const image = computed(
-  () => props.result.image?.smallUrl || props.result.image?.url,
+  () =>
+    props.result.image?.smallUrl ||
+    props.result.image?.url ||
+    props.result.imageUrl,
 );
 
 // A place's picture fills the frame. Everything else -- a ship's angled
@@ -33,6 +37,10 @@ const image = computed(
 const cover = computed(() => props.result.type === "Location");
 
 const appearance = computed(() => props.result.appearance);
+
+const person = computed(() =>
+  ["User", "FleetMembership"].includes(props.result.type),
+);
 
 // A body and a star are drawn, as the starmap draws them, whether or not a
 // picture of them exists; a system is drawn as its star.
@@ -87,6 +95,17 @@ const nameParts = computed(() => {
         :style="sun"
       />
     </span>
+    <MemberAvatar
+      v-else-if="person"
+      :member="{
+        avatar: result.image,
+        squadrons: result.squadron ? [result.squadron] : [],
+      }"
+      :online="result.online"
+      show-squadrons
+      aria-hidden="true"
+      data-test="search-result-avatar"
+    />
     <BlueprintPlan
       v-else-if="result.type === 'Blueprint' && result.image?.smallUrl"
       :image="result.image"
@@ -131,7 +150,15 @@ const nameParts = computed(() => {
           </template>
         </template>
       </span>
-      <span v-if="result.detail" class="search-result-label__detail">
+      <span
+        v-if="result.squadron"
+        class="search-result-label__squadron"
+        data-test="search-result-squadron"
+      >
+        {{ result.squadron.name }}
+        <template v-if="result.detail">· {{ result.detail }}</template>
+      </span>
+      <span v-else-if="result.detail" class="search-result-label__detail">
         {{ result.detail }}
       </span>
     </span>
@@ -250,5 +277,10 @@ const nameParts = computed(() => {
   line-height: 1.35;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.search-result-label__squadron {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.75rem;
 }
 </style>

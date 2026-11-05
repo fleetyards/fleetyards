@@ -15,6 +15,31 @@ import { CATALOGUE_TENANTS, isTenantActive } from "./catalogue/tenants";
 describe("frontend routes", () => {
   const router = createRouter({ history: createMemoryHistory(), routes });
 
+  it.each([
+    "home",
+    "login",
+    "signup",
+    "request-password",
+    "change-password",
+    "oauth-authorize",
+    "share",
+    "confirm",
+  ])("hides the header search on %s", (name) => {
+    expect(
+      router.getRoutes().find((route) => route.name === name)?.meta,
+    ).toEqual(expect.objectContaining({ hideHeaderSearch: true }));
+  });
+
+  it.each(["ships", "hangar", "stats", "notifications"])(
+    "keeps the header search on %s",
+    (name) => {
+      expect(
+        router.getRoutes().find((route) => route.name === name)?.meta
+          .hideHeaderSearch,
+      ).toBeUndefined();
+    },
+  );
+
   // Vehicle pages answer only their owner.
   beforeEach(() => {
     setActivePinia(createPinia());

@@ -9,7 +9,6 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetDirectoryFilters } from "@/frontend/composables/useFleetDirectoryFilters";
 import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
@@ -93,11 +92,13 @@ const timezoneOptions = TIMEZONE_OPTIONS.map((timezone) => ({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#header-left">
+    <!-- Above the list rather than in this panel, which starts collapsed: a
+         fleet to join is found by name, and no site search covers fleets. -->
+    <Teleport defer to="#fleet-directory-search">
       <FormInput
         v-model="form.search"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
+        name="directorySearch"
+        inline
         translation-key="filters.fleetDirectory.search"
         :no-label="true"
         :clearable="true"

@@ -18,6 +18,9 @@ class Api::V1::FleetsEventsIndexTest < ActionDispatch::IntegrationTest
       parameter name: :upcoming, in: :query, schema: {type: :boolean}, required: false
       parameter name: :past, in: :query, schema: {type: :boolean}, required: false
       parameter name: :archived, in: :query, schema: {type: :boolean}, required: false
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetEventQuery,
+        style: :deepObject, explode: true, required: false
 
       security [
         {SessionCookie: []},

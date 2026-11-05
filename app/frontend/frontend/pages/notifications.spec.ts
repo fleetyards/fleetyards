@@ -113,10 +113,9 @@ afterEach(() => {
 });
 
 describe("NotificationsPage on a phone", () => {
-  it("shows the search in the header and no checkboxes until a row is held", async () => {
+  it("keeps the header free of selection controls and shows no checkboxes until a row is held", async () => {
     const wrapper = await mount();
 
-    expect(headerLeft().querySelector('input[name="search"]')).not.toBeNull();
     expect(headerLeft().querySelector('[data-test="bulk-exit"]')).toBeNull();
     expect(wrapper.find('[data-test="notification-checkbox"]').exists()).toBe(
       false,
@@ -128,7 +127,6 @@ describe("NotificationsPage on a phone", () => {
 
     await hold(wrapper, 0);
 
-    expect(headerLeft().querySelector('input[name="search"]')).toBeNull();
     expect(
       headerLeft().querySelector('[data-test="bulk-exit"]'),
     ).not.toBeNull();
@@ -158,7 +156,7 @@ describe("NotificationsPage on a phone", () => {
     expect(wrapper.find(".notifications--reading").exists()).toBe(false);
   });
 
-  it("gives the header back to the search when the selection is cleared", async () => {
+  it("gives the header back when the selection is cleared", async () => {
     const wrapper = await mount();
 
     await hold(wrapper, 0);
@@ -167,7 +165,6 @@ describe("NotificationsPage on a phone", () => {
     ).click();
     await flushPromises();
 
-    expect(headerLeft().querySelector('input[name="search"]')).not.toBeNull();
     expect(headerLeft().querySelector('[data-test="bulk-exit"]')).toBeNull();
     expect(
       document.querySelector('[data-test="page-actions-menu"]'),

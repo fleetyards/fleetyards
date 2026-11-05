@@ -81,7 +81,7 @@ const sortFields = useEquipmentSortFields(() => equipment.value?.items || []);
     </template>
 
     <template #filter>
-      <FilterForm hide-quicksearch />
+      <FilterForm />
     </template>
 
     <template #pagination-top>

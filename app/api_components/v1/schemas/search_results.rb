@@ -10,7 +10,9 @@ module V1
       schema({
         type: :object,
         properties: {
-          groups: {type: :array, items: ::V1::Schemas::SearchGroup}
+          groups: {type: :array, items: ::V1::Schemas::SearchGroup},
+          # Present where the search covered one fleet.
+          fleet: ::V1::Schemas::SearchFleet
         },
         additionalProperties: false,
         required: %w[groups]

@@ -84,7 +84,7 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
     </template>
 
     <template #filter>
-      <FilterForm hide-quicksearch />
+      <FilterForm />
     </template>
 
     <template #pagination-top>

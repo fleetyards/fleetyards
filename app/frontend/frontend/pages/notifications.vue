@@ -491,7 +491,7 @@ const destroySelected = () =>
     hide-empty
   >
     <template #filter>
-      <FilterForm :hide-quicksearch="selecting" />
+      <FilterForm />
     </template>
     <template #actions-left>
       <BtnGroup segmented>

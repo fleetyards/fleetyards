@@ -741,7 +741,7 @@ const { activeFilters } = useShipFilterSummary(() =>
         download-name="my-hangar-fleetchart"
       >
         <template #filter>
-          <FilterForm hide-quicksearch />
+          <FilterForm />
         </template>
         <template #pagination>
           <Paginator

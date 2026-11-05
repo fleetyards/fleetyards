@@ -21,6 +21,7 @@ const router = async () => {
       { path: "/ships", name: "ships", component: blank },
       { path: "/components", name: "components", component: blank },
       { path: "/places", name: "locations-places", component: blank },
+      { path: "/hangar/paints", name: "hangar-paints", component: blank },
       { path: "/components/:slug", name: "component", component: blank },
       { path: "/locations/:slug", name: "location", component: blank },
     ],
@@ -149,6 +150,89 @@ describe("HomeSearch", () => {
 
       expect(instance.currentRoute.value.name).toBe("locations-places");
     });
+  });
+
+  it("opens an item with no page of its own on its list, narrowed to it", async () => {
+    groups = [
+      {
+        type: "Paint",
+        hasMore: false,
+        items: [{ type: "Paint", name: "Akuma", slug: "1" }],
+      },
+    ];
+    const instance = await router();
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [instance],
+    });
+
+    await typeInto(wrapper, "aku");
+    await wrapper.find("[data-test='home-search-result']").trigger("mousedown");
+    await flushPromises();
+
+    expect(instance.currentRoute.value.name).toBe("hangar-paints");
+    expect(instance.currentRoute.value.query).toEqual({ nameCont: "Akuma" });
+  });
+
+  it("says when the search failed rather than that nothing matched", async () => {
+    vi.mocked(search).mockRejectedValueOnce(new Error("offline"));
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [await router()],
+    });
+
+    await typeInto(wrapper, "port");
+
+    expect(wrapper.find("[data-test='home-search-failed']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='home-search-empty']").exists()).toBe(
+      false,
+    );
+  });
+
+  it("draws a person with their avatar and presence", async () => {
+    groups = [
+      {
+        type: "Friend",
+        hasMore: false,
+        items: [
+          {
+            type: "User",
+            name: "omni",
+            slug: "omni",
+            online: true,
+            squadron: { name: "Night Wing", color: "#123456" },
+          },
+        ],
+      },
+    ];
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [await router()],
+    });
+
+    await typeInto(wrapper, "omni");
+
+    expect(wrapper.find("[data-test='search-result-avatar']").exists()).toBe(
+      true,
+    );
+    expect(
+      wrapper.find("[data-test='search-result-squadron']").text(),
+    ).toContain("Night Wing");
+  });
+
+  it("says which fleet answered", async () => {
+    vi.mocked(search).mockResolvedValueOnce({
+      groups,
+      fleet: { name: "Deep Diggers", slug: "diggers" },
+    });
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [await router()],
+    });
+
+    await typeInto(wrapper, "port");
+
+    expect(wrapper.find("[data-test='home-search-fleet']").text()).toContain(
+      "Deep Diggers",
+    );
   });
 
   describe("on a catalogue's pages", () => {

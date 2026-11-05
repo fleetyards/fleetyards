@@ -7,14 +7,17 @@ export default {
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
-import type { FleetMember } from "@/services/fyApi";
+import type { FleetMember, SearchSquadron } from "@/services/fyApi";
 import { useVerifiedOrgLabel } from "@/frontend/composables/useVerifiedOrgLabel";
 
 type Props = {
-  member: Pick<
-    FleetMember,
-    "avatar" | "squadrons" | "verifiedOrgSid" | "verificationCheckedAt"
-  >;
+  member: Partial<
+    Pick<FleetMember, "avatar" | "verifiedOrgSid" | "verificationCheckedAt">
+  > & {
+    squadrons?: (
+      NonNullable<FleetMember["squadrons"]>[number] | SearchSquadron
+    )[];
+  };
   online?: boolean;
   showSquadrons?: boolean;
   // A roster row's bubble, or a card's: the larger one draws a sharper image
@@ -41,7 +44,7 @@ const orgBadgeLabel = computed(() => verifiedOrgLabel(props.member));
 const squadronNames = computed(() =>
   (props.member.squadrons ?? [])
     .map((squadron) =>
-      squadron.role
+      "role" in squadron && squadron.role
         ? `${squadron.name} · ${squadron.role.name}`
         : squadron.name,
     )

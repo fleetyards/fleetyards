@@ -11,6 +11,7 @@ module Api
     # so a join answers the same question with no sync job to fall out of step.
     class FleetBlueprintsController < ::Api::BaseController
       include BlueprintFiltersConcern
+      include FleetBlueprintScoped
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
@@ -44,16 +45,6 @@ module Api
 
         @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
         @wanters = members_for(@blueprints, UserBlueprint.wanted)
-      end
-
-      # The members who let this fleet see what they hold.
-      #
-      # `blueprints_filter_all` rather than "not hide", so a position added
-      # later has to be opted into rather than silently counting as sharing.
-      private def sharing_memberships
-        @sharing_memberships ||= @fleet.fleet_memberships.kept
-          .where(aasm_state: "accepted")
-          .blueprints_filter_all
       end
 
       # Who holds -- or wants -- each of these recipes, keyed by blueprint.

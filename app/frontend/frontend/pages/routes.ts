@@ -20,6 +20,7 @@ const VisualTestsRoutes =
           path: "/visual-tests/",
           component: () => import("@/frontend/pages/visual-tests.vue"),
           children: visualTestsRoutes,
+          meta: { hideHeaderSearch: true },
           // Named rather than the array's first entry: that was whichever
           // page happened to be added at the top, and the nav opens on
           // typography.
@@ -34,6 +35,7 @@ export const routes: RouteRecordRaw[] = [
     name: "home",
     component: () => import("@/frontend/pages/index.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "home",
       nav: "main",
     },
@@ -64,6 +66,7 @@ export const routes: RouteRecordRaw[] = [
     name: "share",
     component: () => import("@/frontend/pages/share.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "share",
     },
   },
@@ -285,6 +288,7 @@ export const routes: RouteRecordRaw[] = [
     name: "signup",
     component: () => import("@/frontend/pages/signup.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "signUp",
       nav: "sub",
     },
@@ -294,6 +298,7 @@ export const routes: RouteRecordRaw[] = [
     name: "signup-auth-callback",
     component: () => import("@/frontend/pages/auth-callback.vue"),
     meta: {
+      hideHeaderSearch: true,
       needsAuthentication: true,
     },
   },
@@ -302,6 +307,7 @@ export const routes: RouteRecordRaw[] = [
     name: "login",
     component: () => import("@/frontend/pages/login.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "login",
       needsNoAuthentication: true,
       nav: "sub",
@@ -312,6 +318,7 @@ export const routes: RouteRecordRaw[] = [
     name: "oauth-authorize",
     component: () => import("@/frontend/pages/oauth/authorize.vue"),
     meta: {
+      hideHeaderSearch: true,
       needsAuthentication: true,
     },
   },
@@ -320,6 +327,7 @@ export const routes: RouteRecordRaw[] = [
     name: "request-password",
     component: () => import("@/frontend/pages/request-password.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "requestPassword",
     },
   },
@@ -328,6 +336,7 @@ export const routes: RouteRecordRaw[] = [
     name: "change-password",
     component: () => import("@/frontend/pages/change-password.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "changePassword",
     },
   },
@@ -335,6 +344,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/confirm/:token/",
     name: "confirm",
     component: () => import("@/frontend/pages/confirm.vue"),
+    meta: { hideHeaderSearch: true },
   },
   ...VisualTestsRoutes,
   {

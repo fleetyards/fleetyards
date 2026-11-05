@@ -8,6 +8,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get "resource-access-catalog", to: "fleet_resource_access_catalog#index"
   end
 
+  get "search", to: "fleet_search#index"
+
   resources :fleet_vehicles, path: "vehicles", only: %i[index] do
     collection do
       get :export

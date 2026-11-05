@@ -14,7 +14,15 @@
         "searchNoResultsHint": "Prueba con una nave, un componente, una misión o un lugar.",
         "searchShowMore": "Mostrar más",
         "searching": "Buscando…",
+        "searchFailed": "La búsqueda ha fallado. Inténtalo de nuevo.",
+        "searchInCatalogue": "Buscar en el catálogo",
+        "searchScopes": {
+          "mine": "Lo mío",
+          "fleet": "Flota"
+        },
         "searchKeys": {
+          "add": "para añadir",
+          "scope": "para cambiar",
           "move": "para moverte",
           "open": "para abrir",
           "close": "para cerrar"

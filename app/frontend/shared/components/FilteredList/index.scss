@@ -41,6 +41,16 @@
     }
   }
 
+  // Wraps before it squeezes: on a phone the sort takes a row of its own.
+  &__sort-start {
+    flex: 1 1 260px;
+    max-width: 400px;
+
+    + .filtered-list__sort {
+      margin-left: auto;
+    }
+  }
+
   // Beside the filter button that opens them, in whatever the toolbar's
   // buttons leave over: a zero basis never wraps the row, the chips that do not
   // fit go into the overflow chip instead. Centred as a block rather than made

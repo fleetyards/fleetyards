@@ -8,14 +8,15 @@ import {
 } from "@/frontend/composables/useShipFilterSummary";
 import { useFleetRoles } from "@/services/fyApi";
 
-// Each has a control of its own on the page -- the search in the header, the
-// squadrons in the toolbar -- so a chip would only say it twice.
-const SHOWN_ELSEWHERE = ["searchCont", "squadronSlugIn"];
+// A control of its own on the page -- the squadrons in the toolbar -- so a chip
+// would only say it twice.
+const SHOWN_ELSEWHERE = ["squadronSlugIn"];
 
 // A box that is ticked or not: its label is the whole of what it filters by.
 const TOGGLES = ["withoutRsiHandle", "withoutDiscord", "withoutSquadron"];
 
 const LABELS: Record<string, string> = {
+  searchCont: "labels.filters.fleets.members.search",
   roleIn: "labels.filters.fleets.members.role",
   stateIn: "labels.filters.fleets.members.state",
   acceptedAt: "labels.fleet.members.joined",

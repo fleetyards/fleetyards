@@ -431,6 +431,9 @@ const openFilters = () => {
                control, not a result. It stays put while the list loads, while
                it is empty, and while it refetches under a new order. -->
           <div class="filtered-list__sort-row">
+            <div v-if="slots['sort-start']" class="filtered-list__sort-start">
+              <slot name="sort-start" />
+            </div>
             <div class="filtered-list__sort">
               <slot name="sort" />
             </div>

@@ -14,7 +14,15 @@
         "searchNoResultsHint": "Essayez un vaisseau, un composant, une mission ou un lieu.",
         "searchShowMore": "Afficher plus",
         "searching": "Recherche…",
+        "searchFailed": "La recherche a échoué. Veuillez réessayer.",
+        "searchInCatalogue": "Rechercher dans le catalogue",
+        "searchScopes": {
+          "mine": "Mes affaires",
+          "fleet": "Flotte"
+        },
         "searchKeys": {
+          "add": "pour ajouter",
+          "scope": "pour changer",
           "move": "pour naviguer",
           "open": "pour ouvrir",
           "close": "pour fermer"

@@ -8,6 +8,8 @@ json.groups @groups do |group|
     json.name result.name
     json.slug result.slug
     json.detail result.detail
+    json.online result.online
+    json.image_url result.image_url
     if result.appearance
       json.appearance do
         json.kind result.appearance.kind
@@ -16,9 +18,32 @@ json.groups @groups do |group|
         json.flare result.appearance.flare
       end
     end
+    if result.squadron
+      json.squadron do
+        json.name result.squadron.name
+        json.color result.squadron.color
+        if result.squadron.icon.attached?
+          json.icon do
+            json.partial! "api/v1/shared/file", record: result.squadron, attr: :icon
+          end
+        end
+      end
+    end
     if result.image
       json.image do
         json.partial! "api/v1/shared/file", record: result.image.record, attr: result.image.name
+      end
+    end
+  end
+end
+
+if @search_fleet
+  json.fleet do
+    json.name @search_fleet.name
+    json.slug @search_fleet.slug
+    if @search_fleet.logo.attached?
+      json.logo do
+        json.partial! "api/v1/shared/file", record: @search_fleet, attr: :logo
       end
     end
   end

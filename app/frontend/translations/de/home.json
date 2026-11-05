@@ -14,7 +14,15 @@
         "searchNoResultsHint": "Versuch es mit einem Schiff, einer Komponente, einer Mission oder einem Ort.",
         "searchShowMore": "Mehr anzeigen",
         "searching": "Suche läuft…",
+        "searchFailed": "Die Suche ist fehlgeschlagen. Bitte versuch es erneut.",
+        "searchInCatalogue": "Im Katalog suchen",
+        "searchScopes": {
+          "mine": "Meine Sachen",
+          "fleet": "Flotte"
+        },
         "searchKeys": {
+          "add": "zum Hinzufügen",
+          "scope": "zum Wechseln",
           "move": "zum Wechseln",
           "open": "zum Öffnen",
           "close": "zum Schließen"

@@ -22,7 +22,6 @@ import {
   MEMBERS_VIEW_FILTER_KEYS,
   type MembersView,
 } from "@/frontend/composables/useMembersView";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 type Props = {
   variant?: MembersView;
@@ -127,20 +126,14 @@ const stateOptions: FilterOption[] = [
 
 <template>
   <form @submit.prevent="filter(form)">
-    <!-- In the page header rather than this sidebar, like the hangar's: a
-         members list is searched by name far more often than it is filtered, and
-         the sidebar is collapsed by default. -->
-    <Teleport to="#header-left">
-      <FormInput
-        id="member-search"
-        name="member-search"
-        :size="InputSizesEnum.MEDIUM"
-        v-model="form.searchCont"
-        translation-key="filters.fleets.members.search"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      id="member-search"
+      name="member-search"
+      v-model="form.searchCont"
+      translation-key="filters.fleets.members.search"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <BaseSelect
       v-model="form.roleIn"

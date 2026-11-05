@@ -110,7 +110,7 @@ describe("ComponentsFilterForm", () => {
     const wrapper = mountForm();
     await flushPromises();
 
-    const input = wrapper.find("input[name='search']");
+    const input = wrapper.find("input[name='searchNameCont']");
     expect((input.element as HTMLInputElement).value).toBe("ore pod");
 
     vi.advanceTimersByTime(2000);

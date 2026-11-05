@@ -24,18 +24,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { type HangarQuery } from "@/services/fyApi";
-import {
-  InputSizesEnum,
-  InputTypesEnum,
-} from "@/shared/components/base/FormInput/types";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 
@@ -121,16 +110,6 @@ const hasGroupFilters = (keys: string[]) =>
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        :size="InputSizesEnum.MEDIUM"
-        v-model="form.searchCont"
-        name="vehicle-search"
-        translation-key="filters.vehicles.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
     <FilterGroup
       :label="t('filteredList.groups.ship')"
       :active="

@@ -9,7 +9,6 @@ import { keptOptions } from "@/frontend/utils/Filters";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
@@ -24,14 +23,6 @@ import {
   useEquipmentTypesFilters,
   useEquipmentWeaponClassesFilters,
 } from "@/services/fyApi";
-
-type Props = {
-  hideQuicksearch?: boolean;
-};
-
-withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
-});
 
 const { t } = useI18n();
 
@@ -140,16 +131,13 @@ watch(slots, (options) => pruneToOptions("slotIn", options), {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        v-model="form.nameOrSlugCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.equipment.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
+    <FormInput
+      v-model="form.nameOrSlugCont"
+      name="nameOrSlugCont"
+      translation-key="filters.equipment.name"
+      :no-label="true"
+      :clearable="true"
+    />
 
     <ManufacturerSelect v-model="form.manufacturerSlugIn" name="manufacturer" />
 

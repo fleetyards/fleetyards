@@ -7,6 +7,7 @@ import type {
 
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useOverlayStore } from "@/shared/stores/overlay";
+import { useSearchStore } from "@/frontend/stores/search";
 import { useNavStore } from "@/shared/stores/nav";
 import { useFleetStore } from "./fleet";
 import { useHangarStore } from "./hangar";
@@ -64,6 +65,7 @@ export const useAppStore = defineStore("app", {
         // response still on its way repopulates currentUser behind this reset.
         sessionStore.clearSession();
         navStore.$reset();
+        useSearchStore().$reset();
       }
 
       fleetStore.$reset();

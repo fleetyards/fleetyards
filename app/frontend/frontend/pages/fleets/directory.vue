@@ -109,6 +109,10 @@ const openDisplayOptionsModal = () => {
       <RowsSkeleton v-else :count="count" icon meta trailing />
     </template>
 
+    <template #sort-start>
+      <div id="fleet-directory-search" />
+    </template>
+
     <template #sort>
       <ListToolbar :columns="sortFields" default-sort="memberCount desc" />
     </template>

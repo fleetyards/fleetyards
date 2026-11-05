@@ -43,6 +43,14 @@ module FleetSubscriptionConcern
     }, status: :forbidden
   end
 
+  # Whether a capability is on offer, for a surface that leaves it out rather
+  # than refusing the request.
+  private def fleet_capability_available?(capability)
+    return true unless Subscriptions::PREMIUM_FEATURES.include?(capability)
+
+    !fleet_subscription_missing?(subscription_fleet)
+  end
+
   # The same question without the JSON answer, for a surface that speaks
   # something else -- the ICS feed renders plain text, and handing a calendar
   # client a JSON error body would be worse than the refusal itself.

@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import {
-  InputSizesEnum,
-  InputTypesEnum,
-} from "@/shared/components/base/FormInput/types";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -20,12 +17,10 @@ import {
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 
 type Props = {
-  hideQuicksearch?: boolean;
   updateCallback?: () => Promise<void>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  hideQuicksearch: false,
   updateCallback: undefined,
 });
 
@@ -64,19 +59,7 @@ defineExpose({ isFilterSelected });
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport v-if="!hideQuicksearch" to="#header-left">
-      <FormInput
-        :size="InputSizesEnum.MEDIUM"
-        v-model="form.nameCont"
-        name="search"
-        :placeholder="t('labels.logistics.searchItems')"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
-
     <FormInput
-      v-if="hideQuicksearch"
       v-model="form.nameCont"
       name="item-name"
       :placeholder="t('labels.logistics.searchItems')"

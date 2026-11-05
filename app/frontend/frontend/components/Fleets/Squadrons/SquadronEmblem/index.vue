@@ -9,10 +9,12 @@ import type {
   FleetSquadron,
   FleetSquadronRef,
   PublicFleetSquadron,
+  SearchSquadron,
 } from "@/services/fyApi";
 
 type Props = {
-  squadron: FleetSquadron | FleetSquadronRef | PublicFleetSquadron;
+  squadron:
+    FleetSquadron | FleetSquadronRef | PublicFleetSquadron | SearchSquadron;
   size?: number;
 };
 

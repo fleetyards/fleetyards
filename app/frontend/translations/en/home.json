@@ -14,7 +14,15 @@
         "searchNoResultsHint": "Try a ship, a component, a mission or a place.",
         "searchShowMore": "Show more",
         "searching": "Searching…",
+        "searchFailed": "The search failed. Please try again.",
+        "searchInCatalogue": "Search the catalogue",
+        "searchScopes": {
+          "mine": "My stuff",
+          "fleet": "Fleet"
+        },
         "searchKeys": {
+          "add": "to add",
+          "scope": "to switch",
           "move": "to move",
           "open": "to open",
           "close": "to close"

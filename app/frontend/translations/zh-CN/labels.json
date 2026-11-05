@@ -348,7 +348,7 @@
       "updatedAt": "更新于",
       "addToHangar": "添加到机库",
       "home": {
-        "catalogueSearch": "搜索舰船、物品、任务和地点",
+        "catalogueSearch": "搜索",
         "submitCatalogueSearch": "搜索"
       },
       "shop": {
@@ -2836,6 +2836,7 @@
           "rsiHandle": "RSI 用户名"
         },
         "fleets": {
+          "titleFilter": "按标题搜索",
           "name": "名称",
           "fid": "FID",
           "memberCountGteq": "最少成员数",

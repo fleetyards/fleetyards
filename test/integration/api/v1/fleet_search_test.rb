@@ -1,0 +1,196 @@
+# frozen_string_literal: true
+
+require "openapi_helper"
+
+class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
+
+  openapi_schema :"v1/schema"
+
+  api_path "/fleets/{fleetSlug}/search" do
+    get("Search one fleet") do
+      operationId "fleetSearch"
+      tags "Search"
+      produces "application/json"
+
+      parameter name: "fleetSlug", in: :path, schema: {type: :string}, required: true
+      parameter name: "q", in: :query, schema: {type: :string}, required: true
+
+      response(200, "successful") do
+        schema ::V1::Schemas::SearchResults
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  setup do
+    Flipper.enable("fleet_contracts")
+    Flipper.enable("fleet_logistics")
+    Flipper.enable("fleet_mission_builder")
+
+    @officer = create(:user, username: "omniofficer")
+    @member = create(:user)
+    @outsider = create(:user)
+    @fleet = create(:fleet, admins: [@officer], members: [@member])
+    @depot = create(:fleet_inventory, fleet: @fleet)
+  end
+
+  def search(user, status = 200, &block)
+    sign_in user
+
+    assert_api_response :get, status, path_params: {fleetSlug: @fleet.slug}, params: {q: "omni"}, &block
+  end
+
+  def groups
+    parsed_body["groups"].to_h { |group| [group["type"], group["items"].pluck("name")] }
+  end
+
+  test "GET /fleets/:slug/search finds members, events, contracts and inventory" do
+    create(:fleet_event, fleet: @fleet, title: "Omni Raid")
+    create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot, title: "Omni Haul")
+    create(:fleet_inventory_item, fleet_inventory: @depot, name: "Omni Ore")
+
+    search(@member) do
+      assert_equal(
+        {
+          "FleetMembership" => ["omniofficer"],
+          "FleetEvent" => ["Omni Raid"],
+          "FleetContract" => ["Omni Haul"],
+          "FleetInventoryItem" => ["Omni Ore"]
+        },
+        groups
+      )
+    end
+  end
+
+  test "GET /fleets/:slug/search lists only accepted members" do
+    %i[invited requested declined].each do |state|
+      create(:fleet_membership, fleet: @fleet, user: create(:user, username: "omni#{state}"), aasm_state: state)
+    end
+
+    search(@officer) { assert_equal ["omniofficer"], groups["FleetMembership"] }
+  end
+
+  test "GET /fleets/:slug/search says which fleet answered" do
+    search(@member) { assert_equal @fleet.name, parsed_body["fleet"]["name"] }
+  end
+
+  test "GET /fleets/:slug/search shows a member who hides their presence as offline" do
+    @officer.update!(show_online_status: false)
+
+    search(@member) do
+      member = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_equal false, member["online"]
+    end
+  end
+
+  test "GET /fleets/:slug/search shows a member's squadron to those who may read it" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Night Wing")
+    membership = @officer.fleet_memberships.find_by(fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: membership)
+
+    search(@officer) do
+      member = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_equal "Night Wing", member["squadron"]["name"]
+    end
+  end
+
+  test "GET /fleets/:slug/search leaves out a member's squadron for a reader who may not see it" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Night Wing")
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: @officer.fleet_memberships.find_by(fleet: @fleet))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    @fleet.fleet_memberships.find_by(user: @member).update!(fleet_role: role)
+
+    search(@member) do
+      item = parsed_body["groups"].find { |group| group["type"] == "FleetMembership" }["items"].first
+
+      assert_not item.key?("squadron")
+    end
+  end
+
+  test "GET /fleets/:slug/search lists a ship once per model, without its owner's name for it" do
+    model = create(:model, name: "Omni Hauler")
+    2.times { |n| FleetVehicle.create!(fleet: @fleet, vehicle: create(:vehicle, model:, user: @member, name: "Omni Secret #{n}")) }
+
+    search(@member) { assert_equal ["Omni Hauler"], groups["FleetShip"] }
+  end
+
+  test "GET /fleets/:slug/search leaves out ships for a reader who may not see them" do
+    FleetVehicle.create!(fleet: @fleet, vehicle: create(:vehicle, model: create(:model, name: "Omni Hauler"), user: @member))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    @fleet.fleet_memberships.find_by(user: @member).update!(fleet_role: role)
+
+    search(@member) { assert_nil groups["FleetShip"] }
+  end
+
+  test "GET /fleets/:slug/search finds blueprints only from members who share them" do
+    create(:fleet_membership, :accepted, fleet: @fleet, user: (sharer = create(:user)), blueprints_filter: :all)
+    create(:user_blueprint, user: sharer, blueprint: create(:blueprint, name: "Omni Rifle"))
+    create(:fleet_membership, :accepted, fleet: @fleet, user: (private_holder = create(:user)), blueprints_filter: :hide)
+    create(:user_blueprint, user: private_holder, blueprint: create(:blueprint, name: "Omni Secret"))
+
+    search(@officer) { assert_equal ["Omni Rifle"], groups["FleetBlueprint"] }
+  end
+
+  test "GET /fleets/:slug/search refuses someone outside the fleet" do
+    create(:fleet_event, fleet: @fleet, title: "Omni Raid")
+
+    search(@outsider, 404)
+  end
+
+  test "GET /fleets/:slug/search does not show a member a draft contract" do
+    create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot, title: "Omni Draft")
+
+    search(@member) { assert_nil groups["FleetContract"] }
+  end
+
+  test "GET /fleets/:slug/search shows a draft to someone who may publish it" do
+    create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot, title: "Omni Draft")
+
+    search(@officer) { assert_equal ["Omni Draft"], groups["FleetContract"] }
+  end
+
+  test "GET /fleets/:slug/search does not show a contract restricted to another squadron" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
+      visibility: :squadron_only, fleet_squadrons: [squadron], title: "Omni Secret")
+
+    search(@member) { assert_nil groups["FleetContract"] }
+  end
+
+  test "GET /fleets/:slug/search leaves out an archived event" do
+    create(:fleet_event, fleet: @fleet, title: "Omni Raid", archived_at: Time.current)
+
+    search(@member) { assert_nil groups["FleetEvent"] }
+  end
+
+  test "GET /fleets/:slug/search does not show items from an officers-only inventory" do
+    secret = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:fleet_inventory_item, fleet_inventory: secret, name: "Omni Stash")
+
+    search(@member) { assert_nil groups["FleetInventoryItem"] }
+    search(@officer) { assert_equal ["Omni Stash"], groups["FleetInventoryItem"] }
+  end
+
+  test "GET /fleets/:slug/search leaves out a section whose feature is off" do
+    Flipper.disable("fleet_contracts")
+    create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot, title: "Omni Haul")
+
+    search(@officer) { assert_nil groups["FleetContract"] }
+  end
+
+  test "GET /fleets/:slug/search leaves out a section the fleet has not paid for" do
+    Flipper.enable("fleet_subscriptions")
+    create(:fleet_event, fleet: @fleet, title: "Omni Raid")
+
+    search(@officer) do
+      assert_nil groups["FleetEvent"]
+      assert_equal ["omniofficer"], groups["FleetMembership"]
+    end
+  end
+end

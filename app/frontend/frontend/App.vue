@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
+import HomeSearch from "@/frontend/components/Home/Search/index.vue";
+import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
@@ -163,6 +165,9 @@ const maybeCountVisit = () => {
 };
 
 const route = useRoute();
+
+// On a touch screen focus would raise the keyboard over every page opened.
+const touch = useLowPowerDevice();
 
 const comlink = useComlink();
 
@@ -330,7 +335,15 @@ const setLocale = (locale: string) => {
             'main-inner--with-primary-action': route.meta.primaryAction,
           }"
         >
-          <AppNavigationHeader />
+          <AppNavigationHeader>
+            <template #left>
+              <HomeSearch
+                v-if="route.matched.length && !route.meta.hideHeaderSearch"
+                :autofocus="!touch"
+                compact
+              />
+            </template>
+          </AppNavigationHeader>
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">

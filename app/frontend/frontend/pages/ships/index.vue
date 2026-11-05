@@ -141,7 +141,7 @@ const { activeFilters } = useShipFilterSummary();
     </template>
 
     <template #filter>
-      <FilterForm hide-quicksearch />
+      <FilterForm />
     </template>
 
     <template #pagination-top>
@@ -199,7 +199,7 @@ const { activeFilters } = useShipFilterSummary();
           />
         </template>
         <template #filter>
-          <FilterForm hide-quicksearch />
+          <FilterForm />
         </template>
       </FleetchartApp>
     </template>

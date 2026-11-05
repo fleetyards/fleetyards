@@ -348,7 +348,7 @@
       "updatedAt": "Mis à jour le",
       "addToHangar": "Ajouter au hangar",
       "home": {
-        "catalogueSearch": "Rechercher des vaisseaux, objets, missions et lieux",
+        "catalogueSearch": "Rechercher",
         "submitCatalogueSearch": "Rechercher"
       },
       "shop": {
@@ -2836,6 +2836,7 @@
           "rsiHandle": "Pseudo RSI"
         },
         "fleets": {
+          "titleFilter": "Rechercher par titre",
           "name": "Nom",
           "fid": "FID",
           "memberCountGteq": "Membres minimum",

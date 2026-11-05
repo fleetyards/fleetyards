@@ -348,7 +348,7 @@
       "updatedAt": "Aktualisiert am",
       "addToHangar": "Zum Hangar hinzufügen",
       "home": {
-        "catalogueSearch": "Schiffe, Gegenstände, Missionen und Orte suchen",
+        "catalogueSearch": "Suchen",
         "submitCatalogueSearch": "Suchen"
       },
       "shop": {
@@ -2836,6 +2836,7 @@
           "rsiHandle": "RSI-Handle"
         },
         "fleets": {
+          "titleFilter": "Nach Titel suchen",
           "name": "Name",
           "fid": "FID",
           "memberCountGteq": "Mindestens Mitglieder",

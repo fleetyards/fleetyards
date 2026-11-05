@@ -115,20 +115,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Teleport to="#header-left">
-    <BreadCrumbs
-      :crumbs="[
-        {
-          to: {
-            name: 'hangar-public',
-            params: { username: username },
-            query: shareQuery,
-          },
-          label: t('headlines.hangar.public', { user: usernamePlural }),
+  <BreadCrumbs
+    :crumbs="[
+      {
+        to: {
+          name: 'hangar-public',
+          params: { username: username },
+          query: shareQuery,
         },
-      ]"
-    />
-  </Teleport>
+        label: t('headlines.hangar.public', { user: usernamePlural }),
+      },
+    ]"
+  />
   <div class="row hangar-public">
     <div class="col-12 col-lg-8">
       <HangarPublicHeading
@@ -244,7 +242,7 @@ onMounted(async () => {
         "
       >
         <template #filter>
-          <FilterForm hide-quicksearch />
+          <FilterForm />
         </template>
         <template #pagination>
           <Paginator
