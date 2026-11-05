@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { type SlotFit } from "@/frontend/utils/dressingRoomFit";
 
 const fetchEquipment = vi.fn((_params: unknown) =>
@@ -44,6 +44,10 @@ vi.mock("@/shared/composables/useComlink", async (importOriginal) => {
 const { default: SlotPicker } = await import("./index.vue");
 
 describe("DressingRoomSlotPickerModal", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("offers only armour and undersuits that fit the slot", async () => {
     const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
       props: { slot: "torso" },
@@ -157,12 +161,51 @@ describe("DressingRoomSlotPickerModal", () => {
       '[data-test="dressing-room-option-p4-ar-rifle"]',
     );
     expect(option.text()).toContain("Behring · Assault Rifle");
-    expect(option.find('[data-test="dressing-room-item-size"]').text()).toBe(
-      "S2",
-    );
+    expect(option.find(".picker-card__badge").text()).toBe("S2");
   });
 
-  it("shows armour's weight and figures, but no size", async () => {
+  it("keeps a weapon's figures off the card and shows them on hover", async () => {
+    fetchEquipment.mockResolvedValueOnce({
+      items: [
+        {
+          id: "a03",
+          name: "A03 Sniper Rifle",
+          slug: "a03-sniper-rifle",
+          media: {},
+          equipmentType: "weapon",
+          itemTypeLabel: "Sniper Rifle",
+          size: "3",
+          alphaDamage: 42.5,
+        },
+      ],
+      meta: { pagination: { currentPage: 1, totalPages: 1 } },
+    } as never);
+
+    const weapons = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "primary" },
+      attachTo: document.body,
+    });
+    await flushPromises();
+
+    const option = weapons.find(
+      '[data-test="dressing-room-option-a03-sniper-rifle"]',
+    );
+    expect(option.text()).not.toContain("42");
+    expect(option.find("button").attributes("title")).toBeUndefined();
+
+    vi.useFakeTimers();
+    await weapons.find('[data-test="popover-trigger"]').trigger("mouseenter");
+    await vi.advanceTimersByTimeAsync(300);
+
+    const card = document.querySelector('[data-test="popover"]');
+    expect(card?.classList).toContain("popover--passive");
+    expect(card?.textContent).toContain("42");
+    expect(card?.querySelector("a")).toBeNull();
+
+    weapons.unmount();
+  });
+
+  it("shows armour's weight, but no size", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [
         {
@@ -188,11 +231,6 @@ describe("DressingRoomSlotPickerModal", () => {
       '[data-test="dressing-room-option-antium-helmet"]',
     );
     expect(helmet.text()).toContain("Heavy Armor");
-    expect(helmet.find('[data-test="dressing-room-item-size"]').exists()).toBe(
-      false,
-    );
-    expect(helmet.find('[data-test="dressing-room-item-stats"]').exists()).toBe(
-      true,
-    );
+    expect(helmet.find(".picker-card__badge").exists()).toBe(false);
   });
 });

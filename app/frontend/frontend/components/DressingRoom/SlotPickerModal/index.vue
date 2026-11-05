@@ -9,7 +9,6 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import CataloguePicker, {
   type CatalogueItem,
 } from "@/frontend/components/CataloguePicker/index.vue";
-import ItemStats from "@/frontend/components/DressingRoom/ItemStats/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
@@ -63,9 +62,19 @@ const isDisabled = (item: CatalogueItem) => !fits(item);
 
 const isSelected = (item: CatalogueItem) => item.slug === props.selectedSlug();
 
+// Helmets, cores, arms, legs and undersuits are all size 1; weapons and backpacks
+// are the gear whose size varies.
 const withSize = computed(
   () => isWeaponSlot(props.slot) || props.slot === OutfitSlotEnum.BACKPACK,
 );
+
+const sizeBadgesOf = (item: CatalogueItem) => {
+  const { size } = item as Equipment;
+
+  return withSize.value && Number(size) > 0
+    ? [{ key: "size", label: t("dressingRoom.size", { size }) }]
+    : [];
+};
 
 const misfitReason = computed(() =>
   fit.value.kind === "none" && !fit.value.providers.length
@@ -114,6 +123,7 @@ const pick = (item: CatalogueItem) => {
       :query="query"
       :is-selected="isSelected"
       :is-disabled="isDisabled"
+      :badges-of="sizeBadgesOf"
       card-test-prefix="dressing-room-option"
       data-test="dressing-room-slot-picker"
       @toggle="pick"
@@ -127,7 +137,6 @@ const pick = (item: CatalogueItem) => {
         </p>
       </template>
       <template #details="{ item }">
-        <ItemStats :equipment="item as Equipment" :with-size="withSize" />
         <span v-if="!fits(item)" class="slot-picker-modal__misfit">
           {{ misfitReason }}
         </span>
