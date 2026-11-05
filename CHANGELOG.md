@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.42.0](https://github.com/fleetyards/fleetyards/compare/v9.41.0...v9.42.0) (2026-11-05)
+
+
+### Features
+
+* **hangar-planner:** starts on empty slots, slot buttons on the row, pledge details ([#6202](https://github.com/fleetyards/fleetyards/issues/6202)) ([45f8c75](https://github.com/fleetyards/fleetyards/commit/45f8c751143759292f600f600a205dd8eaba4e39))
+
+
+### Bug Fixes
+
+* **dressing-room:** gear below the slots on mobile, stage buttons hidden until tapped ([#6200](https://github.com/fleetyards/fleetyards/issues/6200)) ([6df78e9](https://github.com/fleetyards/fleetyards/commit/6df78e95624f40eb59cb25a857e6ec0cb2839524))
+
 ## [9.41.0](https://github.com/fleetyards/fleetyards/compare/v9.40.0...v9.41.0) (2026-11-05)
 
 
