@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# The ship views import skips a ship whose listing is unchanged, and the paints'
-# stencil sheets were published before paints had a field for them. Clearing the
-# digest makes the next run read those listings again; maps already attached are
-# matched by their MD5 and not fetched.
-class ReimportShipViewsForPaintStencils < ActiveRecord::Migration[8.1]
+# The paints' stencil sheets were published before paints had a field for them,
+# and the import skips a ship whose listing is unchanged. Clearing the digests
+# would also bring back every render detached in the admin, so only the paint
+# maps are read again. Migrations run while the old workers are still up, and
+# jobs are not retried, so the run waits for the deploy to finish.
+class ImportPaintStencilSheets < ActiveRecord::Migration[8.1]
   def up
-    Model.with_textured_holo.where.not(ship_views_digest: nil).update_all(ship_views_digest: nil)
+    ::ScData::ShipViewsImportJob.perform_in(30.minutes, nil, true)
   end
 
   def down

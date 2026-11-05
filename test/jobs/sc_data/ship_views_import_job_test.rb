@@ -513,6 +513,33 @@ module ScData
       assert_equal "old_stencil.webp", paint.reload.holo_texture_stencil.filename.to_s
     end
 
+    test "paints only reads an unchanged ship's paint maps and leaves its renders" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      publish(
+        {
+          "flight_top.png" => PNG,
+          "flight_textured.json" => {paints: {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "flight_textured_skull_stencil.webp"}}}.to_json,
+          "flight_textured_skull.webp" => PNG,
+          "flight_textured_skull_stencil.webp" => "stencil"
+        }
+      )
+      perform
+      paint.holo_texture_stencil.detach
+      field = @model.reload.attachment_reflections.keys.find { |name| @model.public_send(name).attached? }
+      assert field
+      @model.public_send(field).detach
+
+      perform
+      assert_not paint.reload.holo_texture_stencil.attached?
+
+      perform(nil, true)
+
+      assert_equal "flight_textured_skull_stencil.webp", paint.reload.holo_texture_stencil.filename.to_s
+      assert_not @model.reload.public_send(field).attached?
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
     test "dresses a liveried variant in its palette's stencil sheet" do
       @model.update_columns(rsi_chassis_id: 4242)
       variant = create(:model, rsi_chassis_id: 4242)
