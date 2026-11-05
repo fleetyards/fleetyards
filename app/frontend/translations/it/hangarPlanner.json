@@ -53,7 +53,6 @@
       "notOnSale": "non in vendita",
       "routes": "Come ottenerle",
       "editRoute": "Percorso per %{ship}",
-      "removeRoute": "Rimuovi percorso",
       "unresolvedUnits": {
         "one": "%{count} nave non ha ancora un percorso",
         "other": "%{count} navi non hanno ancora un percorso"
@@ -90,7 +89,6 @@
         "upgradeSource": "Upgrade da",
         "ownedUpgrade": "Upgrade nel tuo hangar RSI",
         "upgradeTo": "Upgrade a",
-        "meltShip": "Nave da sciogliere",
         "meltValue": "Credito",
         "meltValueInfo": "Quanto rende fonderla. Lascia vuoto per usare il valore che RSI dà al pledge, o il prezzo di oggi nello store dove la sincronizzazione dell'hangar non l'ha letto.",
         "slotDescription": "Descrizione",
@@ -397,18 +395,8 @@
         "showContents": "Mostra il contenuto di %{name}"
       },
       "meltList": {
-        "none": "Secondo RSI nessuna delle tue navi può essere fusa. Disattiva il filtro per scegliere una nave qualsiasi.",
-        "credit": "%{value} di credito",
-        "estimate": "%{value} stimato",
-        "wholePledge": {
-          "one": "fonde %{count} oggetto",
-          "other": "fonde tutto il pledge: %{count} oggetti"
-        },
-        "meltableOnly": "Solo fondibili",
         "notMeltable": "non fondibile",
         "notSynced": "non sincronizzata",
-        "noShips": "Nessuna delle tue navi è libera da fondere.",
-        "inPackage": "in %{name}",
         "contents": "Viene fuso insieme",
         "contentsOf": "Viene fuso insieme, come parte di %{name}",
         "unlisted": {
@@ -465,8 +453,6 @@
           "catalogue": "Qualsiasi nave"
         }
       },
-      "slotsTitle": "Slot",
-      "editSlots": "Modifica slot",
       "slotNumber": "Slot %{number}",
       "suggestions": {
         "title": "Suggerimenti",

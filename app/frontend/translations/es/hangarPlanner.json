@@ -53,7 +53,6 @@
       "notOnSale": "no está a la venta",
       "routes": "Cómo conseguirlas",
       "editRoute": "Vía para %{ship}",
-      "removeRoute": "Quitar vía",
       "unresolvedUnits": {
         "one": "%{count} nave aún no tiene vía",
         "other": "%{count} naves aún no tienen vía"
@@ -90,7 +89,6 @@
         "upgradeSource": "Upgrade desde",
         "ownedUpgrade": "Upgrade en tu hangar de RSI",
         "upgradeTo": "Upgrade a",
-        "meltShip": "Nave a fundir",
         "meltValue": "Crédito",
         "meltValueInfo": "Lo que da fundirla. Déjalo vacío para usar el valor que RSI da al pledge, o el precio de hoy en la tienda si la sincronización del hangar no lo ha leído.",
         "slotDescription": "Descripción",
@@ -397,18 +395,8 @@
         "showContents": "Mostrar el contenido de %{name}"
       },
       "meltList": {
-        "none": "Según RSI, ninguna de tus naves se puede fundir. Quita el filtro para elegir cualquier nave.",
-        "credit": "%{value} de crédito",
-        "estimate": "%{value} estimado",
-        "wholePledge": {
-          "one": "funde %{count} objeto",
-          "other": "funde todo el pledge: %{count} objetos"
-        },
-        "meltableOnly": "Solo fundibles",
         "notMeltable": "no fundible",
         "notSynced": "sin sincronizar",
-        "noShips": "Ninguna de tus naves está libre para fundir.",
-        "inPackage": "en %{name}",
         "contents": "Se funde con ella",
         "contentsOf": "Se funde con ella, como parte de %{name}",
         "unlisted": {
@@ -465,8 +453,6 @@
           "catalogue": "Cualquier nave"
         }
       },
-      "slotsTitle": "Slots",
-      "editSlots": "Editar slots",
       "slotNumber": "Hueco %{number}",
       "suggestions": {
         "title": "Sugerencias",

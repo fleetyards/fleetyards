@@ -50,6 +50,13 @@ const resources = ref<HangarPlanResources>({
       pledgeShips: [],
       pledgeItems: [],
     },
+    {
+      id: "vehicle-gift",
+      model: model("Gifted Ship", 50),
+      meltable: false,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
   ],
   upgrades: [],
   storeModels: [],
@@ -71,34 +78,16 @@ vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
 }));
 
-const mount = () =>
-  mountWithDefaults(Component, {
-    props: { planId: "plan" },
-  });
-
-const row = (wrapper: Awaited<ReturnType<typeof mount>>, title: string) =>
-  wrapper
-    .findAll('[data-test="pick-list-row"]')
-    .find((entry) => entry.text().includes(title));
+const mount = (props: Record<string, unknown>) =>
+  mountWithDefaults(Component, { props: { planId: "plan", ...props } });
 
 describe("Hangar/Planner/MeltModal", () => {
-  it("names the package a ship is part of, and only then", async () => {
-    const wrapper = await mount();
+  it("names the ship it melts and lists what melts with it", async () => {
+    const wrapper = await mount({ vehicleId: "vehicle-cutlass" });
 
-    expect(row(wrapper, "Cutlass Black")?.text()).toContain(
-      "Package - Explorer Pack",
+    expect(wrapper.find('[data-test="hangar-plan-melt-ship"]').text()).toBe(
+      "Cutlass Black",
     );
-    expect(row(wrapper, "Aurora MR")?.text()).not.toContain("Standalone");
-  });
-
-  it("lists what melts with the picked ship", async () => {
-    const wrapper = await mount();
-
-    expect(
-      wrapper.find('[data-test="hangar-plan-melt-contents"]').exists(),
-    ).toBe(false);
-
-    await row(wrapper, "Cutlass Black")?.trigger("click");
 
     const contents = wrapper.find('[data-test="hangar-plan-melt-contents"]');
     expect(contents.text()).toContain("Package - Explorer Pack");
@@ -109,13 +98,25 @@ describe("Hangar/Planner/MeltModal", () => {
     expect(contents.text()).toContain("1 more item");
   });
 
-  it("lists nothing for a ship that is its pledge on its own", async () => {
-    const wrapper = await mount();
+  it("offers no ship to pick, only the one it was opened for", async () => {
+    const wrapper = await mount({ vehicleId: "vehicle-aurora" });
 
-    await row(wrapper, "Aurora MR")?.trigger("click");
+    expect(wrapper.find('[data-test="pick-list-row"]').exists()).toBe(false);
+  });
+
+  it("lists nothing for a ship that is its pledge on its own", async () => {
+    const wrapper = await mount({ vehicleId: "vehicle-aurora" });
 
     expect(
       wrapper.find('[data-test="hangar-plan-melt-contents"]').exists(),
     ).toBe(false);
+  });
+
+  it("warns where RSI says the pledge does not melt", async () => {
+    const wrapper = await mount({ vehicleId: "vehicle-gift" });
+
+    expect(
+      wrapper.find('[data-test="hangar-plan-melt-ship"]').text(),
+    ).toContain("not meltable");
   });
 });

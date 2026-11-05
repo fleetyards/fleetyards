@@ -24,6 +24,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
 import HangarFlow from "@/frontend/components/Hangar/Planner/HangarFlow/index.vue";
 import ComparisonDetails from "@/frontend/components/Hangar/Planner/ComparisonDetails/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
@@ -190,7 +191,27 @@ const editSlot = (slot: HangarPlanSlot) =>
     { planId: planId.value, slot },
   );
 
-const openMelt = (melt?: HangarPlanMelt) =>
+const editSlotDetails = (slot: HangarPlanSlot) =>
+  openModal(
+    () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
+    { planId: planId.value, slot },
+  );
+
+const destroySlot = useDestroyHangarPlanSlot();
+const removeSlot = async (slot: HangarPlanSlot) => {
+  try {
+    updatePlan(
+      await destroySlot.mutateAsync({
+        hangarPlanId: planId.value,
+        id: slot.id,
+      }),
+    );
+  } catch {
+    displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
+  }
+};
+
+const openMelt = (melt: HangarPlanMelt) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/MeltModal/index.vue"),
     { planId: planId.value, melt },
@@ -327,17 +348,6 @@ const onDestroy = async () => {
         <i class="fa-light fa-plus" />
         {{ t("hangarPlanner.addSlot") }}
       </Btn>
-      <Btn data-test="hangar-plan-add-melt" @click="openMelt()">
-        <i class="fa-light fa-fire" />
-        {{ t("hangarPlanner.addMelt") }}
-      </Btn>
-      <Btn
-        :to="{ name: 'hangar-plan-slots', params: { id: plan.id } }"
-        data-test="hangar-plan-edit-slots"
-      >
-        <i class="fa-light fa-grid-2" />
-        {{ t("hangarPlanner.editSlots") }}
-      </Btn>
       <Btn
         :to="{ name: 'hangar-plan-suggestions', params: { id: plan.id } }"
         data-test="hangar-plan-suggestions"
@@ -453,6 +463,7 @@ const onDestroy = async () => {
             {{ t("hangarPlanner.decisions.keepPending") }}
           </Btn>
         </div>
+        <SlotPlaceholders v-if="!plan.slots.length" @add="addSlot" />
         <Loader :loading="comparisonFetching && !comparison" />
         <HangarFlow
           v-if="comparison"

@@ -1,4 +1,3 @@
-import { flushPromises } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -68,6 +67,7 @@ const slot = (attrs: Partial<HangarPlanSlot> = {}): HangarPlanSlot => ({
   position: 0,
   state: HangarPlanSlotStateEnum.OPEN,
   filters: {},
+  starts: [],
   candidates: [],
   ...attrs,
 });
@@ -80,41 +80,15 @@ describe("Hangar/Planner/SlotCard", () => {
 
   it("explains an open slot", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: { planId: "plan", slot: slot() },
+      props: { slot: slot() },
     });
 
     expect(wrapper.text()).toContain("No ship picked yet");
   });
 
-  it("lets the user choose between the candidates of an undecided slot", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: {
-        planId: "plan",
-        slot: slot({
-          state: HangarPlanSlotStateEnum.UNDECIDED,
-          candidates: [candidate("Hull A"), candidate("Caterpillar")],
-        }),
-      },
-    });
-
-    const choose = wrapper.findAll('[data-test="hangar-plan-choose"]');
-    expect(choose).toHaveLength(2);
-
-    await choose[1].trigger("click");
-    await flushPromises();
-
-    expect(chooseMutate).toHaveBeenCalledWith({
-      hangarPlanId: "plan",
-      id: "slot",
-      data: { candidateId: "candidate-Caterpillar" },
-    });
-    expect(updatePlan).toHaveBeenCalledWith(plan);
-  });
-
   it("counts the ships of a decided slot that have no route yet", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
-        planId: "plan",
         slot: slot({
           quantity: 3,
           state: HangarPlanSlotStateEnum.DECIDED,
@@ -140,15 +114,11 @@ describe("Hangar/Planner/SlotCard", () => {
 
     expect(wrapper.findAll('[data-test="hangar-plan-route"]')).toHaveLength(1);
     expect(wrapper.text()).toContain("2 ships have no route yet");
-    expect(wrapper.find('[data-test="hangar-plan-add-route"]').exists()).toBe(
-      true,
-    );
   });
 
   it("shows what the slot is for and marks a ship outside its filters", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
-        planId: "plan",
         slot: slot({
           description: "Long trips with a snub",
           filters: { classificationIn: ["exploration"], onSaleEq: true },
@@ -171,7 +141,6 @@ describe("Hangar/Planner/SlotCard", () => {
   it("marks the cheapest and the roomiest undecided ship", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
-        planId: "plan",
         slot: slot({
           state: HangarPlanSlotStateEnum.UNDECIDED,
           candidates: [
@@ -205,7 +174,6 @@ describe("Hangar/Planner/SlotCard", () => {
     ) =>
       mountWithDefaults(Component, {
         props: {
-          planId: "plan",
           slot: slot({
             state: HangarPlanSlotStateEnum.DECIDED,
             candidates: [candidate("Carrack")],
@@ -262,26 +230,5 @@ describe("Hangar/Planner/SlotCard", () => {
     it("shows only the routes' cost once every unit has a start", async () => {
       expect(shown(await mountCost(0, 0))).toEqual(["$0.00", undefined]);
     });
-  });
-
-  it("offers no edits on a shared plan", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: {
-        planId: "plan",
-        readonly: true,
-        slot: slot({
-          quantity: 2,
-          state: HangarPlanSlotStateEnum.UNDECIDED,
-          candidates: [candidate("Hull A"), candidate("Caterpillar")],
-        }),
-      },
-    });
-
-    expect(wrapper.find('[data-test="hangar-plan-choose"]').exists()).toBe(
-      false,
-    );
-    expect(
-      wrapper.find('[data-test="hangar-plan-slot-add-candidates"]').exists(),
-    ).toBe(false);
   });
 });

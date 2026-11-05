@@ -53,7 +53,6 @@
       "notOnSale": "未在售",
       "routes": "取得方式",
       "editRoute": "取得 %{ship} 的途徑",
-      "removeRoute": "移除途徑",
       "unresolvedUnits": {
         "one": "%{count} 艘飛船尚無取得途徑",
         "other": "%{count} 艘飛船尚無取得途徑"
@@ -90,7 +89,6 @@
         "upgradeSource": "升級自",
         "ownedUpgrade": "你 RSI 機庫中的升級",
         "upgradeTo": "升級為",
-        "meltShip": "要熔毀的飛船",
         "meltValue": "點數",
         "meltValueInfo": "熔掉可獲得的信用點。留空則使用 RSI 為該禮包列出的價值；機庫同步未讀取時使用今日商店價格。",
         "slotDescription": "描述",
@@ -397,18 +395,8 @@
         "showContents": "顯示 %{name} 的內容"
       },
       "meltList": {
-        "none": "根據 RSI，你的飛船都不可熔。關閉篩選即可任選飛船。",
-        "credit": "%{value} 信用點",
-        "estimate": "約 %{value}",
-        "wholePledge": {
-          "one": "熔掉 %{count} 件物品",
-          "other": "熔掉整個禮包：%{count} 件物品"
-        },
-        "meltableOnly": "僅可熔",
         "notMeltable": "不可熔",
         "notSynced": "未同步",
-        "noShips": "你沒有可用於熔掉的飛船。",
-        "inPackage": "屬於 %{name}",
         "contents": "一併熔掉",
         "contentsOf": "作為 %{name} 的一部分一併熔掉",
         "unlisted": {
@@ -465,8 +453,6 @@
           "catalogue": "任意艦船"
         }
       },
-      "slotsTitle": "槽位",
-      "editSlots": "編輯槽位",
       "slotNumber": "欄位 %{number}",
       "suggestions": {
         "title": "建議",

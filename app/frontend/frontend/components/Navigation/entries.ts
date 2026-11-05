@@ -76,7 +76,7 @@ export const HANGAR_ITEMS: NavSectionItem[] = [
     icon: "fa-duotone fa-compass-drafting",
     requiresAuth: true,
     featureFlag: FeatureFlagName.HANGAR_PLANNER,
-    activeRoutes: ["hangar-plan", "hangar-plan-slots", "hangar-plan-compare"],
+    activeRoutes: ["hangar-plan", "hangar-plan-compare"],
   },
   {
     key: "hangar-assets-menu",

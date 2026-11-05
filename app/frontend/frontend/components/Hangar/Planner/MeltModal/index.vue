@@ -10,13 +10,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import PickList, {
-  type PickListItem,
-} from "@/frontend/components/Hangar/Planner/PickList/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
-import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import Chip from "@/shared/components/base/Chip/index.vue";
-import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import { pledgeUnlisted } from "@/frontend/components/Hangar/Planner/format";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -31,8 +28,8 @@ import {
 
 type Props = {
   planId: string;
+  // The melt to edit, or the hangar ship to melt.
   melt?: HangarPlanMelt;
-  // A hangar ship to melt, picked already.
   vehicleId?: string;
 };
 
@@ -43,140 +40,61 @@ const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { updatePlan } = useHangarPlanCache();
 
-const { money } = usePlanMoney();
-
-const { data: resources, isLoading } = useHangarPlanResources(
-  () => props.planId,
-);
+const { data: resources } = useHangarPlanResources(() => props.planId);
 
 const submitting = ref(false);
-const vehicleId = ref<string | null>(
-  props.melt?.vehicleId ?? props.vehicleId ?? null,
-);
 const valueOverride = ref<string>(props.melt?.valueOverride?.toString() ?? "");
 
 const touched = ref(false);
-watch([vehicleId, valueOverride], () => {
+watch(valueOverride, () => {
   touched.value = true;
 });
 useModalDirty(touched);
 
-const freeVehicles = computed(() =>
-  (resources.value?.vehicles ?? []).filter((vehicle) => !vehicle.usedBy),
+const vehicleId = computed(() => props.melt?.vehicleId ?? props.vehicleId);
+
+const vehicle = computed(() =>
+  (resources.value?.vehicles ?? []).find(
+    (entry) => entry.id === vehicleId.value,
+  ),
 );
 
 // RSI says per pledge whether it melts, but only for ships the hangar sync
 // read; anyone who keeps their hangar by hand can still melt any ship.
-const meltableCount = computed(
-  () => freeVehicles.value.filter((vehicle) => vehicle.meltable).length,
-);
-
-const meltableOnly = ref(false);
-
-// Filtered by default once the sync has said which ships melt, unless a ship
-// was picked already, which the filter could hide.
-watch(
-  meltableCount,
-  (count, before) => {
-    if (count && !before && !props.vehicleId) meltableOnly.value = true;
-  },
-  { immediate: true },
-);
-
-const meltable = computed(() =>
-  meltableOnly.value
-    ? freeVehicles.value.filter((vehicle) => vehicle.meltable)
-    : freeVehicles.value,
-);
-
-type Vehicle = (typeof freeVehicles.value)[number];
-
-const meltBadge = (vehicle: Vehicle) => {
-  if (vehicle.meltable === false)
+const meltBadge = computed(() => {
+  if (!vehicle.value) return undefined;
+  if (vehicle.value.meltable === false) {
     return t("hangarPlanner.meltList.notMeltable");
-  if (vehicle.meltable === null || vehicle.meltable === undefined) {
+  }
+  if (vehicle.value.meltable === null || vehicle.value.meltable === undefined) {
     return t("hangarPlanner.meltList.notSynced");
   }
   return undefined;
-};
-
-const inPackage = (vehicle: Vehicle) =>
-  (vehicle.pledgeItemCount ?? 0) > 1 ||
-  vehicle.pledgeShips.length > 0 ||
-  vehicle.pledgeItems.length > 0;
-
-const packageLabel = (vehicle: Vehicle) => {
-  if (!inPackage(vehicle)) return undefined;
-  if (vehicle.pledgeName) {
-    return t("hangarPlanner.meltList.inPackage", { name: vehicle.pledgeName });
-  }
-  return t("hangarPlanner.meltList.wholePledge", {
-    count: vehicle.pledgeItemCount ?? 0,
-  });
-};
-
-const creditOf = (vehicle: Vehicle) =>
-  vehicle.meltValue ?? vehicle.model.pledgePrice ?? null;
-
-const vehicleItems = computed<PickListItem[]>(() =>
-  meltable.value.map((vehicle) => ({
-    id: vehicle.id,
-    title: vehicle.name || vehicle.model.name,
-    ship: vehicle.model,
-    meta:
-      [vehicle.name ? vehicle.model.name : undefined, packageLabel(vehicle)]
-        .filter(Boolean)
-        .join(" · ") || undefined,
-    keywords: [
-      ...vehicle.pledgeShips.map((ship) => ship.model.name),
-      ...vehicle.pledgeItems.map((item) => item.name),
-    ].join(" "),
-    price:
-      typeof vehicle.meltValue === "number"
-        ? t("hangarPlanner.meltList.credit", {
-            value: money(vehicle.meltValue),
-          })
-        : t("hangarPlanner.meltList.estimate", {
-            value: money(creditOf(vehicle)),
-          }),
-    sortPrice: creditOf(vehicle),
-    badge: meltBadge(vehicle),
-  })),
-);
-
-const picked = computed(() =>
-  freeVehicles.value.find((vehicle) => vehicle.id === vehicleId.value),
-);
-
-// Editing a melt, its ship is taken by the melt itself and not in the free list.
-const meltedVehicle = computed(() =>
-  (resources.value?.vehicles ?? []).find(
-    (vehicle) => vehicle.id === vehicleId.value,
-  ),
-);
+});
 
 const contents = computed(() => {
-  const vehicle = meltedVehicle.value;
-  if (!vehicle || !inPackage(vehicle)) return undefined;
+  const ship = vehicle.value;
+  if (!ship) return undefined;
 
-  const listed =
-    1 +
-    vehicle.pledgeShips.length +
-    vehicle.pledgeItems.reduce((sum, item) => sum + item.quantity, 0);
-  // RSI counts what the sync keeps no record of, such as the game package or
-  // insurance-only items.
-  const unlisted = Math.max((vehicle.pledgeItemCount ?? 0) - listed, 0);
+  const inPackage =
+    (ship.pledgeItemCount ?? 0) > 1 ||
+    ship.pledgeShips.length > 0 ||
+    ship.pledgeItems.length > 0;
+  if (!inPackage) return undefined;
 
   return {
-    name: vehicle.pledgeName,
-    ships: vehicle.pledgeShips,
-    items: vehicle.pledgeItems,
-    unlisted,
+    name: ship.pledgeName,
+    ships: ship.pledgeShips,
+    items: ship.pledgeItems,
+    unlisted: pledgeUnlisted(ship),
   };
 });
 
 const placeholder = computed(() => {
-  const credit = picked.value ? creditOf(picked.value) : props.melt?.value;
+  const credit =
+    props.melt?.value ??
+    vehicle.value?.meltValue ??
+    vehicle.value?.model.pledgePrice;
   return typeof credit === "number" ? String(credit) : undefined;
 });
 
@@ -215,37 +133,15 @@ const onSubmit = async () => {
     :title="melt ? t('hangarPlanner.editMelt') : t('hangarPlanner.addMelt')"
   >
     <form id="hangar-plan-melt-form" @submit.prevent="onSubmit">
-      <template v-if="!melt">
-        <span class="melt-label">{{ t("hangarPlanner.fields.meltShip") }}</span>
-        <PickList
-          v-model="vehicleId"
-          name="vehicleId"
-          :items="vehicleItems"
-          :loading="isLoading"
-          :empty="
-            meltableOnly
-              ? t('hangarPlanner.meltList.none')
-              : t('hangarPlanner.meltList.noShips')
-          "
-        >
-          <template #filters>
-            <div class="melt-filters">
-              <Chip
-                :state="
-                  meltableOnly
-                    ? ChipStatesEnum.INCLUDED
-                    : ChipStatesEnum.NEUTRAL
-                "
-                :count="meltableCount"
-                data-test="hangar-plan-melt-filter-meltable"
-                @toggle="meltableOnly = !meltableOnly"
-              >
-                {{ t("hangarPlanner.meltList.meltableOnly") }}
-              </Chip>
-            </div>
-          </template>
-        </PickList>
-      </template>
+      <p v-if="vehicle" class="melt-ship" data-test="hangar-plan-melt-ship">
+        <strong>{{ vehicle.name || vehicle.model.name }}</strong>
+        <span v-if="vehicle.name" class="melt-muted">
+          {{ vehicle.model.name }}
+        </span>
+        <Pill v-if="meltBadge" :variant="PillVariantsEnum.WARNING">
+          {{ meltBadge }}
+        </Pill>
+      </p>
       <section
         v-if="contents"
         class="melt-contents"
@@ -281,7 +177,6 @@ const onSubmit = async () => {
         :type="BtnTypesEnum.SUBMIT"
         form="hangar-plan-melt-form"
         :loading="submitting"
-        :disabled="!melt && !vehicleId"
         data-test="hangar-plan-melt-save"
       >
         {{ t("actions.save") }}
@@ -296,10 +191,12 @@ const onSubmit = async () => {
   margin-bottom: 6px;
 }
 
-.melt-filters {
+.melt-ship {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 8px;
+  align-items: center;
+  margin: 0 0 12px;
 }
 
 .melt-contents {
@@ -307,7 +204,6 @@ const onSubmit = async () => {
 }
 
 .melt-muted {
-  margin: 8px 0 16px;
   font-size: 0.85rem;
   color: var(--color-text-dim);
 }

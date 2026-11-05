@@ -53,7 +53,6 @@
       "notOnSale": "not on sale",
       "routes": "How you get them",
       "editRoute": "Route to %{ship}",
-      "removeRoute": "Remove route",
       "unresolvedUnits": {
         "one": "%{count} ship has no route yet",
         "other": "%{count} ships have no route yet"
@@ -90,7 +89,6 @@
         "upgradeSource": "Upgrade from",
         "ownedUpgrade": "Upgrade in your RSI hangar",
         "upgradeTo": "Upgrade to",
-        "meltShip": "Ship to melt",
         "meltValue": "Credit",
         "meltValueInfo": "What melting gives. Leave empty to use what RSI lists the pledge at, or today's store price where the hangar sync has not read it.",
         "slotDescription": "Description",
@@ -397,18 +395,8 @@
         "showContents": "Show what %{name} holds"
       },
       "meltList": {
-        "none": "None of your ships can be melted, as far as RSI says. Turn off the filter to pick any ship.",
-        "credit": "%{value} credit",
-        "estimate": "%{value} estimate",
-        "wholePledge": {
-          "one": "melts %{count} item",
-          "other": "melts the whole pledge: %{count} items"
-        },
-        "meltableOnly": "Meltable only",
         "notMeltable": "not meltable",
         "notSynced": "not synced",
-        "noShips": "None of your ships is free to melt.",
-        "inPackage": "in %{name}",
         "contents": "Melts with it",
         "contentsOf": "Melts with it, as part of %{name}",
         "unlisted": {
@@ -465,8 +453,6 @@
           "catalogue": "Any ship"
         }
       },
-      "slotsTitle": "Slots",
-      "editSlots": "Edit slots",
       "slotNumber": "Slot %{number}",
       "suggestions": {
         "title": "Suggestions",

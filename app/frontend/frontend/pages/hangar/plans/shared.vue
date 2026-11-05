@@ -47,10 +47,8 @@ const slotCost = (slotId: string) =>
         <SlotCard
           v-for="slot in plan.slots"
           :key="slot.id"
-          :plan-id="plan.id"
           :slot="slot"
           :cost="slotCost(slot.id)"
-          readonly
         />
       </section>
       <aside>
