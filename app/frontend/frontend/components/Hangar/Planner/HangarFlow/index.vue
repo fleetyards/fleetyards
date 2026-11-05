@@ -207,12 +207,30 @@ const heldRow = ({ slot, start }: HeldStart, left: Card) => ({
   ...openRight(slot),
 });
 
-const heldCard = (start: HangarPlanSlotStart): Card => {
+// A hangar ship's start shows on the ship's own row, unless the ship has left
+// the hangar: the route still spends it, so it keeps a row to be seen and fixed.
+const onShipRow = (start: Pick<HangarPlanSlotStart, "sourceVehicleId">) =>
+  props.comparison.vehicles.some(
+    (entry) => entry.vehicleId === start.sourceVehicleId,
+  );
+
+const startCard = (
+  start: Pick<HangarPlanSlotStart, "startKind" | "startModel">,
+): Card => {
   const kind = t(`hangarPlanner.startKinds.${start.startKind}`);
 
-  return start.startModel
-    ? { title: start.startModel.name, sub: kind, model: start.startModel }
-    : { title: kind, sub: t("hangarPlanner.pick.buyChosen") };
+  if (!start.startModel) {
+    return { title: kind, sub: t("hangarPlanner.pick.buyChosen") };
+  }
+
+  return start.startKind === HangarPlanStartKindEnum.OWNED
+    ? {
+        title: start.startModel.name,
+        sub: t("hangarPlanner.sourceMissing"),
+        model: start.startModel,
+        tone: "warning",
+      }
+    : { title: start.startModel.name, sub: kind, model: start.startModel };
 };
 
 const undecidedCard = (slot: HangarPlanSlot): Card => ({
@@ -577,16 +595,10 @@ const gapDetail = (slot: HangarPlanSlot) => {
 
 const neededRows = computed<Row[]>(() => {
   const bought = routes.value
-    .filter(
-      (route) => route.acquisition.startKind !== HangarPlanStartKindEnum.OWNED,
-    )
+    .filter((route) => !onShipRow(route.acquisition))
     .map((route): Row => {
       const { acquisition } = route;
-      const left: Card = {
-        title: acquisition.startModel.name,
-        sub: t(`hangarPlanner.startKinds.${acquisition.startKind}`),
-        model: acquisition.startModel,
-      };
+      const left = startCard(acquisition);
 
       return {
         key: acquisition.id,
@@ -655,19 +667,13 @@ const neededRows = computed<Row[]>(() => {
   });
 
   const waiting = waitingStarts.value
-    .filter(
-      (start) => start.acquisition.startKind !== HangarPlanStartKindEnum.OWNED,
-    )
+    .filter((start) => !onShipRow(start.acquisition))
     .map((start, index): Row => ({
       key: start.acquisition.id,
       group: "slots",
       order: slotOrder(start.slot.id) + index,
       testId: "hangar-plan-flow-waiting",
-      ...waitingRow(start, {
-        title: start.acquisition.startModel.name,
-        sub: t(`hangarPlanner.startKinds.${start.acquisition.startKind}`),
-        model: start.acquisition.startModel,
-      }),
+      ...waitingRow(start, startCard(start.acquisition)),
     }));
 
   // A slot still choosing its ship keeps a row for each unit no start was
@@ -702,13 +708,13 @@ const neededRows = computed<Row[]>(() => {
     });
 
   const held = heldStarts.value
-    .filter(({ start }) => start.startKind !== HangarPlanStartKindEnum.OWNED)
+    .filter(({ start }) => !onShipRow(start))
     .map((entry, index): Row => ({
       key: entry.start.id,
       group: "slots",
       order: slotOrder(entry.slot.id) + index,
       testId: "hangar-plan-flow-held",
-      ...heldRow(entry, heldCard(entry.start)),
+      ...heldRow(entry, startCard(entry.start)),
     }));
 
   // An open slot keeps a row while a unit of it has no start yet.

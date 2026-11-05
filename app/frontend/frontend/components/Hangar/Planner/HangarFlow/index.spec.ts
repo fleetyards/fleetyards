@@ -851,6 +851,66 @@ describe("Hangar/Planner/HangarFlow", () => {
     });
   });
 
+  describe("a start whose hangar ship is gone", () => {
+    const hull = { id: "hull", name: "Hull A", slug: "hull-a", onSale: true };
+    const lost = {
+      id: "lost",
+      startKind: "owned",
+      sourceVehicleId: "gone",
+      startModel: hull,
+      sourceMissing: true,
+    };
+
+    it("keeps a row for a slot holding it, to fix or remove", async () => {
+      const held = slot("held", HangarPlanSlotStateEnum.OPEN, {
+        starts: [lost] as HangarPlanSlot["starts"],
+      });
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [held] },
+          comparison: { ...comparison, vehicles: [] },
+        },
+      });
+
+      const row = wrapper.find('[data-test="hangar-plan-flow-held"]');
+      expect(row.text()).toContain("no longer in your hangar");
+      expect(
+        row.find('[data-test="hangar-plan-flow-slot-remove"]').exists(),
+      ).toBe(true);
+    });
+
+    it("keeps a row for a route that still starts from it", async () => {
+      const routed = slot("routed", HangarPlanSlotStateEnum.DECIDED, {
+        candidates: [
+          {
+            id: "candidate",
+            position: 0,
+            model: carrack,
+            modelModuleIds: [],
+            modelUpgradeIds: [],
+            matchesFilters: true,
+            acquisitions: [
+              {
+                ...lost,
+                routeComplete: false,
+                usesBuybackToken: false,
+                steps: [],
+              },
+            ],
+          },
+        ] as HangarPlanSlot["candidates"],
+      });
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [routed] },
+          comparison: { ...comparison, vehicles: [] },
+        },
+      });
+
+      expect(wrapper.text()).toContain("no longer in your hangar");
+    });
+  });
+
   describe("how a hangar ship was pledged", () => {
     const hull = { id: "hull", name: "Hull A", slug: "hull-a", onSale: true };
 
