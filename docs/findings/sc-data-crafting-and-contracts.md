@@ -104,3 +104,13 @@ The survey found 2,536 contracts across 107 generators and 272 handlers. Contrac
 - **"Surface" means grounded, not strictly a planet.** GrimHex, an asteroid station, is tagged Surface.
 - **Ship combat at a surface target needs no landing.** A contract with `MissionPropertyValue_ShipSpawnDescriptions` and no NPC spawns, mission items, hauling orders or entity spawns is fought in flight.
 - **4.10.1-live:** surface 818, space 1,167, mixed 469, unknown 82 of 2,536. 1,175 need landing.
+
+## Factions and reputation ladders
+
+`FactionReputation.reputationContextPropertiesUI` leads to an `SReputationContextUI`, whose scopes each hold a `standingMap` of `SReputationStandingParams` with a `minReputation`. Measured on 4.10.2-live:
+
+- **A faction's UI context does not list every ladder it pays into.** All 110 of Foxwell's award lines feed `FactionReputation`, while its context lists only Bounty Hunting and Security. A faction's ladders are the union of the two.
+- **`missionResults` is five flags the export never names.** The first alone is on 2,809 of 2,883 award lines, nearly all gains, so it reads as completion. The third is on 64 lines, 54 of them losses, but nothing separates failing from abandoning, so those are only "not completed".
+- **Most standings on the `Affinity` ladder are placeholders.** 36 of 41 have no player-facing name.
+- **The hover and wheeled racing ladders have no localisation keys at all**, so nothing can name them.
+- **Rep logos share `ui/sharedassets/manufacturerlogos` with the manufacturers' own.** `FactionsParser` must run after `ManufacturersParser` and must not clear that folder.
