@@ -43,7 +43,7 @@ class OutfitItem < ApplicationRecord
   GEAR_ITEMS = {
     "grenade" => {equipment_types: %w[weapon tool], sub_types: %w[Grenade]},
     "magazine" => {equipment_types: %w[weapon_attachment], sub_types: %w[Magazine]},
-    "gadget" => {equipment_types: %w[tool mining_gadget], sub_types: %w[Gadget]},
+    "gadget" => {equipment_types: %w[mining_gadget], sub_types: %w[Gadget]},
     "medpen" => {equipment_types: %w[medical], sub_types: %w[MedPack Medical]},
     "oxypen" => {equipment_types: %w[medical], sub_types: %w[OxygenCap]},
     "utility" => {equipment_types: %w[weapon tool], sub_types: %w[Knife Gadget]}

@@ -517,7 +517,7 @@ module ScData
       end
 
       private def goes_on_worn_port?(attach_def)
-        %w[WeaponPersonal FPS_Consumable].include?(attach_def["Type"]) ||
+        %w[WeaponPersonal FPS_Consumable Gadget].include?(attach_def["Type"]) ||
           (attach_def["Type"] == "WeaponAttachment" && attach_def["SubType"] == "Magazine")
       end
 
@@ -529,7 +529,7 @@ module ScData
         container = inventory_containers[values.dig("Components", "SCItemInventoryContainerComponentParams", "containerParams")]
         return if container.nil?
 
-        capacity = micro_scu(container["inventoryType"]&.values&.first&.dig("capacity") || {})
+        capacity = micro_scu(container.dig("inventoryType", "InventoryClosedContainerType", "capacity") || {})
         return unless capacity.positive?
 
         dimensions = container["interiorDimensions"] || {}
@@ -541,7 +541,7 @@ module ScData
       end
 
       private def inventory_containers
-        @inventory_containers ||= Dir.glob("#{import_path}/inventorycontainers/armor/**/*.xml").each_with_object({}) do |file, index|
+        @inventory_containers ||= Dir.glob("#{import_path}/inventorycontainers/**/*.xml").each_with_object({}) do |file, index|
           values = Hash.from_xml(File.read(file)).values.first
           ref = values.is_a?(Hash) ? values["__ref"] : nil
 
@@ -589,7 +589,7 @@ module ScData
           .index_by { |value| value["__ref"] }
       end
 
-      FIT_PORT_TYPE = /\A(Char_Armor_|(WeaponPersonal|WeaponAttachment|FPS_Consumable)\z)/
+      FIT_PORT_TYPE = /\A(Char_Armor_|(WeaponPersonal|WeaponAttachment|FPS_Consumable|Gadget)\z)/
 
       private def worn_ports(values)
         ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))

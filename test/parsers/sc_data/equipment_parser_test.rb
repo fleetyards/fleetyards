@@ -237,6 +237,9 @@ module ScData
                 <SItemPortDef Name="medPen_attach_1" MinSize="1" MaxSize="1">
                   <Types><SItemPortDefTypes Type="FPS_Consumable" /></Types>
                 </SItemPortDef>
+                <SItemPortDef Name="gadget_attach_1" MinSize="1" MaxSize="2">
+                  <Types><SItemPortDefTypes Type="Gadget" /></Types>
+                </SItemPortDef>
               </Ports>
             </SItemPortContainerComponentParams>
           XML
@@ -245,13 +248,14 @@ module ScData
         assert_equal [
           {"name" => "magazine_attach_1", "types" => [{"type" => "WeaponAttachment", "sub_types" => ["Magazine"]}],
            "min_size" => 1, "max_size" => 1, "bone" => "magazine_attach_1_override", "item_helper" => "attach_offset_left_01"},
-          {"name" => "medPen_attach_1", "types" => [{"type" => "FPS_Consumable"}], "min_size" => 1, "max_size" => 1}
+          {"name" => "medPen_attach_1", "types" => [{"type" => "FPS_Consumable"}], "min_size" => 1, "max_size" => 1},
+          {"name" => "gadget_attach_1", "types" => [{"type" => "Gadget"}], "min_size" => 1, "max_size" => 2}
         ], parsed.fetch("cds_core_01_01_01")["fit"]["ports"]
       end
 
       test "reads what a worn piece holds from the container record, not its description" do
         ref = "54a89245-673d-4a56-8454-8488eb0d3fc8"
-        container = "#{@raw_path}/Data/Libs/Foundry/Records/inventorycontainers/armor/medium/medium_legs.xml"
+        container = "#{@raw_path}/Data/Libs/Foundry/Records/inventorycontainers/clothing/medium_legs.xml"
         FileUtils.mkdir_p(File.dirname(container))
         File.write(container, <<~XML)
           <InventoryContainer.medium_legs __type="InventoryContainer" __ref="#{ref}">

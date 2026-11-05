@@ -193,6 +193,17 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     ]}
   end
 
+  test "POST /outfits keeps a hand tool out of the gadget slot, which takes mining gadgets" do
+    sign_in @user
+    core = create(:worn_equipment, slot: "torso", fit: worn_fit("gadget_attach_1"))
+    gadget = create(:equipment, equipment_type: "mining_gadget", sub_type: "Gadget")
+    multitool = create(:equipment, equipment_type: "tool", sub_type: "Gadget")
+    worn = {slot: "torso", equipmentId: core.id}
+
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Miner", items: [worn, {slot: "gadget_1", equipmentId: gadget.id}]}
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Tool", items: [worn, {slot: "gadget_1", equipmentId: multitool.id}]}
+  end
+
   test "POST /outfits refuses the wrong gear for a slot" do
     sign_in @user
     core = create(:worn_equipment, slot: "torso", fit: worn_fit("grenade_attach_1"))

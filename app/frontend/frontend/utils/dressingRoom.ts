@@ -80,7 +80,7 @@ export const GEAR_KINDS: GearKind[] = [
     slots: [OutfitSlotEnum.GADGET_1],
     port: "gadget_attach",
     providers: [OutfitSlotEnum.TORSO, OutfitSlotEnum.BACKPACK],
-    equipmentTypes: ["tool", "mining_gadget"],
+    equipmentTypes: ["mining_gadget"],
     subTypes: ["Gadget"],
   },
   {
