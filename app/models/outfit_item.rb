@@ -46,8 +46,12 @@ class OutfitItem < ApplicationRecord
     "gadget" => {equipment_types: %w[mining_gadget], sub_types: %w[Gadget]},
     "medpen" => {equipment_types: %w[medical], sub_types: %w[MedPack Medical]},
     "oxypen" => {equipment_types: %w[medical], sub_types: %w[OxygenCap]},
-    "utility" => {equipment_types: %w[weapon tool], sub_types: %w[Knife Gadget]}
+    "utility" => {equipment_types: %w[weapon tool], sub_types: %w[Knife Gadget], sizes: %w[1]}
   }.freeze
+
+  # The big tools a back mount carries, by size: the game's ports stop at 5 on
+  # the primary mount and 4 on the secondary, and take nothing under 2.
+  WEAPON_TOOL_SIZES = {"primary" => 2..5, "secondary" => 2..4}.freeze
 
   SLOTS = (ARMOR_SLOTS + WEAPON_SLOTS.keys + GEAR_SLOTS.keys).freeze
 
@@ -93,10 +97,15 @@ class OutfitItem < ApplicationRecord
   private def fits_gear_slot?
     rule = GEAR_ITEMS.fetch(slot.split("_").first)
 
-    rule[:equipment_types].include?(equipment.equipment_type) && rule[:sub_types].include?(equipment.sub_type)
+    rule[:equipment_types].include?(equipment.equipment_type) &&
+      rule[:sub_types].include?(equipment.sub_type) &&
+      (rule[:sizes].nil? || rule[:sizes].include?(equipment.size))
   end
 
   private def fits_weapon_slot?
-    equipment.equipment_type == "weapon" && WEAPON_SUB_TYPES.fetch(slot).include?(equipment.sub_type)
+    return WEAPON_SUB_TYPES.fetch(slot).include?(equipment.sub_type) if equipment.equipment_type == "weapon"
+
+    equipment.equipment_type == "tool" && equipment.sub_type == "Gadget" &&
+      WEAPON_TOOL_SIZES[slot]&.cover?(equipment.size.to_i)
   end
 end

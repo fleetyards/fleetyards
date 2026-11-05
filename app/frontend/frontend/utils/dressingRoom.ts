@@ -42,6 +42,7 @@ export interface GearKind {
   // What it takes; the same rule the API checks.
   equipmentTypes: string[];
   subTypes: string[];
+  sizes?: string[];
 }
 
 export const GEAR_KINDS: GearKind[] = [
@@ -106,6 +107,8 @@ export const GEAR_KINDS: GearKind[] = [
     providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
     equipmentTypes: ["weapon", "tool"],
     subTypes: ["Knife", "Gadget"],
+    // The big multitools go on a back mount instead.
+    sizes: ["1"],
   },
 ];
 
@@ -140,10 +143,28 @@ export const visibleGearSlots = (
   offered: (slot: OutfitSlotEnum) => boolean,
 ) => GEAR_SLOTS.filter((slot) => !!selection[slot] || offered(slot));
 
-export const WEAPON_SUB_TYPES: Partial<Record<OutfitSlotEnum, string[]>> = {
-  [OutfitSlotEnum.PRIMARY]: ["Medium", "Large"],
-  [OutfitSlotEnum.SECONDARY]: ["Medium"],
-  [OutfitSlotEnum.SIDEARM]: ["Small"],
+// What each weapon slot offers; the same rule the API checks. A back mount also
+// carries the big multitools, from the size its port starts at to where it stops.
+export const WEAPON_QUERIES: Partial<
+  Record<
+    OutfitSlotEnum,
+    { equipmentTypeIn: string[]; subTypeIn: string[]; sizeIn?: string[] }
+  >
+> = {
+  [OutfitSlotEnum.PRIMARY]: {
+    equipmentTypeIn: ["weapon", "tool"],
+    subTypeIn: ["Medium", "Large", "Gadget"],
+    sizeIn: ["2", "3", "4", "5"],
+  },
+  [OutfitSlotEnum.SECONDARY]: {
+    equipmentTypeIn: ["weapon", "tool"],
+    subTypeIn: ["Medium", "Gadget"],
+    sizeIn: ["2", "3", "4"],
+  },
+  [OutfitSlotEnum.SIDEARM]: {
+    equipmentTypeIn: ["weapon"],
+    subTypeIn: ["Small"],
+  },
 };
 
 // Where each slot's item hangs, as the game's ports say: the bone the worn

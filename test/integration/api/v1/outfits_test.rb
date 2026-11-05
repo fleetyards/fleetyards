@@ -167,7 +167,7 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     sign_in @user
     core = create(:worn_equipment, slot: "torso", fit: worn_fit("grenade_attach_1", "magazine_attach_1"))
     legs = create(:worn_equipment, slot: "legs", fit: worn_fit("medPen_attach_1", "utility_attach_2"))
-    knife = create(:equipment, sub_type: "Knife")
+    knife = create(:equipment, sub_type: "Knife", size: "1")
     pen = create(:equipment, equipment_type: "medical", sub_type: "MedPack")
     magazine = create(:equipment, equipment_type: "weapon_attachment", sub_type: "Magazine")
 
@@ -202,6 +202,25 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :post, 201, api_path: "/outfits", body: {name: "Miner", items: [worn, {slot: "gadget_1", equipmentId: gadget.id}]}
     assert_api_response :post, 400, api_path: "/outfits", body: {name: "Tool", items: [worn, {slot: "gadget_1", equipmentId: multitool.id}]}
+  end
+
+  test "POST /outfits carries a big multitool on the back mounts, not in a utility slot" do
+    sign_in @user
+    legs = create(:worn_equipment, slot: "legs", fit: worn_fit("utility_attach_1"))
+    cambio = create(:equipment, equipment_type: "tool", sub_type: "Gadget", size: "2")
+    extinguisher = create(:equipment, equipment_type: "tool", sub_type: "Gadget", size: "5")
+    multitool = create(:equipment, equipment_type: "tool", sub_type: "Gadget", size: "1")
+
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Back", items: [
+      {slot: "primary", equipmentId: extinguisher.id}, {slot: "secondary", equipmentId: cambio.id}
+    ]}
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Too big", items: [{slot: "secondary", equipmentId: extinguisher.id}]}
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Too small", items: [{slot: "primary", equipmentId: multitool.id}]}
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Sidearm", items: [{slot: "sidearm", equipmentId: cambio.id}]}
+
+    worn = {slot: "legs", equipmentId: legs.id}
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Small", items: [worn, {slot: "utility_1", equipmentId: multitool.id}]}
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Big", items: [worn, {slot: "utility_1", equipmentId: cambio.id}]}
   end
 
   test "POST /outfits refuses the wrong gear for a slot" do
