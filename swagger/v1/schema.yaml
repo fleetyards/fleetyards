@@ -1074,6 +1074,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/factions":
+    get:
+      summary: Factions
+      tags:
+      - Factions
+      operationId: factions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FactionsList"
+  "/factions/{slug}":
+    get:
+      summary: Faction detail
+      tags:
+      - Factions
+      operationId: faction
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FactionDetail"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -29142,6 +29182,138 @@ components:
       required:
       - capacity
       title: ExternalFuelTank
+    Faction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        area:
+          type:
+          - string
+          - 'null'
+        focus:
+          type:
+          - string
+          - 'null'
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        missionCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - name
+      - missionCount
+      title: Faction
+    FactionDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        area:
+          type:
+          - string
+          - 'null'
+        focus:
+          type:
+          - string
+          - 'null'
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        missionCount:
+          type: integer
+        description:
+          type:
+          - string
+          - 'null'
+        headquarters:
+          type:
+          - string
+          - 'null'
+        founded:
+          type:
+          - string
+          - 'null'
+        leadership:
+          type:
+          - string
+          - 'null'
+        ladders:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FactionLadder"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - name
+      - missionCount
+      - ladders
+      title: FactionDetail
+    FactionLadder:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        ceiling:
+          type:
+          - integer
+          - 'null'
+        ranks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FactionRank"
+        missionCount:
+          type: integer
+        minAward:
+          type:
+          - integer
+          - 'null'
+        maxAward:
+          type:
+          - integer
+          - 'null'
+      additionalProperties: false
+      required:
+      - key
+      - name
+      - ranks
+      - missionCount
+      title: FactionLadder
+    FactionRank:
+      type: object
+      properties:
+        name:
+          type: string
+        minReputation:
+          type: integer
+      additionalProperties: false
+      required:
+      - name
+      - minReputation
+      title: FactionRank
+    FactionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Faction"
+      title: FactionsList
     FeatureFlagName:
       type: string
       enum:
@@ -36194,6 +36366,10 @@ components:
           type:
           - string
           - 'null'
+        slug:
+          type:
+          - string
+          - 'null'
         alignment:
           "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
         lawful:
@@ -36386,6 +36562,20 @@ components:
           type:
           - string
           - 'null'
+        orgSlug:
+          type:
+          - string
+          - 'null'
+        ladderKey:
+          type:
+          - string
+          - 'null'
+        ladderName:
+          type:
+          - string
+          - 'null'
+        outcome:
+          "$ref": "#/components/schemas/NullableGameMissionRewardOutcomeEnum"
         entityClass:
           type:
           - string
@@ -45875,6 +46065,19 @@ components:
       - UNKNOWN
       - 'NULL'
       title: NullableGameMissionLocationKindEnum
+    NullableGameMissionRewardOutcomeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - completed
+      - not_completed
+      -
+      x-enumNames:
+      - COMPLETED
+      - NOT_COMPLETED
+      - 'NULL'
+      title: NullableGameMissionRewardOutcomeEnum
     NullableHangarPlanVehicleUseEnum:
       type:
       - string

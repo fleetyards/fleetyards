@@ -19,6 +19,9 @@ module Shared
             # and the display name is localised.
             key: {type: [:string, :null]},
 
+            # The faction page this org has, derived from `key`.
+            slug: {type: [:string, :null]},
+
             # "neutral" is ours to name: the export states a boolean and there
             # is no third value anywhere in the tree.
             alignment: ::Shared::V1::Schemas::Enums::NullableBlueprintSourceAlignmentEnum,

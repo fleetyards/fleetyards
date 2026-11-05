@@ -107,6 +107,15 @@ module ScData
         assert_equal 2, GameMissionReward.of_kind("reputation").where(amount: ...0).count
       end
 
+      test "#all keeps the ladder and the outcome of a reputation reward" do
+        loader.all
+
+        reward = GameMissionReward.of_kind("reputation").find_by!(ladder_key: "factionreputationscope")
+
+        assert_equal "Standing", reward.ladder_name
+        assert_equal "completed", reward.outcome
+      end
+
       # The denormalised list and the rows it is drawn from cannot disagree: the
       # list is what a filter reads and the rows are what a page renders.
       # "blueprint" is the one entry with no row behind it -- a recipe comes from

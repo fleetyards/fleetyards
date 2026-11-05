@@ -23,6 +23,12 @@ json.rewards mission.facts&.rewards.to_a do |reward|
   # export declares are negative.
   json.org_name reward.org_name
   json.org_key reward.org_key
+  json.org_slug Faction.slug_for_key(reward.org_key)
+
+  # Reputation only: the ladder the points go to, and when they are paid.
+  json.ladder_key reward.ladder_key
+  json.ladder_name reward.ladder_name
+  json.outcome reward.outcome
 
   # Item only. The entity class is not resolved to a catalogue row: an award
   # names things that are variously equipment, a commodity crate, or a mission

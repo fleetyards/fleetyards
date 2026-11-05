@@ -39,6 +39,18 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     create(:game_mission_reward, :currency, build: @mission.build, position: 1)
   end
 
+  test "GET /missions/{slug} states the ladder and outcome of a reputation reward, and links the faction" do
+    create(:game_mission_reward, build: @mission.build, amount: -250, position: 2,
+      ladder_key: "reputationscope_hauling", ladder_name: "Hauling", outcome: "not_completed")
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      reward = parsed_body["rewards"].last
+
+      assert_equal ["Hauling", "not_completed", "foxwellenforcement"], reward.values_at("ladderName", "outcome", "orgSlug")
+      assert_equal "foxwellenforcement", parsed_body.dig("org", "slug")
+    end
+  end
+
   test "GET /missions/{slug} names the places it can take place at" do
     levski = create(:location, name: "Levski", kind: "city")
     retired = create(:location, name: "Port Olisar", version: nil, with_build: false)

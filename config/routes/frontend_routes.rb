@@ -39,6 +39,9 @@ namespace :frontend, **frontend_options do
   # anywhere else.
   get "catalogue/missions/:slug", to: "base#mission", as: :game_mission
 
+  # The same, for a faction.
+  get "catalogue/factions/:slug", to: "base#faction", as: :faction
+
   # The same, for a place. Top level rather than under the catalogue: a place
   # is somewhere you go, not something you buy or fit.
   get "locations/:slug", to: "base#location", as: :location

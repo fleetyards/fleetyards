@@ -112,6 +112,18 @@ module Frontend
       render_frontend
     end
 
+    def faction
+      @faction = Faction.find_by(slug: params[:slug].to_s.downcase)
+
+      if @faction.present?
+        @title = @faction.name
+        @description = @faction.description
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
     def location
       @location = Location.find_by(slug: params[:slug].to_s.downcase)
 
