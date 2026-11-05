@@ -103,6 +103,13 @@ module Catalogue
       assert_equal ["InterSec Patrol", "Zzz Patrol"], search("intersec").map(&:second)
     end
 
+    test "ranks a name holding the query mid-word above a short one only its org matches" do
+      create(:game_mission, name: "Ab", org_name: "Red Wind Linehaul")
+      create(:game_mission, name: "A Hundred Crates To Move", org_name: "Foxwell Enforcement")
+
+      assert_equal ["A Hundred Crates To Move", "Ab"], search("red").map(&:second)
+    end
+
     test "says there is more where variants of a mission collapsed into one row" do
       2.times { create(:game_mission, name: "Clear the Outpost", org_name: "InterSec Defense Solutions") }
 

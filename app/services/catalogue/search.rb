@@ -154,8 +154,8 @@ module Catalogue
       klass = TokenResolver::CATALOGUES.fetch(prefix)
       name = TokenResolver.name_sql(prefix)
       rank = ActiveRecord::Base.sanitize_sql_array([
-        "CASE WHEN lower(#{name}) LIKE ? THEN 0 WHEN lower(#{name}) LIKE ? THEN 1 ELSE 2 END",
-        "#{escaped}%", "% #{escaped}%"
+        "CASE WHEN lower(#{name}) LIKE ? THEN 0 WHEN lower(#{name}) LIKE ? THEN 1 WHEN lower(#{name}) LIKE ? THEN 2 ELSE 3 END",
+        "#{escaped}%", "% #{escaped}%", "%#{escaped}%"
       ])
 
       searched = [name, *also_searched(prefix, klass)].map { |column| "lower(#{column}) LIKE :pattern" }.join(" OR ")
