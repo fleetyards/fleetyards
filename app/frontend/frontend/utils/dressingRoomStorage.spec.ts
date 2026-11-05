@@ -31,6 +31,15 @@ describe("the stored items in an address", () => {
     });
   });
 
+  it("stacks a slug repeated by hand, within the limit", () => {
+    expect(
+      parseStoredQuery({ stored_backpack: "pen*2,pen*3,gun*999,gun" }).backpack,
+    ).toEqual([
+      { slug: "pen", quantity: 5 },
+      { slug: "gun", quantity: 999 },
+    ]);
+  });
+
   it("does not trust a quantity it cannot read or the API would refuse", () => {
     expect(
       parseStoredQuery({ stored_legs: "a*x,b*0,c*-2,d*5000" }).legs,
@@ -112,5 +121,10 @@ describe("what fits", () => {
     );
     expect(holderProblem(PACK, entries, { medpen: PEN })).toBe("overCapacity");
     expect(holderProblem(PACK, [], { medpen: PEN })).toBeUndefined();
+    expect(
+      holderProblem(PACK, [{ slug: "prop", quantity: 1 }], {
+        prop: { volume: null },
+      }),
+    ).toBe("unmeasured");
   });
 });

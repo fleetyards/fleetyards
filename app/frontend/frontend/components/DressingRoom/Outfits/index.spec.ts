@@ -152,6 +152,30 @@ describe("DressingRoomOutfits", () => {
     ).toBeDefined();
   });
 
+  it("still renames a saved outfit a patch left unsaveable, leaving its contents alone", async () => {
+    const wrapper = await mount({ activeId: "outfit-1", blocked: true });
+
+    await wrapper
+      .find('input[name="dressing-room-outfit-name"]')
+      .setValue("Renamed");
+
+    expect(
+      wrapper.find('[data-test="dressing-room-save-blocked"]').exists(),
+    ).toBe(false);
+
+    await wrapper
+      .find('[data-test="dressing-room-save-changes"]')
+      .trigger("click");
+    await flushPromises();
+
+    const [[call]] = update.mock.calls as unknown as [
+      [{ data: Record<string, unknown> }],
+    ];
+    expect(call.data.name).toBe("Renamed");
+    expect(call.data.items).toBeUndefined();
+    expect(call.data.storedItems).toBeUndefined();
+  });
+
   it("does not save on Enter under a name already taken", async () => {
     const wrapper = await mount({});
 

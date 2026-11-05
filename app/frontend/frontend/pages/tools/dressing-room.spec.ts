@@ -212,7 +212,10 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
 
 const { default: Component } = await import("./dressing-room.vue");
 
-const mount = async (query: Record<string, string> = {}) => {
+const mount = async (
+  query: Record<string, string> = {},
+  { settle = true }: { settle?: boolean } = {},
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -234,7 +237,7 @@ const mount = async (query: Record<string, string> = {}) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     plugins: [router],
   });
-  await flushPromises();
+  if (settle) await flushPromises();
 
   return { wrapper, router };
 };
@@ -673,6 +676,38 @@ describe("ToolsDressingRoomPage", () => {
       expect(
         wrapper.find('[data-test="dressing-room-gear-hint"]').exists(),
       ).toBe(true);
+    });
+
+    it("says so when what is worn offers no gear at all", async () => {
+      const { wrapper } = await mount({ undersuit: "flight-suit" });
+
+      expect(
+        wrapper.find('[data-test="dressing-room-gear-hint"]').text(),
+      ).toContain("no gear slots");
+    });
+
+    it("marks nothing as wrong while the worn pieces are still loading", async () => {
+      const { wrapper } = await mount(
+        {
+          torso: "gear-core",
+          grenade_1: "mk-4",
+          backpack: "small-pack",
+          stored_backpack: "medpen",
+        },
+        { settle: false },
+      );
+
+      expect(
+        wrapper.find('[data-test="dressing-room-fit-grenade_1"]').exists(),
+      ).toBe(false);
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-storage-problem-backpack"]')
+          .exists(),
+      ).toBe(false);
+      expect(
+        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
+      ).toBe(false);
     });
 
     it("offers the next port of what is worn, and hangs gear on its bone", async () => {

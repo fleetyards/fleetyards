@@ -115,12 +115,22 @@ watch(
   { immediate: true },
 );
 
+const contentsChanged = computed(
+  () =>
+    !active.value ||
+    savedItemsKey(active.value) !== itemsKey(props.items) ||
+    savedStoredKey(active.value) !== storedKey(props.storedItems),
+);
+
+// A patch can take a port or room away from a saved outfit. That only stands in
+// the way of saving new contents: renaming it leaves them as they were.
+const refused = computed(() => props.blocked && contentsChanged.value);
+
 const changed = computed(
   () =>
     !!active.value &&
     (active.value.name !== name.value.trim() ||
-      savedItemsKey(active.value) !== itemsKey(props.items) ||
-      savedStoredKey(active.value) !== storedKey(props.storedItems) ||
+      contentsChanged.value ||
       (active.value.heldWeapon ?? undefined) !== props.heldWeapon ||
       (props.body !== undefined && active.value.body !== props.body)),
 );
@@ -163,8 +173,9 @@ const saveChanges = async () => {
       id: active.value.id,
       data: {
         name: name.value.trim(),
-        items: props.items,
-        storedItems: props.storedItems,
+        ...(contentsChanged.value
+          ? { items: props.items, storedItems: props.storedItems }
+          : {}),
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
       },
@@ -195,19 +206,19 @@ const nameTaken = computed(() =>
 
 const canSave = computed(
   () =>
-    !!name.value.trim() &&
-    !nameTaken.value &&
-    !saving.value &&
-    !props.pending &&
-    !props.blocked,
+    !!name.value.trim() && !nameTaken.value && !saving.value && !props.pending,
 );
 
 const canSaveNew = computed(
   () =>
-    canSave.value && (!active.value || name.value.trim() !== active.value.name),
+    canSave.value &&
+    !props.blocked &&
+    (!active.value || name.value.trim() !== active.value.name),
 );
 
-const canSaveChanges = computed(() => canSave.value && changed.value);
+const canSaveChanges = computed(
+  () => canSave.value && changed.value && !refused.value,
+);
 
 // Enter saves what the buttons would: the active outfit's changes, or a new
 // outfit when none is active.
@@ -237,7 +248,7 @@ const submit = () => {
           {{ t("dressingRoom.nameTaken") }}
         </p>
         <p
-          v-if="blocked"
+          v-if="refused"
           class="outfits__warning"
           data-test="dressing-room-save-blocked"
         >

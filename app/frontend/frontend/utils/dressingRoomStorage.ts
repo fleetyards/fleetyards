@@ -1,5 +1,9 @@
 import { type LocationQuery } from "vue-router";
-import { OutfitHolderEnum } from "@/services/fyApi";
+import {
+  type EquipmentInventory,
+  OutfitHolderEnum,
+  type OutfitSlotEnum,
+} from "@/services/fyApi";
 
 export const HOLDERS: OutfitHolderEnum[] = [
   OutfitHolderEnum.BACKPACK,
@@ -19,10 +23,14 @@ export interface StoredEntry {
 // What each worn piece holds, by equipment slug: what a share link carries.
 export type StoredSelection = Partial<Record<OutfitHolderEnum, StoredEntry[]>>;
 
-export interface StorageInventory {
-  capacity: number;
-  dimensions: { x: number; y: number; z: number };
-}
+export type StorageInventory = EquipmentInventory;
+
+export const wornInventory = (
+  worn: Partial<
+    Record<OutfitSlotEnum, { inventory?: StorageInventory | null } | undefined>
+  >,
+  holder: OutfitHolderEnum,
+) => worn[holder]?.inventory;
 
 export interface StorableItem {
   volume?: number | null;
@@ -54,9 +62,21 @@ export const parseStoredQuery = (query: LocationQuery): StoredSelection =>
       const value = [query[queryKey(holder)]].flat()[0];
       if (typeof value !== "string" || !value) return [];
 
+      // A slug repeated by hand is one stack, not two rows of the same item.
       const entries = value
         .split(",")
-        .flatMap((text) => parseEntry(text) ?? []);
+        .flatMap((text) => parseEntry(text) ?? [])
+        .reduce<StoredEntry[]>((merged, entry) => {
+          const known = merged.find(({ slug }) => slug === entry.slug);
+          if (!known) return [...merged, entry];
+
+          known.quantity = Math.min(
+            known.quantity + entry.quantity,
+            MAX_STORED_QUANTITY,
+          );
+
+          return merged;
+        }, []);
 
       return entries.length ? [[holder, entries]] : [];
     }),
@@ -164,6 +184,15 @@ export const holderProblem = (
 ) => {
   if (!entries.length) return undefined;
   if (!inventory) return "noStorage";
+  if (
+    entries.some((entry) => {
+      const item = items[entry.slug];
+
+      return !!item && !item.volume;
+    })
+  ) {
+    return "unmeasured";
+  }
   if (usedSpace(entries, items) > inventory.capacity) return "overCapacity";
 
   const tooLarge = entries.some((entry) => {

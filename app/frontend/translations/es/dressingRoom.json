@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "Aquí no llevas nada que pueda contener estos objetos.",
           "overCapacity": "Contiene más de lo que cabe en esta pieza.",
-          "tooLarge": "Contiene un objeto demasiado grande para esta pieza."
+          "tooLarge": "Contiene un objeto demasiado grande para esta pieza.",
+          "unmeasured": "Contiene un objeto sin tamaño medido."
         },
         "misfit": {
           "unmeasured": "Sin tamaño medido",
           "tooLarge": "Demasiado grande para esta pieza",
           "noRoom": "No queda espacio suficiente"
         }
-      }
+      },
+      "gearNone": "Lo que llevas puesto no tiene ranuras de equipo."
     }
   }
 }

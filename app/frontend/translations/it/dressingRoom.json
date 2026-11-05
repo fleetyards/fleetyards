@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "Nulla di indossato qui può contenere questi oggetti.",
           "overCapacity": "Contiene più di quanto questo pezzo possa ospitare.",
-          "tooLarge": "Contiene un oggetto troppo grande per questo pezzo."
+          "tooLarge": "Contiene un oggetto troppo grande per questo pezzo.",
+          "unmeasured": "Contiene un oggetto senza dimensione misurata."
         },
         "misfit": {
           "unmeasured": "Dimensione non misurata",
           "tooLarge": "Troppo grande per questo pezzo",
           "noRoom": "Spazio insufficiente"
         }
-      }
+      },
+      "gearNone": "Ciò che indossi non ha slot per l'equipaggiamento."
     }
   }
 }

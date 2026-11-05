@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "Hier wird nichts getragen, das diese Gegenstände aufnehmen kann.",
           "overCapacity": "Enthält mehr, als dieses Teil fassen kann.",
-          "tooLarge": "Enthält einen Gegenstand, der für dieses Teil zu groß ist."
+          "tooLarge": "Enthält einen Gegenstand, der für dieses Teil zu groß ist.",
+          "unmeasured": "Enthält einen Gegenstand ohne gemessene Größe."
         },
         "misfit": {
           "unmeasured": "Keine gemessene Größe",
           "tooLarge": "Zu groß für dieses Teil",
           "noRoom": "Nicht genug Platz übrig"
         }
-      }
+      },
+      "gearNone": "Was du trägst, hat keine Ausrüstungsplätze."
     }
   }
 }

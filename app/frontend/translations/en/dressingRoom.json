@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "Nothing worn here can hold these items.",
           "overCapacity": "Holds more than this piece has room for.",
-          "tooLarge": "Holds an item too large for this piece."
+          "tooLarge": "Holds an item too large for this piece.",
+          "unmeasured": "Holds an item with no measured size."
         },
         "misfit": {
           "unmeasured": "No measured size",
           "tooLarge": "Too large for this piece",
           "noRoom": "Not enough room left"
         }
-      }
+      },
+      "gearNone": "What you are wearing has no gear slots."
     }
   }
 }

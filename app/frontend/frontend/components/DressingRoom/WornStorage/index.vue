@@ -19,19 +19,20 @@ import {
 import {
   HOLDERS,
   MAX_STORED_QUANTITY,
-  type StorageInventory,
   type StoredEntry,
   type StoredSelection,
   holderProblem,
   storeProblem,
   usedSpace,
+  wornInventory,
 } from "@/frontend/utils/dressingRoomStorage";
 
 type Props = {
   stored: StoredSelection;
   worn: Partial<Record<OutfitSlotEnum, Equipment | undefined>>;
   storedItems: Record<string, Equipment | undefined>;
-  // Items still loading: not yet known to be missing.
+  // Worn pieces or items still loading: nothing is known to be missing or
+  // wrong yet.
   loading?: boolean;
 };
 
@@ -50,8 +51,7 @@ const microScuLabel = (value: number) =>
     : t("number.microScu", { count: 0 });
 
 const inventoryOf = (holder: OutfitHolderEnum) =>
-  props.worn[holder as OutfitSlotEnum]?.inventory as
-    StorageInventory | null | undefined;
+  wornInventory(props.worn, holder);
 
 // Everything with room in it, and anything still holding items after the piece
 // that held them came off.
@@ -72,7 +72,9 @@ const holders = computed(() =>
         percent: inventory
           ? Math.min(100, Math.round((used / inventory.capacity) * 100))
           : 0,
-        problem: holderProblem(inventory, entries, props.storedItems),
+        problem: props.loading
+          ? undefined
+          : holderProblem(inventory, entries, props.storedItems),
       },
     ];
   }),

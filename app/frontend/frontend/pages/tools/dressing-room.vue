@@ -71,7 +71,6 @@ import {
 } from "@/frontend/utils/dressingRoomFit";
 import {
   HOLDERS,
-  type StorageInventory,
   type StoredSelection,
   addStored,
   holderProblem,
@@ -80,6 +79,7 @@ import {
   storedQuery,
   storedSlugs,
   usedSpace,
+  wornInventory,
 } from "@/frontend/utils/dressingRoomStorage";
 
 // The figure faces -Z, as the game's characters face its +Y: the camera starts
@@ -251,6 +251,15 @@ const slotLabel = (slot: OutfitSlotEnum) => {
   return t(`dressingRoom.gear.${kind.key}`, { number: gearNumber(slot) });
 };
 
+// Whether the empty gear group is down to what is worn, or to nothing being.
+const wearsGearProvider = computed(() =>
+  GEAR_SLOTS.some((slot) => {
+    const fit = slotFits.value[slot];
+
+    return fit.kind !== "none" || fit.providers.length > 0;
+  }),
+);
+
 const gearSlots = computed(() =>
   visibleGearSlots(
     selection.value,
@@ -299,6 +308,9 @@ const slotFits = computed(
 
 // Why a slot cannot take its piece, or anything at all; nothing when it fits.
 const fitNote = (slot: OutfitSlotEnum) => {
+  // A piece still loading may be the one that offers this gear its port.
+  if (isGearSlot(slot) && wornLoading.value) return undefined;
+
   const fit = slotFits.value[slot];
 
   if (fit.kind === "none") {
@@ -351,12 +363,8 @@ const storedMissing = computed(() =>
   storedItemQueries.value.some((query) => query.isError),
 );
 
-const wornInventory = (holder: OutfitHolderEnum) =>
-  items.value[holder as OutfitSlotEnum]?.inventory as
-    StorageInventory | null | undefined;
-
 const openStorage = (holder: OutfitHolderEnum) => {
-  const inventory = wornInventory(holder);
+  const inventory = wornInventory(items.value, holder);
   if (!inventory) return;
 
   comlink.emit("open-modal", {
@@ -389,6 +397,8 @@ const changeStored = (
     setStoredQuantity(stored.value, holder, slug, quantity),
   );
 };
+
+const wornLoading = computed(() => OUTFIT_SLOTS.some(loadingSlot));
 
 // Painted holos that did not load, so the figure is drawn in clay instead.
 const failedPaths = ref<string[]>([]);
@@ -661,15 +671,16 @@ const storedInputs = computed<OutfitStoredItemInput[]>(() =>
 // What the API would refuse, each already marked where it is on the page.
 const saveBlocked = computed(
   () =>
-    GEAR_SLOTS.some((slot) => !!selection.value[slot] && !!fitNote(slot)) ||
-    HOLDERS.some(
-      (holder) =>
-        !!holderProblem(
-          wornInventory(holder),
-          stored.value[holder],
-          storedItems.value,
-        ),
-    ),
+    !wornLoading.value &&
+    (GEAR_SLOTS.some((slot) => !!selection.value[slot] && !!fitNote(slot)) ||
+      HOLDERS.some(
+        (holder) =>
+          !!holderProblem(
+            wornInventory(items.value, holder),
+            stored.value[holder],
+            storedItems.value,
+          ),
+      )),
 );
 
 const outfitItems = computed<OutfitItemInput[]>(() =>
@@ -800,7 +811,13 @@ const copyShareLink = () => {
               class="dressing-room__group-hint"
               data-test="dressing-room-gear-hint"
             >
-              {{ t("dressingRoom.gearHint") }}
+              {{
+                wornLoading
+                  ? "…"
+                  : wearsGearProvider
+                    ? t("dressingRoom.gearNone")
+                    : t("dressingRoom.gearHint")
+              }}
             </p>
             <ul
               v-else
@@ -937,7 +954,7 @@ const copyShareLink = () => {
           :stored="stored"
           :worn="items"
           :stored-items="storedItems"
-          :loading="storedLoading"
+          :loading="storedLoading || wornLoading"
           @add="openStorage"
           @quantity="changeStored"
         />

@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "此处没有穿戴可容纳这些物品的部件。",
           "overCapacity": "所存物品超出此部件的容量。",
-          "tooLarge": "存有对此部件来说过大的物品。"
+          "tooLarge": "存有对此部件来说过大的物品。",
+          "unmeasured": "存有没有测量尺寸的物品。"
         },
         "misfit": {
           "unmeasured": "没有测量尺寸",
           "tooLarge": "对此部件来说过大",
           "noRoom": "剩余空间不足"
         }
-      }
+      },
+      "gearNone": "你所穿的部件没有装备槽位。"
     }
   }
 }

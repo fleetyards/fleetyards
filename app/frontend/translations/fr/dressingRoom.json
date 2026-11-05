@@ -84,14 +84,16 @@
         "problems": {
           "noStorage": "Rien de porté ici ne peut contenir ces objets.",
           "overCapacity": "Contient plus que ce que cette pièce peut accueillir.",
-          "tooLarge": "Contient un objet trop grand pour cette pièce."
+          "tooLarge": "Contient un objet trop grand pour cette pièce.",
+          "unmeasured": "Contient un objet sans taille mesurée."
         },
         "misfit": {
           "unmeasured": "Taille non mesurée",
           "tooLarge": "Trop grand pour cette pièce",
           "noRoom": "Plus assez de place"
         }
-      }
+      },
+      "gearNone": "Ce que vous portez n'a pas d'emplacement d'équipement."
     }
   }
 }
