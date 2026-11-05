@@ -180,13 +180,13 @@ const barStyle = (minReputation: number) => {
     height: 12px;
     overflow: hidden;
     background-color: var(--color-gray-black);
-    border-radius: 6px;
+    border-radius: 2px;
   }
 
   &__bar {
     height: 100%;
-    background-color: var(--color-endcap);
-    border-radius: 6px;
+    background-color: var(--color-primary);
+    border-radius: 2px;
   }
 }
 </style>
