@@ -25,9 +25,6 @@ type Props = {
   badges?: PickerCardBadge[];
   selected?: boolean;
   disabled?: boolean;
-  // Off where something else names the card on hover, and the browser's tooltip
-  // would only land on top of it.
-  hideTitle?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,7 +34,6 @@ const props = withDefaults(defineProps<Props>(), {
   badges: () => [],
   selected: false,
   disabled: false,
-  hideTitle: false,
 });
 
 const emit = defineEmits<{
@@ -82,6 +78,7 @@ const accessibleName = computed(() =>
       'picker-card--selected': selected,
       'picker-card--disabled': disabled,
       'picker-card--contain': imageFit === 'contain',
+      'picker-card--info': $slots.info,
     }"
   >
     <div class="picker-card__image">
@@ -140,11 +137,16 @@ const accessibleName = computed(() =>
       class="picker-card__toggle"
       :aria-pressed="selected"
       :aria-label="accessibleName"
-      :title="hideTitle ? undefined : fullText"
+      :title="fullText"
       :aria-describedby="$slots.default ? detailsId : undefined"
       :disabled="disabled"
       @click="emit('toggle')"
     />
+
+    <!-- A sibling of the toggle for the same reason as the overlay slot. -->
+    <div v-if="$slots.info" class="picker-card__info">
+      <slot name="info" />
+    </div>
   </div>
 </template>
 
@@ -271,6 +273,17 @@ const accessibleName = computed(() =>
 .picker-card--selected .picker-card__check {
   @apply opacity-100;
   transform: scale(1);
+}
+
+/* ---------- info ---------- */
+.picker-card__info {
+  @apply absolute z-[2] flex;
+  top: 8px;
+  right: 8px;
+}
+
+.picker-card--info .picker-card__check {
+  right: 36px;
 }
 
 /* ---------- already-have markers ---------- */

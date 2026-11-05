@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "show": "Mostra le statistiche di %{name}",
         "stock": "Di serie: %{value}",
         "more": "+%{count} altri nella pagina dei dettagli",
         "unavailable": "Impossibile caricare questi dettagli.",

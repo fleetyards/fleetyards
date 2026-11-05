@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "show": "Show stats for %{name}",
         "stock": "Stock: %{value}",
         "more": "+%{count} more on the detail page",
         "unavailable": "Could not load these details.",

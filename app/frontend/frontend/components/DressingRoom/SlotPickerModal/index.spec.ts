@@ -164,7 +164,7 @@ describe("DressingRoomSlotPickerModal", () => {
     expect(option.find(".picker-card__badge").text()).toBe("S2");
   });
 
-  it("keeps a weapon's figures off the card and shows them on hover", async () => {
+  it("keeps a weapon's figures off the card and shows them from its info button", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [
         {
@@ -191,9 +191,12 @@ describe("DressingRoomSlotPickerModal", () => {
       '[data-test="dressing-room-option-a03-sniper-rifle"]',
     );
     expect(option.text()).not.toContain("42");
-    expect(option.find("button").attributes("title")).toBeUndefined();
 
     vi.useFakeTimers();
+    await option.find(".picker-card__toggle").trigger("mouseenter");
+    await vi.advanceTimersByTimeAsync(300);
+    expect(document.querySelector('[data-test="popover"]')).toBeNull();
+
     await weapons.find('[data-test="popover-trigger"]').trigger("mouseenter");
     await vi.advanceTimersByTimeAsync(300);
 

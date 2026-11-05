@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "show": "显示 %{name} 的数据",
         "stock": "原厂：%{value}",
         "more": "详情页另有 %{count} 项",
         "unavailable": "无法加载这些详情。",
