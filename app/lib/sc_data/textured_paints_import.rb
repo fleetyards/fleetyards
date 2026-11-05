@@ -3,8 +3,9 @@
 module ScData
   # The maps a ship's textured holo can be repainted with: per paint a base
   # colour and an occlusion/roughness/metallic WebP beside `flight_textured.glb`,
-  # listed in `flight_textured.json` under the palette's slug. Each lands on the
-  # ship's paints that the palette stands for.
+  # listed in `flight_textured.json` under the palette's slug, and for a paint
+  # with artwork of its own a stencil sheet. Each lands on the ship's paints that
+  # the palette stands for.
   #
   # The lite export has a smaller atlas, so `flight_textured_lite.json` lists
   # maps of its own. Either set paints its variant's landed holo too: both
@@ -24,8 +25,8 @@ module ScData
     # Listing => {attachment => the manifest key naming its file}. Only the base
     # colour, listed first, is required: without it a paint has nothing to show.
     LISTINGS = {
-      "flight_textured.json" => {holo_texture: "base", holo_texture_orm: "orm"},
-      "flight_textured_lite.json" => {holo_texture_lite: "base", holo_texture_orm_lite: "orm"}
+      "flight_textured.json" => {holo_texture: "base", holo_texture_orm: "orm", holo_texture_stencil: "stencil"},
+      "flight_textured_lite.json" => {holo_texture_lite: "base", holo_texture_orm_lite: "orm", holo_texture_stencil_lite: "stencil"}
     }.freeze
 
     # Listing => the holos its maps fit.
@@ -89,9 +90,22 @@ module ScData
 
           complete &= attach(stale, field, path, file_name, md5)
         end
+
+        settle_stencil(records, fields.key("stencil"), entry, maps, "#{path}/#{name}", slug)
       end
 
       complete
+    end
+
+    # A palette that names no sheet takes back one an earlier export or another
+    # palette left on the paint: artwork is only right on its own base colour. A
+    # sheet named but not published says nothing about the one already there.
+    private def settle_stencil(records, field, entry, maps, listing, slug)
+      if entry["stencil"].present?
+        @logger.call(:warn, "#{listing}: paint #{slug} names stencil #{entry["stencil"]}, which is not published") unless maps.key?(field)
+      else
+        records.each { |record| record.public_send(field).detach if record.public_send(field).attached? }
+      end
     end
 
     private def fetch_listing(path, name)

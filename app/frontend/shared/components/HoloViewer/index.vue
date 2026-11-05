@@ -65,10 +65,11 @@ export type HoloModel = {
   // Painted and animated: drawn with its own materials, not the holo's.
   textured?: boolean;
   // A textured holo's paint: the base-colour map its body is drawn with in
-  // place of the export's own, and the occlusion/roughness/metallic map that
-  // goes with it.
+  // place of the export's own, the occlusion/roughness/metallic map that goes
+  // with it, and the stencil sheet of a paint with artwork of its own.
   paint?: string;
   paintOrm?: string;
+  paintStencil?: string;
   // Parts drawn on the holo's ports, in its own frame.
   mounts?: HoloMount[];
   // Framed and centred with its parts rather than on its own: a figure whose

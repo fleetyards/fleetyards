@@ -446,6 +446,115 @@ module ScData
       assert_equal "flight_textured_gladius-talklikeapirate-metal-red_orm.webp", paint.holo_texture_orm.filename.to_s
     end
 
+    test "puts a paint's stencil sheet beside its maps, on the full and the lite listing" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      full = {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "flight_textured_skull_stencil.webp"}}
+      lite = {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_lite_skull.webp", stencil: "flight_textured_lite_skull_stencil.webp"}}
+      publish({
+        "flight_textured.json" => {paints: full}.to_json,
+        "flight_textured_lite.json" => {paints: lite}.to_json,
+        "flight_textured_skull.webp" => PNG,
+        "flight_textured_skull_stencil.webp" => "stencil",
+        "flight_textured_lite_skull.webp" => PNG,
+        "flight_textured_lite_skull_stencil.webp" => "lite stencil"
+      })
+
+      perform
+
+      paint.reload
+      assert_equal "flight_textured_skull_stencil.webp", paint.holo_texture_stencil.filename.to_s
+      assert_equal "flight_textured_lite_skull_stencil.webp", paint.holo_texture_stencil_lite.filename.to_s
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "leaves a paint without artwork of its own without a stencil sheet" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_green_black")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"corsair-green-black" => {items: ["paint_corsair_green_black"], base: "flight_textured_corsair-green-black.webp", stencil: nil}},
+        {"flight_textured_corsair-green-black.webp" => PNG}
+      )
+
+      perform
+
+      assert paint.reload.holo_texture.attached?
+      assert_not paint.holo_texture_stencil.attached?
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "takes back a stencil sheet the palette no longer names" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      paint.holo_texture_stencil.attach(io: StringIO.new("old"), filename: "old_stencil.webp")
+      publish_paints(
+        {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: nil}},
+        {"flight_textured_skull.webp" => PNG}
+      )
+
+      perform
+
+      assert_not paint.reload.holo_texture_stencil.attached?
+    end
+
+    test "keeps the stencil sheet on a paint whose listed sheet is not published, and says so" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      paint.holo_texture_stencil.attach(io: StringIO.new("old"), filename: "old_stencil.webp")
+      publish_paints(
+        {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "missing_stencil.webp"}},
+        {"flight_textured_skull.webp" => PNG}
+      )
+      Rails.logger.expects(:warn).with { |message| message.include?("missing_stencil.webp") }.at_least_once
+      Rails.logger.stubs(:info)
+
+      perform
+
+      assert_equal "old_stencil.webp", paint.reload.holo_texture_stencil.filename.to_s
+    end
+
+    test "paints only reads an unchanged ship's paint maps and leaves its renders" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      publish(
+        {
+          "flight_top.png" => PNG,
+          "flight_textured.json" => {paints: {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "flight_textured_skull_stencil.webp"}}}.to_json,
+          "flight_textured_skull.webp" => PNG,
+          "flight_textured_skull_stencil.webp" => "stencil"
+        }
+      )
+      perform
+      paint.holo_texture_stencil.detach
+      field = @model.reload.attachment_reflections.keys.find { |name| @model.public_send(name).attached? }
+      assert field
+      @model.public_send(field).detach
+
+      perform
+      assert_not paint.reload.holo_texture_stencil.attached?
+
+      perform(nil, true)
+
+      assert_equal "flight_textured_skull_stencil.webp", paint.reload.holo_texture_stencil.filename.to_s
+      assert_not @model.reload.public_send(field).attached?
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "dresses a liveried variant in its palette's stencil sheet" do
+      @model.update_columns(rsi_chassis_id: 4242)
+      variant = create(:model, rsi_chassis_id: 4242)
+      component = create(:component, category: "paints", sc_key: "paint_gladius_valiant", name: "Gladius Valiant Livery")
+      create(:hardpoint, parent: variant, component:)
+      publish_paints(
+        {"gladiusvaliant" => {items: ["paint_gladius_valiant"], base: "flight_textured_gladiusvaliant.webp", stencil: "flight_textured_gladiusvaliant_stencil.webp"}},
+        {"flight_textured_gladiusvaliant.webp" => PNG, "flight_textured_gladiusvaliant_stencil.webp" => "stencil"}
+      )
+
+      perform
+
+      assert_equal "flight_textured_gladiusvaliant_stencil.webp", variant.reload.holo_texture_stencil.filename.to_s
+    end
+
     test "puts the lite listing's maps on the paint's lite pair" do
       component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
       paint = create(:model_paint, model: @model, component:)

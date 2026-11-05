@@ -319,8 +319,10 @@ module Api
           .active
           .with_attached_holo_texture
           .with_attached_holo_texture_orm
+          .with_attached_holo_texture_stencil
           .with_attached_holo_texture_lite
           .with_attached_holo_texture_orm_lite
+          .with_attached_holo_texture_stencil_lite
           .order(name: :asc)
       end
 

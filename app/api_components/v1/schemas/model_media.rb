@@ -70,8 +70,10 @@ module V1
           landedHoloTexturedLite: ::Shared::V1::Schemas::MediaFile,
           holoTexture: ::Shared::V1::Schemas::MediaFile,
           holoTextureOrm: ::Shared::V1::Schemas::MediaFile,
+          holoTextureStencil: ::Shared::V1::Schemas::MediaFile,
           holoTextureLite: ::Shared::V1::Schemas::MediaFile,
           holoTextureOrmLite: ::Shared::V1::Schemas::MediaFile,
+          holoTextureStencilLite: ::Shared::V1::Schemas::MediaFile,
           holoUsdz: ::Shared::V1::Schemas::MediaFile,
           brochure: ::Shared::V1::Schemas::MediaFile
         },

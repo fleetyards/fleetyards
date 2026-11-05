@@ -15,6 +15,9 @@ module ScData
   # by render even when the digest says nothing changed, so a render detached in
   # the admin comes back. A view uploaded by hand over an imported render is
   # kept: the stored md5s still name the render it replaced.
+  #
+  # Paints only, every ship's paint maps are read again whatever its digest says,
+  # and its renders are left as they are.
   class ShipViewsImportJob < ApplicationJob
     include RenderImport
 
@@ -24,7 +27,7 @@ module ScData
     # is exported without its components, so there is no landed set.
     HARDPOINT_TRANSFORMS_NAME = /\A(?:flight[-_ ]?)?hardpoints\.json\z/i
 
-    def perform(model_id = nil)
+    def perform(model_id = nil, paints_only = false)
       return unless ::ScData::ShipViewsStore.configured?
 
       store = ::ScData::ShipViewsStore.new
@@ -56,11 +59,11 @@ module ScData
           next
         end
 
-        next if model_id.nil? && model.ship_views_digest == entry["files"]
+        next if model_id.nil? && !paints_only && model.ship_views_digest == entry["files"]
 
         listing = store.listing(path)
         @liveried = Model::LIVERY_MAP_ATTACHMENT_NAMES.any? { |name| model.public_send(name).attached? }
-        fields = import(store, model, path, entry["files"], listing:)
+        fields = paints_only ? [] : import(store, model, path, entry["files"], listing:)
         attached[model.slug] = fields if fields.any?
 
         # A paint map that did not come down is fetched again next run. A

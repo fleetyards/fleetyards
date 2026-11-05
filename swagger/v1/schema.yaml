@@ -43303,9 +43303,13 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrm:
           "$ref": "#/components/schemas/MediaFile"
+        holoTextureStencil:
+          "$ref": "#/components/schemas/MediaFile"
         holoTextureLite:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrmLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureStencilLite:
           "$ref": "#/components/schemas/MediaFile"
         holoUsdz:
           "$ref": "#/components/schemas/MediaFile"
@@ -44009,11 +44013,19 @@ components:
           type:
           - string
           - 'null'
+        holoTextureStencil:
+          type:
+          - string
+          - 'null'
         holoTextureLite:
           type:
           - string
           - 'null'
         holoTextureOrmLite:
+          type:
+          - string
+          - 'null'
+        holoTextureStencilLite:
           type:
           - string
           - 'null'
