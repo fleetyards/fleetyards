@@ -177,16 +177,16 @@ const barStyle = (minReputation: number) => {
   }
 
   &__track {
-    height: 4px;
+    height: 8px;
     overflow: hidden;
     background-color: var(--color-gray-black);
-    border-radius: 2px;
+    border-radius: 4px;
   }
 
   &__bar {
     height: 100%;
     background-color: var(--color-endcap);
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 </style>
