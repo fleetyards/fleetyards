@@ -9,16 +9,19 @@ vi.mock("@/services/fyApi", () => ({
   useVersion: () => ({ data: ref(undefined), refetch }),
 }));
 
-const mountComposable = () =>
+const mountComposable = (checkOnResume = true) =>
   mount(
     defineComponent({
       setup() {
-        useCheckStoreVersion({
-          storeVersion: window.STORE_VERSION,
-          updateVersion: vi.fn(),
-          $reset: vi.fn(),
-          $patch: vi.fn(),
-        } as unknown as FltYrdsStore);
+        useCheckStoreVersion(
+          {
+            storeVersion: window.STORE_VERSION,
+            updateVersion: vi.fn(),
+            $reset: vi.fn(),
+            $patch: vi.fn(),
+          } as unknown as FltYrdsStore,
+          { checkOnResume },
+        );
 
         return () => h("div");
       },
@@ -33,6 +36,7 @@ const becomeVisible = (state: DocumentVisibilityState = "visible") => {
 describe("useCheckStoreVersion", () => {
   beforeEach(() => {
     refetch.mockReset();
+    refetch.mockResolvedValue({ isError: false });
     vi.useFakeTimers();
   });
 
@@ -70,6 +74,29 @@ describe("useCheckStoreVersion", () => {
     becomeVisible();
 
     expect(refetch).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+
+  it("tries again on the next return after a failed check", async () => {
+    refetch.mockResolvedValueOnce({ isError: true });
+    const wrapper = mountComposable();
+
+    vi.advanceTimersByTime(60_000);
+    becomeVisible();
+    await vi.advanceTimersByTimeAsync(1);
+    becomeVisible();
+
+    expect(refetch).toHaveBeenCalledTimes(2);
+    wrapper.unmount();
+  });
+
+  it("leaves resuming alone unless asked to check", () => {
+    const wrapper = mountComposable(false);
+
+    vi.advanceTimersByTime(60_000);
+    becomeVisible();
+
+    expect(refetch).not.toHaveBeenCalled();
     wrapper.unmount();
   });
 

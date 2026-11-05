@@ -189,7 +189,7 @@ watch(
   },
 );
 
-useCheckStoreVersion(appStore);
+useCheckStoreVersion(appStore, { checkOnResume: true });
 
 useAppUpdateNotice(appStore);
 

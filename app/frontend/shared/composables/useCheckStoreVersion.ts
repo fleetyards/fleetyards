@@ -4,7 +4,10 @@ import { useVersion as useVersionQuery } from "@/services/fyApi";
 const CHECK_VERSION_INTERVAL = 1800 * 1000; // 30 mins
 const RESUME_CHECK_THROTTLE = 60 * 1000;
 
-export const useCheckStoreVersion = (store: FltYrdsStore) => {
+export const useCheckStoreVersion = (
+  store: FltYrdsStore,
+  { checkOnResume = false } = {},
+) => {
   const { data: version, refetch } = useVersionQuery();
 
   onBeforeMount(() => {
@@ -15,7 +18,7 @@ export const useCheckStoreVersion = (store: FltYrdsStore) => {
 
   // Timers stand still while a phone keeps the app in the background, so coming
   // back to it is the moment a release can have gone by unnoticed.
-  const checkOnResume = () => {
+  const checkVersionOnResume = () => {
     if (
       document.visibilityState !== "visible" ||
       Date.now() - lastResumeCheck < RESUME_CHECK_THROTTLE
@@ -24,7 +27,10 @@ export const useCheckStoreVersion = (store: FltYrdsStore) => {
     }
 
     lastResumeCheck = Date.now();
-    void refetch();
+    void refetch().then(({ isError }) => {
+      // The radio is often not back yet; the next return to the app tries again.
+      if (isError) lastResumeCheck = 0;
+    });
   };
 
   onMounted(() => {
@@ -32,11 +38,13 @@ export const useCheckStoreVersion = (store: FltYrdsStore) => {
       void refetch();
     }, CHECK_VERSION_INTERVAL);
 
-    document.addEventListener("visibilitychange", checkOnResume);
+    if (checkOnResume) {
+      document.addEventListener("visibilitychange", checkVersionOnResume);
+    }
   });
 
   onBeforeUnmount(() => {
-    document.removeEventListener("visibilitychange", checkOnResume);
+    document.removeEventListener("visibilitychange", checkVersionOnResume);
   });
 
   const check = () => {
