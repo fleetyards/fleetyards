@@ -1,5 +1,17 @@
 module Rsi
   class PledgeStoreLoader < ::Rsi::BaseLoader
+    # `ccu_target_seen_at` only ever moves with `ccu_on_sale`, so it says nothing
+    # the other does not.
+    UNREPORTED_COLUMNS = %w[updated_at ccu_target_seen_at].freeze
+
+    attr_reader :changed_fields
+
+    def initialize(options = {})
+      super
+
+      @changed_fields = {}
+    end
+
     def run(model)
       return if model.blank? || model.rsi_id.blank? || model.rsi_chassis_id.blank?
 
@@ -28,6 +40,9 @@ module Rsi
         ccu_on_sale:,
         ccu_target_seen_at: model.ccu_target_seen_at || (Time.current if ccu_on_sale)
       )
+
+      fields = model.saved_changes.keys - UNREPORTED_COLUMNS
+      changed_fields[model.id] = fields.sort if fields.any?
     end
 
     private def load_pledge_store_data(model)

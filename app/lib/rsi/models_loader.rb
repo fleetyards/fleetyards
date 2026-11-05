@@ -36,6 +36,10 @@ module Rsi
       cleanup_variants
     end
 
+    def store_changes
+      pledge_store_loader.changed_fields
+    end
+
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?

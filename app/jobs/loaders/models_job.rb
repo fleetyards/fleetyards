@@ -18,13 +18,14 @@ module Loaders
       import.start!
 
       started_at = Time.current
+      loader = ::Rsi::ModelsLoader.new
 
-      ::Rsi::ModelsLoader.new.all
+      loader.all
 
       AdminReport.deliver(
         task_type: "ship_matrix_import",
         title: "Ship Matrix Import Results",
-        body: results_body(started_at),
+        body: results_body(started_at, loader.store_changes),
         # A run that changes nothing is the normal case for a matrix that moves
         # a few times a month, so it never opens an issue. A run that breaks
         # raises, and the import's own notification carries that.
@@ -58,7 +59,7 @@ module Loaders
     # either side of it. Both sides of the change are named, because a matrix
     # that moves a few times a month makes "1 model updated" a question rather
     # than a report.
-    private def results_body(started_at)
+    private def results_body(started_at, store_changes)
       added = Model.where(created_at: started_at..).order(:name)
       updated = Model.where(updated_at: started_at..).where(created_at: ...started_at).order(:name)
 
@@ -75,24 +76,24 @@ module Loaders
       if updated.any?
         changed_fields = changed_fields_by_model(started_at)
 
-        lines += ["", "### Updated", "", *updated.map { |model| updated_line(model, changed_fields[model.id]) }]
+        lines += ["", "### Updated", "", *updated.map { |model| updated_line(model, changed_fields[model.id], store_changes[model.id]) }]
       end
 
       lines.join("\n")
     end
 
-    private def updated_line(model, fields)
-      return "- **#{model.name}**" if fields.blank?
+    private def updated_line(model, fields, store_fields)
+      adopted, matrix_only = split_fields(Array(fields) - Array(store_fields))
 
-      adopted, matrix_only = split_fields(fields)
+      notes = []
+      notes << "matrix only: #{matrix_only.join(", ")}" if matrix_only.any?
+      notes << "store: #{store_fields.join(", ")}" if store_fields.present?
 
-      return "- **#{model.name}**: matrix only: #{matrix_only.join(", ")}" if adopted.empty?
+      head = adopted.join(", ")
+      tail = notes.join("; ")
+      detail = (head.empty? || tail.empty?) ? head + tail : "#{head} (#{tail})"
 
-      line = "- **#{model.name}**: #{adopted.join(", ")}"
-
-      return line if matrix_only.empty?
-
-      "#{line} (matrix only: #{matrix_only.join(", ")})"
+      detail.empty? ? "- **#{model.name}**" : "- **#{model.name}**: #{detail}"
     end
 
     # A shadow that moved with its live column is one change, named once. A
@@ -113,9 +114,11 @@ module Loaders
       [adopted, matrix_only.uniq.sort]
     end
 
-    # paper_trail watches every column this loader writes except `last_updated_at`
-    # and the store image, which move on nearly every matrix change and carry no
-    # value of their own. A run that touched only those is named without fields.
+    # paper_trail does not watch `last_updated_at` and the store image, which move
+    # on nearly every matrix change and carry no value of their own. A run that
+    # touched only those is named without fields. The pledge store's own columns
+    # are not watched either, because a sale would flip them on dozens of ships
+    # at once, so that loader reports them itself.
     private def changed_fields_by_model(started_at)
       PaperTrail::Version
         .where(item_type: "Model", created_at: started_at..)
