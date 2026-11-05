@@ -86,6 +86,7 @@ module ScData
         ::ScData::Parser::EquipmentParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::BlueprintsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::ContractsParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::FactionsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::StarmapParser.new(base_folder:, sc_version:, sc_environment:).all
 
         write_manifest(base_folder:, sc_version:, sc_environment:)
@@ -188,7 +189,7 @@ module ScData
       # icons elsewhere under textures/vector -- so each is still swept of what
       # its own records stopped naming. A second catalogue naming a folder one
       # already writes would wipe the other's files.
-      private def save_icon(icon_path)
+      private def save_icon(icon_path, clear: true)
         icon_path = asset_path(icon_path)
         source = raw_asset(icon_path)
 
@@ -196,7 +197,7 @@ module ScData
 
         target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, File.extname(source).downcase)}"
 
-        clear_once(File.dirname(target))
+        clear_once(File.dirname(target)) if clear
 
         FileUtils.mkdir_p(File.dirname(target))
 
