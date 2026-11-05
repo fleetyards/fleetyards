@@ -48,6 +48,7 @@ const slot = (
   position: 0,
   state,
   filters: {},
+  starts: [],
   candidates: [],
   ...attrs,
 });

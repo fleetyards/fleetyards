@@ -41,6 +41,7 @@ const slot: HangarPlanSlot = {
   position: 0,
   state: HangarPlanSlotStateEnum.UNDECIDED,
   filters: {},
+  starts: [],
   candidates: [
     candidate("Hull A", 90),
     candidate("Caterpillar", 330, { matchesFilters: false }),

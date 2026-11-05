@@ -37247,6 +37247,12 @@ components:
         candidateId:
           type: string
           format: uuid
+          description: The ship of the plan the route leads to
+        slotId:
+          type: string
+          format: uuid
+          description: A slot with no ship yet, which holds the start until it gets
+            one; given instead of candidateId
         startKind:
           "$ref": "#/components/schemas/HangarPlanStartKindEnum"
         sourceVehicleId:
@@ -37276,7 +37282,6 @@ components:
           items:
             "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
       required:
-      - candidateId
       - startKind
       additionalProperties: false
       title: HangarPlanAcquisitionCreateInput
@@ -38164,6 +38169,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanCandidate"
+        starts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSlotStart"
+          description: Starts picked while the slot has no ship; its first ship takes
+            them
       additionalProperties: false
       required:
       - id
@@ -38173,6 +38184,7 @@ components:
       - state
       - filters
       - candidates
+      - starts
       title: HangarPlanSlot
     HangarPlanSlotChooseInput:
       type: object
@@ -38292,6 +38304,40 @@ components:
       - sorting
       additionalProperties: false
       title: HangarPlanSlotSortInput
+    HangarPlanSlotStart:
+      type: object
+      description: A start picked for a slot that has no ship yet
+      properties:
+        id:
+          type: string
+          format: uuid
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModel:
+          anyOf:
+          - "$ref": "#/components/schemas/HangarPlanModel"
+          - type: 'null'
+          description: Unset for a ship to buy or earn, which is whichever ship the
+            slot gets
+        sourceMissing:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - startKind
+      - startModel
+      - sourceMissing
+      title: HangarPlanSlotStart
     HangarPlanSlotStateEnum:
       type: string
       enum:

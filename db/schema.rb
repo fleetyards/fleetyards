@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_05_090100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_05_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1588,19 +1588,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_090100) do
 
   create_table "hangar_plan_acquisitions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hangar_plan_id", null: false
-    t.uuid "hangar_plan_candidate_id", null: false
+    t.uuid "hangar_plan_candidate_id"
     t.string "start_kind", null: false
     t.uuid "source_vehicle_id"
     t.uuid "buyback_pledge_id"
-    t.uuid "start_model_id", null: false
+    t.uuid "start_model_id"
     t.decimal "price_override", precision: 15, scale: 2
     t.decimal "price_snapshot", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "uses_buyback_token", default: true, null: false
+    t.uuid "hangar_plan_slot_id"
     t.index ["hangar_plan_candidate_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_candidate_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_acquisitions_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
     t.index ["hangar_plan_id", "source_vehicle_id"], name: "index_hangar_plan_acquisitions_on_plan_and_vehicle", unique: true, where: "(source_vehicle_id IS NOT NULL)"
+    t.index ["hangar_plan_slot_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_slot_id"
+    t.check_constraint "num_nonnulls(hangar_plan_candidate_id, hangar_plan_slot_id) = 1", name: "hangar_plan_acquisitions_held_by_one"
   end
 
   create_table "hangar_plan_candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3405,6 +3408,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_090100) do
   add_foreign_key "game_mission_prerequisites", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
   add_foreign_key "hangar_plan_acquisitions", "hangar_plan_candidates", on_delete: :cascade
+  add_foreign_key "hangar_plan_acquisitions", "hangar_plan_slots", on_delete: :cascade
   add_foreign_key "hangar_plan_acquisitions", "hangar_plans", on_delete: :cascade
   add_foreign_key "hangar_plan_candidates", "hangar_plan_slots", on_delete: :cascade
   add_foreign_key "hangar_plan_candidates", "model_paints", on_delete: :nullify

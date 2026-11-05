@@ -3,6 +3,7 @@ import type {
   HangarPlanCandidate,
   HangarPlanModel,
   HangarPlanSlot,
+  HangarPlanSlotStart,
 } from "@/services/fyApi";
 
 export type HangarFlowDecision = "keep" | "melt" | "change" | "pending";
@@ -25,9 +26,9 @@ export type HangarFlowEnd = {
 };
 
 // What a start is picked for: a slot, its ship once it has chosen one, and the
-// route that already reaches it.
+// route that already reaches it or the start the slot holds until it has one.
 export type HangarFlowStart = {
   slot: HangarPlanSlot;
   candidate?: HangarPlanCandidate;
-  acquisition?: HangarPlanAcquisition;
+  acquisition?: HangarPlanAcquisition | HangarPlanSlotStart;
 };

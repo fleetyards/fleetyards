@@ -359,6 +359,7 @@ de:
           attributes:
             base:
               slot_filled: "dieser Platz hat bereits für jedes seiner Schiffe einen Weg"
+              holder_invalid: "ein Start gehört zu einem Schiff des Platzes oder zu einem Platz, der noch keine Schiffe hat"
               chain_mismatch: "der Weg muss beim Schiff des Platzes enden"
               chain_broken: "jedes Upgrade muss bei dem Schiff beginnen, bei dem der Schritt davor endet"
               upgrade_taken: "ein Upgrade wird öfter verwendet, als du es besitzt"

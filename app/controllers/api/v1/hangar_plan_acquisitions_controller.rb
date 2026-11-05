@@ -13,8 +13,7 @@ module Api
       before_action :set_acquisition, only: %i[update destroy]
 
       def create
-        candidate = @hangar_plan.candidates.find(params[:candidate_id])
-        @acquisition = @hangar_plan.acquisitions.new(acquisition_params.merge(candidate:))
+        @acquisition = @hangar_plan.acquisitions.new(acquisition_params.merge(holder))
 
         if save_with_steps(@acquisition, params.fetch(:steps, []))
           render_hangar_plan(status: :created)
@@ -24,8 +23,7 @@ module Api
       end
 
       def update
-        @acquisition.assign_attributes(acquisition_params)
-        @acquisition.candidate = @hangar_plan.candidates.find(params[:candidate_id]) if params[:candidate_id].present?
+        @acquisition.assign_attributes(acquisition_params.merge(holder))
 
         steps = params.key?(:steps) ? params.fetch(:steps, []) : nil
         if save_with_steps(@acquisition, steps)
@@ -39,6 +37,16 @@ module Api
         @acquisition.destroy!
 
         render_hangar_plan
+      end
+
+      private def holder
+        if params[:candidate_id].present?
+          {candidate: @hangar_plan.candidates.find(params[:candidate_id]), slot: nil}
+        elsif action_name == "create" && params[:slot_id].present?
+          {slot: @hangar_plan.slots.find(params[:slot_id])}
+        else
+          {}
+        end
       end
 
       private def set_acquisition

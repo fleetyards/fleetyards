@@ -122,6 +122,43 @@ class Api::V1::HangarPlanCandidatesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "DELETE of the last ship leaves its starts with the slot" do
+    candidate = create(:hangar_plan_candidate, slot: @slot, model: @gladius)
+    owned = @plan.acquisitions.create!(candidate:, start_kind: "owned",
+      source_vehicle: create(:vehicle, user: @user, model: @gladius))
+
+    assert_api_response :delete, 200, api_path: "/hangar/plans/{hangarPlanId}/candidates/{id}",
+      path_params: {hangarPlanId: @plan.id, id: candidate.id} do
+      assert_equal "open", parsed_body.dig("slots", 0, "state")
+      assert_equal [owned.id], parsed_body.dig("slots", 0, "starts").pluck("id")
+    end
+
+    assert_equal @slot, owned.reload.slot
+  end
+
+  test "DELETE of the last ship turns a ship bought as it back into none" do
+    candidate = create(:hangar_plan_candidate, slot: @slot, model: @gladius)
+    bought = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @gladius)
+
+    assert_api_response :delete, 200, api_path: "/hangar/plans/{hangarPlanId}/candidates/{id}",
+      path_params: {hangarPlanId: @plan.id, id: candidate.id} do
+      assert_nil parsed_body.dig("slots", 0, "starts", 0, "startModel")
+    end
+
+    assert_nil bought.reload.start_model
+  end
+
+  test "POST gives a slot's first ship the starts it holds" do
+    vehicle = create(:vehicle, user: @user, model: @gladius)
+    start = @plan.acquisitions.create!(slot: @slot, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/candidates",
+      path_params: {hangarPlanId: @plan.id}, body: {slotId: @slot.id, modelId: @arrow.id} do
+      assert_empty parsed_body.dig("slots", 0, "starts")
+      assert_equal [start.id], parsed_body.dig("slots", 0, "candidates", 0, "acquisitions").pluck("id")
+    end
+  end
+
   test "DELETE hands a start the ship held to a ship that stays" do
     leaving = create(:hangar_plan_candidate, slot: @slot, model: @gladius)
     staying = create(:hangar_plan_candidate, slot: @slot, model: @arrow)

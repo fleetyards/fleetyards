@@ -37,6 +37,7 @@ import {
   type HangarPlanCandidate,
   type HangarPlanModel,
   type HangarPlanSlot,
+  type HangarPlanSlotStart,
   BuybackPledgeKindEnum,
   HangarPlanVehicleStatusEnum,
   useHangarPlan,
@@ -47,10 +48,9 @@ import {
 type Props = {
   planId: string;
   slot: HangarPlanSlot;
-  // The ship the start leads to; unset for a slot still choosing its ship,
-  // which is then picked after the start.
+  // The ship the start leads to; unset for a slot still choosing its ship.
   candidate?: HangarPlanCandidate;
-  acquisition?: HangarPlanAcquisition;
+  acquisition?: HangarPlanAcquisition | HangarPlanSlotStart;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -78,7 +78,7 @@ const { data: resources, isLoading } = useHangarPlanResources(
   () => props.planId,
 );
 
-const { pairing, pairStart, pairEnd } = useHangarPlanPairing(
+const { pairing, pairStart, holdStart, pairEnd } = useHangarPlanPairing(
   () => props.planId,
   plan,
 );
@@ -86,7 +86,8 @@ const { pairing, pairStart, pairEnd } = useHangarPlanPairing(
 const target = computed(() => props.candidate?.model);
 
 // A slot still choosing its ship is reached by a start that can become at
-// least one of its ships; the ones it cannot become are named on it.
+// least one of its ships; the ones it cannot become are named on it. With no
+// ship to choose from yet, any ship can start: it may be the one the slot gets.
 const unreachedShips = (from: HangarPlanModel) =>
   props.slot.candidates
     .map((candidate) => candidate.model)
@@ -95,7 +96,7 @@ const unreachedShips = (from: HangarPlanModel) =>
 const reachesSlot = (from: HangarPlanModel) =>
   props.slot.candidates.length
     ? unreachedShips(from).length < props.slot.candidates.length
-    : canLeave(from);
+    : true;
 
 const excludes = (from: HangarPlanModel) => {
   if (target.value) return undefined;

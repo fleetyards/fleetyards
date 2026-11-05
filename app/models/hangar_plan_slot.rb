@@ -22,6 +22,8 @@ class HangarPlanSlot < ApplicationRecord
 
   has_many :candidates, -> { order(:position, :created_at) },
     class_name: "HangarPlanCandidate", inverse_of: :slot, dependent: :destroy
+  has_many :starts, -> { order(:created_at) },
+    class_name: "HangarPlanAcquisition", inverse_of: :slot, dependent: :destroy
 
   validates :label, presence: true, length: {maximum: 100}
   validates :description, length: {maximum: 2000}
@@ -59,9 +61,20 @@ class HangarPlanSlot < ApplicationRecord
   def remove_candidate!(candidate)
     transaction do
       heir = candidates.where.not(id: candidate.id).first
-      hand_over_starts([candidate], heir) if heir
+      heir ? hand_over_starts([candidate], heir) : take_back_starts(candidate)
       candidate.destroy!
     end
+  end
+
+  # The first ship a slot gets takes the starts picked while it had none. They
+  # were valid when picked and the slot's count still bounds them, so a hangar
+  # ship lost since then stays flagged on its route rather than blocking the ship.
+  def hand_starts_to(candidate)
+    starts.to_a.each do |start|
+      start.assign_attributes(slot: nil, candidate:, start_model: start.start_model || candidate.model)
+      start.save!(validate: false)
+    end
+    starts.reset
   end
 
   # Whether a ship meets every filter the slot sets. A ship can be planned
@@ -113,7 +126,7 @@ class HangarPlanSlot < ApplicationRecord
     return unless quantity_changed?
 
     routes = HangarPlanAcquisition.where(hangar_plan_candidate_id: candidates.select(:id))
-      .group(:hangar_plan_candidate_id).count.values.max || 0
+      .group(:hangar_plan_candidate_id).count.values.max || starts.count
     errors.add(:quantity, :below_routes, count: routes) if quantity.to_i < routes
   end
 
@@ -133,6 +146,21 @@ class HangarPlanSlot < ApplicationRecord
       acquisition.update!(candidate: heir)
       room -= 1
     end
+  end
+
+  # The slot's last ship is leaving, so its starts wait for the next one. A ship
+  # only bought or earned as the one leaving goes back to being no ship at all.
+  private def take_back_starts(candidate)
+    HangarPlanAcquisition.where(candidate:).includes(:upgrade_steps).order(:created_at).each do |start|
+      start.upgrade_steps.destroy_all
+      start.upgrade_steps.reset
+      as_the_ship = HangarPlanAcquisition::SHIPLESS_KINDS.include?(start.start_kind) && start.start_model_id == candidate.model_id
+      start.start_model = nil if as_the_ship
+      start.assign_attributes(candidate: nil, slot: self)
+      start.save!(validate: false)
+    end
+    candidate.acquisitions.reset
+    starts.reset
   end
 
   private def slot_limit

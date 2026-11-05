@@ -49,13 +49,14 @@ module HangarPlans
     private def copy_plan
       plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at, :based_on_vehicle_ids))
 
-      source_plan.slots.includes(candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
+      source_plan.slots.includes(:starts, candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
         slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :quantity, :position))
+        source_slot.starts.each { |start| copy_acquisition(start, slot:) }
         source_slot.candidates.each do |source_candidate|
           candidate = slot.candidates.create!(
             source_candidate.slice(:model_id, :model_paint_id, :model_module_ids, :model_upgrade_ids, :position)
           )
-          source_candidate.acquisitions.each { |acquisition| copy_acquisition(acquisition, candidate) }
+          source_candidate.acquisitions.each { |acquisition| copy_acquisition(acquisition, candidate:) }
         end
       end
 
@@ -72,11 +73,11 @@ module HangarPlans
 
     # Copied as they stand, validations included: a source ship the hangar no
     # longer has would otherwise fail a copy the user only asked to duplicate.
-    private def copy_acquisition(source, candidate)
+    private def copy_acquisition(source, holder)
       acquisition = plan.acquisitions.new(
         source.slice(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :price_snapshot,
           :uses_buyback_token)
-          .merge(candidate:)
+          .merge(holder)
       )
       acquisition.save!(validate: false)
 

@@ -359,6 +359,7 @@ zh-CN:
           attributes:
             base:
               slot_filled: "此槽位的每艘舰船都已有获取路线"
+              holder_invalid: "起点属于此槽位的某艘舰船，或属于尚无舰船的槽位"
               chain_mismatch: "获取路线必须以该槽位的舰船结束"
               chain_broken: "每次升级都必须从上一步结束的舰船开始"
               upgrade_taken: "某个升级的使用次数超过了你拥有的数量"

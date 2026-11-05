@@ -30,7 +30,9 @@ import {
   type HangarPlanComparison,
   type HangarPlanVehicleStatus,
   type HangarPlanModel,
+  type HangarPlanPledgeShip,
   type HangarPlanSlot,
+  type HangarPlanSlotStart,
   type HangarPlanSummary,
   HangarPlanSlotStateEnum,
   HangarPlanStartKindEnum,
@@ -159,6 +161,42 @@ const waitingStarts = computed(() =>
 );
 
 type WaitingStart = (typeof waitingStarts.value)[number];
+
+// Starts held by a slot with no ship yet.
+const heldStarts = computed(() =>
+  props.plan.slots.flatMap((slot) =>
+    slot.starts.map((start) => ({ slot, start })),
+  ),
+);
+
+type HeldStart = (typeof heldStarts.value)[number];
+
+const openAction = () => ({
+  kind: "open",
+  label: t("hangarPlanner.states.open"),
+  detail: t("hangarPlanner.comparison.flow.noShip"),
+});
+
+const openRight = (slot: HangarPlanSlot) => ({
+  rightNone: `${slot.label} · ${t("hangarPlanner.comparison.flow.noShip")}`,
+  pickSlot: slot,
+  slot,
+});
+
+const heldRow = ({ slot, start }: HeldStart, left: Card) => ({
+  left,
+  action: openAction(),
+  start: { slot, acquisition: start },
+  ...openRight(slot),
+});
+
+const heldCard = (start: HangarPlanSlotStart): Card => {
+  const kind = t(`hangarPlanner.startKinds.${start.startKind}`);
+
+  return start.startModel
+    ? { title: start.startModel.name, sub: kind, model: start.startModel }
+    : { title: kind, sub: t("hangarPlanner.pick.buyChosen") };
+};
 
 const undecidedCard = (slot: HangarPlanSlot): Card => ({
   title: slot.candidates.map((candidate) => candidate.model.name).join(" / "),
@@ -299,7 +337,7 @@ const routedShipRow = (
 ): Row => {
   const unrouted = !route.acquisition.routeComplete;
   const upgraded = route.acquisition.steps.length > 0;
-  const left = hangarCard(entry.name, entry.model);
+  const left = hangarCard(entry);
   const rowGroup: RowGroup = unrouted ? "ships" : upgraded ? "routed" : "kept";
 
   return {
@@ -340,7 +378,7 @@ const meltedRow = (entry: HangarPlanVehicleStatus): Row => {
     group: "melted",
     order: shipOrder(entry.vehicleId),
     testId: "hangar-plan-vehicle-status",
-    left: hangarCard(entry.name, entry.model),
+    left: hangarCard(entry),
     action: {
       kind: "melted",
       icon: "fa-light fa-fire",
@@ -364,7 +402,7 @@ const meltedRow = (entry: HangarPlanVehicleStatus): Row => {
 
 const shipRows = computed<Row[]>(() =>
   props.comparison.vehicles.flatMap((entry): Row[] => {
-    const left = hangarCard(entry.name, entry.model);
+    const left = hangarCard(entry);
     const route = routes.value.find(
       (candidate) => candidate.acquisition.sourceVehicleId === entry.vehicleId,
     );
@@ -402,6 +440,20 @@ const shipRows = computed<Row[]>(() =>
           ];
         }
 
+        const held = heldStarts.value.find(
+          ({ start }) => start.sourceVehicleId === entry.vehicleId,
+        );
+        if (held) {
+          return [
+            {
+              ...base,
+              ...heldRow(held, left),
+              group: "ships",
+              testId: "hangar-plan-vehicle-held",
+            },
+          ];
+        }
+
         // Kept without a slot: the plan only noted the decision.
         return [
           {
@@ -412,7 +464,11 @@ const shipRows = computed<Row[]>(() =>
               kind: "kept",
               label: t("hangarPlanner.vehicleStatuses.kept"),
             },
-            right: { ...left, sub: t("hangarPlanner.pick.same") },
+            right: {
+              ...left,
+              sub: t("hangarPlanner.pick.same"),
+              note: undefined,
+            },
             decisions: ["pending"],
             end,
           },
@@ -618,26 +674,35 @@ const neededRows = computed<Row[]>(() => {
       };
     });
 
+  const held = heldStarts.value
+    .filter(({ start }) => start.startKind !== HangarPlanStartKindEnum.OWNED)
+    .map((entry, index): Row => ({
+      key: entry.start.id,
+      group: "slots",
+      order: slotOrder(entry.slot.id) + index,
+      testId: "hangar-plan-flow-held",
+      ...heldRow(entry, heldCard(entry.start)),
+    }));
+
+  // An open slot keeps a row while a unit of it has no start yet.
   const open = props.plan.slots
-    .filter((slot) => slot.state === HangarPlanSlotStateEnum.OPEN)
+    .filter(
+      (slot) =>
+        slot.state === HangarPlanSlotStateEnum.OPEN &&
+        slot.starts.length < slot.quantity,
+    )
     .map((slot): Row => ({
       key: `open-${slot.id}`,
       group: "slots",
-      order: slotOrder(slot.id),
+      order: slotOrder(slot.id) + SLOT_ROWS - 1,
       testId: "hangar-plan-flow-open",
       leftNone: t("hangarPlanner.pick.pickStart"),
       start: { slot },
-      action: {
-        kind: "open",
-        label: t("hangarPlanner.states.open"),
-        detail: t("hangarPlanner.comparison.flow.noShip"),
-      },
-      rightNone: `${slot.label} · ${t("hangarPlanner.comparison.flow.noShip")}`,
-      pickSlot: slot,
-      slot,
+      action: openAction(),
+      ...openRight(slot),
     }));
 
-  return [...bought, ...gaps, ...waiting, ...undecided, ...open];
+  return [...bought, ...gaps, ...waiting, ...undecided, ...held, ...open];
 });
 
 // What still needs a decision comes first: the plan's unsettled slots, so one

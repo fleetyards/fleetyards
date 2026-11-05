@@ -359,6 +359,7 @@ zh-TW:
           attributes:
             base:
               slot_filled: "此欄位的每艘艦船都已有取得路線"
+              holder_invalid: "起點屬於此欄位的某艘艦船，或屬於尚無艦船的欄位"
               chain_mismatch: "取得路線必須以該欄位的艦船結束"
               chain_broken: "每次升級都必須從上一步結束的艦船開始"
               upgrade_taken: "某個升級的使用次數超過了你擁有的數量"

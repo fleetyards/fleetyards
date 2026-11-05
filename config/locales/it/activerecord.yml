@@ -359,6 +359,7 @@ it:
           attributes:
             base:
               slot_filled: "questo slot ha già un percorso per ciascuna delle sue navi"
+              holder_invalid: "una partenza appartiene a una nave dello slot o a uno slot ancora senza navi"
               chain_mismatch: "il percorso deve terminare sulla nave dello slot"
               chain_broken: "ogni upgrade deve partire dalla nave su cui è terminato il passo precedente"
               upgrade_taken: "un upgrade viene usato più volte di quante ne possiedi"

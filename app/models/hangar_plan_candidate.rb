@@ -15,6 +15,7 @@ class HangarPlanCandidate < ApplicationRecord
   validate :configuration_matches_model
 
   before_create :append_position
+  after_create { slot.hand_starts_to(self) }
 
   delegate :hangar_plan, to: :slot
 
