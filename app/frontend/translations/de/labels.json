@@ -3027,7 +3027,7 @@
         "profit": "Gewinn",
         "to": "nach",
         "everyBuyer": "Alle Abnehmer für %{commodity} von %{terminal}",
-        "empty": "Keine passenden Flüge. Versuche ältere Preise oder ein anderes System.",
+        "empty": "Keine passenden Flüge. Versuche ältere Preise, ein anderes System oder ein anderes Terminal.",
         "loadExplained": "Die Ladung nutzt die Kistengrößen, die beide Terminals und die Ware erlauben, begrenzt durch den Vorrat beim Kauf, die Nachfrage beim Verkauf und dein Budget.",
         "poweredByUex": "Preise von UEX"
       },

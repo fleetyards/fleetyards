@@ -3027,7 +3027,7 @@
         "profit": "Beneficio",
         "to": "a",
         "everyBuyer": "Todos los compradores de %{commodity} desde %{terminal}",
-        "empty": "Ningún viaje coincide. Prueba con precios más antiguos u otro sistema.",
+        "empty": "Ningún viaje coincide. Prueba con precios más antiguos, otro sistema u otra terminal.",
         "loadExplained": "La carga usa los tamaños de caja que aceptan ambas terminales y la mercancía, limitada por las existencias donde compras, la demanda donde vendes y tu presupuesto.",
         "poweredByUex": "Precios de UEX"
       },

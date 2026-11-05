@@ -3027,7 +3027,7 @@
         "profit": "Profitto",
         "to": "verso",
         "everyBuyer": "Tutti gli acquirenti di %{commodity} da %{terminal}",
-        "empty": "Nessun viaggio corrisponde. Prova prezzi più vecchi o un altro sistema.",
+        "empty": "Nessun viaggio corrisponde. Prova prezzi più vecchi, un altro sistema o un altro terminal.",
         "loadExplained": "Il carico usa le dimensioni di cassa accettate da entrambi i terminali e dalla merce, limitato dalle scorte dove acquisti, dalla domanda dove vendi e dal tuo budget.",
         "poweredByUex": "Prezzi forniti da UEX"
       },
