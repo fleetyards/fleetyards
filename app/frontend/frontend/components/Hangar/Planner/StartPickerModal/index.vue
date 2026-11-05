@@ -309,11 +309,14 @@ const startItems = computed<PickListItem[]>(() =>
 );
 
 // A hangar ship's package, whose contents open beside its row.
-const packagedVehicle = (item: PickListItem) =>
-  freeVehicles.value.find(
-    (vehicle) =>
-      `vehicle:${vehicle.id}` === item.id && vehicle.standalone === false,
-  );
+const packagedVehicles = computed(
+  () =>
+    new Map(
+      freeVehicles.value
+        .filter((vehicle) => vehicle.standalone === false)
+        .map((vehicle) => [`vehicle:${vehicle.id}`, vehicle]),
+    ),
+);
 
 const close = () => comlink.emit("close-modal", true);
 
@@ -396,9 +399,9 @@ const remove = async () => {
       </template>
       <template #row-aside="{ item }">
         <PledgeInfo
-          v-if="packagedVehicle(item)"
-          :ship="packagedVehicle(item)!"
-          :pledge="packagedVehicle(item)!"
+          v-if="packagedVehicles.has(item.id)"
+          :ship="packagedVehicles.get(item.id)!"
+          :pledge="packagedVehicles.get(item.id)!"
         />
       </template>
     </PickList>
