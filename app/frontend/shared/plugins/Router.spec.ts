@@ -74,6 +74,25 @@ describe("setupRouter after a failed chunk", () => {
     expect(assign).not.toHaveBeenCalled();
   });
 
+  it("does not reload on the document's own first navigation", async () => {
+    chunkLoadFailures.value = 1;
+    const router = setupRouter({ routes, history: createMemoryHistory() });
+
+    await router.push("/ships");
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("limits page loads when every document fails and navigates", async () => {
+    const router = await startRouter();
+    chunkLoadFailures.value = 1;
+
+    await router.push("/ships");
+    await router.push("/");
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
   it.each([
     ["a query change", { path: "/", query: { page: "2" } }],
     ["a trailing slash", "/?"],

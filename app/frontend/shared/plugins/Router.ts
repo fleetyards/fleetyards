@@ -10,6 +10,7 @@ import {
 } from "vue-router";
 import {
   chunkLoadFailures,
+  claimPageLoadForFailedChunk,
   reloadForFailedChunk,
 } from "@/shared/utils/ChunkReload";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
@@ -144,9 +145,11 @@ export const setupRouter = (options: FyRouterOptions) => {
     if (
       !failure &&
       chunkLoadFailures.value &&
+      from.matched.length &&
       withoutTrailingSlash(to.path) !== withoutTrailingSlash(from.path) &&
       !("secret" in to.query) &&
-      !successOnScreen()
+      !successOnScreen() &&
+      claimPageLoadForFailedChunk()
     ) {
       window.location.reload();
     }
@@ -169,7 +172,8 @@ export const setupRouter = (options: FyRouterOptions) => {
       const target = router.resolve(to).href;
       if (
         !("secret" in to.query) &&
-        target !== `${window.location.pathname}${window.location.search}`
+        target !== `${window.location.pathname}${window.location.search}` &&
+        claimPageLoadForFailedChunk()
       ) {
         window.location.assign(target);
       }

@@ -1,6 +1,7 @@
 import { ref } from "vue";
 
 const CHUNK_RELOAD_KEY = "fleetyards.chunkReloadAt";
+const CHUNK_PAGE_LOAD_KEY = "fleetyards.chunkPageLoadAt";
 export const CHUNK_RELOAD_COOLDOWN = 60_000;
 
 // A failed chunk cannot be retried inside its document: Vite never requests a
@@ -45,6 +46,22 @@ export const reloadForFailedChunk = () => {
   window.location.reload();
 
   return true;
+};
+
+// For the page loads a navigation triggers once a chunk has failed. Each new
+// document can fail the same way and navigate by itself, so these are limited
+// too, or they would reload forever just like a chunk that always fails.
+export const claimPageLoadForFailedChunk = () => {
+  try {
+    const last = Number(sessionStorage.getItem(CHUNK_PAGE_LOAD_KEY));
+    if (last && Date.now() - last < CHUNK_RELOAD_COOLDOWN) return false;
+
+    sessionStorage.setItem(CHUNK_PAGE_LOAD_KEY, String(Date.now()));
+
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export const handlePreloadError = (event: Event) => {

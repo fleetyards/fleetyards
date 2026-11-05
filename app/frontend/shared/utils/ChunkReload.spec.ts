@@ -1,6 +1,7 @@
 import {
   CHUNK_RELOAD_COOLDOWN,
   chunkLoadFailures,
+  claimPageLoadForFailedChunk,
   handlePreloadError,
   reloadForFailedChunk,
 } from "@/shared/utils/ChunkReload";
@@ -75,6 +76,35 @@ describe("reloadForFailedChunk", () => {
     expect(reloadForFailedChunk()).toBe(false);
     expect(reload).not.toHaveBeenCalled();
     expect(chunkLoadFailures.value).toBe(1);
+  });
+});
+
+describe("claimPageLoadForFailedChunk", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+    vi.useFakeTimers({ toFake: ["Date"] });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("allows one page load per cooldown", () => {
+    expect(claimPageLoadForFailedChunk()).toBe(true);
+    expect(claimPageLoadForFailedChunk()).toBe(false);
+
+    vi.advanceTimersByTime(CHUNK_RELOAD_COOLDOWN);
+
+    expect(claimPageLoadForFailedChunk()).toBe(true);
+  });
+
+  it("refuses when the page load cannot be remembered", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+
+    expect(claimPageLoadForFailedChunk()).toBe(false);
   });
 });
 
