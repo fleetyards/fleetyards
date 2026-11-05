@@ -93,7 +93,13 @@
           "noRoom": "Nicht genug Platz übrig"
         }
       },
-      "gearNone": "Was du trägst, hat keine Ausrüstungsplätze."
+      "gearNone": "Was du trägst, hat keine Ausrüstungsplätze.",
+      "gearColumns": {
+        "magazine": "Munition",
+        "grenade": "Granaten",
+        "medpen": "Medpens",
+        "oxypen": "Oxypens"
+      }
     }
   }
 }

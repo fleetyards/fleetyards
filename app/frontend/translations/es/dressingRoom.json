@@ -93,7 +93,13 @@
           "noRoom": "No queda espacio suficiente"
         }
       },
-      "gearNone": "Lo que llevas puesto no tiene ranuras de equipo."
+      "gearNone": "Lo que llevas puesto no tiene ranuras de equipo.",
+      "gearColumns": {
+        "magazine": "Munición",
+        "grenade": "Granadas",
+        "medpen": "Medpens",
+        "oxypen": "Oxypens"
+      }
     }
   }
 }

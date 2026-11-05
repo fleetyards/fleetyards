@@ -93,7 +93,13 @@
           "noRoom": "Spazio insufficiente"
         }
       },
-      "gearNone": "Ciò che indossi non ha slot per l'equipaggiamento."
+      "gearNone": "Ciò che indossi non ha slot per l'equipaggiamento.",
+      "gearColumns": {
+        "magazine": "Munizioni",
+        "grenade": "Granate",
+        "medpen": "Medpen",
+        "oxypen": "Oxypen"
+      }
     }
   }
 }

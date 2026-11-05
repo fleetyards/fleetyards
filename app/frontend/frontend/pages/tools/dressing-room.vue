@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
+import SlotRow from "@/frontend/components/DressingRoom/SlotRow/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -37,6 +38,8 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
   BACKPACK_MOUNT,
+  GEAR_COLUMNS,
+  GEAR_KINDS,
   GEAR_SLOTS,
   RIFLE_HOLD_CLIP,
   RIG_ORDER,
@@ -267,10 +270,35 @@ const gearSlots = computed(() =>
   ),
 );
 
+const columnKinds = GEAR_COLUMNS.flat();
+
+// The gear with a column under the stage, by column and kind, leaving out what
+// the worn pieces have no slot for.
+const gearColumns = computed(() =>
+  GEAR_COLUMNS.map((column, index) => ({
+    key: index,
+    kinds: GEAR_KINDS.filter((kind) => column.includes(kind.key))
+      .map((kind) => ({
+        key: kind.key,
+        slots: gearSlots.value.filter((slot) => kind.slots.includes(slot)),
+      }))
+      .filter((kind) => kind.slots.length),
+  })).filter((column) => column.kinds.length),
+);
+
+const listedGearSlots = computed(() =>
+  gearSlots.value.filter(
+    (slot) => !columnKinds.includes(gearKind(slot)?.key ?? ""),
+  ),
+);
+
+// The gear group stays while it has slots or something to say about having none.
 const SLOT_GROUPS = computed(() => [
   { key: "armour", slots: OUTFIT_SLOTS },
   { key: "weapons", slots: WEAPON_SLOTS },
-  { key: "gear", slots: gearSlots.value },
+  ...(listedGearSlots.value.length || !gearColumns.value.length
+    ? [{ key: "gear", slots: listedGearSlots.value }]
+    : []),
 ]);
 
 const selectedSlots = computed(() =>
@@ -577,6 +605,20 @@ const attachments = computed(() => [
   }),
 ]);
 
+const slotRow = (slot: OutfitSlotEnum) => ({
+  slot,
+  item: items.value[slot],
+  selected: !!selection.value[slot],
+  loading: loadingSlot(slot),
+  missing: missingSlot(slot),
+  disabled: slotFits.value[slot].kind === "none" && !selection.value[slot],
+  warning: fitNote(slot),
+  positionPending: positionPending(slot),
+  noHolo: !holos.value[slot],
+  holdable: isWeaponSlot(slot) && !!items.value[slot] && !!holos.value[slot],
+  held: heldWeapon.value === slot,
+});
+
 const model = computed(() =>
   body.value
     ? riggedOutfitModel(
@@ -784,6 +826,39 @@ const copyShareLink = () => {
         </div>
       </div>
 
+      <section
+        v-if="gearColumns.length"
+        class="dressing-room__gear"
+        data-test="dressing-room-gear-columns"
+      >
+        <div
+          v-for="column in gearColumns"
+          :key="column.key"
+          class="dressing-room__gear-column"
+        >
+          <template v-for="kind in column.kinds" :key="kind.key">
+            <h2 class="dressing-room__group-title">
+              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
+            </h2>
+            <ul
+              class="dressing-room__slots"
+              :data-test="`dressing-room-slots-${kind.key}`"
+            >
+              <SlotRow
+                v-for="slot in kind.slots"
+                :key="slot"
+                v-bind="slotRow(slot)"
+                :label="String(gearNumber(slot))"
+                :full-label="slotLabel(slot)"
+                compact
+                @pick="openSlot(slot)"
+                @clear="clear(slot)"
+              />
+            </ul>
+          </template>
+        </div>
+      </section>
+
       <aside class="dressing-room__side dressing-room__side--pieces">
         <div class="dressing-room__groups">
           <section
@@ -824,101 +899,15 @@ const copyShareLink = () => {
               class="dressing-room__slots"
               :data-test="`dressing-room-slots-${group.key}`"
             >
-              <li
+              <SlotRow
                 v-for="slot in group.slots"
                 :key="slot"
-                class="dressing-room__slot"
-                :data-test="`dressing-room-slot-${slot}`"
-              >
-                <button
-                  type="button"
-                  class="dressing-room__slot-pick"
-                  :data-test="`dressing-room-pick-${slot}`"
-                  :disabled="slotFits[slot].kind === 'none' && !selection[slot]"
-                  @click="openSlot(slot)"
-                >
-                  <span class="dressing-room__slot-label">
-                    {{ slotLabel(slot) }}
-                  </span>
-                  <span v-if="items[slot]" class="dressing-room__slot-item">
-                    {{ items[slot]?.name }}
-                  </span>
-                  <span
-                    v-else-if="loadingSlot(slot)"
-                    class="dressing-room__slot-item"
-                  >
-                    …
-                  </span>
-                  <span
-                    v-else-if="missingSlot(slot)"
-                    class="dressing-room__slot-item dressing-room__slot-item--missing"
-                  >
-                    {{ t("dressingRoom.notFound") }}
-                  </span>
-                  <span
-                    v-else
-                    class="dressing-room__slot-item dressing-room__slot-item--empty"
-                  >
-                    {{ t("dressingRoom.choose") }}
-                  </span>
-                  <span
-                    v-if="fitNote(slot)"
-                    class="dressing-room__slot-note dressing-room__slot-note--warning"
-                    :data-test="`dressing-room-fit-${slot}`"
-                  >
-                    {{ fitNote(slot) }}
-                  </span>
-                  <span
-                    v-else-if="items[slot] && positionPending(slot)"
-                    class="dressing-room__slot-note"
-                    :data-test="`dressing-room-position-pending-${slot}`"
-                  >
-                    {{ t("dressingRoom.positionPending") }}
-                  </span>
-                  <span
-                    v-else-if="items[slot] && !holos[slot]"
-                    class="dressing-room__slot-note"
-                    :data-test="`dressing-room-no-holo-${slot}`"
-                  >
-                    {{ t("dressingRoom.noHolo") }}
-                  </span>
-                </button>
-                <Btn
-                  v-if="isWeaponSlot(slot) && items[slot] && holos[slot]"
-                  :size="BtnSizesEnum.SM"
-                  :variant="BtnVariantsEnum.BARE"
-                  :active="heldWeapon === slot"
-                  :aria-pressed="heldWeapon === slot"
-                  :aria-label="t('dressingRoom.hold')"
-                  v-tooltip="t('dressingRoom.hold')"
-                  :data-test="`dressing-room-hold-${slot}`"
-                  @click="toggleHeld(slot)"
-                >
-                  <i class="fa-light fa-hand" />
-                </Btn>
-                <Btn
-                  v-if="items[slot]"
-                  :size="BtnSizesEnum.SM"
-                  :variant="BtnVariantsEnum.BARE"
-                  :to="{
-                    name: 'equipment-item',
-                    params: { slug: items[slot]?.slug },
-                  }"
-                  :aria-label="t('dressingRoom.openItem')"
-                >
-                  <i class="fa-light fa-arrow-up-right-from-square" />
-                </Btn>
-                <Btn
-                  v-if="selection[slot]"
-                  :size="BtnSizesEnum.SM"
-                  :variant="BtnVariantsEnum.BARE"
-                  :aria-label="t('dressingRoom.remove')"
-                  :data-test="`dressing-room-clear-${slot}`"
-                  @click="clear(slot)"
-                >
-                  <i class="fa-light fa-xmark" />
-                </Btn>
-              </li>
+                v-bind="slotRow(slot)"
+                :label="slotLabel(slot)"
+                @pick="openSlot(slot)"
+                @hold="toggleHeld(slot)"
+                @clear="clear(slot)"
+              />
             </ul>
           </section>
         </div>
@@ -984,14 +973,19 @@ const copyShareLink = () => {
   display: grid;
   grid-template-areas:
     "stage"
+    "gear"
     "pieces"
     "outfit";
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
   @media (min-width: $desktop-breakpoint) {
-    grid-template-areas: "pieces stage outfit";
+    grid-template-areas:
+      "pieces stage outfit"
+      "pieces gear outfit";
     grid-template-columns: minmax(16rem, 1fr) auto minmax(16rem, 1fr);
+    // The stage keeps its height; a long list beside it stretches the gear row.
+    grid-template-rows: auto 1fr;
     align-items: start;
   }
 }
@@ -1023,6 +1017,24 @@ const copyShareLink = () => {
     height: min(78vh, 56rem);
     aspect-ratio: 3 / 4;
   }
+}
+
+// As wide as the stage above: the stage's aspect ratio sizes the column, and
+// long item names here must not.
+.dressing-room__gear {
+  display: grid;
+  grid-area: gear;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+  width: 0;
+  min-width: 100%;
+}
+
+.dressing-room__gear-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .dressing-room__side--pieces {
@@ -1110,62 +1122,5 @@ const copyShareLink = () => {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.dressing-room__slot {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.dressing-room__slot-pick {
-  display: grid;
-  flex: 1;
-  grid-template-columns: 6rem minmax(0, 1fr);
-  align-items: baseline;
-  column-gap: 0.75rem;
-  min-width: 0;
-  min-height: $tap-target-min;
-  padding: 0.375rem 0.5rem;
-  border: 0;
-  border-radius: 4px;
-  background: none;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    background: $gray-black-hover;
-  }
-}
-
-.dressing-room__slot-label {
-  color: $gray-lighter;
-}
-
-.dressing-room__slot-item {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dressing-room__slot-item--empty {
-  color: $gray-light;
-  font-style: italic;
-}
-
-.dressing-room__slot-item--missing {
-  color: $warning;
-}
-
-.dressing-room__slot-note {
-  grid-column: 2;
-  color: $gray-light;
-  font-size: 0.85em;
-}
-
-.dressing-room__slot-note--warning {
-  color: $warning;
 }
 </style>

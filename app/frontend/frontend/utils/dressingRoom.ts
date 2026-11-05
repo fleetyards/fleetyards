@@ -112,6 +112,10 @@ export const GEAR_KINDS: GearKind[] = [
   },
 ];
 
+// The kinds laid out in columns under the stage; the rest are listed with the
+// other slots.
+export const GEAR_COLUMNS = [["magazine"], ["grenade"], ["medpen", "oxypen"]];
+
 export const GEAR_SLOTS: OutfitSlotEnum[] = GEAR_KINDS.flatMap(
   (kind) => kind.slots,
 );

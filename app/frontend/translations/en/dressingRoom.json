@@ -93,7 +93,13 @@
           "noRoom": "Not enough room left"
         }
       },
-      "gearNone": "What you are wearing has no gear slots."
+      "gearNone": "What you are wearing has no gear slots.",
+      "gearColumns": {
+        "magazine": "Ammo",
+        "grenade": "Grenades",
+        "medpen": "Medpens",
+        "oxypen": "Oxypens"
+      }
     }
   }
 }
