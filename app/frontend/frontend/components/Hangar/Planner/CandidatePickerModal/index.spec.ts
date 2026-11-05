@@ -14,10 +14,12 @@ const updateMutate = vi.fn((_input: unknown) =>
 );
 
 const createMutate = vi.hoisted(() => vi.fn());
+const moveMutate = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useCreateHangarPlanCandidate: () => ({ mutateAsync: createMutate }),
+  useUpdateHangarPlanAcquisition: () => ({ mutateAsync: moveMutate }),
   useUpdateHangarPlanSlot: () => ({ mutateAsync: updateMutate }),
 }));
 
@@ -77,6 +79,59 @@ describe("Hangar/Planner/CandidatePickerModal", () => {
       sizeIn: ["medium"],
       playerOwnableEq: true,
       plannable: true,
+    });
+  });
+
+  it("moves a start the first ship took to the ship it can become", async () => {
+    const ship = (id: string, pledgePrice: number) => ({
+      id,
+      name: id,
+      slug: id,
+      onSale: true,
+      ccuInto: "on_sale",
+      ccuOutOf: "known",
+      pledgePrice,
+    });
+    const start = ship("start", 200);
+    const cheap = {
+      id: "cheap",
+      model: ship("cheap", 100),
+      acquisitions: [{ id: "held" }],
+    };
+    const dear = { id: "dear", model: ship("dear", 400), acquisitions: [] };
+    createMutate.mockResolvedValue({
+      slots: [{ id: slot.id, candidates: [cheap, dear] }],
+    });
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        planId: "plan",
+        slot: {
+          ...slot,
+          starts: [
+            {
+              id: "held",
+              startKind: "owned",
+              startModel: start,
+              sourceMissing: false,
+            },
+          ],
+        } as HangarPlanSlot,
+      },
+    });
+
+    wrapper
+      .findComponent({ name: "ModelPickerModal" })
+      .vm.$emit("submit", [
+        { option: { id: "cheap" } },
+        { option: { id: "dear" } },
+      ]);
+    await flushPromises();
+
+    expect(moveMutate).toHaveBeenCalledWith({
+      hangarPlanId: "plan",
+      id: "held",
+      data: { candidateId: "dear" },
     });
   });
 
