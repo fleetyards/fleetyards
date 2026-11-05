@@ -446,6 +446,58 @@ module ScData
       assert_equal "flight_textured_gladius-talklikeapirate-metal-red_orm.webp", paint.holo_texture_orm.filename.to_s
     end
 
+    test "puts a paint's stencil sheet beside its maps, on the full and the lite listing" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      full = {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "flight_textured_skull_stencil.webp"}}
+      lite = {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_lite_skull.webp", stencil: "flight_textured_lite_skull_stencil.webp"}}
+      publish({
+        "flight_textured.json" => {paints: full}.to_json,
+        "flight_textured_lite.json" => {paints: lite}.to_json,
+        "flight_textured_skull.webp" => PNG,
+        "flight_textured_skull_stencil.webp" => "stencil",
+        "flight_textured_lite_skull.webp" => PNG,
+        "flight_textured_lite_skull_stencil.webp" => "lite stencil"
+      })
+
+      perform
+
+      paint.reload
+      assert_equal "flight_textured_skull_stencil.webp", paint.holo_texture_stencil.filename.to_s
+      assert_equal "flight_textured_lite_skull_stencil.webp", paint.holo_texture_stencil_lite.filename.to_s
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "leaves a paint without artwork of its own without a stencil sheet" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_green_black")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"corsair-green-black" => {items: ["paint_corsair_green_black"], base: "flight_textured_corsair-green-black.webp", stencil: nil}},
+        {"flight_textured_corsair-green-black.webp" => PNG}
+      )
+
+      perform
+
+      assert paint.reload.holo_texture.attached?
+      assert_not paint.holo_texture_stencil.attached?
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "dresses a liveried variant in its palette's stencil sheet" do
+      @model.update_columns(rsi_chassis_id: 4242)
+      variant = create(:model, rsi_chassis_id: 4242)
+      component = create(:component, category: "paints", sc_key: "paint_gladius_valiant", name: "Gladius Valiant Livery")
+      create(:hardpoint, parent: variant, component:)
+      publish_paints(
+        {"gladiusvaliant" => {items: ["paint_gladius_valiant"], base: "flight_textured_gladiusvaliant.webp", stencil: "flight_textured_gladiusvaliant_stencil.webp"}},
+        {"flight_textured_gladiusvaliant.webp" => PNG, "flight_textured_gladiusvaliant_stencil.webp" => "stencil"}
+      )
+
+      perform
+
+      assert_equal "flight_textured_gladiusvaliant_stencil.webp", variant.reload.holo_texture_stencil.filename.to_s
+    end
+
     test "puts the lite listing's maps on the paint's lite pair" do
       component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
       paint = create(:model_paint, model: @model, component:)
