@@ -1,0 +1,47 @@
+name: Apt Install
+description: Installs apt packages from cached .deb files, so a slow Ubuntu mirror only costs the run that fills the cache
+inputs:
+  packages:
+    description: Space-separated package names
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # The dpkg status file changes with the runner or container image, and the
+    # cached .deb files only fit the exact package set they were resolved against.
+    - name: Compute cache key
+      id: key
+      shell: bash
+      env:
+        PACKAGES: ${{ inputs.packages }}
+      run: echo "key=apt-debs-$(cat /var/lib/dpkg/status <(echo "$PACKAGES") | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore .deb files
+      id: restore
+      uses: actions/cache/restore@v6
+      with:
+        path: /tmp/apt-debs
+        key: ${{ steps.key.outputs.key }}
+
+    - name: Install packages
+      shell: bash
+      env:
+        PACKAGES: ${{ inputs.packages }}
+        CACHE_HIT: ${{ steps.restore.outputs.cache-hit }}
+      run: |
+        SUDO=$(command -v sudo || true)
+        if [ "$CACHE_HIT" = "true" ] && $SUDO apt-get install -y --no-install-recommends --no-download /tmp/apt-debs/*.deb; then
+          exit 0
+        fi
+        $SUDO apt-get update
+        $SUDO apt-get install -y --no-install-recommends $PACKAGES
+        mkdir -p /tmp/apt-debs
+        find /var/cache/apt/archives -maxdepth 1 -name '*.deb' -exec cp -t /tmp/apt-debs {} +
+
+    # Saved here rather than in a post step, which is skipped when the job's tests fail.
+    - name: Save .deb files
+      if: steps.restore.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v6
+      with:
+        path: /tmp/apt-debs
+        key: ${{ steps.key.outputs.key }}

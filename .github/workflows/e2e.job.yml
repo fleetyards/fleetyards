@@ -56,7 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install dependencies
-        run: apt-get update && apt-get install -y --no-install-recommends build-essential libyaml-dev libvips-dev
+        uses: ./.github/workflows/apt-install-action
+        with:
+          packages: build-essential libyaml-dev libvips-dev
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
