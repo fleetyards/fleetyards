@@ -53,7 +53,6 @@
       "notOnSale": "non vendu",
       "routes": "Comment les obtenir",
       "editRoute": "Voie vers %{ship}",
-      "removeRoute": "Retirer la voie",
       "unresolvedUnits": {
         "one": "%{count} vaisseau n'a pas encore de voie",
         "other": "%{count} vaisseaux n'ont pas encore de voie"
@@ -90,7 +89,6 @@
         "upgradeSource": "Upgrade depuis",
         "ownedUpgrade": "Upgrade dans votre hangar RSI",
         "upgradeTo": "Upgrade vers",
-        "meltShip": "Vaisseau à melt",
         "meltValue": "Crédit",
         "meltValueInfo": "Ce que la fonte rapporte. Laissez vide pour utiliser la valeur que RSI donne au pledge, ou le prix boutique du jour si la synchronisation du hangar ne l'a pas lue.",
         "slotDescription": "Description",
@@ -390,19 +388,15 @@
         "useToken": "Utiliser un jeton de rachat",
         "withToken": "payé avec un jeton"
       },
+      "pledge": {
+        "standalone": "Individuel",
+        "inPackage": "dans %{name}",
+        "package": "Dans un pack",
+        "showContents": "Afficher le contenu de %{name}"
+      },
       "meltList": {
-        "none": "D'après RSI, aucun de vos vaisseaux ne peut être fondu. Désactivez le filtre pour choisir n'importe quel vaisseau.",
-        "credit": "%{value} de crédit",
-        "estimate": "%{value} estimé",
-        "wholePledge": {
-          "one": "fond %{count} objet",
-          "other": "fond tout le pledge : %{count} objets"
-        },
-        "meltableOnly": "Fondables uniquement",
         "notMeltable": "non fondable",
         "notSynced": "non synchronisé",
-        "noShips": "Aucun de vos vaisseaux n'est libre pour être fondu.",
-        "inPackage": "dans %{name}",
         "contents": "Fondu avec lui",
         "contentsOf": "Fondu avec lui, dans %{name}",
         "unlisted": {
@@ -439,6 +433,8 @@
         "anyShip": "N'importe quel vaisseau",
         "buyChosen": "Le vaisseau que vous choisissez ensuite",
         "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
+        "onlyKeep": "Aucun upgrade n'existe pour lui et RSI ne permet pas de le fondre, il ne peut qu'être gardé",
+        "notMeltable": "Ne peut pas être fondu",
         "excludes": "Exclut %{ships}",
         "ccuSalesOnly": "CCU seulement pendant les ventes",
         "ccuUnknown": "Aucun CCU vu pour l'instant",
@@ -457,8 +453,6 @@
           "catalogue": "N'importe quel vaisseau"
         }
       },
-      "slotsTitle": "Emplacements",
-      "editSlots": "Modifier les emplacements",
       "slotNumber": "Emplacement %{number}",
       "suggestions": {
         "title": "Suggestions",

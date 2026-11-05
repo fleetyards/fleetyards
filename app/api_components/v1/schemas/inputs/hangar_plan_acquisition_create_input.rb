@@ -9,7 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            candidateId: {type: :string, format: :uuid},
+            candidateId: {type: :string, format: :uuid, description: "The ship of the plan the route leads to"},
+            slotId: {type: :string, format: :uuid, description: "A slot with no ship yet, which holds the start until it gets one; given instead of candidateId"},
             startKind: ::V1::Schemas::Enums::HangarPlanStartKindEnum,
             sourceVehicleId: {type: [:string, :null], format: :uuid},
             buybackPledgeId: {type: [:string, :null], format: :uuid},
@@ -18,7 +19,7 @@ module V1
             usesBuybackToken: {type: :boolean},
             steps: {type: :array, items: ::V1::Schemas::Inputs::HangarPlanUpgradeStepInput}
           },
-          required: %w[candidateId startKind],
+          required: %w[startKind],
           additionalProperties: false
         })
       end

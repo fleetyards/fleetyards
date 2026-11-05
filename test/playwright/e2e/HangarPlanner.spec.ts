@@ -90,13 +90,13 @@ test.describe("Hangar Planner", () => {
     );
 
     // The Aurora is not needed, so it is melted for store credit.
-    await page.getByTestId("hangar-plan-add-melt").click();
-    await page.getByTestId("modal").waitFor({ state: "visible" });
+    await page.getByTestId("hangar-plan-flow-toggle-unassigned").click();
     await page
-      .getByTestId("modal")
-      .getByTestId("pick-list-vehicleId")
-      .getByRole("button", { name: /Aurora MR/ })
+      .getByRole("row")
+      .filter({ hasText: "Aurora MR" })
+      .getByTestId("hangar-plan-decide-melt")
       .click();
+    await page.getByTestId("modal").waitFor({ state: "visible" });
 
     const meltCreated = page.waitForResponse(
       (response) =>

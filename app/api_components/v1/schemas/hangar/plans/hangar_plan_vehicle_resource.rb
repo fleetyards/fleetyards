@@ -18,6 +18,7 @@ module V1
               meltValue: {type: [:number, :null], description: "The store credit melting the ship's pledge gives, as RSI lists it"},
               pledgeItemCount: {type: [:integer, :null], description: "How many items the pledge holds; melting the ship melts them all"},
               pledgeName: {type: [:string, :null], description: "The name of the pledge the ship came in, as RSI lists it"},
+              standalone: {type: [:boolean, :null], description: "Whether the pledge holds the ship alone rather than a package; null where the hangar sync never saw it"},
               pledgeShips: {
                 type: :array,
                 description: "The other ships of the same pledge, which melt with it",

@@ -13,15 +13,16 @@ import {
 } from "@/shared/components/base/Btn/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import PledgeInfo from "@/frontend/components/Hangar/Planner/PledgeInfo/index.vue";
 import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
 import {
   manufacturerText,
   usePlanMoney,
+  usePledgeNote,
 } from "@/frontend/components/Hangar/Planner/format";
 import {
-  canLeave,
   reaches,
   startHolder,
 } from "@/frontend/components/Hangar/Planner/reach";
@@ -37,6 +38,7 @@ import {
   type HangarPlanCandidate,
   type HangarPlanModel,
   type HangarPlanSlot,
+  type HangarPlanSlotStart,
   BuybackPledgeKindEnum,
   HangarPlanVehicleStatusEnum,
   useHangarPlan,
@@ -47,10 +49,9 @@ import {
 type Props = {
   planId: string;
   slot: HangarPlanSlot;
-  // The ship the start leads to; unset for a slot still choosing its ship,
-  // which is then picked after the start.
+  // The ship the start leads to; unset for a slot still choosing its ship.
   candidate?: HangarPlanCandidate;
-  acquisition?: HangarPlanAcquisition;
+  acquisition?: HangarPlanAcquisition | HangarPlanSlotStart;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -70,6 +71,7 @@ const FILTERS = [
 
 const { t } = useI18n();
 const { money } = usePlanMoney();
+const pledgeNote = usePledgeNote();
 const comlink = useComlink();
 
 const { data: plan } = useHangarPlan(() => props.planId);
@@ -78,7 +80,7 @@ const { data: resources, isLoading } = useHangarPlanResources(
   () => props.planId,
 );
 
-const { pairing, pairStart, pairEnd } = useHangarPlanPairing(
+const { pairing, pairStart, holdStart, pairEnd } = useHangarPlanPairing(
   () => props.planId,
   plan,
 );
@@ -86,7 +88,8 @@ const { pairing, pairStart, pairEnd } = useHangarPlanPairing(
 const target = computed(() => props.candidate?.model);
 
 // A slot still choosing its ship is reached by a start that can become at
-// least one of its ships; the ones it cannot become are named on it.
+// least one of its ships; the ones it cannot become are named on it. With no
+// ship to choose from yet, any ship can start: it may be the one the slot gets.
 const unreachedShips = (from: HangarPlanModel) =>
   props.slot.candidates
     .map((candidate) => candidate.model)
@@ -95,7 +98,7 @@ const unreachedShips = (from: HangarPlanModel) =>
 const reachesSlot = (from: HangarPlanModel) =>
   props.slot.candidates.length
     ? unreachedShips(from).length < props.slot.candidates.length
-    : canLeave(from);
+    : true;
 
 const excludes = (from: HangarPlanModel) => {
   if (target.value) return undefined;
@@ -160,9 +163,12 @@ const vehicleOptions = computed<StartOption[]>(() =>
       item: {
         id: `vehicle:${vehicle.id}`,
         title: vehicle.name || vehicle.model.name,
-        meta: vehicle.name
-          ? vehicle.model.name
-          : manufacturerText(vehicle.model),
+        meta: [
+          vehicle.name ? vehicle.model.name : manufacturerText(vehicle.model),
+          pledgeNote(vehicle),
+        ]
+          .filter(Boolean)
+          .join(" · "),
         tags: status
           ? [{ label: t(`hangarPlanner.vehicleStatuses.${status}`) }]
           : [],
@@ -302,26 +308,24 @@ const startItems = computed<PickListItem[]>(() =>
     .map((option) => ({ ...option.item, ship: option.model })),
 );
 
+// A hangar ship's package, whose contents open beside its row.
+const packagedVehicles = computed(
+  () =>
+    new Map(
+      freeVehicles.value
+        .filter((vehicle) => vehicle.standalone === false)
+        .map((vehicle) => [`vehicle:${vehicle.id}`, vehicle]),
+    ),
+);
+
 const close = () => comlink.emit("close-modal", true);
 
 const chooseStart = async (item: PickListItem) => {
   const option = options.value.find((entry) => entry.item.id === item.id);
   if (!option) return;
 
-  // A slot with no ship yet has nothing to keep a start on, so its ship is
-  // picked next and both are saved together.
   if (!props.candidate && !props.slot.candidates.length) {
-    comlink.emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
-      props: {
-        planId: props.planId,
-        slot: props.slot,
-        start: option.start,
-        startModel: option.model,
-      },
-      wide: true,
-    });
+    if (await holdStart(props.slot, option.start, props.acquisition)) close();
     return;
   }
 
@@ -392,6 +396,13 @@ const remove = async () => {
             {{ t(`hangarPlanner.vehicleStatuses.${status}`) }}
           </Chip>
         </div>
+      </template>
+      <template #row-aside="{ item }">
+        <PledgeInfo
+          v-if="packagedVehicles.has(item.id)"
+          :ship="packagedVehicles.get(item.id)!"
+          :pledge="packagedVehicles.get(item.id)!"
+        />
       </template>
     </PickList>
 

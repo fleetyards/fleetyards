@@ -12,6 +12,7 @@ class HangarPlanMelt < ApplicationRecord
   validates :vehicle_id, uniqueness: {scope: :hangar_plan_id}
   validates :value_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validate :vehicle_available, on: :create
+  validate :vehicle_meltable, on: :create
 
   before_validation -> { self.model_id ||= vehicle&.model_id }
   before_create -> { self.value_snapshot ||= list_value }
@@ -38,6 +39,12 @@ class HangarPlanMelt < ApplicationRecord
 
   def vehicle_changed?
     !vehicle_missing? && vehicle.model_id != model_id
+  end
+
+  # Only as it is planned: a melt from before RSI stopped allowing it stays, for
+  # the user to take back.
+  private def vehicle_meltable
+    errors.add(:vehicle_id, :not_meltable) if vehicle&.rsi_pledge_meltable == false
   end
 
   private def vehicle_available

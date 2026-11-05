@@ -5,9 +5,13 @@ module HangarPlans
   # the paints, flair, gear and upgrades the hangar sync read. Melting one ship
   # of a pledge melts all of it.
   class PledgeContents
-    Contents = Data.define(:name, :ships, :items)
+    # `standalone` is nil where the hangar sync never saw the ship's pledge.
+    Contents = Data.define(:name, :ships, :items, :standalone)
 
-    EMPTY = Contents.new(name: nil, ships: [], items: [])
+    EMPTY = Contents.new(name: nil, ships: [], items: [], standalone: nil)
+
+    STANDALONE_NAME = /\Astandalone/i
+    PACKAGE_NAME = /\Apackage/i
 
     def initialize(plan, vehicles)
       pledges = vehicles.filter_map(&:rsi_pledge_id).uniq
@@ -29,7 +33,19 @@ module HangarPlans
       # of the same pledge.
       name = vehicle.rsi_pledge_name.presence || items.filter_map(&:pledge_name).first
 
-      Contents.new(name:, ships: @ships.fetch(pledge, []) - [vehicle], items:)
+      ships = @ships.fetch(pledge, []) - [vehicle]
+
+      Contents.new(name:, ships:, items:, standalone: standalone?(vehicle, name, ships, items))
+    end
+
+    # RSI sells a "Standalone Ship - Pulse plus Dominion Paint", so what else a
+    # pledge holds besides ships only tells where its name does not.
+    private def standalone?(vehicle, name, ships, items)
+      return false if ships.any? || items.any? && !STANDALONE_NAME.match?(name.to_s) || PACKAGE_NAME.match?(name.to_s)
+      return true if STANDALONE_NAME.match?(name.to_s)
+      return if vehicle.rsi_pledge_item_count.nil?
+
+      vehicle.rsi_pledge_item_count <= 1
     end
   end
 end

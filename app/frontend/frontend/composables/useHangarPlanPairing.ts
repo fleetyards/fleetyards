@@ -4,8 +4,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import {
   type HangarPlan,
-  type HangarPlanAcquisition,
   type HangarPlanCandidate,
+  type HangarPlanSlot,
   HangarPlanStartKindEnum,
   HangarPlanVehicleMarkEnum,
   useCreateHangarPlanAcquisition,
@@ -23,6 +23,8 @@ export type HangarPlanStart =
   | { kind: "buyback"; pledgeId: string; modelId: string }
   | { kind: "ingame" }
   | { kind: "store" };
+
+type SavedStart = { id: string };
 
 export type HangarPlanEnd =
   | { kind: "same" }
@@ -71,7 +73,7 @@ export const useHangarPlanPairing = (
 
   const startData = (
     start: HangarPlanStart,
-    candidate: HangarPlanCandidate,
+    candidate?: HangarPlanCandidate,
   ) => {
     switch (start.kind) {
       case "owned":
@@ -93,14 +95,14 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.INGAME,
           sourceVehicleId: null,
           buybackPledgeId: null,
-          startModelId: candidate.model.id,
+          startModelId: candidate?.model.id ?? null,
         };
       default:
         return {
           startKind: HangarPlanStartKindEnum.STORE,
           sourceVehicleId: null,
           buybackPledgeId: null,
-          startModelId: candidate.model.id,
+          startModelId: candidate?.model.id ?? null,
         };
     }
   };
@@ -108,7 +110,7 @@ export const useHangarPlanPairing = (
   const pairStart = (
     candidate: HangarPlanCandidate,
     start: HangarPlanStart,
-    acquisition?: HangarPlanAcquisition,
+    acquisition?: SavedStart,
   ) =>
     run(async () => {
       updatePlan(
@@ -124,6 +126,28 @@ export const useHangarPlanPairing = (
                 candidateId: candidate.id,
                 ...startData(start, candidate),
               },
+            }),
+      );
+    });
+
+  // A slot with no ship yet keeps the start itself and hands it to the first
+  // ship it gets.
+  const holdStart = (
+    slot: HangarPlanSlot,
+    start: HangarPlanStart,
+    acquisition?: SavedStart,
+  ) =>
+    run(async () => {
+      updatePlan(
+        acquisition
+          ? await updateAcquisition.mutateAsync({
+              hangarPlanId: hangarPlanId(),
+              id: acquisition.id,
+              data: { ...startData(start), steps: [] },
+            })
+          : await createAcquisition.mutateAsync({
+              hangarPlanId: hangarPlanId(),
+              data: { slotId: slot.id, ...startData(start) },
             }),
       );
     });
@@ -165,7 +189,7 @@ export const useHangarPlanPairing = (
     );
   };
 
-  const release = async (acquisition?: HangarPlanAcquisition) => {
+  const release = async (acquisition?: SavedStart) => {
     if (!acquisition) return;
 
     updatePlan(
@@ -183,7 +207,7 @@ export const useHangarPlanPairing = (
     {
       vehicleId,
       acquisition,
-    }: { vehicleId?: string; acquisition?: HangarPlanAcquisition },
+    }: { vehicleId?: string; acquisition?: SavedStart },
   ) =>
     run(async () => {
       if (end.kind === "same" || end.kind === "remove") {
@@ -229,5 +253,5 @@ export const useHangarPlanPairing = (
       }
     });
 
-  return { pairing, pairStart, pairEnd };
+  return { pairing, pairStart, holdStart, pairEnd };
 };

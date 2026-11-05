@@ -359,6 +359,7 @@ fr:
           attributes:
             base:
               slot_filled: "cet emplacement a déjà un parcours pour chacun de ses vaisseaux"
+              holder_invalid: "un départ appartient à un vaisseau de l'emplacement, ou à un emplacement encore sans vaisseau"
               chain_mismatch: "le parcours doit se terminer sur le vaisseau de l'emplacement"
               chain_broken: "chaque amélioration doit partir du vaisseau où s'est terminée l'étape précédente"
               upgrade_taken: "une amélioration est utilisée plus souvent que vous ne la possédez"
@@ -389,6 +390,7 @@ fr:
             vehicle_id:
               taken: "est déjà utilisé dans ce plan"
               pledge_kept: "fait partie d'un pledge dont ce plan garde les autres vaisseaux"
+              not_meltable: "RSI ne permet pas de fondre ce pledge"
               pledge_melted: "fait partie d'un pledge que ce plan fond"
         vehicle_loadout:
           attributes:

@@ -92,6 +92,63 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST saves a start on a slot with no ship" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {slotId: slot.id, startKind: "owned", sourceVehicleId: vehicle.id} do
+      start = parsed_body.dig("slots", 1, "starts", 0)
+      assert_equal vehicle.id, start["sourceVehicleId"]
+      assert_equal "Cutlass Black", start.dig("startModel", "name")
+      assert_equal "open", parsed_body.dig("slots", 1, "state")
+    end
+  end
+
+  test "POST saves a ship to buy on a slot with no ship, naming none" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {slotId: slot.id, startKind: "store", startModelId: nil} do
+      assert_nil parsed_body.dig("slots", 1, "starts", 0, "startModel")
+    end
+  end
+
+  test "POST rejects a start on a slot that already has a ship" do
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {slotId: @slot.id, startKind: "store"}
+  end
+
+  test "POST rejects a start for neither a ship nor a slot" do
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {startKind: "store", startModelId: @carrack.id}
+  end
+
+  test "POST does not reach another user's slot" do
+    other = create(:hangar_plan_slot, hangar_plan: create(:hangar_plan))
+
+    assert_api_response :post, 404, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {slotId: other.id, startKind: "store"}
+  end
+
+  test "PUT changes a start a slot holds, and moves it to a ship" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    start = @plan.acquisitions.create!(slot:, start_kind: "store")
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: start.id}, body: {startKind: "owned", sourceVehicleId: vehicle.id}
+    assert_equal slot, start.reload.slot
+
+    target = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot: target, model: @constellation)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: start.id}, body: {candidateId: candidate.id}
+    assert_nil start.reload.slot
+    assert_equal candidate, start.candidate
+  end
+
   test "POST keeps an owned ship" do
     vehicle = create(:vehicle, user: @user, model: @carrack)
 

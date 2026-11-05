@@ -359,6 +359,7 @@ it:
           attributes:
             base:
               slot_filled: "questo slot ha già un percorso per ciascuna delle sue navi"
+              holder_invalid: "una partenza appartiene a una nave dello slot o a uno slot ancora senza navi"
               chain_mismatch: "il percorso deve terminare sulla nave dello slot"
               chain_broken: "ogni upgrade deve partire dalla nave su cui è terminato il passo precedente"
               upgrade_taken: "un upgrade viene usato più volte di quante ne possiedi"
@@ -389,6 +390,7 @@ it:
             vehicle_id:
               taken: "è già usato in questo piano"
               pledge_kept: "fa parte di un pledge di cui questo piano tiene le altre navi"
+              not_meltable: "RSI non consente di fondere questo pledge"
               pledge_melted: "fa parte di un pledge che questo piano fonde"
         vehicle_loadout:
           attributes:

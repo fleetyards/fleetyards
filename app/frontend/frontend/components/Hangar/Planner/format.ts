@@ -1,5 +1,28 @@
 import { useI18n } from "@/shared/composables/useI18n";
-import type { HangarPlanModel } from "@/services/fyApi";
+import type {
+  HangarPlanModel,
+  HangarPlanPledgeItem,
+  HangarPlanPledgeShip,
+} from "@/services/fyApi";
+
+export type PledgeDetails = {
+  pledgeName?: string | null;
+  pledgeItemCount?: number | null;
+  // Besides the ship the pledge is read from.
+  pledgeShips: HangarPlanPledgeShip[];
+  pledgeItems: HangarPlanPledgeItem[];
+};
+
+// RSI counts what the sync keeps no record of, such as the game package or
+// insurance-only items.
+export const pledgeUnlisted = (pledge: PledgeDetails) => {
+  const listed =
+    1 +
+    pledge.pledgeShips.length +
+    pledge.pledgeItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  return Math.max((pledge.pledgeItemCount ?? 0) - listed, 0);
+};
 
 // A pick row shows the manufacturer's icon, so it names the manufacturer only
 // where there is none.
@@ -43,4 +66,24 @@ export const usePlanMoney = () => {
       : money(max);
 
   return { money, amount, range, net, startRange };
+};
+
+// How a hangar ship was pledged, said only where the hangar sync saw its pledge.
+export const usePledgeNote = () => {
+  const { t } = useI18n();
+
+  return ({
+    standalone,
+    pledgeName,
+  }: {
+    standalone?: boolean | null;
+    pledgeName?: string | null;
+  }) => {
+    if (standalone === null || standalone === undefined) return undefined;
+    if (standalone) return t("hangarPlanner.pledge.standalone");
+
+    return pledgeName
+      ? t("hangarPlanner.pledge.inPackage", { name: pledgeName })
+      : t("hangarPlanner.pledge.package");
+  };
 };

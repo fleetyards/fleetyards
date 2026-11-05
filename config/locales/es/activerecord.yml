@@ -359,6 +359,7 @@ es:
           attributes:
             base:
               slot_filled: "este hueco ya tiene una ruta para cada una de sus naves"
+              holder_invalid: "un inicio pertenece a una nave del hueco o a un hueco que aún no tiene naves"
               chain_mismatch: "la ruta tiene que terminar en la nave del hueco"
               chain_broken: "cada mejora tiene que empezar en la nave en la que terminó el paso anterior"
               upgrade_taken: "se usa una mejora más veces de las que tienes"
@@ -389,6 +390,7 @@ es:
             vehicle_id:
               taken: "ya se usa en este plan"
               pledge_kept: "viene en un pledge cuyas otras naves conserva este plan"
+              not_meltable: "RSI no permite fundir este pledge"
               pledge_melted: "viene en un pledge que este plan funde"
         vehicle_loadout:
           attributes:

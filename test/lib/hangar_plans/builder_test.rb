@@ -43,8 +43,12 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     open_slot = source.slots.create!(label: "Hauler", quantity: 2)
     open_slot.candidates.create!(model: @carrack)
     open_slot.candidates.create!(model: @gladius)
+    waiting_slot = source.slots.create!(label: "Fighter", quantity: 1)
+    source.acquisitions.create!(slot: waiting_slot, start_kind: "store")
 
     copy = build_plan("plan", source_plan: source)
+
+    assert_equal ["store"], copy.slots.find_by(label: "Fighter").starts.pluck(:start_kind)
 
     assert_equal source.slots.map { |slot| [slot.label, slot.quantity, slot.state] },
       copy.slots.map { |slot| [slot.label, slot.quantity, slot.state] }

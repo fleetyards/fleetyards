@@ -125,11 +125,13 @@ vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
   useHangarPlanPairing: () => ({
     pairing: ref(false),
     pairStart,
+    holdStart,
     pairEnd: vi.fn(),
   }),
 }));
 
 const comlinkEmit = vi.hoisted(() => vi.fn());
+const holdStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
@@ -156,6 +158,7 @@ const slot = (candidates: HangarPlanCandidate[]): HangarPlanSlot => ({
       : HangarPlanSlotStateEnum.DECIDED,
   filters: {},
   candidates,
+  starts: [],
 });
 
 const titles = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
@@ -227,12 +230,12 @@ describe("Hangar/Planner/StartPickerModal", () => {
     );
   });
 
-  it("picks the ship next for a slot with no ship yet", async () => {
+  it("holds a start on a slot with no ship yet, whatever the ship can become", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan", slot: slot([]) },
     });
 
-    // Any ship RSI sells upgrades out of, never the Idris.
+    // Even the Idris, which RSI sells no upgrades out of: it can stay itself.
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
       "Earn in game",
@@ -240,23 +243,23 @@ describe("Hangar/Planner/StartPickerModal", () => {
       "Cutlass Black",
       "Prospector",
       "Vulture",
+      "Idris-P",
     ]);
 
     pairStart.mockClear();
+    comlinkEmit.mockClear();
     await use(wrapper, "Vulture");
 
-    // Nothing is saved until the ship is picked.
+    // Saved on the slot as it is, with no ship to pick first.
     expect(pairStart).not.toHaveBeenCalled();
-    expect(comlinkEmit).toHaveBeenLastCalledWith(
+    expect(holdStart).toHaveBeenLastCalledWith(
+      expect.objectContaining({ id: "mining" }),
+      { kind: "owned", vehicleId: "vehicle-vulture" },
+      undefined,
+    );
+    expect(comlinkEmit).not.toHaveBeenCalledWith(
       "open-modal",
-      expect.objectContaining({
-        wide: true,
-        props: expect.objectContaining({
-          planId: "plan",
-          start: { kind: "owned", vehicleId: "vehicle-vulture" },
-          startModel: vulture,
-        }),
-      }),
+      expect.anything(),
     );
   });
 

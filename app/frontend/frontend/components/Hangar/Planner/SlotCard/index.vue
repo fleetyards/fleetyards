@@ -6,60 +6,37 @@ export default {
 
 <script lang="ts" setup>
 import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
-import type { Component } from "vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
 import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
 import { useAcquisitionNodes } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { reaches } from "@/frontend/components/Hangar/Planner/reach";
 import { useCandidateSpecs } from "@/frontend/components/Hangar/Planner/candidateSpecs";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import {
   type HangarPlanAcquisition,
-  type HangarPlanCandidate,
   type HangarPlanSlot,
   type HangarPlanSlotCost,
   HangarPlanSlotStateEnum,
-  HangarPlanStartKindEnum,
-  useChooseHangarPlanSlotCandidate,
-  useDestroyHangarPlanAcquisition,
-  useDestroyHangarPlanCandidate,
-  useDestroyHangarPlanSlot,
 } from "@/services/fyApi";
 
 type Props = {
-  planId: string;
   slot: HangarPlanSlot;
   cost?: HangarPlanSlotCost;
-  readonly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   cost: undefined,
-  readonly: false,
 });
 
 const { t } = useI18n();
 const { money, range, startRange } = usePlanMoney();
 const acquisitionNodes = useAcquisitionNodes();
-const comlink = useComlink();
-const { displayAlert } = useAppNotifications();
-const { updatePlan } = useHangarPlanCache();
 
 const stateVariant = computed(() => {
   switch (props.slot.state) {
@@ -159,104 +136,6 @@ const routeCost = (acquisition: HangarPlanAcquisition) => {
   }
   return prices.reduce<number>((sum, price) => sum + (price ?? 0), 0);
 };
-
-const openModal = (
-  component: () => Promise<Component>,
-  props: Record<string, unknown>,
-  options: { wide?: boolean } = {},
-) => comlink.emit("open-modal", { component, props, ...options });
-
-const editSlot = () =>
-  openModal(
-    () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
-    { planId: props.planId, slot: props.slot },
-  );
-
-const addCandidates = () =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
-    { planId: props.planId, slot: props.slot },
-    { wide: true },
-  );
-
-const openRoute = (
-  candidate: HangarPlanCandidate,
-  acquisition: HangarPlanAcquisition,
-) =>
-  openModal(
-    () => import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
-    { planId: props.planId, candidate, acquisition },
-    { wide: true },
-  );
-
-const pickStart = (candidate: HangarPlanCandidate) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/StartPickerModal/index.vue"),
-    { planId: props.planId, slot: props.slot, candidate },
-  );
-
-// Upgrades are planned between two different ships they can join; a ship
-// kept or bought as it is has none, though a buy-back still has its token to
-// settle.
-const chainable = (
-  candidate: HangarPlanCandidate,
-  acquisition: HangarPlanAcquisition,
-) =>
-  acquisition.startModel.id === candidate.model.id
-    ? acquisition.startKind === HangarPlanStartKindEnum.BUYBACK
-    : reaches(acquisition.startModel, candidate.model);
-
-// Units no start was picked for yet.
-const startless = computed(() =>
-  decidedCandidate.value
-    ? props.slot.quantity - decidedCandidate.value.acquisitions.length
-    : 0,
-);
-
-const destroySlot = useDestroyHangarPlanSlot();
-const destroyCandidate = useDestroyHangarPlanCandidate();
-const destroyAcquisition = useDestroyHangarPlanAcquisition();
-const choose = useChooseHangarPlanSlotCandidate();
-
-const run = async (request: Promise<Parameters<typeof updatePlan>[0]>) => {
-  try {
-    updatePlan(await request);
-  } catch {
-    displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
-  }
-};
-
-const removeSlot = () =>
-  run(
-    destroySlot.mutateAsync({ hangarPlanId: props.planId, id: props.slot.id }),
-  );
-
-const removeCandidate = (candidate: HangarPlanCandidate) =>
-  run(
-    destroyCandidate.mutateAsync({
-      hangarPlanId: props.planId,
-      id: candidate.id,
-    }),
-  );
-
-const chooseCandidate = (candidate: HangarPlanCandidate) =>
-  run(
-    choose.mutateAsync({
-      hangarPlanId: props.planId,
-      id: props.slot.id,
-      data: { candidateId: candidate.id },
-    }),
-  );
-
-const removeRoute = (acquisition: HangarPlanAcquisition) =>
-  run(
-    destroyAcquisition.mutateAsync({
-      hangarPlanId: props.planId,
-      id: acquisition.id,
-    }),
-  );
 </script>
 
 <template>
@@ -287,36 +166,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
           {{ uncountedCost }}
         </span>
       </template>
-      <template v-if="!readonly" #actions>
-        <Btn
-          v-if="slot.state !== HangarPlanSlotStateEnum.OPEN"
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.GHOST"
-          data-test="hangar-plan-slot-add-candidates"
-          @click="addCandidates"
-        >
-          <i class="fa-light fa-plus" />
-          {{ t("hangarPlanner.addShips") }}
-        </Btn>
-        <Btn
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.BARE"
-          :aria-label="t('hangarPlanner.editSlot')"
-          @click="editSlot"
-        >
-          <i class="fa-light fa-pen" />
-        </Btn>
-        <Btn
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.BARE"
-          :tone="BtnTonesEnum.DANGER"
-          :aria-label="t('hangarPlanner.removeSlot')"
-          :confirm="t('hangarPlanner.confirmRemoveSlot')"
-          @click="removeSlot"
-        >
-          <i class="fa-light fa-trash" />
-        </Btn>
-      </template>
     </PanelHeading>
     <PanelBody class="plan-slot__body">
       <p v-if="slot.description" class="plan-slot__description">
@@ -338,15 +187,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
       >
         <i class="fa-light fa-circle-dashed" aria-hidden="true" />
         <p class="plan-slot__hint">{{ t("hangarPlanner.openSlotHint") }}</p>
-        <Btn
-          v-if="!readonly"
-          :size="BtnSizesEnum.SM"
-          data-test="hangar-plan-slot-add-candidates"
-          @click="addCandidates"
-        >
-          <i class="fa-light fa-plus" />
-          {{ t("hangarPlanner.addShips") }}
-        </Btn>
       </div>
 
       <ul
@@ -418,27 +258,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
               </span>
             </span>
           </div>
-          <div v-if="!readonly" class="plan-slot__candidate-actions">
-            <Btn
-              v-if="undecided"
-              :size="BtnSizesEnum.MD"
-              class="plan-slot__choose"
-              data-test="hangar-plan-choose"
-              @click="chooseCandidate(candidate)"
-            >
-              <i class="fa-light fa-check" />
-              {{ t("hangarPlanner.choose") }}
-            </Btn>
-            <Btn
-              :size="BtnSizesEnum.XS"
-              :variant="BtnVariantsEnum.BARE"
-              :tone="BtnTonesEnum.DANGER"
-              :aria-label="t('hangarPlanner.removeCandidate')"
-              @click="removeCandidate(candidate)"
-            >
-              <i class="fa-light fa-xmark" />
-            </Btn>
-          </div>
         </li>
       </ul>
 
@@ -451,7 +270,7 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
           data-test="hangar-plan-route"
         >
           <RouteChain :nodes="acquisitionNodes(acquisition)" />
-          <div class="plan-slot__route-actions">
+          <div class="plan-slot__route-cost-cell">
             <span
               v-if="!acquisition.routeComplete"
               class="plan-slot__route-cost plan-slot__route-cost--missing"
@@ -461,30 +280,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
             <span v-else class="plan-slot__route-cost">
               {{ money(routeCost(acquisition)) }}
             </span>
-            <template v-if="!readonly">
-              <Btn
-                v-if="chainable(decidedCandidate, acquisition)"
-                :size="BtnSizesEnum.XS"
-                :variant="BtnVariantsEnum.BARE"
-                :aria-label="
-                  t('hangarPlanner.editRoute', {
-                    ship: decidedCandidate.model.name,
-                  })
-                "
-                @click="openRoute(decidedCandidate, acquisition)"
-              >
-                <i class="fa-light fa-pen" />
-              </Btn>
-              <Btn
-                :size="BtnSizesEnum.XS"
-                :variant="BtnVariantsEnum.BARE"
-                :tone="BtnTonesEnum.DANGER"
-                :aria-label="t('hangarPlanner.removeRoute')"
-                @click="removeRoute(acquisition)"
-              >
-                <i class="fa-light fa-trash" />
-              </Btn>
-            </template>
           </div>
         </div>
         <div v-if="unresolved > 0" class="plan-slot__gap">
@@ -492,15 +287,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
             <i class="fa-light fa-route" aria-hidden="true" />
             {{ t("hangarPlanner.unresolvedUnits", { count: unresolved }) }}
           </span>
-          <Btn
-            v-if="!readonly && startless > 0"
-            :size="BtnSizesEnum.XS"
-            data-test="hangar-plan-add-route"
-            @click="pickStart(decidedCandidate)"
-          >
-            <i class="fa-light fa-plus" />
-            {{ t("hangarPlanner.pick.pickStart") }}
-          </Btn>
         </div>
       </section>
     </PanelBody>
@@ -642,15 +428,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
   color: var(--color-success);
 }
 
-.plan-slot__candidate-actions,
-.plan-slot__route-actions {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  margin-left: auto;
-  white-space: nowrap;
-}
-
 // Undecided ships stand side by side so the trade-off reads across.
 .plan-slot__candidates--versus {
   display: grid;
@@ -685,18 +462,6 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
     padding: 6px 0;
     border-top: 1px solid var(--color-edge-faint);
   }
-
-  .plan-slot__candidate-actions {
-    justify-content: space-between;
-    margin-top: auto;
-    margin-left: 0;
-  }
-
-  // Picking one is what an undecided slot is waiting for, so the button takes
-  // the card's width rather than sitting small beside the remove icon.
-  .plan-slot__choose {
-    flex: 1;
-  }
 }
 
 .plan-slot__routes {
@@ -729,6 +494,11 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
     padding-top: 10px;
     border-top: 1px solid var(--color-edge-faint);
   }
+}
+
+.plan-slot__route-cost-cell {
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .plan-slot__route-cost {

@@ -361,6 +361,7 @@ en:
           attributes:
             base:
               slot_filled: "this slot already has a route for each of its ships"
+              holder_invalid: "a start belongs to a ship of the slot, or to a slot with no ships yet"
               chain_mismatch: "the route has to end on the slot's ship"
               chain_broken: "each upgrade has to start on the ship the step before ended on"
               upgrade_taken: "an upgrade is used more often than you hold it"
@@ -391,6 +392,7 @@ en:
             vehicle_id:
               taken: "is already used in this plan"
               pledge_kept: "comes in a pledge whose other ships this plan keeps"
+              not_meltable: "RSI does not let this pledge be melted"
               pledge_melted: "comes in a pledge this plan melts"
         vehicle_loadout:
           attributes:

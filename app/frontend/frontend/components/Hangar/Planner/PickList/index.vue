@@ -235,7 +235,7 @@ const choose = (item: PickListItem) => {
         {{ t("hangarPlanner.route.noMatch") }}
       </p>
       <ul v-else class="pick-list__rows" :data-test="`pick-list-${name}`">
-        <li v-for="item in sorted" :key="item.id">
+        <li v-for="item in sorted" :key="item.id" class="pick-list__entry">
           <button
             type="button"
             class="pick-list__row pick-list__row--button"
@@ -293,6 +293,7 @@ const choose = (item: PickListItem) => {
               aria-hidden="true"
             />
           </button>
+          <slot name="row-aside" :item="item" />
         </li>
       </ul>
     </template>
@@ -364,6 +365,17 @@ const choose = (item: PickListItem) => {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+}
+
+.pick-list__entry {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  > .pick-list__row {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .pick-list__title {

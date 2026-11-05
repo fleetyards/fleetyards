@@ -167,6 +167,41 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_not_includes HangarPlans::Comparison.new(@plan).vehicles.map { |entry| entry.vehicle.model }, beacon
   end
 
+  test "a pledge says whether it holds a ship alone" do
+    plan = create(:hangar_plan, user: (user = create(:user)))
+    model = create(:model)
+    alone = create(:vehicle, user:, model:, rsi_pledge_id: "alone", rsi_pledge_name: "Standalone Ship - Pulse plus Dominion Paint", rsi_pledge_item_count: 2)
+    bare = create(:vehicle, user:, model:, rsi_pledge_id: "bare", rsi_pledge_item_count: 1)
+    packed = create(:vehicle, user:, model:, rsi_pledge_id: "pack", rsi_pledge_name: "Package - Praetorian Pack")
+    create(:vehicle, user:, model:, rsi_pledge_id: "pack", rsi_pledge_name: "Package - Praetorian Pack")
+    single = create(:vehicle, user:, model:, rsi_pledge_id: "single", rsi_pledge_name: "VIP Wing Commander", rsi_pledge_item_count: 3)
+    unsynced = create(:vehicle, user:, model:)
+    uncounted = create(:vehicle, user:, model:, rsi_pledge_id: "uncounted", rsi_pledge_name: "Aurora Starter Pack")
+    named_package = create(:vehicle, user:, model:, rsi_pledge_id: "named", rsi_pledge_name: "Package - Dominus Pack")
+
+    contents = HangarPlans::PledgeContents.new(plan, [alone, bare, packed, single, unsynced, uncounted, named_package])
+
+    assert_equal true, contents.for(alone).standalone
+    assert_equal true, contents.for(bare).standalone
+    assert_equal false, contents.for(packed).standalone
+    assert_equal false, contents.for(single).standalone
+    assert_nil contents.for(unsynced).standalone
+    assert_nil contents.for(uncounted).standalone
+    assert_equal false, contents.for(named_package).standalone
+  end
+
+  test "a start a slot with no ship holds leaves the hangar ship as it is" do
+    plan = create(:hangar_plan, user: (user = create(:user)))
+    vehicle = create(:vehicle, user:, model: create(:model))
+    plan.acquisitions.create!(slot: create(:hangar_plan_slot, hangar_plan: plan), start_kind: "owned", source_vehicle: vehicle)
+
+    comparison = HangarPlans::Comparison.new(plan)
+
+    assert_equal ["unrouted"], comparison.vehicles.map(&:status)
+    assert_equal [vehicle], comparison.fleet.map(&:vehicle)
+    assert_empty comparison.gaps
+  end
+
   private def slot_for(model, quantity: 1)
     slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
     create(:hangar_plan_candidate, slot:, model:)

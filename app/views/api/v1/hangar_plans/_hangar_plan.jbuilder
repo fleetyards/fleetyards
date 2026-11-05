@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 model_preload = HangarPlans::MODEL_PRELOAD
-slots = hangar_plan.slots.includes(candidates: [
-  :model_paint,
-  {model: model_preload},
-  {acquisitions: [{start_model: model_preload}, :buyback_pledge, {source_vehicle: :model},
-    {upgrade_steps: [{origin_model: model_preload}, {target_model: model_preload}, :hangar_pledge_item, :buyback_pledge]}]}
-]).to_a
+slots = hangar_plan.slots.includes(
+  {starts: [{start_model: model_preload}, :buyback_pledge, {source_vehicle: :model}]},
+  candidates: [
+    :model_paint,
+    {model: model_preload},
+    {acquisitions: [{start_model: model_preload}, :buyback_pledge, {source_vehicle: :model},
+      {upgrade_steps: [{origin_model: model_preload}, {target_model: model_preload}, :hangar_pledge_item, :buyback_pledge]}]}
+  ]
+).to_a
 melts = hangar_plan.melts.includes({model: model_preload}, :vehicle).to_a
 
 # Every route and melt asks its plan about the live hangar; one plan answers
@@ -15,6 +18,7 @@ slots.flat_map(&:candidates).flat_map(&:acquisitions).each do |acquisition|
   acquisition.association(:hangar_plan).target = hangar_plan
   acquisition.upgrade_steps.each { |step| step.association(:hangar_plan).target = hangar_plan }
 end
+slots.flat_map(&:starts).each { |start| start.association(:hangar_plan).target = hangar_plan }
 melts.each { |melt| melt.association(:hangar_plan).target = hangar_plan }
 melt_pledges = HangarPlans::PledgeContents.new(hangar_plan, local_assigns[:public_view] ? [] : melts.filter_map(&:vehicle))
 
@@ -41,6 +45,23 @@ json.slots slots do |slot|
   json.quantity slot.quantity
   json.position slot.position
   json.state slot.state
+
+  json.starts slot.starts do |start|
+    json.id start.id
+    json.start_kind start.start_kind
+    unless local_assigns[:public_view]
+      json.source_vehicle_id start.source_vehicle_id
+      json.buyback_pledge_id start.buyback_pledge_id
+    end
+    if start.start_model
+      json.start_model do
+        json.partial! "api/v1/hangar_plans/model", model: start.start_model
+      end
+    else
+      json.start_model nil
+    end
+    json.source_missing local_assigns[:public_view] ? false : start.source_missing?
+  end
 
   json.candidates slot.candidates do |candidate|
     json.id candidate.id
@@ -75,19 +96,7 @@ json.melts melts do |melt|
   json.vehicle_missing local_assigns[:public_view] ? false : melt.vehicle_missing?
   pledge = melt_pledges.for(melt.vehicle)
   json.pledge_name pledge.name
-  json.pledge_ships pledge.ships do |ship|
-    json.id ship.id
-    json.name ship.name
-    json.model do
-      json.partial! "api/v1/hangar_plans/model", model: ship.model
-    end
-  end
-  json.pledge_items pledge.items do |item|
-    json.id item.id
-    json.name item.name
-    json.kind item.kind
-    json.quantity item.quantity
-  end
+  json.partial! "api/v1/hangar_plans/pledge_contents", ships: pledge.ships, items: pledge.items
 end
 
 # The marks name the owner's hangar ships, which a shared plan does not show.

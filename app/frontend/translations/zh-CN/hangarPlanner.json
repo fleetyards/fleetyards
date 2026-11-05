@@ -53,7 +53,6 @@
       "notOnSale": "未在售",
       "routes": "获取方式",
       "editRoute": "获取 %{ship} 的途径",
-      "removeRoute": "移除途径",
       "unresolvedUnits": {
         "one": "%{count} 艘飞船尚无获取途径",
         "other": "%{count} 艘飞船尚无获取途径"
@@ -90,7 +89,6 @@
         "upgradeSource": "升级自",
         "ownedUpgrade": "你 RSI 机库中的升级",
         "upgradeTo": "升级为",
-        "meltShip": "要熔毁的飞船",
         "meltValue": "积分",
         "meltValueInfo": "熔掉可获得的信用点。留空则使用 RSI 为该礼包列出的价值；机库同步未读取时使用今日商店价格。",
         "slotDescription": "描述",
@@ -390,19 +388,15 @@
         "useToken": "使用回购代币",
         "withToken": "已用代币支付"
       },
+      "pledge": {
+        "standalone": "单独购买",
+        "inPackage": "包含于 %{name}",
+        "package": "包含于套装",
+        "showContents": "显示 %{name} 的内容"
+      },
       "meltList": {
-        "none": "根据 RSI，你的飞船都不可熔。关闭筛选即可任选飞船。",
-        "credit": "%{value} 信用点",
-        "estimate": "约 %{value}",
-        "wholePledge": {
-          "one": "熔掉 %{count} 件物品",
-          "other": "熔掉整个礼包：%{count} 件物品"
-        },
-        "meltableOnly": "仅可熔",
         "notMeltable": "不可熔",
         "notSynced": "未同步",
-        "noShips": "你没有可用于熔掉的飞船。",
-        "inPackage": "属于 %{name}",
         "contents": "一并熔掉",
         "contentsOf": "作为 %{name} 的一部分一并熔掉",
         "unlisted": {
@@ -439,6 +433,8 @@
         "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
+        "onlyKeep": "这艘舰船没有升级，RSI 也不允许熔炼，只能保留",
+        "notMeltable": "无法熔炼",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
         "ccuUnknown": "尚未见过 CCU",
@@ -457,8 +453,6 @@
           "catalogue": "任意舰船"
         }
       },
-      "slotsTitle": "槽位",
-      "editSlots": "编辑槽位",
       "slotNumber": "槽位 %{number}",
       "suggestions": {
         "title": "建议",

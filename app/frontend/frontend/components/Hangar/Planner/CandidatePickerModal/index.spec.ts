@@ -3,11 +3,8 @@ import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
-  HangarPlanCcuIntoEnum,
-  HangarPlanCcuOutOfEnum,
   HangarPlanSlotStateEnum,
   type HangarPlan,
-  type HangarPlanModel,
   type HangarPlanSlot,
 } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -17,16 +14,12 @@ const updateMutate = vi.fn((_input: unknown) =>
 );
 
 const createMutate = vi.hoisted(() => vi.fn());
-const pairStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
-
-vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
-  useHangarPlanPairing: () => ({ pairStart }),
-}));
+const moveMutate = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useCreateHangarPlanCandidate: () => ({ mutateAsync: createMutate }),
-  useHangarPlan: () => ({ data: { value: undefined } }),
+  useUpdateHangarPlanAcquisition: () => ({ mutateAsync: moveMutate }),
   useUpdateHangarPlanSlot: () => ({ mutateAsync: updateMutate }),
 }));
 
@@ -74,16 +67,7 @@ const slot: HangarPlanSlot = {
   state: HangarPlanSlotStateEnum.OPEN,
   filters: { pledgePriceLteq: 400, sizeIn: ["medium"] },
   candidates: [],
-};
-
-const hull: HangarPlanModel = {
-  id: "hull-c",
-  name: "Hull C",
-  slug: "hull-c",
-  onSale: false,
-  pledgePrice: 250,
-  ccuInto: HangarPlanCcuIntoEnum.SALES_ONLY,
-  ccuOutOf: HangarPlanCcuOutOfEnum.KNOWN,
+  starts: [],
 };
 
 describe("Hangar/Planner/CandidatePickerModal", () => {
@@ -98,45 +82,57 @@ describe("Hangar/Planner/CandidatePickerModal", () => {
     });
   });
 
-  it("bounds the ships by the start picked before the slot had one", async () => {
-    await mountWithDefaults(Component, {
+  it("moves a start the first ship took to the ship it can become", async () => {
+    const ship = (id: string, pledgePrice: number) => ({
+      id,
+      name: id,
+      slug: id,
+      onSale: true,
+      ccuInto: "on_sale",
+      ccuOutOf: "known",
+      pledgePrice,
+    });
+    const start = ship("start", 200);
+    const cheap = {
+      id: "cheap",
+      model: ship("cheap", 100),
+      acquisitions: [{ id: "held" }],
+    };
+    const dear = { id: "dear", model: ship("dear", 400), acquisitions: [] };
+    createMutate.mockResolvedValue({
+      slots: [{ id: slot.id, candidates: [cheap, dear] }],
+    });
+
+    const wrapper = await mountWithDefaults(Component, {
       props: {
         planId: "plan",
-        slot,
-        start: { kind: "owned", vehicleId: "vehicle-hull-c" },
-        startModel: hull,
+        slot: {
+          ...slot,
+          starts: [
+            {
+              id: "held",
+              startKind: "owned",
+              startModel: start,
+              sourceMissing: false,
+            },
+          ],
+        } as HangarPlanSlot,
       },
-    });
-
-    expect(picker.query).toEqual({
-      pledgePriceLteq: 400,
-      sizeIn: ["medium"],
-      playerOwnableEq: true,
-      plannable: true,
-      ccuTarget: true,
-      pledgePriceGt: 250,
-    });
-  });
-
-  it("saves the start with the ship picked for it", async () => {
-    const start = { kind: "owned" as const, vehicleId: "vehicle-hull-c" };
-    const candidate = {
-      id: "candidate",
-      model: { ...hull, id: "polaris", pledgePrice: 975 },
-    };
-    createMutate.mockResolvedValueOnce({
-      slots: [{ ...slot, candidates: [candidate] }],
-    });
-    const wrapper = await mountWithDefaults(Component, {
-      props: { planId: "plan", slot, start, startModel: hull },
     });
 
     wrapper
       .findComponent({ name: "ModelPickerModal" })
-      .vm.$emit("submit", [{ option: { id: "polaris" } }]);
+      .vm.$emit("submit", [
+        { option: { id: "cheap" } },
+        { option: { id: "dear" } },
+      ]);
     await flushPromises();
 
-    expect(pairStart).toHaveBeenCalledWith(candidate, start);
+    expect(moveMutate).toHaveBeenCalledWith({
+      hangarPlanId: "plan",
+      id: "held",
+      data: { candidateId: "dear" },
+    });
   });
 
   it("saves the filters picked as the slot's own", async () => {

@@ -7,7 +7,7 @@ module HangarPlans
   class Resources
     USES = %w[acquisition melt].freeze
 
-    VehicleResource = Data.define(:vehicle, :used_by, :pledge_name, :pledge_ships, :pledge_items)
+    VehicleResource = Data.define(:vehicle, :used_by, :pledge_name, :pledge_ships, :pledge_items, :standalone)
     UpgradeResource = Data.define(:item, :from_model, :to_model, :used_count)
     BuybackResource = Data.define(:pledge, :models, :used)
 
@@ -37,7 +37,8 @@ module HangarPlans
         end
         contents = pledges.for(vehicle)
 
-        VehicleResource.new(vehicle:, used_by:, pledge_name: contents.name, pledge_ships: contents.ships, pledge_items: contents.items)
+        VehicleResource.new(vehicle:, used_by:, pledge_name: contents.name, pledge_ships: contents.ships, pledge_items: contents.items,
+          standalone: contents.standalone)
       end
     end
 

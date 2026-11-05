@@ -17,6 +17,7 @@ const slot = (id: string): HangarPlanSlot => ({
   position: 0,
   state: HangarPlanSlotStateEnum.OPEN,
   filters: { sizeIn: ["small"] },
+  starts: [],
   candidates: [],
 });
 

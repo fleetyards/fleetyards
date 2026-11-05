@@ -298,17 +298,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "plans/:id/slots/",
-    name: "hangar-plan-slots",
-    component: () => import("@/frontend/pages/hangar/plans/[id]/slots.vue"),
-    meta: {
-      needsAuthentication: true,
-      title: "hangar.plans",
-      backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_PLANNER,
-    },
-  },
-  {
     path: "plans/:id/suggestions/",
     name: "hangar-plan-suggestions",
     component: () =>
@@ -324,6 +313,10 @@ export const routes: RouteRecordRaw[] = [
   // for links saved to it.
   {
     path: "plans/:id/hangar/",
+    redirect: (to) => ({ name: "hangar-plan", params: to.params }),
+  },
+  {
+    path: "plans/:id/slots/",
     redirect: (to) => ({ name: "hangar-plan", params: to.params }),
   },
   {

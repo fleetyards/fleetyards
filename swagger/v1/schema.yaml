@@ -37247,6 +37247,12 @@ components:
         candidateId:
           type: string
           format: uuid
+          description: The ship of the plan the route leads to
+        slotId:
+          type: string
+          format: uuid
+          description: A slot with no ship yet, which holds the start until it gets
+            one; given instead of candidateId
         startKind:
           "$ref": "#/components/schemas/HangarPlanStartKindEnum"
         sourceVehicleId:
@@ -37276,7 +37282,6 @@ components:
           items:
             "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
       required:
-      - candidateId
       - startKind
       additionalProperties: false
       title: HangarPlanAcquisitionCreateInput
@@ -38164,6 +38169,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanCandidate"
+        starts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSlotStart"
+          description: Starts picked while the slot has no ship; its first ship takes
+            them
       additionalProperties: false
       required:
       - id
@@ -38173,6 +38184,7 @@ components:
       - state
       - filters
       - candidates
+      - starts
       title: HangarPlanSlot
     HangarPlanSlotChooseInput:
       type: object
@@ -38292,6 +38304,40 @@ components:
       - sorting
       additionalProperties: false
       title: HangarPlanSlotSortInput
+    HangarPlanSlotStart:
+      type: object
+      description: A start picked for a slot that has no ship yet
+      properties:
+        id:
+          type: string
+          format: uuid
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModel:
+          anyOf:
+          - "$ref": "#/components/schemas/HangarPlanModel"
+          - type: 'null'
+          description: Unset for a ship to buy or earn, which is whichever ship the
+            slot gets
+        sourceMissing:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - startKind
+      - startModel
+      - sourceMissing
+      title: HangarPlanSlotStart
     HangarPlanSlotStateEnum:
       type: string
       enum:
@@ -38721,6 +38767,12 @@ components:
           - string
           - 'null'
           description: The name of the pledge the ship came in, as RSI lists it
+        standalone:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the pledge holds the ship alone rather than a package;
+            null where the hangar sync never saw it
         pledgeShips:
           type: array
           description: The other ships of the same pledge, which melt with it
@@ -38755,11 +38807,47 @@ components:
           "$ref": "#/components/schemas/HangarPlanVehicleStatusEnum"
         targetModel:
           "$ref": "#/components/schemas/HangarPlanModel"
+        pledgeName:
+          type:
+          - string
+          - 'null'
+          description: The RSI pledge the ship came in, where the hangar sync kept
+            its name
+        standalone:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the pledge holds the ship alone rather than a package;
+            null where the hangar sync never saw it
+        meltable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether RSI lets the ship's pledge be melted; null until the
+            hangar sync has read it
+        pledgeItemCount:
+          type:
+          - integer
+          - 'null'
+          description: How many items the pledge holds, as RSI counts them
+        pledgeShips:
+          type: array
+          description: The other ships of the same pledge
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeShip"
+        pledgeItems:
+          type: array
+          description: The paints, flair, gear and upgrades of the same pledge the
+            hangar sync read
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeItem"
       additionalProperties: false
       required:
       - vehicleId
       - model
       - status
+      - pledgeShips
+      - pledgeItems
       title: HangarPlanVehicleStatus
     HangarPlanVehicleStatusEnum:
       type: string

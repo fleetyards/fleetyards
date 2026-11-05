@@ -5,15 +5,21 @@
 # it is the planned ship. The start and every step are resources the user owns
 # at most once, so nothing here may be spent twice within a plan. A start with
 # no upgrades that is not the planned ship holds both ends while its route has
-# yet to be planned.
+# yet to be planned. A slot with no ship yet holds its starts itself, and hands
+# them to the first ship it gets.
 class HangarPlanAcquisition < ApplicationRecord
   START_KINDS = %w[owned store ingame buyback].freeze
   BUYBACK_SHIP_KINDS = %w[ship package other].freeze
+  # Bought or earned as the planned ship, so with none planned there is no ship
+  # to name yet.
+  SHIPLESS_KINDS = %w[store ingame].freeze
 
   belongs_to :hangar_plan, touch: true
   belongs_to :candidate, class_name: "HangarPlanCandidate", foreign_key: :hangar_plan_candidate_id,
-    inverse_of: :acquisitions
-  belongs_to :start_model, class_name: "Model"
+    inverse_of: :acquisitions, optional: true
+  belongs_to :slot, class_name: "HangarPlanSlot", foreign_key: :hangar_plan_slot_id,
+    inverse_of: :starts, optional: true
+  belongs_to :start_model, class_name: "Model", optional: true
   belongs_to :source_vehicle, class_name: "Vehicle", optional: true
   belongs_to :buyback_pledge, optional: true
 
@@ -22,8 +28,12 @@ class HangarPlanAcquisition < ApplicationRecord
 
   validates :start_kind, inclusion: {in: START_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
+  validate :held_by_a_ship_or_an_empty_slot
+  validate :start_model_known
   validate :start_source, if: :start_changed?
-  validate :quantity_available, if: -> { new_record? || will_save_change_to_hangar_plan_candidate_id? }
+  validate :quantity_available, if: -> {
+    new_record? || will_save_change_to_hangar_plan_candidate_id? || will_save_change_to_hangar_plan_slot_id?
+  }
   validate :chain_ends_on_candidate
   validate :chain_resources_available
 
@@ -98,6 +108,20 @@ class HangarPlanAcquisition < ApplicationRecord
 
   private def assign_start_model
     self.start_model_id = source_vehicle.model_id if start_kind == "owned" && source_vehicle.present?
+    self.start_model ||= candidate&.model if SHIPLESS_KINDS.include?(start_kind)
+  end
+
+  private def held_by_a_ship_or_an_empty_slot
+    return errors.add(:base, :holder_invalid) if candidate.present? == slot.present?
+
+    errors.add(:base, :holder_invalid) if slot.present? && will_save_change_to_hangar_plan_slot_id? && slot.candidates.exists?
+  end
+
+  private def start_model_known
+    return if start_model.present?
+    return if slot.present? && SHIPLESS_KINDS.include?(start_kind)
+
+    errors.add(:start_model, :required)
   end
 
   private def start_source
@@ -134,8 +158,12 @@ class HangarPlanAcquisition < ApplicationRecord
   end
 
   private def quantity_available
-    return if candidate.blank?
-    return if candidate.acquisitions.where.not(id:).count < candidate.slot.quantity
+    taken, quantity = if candidate.present?
+      [candidate.acquisitions, candidate.slot.quantity]
+    elsif slot.present?
+      [slot.starts, slot.quantity]
+    end
+    return if taken.nil? || taken.where.not(id:).count < quantity
 
     errors.add(:base, :slot_filled)
   end
@@ -159,6 +187,7 @@ class HangarPlanAcquisition < ApplicationRecord
   end
 
   private def chain_ends_on_candidate
+    return errors.add(:base, :chain_mismatch) if candidate.blank? && ordered_steps.any?
     return if candidate.blank? || start_model.blank?
 
     previous = start_model
