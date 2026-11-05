@@ -98,10 +98,13 @@ const viewer = ref<InstanceType<typeof HoloViewer>>();
 const stage = ref<HTMLElement>();
 const stageTapped = ref(false);
 
-// Not every touch browser keeps :hover after a tap, and without it the stage's
-// actions could not be reached at all.
-const handleStagePointerDown = (event: PointerEvent) => {
-  if (event.pointerType === "touch") stageTapped.value = true;
+// On click, not pointerdown: a tap's target is settled when the finger lifts, so
+// revealing any earlier would hand that same tap to a button nobody could see.
+// Dragging the figure round produces no click.
+const handleStageClick = (event: MouseEvent) => {
+  if ((event.target as Element).closest("button")) return;
+
+  stageTapped.value = !stageTapped.value;
 };
 
 onClickOutside(stage, () => {
@@ -786,7 +789,7 @@ const copyShareLink = () => {
         class="dressing-room__stage"
         :class="{ 'dressing-room__stage--tapped': stageTapped }"
         data-test="dressing-room-stage"
-        @pointerdown.capture="handleStagePointerDown"
+        @click="handleStageClick"
       >
         <HoloViewer
           v-if="model"
@@ -1096,8 +1099,22 @@ const copyShareLink = () => {
   transition: opacity 0.15s ease;
 }
 
-.dressing-room__stage:hover .dressing-room__actions,
-.dressing-room__stage--tapped .dressing-room__actions,
+// Each kind of screen has its own reveal: a touch browser can hold on to :hover
+// long after the tap, and a mouse click must not pin the buttons in place.
+@media (hover: hover) {
+  .dressing-room__stage:hover .dressing-room__actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (hover: none) {
+  .dressing-room__stage--tapped .dressing-room__actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .dressing-room__actions:focus-within {
   opacity: 1;
   pointer-events: auto;

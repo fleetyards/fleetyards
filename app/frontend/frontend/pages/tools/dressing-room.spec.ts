@@ -246,17 +246,27 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>["wrapper"]) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("ToolsDressingRoomPage", () => {
-  describe("the stage's actions on a touch screen", () => {
+  describe("tapping the stage", () => {
     const TAPPED = "dressing-room__stage--tapped";
 
-    it("are revealed by a tap on the stage and hidden by one elsewhere", async () => {
+    it("reveals the actions, and a second tap hides them", async () => {
       const { wrapper } = await mount();
       const stage = wrapper.find('[data-test="dressing-room-stage"]');
 
       expect(stage.classes()).not.toContain(TAPPED);
 
-      await stage.trigger("pointerdown", { pointerType: "touch" });
+      await stage.trigger("click");
       expect(stage.classes()).toContain(TAPPED);
+
+      await stage.trigger("click");
+      expect(stage.classes()).not.toContain(TAPPED);
+    });
+
+    it("hides the actions again on a tap elsewhere", async () => {
+      const { wrapper } = await mount();
+      const stage = wrapper.find('[data-test="dressing-room-stage"]');
+
+      await stage.trigger("click");
 
       window.dispatchEvent(new Event("pointerdown"));
       document.body.click();
@@ -264,11 +274,24 @@ describe("ToolsDressingRoomPage", () => {
       expect(stage.classes()).not.toContain(TAPPED);
     });
 
-    it("leave a mouse to hover", async () => {
+    it("keeps the actions up when one of them is used", async () => {
+      const { wrapper } = await mount({ torso: "adp-core" });
+      const stage = wrapper.find('[data-test="dressing-room-stage"]');
+
+      await stage.trigger("click");
+      await wrapper
+        .find('[data-test="dressing-room-copy-link"]')
+        .trigger("click");
+
+      expect(stage.classes()).toContain(TAPPED);
+    });
+
+    it("waits for the tap to end before revealing them", async () => {
       const { wrapper } = await mount();
       const stage = wrapper.find('[data-test="dressing-room-stage"]');
 
-      await stage.trigger("pointerdown", { pointerType: "mouse" });
+      await stage.trigger("pointerdown", { pointerType: "touch" });
+
       expect(stage.classes()).not.toContain(TAPPED);
     });
   });
