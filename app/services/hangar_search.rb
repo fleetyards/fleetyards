@@ -46,19 +46,15 @@ class HangarSearch
           )
         }
       ),
-      ScopedSearch::Source.new(
-        type: "OwnedBlueprint",
-        scope: @blueprints.order(Arel.sql(::Catalogue::TokenResolver.name_sql("blueprint"))),
-        filter: :name_cont,
-        item: ->(blueprint) { ScopedSearch.result(type: "Blueprint", name: blueprint.name, slug: blueprint.slug) }
-      ),
+      ScopedSearch.blueprint_source("OwnedBlueprint", @blueprints),
       ScopedSearch::Source.new(
         type: "InventoryItem",
-        scope: @inventory_items.includes(:inventory).order(:name),
+        scope: @inventory_items.includes(:inventory).preload(:item).order(:name),
         filter: :name_cont,
         item: lambda { |item|
           ScopedSearch.result(type: "InventoryItem", name: item.name, slug: item.id, detail: item.inventory.name)
-        }
+        },
+        images: ScopedSearch.method(:inventory_images)
       ),
       *PLEDGE_KINDS.map { |type, kind| named_source(type, @pledge_items.public_send(kind)) },
       named_source("Buyback", @buybacks)
@@ -68,7 +64,9 @@ class HangarSearch
   private def vehicle_source(type, scope)
     ScopedSearch::Source.new(
       type:,
-      scope: scope.includes(:model).references(:model).order("models.name", :name),
+      scope: scope.includes(:model).references(:model)
+        .preload(Vehicle::PICTURE_PRELOADS, image_attachment: :blob)
+        .order("models.name", :name),
       filter: :search_cont,
       item: lambda { |vehicle|
         ScopedSearch.result(
@@ -77,6 +75,11 @@ class HangarSearch
           slug: vehicle.id,
           detail: vehicle.name.present? ? vehicle.model.name : nil
         )
+      },
+      images: lambda { |vehicles|
+        renders = ::Catalogue::Search.new.images_for("ship", vehicles.map { |vehicle| vehicle.model.slug })
+
+        vehicles.to_h { |vehicle| [vehicle, vehicle.display_image || renders[vehicle.model.slug]] }
       }
     )
   end
@@ -86,7 +89,7 @@ class HangarSearch
       type:,
       scope: scope.order(:name),
       filter: :name_cont,
-      item: ->(record) { ScopedSearch.result(type:, name: record.name, slug: record.id) }
+      item: ->(record) { ScopedSearch.result(type:, name: record.name, slug: record.id, image_url: record.image_url.presence) }
     )
   end
 end

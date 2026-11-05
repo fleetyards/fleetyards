@@ -11,10 +11,36 @@ class ScopedSearch
   # `filter` is the ransack predicate the matching list page filters by, so what
   # "show more" opens on holds what this counted. `item` turns a record into
   # a `Catalogue::Search::Result`.
-  Source = Data.define(:type, :scope, :filter, :item)
+  # `images`, where given, answers for the kept records at once, record to
+  # attachment, so a page of rows takes one query per catalogue.
+  Source = Data.define(:type, :scope, :filter, :item, :images) do
+    def initialize(images: nil, **)
+      super
+    end
+  end
 
-  def self.result(type:, name:, slug:, detail: nil, image: nil, online: nil, squadron: nil)
-    ::Catalogue::Search::Result.new(type:, name:, slug:, detail:, image:, appearance: nil, online:, squadron:)
+  def self.result(type:, name:, slug:, detail: nil, image: nil, online: nil, squadron: nil, image_url: nil)
+    ::Catalogue::Search::Result.new(type:, name:, slug:, detail:, image:, appearance: nil, online:, squadron:, image_url:)
+  end
+
+  def self.blueprint_source(type, scope)
+    Source.new(
+      type:,
+      scope: scope.order(Arel.sql(::Catalogue::TokenResolver.name_sql("blueprint"))),
+      filter: :name_cont,
+      item: ->(blueprint) { result(type: "Blueprint", name: blueprint.name, slug: blueprint.slug) },
+      images: lambda { |blueprints|
+        images = ::Catalogue::Search.new.images_for("blueprint", blueprints.map(&:slug))
+
+        blueprints.to_h { |blueprint| [blueprint, images[blueprint.slug]] }
+      }
+    )
+  end
+
+  def self.inventory_images(entries)
+    ::InventoryLedgerEntry.preload_images(entries)
+
+    entries.to_h { |entry| [entry, entry.display_image] }
   end
 
   def initialize(sources)
@@ -35,11 +61,18 @@ class ScopedSearch
     records = source.scope.ransack(source.filter => query).result.limit(PER_TYPE + 1).to_a
     return if records.empty?
 
+    kept = records.first(PER_TYPE)
+    images = source.images&.call(kept) || {}
+
     ::Catalogue::Search::Group.new(
       type: source.type,
-      items: records.first(PER_TYPE).map(&source.item),
+      items: kept.map { |record| with_image(source.item.call(record), images[record]) },
       has_more: records.size > PER_TYPE
     )
+  end
+
+  private def with_image(result, image)
+    image ? result.with(image:) : result
   end
 
   private def rank(name, query)

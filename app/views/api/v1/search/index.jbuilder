@@ -9,6 +9,7 @@ json.groups @groups do |group|
     json.slug result.slug
     json.detail result.detail
     json.online result.online
+    json.image_url result.image_url
     if result.appearance
       json.appearance do
         json.kind result.appearance.kind

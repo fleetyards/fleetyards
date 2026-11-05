@@ -16,6 +16,8 @@ module V1
           detail: {type: :string},
           # Absent where the catalogue keeps no picture, or this item has none.
           image: ::Shared::V1::Schemas::MediaFile,
+          # Where the picture is someone else's: RSI's, for a pledge item.
+          imageUrl: {type: :string},
           # Present for a place only.
           appearance: ::V1::Schemas::SearchAppearance,
           # Present for a person whose presence the reader may see.

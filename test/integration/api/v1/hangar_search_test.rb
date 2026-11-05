@@ -133,6 +133,25 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search shows a user's ships, items and pledges by their pictures" do
+    png = Rails.root.join("test/fixtures/files/test.png")
+    model = create(:model, name: "Omni Hauler")
+    model.angled_view.attach(io: png.open, filename: "angled.png", content_type: "image/png")
+    create(:vehicle, user: @user, model:)
+    component = create(:component, :with_store_image, name: "Omni Cannon")
+    create(:inventory_item, inventory: create(:inventory, holder: @user), name: "Omni Cannon", item: component)
+    create(:hangar_pledge_item, user: @user, kind: "paint", name: "Omni Paint", image_url: "https://example.test/paint.jpg")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "omni"} do
+      items = parsed_body["groups"].to_h { |group| [group["type"], group["items"].first] }
+
+      assert items["HangarVehicle"]["image"].present?
+      assert items["InventoryItem"]["image"].present?
+      assert_equal "https://example.test/paint.jpg", items["Paint"]["imageUrl"]
+    end
+  end
+
   test "GET /hangar/search says when a list has more than it offers" do
     6.times { |n| create(:hangar_pledge_item, user: @user, kind: "paint", name: "Omni Paint #{n}") }
     sign_in @user

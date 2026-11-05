@@ -48192,6 +48192,8 @@ components:
           type: string
         image:
           "$ref": "#/components/schemas/MediaFile"
+        imageUrl:
+          type: string
         appearance:
           "$ref": "#/components/schemas/SearchAppearance"
         online:

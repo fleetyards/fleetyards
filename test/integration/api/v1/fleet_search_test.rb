@@ -113,6 +113,30 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/search lists a ship once per model, without its owner's name for it" do
+    model = create(:model, name: "Omni Hauler")
+    2.times { |n| FleetVehicle.create!(fleet: @fleet, vehicle: create(:vehicle, model:, user: @member, name: "Omni Secret #{n}")) }
+
+    search(@member) { assert_equal ["Omni Hauler"], groups["FleetShip"] }
+  end
+
+  test "GET /fleets/:slug/search leaves out ships for a reader who may not see them" do
+    FleetVehicle.create!(fleet: @fleet, vehicle: create(:vehicle, model: create(:model, name: "Omni Hauler"), user: @member))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    @fleet.fleet_memberships.find_by(user: @member).update!(fleet_role: role)
+
+    search(@member) { assert_nil groups["FleetShip"] }
+  end
+
+  test "GET /fleets/:slug/search finds blueprints only from members who share them" do
+    create(:fleet_membership, :accepted, fleet: @fleet, user: (sharer = create(:user)), blueprints_filter: :all)
+    create(:user_blueprint, user: sharer, blueprint: create(:blueprint, name: "Omni Rifle"))
+    create(:fleet_membership, :accepted, fleet: @fleet, user: (private_holder = create(:user)), blueprints_filter: :hide)
+    create(:user_blueprint, user: private_holder, blueprint: create(:blueprint, name: "Omni Secret"))
+
+    search(@officer) { assert_equal ["Omni Rifle"], groups["FleetBlueprint"] }
+  end
+
   test "GET /fleets/:slug/search refuses someone outside the fleet" do
     create(:fleet_event, fleet: @fleet, title: "Omni Raid")
 

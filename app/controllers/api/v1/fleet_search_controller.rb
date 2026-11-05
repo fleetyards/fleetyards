@@ -6,6 +6,7 @@ module Api
     # caller could open its list: the same permission, feature and subscription
     # gates, and the same visibility rules, as the list's own endpoint.
     class FleetSearchController < ::Api::BaseController
+      include FleetBlueprintScoped
       include FleetContractScoped
       include FleetEventScoped
       include FleetInventoryScoped
@@ -26,7 +27,7 @@ module Api
       end
 
       private def sources
-        [member_source, event_source, contract_source, inventory_source].compact
+        [member_source, ship_source, blueprint_source, event_source, contract_source, inventory_source].compact
       end
 
       private def member_source
@@ -60,6 +61,33 @@ module Api
         member.fleet_squadron_memberships.map(&:fleet_squadron).min_by { |squadron| [squadron.team? ? 1 : 0, squadron.rank] }
       end
 
+      # One row per model, and only what the fleet's own list shows of a ship: a
+      # member's name for it and their picture of it stay in their hangar.
+      private def ship_source
+        return unless allowed_to?(:index?, with: FleetVehiclePolicy, context: {fleet: @fleet})
+
+        ScopedSearch::Source.new(
+          type: "FleetShip",
+          scope: Model.where(id: @fleet.vehicles.where(loaner: false).select(:model_id)).includes(:manufacturer).order(:name),
+          filter: :name_cont,
+          item: ->(model) { ScopedSearch.result(type: "FleetShip", name: model.name, slug: model.slug, detail: model.manufacturer&.name) },
+          images: lambda { |models|
+            renders = ::Catalogue::Search.new.images_for("ship", models.map(&:slug))
+
+            models.to_h { |model| [model, renders[model.slug]] }
+          }
+        )
+      end
+
+      private def blueprint_source
+        return unless allowed_to?(:index?, with: FleetBlueprintPolicy, context: {fleet: @fleet})
+
+        ScopedSearch.blueprint_source(
+          "FleetBlueprint",
+          Blueprint.with_facts(true).owned_by(sharing_memberships.select(:user_id))
+        )
+      end
+
       private def event_source
         return unless readable?(FleetEventPolicy, "fleet_mission_builder", :events)
 
@@ -88,13 +116,14 @@ module Api
         ScopedSearch::Source.new(
           type: "FleetInventoryItem",
           scope: FleetInventoryItem.where(fleet_inventory_id: visible_fleet_inventories.select(:id))
-            .includes(:fleet_inventory).order(:name),
+            .includes(:fleet_inventory).preload(:item).order(:name),
           filter: :name_cont,
           item: lambda { |item|
             ScopedSearch.result(
               type: "FleetInventoryItem", name: item.name, slug: item.id, detail: item.fleet_inventory.name
             )
-          }
+          },
+          images: ScopedSearch.method(:inventory_images)
         )
       end
 
