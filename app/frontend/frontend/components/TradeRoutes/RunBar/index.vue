@@ -38,7 +38,7 @@ const { t, toNumber } = useI18n();
 
 const mobile = useMobile();
 
-// On a phone the bar folds into one summary line: five stacked controls would
+// On a phone the bar folds into one summary line: its stacked controls would
 // push the best run below the fold.
 const expanded = ref(false);
 
@@ -50,6 +50,7 @@ const {
   starSystem,
   commodity,
   priceAge,
+  origin,
   startTerminal,
   targetTerminal,
   update,
@@ -60,11 +61,52 @@ const { data: commodities } = useTradeRouteCommoditiesFilters();
 const { data: startTerminals } = useTradeRouteOriginTerminalsFilters();
 const { data: targetTerminals } = useTradeRouteDestinationTerminalsFilters();
 
-// The system says where to buy, so a start elsewhere could never match.
+// The system says where to buy, so a start elsewhere could never match, and
+// no run starts and ends at the same terminal.
 const startOptions = computed(() =>
   (startTerminals.value ?? []).filter(
-    (option) => !starSystem.value || option.category === starSystem.value,
+    (option) =>
+      option.value !== targetTerminal.value &&
+      (!starSystem.value || option.category === starSystem.value),
   ),
+);
+
+const targetOptions = computed(() =>
+  (targetTerminals.value ?? []).filter(
+    (option) => option.value !== startTerminal.value,
+  ),
+);
+
+// A shared link can name a terminal the select does not offer, which would
+// filter the list with nothing on screen to show it or clear it. Only loaded
+// options can rule a terminal out, and replacing keeps the back button from
+// returning to the link and being sent forward again.
+watch(
+  [startOptions, targetOptions, startTerminal, targetTerminal],
+  () => {
+    const isOffered = (options: FilterOption[], id: string) =>
+      options.some((option) => option.value === id);
+    const changes: Record<string, undefined> = {};
+
+    if (
+      startTerminals.value &&
+      startTerminal.value &&
+      !isOffered(startOptions.value, startTerminal.value)
+    ) {
+      changes.from = undefined;
+    }
+
+    if (
+      targetTerminals.value &&
+      targetTerminal.value &&
+      !isOffered(targetOptions.value, targetTerminal.value)
+    ) {
+      changes.to = undefined;
+    }
+
+    if (Object.keys(changes).length) void update(changes, { replace: true });
+  },
+  { immediate: true },
 );
 
 const budgetInput = ref(budget.value ? String(budget.value) : "");
@@ -103,21 +145,13 @@ onUnmounted(() => {
 
 // A purchase's buyers are one terminal's view: another system leaves it.
 const setSystem = (system?: string) => {
-  const start = startTerminals.value?.find(
-    (option) => option.value === startTerminal.value,
-  );
-
-  void update({
-    system,
-    origin: undefined,
-    from:
-      !system || start?.category === system ? startTerminal.value : undefined,
-  });
+  void update({ system, origin: undefined });
 };
 
-// A start or target is a different question from one purchase's buyers.
+// A start or target is a different question from one purchase's buyers. That
+// view is limited to one terminal, so the select says which.
 const startValue = computed({
-  get: () => startTerminal.value,
+  get: () => origin.value ?? startTerminal.value,
   set: (value?: string) => {
     void update({ from: value || undefined, origin: undefined });
   },
@@ -143,7 +177,7 @@ const commodityValue = computed({
 });
 
 const summaryChips = computed(() => {
-  const start = terminalLabel(startTerminals.value, startTerminal.value);
+  const start = terminalLabel(startTerminals.value, startValue.value);
   const target = terminalLabel(targetTerminals.value, targetTerminal.value);
 
   return [
@@ -345,7 +379,7 @@ const priceAges = computed(() => [
           <BaseSelect
             v-model="targetValue"
             name="target"
-            :options="targetTerminals ?? []"
+            :options="targetOptions"
             :label="t('labels.tradeRoutes.anyTerminal')"
             :no-label="true"
             searchable

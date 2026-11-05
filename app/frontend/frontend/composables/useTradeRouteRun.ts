@@ -46,11 +46,16 @@ export const useTradeRouteRun = () => {
   const targetTerminal = computed(() => single(route.query.to));
   const sort = computed(() => single(route.query.s));
 
-  const update = async (changes: Record<string, string | undefined>) => {
-    await router.push({
+  const update = async (
+    changes: Record<string, string | undefined>,
+    { replace = false } = {},
+  ) => {
+    const location = {
       name: route.name as string,
       query: { ...route.query, ...changes },
-    });
+    };
+
+    await (replace ? router.replace(location) : router.push(location));
   };
 
   const apiQuery = computed<TradeRouteQuery>(() => {

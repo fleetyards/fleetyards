@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { createRouter, createWebHashHistory, type Router } from "vue-router";
 import { type VueWrapper } from "@vue/test-utils";
+import { type FilterOption } from "@/services/fyApi";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
@@ -16,16 +17,24 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useTradeRouteCommoditiesFilters: () => ({
     data: ref([{ label: "Gold", value: "gold" }]),
   }),
-  useTradeRouteOriginTerminalsFilters: () => ({
-    data: ref([
-      { category: "Pyro", label: "Ruin Station", value: "ruin" },
-      { category: "Stanton", label: "ARC-L1", value: "arc" },
-    ]),
-  }),
+  useTradeRouteOriginTerminalsFilters: () => ({ data: originTerminals }),
   useTradeRouteDestinationTerminalsFilters: () => ({
-    data: ref([{ category: "Stanton", label: "Area 18", value: "area18" }]),
+    data: destinationTerminals,
   }),
 }));
+
+const ORIGIN_TERMINALS = [
+  { category: "Pyro", label: "Ruin Station", value: "ruin" },
+  { category: "Stanton", label: "ARC-L1", value: "arc" },
+];
+
+const DESTINATION_TERMINALS = [
+  { category: "Stanton", label: "ARC-L1", value: "arc" },
+  { category: "Stanton", label: "Area 18", value: "area18" },
+];
+
+const originTerminals = ref<FilterOption[] | undefined>();
+const destinationTerminals = ref<FilterOption[] | undefined>();
 
 const routerAt = async (query: Record<string, string>) => {
   const router = createRouter({
@@ -56,6 +65,8 @@ const mount = async (router: Router) =>
 describe("TradeRoutes/RunBar", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    originTerminals.value = ORIGIN_TERMINALS;
+    destinationTerminals.value = DESTINATION_TERMINALS;
     // jsdom lays nothing out, so the document reads 0 wide and the bar would
     // fold into its phone summary.
     Object.defineProperty(document.documentElement, "clientWidth", {
@@ -144,6 +155,53 @@ describe("TradeRoutes/RunBar", () => {
       system: "Pyro",
       from: "ruin",
     });
+  });
+
+  it("keeps a start while its options load, then judges it by them", async () => {
+    originTerminals.value = undefined;
+    const router = await routerAt({ from: "ruin" });
+    const wrapper = await mount(router);
+
+    await clickSystem(wrapper, "Stanton");
+    expect(router.currentRoute.value.query.from).toBe("ruin");
+
+    originTerminals.value = ORIGIN_TERMINALS;
+    await vi.runAllTimersAsync();
+
+    expect(router.currentRoute.value.query).toEqual({ system: "Stanton" });
+  });
+
+  it("replaces a link naming terminals the selects do not offer", async () => {
+    const router = await routerAt({ from: "gone", to: "closed", ship: "c2" });
+    const replace = vi.spyOn(router, "replace");
+    await mount(router);
+    await vi.runAllTimersAsync();
+
+    expect(router.currentRoute.value.query).toEqual({ ship: "c2" });
+    expect(replace).toHaveBeenCalledOnce();
+  });
+
+  it("does not offer the other end's terminal", async () => {
+    const router = await routerAt({ from: "arc" });
+    const wrapper = await mount(router);
+
+    expect(select(wrapper, "target").props("options")).toEqual([
+      { category: "Stanton", label: "Area 18", value: "area18" },
+    ]);
+
+    await router.push({ name: "trade-routes", query: { to: "arc" } });
+    await vi.runAllTimersAsync();
+
+    expect(select(wrapper, "start").props("options")).toEqual([
+      { category: "Pyro", label: "Ruin Station", value: "ruin" },
+    ]);
+  });
+
+  it("shows a purchase's terminal as the start", async () => {
+    const router = await routerAt({ commodity: "gold", origin: "arc" });
+    const wrapper = await mount(router);
+
+    expect(select(wrapper, "start").props("modelValue")).toBe("arc");
   });
 
   it("names the start and target in the phone summary", async () => {
