@@ -3,6 +3,7 @@ import { OutfitSlotEnum } from "@/services/fyApi";
 import {
   type FitItem,
   fitsSlot,
+  gearMount,
   portProvider,
   slotFit,
 } from "./dressingRoomFit";
@@ -237,5 +238,70 @@ describe("portProvider", () => {
 
   it("names nothing when nothing worn says", () => {
     expect(portProvider(OutfitSlotEnum.SIDEARM, {})).toBeUndefined();
+  });
+});
+
+describe("gear slots", () => {
+  const port = (name: string, subTypes: string[], extra = {}) => ({
+    name,
+    types: [{ type: "WeaponPersonal", subTypes }],
+    minSize: 1,
+    maxSize: 1,
+    ...extra,
+  });
+
+  const legs = {
+    name: "Legs",
+    fit: {
+      type: "Char_Armor_Legs",
+      ports: [
+        port("utility_attach_1", ["Gadget", "Rocket"]),
+        port("utility_attach_2", ["Knife", "Gadget"], {
+          bone: "utility_attach_2_override",
+          itemHelper: "attach_offset_left_01",
+        }),
+      ],
+    },
+  };
+
+  const knife = {
+    name: "Knife",
+    subType: "Knife",
+    size: "1",
+    fit: { type: "WeaponPersonal" },
+  };
+
+  it("offers nothing while no worn piece could carry the gear", () => {
+    expect(slotFit(OutfitSlotEnum.UTILITY_1, {})).toEqual({
+      kind: "none",
+      providers: [],
+    });
+  });
+
+  it("closes a slot past the ports the worn piece has", () => {
+    const worn = {
+      [OutfitSlotEnum.TORSO]: { name: "Core", fit: { type: "T" } },
+    };
+
+    expect(slotFit(OutfitSlotEnum.GRENADE_1, worn).kind).toBe("none");
+  });
+
+  it("asks each numbered port what it takes: a knife goes in only one", () => {
+    const worn = { [OutfitSlotEnum.LEGS]: legs };
+
+    expect(fitsSlot(slotFit(OutfitSlotEnum.UTILITY_1, worn), knife)).toBe(
+      false,
+    );
+    expect(fitsSlot(slotFit(OutfitSlotEnum.UTILITY_2, worn), knife)).toBe(true);
+  });
+
+  it("mounts gear on the bone and helper its port names", () => {
+    const worn = { [OutfitSlotEnum.LEGS]: legs };
+
+    expect(gearMount(OutfitSlotEnum.UTILITY_2, worn)).toEqual({
+      bone: "utility_attach_2_override",
+      helper: "attach_offset_left_01",
+    });
+    expect(gearMount(OutfitSlotEnum.UTILITY_1, worn)).toBeUndefined();
   });
 });

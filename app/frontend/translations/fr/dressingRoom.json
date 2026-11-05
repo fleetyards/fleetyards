@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "Armure",
-        "weapons": "Armes"
+        "weapons": "Armes",
+        "gear": "Équipement"
       },
       "hold": "Tenir en main",
       "bodies": {
@@ -53,13 +54,42 @@
       "positionPending": "Position pas encore exportée",
       "fit": {
         "noPort": "%{item} n'a pas d'emplacement pour cela",
-        "doesNotFit": "Ne convient pas à %{item}"
+        "doesNotFit": "Ne convient pas à %{item}",
+        "noWornPiece": "Aucune pièce portée n'a de place pour ceci"
       },
       "armorSets": {
         "open": "Ensembles d'armure",
         "count": {
           "one": "%{count} ensemble",
           "other": "%{count} ensembles"
+        }
+      },
+      "gearHint": "Portez un torse, des jambes ou une sous-combinaison pour emporter grenades, chargeurs, injecteurs et outils.",
+      "gear": {
+        "grenade": "Grenade %{number}",
+        "magazine": "Chargeur %{number}",
+        "gadget": "Gadget",
+        "medpen": "Medpen %{number}",
+        "oxypen": "Oxypen %{number}",
+        "utility": "Utilitaire %{number}"
+      },
+      "saveBlocked": "Corrigez ce qui est signalé ci-dessus pour enregistrer cette tenue.",
+      "storage": {
+        "title": "Rangement",
+        "space": "%{used} sur %{capacity}",
+        "add": "Ajouter un objet",
+        "fewer": "Un de moins",
+        "more": "Un de plus",
+        "pickerTitle": "Ajouter à %{piece}",
+        "problems": {
+          "noStorage": "Rien de porté ici ne peut contenir ces objets.",
+          "overCapacity": "Contient plus que ce que cette pièce peut accueillir.",
+          "tooLarge": "Contient un objet trop grand pour cette pièce."
+        },
+        "misfit": {
+          "unmeasured": "Taille non mesurée",
+          "tooLarge": "Trop grand pour cette pièce",
+          "noRoom": "Plus assez de place"
         }
       }
     }

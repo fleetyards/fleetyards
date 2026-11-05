@@ -21,6 +21,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   type Outfit,
   type OutfitItemInput,
+  type OutfitStoredItemInput,
   type OutfitBodyEnum,
   type OutfitWeaponSlotEnum,
   getOutfitsQueryKey,
@@ -33,17 +34,24 @@ import {
 type Props = {
   // What the outfit on screen wears, by id: what it is saved with.
   items: OutfitItemInput[];
+  // What the worn pieces hold, by id.
+  storedItems?: OutfitStoredItemInput[];
   activeId?: string;
   // A piece has not resolved yet, or no longer does: saving now would leave
   // it out.
   pending?: boolean;
+  // Something on screen the API would refuse: gear with no port, storage that
+  // does not fit.
+  blocked?: boolean;
   heldWeapon?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  storedItems: () => [],
   activeId: undefined,
   pending: false,
+  blocked: false,
   heldWeapon: undefined,
   body: undefined,
 });
@@ -80,6 +88,23 @@ const savedItemsKey = (outfit: Outfit) =>
     })),
   );
 
+const storedKey = (
+  stored: { holder: string; equipmentId: string; quantity: number }[],
+) =>
+  stored
+    .map((item) => `${item.holder}:${item.equipmentId}:${item.quantity}`)
+    .sort()
+    .join(",");
+
+const savedStoredKey = (outfit: Outfit) =>
+  storedKey(
+    outfit.storedItems.map((item) => ({
+      holder: item.holder,
+      equipmentId: item.equipment.id,
+      quantity: item.quantity,
+    })),
+  );
+
 const name = ref("");
 
 watch(
@@ -95,6 +120,7 @@ const changed = computed(
     !!active.value &&
     (active.value.name !== name.value.trim() ||
       savedItemsKey(active.value) !== itemsKey(props.items) ||
+      savedStoredKey(active.value) !== storedKey(props.storedItems) ||
       (active.value.heldWeapon ?? undefined) !== props.heldWeapon ||
       (props.body !== undefined && active.value.body !== props.body)),
 );
@@ -116,6 +142,7 @@ const saveNew = async () => {
       data: {
         name: name.value.trim(),
         items: props.items,
+        storedItems: props.storedItems,
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
       },
@@ -137,6 +164,7 @@ const saveChanges = async () => {
       data: {
         name: name.value.trim(),
         items: props.items,
+        storedItems: props.storedItems,
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
       },
@@ -167,7 +195,11 @@ const nameTaken = computed(() =>
 
 const canSave = computed(
   () =>
-    !!name.value.trim() && !nameTaken.value && !saving.value && !props.pending,
+    !!name.value.trim() &&
+    !nameTaken.value &&
+    !saving.value &&
+    !props.pending &&
+    !props.blocked,
 );
 
 const canSaveNew = computed(
@@ -203,6 +235,13 @@ const submit = () => {
         />
         <p v-if="nameTaken" class="outfits__warning">
           {{ t("dressingRoom.nameTaken") }}
+        </p>
+        <p
+          v-if="blocked"
+          class="outfits__warning"
+          data-test="dressing-room-save-blocked"
+        >
+          {{ t("dressingRoom.saveBlocked") }}
         </p>
         <div class="outfits__actions">
           <Btn

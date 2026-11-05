@@ -9,6 +9,7 @@ const heavy = {
   id: "outfit-1",
   name: "Heavy",
   items: [{ slot: "torso", equipment: { id: "core", slug: "adp-core" } }],
+  storedItems: [],
   createdAt: NOW,
   updatedAt: NOW,
 } as unknown as Outfit;
@@ -78,6 +79,7 @@ describe("DressingRoomOutfits", () => {
       data: {
         name: "Recon",
         items: [{ slot: "torso", equipmentId: "core" }],
+        storedItems: [],
         heldWeapon: null,
       },
     });
@@ -111,6 +113,43 @@ describe("DressingRoomOutfits", () => {
     } as never);
 
     expect(saveChanges().attributes("disabled")).toBeUndefined();
+  });
+
+  it("counts a change to what is stored as a change to save, and saves it", async () => {
+    const wrapper = await mount({ activeId: "outfit-1" });
+    const saveChanges = () =>
+      wrapper.find('[data-test="dressing-room-save-changes"]');
+    const storedItems = [
+      { holder: "backpack", equipmentId: "pen", quantity: 2 },
+    ];
+
+    await wrapper.setProps({ storedItems } as never);
+    expect(saveChanges().attributes("disabled")).toBeUndefined();
+
+    await saveChanges().trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: expect.objectContaining({ storedItems }),
+    });
+  });
+
+  it("will not save what the API would refuse, and says why", async () => {
+    const wrapper = await mount({ blocked: true });
+
+    await wrapper
+      .find('input[name="dressing-room-outfit-name"]')
+      .setValue("Recon");
+
+    expect(
+      wrapper.find('[data-test="dressing-room-save-blocked"]').exists(),
+    ).toBe(true);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-save-new"]')
+        .attributes("disabled"),
+    ).toBeDefined();
   });
 
   it("does not save on Enter under a name already taken", async () => {

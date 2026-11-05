@@ -69,6 +69,23 @@ describe("DressingRoomSlotPickerModal", () => {
     expect(closed).toHaveBeenCalled();
   });
 
+  it("offers a gear slot what its kind takes, under the slot's own name", async () => {
+    const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "medpen_1", title: "Medpen 1" },
+    });
+    await flushPromises();
+
+    expect(fetchEquipment).toHaveBeenCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({
+          equipmentTypeIn: ["medical"],
+          subTypeIn: ["MedPack", "Medical"],
+        }),
+      }),
+    );
+    expect(wrapper.text()).toContain("Medpen 1");
+  });
+
   it("greys out what the worn pieces leave no room for, even once they load after it opened", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [

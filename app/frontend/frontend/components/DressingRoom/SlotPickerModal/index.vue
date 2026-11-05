@@ -13,7 +13,11 @@ import ItemStats from "@/frontend/components/DressingRoom/ItemStats/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
-import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
+import {
+  WEAPON_SUB_TYPES,
+  gearKind,
+  isWeaponSlot,
+} from "@/frontend/utils/dressingRoom";
 import {
   type SlotFit,
   fitsSlot,
@@ -33,11 +37,14 @@ interface Props {
   // What the worn pieces leave room for: anything else is shown, but greyed
   // out with the reason.
   fit?: () => SlotFit;
+  // A numbered gear slot's name; the others are named after the slot.
+  title?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   selectedSlug: () => undefined,
   fit: (): SlotFit => ({ kind: "open" }),
+  title: undefined,
 });
 
 const emit = defineEmits<{
@@ -61,20 +68,29 @@ const withSize = computed(
 );
 
 const misfitReason = computed(() =>
-  t("dressingRoom.fit.doesNotFit", { item: providerNames(fit.value) }),
+  fit.value.kind === "none" && !fit.value.providers.length
+    ? t("dressingRoom.fit.noWornPiece")
+    : t("dressingRoom.fit.doesNotFit", { item: providerNames(fit.value) }),
 );
 
 // Nothing worn offers this slot at all: said once, above the grid.
-const noPort = computed(() =>
-  fit.value.kind === "none"
+const noPort = computed(() => {
+  if (fit.value.kind !== "none") return undefined;
+
+  return fit.value.providers.length
     ? t("dressingRoom.fit.noPort", { item: providerNames(fit.value) })
-    : undefined,
-);
+    : t("dressingRoom.fit.noWornPiece");
+});
 
 // A weapon slot takes weapons of its size; an armour slot the armour and
 // undersuits made for it.
-const query = computed(() =>
-  isWeaponSlot(props.slot)
+const query = computed(() => {
+  const gear = gearKind(props.slot);
+  if (gear) {
+    return { equipmentTypeIn: gear.equipmentTypes, subTypeIn: gear.subTypes };
+  }
+
+  return isWeaponSlot(props.slot)
     ? {
         equipmentTypeIn: ["weapon"],
         subTypeIn: WEAPON_SUB_TYPES[props.slot],
@@ -82,8 +98,8 @@ const query = computed(() =>
     : {
         slotIn: [props.slot as EquipmentSlotEnum],
         equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
-      },
-);
+      };
+});
 
 const pick = (item: CatalogueItem) => {
   emit("select", item as Equipment);
@@ -92,7 +108,7 @@ const pick = (item: CatalogueItem) => {
 </script>
 
 <template>
-  <Modal :title="t(`dressingRoom.slots.${slot}`)" flush>
+  <Modal :title="title ?? t(`dressingRoom.slots.${slot}`)" flush>
     <CataloguePicker
       kind="Equipment"
       :query="query"

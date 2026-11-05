@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
+import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -23,7 +24,9 @@ import {
   type ArmorSet,
   type Equipment,
   type Outfit,
+  type OutfitHolderEnum,
   type OutfitItemInput,
+  type OutfitStoredItemInput,
   OutfitBodyEnum,
   OutfitSlotEnum,
   type OutfitWeaponSlotEnum,
@@ -34,6 +37,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
   BACKPACK_MOUNT,
+  GEAR_SLOTS,
   RIFLE_HOLD_CLIP,
   RIG_ORDER,
   handMount,
@@ -44,6 +48,9 @@ import {
   WEAPON_SLOTS,
   attachment,
   clipLabel,
+  gearKind,
+  gearNumber,
+  isGearSlot,
   isWeaponSlot,
   outfitModel,
   outfitQuery,
@@ -51,15 +58,29 @@ import {
   pieceHolo,
   riggedOutfitModel,
   riggedPieceHolo,
+  visibleGearSlots,
   wearArmorSet,
 } from "@/frontend/utils/dressingRoom";
 import {
   type SlotFit,
   fitsSlot,
+  gearMount,
   portProvider,
   providerNames,
   slotFit,
 } from "@/frontend/utils/dressingRoomFit";
+import {
+  HOLDERS,
+  type StorageInventory,
+  type StoredSelection,
+  addStored,
+  holderProblem,
+  parseStoredQuery,
+  setStoredQuantity,
+  storedQuery,
+  storedSlugs,
+  usedSpace,
+} from "@/frontend/utils/dressingRoomStorage";
 
 // The figure faces -Z, as the game's characters face its +Y: the camera starts
 // in front of it.
@@ -79,6 +100,8 @@ const router = useRouter();
 const selection = computed<OutfitSelection>(() =>
   parseOutfitQuery(route.query),
 );
+
+const stored = computed<StoredSelection>(() => parseStoredQuery(route.query));
 
 const queryValue = (key: string) => {
   const value = [route.query[key]].flat()[0];
@@ -114,7 +137,11 @@ type NavigationState = {
   body?: OutfitBodyEnum;
 };
 
-const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
+const navigate = (
+  next: OutfitSelection,
+  state: NavigationState = {},
+  nextStored: StoredSelection = stored.value,
+) => {
   const query: NavigationState = {
     outfit: activeOutfitId.value,
     pose: poseName.value,
@@ -130,7 +157,7 @@ const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
 
   return router.replace({
     name: "dressing-room",
-    query: { ...outfitQuery(next), ...query },
+    query: { ...outfitQuery(next), ...storedQuery(nextStored), ...query },
   });
 };
 
@@ -166,6 +193,7 @@ const openSlot = (slot: OutfitSlotEnum) => {
       slot,
       selectedSlug: () => selection.value[slot],
       fit: () => slotFits.value[slot],
+      title: slotLabel(slot),
       onSelect: (item: Equipment) => choose(slot, item),
     },
     wide: true,
@@ -173,7 +201,11 @@ const openSlot = (slot: OutfitSlotEnum) => {
 };
 
 const reset = () => {
-  void navigate({}, { outfit: undefined, pose: undefined, held: undefined });
+  void navigate(
+    {},
+    { outfit: undefined, pose: undefined, held: undefined },
+    {},
+  );
 };
 
 const toggleHeld = (slot: OutfitSlotEnum) => {
@@ -194,6 +226,16 @@ const loadOutfit = (outfit: Outfit) => {
       held: outfit.heldWeapon ?? undefined,
       body: outfit.body,
     },
+    outfit.storedItems.reduce<StoredSelection>(
+      (list, item) => ({
+        ...list,
+        [item.holder]: [
+          ...(list[item.holder] ?? []),
+          { slug: item.equipment.slug, quantity: item.quantity },
+        ],
+      }),
+      {},
+    ),
   );
 };
 
@@ -201,10 +243,26 @@ const setActiveOutfit = (id: string | undefined) => {
   void navigate(selection.value, { outfit: id });
 };
 
-const SLOT_GROUPS = [
+// A numbered gear slot reads by its kind; the one of a kind needs no number.
+const slotLabel = (slot: OutfitSlotEnum) => {
+  const kind = gearKind(slot);
+  if (!kind) return t(`dressingRoom.slots.${slot}`);
+
+  return t(`dressingRoom.gear.${kind.key}`, { number: gearNumber(slot) });
+};
+
+const gearSlots = computed(() =>
+  visibleGearSlots(
+    selection.value,
+    (slot) => slotFits.value[slot].kind === "ports",
+  ),
+);
+
+const SLOT_GROUPS = computed(() => [
   { key: "armour", slots: OUTFIT_SLOTS },
   { key: "weapons", slots: WEAPON_SLOTS },
-];
+  { key: "gear", slots: gearSlots.value },
+]);
 
 const selectedSlots = computed(() =>
   ALL_SLOTS.filter((slot) => selection.value[slot]),
@@ -244,7 +302,9 @@ const fitNote = (slot: OutfitSlotEnum) => {
   const fit = slotFits.value[slot];
 
   if (fit.kind === "none") {
-    return t("dressingRoom.fit.noPort", { item: providerNames(fit) });
+    return fit.providers.length
+      ? t("dressingRoom.fit.noPort", { item: providerNames(fit) })
+      : t("dressingRoom.fit.noWornPiece");
   }
 
   const item = items.value[slot];
@@ -263,6 +323,72 @@ const loadingSlot = (slot: OutfitSlotEnum) =>
 const missingSlot = (slot: OutfitSlotEnum) =>
   !!selection.value[slot] &&
   !!itemQueries.value[selectedSlots.value.indexOf(slot)]?.isError;
+
+const storedItemQueries = useQueries({
+  queries: computed(() =>
+    storedSlugs(stored.value).map((slug) =>
+      getEquipmentItemQueryOptions(slug, {
+        query: { retry: false, refetchOnWindowFocus: false },
+      }),
+    ),
+  ),
+});
+
+const storedItems = computed<Record<string, Equipment | undefined>>(() =>
+  Object.fromEntries(
+    storedSlugs(stored.value).map((slug, index) => [
+      slug,
+      storedItemQueries.value[index]?.data,
+    ]),
+  ),
+);
+
+const storedLoading = computed(() =>
+  storedItemQueries.value.some((query) => query.isLoading),
+);
+
+const storedMissing = computed(() =>
+  storedItemQueries.value.some((query) => query.isError),
+);
+
+const wornInventory = (holder: OutfitHolderEnum) =>
+  items.value[holder as OutfitSlotEnum]?.inventory as
+    StorageInventory | null | undefined;
+
+const openStorage = (holder: OutfitHolderEnum) => {
+  const inventory = wornInventory(holder);
+  if (!inventory) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/DressingRoom/StoredItemPickerModal/index.vue"),
+    props: {
+      holder,
+      inventory,
+      used: () => usedSpace(stored.value[holder], storedItems.value),
+      onSelect: (item: Equipment) => {
+        void navigate(
+          selection.value,
+          {},
+          addStored(stored.value, holder, item.slug),
+        );
+      },
+    },
+    wide: true,
+  });
+};
+
+const changeStored = (
+  holder: OutfitHolderEnum,
+  slug: string,
+  quantity: number,
+) => {
+  void navigate(
+    selection.value,
+    {},
+    setStoredQuantity(stored.value, holder, slug, quantity),
+  );
+};
 
 // Painted holos that did not load, so the figure is drawn in clay instead.
 const failedPaths = ref<string[]>([]);
@@ -320,6 +446,9 @@ const pinnedBackpack = computed(() =>
     : undefined,
 );
 
+const isCarriedSlot = (slot: OutfitSlotEnum) =>
+  isWeaponSlot(slot) || isGearSlot(slot);
+
 // What each slot is drawn from, or nothing: the slot list says which are not.
 const holos = computed(
   () =>
@@ -328,10 +457,10 @@ const holos = computed(
         if (!body.value) {
           return [
             slot,
-            isWeaponSlot(slot) ? undefined : staticHolos.value[slot],
+            isCarriedSlot(slot) ? undefined : staticHolos.value[slot],
           ];
         }
-        if (isWeaponSlot(slot)) return [slot, staticHolos.value[slot]];
+        if (isCarriedSlot(slot)) return [slot, staticHolos.value[slot]];
         if (slot === OutfitSlotEnum.BACKPACK) {
           return [slot, riggedHolos.value[slot] ?? pinnedBackpack.value];
         }
@@ -384,13 +513,30 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
   return from ? { ...placed, from } : undefined;
 };
 
+// Gear hangs where the port of the piece carrying it says, and only where the
+// item has the helper that port names: without one it would be a guess.
+const gearPlacement = (slot: OutfitSlotEnum) => {
+  const holo = staticHolos.value[slot];
+  const mount = gearMount(slot, items.value);
+  const provider = portProvider(slot, items.value);
+  const from = provider && riggedHolos.value[provider]?.path;
+  if (!holo || !mount || !from) return undefined;
+
+  const placed = attachment(holo, mount, items.value[slot]?.attachPoints);
+
+  return placed.helper ? { ...placed, from } : undefined;
+};
+
+const carriedPlacement = (slot: OutfitSlotEnum) =>
+  isGearSlot(slot) ? gearPlacement(slot) : weaponPlacement(slot);
+
 // Left off the figure by the viewer: the piece it hangs from has no mount for
 // it in its rig.
 const unplaced = ref<string[]>([]);
 
 const unplacedSlot = (slot: OutfitSlotEnum) => {
-  const path = isWeaponSlot(slot)
-    ? weaponPlacement(slot)?.path
+  const path = isCarriedSlot(slot)
+    ? carriedPlacement(slot)?.path
     : riggedHolos.value[slot]?.path;
 
   return !!path && unplaced.value.includes(path);
@@ -399,10 +545,10 @@ const unplacedSlot = (slot: OutfitSlotEnum) => {
 const positionPending = (slot: OutfitSlotEnum) =>
   !!body.value &&
   (unplacedSlot(slot) ||
-    (isWeaponSlot(slot) &&
+    (isCarriedSlot(slot) &&
       !!staticHolos.value[slot] &&
       heldWeapon.value !== slot &&
-      !weaponPlacement(slot)));
+      !carriedPlacement(slot)));
 
 const attachments = computed(() => [
   ...(pinnedBackpack.value
@@ -414,8 +560,8 @@ const attachments = computed(() => [
         ),
       ]
     : []),
-  ...WEAPON_SLOTS.flatMap((slot) => {
-    const placed = weaponPlacement(slot);
+  ...[...WEAPON_SLOTS, ...GEAR_SLOTS].flatMap((slot) => {
+    const placed = carriedPlacement(slot);
 
     return placed ? [placed] : [];
   }),
@@ -491,8 +637,39 @@ const selectedPose = computed({
 
 // A piece still loading, or one the address names but the catalogue no longer
 // has: saving now would drop it from the outfit.
-const piecesPending = computed(() =>
-  selectedSlots.value.some((slot) => loadingSlot(slot) || missingSlot(slot)),
+const piecesPending = computed(
+  () =>
+    selectedSlots.value.some(
+      (slot) => loadingSlot(slot) || missingSlot(slot),
+    ) ||
+    storedLoading.value ||
+    storedMissing.value,
+);
+
+const storedInputs = computed<OutfitStoredItemInput[]>(() =>
+  HOLDERS.flatMap((holder) =>
+    (stored.value[holder] ?? []).flatMap((entry) => {
+      const item = storedItems.value[entry.slug];
+
+      return item
+        ? [{ holder, equipmentId: item.id, quantity: entry.quantity }]
+        : [];
+    }),
+  ),
+);
+
+// What the API would refuse, each already marked where it is on the page.
+const saveBlocked = computed(
+  () =>
+    GEAR_SLOTS.some((slot) => !!selection.value[slot] && !!fitNote(slot)) ||
+    HOLDERS.some(
+      (holder) =>
+        !!holderProblem(
+          wornInventory(holder),
+          stored.value[holder],
+          storedItems.value,
+        ),
+    ),
 );
 
 const outfitItems = computed<OutfitItemInput[]>(() =>
@@ -512,6 +689,7 @@ const shareUrl = computed(
         name: "dressing-room",
         query: {
           ...outfitQuery(selection.value),
+          ...storedQuery(stored.value),
           held: heldWeapon.value,
           pose: poseName.value,
           body:
@@ -617,7 +795,15 @@ const copyShareLink = () => {
                 {{ t("dressingRoom.armorSets.open") }}
               </Btn>
             </div>
+            <p
+              v-if="group.key === 'gear' && !group.slots.length"
+              class="dressing-room__group-hint"
+              data-test="dressing-room-gear-hint"
+            >
+              {{ t("dressingRoom.gearHint") }}
+            </p>
             <ul
+              v-else
               class="dressing-room__slots"
               :data-test="`dressing-room-slots-${group.key}`"
             >
@@ -635,7 +821,7 @@ const copyShareLink = () => {
                   @click="openSlot(slot)"
                 >
                   <span class="dressing-room__slot-label">
-                    {{ t(`dressingRoom.slots.${slot}`) }}
+                    {{ slotLabel(slot) }}
                   </span>
                   <span v-if="items[slot]" class="dressing-room__slot-item">
                     {{ items[slot]?.name }}
@@ -747,8 +933,18 @@ const copyShareLink = () => {
           :searchable="false"
           data-test="dressing-room-pose"
         />
+        <WornStorage
+          :stored="stored"
+          :worn="items"
+          :stored-items="storedItems"
+          :loading="storedLoading"
+          @add="openStorage"
+          @quantity="changeStored"
+        />
         <Outfits
           :items="outfitItems"
+          :stored-items="storedInputs"
+          :blocked="saveBlocked"
           :held-weapon="heldWeapon"
           :body="bodyKey"
           :pending="piecesPending"
@@ -869,6 +1065,11 @@ const copyShareLink = () => {
   margin: 0;
   font-size: 1rem;
   color: $gray-lighter;
+}
+
+.dressing-room__group-hint {
+  margin: 0;
+  color: $gray-light;
 }
 
 .dressing-room__slots {

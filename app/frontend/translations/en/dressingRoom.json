@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "Armour",
-        "weapons": "Weapons"
+        "weapons": "Weapons",
+        "gear": "Gear"
       },
       "hold": "Hold",
       "bodies": {
@@ -53,13 +54,42 @@
       "positionPending": "Position not exported yet",
       "fit": {
         "noPort": "%{item} has no slot for this",
-        "doesNotFit": "Doesn't fit %{item}"
+        "doesNotFit": "Doesn't fit %{item}",
+        "noWornPiece": "Nothing worn has a slot for this"
       },
       "armorSets": {
         "open": "Armour sets",
         "count": {
           "one": "%{count} Set",
           "other": "%{count} Sets"
+        }
+      },
+      "gearHint": "Wear a core, legs or an undersuit to carry grenades, magazines, pens and tools.",
+      "gear": {
+        "grenade": "Grenade %{number}",
+        "magazine": "Magazine %{number}",
+        "gadget": "Gadget",
+        "medpen": "Medpen %{number}",
+        "oxypen": "Oxypen %{number}",
+        "utility": "Utility %{number}"
+      },
+      "saveBlocked": "Fix what is marked above to save this outfit.",
+      "storage": {
+        "title": "Storage",
+        "space": "%{used} of %{capacity}",
+        "add": "Add item",
+        "fewer": "One fewer",
+        "more": "One more",
+        "pickerTitle": "Add to %{piece}",
+        "problems": {
+          "noStorage": "Nothing worn here can hold these items.",
+          "overCapacity": "Holds more than this piece has room for.",
+          "tooLarge": "Holds an item too large for this piece."
+        },
+        "misfit": {
+          "unmeasured": "No measured size",
+          "tooLarge": "Too large for this piece",
+          "noRoom": "Not enough room left"
         }
       }
     }

@@ -32,10 +32,120 @@ export const WEAPON_SLOTS: OutfitSlotEnum[] = [
   OutfitSlotEnum.SIDEARM,
 ];
 
-export const ALL_SLOTS = [...OUTFIT_SLOTS, ...WEAPON_SLOTS];
+export interface GearKind {
+  key: string;
+  slots: OutfitSlotEnum[];
+  // The game's port behind the slots, numbered as they are.
+  port: string;
+  // Which worn slots can offer it, innermost first.
+  providers: OutfitSlotEnum[];
+  // What it takes; the same rule the API checks.
+  equipmentTypes: string[];
+  subTypes: string[];
+}
+
+export const GEAR_KINDS: GearKind[] = [
+  {
+    key: "grenade",
+    slots: [
+      OutfitSlotEnum.GRENADE_1,
+      OutfitSlotEnum.GRENADE_2,
+      OutfitSlotEnum.GRENADE_3,
+      OutfitSlotEnum.GRENADE_4,
+    ],
+    port: "grenade_attach",
+    providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.TORSO],
+    equipmentTypes: ["weapon", "tool"],
+    subTypes: ["Grenade"],
+  },
+  {
+    key: "magazine",
+    slots: [
+      OutfitSlotEnum.MAGAZINE_1,
+      OutfitSlotEnum.MAGAZINE_2,
+      OutfitSlotEnum.MAGAZINE_3,
+      OutfitSlotEnum.MAGAZINE_4,
+      OutfitSlotEnum.MAGAZINE_5,
+      OutfitSlotEnum.MAGAZINE_6,
+      OutfitSlotEnum.MAGAZINE_7,
+      OutfitSlotEnum.MAGAZINE_8,
+    ],
+    port: "magazine_attach",
+    providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.TORSO],
+    equipmentTypes: ["weapon_attachment"],
+    subTypes: ["Magazine"],
+  },
+  {
+    key: "gadget",
+    slots: [OutfitSlotEnum.GADGET_1],
+    port: "gadget_attach",
+    providers: [OutfitSlotEnum.TORSO, OutfitSlotEnum.BACKPACK],
+    equipmentTypes: ["tool", "mining_gadget"],
+    subTypes: ["Gadget"],
+  },
+  {
+    key: "medpen",
+    slots: [OutfitSlotEnum.MEDPEN_1, OutfitSlotEnum.MEDPEN_2],
+    port: "medPen_attach",
+    providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
+    equipmentTypes: ["medical"],
+    subTypes: ["MedPack", "Medical"],
+  },
+  {
+    key: "oxypen",
+    slots: [OutfitSlotEnum.OXYPEN_1, OutfitSlotEnum.OXYPEN_2],
+    port: "oxyPen_attach",
+    providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
+    equipmentTypes: ["medical"],
+    subTypes: ["OxygenCap"],
+  },
+  {
+    key: "utility",
+    slots: [OutfitSlotEnum.UTILITY_1, OutfitSlotEnum.UTILITY_2],
+    port: "utility_attach",
+    providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
+    equipmentTypes: ["weapon", "tool"],
+    subTypes: ["Knife", "Gadget"],
+  },
+];
+
+export const GEAR_SLOTS: OutfitSlotEnum[] = GEAR_KINDS.flatMap(
+  (kind) => kind.slots,
+);
+
+export const ALL_SLOTS = [...OUTFIT_SLOTS, ...WEAPON_SLOTS, ...GEAR_SLOTS];
 
 export const isWeaponSlot = (slot?: string): slot is OutfitWeaponSlotEnum =>
   WEAPON_SLOTS.includes(slot as OutfitSlotEnum);
+
+export const isGearSlot = (slot?: string) =>
+  GEAR_SLOTS.includes(slot as OutfitSlotEnum);
+
+export const gearKind = (slot: OutfitSlotEnum) =>
+  GEAR_KINDS.find((kind) => kind.slots.includes(slot));
+
+export const gearNumber = (slot: OutfitSlotEnum) =>
+  Number(slot.split("_").pop());
+
+export const gearPort = (slot: OutfitSlotEnum) => {
+  const kind = gearKind(slot);
+
+  return kind ? `${kind.port}_${gearNumber(slot)}` : undefined;
+};
+
+// Eight empty magazine rows say nothing the ninth would not: what is filled,
+// and the next one the worn pieces offer.
+export const visibleGearSlots = (
+  selection: OutfitSelection,
+  offered: (slot: OutfitSlotEnum) => boolean,
+) =>
+  GEAR_KINDS.flatMap((kind) => {
+    const nextEmpty = kind.slots.find(
+      (slot) => offered(slot) && !selection[slot],
+    );
+
+    return kind.slots.filter((slot) => !!selection[slot] || slot === nextEmpty);
+  });
 
 // What each weapon slot takes, by the weapon's sub type; the same rule the API
 // checks.

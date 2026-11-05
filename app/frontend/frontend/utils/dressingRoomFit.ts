@@ -1,4 +1,10 @@
 import { OutfitSlotEnum } from "@/services/fyApi";
+import {
+  type Mount,
+  GEAR_KINDS,
+  gearKind,
+  gearPort,
+} from "@/frontend/utils/dressingRoom";
 
 // What the game decides fit by, as the equipment payload carries it.
 export interface FitPort {
@@ -8,6 +14,10 @@ export interface FitPort {
   maxSize: number;
   portTags?: string[];
   requiredTags?: string[];
+  // The bone of the piece's rig an item in this port hangs from, and the helper
+  // on the item that meets it.
+  bone?: string;
+  itemHelper?: string;
 }
 
 export interface Fit {
@@ -34,6 +44,11 @@ const SLOT_PORTS: Partial<Record<OutfitSlotEnum, string>> = {
   [OutfitSlotEnum.PRIMARY]: "wep_stocked_3",
   [OutfitSlotEnum.SECONDARY]: "wep_stocked_2",
   [OutfitSlotEnum.SIDEARM]: "wep_sidearm",
+  ...Object.fromEntries(
+    GEAR_KINDS.flatMap((kind) =>
+      kind.slots.map((slot) => [slot, gearPort(slot)]),
+    ),
+  ),
 };
 
 // Which worn slots can offer a slot's port, innermost first: the undersuit
@@ -58,6 +73,11 @@ const PROVIDERS: Partial<Record<OutfitSlotEnum, OutfitSlotEnum[]>> = {
     OutfitSlotEnum.BACKPACK,
   ],
   [OutfitSlotEnum.SIDEARM]: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
+  ...Object.fromEntries(
+    GEAR_KINDS.flatMap((kind) =>
+      kind.slots.map((slot) => [slot, kind.providers]),
+    ),
+  ),
 };
 
 // A port's required tags carry a leading $ the item's own tags do not.
@@ -110,6 +130,9 @@ export const slotFit = (
     .map((provider) => worn[provider])
     .filter((item): item is FitItem => !!item?.fit);
 
+  // Gear only ever hangs on a worn piece, so with none there is nowhere for it.
+  if (!providers.length && gearKind(slot)) return { kind: "none", providers };
+
   if (!portName || !providers.length) return { kind: "open" };
 
   const ports = providers.flatMap((provider) =>
@@ -143,6 +166,21 @@ export const portProvider = (
     .find((provider) =>
       worn[provider]?.fit?.ports?.some((port) => port.name === portName),
     );
+};
+
+// Where a piece of gear hangs, as the port of the piece carrying it says.
+export const gearMount = (
+  slot: OutfitSlotEnum,
+  worn: Partial<Record<OutfitSlotEnum, FitItem | undefined>>,
+): Mount | undefined => {
+  const provider = portProvider(slot, worn);
+  const port =
+    provider &&
+    worn[provider]?.fit?.ports?.find(
+      (entry) => entry.name === SLOT_PORTS[slot],
+    );
+
+  return port?.bone ? { bone: port.bone, helper: port.itemHelper } : undefined;
 };
 
 // Who the slot is up to, by name: "Flight Suit", or "Undersuit, Core".
