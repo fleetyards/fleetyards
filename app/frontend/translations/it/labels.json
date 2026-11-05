@@ -348,7 +348,7 @@
       "updatedAt": "Aggiornato il",
       "addToHangar": "Aggiungi all'hangar",
       "home": {
-        "catalogueSearch": "Cerca navi, oggetti, missioni e luoghi",
+        "catalogueSearch": "Cerca",
         "submitCatalogueSearch": "Cerca"
       },
       "shop": {

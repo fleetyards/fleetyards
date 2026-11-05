@@ -18,9 +18,7 @@
         "searchInCatalogue": "Search the catalogue",
         "searchScopes": {
           "mine": "My stuff",
-          "fleet": "Fleet",
-          "minePlaceholder": "Your ships, blueprints, inventory…",
-          "fleetPlaceholder": "This fleet's members, events, contracts…"
+          "fleet": "Fleet"
         },
         "searchKeys": {
           "add": "to add",

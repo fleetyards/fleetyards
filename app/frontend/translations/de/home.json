@@ -18,9 +18,7 @@
         "searchInCatalogue": "Im Katalog suchen",
         "searchScopes": {
           "mine": "Meine Sachen",
-          "fleet": "Flotte",
-          "minePlaceholder": "Deine Schiffe, Blaupausen, Inventar…",
-          "fleetPlaceholder": "Mitglieder, Events, Aufträge dieser Flotte…"
+          "fleet": "Flotte"
         },
         "searchKeys": {
           "add": "zum Hinzufügen",

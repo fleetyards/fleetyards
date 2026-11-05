@@ -18,9 +18,7 @@
         "searchInCatalogue": "Rechercher dans le catalogue",
         "searchScopes": {
           "mine": "Mes affaires",
-          "fleet": "Flotte",
-          "minePlaceholder": "Vos vaisseaux, plans, inventaire…",
-          "fleetPlaceholder": "Membres, événements, contrats de cette flotte…"
+          "fleet": "Flotte"
         },
         "searchKeys": {
           "add": "pour ajouter",

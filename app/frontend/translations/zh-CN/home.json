@@ -18,9 +18,7 @@
         "searchInCatalogue": "在目录中搜索",
         "searchScopes": {
           "mine": "我的物品",
-          "fleet": "舰队",
-          "minePlaceholder": "你的舰船、蓝图、库存…",
-          "fleetPlaceholder": "此舰队的成员、活动、合约…"
+          "fleet": "舰队"
         },
         "searchKeys": {
           "add": "添加",

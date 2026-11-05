@@ -13,8 +13,6 @@ export interface SearchScope {
   key: string;
   labelKey: string;
   icon: Icon;
-  // Absent where the field's own wording fits.
-  placeholderKey?: string;
   fleetSlug?: string;
   search: (q: string) => Promise<SearchResults>;
 }
@@ -32,7 +30,6 @@ const MINE: SearchScope = {
   key: "mine",
   labelKey: "home.landing.searchScopes.mine",
   icon: "fa-duotone fa-warehouse",
-  placeholderKey: "home.landing.searchScopes.minePlaceholder",
   search: (q) => hangarSearch({ q }),
 };
 
@@ -69,7 +66,6 @@ export const useSearchScopes = () => {
     key: "fleet",
     labelKey: "home.landing.searchScopes.fleet",
     icon: FLEET_GLYPH,
-    placeholderKey: "home.landing.searchScopes.fleetPlaceholder",
     fleetSlug: slug,
     search: async (q) => {
       try {

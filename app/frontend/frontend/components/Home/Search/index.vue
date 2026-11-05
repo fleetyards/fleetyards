@@ -365,7 +365,6 @@ const popoverStyle = computed(() => {
           :size="compact ? InputSizesEnum.MEDIUM : InputSizesEnum.LARGE"
           :autofocus="autofocus"
           translation-key="home.catalogueSearch"
-          :placeholder="scope.placeholderKey && t(scope.placeholderKey)"
           autocomplete="off"
           no-label
           clearable

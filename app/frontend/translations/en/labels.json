@@ -348,7 +348,7 @@
       "updatedAt": "Updated at",
       "addToHangar": "Add to Hangar",
       "home": {
-        "catalogueSearch": "Search ships, items, missions and places",
+        "catalogueSearch": "Search",
         "submitCatalogueSearch": "Search"
       },
       "shop": {

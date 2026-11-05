@@ -18,9 +18,7 @@
         "searchInCatalogue": "Cerca nel catalogo",
         "searchScopes": {
           "mine": "Le mie cose",
-          "fleet": "Flotta",
-          "minePlaceholder": "Le tue navi, progetti, inventario…",
-          "fleetPlaceholder": "Membri, eventi, contratti di questa flotta…"
+          "fleet": "Flotta"
         },
         "searchKeys": {
           "add": "per aggiungere",
