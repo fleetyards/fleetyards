@@ -89,7 +89,7 @@ const logout = () => {
           :src="currentUser.avatar.smallUrl"
           alt=""
         />
-        <span v-else class="account-menu__initial">
+        <span v-else class="account-menu__initial" aria-hidden="true">
           {{ currentUser.username.charAt(0) }}
         </span>
         <span

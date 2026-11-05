@@ -44,20 +44,30 @@ const badgeLabel = computed(() =>
 );
 
 const initial = computed(() => props.label?.charAt(0));
+
+// Only what each element takes. RouterLink spreads its attrs over the anchor it
+// renders, so even an undefined `href` wipes out its own, and an anchor with no
+// href is not a tab stop.
+const linkAttrs = computed(() => {
+  if (props.to) {
+    return { to: props.to };
+  }
+
+  if (props.href) {
+    return { href: props.href, target: "_blank", rel: "noopener" };
+  }
+
+  return { type: "button" };
+});
 </script>
 
 <template>
-  <li v-if="divider" class="nav-menu-item__divider" role="separator" />
+  <li v-if="divider" class="nav-menu-item__divider" />
   <li v-else-if="heading" class="nav-menu-item__heading">{{ label }}</li>
   <li v-else class="nav-menu-item">
     <component
       :is="to ? RouterLink : href ? 'a' : 'button'"
-      v-bind="$attrs"
-      :to="to"
-      :href="href"
-      :target="href ? '_blank' : undefined"
-      :rel="href ? 'noopener' : undefined"
-      :type="to || href ? undefined : 'button'"
+      v-bind="{ ...$attrs, ...linkAttrs }"
       :aria-current="active ? 'page' : undefined"
       class="nav-menu-item__link"
       :class="{ 'nav-menu-item__link--active': active }"
@@ -65,8 +75,10 @@ const initial = computed(() => props.label?.charAt(0));
     >
       <span class="nav-menu-item__icon">
         <img v-if="image" :src="image" alt="" class="nav-menu-item__image" />
-        <i v-else-if="icon" :class="icon" />
-        <span v-else class="nav-menu-item__initial">{{ initial }}</span>
+        <i v-else-if="icon" :class="icon" aria-hidden="true" />
+        <span v-else class="nav-menu-item__initial" aria-hidden="true">{{
+          initial
+        }}</span>
       </span>
       <span class="nav-menu-item__label">{{ label }}</span>
       <span v-if="badge" class="nav-menu-item__badge">{{ badgeLabel }}</span>
