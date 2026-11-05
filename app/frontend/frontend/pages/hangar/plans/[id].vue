@@ -54,6 +54,7 @@ import {
   useAddHangarPlanToWishlist,
   useDestroyHangarPlan,
   useDestroyHangarPlanMelt,
+  useDestroyHangarPlanSlot,
   useHangarPlan,
   useHangarPlanComparison,
   useHangarPlanDrift,
@@ -464,6 +465,8 @@ const onDestroy = async () => {
           @end="pickEnd"
           @pick="pickShips"
           @edit="editSlot"
+          @edit-slot="editSlotDetails"
+          @remove-slot="removeSlot"
         />
       </section>
 

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
 import CardTitle from "@/frontend/components/Hangar/Planner/HangarFlow/CardTitle.vue";
+import SlotActions from "@/frontend/components/Hangar/Planner/HangarFlow/SlotActions.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -800,6 +801,9 @@ const rightLabel = (row: Row) =>
       ? t("hangarPlanner.editSlotOf", { slot: row.slot.label })
       : undefined;
 
+// The slot a row belongs to, whichever of its ends led there.
+const slotOf = (row: Row) => row.start?.slot ?? row.slot;
+
 const imageOf = (model?: HangarPlanModel) =>
   model?.image?.smallUrl || fallbackImage;
 </script>
@@ -1007,6 +1011,11 @@ const imageOf = (model?: HangarPlanModel) =>
           <Pill v-if="row.right.pill" :variant="row.right.pill.variant">
             {{ row.right.pill.label }}
           </Pill>
+          <SlotActions
+            v-if="slotOf(row)"
+            @edit="emit('editSlot', slotOf(row)!)"
+            @remove="emit('removeSlot', slotOf(row)!)"
+          />
         </div>
         <div
           v-else
@@ -1026,20 +1035,7 @@ const imageOf = (model?: HangarPlanModel) =>
             {{ row.rightNone }}
           </button>
           <template v-else>
-            <button
-              v-if="row.slot"
-              type="button"
-              class="hangar-flow__slot-edit"
-              :aria-label="
-                t('hangarPlanner.editSlotOf', { slot: row.slot.label })
-              "
-              data-test="hangar-plan-flow-edit-slot"
-              @click="emit('edit', row.slot)"
-            >
-              {{ row.rightNone }}
-              <i class="fa-light fa-pen" aria-hidden="true" />
-            </button>
-            <template v-else>{{ row.rightNone }}</template>
+            {{ row.rightNone }}
             <Btn
               v-if="row.pickSlot"
               :size="BtnSizesEnum.XS"
@@ -1050,6 +1046,11 @@ const imageOf = (model?: HangarPlanModel) =>
               {{ t("hangarPlanner.addShips") }}
             </Btn>
           </template>
+          <SlotActions
+            v-if="slotOf(row)"
+            @edit="emit('editSlot', slotOf(row)!)"
+            @remove="emit('removeSlot', slotOf(row)!)"
+          />
         </div>
       </div>
     </template>
@@ -1375,32 +1376,12 @@ const imageOf = (model?: HangarPlanModel) =>
   }
 }
 
-.hangar-flow__slot-edit {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  padding: 4px 6px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--color-control-hover);
-    color: var(--color-lifted);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 1px;
-  }
-}
-
 .hangar-flow__decisions {
   display: flex;
+  flex-wrap: wrap;
   gap: 2px;
+  align-items: center;
+  justify-content: center;
 }
 
 .hangar-flow__tag {

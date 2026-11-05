@@ -474,7 +474,7 @@ describe("Hangar/Planner/HangarFlow", () => {
     await open.find('[data-test="hangar-plan-flow-pick"]').trigger("click");
     // Named, removed and given filters before it has a ship.
     await open
-      .find('[data-test="hangar-plan-flow-edit-slot"]')
+      .find('[data-test="hangar-plan-flow-slot-edit"]')
       .trigger("click");
 
     const [[start]] = wrapper.emitted("start") as [
@@ -495,7 +495,8 @@ describe("Hangar/Planner/HangarFlow", () => {
     // the start as well.
     expect(wrapper.emitted("route")).toBeUndefined();
     expect(wrapper.emitted("start")).toHaveLength(2);
-    expect(wrapper.emitted("edit")).toEqual([[short], [empty]]);
+    expect(wrapper.emitted("edit")).toEqual([[short]]);
+    expect(wrapper.emitted("editSlot")).toEqual([[empty]]);
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
 
