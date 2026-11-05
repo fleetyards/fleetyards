@@ -316,6 +316,10 @@ export const routes: RouteRecordRaw[] = [
     redirect: (to) => ({ name: "hangar-plan", params: to.params }),
   },
   {
+    path: "plans/:id/slots/",
+    redirect: (to) => ({ name: "hangar-plan", params: to.params }),
+  },
+  {
     path: "plans/:id/compare/:otherId/",
     name: "hangar-plan-compare",
     component: () => import("@/frontend/pages/hangar/plans/[id]/compare.vue"),
