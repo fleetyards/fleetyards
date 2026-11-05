@@ -46297,6 +46297,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/OutfitItem"
+        storedItems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitStoredItem"
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:
@@ -46312,6 +46316,7 @@ components:
       - id
       - name
       - items
+      - storedItems
       - heldWeapon
       - body
       - createdAt
@@ -46337,6 +46342,12 @@ components:
           items:
             "$ref": "#/components/schemas/OutfitItemInput"
           description: Everything the outfit wears; a slot left out is emptied
+        storedItems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitStoredItemInput"
+          description: Everything kept in the worn pieces' storage; replaces what
+            was there
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:
@@ -46345,6 +46356,19 @@ components:
       - name
       additionalProperties: false
       title: OutfitCreateInput
+    OutfitHolderEnum:
+      type: string
+      enum:
+      - torso
+      - legs
+      - backpack
+      - undersuit
+      x-enumNames:
+      - TORSO
+      - LEGS
+      - BACKPACK
+      - UNDERSUIT
+      title: OutfitHolderEnum
     OutfitItem:
       type: object
       properties:
@@ -46382,6 +46406,25 @@ components:
       - primary
       - secondary
       - sidearm
+      - grenade_1
+      - grenade_2
+      - grenade_3
+      - grenade_4
+      - magazine_1
+      - magazine_2
+      - magazine_3
+      - magazine_4
+      - magazine_5
+      - magazine_6
+      - magazine_7
+      - magazine_8
+      - gadget_1
+      - medpen_1
+      - medpen_2
+      - oxypen_1
+      - oxypen_2
+      - utility_1
+      - utility_2
       x-enumNames:
       - UNDERSUIT
       - TORSO
@@ -46392,7 +46435,59 @@ components:
       - PRIMARY
       - SECONDARY
       - SIDEARM
+      - GRENADE_1
+      - GRENADE_2
+      - GRENADE_3
+      - GRENADE_4
+      - MAGAZINE_1
+      - MAGAZINE_2
+      - MAGAZINE_3
+      - MAGAZINE_4
+      - MAGAZINE_5
+      - MAGAZINE_6
+      - MAGAZINE_7
+      - MAGAZINE_8
+      - GADGET_1
+      - MEDPEN_1
+      - MEDPEN_2
+      - OXYPEN_1
+      - OXYPEN_2
+      - UTILITY_1
+      - UTILITY_2
       title: OutfitSlotEnum
+    OutfitStoredItem:
+      type: object
+      properties:
+        holder:
+          "$ref": "#/components/schemas/OutfitHolderEnum"
+        quantity:
+          type: integer
+        equipment:
+          "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - holder
+      - quantity
+      - equipment
+      title: OutfitStoredItem
+    OutfitStoredItemInput:
+      type: object
+      properties:
+        holder:
+          "$ref": "#/components/schemas/OutfitHolderEnum"
+        equipmentId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 999
+      required:
+      - holder
+      - equipmentId
+      - quantity
+      additionalProperties: false
+      title: OutfitStoredItemInput
     OutfitUpdateInput:
       type: object
       properties:
@@ -46404,6 +46499,12 @@ components:
           items:
             "$ref": "#/components/schemas/OutfitItemInput"
           description: Everything the outfit wears; a slot left out is emptied
+        storedItems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitStoredItemInput"
+          description: Everything kept in the worn pieces' storage; replaces what
+            was there
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:

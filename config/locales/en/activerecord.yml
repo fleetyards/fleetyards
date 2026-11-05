@@ -320,10 +320,20 @@ en:
               outfit_limit_reached: "can hold at most %{count} outfits"
             held_weapon:
               not_carried: "is not a weapon this outfit carries"
+            items:
+              no_port: "has no port for this gear"
+            stored_items:
+              over_capacity: "is too much for what the worn pieces hold"
+              too_large: "is too large to fit where it is kept"
+              no_storage: "is kept in a piece with no storage"
         outfit_item:
           attributes:
             equipment:
               wrong_slot: "does not fit this slot"
+        outfit_stored_item:
+          attributes:
+            equipment:
+              unmeasured: "has no measured size to store it by"
         fleet_shopping_list:
           attributes:
             base:
