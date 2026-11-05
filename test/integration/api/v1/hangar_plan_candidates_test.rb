@@ -138,7 +138,7 @@ class Api::V1::HangarPlanCandidatesTest < ActionDispatch::IntegrationTest
 
   test "DELETE of the last ship turns a ship bought as it back into none" do
     candidate = create(:hangar_plan_candidate, slot: @slot, model: @gladius)
-    bought = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @gladius)
+    bought = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @gladius, price_override: 10)
 
     assert_api_response :delete, 200, api_path: "/hangar/plans/{hangarPlanId}/candidates/{id}",
       path_params: {hangarPlanId: @plan.id, id: candidate.id} do
@@ -146,6 +146,7 @@ class Api::V1::HangarPlanCandidatesTest < ActionDispatch::IntegrationTest
     end
 
     assert_nil bought.reload.start_model
+    assert_nil bought.price_override
   end
 
   test "POST gives a slot's first ship the starts it holds" do

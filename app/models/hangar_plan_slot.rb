@@ -155,7 +155,10 @@ class HangarPlanSlot < ApplicationRecord
       start.upgrade_steps.destroy_all
       start.upgrade_steps.reset
       as_the_ship = HangarPlanAcquisition::SHIPLESS_KINDS.include?(start.start_kind) && start.start_model_id == candidate.model_id
-      start.start_model = nil if as_the_ship
+      if as_the_ship
+        start.start_model = nil
+        start.price_override = nil
+      end
       start.assign_attributes(candidate: nil, slot: self)
       start.save!(validate: false)
     end
