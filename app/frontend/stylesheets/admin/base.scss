@@ -2,10 +2,11 @@
   color-scheme: light dark;
 }
 
+// Not !important: that also beat every :focus-visible ring a component declares.
 a,
 input[type="button"],
 button {
-  outline: 0 none !important;
+  outline: 0 none;
 }
 
 .flex {
