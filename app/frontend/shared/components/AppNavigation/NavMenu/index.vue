@@ -10,6 +10,7 @@ export default {
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/shared/stores/nav";
 import { useMobile } from "@/shared/composables/useMobile";
+import { hasModifier, navRows } from "../keyboard";
 
 type Props = {
   // "up" for a menu anchored at the foot of the navigation.
@@ -35,6 +36,8 @@ const menuId = useId();
 const root = ref<HTMLElement | null>(null);
 
 const trigger = ref<HTMLButtonElement | null>(null);
+
+const panel = ref<HTMLElement | null>(null);
 
 const panelStyle = ref<Record<string, string>>({});
 
@@ -90,7 +93,40 @@ const toggle = () => {
 };
 
 const onKeydown = (event: KeyboardEvent) => {
-  if (event.key === "Escape") {
+  if (event.key === "Escape" && !event.defaultPrevented) {
+    event.preventDefault();
+    close(true);
+  }
+};
+
+const enterMenu = async (edge: "first" | "last") => {
+  open.value = true;
+
+  await nextTick();
+
+  const rows = navRows(panel.value);
+
+  rows[edge === "first" ? 0 : rows.length - 1]?.focus();
+};
+
+const onMenuKeydown = (event: KeyboardEvent) => {
+  if (event.defaultPrevented || hasModifier(event)) {
+    return;
+  }
+
+  const onTrigger = event.target === trigger.value;
+
+  if (onTrigger && event.key === "ArrowRight") {
+    event.preventDefault();
+    void enterMenu("first");
+  } else if (onTrigger && open.value && event.key === "ArrowDown") {
+    event.preventDefault();
+    void enterMenu("first");
+  } else if (onTrigger && open.value && event.key === "ArrowUp") {
+    event.preventDefault();
+    void enterMenu("last");
+  } else if (open.value && event.key === "ArrowLeft") {
+    event.preventDefault();
     close(true);
   }
 };
@@ -117,7 +153,9 @@ const onFocusOut = (event: FocusEvent) => {
 // Every row either navigates or acts, and the menu has done its job either way.
 const onPanelClick = (event: MouseEvent) => {
   if ((event.target as Element).closest("a, button")) {
-    close();
+    // A keyboard's click has no click count. Its row is about to be removed, and
+    // focus would go with it, back to the top of the page.
+    close(event.detail === 0);
   }
 };
 
@@ -163,6 +201,7 @@ onBeforeUnmount(() => {
       'nav-menu--open': open,
     }"
     @focusout="onFocusOut"
+    @keydown="onMenuKeydown"
   >
     <button
       ref="trigger"
@@ -178,6 +217,7 @@ onBeforeUnmount(() => {
     <ul
       v-if="open"
       :id="menuId"
+      ref="panel"
       class="nav-menu__panel"
       :class="{ 'nav-menu__panel--slim': slim }"
       :style="panelStyle"

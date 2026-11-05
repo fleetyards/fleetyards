@@ -248,12 +248,8 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
 
-    /*
-     * Escape hands focus back to the trigger, and that is itself a `focusin` on
-     * the row -- so without something to say the section was dismissed on
-     * purpose, the panel reopens on the same key that closed it and a keyboard
-     * cannot get out of it at all.
-     */
+    // Escape hands focus back to the trigger, which must not reopen the panel
+    // on the same key that closed it.
     it("closes the panel on escape and leaves it closed", async () => {
       const wrapper = await mountSection(true);
 
@@ -369,6 +365,156 @@ describe("NavItem with a submenu", () => {
       expect(panels[0].classes()).toContain("nav-flyout--nesting");
 
       wrapper.unmount();
+    });
+  });
+
+  describe("from the keyboard", () => {
+    const panelCount = (wrapper: VueWrapper) =>
+      wrapper.findAll(".nav-flyout").length;
+
+    const press = async (wrapper: VueWrapper, key: string) => {
+      (document.activeElement as HTMLElement).dispatchEvent(
+        new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+      );
+      await wrapper.vm.$nextTick();
+      await wrapper.vm.$nextTick();
+      await wrapper.vm.$nextTick();
+    };
+
+    const focusTrigger = (wrapper: VueWrapper, key: string) =>
+      (
+        wrapper.get(`[data-test="nav-${key}"] > button`)
+          .element as HTMLButtonElement
+      ).focus();
+
+    beforeEach(() => {
+      vi.spyOn(HTMLElement.prototype, "getClientRects").mockReturnValue([
+        {},
+      ] as unknown as DOMRectList);
+    });
+
+    // Opening on focus had Tab walk every row of every section, 41 stops to get
+    // from the top of the rail to the bottom.
+    it("does not open a section when the focus lands on it", async () => {
+      const wrapper = await mountSection(true);
+
+      focusTrigger(wrapper, "catalogue-menu");
+      await wrapper.vm.$nextTick();
+
+      expect(panelCount(wrapper)).toBe(0);
+
+      wrapper.unmount();
+    });
+
+    it("opens the panel and enters it on the right arrow", async () => {
+      const wrapper = await mountSection(true);
+
+      focusTrigger(wrapper, "catalogue-menu");
+      await press(wrapper, "ArrowRight");
+
+      expect(panelCount(wrapper)).toBe(1);
+      expect(document.activeElement?.textContent).toContain("Components");
+
+      wrapper.unmount();
+    });
+
+    it("closes back to the trigger on the left arrow", async () => {
+      const wrapper = await mountSection(true);
+
+      focusTrigger(wrapper, "catalogue-menu");
+      await press(wrapper, "ArrowRight");
+      await press(wrapper, "ArrowLeft");
+
+      expect(panelCount(wrapper)).toBe(0);
+      expect(document.activeElement).toBe(
+        wrapper.get('[data-test="nav-catalogue-menu"] > button').element,
+      );
+
+      wrapper.unmount();
+    });
+
+    it("folds a section that is unfolded in place", async () => {
+      const wrapper = await mountSection(false, { submenuActive: true });
+      const section = '[data-test="nav-catalogue-menu"] > button';
+
+      focusTrigger(wrapper, "catalogue-menu");
+      expect(wrapper.get(section).attributes("aria-expanded")).toBe("true");
+
+      await press(wrapper, "ArrowLeft");
+
+      expect(wrapper.get(section).attributes("aria-expanded")).toBe("false");
+
+      wrapper.unmount();
+    });
+
+    it("does not take the focus from elsewhere on the page", async () => {
+      const wrapper = await mountSection(true);
+      const input = document.body.appendChild(document.createElement("input"));
+
+      await wrapper.trigger("pointerenter");
+      input.focus();
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+      await wrapper.vm.$nextTick();
+
+      expect(panelCount(wrapper)).toBe(0);
+      expect(document.activeElement).toBe(input);
+
+      input.remove();
+      wrapper.unmount();
+    });
+
+    it("marks the row of the open page", async () => {
+      const wrapper = await mountWithDefaults<typeof NavItem>(NavItem, {
+        props: { to: { name: "home" }, label: "Home", active: true },
+        plugins: [buildRouter()],
+      });
+
+      expect(wrapper.get("a").attributes("aria-current")).toBe("page");
+
+      wrapper.unmount();
+    });
+
+    describe("in a sub-section's panel", () => {
+      const mountNested = () =>
+        mountWithDefaults<typeof NavItem>(NavItem, {
+          props: { label: "Hangar", menuKey: "hangar-menu" },
+          slots: {
+            submenu: () => [
+              h(
+                NavItem,
+                { label: "Pledge items", menuKey: "pledge-menu" },
+                {
+                  submenu: () => [
+                    h(NavItem, { to: { name: "components" }, label: "Paints" }),
+                  ],
+                },
+              ),
+            ],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any,
+          initialState: { nav: { slim: true } },
+          plugins: [buildRouter()],
+          attachTo: document.body,
+        });
+
+      for (const key of ["Escape", "ArrowLeft"]) {
+        it(`closes one panel per press of ${key}`, async () => {
+          const wrapper = await mountNested();
+
+          focusTrigger(wrapper, "hangar-menu");
+          await press(wrapper, "ArrowRight");
+          await press(wrapper, "ArrowRight");
+          expect(panelCount(wrapper)).toBe(2);
+
+          await press(wrapper, key);
+          expect(panelCount(wrapper)).toBe(1);
+          expect(document.activeElement).toBe(
+            wrapper.get('[data-test="nav-pledge-menu"] > button').element,
+          );
+
+          wrapper.unmount();
+        });
+      }
     });
   });
 

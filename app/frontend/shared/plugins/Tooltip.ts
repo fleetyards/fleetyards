@@ -8,6 +8,8 @@ interface TooltipOptions {
   html?: boolean;
   multiline?: boolean;
   preserveLineBreaks?: boolean;
+  // For an anchor whose hover already says the same thing some other way.
+  focusOnly?: boolean;
 }
 
 function parseBinding(binding: DirectiveBinding): TooltipOptions {
@@ -22,6 +24,7 @@ function parseBinding(binding: DirectiveBinding): TooltipOptions {
       html: binding.value.html,
       multiline: binding.value.multiline,
       preserveLineBreaks: binding.value.preserveLineBreaks,
+      focusOnly: binding.value.focusOnly,
     };
   }
 
@@ -400,7 +403,7 @@ const vTooltip: Directive = {
       tooltipEl: null,
       options,
       showHandler: () => {
-        if (tapDriven(state)) return;
+        if (tapDriven(state) || state.options.focusOnly) return;
 
         show(el);
       },
@@ -421,7 +424,7 @@ const vTooltip: Directive = {
 
         // A click from a mouse closes, the way it always has -- clicking a
         // control should not leave its tooltip sitting over the result.
-        if (!fromPointer || !tapDriven(state)) {
+        if (!fromPointer || !tapDriven(state) || state.options.focusOnly) {
           hide(el);
           return;
         }

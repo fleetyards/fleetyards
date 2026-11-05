@@ -51,6 +51,21 @@ afterEach(() => {
 });
 
 describe("v-tooltip", () => {
+  it("leaves a focus-only tooltip to the keyboard", async () => {
+    const { el } = mountAnchor({
+      content: { content: "Delete", focusOnly: true },
+    });
+
+    el.dispatchEvent(new Event("mouseenter"));
+    await nextFrame();
+    expect(visibleTooltips()).toHaveLength(0);
+
+    vi.spyOn(el, "matches").mockReturnValue(true);
+    el.dispatchEvent(new Event("focus"));
+    await nextFrame();
+    expect(visibleTooltips()).toHaveLength(1);
+  });
+
   it("shows on mouseenter and hides on mouseleave", async () => {
     const { el } = mountAnchor();
 
