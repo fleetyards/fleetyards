@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.41.0](https://github.com/fleetyards/fleetyards/compare/v9.40.0...v9.41.0) (2026-11-05)
+
+
+### Features
+
+* **dressing-room:** gear columns under the stage, every slot listed, big multitools on back mounts ([#6199](https://github.com/fleetyards/fleetyards/issues/6199)) ([4a003e1](https://github.com/fleetyards/fleetyards/commit/4a003e10b3d69d77dcf71fec76759d327988e85a))
+* **dressing-room:** gear slots from worn ports, and fillable worn storage ([#6198](https://github.com/fleetyards/fleetyards/issues/6198)) ([f657157](https://github.com/fleetyards/fleetyards/commit/f657157b68990ba47e71b62a6ebb233972b77db9))
+* **dressing-room:** move item figures off the slot picker's cards ([2e3e304](https://github.com/fleetyards/fleetyards/commit/2e3e304fe696894074971b2ac5b763cd58657673))
+* **pickers:** open an item's stats card from an info icon ([7311b5d](https://github.com/fleetyards/fleetyards/commit/7311b5d43ef580d4a0aec1f65448f5967ed64e8f))
+* **pickers:** show an item's stats card on hover ([c4cbbb9](https://github.com/fleetyards/fleetyards/commit/c4cbbb9e4daa70fe035be924aefeae4301dcfb68))
+* **popover:** a read-only card for triggers in a picker's grid ([17b4c8d](https://github.com/fleetyards/fleetyards/commit/17b4c8d86145c6dc2b08a83f314b953198e8b23f))
+* **popover:** let a click open the card of a trigger that does nothing else ([6d03536](https://github.com/fleetyards/fleetyards/commit/6d035365563f509c8fac7bda999d850342b2125b))
+
+
+### Bug Fixes
+
+* **holo:** draw a paint's own stencil artwork on the textured holo ([#6197](https://github.com/fleetyards/fleetyards/issues/6197)) ([4786fdd](https://github.com/fleetyards/fleetyards/commit/4786fdda052d20ffa1eec5d5cb94d893e0aebc06))
+* **popover:** keep what a control is already described by ([da40d60](https://github.com/fleetyards/fleetyards/commit/da40d60bf15541cf858e9ffb315410de424c7361))
+* **pwa:** recover from chunks that fail to load ([#6195](https://github.com/fleetyards/fleetyards/issues/6195)) ([b9f6bbc](https://github.com/fleetyards/fleetyards/commit/b9f6bbce19c34bd9802d641fd442948e1307fe9d))
+
+
+### Refactorings
+
+* **popover:** drop the fill option ([075aeb2](https://github.com/fleetyards/fleetyards/commit/075aeb218a392e102ade06df55b2955f28a57d73))
+
+
+### Chores
+
+* **deps:** bump @tanstack/vue-query from 5.105.0 to 5.105.1 ([#6191](https://github.com/fleetyards/fleetyards/issues/6191)) ([4bb8438](https://github.com/fleetyards/fleetyards/commit/4bb8438da09c10ee691a3e9b76520dc709401266))
+
 ## [9.40.0](https://github.com/fleetyards/fleetyards/compare/v9.39.0...v9.40.0) (2026-11-05)
 
 
