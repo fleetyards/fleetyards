@@ -30,8 +30,10 @@ module ScData
           body.update_columns(lighting:) if body.lighting != lighting
         end
 
-        # The index has no digest of its own for a body, so its file list is.
-        digest = Digest::MD5.hexdigest(entry["files"].sort.to_json)
+        # The index has no digest of its own for a body, so its file list is,
+        # with the names this job reads: a file listed before the job learned
+        # its name would otherwise stay skipped until the export changes.
+        digest = Digest::MD5.hexdigest([FIELDS.keys, entry["files"].sort].to_json)
         next if body.views_digest == digest
 
         fields = import(store, body, entry["path"], digest, listing: {"files" => entry["files"]})

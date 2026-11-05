@@ -125,6 +125,21 @@ module ScData
       assert_equal ["index.json"], fetched
     end
 
+    test "takes in a listed file the job only learned to read after the listing last changed" do
+      publish("male", {"body.glb" => BODY, "body_textured.glb" => BODY})
+      known = ::ScData::CharacterBodiesImportJob::FIELDS.except("body_textured.glb")
+      stub_const(::ScData::CharacterBodiesImportJob, :FIELDS, known) do
+        ::ScData::CharacterBodiesImportJob.new.perform
+      end
+      assert_not CharacterBody.find_by!(key: "male").holo_textured.attached?
+      @client.api_requests.clear
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal ["index.json", "body_textured.glb"], fetched
+      assert_equal "body_textured.glb", CharacterBody.find_by!(key: "male").holo_textured.filename.to_s
+    end
+
     test "does nothing without a configured store" do
       ::ScData::CharacterStore.stubs(:configured?).returns(false)
 
