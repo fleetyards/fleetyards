@@ -23,7 +23,7 @@
         },
         "searchKeys": {
           "add": "per aggiungere",
-          "scope": "per cambiare ricerca",
+          "scope": "per cambiare",
           "move": "per spostarti",
           "open": "per aprire",
           "close": "per chiudere"

@@ -23,7 +23,7 @@
         },
         "searchKeys": {
           "add": "添加",
-          "scope": "切换搜索",
+          "scope": "切换",
           "move": "移动",
           "open": "打开",
           "close": "关闭"

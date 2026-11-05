@@ -23,7 +23,7 @@
         },
         "searchKeys": {
           "add": "to add",
-          "scope": "to switch search",
+          "scope": "to switch",
           "move": "to move",
           "open": "to open",
           "close": "to close"

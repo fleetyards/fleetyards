@@ -23,7 +23,7 @@
         },
         "searchKeys": {
           "add": "新增",
-          "scope": "切換搜尋",
+          "scope": "切換",
           "move": "移動",
           "open": "開啟",
           "close": "關閉"
