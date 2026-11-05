@@ -982,9 +982,10 @@ const copyShareLink = () => {
   @media (min-width: $desktop-breakpoint) {
     grid-template-areas:
       "pieces stage outfit"
-      "pieces gear outfit";
+      "gear gear outfit";
     grid-template-columns: minmax(16rem, 1fr) auto minmax(16rem, 1fr);
-    // The stage keeps its height; a long list beside it stretches the gear row.
+    // The first row fits the slots and the stage; the right column's lists run
+    // on past it beside the gear.
     grid-template-rows: auto 1fr;
     align-items: start;
   }
@@ -1019,8 +1020,8 @@ const copyShareLink = () => {
   }
 }
 
-// As wide as the stage above: the stage's aspect ratio sizes the column, and
-// long item names here must not.
+// As wide as the slots and stage above: the stage's aspect ratio sizes its
+// column, and long item names here must not.
 .dressing-room__gear {
   display: grid;
   grid-area: gear;
