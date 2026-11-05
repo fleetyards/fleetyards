@@ -11,14 +11,6 @@ import { useNotificationsUnreadCount as useNotificationsUnreadCountQuery } from 
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 
-type Props = {
-  iconOnly?: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  iconOnly: false,
-});
-
 const { t } = useI18n();
 
 const sessionStore = useSessionStore();
@@ -32,22 +24,12 @@ const { data: unreadCount } = useNotificationsUnreadCountQuery({
 });
 
 const badge = computed(() => unreadCount.value?.count || 0);
-
-// The name has to contain what the row shows, so speech control can target it.
-const iconOnlyLabel = computed(() => {
-  if (!badge.value) {
-    return t("nav.notifications");
-  }
-
-  return `${t("nav.notifications")} ${badge.value > 99 ? "99+" : badge.value}`;
-});
 </script>
 
 <template>
   <NavItem
     menu-key="notifications"
-    :label="props.iconOnly ? undefined : t('nav.notifications')"
-    :aria-label="props.iconOnly ? iconOnlyLabel : undefined"
+    :label="t('nav.notifications')"
     icon="fa-duotone fa-bell"
     :badge="badge"
     :to="{ name: 'notifications' }"

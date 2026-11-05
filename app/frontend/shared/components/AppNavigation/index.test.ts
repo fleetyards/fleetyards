@@ -149,16 +149,73 @@ describe("AppNavigation", () => {
       wrapper.unmount();
     });
 
-    it("skips to the content", async () => {
+    it("skips to the content, focusable only for the jump", async () => {
       const main = document.body.appendChild(document.createElement("div"));
       main.id = "main-content";
-      main.tabIndex = -1;
 
       const wrapper = await mountRail(1280);
 
       await wrapper.get('[data-test="nav-skip-to-content"]').trigger("click");
 
       expect(document.activeElement).toBe(main);
+
+      main.blur();
+
+      expect(main.hasAttribute("tabindex")).toBe(false);
+
+      wrapper.unmount();
+    });
+
+    it("keeps Tab inside the open drawer", async () => {
+      const wrapper = await mountRail(390);
+      const event = () =>
+        new KeyboardEvent("keydown", {
+          key: "Tab",
+          bubbles: true,
+          cancelable: true,
+        });
+
+      useNavStore(wrapper.vm.$pinia).collapsed = false;
+      await wrapper.vm.$nextTick();
+      await wrapper.vm.$nextTick();
+
+      expect(focused()).toBe("one");
+
+      const passesThrough = event();
+      document.activeElement?.dispatchEvent(passesThrough);
+      expect(passesThrough.defaultPrevented).toBe(false);
+
+      const rows = wrapper.findAll<HTMLElement>("a[href], button");
+      const last = rows[rows.length - 1].element;
+      last.focus();
+      const wraps = event();
+      last.dispatchEvent(wraps);
+
+      expect(wraps.defaultPrevented).toBe(true);
+
+      wrapper.unmount();
+    });
+
+    it("skips the rows of a section that is folding", async () => {
+      const wrapper = await mountWithDefaults<typeof Component>(Component, {
+        props: { title: "Test", logo: "logo.png" },
+        slots: {
+          main: () => [
+            h("li", { class: "nav-item__sub-menu", "data-test": "section" }, [
+              h("button", { "aria-expanded": "false", "data-test": "shut" }),
+              h("ul", [h("li", [h("a", { href: "/x", "data-test": "x" })])]),
+            ]),
+            h("li", [h("a", { href: "/next", "data-test": "next" })]),
+          ],
+        },
+        initialState: { nav: { slim: false } },
+        attachTo: document.body,
+      });
+
+      (wrapper.get('[data-test="shut"]').element as HTMLElement).focus();
+      press("ArrowDown");
+
+      expect(focused()).toBe("next");
 
       wrapper.unmount();
     });

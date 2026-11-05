@@ -41,8 +41,12 @@
         }
       }
 
+      // Still the row's name for a screen reader, with no room to show it.
       .nav-item-text {
-        display: none;
+        position: absolute;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
       }
 
       &::after {

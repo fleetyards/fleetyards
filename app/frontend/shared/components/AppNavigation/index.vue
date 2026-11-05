@@ -12,7 +12,7 @@ import { storeToRefs } from "pinia";
 import { useMobileStore } from "@/shared/stores/mobile";
 import { useSwipeToDismiss } from "@/shared/composables/useSwipeToDismiss";
 import { useI18n } from "@/shared/composables/useI18n";
-import { moveRowFocus, navRows } from "./keyboard";
+import { containTab, moveRowFocus, navRows } from "./keyboard";
 
 type Props = {
   title: string;
@@ -29,10 +29,23 @@ const { slimNavigation: slim, collapsed: navCollapsed } = storeToRefs(navStore);
 
 const route = useRoute();
 
+/*
+ * A navigation can swap the rail itself -- entering a fleet replaces its rows
+ * with the fleet's -- and the row holding the focus goes with them. The switcher
+ * at the head of the rail is what stays.
+ */
 watch(
   () => route.path,
-  () => {
+  async () => {
+    const hadFocus = navigation.value?.contains(document.activeElement);
+
     closeNav();
+
+    await nextTick();
+
+    if (hadFocus && document.activeElement === document.body) {
+      focusFirstRow();
+    }
   },
 );
 
@@ -71,6 +84,8 @@ const { mobile } = storeToRefs(useMobileStore());
 const drawerHidden = computed(() => mobile.value && navCollapsed.value);
 
 const onDrawerKeydown = (event: KeyboardEvent) => {
+  containTab(event, wrapper.value);
+
   // On the window, so a menu open inside the drawer hears Escape first.
   if (event.key === "Escape" && !event.defaultPrevented) {
     closeNav();
@@ -79,14 +94,22 @@ const onDrawerKeydown = (event: KeyboardEvent) => {
 
 let focusBeforeDrawer: HTMLElement | null = null;
 
+const focusFirstRow = () => {
+  navRows(wrapper.value?.querySelector(".app-navigation__inner"))[0]?.focus({
+    preventScroll: true,
+  });
+};
+
 watch(navCollapsed, async (collapsed) => {
   if (collapsed) {
     window.removeEventListener("keydown", onDrawerKeydown);
 
     // A row keeping the focus would lose it once the drawer turns inert.
     if (wrapper.value?.contains(document.activeElement)) {
-      focusBeforeDrawer?.focus();
+      focusBeforeDrawer?.focus({ preventScroll: true });
     }
+
+    focusBeforeDrawer = null;
 
     return;
   }
@@ -100,13 +123,24 @@ watch(navCollapsed, async (collapsed) => {
 
   await nextTick();
 
-  navRows(wrapper.value?.querySelector(".app-navigation__inner"))[0]?.focus({
-    preventScroll: true,
-  });
+  focusFirstRow();
 });
 
+// Focusable only for the jump. A lasting tabindex would catch every press on
+// something in the page that takes no focus of its own, and the popovers that
+// read a press going nowhere as a press inside them would start closing.
 const skipToContent = () => {
-  document.getElementById("main-content")?.focus();
+  const main = document.getElementById("main-content");
+
+  if (!main) {
+    return;
+  }
+
+  main.tabIndex = -1;
+  main.addEventListener("blur", () => main.removeAttribute("tabindex"), {
+    once: true,
+  });
+  main.focus();
 };
 
 const { offset: swipeOffset, dragging } = useSwipeToDismiss({

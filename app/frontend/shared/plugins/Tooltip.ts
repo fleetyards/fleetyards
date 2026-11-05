@@ -469,6 +469,18 @@ const vTooltip: Directive = {
     if (state.tooltipEl && !state.options.content) {
       hide(el);
     }
+
+    // Focus handed back while the anchor had nothing to say found no content to
+    // show, and no further focus event is coming.
+    if (
+      state.options.focusOnly &&
+      state.options.content &&
+      activeEl !== el &&
+      document.activeElement === el &&
+      isKeyboardFocus(el)
+    ) {
+      show(el);
+    }
   },
 
   beforeUnmount(el: HTMLElement) {

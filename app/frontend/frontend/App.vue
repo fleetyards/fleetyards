@@ -332,7 +332,6 @@ const setLocale = (locale: string) => {
           id="main-content"
           ref="mainInner"
           class="main-inner"
-          tabindex="-1"
           :class="{
             'main-inner--with-primary-action': route.meta.primaryAction,
           }"

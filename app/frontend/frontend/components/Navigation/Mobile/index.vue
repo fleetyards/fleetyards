@@ -96,20 +96,20 @@ watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
       <template v-if="currentFleet">
         <NavItem
           :to="{ name: 'home' }"
-          :aria-label="t('nav.home')"
+          :label="t('nav.home')"
           :active="routeActive('home')"
           icon="fa-duotone fa-home-alt"
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"
           :to="{ name: 'hangar' }"
-          :aria-label="t('nav.hangar.index')"
+          :label="t('nav.hangar.index')"
           icon="fa-duotone fa-warehouse"
         />
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
-          :aria-label="t('nav.hangar.index')"
+          :label="t('nav.hangar.index')"
           icon="fa-light fa-warehouse"
         />
         <!-- Every section of the fleet, and the way out of it, behind its own
@@ -148,34 +148,34 @@ watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
             data-tour="fleet-contracts"
           />
         </li>
-        <NotificationsNav v-if="isAuthenticated" icon-only />
+        <NotificationsNav v-if="isAuthenticated" />
       </template>
     </template>
     <template v-else>
       <NavItem
         :to="{ name: 'home' }"
-        :aria-label="t('nav.home')"
+        :label="t('nav.home')"
         :active="routeActive('home')"
         icon="fa-duotone fa-home-alt"
       />
       <NavItem
         :to="{ name: 'ships' }"
-        :aria-label="t('nav.ships.index')"
+        :label="t('nav.ships.index')"
         :icon="SHIP_GLYPH"
       />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
         :to="{ name: 'hangar' }"
-        :aria-label="t('nav.hangar.index')"
+        :label="t('nav.hangar.index')"
         icon="fa-duotone fa-warehouse"
       />
       <NavItem
         v-else
         :to="{ name: 'hangar-preview' }"
-        :aria-label="t('nav.hangar.index')"
+        :label="t('nav.hangar.index')"
         icon="fa-light fa-warehouse"
       />
-      <NotificationsNav v-if="isAuthenticated" icon-only />
+      <NotificationsNav v-if="isAuthenticated" />
     </template>
   </AppNavigationMobile>
 </template>

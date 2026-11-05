@@ -10,7 +10,7 @@ export default {
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/shared/stores/nav";
 import { useMobile } from "@/shared/composables/useMobile";
-import { hasModifier, navRows } from "../keyboard";
+import { focusEdgeRow, hasModifier } from "../keyboard";
 
 type Props = {
   // "up" for a menu anchored at the foot of the navigation.
@@ -104,9 +104,7 @@ const enterMenu = async (edge: "first" | "last") => {
 
   await nextTick();
 
-  const rows = navRows(panel.value);
-
-  rows[edge === "first" ? 0 : rows.length - 1]?.focus();
+  focusEdgeRow(panel.value, edge);
 };
 
 const onMenuKeydown = (event: KeyboardEvent) => {
@@ -116,10 +114,10 @@ const onMenuKeydown = (event: KeyboardEvent) => {
 
   const onTrigger = event.target === trigger.value;
 
-  if (onTrigger && event.key === "ArrowRight") {
-    event.preventDefault();
-    void enterMenu("first");
-  } else if (onTrigger && open.value && event.key === "ArrowDown") {
+  if (
+    onTrigger &&
+    (event.key === "ArrowRight" || (open.value && event.key === "ArrowDown"))
+  ) {
     event.preventDefault();
     void enterMenu("first");
   } else if (onTrigger && open.value && event.key === "ArrowUp") {

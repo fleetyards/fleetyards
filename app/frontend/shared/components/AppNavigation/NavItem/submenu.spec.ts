@@ -393,8 +393,7 @@ describe("NavItem with a submenu", () => {
       ] as unknown as DOMRectList);
     });
 
-    // Opening on focus had Tab walk every row of every section, 41 stops to get
-    // from the top of the rail to the bottom.
+    // Opening on focus would have Tab walk every row of every section.
     it("does not open a section when the focus lands on it", async () => {
       const wrapper = await mountSection(true);
 

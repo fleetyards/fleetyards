@@ -2,7 +2,7 @@
   color-scheme: light dark;
 }
 
-// Not !important: that also beat every :focus-visible ring a component declares.
+// For pointer focus. A component's own :focus-visible ring has to be able to win.
 a,
 input[type="button"],
 button {

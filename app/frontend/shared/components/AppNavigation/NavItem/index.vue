@@ -16,7 +16,7 @@ import {
   flyoutPanels,
   openFlyout,
 } from "./context";
-import { hasModifier, navRows } from "../keyboard";
+import { focusEdgeRow, hasModifier } from "../keyboard";
 import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
@@ -30,8 +30,6 @@ type Props = {
   // Shown in both states, where `label` stands in only once the navigation
   // collapses. For a row whose slot carries something the label does not say.
   tooltip?: string;
-  // For a row that shows only its icon, like those on the mobile bar.
-  ariaLabel?: string;
   icon?: string | Glyph;
   image?: string;
   avatar?: boolean;
@@ -49,7 +47,6 @@ const props = withDefaults(defineProps<Props>(), {
   href: undefined,
   label: undefined,
   tooltip: undefined,
-  ariaLabel: undefined,
   icon: undefined,
   image: undefined,
   avatar: false,
@@ -502,11 +499,6 @@ const onKeydown = (event: KeyboardEvent) => {
   }
 };
 
-const sectionRows = () =>
-  navRows(
-    flyout.value ? panel.value : root.value?.querySelector(":scope > ul"),
-  );
-
 const enterSection = async (edge: "first" | "last") => {
   if (flyout.value) {
     await showFlyout(true);
@@ -516,9 +508,10 @@ const enterSection = async (edge: "first" | "last") => {
     await nextTick();
   }
 
-  const rows = sectionRows();
-
-  rows[edge === "first" ? 0 : rows.length - 1]?.focus();
+  focusEdgeRow(
+    flyout.value ? panel.value : root.value?.querySelector(":scope > ul"),
+    edge,
+  );
 };
 
 const onSectionKeydown = (event: KeyboardEvent) => {
@@ -921,7 +914,6 @@ const toggleMenu = () => {
       <a
         v-tooltip="tooltipOptions"
         :href="linkHref"
-        :aria-label="ariaLabel"
         :aria-current="active || routeActive ? 'page' : undefined"
       >
         <slot>
