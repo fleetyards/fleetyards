@@ -15,7 +15,8 @@ module Catalogue
       "ship" => ::Model,
       "blueprint" => ::Blueprint,
       "mission" => ::GameMission,
-      "location" => ::Location
+      "location" => ::Location,
+      "faction" => ::Faction
     }.freeze
 
     # What a token without a prefix can mean. The rest are reached only by
@@ -53,6 +54,7 @@ module Catalogue
       when "blueprint" then ::Blueprint.with_facts(true)
       when "mission" then ::GameMission.with_facts(true).named
       when "location" then ::Location.listed.with_facts(true)
+      when "faction" then ::Faction.with_facts(true)
       end
     end
 

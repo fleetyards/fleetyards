@@ -11,10 +11,6 @@ module Catalogue
   class Search
     TYPES = %w[ship component equipment commodity blueprint mission location faction].freeze
 
-    # A faction is searched but is no markdown token, which is all
-    # `TokenResolver` is for.
-    CATALOGUES = TokenResolver::CATALOGUES.merge("faction" => ::Faction).freeze
-
     PER_TYPE = 5
     MIN_LENGTH = 2
 
@@ -94,7 +90,7 @@ module Catalogue
       attachments = IMAGES.fetch(prefix, [])
       return {} if attachments.empty?
 
-      records = CATALOGUES.fetch(prefix).where(slug: slugs).to_a
+      records = TokenResolver::CATALOGUES.fetch(prefix).where(slug: slugs).to_a
       ActiveRecord::Associations::Preloader.new(
         records:,
         associations: attachments.to_h { |attachment| [:"#{attachment}_attachment", :blob] }
@@ -155,8 +151,8 @@ module Catalogue
     # -- "port" means Port Tressler before Support -- then the shortest, the
     # closest match, then alphabetically so equal names keep a stable order.
     private def matches(prefix, escaped)
-      klass = CATALOGUES.fetch(prefix)
-      name = name_sql(prefix)
+      klass = TokenResolver::CATALOGUES.fetch(prefix)
+      name = TokenResolver.name_sql(prefix)
       rank = ActiveRecord::Base.sanitize_sql_array([
         "CASE WHEN lower(#{name}) LIKE ? THEN 0 WHEN lower(#{name}) LIKE ? THEN 1 ELSE 2 END",
         "#{escaped}%", "% #{escaped}%"
@@ -164,7 +160,7 @@ module Catalogue
 
       searched = [name, *also_searched(prefix, klass)].map { |column| "lower(#{column}) LIKE :pattern" }.join(" OR ")
 
-      rows = listed(prefix)
+      rows = TokenResolver.listed(prefix)
         .where(searched, pattern: "%#{escaped}%")
         .order(Arel.sql(rank), Arel.sql("length(#{name})"), Arel.sql("lower(#{name})"), Arel.sql("#{klass.table_name}.slug"))
         .limit(CANDIDATES)
@@ -177,18 +173,6 @@ module Catalogue
         .uniq { |result| [result.name.downcase, result.detail] }
 
       [results, rows.size]
-    end
-
-    private def listed(prefix)
-      return ::Faction.joins(:builds).merge(::FactionBuild.current(::Faction.served_source)) if prefix == "faction"
-
-      TokenResolver.listed(prefix)
-    end
-
-    private def name_sql(prefix)
-      return "faction_builds.name" if prefix == "faction"
-
-      TokenResolver.name_sql(prefix)
     end
 
     # Searching for an org finds the work it offers. These rows rank below any
@@ -215,7 +199,7 @@ module Catalogue
       when "equipment" then [klass.fact_sql(:manufacturer_id)]
       when "mission" then [klass.fact_sql(:org_name)]
       when "location" then [Arel.sql("locations.parent_id")]
-      when "faction" then [Arel.sql("faction_builds.focus")]
+      when "faction" then [klass.fact_sql(:focus)]
       else []
       end
     end

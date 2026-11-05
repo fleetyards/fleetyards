@@ -33,6 +33,37 @@ class Faction < ApplicationRecord
   validates :sc_key, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
 
+  # The build a read resolves against, joined as `faction_facts`.
+  def self.current_facts_join(source)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      INNER JOIN faction_builds AS faction_facts
+        ON faction_facts.faction_id = factions.id
+       AND faction_facts.environment = ?
+       AND faction_facts.version = ?
+    SQL
+  end
+
+  # Everything: factions only an older build describes, and rows no load ever
+  # did, which answer with the name on the row and nothing else.
+  def self.all_facts_join(source)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      LEFT JOIN (
+        SELECT p.id AS faction_id, COALESCE(b.name, p.name) AS name, b.focus AS focus
+        FROM factions p
+        LEFT JOIN (
+          SELECT DISTINCT ON (faction_id) *
+          FROM faction_builds
+          WHERE environment = ?
+          ORDER BY faction_id, (version = ?) DESC, created_at DESC
+        ) b ON b.faction_id = p.id
+      ) AS faction_facts ON faction_facts.faction_id = factions.id
+    SQL
+  end
+
+  def self.fact_sql(fact)
+    Arel.sql("faction_facts.#{fact}")
+  end
+
   # Derived from the key alone so a mission can link to its faction from
   # `org_key` without a lookup per row.
   def self.slug_for_key(key)
