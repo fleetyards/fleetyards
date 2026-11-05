@@ -98,6 +98,7 @@ const timezoneOptions = TIMEZONE_OPTIONS.map((timezone) => ({
       <FormInput
         v-model="form.search"
         name="directorySearch"
+        inline
         translation-key="filters.fleetDirectory.search"
         :no-label="true"
         :clearable="true"
