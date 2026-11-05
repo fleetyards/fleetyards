@@ -61,6 +61,7 @@ const ICONS: Record<string, Icon> = {
   Model: SHIP_GLYPH,
   Blueprint: "fa-duotone fa-notes",
   GameMission: "fa-duotone fa-scroll",
+  Faction: "fa-duotone fa-people-group",
   Location: "fa-duotone fa-planet-ringed",
   FleetContract: "fa-duotone fa-clipboard-list",
   FleetEvent: "fa-duotone fa-calendar-day",

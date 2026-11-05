@@ -9,7 +9,12 @@ module Catalogue
   # carry. On a site search that hides most missions and every size of a
   # component.
   class Search
-    TYPES = %w[ship component equipment commodity blueprint mission location].freeze
+    TYPES = %w[ship component equipment commodity blueprint mission location faction].freeze
+
+    # A faction is searched but is no markdown token, which is all
+    # `TokenResolver` is for.
+    CATALOGUES = TokenResolver::CATALOGUES.merge("faction" => ::Faction).freeze
+
     PER_TYPE = 5
     MIN_LENGTH = 2
 
@@ -29,7 +34,8 @@ module Catalogue
       "component" => ITEM_IMAGES,
       "equipment" => ITEM_IMAGES,
       "commodity" => %i[store_image],
-      "location" => %i[image]
+      "location" => %i[image],
+      "faction" => %i[logo]
     }.freeze
 
     # `image` is the attachment itself, or nil where there is no picture.
@@ -62,7 +68,7 @@ module Catalogue
     end
 
     private def group(prefix, escaped)
-      found = matches(prefix, escaped)
+      found, matched = matches(prefix, escaped)
       return if found.empty?
 
       items = found.first(PER_TYPE)
@@ -74,7 +80,9 @@ module Catalogue
       Group.new(
         type: items.first.type,
         items: items.map { |item| item.with(image: images[item.slug], appearance: appearances[item.slug]) },
-        has_more: found.size > PER_TYPE
+        # Variants of one mission collapse into one row here, so more rows than
+        # are offered also means there is more to see on the list.
+        has_more: found.size > PER_TYPE || (prefix == "mission" && matched > found.size)
       )
     end
 
@@ -86,7 +94,7 @@ module Catalogue
       attachments = IMAGES.fetch(prefix, [])
       return {} if attachments.empty?
 
-      records = TokenResolver::CATALOGUES.fetch(prefix).where(slug: slugs).to_a
+      records = CATALOGUES.fetch(prefix).where(slug: slugs).to_a
       ActiveRecord::Associations::Preloader.new(
         records:,
         associations: attachments.to_h { |attachment| [:"#{attachment}_attachment", :blob] }
@@ -147,24 +155,46 @@ module Catalogue
     # -- "port" means Port Tressler before Support -- then the shortest, the
     # closest match, then alphabetically so equal names keep a stable order.
     private def matches(prefix, escaped)
-      klass = TokenResolver::CATALOGUES.fetch(prefix)
-      name = TokenResolver.name_sql(prefix)
+      klass = CATALOGUES.fetch(prefix)
+      name = name_sql(prefix)
       rank = ActiveRecord::Base.sanitize_sql_array([
         "CASE WHEN lower(#{name}) LIKE ? THEN 0 WHEN lower(#{name}) LIKE ? THEN 1 ELSE 2 END",
         "#{escaped}%", "% #{escaped}%"
       ])
 
-      rows = TokenResolver.listed(prefix)
-        .where("lower(#{name}) LIKE ?", "%#{escaped}%")
+      searched = [name, *also_searched(prefix, klass)].map { |column| "lower(#{column}) LIKE :pattern" }.join(" OR ")
+
+      rows = listed(prefix)
+        .where(searched, pattern: "%#{escaped}%")
         .order(Arel.sql(rank), Arel.sql("length(#{name})"), Arel.sql("lower(#{name})"), Arel.sql("#{klass.table_name}.slug"))
         .limit(CANDIDATES)
         .pluck(Arel.sql(name), Arel.sql("#{klass.table_name}.slug"), *detail_columns(prefix, klass))
 
       details = details_for(prefix, rows.map { |row| row.drop(2) })
 
-      rows.each_with_index
+      results = rows.each_with_index
         .map { |(row_name, slug), index| Result.new(type: klass.name, name: row_name, slug:, detail: details[index], image: nil, appearance: nil, online: nil, squadron: nil, image_url: nil) }
         .uniq { |result| [result.name.downcase, result.detail] }
+
+      [results, rows.size]
+    end
+
+    private def listed(prefix)
+      return ::Faction.joins(:builds).merge(::FactionBuild.current(::Faction.served_source)) if prefix == "faction"
+
+      TokenResolver.listed(prefix)
+    end
+
+    private def name_sql(prefix)
+      return "faction_builds.name" if prefix == "faction"
+
+      TokenResolver.name_sql(prefix)
+    end
+
+    # Searching for an org finds the work it offers. These rows rank below any
+    # whose own name matches.
+    private def also_searched(prefix, klass)
+      (prefix == "mission") ? [klass.fact_sql(:org_name)] : []
     end
 
     # The same ranking the query orders a catalogue by.
@@ -185,6 +215,7 @@ module Catalogue
       when "equipment" then [klass.fact_sql(:manufacturer_id)]
       when "mission" then [klass.fact_sql(:org_name)]
       when "location" then [Arel.sql("locations.parent_id")]
+      when "faction" then [Arel.sql("faction_builds.focus")]
       else []
       end
     end
@@ -203,8 +234,8 @@ module Catalogue
 
           [size.present? ? "S#{size}" : nil, names[manufacturer_id]].compact.join(" · ").presence
         end
-      when "mission"
-        columns.map { |(org_name)| org_name.presence }
+      when "mission", "faction"
+        columns.map { |(detail)| detail.presence }
       when "location"
         names = location_names(columns.map(&:first))
         columns.map { |(parent_id)| names[parent_id] }

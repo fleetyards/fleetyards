@@ -30,7 +30,8 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "blueprints",
     "hangar-blueprints",
   ]),
-  GameMission: group("nav.catalogue.missions", "missions", "nameCont"),
+  GameMission: group("nav.catalogue.missions", "missions", "nameOrOrgNameCont"),
+  Faction: group("nav.catalogue.factions", "factions", undefined),
   Location: group("nav.locations", "locations-places", "nameCont", [
     "locations",
     "locations-places",

@@ -52,6 +52,16 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "GET /missions finds a mission by its name or by its org" do
+    named = create(:game_mission, name: "InterSec Patrol", org_name: "Foxwell Enforcement")
+    offered = create(:game_mission, name: "Clear the Outpost", org_name: "InterSec Defense Solutions")
+    create(:game_mission, name: "Unrelated", org_name: "Foxwell Enforcement")
+
+    assert_api_response :get, 200, params: {q: {nameOrOrgNameCont: "intersec"}} do
+      assert_equal [named.slug, offered.slug].sort, parsed_body["items"].pluck("slug").sort
+    end
+  end
+
   test "GET /missions lists the catalogue" do
     assert_api_response :get, 200 do
       assert_equal 2, parsed_body["items"].count

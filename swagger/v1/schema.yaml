@@ -36458,6 +36458,8 @@ components:
       properties:
         nameCont:
           type: string
+        nameOrOrgNameCont:
+          type: string
         idIn:
           type: array
           items:
