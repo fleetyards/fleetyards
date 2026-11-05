@@ -8,7 +8,10 @@ import {
   type RouteLocationNormalized,
   type RouterOptions,
 } from "vue-router";
-import { reloadForFailedChunk } from "@/shared/utils/ChunkReload";
+import {
+  chunkLoadFailed,
+  reloadForFailedChunk,
+} from "@/shared/utils/ChunkReload";
 import { reportError } from "@/shared/plugins/Appsignal";
 import qs from "qs";
 import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
@@ -106,6 +109,23 @@ export const setupRouter = (options: FyRouterOptions) => {
         query: newRoute.routeQuery,
       };
     }
+  });
+
+  // Someone tapping a link can always be given a full page load: it recovers
+  // the document and cannot loop, because nothing happens until the next tap. A
+  // one-time secret stays out of it, as a page load hands it to every access log.
+  router.beforeEach((to, from) => {
+    if (
+      !chunkLoadFailed.value ||
+      to.path === from.path ||
+      "secret" in to.query
+    ) {
+      return;
+    }
+
+    window.location.assign(router.resolve(to).href);
+
+    return false;
   });
 
   router.beforeEach(restoreSavedFilter);
