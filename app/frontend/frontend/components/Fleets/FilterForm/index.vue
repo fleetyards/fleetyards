@@ -104,14 +104,6 @@ const hasGroupFilters = (keys: string[]) =>
 
 <template>
   <form @submit.prevent="submit">
-    <FormInput
-      name="searchCont"
-      v-model="form.searchCont"
-      translation-key="filters.models.name"
-      :no-label="true"
-      :clearable="true"
-    />
-
     <FilterGroup
       :label="t('filteredList.groups.ship')"
       :active="
