@@ -150,6 +150,56 @@ module Loaders
       assert_not_includes notification.body, "- **Carrack**:"
     end
 
+    test "#perform names what moved in the pledge store" do
+      model = create(:model, name: "Carrack", on_sale: true, ccu_on_sale: false)
+
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        model.update!(on_sale: false, ccu_on_sale: true, ccu_target_seen_at: Time.current)
+        true
+      end
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "- **Carrack**: store: ccu_on_sale, on_sale"
+    end
+
+    test "#perform names a store move beside what the matrix changed" do
+      model = create(:model, name: "Idris P", mass: 40_000, rsi_mass: 40_000, cargo: 100, ccu_on_sale: false)
+
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        model.update!(rsi_mass: 52_000, cargo: 120, ccu_on_sale: true)
+        true
+      end
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "- **Idris P**: cargo (matrix only: mass; store: ccu_on_sale)"
+    end
+
+    test "#perform names no store move for a model the run added" do
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        create(:model, name: "Spirit C1", on_sale: true)
+        true
+      end
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "- **Spirit C1**"
+      assert_not_includes notification.body, "store:"
+    end
+
     test "#perform creates an import, runs the loader, and finishes the import" do
       assert_import_wrapping_job_success(
         job_class: ::Loaders::ModelsJob,

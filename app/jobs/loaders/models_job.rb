@@ -2,6 +2,12 @@
 
 module Loaders
   class ModelsJob < ::Loaders::BaseJob
+    # What the pledge store step writes that paper_trail does not watch, because
+    # a sale would flip it on dozens of ships at once. The first sighting of an
+    # upgrade only ever arrives with `ccu_on_sale`, so `ccu_target_seen_at` is
+    # not named as well.
+    STORE_COLUMNS = %w[on_sale ccu_on_sale rsi_pledge_slug rsi_pledge_value rsi_ctm_url].freeze
+
     # `follow_ups` are loader keys started once the matrix is in: loaners,
     # modules, paints and prices all match against the ships this run may add.
     # Outside the run's own rescue, which can fail an import only while it is
@@ -18,13 +24,14 @@ module Loaders
       import.start!
 
       started_at = Time.current
+      store_values_before = store_values
 
       ::Rsi::ModelsLoader.new.all
 
       AdminReport.deliver(
         task_type: "ship_matrix_import",
         title: "Ship Matrix Import Results",
-        body: results_body(started_at),
+        body: results_body(started_at, store_values_before),
         # A run that changes nothing is the normal case for a matrix that moves
         # a few times a month, so it never opens an issue. A run that breaks
         # raises, and the import's own notification carries that.
@@ -58,7 +65,7 @@ module Loaders
     # either side of it. Both sides of the change are named, because a matrix
     # that moves a few times a month makes "1 model updated" a question rather
     # than a report.
-    private def results_body(started_at)
+    private def results_body(started_at, store_values_before)
       added = Model.where(created_at: started_at..).order(:name)
       updated = Model.where(updated_at: started_at..).where(created_at: ...started_at).order(:name)
 
@@ -74,25 +81,26 @@ module Loaders
 
       if updated.any?
         changed_fields = changed_fields_by_model(started_at)
+        store_fields = changed_store_fields(store_values_before)
 
-        lines += ["", "### Updated", "", *updated.map { |model| updated_line(model, changed_fields[model.id]) }]
+        lines += ["", "### Updated", "", *updated.map { |model| updated_line(model, changed_fields[model.id], store_fields[model.id]) }]
       end
 
       lines.join("\n")
     end
 
-    private def updated_line(model, fields)
-      return "- **#{model.name}**" if fields.blank?
+    private def updated_line(model, fields, store_fields)
+      adopted, matrix_only = split_fields(Array(fields))
 
-      adopted, matrix_only = split_fields(fields)
+      notes = []
+      notes << "matrix only: #{matrix_only.join(", ")}" if matrix_only.any?
+      notes << "store: #{store_fields.join(", ")}" if store_fields.present?
 
-      return "- **#{model.name}**: matrix only: #{matrix_only.join(", ")}" if adopted.empty?
+      return "- **#{model.name}**" if adopted.empty? && notes.empty?
+      return "- **#{model.name}**: #{notes.join("; ")}" if adopted.empty?
+      return "- **#{model.name}**: #{adopted.join(", ")}" if notes.empty?
 
-      line = "- **#{model.name}**: #{adopted.join(", ")}"
-
-      return line if matrix_only.empty?
-
-      "#{line} (matrix only: #{matrix_only.join(", ")})"
+      "- **#{model.name}**: #{adopted.join(", ")} (#{notes.join("; ")})"
     end
 
     # A shadow that moved with its live column is one change, named once. A
@@ -113,14 +121,27 @@ module Loaders
       [adopted, matrix_only.uniq.sort]
     end
 
-    # paper_trail watches every column this loader writes except `last_updated_at`
-    # and the store image, which move on nearly every matrix change and carry no
-    # value of their own. A run that touched only those is named without fields.
+    # paper_trail does not watch `last_updated_at` and the store image, which move
+    # on nearly every matrix change and carry no value of their own, nor
+    # `STORE_COLUMNS`, which are compared across the run instead. A run that
+    # touched only `last_updated_at` or the image is named without fields.
     private def changed_fields_by_model(started_at)
       PaperTrail::Version
         .where(item_type: "Model", created_at: started_at..)
         .group_by(&:item_id)
         .transform_values { |versions| versions.flat_map { |version| version.changeset.keys }.uniq.sort }
+    end
+
+    private def store_values
+      Model.pluck(:id, *STORE_COLUMNS).to_h { |id, *values| [id, values] }
+    end
+
+    private def changed_store_fields(values_before)
+      store_values.to_h { |id, values|
+        before = values_before.fetch(id, values)
+
+        [id, STORE_COLUMNS.zip(before, values).filter_map { |column, old, new| column if old != new }.sort]
+      }
     end
   end
 end
