@@ -26,6 +26,8 @@ runs:
 
     # Downloads and installs in two steps because Docker images ship an apt hook
     # that deletes the .deb files as soon as dpkg has run.
+    # A slow mirror connection keeps trickling data, so apt's own timeouts never
+    # fire. Restarting opens a new connection and apt resumes its partial files.
     - name: Install packages
       id: install
       shell: bash
@@ -41,7 +43,10 @@ runs:
           echo "::warning::Could not install the cached .deb files, downloading from the mirror instead"
         fi
         $SUDO apt-get update
-        $SUDO apt-get install -y -f --no-install-recommends --download-only $PACKAGES
+        for attempt in 1 2 3; do
+          timeout 300 $SUDO apt-get install -y -f --no-install-recommends --download-only $PACKAGES && break
+          echo "::warning::Download attempt $attempt did not finish within 5 minutes"
+        done
         mkdir -p /tmp/apt-debs
         find /var/cache/apt/archives -maxdepth 1 -name '*.deb' -exec cp -t /tmp/apt-debs {} +
         $SUDO apt-get install -y -f --no-install-recommends $PACKAGES
