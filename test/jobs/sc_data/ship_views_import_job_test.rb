@@ -483,6 +483,36 @@ module ScData
       assert_equal "listing-1", @model.ship_views_digest
     end
 
+    test "takes back a stencil sheet the palette no longer names" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      paint.holo_texture_stencil.attach(io: StringIO.new("old"), filename: "old_stencil.webp")
+      publish_paints(
+        {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: nil}},
+        {"flight_textured_skull.webp" => PNG}
+      )
+
+      perform
+
+      assert_not paint.reload.holo_texture_stencil.attached?
+    end
+
+    test "keeps the stencil sheet on a paint whose listed sheet is not published, and says so" do
+      component = create(:component, category: "paints", sc_key: "paint_corsair_pirate_skull")
+      paint = create(:model_paint, model: @model, component:)
+      paint.holo_texture_stencil.attach(io: StringIO.new("old"), filename: "old_stencil.webp")
+      publish_paints(
+        {"corsair-pirate-skull" => {items: ["paint_corsair_pirate_skull"], base: "flight_textured_skull.webp", stencil: "missing_stencil.webp"}},
+        {"flight_textured_skull.webp" => PNG}
+      )
+      Rails.logger.expects(:warn).with { |message| message.include?("missing_stencil.webp") }.at_least_once
+      Rails.logger.stubs(:info)
+
+      perform
+
+      assert_equal "old_stencil.webp", paint.reload.holo_texture_stencil.filename.to_s
+    end
+
     test "dresses a liveried variant in its palette's stencil sheet" do
       @model.update_columns(rsi_chassis_id: 4242)
       variant = create(:model, rsi_chassis_id: 4242)

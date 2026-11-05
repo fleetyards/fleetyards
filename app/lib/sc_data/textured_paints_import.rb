@@ -90,9 +90,22 @@ module ScData
 
           complete &= attach(stale, field, path, file_name, md5)
         end
+
+        settle_stencil(records, fields.key("stencil"), entry, maps, "#{path}/#{name}", slug)
       end
 
       complete
+    end
+
+    # A palette that names no sheet takes back one an earlier export or another
+    # palette left on the paint: artwork is only right on its own base colour. A
+    # sheet named but not published says nothing about the one already there.
+    private def settle_stencil(records, field, entry, maps, listing, slug)
+      if entry["stencil"].present?
+        @logger.call(:warn, "#{listing}: paint #{slug} names stencil #{entry["stencil"]}, which is not published") unless maps.key?(field)
+      else
+        records.each { |record| record.public_send(field).detach if record.public_send(field).attached? }
+      end
     end
 
     private def fetch_listing(path, name)
