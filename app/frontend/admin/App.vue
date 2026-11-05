@@ -34,6 +34,7 @@ import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import { useAdminPresenceUpdates } from "@/admin/composables/useAdminPresenceUpdates";
 import { useAxiosInterceptors } from "@/admin/composables/useAxiosInterceptors";
 import { useAppUpdateNotice } from "@/shared/composables/useAppUpdateNotice";
+import { useChunkFailureNotice } from "@/shared/composables/useChunkFailureNotice";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { AppVersionChannel } from "@/services/fyCable/channels/AppVersionChannel";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
@@ -87,6 +88,8 @@ useSubscription({
 });
 
 useAppUpdateNotice(appStore);
+
+useChunkFailureNotice();
 
 const mobile = useMobile();
 

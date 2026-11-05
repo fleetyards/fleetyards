@@ -17,6 +17,7 @@
         },
         "otherWays": "Other ways to help"
       },
+      "appLoadFailed": "Part of FleetYards couldn't be loaded, so this page may look or behave oddly. Reload to fix it. If that doesn't help, close the app and open it again.",
       "appUpdate": {
         "withCodename": "FleetYards %{version} (%{codename}) is live. Reload to switch to it.",
         "plain": "FleetYards %{version} is live. Reload to switch to it."

@@ -1,5 +1,6 @@
 import {
   CHUNK_RELOAD_COOLDOWN,
+  chunkLoadFailed,
   handlePreloadError,
   reloadForFailedChunk,
 } from "@/shared/utils/ChunkReload";
@@ -9,6 +10,7 @@ describe("reloadForFailedChunk", () => {
 
   beforeEach(() => {
     sessionStorage.clear();
+    chunkLoadFailed.value = false;
     reload.mockReset();
     vi.stubGlobal("location", { ...window.location, reload });
     vi.useFakeTimers();
@@ -33,6 +35,19 @@ describe("reloadForFailedChunk", () => {
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
+  it("leaves a healthy reload unflagged", () => {
+    reloadForFailedChunk();
+
+    expect(chunkLoadFailed.value).toBe(false);
+  });
+
+  it("flags the document when the cooldown stops a reload", () => {
+    reloadForFailedChunk();
+    reloadForFailedChunk();
+
+    expect(chunkLoadFailed.value).toBe(true);
+  });
+
   it("reloads again once the cooldown has passed", () => {
     reloadForFailedChunk();
     vi.advanceTimersByTime(CHUNK_RELOAD_COOLDOWN);
@@ -48,6 +63,7 @@ describe("reloadForFailedChunk", () => {
 
     expect(reloadForFailedChunk()).toBe(false);
     expect(reload).not.toHaveBeenCalled();
+    expect(chunkLoadFailed.value).toBe(true);
   });
 });
 

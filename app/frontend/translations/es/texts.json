@@ -17,6 +17,7 @@
         },
         "otherWays": "Otras formas de ayudar"
       },
+      "appLoadFailed": "No se ha podido cargar una parte de FleetYards, así que esta página puede verse o funcionar mal. Recarga para solucionarlo. Si no funciona, cierra la aplicación y vuelve a abrirla.",
       "appUpdate": {
         "withCodename": "FleetYards %{version} (%{codename}) ya está disponible. Recarga para cambiar a ella.",
         "plain": "FleetYards %{version} ya está disponible. Recarga para cambiar a ella."
