@@ -22,6 +22,11 @@ import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { SEARCH_GROUPS } from "@/frontend/components/Home/Search/groups";
 import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
 import {
+  SEARCH_SHORTCUT_ARIA,
+  SEARCH_SHORTCUT_LABEL,
+  useSearchShortcut,
+} from "@/frontend/components/Home/Search/useSearchShortcut";
+import {
   CATALOGUE_SCOPE,
   useSearchScopes,
 } from "@/frontend/components/Home/Search/useSearchScopes";
@@ -309,6 +314,13 @@ const onKeydown = (event: KeyboardEvent) => {
 
 const form = ref<HTMLFormElement | null>(null);
 
+useSearchShortcut(() => {
+  const input = form.value?.querySelector("input");
+
+  input?.focus();
+  input?.select();
+});
+
 // A suggestion is searched for as if typed, with the field focused so the
 // keyboard carries on from there.
 const trySuggestion = async (suggestion: string) => {
@@ -364,12 +376,19 @@ const popoverStyle = computed(() => {
           name="search"
           :size="compact ? InputSizesEnum.MEDIUM : InputSizesEnum.LARGE"
           :autofocus="autofocus"
+          :aria-keyshortcuts="SEARCH_SHORTCUT_ARIA"
           translation-key="home.catalogueSearch"
           autocomplete="off"
           no-label
           clearable
           @update:model-value="onInput"
-        />
+        >
+          <template v-if="!touch && !open && !searchQuery" #suffix>
+            <kbd class="home-search__hint" aria-hidden="true">{{
+              SEARCH_SHORTCUT_LABEL
+            }}</kbd>
+          </template>
+        </FormInput>
         <Btn
           type="submit"
           :aria-label="t('labels.home.submitCatalogueSearch')"
@@ -588,6 +607,21 @@ const popoverStyle = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+@mixin search-key {
+  display: inline-block;
+  min-width: 18px;
+  padding: 1px 4px;
+  color: var(--color-text, #c8c8c8);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  text-align: center;
+  background: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: 4px;
+  box-shadow: none;
+}
+
 .home-search {
   text-align: left;
 }
@@ -856,19 +890,13 @@ const popoverStyle = computed(() => {
   border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
 
   kbd {
-    display: inline-block;
-    min-width: 18px;
+    @include search-key;
+
     margin-right: 2px;
-    padding: 1px 4px;
-    color: var(--color-text, #c8c8c8);
-    font-family: inherit;
-    font-size: 0.6875rem;
-    line-height: 1.3;
-    text-align: center;
-    background: var(--color-control, rgb(39 43 48 / 0.9));
-    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-    border-radius: 4px;
-    box-shadow: none;
   }
+}
+
+.home-search__hint {
+  @include search-key;
 }
 </style>

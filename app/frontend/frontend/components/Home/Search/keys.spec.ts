@@ -101,6 +101,122 @@ const mount = async () => {
   return { router, wrapper };
 };
 
+describe("HomeSearch shortcut", () => {
+  const press = (target: EventTarget, init: KeyboardEventInit) => {
+    const event = new KeyboardEvent("keydown", {
+      bubbles: true,
+      cancelable: true,
+      ...init,
+    });
+
+    target.dispatchEvent(event);
+
+    return event;
+  };
+
+  const mountAttached = async () => {
+    const router = createRouter({
+      history: createWebHashHistory(),
+      routes: [{ path: "/", name: "home", component: { template: "<div />" } }],
+    });
+
+    return mountWithDefaults(Component, {
+      plugins: [router],
+      attachTo: document.body,
+    });
+  };
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  it("takes the focus on the slash key", async () => {
+    const wrapper = await mountAttached();
+
+    const event = press(document.body, { key: "/" });
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(wrapper.find("input").element);
+
+    wrapper.unmount();
+  });
+
+  // jsdom reports no platform, so this runs as a machine with a Ctrl key.
+  it("takes the focus on Ctrl+K, from inside another field too", async () => {
+    const wrapper = await mountAttached();
+    const other = document.body.appendChild(document.createElement("input"));
+
+    other.focus();
+    press(other, { key: "k", ctrlKey: true });
+
+    expect(document.activeElement).toBe(wrapper.find("input").element);
+
+    wrapper.unmount();
+  });
+
+  it.each([
+    ["input", () => document.createElement("input")],
+    ["textarea", () => document.createElement("textarea")],
+    [
+      "editor",
+      () => {
+        const editor = document.createElement("div");
+        editor.setAttribute("contenteditable", "true");
+        return editor;
+      },
+    ],
+    [
+      "select",
+      () => {
+        const select = document.createElement("button");
+        select.setAttribute("role", "combobox");
+        return select;
+      },
+    ],
+  ])("leaves the slash key to a %s", async (_name, build) => {
+    const wrapper = await mountAttached();
+    const field = document.body.appendChild(build());
+
+    const event = press(field, { key: "/" });
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(document.activeElement).not.toBe(wrapper.find("input").element);
+
+    wrapper.unmount();
+  });
+
+  it("leaves Ctrl+K to the markdown editor", async () => {
+    const wrapper = await mountAttached();
+    const editor = document.body.appendChild(document.createElement("div"));
+    editor.setAttribute("contenteditable", "true");
+
+    expect(press(editor, { key: "k", ctrlKey: true }).defaultPrevented).toBe(
+      false,
+    );
+
+    wrapper.unmount();
+  });
+
+  it("does nothing behind a modal", async () => {
+    const wrapper = await mountAttached();
+    const modal = document.body.appendChild(document.createElement("div"));
+    modal.setAttribute("aria-modal", "true");
+
+    expect(press(document.body, { key: "/" }).defaultPrevented).toBe(false);
+    expect(document.activeElement).not.toBe(wrapper.find("input").element);
+
+    wrapper.unmount();
+  });
+
+  it("stops listening once it is gone", async () => {
+    const wrapper = await mountAttached();
+
+    wrapper.unmount();
+
+    expect(press(document.body, { key: "/" }).defaultPrevented).toBe(false);
+  });
+});
+
 describe("HomeSearch keys", () => {
   beforeEach(() => {
     Element.prototype.scrollIntoView = vi.fn();
