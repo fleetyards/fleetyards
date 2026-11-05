@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
+import AppUpdateHint from "@/shared/components/AppUpdateHint/index.vue";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 import type { AppVersionAnnouncement } from "@/shared/stores/types";
 
@@ -68,7 +69,8 @@ export const useAppUpdateNotice = (store: AppUpdateSource) => {
         persist: true,
         timeout: false,
         tag: NOTICE_TAG,
-        component: () => import("@/shared/components/AppUpdateHint/index.vue"),
+        // Not a lazy import: this notice matters most when loading chunks fails.
+        component: () => Promise.resolve(AppUpdateHint),
         componentProps: {
           version: notice.version,
           codename: notice.codename,
