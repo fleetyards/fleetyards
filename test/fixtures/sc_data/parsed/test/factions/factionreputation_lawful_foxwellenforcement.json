@@ -3,7 +3,7 @@
   "sc_ref": "016c2950-0292-468c-a408-a5283b52f158",
   "name": "Foxwell Enforcement",
   "lawful": true,
-  "logo": "ui/sharedassets/manufacturerlogos/rep_ui_icon_logo_foxwellenforcement.tif",
+  "icon": "ui/sharedassets/manufacturerlogos/rep_ui_icon_logo_foxwellenforcement.tif",
   "description": "Founded by retired police officers in Lo, Corel system, Foxwell Enforcement provides low-cost security consultancy to those who need it most. The company hoped this altruism would lead to financial reward, but instead they’ve been forced to cut corners and loosen hiring practices to survive. Many companies still hire Foxwell because they’re affordable, but their low wages makes it hard to retain skilled security contractors.",
   "headquarters": "Lo, Corel System",
   "founded": "2928",

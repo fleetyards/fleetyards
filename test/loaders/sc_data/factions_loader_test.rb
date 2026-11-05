@@ -53,6 +53,15 @@ module ScData
         assert_not_includes build.ladders.pluck(:name), "Stale"
       end
 
+      test "#all keeps the row of a faction whose ref the export reissued" do
+        faction = create(:faction, sc_key: "factionreputation_wikelo", sc_ref: "00000000-0000-4000-8000-00000000abcd", with_build: false)
+
+        loader.all
+
+        assert_equal "5f442fdd-15cc-4f62-bd10-fce2023f4d0c", faction.reload.sc_ref
+        assert_equal 1, Faction.where(sc_key: "factionreputation_wikelo").count
+      end
+
       test "#all retires a faction the export dropped" do
         gone = create(:faction, sc_key: "factionreputation_gone", version: ::ScData::Source.version, with_build: false)
         gone.builds.create!(environment: FIXTURE_ENVIRONMENT, version: ::ScData::Source.version, name: "Gone")

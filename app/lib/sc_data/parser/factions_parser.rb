@@ -39,7 +39,7 @@ module ScData
 
         # `ManufacturerLogos` holds these beside the manufacturers' own, which
         # that parser has already written and a clear here would delete.
-        parsed.each { |faction| save_icon(faction[:logo], clear: false) if faction[:logo].present? }
+        parsed.each { |faction| save_icon(faction[:icon], clear: false) if faction[:icon].present? }
 
         save_items(parsed, folder: FOLDER, key: :sc_key)
       end
@@ -65,14 +65,14 @@ module ScData
           sc_ref: ref,
           name:,
           lawful: lawful(values),
-          logo: asset_path(value_or_nil(values["logo"]))&.downcase,
+          icon: asset_path(value_or_nil(values["logo"]))&.downcase,
           **TEXT_PROPERTIES.transform_values { |property| text_property(values, property) },
           ladders: ladders(ref, values)
         }
       end
 
-      # The scopes awards feed come first, busiest first, so the ladder most of
-      # a faction's points go to leads. Unique by what a reader would see:
+      # The scopes awards feed come first, those most awards name first, so the
+      # ladder a faction's contracts mostly pay into leads. Unique by what a reader would see:
       # Northrock's context lists two scopes with the same name and ranks.
       private def ladders(ref, values)
         awarded = awarded_scopes.fetch(ref, {}).sort_by { |_scope, count| -count }.map(&:first)

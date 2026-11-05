@@ -14,11 +14,15 @@ module ScData
         return if faction_data["sc_ref"].blank?
         return if faction_data["sc_key"].blank?
 
+        # By key as well: the export is free to reissue a GUID, and a second row
+        # for the same key would fail its uniqueness check and abort the load.
         faction = Faction.find_by(sc_ref: faction_data["sc_ref"])
-        faction ||= Faction.new(sc_ref: faction_data["sc_ref"])
+        faction ||= Faction.find_by(sc_key: faction_data["sc_key"])
+        faction ||= Faction.new
 
         Faction.transaction do
           apply(faction, {
+            sc_ref: faction_data["sc_ref"],
             sc_key: faction_data["sc_key"],
             name: faction_data["name"],
             version: sc_version
@@ -31,7 +35,7 @@ module ScData
 
         # On the shared row, so only the environment readers get by default
         # writes it: a ptu load must not hand live readers ptu art.
-        attach_icon(faction, :logo, faction_data["logo"]) if default_environment?
+        attach_icon(faction, :logo, faction_data["icon"]) if default_environment?
 
         faction
       end
