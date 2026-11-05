@@ -98,9 +98,17 @@ describe("useMemberFilterSummary", () => {
     wrapper.unmount();
   });
 
-  it("leaves out the search and the squadron, which have controls of their own", async () => {
+  it("names the search, whose field is in the collapsed sidebar", async () => {
+    const { activeFilters, wrapper } = await summarize({ searchCont: "kudl" });
+
+    expect(activeFilters.value.map((item) => item.label)).toEqual([
+      "labels.filters.fleets.members.search: kudl",
+    ]);
+    wrapper.unmount();
+  });
+
+  it("leaves out the squadron, which has a control of its own", async () => {
     const { activeFilters, wrapper } = await summarize({
-      searchCont: "kudl",
       squadronSlugIn: ["operations"],
       view: "invites",
     });

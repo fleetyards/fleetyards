@@ -175,10 +175,6 @@ module Api
         authorize! @fleet_contract, to: :progress?
       end
 
-      # Everything the member may see. A draft is not an offer of work yet, so
-      # it only lists for the people who could publish it -- the managers, and
-      # the author of a personal one -- the same rule `FleetContractPolicy#show?`
-      # applies to a single one.
       # The model refuses a title whose slug is taken, but two saves racing onto
       # the same one both pass that check and only the unique index on
       # (fleet_id, slug) stops the second.

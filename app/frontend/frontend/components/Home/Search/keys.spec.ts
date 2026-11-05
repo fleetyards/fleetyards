@@ -95,7 +95,8 @@ describe("HomeSearch keys", () => {
     Element.prototype.scrollIntoView = vi.fn();
     vi.useFakeTimers();
     catalogue.mockClear();
-    mine.mockClear();
+    mine.mockReset();
+    mine.mockImplementation(async () => ({ groups: [] }));
     add.mockReset();
   });
 
@@ -118,6 +119,31 @@ describe("HomeSearch keys", () => {
     await flushPromises();
 
     expect(catalogue).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not act on the previous scope's matches while the new one answers", async () => {
+    mine.mockImplementation(() => new Promise<{ groups: never[] }>(() => {}));
+    const { router, wrapper } = await mount();
+    const input = wrapper.find("input");
+
+    await input.trigger("keydown", { key: "Tab" });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='home-search-searching']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='home-search-result']").exists()).toBe(
+      false,
+    );
+
+    await input.trigger("keydown", { key: "Enter", metaKey: true });
+    await flushPromises();
+
+    expect(add).not.toHaveBeenCalled();
+    expect(router.currentRoute.value.name).toBe("home");
+
+    await input.trigger("keydown", { key: "Tab", shiftKey: true });
+    await flushPromises();
   });
 
   it("offers the catalogue when nothing of a saved scope matches", async () => {

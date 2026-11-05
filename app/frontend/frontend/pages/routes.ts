@@ -336,6 +336,7 @@ export const routes: RouteRecordRaw[] = [
     name: "change-password",
     component: () => import("@/frontend/pages/change-password.vue"),
     meta: {
+      hideHeaderSearch: true,
       title: "changePassword",
     },
   },

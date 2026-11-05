@@ -66,6 +66,14 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/search lists only accepted members" do
+    %i[invited requested declined].each do |state|
+      create(:fleet_membership, fleet: @fleet, user: create(:user, username: "omni#{state}"), aasm_state: state)
+    end
+
+    search(@officer) { assert_equal ["omniofficer"], groups["FleetMembership"] }
+  end
+
   test "GET /fleets/:slug/search refuses someone outside the fleet" do
     create(:fleet_event, fleet: @fleet, title: "Omni Raid")
 

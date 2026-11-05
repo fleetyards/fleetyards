@@ -49,14 +49,6 @@ export const useSearchScopes = () => {
   // Learned from the answer: a fleet someone only visits, or has since left.
   const refused = ref<string[]>([]);
 
-  watch(
-    routeFleet,
-    (slug) => {
-      if (slug && !refused.value.includes(slug)) store.fleetSlug = slug;
-    },
-    { immediate: true },
-  );
-
   const fleetSlug = computed(() => {
     const slug = routeFleet.value ?? store.fleetSlug;
 
@@ -70,7 +62,13 @@ export const useSearchScopes = () => {
     fleetSlug: slug,
     search: async (q) => {
       try {
-        return await fleetSearch(slug, { q });
+        const results = await fleetSearch(slug, { q });
+
+        // Only once it has answered: viewing a fleet's public page must not
+        // replace the one the reader is actually in.
+        store.fleetSlug = slug;
+
+        return results;
       } catch (error) {
         const status = (error as { response?: { status?: number } }).response
           ?.status;

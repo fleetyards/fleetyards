@@ -106,13 +106,17 @@ watch(active, async (index) => {
 // offer matches for text the field no longer holds.
 let latestSearch = 0;
 
+const forgetAnswer = () => {
+  rankedGroups.value = [];
+  searchedFor.value = undefined;
+};
+
 const searchNow = async (text: string) => {
   const request = ++latestSearch;
   const trimmed = text.trim();
 
   if (trimmed.length < MIN_LENGTH) {
-    rankedGroups.value = [];
-    searchedFor.value = undefined;
+    forgetAnswer();
     return;
   }
 
@@ -129,15 +133,19 @@ const searchNow = async (text: string) => {
 
 const runSearch = useDebounceFn(searchNow, 200);
 
+// The answer on screen is the previous scope's, and until the new one lands the
+// keys must not act on it.
 watch(
   () => scope.value.key,
-  () => searchNow(query.value),
+  () => {
+    forgetAnswer();
+    void searchNow(query.value);
+  },
 );
 
 const clear = () => {
   searchQuery.value = undefined;
-  rankedGroups.value = [];
-  searchedFor.value = undefined;
+  forgetAnswer();
 };
 
 // In the page header the field outlives every navigation, not just its own.

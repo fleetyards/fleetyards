@@ -32,7 +32,7 @@ module Api
 
         ScopedSearch::Source.new(
           type: "FleetMembership",
-          scope: @fleet.fleet_memberships.kept.includes(:user).references(:user).order("users.username"),
+          scope: @fleet.fleet_memberships.kept.accepted.includes(:user).references(:user).order("users.username"),
           filter: :user_username_or_user_display_name_or_nickname_cont,
           item: lambda { |member|
             ScopedSearch.result(

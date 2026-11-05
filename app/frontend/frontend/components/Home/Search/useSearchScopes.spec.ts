@@ -74,6 +74,23 @@ describe("useSearchScopes", () => {
     expect(useSearchStore().fleetSlug).toBe("diggers");
   });
 
+  it("keeps the last fleet when one only being viewed refuses", async () => {
+    const store = useSearchStore();
+    store.fleetSlug = "diggers";
+    route.value = { path: "/fleets/strangers/", params: { slug: "strangers" } };
+    vi.mocked(fleetSearch).mockRejectedValue({ response: { status: 404 } });
+
+    const { scopes } = useSearchScopes();
+    await expect(scopes.value[2].search("omni")).rejects.toBeDefined();
+    await flushPromises();
+
+    expect(store.fleetSlug).toBe("diggers");
+
+    route.value = { path: "/ships/", params: {} };
+
+    expect(store.fleetSlug).toBe("diggers");
+  });
+
   it("ignores a slug that is not a fleet's", () => {
     route.value = { path: "/ships/orig-100i/", params: { slug: "orig-100i" } };
 

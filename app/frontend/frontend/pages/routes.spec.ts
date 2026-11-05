@@ -20,6 +20,7 @@ describe("frontend routes", () => {
     "login",
     "signup",
     "request-password",
+    "change-password",
     "oauth-authorize",
     "share",
     "confirm",
