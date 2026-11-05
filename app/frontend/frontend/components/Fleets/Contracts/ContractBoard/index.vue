@@ -120,9 +120,15 @@ const queryParams = computed(() => ({
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
   q: {
-    stateIn: props.view.states,
+    // A title search looks past the board, as the site search that links here
+    // does. The caller's own board stays their own.
+    ...(titleCont.value && !props.view.mine
+      ? { titleCont: titleCont.value }
+      : {
+          stateIn: props.view.states,
+          ...(titleCont.value ? { titleCont: titleCont.value } : {}),
+        }),
     ...sortParam.value,
-    ...(titleCont.value ? { titleCont: titleCont.value } : {}),
   },
 }));
 

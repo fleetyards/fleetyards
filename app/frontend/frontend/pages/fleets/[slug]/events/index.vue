@@ -121,8 +121,9 @@ const titleCont = computed(() =>
 
 const queryParams = computed(() => ({
   q: titleCont.value ? { titleCont: titleCont.value } : undefined,
-  upcoming: tab.value === "upcoming" ? true : undefined,
-  past: tab.value === "past" ? true : undefined,
+  // A title search looks past the tab, as the site search that links here does.
+  upcoming: tab.value === "upcoming" && !titleCont.value ? true : undefined,
+  past: tab.value === "past" && !titleCont.value ? true : undefined,
   archived: tab.value === "archived" ? true : undefined,
 }));
 
