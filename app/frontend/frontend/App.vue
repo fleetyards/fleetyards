@@ -333,7 +333,10 @@ const setLocale = (locale: string) => {
         >
           <AppNavigationHeader>
             <template #left>
-              <HomeSearch v-if="!route.meta.hideHeaderSearch" compact />
+              <HomeSearch
+                v-if="route.matched.length && !route.meta.hideHeaderSearch"
+                compact
+              />
             </template>
           </AppNavigationHeader>
 
