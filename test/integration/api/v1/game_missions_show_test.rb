@@ -40,6 +40,7 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /missions/{slug} states the ladder and outcome of a reputation reward, and links the faction" do
+    create(:faction, sc_key: "factionreputation_lawful_foxwellenforcement")
     create(:game_mission_reward, build: @mission.build, amount: -250, position: 2,
       ladder_key: "reputationscope_hauling", ladder_name: "Hauling", outcome: "not_completed")
 
@@ -47,7 +48,14 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
       reward = parsed_body["rewards"].last
 
       assert_equal ["Hauling", "not_completed", "foxwellenforcement"], reward.values_at("ladderName", "outcome", "orgSlug")
-      assert_equal "foxwellenforcement", parsed_body.dig("org", "slug")
+      assert_equal "foxwellenforcement", parsed_body["factionSlug"]
+    end
+  end
+
+  test "GET /missions/{slug} links no faction the current build does not carry" do
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      assert_nil parsed_body["factionSlug"]
+      assert_nil parsed_body["rewards"].first["orgSlug"]
     end
   end
 

@@ -127,8 +127,11 @@ watch(
                 {{ t("labels.gameMission.offeredBy") }}
                 <router-link
                   :to="
-                    mission.org.slug
-                      ? { name: 'faction', params: { slug: mission.org.slug } }
+                    mission.factionSlug
+                      ? {
+                          name: 'faction',
+                          params: { slug: mission.factionSlug },
+                        }
                       : {
                           name: 'missions',
                           query: { orgNameIn: [mission.org.name] },

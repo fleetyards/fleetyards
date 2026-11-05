@@ -17645,6 +17645,10 @@ components:
           type:
           - number
           - 'null'
+        factionSlug:
+          type:
+          - string
+          - 'null'
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -17923,10 +17927,6 @@ components:
         name:
           type: string
         key:
-          type:
-          - string
-          - 'null'
-        slug:
           type:
           - string
           - 'null'

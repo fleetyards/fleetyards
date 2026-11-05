@@ -64,10 +64,15 @@ class Faction < ApplicationRecord
     Arel.sql("faction_facts.#{fact}")
   end
 
-  # Derived from the key alone so a mission can link to its faction from
-  # `org_key` without a lookup per row.
+  # Derived from the key alone, so a faction keeps its URL through a rename.
   def self.slug_for_key(key)
     key.to_s.sub(KEY_PREFIX, "").tr("_", "-").presence
+  end
+
+  # Key to slug for the factions with a page in the build being read: a link to
+  # any other would 404.
+  def self.current_slugs
+    current_version.pluck(:sc_key, :slug).to_h
   end
 
   # Released, named missions per offering org, in the build being read.

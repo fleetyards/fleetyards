@@ -51,6 +51,9 @@ module Shared
 
             # Null on 197: a handler naming no faction takes its generator's
             # org, and only where that generator names exactly one.
+            # Detail only: the page of the offering org, where it has one.
+            factionSlug: {type: [:string, :null]},
+
             org: {anyOf: [::Shared::V1::Schemas::GameMissionOrg, {type: :null}]},
 
             # The reputation band it is offered in, which is what a player reads

@@ -38,7 +38,6 @@ if mission.org_name.present?
   json.org do
     json.name mission.org_name
     json.key mission.org_key
-    json.slug Faction.slug_for_key(mission.org_key)
     # What the export states, and what we curate from it. "neutral" is ours to
     # name: the game states a boolean and nothing else.
     json.alignment mission.alignment
