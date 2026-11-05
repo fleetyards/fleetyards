@@ -39,6 +39,38 @@ class Api::V1::FiltersTradeRoutesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/filters/trade-routes/origin-terminals" do
+    get("Trade Route Origin Terminal Filters") do
+      operationId "tradeRouteOriginTerminalsFilters"
+      tags "TradeRoutesFilters"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Shared::V1::Schemas::FilterOptionsList
+      end
+
+      response(403, "feature unavailable") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/filters/trade-routes/destination-terminals" do
+    get("Trade Route Destination Terminal Filters") do
+      operationId "tradeRouteDestinationTerminalsFilters"
+      tags "TradeRoutesFilters"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Shared::V1::Schemas::FilterOptionsList
+      end
+
+      response(403, "feature unavailable") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   api_path "/filters/trade-routes/commodities" do
     get("Trade Route Commodity Filters") do
       operationId "tradeRouteCommoditiesFilters"
@@ -80,6 +112,22 @@ class Api::V1::FiltersTradeRoutesTest < ActionDispatch::IntegrationTest
       assert_equal [@arc.id, @ruin.id], parsed_body.pluck("value")
       assert_equal ["Admin - ARC-L1", "Admin - Ruin Station"], parsed_body.pluck("label")
       assert_equal "Stanton", parsed_body.first["category"]
+    end
+  end
+
+  test "GET /filters/trade-routes/origin-terminals lists only the terminals an available route starts at" do
+    assert_api_response :get, 200, api_path: "/filters/trade-routes/origin-terminals" do
+      assert_equal [@arc.id], parsed_body.pluck("value")
+      assert_equal ["Admin - ARC-L1"], parsed_body.pluck("label")
+      assert_equal ["Stanton"], parsed_body.pluck("category")
+    end
+  end
+
+  test "GET /filters/trade-routes/destination-terminals lists only the terminals an available route ends at" do
+    assert_api_response :get, 200, api_path: "/filters/trade-routes/destination-terminals" do
+      assert_equal [@ruin.id], parsed_body.pluck("value")
+      assert_equal ["Admin - Ruin Station"], parsed_body.pluck("label")
+      assert_equal ["Pyro"], parsed_body.pluck("category")
     end
   end
 

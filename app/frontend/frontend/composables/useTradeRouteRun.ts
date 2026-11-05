@@ -40,13 +40,22 @@ export const useTradeRouteRun = () => {
   // Set from a run's "other places buy it" link: every destination for one
   // commodity bought at one terminal, ungrouped.
   const origin = computed(() => single(route.query.origin));
+  // Picked in the run bar, and unlike `origin` the list stays grouped: the best
+  // run of each commodity from or to these terminals.
+  const startTerminal = computed(() => single(route.query.from));
+  const targetTerminal = computed(() => single(route.query.to));
   const sort = computed(() => single(route.query.s));
 
-  const update = async (changes: Record<string, string | undefined>) => {
-    await router.push({
+  const update = async (
+    changes: Record<string, string | undefined>,
+    { replace = false } = {},
+  ) => {
+    const location = {
       name: route.name as string,
       query: { ...route.query, ...changes },
-    });
+    };
+
+    await (replace ? router.replace(location) : router.push(location));
   };
 
   const apiQuery = computed<TradeRouteQuery>(() => {
@@ -56,7 +65,11 @@ export const useTradeRouteRun = () => {
     if (modelSlug.value && budget.value) query.budget = budget.value;
     if (starSystem.value) query.originTerminalStarSystemIn = [starSystem.value];
     if (commodity.value) query.commoditySlugIn = [commodity.value];
-    if (origin.value) query.originTerminalIdIn = [origin.value];
+    const originTerminal = origin.value ?? startTerminal.value;
+    if (originTerminal) query.originTerminalIdIn = [originTerminal];
+    if (targetTerminal.value) {
+      query.destinationTerminalIdIn = [targetTerminal.value];
+    }
     if (priceAge.value !== TradeRoutePriceAgesEnum.ANY) {
       query.maxPriceAgeHours = Number(priceAge.value);
     }
@@ -72,6 +85,8 @@ export const useTradeRouteRun = () => {
     commodity,
     priceAge,
     origin,
+    startTerminal,
+    targetTerminal,
     sort,
     apiQuery,
     update,

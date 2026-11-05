@@ -2973,6 +2973,11 @@
         "anySystem": "全部",
         "commodity": "商品",
         "allCommodities": "全部商品",
+        "start": "起点",
+        "target": "终点",
+        "anyTerminal": "全部终端",
+        "fromTerminal": "从 %{terminal}",
+        "toTerminal": "到 %{terminal}",
         "priceAge": "价格不早于",
         "priceAges": {
           "day": "24 小时",
@@ -3022,7 +3027,7 @@
         "profit": "利润",
         "to": "至",
         "everyBuyer": "从 %{terminal} 收购 %{commodity} 的所有地点",
-        "empty": "没有匹配的航程。试试更早的价格或其他星系。",
+        "empty": "没有匹配的航程。试试更早的价格、其他星系或其他终端。",
         "loadExplained": "载货量按两个终端和商品都接受的货箱尺寸计算，并受购买地库存、出售地需求和你的预算限制。",
         "poweredByUex": "价格由 UEX 提供"
       },

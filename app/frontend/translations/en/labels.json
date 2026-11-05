@@ -2973,6 +2973,11 @@
         "anySystem": "Any",
         "commodity": "Commodity",
         "allCommodities": "All commodities",
+        "start": "Start",
+        "target": "Target",
+        "anyTerminal": "Any terminal",
+        "fromTerminal": "From %{terminal}",
+        "toTerminal": "To %{terminal}",
         "priceAge": "Prices no older than",
         "priceAges": {
           "day": "24 h",
@@ -3022,7 +3027,7 @@
         "profit": "Profit",
         "to": "to",
         "everyBuyer": "Every place that buys %{commodity} from %{terminal}",
-        "empty": "No runs match. Try older prices or another system.",
+        "empty": "No runs match. Try older prices, another system or another terminal.",
         "loadExplained": "Load uses the crate sizes both terminals and the commodity accept, capped by stock where you buy, demand where you sell and your budget.",
         "poweredByUex": "Prices powered by UEX"
       },

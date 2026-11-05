@@ -230,6 +230,19 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /trade-routes groups only the runs to the destination terminal" do
+    assert_api_response :get, 200, params: {q: {"grouped" => true, "destinationTerminalIdIn" => [@ruin.id]}} do
+      assert_equal [@low_stock.id, @small_crates.id], ids
+      assert_equal [0, 0], parsed_body["items"].pluck("otherDestinations")
+    end
+  end
+
+  test "GET /trade-routes filters by start and target terminal together" do
+    assert_api_response :get, 200, params: {q: {"grouped" => true, "originTerminalIdIn" => [@arc.id], "destinationTerminalIdIn" => [@ruin.id]}} do
+      assert_equal [@low_stock.id], ids
+    end
+  end
+
   test "GET /trade-routes filters by commodity" do
     assert_api_response :get, 200, params: {q: {"commoditySlugIn" => [@agricium.slug]}} do
       assert_equal [@low_stock.id], ids

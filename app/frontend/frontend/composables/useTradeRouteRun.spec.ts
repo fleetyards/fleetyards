@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   createRouter,
   createWebHashHistory,
@@ -90,6 +90,36 @@ describe("useTradeRouteRun", () => {
       commoditySlugIn: ["gold"],
       originTerminalIdIn: ["terminal-1"],
     });
+  });
+
+  it("keeps runs grouped when filtering by start and target terminal", async () => {
+    expect(
+      await apiQueryFor({ from: "terminal-1", to: "terminal-2" }),
+    ).toMatchObject({
+      grouped: true,
+      originTerminalIdIn: ["terminal-1"],
+      destinationTerminalIdIn: ["terminal-2"],
+    });
+  });
+
+  it("lets a purchase's buyers win over the start terminal", async () => {
+    expect(
+      await apiQueryFor({ from: "terminal-1", origin: "terminal-3" }),
+    ).toMatchObject({
+      grouped: false,
+      originTerminalIdIn: ["terminal-3"],
+    });
+  });
+
+  it("corrects the URL without a history entry when asked to replace", async () => {
+    const { run, router, unmount } = await setup({ from: "gone", ship: "c2" });
+    const push = vi.spyOn(router, "push");
+
+    await run.update({ from: undefined }, { replace: true });
+
+    expect(push).not.toHaveBeenCalled();
+    expect(router.currentRoute.value.query).toEqual({ ship: "c2" });
+    unmount();
   });
 
   it("writes changes into the URL and keeps the rest of the run", async () => {

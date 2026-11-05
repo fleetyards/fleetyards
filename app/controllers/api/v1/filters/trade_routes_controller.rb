@@ -15,11 +15,15 @@ module Api
         end
 
         def terminals
-          @filters = routed_terminals.order(:name, :id).map do |terminal|
-            Filter.new(category: terminal.star_system, label: terminal.name, value: terminal.id)
-          end
+          render_terminals(routed_terminals)
+        end
 
-          render "api/v1/shared/filters"
+        def origin_terminals
+          render_terminals(terminals_on(:origin_terminal_id))
+        end
+
+        def destination_terminals
+          render_terminals(terminals_on(:destination_terminal_id))
         end
 
         def commodities
@@ -32,12 +36,21 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        private def render_terminals(terminals)
+          @filters = terminals.order(:name, :id).map do |terminal|
+            Filter.new(category: terminal.star_system, label: terminal.name, value: terminal.id)
+          end
+
+          render "api/v1/shared/filters"
+        end
+
         # Only terminals a route can actually be filtered down to.
         private def routed_terminals
-          routes = TradeRoute.between_available_terminals
+          terminals_on(:origin_terminal_id).or(terminals_on(:destination_terminal_id))
+        end
 
-          Terminal.available.where(id: routes.select(:origin_terminal_id))
-            .or(Terminal.available.where(id: routes.select(:destination_terminal_id)))
+        private def terminals_on(column)
+          Terminal.where(id: TradeRoute.between_available_terminals.select(column))
         end
       end
     end

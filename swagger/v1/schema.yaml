@@ -1582,6 +1582,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/filters/trade-routes/destination-terminals":
+    get:
+      summary: Trade Route Destination Terminal Filters
+      tags:
+      - TradeRoutesFilters
+      operationId: tradeRouteDestinationTerminalsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/filters/trade-routes/origin-terminals":
+    get:
+      summary: Trade Route Origin Terminal Filters
+      tags:
+      - TradeRoutesFilters
+      operationId: tradeRouteOriginTerminalsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/filters/trade-routes/star-systems":
     get:
       summary: Trade Route Star System Filters
