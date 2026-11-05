@@ -150,6 +150,23 @@ module Loaders
       assert_not_includes notification.body, "- **Carrack**:"
     end
 
+    test "#perform names a model the run published" do
+      model = create(:model, name: "Carrack", hidden: true)
+
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        model.update!(hidden: false)
+        true
+      end
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "- **Carrack**: hidden"
+    end
+
     test "#perform names what moved in the pledge store" do
       model = create(:model, name: "Carrack")
 

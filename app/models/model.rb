@@ -21,7 +21,7 @@ class Model < ApplicationRecord
   # and the new value is not blank -- so a shadow that moves alone is the matrix
   # saying something we did not adopt, which nothing else records.
   has_paper_trail on: %i[update], only: %i[
-    name description ground
+    name description ground hidden
     rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
     rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_crew
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
