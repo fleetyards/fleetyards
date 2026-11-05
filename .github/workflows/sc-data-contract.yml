@@ -79,7 +79,7 @@ jobs:
       - name: Install libvips
         uses: ./.github/workflows/apt-install-action
         with:
-          packages: libvips-dev
+          packages: libvips42t64
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
