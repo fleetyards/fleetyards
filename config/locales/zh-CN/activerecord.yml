@@ -390,6 +390,7 @@ zh-CN:
             vehicle_id:
               taken: "已在此计划中使用"
               pledge_kept: "属于此计划保留其他舰船的礼包"
+              not_meltable: "RSI 不允许熔炼此 Pledge"
               pledge_melted: "属于此计划熔炼的礼包"
         vehicle_loadout:
           attributes:

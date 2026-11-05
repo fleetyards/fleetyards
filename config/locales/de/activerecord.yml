@@ -390,6 +390,7 @@ de:
             vehicle_id:
               taken: "wird in diesem Plan bereits verwendet"
               pledge_kept: "gehört zu einem Pledge, dessen andere Schiffe dieser Plan behält"
+              not_meltable: "RSI erlaubt nicht, diesen Pledge einzuschmelzen"
               pledge_melted: "gehört zu einem Pledge, das dieser Plan meltet"
         vehicle_loadout:
           attributes:

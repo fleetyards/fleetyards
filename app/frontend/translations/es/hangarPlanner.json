@@ -445,6 +445,8 @@
         "anyShip": "Cualquier nave",
         "buyChosen": "La nave que elijas a continuación",
         "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
+        "onlyKeep": "No existen mejoras para ella y RSI no permite fundirla, solo se puede conservar",
+        "notMeltable": "No se puede fundir",
         "excludes": "Descarta %{ships}",
         "ccuSalesOnly": "CCU solo en rebajas",
         "ccuUnknown": "Aún no se ha visto ningún CCU",

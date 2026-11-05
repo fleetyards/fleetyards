@@ -14,6 +14,7 @@ json.vehicles entries do |entry|
   json.status entry.status
   json.pledge_name pledge.name
   json.standalone pledge.standalone
+  json.meltable entry.vehicle.rsi_pledge_meltable
   json.pledge_item_count entry.vehicle.rsi_pledge_item_count
   json.partial! "api/v1/hangar_plans/pledge_contents", ships: pledge.ships, items: pledge.items
   if entry.target_model

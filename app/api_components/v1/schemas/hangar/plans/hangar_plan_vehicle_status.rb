@@ -17,6 +17,7 @@ module V1
               targetModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
               pledgeName: {type: [:string, :null], description: "The RSI pledge the ship came in, where the hangar sync kept its name"},
               standalone: {type: [:boolean, :null], description: "Whether the pledge holds the ship alone rather than a package; null where the hangar sync never saw it"},
+              meltable: {type: [:boolean, :null], description: "Whether RSI lets the ship's pledge be melted; null until the hangar sync has read it"},
               pledgeItemCount: {type: [:integer, :null], description: "How many items the pledge holds, as RSI counts them"},
               pledgeShips: {
                 type: :array,

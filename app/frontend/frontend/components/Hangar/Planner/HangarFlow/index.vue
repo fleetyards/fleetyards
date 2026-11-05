@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
 import CardTitle from "@/frontend/components/Hangar/Planner/HangarFlow/CardTitle.vue";
+import MeltBlocked from "@/frontend/components/Hangar/Planner/HangarFlow/MeltBlocked.vue";
 import SlotActions from "@/frontend/components/Hangar/Planner/HangarFlow/SlotActions.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
@@ -103,6 +104,9 @@ type Row = {
   // besides picking where it ends up.
   vehicleId?: string;
   decisions?: HangarFlowDecision[];
+  // RSI says the ship's pledge does not melt. A ship the sync never read may
+  // still melt, as far as anyone knows, so only its word against it counts.
+  meltBlocked?: boolean;
   // What the left card picks a start for.
   start?: HangarFlowStart;
   // What the right card picks an end ship for.
@@ -435,6 +439,7 @@ const shipRows = computed<Row[]>(() =>
       order: shipOrder(entry.vehicleId),
       left,
       vehicleId: entry.vehicleId,
+      meltBlocked: entry.meltable === false,
     };
 
     switch (entry.status) {
@@ -517,7 +522,10 @@ const shipRows = computed<Row[]>(() =>
               ? {
                   // Nothing can be upgraded out of it, so changing it means
                   // melting it.
-                  rightNone: t("hangarPlanner.pick.onlyMelt"),
+                  rightNone:
+                    entry.meltable === false
+                      ? t("hangarPlanner.pick.onlyKeep")
+                      : t("hangarPlanner.pick.onlyMelt"),
                   decisions: [
                     "keep",
                     "melt",
@@ -974,21 +982,23 @@ const imageOf = (model?: HangarPlanModel) =>
             v-if="row.vehicleId && row.decisions"
             class="hangar-flow__decisions"
           >
-            <Btn
-              v-for="decision in row.decisions"
-              :key="decision"
-              :size="BtnSizesEnum.XS"
-              :variant="BtnVariantsEnum.BARE"
-              :aria-label="t(`hangarPlanner.decisions.${decision}`)"
-              :title="t(`hangarPlanner.decisions.${decision}`)"
-              :data-test="`hangar-plan-decide-${decision}`"
-              @click="decide(row, decision)"
-            >
-              <i
-                :class="hangarFlowDecisionIcons[decision]"
-                aria-hidden="true"
-              />
-            </Btn>
+            <template v-for="decision in row.decisions" :key="decision">
+              <MeltBlocked v-if="decision === 'melt' && row.meltBlocked" />
+              <Btn
+                v-else
+                :size="BtnSizesEnum.XS"
+                :variant="BtnVariantsEnum.BARE"
+                :aria-label="t(`hangarPlanner.decisions.${decision}`)"
+                :title="t(`hangarPlanner.decisions.${decision}`)"
+                :data-test="`hangar-plan-decide-${decision}`"
+                @click="decide(row, decision)"
+              >
+                <i
+                  :class="hangarFlowDecisionIcons[decision]"
+                  aria-hidden="true"
+                />
+              </Btn>
+            </template>
           </span>
         </div>
 

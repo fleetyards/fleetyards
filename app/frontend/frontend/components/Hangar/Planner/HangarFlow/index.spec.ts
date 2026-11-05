@@ -732,4 +732,228 @@ describe("Hangar/Planner/HangarFlow", () => {
     ];
     expect(start.acquisition.id).toBe("waiting");
   });
+  describe("a slot with no ship yet", () => {
+    const openSlot = (attrs: Partial<HangarPlanSlot> = {}): HangarPlanSlot => ({
+      id: "open",
+      label: "Fighter",
+      quantity: 1,
+      position: 0,
+      state: HangarPlanSlotStateEnum.OPEN,
+      filters: {},
+      candidates: [],
+      starts: [],
+      ...attrs,
+    });
+
+    const mountOpen = (slot: HangarPlanSlot, vehicles: unknown[] = []) =>
+      mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [slot] } as HangarPlan,
+          comparison: {
+            ...comparison,
+            vehicles,
+          } as HangarPlanComparison,
+        },
+      });
+
+    const hull = { id: "hull", name: "Hull A", slug: "hull-a", onSale: true };
+
+    it("shows a start it holds, and still lets ships be added", async () => {
+      const start = {
+        id: "start",
+        startKind: "buyback",
+        startModel: hull,
+        sourceMissing: false,
+      };
+      const slot = openSlot({ starts: [start] as HangarPlanSlot["starts"] });
+      const wrapper = await mountOpen(slot);
+
+      const row = wrapper.find('[data-test="hangar-plan-flow-held"]');
+      expect(row.text()).toContain("Hull A");
+      expect(wrapper.find('[data-test="hangar-plan-flow-open"]').exists()).toBe(
+        false,
+      );
+
+      await row
+        .find('[data-test="hangar-plan-flow-pick-start"]')
+        .trigger("click");
+      await row.find('[data-test="hangar-plan-flow-pick"]').trigger("click");
+
+      expect(wrapper.emitted("start")).toEqual([
+        [{ slot, acquisition: start }],
+      ]);
+      expect(wrapper.emitted("pick")).toEqual([[slot]]);
+    });
+
+    it("names a ship to buy by how it is got, and keeps a row for the unit left", async () => {
+      const slot = openSlot({
+        quantity: 2,
+        starts: [
+          {
+            id: "start",
+            startKind: "store",
+            startModel: null,
+            sourceMissing: false,
+          },
+        ] as HangarPlanSlot["starts"],
+      });
+      const wrapper = await mountOpen(slot);
+
+      expect(
+        wrapper.find('[data-test="hangar-plan-flow-held"]').text(),
+      ).toContain("Store purchase");
+      expect(wrapper.find('[data-test="hangar-plan-flow-open"]').exists()).toBe(
+        true,
+      );
+    });
+
+    it("shows a hangar ship it holds on the ship's own row", async () => {
+      const slot = openSlot({
+        starts: [
+          {
+            id: "start",
+            startKind: "owned",
+            sourceVehicleId: "vehicle",
+            startModel: hull,
+            sourceMissing: false,
+          },
+        ] as HangarPlanSlot["starts"],
+      });
+      const wrapper = await mountOpen(slot, [
+        {
+          vehicleId: "vehicle",
+          model: hull,
+          status: HangarPlanVehicleStatusEnum.UNROUTED,
+        },
+      ]);
+
+      expect(
+        wrapper.find('[data-test="hangar-plan-vehicle-held"]').exists(),
+      ).toBe(true);
+      expect(wrapper.find('[data-test="hangar-plan-flow-held"]').exists()).toBe(
+        false,
+      );
+    });
+
+    it("edits and removes the slot from its row, with no modal in between", async () => {
+      const slot = openSlot();
+      const wrapper = await mountOpen(slot);
+      const row = wrapper.find('[data-test="hangar-plan-flow-open"]');
+
+      await row
+        .find('[data-test="hangar-plan-flow-slot-edit"]')
+        .trigger("click");
+
+      expect(wrapper.emitted("editSlot")).toEqual([[slot]]);
+      expect(
+        row.find('[data-test="hangar-plan-flow-slot-remove"]').exists(),
+      ).toBe(true);
+    });
+  });
+
+  describe("how a hangar ship was pledged", () => {
+    const hull = { id: "hull", name: "Hull A", slug: "hull-a", onSale: true };
+
+    const note = async (attrs: Record<string, unknown>) => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [] } as HangarPlan,
+          comparison: {
+            ...comparison,
+            vehicles: [
+              {
+                vehicleId: "vehicle",
+                model: hull,
+                status: HangarPlanVehicleStatusEnum.PENDING,
+                ...attrs,
+              },
+            ],
+          } as HangarPlanComparison,
+        },
+      });
+
+      const pledge = wrapper.find('[data-test="hangar-plan-flow-pledge"]');
+      return pledge.exists() ? pledge.text() : undefined;
+    };
+
+    it("says a ship is standalone", async () => {
+      expect(await note({ standalone: true })).toBe("Standalone");
+    });
+
+    it("names the package a ship came in", async () => {
+      expect(
+        await note({
+          standalone: false,
+          pledgeName: "Package - Praetorian Pack",
+        }),
+      ).toBe("in Package - Praetorian Pack");
+    });
+
+    it("says nothing where the hangar sync never saw the pledge", async () => {
+      expect(await note({ standalone: null })).toBeUndefined();
+    });
+  });
+
+  describe("a ship RSI says does not melt", () => {
+    const hull = { id: "hull", name: "Hull A", slug: "hull-a", onSale: true };
+
+    const row = async (attrs: Record<string, unknown>) => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [] } as HangarPlan,
+          comparison: {
+            ...comparison,
+            vehicles: [
+              {
+                vehicleId: "vehicle",
+                model: hull,
+                status: HangarPlanVehicleStatusEnum.PENDING,
+                pledgeShips: [],
+                pledgeItems: [],
+                ...attrs,
+              },
+            ],
+          } as unknown as HangarPlanComparison,
+        },
+      });
+
+      return wrapper;
+    };
+
+    const melts = '[data-test="hangar-plan-decide-melt"]';
+
+    it("keeps the melt there but disabled, and says why", async () => {
+      const wrapper = await row({ meltable: false });
+
+      expect(wrapper.find(melts).attributes("disabled")).toBeDefined();
+      expect(
+        wrapper.find('[data-test="hangar-plan-decide-keep"]').exists(),
+      ).toBe(true);
+
+      expect(wrapper.find(melts).text()).toBe("Can't be melted");
+
+      await wrapper.find(melts).trigger("click");
+      expect(wrapper.emitted("decide")).toBeUndefined();
+    });
+
+    it("leaves the melt enabled where the sync never read the pledge", async () => {
+      for (const meltable of [null, true]) {
+        const wrapper = await row({ meltable });
+
+        expect(wrapper.find(melts).attributes("disabled")).toBeUndefined();
+        expect(wrapper.find(melts).text()).not.toContain("Can't be melted");
+      }
+    });
+
+    it("says it can only be kept where no upgrade leads out of it either", async () => {
+      const wrapper = await row({
+        meltable: false,
+        status: HangarPlanVehicleStatusEnum.CHANGE,
+        model: { ...hull, ccuOutOf: "none" },
+      });
+
+      expect(wrapper.text()).toContain("it can only be kept");
+      expect(wrapper.find(melts).attributes("disabled")).toBeDefined();
+    });
+  });
 });

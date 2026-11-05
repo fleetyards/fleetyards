@@ -445,6 +445,8 @@
         "anyShip": "Beliebiges Schiff",
         "buyChosen": "Das Schiff, das du als Nächstes wählst",
         "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden",
+        "onlyKeep": "Es gibt keine Upgrades dafür und RSI erlaubt kein Einschmelzen, es kann nur behalten werden",
+        "notMeltable": "Kann nicht eingeschmolzen werden",
         "excludes": "Schließt %{ships} aus",
         "ccuSalesOnly": "CCU nur in Sales",
         "ccuUnknown": "Noch kein CCU gesehen",

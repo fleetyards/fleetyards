@@ -445,6 +445,8 @@
         "anyShip": "Any ship",
         "buyChosen": "The ship you pick next",
         "onlyMelt": "No upgrades exist for it, so it can only be melted",
+        "onlyKeep": "No upgrades exist for it and RSI does not let it melt, so it can only be kept",
+        "notMeltable": "Can't be melted",
         "excludes": "Rules out %{ships}",
         "ccuSalesOnly": "CCU only during sales",
         "ccuUnknown": "No CCU seen yet",

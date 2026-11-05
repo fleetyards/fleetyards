@@ -445,6 +445,8 @@
         "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
+        "onlyKeep": "这艘舰船没有升级，RSI 也不允许熔炼，只能保留",
+        "notMeltable": "无法熔炼",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
         "ccuUnknown": "尚未见过 CCU",

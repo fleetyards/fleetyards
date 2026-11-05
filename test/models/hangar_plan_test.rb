@@ -318,6 +318,85 @@ class HangarPlanTest < ActiveSupport::TestCase
     end
   end
 
+  test "a pledge RSI says does not melt cannot be planned as a melt, but one already planned stays" do
+    vehicle = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "gift", rsi_pledge_meltable: false)
+    melt = build(:hangar_plan_melt, hangar_plan: @plan, vehicle:)
+
+    assert_not melt.valid?
+    assert melt.errors.of_kind?(:vehicle_id, :not_meltable)
+
+    melt.save!(validate: false)
+    assert melt.reload.valid?
+    assert build(:hangar_plan_melt, hangar_plan: @plan,
+      vehicle: create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "unread")).valid?
+  end
+
+  test "a slot with no ship holds a start, up to its quantity" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+
+    start = @plan.acquisitions.create!(slot:, start_kind: "owned", source_vehicle: vehicle)
+    extra = @plan.acquisitions.new(slot:, start_kind: "store")
+
+    assert_equal @cutlass, start.start_model
+    assert_not start.route_complete?
+    assert_not extra.valid?
+    assert extra.errors.of_kind?(:base, :slot_filled)
+  end
+
+  test "a start to buy names no ship until the slot has one, any other start has to" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+
+    assert @plan.acquisitions.new(slot:, start_kind: "store").valid?
+    assert @plan.acquisitions.new(slot:, start_kind: "ingame").valid?
+    assert_not @plan.acquisitions.new(slot:, start_kind: "owned").valid?
+    assert @plan.acquisitions.new(slot:, start_kind: "buyback").tap(&:valid?).errors.of_kind?(:start_model, :required)
+  end
+
+  test "a start is held by a ship or by a slot with none, never both or neither" do
+    both = @plan.acquisitions.new(candidate: @candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), start_kind: "store")
+    neither = @plan.acquisitions.new(start_kind: "store", start_model: @carrack)
+    on_a_slot_with_a_ship = @plan.acquisitions.new(slot: @slot, start_kind: "store")
+
+    [both, neither, on_a_slot_with_a_ship].each do |acquisition|
+      assert_not acquisition.valid?
+      assert acquisition.errors.of_kind?(:base, :holder_invalid)
+    end
+  end
+
+  test "a start a slot holds takes no upgrades" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    start = @plan.acquisitions.new(slot:, start_kind: "store", start_model: @cutlass)
+    start.upgrade_steps.build(hangar_plan: @plan, position: 0, source_kind: "store", from_model_id: @cutlass.id, to_model_id: @carrack.id)
+
+    assert_not start.valid?
+    assert start.errors.of_kind?(:base, :chain_mismatch)
+  end
+
+  test "a slot's first ship takes the starts it holds, and a ship to buy becomes that ship" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+    owned = @plan.acquisitions.create!(slot:, start_kind: "owned", source_vehicle: vehicle)
+    bought = @plan.acquisitions.create!(slot:, start_kind: "store")
+
+    candidate = create(:hangar_plan_candidate, slot:, model: @constellation)
+
+    assert_equal [candidate, candidate], [owned.reload.candidate, bought.reload.candidate]
+    assert_empty slot.reload.starts
+    assert_equal @cutlass, owned.start_model
+    assert_equal @constellation, bought.start_model
+    assert_in_delta 250.0, bought.price_snapshot
+    assert bought.route_complete?
+  end
+
+  test "a slot cannot drop below the starts it holds" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+    2.times { @plan.acquisitions.create!(slot:, start_kind: "store") }
+
+    assert_not slot.update(quantity: 1)
+    assert slot.errors.of_kind?(:quantity, :below_routes)
+  end
+
   private def build_acquisition(**attributes)
     @plan.acquisitions.new(candidate: @candidate, **attributes)
   end
