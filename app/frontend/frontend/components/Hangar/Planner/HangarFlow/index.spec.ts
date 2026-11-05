@@ -879,6 +879,22 @@ describe("Hangar/Planner/HangarFlow", () => {
       ).toBe(true);
     });
 
+    it("does not call a ship gone that the plan merely no longer lists", async () => {
+      const held = slot("held", HangarPlanSlotStateEnum.OPEN, {
+        starts: [{ ...lost, sourceMissing: false }] as HangarPlanSlot["starts"],
+      });
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          plan: { ...plan, slots: [held] },
+          comparison: { ...comparison, vehicles: [] },
+        },
+      });
+
+      const row = wrapper.find('[data-test="hangar-plan-flow-held"]');
+      expect(row.text()).toContain("Kept from hangar");
+      expect(row.text()).not.toContain("no longer in your hangar");
+    });
+
     it("keeps a row for a route that still starts from it", async () => {
       const routed = slot("routed", HangarPlanSlotStateEnum.DECIDED, {
         candidates: [

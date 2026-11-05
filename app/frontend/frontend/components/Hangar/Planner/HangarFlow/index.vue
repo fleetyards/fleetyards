@@ -207,15 +207,19 @@ const heldRow = ({ slot, start }: HeldStart, left: Card) => ({
   ...openRight(slot),
 });
 
-// A hangar ship's start shows on the ship's own row, unless the ship has left
-// the hangar: the route still spends it, so it keeps a row to be seen and fixed.
+// A hangar ship's start shows on the ship's own row, unless the plan lists no
+// such ship: it left the hangar, or its model went out of the catalogue. The
+// route still spends it, so it keeps a row to be seen and fixed.
 const onShipRow = (start: Pick<HangarPlanSlotStart, "sourceVehicleId">) =>
   props.comparison.vehicles.some(
     (entry) => entry.vehicleId === start.sourceVehicleId,
   );
 
 const startCard = (
-  start: Pick<HangarPlanSlotStart, "startKind" | "startModel">,
+  start: Pick<
+    HangarPlanSlotStart,
+    "startKind" | "startModel" | "sourceMissing"
+  >,
 ): Card => {
   const kind = t(`hangarPlanner.startKinds.${start.startKind}`);
 
@@ -223,7 +227,7 @@ const startCard = (
     return { title: kind, sub: t("hangarPlanner.pick.buyChosen") };
   }
 
-  return start.startKind === HangarPlanStartKindEnum.OWNED
+  return start.sourceMissing
     ? {
         title: start.startModel.name,
         sub: t("hangarPlanner.sourceMissing"),
