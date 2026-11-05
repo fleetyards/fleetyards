@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.40.0](https://github.com/fleetyards/fleetyards/compare/v9.39.0...v9.40.0) (2026-11-05)
+
+
+### Features
+
+* **api:** say when a search group has more matches than it offers ([e843343](https://github.com/fleetyards/fleetyards/commit/e8433439e1eab7b14b93e611433df5af176393cd))
+* **blueprints:** call the add button Add to Assets ([f9f357f](https://github.com/fleetyards/fleetyards/commit/f9f357f50446d77d9b2ab9a5431b4e21cf9a5434))
+* **catalogue:** name field in the blueprint and mission filter forms ([1474650](https://github.com/fleetyards/fleetyards/commit/147465099a8b25f66838039f7e452fdf94aaa70f))
+* **fleetchart:** offer nebula backgrounds for the chart ([#6181](https://github.com/fleetyards/fleetyards/issues/6181)) ([1d58482](https://github.com/fleetyards/fleetyards/commit/1d58482530e927942efc2f51d4c9002991241278))
+* **fleets:** withdraw a join request through its own endpoint ([5020772](https://github.com/fleetyards/fleetyards/commit/5020772f15070a5820c16cc5299f48f582796e39))
+* **search:** add to hangar or inventory from a search result ([ac9210a](https://github.com/fleetyards/fleetyards/commit/ac9210a89e3658185a359814a2bad2bd05c66567))
+* **search:** lead the results with the catalogue a list page shows ([331dfbe](https://github.com/fleetyards/fleetyards/commit/331dfbebf6f13a546004230abd8bc4e813b4bc57))
+* **search:** link from a search group to its filtered list ([44ddb18](https://github.com/fleetyards/fleetyards/commit/44ddb184d82085895025030c9530130a49add8b6))
+* **search:** one header search with catalogue, my stuff and fleet scopes ([#6187](https://github.com/fleetyards/fleetyards/issues/6187)) ([73b06ef](https://github.com/fleetyards/fleetyards/commit/73b06ef9a0dc7a49ab70102590f84c6de285406b))
+
+
+### Bug Fixes
+
+* **dressing-room:** import a body file listed before the job could read it ([491d97d](https://github.com/fleetyards/fleetyards/commit/491d97d59ebd66594149c12f6a4be4dc495644de))
+* **fleets:** re-read the invites list after a failed answer and keep its buttons usable ([659dd73](https://github.com/fleetyards/fleetyards/commit/659dd73abda29783606a79eac6c57af39d4da719))
+* **fleets:** refresh the reader's fleets when a membership is accepted ([67cd939](https://github.com/fleetyards/fleetyards/commit/67cd93917c1ca49d54a03e531af41efbe7e37655))
+* **hangar-planner:** pick a start for a slot with no ship yet, and show the full add-slot form ([#6183](https://github.com/fleetyards/fleetyards/issues/6183)) ([b8f0e08](https://github.com/fleetyards/fleetyards/commit/b8f0e08ca63aa211a973185fd0ac1207cd5513c5))
+* **models:** name pledge store changes in the ship matrix report ([#6186](https://github.com/fleetyards/fleetyards/issues/6186)) ([ace797a](https://github.com/fleetyards/fleetyards/commit/ace797ad92c232f5bab6fd53132c570b1c85b9d4))
+* **nav:** keep a sub-section's panel open while a row in it takes focus ([537c6bb](https://github.com/fleetyards/fleetyards/commit/537c6bb4c71630208fdc57924fb9a668be0af368))
+* **nav:** keep flyouts open for a slow or diagonal pointer ([fd7e139](https://github.com/fleetyards/fleetyards/commit/fd7e1398b72c3828f0f8ff84e93901368e2dce89))
+* **nav:** make the navigation usable from the keyboard ([#6188](https://github.com/fleetyards/fleetyards/issues/6188)) ([ae6a095](https://github.com/fleetyards/fleetyards/commit/ae6a095608205394012c4c624a21a98f1930b542))
+
 ## [9.39.0](https://github.com/fleetyards/fleetyards/compare/v9.38.0...v9.39.0) (2026-11-04)
 
 
