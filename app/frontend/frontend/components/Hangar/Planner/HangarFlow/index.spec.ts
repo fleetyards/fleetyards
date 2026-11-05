@@ -898,7 +898,7 @@ describe("Hangar/Planner/HangarFlow", () => {
               },
             ],
           },
-        ] as HangarPlanSlot["candidates"],
+        ] as unknown as HangarPlanSlot["candidates"],
       });
       const wrapper = await mountWithDefaults(Component, {
         props: {
