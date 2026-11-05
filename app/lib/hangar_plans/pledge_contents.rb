@@ -11,6 +11,7 @@ module HangarPlans
     EMPTY = Contents.new(name: nil, ships: [], items: [], standalone: nil)
 
     STANDALONE_NAME = /\Astandalone/i
+    PACKAGE_NAME = /\Apackage/i
 
     def initialize(plan, vehicles)
       pledges = vehicles.filter_map(&:rsi_pledge_id).uniq
@@ -40,10 +41,11 @@ module HangarPlans
     # RSI sells a "Standalone Ship - Pulse plus Dominion Paint", so what else a
     # pledge holds besides ships only tells where its name does not.
     private def standalone?(vehicle, name, ships, items)
-      return false if ships.any?
+      return false if ships.any? || items.any? && !STANDALONE_NAME.match?(name.to_s) || PACKAGE_NAME.match?(name.to_s)
       return true if STANDALONE_NAME.match?(name.to_s)
+      return if vehicle.rsi_pledge_item_count.nil?
 
-      items.empty? && vehicle.rsi_pledge_item_count.to_i <= 1
+      vehicle.rsi_pledge_item_count <= 1
     end
   end
 end

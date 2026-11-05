@@ -176,14 +176,18 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     create(:vehicle, user:, model:, rsi_pledge_id: "pack", rsi_pledge_name: "Package - Praetorian Pack")
     single = create(:vehicle, user:, model:, rsi_pledge_id: "single", rsi_pledge_name: "VIP Wing Commander", rsi_pledge_item_count: 3)
     unsynced = create(:vehicle, user:, model:)
+    uncounted = create(:vehicle, user:, model:, rsi_pledge_id: "uncounted", rsi_pledge_name: "Aurora Starter Pack")
+    named_package = create(:vehicle, user:, model:, rsi_pledge_id: "named", rsi_pledge_name: "Package - Dominus Pack")
 
-    contents = HangarPlans::PledgeContents.new(plan, [alone, bare, packed, single, unsynced])
+    contents = HangarPlans::PledgeContents.new(plan, [alone, bare, packed, single, unsynced, uncounted, named_package])
 
     assert_equal true, contents.for(alone).standalone
     assert_equal true, contents.for(bare).standalone
     assert_equal false, contents.for(packed).standalone
     assert_equal false, contents.for(single).standalone
     assert_nil contents.for(unsynced).standalone
+    assert_nil contents.for(uncounted).standalone
+    assert_equal false, contents.for(named_package).standalone
   end
 
   test "a start a slot with no ship holds leaves the hangar ship as it is" do
