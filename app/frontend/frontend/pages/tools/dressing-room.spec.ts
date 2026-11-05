@@ -695,6 +695,19 @@ describe("ToolsDressingRoomPage", () => {
       ).toBe(false);
     });
 
+    it("lists the gear columns after the armour and weapon slots", async () => {
+      const { wrapper } = await mount({ torso: "gear-core" });
+      const pieces = wrapper.find(".dressing-room__side--pieces").element;
+      const columns = wrapper.find(
+        '[data-test="dressing-room-gear-columns"]',
+      ).element;
+
+      expect(
+        pieces.compareDocumentPosition(columns) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
+
     it("says so when what is worn offers no gear at all", async () => {
       const { wrapper } = await mount({ undersuit: "flight-suit" });
 

@@ -826,39 +826,6 @@ const copyShareLink = () => {
         </div>
       </div>
 
-      <section
-        v-if="gearColumns.length"
-        class="dressing-room__gear"
-        data-test="dressing-room-gear-columns"
-      >
-        <div
-          v-for="column in gearColumns"
-          :key="column.key"
-          class="dressing-room__gear-column"
-        >
-          <template v-for="kind in column.kinds" :key="kind.key">
-            <h2 class="dressing-room__group-title">
-              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
-            </h2>
-            <ul
-              class="dressing-room__slots"
-              :data-test="`dressing-room-slots-${kind.key}`"
-            >
-              <SlotRow
-                v-for="slot in kind.slots"
-                :key="slot"
-                v-bind="slotRow(slot)"
-                :label="String(gearNumber(slot))"
-                :full-label="slotLabel(slot)"
-                compact
-                @pick="openSlot(slot)"
-                @clear="clear(slot)"
-              />
-            </ul>
-          </template>
-        </div>
-      </section>
-
       <aside class="dressing-room__side dressing-room__side--pieces">
         <div class="dressing-room__groups">
           <section
@@ -912,6 +879,39 @@ const copyShareLink = () => {
           </section>
         </div>
       </aside>
+
+      <section
+        v-if="gearColumns.length"
+        class="dressing-room__gear"
+        data-test="dressing-room-gear-columns"
+      >
+        <div
+          v-for="column in gearColumns"
+          :key="column.key"
+          class="dressing-room__gear-column"
+        >
+          <template v-for="kind in column.kinds" :key="kind.key">
+            <h2 class="dressing-room__group-title">
+              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
+            </h2>
+            <ul
+              class="dressing-room__slots"
+              :data-test="`dressing-room-slots-${kind.key}`"
+            >
+              <SlotRow
+                v-for="slot in kind.slots"
+                :key="slot"
+                v-bind="slotRow(slot)"
+                :label="String(gearNumber(slot))"
+                :full-label="slotLabel(slot)"
+                compact
+                @pick="openSlot(slot)"
+                @clear="clear(slot)"
+              />
+            </ul>
+          </template>
+        </div>
+      </section>
 
       <aside class="dressing-room__side dressing-room__side--outfit">
         <BtnGroup
@@ -973,8 +973,8 @@ const copyShareLink = () => {
   display: grid;
   grid-template-areas:
     "stage"
-    "gear"
     "pieces"
+    "gear"
     "outfit";
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
