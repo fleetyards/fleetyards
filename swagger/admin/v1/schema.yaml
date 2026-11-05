@@ -11171,9 +11171,13 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrm:
           "$ref": "#/components/schemas/MediaFile"
+        holoTextureStencil:
+          "$ref": "#/components/schemas/MediaFile"
         holoTextureLite:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrmLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureStencilLite:
           "$ref": "#/components/schemas/MediaFile"
         holoUsdz:
           "$ref": "#/components/schemas/MediaFile"

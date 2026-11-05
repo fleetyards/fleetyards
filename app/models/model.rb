@@ -560,7 +560,8 @@ class Model < ApplicationRecord
   # Valiant -- shows the base ship's textured holos repainted with these, the
   # same maps a ModelPaint carries.
   LIVERY_MAP_ATTACHMENT_NAMES = %i[
-    holo_texture holo_texture_orm holo_texture_lite holo_texture_orm_lite
+    holo_texture holo_texture_orm holo_texture_stencil
+    holo_texture_lite holo_texture_orm_lite holo_texture_stencil_lite
   ].freeze
 
   # The flight holo's lite export as USDZ, which AR Quick Look opens as it is
