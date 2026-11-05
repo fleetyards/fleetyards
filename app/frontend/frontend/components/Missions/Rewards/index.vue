@@ -72,9 +72,26 @@ const currencyAmount = (reward: GameMissionReward) => {
             <span class="mission-rewards__value">{{
               reputationAmount(reward)
             }}</span>
-            <span v-if="reward.orgName" class="mission-rewards__note">{{
-              reward.orgName
+            <span v-if="reward.ladderName" class="mission-rewards__note">{{
+              reward.ladderName
             }}</span>
+            <span v-if="reward.orgName" class="mission-rewards__note">
+              <router-link
+                v-if="reward.orgSlug"
+                :to="{ name: 'faction', params: { slug: reward.orgSlug } }"
+              >
+                {{ reward.orgName }}
+              </router-link>
+              <template v-else>{{ reward.orgName }}</template>
+            </span>
+            <span
+              v-if="reward.outcome"
+              class="mission-rewards__note"
+              data-test="reward-outcome"
+              >{{
+                t(`labels.gameMission.rewardOutcomes.${reward.outcome}`)
+              }}</span
+            >
           </template>
 
           <!-- 2352 of the 2360 contracts that pay leave the figure to the

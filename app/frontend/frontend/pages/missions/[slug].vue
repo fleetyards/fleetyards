@@ -126,10 +126,14 @@ watch(
               <template v-if="mission.org">
                 {{ t("labels.gameMission.offeredBy") }}
                 <router-link
-                  :to="{
-                    name: 'missions',
-                    query: { orgNameIn: [mission.org.name] },
-                  }"
+                  :to="
+                    mission.org.slug
+                      ? { name: 'faction', params: { slug: mission.org.slug } }
+                      : {
+                          name: 'missions',
+                          query: { orgNameIn: [mission.org.name] },
+                        }
+                  "
                 >
                   {{ mission.org.name }}
                 </router-link>
