@@ -146,7 +146,7 @@ const barStyle = (minReputation: number) => {
   &__ranks {
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 18px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -155,7 +155,7 @@ const barStyle = (minReputation: number) => {
   &__rank {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
 
   &__rank-line {
@@ -177,16 +177,16 @@ const barStyle = (minReputation: number) => {
   }
 
   &__track {
-    height: 8px;
+    height: 12px;
     overflow: hidden;
     background-color: var(--color-gray-black);
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
   &__bar {
     height: 100%;
     background-color: var(--color-endcap);
-    border-radius: 4px;
+    border-radius: 6px;
   }
 }
 </style>
