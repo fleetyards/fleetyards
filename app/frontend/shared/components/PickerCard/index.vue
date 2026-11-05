@@ -25,6 +25,9 @@ type Props = {
   badges?: PickerCardBadge[];
   selected?: boolean;
   disabled?: boolean;
+  // Off where something else names the card on hover, and the browser's tooltip
+  // would only land on top of it.
+  hideTitle?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   badges: () => [],
   selected: false,
   disabled: false,
+  hideTitle: false,
 });
 
 const emit = defineEmits<{
@@ -136,7 +140,7 @@ const accessibleName = computed(() =>
       class="picker-card__toggle"
       :aria-pressed="selected"
       :aria-label="accessibleName"
-      :title="fullText"
+      :title="hideTitle ? undefined : fullText"
       :aria-describedby="$slots.default ? detailsId : undefined"
       :disabled="disabled"
       @click="emit('toggle')"

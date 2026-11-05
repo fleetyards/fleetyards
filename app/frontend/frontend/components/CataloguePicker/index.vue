@@ -13,6 +13,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import PickerCard, {
   type PickerCardBadge,
 } from "@/shared/components/PickerCard/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import CataloguePickerLayout from "@/frontend/components/CataloguePicker/Layout/index.vue";
 import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
@@ -275,28 +276,35 @@ const resultsLabel = computed(() =>
       <slot name="notice" />
     </template>
 
-    <PickerCard
+    <CatalogueItemPopover
       v-for="item in records"
       :key="item.id"
-      :name="item.name"
-      :subtitle="subtitleOf(item)"
-      :image="imageOf(item)"
-      :image-fit="compareItemImageFit(item)"
-      :badges="badgesOf(item)"
-      :selected="isSelected(item)"
-      :disabled="isDisabled(item)"
-      :data-test="`${cardTestPrefix}-${item.slug}`"
-      @toggle="emit('toggle', item)"
+      :item="{ type: kind, slug: item.slug, name: item.name }"
+      :record="item"
+      picker-cell
     >
-      <template #placeholder>
-        <HardpointCategoryIcon
-          v-if="kind === 'Component'"
-          :category="(item as Component).category"
-        />
-        <EquipmentIcon v-else :equipment="item as Equipment" />
-      </template>
-      <slot name="details" :item="item" />
-    </PickerCard>
+      <PickerCard
+        :name="item.name"
+        :subtitle="subtitleOf(item)"
+        :image="imageOf(item)"
+        :image-fit="compareItemImageFit(item)"
+        :badges="badgesOf(item)"
+        :selected="isSelected(item)"
+        :disabled="isDisabled(item)"
+        hide-title
+        :data-test="`${cardTestPrefix}-${item.slug}`"
+        @toggle="emit('toggle', item)"
+      >
+        <template #placeholder>
+          <HardpointCategoryIcon
+            v-if="kind === 'Component'"
+            :category="(item as Component).category"
+          />
+          <EquipmentIcon v-else :equipment="item as Equipment" />
+        </template>
+        <slot name="details" :item="item" />
+      </PickerCard>
+    </CatalogueItemPopover>
 
     <template v-if="hasMore || loadingMore" #more>
       <Btn

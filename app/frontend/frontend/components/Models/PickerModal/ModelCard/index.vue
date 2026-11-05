@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import PickerCard from "@/shared/components/PickerCard/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { type ModelOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { ModelPickerBadge } from "@/frontend/components/Models/PickerModal/types";
@@ -74,39 +75,49 @@ const badges = computed(() => {
 </script>
 
 <template>
-  <PickerCard
-    :name="option.name"
-    :subtitle="subtitle"
-    :image="option.media.storeImage?.mediumUrl"
-    :badges="badges"
-    :selected="selected"
-    :disabled="disabled"
-    :data-test="`model-picker-card-${option.slug}`"
-    @toggle="emit('toggle')"
+  <CatalogueItemPopover
+    :item="{ type: 'Model', slug: option.slug, name: option.name }"
+    picker-cell
   >
-    <template v-if="quantities && selected" #overlay>
-      <div class="model-card__quantity">
-        <button
-          type="button"
-          class="model-card__step"
-          :disabled="quantity <= 1"
-          :aria-label="t('modelPicker.actions.decrease', { name: option.name })"
-          @click="emit('decrease')"
-        >
-          <i class="fa-regular fa-minus" />
-        </button>
-        <span class="model-card__count">{{ quantity }}</span>
-        <button
-          type="button"
-          class="model-card__step"
-          :aria-label="t('modelPicker.actions.increase', { name: option.name })"
-          @click="emit('increase')"
-        >
-          <i class="fa-regular fa-plus" />
-        </button>
-      </div>
-    </template>
-  </PickerCard>
+    <PickerCard
+      :name="option.name"
+      :subtitle="subtitle"
+      :image="option.media.storeImage?.mediumUrl"
+      :badges="badges"
+      :selected="selected"
+      :disabled="disabled"
+      hide-title
+      :data-test="`model-picker-card-${option.slug}`"
+      @toggle="emit('toggle')"
+    >
+      <template v-if="quantities && selected" #overlay>
+        <div class="model-card__quantity">
+          <button
+            type="button"
+            class="model-card__step"
+            :disabled="quantity <= 1"
+            :aria-label="
+              t('modelPicker.actions.decrease', { name: option.name })
+            "
+            @click="emit('decrease')"
+          >
+            <i class="fa-regular fa-minus" />
+          </button>
+          <span class="model-card__count">{{ quantity }}</span>
+          <button
+            type="button"
+            class="model-card__step"
+            :aria-label="
+              t('modelPicker.actions.increase', { name: option.name })
+            "
+            @click="emit('increase')"
+          >
+            <i class="fa-regular fa-plus" />
+          </button>
+        </div>
+      </template>
+    </PickerCard>
+  </CatalogueItemPopover>
 </template>
 
 <style scoped>

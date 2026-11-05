@@ -134,6 +134,25 @@ describe("Models/PickerModal", () => {
     expect(wrapper.find(".model-picker__selected").exists()).toBe(false);
   });
 
+  it("shows a ship's stats card on hover, in place of the browser's tooltip", async () => {
+    const wrapper = await mountOnPhone();
+    viewport.mobile = false;
+
+    const card = wrapper.find(
+      '[data-test="model-picker-card-misc-freelancer-max"]',
+    );
+    expect(card.find("button").attributes("title")).toBeUndefined();
+
+    vi.useFakeTimers();
+    await wrapper.find('[data-test="popover-trigger"]').trigger("mouseenter");
+    await vi.advanceTimersByTimeAsync(300);
+    vi.useRealTimers();
+
+    const panel = document.querySelector('[data-test="popover"]');
+    expect(panel?.classList).toContain("popover--passive");
+    expect(panel?.textContent).toContain("Freelancer MAX");
+  });
+
   it("keeps the extra filters folded away until asked for", async () => {
     const wrapper = await mount();
     const display = () =>
