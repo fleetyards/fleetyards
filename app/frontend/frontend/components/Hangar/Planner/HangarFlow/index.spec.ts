@@ -128,16 +128,22 @@ const comparison: HangarPlanComparison = {
   vehicles: [
     {
       vehicleId: "vehicle-aurora",
+      pledgeShips: [],
+      pledgeItems: [],
       model: model("Aurora MR"),
       status: HangarPlanVehicleStatusEnum.UNASSIGNED,
     },
     {
       vehicleId: "vehicle-titan",
+      pledgeShips: [],
+      pledgeItems: [],
       model: model("Avenger Titan"),
       status: HangarPlanVehicleStatusEnum.MELTED,
     },
     {
       vehicleId: "vehicle-vulture",
+      pledgeShips: [],
+      pledgeItems: [],
       model: vulture,
       status: HangarPlanVehicleStatusEnum.KEPT,
     },
@@ -264,11 +270,15 @@ describe("Hangar/Planner/HangarFlow", () => {
             ...comparison.vehicles,
             {
               vehicleId: "vehicle-cutlass",
+              pledgeShips: [],
+              pledgeItems: [],
               model: model("Cutlass Black"),
               status: HangarPlanVehicleStatusEnum.CHANGE,
             },
             {
               vehicleId: "vehicle-gladius",
+              pledgeShips: [],
+              pledgeItems: [],
               model: model("Gladius"),
               status: HangarPlanVehicleStatusEnum.PENDING,
             },
@@ -421,6 +431,8 @@ describe("Hangar/Planner/HangarFlow", () => {
           vehicles: [
             {
               vehicleId: "vehicle-cutlass",
+              pledgeShips: [],
+              pledgeItems: [],
               model: cutlass,
               status: HangarPlanVehicleStatusEnum.UNROUTED,
               targetModel: vulture,
@@ -626,6 +638,8 @@ describe("Hangar/Planner/HangarFlow", () => {
           vehicles: [
             {
               vehicleId: "vehicle-kraken",
+              pledgeShips: [],
+              pledgeItems: [],
               model: kraken,
               status: HangarPlanVehicleStatusEnum.CHANGE,
             },
@@ -688,6 +702,8 @@ describe("Hangar/Planner/HangarFlow", () => {
           vehicles: [
             {
               vehicleId: "vehicle-cutlass",
+              pledgeShips: [],
+              pledgeItems: [],
               model: cutlass,
               status: HangarPlanVehicleStatusEnum.UNROUTED,
             },

@@ -390,6 +390,12 @@
         "useToken": "Use buy-back token",
         "withToken": "paid with a token"
       },
+      "pledge": {
+        "standalone": "Standalone",
+        "inPackage": "in %{name}",
+        "package": "In a package",
+        "showContents": "Show what %{name} holds"
+      },
       "meltList": {
         "none": "None of your ships can be melted, as far as RSI says. Turn off the filter to pick any ship.",
         "credit": "%{value} credit",

@@ -390,6 +390,12 @@
         "useToken": "Usa token di riacquisto",
         "withToken": "pagato con un token"
       },
+      "pledge": {
+        "standalone": "Singola",
+        "inPackage": "in %{name}",
+        "package": "In un pacchetto",
+        "showContents": "Mostra il contenuto di %{name}"
+      },
       "meltList": {
         "none": "Secondo RSI nessuna delle tue navi può essere fusa. Disattiva il filtro per scegliere una nave qualsiasi.",
         "credit": "%{value} di credito",

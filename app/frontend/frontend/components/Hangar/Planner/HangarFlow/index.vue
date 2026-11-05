@@ -14,7 +14,12 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import PledgeInfo from "@/frontend/components/Hangar/Planner/PledgeInfo/index.vue";
+import {
+  type PledgeDetails,
+  usePlanMoney,
+  usePledgeNote,
+} from "@/frontend/components/Hangar/Planner/format";
 import { canLeave, reaches } from "@/frontend/components/Hangar/Planner/reach";
 import {
   type HangarFlowDecision,
@@ -57,16 +62,23 @@ const emit = defineEmits<{
   end: [end: HangarFlowEnd];
   pick: [slot: HangarPlanSlot];
   edit: [slot: HangarPlanSlot];
+  editSlot: [slot: HangarPlanSlot];
+  removeSlot: [slot: HangarPlanSlot];
 }>();
 
 const { t } = useI18n();
 const { money, range, startRange } = usePlanMoney();
+const pledgeNote = usePledgeNote();
 
 type Card = {
   title: string;
   // Every ship the card stands for, where it stands for more than one.
   ships?: HangarPlanModel[];
   sub?: string;
+  // How a hangar ship was pledged, where the hangar sync saw it.
+  note?: string;
+  // The ship's package, whose contents open from the note.
+  pledge?: { ship: HangarPlanPledgeShip; details: PledgeDetails };
   model?: HangarPlanModel;
   pill?: { variant: `${PillVariantsEnum}`; label: string };
   tone?: "warning";
@@ -248,16 +260,22 @@ const slotSub = (slot: HangarPlanSlot, index: number) =>
       })}`
     : slot.label;
 
-const hangarCard = (
-  name: string | null | undefined,
-  model: HangarPlanModel,
-): Card => ({
-  title: name || model.name,
-  sub: [name ? model.name : undefined, model.manufacturerName]
-    .filter(Boolean)
-    .join(" · "),
-  model,
-});
+const hangarCard = (entry: HangarPlanVehicleStatus): Card => {
+  const { name, model } = entry;
+
+  return {
+    title: name || model.name,
+    sub: [name ? model.name : undefined, model.manufacturerName]
+      .filter(Boolean)
+      .join(" · "),
+    note: pledgeNote(entry),
+    pledge:
+      entry.standalone === false
+        ? { ship: { id: entry.vehicleId, name, model }, details: entry }
+        : undefined,
+    model,
+  };
+};
 
 const slotCard = (route: PlannedRoute): Card => ({
   title: route.model.name,
@@ -897,6 +915,18 @@ const imageOf = (model?: HangarPlanModel) =>
               <span v-if="row.left.sub" class="hangar-flow__muted">
                 {{ row.left.sub }}
               </span>
+              <span
+                v-if="row.left.note"
+                class="hangar-flow__muted hangar-flow__pledge"
+                data-test="hangar-plan-flow-pledge"
+              >
+                {{ row.left.note }}
+                <PledgeInfo
+                  v-if="row.left.pledge"
+                  :ship="row.left.pledge.ship"
+                  :pledge="row.left.pledge.details"
+                />
+              </span>
             </span>
           </template>
           <button
@@ -1096,6 +1126,12 @@ const imageOf = (model?: HangarPlanModel) =>
   border: 1px solid var(--color-edge-soft);
   border-radius: 12px;
   background: var(--color-control);
+}
+
+.hangar-flow__pledge {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
 }
 
 .hangar-flow__card--none {

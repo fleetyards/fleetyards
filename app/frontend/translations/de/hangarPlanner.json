@@ -390,6 +390,12 @@
         "useToken": "Buy-Back-Token nutzen",
         "withToken": "mit Token bezahlt"
       },
+      "pledge": {
+        "standalone": "Einzeln",
+        "inPackage": "in %{name}",
+        "package": "In einem Paket",
+        "showContents": "Inhalt von %{name} anzeigen"
+      },
       "meltList": {
         "none": "Laut RSI lässt sich keines deiner Schiffe melten. Schalte den Filter aus, um ein beliebiges Schiff zu wählen.",
         "credit": "%{value} Guthaben",

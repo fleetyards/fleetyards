@@ -390,6 +390,12 @@
         "useToken": "使用回购代币",
         "withToken": "已用代币支付"
       },
+      "pledge": {
+        "standalone": "单独购买",
+        "inPackage": "包含于 %{name}",
+        "package": "包含于套装",
+        "showContents": "显示 %{name} 的内容"
+      },
       "meltList": {
         "none": "根据 RSI，你的飞船都不可熔。关闭筛选即可任选飞船。",
         "credit": "%{value} 信用点",

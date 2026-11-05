@@ -390,6 +390,12 @@
         "useToken": "Utiliser un jeton de rachat",
         "withToken": "payé avec un jeton"
       },
+      "pledge": {
+        "standalone": "Individuel",
+        "inPackage": "dans %{name}",
+        "package": "Dans un pack",
+        "showContents": "Afficher le contenu de %{name}"
+      },
       "meltList": {
         "none": "D'après RSI, aucun de vos vaisseaux ne peut être fondu. Désactivez le filtre pour choisir n'importe quel vaisseau.",
         "credit": "%{value} de crédit",

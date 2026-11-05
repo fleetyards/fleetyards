@@ -158,6 +158,22 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, api_path: "/hangar/plans/{id}/summary", path_params: {id: @plan.id}
   end
 
+  test "GET comparison lists what a hangar ship's package holds" do
+    user = @plan.user
+    model = create(:model)
+    vehicle = create(:vehicle, user:, model:, rsi_pledge_id: "pack", rsi_pledge_name: "Package - Explorer Pack", rsi_pledge_item_count: 3)
+    other = create(:vehicle, user:, model:, rsi_pledge_id: "pack", rsi_pledge_name: "Package - Explorer Pack")
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/comparison", path_params: {id: @plan.id} do
+      entry = parsed_body["vehicles"].find { |candidate| candidate["vehicleId"] == vehicle.id }
+
+      assert_equal false, entry["standalone"]
+      assert_equal "Package - Explorer Pack", entry["pledgeName"]
+      assert_equal 3, entry["pledgeItemCount"]
+      assert_equal [other.id], entry["pledgeShips"].pluck("id")
+    end
+  end
+
   test "GET comparison shows each ship and the metrics side by side" do
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/comparison", path_params: {id: @plan.id} do
       assert_equal [["kept", @owned.id]], parsed_body["vehicles"].map { |entry| [entry["status"], entry["vehicleId"]] }

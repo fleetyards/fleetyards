@@ -1,12 +1,21 @@
 # frozen_string_literal: true
 
-json.vehicles @comparison.vehicles do |entry|
+entries = @comparison.vehicles
+pledges = HangarPlans::PledgeContents.new(@hangar_plan, entries.map(&:vehicle))
+
+json.vehicles entries do |entry|
+  pledge = pledges.for(entry.vehicle)
+
   json.vehicle_id entry.vehicle.id
   json.name entry.vehicle.name
   json.model do
     json.partial! "api/v1/hangar_plans/model", model: entry.vehicle.model
   end
   json.status entry.status
+  json.pledge_name pledge.name
+  json.standalone pledge.standalone
+  json.pledge_item_count entry.vehicle.rsi_pledge_item_count
+  json.partial! "api/v1/hangar_plans/pledge_contents", ships: pledge.ships, items: pledge.items
   if entry.target_model
     json.target_model do
       json.partial! "api/v1/hangar_plans/model", model: entry.target_model

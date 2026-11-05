@@ -390,6 +390,12 @@
         "useToken": "Usar ficha de recompra",
         "withToken": "pagada con ficha"
       },
+      "pledge": {
+        "standalone": "Individual",
+        "inPackage": "en %{name}",
+        "package": "En un paquete",
+        "showContents": "Mostrar el contenido de %{name}"
+      },
       "meltList": {
         "none": "Según RSI, ninguna de tus naves se puede fundir. Quita el filtro para elegir cualquier nave.",
         "credit": "%{value} de crédito",
