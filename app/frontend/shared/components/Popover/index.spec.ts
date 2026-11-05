@@ -119,6 +119,47 @@ describe("Popover with a mouse", () => {
   });
 });
 
+describe("Popover whose trigger only opens its card", () => {
+  const mountToggling = () => {
+    const wrapper = mount(Popover, {
+      attachTo: document.body,
+      props: { label: "Glacier", clickToggles: true },
+      slots: {
+        default: () => h("button", { type: "button" }, "Info"),
+        content: () => h("div", "Glacier stats"),
+      },
+    });
+    wrappers.push(wrapper);
+
+    return wrapper.find("[data-test='popover-trigger']");
+  };
+
+  const click = async (el: Element) => {
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, detail: 1 }));
+    await vi.advanceTimersByTimeAsync(0);
+  };
+
+  it("opens on a mouse click without the hover delay, and closes on the next", async () => {
+    const trigger = mountToggling();
+
+    await click(trigger.element);
+    expect(panel()).not.toBeNull();
+
+    await click(trigger.element);
+    expect(panel()).toBeNull();
+  });
+
+  it("closes a card a mouse click opened when the pointer leaves", async () => {
+    const trigger = mountToggling();
+
+    await click(trigger.element);
+    await trigger.trigger("mouseleave");
+    await vi.advanceTimersByTimeAsync(150);
+
+    expect(panel()).toBeNull();
+  });
+});
+
 describe("Popover on touch", () => {
   it("leaves a tap to the control around it when told to", async () => {
     const wrapper = mount(Popover, {
