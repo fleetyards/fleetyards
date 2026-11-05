@@ -32,7 +32,6 @@ import {
   MeshLambertMaterial,
   MeshStandardMaterial,
   DefaultLoadingManager,
-  type ColorSpace,
   NoColorSpace,
   SRGBColorSpace,
   TextureLoader,
@@ -42,6 +41,12 @@ import {
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { extrasLoadingManager, prepareGltfLoader } from "../gltfLoader";
 import { gridScale } from "../gridScale";
+import {
+  applyStencilMap,
+  BODY_SUFFIX,
+  partMaterials,
+  preparePaintMap,
+} from "../paintMaps";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -875,22 +880,6 @@ if (props.pickable) {
   });
 }
 
-// The body is the one mesh a paint recolours; decals and glass keep theirs.
-const bodyMaterials = (scene: Group) => {
-  const materials = new Set<MeshStandardMaterial>();
-
-  scene.traverse((node) => {
-    if (!node.name.endsWith("_body")) return;
-
-    node.traverse((child) => {
-      const mesh = child as Mesh;
-      if (mesh.isMesh) materials.add(mesh.material as MeshStandardMaterial);
-    });
-  });
-
-  return [...materials];
-};
-
 // The export's own paint, kept to switch back to.
 type OwnPaint = {
   map: Texture | null;
@@ -909,40 +898,32 @@ const loadPaintMap = (url?: string) =>
         .catch(() => undefined)
     : Promise.resolve(undefined);
 
-// Written like the export's own maps, which are in glTF's orientation.
-const preparePaintMap = (
-  map: Texture,
-  like: Texture | null,
-  colorSpace: ColorSpace,
-) => {
-  map.colorSpace = colorSpace;
-  map.flipY = false;
-  if (!like) return;
-
-  map.wrapS = like.wrapS;
-  map.wrapT = like.wrapT;
-  map.anisotropy = like.anisotropy;
-};
-
 const applyPaint = async (scene: Group) => {
   const request = ++paintRequest;
-  const [map, loadedOrm] = await Promise.all([
+  const [map, loadedOrm, loadedStencil] = await Promise.all([
     loadPaintMap(props.model.paint),
     loadPaintMap(props.model.paint && props.model.paintOrm),
+    loadPaintMap(props.model.paint && props.model.paintStencil),
   ]);
 
-  // Only with its own base colour: a metal paint's ORM under another paint's
-  // colours would turn the wrong parts to metal.
+  // Only with their own base colour: a metal paint's ORM under another paint's
+  // colours would turn the wrong parts to metal, and its artwork would sit on
+  // the wrong paint.
   const orm = map ? loadedOrm : undefined;
+  const stencil = map ? loadedStencil : undefined;
   if (!orm) loadedOrm?.dispose();
+  if (!stencil) loadedStencil?.dispose();
 
   if (request !== paintRequest) {
     map?.dispose();
     orm?.dispose();
+    stencil?.dispose();
     return;
   }
 
-  bodyMaterials(scene).forEach((bodyMaterial) => {
+  applyStencilMap(scene, stencil);
+
+  partMaterials(scene, BODY_SUFFIX).forEach((bodyMaterial) => {
     const own = (bodyMaterial.userData.ownPaint ??= {
       map: bodyMaterial.map,
       orm: bodyMaterial.roughnessMap,
@@ -963,7 +944,7 @@ const applyPaint = async (scene: Group) => {
   });
 
   paintMaps.forEach((paintMap) => paintMap.dispose());
-  paintMaps = [map, orm].filter((paintMap) => paintMap !== undefined);
+  paintMaps = [map, orm, stencil].filter((paintMap) => paintMap !== undefined);
 
   invalidate();
 };
@@ -1108,7 +1089,7 @@ watch(
 );
 
 watch(
-  () => [props.model.paint, props.model.paintOrm],
+  () => [props.model.paint, props.model.paintOrm, props.model.paintStencil],
   () => {
     if (state.value && props.model.textured) void applyPaint(state.value.scene);
   },

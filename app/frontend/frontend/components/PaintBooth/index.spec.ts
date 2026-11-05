@@ -40,6 +40,7 @@ const paint = (slug: string, maps = true) =>
       ? {
           holoTexture: `https://example.test/${slug}.ktx2`,
           holoTextureOrm: `https://example.test/${slug}_orm.ktx2`,
+          holoTextureStencil: `https://example.test/${slug}_stencil.webp`,
         }
       : {},
   }) as unknown as ModelPaint;
@@ -128,6 +129,7 @@ describe("PaintBooth", () => {
     expect(viewerModel(wrapper)).toMatchObject({
       paint: "https://example.test/ghoulish-green.ktx2",
       paintOrm: "https://example.test/ghoulish-green_orm.ktx2",
+      paintStencil: "https://example.test/ghoulish-green_stencil.webp",
     });
     expect(
       wrapper

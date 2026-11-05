@@ -65,8 +65,13 @@ export const useModelHolo = (
       ? {
           base: paint.media.holoTextureLite,
           orm: paint.media.holoTextureOrmLite,
+          stencil: paint.media.holoTextureStencilLite,
         }
-      : { base: paint.media.holoTexture, orm: paint.media.holoTextureOrm };
+      : {
+          base: paint.media.holoTexture,
+          orm: paint.media.holoTextureOrm,
+          stencil: paint.media.holoTextureStencil,
+        };
 
   // A variant whose own colours are a livery of its base ship's wears it where
   // no paint is picked.
@@ -74,8 +79,16 @@ export const useModelHolo = (
     const { media } = toValue(model);
 
     return texturedHoloExport.value?.lite
-      ? { base: media.holoTextureLite?.url, orm: media.holoTextureOrmLite?.url }
-      : { base: media.holoTexture?.url, orm: media.holoTextureOrm?.url };
+      ? {
+          base: media.holoTextureLite?.url,
+          orm: media.holoTextureOrmLite?.url,
+          stencil: media.holoTextureStencilLite?.url,
+        }
+      : {
+          base: media.holoTexture?.url,
+          orm: media.holoTextureOrm?.url,
+          stencil: media.holoTextureStencil?.url,
+        };
   });
 
   const holoPaints = computed(() =>
@@ -115,6 +128,7 @@ export const useModelHolo = (
       textured,
       paint: maps?.base || undefined,
       paintOrm: maps?.orm || undefined,
+      paintStencil: maps?.stencil || undefined,
     };
   });
 
