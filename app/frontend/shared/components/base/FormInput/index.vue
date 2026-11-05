@@ -26,6 +26,7 @@ type Props = {
   type?: `${InputTypesEnum}`;
   translationKey?: string;
   autofocus?: boolean;
+  ariaKeyshortcuts?: string;
   autocomplete?: string;
   // The keyboard a touch device offers. "decimal" is how a text field takes a
   // number it parses itself, where a native number field would not.
@@ -65,6 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: InputTypesEnum.TEXT,
   translationKey: undefined,
   autofocus: false,
+  ariaKeyshortcuts: undefined,
   autocomplete: undefined,
   inputmode: undefined,
   hideLabelOnEmpty: false,
@@ -357,6 +359,7 @@ defineExpose({
         :data-test="`input-${name}`"
         :aria-label="innerLabel"
         :autofocus="autofocus"
+        :aria-keyshortcuts="ariaKeyshortcuts"
         :autocomplete="autocomplete"
         :inputmode="inputmode"
         :disabled="disabled"

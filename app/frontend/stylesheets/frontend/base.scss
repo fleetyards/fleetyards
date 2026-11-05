@@ -1,7 +1,8 @@
+// For pointer focus. A component's own :focus-visible ring has to be able to win.
 a,
 input[type="button"],
 button {
-  outline: 0 none !important;
+  outline: 0 none;
 }
 
 .flex {

@@ -11,6 +11,8 @@ import { useNavStore } from "@/shared/stores/nav";
 import { storeToRefs } from "pinia";
 import { useMobileStore } from "@/shared/stores/mobile";
 import { useSwipeToDismiss } from "@/shared/composables/useSwipeToDismiss";
+import { useI18n } from "@/shared/composables/useI18n";
+import { containTab, moveRowFocus, navRows } from "./keyboard";
 
 type Props = {
   title: string;
@@ -19,16 +21,31 @@ type Props = {
 
 defineProps<Props>();
 
+const { t } = useI18n();
+
 const navStore = useNavStore();
 
 const { slimNavigation: slim, collapsed: navCollapsed } = storeToRefs(navStore);
 
 const route = useRoute();
 
+/*
+ * A navigation can swap the rail itself -- entering a fleet replaces its rows
+ * with the fleet's -- and the row holding the focus goes with them. The switcher
+ * at the head of the rail is what stays.
+ */
 watch(
   () => route.path,
-  () => {
+  async () => {
+    const hadFocus = navigation.value?.contains(document.activeElement);
+
     closeNav();
+
+    await nextTick();
+
+    if (hadFocus && document.activeElement === document.body) {
+      focusFirstRow();
+    }
   },
 );
 
@@ -38,6 +55,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
+  window.removeEventListener("keydown", onDrawerKeydown);
   document.body.classList.remove("nav-swiping");
   document.body.style.removeProperty("--nav-swipe-offset");
 
@@ -62,6 +80,68 @@ const closeNav = () => {
 const wrapper = ref<HTMLElement | null>(null);
 
 const { mobile } = storeToRefs(useMobileStore());
+
+const drawerHidden = computed(() => mobile.value && navCollapsed.value);
+
+const onDrawerKeydown = (event: KeyboardEvent) => {
+  containTab(event, wrapper.value);
+
+  // On the window, so a menu open inside the drawer hears Escape first.
+  if (event.key === "Escape" && !event.defaultPrevented) {
+    closeNav();
+  }
+};
+
+let focusBeforeDrawer: HTMLElement | null = null;
+
+const focusFirstRow = () => {
+  navRows(wrapper.value?.querySelector(".app-navigation__inner"))[0]?.focus({
+    preventScroll: true,
+  });
+};
+
+watch(navCollapsed, async (collapsed) => {
+  if (collapsed) {
+    window.removeEventListener("keydown", onDrawerKeydown);
+
+    // A row keeping the focus would lose it once the drawer turns inert.
+    if (wrapper.value?.contains(document.activeElement)) {
+      focusBeforeDrawer?.focus({ preventScroll: true });
+    }
+
+    focusBeforeDrawer = null;
+
+    return;
+  }
+
+  if (!mobile.value) {
+    return;
+  }
+
+  focusBeforeDrawer = document.activeElement as HTMLElement | null;
+  window.addEventListener("keydown", onDrawerKeydown);
+
+  await nextTick();
+
+  focusFirstRow();
+});
+
+// Focusable only for the jump. A lasting tabindex would catch every press on
+// something in the page that takes no focus of its own, and the popovers that
+// read a press going nowhere as a press inside them would start closing.
+const skipToContent = () => {
+  const main = document.getElementById("main-content");
+
+  if (!main) {
+    return;
+  }
+
+  main.tabIndex = -1;
+  main.addEventListener("blur", () => main.removeAttribute("tabindex"), {
+    once: true,
+  });
+  main.focus();
+};
 
 const { offset: swipeOffset, dragging } = useSwipeToDismiss({
   panel: wrapper,
@@ -92,13 +172,24 @@ watchEffect(() => {
     }"
     class="app-navigation"
     role="navigation"
+    :aria-label="t('nav.navigation')"
     data-test="app-navigation"
+    @keydown="moveRowFocus"
   >
+    <a
+      class="app-navigation__skip"
+      href="#main-content"
+      data-test="nav-skip-to-content"
+      @click.prevent="skipToContent"
+    >
+      {{ t("nav.skipToContent") }}
+    </a>
     <div
       ref="wrapper"
       :class="{
         'app-navigation__wrapper--slim': slim,
       }"
+      :inert="drawerHidden || undefined"
       class="app-navigation__wrapper"
     >
       <div class="app-navigation__inner">

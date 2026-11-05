@@ -91,6 +91,7 @@ const invitationCount = computed(
       <span
         v-else
         class="context-switcher__logo context-switcher__initials"
+        aria-hidden="true"
         data-test="nav-switcher-logo"
       >
         {{ fleetInitials(currentFleet.name) }}

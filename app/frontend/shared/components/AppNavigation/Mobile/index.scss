@@ -41,8 +41,12 @@
         }
       }
 
+      // Still the row's name for a screen reader, with no room to show it.
       .nav-item-text {
-        display: none;
+        position: absolute;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
       }
 
       &::after {
@@ -115,6 +119,11 @@
   border: 1px solid transparent;
   border-color: transparent;
   border-radius: 3px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
+  }
 
   &__icon-bar {
     display: block;

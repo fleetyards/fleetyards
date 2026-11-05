@@ -16,6 +16,7 @@ import {
   flyoutPanels,
   openFlyout,
 } from "./context";
+import { focusEdgeRow, hasModifier } from "../keyboard";
 import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
@@ -106,8 +107,12 @@ const routeActive = computed(() => {
 const tooltipOptions = computed(() => {
   // The flyout heads itself with the section's name, so a tooltip would
   // otherwise say it twice -- the second time laid over the panel saying it.
+  // Focus does not open the panel, though, so on the collapsed rail the keyboard
+  // still needs telling which icon it has reached.
   if (flyout.value && !props.tooltip) {
-    return null;
+    return slim.value && !flyoutOpen.value && props.label
+      ? { content: props.label, placement: "right", focusOnly: true }
+      : null;
   }
 
   const content = props.tooltip ?? (slim.value ? props.label : null);
@@ -234,14 +239,6 @@ const clearCloseTimer = () => {
   }
 };
 
-/*
- * Set when the section is dismissed on purpose -- Escape, or a click on its own
- * row -- and cleared once the pointer and the focus have both left. Without it
- * Escape cannot close the panel at all: handing focus back to the trigger is
- * itself a `focusin` on the row, which reopens what was just dismissed.
- */
-const dismissed = ref(false);
-
 let takeOverTimer: ReturnType<typeof setTimeout> | undefined;
 
 const clearTakeOverTimer = () => {
@@ -251,10 +248,9 @@ const clearTakeOverTimer = () => {
   }
 };
 
-const closeFlyout = (deliberate = false) => {
+const closeFlyout = () => {
   clearCloseTimer();
   clearTakeOverTimer();
-  dismissed.value = deliberate;
   pinned.value = false;
   flyoutOpen.value = false;
 
@@ -428,7 +424,7 @@ const takeOverOncePointerSettles = () => {
 const onPointerEnter = (event: PointerEvent) => {
   rememberPointer(event);
 
-  if (!flyout.value || dismissed.value) {
+  if (!flyout.value) {
     return;
   }
 
@@ -444,7 +440,6 @@ const onPointerLeave = (event: PointerEvent) => {
     return;
   }
 
-  dismissed.value = false;
   scheduleClose();
 };
 
@@ -456,14 +451,6 @@ const onPanelEnter = (event: PointerEvent) => {
 const onPanelLeave = (event: PointerEvent) => {
   rememberPointer(event);
   scheduleClose();
-};
-
-const onFocusIn = () => {
-  if (!flyout.value || dismissed.value) {
-    return;
-  }
-
-  void showFlyout();
 };
 
 // Tabbing past the last row in the panel, or back past the trigger, is the only
@@ -484,13 +471,77 @@ const onFocusOut = (event: FocusEvent) => {
   closeFlyout();
 };
 
+/*
+ * One panel per press, innermost first. Every open panel hears the key on the
+ * document, and an outer one closing would take the inner trigger, and the focus
+ * handed to it, out of the page.
+ *
+ * Focus only comes back from inside the section: a panel can be open under a
+ * resting pointer while the reader is typing somewhere else on the page.
+ */
 const onKeydown = (event: KeyboardEvent) => {
-  if (event.key !== "Escape") {
+  if (
+    event.key !== "Escape" ||
+    event.defaultPrevented ||
+    openFlyout.value[openFlyout.value.length - 1] !== flyoutId
+  ) {
     return;
   }
 
-  closeFlyout(true);
-  trigger.value?.focus();
+  event.preventDefault();
+
+  const hadFocus = root.value?.contains(document.activeElement);
+
+  closeFlyout();
+
+  if (hadFocus) {
+    trigger.value?.focus();
+  }
+};
+
+const enterSection = async (edge: "first" | "last") => {
+  if (flyout.value) {
+    await showFlyout(true);
+  } else {
+    open.value = true;
+
+    await nextTick();
+  }
+
+  focusEdgeRow(
+    flyout.value ? panel.value : root.value?.querySelector(":scope > ul"),
+    edge,
+  );
+};
+
+const onSectionKeydown = (event: KeyboardEvent) => {
+  if (event.defaultPrevented || hasModifier(event)) {
+    return;
+  }
+
+  const onTrigger = event.target === trigger.value;
+  const panelOpen = flyout.value && flyoutOpen.value;
+
+  if (
+    onTrigger &&
+    (event.key === "ArrowRight" || (panelOpen && event.key === "ArrowDown"))
+  ) {
+    event.preventDefault();
+    void enterSection("first");
+  } else if (onTrigger && panelOpen && event.key === "ArrowUp") {
+    event.preventDefault();
+    void enterSection("last");
+  } else if (event.key === "ArrowLeft" && submenuExpanded.value) {
+    event.preventDefault();
+
+    if (flyout.value) {
+      closeFlyout();
+    } else {
+      open.value = false;
+    }
+
+    trigger.value?.focus();
+  }
 };
 
 // A pinned panel outlives the pointer that opened it, so something on the page
@@ -659,7 +710,14 @@ watch(
 watch(
   () => route.path,
   () => {
+    const hadFocus = panel.value?.contains(document.activeElement);
+
     closeFlyout();
+
+    // The row that was just chosen goes with the panel, and the focus with it.
+    if (hadFocus) {
+      trigger.value?.focus();
+    }
   },
 );
 
@@ -703,7 +761,7 @@ const submenuControls = computed(() =>
 const toggleMenu = () => {
   if (flyout.value) {
     if (pinned.value) {
-      closeFlyout(true);
+      closeFlyout();
     } else {
       void showFlyout(true);
     }
@@ -735,8 +793,8 @@ const toggleMenu = () => {
     @pointerenter="onPointerEnter"
     @pointermove="rememberPointer"
     @pointerleave="onPointerLeave"
-    @focusin="onFocusIn"
     @focusout="onFocusOut"
+    @keydown="onSectionKeydown"
   >
     <Collapsed
       v-if="!flyout && submenuDirection === 'up'"
@@ -770,7 +828,10 @@ const toggleMenu = () => {
           class="nav-item__submenu-icon"
           :class="{ 'nav-item__submenu-icon--up': submenuDirection === 'up' }"
         >
-          <i class="nav-item__submenu-glyph fa-solid fa-caret-right" />
+          <i
+            class="nav-item__submenu-glyph fa-solid fa-caret-right"
+            aria-hidden="true"
+          />
         </span>
       </slot>
     </button>
@@ -850,7 +911,11 @@ const toggleMenu = () => {
       @click="navigate"
       @keypress.enter="() => navigate"
     >
-      <a v-tooltip="tooltipOptions" :href="linkHref">
+      <a
+        v-tooltip="tooltipOptions"
+        :href="linkHref"
+        :aria-current="active || routeActive ? 'page' : undefined"
+      >
         <slot>
           <NavItemInner
             :label="label"

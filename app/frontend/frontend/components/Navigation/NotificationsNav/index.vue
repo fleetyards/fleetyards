@@ -11,14 +11,6 @@ import { useNotificationsUnreadCount as useNotificationsUnreadCountQuery } from 
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 
-type Props = {
-  iconOnly?: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  iconOnly: false,
-});
-
 const { t } = useI18n();
 
 const sessionStore = useSessionStore();
@@ -37,7 +29,7 @@ const badge = computed(() => unreadCount.value?.count || 0);
 <template>
   <NavItem
     menu-key="notifications"
-    :label="props.iconOnly ? undefined : t('nav.notifications')"
+    :label="t('nav.notifications')"
     icon="fa-duotone fa-bell"
     :badge="badge"
     :to="{ name: 'notifications' }"

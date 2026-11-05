@@ -233,7 +233,7 @@ const setNoScroll = () => {
         <AdminNavigation v-if="navigationVisible" />
       </transition>
       <div class="main-wrapper">
-        <div ref="mainInner" class="main-inner">
+        <div id="main-content" ref="mainInner" class="main-inner">
           <AppNavigationHeader />
 
           <router-view v-slot="{ Component, route: viewRoute }">

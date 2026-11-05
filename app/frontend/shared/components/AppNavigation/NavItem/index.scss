@@ -70,10 +70,19 @@ $nav-active-glow: color-mix(
   &:hover > a,
   &:active > a,
   &--active > a,
+  > a:focus-visible,
   &:hover > button,
   &:active > button,
-  &--active > button {
+  &--active > button,
+  > button:focus-visible {
     color: color.adjust($text-color, $lightness: 10%);
+  }
+
+  // Inset, because the rail clips anything drawn past its edges.
+  > a:focus-visible,
+  > button:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
   }
 
   &--active > a,

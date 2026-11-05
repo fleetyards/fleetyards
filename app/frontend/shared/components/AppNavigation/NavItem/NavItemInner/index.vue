@@ -50,7 +50,7 @@ const badgeLabel = computed(() => {
       <img
         v-if="image"
         :src="image"
-        :alt="`${label} image`"
+        alt=""
         class="nav-item-image"
         :class="{ 'nav-item-image-avatar': avatar }"
       />
@@ -60,8 +60,9 @@ const badgeLabel = computed(() => {
         :class="{
           [icon]: true,
         }"
+        aria-hidden="true"
       />
-      <span v-else class="nav-item-image-empty">
+      <span v-else class="nav-item-image-empty" aria-hidden="true">
         {{ firstLetter }}
       </span>
       <span
