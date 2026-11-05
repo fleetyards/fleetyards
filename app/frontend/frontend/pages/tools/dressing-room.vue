@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useQueries } from "@tanstack/vue-query";
+import { onClickOutside } from "@vueuse/core";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -93,6 +94,22 @@ const HOLO_AZIMUTH = 180;
 const HOLO_ELEVATION = 8;
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
+
+const stage = ref<HTMLElement>();
+const stageTapped = ref(false);
+
+// On click, not pointerdown: a tap's target is settled when the finger lifts, so
+// revealing any earlier would hand that same tap to a button nobody could see.
+// Dragging the figure round produces no click.
+const handleStageClick = (event: MouseEvent) => {
+  if ((event.target as Element).closest("button")) return;
+
+  stageTapped.value = !stageTapped.value;
+};
+
+onClickOutside(stage, () => {
+  stageTapped.value = false;
+});
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -767,7 +784,13 @@ const copyShareLink = () => {
     <p class="dressing-room-page__lead">{{ t("dressingRoom.lead") }}</p>
 
     <div class="dressing-room">
-      <div class="dressing-room__stage" data-test="dressing-room-stage">
+      <div
+        ref="stage"
+        class="dressing-room__stage"
+        :class="{ 'dressing-room__stage--tapped': stageTapped }"
+        data-test="dressing-room-stage"
+        @click="handleStageClick"
+      >
         <HoloViewer
           v-if="model"
           ref="viewer"
@@ -826,39 +849,6 @@ const copyShareLink = () => {
         </div>
       </div>
 
-      <section
-        v-if="gearColumns.length"
-        class="dressing-room__gear"
-        data-test="dressing-room-gear-columns"
-      >
-        <div
-          v-for="column in gearColumns"
-          :key="column.key"
-          class="dressing-room__gear-column"
-        >
-          <template v-for="kind in column.kinds" :key="kind.key">
-            <h2 class="dressing-room__group-title">
-              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
-            </h2>
-            <ul
-              class="dressing-room__slots"
-              :data-test="`dressing-room-slots-${kind.key}`"
-            >
-              <SlotRow
-                v-for="slot in kind.slots"
-                :key="slot"
-                v-bind="slotRow(slot)"
-                :label="String(gearNumber(slot))"
-                :full-label="slotLabel(slot)"
-                compact
-                @pick="openSlot(slot)"
-                @clear="clear(slot)"
-              />
-            </ul>
-          </template>
-        </div>
-      </section>
-
       <aside class="dressing-room__side dressing-room__side--pieces">
         <div class="dressing-room__groups">
           <section
@@ -912,6 +902,39 @@ const copyShareLink = () => {
           </section>
         </div>
       </aside>
+
+      <section
+        v-if="gearColumns.length"
+        class="dressing-room__gear"
+        data-test="dressing-room-gear-columns"
+      >
+        <div
+          v-for="column in gearColumns"
+          :key="column.key"
+          class="dressing-room__gear-column"
+        >
+          <template v-for="kind in column.kinds" :key="kind.key">
+            <h2 class="dressing-room__group-title">
+              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
+            </h2>
+            <ul
+              class="dressing-room__slots"
+              :data-test="`dressing-room-slots-${kind.key}`"
+            >
+              <SlotRow
+                v-for="slot in kind.slots"
+                :key="slot"
+                v-bind="slotRow(slot)"
+                :label="String(gearNumber(slot))"
+                :full-label="slotLabel(slot)"
+                compact
+                @pick="openSlot(slot)"
+                @clear="clear(slot)"
+              />
+            </ul>
+          </template>
+        </div>
+      </section>
 
       <aside class="dressing-room__side dressing-room__side--outfit">
         <BtnGroup
@@ -971,11 +994,6 @@ const copyShareLink = () => {
 
 .dressing-room {
   display: grid;
-  grid-template-areas:
-    "stage"
-    "gear"
-    "pieces"
-    "outfit";
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
@@ -995,7 +1013,6 @@ const copyShareLink = () => {
 // empty either side of it.
 .dressing-room__stage {
   position: relative;
-  grid-area: stage;
   height: min(70vh, 48rem);
   min-height: 24rem;
   border-radius: 4px;
@@ -1015,6 +1032,7 @@ const copyShareLink = () => {
     );
 
   @media (min-width: $desktop-breakpoint) {
+    grid-area: stage;
     height: min(78vh, 56rem);
     aspect-ratio: 3 / 4;
   }
@@ -1024,12 +1042,15 @@ const copyShareLink = () => {
 // column, and long item names here must not.
 .dressing-room__gear {
   display: grid;
-  grid-area: gear;
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: 1.25rem;
   align-items: start;
   width: 0;
   min-width: 100%;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: gear;
+  }
 }
 
 .dressing-room__gear-column {
@@ -1039,11 +1060,15 @@ const copyShareLink = () => {
 }
 
 .dressing-room__side--pieces {
-  grid-area: pieces;
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: pieces;
+  }
 }
 
 .dressing-room__side--outfit {
-  grid-area: outfit;
+  @media (min-width: $desktop-breakpoint) {
+    grid-area: outfit;
+  }
 }
 
 .dressing-room__empty {
@@ -1069,20 +1094,32 @@ const copyShareLink = () => {
   right: 8px;
   display: flex;
   gap: 8px;
+  // Out of the figure's way until the stage is pointed at or tapped. Hidden
+  // buttons must not take taps: an unseen reset would wipe the outfit.
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
 }
 
-// Out of the figure's way until the stage is pointed at. A touch screen has no
-// hover to reveal them with, so they stay there.
+// Each kind of screen has its own reveal: a touch browser can hold on to :hover
+// long after the tap, and a mouse click must not pin the buttons in place.
 @media (hover: hover) {
-  .dressing-room__actions {
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-
-  .dressing-room__stage:hover .dressing-room__actions,
-  .dressing-room__actions:focus-within {
+  .dressing-room__stage:hover .dressing-room__actions {
     opacity: 1;
+    pointer-events: auto;
   }
+}
+
+@media (hover: none) {
+  .dressing-room__stage--tapped .dressing-room__actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.dressing-room__actions:focus-within {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .dressing-room__side {
