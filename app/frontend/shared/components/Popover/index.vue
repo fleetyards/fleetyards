@@ -34,9 +34,6 @@ type Props = {
   // For a trigger whose only action is the card: a mouse click opens it without
   // the hover delay, rather than dismissing it as a click on a link would.
   clickToggles?: boolean;
-  // The trigger fills the grid cell it sits in, and hands that size on to its
-  // content.
-  fill?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,7 +45,6 @@ const props = withDefaults(defineProps<Props>(), {
   tapThrough: false,
   passive: false,
   clickToggles: false,
-  fill: false,
 });
 
 const emit = defineEmits<{ open: []; close: [] }>();
@@ -371,7 +367,7 @@ defineExpose({ open, show, close });
     v-bind="$attrs"
     ref="trigger"
     class="popover__trigger"
-    :class="{ 'popover__trigger--open': open, 'popover__trigger--fill': fill }"
+    :class="{ 'popover__trigger--open': open }"
     :tabindex="ownTabindex"
     aria-haspopup="dialog"
     :aria-expanded="open"
