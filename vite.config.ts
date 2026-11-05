@@ -94,7 +94,8 @@ export default defineConfig({
     }),
     // injectManifest rather than generateSW: the worker needs push and
     // notificationclick handlers, and generateSW has no source to put them in.
-    // The precaching, cleanup and takeover it configured now live in sw.ts.
+    // No precache: assets load from the CDN, so a cache of them on the app's own
+    // host would never answer a request.
     VitePWA({
       strategies: "injectManifest",
       srcDir: "sw",
@@ -105,13 +106,7 @@ export default defineConfig({
       // Rails serves the manifest (app/views/frontend/_manifest.json.erb).
       manifest: false,
       injectManifest: {
-        modifyURLPrefix: {
-          "": "/vite/",
-        },
-        globPatterns: ["**/*.{js,css,ico,png,svg,woff2}"],
-        // The shared app chunk sat a few hundred bytes under the 2 MiB default,
-        // and a chunk over it fails the build rather than going uncached.
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        injectionPoint: undefined,
       },
     }),
     Components({
@@ -156,8 +151,7 @@ export default defineConfig({
 
           // A chunk per locale. Every locale is loaded up front, and left to
           // the bundler they all landed in one shared chunk that grows with
-          // every label; past 2 MiB the service worker refuses to precache it
-          // and the build fails.
+          // every label.
           const locale = id.match(/\/app\/frontend\/translations\/([^/]+)\//)?.[1];
           if (locale) return `translations-${locale}`;
         },

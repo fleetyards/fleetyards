@@ -1,7 +1,6 @@
 // The slice of the service worker globals this worker uses. The project's
 // TypeScript config targets the DOM, and the WebWorker lib cannot be loaded
 // alongside it without conflicting declarations.
-import type { PrecacheEntry } from "workbox-precaching";
 
 export interface ExtendableEvent extends Event {
   waitUntil(promise: Promise<unknown>): void;
@@ -27,7 +26,7 @@ export interface WindowClient {
 }
 
 export interface ServiceWorkerScope {
-  __WB_MANIFEST: Array<PrecacheEntry | string>;
+  readonly caches: CacheStorage;
   readonly location: Location;
   readonly registration: ServiceWorkerRegistration;
   readonly clients: {
@@ -38,6 +37,10 @@ export interface ServiceWorkerScope {
     openWindow(url: string): Promise<WindowClient | null>;
   };
   skipWaiting(): Promise<void>;
+  addEventListener(
+    type: "activate",
+    listener: (event: ExtendableEvent) => void,
+  ): void;
   addEventListener(type: "push", listener: (event: PushEvent) => void): void;
   addEventListener(
     type: "notificationclick",

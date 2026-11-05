@@ -1,10 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("workbox-precaching", () => ({
-  cleanupOutdatedCaches: vi.fn(),
-  precacheAndRoute: vi.fn(),
-}));
-
 vi.mock("workbox-core", () => ({ clientsClaim: vi.fn() }));
 
 const ORIGIN = "https://fleetyards.net";
@@ -14,7 +9,10 @@ type Listener = (event: Record<string, unknown>) => void;
 const worker = () => {
   const listeners: Record<string, Listener> = {};
   const scope = {
-    __WB_MANIFEST: [],
+    caches: {
+      keys: vi.fn().mockResolvedValue([]),
+      delete: vi.fn().mockResolvedValue(true),
+    },
     location: { origin: ORIGIN },
     registration: {
       showNotification: vi.fn().mockResolvedValue(undefined),
@@ -66,6 +64,30 @@ beforeEach(async () => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+});
+
+describe("activate", () => {
+  it("deletes the precache earlier workers left behind", async () => {
+    current.scope.caches.keys.mockResolvedValue([
+      "workbox-precache-v2-https://fleetyards.net/",
+      "workbox-precache-v2-https://fleetyards.net/-temp",
+    ]);
+
+    await dispatch("activate", {});
+
+    expect(current.scope.caches.delete).toHaveBeenCalledTimes(2);
+    expect(current.scope.caches.delete).toHaveBeenCalledWith(
+      "workbox-precache-v2-https://fleetyards.net/",
+    );
+  });
+
+  it("leaves every other cache alone", async () => {
+    current.scope.caches.keys.mockResolvedValue(["something-else"]);
+
+    await dispatch("activate", {});
+
+    expect(current.scope.caches.delete).not.toHaveBeenCalled();
+  });
 });
 
 describe("push", () => {
