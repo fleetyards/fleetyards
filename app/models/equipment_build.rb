@@ -23,7 +23,7 @@ class EquipmentBuild < ApplicationRecord
     weapon_class size grade slot hidden rate_of_fire range storage
     damage_reduction temperature_rating radiation_protection
     radiation_scrub_rate g_force_tolerance core_compatibility
-    backpack_compatibility volume volume_dimensions fit stats alpha_damage dps
+    backpack_compatibility volume volume_dimensions fit inventory stats alpha_damage dps
   ].freeze
 
   # The facts Equipment reads through its build. `hidden` is held back from the

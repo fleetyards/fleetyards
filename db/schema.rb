@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_04_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_05_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -629,6 +629,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_04_210000) do
     t.jsonb "stats"
     t.decimal "alpha_damage", precision: 15, scale: 2
     t.decimal "dps", precision: 15, scale: 2
+    t.jsonb "inventory"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["family_key"], name: "index_equipment_on_family_key"
     t.index ["item_type"], name: "index_equipment_on_item_type"
@@ -683,6 +684,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_04_210000) do
     t.jsonb "stats"
     t.decimal "alpha_damage", precision: 15, scale: 2
     t.decimal "dps", precision: 15, scale: 2
+    t.jsonb "inventory"
     t.index ["environment", "equipment_type"], name: "index_equipment_builds_on_environment_and_equipment_type"
     t.index ["environment", "item_type"], name: "index_equipment_builds_on_environment_and_item_type"
     t.index ["environment", "version"], name: "index_equipment_builds_on_environment_and_version"

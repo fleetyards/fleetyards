@@ -219,6 +219,71 @@ module ScData
         ], fit["ports"]
       end
 
+      test "reads the gear ports a core offers, with the bone and helper each hangs by" do
+        write_equipment("cds_core_01_01_01", name: "Core", path: "entities/scitem/characters/human/armor/pu_armor/heavy/core",
+          type: "Char_Armor_Torso", components_extra: <<~XML)
+            <SItemPortContainerComponentParams>
+              <Ports>
+                <SItemPortDef Name="magazine_attach_1" MinSize="1" MaxSize="1">
+                  <Types>
+                    <SItemPortDefTypes Type="WeaponAttachment"><SubTypes><Enum value="Magazine" /></SubTypes></SItemPortDefTypes>
+                  </Types>
+                  <AttachmentImplementation>
+                    <SItemPortDefAttachmentImplementationBone>
+                      <Helper><Helper Name="magazine_attach_1_override" ItemOffsetHelperName="attach_offset_left_01" /></Helper>
+                    </SItemPortDefAttachmentImplementationBone>
+                  </AttachmentImplementation>
+                </SItemPortDef>
+                <SItemPortDef Name="medPen_attach_1" MinSize="1" MaxSize="1">
+                  <Types><SItemPortDefTypes Type="FPS_Consumable" /></Types>
+                </SItemPortDef>
+              </Ports>
+            </SItemPortContainerComponentParams>
+          XML
+        @parser.translations = {"Core" => "Core"}
+
+        assert_equal [
+          {"name" => "magazine_attach_1", "types" => [{"type" => "WeaponAttachment", "sub_types" => ["Magazine"]}],
+           "min_size" => 1, "max_size" => 1, "bone" => "magazine_attach_1_override", "item_helper" => "attach_offset_left_01"},
+          {"name" => "medPen_attach_1", "types" => [{"type" => "FPS_Consumable"}], "min_size" => 1, "max_size" => 1}
+        ], parsed.fetch("cds_core_01_01_01")["fit"]["ports"]
+      end
+
+      test "reads what a worn piece holds from the container record, not its description" do
+        ref = "54a89245-673d-4a56-8454-8488eb0d3fc8"
+        container = "#{@raw_path}/Data/Libs/Foundry/Records/inventorycontainers/armor/medium/medium_legs.xml"
+        FileUtils.mkdir_p(File.dirname(container))
+        File.write(container, <<~XML)
+          <InventoryContainer.medium_legs __type="InventoryContainer" __ref="#{ref}">
+            <interiorDimensions x="0.2" y="0.27" z="0.2" />
+            <inventoryType>
+              <InventoryClosedContainerType>
+                <capacity><SMicroCargoUnit microSCU="5500" /></capacity>
+              </InventoryClosedContainerType>
+            </inventoryType>
+          </InventoryContainer.medium_legs>
+        XML
+        write_equipment("cds_legs_01_01_01", name: "Legs", path: "entities/scitem/characters/human/armor/pu_armor/medium/legs",
+          type: "Char_Armor_Legs", components_extra: %(<SCItemInventoryContainerComponentParams containerParams="#{ref}" />))
+        write_equipment("cds_legs_01_01_02", name: "Legs", path: "entities/scitem/characters/human/armor/pu_armor/medium/legs",
+          type: "Char_Armor_Legs")
+        @parser.translations = {"Legs" => "Legs"}
+
+        assert_equal({"capacity" => 5500, "dimensions" => {"x" => 0.2, "y" => 0.27, "z" => 0.2}},
+          parsed.fetch("cds_legs_01_01_01")["inventory"])
+        assert_nil parsed.fetch("cds_legs_01_01_02")["inventory"]
+      end
+
+      test "reads what a pen and a magazine are, so a worn port can be asked about them" do
+        write_equipment("crlf_consumable_healing_01", name: "Pen", path: "entities/scitem/consumables",
+          type: "FPS_Consumable", sub_type: "MedPack")
+        write_attachment("behr_rifle_ballistic_01_mag", "Magazine", sub_type: "Magazine")
+        @parser.translations = @parser.translations.merge("Pen" => "Pen")
+
+        assert_equal "FPS_Consumable", parsed.fetch("crlf_consumable_healing_01")["fit"]["type"]
+        assert_equal "WeaponAttachment", parsed.fetch("behr_rifle_ballistic_01_mag")["fit"]["type"]
+      end
+
       test "reads the tags a backpack demands of the port it goes on" do
         write_equipment("cds_combat_superheavy_backpack_01_01_01", name: "Backpack", path: "entities/scitem/characters/human/armor/pu_armor/heavy/backpack",
           type: "Char_Armor_Backpack", required_tags: "CdsSuperheavyBackpack_01")

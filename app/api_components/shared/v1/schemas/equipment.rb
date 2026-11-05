@@ -73,6 +73,10 @@ module Shared
               description: "What decides where the item may be worn or carried; absent for everything else",
               anyOf: [::Shared::V1::Schemas::EquipmentFit, {type: :null}]
             },
+            inventory: {
+              description: "What a worn piece can hold; absent for anything without storage of its own",
+              anyOf: [::Shared::V1::Schemas::EquipmentInventory, {type: :null}]
+            },
             attachPoints: {
               type: [:object, :null],
               description: "Where the item is hung when stowed -- on a back mount, in a holster, on a core -- by helper name; on the detail payload only",

@@ -122,6 +122,7 @@ module ScData
           volume: equipment_data["volume"],
           volume_dimensions: equipment_data["volume_dimensions"],
           fit: equipment_data["fit"],
+          inventory: equipment_data["inventory"],
           stats: equipment_data["stats"],
           alpha_damage: equipment_data["alpha_damage"],
           dps: equipment_data["dps"],
