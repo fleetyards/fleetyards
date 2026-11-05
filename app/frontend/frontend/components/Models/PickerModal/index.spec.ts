@@ -134,16 +134,26 @@ describe("Models/PickerModal", () => {
     expect(wrapper.find(".model-picker__selected").exists()).toBe(false);
   });
 
-  it("shows a ship's stats card on hover, in place of the browser's tooltip", async () => {
+  it("shows a ship's stats card from its info button, and only from there", async () => {
     const wrapper = await mountOnPhone();
     viewport.mobile = false;
 
     const card = wrapper.find(
       '[data-test="model-picker-card-misc-freelancer-max"]',
     );
-    expect(card.find("button").attributes("title")).toBeUndefined();
+    expect(card.find(".picker-card__toggle").attributes("title")).toContain(
+      "Freelancer MAX",
+    );
+    expect(
+      card.find('[data-test="popover-trigger"] [data-test="catalogue-item-info"]')
+        .exists(),
+    ).toBe(true);
 
     vi.useFakeTimers();
+    await card.find(".picker-card__toggle").trigger("mouseenter");
+    await vi.advanceTimersByTimeAsync(300);
+    expect(document.querySelector('[data-test="popover"]')).toBeNull();
+
     await wrapper.find('[data-test="popover-trigger"]').trigger("mouseenter");
     await vi.advanceTimersByTimeAsync(300);
     vi.useRealTimers();

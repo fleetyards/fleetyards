@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "show": "Werte von %{name} anzeigen",
         "stock": "Serie: %{value}",
         "more": "+%{count} weitere auf der Detailseite",
         "unavailable": "Diese Details konnten nicht geladen werden.",

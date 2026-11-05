@@ -31,9 +31,9 @@ type Props = {
   // A card to read and nothing more: the pointer goes through it, for a trigger
   // in a grid whose card would otherwise block the neighbours it covers.
   passive?: boolean;
-  // The trigger fills the grid cell it sits in, and hands that size on to its
-  // content.
-  fill?: boolean;
+  // For a trigger whose only action is the card: a mouse click opens it without
+  // the hover delay, rather than dismissing it as a click on a link would.
+  clickToggles?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   focusable: true,
   tapThrough: false,
   passive: false,
-  fill: false,
+  clickToggles: false,
 });
 
 const emit = defineEmits<{ open: []; close: [] }>();
@@ -286,7 +286,7 @@ const onClickCapture = (event: MouseEvent) => {
   if (props.disabled || event.detail === 0) return;
   if (props.tapThrough && tapDriven()) return;
 
-  if (!tapDriven()) {
+  if (!tapDriven() && !props.clickToggles) {
     close();
     return;
   }
@@ -299,7 +299,7 @@ const onClickCapture = (event: MouseEvent) => {
   }
 
   event.preventDefault();
-  void show("tap");
+  void show(tapDriven() ? "tap" : "hover");
 };
 
 // Keyboard only. Pointer focus already has hover, and showing a card on every
@@ -367,7 +367,7 @@ defineExpose({ open, show, close });
     v-bind="$attrs"
     ref="trigger"
     class="popover__trigger"
-    :class="{ 'popover__trigger--open': open, 'popover__trigger--fill': fill }"
+    :class="{ 'popover__trigger--open': open }"
     :tabindex="ownTabindex"
     aria-haspopup="dialog"
     :aria-expanded="open"

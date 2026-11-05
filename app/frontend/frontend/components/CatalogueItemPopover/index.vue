@@ -67,10 +67,9 @@ type Props = {
   tapThrough?: boolean;
   // A crafted part: the card adds the stats its recipe and grades give.
   crafted?: InventoryCraftedRef;
-  // The trigger is a card in a picker's grid, which is there to be picked: the
-  // card is only to read, the pointer goes through it to the cards it covers, and
-  // a tap stays the picker's.
-  pickerCell?: boolean;
+  // The trigger sits in a picker's grid, which is there to be picked from: the
+  // card is only to read, and the pointer goes through it to the cards it covers.
+  readOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -81,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
   focusable: true,
   tapThrough: false,
   crafted: undefined,
-  pickerCell: false,
+  readOnly: false,
 });
 
 // A crafted part's card opens the catalogue page with its recipe and grades
@@ -99,7 +98,7 @@ const route = computed(() => {
 });
 
 const cardRoute = computed(() =>
-  props.pickerCell ? false : (route.value ?? false),
+  props.readOnly ? false : (route.value ?? false),
 );
 
 const slug = computed(() => props.item.slug || "");
@@ -309,7 +308,7 @@ const hasCard = computed(
     (!!props.record || !!route.value),
 );
 
-const linked = computed(() => props.link && !props.pickerCell && !!route.value);
+const linked = computed(() => props.link && !props.readOnly && !!route.value);
 
 const label = computed(() => props.item.name || props.linkLabel || "");
 </script>
@@ -319,9 +318,9 @@ const label = computed(() => props.item.name || props.linkLabel || "");
     v-if="hasCard"
     :label="label"
     :focusable="focusable"
-    :tap-through="tapThrough || pickerCell"
-    :passive="pickerCell"
-    :fill="pickerCell"
+    :tap-through="tapThrough"
+    :passive="readOnly"
+    :click-toggles="readOnly"
     @open="requested = true"
   >
     <router-link
