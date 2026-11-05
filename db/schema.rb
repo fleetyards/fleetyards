@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_05_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -700,6 +700,51 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_150000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["from_currency", "to_currency"], name: "index_exchange_rates_on_from_currency_and_to_currency", unique: true
+  end
+
+  create_table "faction_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "faction_id", null: false
+    t.string "environment", null: false
+    t.string "version", null: false
+    t.string "name"
+    t.text "description"
+    t.boolean "lawful"
+    t.string "alignment"
+    t.string "headquarters"
+    t.string "founded"
+    t.string "leadership"
+    t.string "area"
+    t.string "focus"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment", "version"], name: "index_faction_builds_on_environment_and_version"
+    t.index ["faction_id", "environment", "version"], name: "index_faction_builds_on_faction_id_and_environment_and_version", unique: true
+    t.index ["faction_id"], name: "index_faction_builds_on_faction_id"
+  end
+
+  create_table "faction_ladders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "faction_build_id", null: false
+    t.string "key", null: false
+    t.string "name", null: false
+    t.integer "ceiling"
+    t.jsonb "ranks", default: [], null: false
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["faction_build_id", "position"], name: "index_faction_ladders_on_faction_build_id_and_position", unique: true
+  end
+
+  create_table "factions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "sc_ref", null: false
+    t.string "sc_key", null: false
+    t.string "slug", null: false
+    t.string "name"
+    t.string "version"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sc_key"], name: "index_factions_on_sc_key", unique: true
+    t.index ["sc_ref"], name: "index_factions_on_sc_ref", unique: true
+    t.index ["slug"], name: "index_factions_on_slug", unique: true
   end
 
   create_table "feature_flag_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1516,6 +1561,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_150000) do
     t.string "entity_name"
     t.string "catalogue_item_type"
     t.uuid "catalogue_item_id"
+    t.string "ladder_key"
+    t.string "ladder_name"
+    t.string "outcome"
     t.index ["game_mission_build_id", "position"], name: "index_game_mission_rewards_on_build_and_position", unique: true
     t.index ["game_mission_build_id"], name: "index_game_mission_rewards_on_build"
     t.index ["kind"], name: "index_game_mission_rewards_on_kind"
@@ -3327,6 +3375,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_150000) do
   add_foreign_key "equipment_attachments", "equipment", column: "attachment_id", on_delete: :cascade
   add_foreign_key "equipment_attachments", "equipment_builds", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
+  add_foreign_key "faction_builds", "factions", on_delete: :cascade
+  add_foreign_key "faction_ladders", "faction_builds", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade

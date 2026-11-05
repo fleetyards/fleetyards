@@ -23,7 +23,13 @@ class GameMissionReward < ApplicationRecord
   # reward on a page that could say only "there is one".
   KINDS = %w[reputation item badge currency].freeze
 
+  # Reputation only. The export names the first of its five result flags
+  # nowhere, but it sits on nearly every gain, so it reads as completion; the
+  # others are only said not to be it. Null where the award sets no flag.
+  OUTCOMES = %w[completed not_completed].freeze
+
   validates :kind, presence: true, inclusion: {in: KINDS}
+  validates :outcome, inclusion: {in: OUTCOMES}, allow_nil: true
 
   scope :of_kind, ->(kind) { where(kind:) }
 
