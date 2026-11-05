@@ -399,7 +399,8 @@
         "components": "Componenti",
         "blueprints": "Progetti",
         "missions": "Missioni",
-        "equipment": "Equipaggiamento"
+        "equipment": "Equipaggiamento",
+        "factions": "Fazioni"
       },
       "equipment": {
         "index": "Equipaggiamento"

@@ -597,6 +597,9 @@
       "missions": {
         "index": "任务"
       },
+      "factions": {
+        "index": "势力"
+      },
       "missions": {
         "index": "任务"
       },

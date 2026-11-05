@@ -3,6 +3,7 @@ import { routes as blueprintsRoutes } from "@/frontend/pages/blueprints/routes";
 import { routes as commoditiesRoutes } from "@/frontend/pages/commodities/routes";
 import { routes as componentsRoutes } from "@/frontend/pages/components/routes";
 import { routes as equipmentRoutes } from "@/frontend/pages/equipment/routes";
+import { routes as factionsRoutes } from "@/frontend/pages/factions/routes";
 import { routes as missionsRoutes } from "@/frontend/pages/missions/routes";
 
 export type CatalogueTenant = {
@@ -67,6 +68,14 @@ export const CATALOGUE_TENANTS: CatalogueTenant[] = [
     detailRoutes: ["mission"],
     component: () => import("@/frontend/pages/missions.vue"),
     children: missionsRoutes,
+  },
+  {
+    key: "factions",
+    icon: "fa-duotone fa-people-group",
+    listRoute: "factions",
+    detailRoutes: ["faction"],
+    component: () => import("@/frontend/pages/factions.vue"),
+    children: factionsRoutes,
   },
 ];
 

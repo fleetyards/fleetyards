@@ -399,7 +399,8 @@
         "components": "Componentes",
         "blueprints": "Planos",
         "missions": "Misiones",
-        "equipment": "Equipo"
+        "equipment": "Equipo",
+        "factions": "Facciones"
       },
       "equipment": {
         "index": "Equipo"

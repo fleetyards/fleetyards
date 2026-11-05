@@ -429,7 +429,10 @@
       "equipment": {
         "index": "Equipaggiamento"
       },
-      "equipmentItem": "%{name}"
+      "equipmentItem": "%{name}",
+      "factions": {
+        "index": "Fazioni"
+      }
     }
   }
 }

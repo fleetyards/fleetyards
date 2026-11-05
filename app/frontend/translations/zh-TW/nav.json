@@ -399,7 +399,8 @@
         "components": "部件",
         "blueprints": "藍圖",
         "missions": "任務",
-        "equipment": "裝備"
+        "equipment": "裝備",
+        "factions": "勢力"
       },
       "equipment": {
         "index": "裝備"

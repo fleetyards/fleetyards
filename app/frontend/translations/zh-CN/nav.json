@@ -399,7 +399,8 @@
         "components": "部件",
         "blueprints": "蓝图",
         "missions": "任务",
-        "equipment": "装备"
+        "equipment": "装备",
+        "factions": "势力"
       },
       "equipment": {
         "index": "装备"
