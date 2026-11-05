@@ -238,6 +238,13 @@ const offersCatalogue = computed(
     scope.value.key !== CATALOGUE_SCOPE,
 );
 
+// The button goes as soon as it has answered, and focus must not go with it:
+// leaving the search closes it.
+const searchCatalogue = () => {
+  form.value?.querySelector("input")?.focus();
+  selectScope(CATALOGUE_SCOPE);
+};
+
 const canSwitchScope = computed(() => scopes.value.length > 1);
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -397,7 +404,8 @@ const popoverStyle = computed(() => ({
               class="home-search__in-catalogue"
               :size="BtnSizesEnum.MD"
               data-test="home-search-in-catalogue"
-              @click="selectScope(CATALOGUE_SCOPE)"
+              @mousedown.prevent
+              @click="searchCatalogue"
             >
               {{ t("home.landing.searchInCatalogue") }}
               <span aria-hidden="true">↵</span>
@@ -716,7 +724,8 @@ const popoverStyle = computed(() => ({
 .home-search__scopes {
   position: absolute;
   top: var(--scope-tabs-top);
-  left: 100%;
+  // Past the card's border, not on it: `left` counts from inside the border.
+  left: calc(100% + 1px);
   display: flex;
   flex-direction: column;
   gap: var(--scope-tab-gap);
