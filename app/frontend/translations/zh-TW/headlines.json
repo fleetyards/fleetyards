@@ -449,6 +449,7 @@
       "support": "Support FleetYards.net",
       "supporters": "感謝我們的支持者",
       "allSupporters": "我們的所有支持者",
+      "appLoadFailed": "部分內容未能載入",
       "appUpdate": "新版本已就緒",
       "installApp": {
         "offer": "隨身攜帶 FleetYards",

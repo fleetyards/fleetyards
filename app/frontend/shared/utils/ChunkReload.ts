@@ -1,5 +1,16 @@
+import { ref } from "vue";
+
 const CHUNK_RELOAD_KEY = "fleetyards.chunkReloadAt";
+const CHUNK_PAGE_LOAD_KEY = "fleetyards.chunkPageLoadAt";
 export const CHUNK_RELOAD_COOLDOWN = 60_000;
+
+// A failed chunk cannot be retried inside its document: Vite never requests a
+// stylesheet twice, so the next attempt succeeds with the page left unstyled,
+// and WebKit answers every later import of the module with the same failure.
+// Loading the document again recovers, except that WebKit can keep failing the
+// module for as long as the tab lives, which in an installed app means until it
+// is closed.
+export const chunkLoadFailures = ref(0);
 
 const lastChunkReload = () => {
   try {
@@ -14,17 +25,43 @@ const lastChunkReload = () => {
 // would otherwise reload the page forever and spend the whole API rate limit
 // on page boots, so a second failure soon after is left to surface instead.
 export const reloadForFailedChunk = () => {
-  if (Date.now() - lastChunkReload() < CHUNK_RELOAD_COOLDOWN) return false;
+  const lastReload = lastChunkReload();
+
+  if (Date.now() - lastReload < CHUNK_RELOAD_COOLDOWN) {
+    // Asked for by this document, so it is on its way out: one route's chunks
+    // fail together, and only those of an earlier document mean a failed reload.
+    if (lastReload >= performance.timeOrigin) return true;
+
+    chunkLoadFailures.value += 1;
+    return false;
+  }
 
   try {
     sessionStorage.setItem(CHUNK_RELOAD_KEY, String(Date.now()));
   } catch {
+    chunkLoadFailures.value += 1;
     return false;
   }
 
   window.location.reload();
 
   return true;
+};
+
+// For the page loads a navigation triggers once a chunk has failed. Each new
+// document can fail the same way and navigate by itself, so these are limited
+// too, or they would reload forever just like a chunk that always fails.
+export const claimPageLoadForFailedChunk = () => {
+  try {
+    const last = Number(sessionStorage.getItem(CHUNK_PAGE_LOAD_KEY));
+    if (last && Date.now() - last < CHUNK_RELOAD_COOLDOWN) return false;
+
+    sessionStorage.setItem(CHUNK_PAGE_LOAD_KEY, String(Date.now()));
+
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export const handlePreloadError = (event: Event) => {

@@ -2,11 +2,13 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
-import { useNotificationsStore } from "@/shared/stores/notifications";
-import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { type NavigationFailure, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
-import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
+import {
+  setupRouter,
+  successOnScreen,
+  type FyRedirectRoute,
+} from "@/shared/plugins/Router";
 import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { getFleetQueryOptions, type FeatureFlagName } from "@/services/fyApi";
@@ -64,17 +66,6 @@ const rememberReload = (version: string) => {
 };
 
 const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, "");
-
-// A success that is about to time out on its own; a notice that waits for the
-// member would hold the release back for as long as it is left open.
-const successOnScreen = () =>
-  useNotificationsStore().messages.some(
-    (message) =>
-      message.visible &&
-      message.type === MessageTypesEnum.SUCCESS &&
-      !message.persist &&
-      message.timeout !== false,
-  );
 
 /*
  * A tab left open across a release keeps sending requests shaped by its old

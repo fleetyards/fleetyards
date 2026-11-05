@@ -42,6 +42,7 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 import { useAppUpdateNotice } from "@/shared/composables/useAppUpdateNotice";
+import { useChunkFailureNotice } from "@/shared/composables/useChunkFailureNotice";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
@@ -188,9 +189,11 @@ watch(
   },
 );
 
-useCheckStoreVersion(appStore);
+useCheckStoreVersion(appStore, { checkOnResume: true });
 
 useAppUpdateNotice(appStore);
+
+useChunkFailureNotice();
 
 const userUpdateComlink = ref();
 const fleetCreateComlink = ref();

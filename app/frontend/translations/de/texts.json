@@ -17,6 +17,7 @@
         },
         "otherWays": "Andere Wege zu helfen"
       },
+      "appLoadFailed": "Ein Teil von FleetYards konnte nicht geladen werden, daher sieht diese Seite vielleicht falsch aus oder reagiert nicht richtig. Lade sie neu, um das zu beheben. Falls das nicht hilft, schließe die App und öffne sie erneut.",
       "appUpdate": {
         "withCodename": "FleetYards %{version} (%{codename}) ist live. Lade die Seite neu, um zu wechseln.",
         "plain": "FleetYards %{version} ist live. Lade die Seite neu, um zu wechseln."

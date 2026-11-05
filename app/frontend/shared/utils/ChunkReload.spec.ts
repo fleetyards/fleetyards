@@ -1,17 +1,28 @@
 import {
   CHUNK_RELOAD_COOLDOWN,
+  chunkLoadFailures,
+  claimPageLoadForFailedChunk,
   handlePreloadError,
   reloadForFailedChunk,
 } from "@/shared/utils/ChunkReload";
+
+const CHUNK_RELOAD_KEY = "fleetyards.chunkReloadAt";
+
+const documentStart = Math.ceil(performance.timeOrigin);
+
+const reloadedByEarlierDocument = (msAgo = 1) =>
+  sessionStorage.setItem(CHUNK_RELOAD_KEY, String(documentStart - msAgo));
 
 describe("reloadForFailedChunk", () => {
   const reload = vi.fn();
 
   beforeEach(() => {
     sessionStorage.clear();
+    chunkLoadFailures.value = 0;
     reload.mockReset();
     vi.stubGlobal("location", { ...window.location, reload });
-    vi.useFakeTimers();
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(documentStart);
   });
 
   afterEach(() => {
@@ -23,22 +34,38 @@ describe("reloadForFailedChunk", () => {
   it("reloads on the first failure", () => {
     expect(reloadForFailedChunk()).toBe(true);
     expect(reload).toHaveBeenCalledTimes(1);
+    expect(chunkLoadFailures.value).toBe(0);
   });
 
-  it("does not reload again while the last reload is recent", () => {
+  it("treats more failures while its own reload is under way as handled", () => {
     reloadForFailedChunk();
-    vi.advanceTimersByTime(CHUNK_RELOAD_COOLDOWN - 1);
+
+    expect(reloadForFailedChunk()).toBe(true);
+    expect(reload).toHaveBeenCalledTimes(1);
+    expect(chunkLoadFailures.value).toBe(0);
+  });
+
+  it("does not reload again soon after an earlier document's reload", () => {
+    reloadedByEarlierDocument();
 
     expect(reloadForFailedChunk()).toBe(false);
-    expect(reload).toHaveBeenCalledTimes(1);
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("counts a failure the cooldown keeps from reloading", () => {
+    reloadedByEarlierDocument();
+
+    reloadForFailedChunk();
+    reloadForFailedChunk();
+
+    expect(chunkLoadFailures.value).toBe(2);
   });
 
   it("reloads again once the cooldown has passed", () => {
-    reloadForFailedChunk();
-    vi.advanceTimersByTime(CHUNK_RELOAD_COOLDOWN);
+    reloadedByEarlierDocument(CHUNK_RELOAD_COOLDOWN);
 
     expect(reloadForFailedChunk()).toBe(true);
-    expect(reload).toHaveBeenCalledTimes(2);
+    expect(reload).toHaveBeenCalledTimes(1);
   });
 
   it("does not reload when the attempt cannot be remembered", () => {
@@ -48,6 +75,36 @@ describe("reloadForFailedChunk", () => {
 
     expect(reloadForFailedChunk()).toBe(false);
     expect(reload).not.toHaveBeenCalled();
+    expect(chunkLoadFailures.value).toBe(1);
+  });
+});
+
+describe("claimPageLoadForFailedChunk", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+    vi.useFakeTimers({ toFake: ["Date"] });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("allows one page load per cooldown", () => {
+    expect(claimPageLoadForFailedChunk()).toBe(true);
+    expect(claimPageLoadForFailedChunk()).toBe(false);
+
+    vi.advanceTimersByTime(CHUNK_RELOAD_COOLDOWN);
+
+    expect(claimPageLoadForFailedChunk()).toBe(true);
+  });
+
+  it("refuses when the page load cannot be remembered", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+
+    expect(claimPageLoadForFailedChunk()).toBe(false);
   });
 });
 
@@ -62,12 +119,15 @@ describe("handlePreloadError", () => {
   });
 
   it("swallows the error only when it reloads", () => {
-    const first = new Event("vite:preloadError", { cancelable: true });
-    handlePreloadError(first);
-    expect(first.defaultPrevented).toBe(true);
+    const reloading = new Event("vite:preloadError", { cancelable: true });
+    handlePreloadError(reloading);
+    expect(reloading.defaultPrevented).toBe(true);
 
-    const second = new Event("vite:preloadError", { cancelable: true });
-    handlePreloadError(second);
-    expect(second.defaultPrevented).toBe(false);
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, String(documentStart - 1));
+    vi.spyOn(Date, "now").mockReturnValue(documentStart);
+    const stuck = new Event("vite:preloadError", { cancelable: true });
+    handlePreloadError(stuck);
+    expect(stuck.defaultPrevented).toBe(false);
+    vi.restoreAllMocks();
   });
 });

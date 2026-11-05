@@ -17,6 +17,7 @@
         },
         "otherWays": "其他帮助方式"
       },
+      "appLoadFailed": "FleetYards 的部分内容未能加载，此页面可能显示或运行异常。重新加载即可修复。如果仍有问题，请关闭应用后重新打开。",
       "appUpdate": {
         "withCodename": "FleetYards %{version}（%{codename}）已上线。重新加载即可切换。",
         "plain": "FleetYards %{version} 已上线。重新加载即可切换。"

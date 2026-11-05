@@ -449,6 +449,7 @@
       "support": "Support FleetYards.net",
       "supporters": "Danke an unsere Unterstützer",
       "allSupporters": "Alle Unterstützer",
+      "appLoadFailed": "Etwas wurde nicht geladen",
       "appUpdate": "Eine neue Version ist verfügbar",
       "installApp": {
         "offer": "Nimm FleetYards mit",

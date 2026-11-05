@@ -1,4 +1,3 @@
-import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
 import { clientsClaim } from "workbox-core";
 import icon from "../images/favicons/icon-192.png";
 import {
@@ -11,12 +10,27 @@ import type { ServiceWorkerScope } from "./types";
 
 declare const self: ServiceWorkerScope;
 
-// What generateSW used to write for us: precache the build, drop caches from
-// older builds, and take over open tabs as soon as a new worker installs.
-cleanupOutdatedCaches();
-precacheAndRoute(self.__WB_MANIFEST);
+// Take over open tabs as soon as a new worker installs.
 void self.skipWaiting();
 clientsClaim();
+
+// Workers of earlier builds downloaded the whole build into this cache, from the
+// app's own host. The app loads its assets from the CDN, so nothing ever read it.
+const ABANDONED_CACHE_PREFIX = "workbox-precache";
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      const names = await self.caches.keys();
+
+      await Promise.all(
+        names
+          .filter((name) => name.startsWith(ABANDONED_CACHE_PREFIX))
+          .map((name) => self.caches.delete(name)),
+      );
+    })(),
+  );
+});
 
 // A deploy can activate a new worker mid-session, so nothing below may depend
 // on the build that queued the push.

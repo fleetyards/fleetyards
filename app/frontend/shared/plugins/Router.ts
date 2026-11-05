@@ -8,7 +8,14 @@ import {
   type RouteLocationNormalized,
   type RouterOptions,
 } from "vue-router";
-import { reloadForFailedChunk } from "@/shared/utils/ChunkReload";
+import {
+  chunkLoadFailures,
+  claimPageLoadForFailedChunk,
+  reloadForFailedChunk,
+} from "@/shared/utils/ChunkReload";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
+import { useNotificationsStore } from "@/shared/stores/notifications";
+import { withoutTrailingSlash } from "@/shared/utils/Paths";
 import { reportError } from "@/shared/plugins/Appsignal";
 import qs from "qs";
 import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
@@ -52,6 +59,17 @@ export type FyRouterOptions = {
     failure?: NavigationFailure | void,
   ) => void;
 };
+
+// A success that is about to time out on its own; a notice that waits for the
+// member would hold a reload back for as long as it is left open.
+export const successOnScreen = () =>
+  useNotificationsStore().messages.some(
+    (message) =>
+      message.visible &&
+      message.type === MessageTypesEnum.SUCCESS &&
+      !message.persist &&
+      message.timeout !== false,
+  );
 
 export const setupRouter = (options: FyRouterOptions) => {
   const router = createRouter({
@@ -120,16 +138,45 @@ export const setupRouter = (options: FyRouterOptions) => {
 
   router.afterEach((to, from, failure) => {
     options.afterEach?.(to, from, failure);
+
+    // A document with a failed chunk is reloaded on arriving at another page.
+    // After the navigation rather than before it, so a push, a replace and a Back
+    // have already left history as they should.
+    if (
+      !failure &&
+      chunkLoadFailures.value &&
+      from.matched.length &&
+      withoutTrailingSlash(to.path) !== withoutTrailingSlash(from.path) &&
+      !("secret" in to.query) &&
+      !successOnScreen() &&
+      claimPageLoadForFailedChunk()
+    ) {
+      window.location.reload();
+    }
   });
 
-  router.onError((error) => {
+  router.onError((error, to) => {
     if (
       process.env.NODE_ENV === "production" &&
       (error.message.includes("Failed to fetch dynamically imported module") ||
         error.message.includes("error loading dynamically imported module") ||
         error.message.includes("Importing a module script failed"))
     ) {
-      if (!reloadForFailedChunk()) reportError(error, "router chunk load");
+      if (reloadForFailedChunk()) return;
+
+      reportError(error, "router chunk load");
+
+      // The page never arrived, so only a load of the address itself can get
+      // there. Never of the address this document was loaded from, as that is
+      // what would loop when the chunk fails on every load.
+      const target = router.resolve(to).href;
+      if (
+        !("secret" in to.query) &&
+        target !== `${window.location.pathname}${window.location.search}` &&
+        claimPageLoadForFailedChunk()
+      ) {
+        window.location.assign(target);
+      }
     }
   });
 
