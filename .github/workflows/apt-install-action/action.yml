@@ -1,0 +1,63 @@
+name: Apt Install
+description: Installs apt packages from cached .deb files, so a slow Ubuntu mirror only costs the run that fills the cache
+inputs:
+  packages:
+    description: Space-separated package names
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # The dpkg status file changes with the runner or container image, and the
+    # cached .deb files only fit the exact package set they were resolved against.
+    # Hashing this file too lets an edit here replace an entry that turned out bad.
+    - name: Compute cache key
+      id: key
+      shell: bash
+      env:
+        PACKAGES: ${{ inputs.packages }}
+      run: echo "key=apt-debs-$(cat /var/lib/dpkg/status .github/workflows/apt-install-action/action.yml <(echo "$PACKAGES") | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore .deb files
+      id: restore
+      uses: actions/cache/restore@v6
+      with:
+        path: /tmp/apt-debs
+        key: ${{ steps.key.outputs.key }}
+
+    # Downloads and installs in two steps because Docker images ship an apt hook
+    # that deletes the .deb files as soon as dpkg has run.
+    # A slow mirror connection keeps trickling data, so apt's own timeouts never
+    # fire. Restarting opens a new connection and apt resumes its partial files.
+    - name: Install packages
+      id: install
+      shell: bash
+      env:
+        PACKAGES: ${{ inputs.packages }}
+        CACHE_HIT: ${{ steps.restore.outputs.cache-hit }}
+      run: |
+        SUDO=$(command -v sudo || true)
+        if [ "$CACHE_HIT" = "true" ]; then
+          if $SUDO dpkg -i /tmp/apt-debs/*.deb; then
+            exit 0
+          fi
+          echo "::warning::Could not install the cached .deb files, downloading from the mirror instead"
+        fi
+        $SUDO apt-get update
+        for attempt in 1 2 3; do
+          timeout 300 $SUDO apt-get install -y -f --no-install-recommends --download-only $PACKAGES && break
+          echo "::warning::Download attempt $attempt did not finish within 5 minutes"
+        done
+        mkdir -p /tmp/apt-debs
+        find /var/cache/apt/archives -maxdepth 1 -name '*.deb' -exec cp -t /tmp/apt-debs {} +
+        $SUDO apt-get install -y -f --no-install-recommends $PACKAGES
+        if [ -n "$(find /tmp/apt-debs -name '*.deb' -print -quit)" ]; then
+          echo "has-debs=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    # Saved here rather than in a post step, which is skipped when the job's tests fail.
+    - name: Save .deb files
+      if: steps.restore.outputs.cache-hit != 'true' && steps.install.outputs.has-debs == 'true'
+      uses: actions/cache/save@v6
+      with:
+        path: /tmp/apt-debs
+        key: ${{ steps.key.outputs.key }}

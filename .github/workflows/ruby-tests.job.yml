@@ -55,7 +55,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install libvips
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+        uses: ./.github/workflows/apt-install-action
+        with:
+          packages: libvips42t64
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

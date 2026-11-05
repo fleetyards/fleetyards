@@ -49,7 +49,9 @@ updates:
       - docker
 
   - package-ecosystem: github-actions
-    directory: /
+    directories:
+      - /
+      - /.github/workflows/*-action
     schedule:
       interval: daily
     open-pull-requests-limit: 5
