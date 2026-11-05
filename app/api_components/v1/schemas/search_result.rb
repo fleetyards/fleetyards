@@ -19,7 +19,9 @@ module V1
           # Present for a place only.
           appearance: ::V1::Schemas::SearchAppearance,
           # Present for a person whose presence the reader may see.
-          online: {type: :boolean}
+          online: {type: :boolean},
+          # Present for a member whose squadron the reader may see.
+          squadron: ::V1::Schemas::SearchSquadron
         },
         additionalProperties: false,
         required: %w[type name slug]

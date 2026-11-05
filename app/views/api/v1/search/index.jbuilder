@@ -17,6 +17,17 @@ json.groups @groups do |group|
         json.flare result.appearance.flare
       end
     end
+    if result.squadron
+      json.squadron do
+        json.name result.squadron.name
+        json.color result.squadron.color
+        if result.squadron.icon.attached?
+          json.icon do
+            json.partial! "api/v1/shared/file", record: result.squadron, attr: :icon
+          end
+        end
+      end
+    end
     if result.image
       json.image do
         json.partial! "api/v1/shared/file", record: result.image.record, attr: result.image.name
