@@ -490,6 +490,7 @@ module ScData
           required_tags: (attach_def["RequiredTags"].to_s.split.presence if attach_def["Type"] == "WeaponAttachment"),
           ports: (attachment_ports(values).presence if attach_def["Type"] == "WeaponPersonal"),
           fit: fit(attach_def, values, worn_type),
+          inventory: (inventory(values) if worn_type),
           stats: stats.presence,
           **ScData::Parser::GearStats.headline(stats),
           hidden: variant?(key),
@@ -505,7 +506,7 @@ module ScData
       # item's and the item's among the port's. A flight suit offers no arms or
       # legs port at all; a heavy core's backpack port takes up to size 3.
       private def fit(attach_def, values, worn_type)
-        return unless worn_type || attach_def["Type"] == "WeaponPersonal"
+        return unless worn_type || goes_on_worn_port?(attach_def)
 
         {
           type: attach_def["Type"],
@@ -513,6 +514,39 @@ module ScData
           required_tags: attach_def["RequiredTags"].to_s.split.presence,
           ports: (worn_ports(values).presence if worn_type)
         }.compact
+      end
+
+      private def goes_on_worn_port?(attach_def)
+        %w[WeaponPersonal FPS_Consumable Gadget].include?(attach_def["Type"]) ||
+          (attach_def["Type"] == "WeaponAttachment" && attach_def["SubType"] == "Magazine")
+      end
+
+      # What a worn piece holds, from the container record it names. The
+      # description states a figure too, but not a dependable one: the same 8K
+      # microSCU core reads "8.0 µSCU" in one description and "8K µSCU" in the
+      # next.
+      private def inventory(values)
+        container = inventory_containers[values.dig("Components", "SCItemInventoryContainerComponentParams", "containerParams")]
+        return if container.nil?
+
+        capacity = micro_scu(container.dig("inventoryType", "InventoryClosedContainerType", "capacity") || {})
+        return unless capacity.positive?
+
+        dimensions = container["interiorDimensions"] || {}
+
+        {
+          capacity: capacity.to_i,
+          dimensions: %w[x y z].to_h { |axis| [axis.to_sym, dimensions[axis].to_f] }
+        }
+      end
+
+      private def inventory_containers
+        @inventory_containers ||= Dir.glob("#{import_path}/inventorycontainers/**/*.xml").each_with_object({}) do |file, index|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = values.is_a?(Hash) ? values["__ref"] : nil
+
+          index[ref] = values if ref.present?
+        end
       end
 
       # A gun's or a magazine's capacity, where the description states none.
@@ -555,7 +589,7 @@ module ScData
           .index_by { |value| value["__ref"] }
       end
 
-      FIT_PORT_TYPE = /\A(Char_Armor_|WeaponPersonal\z)/
+      FIT_PORT_TYPE = /\A(Char_Armor_|(WeaponPersonal|WeaponAttachment|FPS_Consumable|Gadget)\z)/
 
       private def worn_ports(values)
         ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
@@ -572,13 +606,17 @@ module ScData
 
           next if types.empty?
 
+          mount = port.dig("AttachmentImplementation", "SItemPortDefAttachmentImplementationBone", "Helper", "Helper") || {}
+
           {
             name: port["Name"],
             types:,
             min_size: port["MinSize"].to_i,
             max_size: port["MaxSize"].to_i,
             port_tags: port["PortTags"].to_s.split.presence,
-            required_tags: port["RequiredPortTags"].to_s.split.presence
+            required_tags: port["RequiredPortTags"].to_s.split.presence,
+            bone: value_or_nil(mount["Name"]),
+            item_helper: value_or_nil(mount["ItemOffsetHelperName"])
           }.compact
         end
       end

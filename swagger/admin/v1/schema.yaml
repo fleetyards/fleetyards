@@ -15520,6 +15520,12 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/EquipmentFit"
           - type: 'null'
+        inventory:
+          description: What a worn piece can hold; absent for anything without storage
+            of its own
+          anyOf:
+          - "$ref": "#/components/schemas/EquipmentInventory"
+          - type: 'null'
         attachPoints:
           type:
           - object
@@ -15801,6 +15807,12 @@ components:
             type: string
           description: Tags an item needs to go in it; a leading $ is not part of
             the tag
+        bone:
+          type: string
+          description: The bone of the piece's rig an item in this port hangs from
+        itemHelper:
+          type: string
+          description: The helper on the item that meets that bone
       additionalProperties: false
       required:
       - name
@@ -15971,6 +15983,35 @@ components:
           - 'null'
       additionalProperties: false
       title: EquipmentInput
+    EquipmentInventory:
+      type: object
+      description: 'What a worn piece can hold: its capacity in microSCU, and the
+        interior an item has to fit inside, in metres'
+      properties:
+        capacity:
+          type: integer
+        dimensions:
+          "$ref": "#/components/schemas/EquipmentInventoryDimensions"
+      additionalProperties: false
+      required:
+      - capacity
+      - dimensions
+      title: EquipmentInventory
+    EquipmentInventoryDimensions:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      title: EquipmentInventoryDimensions
     EquipmentMagazine:
       type: object
       properties:

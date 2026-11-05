@@ -318,10 +318,20 @@ fr:
               outfit_limit_reached: "peut contenir au plus %{count} tenues"
             held_weapon:
               not_carried: "n'est pas une arme que porte cette tenue"
+            items:
+              no_port: "n'a pas de port pour cet équipement"
+            stored_items:
+              over_capacity: "dépasse ce que peuvent contenir les pièces portées"
+              too_large: "est trop grand pour l'endroit où il est rangé"
+              no_storage: "est rangé dans une pièce sans rangement"
         outfit_item:
           attributes:
             equipment:
               wrong_slot: "ne convient pas à cet emplacement"
+        outfit_stored_item:
+          attributes:
+            equipment:
+              unmeasured: "n'a pas de taille mesurée pour être rangé"
         fleet_shopping_list:
           attributes:
             base:

@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "Armatura",
-        "weapons": "Armi"
+        "weapons": "Armi",
+        "gear": "Equipaggiamento"
       },
       "hold": "Impugna",
       "bodies": {
@@ -53,7 +54,8 @@
       "positionPending": "Posizione non ancora esportata",
       "fit": {
         "noPort": "%{item} non ha uno slot per questo",
-        "doesNotFit": "Non compatibile con %{item}"
+        "doesNotFit": "Non compatibile con %{item}",
+        "noWornPiece": "Nessun pezzo indossato ha posto per questo"
       },
       "armorSets": {
         "open": "Set di armatura",
@@ -61,7 +63,37 @@
           "one": "%{count} set",
           "other": "%{count} set"
         }
-      }
+      },
+      "gearHint": "Indossa un torso, delle gambe o una tuta interna per portare granate, caricatori, iniettori e strumenti.",
+      "gear": {
+        "grenade": "Granata %{number}",
+        "magazine": "Caricatore %{number}",
+        "gadget": "Gadget",
+        "medpen": "Medpen %{number}",
+        "oxypen": "Oxypen %{number}",
+        "utility": "Utilità %{number}"
+      },
+      "saveBlocked": "Correggi ciò che è segnalato sopra per salvare questo outfit.",
+      "storage": {
+        "title": "Spazio",
+        "space": "%{used} di %{capacity}",
+        "add": "Aggiungi oggetto",
+        "fewer": "Uno in meno",
+        "more": "Uno in più",
+        "pickerTitle": "Aggiungi a %{piece}",
+        "problems": {
+          "noStorage": "Nulla di indossato qui può contenere questi oggetti.",
+          "overCapacity": "Contiene più di quanto questo pezzo possa ospitare.",
+          "tooLarge": "Contiene un oggetto troppo grande per questo pezzo.",
+          "unmeasured": "Contiene un oggetto senza dimensione misurata."
+        },
+        "misfit": {
+          "unmeasured": "Dimensione non misurata",
+          "tooLarge": "Troppo grande per questo pezzo",
+          "noRoom": "Spazio insufficiente"
+        }
+      },
+      "gearNone": "Ciò che indossi non ha slot per l'equipaggiamento."
     }
   }
 }

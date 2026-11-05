@@ -21,6 +21,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   type Outfit,
   type OutfitItemInput,
+  type OutfitStoredItemInput,
   type OutfitBodyEnum,
   type OutfitWeaponSlotEnum,
   getOutfitsQueryKey,
@@ -33,17 +34,24 @@ import {
 type Props = {
   // What the outfit on screen wears, by id: what it is saved with.
   items: OutfitItemInput[];
+  // What the worn pieces hold, by id.
+  storedItems?: OutfitStoredItemInput[];
   activeId?: string;
   // A piece has not resolved yet, or no longer does: saving now would leave
   // it out.
   pending?: boolean;
+  // Something on screen the API would refuse: gear with no port, storage that
+  // does not fit.
+  blocked?: boolean;
   heldWeapon?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  storedItems: () => [],
   activeId: undefined,
   pending: false,
+  blocked: false,
   heldWeapon: undefined,
   body: undefined,
 });
@@ -80,6 +88,23 @@ const savedItemsKey = (outfit: Outfit) =>
     })),
   );
 
+const storedKey = (
+  stored: { holder: string; equipmentId: string; quantity: number }[],
+) =>
+  stored
+    .map((item) => `${item.holder}:${item.equipmentId}:${item.quantity}`)
+    .sort()
+    .join(",");
+
+const savedStoredKey = (outfit: Outfit) =>
+  storedKey(
+    outfit.storedItems.map((item) => ({
+      holder: item.holder,
+      equipmentId: item.equipment.id,
+      quantity: item.quantity,
+    })),
+  );
+
 const name = ref("");
 
 watch(
@@ -90,11 +115,22 @@ watch(
   { immediate: true },
 );
 
+const contentsChanged = computed(
+  () =>
+    !active.value ||
+    savedItemsKey(active.value) !== itemsKey(props.items) ||
+    savedStoredKey(active.value) !== storedKey(props.storedItems),
+);
+
+// A patch can take a port or room away from a saved outfit. That only stands in
+// the way of saving new contents: renaming it leaves them as they were.
+const refused = computed(() => props.blocked && contentsChanged.value);
+
 const changed = computed(
   () =>
     !!active.value &&
     (active.value.name !== name.value.trim() ||
-      savedItemsKey(active.value) !== itemsKey(props.items) ||
+      contentsChanged.value ||
       (active.value.heldWeapon ?? undefined) !== props.heldWeapon ||
       (props.body !== undefined && active.value.body !== props.body)),
 );
@@ -116,6 +152,7 @@ const saveNew = async () => {
       data: {
         name: name.value.trim(),
         items: props.items,
+        storedItems: props.storedItems,
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
       },
@@ -136,7 +173,9 @@ const saveChanges = async () => {
       id: active.value.id,
       data: {
         name: name.value.trim(),
-        items: props.items,
+        ...(contentsChanged.value
+          ? { items: props.items, storedItems: props.storedItems }
+          : {}),
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
       },
@@ -172,10 +211,14 @@ const canSave = computed(
 
 const canSaveNew = computed(
   () =>
-    canSave.value && (!active.value || name.value.trim() !== active.value.name),
+    canSave.value &&
+    !props.blocked &&
+    (!active.value || name.value.trim() !== active.value.name),
 );
 
-const canSaveChanges = computed(() => canSave.value && changed.value);
+const canSaveChanges = computed(
+  () => canSave.value && changed.value && !refused.value,
+);
 
 // Enter saves what the buttons would: the active outfit's changes, or a new
 // outfit when none is active.
@@ -203,6 +246,13 @@ const submit = () => {
         />
         <p v-if="nameTaken" class="outfits__warning">
           {{ t("dressingRoom.nameTaken") }}
+        </p>
+        <p
+          v-if="refused"
+          class="outfits__warning"
+          data-test="dressing-room-save-blocked"
+        >
+          {{ t("dressingRoom.saveBlocked") }}
         </p>
         <div class="outfits__actions">
           <Btn

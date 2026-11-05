@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "Armadura",
-        "weapons": "Armas"
+        "weapons": "Armas",
+        "gear": "Equipo"
       },
       "hold": "Empuñar",
       "bodies": {
@@ -53,7 +54,8 @@
       "positionPending": "Posición aún no exportada",
       "fit": {
         "noPort": "%{item} no tiene espacio para esto",
-        "doesNotFit": "No encaja con %{item}"
+        "doesNotFit": "No encaja con %{item}",
+        "noWornPiece": "Ninguna pieza puesta tiene sitio para esto"
       },
       "armorSets": {
         "open": "Conjuntos de armadura",
@@ -61,7 +63,37 @@
           "one": "%{count} conjunto",
           "other": "%{count} conjuntos"
         }
-      }
+      },
+      "gearHint": "Ponte un torso, piernas o un traje interior para llevar granadas, cargadores, inyectores y herramientas.",
+      "gear": {
+        "grenade": "Granada %{number}",
+        "magazine": "Cargador %{number}",
+        "gadget": "Dispositivo",
+        "medpen": "Medpen %{number}",
+        "oxypen": "Oxypen %{number}",
+        "utility": "Utilidad %{number}"
+      },
+      "saveBlocked": "Corrige lo marcado arriba para guardar este atuendo.",
+      "storage": {
+        "title": "Almacenamiento",
+        "space": "%{used} de %{capacity}",
+        "add": "Añadir objeto",
+        "fewer": "Uno menos",
+        "more": "Uno más",
+        "pickerTitle": "Añadir a %{piece}",
+        "problems": {
+          "noStorage": "Aquí no llevas nada que pueda contener estos objetos.",
+          "overCapacity": "Contiene más de lo que cabe en esta pieza.",
+          "tooLarge": "Contiene un objeto demasiado grande para esta pieza.",
+          "unmeasured": "Contiene un objeto sin tamaño medido."
+        },
+        "misfit": {
+          "unmeasured": "Sin tamaño medido",
+          "tooLarge": "Demasiado grande para esta pieza",
+          "noRoom": "No queda espacio suficiente"
+        }
+      },
+      "gearNone": "Lo que llevas puesto no tiene ranuras de equipo."
     }
   }
 }

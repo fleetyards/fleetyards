@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "护甲",
-        "weapons": "武器"
+        "weapons": "武器",
+        "gear": "装备"
       },
       "hold": "手持",
       "bodies": {
@@ -53,7 +54,8 @@
       "positionPending": "位置尚未导出",
       "fit": {
         "noPort": "%{item} 没有此槽位",
-        "doesNotFit": "与 %{item} 不兼容"
+        "doesNotFit": "与 %{item} 不兼容",
+        "noWornPiece": "所穿部件没有可放置此物的位置"
       },
       "armorSets": {
         "open": "护甲套装",
@@ -61,7 +63,37 @@
           "one": "%{count} 套",
           "other": "%{count} 套"
         }
-      }
+      },
+      "gearHint": "穿上躯干、腿甲或内衬服，即可携带手雷、弹匣、针剂和工具。",
+      "gear": {
+        "grenade": "手雷 %{number}",
+        "magazine": "弹匣 %{number}",
+        "gadget": "小工具",
+        "medpen": "医疗笔 %{number}",
+        "oxypen": "氧气笔 %{number}",
+        "utility": "工具 %{number}"
+      },
+      "saveBlocked": "请先修正上方标记的问题，再保存此装扮。",
+      "storage": {
+        "title": "储物",
+        "space": "%{used} / %{capacity}",
+        "add": "添加物品",
+        "fewer": "减少一个",
+        "more": "增加一个",
+        "pickerTitle": "添加到%{piece}",
+        "problems": {
+          "noStorage": "此处没有穿戴可容纳这些物品的部件。",
+          "overCapacity": "所存物品超出此部件的容量。",
+          "tooLarge": "存有对此部件来说过大的物品。",
+          "unmeasured": "存有没有测量尺寸的物品。"
+        },
+        "misfit": {
+          "unmeasured": "没有测量尺寸",
+          "tooLarge": "对此部件来说过大",
+          "noRoom": "剩余空间不足"
+        }
+      },
+      "gearNone": "你所穿的部件没有装备槽位。"
     }
   }
 }

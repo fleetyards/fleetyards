@@ -26,7 +26,7 @@ module Api
         authorize! with: OutfitPolicy
 
         @outfits = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .order(:name)
       end
 
@@ -72,17 +72,22 @@ module Api
 
       private def set_outfit
         @outfit = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .find(params[:id])
 
         authorize! @outfit, to: :show?, with: OutfitPolicy
       end
 
       private def outfit_params
-        permitted = params.transform_keys(&:underscore).permit(:name, :held_weapon, :body, items: %i[slot equipment_id])
+        permitted = params.transform_keys(&:underscore).permit(
+          :name, :held_weapon, :body,
+          items: %i[slot equipment_id],
+          stored_items: %i[holder equipment_id quantity]
+        )
         items = permitted.delete(:items)
+        stored_items = permitted.delete(:stored_items)
 
-        items.nil? ? permitted : permitted.merge(item_list: items)
+        permitted.merge({item_list: items, stored_item_list: stored_items}.compact)
       end
     end
   end

@@ -95,6 +95,61 @@ const EQUIPMENT: Record<string, Equipment> = {
   } as unknown as Equipment,
 };
 
+const GEAR: Record<string, Equipment> = {
+  "gear-core": {
+    ...piece("gear-core", { holoRiggedMale: media("gear_core_rigged.glb") }),
+    fit: {
+      type: "Char_Armor_Torso",
+      ports: [
+        {
+          name: "grenade_attach_1",
+          types: [{ type: "WeaponPersonal", subTypes: ["Grenade"] }],
+          minSize: 1,
+          maxSize: 1,
+          bone: "grenade_attach_1_override",
+          itemHelper: "attach_offset_left_01",
+        },
+        {
+          name: "grenade_attach_2",
+          types: [{ type: "WeaponPersonal", subTypes: ["Grenade"] }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+    },
+  } as unknown as Equipment,
+  "mk-4": {
+    ...piece("mk-4", { holo: media("mk4.glb") }),
+    subType: "Grenade",
+    size: "1",
+    fit: { type: "WeaponPersonal" },
+    attachPoints: {
+      attachOffsetLeft01: { position: [0, 0, 0.03], rotation: [0, 0, 0, 1] },
+    },
+  } as unknown as Equipment,
+  "plain-grenade": {
+    ...piece("plain-grenade", { holo: media("plain_grenade.glb") }),
+    subType: "Grenade",
+    size: "1",
+    fit: { type: "WeaponPersonal" },
+  } as unknown as Equipment,
+  "small-pack": {
+    ...piece("small-pack", {}),
+    inventory: {
+      capacity: 1000,
+      dimensions: { x: 0.5, y: 1, z: 0.5 },
+    },
+  } as unknown as Equipment,
+  medpen: {
+    ...piece("medpen", {}),
+    name: "MedPen",
+    volume: 0.00018,
+    volumeDimensions: { x: 0.03, y: 0.03, z: 0.1 },
+  } as unknown as Equipment,
+};
+
+Object.assign(EQUIPMENT, GEAR);
+
 const MALE: CharacterBody = {
   key: "male",
   holo: media("body.glb"),
@@ -157,7 +212,10 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
 
 const { default: Component } = await import("./dressing-room.vue");
 
-const mount = async (query: Record<string, string> = {}) => {
+const mount = async (
+  query: Record<string, string> = {},
+  { settle = true }: { settle?: boolean } = {},
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -179,7 +237,7 @@ const mount = async (query: Record<string, string> = {}) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     plugins: [router],
   });
-  await flushPromises();
+  if (settle) await flushPromises();
 
   return { wrapper, router };
 };
@@ -609,5 +667,188 @@ describe("ToolsDressingRoomPage", () => {
     );
 
     bodies.value = [MALE];
+  });
+
+  describe("gear slots", () => {
+    it("asks for a worn piece while none offers gear", async () => {
+      const { wrapper } = await mount();
+
+      expect(
+        wrapper.find('[data-test="dressing-room-gear-hint"]').exists(),
+      ).toBe(true);
+    });
+
+    it("says so when what is worn offers no gear at all", async () => {
+      const { wrapper } = await mount({ undersuit: "flight-suit" });
+
+      expect(
+        wrapper.find('[data-test="dressing-room-gear-hint"]').text(),
+      ).toContain("no gear slots");
+    });
+
+    it("marks nothing as wrong while the worn pieces are still loading", async () => {
+      const { wrapper } = await mount(
+        {
+          torso: "gear-core",
+          grenade_1: "mk-4",
+          backpack: "small-pack",
+          stored_backpack: "medpen",
+        },
+        { settle: false },
+      );
+
+      expect(
+        wrapper.find('[data-test="dressing-room-fit-grenade_1"]').exists(),
+      ).toBe(false);
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-storage-problem-backpack"]')
+          .exists(),
+      ).toBe(false);
+      expect(
+        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
+      ).toBe(false);
+    });
+
+    it("offers the next port of what is worn, and hangs gear on its bone", async () => {
+      const { wrapper } = await mount({
+        torso: "gear-core",
+        grenade_1: "mk-4",
+      });
+
+      expect(
+        wrapper.find('[data-test="dressing-room-slot-grenade_1"]').text(),
+      ).toContain("MK-4");
+      expect(
+        wrapper.find('[data-test="dressing-room-slot-grenade_2"]').exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find('[data-test="dressing-room-slot-grenade_3"]').exists(),
+      ).toBe(false);
+
+      expect(viewerModel(wrapper).rig.attachments).toContainEqual(
+        expect.objectContaining({
+          path: "/mk4.glb",
+          bone: "grenade_attach_1_override",
+          from: "/gear_core_rigged.glb",
+          helper: { position: [0, 0, 0.03], rotation: [0, 0, 0, 1] },
+        }),
+      );
+    });
+
+    it("says so rather than guessing where gear without a helper goes", async () => {
+      const { wrapper } = await mount({
+        torso: "gear-core",
+        grenade_1: "plain-grenade",
+      });
+
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-position-pending-grenade_1"]')
+          .exists(),
+      ).toBe(true);
+      expect(viewerModel(wrapper).rig.attachments ?? []).toEqual([]);
+    });
+
+    it("reports gear left without a port, and blocks saving it", async () => {
+      const { wrapper } = await mount({ grenade_1: "mk-4" });
+
+      expect(
+        wrapper.find('[data-test="dressing-room-fit-grenade_1"]').exists(),
+      ).toBe(true);
+      expect(
+        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
+      ).toBe(true);
+    });
+  });
+
+  describe("worn storage", () => {
+    it("shows no storage until a piece with room is worn", async () => {
+      const { wrapper } = await mount({ torso: "gear-core" });
+
+      expect(wrapper.find('[data-test="dressing-room-storage"]').exists()).toBe(
+        false,
+      );
+    });
+
+    it("lists what a piece holds and how much room it takes", async () => {
+      const { wrapper } = await mount({
+        backpack: "small-pack",
+        stored_backpack: "medpen*3",
+      });
+
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-stored-backpack-medpen"]')
+          .text(),
+      ).toContain("MedPen");
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-storage-space-backpack"]')
+          .text(),
+      ).toContain("540");
+    });
+
+    it("changes the quantity in the address, and stops at what fits", async () => {
+      const { wrapper, router } = await mount({
+        backpack: "small-pack",
+        stored_backpack: "medpen*5",
+      });
+
+      const more = wrapper.find(
+        '[data-test="dressing-room-stored-more-backpack-medpen"]',
+      );
+      expect(more.attributes("disabled")).toBeDefined();
+
+      await wrapper
+        .find('[data-test="dressing-room-stored-fewer-backpack-medpen"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(router.currentRoute.value.query.stored_backpack).toBe("medpen*4");
+    });
+
+    it("keeps items whose piece came off, marked, and blocks saving them", async () => {
+      const { wrapper } = await mount({ stored_backpack: "medpen" });
+
+      expect(
+        wrapper
+          .find('[data-test="dressing-room-storage-problem-backpack"]')
+          .exists(),
+      ).toBe(true);
+      expect(
+        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
+      ).toBe(true);
+    });
+
+    it("loads a saved outfit's stored items into the address", async () => {
+      const { wrapper, router } = await mount();
+
+      wrapper.findComponent({ name: "DressingRoomOutfits" }).vm.$emit("load", {
+        id: "saved",
+        items: [{ slot: "backpack", equipment: GEAR["small-pack"] }],
+        storedItems: [
+          { holder: "backpack", quantity: 2, equipment: GEAR.medpen },
+        ],
+        heldWeapon: null,
+        body: "male",
+      });
+      await flushPromises();
+
+      expect(router.currentRoute.value.query.stored_backpack).toBe("medpen*2");
+    });
+
+    it("carries stored items in the share link", async () => {
+      const { wrapper } = await mount({
+        backpack: "small-pack",
+        stored_backpack: "medpen*2",
+      });
+
+      await wrapper
+        .find('[data-test="dressing-room-copy-link"]')
+        .trigger("click");
+
+      expect(copied.mock.lastCall?.[0]).toContain("stored_backpack=medpen*2");
+    });
   });
 });

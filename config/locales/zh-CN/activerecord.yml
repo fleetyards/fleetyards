@@ -318,10 +318,20 @@ zh-CN:
               outfit_limit_reached: "最多只能有 %{count} 套装扮"
             held_weapon:
               not_carried: "不是此装扮携带的武器"
+            items:
+              no_port: "没有可放置此装备的挂点"
+            stored_items:
+              over_capacity: "超出了所穿部件的存储容量"
+              too_large: "太大，放不进存放位置"
+              no_storage: "存放在没有储物空间的部件中"
         outfit_item:
           attributes:
             equipment:
               wrong_slot: "不适合此槽位"
+        outfit_stored_item:
+          attributes:
+            equipment:
+              unmeasured: "没有可用于存放的测量尺寸"
         fleet_shopping_list:
           attributes:
             base:

@@ -43,7 +43,8 @@
       },
       "groups": {
         "armour": "Rüstung",
-        "weapons": "Waffen"
+        "weapons": "Waffen",
+        "gear": "Ausrüstung"
       },
       "hold": "In die Hand nehmen",
       "bodies": {
@@ -53,7 +54,8 @@
       "positionPending": "Position noch nicht exportiert",
       "fit": {
         "noPort": "%{item} hat hierfür keinen Platz",
-        "doesNotFit": "Passt nicht zu %{item}"
+        "doesNotFit": "Passt nicht zu %{item}",
+        "noWornPiece": "Kein getragenes Teil hat hierfür einen Platz"
       },
       "armorSets": {
         "open": "Rüstungssets",
@@ -61,7 +63,37 @@
           "one": "%{count} Set",
           "other": "%{count} Sets"
         }
-      }
+      },
+      "gearHint": "Trage einen Torso, Beine oder einen Unteranzug, um Granaten, Magazine, Pens und Werkzeuge mitzunehmen.",
+      "gear": {
+        "grenade": "Granate %{number}",
+        "magazine": "Magazin %{number}",
+        "gadget": "Gadget",
+        "medpen": "Medpen %{number}",
+        "oxypen": "Oxypen %{number}",
+        "utility": "Werkzeug %{number}"
+      },
+      "saveBlocked": "Behebe die oben markierten Punkte, um dieses Outfit zu speichern.",
+      "storage": {
+        "title": "Stauraum",
+        "space": "%{used} von %{capacity}",
+        "add": "Gegenstand hinzufügen",
+        "fewer": "Einen weniger",
+        "more": "Einen mehr",
+        "pickerTitle": "Zu %{piece} hinzufügen",
+        "problems": {
+          "noStorage": "Hier wird nichts getragen, das diese Gegenstände aufnehmen kann.",
+          "overCapacity": "Enthält mehr, als dieses Teil fassen kann.",
+          "tooLarge": "Enthält einen Gegenstand, der für dieses Teil zu groß ist.",
+          "unmeasured": "Enthält einen Gegenstand ohne gemessene Größe."
+        },
+        "misfit": {
+          "unmeasured": "Keine gemessene Größe",
+          "tooLarge": "Zu groß für dieses Teil",
+          "noRoom": "Nicht genug Platz übrig"
+        }
+      },
+      "gearNone": "Was du trägst, hat keine Ausrüstungsplätze."
     }
   }
 }
