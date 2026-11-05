@@ -1058,6 +1058,20 @@ const copyShareLink = () => {
   gap: 8px;
 }
 
+// Out of the figure's way until the stage is pointed at. A touch screen has no
+// hover to reveal them with, so they stay there.
+@media (hover: hover) {
+  .dressing-room__actions {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .dressing-room__stage:hover .dressing-room__actions,
+  .dressing-room__actions:focus-within {
+    opacity: 1;
+  }
+}
+
 .dressing-room__side {
   display: flex;
   flex-direction: column;
