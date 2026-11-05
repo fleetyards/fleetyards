@@ -63,6 +63,7 @@ module ScData
       # found by its `sc_key` and matched on to its `sc_ref`, and a record
       # missing either is skipped by the loader -- which `retire_absent` then
       # reads as a contract the build dropped.
+      "factions" => Catalogue.new(key: %w[sc_key sc_ref], floor: 30, icons: true),
       "game_missions" => Catalogue.new(key: %w[sc_key sc_ref], floor: 2000, icons: false),
       "items" => Catalogue.new(key: "key", floor: 6200, icons: true),
       "locations" => Catalogue.new(key: "sc_key", floor: 1480, icons: false),

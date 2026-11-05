@@ -22,6 +22,8 @@ module ScData
     # Both outputs come off one traversal of the 107 generator files, which is
     # the expensive half of either.
     class ContractsParser < ScData::Parser::BaseParser
+      include ScData::Parser::ReputationLadders
+
       POOLS_PATH = "crafting/blueprintrewards"
       GENERATORS_PATH = "contracts/contractgenerator"
       # Two record sets, because the two chains arrive at an org differently. A
@@ -771,16 +773,39 @@ module ScData
 
       private def reputation_rewards(value)
         Array.wrap(value).flat_map do |result|
+          outcome = reputation_outcome(result)
+
           Array.wrap(result["contractResultReputationAmounts"]).filter_map do |amounts|
             amount = reputation_amounts[value_or_nil(amounts["reward"])]
 
             next if amount.nil?
 
             org = orgs[value_or_nil(amounts["factionReputation"])] || {}
+            ladder = reputation_scopes[value_or_nil(amounts["reputationScope"])] || {}
 
-            {kind: "reputation", amount:, org_key: org[:key], org_name: org[:name]}.compact
+            {
+              kind: "reputation",
+              amount:,
+              org_key: org[:key],
+              org_name: org[:name],
+              ladder_key: ladder[:key],
+              ladder_name: ladder[:name],
+              outcome:
+            }.compact
           end
         end
+      end
+
+      # Five flags the export never names. The first alone sits on nearly every
+      # gain, so it reads as completion; nothing separates the others from one
+      # another, so they are only said not to be it. With none set, the award
+      # states no outcome at all.
+      private def reputation_outcome(result)
+        flags = Array.wrap(result.dig("missionResults", "Bool")).map { |flag| flag["value"] == "1" }
+
+        return if flags.none?
+
+        flags.first ? "completed" : "not_completed"
       end
 
       private def item_rewards(value)

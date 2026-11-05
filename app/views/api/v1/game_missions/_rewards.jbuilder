@@ -8,6 +8,10 @@
 # computes at run time, and no table, curve or scalar anywhere in the export
 # could reproduce it. A field empty on 99.7% of rows would read as our gap
 # rather than as the game's.
+faction_slugs = Faction.current_slugs
+
+json.faction_slug faction_slugs[mission.org_key]
+
 json.rewards mission.facts&.rewards.to_a do |reward|
   json.kind reward.kind
   json.amount reward.amount
@@ -23,6 +27,12 @@ json.rewards mission.facts&.rewards.to_a do |reward|
   # export declares are negative.
   json.org_name reward.org_name
   json.org_key reward.org_key
+  json.org_slug faction_slugs[reward.org_key]
+
+  # Reputation only: the ladder the points go to, and when they are paid.
+  json.ladder_key reward.ladder_key
+  json.ladder_name reward.ladder_name
+  json.outcome reward.outcome
 
   # Item only. The entity class is not resolved to a catalogue row: an award
   # names things that are variously equipment, a commodity crate, or a mission

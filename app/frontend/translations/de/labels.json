@@ -4926,7 +4926,11 @@
           "excluded": "Nicht mehr, sobald abgeschlossen"
         },
         "unreleased": "Nicht im Release",
-        "retired": "Entfernt"
+        "retired": "Entfernt",
+        "rewardOutcomes": {
+          "completed": "bei Abschluss",
+          "not_completed": "wenn nicht abgeschlossen"
+        }
       },
       "fleetDirectory": {
         "name": "Flotten",
@@ -5121,6 +5125,20 @@
         "vehicle": "Dein Schiff",
         "hasPlaque": "hat eine Plakette",
         "captainInfo": "Der Name, den die Plakette als Kapitän des Schiffs nennt."
+      },
+      "faction": {
+        "name": "Fraktion",
+        "missions": "Missionen",
+        "details": "Details",
+        "headquarters": "Hauptsitz",
+        "founded": "Gegründet",
+        "leadership": "Leitung",
+        "area": "Einsatzgebiet",
+        "focus": "Schwerpunkt",
+        "ladders": "Ruf",
+        "noAwards": "Keine veröffentlichte Mission zahlt hierauf ein.",
+        "perMission": "Pro Mission",
+        "awardRange": "%{min} bis %{max}"
       }
     }
   }

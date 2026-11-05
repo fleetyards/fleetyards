@@ -4926,7 +4926,11 @@
           "excluded": "Ya no si has completado"
         },
         "unreleased": "Fuera de la versión",
-        "retired": "Retirada"
+        "retired": "Retirada",
+        "rewardOutcomes": {
+          "completed": "al completarla",
+          "not_completed": "si no se completa"
+        }
       },
       "fleetDirectory": {
         "name": "Flotas",
@@ -5121,6 +5125,20 @@
         "vehicle": "Tu nave",
         "hasPlaque": "tiene una placa",
         "captainInfo": "El nombre que la placa da como capitán de la nave."
+      },
+      "faction": {
+        "name": "Facción",
+        "missions": "Misiones",
+        "details": "Detalles",
+        "headquarters": "Sede",
+        "founded": "Fundación",
+        "leadership": "Liderazgo",
+        "area": "Zona",
+        "focus": "Enfoque",
+        "ladders": "Reputación",
+        "noAwards": "Ninguna misión publicada aporta aquí.",
+        "perMission": "Por misión",
+        "awardRange": "de %{min} a %{max}"
       }
     }
   }

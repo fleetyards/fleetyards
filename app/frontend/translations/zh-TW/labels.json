@@ -4923,7 +4923,11 @@
           "excluded": "完成以下任務後不再提供"
         },
         "unreleased": "未在正式版",
-        "retired": "已移除"
+        "retired": "已移除",
+        "rewardOutcomes": {
+          "completed": "完成時",
+          "not_completed": "未完成時"
+        }
       },
       "fleetDirectory": {
         "name": "艦隊",
@@ -5118,6 +5122,20 @@
         "vehicle": "你的艦船",
         "hasPlaque": "已有銘牌",
         "captainInfo": "銘牌上作為艦長顯示的名字。"
+      },
+      "faction": {
+        "name": "勢力",
+        "missions": "任務",
+        "details": "詳情",
+        "headquarters": "總部",
+        "founded": "成立",
+        "leadership": "領導層",
+        "area": "活動區域",
+        "focus": "專注領域",
+        "ladders": "聲望",
+        "noAwards": "沒有已發布的任務計入此項。",
+        "perMission": "每個任務",
+        "awardRange": "%{min} 至 %{max}"
       }
     }
   }

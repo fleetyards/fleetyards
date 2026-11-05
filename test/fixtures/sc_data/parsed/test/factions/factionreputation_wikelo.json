@@ -1,0 +1,61 @@
+{
+  "sc_key": "factionreputation_wikelo",
+  "sc_ref": "5f442fdd-15cc-4f62-bd10-fce2023f4d0c",
+  "name": "Wikelo Emporium",
+  "lawful": true,
+  "icon": "ui/sharedassets/manufacturerlogos/rep_ui_icon_logo_wikelo_diff.tif",
+  "description": "After many successful cycles at the head of a fabrication souli, Wikelo found themselves lacking in the drive that had defined their early career. In a shock to many, the Banu decided to divest from their souli early and follow their true passion - collecting and fabricating unique items and vehicles. Drawn to manufacturing-style of Humans, it wasn't long before Wikelo had established a remote trading shop inside Human-space, Wikelo Emporium, where they could grow their collection and barter with those who shared their passions.",
+  "headquarters": "Wikelo Emporium Station",
+  "founded": "N/A",
+  "leadership": "Wikelo",
+  "area": "UEE",
+  "focus": "Barter",
+  "ladders": [
+    {
+      "key": "reputationscope_wikelo",
+      "name": "Barter & Trade",
+      "ceiling": 1000,
+      "ranks": [
+        {
+          "name": "New Customer",
+          "min_reputation": 0
+        },
+        {
+          "name": "Very Good Customer",
+          "min_reputation": 340
+        },
+        {
+          "name": "Very Best Customer",
+          "min_reputation": 999
+        }
+      ]
+    },
+    {
+      "key": "reputationscope_affinity",
+      "name": "Affinity",
+      "ceiling": 10000,
+      "ranks": [
+        {
+          "name": "Hated",
+          "min_reputation": -10000
+        },
+        {
+          "name": "Disliked",
+          "min_reputation": -5000
+        },
+        {
+          "name": "Neutral",
+          "min_reputation": 0
+        },
+        {
+          "name": "Liked",
+          "min_reputation": 2500
+        },
+        {
+          "name": "Exalted",
+          "min_reputation": 10000
+        }
+      ]
+    }
+  ]
+}

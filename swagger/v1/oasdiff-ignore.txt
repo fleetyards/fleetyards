@@ -3892,3 +3892,5 @@ PUT /outfits/{id} added the new `oxypen_1` enum value to the `items/items/slot` 
 PUT /outfits/{id} added the new `oxypen_2` enum value to the `items/items/slot` response property for the response status `200`
 PUT /outfits/{id} added the new `utility_1` enum value to the `items/items/slot` response property for the response status `200`
 PUT /outfits/{id} added the new `utility_2` enum value to the `items/items/slot` response property for the response status `200`
+GET /catalogue/lookup added the new `Faction` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/search added the new `Faction` enum value to the `items/items/type` response property for the response status `200`

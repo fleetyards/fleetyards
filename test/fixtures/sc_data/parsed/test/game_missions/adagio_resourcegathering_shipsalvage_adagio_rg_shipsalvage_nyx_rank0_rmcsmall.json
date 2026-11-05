@@ -25,7 +25,10 @@
       "kind": "reputation",
       "amount": 100,
       "org_key": "factionreputation_lawful_adagioholdings",
-      "org_name": "Adagio Holdings"
+      "org_name": "Adagio Holdings",
+      "ladder_key": "factionreputationscope",
+      "ladder_name": "Standing",
+      "outcome": "completed"
     },
     {
       "kind": "currency",

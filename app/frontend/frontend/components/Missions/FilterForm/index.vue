@@ -38,7 +38,7 @@ const asList = (value: unknown): string[] => {
 };
 
 const prefillFormValues = (): GameMissionQuery => ({
-  nameCont: filters.value.nameCont,
+  nameOrOrgNameCont: filters.value.nameOrOrgNameCont ?? filters.value.nameCont,
   orgNameIn: asList(filters.value.orgNameIn ?? filters.value.orgNameEq),
   minStandingIn: asList(
     filters.value.minStandingIn ?? filters.value.minStandingEq,
@@ -172,7 +172,7 @@ const releasedValue = computed({
 <template>
   <form @submit.prevent="handleSubmit">
     <FormInput
-      v-model="form.nameCont"
+      v-model="form.nameOrOrgNameCont"
       name="mission-name"
       translation-key="filters.missions.name"
       :no-label="true"

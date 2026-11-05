@@ -116,7 +116,7 @@ module GameMissionFiltersConcern
 
   private def missions_query_params
     @missions_query_params ||= params.permit(q: [
-      :s, :sorts, :name_cont, :current_version,
+      :s, :sorts, :name_cont, :name_or_org_name_cont, :current_version,
       :kind_eq, :alignment_eq, :org_key_eq, :org_name_eq, :location_kind_eq,
       :min_standing_eq, :max_standing_eq,
       :difficulty_mechanical_skill_lteq, :difficulty_mechanical_skill_gteq,

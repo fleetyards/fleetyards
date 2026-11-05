@@ -35,9 +35,12 @@ const groups = computed(() =>
 
 // A standing loss is stated the same way a gain is -- 16 of the 58 amounts the
 // export declares are negative -- so the sign carries the meaning and is never
-// dropped.
+// dropped. `toNumber` reads zero as not available, and six awards really are
+// worth nothing.
 const reputationAmount = (reward: GameMissionReward) =>
-  `${(reward.amount ?? 0) > 0 ? "+" : ""}${toNumber(reward.amount ?? 0)}`;
+  reward.amount
+    ? `${reward.amount > 0 ? "+" : ""}${toNumber(reward.amount)}`
+    : "0";
 
 // `toNumber` with the currency spelled out rather than `toUEC`: seven of the
 // eight stated payouts are in aUEC and the eighth is in mercenary scrip, and
@@ -72,9 +75,26 @@ const currencyAmount = (reward: GameMissionReward) => {
             <span class="mission-rewards__value">{{
               reputationAmount(reward)
             }}</span>
-            <span v-if="reward.orgName" class="mission-rewards__note">{{
-              reward.orgName
+            <span v-if="reward.ladderName" class="mission-rewards__note">{{
+              reward.ladderName
             }}</span>
+            <span v-if="reward.orgName" class="mission-rewards__note">
+              <router-link
+                v-if="reward.orgSlug"
+                :to="{ name: 'faction', params: { slug: reward.orgSlug } }"
+              >
+                {{ reward.orgName }}
+              </router-link>
+              <template v-else>{{ reward.orgName }}</template>
+            </span>
+            <span
+              v-if="reward.outcome"
+              class="mission-rewards__note"
+              data-test="reward-outcome"
+              >{{
+                t(`labels.gameMission.rewardOutcomes.${reward.outcome}`)
+              }}</span
+            >
           </template>
 
           <!-- 2352 of the 2360 contracts that pay leave the figure to the

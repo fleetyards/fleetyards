@@ -8,6 +8,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 // `orgNameEq=Foxwell` beside `orgNameIn=[Headhunters]` is a guaranteed empty
 // list.
 const SUPERSEDED_PARAMS = {
+  nameOrOrgNameCont: "nameCont",
   orgNameIn: "orgNameEq",
   minStandingIn: "minStandingEq",
   kindIn: "kindEq",

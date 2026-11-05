@@ -4923,7 +4923,11 @@
           "excluded": "完成以下任务后不再提供"
         },
         "unreleased": "未在正式版",
-        "retired": "已移除"
+        "retired": "已移除",
+        "rewardOutcomes": {
+          "completed": "完成时",
+          "not_completed": "未完成时"
+        }
       },
       "fleetDirectory": {
         "name": "舰队",
@@ -5118,6 +5122,20 @@
         "vehicle": "你的舰船",
         "hasPlaque": "已有铭牌",
         "captainInfo": "铭牌上作为舰长显示的名字。"
+      },
+      "faction": {
+        "name": "势力",
+        "missions": "任务",
+        "details": "详情",
+        "headquarters": "总部",
+        "founded": "成立",
+        "leadership": "领导层",
+        "area": "活动区域",
+        "focus": "专注领域",
+        "ladders": "声望",
+        "noAwards": "没有已发布的任务计入此项。",
+        "perMission": "每个任务",
+        "awardRange": "%{min} 至 %{max}"
       }
     }
   }

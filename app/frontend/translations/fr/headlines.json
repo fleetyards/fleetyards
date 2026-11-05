@@ -597,6 +597,9 @@
       "missions": {
         "index": "Missions"
       },
+      "factions": {
+        "index": "Factions"
+      },
       "missions": {
         "index": "Missions"
       },

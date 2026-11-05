@@ -81,6 +81,50 @@ module Catalogue
       assert_equal Search::PER_TYPE, search("ore").size
     end
 
+    test "finds a faction and the missions it offers by its name" do
+      faction = create(:faction, name: "InterSec Defense Solutions")
+      faction.build.update!(focus: "Security")
+      create(:game_mission, name: "Clear the Outpost", org_name: "InterSec Defense Solutions")
+      create(:game_mission, name: "Clear the Outpost", org_name: "Foxwell Enforcement")
+
+      assert_equal(
+        [
+          ["Faction", "InterSec Defense Solutions", "Security"],
+          ["GameMission", "Clear the Outpost", "InterSec Defense Solutions"]
+        ],
+        search("intersec")
+      )
+    end
+
+    test "ranks a mission named for the query above one only its org matches" do
+      create(:game_mission, name: "Zzz Patrol", org_name: "InterSec Defense Solutions")
+      create(:game_mission, name: "InterSec Patrol", org_name: "Foxwell Enforcement")
+
+      assert_equal ["InterSec Patrol", "Zzz Patrol"], search("intersec").map(&:second)
+    end
+
+    test "ranks a name holding the query mid-word above a short one only its org matches" do
+      create(:game_mission, name: "Ab", org_name: "Red Wind Linehaul")
+      create(:game_mission, name: "A Hundred Crates To Move", org_name: "Foxwell Enforcement")
+
+      assert_equal ["A Hundred Crates To Move", "Ab"], search("red").map(&:second)
+    end
+
+    test "says there is more where variants of a mission collapsed into one row" do
+      2.times { create(:game_mission, name: "Clear the Outpost", org_name: "InterSec Defense Solutions") }
+
+      group = Search.new.call("intersec").sole
+
+      assert_equal 1, group.items.size
+      assert group.has_more
+    end
+
+    test "leaves out a faction the current build does not carry" do
+      create(:faction, name: "InterSec Gone", version: nil, with_build: false)
+
+      assert_empty search("intersec")
+    end
+
     test "says when a catalogue has more than it offers" do
       5.times { |n| create(:commodity, name: "Ore #{n}") }
       assert_equal [false], Search.new.call("ore").map(&:has_more)

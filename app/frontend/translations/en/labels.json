@@ -4940,7 +4940,11 @@
           "excluded": "Not once you have completed"
         },
         "unreleased": "Not in release",
-        "retired": "Retired"
+        "retired": "Retired",
+        "rewardOutcomes": {
+          "completed": "on completion",
+          "not_completed": "if not completed"
+        }
       },
       "fleetDirectory": {
         "name": "Fleets",
@@ -5135,6 +5139,20 @@
         "vehicle": "Your ship",
         "hasPlaque": "has a plaque",
         "captainInfo": "The name the plaque gives as the ship's captain."
+      },
+      "faction": {
+        "name": "Faction",
+        "missions": "Missions",
+        "details": "Details",
+        "headquarters": "Headquarters",
+        "founded": "Founded",
+        "leadership": "Leadership",
+        "area": "Area",
+        "focus": "Focus",
+        "ladders": "Reputation",
+        "noAwards": "No released mission pays into this.",
+        "perMission": "Per mission",
+        "awardRange": "%{min} to %{max}"
       }
     }
   }

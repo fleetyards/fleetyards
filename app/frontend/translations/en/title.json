@@ -429,7 +429,10 @@
       "equipment": {
         "index": "Equipment"
       },
-      "equipmentItem": "%{name}"
+      "equipmentItem": "%{name}",
+      "factions": {
+        "index": "Factions"
+      }
     }
   }
 }

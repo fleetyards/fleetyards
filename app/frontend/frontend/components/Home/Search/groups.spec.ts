@@ -15,6 +15,10 @@ describe("SEARCH_GROUPS", () => {
     },
   );
 
+  it("lists every mission its search found, including by org", () => {
+    expect(SEARCH_GROUPS.GameMission.list.filter).toBe("nameOrOrgNameCont");
+  });
+
   it.each(["InventoryItem", "FleetInventoryItem"])(
     "%s opens on the log, the view its filter narrows",
     (type) => {

@@ -96,6 +96,22 @@ module Catalogue
       assert_equal ["commodity:Mercury", "component:Mercury"], @resolver.search("merc").map(&:token).sort
     end
 
+    test "resolves a faction by its prefix only, and offers it with the prefix" do
+      faction = create(:faction, name: "InterSec Defense Solutions")
+
+      assert_equal(
+        {"faction:InterSec Defense Solutions" => ["Faction", faction.slug]},
+        resolved("faction:InterSec Defense Solutions", "InterSec Defense Solutions")
+      )
+      assert_equal ["faction:InterSec Defense Solutions"], @resolver.search("intersec").map(&:token)
+    end
+
+    test "leaves a faction the current build does not carry as plain text" do
+      create(:faction, name: "InterSec Gone", version: nil, with_build: false)
+
+      assert_empty resolved("faction:InterSec Gone")
+    end
+
     test "search always prefixes a ship, a blueprint or a mission" do
       create(:model, name: "Carrack")
       create(:component, name: "Carrack Engine")

@@ -40,6 +40,17 @@ module Shared
             # org offering the contract.
             orgName: {type: [:string, :null]},
             orgKey: {type: [:string, :null]},
+            orgSlug: {type: [:string, :null]},
+
+            # Reputation only: the ladder the points go to. A faction can have
+            # several, and the name is null where the export gives it none.
+            ladderKey: {type: [:string, :null]},
+            ladderName: {type: [:string, :null]},
+
+            # Reputation only: whether completing the mission pays this, or
+            # anything else does. The export never names its result flags, so
+            # nothing finer can be said.
+            outcome: ::Shared::V1::Schemas::Enums::NullableGameMissionRewardOutcomeEnum,
 
             # Item only. Not resolved to a catalogue row: an award names things
             # that are variously equipment, a commodity crate, or a mission

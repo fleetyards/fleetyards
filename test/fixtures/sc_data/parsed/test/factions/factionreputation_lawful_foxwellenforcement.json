@@ -1,0 +1,155 @@
+{
+  "sc_key": "factionreputation_lawful_foxwellenforcement",
+  "sc_ref": "016c2950-0292-468c-a408-a5283b52f158",
+  "name": "Foxwell Enforcement",
+  "lawful": true,
+  "icon": "ui/sharedassets/manufacturerlogos/rep_ui_icon_logo_foxwellenforcement.tif",
+  "description": "Founded by retired police officers in Lo, Corel system, Foxwell Enforcement provides low-cost security consultancy to those who need it most. The company hoped this altruism would lead to financial reward, but instead they’ve been forced to cut corners and loosen hiring practices to survive. Many companies still hire Foxwell because they’re affordable, but their low wages makes it hard to retain skilled security contractors.",
+  "headquarters": "Lo, Corel System",
+  "founded": "2928",
+  "leadership": "Banco Foxwell, CEO",
+  "area": "UEE",
+  "focus": "Private Security Firm",
+  "ladders": [
+    {
+      "key": "factionreputationscope",
+      "name": "Standing",
+      "ceiling": 95250,
+      "ranks": [
+        {
+          "name": "Neutral",
+          "min_reputation": 0
+        },
+        {
+          "name": "Jr. Contractor",
+          "min_reputation": 800
+        },
+        {
+          "name": "Contractor",
+          "min_reputation": 2200
+        },
+        {
+          "name": "Sr. Contractor",
+          "min_reputation": 5800
+        },
+        {
+          "name": "Veteran Contractor",
+          "min_reputation": 15000
+        },
+        {
+          "name": "Head Contractor",
+          "min_reputation": 38000
+        },
+        {
+          "name": "Elite Contractor",
+          "min_reputation": 95250
+        }
+      ]
+    },
+    {
+      "key": "reputationscope_bounty",
+      "name": "Bounty Hunting",
+      "ceiling": 5200000,
+      "ranks": [
+        {
+          "name": "Not Eligible",
+          "min_reputation": -1000
+        },
+        {
+          "name": "Applicant",
+          "min_reputation": 0
+        },
+        {
+          "name": "Tracker Trainee",
+          "min_reputation": 1
+        },
+        {
+          "name": "Associate Tracker",
+          "min_reputation": 5000
+        },
+        {
+          "name": "Tracker",
+          "min_reputation": 30000
+        },
+        {
+          "name": "Advanced Tracker",
+          "min_reputation": 120000
+        },
+        {
+          "name": "Senior Tracker",
+          "min_reputation": 480000
+        },
+        {
+          "name": "Master Tracker",
+          "min_reputation": 1600000
+        }
+      ]
+    },
+    {
+      "key": "reputationscope_security",
+      "name": "Security",
+      "ceiling": 5200000,
+      "ranks": [
+        {
+          "name": "Not Eligible",
+          "min_reputation": -1000
+        },
+        {
+          "name": "Applicant",
+          "min_reputation": 0
+        },
+        {
+          "name": "Security Trainee",
+          "min_reputation": 1
+        },
+        {
+          "name": "Jr. Security Contractor",
+          "min_reputation": 5000
+        },
+        {
+          "name": "Security Contractor",
+          "min_reputation": 30000
+        },
+        {
+          "name": "Sr. Security Contractor",
+          "min_reputation": 120000
+        },
+        {
+          "name": "Lead Security Contractor",
+          "min_reputation": 480000
+        },
+        {
+          "name": "Elite Security Contractor",
+          "min_reputation": 1600000
+        }
+      ]
+    },
+    {
+      "key": "reputationscope_affinity",
+      "name": "Affinity",
+      "ceiling": 10000,
+      "ranks": [
+        {
+          "name": "Hated",
+          "min_reputation": -10000
+        },
+        {
+          "name": "Disliked",
+          "min_reputation": -5000
+        },
+        {
+          "name": "Neutral",
+          "min_reputation": 0
+        },
+        {
+          "name": "Liked",
+          "min_reputation": 2500
+        },
+        {
+          "name": "Exalted",
+          "min_reputation": 10000
+        }
+      ]
+    }
+  ]
+}

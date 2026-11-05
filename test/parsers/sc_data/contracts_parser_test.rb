@@ -345,6 +345,33 @@ module ScData
 
       # A contract names a reward record rather than stating a figure, and the
       # record is in another tree entirely.
+      test "#missions names the ladder a reputation reward feeds and the outcome that triggers it" do
+        scope_ref = "9c0a1f22-0000-4000-8000-0000000000b2"
+        translate("Rep_Hauling" => "Hauling")
+        reputation_reward("reputationrewardamount_positive_xxxs", ref: REPUTATION_REWARD_REF, amount: 100)
+        write("reputation/scopes/reputationscope_hauling", "SReputationScopeParams", scope_ref, "", displayName: "@Rep_Hauling")
+        generator("gen", results: <<~XML)
+          <ContractResult_LegacyReputation>
+            <missionResults><Bool value="1" /><Bool value="0" /><Bool value="0" /></missionResults>
+            <contractResultReputationAmounts reputationScope="#{scope_ref}" reward="#{REPUTATION_REWARD_REF}" />
+          </ContractResult_LegacyReputation>
+          <ContractResult_LegacyReputation>
+            <missionResults><Bool value="0" /><Bool value="0" /><Bool value="1" /></missionResults>
+            <contractResultReputationAmounts reputationScope="#{scope_ref}" reward="#{REPUTATION_REWARD_REF}" />
+          </ContractResult_LegacyReputation>
+          <ContractResult_LegacyReputation>
+            <missionResults><Bool value="0" /><Bool value="0" /><Bool value="0" /></missionResults>
+            <contractResultReputationAmounts reputationScope="#{scope_ref}" reward="#{REPUTATION_REWARD_REF}" />
+          </ContractResult_LegacyReputation>
+        XML
+
+        rewards = @parser.missions.sole[:rewards]
+
+        assert_equal ["completed", "not_completed", nil], rewards.pluck(:outcome)
+        assert_equal ["reputationscope_hauling"], rewards.pluck(:ladder_key).uniq
+        assert_equal ["Hauling"], rewards.pluck(:ladder_name).uniq
+      end
+
       test "#missions resolves a reputation reward to the amount its record states" do
         translate("Foxwell_RepUI_Name" => "Foxwell Enforcement")
         faction_reputation("foxwellenforcement", ref: ORG_REF, display_name: "@Foxwell_RepUI_Name")

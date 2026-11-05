@@ -10,6 +10,8 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            # What the filter form and the site search use: an org finds its work.
+            nameOrOrgNameCont: {type: :string},
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}},
 

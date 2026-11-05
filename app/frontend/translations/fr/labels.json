@@ -4926,7 +4926,11 @@
           "excluded": "Plus après avoir terminé"
         },
         "unreleased": "Hors version",
-        "retired": "Retirée"
+        "retired": "Retirée",
+        "rewardOutcomes": {
+          "completed": "à l'achèvement",
+          "not_completed": "si non achevée"
+        }
       },
       "fleetDirectory": {
         "name": "Flottes",
@@ -5121,6 +5125,20 @@
         "vehicle": "Ton vaisseau",
         "hasPlaque": "a une plaque",
         "captainInfo": "Le nom que la plaque donne comme capitaine du vaisseau."
+      },
+      "faction": {
+        "name": "Faction",
+        "missions": "Missions",
+        "details": "Détails",
+        "headquarters": "Siège",
+        "founded": "Fondation",
+        "leadership": "Direction",
+        "area": "Zone",
+        "focus": "Spécialité",
+        "ladders": "Réputation",
+        "noAwards": "Aucune mission publiée n'y contribue.",
+        "perMission": "Par mission",
+        "awardRange": "de %{min} à %{max}"
       }
     }
   }

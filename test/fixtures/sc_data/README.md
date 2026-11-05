@@ -43,6 +43,8 @@ The later catalogues are curated the same way, by branch rather than by volume:
 | Catalogue | Covers |
 | --- | --- |
 | `commodities/` | a metal, an ore, a mineral, a harvestable and an alloy for the type ladder; `hadanite` counted with a piece volume against `iron` in bulk; `slam` declared outside the commodity trees; `gold`'s SVG icon and its container sizes against `shipammo_size_1`, which has none; `gold_ore` refining into `gold`, and three construction-material forms refining into one good |
+| `factions/` | Foxwell, lawful, whose awards feed a ladder its context does not list; Wikelo, whose alignment is curated |
+| `icons/**/rep_ui_icon_logo_foxwellenforcement.png` | the logo Foxwell names |
 | `game_missions/` | the Firesale resupply linked to PYR2 L4 through its templates and to Pyro through its text; the alignment fork (`firesale_cfp` lawful, `firesale_hh` unlawful) and an unattributed contract that must answer neither; `klescher` the one stated payout against five the game settles; a reputation loss keeping its sign; two carrying blueprint pools; one `released: false`; `huntthepolaris` the item reward that names MG Scrip |
 | `manufacturers/` | `sasu` and `roo` are both Sakura Sun, which is the de-duplication; `roo` names no logo where `sasu` does, which is the load-order trap; `mxox`, `prar` and `aeg` the corrected names; `taln` the icon every artwork test attaches |
 | `blueprints/` + `blueprint_pools/` | two recipes and the Foxwell pool that hands one of them out, so a load walks the source side as well as the recipe side |

@@ -4926,7 +4926,11 @@
           "excluded": "Non più dopo aver completato"
         },
         "unreleased": "Non nella release",
-        "retired": "Ritirata"
+        "retired": "Ritirata",
+        "rewardOutcomes": {
+          "completed": "al completamento",
+          "not_completed": "se non completata"
+        }
       },
       "fleetDirectory": {
         "name": "Flotte",
@@ -5121,6 +5125,20 @@
         "vehicle": "La tua nave",
         "hasPlaque": "ha una targa",
         "captainInfo": "Il nome che la targa indica come capitano della nave."
+      },
+      "faction": {
+        "name": "Fazione",
+        "missions": "Missioni",
+        "details": "Dettagli",
+        "headquarters": "Sede",
+        "founded": "Fondazione",
+        "leadership": "Direzione",
+        "area": "Area",
+        "focus": "Settore",
+        "ladders": "Reputazione",
+        "noAwards": "Nessuna missione pubblicata contribuisce.",
+        "perMission": "Per missione",
+        "awardRange": "da %{min} a %{max}"
       }
     }
   }

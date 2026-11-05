@@ -429,7 +429,10 @@
       "equipment": {
         "index": "裝備"
       },
-      "equipmentItem": "%{name}"
+      "equipmentItem": "%{name}",
+      "factions": {
+        "index": "勢力"
+      }
     }
   }
 }
