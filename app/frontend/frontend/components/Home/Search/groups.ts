@@ -4,7 +4,7 @@ type SearchGroupConfig = {
   // Where the group lists everything, and the filter that narrows it by name.
   // Ships take the name filter over their wider header search because it is the
   // one their filter form shows.
-  list: { name: string; filter: string };
+  list: { name: string; filter?: string };
   // The list pages this group leads on. An item's own page keeps the ranking.
   listPages: string[];
 };
@@ -12,7 +12,7 @@ type SearchGroupConfig = {
 const group = (
   labelKey: string,
   name: string,
-  filter: string,
+  filter: string | undefined,
   listPages: string[] = [name],
 ): SearchGroupConfig => ({ labelKey, list: { name, filter }, listPages });
 
@@ -37,6 +37,7 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "hangar-wishlist",
     "searchCont",
   ),
+  Friend: group("nav.settings.friends", "settings-friends", undefined),
   OwnedBlueprint: group(
     "nav.hangar.blueprints",
     "hangar-blueprints",

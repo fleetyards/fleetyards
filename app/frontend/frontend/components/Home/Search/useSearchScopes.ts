@@ -1,3 +1,5 @@
+import { type Icon } from "@/shared/components/DuotoneGlyph/glyph";
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import { useSearchStore } from "@/frontend/stores/search";
 import { useSessionStore } from "@/frontend/stores/session";
 import {
@@ -10,6 +12,7 @@ import {
 export type SearchScope = {
   key: string;
   labelKey: string;
+  icon: Icon;
   // Absent where the field's own wording fits.
   placeholderKey?: string;
   fleetSlug?: string;
@@ -21,12 +24,14 @@ export const CATALOGUE_SCOPE = "catalogue";
 const CATALOGUE: SearchScope = {
   key: CATALOGUE_SCOPE,
   labelKey: "nav.catalogue.index",
+  icon: "fa-duotone fa-books",
   search: (q) => search({ q }),
 };
 
 const MINE: SearchScope = {
   key: "mine",
   labelKey: "home.landing.searchScopes.mine",
+  icon: "fa-duotone fa-warehouse",
   placeholderKey: "home.landing.searchScopes.minePlaceholder",
   search: (q) => hangarSearch({ q }),
 };
@@ -49,6 +54,11 @@ export const useSearchScopes = () => {
   // Learned from the answer: a fleet someone only visits, or has since left.
   const refused = ref<string[]>([]);
 
+  // Asked again on the next visit: someone refused today may since have joined.
+  watch(routeFleet, () => {
+    refused.value = [];
+  });
+
   const fleetSlug = computed(() => {
     const slug = routeFleet.value ?? store.fleetSlug;
 
@@ -58,6 +68,7 @@ export const useSearchScopes = () => {
   const fleetScope = (slug: string): SearchScope => ({
     key: "fleet",
     labelKey: "home.landing.searchScopes.fleet",
+    icon: FLEET_GLYPH,
     placeholderKey: "home.landing.searchScopes.fleetPlaceholder",
     fleetSlug: slug,
     search: async (q) => {

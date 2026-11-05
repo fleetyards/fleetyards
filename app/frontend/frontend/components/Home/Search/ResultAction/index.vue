@@ -10,7 +10,10 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
+import {
+  HANGAR_TYPES,
+  useSearchResultAdd,
+} from "@/frontend/components/Home/Search/useSearchResultAdd";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
@@ -34,9 +37,7 @@ const { canAdd, add } = useSearchResultAdd();
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
 
-const addsToHangar = computed(() =>
-  ["Model", "Blueprint"].includes(props.result.type),
-);
+const addsToHangar = computed(() => HANGAR_TYPES.includes(props.result.type));
 
 const visible = computed(() => canAdd(props.result));
 

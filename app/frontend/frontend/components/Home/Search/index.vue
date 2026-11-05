@@ -9,10 +9,12 @@ import { useDebounceFn, useElementBounding, useWindowSize } from "@vueuse/core";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import AppIcon from "@/shared/components/AppIcon/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
 import HomeSearchResultAction from "@/frontend/components/Home/Search/ResultAction/index.vue";
 import HomeSearchResultLabel from "@/frontend/components/Home/Search/ResultLabel/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
@@ -23,7 +25,11 @@ import {
   CATALOGUE_SCOPE,
   useSearchScopes,
 } from "@/frontend/components/Home/Search/useSearchScopes";
-import { type SearchGroup, type SearchResult } from "@/services/fyApi";
+import {
+  type SearchGroup,
+  type SearchResult,
+  type SearchResults,
+} from "@/services/fyApi";
 
 type Props = {
   autofocus?: boolean;
@@ -58,6 +64,8 @@ const MIN_LENGTH = 2;
 
 const searchQuery = ref<string | undefined>();
 const rankedGroups = ref<SearchGroup[]>([]);
+const answeringFleet = ref<SearchResults["fleet"]>();
+const failed = ref(false);
 const searchedFor = ref<string | undefined>();
 const open = ref(false);
 const active = ref(-1);
@@ -107,6 +115,8 @@ watch(active, async (index) => {
 let latestSearch = 0;
 
 const forgetAnswer = () => {
+  answeringFleet.value = undefined;
+  failed.value = false;
   rankedGroups.value = [];
   searchedFor.value = undefined;
 };
@@ -125,6 +135,8 @@ const searchNow = async (text: string) => {
   if (request !== latestSearch) return;
 
   rankedGroups.value = response?.groups ?? [];
+  answeringFleet.value = response?.fleet;
+  failed.value = !response;
   searchedFor.value = trimmed;
   // The best match is highlighted from the start, so what Enter opens is
   // always on screen.
@@ -167,7 +179,7 @@ const listRoute = (group: SearchGroup, text?: string) => {
   return {
     name: list.name,
     params: fleetSlug ? { slug: fleetSlug } : {},
-    query: { [list.filter]: text },
+    query: list.filter ? { [list.filter]: text } : {},
   };
 };
 
@@ -242,6 +254,7 @@ const addActive = async () => {
 const offersCatalogue = computed(
   () =>
     answered.value &&
+    !failed.value &&
     !steps.value.length &&
     scope.value.key !== CATALOGUE_SCOPE,
 );
@@ -321,6 +334,7 @@ const { height: windowHeight } = useWindowSize();
 const popoverStyle = computed(() => ({
   maxHeight: `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
   "--scope-count": scopes.value.length,
+  "--popover-max-height": `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
 }));
 </script>
 
@@ -379,11 +393,27 @@ const popoverStyle = computed(() => ({
             class="home-search__scope"
             :class="{ 'home-search__scope--active': option.key === scope.key }"
             :aria-selected="option.key === scope.key"
+            :aria-label="t(option.labelKey)"
+            v-tooltip.right="t(option.labelKey)"
             data-test="home-search-scope"
             @mousedown.prevent="selectScope(option.key)"
           >
-            {{ t(option.labelKey) }}
+            <AppIcon :icon="option.icon" aria-hidden="true" />
           </button>
+        </div>
+
+        <div
+          v-if="answered && answeringFleet"
+          class="home-search__source"
+          data-test="home-search-fleet"
+        >
+          <Avatar
+            :avatar="answeringFleet.logo?.smallUrl"
+            size="small"
+            :icon="FLEET_GLYPH"
+            aria-hidden="true"
+          />
+          {{ answeringFleet.name }}
         </div>
 
         <div
@@ -394,6 +424,18 @@ const popoverStyle = computed(() => ({
         >
           <i class="fa-light fa-spinner-third fa-spin" aria-hidden="true" />
           {{ t("home.landing.searching") }}
+        </div>
+
+        <div
+          v-else-if="failed"
+          class="home-search__state home-search__state--empty"
+          aria-live="polite"
+          data-test="home-search-failed"
+        >
+          <i class="fa-duotone fa-triangle-exclamation" aria-hidden="true" />
+          <div class="home-search__state-title">
+            {{ t("home.landing.searchFailed") }}
+          </div>
         </div>
 
         <div
@@ -640,6 +682,18 @@ const popoverStyle = computed(() => ({
   }
 }
 
+.home-search__source {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: var(--color-lifted, #eee);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+}
+
 .home-search__state-title {
   margin-bottom: 4px;
   color: var(--color-lifted, #eee);
@@ -718,14 +772,17 @@ const popoverStyle = computed(() => ({
 // Register cards on the overlay's edge. The chosen one takes the overlay's own
 // material and overlaps its frame, so the two read as one sheet.
 .home-search__popover--tabbed {
-  --scope-tab-height: 124px;
+  --scope-tab-height: 64px;
   --scope-tab-gap: 4px;
   --scope-tabs-top: 12px;
 
   // Tall enough that the tabs never hang below a short answer.
-  min-height: calc(
-    var(--scope-count) * (var(--scope-tab-height) + var(--scope-tab-gap)) +
-      var(--scope-tabs-top) * 2
+  min-height: min(
+    calc(
+      var(--scope-count) * (var(--scope-tab-height) + var(--scope-tab-gap)) +
+        var(--scope-tabs-top) * 2
+    ),
+    var(--popover-max-height)
   );
 }
 
@@ -741,17 +798,13 @@ const popoverStyle = computed(() => ({
 
 .home-search__scope {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
   min-height: var(--scope-tab-height);
-  padding: 12px 9px;
   color: var(--color-text-dim, #959595);
-  font-family: Orbitron, sans-serif;
-  font-size: 0.6875rem;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-align: center;
-  text-transform: uppercase;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
+  font-size: 1.125rem;
   background: color-mix(in srgb, var(--color-gray-darker, #272b30) 70%, #000);
   // The card's shadow falling on it: what is not chosen lies behind the sheet.
   box-shadow: inset 8px 0 8px -6px rgb(0 0 0 / 0.65);
@@ -765,8 +818,8 @@ const popoverStyle = computed(() => ({
   }
 
   &--active {
+    width: 41px;
     margin-left: -1px;
-    padding-left: 10px;
     color: var(--color-lifted, #eee);
     background: var(--color-gray-darker, #272b30);
     border-color: var(--color-edge, rgb(122 130 136 / 0.5));
@@ -779,7 +832,7 @@ const popoverStyle = computed(() => ({
 // No room beside the overlay on a phone: it gives up the width its tabs take.
 @media (max-width: $desktop-breakpoint) {
   .home-search__popover--tabbed {
-    right: 36px;
+    right: 42px;
   }
 }
 

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import AppIcon from "@/shared/components/AppIcon/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
@@ -33,6 +34,10 @@ const image = computed(
 const cover = computed(() => props.result.type === "Location");
 
 const appearance = computed(() => props.result.appearance);
+
+const person = computed(() =>
+  ["User", "FleetMembership"].includes(props.result.type),
+);
 
 // A body and a star are drawn, as the starmap draws them, whether or not a
 // picture of them exists; a system is drawn as its star.
@@ -87,6 +92,14 @@ const nameParts = computed(() => {
         :style="sun"
       />
     </span>
+    <Avatar
+      v-else-if="person"
+      :avatar="result.image?.smallUrl"
+      :online="result.online"
+      size="small"
+      aria-hidden="true"
+      data-test="search-result-avatar"
+    />
     <BlueprintPlan
       v-else-if="result.type === 'Blueprint' && result.image?.smallUrl"
       :image="result.image"

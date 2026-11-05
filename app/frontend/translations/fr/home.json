@@ -14,6 +14,7 @@
         "searchNoResultsHint": "Essayez un vaisseau, un composant, une mission ou un lieu.",
         "searchShowMore": "Afficher plus",
         "searching": "Recherche…",
+        "searchFailed": "La recherche a échoué. Veuillez réessayer.",
         "searchInCatalogue": "Rechercher dans le catalogue",
         "searchScopes": {
           "mine": "Mes affaires",

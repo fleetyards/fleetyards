@@ -14,6 +14,7 @@
         "searchNoResultsHint": "試試艦船、組件、任務或地點。",
         "searchShowMore": "顯示更多",
         "searching": "搜尋中…",
+        "searchFailed": "搜尋失敗，請再試一次。",
         "searchInCatalogue": "在目錄中搜尋",
         "searchScopes": {
           "mine": "我的物品",

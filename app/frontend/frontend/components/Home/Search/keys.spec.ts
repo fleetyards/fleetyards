@@ -30,8 +30,18 @@ vi.mock("@/frontend/components/Home/Search/useSearchScopes", async () => {
   const { ref, computed } = await import("vue");
   const selected = ref("catalogue");
   const scopes = computed(() => [
-    { key: "catalogue", labelKey: "nav.catalogue.index", search: catalogue },
-    { key: "mine", labelKey: "nav.hangar.index", search: mine },
+    {
+      key: "catalogue",
+      labelKey: "nav.catalogue.index",
+      icon: "fa-books",
+      search: catalogue,
+    },
+    {
+      key: "mine",
+      labelKey: "nav.hangar.index",
+      icon: "fa-warehouse",
+      search: mine,
+    },
   ]);
   const current = computed(() =>
     scopes.value.find((scope) => scope.key === selected.value)!,
@@ -54,6 +64,7 @@ vi.mock("@/frontend/components/Home/Search/useSearchScopes", async () => {
 });
 
 vi.mock("@/frontend/components/Home/Search/useSearchResultAdd", () => ({
+  HANGAR_TYPES: ["Model", "Blueprint"],
   useSearchResultAdd: () => ({
     canAdd: (result: { type: string }) => result.type === "Commodity",
     add,

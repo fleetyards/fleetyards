@@ -14,6 +14,7 @@
         "searchNoResultsHint": "Prova con una nave, un componente, una missione o un luogo.",
         "searchShowMore": "Mostra altro",
         "searching": "Ricerca in corso…",
+        "searchFailed": "La ricerca non è riuscita. Riprova.",
         "searchInCatalogue": "Cerca nel catalogo",
         "searchScopes": {
           "mine": "Le mie cose",

@@ -14,7 +14,7 @@ import {
 } from "@/services/fyApi";
 
 const INVENTORY_TYPES = ["Component", "Equipment", "Commodity"];
-const HANGAR_TYPES = ["Model", "Blueprint"];
+export const HANGAR_TYPES = ["Model", "Blueprint"];
 
 // `unavailable`: the record cannot be added, which only its full record tells.
 export type SearchResultAddOutcome = "opened" | "unavailable" | "failed";

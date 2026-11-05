@@ -67,6 +67,7 @@ const ICONS: Record<string, Icon> = {
   User: "fa-duotone fa-user",
   FleetMember: "fa-duotone fa-user",
   FleetMembership: "fa-duotone fa-user",
+  Friend: "fa-duotone fa-user-group",
   FleetInventoryItem: "fa-duotone fa-boxes-stacked",
   Vehicle: SHIP_GLYPH,
   HangarVehicle: "fa-duotone fa-warehouse",
