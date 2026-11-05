@@ -45,7 +45,9 @@ const badges = computed<RowListItemBadge[]>(() => [
   {
     key: "missions",
     label: t("labels.faction.missions"),
-    value: String(toNumber(props.faction.missionCount)),
+    value: props.faction.missionCount
+      ? String(toNumber(props.faction.missionCount))
+      : "0",
   },
 ]);
 

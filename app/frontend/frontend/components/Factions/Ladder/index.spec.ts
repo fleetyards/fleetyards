@@ -28,6 +28,7 @@ describe("Factions/Ladder", () => {
     expect(rows).toHaveLength(3);
     expect(rows[0]).toContain("Not Eligible");
     expect(rows[0]).toMatch(/-1[,.\s]?000/);
+    expect(rows[1]).toMatch(/Trainee\s*0$/);
     expect(rows[2]).toContain("Rookie");
   });
 

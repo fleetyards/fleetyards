@@ -16,6 +16,9 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
+// `toNumber` reads zero as not available, and here zero is a real figure.
+const points = (value: number) => (value ? toNumber(value) : "0");
+
 const award = computed(() => {
   const { missionCount, minAward, maxAward } = props.ladder;
 
@@ -46,7 +49,7 @@ const award = computed(() => {
         <tr v-for="rank in ladder.ranks" :key="rank.name">
           <td>{{ rank.name }}</td>
           <td class="faction-ladder__points">
-            {{ toNumber(rank.minReputation) }}
+            {{ points(rank.minReputation) }}
           </td>
         </tr>
       </tbody>

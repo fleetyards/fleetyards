@@ -35,9 +35,12 @@ const groups = computed(() =>
 
 // A standing loss is stated the same way a gain is -- 16 of the 58 amounts the
 // export declares are negative -- so the sign carries the meaning and is never
-// dropped.
+// dropped. `toNumber` reads zero as not available, and six awards really are
+// worth nothing.
 const reputationAmount = (reward: GameMissionReward) =>
-  `${(reward.amount ?? 0) > 0 ? "+" : ""}${toNumber(reward.amount ?? 0)}`;
+  reward.amount
+    ? `${reward.amount > 0 ? "+" : ""}${toNumber(reward.amount)}`
+    : "0";
 
 // `toNumber` with the currency spelled out rather than `toUEC`: seven of the
 // eight stated payouts are in aUEC and the eighth is in mercenary scrip, and

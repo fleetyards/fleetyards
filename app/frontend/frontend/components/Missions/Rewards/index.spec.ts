@@ -48,6 +48,12 @@ describe("Missions/Rewards", () => {
     );
   });
 
+  it("states an award worth nothing as zero", async () => {
+    const wrapper = await mountRewards([reputation({ amount: 0 })]);
+
+    expect(wrapper.find(".mission-rewards__value").text()).toBe("0");
+  });
+
   it("tells a loss on not completing from a gain on completing", async () => {
     const wrapper = await mountRewards([
       reputation(),
