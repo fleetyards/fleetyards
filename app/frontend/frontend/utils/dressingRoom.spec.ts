@@ -351,19 +351,20 @@ describe("visibleGearSlots", () => {
   const OFFERED: OutfitSlotEnum[] = [
     OutfitSlotEnum.MAGAZINE_1,
     OutfitSlotEnum.MAGAZINE_2,
-    OutfitSlotEnum.MAGAZINE_3,
+    OutfitSlotEnum.UTILITY_1,
+    OutfitSlotEnum.UTILITY_2,
   ];
   const offered = (slot: OutfitSlotEnum) => OFFERED.includes(slot);
 
-  it("lists what is filled and the next empty slot of each kind on offer", () => {
+  it("lists every slot on offer, filled or not", () => {
     expect(
       visibleGearSlots({ [OutfitSlotEnum.MAGAZINE_1]: "mag" }, offered),
-    ).toEqual([OutfitSlotEnum.MAGAZINE_1, OutfitSlotEnum.MAGAZINE_2]);
+    ).toEqual(OFFERED);
   });
 
   it("keeps a filled slot no worn piece offers, so it can be seen and cleared", () => {
     expect(
       visibleGearSlots({ [OutfitSlotEnum.GRENADE_1]: "frag" }, offered),
-    ).toEqual([OutfitSlotEnum.GRENADE_1, OutfitSlotEnum.MAGAZINE_1]);
+    ).toEqual([OutfitSlotEnum.GRENADE_1, ...OFFERED]);
   });
 });

@@ -710,7 +710,7 @@ describe("ToolsDressingRoomPage", () => {
       ).toBe(false);
     });
 
-    it("offers the next port of what is worn, and hangs gear on its bone", async () => {
+    it("offers every port of what is worn, and hangs gear on its bone", async () => {
       const { wrapper } = await mount({
         torso: "gear-core",
         grenade_1: "mk-4",

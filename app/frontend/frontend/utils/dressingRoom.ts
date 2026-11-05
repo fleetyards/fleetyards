@@ -133,22 +133,13 @@ export const gearPort = (slot: OutfitSlotEnum) => {
   return kind ? `${kind.port}_${gearNumber(slot)}` : undefined;
 };
 
-// Eight empty magazine rows say nothing the ninth would not: what is filled,
-// and the next one the worn pieces offer.
+// Every slot the worn pieces offer, and any still filled after the piece that
+// offered it came off, so it can be seen and cleared.
 export const visibleGearSlots = (
   selection: OutfitSelection,
   offered: (slot: OutfitSlotEnum) => boolean,
-) =>
-  GEAR_KINDS.flatMap((kind) => {
-    const nextEmpty = kind.slots.find(
-      (slot) => offered(slot) && !selection[slot],
-    );
+) => GEAR_SLOTS.filter((slot) => !!selection[slot] || offered(slot));
 
-    return kind.slots.filter((slot) => !!selection[slot] || slot === nextEmpty);
-  });
-
-// What each weapon slot takes, by the weapon's sub type; the same rule the API
-// checks.
 export const WEAPON_SUB_TYPES: Partial<Record<OutfitSlotEnum, string[]>> = {
   [OutfitSlotEnum.PRIMARY]: ["Medium", "Large"],
   [OutfitSlotEnum.SECONDARY]: ["Medium"],
