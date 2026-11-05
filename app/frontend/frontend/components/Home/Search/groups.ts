@@ -75,6 +75,12 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "fleet-members",
     "searchCont",
   ),
+  FleetShip: group("nav.fleets.ships", "fleet-ships", "modelNameCont"),
+  FleetBlueprint: group(
+    "nav.fleets.blueprints",
+    "fleet-blueprints",
+    "nameCont",
+  ),
   FleetEvent: group("nav.fleets.events.index", "fleet-events", "titleCont"),
   FleetContract: group(
     "nav.fleets.contracts.index",

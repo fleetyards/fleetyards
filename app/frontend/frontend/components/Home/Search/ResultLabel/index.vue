@@ -26,7 +26,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const image = computed(
-  () => props.result.image?.smallUrl || props.result.image?.url,
+  () =>
+    props.result.image?.smallUrl ||
+    props.result.image?.url ||
+    props.result.imageUrl,
 );
 
 // A place's picture fills the frame. Everything else -- a ship's angled
