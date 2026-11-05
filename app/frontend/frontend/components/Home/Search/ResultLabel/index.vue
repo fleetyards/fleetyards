@@ -6,8 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import AppIcon from "@/shared/components/AppIcon/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
-import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
@@ -93,11 +92,14 @@ const nameParts = computed(() => {
         :style="sun"
       />
     </span>
-    <Avatar
+    <MemberAvatar
       v-else-if="person"
-      :avatar="result.image?.smallUrl"
+      :member="{
+        avatar: result.image,
+        squadrons: result.squadron ? [result.squadron] : [],
+      }"
       :online="result.online"
-      size="small"
+      show-squadrons
       aria-hidden="true"
       data-test="search-result-avatar"
     />
@@ -150,7 +152,6 @@ const nameParts = computed(() => {
         class="search-result-label__squadron"
         data-test="search-result-squadron"
       >
-        <SquadronEmblem :squadron="result.squadron" :size="18" />
         {{ result.squadron.name }}
         <template v-if="result.detail">· {{ result.detail }}</template>
       </span>
@@ -276,9 +277,6 @@ const nameParts = computed(() => {
 }
 
 .search-result-label__squadron {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: var(--color-text-dim, #959595);
   font-size: 0.75rem;
 }
