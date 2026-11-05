@@ -5131,10 +5131,9 @@
         "area": "Zone",
         "focus": "Spécialité",
         "ladders": "Réputation",
-        "rank": "Rang",
-        "points": "À partir de (points)",
-        "awards": "Missions qui y contribuent : %{count} (de %{min} à %{max} points chacune)",
-        "noAwards": "Aucune mission publiée n'y contribue."
+        "noAwards": "Aucune mission publiée n'y contribue.",
+        "perMission": "Par mission",
+        "awardRange": "de %{min} à %{max}"
       }
     }
   }

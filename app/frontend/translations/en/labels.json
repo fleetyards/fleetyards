@@ -5145,10 +5145,9 @@
         "area": "Area",
         "focus": "Focus",
         "ladders": "Reputation",
-        "rank": "Rank",
-        "points": "From points",
-        "awards": "Missions paying into this: %{count} (%{min} to %{max} points each)",
-        "noAwards": "No released mission pays into this."
+        "noAwards": "No released mission pays into this.",
+        "perMission": "Per mission",
+        "awardRange": "%{min} to %{max}"
       }
     }
   }

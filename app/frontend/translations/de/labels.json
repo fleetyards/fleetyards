@@ -5131,10 +5131,9 @@
         "area": "Einsatzgebiet",
         "focus": "Schwerpunkt",
         "ladders": "Ruf",
-        "rank": "Rang",
-        "points": "Ab Punkten",
-        "awards": "Missionen, die hierauf einzahlen: %{count} (je %{min} bis %{max} Punkte)",
-        "noAwards": "Keine veröffentlichte Mission zahlt hierauf ein."
+        "noAwards": "Keine veröffentlichte Mission zahlt hierauf ein.",
+        "perMission": "Pro Mission",
+        "awardRange": "%{min} bis %{max}"
       }
     }
   }

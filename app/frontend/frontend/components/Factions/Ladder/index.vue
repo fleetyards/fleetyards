@@ -5,6 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type FactionLadder } from "@/services/fyApi";
 
@@ -19,98 +23,170 @@ const { t, toNumber } = useI18n();
 // `toNumber` reads zero as not available, and here zero is a real figure.
 const points = (value: number) => (value ? toNumber(value) : "0");
 
+const signed = (value?: number | null) => `+${toNumber(value ?? 0)}`;
+
 const award = computed(() => {
-  const { missionCount, minAward, maxAward } = props.ladder;
+  const { minAward, maxAward } = props.ladder;
 
-  if (!missionCount) return t("labels.faction.noAwards");
+  if (minAward === maxAward) return signed(minAward);
 
-  return t("labels.faction.awards", {
-    count: missionCount,
-    min: `+${toNumber(minAward ?? 0)}`,
-    max: `+${toNumber(maxAward ?? 0)}`,
+  return t("labels.faction.awardRange", {
+    min: signed(minAward),
+    max: signed(maxAward),
   });
 });
+
+const topPoints = computed(() =>
+  Math.max(...props.ladder.ranks.map((rank) => rank.minReputation), 0),
+);
+
+// The rank's total against the top rank's, unscaled, so a bar states the real
+// climb. A rank at or below zero takes no points to reach and has no bar.
+const barStyle = (minReputation: number) => {
+  if (minReputation <= 0 || !topPoints.value) return { width: "0" };
+
+  // The floor keeps the lowest ranks visible beside a top rank thousands of
+  // times their size.
+  return {
+    width: `${(minReputation / topPoints.value) * 100}%`,
+    minWidth: "2px",
+  };
+};
 </script>
 
 <template>
-  <article class="faction-ladder" data-test="faction-ladder">
-    <h3 class="faction-ladder__name">{{ ladder.name }}</h3>
+  <Panel :outer-spacing="false" data-test="faction-ladder">
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC">
+      {{ ladder.name }}
+    </PanelHeading>
 
-    <table class="faction-ladder__ranks">
-      <thead>
-        <tr>
-          <th scope="col">{{ t("labels.faction.rank") }}</th>
-          <th scope="col" class="faction-ladder__points">
-            {{ t("labels.faction.points") }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="rank in ladder.ranks" :key="rank.name">
-          <td>{{ rank.name }}</td>
-          <td class="faction-ladder__points">
-            {{ points(rank.minReputation) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <PanelBody>
+      <div class="faction-ladder">
+        <dl v-if="ladder.missionCount" class="faction-ladder__stats">
+          <div class="faction-ladder__stat">
+            <dt>{{ t("labels.faction.missions") }}</dt>
+            <dd>{{ toNumber(ladder.missionCount) }}</dd>
+          </div>
+          <div class="faction-ladder__stat">
+            <dt>{{ t("labels.faction.perMission") }}</dt>
+            <dd data-test="faction-ladder-award">{{ award }}</dd>
+          </div>
+        </dl>
+        <p v-else class="faction-ladder__note">
+          {{ t("labels.faction.noAwards") }}
+        </p>
 
-    <p class="faction-ladder__award">{{ award }}</p>
-  </article>
+        <ol class="faction-ladder__ranks">
+          <li
+            v-for="rank in ladder.ranks"
+            :key="rank.name"
+            class="faction-ladder__rank"
+          >
+            <div class="faction-ladder__rank-line">
+              <span class="faction-ladder__rank-name">{{ rank.name }}</span>
+              <span class="faction-ladder__rank-points">
+                {{ points(rank.minReputation) }}
+              </span>
+            </div>
+            <div class="faction-ladder__track" aria-hidden="true">
+              <div
+                class="faction-ladder__bar"
+                :style="barStyle(rank.minReputation)"
+              />
+            </div>
+          </li>
+        </ol>
+      </div>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
 .faction-ladder {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  background-color: var(--color-control, rgb(39 43 48 / 0.9));
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: var(--radius-surface-slim, 12px);
+  gap: 14px;
 
-  &__name {
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     margin: 0;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--color-text, #c8c8c8);
+  }
+
+  &__stat {
+    padding: 8px 10px;
+    background-color: var(--color-gray-black);
+    border-radius: var(--radius-control);
+
+    dt {
+      font-family: "Orbitron", tahoma, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-text-dim);
+    }
+
+    dd {
+      margin: 2px 0 0;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--color-lifted);
+    }
+  }
+
+  &__note {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
   }
 
   &__ranks {
-    width: 100%;
-    font-size: 0.8125rem;
-    color: var(--color-text, #c8c8c8);
-    border-collapse: collapse;
-
-    th {
-      padding-bottom: 6px;
-      font-family: "Orbitron", tahoma, sans-serif;
-      font-size: 0.6875rem;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-align: left;
-      text-transform: uppercase;
-      color: var(--color-text-dim, #959595);
-    }
-
-    td {
-      padding: 4px 0;
-      border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-    }
-
-    th.faction-ladder__points,
-    td.faction-ladder__points {
-      padding-left: 12px;
-      text-align: right;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  &__award {
-    margin: 0;
-    font-size: 0.75rem;
-    color: var(--color-text-dim, #959595);
+  &__rank {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__rank-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  &__rank-name {
+    color: var(--color-lifted);
+  }
+
+  &__rank-points {
+    color: var(--color-text-dim);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__track {
+    height: 4px;
+    overflow: hidden;
+    background-color: var(--color-gray-black);
+    border-radius: 2px;
+  }
+
+  &__bar {
+    height: 100%;
+    background-color: var(--color-endcap);
+    border-radius: 2px;
   }
 }
 </style>

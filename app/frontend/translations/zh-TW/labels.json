@@ -5128,10 +5128,9 @@
         "area": "活動區域",
         "focus": "專注領域",
         "ladders": "聲望",
-        "rank": "等級",
-        "points": "起始點數",
-        "awards": "計入此項的任務：%{count} 個（每個 %{min} 至 %{max} 點）",
-        "noAwards": "沒有已發布的任務計入此項。"
+        "noAwards": "沒有已發布的任務計入此項。",
+        "perMission": "每個任務",
+        "awardRange": "%{min} 至 %{max}"
       }
     }
   }

@@ -113,9 +113,7 @@ watch(
         </section>
 
         <section v-if="faction.ladders.length" class="faction-page__section">
-          <h2 class="mission-page__panel-title">
-            {{ t("labels.faction.ladders") }}
-          </h2>
+          <Heading level="h2">{{ t("labels.faction.ladders") }}</Heading>
 
           <div class="faction-page__ladders">
             <FactionLadder
@@ -155,7 +153,7 @@ watch(
 
   &__ladders {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     align-items: start;
     gap: 16px;
   }

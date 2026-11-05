@@ -5128,10 +5128,9 @@
         "area": "活动区域",
         "focus": "专注领域",
         "ladders": "声望",
-        "rank": "等级",
-        "points": "起始点数",
-        "awards": "计入此项的任务：%{count} 个（每个 %{min} 至 %{max} 点）",
-        "noAwards": "没有已发布的任务计入此项。"
+        "noAwards": "没有已发布的任务计入此项。",
+        "perMission": "每个任务",
+        "awardRange": "%{min} 至 %{max}"
       }
     }
   }

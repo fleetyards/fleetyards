@@ -5131,10 +5131,9 @@
         "area": "Area",
         "focus": "Settore",
         "ladders": "Reputazione",
-        "rank": "Grado",
-        "points": "Da (punti)",
-        "awards": "Missioni che contribuiscono: %{count} (da %{min} a %{max} punti ciascuna)",
-        "noAwards": "Nessuna missione pubblicata contribuisce."
+        "noAwards": "Nessuna missione pubblicata contribuisce.",
+        "perMission": "Per missione",
+        "awardRange": "da %{min} a %{max}"
       }
     }
   }

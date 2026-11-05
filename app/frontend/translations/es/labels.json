@@ -5131,10 +5131,9 @@
         "area": "Zona",
         "focus": "Enfoque",
         "ladders": "Reputación",
-        "rank": "Rango",
-        "points": "Desde (puntos)",
-        "awards": "Misiones que aportan aquí: %{count} (de %{min} a %{max} puntos cada una)",
-        "noAwards": "Ninguna misión publicada aporta aquí."
+        "noAwards": "Ninguna misión publicada aporta aquí.",
+        "perMission": "Por misión",
+        "awardRange": "de %{min} a %{max}"
       }
     }
   }
