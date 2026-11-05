@@ -329,8 +329,10 @@ const setLocale = (locale: string) => {
       </transition>
       <div class="main-wrapper">
         <div
+          id="main-content"
           ref="mainInner"
           class="main-inner"
+          tabindex="-1"
           :class="{
             'main-inner--with-primary-action': route.meta.primaryAction,
           }"

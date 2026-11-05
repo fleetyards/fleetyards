@@ -11,6 +11,8 @@ import { useNavStore } from "@/shared/stores/nav";
 import { storeToRefs } from "pinia";
 import { useMobileStore } from "@/shared/stores/mobile";
 import { useSwipeToDismiss } from "@/shared/composables/useSwipeToDismiss";
+import { useI18n } from "@/shared/composables/useI18n";
+import { moveRowFocus, navRows } from "./keyboard";
 
 type Props = {
   title: string;
@@ -18,6 +20,8 @@ type Props = {
 };
 
 defineProps<Props>();
+
+const { t } = useI18n();
 
 const navStore = useNavStore();
 
@@ -38,6 +42,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
+  window.removeEventListener("keydown", onDrawerKeydown);
   document.body.classList.remove("nav-swiping");
   document.body.style.removeProperty("--nav-swipe-offset");
 
@@ -62,6 +67,47 @@ const closeNav = () => {
 const wrapper = ref<HTMLElement | null>(null);
 
 const { mobile } = storeToRefs(useMobileStore());
+
+const drawerHidden = computed(() => mobile.value && navCollapsed.value);
+
+const onDrawerKeydown = (event: KeyboardEvent) => {
+  // On the window, so a menu open inside the drawer hears Escape first.
+  if (event.key === "Escape" && !event.defaultPrevented) {
+    closeNav();
+  }
+};
+
+let focusBeforeDrawer: HTMLElement | null = null;
+
+watch(navCollapsed, async (collapsed) => {
+  if (collapsed) {
+    window.removeEventListener("keydown", onDrawerKeydown);
+
+    // A row keeping the focus would lose it once the drawer turns inert.
+    if (wrapper.value?.contains(document.activeElement)) {
+      focusBeforeDrawer?.focus();
+    }
+
+    return;
+  }
+
+  if (!mobile.value) {
+    return;
+  }
+
+  focusBeforeDrawer = document.activeElement as HTMLElement | null;
+  window.addEventListener("keydown", onDrawerKeydown);
+
+  await nextTick();
+
+  navRows(wrapper.value?.querySelector(".app-navigation__inner"))[0]?.focus({
+    preventScroll: true,
+  });
+});
+
+const skipToContent = () => {
+  document.getElementById("main-content")?.focus();
+};
 
 const { offset: swipeOffset, dragging } = useSwipeToDismiss({
   panel: wrapper,
@@ -92,13 +138,24 @@ watchEffect(() => {
     }"
     class="app-navigation"
     role="navigation"
+    :aria-label="t('nav.navigation')"
     data-test="app-navigation"
+    @keydown="moveRowFocus"
   >
+    <a
+      class="app-navigation__skip"
+      href="#main-content"
+      data-test="nav-skip-to-content"
+      @click.prevent="skipToContent"
+    >
+      {{ t("nav.skipToContent") }}
+    </a>
     <div
       ref="wrapper"
       :class="{
         'app-navigation__wrapper--slim': slim,
       }"
+      :inert="drawerHidden || undefined"
       class="app-navigation__wrapper"
     >
       <div class="app-navigation__inner">

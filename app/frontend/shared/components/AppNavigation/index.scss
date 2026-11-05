@@ -5,6 +5,25 @@
   min-width: 300px;
   height: 100vh;
 
+  // Above the rail, and off screen until the keyboard lands on it.
+  &__skip {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    padding: 8px 14px;
+    color: var(--color-lifted, #eee);
+    background: var(--color-gray-black, #1a1d21);
+    border-radius: 8px;
+    transform: translateY(-200%);
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, #428bca);
+      outline-offset: 0;
+      transform: none;
+    }
+  }
+
   &__wrapper {
     position: fixed;
     width: 300px;

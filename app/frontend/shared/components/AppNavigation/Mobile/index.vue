@@ -28,7 +28,7 @@ const { collapsed: navCollapsed } = storeToRefs(navStore);
           }"
           class="navigation-mobile__toggle"
           type="button"
-          aria-label="Toggle Navigation"
+          :aria-expanded="!navCollapsed"
           @click.stop.prevent="navStore.toggle"
         >
           <span class="sr-only">

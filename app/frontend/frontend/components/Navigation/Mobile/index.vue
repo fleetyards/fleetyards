@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
+import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/index.vue";
@@ -21,6 +22,8 @@ import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
 } from "@/services/fyApi";
+
+const { t } = useI18n();
 
 const sessionStore = useSessionStore();
 
@@ -93,17 +96,20 @@ watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
       <template v-if="currentFleet">
         <NavItem
           :to="{ name: 'home' }"
+          :aria-label="t('nav.home')"
           :active="routeActive('home')"
           icon="fa-duotone fa-home-alt"
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"
           :to="{ name: 'hangar' }"
+          :aria-label="t('nav.hangar.index')"
           icon="fa-duotone fa-warehouse"
         />
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
+          :aria-label="t('nav.hangar.index')"
           icon="fa-light fa-warehouse"
         />
         <!-- Every section of the fleet, and the way out of it, behind its own
@@ -148,18 +154,25 @@ watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
     <template v-else>
       <NavItem
         :to="{ name: 'home' }"
+        :aria-label="t('nav.home')"
         :active="routeActive('home')"
         icon="fa-duotone fa-home-alt"
       />
-      <NavItem :to="{ name: 'ships' }" :icon="SHIP_GLYPH" />
+      <NavItem
+        :to="{ name: 'ships' }"
+        :aria-label="t('nav.ships.index')"
+        :icon="SHIP_GLYPH"
+      />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
         :to="{ name: 'hangar' }"
+        :aria-label="t('nav.hangar.index')"
         icon="fa-duotone fa-warehouse"
       />
       <NavItem
         v-else
         :to="{ name: 'hangar-preview' }"
+        :aria-label="t('nav.hangar.index')"
         icon="fa-light fa-warehouse"
       />
       <NotificationsNav v-if="isAuthenticated" icon-only />

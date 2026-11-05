@@ -87,7 +87,7 @@ const setNoScroll = () => {
         <AppNavigation />
       </transition>
       <div class="main-wrapper">
-        <div class="main-inner">
+        <div id="main-content" class="main-inner" tabindex="-1">
           <AppNavigationHeader />
 
           <router-view v-slot="{ Component, route: viewRoute }">
