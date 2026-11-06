@@ -137,6 +137,14 @@ const figures = computed<Figure[]>(() => {
 
   return list;
 });
+
+// Two even rows between a phone and room for them all on one line, however many
+// figures the ship has: a fixed share left a lone tile stretched across a row.
+const figuresPerRow = computed(() => {
+  const count = figures.value.length;
+
+  return count > 4 ? Math.ceil(count / 2) : count;
+});
 </script>
 
 <template>
@@ -148,7 +156,10 @@ const figures = computed<Figure[]>(() => {
     data-test="hardpoints-summary-figures"
   >
     <PanelBody>
-      <div class="metrics-card__hero">
+      <div
+        class="metrics-card__hero"
+        :style="{ '--summary-figures-per-row': figuresPerRow }"
+      >
         <div
           v-for="figure in figures"
           :key="figure.key"
@@ -178,11 +189,9 @@ const figures = computed<Figure[]>(() => {
     margin-bottom: 0;
   }
 
-  // Between a phone's two columns and room for every figure on one line, an even
-  // 4 + 3 beats a full row left over and labels wrapping inside their tiles.
   @media (min-width: 640px) and (max-width: 1359.98px) {
     .metrics-card__tile {
-      flex: 1 1 24%;
+      flex: 1 1 calc(100% / var(--summary-figures-per-row) - 1px);
     }
   }
 }
