@@ -71,14 +71,10 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "sorts by the figures a ship carries as it comes" do
-    stat = ->(model, **figures) {
-      LoadoutStat.create!(fitting: model, environment: ::ScData::Source.current.environment,
-        version: ::ScData::Source.current.version, **figures)
-    }
     light = create(:model, name: "Light")
-    stat.call(light, max_weapon_size: 1, alpha: 10, burst_dps: 100, sustained_dps_max: 300)
+    create(:loadout_stat, fitting: light, max_weapon_size: 1, alpha: 10, burst_dps: 100, sustained_dps_max: 300)
     heavy = create(:model, name: "Heavy")
-    stat.call(heavy, max_weapon_size: 3, alpha: 100, burst_dps: 1000, sustained_dps_max: 200)
+    create(:loadout_stat, fitting: heavy, max_weapon_size: 3, alpha: 100, burst_dps: 1000, sustained_dps_max: 200)
     concept = create(:model, name: "Concept")
 
     {
@@ -124,6 +120,26 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
       assert_equal names.sort, parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "orders ships sharing a name and a figure the same way every time" do
+    first, second = 2.times.map { create(:model, name: "Twin", manufacturer: create(:manufacturer)) }.sort_by(&:id)
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      assert_equal [first.id, second.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "keeps the chosen sort under a price filter" do
+    cheap = create(:model, name: "Avenger", pledge_price: 50)
+    create(:loadout_stat, fitting: cheap, alpha: 10)
+    armed = create(:model, name: "Gladius", pledge_price: 60)
+    create(:loadout_stat, fitting: armed, alpha: 100)
+    create(:model, name: "Aurora", pledge_price: 20)
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: [50], sorts: ["alpha desc"]}} do
+      assert_equal [armed.id, cheap.id], parsed_body["items"].map { |item| item["id"] }
     end
   end
 

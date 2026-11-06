@@ -97,8 +97,7 @@ module Api
       end
 
       def cargo_options
-        normalize_sort_params(model_query_params)
-        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+        apply_model_sorts
 
         @q = Model.visible
           .active
@@ -217,16 +216,13 @@ module Api
 
         scope = model.variants.includes(:manufacturer, :loadout_stats, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
         if pledge_price_range.present?
-          model_query_params["sorts"] = "pledge_price asc"
           scope = scope.where(pledge_price: pledge_price_range)
         end
         if price_range.present?
-          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
-        normalize_sort_params(model_query_params)
-        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+        apply_model_sorts
 
         @q = scope.ransack(model_query_params)
 
@@ -244,17 +240,14 @@ module Api
         scope = model.loaners.includes(:manufacturer, :loadout_stats, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "pledge_price asc"
           scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?
-          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
-        normalize_sort_params(model_query_params)
-        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+        apply_model_sorts
 
         @q = scope.ransack(model_query_params)
 
@@ -483,12 +476,10 @@ module Api
         scope = Model.includes(Model.rendered_associations).visible.active
 
         if pledge_price_range.present?
-          model_query_params["sorts"] = "pledge_price asc"
           scope = scope.where(pledge_price: pledge_price_range)
         end
 
         if price_range.present?
-          model_query_params["sorts"] = "price asc"
           scope = scope.where(price: price_range)
         end
 
@@ -501,14 +492,18 @@ module Api
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
-        normalize_sort_params(model_query_params)
-        model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+        apply_model_sorts
         read_cargo_as_max_cargo
-        # Whole groups of ships share a figure -- every unarmed one has 0 alpha --
-        # and without a fixed order within a group, pages repeat and skip ships.
-        model_query_params["sorts"] = Array(model_query_params["sorts"]) | [Model::DEFAULT_SORTING_PARAMS]
 
         scope.ransack(model_query_params)
+      end
+
+      # Whole groups of ships share a figure -- every unarmed one has 0 alpha -- and
+      # a name is only unique per manufacturer. Without a total order, a page offset
+      # repeats and skips ships.
+      private def apply_model_sorts
+        normalize_sort_params(model_query_params)
+        model_query_params["sorts"] = Array(sorting_params(Model, model_query_params["sorts"])) | ["name asc", "id asc"]
       end
 
       # The catalogue answers for what a ship can carry once fitted, so a
