@@ -722,4 +722,30 @@
     line-height: 1.4;
     color: var(--color-text-dim);
   }
+
+  // One line needs more than these columns are wide: the name collapsed to nothing,
+  // and the figure, which cannot shrink, ran into the next ship. So the badges stay
+  // on their line and the name and figure each take a line of their own.
+  @media (max-width: $tablet-breakpoint) {
+    &__head,
+    &__part {
+      flex-wrap: wrap;
+      gap: 2px 6px;
+    }
+
+    &__part {
+      padding-left: 8px;
+    }
+
+    &__note {
+      padding-left: 0;
+    }
+
+    &__name,
+    &__figure {
+      flex-basis: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
 }
