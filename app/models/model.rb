@@ -316,16 +316,7 @@ class Model < ApplicationRecord
   # and no figures yet both sort as 0, rather than as a NULL that a descending
   # sort puts first. A vehicle without a loadout reads the same row.
   def self.stock_stat_sql(column)
-    raise ArgumentError, "not a list figure: #{column}" unless LoadoutStat::LIST_FIGURES.key?(column.to_s)
-
-    sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
-      COALESCE((
-        SELECT stock_stats.#{column} FROM loadout_stats stock_stats
-        WHERE stock_stats.fitting_type = 'Model'
-          AND stock_stats.fitting_id = models.id
-          AND stock_stats.environment = ?
-      ), 0)
-    SQL
+    "COALESCE((#{LoadoutStat.stock_sql(column, "models.id")}), 0)"
   end
 
   LoadoutStat::LIST_FIGURES.each do |column, type|

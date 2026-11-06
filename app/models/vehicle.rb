@@ -450,12 +450,7 @@ class Vehicle < ApplicationRecord
         #{"AND fitted_loadouts.public = TRUE" if public_only}
         AND fitted_stats.environment = ?
     SQL
-    stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
-      SELECT stock_stats.#{column} FROM loadout_stats stock_stats
-      WHERE stock_stats.fitting_type = 'Model'
-        AND stock_stats.fitting_id = vehicles.model_id
-        AND stock_stats.environment = ?
-    SQL
+    stock_stat = LoadoutStat.stock_sql(column, "vehicles.model_id")
 
     # No guns sorts and compares as 0, rather than as a NULL that a descending
     # sort puts first.

@@ -15,6 +15,19 @@ class LoadoutStat < ApplicationRecord
 
   belongs_to :fitting, polymorphic: true
 
+  # A figure of the ship whose id `fitting_id_sql` names, as it comes, for the
+  # source the reader is on.
+  def self.stock_sql(column, fitting_id_sql)
+    raise ArgumentError, "not a list figure: #{column}" unless LIST_FIGURES.key?(column.to_s)
+
+    sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
+      SELECT stock_stats.#{column} FROM loadout_stats stock_stats
+      WHERE stock_stats.fitting_type = 'Model'
+        AND stock_stats.fitting_id = #{fitting_id_sql}
+        AND stock_stats.environment = ?
+    SQL
+  end
+
   def self.refresh(source = ::ScData::Source.current.served)
     ::ScData::Source.with(source) do
       # Kept for the ships loadouts are fitted to, which reuse their stock tree.
