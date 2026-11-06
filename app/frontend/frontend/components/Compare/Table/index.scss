@@ -475,6 +475,11 @@
   text-align: right;
   white-space: nowrap;
 
+  // A phone's column is narrower than a long figure with its unit.
+  @media (max-width: 576px) {
+    white-space: normal;
+  }
+
   // Softened off the palette rather than hand-picked: these land on most cells in
   // baseline mode, where full-strength $danger would read as an error state.
   &--better {
@@ -515,6 +520,12 @@
   border: 1px solid rgba($gray-light, 0.28);
   border-radius: 4px;
   white-space: nowrap;
+
+  // A phone's column can be narrower than a label and value together.
+  @media (max-width: 576px) {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
 
   &__label {
     font-family: "Open Sans", sans-serif;
@@ -741,11 +752,26 @@
       padding-left: 0;
     }
 
+    // Wrapping, so the ellipsis can never show, and clipping would only cut off the
+    // focus ring of the link inside.
+    &__name {
+      overflow: visible;
+    }
+
+    &__name,
+    &__note {
+      overflow-wrap: anywhere;
+    }
+
     &__name,
     &__figure {
       flex-basis: 100%;
       white-space: normal;
-      overflow-wrap: anywhere;
+    }
+
+    // Right-aligned like every other figure in the column.
+    &__figure {
+      text-align: right;
     }
   }
 }
