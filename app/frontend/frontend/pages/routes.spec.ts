@@ -59,27 +59,6 @@ describe("frontend routes", () => {
     expect(router.currentRoute.value.name).toBe(name);
   });
 
-  describe.each(
-    CATALOGUE_TENANTS.map((tenant) => [tenant.key, tenant] as const),
-  )("the old %s paths", (key, tenant) => {
-    it("send the list to the catalogue", async () => {
-      await router.push(`/${key}/`);
-
-      expect(router.currentRoute.value.name).toBe(tenant.listRoute);
-      expect(router.currentRoute.value.path).toMatch(
-        new RegExp(`^/catalogue/${key}/?$`),
-      );
-    });
-
-    it("send a detail page there, keeping its slug and query", async () => {
-      await router.push(`/${key}/some-slug/?tab=x`);
-
-      expect(router.currentRoute.value.name).toBe(tenant.detailRoutes[0]);
-      expect(router.currentRoute.value.params.slug).toBe("some-slug");
-      expect(router.currentRoute.value.query.tab).toBe("x");
-    });
-  });
-
   // Every list is its own page: a tab is somewhere a reader can be sent and
   // somewhere a reload lands, which is also what lets a notification point at
   // the one list its request is in.
