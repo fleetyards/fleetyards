@@ -148,6 +148,50 @@ describe("minimalCategories", () => {
     );
   });
 
+  it("keeps a changed copy apart from stock ones", () => {
+    const stock = gun("Cannon");
+    const swapped = gun("Cannon");
+
+    const [{ rows }] = minimalCategories([stock, stock, swapped], {
+      changed: new Set([swapped.id]),
+    });
+
+    expect(rows.map((row) => row.hardpoints.length)).toEqual([2, 1]);
+  });
+
+  it("keeps each crafting on its own row", () => {
+    const crafting = (groupKey: string) => ({ ...gun("Cannon"), groupKey });
+    const first = crafting("a");
+    const second = crafting("b");
+
+    const [{ rows }] = minimalCategories([first, second], {
+      changed: new Set([first.id, second.id]),
+      crafted: new Set([first.id, second.id]),
+    });
+
+    expect(rows).toHaveLength(2);
+  });
+
+  it("lists a changed part a summary would leave out", () => {
+    const swapped = hardpoint(HardpointCategoryEnum.LIFESUPPORT, "ComfortAir");
+
+    expect(
+      minimalCategories(
+        [swapped, hardpoint(HardpointCategoryEnum.LIFESUPPORT, "Other")],
+        { changed: new Set([swapped.id]) },
+      )[0].rows.map((row) => row.hardpoints[0].id),
+    ).toEqual([swapped.id]);
+  });
+
+  it("does not count a part no list draws", () => {
+    const controller = hardpoint(
+      HardpointCategoryEnum.CONTROLLER,
+      "Controller",
+    );
+
+    expect(holdsAny([controller], new Set([controller.id]))).toBe(false);
+  });
+
   it("finds an id anywhere inside the hardpoints", () => {
     const held = gun("Cannon");
     const mount = hardpoint(HardpointCategoryEnum.WEAPON_MOUNTS, "Gimbal", [

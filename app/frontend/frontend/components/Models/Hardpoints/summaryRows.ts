@@ -60,6 +60,12 @@ const LEADING: HardpointCategoryEnum[] = [
 const categoryOf = ({ category }: Hardpoint) =>
   category ?? HardpointCategoryEnum.UNKNOWN;
 
+// What a loadout fits differently from the stock ship.
+export interface PartMarks {
+  changed?: Set<string>;
+  crafted?: Set<string>;
+}
+
 interface Placed {
   hardpoint: Hardpoint;
   category: HardpointCategoryEnum;
@@ -98,18 +104,23 @@ const place = (
 // inside it, and the same gun on two different mounts is still one row here. The
 // sub-type as well, because hydrogen and quantum tanks are both "Internal Tank".
 // A module slot never stacks: its name comes from the reader's pick for that slot.
-const stackKey = ({
-  category,
-  component,
-  groupKey,
-  id,
-  maxSize,
-}: Hardpoint) => {
+const stackKey = ({ hardpoint, carriers }: Placed, marks: PartMarks) => {
+  const { category, component, groupKey, id, maxSize } = hardpoint;
+
   if (category === HardpointCategoryEnum.MODULE) return id;
 
-  return component?.name
+  const part = component?.name
     ? `${maxSize}|${component.name}|${component.subType ?? ""}`
     : `${groupKey ?? id}|${JSON.stringify([component?.size, component?.typeData ?? null])}`;
+
+  // A changed copy stays apart from a stock one, or the mark would claim them all.
+  const changed = [id, ...carriers].some((relatedId) =>
+    marks.changed?.has(relatedId),
+  );
+  // Each crafting has its own figures and its own key, and a row reads the first's.
+  const crafted = marks.crafted?.has(id) ? groupKey : "";
+
+  return `${part}|${changed}|${crafted}`;
 };
 
 const thrustOf = (hardpoint: Hardpoint) =>
@@ -126,11 +137,11 @@ const rowOf = (key: string, placed: Placed[], total: boolean): MinimalRow => ({
   ]),
 });
 
-const stacksOf = (placed: Placed[]): MinimalRow[] => {
+const stacksOf = (placed: Placed[], marks: PartMarks): MinimalRow[] => {
   const stacks = new Map<string, Placed[]>();
 
   placed.forEach((entry) => {
-    const key = stackKey(entry.hardpoint);
+    const key = stackKey(entry, marks);
     stacks.set(key, [...(stacks.get(key) ?? []), entry]);
   });
 
@@ -140,16 +151,20 @@ const stacksOf = (placed: Placed[]): MinimalRow[] => {
 const rowsFor = (
   category: HardpointCategoryEnum,
   placed: Placed[],
+  marks: PartMarks,
 ): MinimalRow[] => {
   const pushing = placed.filter(({ hardpoint }) => thrustOf(hardpoint));
 
   if (!THRUSTERS.includes(category) || !pushing.length) {
-    return stacksOf(placed);
+    return stacksOf(placed, marks);
   }
 
   return [
     rowOf(category, pushing, true),
-    ...stacksOf(placed.filter(({ hardpoint }) => !thrustOf(hardpoint))),
+    ...stacksOf(
+      placed.filter(({ hardpoint }) => !thrustOf(hardpoint)),
+      marks,
+    ),
   ];
 };
 
@@ -162,18 +177,26 @@ const rank = (category: HardpointCategoryEnum) => {
 export const minimalCategories = (
   hardpoints: Hardpoint[],
   // Where these rows are all there is, nothing can be left for the full ones.
-  { complete = false }: { complete?: boolean } = {},
+  { complete = false, ...marks }: { complete?: boolean } & PartMarks = {},
 ): MinimalCategory[] => {
   const leftOut = complete ? NEVER_LISTED : LEFT_OUT;
+
+  // What a loadout changed is what its page is for, however small a part it is.
+  const listed = ({ hardpoint, category }: Placed) => {
+    const part = categoryOf(hardpoint);
+
+    if (marks.changed?.has(hardpoint.id) && !NEVER_LISTED.includes(part)) {
+      return true;
+    }
+
+    return !leftOut.includes(category) && !leftOut.includes(part);
+  };
 
   const categories = new Map<HardpointCategoryEnum, Placed[]>();
 
   hardpoints
     .flatMap((hardpoint) => place(hardpoint))
-    .filter(
-      ({ hardpoint, category }) =>
-        !leftOut.includes(category) && !leftOut.includes(categoryOf(hardpoint)),
-    )
+    .filter(listed)
     .forEach((entry) => {
       categories.set(entry.category, [
         ...(categories.get(entry.category) ?? []),
@@ -183,12 +206,18 @@ export const minimalCategories = (
 
   return [...categories]
     .sort(([a], [b]) => rank(a) - rank(b) || String(a).localeCompare(String(b)))
-    .map(([category, list]) => ({ category, rows: rowsFor(category, list) }));
+    .map(([category, list]) => ({
+      category,
+      rows: rowsFor(category, list, marks),
+    }));
 };
 
 // Whether any of these hardpoints, or what sits inside them, is one of the ids.
+// Parts no list draws do not count, so nothing opens without a change to show.
 export const holdsAny = (hardpoints: Hardpoint[], ids: Set<string>): boolean =>
   hardpoints.some(
     (hardpoint) =>
-      ids.has(hardpoint.id) || holdsAny(partContents(hardpoint), ids),
+      (ids.has(hardpoint.id) &&
+        !NEVER_LISTED.includes(categoryOf(hardpoint))) ||
+      holdsAny(partContents(hardpoint), ids),
   );
