@@ -5,19 +5,22 @@ import Component from "./index.vue";
 import type { Vehicle } from "@/services/fyApi";
 
 const isError = ref(false);
+const isPlaceholderData = ref(false);
+const items = ref<unknown>({
+  items: [
+    { id: "cargo", slug: "cargo", name: "Cargo Module" },
+    { id: "living", slug: "living", name: "Living Module" },
+  ],
+});
 const openEditModal = vi.fn();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useModelModules: () => ({
-    data: ref({
-      items: [
-        { id: "cargo", slug: "cargo", name: "Cargo Module" },
-        { id: "living", slug: "living", name: "Living Module" },
-      ],
-    }),
+    data: items,
     isLoading: ref(false),
     isError,
+    isPlaceholderData,
   }),
 }));
 
@@ -44,6 +47,13 @@ const editButton = '[data-test="vehicle-overview-modules-edit"]';
 describe("VehicleOverviewModulesCard", () => {
   beforeEach(() => {
     isError.value = false;
+    isPlaceholderData.value = false;
+    items.value = {
+      items: [
+        { id: "cargo", slug: "cargo", name: "Cargo Module" },
+        { id: "living", slug: "living", name: "Living Module" },
+      ],
+    };
     openEditModal.mockReset();
   });
 
@@ -61,7 +71,7 @@ describe("VehicleOverviewModulesCard", () => {
   it("invites the owner to record modules while the ship has none", async () => {
     const wrapper = await mount({ modelModuleIds: [] });
 
-    expect(wrapper.text()).toContain("No modules fitted");
+    expect(wrapper.text()).toContain("No modules recorded");
     expect(wrapper.find(editButton).exists()).toBe(true);
   });
 
@@ -101,9 +111,28 @@ describe("VehicleOverviewModulesCard", () => {
 
   it("does not claim the ship has no modules when the request failed", async () => {
     isError.value = true;
+    items.value = undefined;
 
     const wrapper = await mount();
 
     expect(wrapper.find(card).exists()).toBe(false);
+  });
+
+  it("keeps the list it has when a refetch fails", async () => {
+    isError.value = true;
+
+    const wrapper = await mount();
+
+    expect(wrapper.text()).toContain("Cargo Module");
+  });
+
+  it("does not claim the ship has no modules from the last ship's catalogue", async () => {
+    isPlaceholderData.value = true;
+    items.value = { items: [{ id: "other", slug: "other", name: "Other" }] };
+
+    const wrapper = await mount();
+
+    expect(wrapper.find(card).exists()).toBe(true);
+    expect(wrapper.text()).not.toContain("No modules recorded");
   });
 });

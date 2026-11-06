@@ -4983,6 +4983,7 @@
         "cargoMeter": "货舱装载",
         "configuration": "配置",
         "noPaint": "标准涂装",
+        "noModules": "未记录模块",
         "ownedPaints": "你的涂装",
         "ownedModules": "你的模块",
         "ownedPaintsCount": {

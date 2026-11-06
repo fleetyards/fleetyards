@@ -4986,6 +4986,7 @@
         "cargoMeter": "Carga",
         "configuration": "Configuración",
         "noPaint": "Pintura estándar",
+        "noModules": "Sin módulos registrados",
         "ownedPaints": "Tus pinturas",
         "ownedModules": "Tus módulos",
         "ownedPaintsCount": {

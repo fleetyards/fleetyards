@@ -8,11 +8,12 @@ export default {
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import Addons from "@/frontend/components/Vehicles/EditModal/Addons/index.vue";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleModuleCatalogue } from "@/frontend/composables/useVehicleModuleCatalogue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Vehicle, useModelModules } from "@/services/fyApi";
+import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -33,17 +34,19 @@ const visible = computed(
     (editable.value || props.vehicle.modelModuleIds.length > 0),
 );
 
-// An owned module beyond the first page of the catalogue would drop out of the
-// list, so this asks for the largest page the endpoint serves.
 const {
   data: modules,
   isLoading,
   isError,
-} = useModelModules(
-  () => props.vehicle.model.slug,
-  { perPage: "100" },
-  { query: { enabled: visible } },
-);
+  isPlaceholderData,
+} = useVehicleModuleCatalogue(() => props.vehicle, visible);
+
+// A placeholder is the previous ship's catalogue, which this ship's modules
+// would not be found in.
+const pending = computed(() => isLoading.value || isPlaceholderData.value);
+
+// A failed refetch keeps the list it already has.
+const failed = computed(() => isError.value && !modules.value);
 
 const { openEditModal } = useVehicleModals();
 
@@ -55,9 +58,9 @@ const openEditor = () =>
   <!-- Hidden on a failed request: an empty list would claim the ship has no
        modules. -->
   <MetricsCard
-    v-if="visible && !isError"
+    v-if="visible && !failed"
     :title="t('labels.vehicleOverview.ownedModules')"
-    :loading="isLoading"
+    :loading="pending"
     variant="slim"
     data-test="vehicle-overview-modules"
   >
@@ -72,10 +75,10 @@ const openEditor = () =>
       </Btn>
     </template>
     <Addons
-      v-if="!isLoading"
+      v-if="!pending"
       :model-value="vehicle.modelModuleIds"
       :addons="modules?.items ?? []"
-      :empty-label="t('addon.empty.modules')"
+      :empty-label="t('labels.vehicleOverview.noModules')"
     />
   </MetricsCard>
 </template>
