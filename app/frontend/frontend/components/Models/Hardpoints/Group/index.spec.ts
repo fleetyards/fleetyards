@@ -84,6 +84,34 @@ describe("HardpointGroup", () => {
     expect(wrapper.find(".hardpoint-item").exists()).toBe(false);
   });
 
+  it("shows ship matrix cards as a summary, with nothing to expand", async () => {
+    const wrapper = await mountWithDefaults(
+      defineComponent({
+        components: { Group: Component },
+        setup() {
+          provide(hardpointCardFoldKey, {
+            collapsed: () => false,
+            toggle: vi.fn(),
+          });
+
+          return {
+            group: HardpointGroupEnum.SYSTEM,
+            hardpoints: [generator("a")],
+          };
+        },
+        template:
+          "<Group :group='group' :hardpoints='hardpoints' summary-only />",
+      }),
+      { plugins: [router] },
+    );
+
+    expect(wrapper.find(summaryRow).exists()).toBe(true);
+    expect(wrapper.find(".hardpoint-item").exists()).toBe(false);
+    expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
+      false,
+    );
+  });
+
   it("offers no toggle on a group with nothing to summarise", async () => {
     const wrapper = await mountWithDefaults(
       defineComponent({

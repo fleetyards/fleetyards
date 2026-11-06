@@ -26,11 +26,14 @@ type Props = {
   // The hardpoints with the reader's picked modules grafted on, which a summary
   // lists the contents of. The rows the full card draws pick their own.
   fitted?: Hardpoint[];
+  // Ship matrix data has nothing more to expand to.
+  summaryOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   withoutTitle: false,
   fitted: undefined,
+  summaryOnly: false,
 });
 
 const fold = inject(hardpointCardFoldKey, undefined);
@@ -44,7 +47,9 @@ const summaryCategories = computed(() =>
 );
 
 const summary = computed(() =>
-  fold?.collapsed(props.group) ? summaryCategories.value : [],
+  props.summaryOnly || fold?.collapsed(props.group)
+    ? summaryCategories.value
+    : [],
 );
 
 const { t } = useI18n();
@@ -89,7 +94,9 @@ const categories = computed(() => {
       v-if="!withoutTitle"
       variant="slim"
       :title="groupLabel"
-      :collapse-key="summaryCategories.length ? group : undefined"
+      :collapse-key="
+        !summaryOnly && summaryCategories.length ? group : undefined
+      "
       keep-body
     >
       <SummaryCategories v-if="summary.length" :categories="summary" />

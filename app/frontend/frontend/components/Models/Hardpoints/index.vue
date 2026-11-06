@@ -533,7 +533,7 @@ useMetricsMasonry(metricsGrid);
           </Btn>
         </BtnGroup>
         <Btn
-          v-if="shownGroups.length"
+          v-if="shownGroups.length && source === HardpointSourceEnum.GAME_FILES"
           class="hardpoints__fold-all"
           :variant="BtnVariantsEnum.BARE"
           data-test="hardpoints-fold-all"
@@ -578,6 +578,9 @@ useMetricsMasonry(metricsGrid);
               :group="group"
               :hardpoints="hardpointsForGroup(group)"
               :fitted="onShipPage ? (fittedByGroup[group] ?? []) : undefined"
+              :summary-only="
+                onShipPage && source === HardpointSourceEnum.SHIP_MATRIX
+              "
             />
           </div>
         </div>
