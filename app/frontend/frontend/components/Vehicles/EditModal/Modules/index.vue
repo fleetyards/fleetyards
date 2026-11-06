@@ -10,9 +10,9 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import Addons from "../Addons/index.vue";
 import Packages from "../Packages/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleModuleCatalogue } from "@/frontend/composables/useVehicleModuleCatalogue";
 import {
   type Vehicle,
-  useModelModules as useModelModulesQuery,
   useModelModulePackages as useModelModulePackagesQuery,
 } from "@/services/fyApi";
 
@@ -32,8 +32,9 @@ const modelSlug = computed(() => props.vehicle.model?.slug ?? "");
 const { data: modulePackages, ...modulePackagesAsyncStatus } =
   useModelModulePackagesQuery(modelSlug);
 
-const { data: modulesData, ...modulesAsyncStatus } =
-  useModelModulesQuery(modelSlug);
+const { data: modulesData, ...modulesAsyncStatus } = useVehicleModuleCatalogue(
+  () => props.vehicle,
+);
 
 const packages = computed(() => modulePackages.value?.items ?? []);
 const modules = computed(() => modulesData.value?.items ?? []);

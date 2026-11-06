@@ -17,6 +17,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
+      parameter name: "vehicleId", in: :query, schema: {type: :string, format: :uuid}, required: false, description: "Also list the modules this ship of the signed-in user has, even ones the catalogue hides"
 
       response(200, "successful") do
         schema ::V1::Schemas::Models::Modules::ModelModules
@@ -34,6 +35,41 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: model.slug} do
       assert_equal model.modules.count, parsed_body["items"].count
       assert_operator parsed_body["items"].count, :>, 0
+    end
+  end
+
+  test "GET /models/:slug/modules keeps a hidden module for the ship that has it" do
+    model = create(:model)
+    hidden = create(:model_module, name: "Retired Module", hidden: true)
+    create(:module_hardpoint, model:, model_module: hidden)
+    user = create(:user)
+    vehicle = create(:vehicle, user:, model:, model_modules: [hidden])
+    sign_in user
+
+    assert_api_response :get, 200, path_params: {slug: model.slug}, params: {vehicleId: vehicle.id} do
+      assert_equal ["Retired Module"], parsed_body["items"].pluck("name")
+    end
+  end
+
+  test "GET /models/:slug/modules keeps a hidden module private to its owner" do
+    model = create(:model)
+    hidden = create(:model_module, name: "Retired Module", hidden: true)
+    create(:module_hardpoint, model:, model_module: hidden)
+    vehicle = create(:vehicle, user: create(:user), model:, model_modules: [hidden])
+    sign_in create(:user)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug}, params: {vehicleId: vehicle.id} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /models/:slug/modules leaves out a hidden module without a ship" do
+    model = create(:model)
+    hidden = create(:model_module, name: "Retired Module", hidden: true)
+    create(:module_hardpoint, model:, model_module: hidden)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_empty parsed_body["items"]
     end
   end
 
