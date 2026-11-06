@@ -29,6 +29,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/blueprints":
     get:
       summary: Blueprints list
@@ -59,6 +61,8 @@ paths:
                 "$ref": "#/components/schemas/Blueprints"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/blueprints/{slug}":
     get:
       summary: Blueprint detail
@@ -86,6 +90,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/blueprints/{slug}/own":
     parameters:
     - name: slug
@@ -93,6 +99,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Mark a blueprint as owned
       tags:
@@ -160,6 +167,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Put a blueprint on the wishlist
       tags:
@@ -283,6 +291,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Cart"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/cart/items":
     post:
       summary: Add Cart Item
@@ -328,6 +338,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/cart/items/bulk":
     post:
       summary: Add Cart Items
@@ -367,6 +379,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/cart/items/{id}":
     parameters:
     - name: id
@@ -375,6 +389,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Cart Item
       tags:
@@ -506,6 +521,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/carts/{id}":
     parameters:
     - name: id
@@ -514,6 +531,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Cart List
       tags:
@@ -624,6 +642,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Clear Cart List
       tags:
@@ -681,6 +700,8 @@ paths:
                 "$ref": "#/components/schemas/CatalogueTokenMatches"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/catalogue/search":
     get:
       summary: Search the catalogue for an item to name inline
@@ -704,6 +725,8 @@ paths:
                 "$ref": "#/components/schemas/CatalogueTokenMatches"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/character-bodies":
     get:
       summary: Character bodies
@@ -723,6 +746,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/commodities":
     get:
       summary: Commodities list
@@ -753,6 +778,8 @@ paths:
                 "$ref": "#/components/schemas/Commodities"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/commodities/{slug}":
     get:
       summary: Commodity detail
@@ -780,6 +807,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/commodities/{slug}/price-history":
     parameters:
     - name: slug
@@ -788,6 +817,7 @@ paths:
         type: string
       description: Commodity slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Commodity Price History
       tags:
@@ -833,6 +863,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/components":
     get:
       summary: Components list
@@ -868,6 +900,8 @@ paths:
                 "$ref": "#/components/schemas/Components"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/components/weapons":
     get:
       summary: Ship guns for the deflection check
@@ -881,6 +915,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/WeaponIndex"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/components/{slug}":
     get:
       summary: Component detail
@@ -908,6 +944,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/components/{slug}/changes":
     parameters:
     - name: slug
@@ -916,6 +954,7 @@ paths:
         type: string
       description: Component slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Component Changes
       tags:
@@ -966,6 +1005,8 @@ paths:
                 "$ref": "#/components/schemas/Equipments"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/equipment/{slug}":
     get:
       summary: Equipment detail
@@ -993,6 +1034,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/equipment/{slug}/attachments":
     parameters:
     - name: slug
@@ -1000,6 +1043,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Attachments that fit an equipment item
       tags:
@@ -1027,6 +1071,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Other versions of an equipment item
       tags:
@@ -1054,6 +1099,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Weapons an attachment fits
       tags:
@@ -1087,6 +1133,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FactionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/factions/{slug}":
     get:
       summary: Faction detail
@@ -1114,6 +1162,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/features":
     get:
       summary: Feature Flags for User
@@ -1127,6 +1177,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FeatureNamesList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/blueprints/materials":
     get:
       summary: Blueprint materials filter
@@ -1140,6 +1192,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/commodities/types":
     get:
       summary: Commodity Types Filters
@@ -1153,6 +1207,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/components/categories":
     get:
       summary: Components Categories Filters
@@ -1166,6 +1222,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/components/grades":
     get:
       summary: Components Grade Filters
@@ -1189,6 +1247,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/components/sizes":
     get:
       summary: Components Size Filters
@@ -1212,6 +1272,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/components/sub-types":
     get:
       summary: Components Sub Type Filters
@@ -1233,6 +1295,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/grades":
     get:
       summary: Equipment Grade Filters
@@ -1256,6 +1320,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/item-types":
     get:
       summary: Equipment Item Type Filters
@@ -1279,6 +1345,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/sizes":
     get:
       summary: Equipment Size Filters
@@ -1302,6 +1370,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/slots":
     get:
       summary: Equipment Slot Filters
@@ -1325,6 +1395,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/sub-types":
     get:
       summary: Equipment Sub Type Filters
@@ -1348,6 +1420,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/types":
     get:
       summary: Equipment Type Filters
@@ -1361,6 +1435,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/weapon-classes":
     get:
       summary: Equipment Weapon Class Filters
@@ -1384,6 +1460,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -1414,6 +1492,8 @@ paths:
                 "$ref": "#/components/schemas/ManufacturerOptions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/missions/orgs":
     get:
       summary: Mission orgs filter
@@ -1427,6 +1507,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/missions/reward-kinds":
     get:
       summary: Mission reward kinds filter
@@ -1440,6 +1522,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/missions/standings":
     get:
       summary: Mission standings filter
@@ -1453,6 +1537,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/missions/systems":
     get:
       summary: Mission systems filter
@@ -1466,6 +1552,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models":
     get:
       summary: Models Filters
@@ -1479,6 +1567,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/classifications":
     get:
       summary: Model classifications Filters
@@ -1492,6 +1582,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/dock-sizes":
     get:
       summary: Model Dock Sizes Filters
@@ -1505,6 +1597,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/focus":
     get:
       summary: Model focus Filters
@@ -1527,6 +1621,8 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/options":
     get:
       summary: Model Options
@@ -1564,6 +1660,8 @@ paths:
                 "$ref": "#/components/schemas/ModelOptions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/production-states":
     get:
       summary: Model Production states Filters
@@ -1577,6 +1675,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/sizes":
     get:
       summary: Model Sizes Filters
@@ -1590,6 +1690,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/models/vehicle-sizes":
     get:
       summary: Model Vehicle Sizes Filters
@@ -1603,6 +1705,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/trade-routes/commodities":
     get:
       summary: Trade Route Commodity Filters
@@ -1622,6 +1726,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/trade-routes/destination-terminals":
     get:
       summary: Trade Route Destination Terminal Filters
@@ -1641,6 +1747,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/trade-routes/origin-terminals":
     get:
       summary: Trade Route Origin Terminal Filters
@@ -1660,6 +1768,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/trade-routes/star-systems":
     get:
       summary: Trade Route Star System Filters
@@ -1679,6 +1789,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/trade-routes/terminals":
     get:
       summary: Trade Route Terminal Filters
@@ -1698,6 +1810,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/vehicles/bought-via":
     get:
       summary: Vehicles Bought Via Filters
@@ -1711,6 +1825,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleet-event-signups/{id}":
     parameters:
     - name: id
@@ -1718,6 +1834,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Withdraw a member's signup (admin)
       tags:
@@ -1749,6 +1866,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     patch:
       summary: 'Admin: assign or update a signup'
       tags:
@@ -1822,6 +1940,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleet-event-slots/sort":
     put:
       summary: Sort event slots
@@ -1853,6 +1973,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleet-event-slots/{id}":
     parameters:
     - name: id
@@ -1860,6 +1982,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update event slot
       tags:
@@ -1925,6 +2048,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Sign up for slot
       tags:
@@ -2056,6 +2180,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -2091,6 +2217,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/find-by-invite/{token}":
     parameters:
     - name: token
@@ -2099,6 +2227,7 @@ paths:
         type: string
       description: Fleet Invite Token
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Find Fleet by Invite
       tags:
@@ -2154,6 +2283,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/my":
     get:
       summary: Fleets for current User
@@ -2181,6 +2312,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/resource-access-catalog":
     get:
       summary: Fleet Resource Access Catalog
@@ -2194,6 +2327,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetResourceAccessGroupsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/use-invite":
     post:
       summary: Create Fleet Membership by Invite
@@ -2239,6 +2374,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/{fleetSlug}/activity":
     parameters:
     - name: fleetSlug
@@ -2246,6 +2383,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Activity
       tags:
@@ -2314,6 +2452,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Announcements
       tags:
@@ -2399,6 +2538,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Fleet Announcement
       tags:
@@ -2472,6 +2612,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Blueprints the fleet's members hold
       tags:
@@ -2534,6 +2675,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Blueprints the fleet's members want
       tags:
@@ -2596,6 +2738,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Calendar
       tags:
@@ -2642,6 +2785,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Generate calendar subscription token
       tags:
@@ -2729,6 +2873,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Rotate calendar subscription token
       tags:
@@ -2764,6 +2909,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Contract Destinations
       tags:
@@ -2819,6 +2965,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: List Fleet Contracts
       tags:
@@ -2948,6 +3095,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: List Fleet Contract Crew
       tags:
@@ -3026,6 +3174,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Leave Fleet Contract Crew
       tags:
@@ -3076,6 +3225,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Fleet Contract Crew Request
       tags:
@@ -3126,6 +3276,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Fleet Contract Crew Request
       tags:
@@ -3166,6 +3317,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Contract Item
       tags:
@@ -3228,6 +3380,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     patch:
       summary: Update Fleet Contract Item
       tags:
@@ -3296,6 +3449,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Open a payout ledger on a fulfilled fleet contract
       tags:
@@ -3392,6 +3546,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Get Fleet Contract
       tags:
@@ -3488,6 +3643,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Cancel Fleet Contract
       tags:
@@ -3526,6 +3682,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Claim Fleet Contract
       tags:
@@ -3570,6 +3727,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Fulfil Fleet Contract
       tags:
@@ -3610,6 +3768,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Get Fleet Contract Progress
       tags:
@@ -3650,6 +3809,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Publish Fleet Contract
       tags:
@@ -3688,6 +3848,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Release Fleet Contract
       tags:
@@ -3724,6 +3885,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Discord Channels
       tags:
@@ -3772,6 +3934,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Discord Role Mappings
       tags:
@@ -3870,6 +4033,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Discord Roles
       tags:
@@ -3917,6 +4081,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Event
       tags:
@@ -4020,6 +4185,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Open a payout ledger on a fleet event
       tags:
@@ -4106,6 +4272,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create event team
       tags:
@@ -4152,6 +4319,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Sort event teams
       tags:
@@ -4199,6 +4367,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create event ship
       tags:
@@ -4250,6 +4419,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Sort event ships
       tags:
@@ -4302,6 +4472,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update event ship
       tags:
@@ -4382,6 +4553,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Expand ship slots from model positions
       tags:
@@ -4435,6 +4607,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update event team
       tags:
@@ -4505,6 +4678,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Archive Fleet Event
       tags:
@@ -4623,6 +4797,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Grant per-event admin/moderator role
       tags:
@@ -4702,6 +4877,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Revoke per-event admin/moderator role
       tags:
@@ -4738,6 +4914,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Cancel Fleet Event
       tags:
@@ -4778,6 +4955,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Complete Fleet Event
       tags:
@@ -4818,6 +4996,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: End a recurring event series from a given date
       tags:
@@ -4858,6 +5037,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Lock Signups
       tags:
@@ -4898,6 +5078,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Publish Fleet Event
       tags:
@@ -4942,6 +5123,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Sign up to event without picking a slot
       tags:
@@ -4988,6 +5170,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Skip a specific occurrence of a recurring event
       tags:
@@ -5034,6 +5217,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Split a recurring event series at an occurrence
       tags:
@@ -5080,6 +5264,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Start Fleet Event
       tags:
@@ -5120,6 +5305,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Sync event to Discord
       tags:
@@ -5172,6 +5358,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Unarchive Fleet Event
       tags:
@@ -5216,6 +5403,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Unlock Signups
       tags:
@@ -5256,6 +5444,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Restore a skipped occurrence of a recurring event
       tags:
@@ -5306,6 +5495,7 @@ paths:
         - string
         - 'null'
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     patch:
       summary: Override fields on a single occurrence
       tags:
@@ -5342,6 +5532,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Features List
       tags:
@@ -5396,6 +5587,7 @@ paths:
         type: string
       description: Feature name
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Disable Fleet Feature
       tags:
@@ -5450,6 +5642,7 @@ paths:
         type: string
       description: Feature name
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Enable Fleet Feature
       tags:
@@ -5497,6 +5690,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Claim the FID equal to the fleet's verified RSI SID
       tags:
@@ -5615,6 +5809,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Inventory
       tags:
@@ -5722,6 +5917,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Inventory Item
       tags:
@@ -5825,6 +6021,7 @@ paths:
         type: string
       description: Inventory item ID
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Fleet Inventory Item
       tags:
@@ -5913,6 +6110,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Inventory Stock
       tags:
@@ -5961,6 +6159,7 @@ paths:
         type: string
       description: Stock position slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Inventory Stock Position
       tags:
@@ -6095,6 +6294,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Fleet Inventory
       tags:
@@ -6207,6 +6407,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet All Inventory Items
       tags:
@@ -6258,6 +6459,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet All Inventory Stock
       tags:
@@ -6294,6 +6496,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Inventory Transfers
       tags:
@@ -6425,6 +6628,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Inventory Transfer
       tags:
@@ -6480,6 +6684,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Fleet Inventory Transfer
       tags:
@@ -6545,6 +6750,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Cancel Fleet Inventory Transfer
       tags:
@@ -6604,6 +6810,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Fleet Inventory Transfer
       tags:
@@ -6663,6 +6870,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Report Fleet Inventory Transfer
       tags:
@@ -6721,6 +6929,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Invite Url
       tags:
@@ -6833,6 +7042,7 @@ paths:
         type: string
       description: Invite Url Token
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Remove Fleet Invite Url
       tags:
@@ -6876,6 +7086,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Member Health
       tags:
@@ -6936,6 +7147,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Member
       tags:
@@ -7054,6 +7266,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Remove Fleet Member
       tags:
@@ -7197,6 +7410,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Member
       tags:
@@ -7255,6 +7469,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Member
       tags:
@@ -7314,6 +7529,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Demote Member
       tags:
@@ -7373,6 +7589,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Promote Member
       tags:
@@ -7428,6 +7645,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Remind Member to Verify
       tags:
@@ -7472,6 +7690,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Leave Fleet
       tags:
@@ -7588,6 +7807,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Membership
       tags:
@@ -7634,6 +7854,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Membership
       tags:
@@ -7680,6 +7901,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Withdraw Join Request
       tags:
@@ -7726,6 +7948,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Mission
       tags:
@@ -7830,6 +8053,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Mission Team
       tags:
@@ -7876,6 +8100,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Sort Mission Teams
       tags:
@@ -7927,6 +8152,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy Mission Team
       tags:
@@ -8002,6 +8228,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Mission Ship
       tags:
@@ -8057,6 +8284,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Sort Mission Ships
       tags:
@@ -8113,6 +8341,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy Mission Ship
       tags:
@@ -8193,6 +8422,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Duplicate Mission Ship
       tags:
@@ -8233,6 +8463,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Archive Mission
       tags:
@@ -8387,6 +8618,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/{fleetSlug}/missions/{slug}/unarchive":
     parameters:
     - name: fleetSlug
@@ -8399,6 +8632,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Unarchive Mission
       tags:
@@ -8434,6 +8668,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show fleet notification settings
       tags:
@@ -8503,6 +8738,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Probe the fleet's Discord guild binding
       tags:
@@ -8538,6 +8774,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Online Members
       tags:
@@ -8580,6 +8817,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Role List
       tags:
@@ -8629,6 +8867,7 @@ paths:
         format: uuid
       description: Fleet role id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Rename Fleet Role
       tags:
@@ -8686,6 +8925,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Generate a new RSI verification token
       tags:
@@ -8795,6 +9035,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Check the RSI org page for the verification token
       tags:
@@ -8865,6 +9106,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/fleets/{fleetSlug}/shopping-lists":
     parameters:
     - name: fleetSlug
@@ -8873,6 +9116,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Shopping Lists
       tags:
@@ -8969,6 +9213,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Shopping List
       tags:
@@ -9093,6 +9338,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Copy Fleet Shopping List
       tags:
@@ -9143,6 +9389,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Squadron Role List
       tags:
@@ -9198,6 +9445,7 @@ paths:
         format: uuid
       description: Squadron role id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Rename Fleet Squadron Role
       tags:
@@ -9256,6 +9504,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Squadron
       tags:
@@ -9363,6 +9612,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Add Fleet Squadron Member
       tags:
@@ -9482,6 +9732,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Remove Fleet Squadron Member
       tags:
@@ -9580,6 +9831,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Request to join a Fleet Squadron
       tags:
@@ -9667,6 +9919,7 @@ paths:
         type: string
       description: Username of the member who asked
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Withdraw or decline a Fleet Squadron Request
       tags:
@@ -9724,6 +9977,7 @@ paths:
         type: string
       description: Username of the member who asked
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept a Fleet Squadron Request
       tags:
@@ -9778,6 +10032,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Fleet Squadron
       tags:
@@ -9906,6 +10161,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Join Fleet Squadron
       tags:
@@ -9960,6 +10216,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Leave Fleet Squadron
       tags:
@@ -10004,6 +10261,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Move Fleet Squadron
       tags:
@@ -10054,6 +10312,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Members Stats
       tags:
@@ -10098,6 +10357,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats Model Counts
       tags:
@@ -10148,6 +10408,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats - Models by Classification
       tags:
@@ -10192,6 +10453,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats - Models by Manufacturer
       tags:
@@ -10236,6 +10498,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats - Models by Production Status
       tags:
@@ -10280,6 +10543,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats - Models by Size
       tags:
@@ -10324,6 +10588,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Vehicles Stats
       tags:
@@ -10374,6 +10639,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Stats - Vehicles by Model
       tags:
@@ -10417,6 +10683,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Fleet Tour
       tags:
@@ -10517,6 +10784,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show Fleet Tour
       tags:
@@ -10563,6 +10831,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Vehicles List
       tags:
@@ -10630,6 +10899,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Vehicles List
       tags:
@@ -10680,6 +10950,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Export a Fleet for hangar.link
       tags:
@@ -10730,6 +11001,7 @@ paths:
         type: string
       description: The acting fleet's slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Allies
       tags:
@@ -10857,6 +11129,7 @@ paths:
         type: string
       description: The other fleet's slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Alliance
       tags:
@@ -10951,6 +11224,7 @@ paths:
         type: string
       description: The other fleet's slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Alliance Request
       tags:
@@ -11005,6 +11279,7 @@ paths:
         type: string
       description: The other fleet's slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Alliance Request
       tags:
@@ -11059,6 +11334,7 @@ paths:
         type: string
       description: The other fleet's slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Ignore Alliance Request
       tags:
@@ -11107,6 +11383,7 @@ paths:
         type: string
       description: slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy Fleet
       tags:
@@ -11333,6 +11610,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/friends/pending-count":
     get:
       summary: Pending friend request count
@@ -11364,6 +11643,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/friends/{username}":
     parameters:
     - name: username
@@ -11372,6 +11653,7 @@ paths:
         type: string
       description: The other user's username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Friendship
       tags:
@@ -11444,6 +11726,7 @@ paths:
         type: string
       description: The other user's username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Friend Request
       tags:
@@ -11490,6 +11773,7 @@ paths:
         type: string
       description: The other user's username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Friend Request
       tags:
@@ -11536,6 +11820,7 @@ paths:
         type: string
       description: The other user's username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Ignore Friend Request
       tags:
@@ -11597,6 +11882,8 @@ paths:
                 "$ref": "#/components/schemas/GameEvents"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar":
     delete:
       summary: Clear your personal Hangar
@@ -11667,6 +11954,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/blueprint-missions":
     get:
       summary: Missions that hand out a wanted blueprint
@@ -11711,6 +12000,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/buybacks":
     get:
       summary: Hangar Buy-back Pledges
@@ -11755,6 +12046,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/buybacks/insurance-terms":
     get:
       summary: Hangar Buy-back Insurance Terms
@@ -11782,6 +12075,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/buybacks/{id}":
     parameters:
     - name: id
@@ -11790,6 +12085,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Remove a Hangar Buy-back Pledge
       tags:
@@ -11853,6 +12149,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/equipment":
     get:
       summary: Hangar Equipment
@@ -11897,6 +12195,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/export":
     get:
       summary: Export your personal Hangar
@@ -11934,6 +12234,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/export/hangar-link":
     get:
       summary: Export your personal Hangar for hangar.link
@@ -11971,6 +12273,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/flair":
     get:
       summary: Hangar Flair
@@ -12015,6 +12319,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/fleetchart-layouts":
     get:
       summary: Fleetchart Layouts
@@ -12086,6 +12392,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/fleetchart-layouts/{id}":
     parameters:
     - name: id
@@ -12094,6 +12402,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleetchart Layout
       tags:
@@ -12196,6 +12505,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Share Fleetchart Layout
       tags:
@@ -12307,6 +12617,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/groups/sort":
     put:
       summary: HangarGroup sort
@@ -12342,6 +12654,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/groups/{id}":
     parameters:
     - name: id
@@ -12351,6 +12665,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: HangarGroup Destroy
       tags:
@@ -12482,6 +12797,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/inventories":
     post:
       summary: Create Hangar Inventory
@@ -12564,6 +12881,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/inventories/{hangarInventorySlug}/items":
     parameters:
     - name: hangarInventorySlug
@@ -12572,6 +12891,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Inventory Item
       tags:
@@ -12673,6 +12993,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Add Hangar Pledge Items to an Inventory
       tags:
@@ -12731,6 +13052,7 @@ paths:
         type: string
       description: Inventory item ID
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Hangar Inventory Item
       tags:
@@ -12813,6 +13135,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Inventory Stock
       tags:
@@ -12861,6 +13184,7 @@ paths:
         type: string
       description: Stock position slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Inventory Stock Position
       tags:
@@ -12977,6 +13301,7 @@ paths:
         type: string
       description: Inventory slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Hangar Inventory
       tags:
@@ -13125,6 +13450,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/inventory-stock":
     get:
       summary: Hangar All Inventory Stock
@@ -13162,6 +13489,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/inventory-transfers":
     get:
       summary: Hangar Inventory Transfers
@@ -13273,6 +13602,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/inventory-transfers/{id}":
     parameters:
     - name: id
@@ -13282,6 +13613,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Inventory Transfer
       tags:
@@ -13331,6 +13663,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Accept Hangar Inventory Transfer
       tags:
@@ -13390,6 +13723,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Cancel Hangar Inventory Transfer
       tags:
@@ -13443,6 +13777,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Hangar Inventory Transfer
       tags:
@@ -13496,6 +13831,7 @@ paths:
         format: uuid
       description: Transfer id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Report Hangar Inventory Transfer
       tags:
@@ -13573,6 +13909,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/move-all-ingame-to-wishlist":
     put:
       summary: Move all Ingame Ships from your Hangar to your Wishlist
@@ -13596,6 +13934,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/paints":
     get:
       summary: Hangar Paints
@@ -13640,6 +13980,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/plans":
     get:
       summary: Hangar Plans
@@ -13717,6 +14059,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/plans/{hangarPlanId}/acquisitions":
     parameters:
     - name: hangarPlanId
@@ -13725,6 +14069,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Plan Acquisition
       tags:
@@ -13777,6 +14122,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Hangar Plan Acquisition
       tags:
@@ -13851,6 +14197,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Plan Candidate
       tags:
@@ -13903,6 +14250,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Hangar Plan Candidate
       tags:
@@ -13971,6 +14319,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Keep Hangar Plan Vehicles
       tags:
@@ -14011,6 +14360,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Plan Melt
       tags:
@@ -14057,6 +14407,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Hangar Plan Melt
       tags:
@@ -14125,6 +14476,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Plan Slot
       tags:
@@ -14171,6 +14523,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Sort Hangar Plan Slots
       tags:
@@ -14213,6 +14566,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Hangar Plan Slot
       tags:
@@ -14287,6 +14641,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Choose Hangar Plan Slot Candidate
       tags:
@@ -14329,6 +14684,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Hangar Plan Vehicle Mark
       tags:
@@ -14375,6 +14731,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Hangar Plan Vehicle Mark
       tags:
@@ -14443,6 +14800,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan
       tags:
@@ -14551,6 +14909,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Add Hangar Plan Purchases to the Wishlist
       tags:
@@ -14587,6 +14946,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Compare two Hangar Plans
       tags:
@@ -14623,6 +14983,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan Comparison with the Hangar
       tags:
@@ -14653,6 +15014,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan Drift
       tags:
@@ -14683,6 +15045,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Rebase Hangar Plan on the Hangar
       tags:
@@ -14713,6 +15076,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan Resources
       tags:
@@ -14743,6 +15107,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Share Hangar Plan
       tags:
@@ -14801,6 +15166,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan Suggestions
       tags:
@@ -14831,6 +15197,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hangar Plan Summary
       tags:
@@ -14894,6 +15261,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/search":
     get:
       summary: Search the current user's hangar
@@ -14921,6 +15290,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/ship-components":
     get:
       summary: Hangar Ship Components
@@ -14965,6 +15336,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -15002,6 +15375,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/stats/models-by-classification":
     get:
       summary: Hangar Stats - Models by Classification
@@ -15029,6 +15404,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/stats/models-by-manufacturer":
     get:
       summary: Hangar Stats - Models by Manufacturer
@@ -15056,6 +15433,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/stats/models-by-production-status":
     get:
       summary: Hangar Stats - Models by Production Status
@@ -15083,6 +15462,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/stats/models-by-size":
     get:
       summary: Hangar Stats - Models by Size
@@ -15110,6 +15491,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-buyback-details":
     put:
       summary: Sync RSI Buy-back Pledge Details
@@ -15149,6 +15532,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-buybacks":
     put:
       summary: Sync RSI Buy-back Pledges
@@ -15188,6 +15573,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-buybacks/last-read":
     get:
       summary: Sync RSI Buy-back Pledges Last Read
@@ -15215,6 +15602,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-hangar":
     put:
       summary: Sync RSI Hangar
@@ -15254,6 +15643,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-hangar/last-read":
     get:
       summary: Sync RSI Hangar Last Read
@@ -15281,6 +15672,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/sync-rsi-hangar/status":
     get:
       summary: Sync RSI Hangar Status
@@ -15308,6 +15701,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/upgrades":
     get:
       summary: Hangar Upgrades
@@ -15352,6 +15747,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hardpoints/{id}/loadout-options":
     parameters:
     - name: id
@@ -15361,6 +15758,7 @@ paths:
         format: uuid
       description: Hardpoint id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Hardpoint Loadout Options
       tags:
@@ -15421,6 +15819,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Homepage"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/images":
     get:
       summary: Images list
@@ -15456,6 +15856,8 @@ paths:
                 "$ref": "#/components/schemas/Images"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/images/random":
     get:
       summary: Images random list
@@ -15481,6 +15883,8 @@ paths:
                 "$ref": "#/components/schemas/ImagesList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/imports":
     get:
       summary: List your own imports
@@ -15525,6 +15929,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/imports/{id}":
     parameters:
     - name: id
@@ -15532,6 +15938,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show one of your imports
       tags:
@@ -15573,6 +15980,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Cancel a running import
       tags:
@@ -15641,6 +16049,8 @@ paths:
                 "$ref": "#/components/schemas/Locations"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/jump-points":
     get:
       summary: Location jump points
@@ -15654,6 +16064,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/LocationJumpPointsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}":
     get:
       summary: Location detail
@@ -15681,6 +16093,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}/contents":
     get:
       summary: Location contents
@@ -15708,6 +16122,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}/people":
     get:
       summary: Location people
@@ -15758,6 +16174,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}/shops":
     get:
       summary: Location shops
@@ -15785,6 +16203,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}/tree":
     get:
       summary: Location system tree
@@ -15812,6 +16232,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -15847,6 +16269,8 @@ paths:
                 "$ref": "#/components/schemas/Manufacturers"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/manufacturers/with-models":
     get:
       summary: with_models manufacturer
@@ -15859,6 +16283,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/markdown-images":
     post:
       summary: Upload an image for a Markdown description
@@ -15898,6 +16324,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/markdown-images/{id}":
     parameters:
     - name: id
@@ -15907,6 +16335,7 @@ paths:
         format: uuid
       description: Markdown image id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show an image embedded in a Markdown description
       tags:
@@ -15998,6 +16427,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/calendar/subscription/rotate":
     post:
       summary: Rotate personal calendar subscription
@@ -16025,6 +16456,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/events":
     get:
       summary: My agenda
@@ -16067,6 +16500,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/fleets":
     get:
       summary: My fleets at a glance
@@ -16094,6 +16529,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/hangar/share":
     post:
       summary: Create hangar share link
@@ -16169,6 +16606,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/hangar/share/rotate":
     post:
       summary: Rotate hangar share link
@@ -16196,6 +16635,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/patch-changes":
     get:
       summary: What the current build changed about my ships
@@ -16223,6 +16664,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/rsi-verification":
     get:
       summary: Show the RSI handle verification
@@ -16302,6 +16745,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/rsi-verification/check":
     post:
       summary: Check the RSI citizen page for the verification token
@@ -16335,6 +16780,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/supporter/claim-key":
     get:
       summary: Show the supporter claim key
@@ -16362,6 +16809,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/supporter/contributions":
     get:
       summary: List my supporter contributions
@@ -16395,6 +16844,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/supporter/contributions/{id}":
     parameters:
     - name: id
@@ -16403,6 +16854,7 @@ paths:
       schema:
         type: string
         format: uuid
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Nominate the fleet a contribution is for
       tags:
@@ -16530,6 +16982,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/mission-slots":
     post:
       summary: Create Mission Slot
@@ -16565,6 +17019,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/mission-slots/sort":
     put:
       summary: Sort Mission Slots
@@ -16600,6 +17056,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/mission-slots/{id}":
     parameters:
     - name: id
@@ -16607,6 +17065,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy Mission Slot
       tags:
@@ -16695,6 +17154,8 @@ paths:
                 "$ref": "#/components/schemas/GameMissions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/missions/{slug}":
     get:
       summary: Mission detail
@@ -16722,6 +17183,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/model-paints":
     get:
       summary: Model Paints List
@@ -16752,6 +17215,8 @@ paths:
                 "$ref": "#/components/schemas/ModelPaintsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models":
     get:
       summary: Models List
@@ -16794,6 +17259,8 @@ paths:
                 "$ref": "#/components/schemas/Models"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/defenses":
     get:
       summary: Ship defenses for the penetration check
@@ -16807,6 +17274,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ModelDefensesList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/embed":
     get:
       summary: Embed Models
@@ -16832,6 +17301,8 @@ paths:
                 "$ref": "#/components/schemas/ModelsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/fleetchart-views":
     get:
       summary: Ship views for a fleetchart
@@ -16855,6 +17326,8 @@ paths:
                 "$ref": "#/components/schemas/FleetchartViewsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/latest":
     get:
       summary: Latest Models
@@ -16868,6 +17341,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ModelsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/slugs":
     get:
       summary: Available Model-Slugs
@@ -16877,6 +17352,8 @@ paths:
       responses:
         '200':
           description: successful
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/updated":
     get:
       summary: Updated Models
@@ -16904,6 +17381,8 @@ paths:
           description: not modified
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -16939,6 +17418,8 @@ paths:
                 "$ref": "#/components/schemas/Models"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -16947,6 +17428,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Detail
       tags:
@@ -16975,6 +17457,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Changes
       tags:
@@ -17003,6 +17486,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Fleetchart Image
       tags:
@@ -17028,6 +17512,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Hardpoints
       tags:
@@ -17062,6 +17547,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Images
       tags:
@@ -17098,6 +17584,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Loadout Preview
       tags:
@@ -17126,6 +17613,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Loadout Slots
       tags:
@@ -17154,6 +17642,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Loaners
       tags:
@@ -17190,6 +17679,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Module Packages
       tags:
@@ -17226,6 +17716,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Modules
       tags:
@@ -17261,6 +17752,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Owners
       tags:
@@ -17309,6 +17801,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Paints
       tags:
@@ -17337,6 +17830,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Positions
       tags:
@@ -17365,6 +17859,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Price History
       tags:
@@ -17393,6 +17888,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Sales
       tags:
@@ -17421,6 +17917,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Snubcrafts
       tags:
@@ -17449,6 +17946,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Storeimage
       tags:
@@ -17468,6 +17966,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Upgrades
       tags:
@@ -17496,6 +17995,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Variants
       tags:
@@ -17532,6 +18032,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Videos
       tags:
@@ -17568,6 +18069,7 @@ paths:
         type: string
       description: Model slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Model Wishlist History
       tags:
@@ -17625,6 +18127,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notification-preferences":
     get:
       summary: List notification preferences
@@ -17652,6 +18156,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notification-preferences/{id}":
     parameters:
     - name: id
@@ -17659,6 +18165,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update a notification preference
       tags:
@@ -17738,6 +18245,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/archive-bulk":
     put:
       summary: Archive the selected notifications
@@ -17773,6 +18282,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/destroy-all":
     delete:
       summary: Delete all notifications
@@ -17796,6 +18307,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/destroy-bulk":
     put:
       summary: Delete the selected notifications
@@ -17831,6 +18344,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/read-all":
     put:
       summary: Mark all notifications as read
@@ -17854,6 +18369,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/read-bulk":
     put:
       summary: Mark the selected notifications as read
@@ -17889,6 +18406,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/unarchive-bulk":
     put:
       summary: Move the selected notifications back to the inbox
@@ -17924,6 +18443,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/unread-bulk":
     put:
       summary: Mark the selected notifications as unread
@@ -17959,6 +18480,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/unread-count":
     get:
       summary: Unread notification count
@@ -17986,6 +18509,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/notifications/{id}":
     parameters:
     - name: id
@@ -17993,6 +18518,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete a notification
       tags:
@@ -18024,6 +18550,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Archive a notification
       tags:
@@ -18059,6 +18586,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Mark notification as read
       tags:
@@ -18094,6 +18622,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Move a notification back to the inbox
       tags:
@@ -18129,6 +18658,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Mark notification as unread
       tags:
@@ -18218,6 +18748,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/oauth-applications/{id}":
     parameters:
     - name: id
@@ -18227,6 +18759,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy OAuth Application
       tags:
@@ -18334,6 +18867,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Regenerate OAuth Application secret
       tags:
@@ -18373,6 +18907,7 @@ paths:
       schema:
         "$ref": "#/components/schemas/OmniauthProviderEnum"
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Disconnect OAuth provider
       tags:
@@ -18446,6 +18981,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/otp/enable":
     post:
       summary: Enable OTP Setup
@@ -18491,6 +19028,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/otp/generate-backup-codes":
     post:
       summary: Generate OTP Backup Codes
@@ -18530,6 +19069,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/otp/start":
     post:
       summary: Start OTP Setup
@@ -18569,6 +19110,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/outfits":
     get:
       summary: Outfits
@@ -18640,6 +19183,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/outfits/{id}":
     parameters:
     - name: id
@@ -18648,6 +19193,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Outfit
       tags:
@@ -18781,6 +19327,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/password/request":
     post:
       summary: Request Password reset
@@ -18806,6 +19354,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/password/{token}":
     parameters:
     - name: token
@@ -18813,6 +19363,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Update Password with Token
       tags:
@@ -18845,6 +19396,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show a payout ledger
       tags:
@@ -18885,6 +19437,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Balances and the transfers that settle them
       tags:
@@ -18919,6 +19472,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Reopen a settled payout ledger
       tags:
@@ -18965,6 +19519,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Settle a payout ledger
       tags:
@@ -19011,6 +19566,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Record a payout entry
       tags:
@@ -19103,6 +19659,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     patch:
       summary: Update a payout entry
       tags:
@@ -19181,6 +19738,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Approve a payout expense
       tags:
@@ -19227,6 +19785,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline a payout expense
       tags:
@@ -19273,6 +19832,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Add a payout participant
       tags:
@@ -19361,6 +19921,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     patch:
       summary: Update a payout participant
       tags:
@@ -19447,6 +20008,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: The frozen payout list
       tags:
@@ -19487,6 +20049,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Mark a transfer as paid
       tags:
@@ -19552,6 +20115,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Shared Fleetchart Layout
       tags:
@@ -19608,6 +20172,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/public/fleets/{fleetSlug}/squadrons":
     parameters:
     - name: fleetSlug
@@ -19616,6 +20182,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Squadrons List
       tags:
@@ -19658,6 +20225,7 @@ paths:
         type: string
       description: Squadron slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Squadron
       tags:
@@ -19686,6 +20254,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Members Stats
       tags:
@@ -19714,6 +20283,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Stats Model Counts
       tags:
@@ -19750,6 +20320,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Models by Classification
       tags:
@@ -19786,6 +20357,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Models by Manufacturer
       tags:
@@ -19822,6 +20394,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Models by Production Status
       tags:
@@ -19858,6 +20431,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Models by Size
       tags:
@@ -19894,6 +20468,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Vehicles Stats
       tags:
@@ -19930,6 +20505,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Vehicles by Model
       tags:
@@ -19966,6 +20542,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Vehicles List
       tags:
@@ -20019,6 +20596,7 @@ paths:
         type: string
       description: Fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Fleet Vehicles Embed for the Fleetyards Widget
       tags:
@@ -20055,6 +20633,7 @@ paths:
         type: string
       description: fleet slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Allied Fleet Members
       tags:
@@ -20083,6 +20662,7 @@ paths:
         type: string
       description: slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Fleet Detail
       tags:
@@ -20110,6 +20690,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Shared Hangar Plan
       tags:
@@ -20137,6 +20718,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Shared Hangar Plan Summary
       tags:
@@ -20180,6 +20762,8 @@ paths:
                 "$ref": "#/components/schemas/PublicVehiclesList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/public/hangars/{username}":
     parameters:
     - name: username
@@ -20187,6 +20771,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar
       tags:
@@ -20236,6 +20821,7 @@ paths:
         type: string
       description: Username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: HangarGroup list
       tags:
@@ -20271,6 +20857,7 @@ paths:
         type: string
       description: username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Stats
       tags:
@@ -20313,6 +20900,7 @@ paths:
         type: string
       description: username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Models by Classification
       tags:
@@ -20348,6 +20936,7 @@ paths:
         type: string
       description: username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Models by Manufacturer
       tags:
@@ -20383,6 +20972,7 @@ paths:
         type: string
       description: username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Models by Production Status
       tags:
@@ -20418,6 +21008,7 @@ paths:
         type: string
       description: username
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Models by Size
       tags:
@@ -20459,6 +21050,7 @@ paths:
         type: string
       description: 'Vehicle address: its id, or its serial, followed by its name'
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Hangar Vehicle
       tags:
@@ -20513,6 +21105,7 @@ paths:
         format: uuid
       description: Loadout id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Vehicle Loadout
       tags:
@@ -20567,6 +21160,7 @@ paths:
         format: uuid
       description: Loadout id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Vehicle Loadout Slots
       tags:
@@ -20615,6 +21209,7 @@ paths:
         format: uuid
       description: Vehicle id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public Vehicle Log Entries
       tags:
@@ -20655,6 +21250,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Public User
       tags:
@@ -20689,6 +21285,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Your Wishlist
       tags:
@@ -20807,6 +21404,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/push-subscriptions/{id}":
     parameters:
     - name: id
@@ -20815,6 +21414,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Unsubscribe a browser from push notifications
       tags:
@@ -20859,6 +21459,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Mark this browser's push subscription as still in use
       tags:
@@ -20930,6 +21531,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/raffles/current":
     get:
       summary: Current Raffle
@@ -20955,6 +21558,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/raffles/preview/{token}":
     parameters:
     - name: token
@@ -20963,6 +21568,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Raffle Preview
       tags:
@@ -20992,6 +21598,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Raffle
       tags:
@@ -21027,6 +21634,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Raffle entrants
       tags:
@@ -21070,6 +21678,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Enter Raffle
       tags:
@@ -21161,6 +21770,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataBuilds"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/compare":
     get:
       summary: Compare two SC Data builds
@@ -21193,6 +21804,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/patch-summary":
     get:
       summary: SC Data patch summary
@@ -21212,6 +21825,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/sources":
     get:
       summary: SC Data Sources
@@ -21225,6 +21840,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataSources"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/version":
     get:
       summary: SC Data Version
@@ -21238,6 +21855,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/search":
     get:
       summary: Search the catalogues
@@ -21259,6 +21878,8 @@ paths:
                 "$ref": "#/components/schemas/SearchResults"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sessions":
     post:
       summary: create session
@@ -21304,6 +21925,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sessions/confirm-access":
     post:
       summary: confirm_access session
@@ -21339,6 +21962,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sessions/confirm-access-code":
     post:
       summary: Verify confirm access code
@@ -21372,6 +21997,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sessions/confirm-access-email":
     post:
       summary: Send confirm access email with code
@@ -21399,6 +22026,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/shops/{slug}":
     get:
       summary: Shop Detail
@@ -21426,6 +22055,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/shops/{slug}/items":
     get:
       summary: Shop Items
@@ -21467,6 +22098,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -21480,6 +22113,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/ingame-price-changes":
     get:
       summary: Stats Ingame Price Changes
@@ -21493,6 +22128,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/models-by-classification":
     get:
       summary: Stats Models by Classification
@@ -21506,6 +22143,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/models-by-manufacturer":
     get:
       summary: Stats Models by Manufacturer
@@ -21519,6 +22158,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/models-by-production-status":
     get:
       summary: Stats Models by Production-Status
@@ -21532,6 +22173,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/models-by-size":
     get:
       summary: Stats Models by Size
@@ -21545,6 +22188,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/models-per-month":
     get:
       summary: Stats Models per Month
@@ -21558,6 +22203,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/most-wishlisted":
     get:
       summary: Stats Most Wishlisted
@@ -21571,6 +22218,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/patch-changes":
     get:
       summary: Stats Patch Changes
@@ -21584,6 +22233,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/pledge-price-changes":
     get:
       summary: Stats Pledge Price Changes
@@ -21597,6 +22248,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/quick-stats":
     get:
       summary: Stats
@@ -21610,6 +22263,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/ships-of-the-month":
     get:
       summary: Stats Ships of the Month
@@ -21638,6 +22293,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/top-paints":
     get:
       summary: Stats Top Paints
@@ -21651,6 +22308,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/trending-ships":
     get:
       summary: Stats Trending Ships
@@ -21664,6 +22323,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model
@@ -21677,6 +22338,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/vehicles-per-month":
     get:
       summary: Stats Vehicles per Month
@@ -21690,6 +22353,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/wish-to-own-ratio":
     get:
       summary: Stats Wish to Own Ratio
@@ -21703,6 +22368,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/stats/wishlist-by-model":
     get:
       summary: Stats Wishlist by Model
@@ -21716,6 +22383,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/supporters":
     get:
       summary: Public list of everyone who has supported the project
@@ -21729,6 +22398,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupportersOverview"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/supporters/progress":
     get:
       summary: Public Supporters Progress
@@ -21742,6 +22413,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupportProgress"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/tours":
     post:
       summary: Create Tour
@@ -21813,6 +22486,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/tours/find-by-invite/{token}":
     parameters:
     - name: token
@@ -21820,6 +22495,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Preview a tour behind an invite link
       tags:
@@ -21859,6 +22535,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Join Tour
       tags:
@@ -21904,6 +22581,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Show Tour
       tags:
@@ -22011,6 +22689,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Archive Tour
       tags:
@@ -22050,6 +22729,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Settle Tour
       tags:
@@ -22095,6 +22775,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Unarchive Tour
       tags:
@@ -22134,6 +22815,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Ask To Join Tour
       tags:
@@ -22221,6 +22903,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Withdraw Tour Join Request
       tags:
@@ -22266,6 +22949,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Approve Tour Join Request
       tags:
@@ -22317,6 +23001,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Decline Tour Join Request
       tags:
@@ -22391,6 +23076,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -22416,6 +23103,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/user-features/{id}/disable":
     parameters:
     - name: id
@@ -22424,6 +23113,7 @@ paths:
         type: string
       description: Feature name
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Disable User Feature
       tags:
@@ -22464,6 +23154,7 @@ paths:
         type: string
       description: Feature name
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Enable User Feature
       tags:
@@ -22541,6 +23232,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/users/check-email":
     post:
       summary: Check E-Mail Availability
@@ -22562,6 +23255,8 @@ paths:
                 "$ref": "#/components/schemas/Check"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/users/check-username":
     post:
       summary: Check Username Availability
@@ -22583,6 +23278,8 @@ paths:
                 "$ref": "#/components/schemas/Check"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/users/confirm":
     post:
       summary: Confirm Account
@@ -22608,6 +23305,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/users/me":
     delete:
       summary: Destroy Account
@@ -22701,6 +23400,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/users/signup":
     post:
       summary: Create new User
@@ -22732,6 +23433,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles":
     post:
       summary: Create new Vehicle
@@ -22767,6 +23470,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles/bulk":
     post:
       summary: Create multiple vehicles
@@ -22832,6 +23537,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
@@ -22867,6 +23574,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles/destroy-all-ingame":
     delete:
       summary: Delete all ingame bought Vehicles
@@ -22890,6 +23599,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles/destroy-bulk":
     put:
       summary: Destroy multiple Vehicles
@@ -22921,6 +23632,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/vehicles/{id}":
     parameters:
     - name: id
@@ -22929,6 +23642,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Vehicle
       tags:
@@ -23056,6 +23770,7 @@ paths:
         format: uuid
       description: Vehicle id
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Move Vehicle
       tags:
@@ -23104,6 +23819,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Clear Vehicle Inventory
       tags:
@@ -23176,6 +23892,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Vehicle Inventory Item
       tags:
@@ -23283,6 +24000,7 @@ paths:
         type: string
       description: Inventory item ID
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Vehicle Inventory Item
       tags:
@@ -23365,6 +24083,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Vehicle Inventory Stock
       tags:
@@ -23413,6 +24132,7 @@ paths:
         type: string
       description: Stock position slug
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Vehicle Inventory Stock Position
       tags:
@@ -23529,6 +24249,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Vehicle Loadout
       tags:
@@ -23618,6 +24339,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Delete Vehicle Loadout
       tags:
@@ -23741,6 +24463,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     put:
       summary: Activate Vehicle Loadout
       tags:
@@ -23790,6 +24513,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Vehicle Loadout Problems
       tags:
@@ -23839,6 +24563,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: Vehicle Loadout Slots
       tags:
@@ -23881,6 +24606,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     post:
       summary: Create Vehicle Log Entry
       tags:
@@ -23986,6 +24712,7 @@ paths:
         type: string
         format: uuid
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     delete:
       summary: Destroy Vehicle Log Entry
       tags:
@@ -24084,6 +24811,7 @@ paths:
       schema:
         type: string
       required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
     get:
       summary: List Vehicle Paints
       tags:
@@ -24137,6 +24865,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Version"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/wishlist":
     delete:
       summary: Clear your Wishlist
@@ -24203,6 +24933,8 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/wishlist/export":
     get:
       summary: Export your Wishlist
@@ -24230,6 +24962,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/wishlist/items":
     get:
       summary: Your Wishlist items
@@ -24257,6 +24991,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
 servers:
 - url: http://api.fleetyards.test/v1
   description: Dev Server
@@ -51697,6 +52433,14 @@ components:
       schema:
         type: string
         default: '1'
+      required: false
+    ScDataSourceParameter:
+      name: scDataSource
+      in: query
+      description: Environment of the game data build to read, as listed by /sc-data/sources.
+        One that is not available reads the default build.
+      schema:
+        type: string
       required: false
     SortingParameter:
       name: s

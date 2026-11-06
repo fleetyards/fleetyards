@@ -34,7 +34,9 @@ module Api
 
         authorize! @hangar_plan, with: HangarPlanPolicy
 
-        source = params[:source].presence || "empty"
+        # The body alone: a query `source` would replace it in `params`, and the
+        # builder treats a value it does not know as an empty plan.
+        source = request.request_parameters[:source].presence || "empty"
         source_plan = current_resource_owner.hangar_plans.find(params[:source_plan_id]) if source == "plan"
 
         HangarPlans::Builder.new(@hangar_plan, source:, source_plan:).run

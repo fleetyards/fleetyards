@@ -43,6 +43,7 @@ const TARGETS = [
     inputs: [
       "pnpm-lock.yaml",
       "orval.config.ts",
+      "orval.strip-sc-data-source.cjs",
       "swagger/v1/schema.yaml",
       "swagger/oauth/v1/schema.yaml",
       "swagger/admin/v1/schema.yaml",

@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-# `source=ptu` puts that build in force for the whole action, so every model,
+# `scDataSource=ptu` puts that build in force for the whole action, so every model,
 # scope and ransacker underneath answers from it without being told.
 class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
   setup do
@@ -19,8 +19,8 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
     assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
   end
 
-  test "source=ptu reads the ptu build" do
-    get "/api/v1/commodities", params: {source: "ptu"}
+  test "scDataSource=ptu reads the ptu build" do
+    get "/api/v1/commodities", params: {scDataSource: "ptu"}
 
     assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
   end
@@ -30,22 +30,49 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
   test "a source nothing has loaded falls back to the default" do
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", nowhere: "9.9.9"}, default: "live"})
 
-    get "/api/v1/commodities", params: {source: "nowhere"}
+    get "/api/v1/commodities", params: {scDataSource: "nowhere"}
 
     assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
   end
 
   # A bookmarked link must not break the day an environment is retired.
   test "a source that is not configured at all falls back too" do
-    get "/api/v1/commodities", params: {source: "made-up"}
+    get "/api/v1/commodities", params: {scDataSource: "made-up"}
 
     assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+  end
+
+  # Endpoints use `source` for their own meaning, so it must never pick a build
+  # just because its value happens to name an environment.
+  test "source does not select a build" do
+    get "/api/v1/commodities", params: {source: "ptu"}
+
+    assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+  end
+
+  test "a build cannot be selected from a request body" do
+    body = {scDataSource: "ptu"}.to_json
+
+    get "/api/v1/commodities", env: {
+      "CONTENT_TYPE" => "application/json",
+      "CONTENT_LENGTH" => body.bytesize.to_s,
+      "rack.input" => StringIO.new(body)
+    }
+
+    assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+  end
+
+  test "every path of the public schema declares the parameter" do
+    paths = YAML.load_file(Rails.root.join("swagger/v1/schema.yaml"), aliases: true).fetch("paths")
+    reference = {"$ref" => "#/components/parameters/ScDataSourceParameter"}
+
+    assert_empty paths.reject { |_, item| item.fetch("parameters", []).include?(reference) }.keys
   end
 
   # `ScData::Current` is reset for us at the end of every request, so a source
   # set for one cannot leak into the next on the same thread.
   test "a source does not leak into the next request" do
-    get "/api/v1/commodities", params: {source: "ptu"}
+    get "/api/v1/commodities", params: {scDataSource: "ptu"}
     assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
 
     get "/api/v1/commodities"
@@ -63,7 +90,7 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
       get "/api/v1/commodities"
       assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
 
-      get "/api/v1/commodities", params: {source: "ptu"}
+      get "/api/v1/commodities", params: {scDataSource: "ptu"}
       assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] },
         "the ptu request was served the live build's cached fragment"
     end
@@ -71,7 +98,7 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
 
   test "a cached fragment warmed by ptu does not answer for the default" do
     with_fragment_caching do
-      get "/api/v1/commodities", params: {source: "ptu"}
+      get "/api/v1/commodities", params: {scDataSource: "ptu"}
       assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
 
       get "/api/v1/commodities"
@@ -89,7 +116,7 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
       get "/api/v1/models"
       assert_equal [100.0], response.parsed_body["items"].map { |item| item.dig("speeds", "scmSpeed") }
 
-      get "/api/v1/models", params: {source: "ptu"}
+      get "/api/v1/models", params: {scDataSource: "ptu"}
       assert_equal [200.0], response.parsed_body["items"].map { |item| item.dig("speeds", "scmSpeed") },
         "the ptu request was served the live build's cached model"
     end
@@ -107,17 +134,17 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
       get "/api/v1/vehicles/#{vehicle.id}"
       assert_equal 100.0, response.parsed_body.dig("model", "speeds", "scmSpeed")
 
-      get "/api/v1/vehicles/#{vehicle.id}", params: {source: "ptu"}
+      get "/api/v1/vehicles/#{vehicle.id}", params: {scDataSource: "ptu"}
       assert_equal 200.0, response.parsed_body.dig("model", "speeds", "scmSpeed"),
         "the ptu request was served the live build's cached vehicle"
     end
   end
 
   test "the source reaches a filter, not just a reader" do
-    get "/api/v1/commodities", params: {source: "ptu", q: {nameCont: "PTU"}}
+    get "/api/v1/commodities", params: {scDataSource: "ptu", q: {nameCont: "PTU"}}
     assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
 
-    get "/api/v1/commodities", params: {source: "ptu", q: {nameCont: "Live"}}
+    get "/api/v1/commodities", params: {scDataSource: "ptu", q: {nameCont: "Live"}}
     assert_empty response.parsed_body["items"]
   end
 

@@ -40,6 +40,36 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
 
+  test "GET /models/:slug/hardpoints refuses a build name as its source" do
+    get "/api/v1/models/#{create(:model).slug}/hardpoints", params: {source: "ptu"}
+
+    assert_response :bad_request
+  end
+
+  test "GET /models/:slug/hardpoints filters by source while another build is selected" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", ptu: "1.1.0"}, default: "live"})
+
+    model = create(:model)
+    model.builds.create!(environment: "live", version: "1.0.0")
+    model.builds.create!(environment: "ptu", version: "1.1.0")
+
+    in_ptu = create(:hardpoint, :without_build, parent: model, sc_name: "in_ptu", source: :game_files)
+    create(:hardpoint_build, hardpoint: in_ptu, environment: "ptu", version: "1.1.0")
+    in_live = create(:hardpoint, :without_build, parent: model, sc_name: "in_live", source: :game_files)
+    create(:hardpoint_build, hardpoint: in_live, environment: "live", version: "1.0.0")
+    curated = create(:hardpoint, parent: model, sc_name: "curated", source: :ship_matrix)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug},
+      params: {source: "game_files", scDataSource: "ptu"} do
+      assert_equal [in_ptu.id], parsed_body.pluck("id")
+    end
+
+    assert_api_response :get, 200, path_params: {slug: model.slug},
+      params: {source: "ship_matrix", scDataSource: "ptu"} do
+      assert_equal [curated.id], parsed_body.pluck("id")
+    end
+  end
+
   # The facts come from the build row now, not from the slot's own columns. The
   # two are dual-written and normally agree, so the only way to show which one
   # is being read is to make them disagree.

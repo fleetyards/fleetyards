@@ -2,9 +2,12 @@
 
 # Which build of the game data this request reads.
 #
-# `source=ptu` puts that source in force for the whole action, so every model,
-# scope and ransacker underneath answers from it without being told -- which is
-# what `ScData::Source.current` being a per-request value buys.
+# `scDataSource=ptu` puts that source in force for the whole action, so every
+# model, scope and ransacker underneath answers from it without being told --
+# which is what `ScData::Source.current` being a per-request value buys.
+#
+# From the query alone, and not called `source`: endpoints use that for their own
+# meaning, and `params` merges the query and the body into one namespace.
 #
 # Only a source that is **available** is accepted: one the config declares *and*
 # a catalogue carries builds for. An environment nothing has loaded would answer
@@ -29,7 +32,7 @@ module ScDataSource
   # for one gets the default rather than a failure, because the alternative is
   # a bookmarked link breaking the day an environment is retired.
   private def requested_sc_data_source
-    requested = params[:source].presence
+    requested = request.query_parameters[:sc_data_source]
 
     return if requested.blank?
 

@@ -137,6 +137,16 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /hangar/plans takes its source from the body, not the query" do
+    vehicle = create(:vehicle, user: @user, model: @gladius)
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: "/hangar/plans", params: {source: "ptu"},
+      body: {name: "From hangar", source: "hangar"} do
+      assert_equal [vehicle.id], parsed_body["vehicleMarks"].pluck("vehicleId")
+    end
+  end
+
   test "POST /hangar/plans duplicates another plan" do
     @plan.slots.create!(label: "Fighter").candidates.create!(model: @gladius)
     sign_in @user

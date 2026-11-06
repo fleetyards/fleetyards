@@ -130,3 +130,25 @@ module OpenapiRuby
     Document.prepend(StableComponentCategoryOrder)
   end
 end
+
+# `Api::BaseController` honours `scDataSource` on every action, so the public
+# schema declares it on every path rather than in each of its integration tests.
+module OpenapiRuby
+  module Generator
+    module ScDataSourceOnEveryPath
+      REFERENCE = {"$ref" => "#/components/parameters/ScDataSourceParameter"}.freeze
+
+      def build_document
+        super.tap do |document|
+          next unless @schema_name.to_s == "v1/schema"
+
+          document.data["paths"].each_value do |path_item|
+            (path_item["parameters"] ||= []) << REFERENCE.dup
+          end
+        end
+      end
+    end
+
+    SchemaWriter.prepend(ScDataSourceOnEveryPath)
+  end
+end
