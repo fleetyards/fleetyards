@@ -22,9 +22,9 @@ module ScData
       test "#one loads data from game files" do
         loader = real_tree_loader(::ScData::Loader::ModelsLoader)
         manufacturer = create(:manufacturer, name: "Roberts Space Industries", slug: "rsi", code: "RSI")
-        model = create(:model, :in_game, name: "Constellation Andromeda", manufacturer: manufacturer)
+        model = create(:model, :in_game, name: "Constellation Mk IV Andromeda", sc_key: "rsi_constellation_andromeda_gs", manufacturer: manufacturer)
 
-        assert_difference -> { Hardpoint.where(parent: model).count }, 95 do
+        assert_difference -> { Hardpoint.where(parent: model).count }, 94 do
           loader.one(model)
         end
       end
