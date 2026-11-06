@@ -1,8 +1,8 @@
-import type { Vehicle, VehiclePublic } from "@/services/fyApi";
+import type { Model, Vehicle, VehiclePublic } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Firepower = Pick<
-  Vehicle | VehiclePublic,
+  Model | Vehicle | VehiclePublic,
   "sustainedDpsMin" | "sustainedDpsMax"
 >;
 

@@ -18,6 +18,10 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useModelSortFields } from "@/frontend/composables/useModelSortFields";
+import {
+  useModelFigureRows,
+  useModelListFigures,
+} from "@/frontend/composables/useModelListFigures";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
@@ -50,13 +54,18 @@ const { detailsVisible, gridView } = storeToRefs(modelsStore);
 
 const route = useRoute();
 
+const activeSort = computed(() =>
+  typeof route.query.s === "string" ? route.query.s : "name asc",
+);
+
 // The chips picked in the display options, plus whichever sort the list is in
 // right now -- the default included -- so the bar never hides the one that is
 // chosen.
-const sortFields = useModelSortFields({
-  include: () =>
-    typeof route.query.s === "string" ? route.query.s : "name asc",
-});
+const sortFields = useModelSortFields({ include: activeSort });
+
+const listFigures = useModelListFigures(() => activeSort.value);
+
+const figureRows = useModelFigureRows();
 
 const fleetchartVisible = computed(() => {
   return fleetchartsStore.isVisible("models");
@@ -171,7 +180,11 @@ const { activeFilters } = useShipFilterSummary();
         primary-key="slug"
       >
         <template #default="{ record }">
-          <ModelPanel :model="record" :details="detailsVisible" />
+          <ModelPanel
+            :model="record"
+            :details="detailsVisible"
+            :lead-metrics="figureRows(record, listFigures)"
+          />
         </template>
       </Grid>
 

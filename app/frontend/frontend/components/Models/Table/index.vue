@@ -13,6 +13,8 @@ import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
+import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -36,6 +38,8 @@ type Props = {
 defineProps<Props>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const { firepower, sustainedRange } = useVehicleFirepower();
 
 const mobile = useMobile();
 
@@ -194,6 +198,20 @@ const angledImage = (record: Model) => {
         <span class="no-break">{{
           toNumber(record.crew.value || "", "people")
         }}</span>
+      </template>
+      <template #col-maxWeaponSize="{ record }">
+        <span class="no-break">{{
+          formatWeaponSizes(record.weaponSizes)
+        }}</span>
+      </template>
+      <template #col-alpha="{ record }">
+        <span class="no-break">{{ firepower(record.alpha) }}</span>
+      </template>
+      <template #col-burstDps="{ record }">
+        <span class="no-break">{{ firepower(record.burstDps) }}</span>
+      </template>
+      <template #col-sustainedDpsMax="{ record }">
+        <span class="no-break">{{ sustainedRange(record) }}</span>
       </template>
       <template #col-groundMaxSpeed="{ record }">
         <span class="no-break">{{
