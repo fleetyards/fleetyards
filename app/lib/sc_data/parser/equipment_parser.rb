@@ -52,13 +52,13 @@ module ScData
         [/_container_anim_(medgun|(grin_)?multitool)_/, "tool", "tool_case"]
       ].freeze
 
-      # Carried records that never reach a player's inventory: mission props,
-      # datapads, the templates the game clones a prop from, and the lootable
-      # boxes that are part of a location rather than something to take away.
       # An arm or leg of a one-piece suit, which is sold whole. Most are named
       # `@LOC_PLACEHOLDER`, but 5.0.0 gives some a real name.
       BUILT_IN_SUIT_PART = "AttachedPart"
 
+      # Carried records that never reach a player's inventory: mission props,
+      # datapads, the templates the game clones a prop from, and the lootable
+      # boxes that are part of a location rather than something to take away.
       CARRIED_NOISE = /missionitem|datapad|template|lootableitem|destroyedinventory|miningbase/
 
       # Carried AttachDef Types that file a record whatever its key. A crate is
