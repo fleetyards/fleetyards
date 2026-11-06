@@ -423,6 +423,7 @@ class PaintsImporter
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
     x1 = ["X1", "X1 Velocity", "X1 Force"]
+    ironclad = ["Ironclad", "Ironclad Assault"]
     ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
     sabre_raven = ["Sabre Raven", "Sabre Raven EX"]
@@ -612,6 +613,7 @@ class PaintsImporter
       "Scorpius Stinger Black Orange" => scorpius,
       "Sabre" => sabre,
       "Sabre Raven" => sabre_raven,
+      "Ironclad" => ironclad,
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
       "Guardian" => guardian,

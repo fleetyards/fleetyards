@@ -22,6 +22,14 @@ class HangarPledgeItems::PaintResolverTest < ActiveSupport::TestCase
     assert_equal paints.map(&:id).sort, resolve("100 Series IceBreak Livery")
   end
 
+  test "resolves an Ironclad pledge to the paint on the Ironclad Assault too" do
+    paints = ["Ironclad", "Ironclad Assault"].map do |name|
+      create(:model_paint, model: create(:model, name:), name: "Aquamarine")
+    end
+
+    assert_equal paints.map(&:id).sort, resolve("Ironclad - Aquamarine Paint")
+  end
+
   test "resolves a pledge naming a ship and a paint with a separator" do
     model = create(:model, name: "C1 Spirit")
     paint = create(:model_paint, model:, name: "Deck the Hull")

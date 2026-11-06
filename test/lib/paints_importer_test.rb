@@ -117,6 +117,17 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_empty sabre.paints
   end
 
+  test "#run imports an Ironclad paint into the Ironclad Assault as well" do
+    ironclad = create(:model, name: "Ironclad")
+    assault = create(:model, name: "Ironclad Assault")
+    hangar_sync("Ironclad - Aquamarine Paint")
+
+    PaintsImporter.new.run
+
+    assert_equal ["Aquamarine"], ironclad.paints.pluck(:name)
+    assert_equal ["Aquamarine"], assault.paints.pluck(:name)
+  end
+
   test "#run imports a series paint into the models that are still missing it" do
     aurora_cl = create(:model, name: "Aurora Mk I CL")
     aurora_es = create(:model, name: "Aurora Mk I ES")
