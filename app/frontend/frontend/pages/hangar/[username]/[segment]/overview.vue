@@ -9,6 +9,7 @@ import LogCard from "@/frontend/components/Vehicles/Overview/LogCard/index.vue";
 import CargoCard from "@/frontend/components/Vehicles/Overview/CargoCard/index.vue";
 import LoadoutsCard from "@/frontend/components/Vehicles/Overview/LoadoutsCard/index.vue";
 import ConfigurationCard from "@/frontend/components/Vehicles/Overview/ConfigurationCard/index.vue";
+import ModulesCard from "@/frontend/components/Vehicles/Overview/ModulesCard/index.vue";
 import PaintsCard from "@/frontend/components/Vehicles/Overview/PaintsCard/index.vue";
 import VisibilityCard from "@/frontend/components/Vehicles/Overview/VisibilityCard/index.vue";
 import FleetsCard from "@/frontend/components/Vehicles/Overview/FleetsCard/index.vue";
@@ -44,6 +45,7 @@ const cargoVisible = computed(() => inGame.value);
           />
           <LoadoutsCard v-if="inGame" :vehicle="vehicle" />
         </div>
+        <ModulesCard :vehicle="vehicle" />
       </div>
 
       <aside class="vehicle-overview__side">

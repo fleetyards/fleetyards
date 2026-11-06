@@ -611,6 +611,7 @@
         "openLog": "Open the log",
         "applyPaint": "Apply %{paint}",
         "editPaints": "Edit paints",
+        "editModules": "Edit modules",
         "editLocation": "Change location",
         "allPaints": "All %{count} paints",
         "fullscreenHolo": "Full screen",

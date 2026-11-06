@@ -611,6 +611,7 @@
         "openLog": "打开日志",
         "applyPaint": "应用 %{paint}",
         "editPaints": "编辑涂装",
+        "editModules": "编辑模块",
         "editLocation": "更改位置",
         "allPaints": "全部 %{count} 款涂装",
         "fullscreenHolo": "全屏",

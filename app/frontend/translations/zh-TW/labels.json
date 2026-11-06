@@ -4984,6 +4984,7 @@
         "configuration": "配置",
         "noPaint": "標準塗裝",
         "ownedPaints": "你的塗裝",
+        "ownedModules": "你的模組",
         "ownedPaintsCount": {
           "one": "%{count} 款塗裝",
           "other": "%{count} 款塗裝"

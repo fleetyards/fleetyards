@@ -4987,6 +4987,7 @@
         "configuration": "Configuration",
         "noPaint": "Peinture standard",
         "ownedPaints": "Tes peintures",
+        "ownedModules": "Tes modules",
         "ownedPaintsCount": {
           "one": "%{count} peinture",
           "other": "%{count} peintures"

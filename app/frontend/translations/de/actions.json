@@ -611,6 +611,7 @@
         "openLog": "Logbuch öffnen",
         "applyPaint": "%{paint} anwenden",
         "editPaints": "Lackierungen bearbeiten",
+        "editModules": "Module bearbeiten",
         "editLocation": "Standort ändern",
         "allPaints": "Alle %{count} Lackierungen",
         "fullscreenHolo": "Vollbild",
