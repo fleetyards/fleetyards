@@ -41,6 +41,13 @@ module ScData
         assert_equal "P4-AR \"Star Kitten\" Rifle", parsed.fetch("hdh_boots_01_01_13")["name"]
       end
 
+      test "leaves out a suit's built-in part even when the export names it" do
+        write_equipment("cds_combat_superheavy_arms_02_01_01", name: "@item_arms", type: "AttachedPart", sub_type: "Heavy")
+        @parser.translations = {"item_arms" => "BUL-H4 Armor Arms Stronghold"}
+
+        assert_not parsed.key?("cds_combat_superheavy_arms_02_01_01")
+      end
+
       test "leaves out a record the export has not named at all" do
         @parser.translations = {}
 
