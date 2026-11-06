@@ -131,4 +131,20 @@ describe("ModelHardpointsMinimal", () => {
 
     wrapper.unmount();
   });
+
+  it("uses the base metrics' cargo until a module changes the holds", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        model: { ...model, metrics: { maxCargo: 696, cargo: 100 } } as Model,
+        cargoHolds: [{ capacity: 480 }] as never,
+      },
+      plugins: [router],
+    });
+
+    expect(
+      wrapper.find("[data-test='hardpoints-minimal-figure-cargo']").text(),
+    ).toContain("696");
+
+    wrapper.unmount();
+  });
 });

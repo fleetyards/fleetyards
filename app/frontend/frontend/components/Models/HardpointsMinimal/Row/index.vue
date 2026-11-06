@@ -6,15 +6,26 @@ export default {
 
 <script lang="ts" setup>
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
-import { rowPresentation } from "@/frontend/components/Models/Hardpoints/rowPresentation";
+import {
+  humanize,
+  rowPresentation,
+} from "@/frontend/components/Models/Hardpoints/rowPresentation";
+import {
+  slotId,
+  type EquippedModules,
+} from "@/frontend/composables/useEquippedHardpoints";
 import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
-import { HardpointSourceEnum, type ComponentThruster } from "@/services/fyApi";
+import {
+  HardpointCategoryEnum,
+  HardpointSourceEnum,
+  type ComponentThruster,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type MinimalRow } from "../rows";
 
-type Props = {
+interface Props {
   row: MinimalRow;
-};
+}
 
 const props = defineProps<Props>();
 
@@ -26,6 +37,11 @@ const count = computed(() => props.row.hardpoints.length);
 
 const fromGameFiles = computed(
   () => hardpoint.value.source === HardpointSourceEnum.GAME_FILES,
+);
+
+const equippedModules = inject<Ref<EquippedModules>>(
+  "equippedModules",
+  ref({}),
 );
 
 const presentation = computed(() => rowPresentation(hardpoint.value.category));
@@ -42,16 +58,24 @@ const label = computed(() => {
     return t(`labels.hardpoint.categories.${hardpoint.value.category}`);
   }
 
-  return presentation.value.label?.(hardpoint.value, t);
+  // A picked module hangs its contents off the slot and leaves the slot's own
+  // component as it was, so only the pick knows the module's name.
+  const picked =
+    hardpoint.value.category === HardpointCategoryEnum.MODULE
+      ? equippedModules.value[slotId(hardpoint.value)]
+      : undefined;
+
+  return picked?.name ?? presentation.value.label?.(hardpoint.value, t);
 });
 
-const humanizedName = computed(() =>
-  hardpoint.value.name
-    .split("_")
-    .join(" ")
-    .replace("hardpoint", "")
-    .replace(/\b\w/g, (letter) => letter.toUpperCase()),
-);
+// A total row can fold thrusters of several sizes, and then no one badge is true.
+const size = computed(() => {
+  if (presentation.value.sizeless) return undefined;
+
+  const [first, ...others] = props.row.hardpoints.map(({ maxSize }) => maxSize);
+
+  return others.every((other) => other === first) ? first : undefined;
+});
 
 // A value carrying its own unit ("3 200 DMG") needs no label after it.
 const endsInUnit = (value: string) => /[^\d\s .,]$/.test(value);
@@ -93,12 +117,7 @@ const unit = computed(() => {
 
 <template>
   <div class="minimal-row" data-test="hardpoints-minimal-row">
-    <span
-      v-if="hardpoint.maxSize && !presentation.sizeless"
-      class="minimal-row__size"
-    >
-      S{{ hardpoint.maxSize }}
-    </span>
+    <span v-if="size" class="minimal-row__size"> S{{ size }} </span>
     <span class="minimal-row__name">
       <template v-if="!fromGameFiles">
         {{ hardpoint.name }}
@@ -123,7 +142,7 @@ const unit = computed(() => {
         </span>
       </template>
       <template v-else>
-        {{ humanizedName }}
+        {{ humanize(hardpoint.name) }}
         <span class="minimal-row__grade">TBD</span>
       </template>
     </span>

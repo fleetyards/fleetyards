@@ -34,10 +34,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import HardpointsMinimalRow from "./Row/index.vue";
 import { minimalCategories, type MinimalCategory } from "./rows";
 
-type Props = {
+interface Props {
   model: Model;
   cargoHolds?: CargoHold[];
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   cargoHolds: () => [],
@@ -57,11 +57,12 @@ const queryParams = computed(() => ({ source: source.value }));
 
 const {
   isLoading,
-  isFetching,
+  isFetching: loading,
   data: hardpoints,
-} = useModelHardpointsQuery(props.model.slug, queryParams);
-
-const loading = computed(() => isLoading.value || isFetching.value);
+} = useModelHardpointsQuery(
+  computed(() => props.model.slug),
+  queryParams,
+);
 
 const equippedModules = inject<Ref<EquippedModules>>(
   "equippedModules",
@@ -103,7 +104,12 @@ provide(
   computed(() => combat.value.weaponPowerRatio),
 );
 
-type Figure = { key: string; label: string; value: string; unit?: string };
+interface Figure {
+  key: string;
+  label: string;
+  value: string;
+  unit?: string;
+}
 
 const number = (value: number) =>
   String(toNumber(Math.round(value), "integer"));
@@ -182,9 +188,12 @@ const figures = computed<Figure[]>(() => {
     }
   }
 
-  const cargo =
-    props.cargoHolds.reduce((sum, hold) => sum + (hold.capacity || 0), 0) ||
-    metrics?.cargo;
+  // The figure the page's base metrics show, until a picked module changes what
+  // the holds add up to.
+  const pickedModule = Object.values(equippedModules.value).some(Boolean);
+  const cargo = pickedModule
+    ? props.cargoHolds.reduce((sum, hold) => sum + (hold.capacity || 0), 0)
+    : (metrics?.maxCargo ?? metrics?.cargo);
 
   if (cargo) {
     list.push({
@@ -208,7 +217,7 @@ const columns = computed(() =>
     groups
       .map((group) => ({ group, categories: categoriesFor(group) }))
       .filter(({ categories }) => categories.length),
-  ),
+  ).filter((column) => column.length),
 );
 
 const hasRows = computed(() => columns.value.some((column) => column.length));

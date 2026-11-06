@@ -5,18 +5,18 @@ import {
   type Hardpoint,
 } from "@/services/fyApi";
 
-export type MinimalRow = {
+export interface MinimalRow {
   key: string;
   hardpoints: Hardpoint[];
   // One row for every thruster of a type, which differ too little to list and
   // whose figure is therefore what they push together.
   total: boolean;
-};
+}
 
-export type MinimalCategory = {
+export interface MinimalCategory {
   category: HardpointCategoryEnum;
   rows: MinimalRow[];
-};
+}
 
 // Fitted by the shipwright or too small a part of the picture for a summary.
 const LEFT_OUT: HardpointCategoryEnum[] = [
@@ -52,7 +52,10 @@ const LEADING: HardpointCategoryEnum[] = [
 const categoryOf = ({ category }: Hardpoint) =>
   category ?? HardpointCategoryEnum.UNKNOWN;
 
-type Placed = { hardpoint: Hardpoint; category: HardpointCategoryEnum };
+interface Placed {
+  hardpoint: Hardpoint;
+  category: HardpointCategoryEnum;
+}
 
 const place = (
   hardpoint: Hardpoint,
