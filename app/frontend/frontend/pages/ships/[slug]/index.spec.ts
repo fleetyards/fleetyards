@@ -63,6 +63,9 @@ vi.mock("@/shared/composables/useMetaInfo", () => ({
   useMetaInfo: () => ({ updateMetaInfo: vi.fn() }),
 }));
 
+import { useModelsStore } from "@/frontend/stores/models";
+import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
+import HardpointsMinimal from "@/frontend/components/Models/HardpointsMinimal/index.vue";
 import ShipPage from "./index.vue";
 
 const model = {
@@ -79,7 +82,7 @@ const model = {
   manufacturer: { id: "manufacturer-1", name: "Drake", slug: "drake" },
 } as unknown as ModelExtended;
 
-const mountPage = async () => {
+const mountPage = async (modelsState: Record<string, unknown> = {}) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [
@@ -105,7 +108,9 @@ const mountPage = async () => {
     global: {
       plugins: [
         createTestingPinia({
-          initialState: { models: { holoviewerVisible: true } },
+          initialState: {
+            models: { holoviewerVisible: true, ...modelsState },
+          },
         }),
         VueQueryPlugin,
         router,
@@ -182,5 +187,35 @@ describe("ShipPage", () => {
 
     expect(wrapper.find("[data-test='model-holo-toggle']").exists()).toBe(true);
     expect(wrapper.find("[data-test='model-holo-states']").exists()).toBe(true);
+  });
+
+  describe("metrics and hardpoints", () => {
+    it("opens on the summary", async () => {
+      const wrapper = await mountPage();
+
+      expect(wrapper.findComponent(HardpointsMinimal).exists()).toBe(true);
+      expect(wrapper.findComponent(Hardpoints).exists()).toBe(false);
+    });
+
+    it("shows the full section once a reader chose it", async () => {
+      const wrapper = await mountPage({ shipDetailsExpanded: true });
+
+      expect(wrapper.findComponent(Hardpoints).exists()).toBe(true);
+      expect(wrapper.findComponent(HardpointsMinimal).exists()).toBe(false);
+    });
+
+    it("takes the reader to the top of the view they asked for", async () => {
+      const scrollIntoView = vi.fn();
+      Element.prototype.scrollIntoView = scrollIntoView;
+
+      const wrapper = await mountPage();
+      const toggle = vi.spyOn(useModelsStore(), "toggleShipDetails");
+
+      await wrapper.find("[data-test='ship-specs-toggle']").trigger("click");
+      await flushPromises();
+
+      expect(toggle).toHaveBeenCalled();
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
   });
 });

@@ -49,6 +49,8 @@ export enum ModelSortFieldsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
+  // The ship page's full metrics and hardpoints, rather than their summary.
+  shipDetailsExpanded: boolean;
   // The ship page's sections a reader closed, by model slug and then anchor.
   collapsedSections: Record<string, string[]>;
   modelState: ModelStateEnum;
@@ -60,6 +62,7 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
+    shipDetailsExpanded: false,
     collapsedSections: {},
     modelState: ModelStateEnum.FLIGHT,
     detailsVisible: false,
@@ -95,6 +98,9 @@ export const useModelsStore = defineStore("models", {
   actions: {
     toggleHoloviewer() {
       this.holoviewerVisible = !this.holoviewerVisible;
+    },
+    toggleShipDetails() {
+      this.shipDetailsExpanded = !this.shipDetailsExpanded;
     },
     toggleSection(modelSlug: string, section: string) {
       if (this.sectionCollapsed(modelSlug, section)) {
@@ -146,6 +152,7 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
+      "shipDetailsExpanded",
       "collapsedSections",
       "modelState",
       "detailsVisible",

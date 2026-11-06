@@ -27,3 +27,19 @@ describe("models store sections", () => {
     expect(store.collapsedSections).toEqual({});
   });
 });
+
+describe("models store ship details", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
+  it("opens on the summary and remembers the choice", () => {
+    const store = useModelsStore();
+
+    expect(store.shipDetailsExpanded).toBe(false);
+
+    store.toggleShipDetails();
+
+    expect(store.shipDetailsExpanded).toBe(true);
+  });
+});
