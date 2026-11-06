@@ -84,6 +84,37 @@ describe("HardpointGroup", () => {
     expect(wrapper.find(".hardpoint-item").exists()).toBe(false);
   });
 
+  it("offers no toggle on a group with nothing to summarise", async () => {
+    const wrapper = await mountWithDefaults(
+      defineComponent({
+        components: { Group: Component },
+        setup() {
+          provide(hardpointCardFoldKey, {
+            collapsed: () => true,
+            toggle: vi.fn(),
+          });
+
+          return {
+            group: HardpointGroupEnum.SYSTEM,
+            hardpoints: [
+              {
+                ...generator("a"),
+                category: HardpointCategoryEnum.LIFESUPPORT,
+              },
+            ],
+          };
+        },
+        template: "<Group :group='group' :hardpoints='hardpoints' />",
+      }),
+      { plugins: [router] },
+    );
+
+    expect(wrapper.find(".hardpoint-item").exists()).toBe(true);
+    expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
+      false,
+    );
+  });
+
   it("swaps in the full rows when expanded, under the same toggle", async () => {
     const toggle = vi.fn();
     const wrapper = await mountGroup({ collapsed: () => false, toggle });

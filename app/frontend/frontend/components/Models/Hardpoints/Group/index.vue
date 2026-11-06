@@ -39,11 +39,12 @@ if (fold) {
   provide(metricsCardFoldKey, fold);
 }
 
-// A group holding only what a summary leaves out still shows, in full.
+const summaryCategories = computed(() =>
+  fold ? minimalCategories(props.fitted ?? props.hardpoints) : [],
+);
+
 const summary = computed(() =>
-  fold?.collapsed(props.group)
-    ? minimalCategories(props.fitted ?? props.hardpoints)
-    : [],
+  fold?.collapsed(props.group) ? summaryCategories.value : [],
 );
 
 const { t } = useI18n();
@@ -88,7 +89,7 @@ const categories = computed(() => {
       v-if="!withoutTitle"
       variant="slim"
       :title="groupLabel"
-      :collapse-key="fold ? group : undefined"
+      :collapse-key="summaryCategories.length ? group : undefined"
       keep-body
     >
       <SummaryCategories v-if="summary.length" :categories="summary" />
