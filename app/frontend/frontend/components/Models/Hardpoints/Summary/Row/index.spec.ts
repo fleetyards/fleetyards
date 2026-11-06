@@ -6,7 +6,7 @@ import {
   HardpointSourceEnum,
   type Hardpoint,
 } from "@/services/fyApi";
-import { type MinimalRow } from "../rows";
+import { type MinimalRow } from "../../summaryRows";
 import Component from "./index.vue";
 
 const thruster = (maxSize: number) =>
@@ -34,7 +34,7 @@ const mountRow = (row: Partial<MinimalRow>, provide = {}) =>
     }),
   );
 
-describe("HardpointsMinimalRow", () => {
+describe("HardpointsSummaryRow", () => {
   it("badges a total row only when its thrusters share a size", async () => {
     const same = await mountRow({
       total: true,

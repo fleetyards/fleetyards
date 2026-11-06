@@ -3037,8 +3037,9 @@
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
         "metricsCredit": "Statistiques basées sur les formules de",
-        "showDetails": "Afficher tous les détails",
-        "showSummary": "Afficher le résumé",
+        "advancedMode": "Mode avancé",
+        "collapseAll": "Tout réduire",
+        "expandAll": "Tout développer",
         "total": "total",
         "guns": "Canons"
       },

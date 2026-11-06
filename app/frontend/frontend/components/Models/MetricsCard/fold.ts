@@ -1,6 +1,6 @@
 import { type InjectionKey } from "vue";
 
-// A page whose metrics cards fold, and which remembers the folded ones.
+// Where a section's cards remember being folded.
 export interface MetricsCardFold {
   collapsed: (key: string) => boolean;
   toggle: (key: string) => void;
@@ -8,3 +8,7 @@ export interface MetricsCardFold {
 
 export const metricsCardFoldKey: InjectionKey<MetricsCardFold> =
   Symbol("metricsCardFold");
+
+// A hardpoint card folds to its summary rows, not to its title.
+export const hardpointCardFoldKey: InjectionKey<MetricsCardFold> =
+  Symbol("hardpointCardFold");

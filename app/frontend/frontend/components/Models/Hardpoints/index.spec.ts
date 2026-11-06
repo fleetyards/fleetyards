@@ -96,3 +96,59 @@ describe("Hardpoints with a loadout's fitting", () => {
     wrapper.unmount();
   });
 });
+
+describe("Hardpoints on the ship page", () => {
+  const ship = {
+    ...model,
+    metrics: { hullHealth: 1000, hullParts: [], hullDoors: [] },
+  } as unknown as Model;
+
+  const mountShip = (models: Record<string, unknown> = {}) =>
+    mountWithDefaults(Component, {
+      props: { model: ship },
+      initialState: { models },
+    });
+
+  it("opens on the key figures rather than the cards", async () => {
+    const wrapper = await mountShip();
+
+    expect(
+      wrapper.find("[data-test='hardpoints-summary-figures']").exists(),
+    ).toBe(true);
+    expect(wrapper.find(".metrics-grid").exists()).toBe(false);
+    expect(wrapper.find(".hardpoints__credit").exists()).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it("shows the foldable cards in advanced mode", async () => {
+    const wrapper = await mountShip({ shipMetricsAdvanced: true });
+
+    expect(
+      wrapper
+        .find(".metrics-grid [data-test='metrics-card-collapse']")
+        .exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='hardpoints-summary-figures']").exists(),
+    ).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it("keeps a loadout's cards in full, with nothing to fold", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { model: ship, fitting: [moduleSlot] },
+    });
+
+    expect(wrapper.find(".metrics-grid").exists()).toBe(true);
+    expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find("[data-test='hardpoints-fold-all']").exists()).toBe(
+      false,
+    );
+
+    wrapper.unmount();
+  });
+});

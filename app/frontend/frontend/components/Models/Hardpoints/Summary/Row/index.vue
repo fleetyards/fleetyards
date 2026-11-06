@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HardpointsMinimalRow",
+  name: "HardpointsSummaryRow",
 };
 </script>
 
@@ -21,7 +21,7 @@ import {
   type ComponentThruster,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type MinimalRow } from "../rows";
+import { type MinimalRow } from "../../summaryRows";
 
 interface Props {
   row: MinimalRow;
@@ -116,7 +116,7 @@ const unit = computed(() => {
 </script>
 
 <template>
-  <div class="minimal-row" data-test="hardpoints-minimal-row">
+  <div class="minimal-row" data-test="hardpoints-summary-row">
     <span v-if="size" class="minimal-row__size"> S{{ size }} </span>
     <span class="minimal-row__name">
       <template v-if="!fromGameFiles">

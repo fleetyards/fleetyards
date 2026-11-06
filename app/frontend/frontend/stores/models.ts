@@ -49,8 +49,11 @@ export enum ModelSortFieldsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
-  // The ship page's full metrics and hardpoints, rather than their summary.
-  shipDetailsExpanded: boolean;
+  // The ship page's full metrics cards, rather than the row of key figures.
+  shipMetricsAdvanced: boolean;
+  // The ship page's hardpoint cards showing their full rows, by model slug. Only
+  // the exceptions are kept, since every card opens on its summary.
+  expandedHardpointGroups: Record<string, string[]>;
   // The ship page's sections a reader closed, by model slug and then anchor.
   collapsedSections: Record<string, string[]>;
   modelState: ModelStateEnum;
@@ -62,7 +65,8 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
-    shipDetailsExpanded: false,
+    shipMetricsAdvanced: false,
+    expandedHardpointGroups: {},
     collapsedSections: {},
     modelState: ModelStateEnum.FLIGHT,
     detailsVisible: false,
@@ -90,6 +94,10 @@ export const useModelsStore = defineStore("models", {
     ],
   }),
   getters: {
+    hardpointGroupExpanded(state) {
+      return (modelSlug: string, group: string) =>
+        !!state.expandedHardpointGroups[modelSlug]?.includes(group);
+    },
     sectionCollapsed(state) {
       return (modelSlug: string, section: string) =>
         !!state.collapsedSections[modelSlug]?.includes(section);
@@ -99,8 +107,25 @@ export const useModelsStore = defineStore("models", {
     toggleHoloviewer() {
       this.holoviewerVisible = !this.holoviewerVisible;
     },
-    toggleShipDetails() {
-      this.shipDetailsExpanded = !this.shipDetailsExpanded;
+    toggleShipMetricsAdvanced() {
+      this.shipMetricsAdvanced = !this.shipMetricsAdvanced;
+    },
+    setExpandedHardpointGroups(modelSlug: string, groups: string[]) {
+      const { [modelSlug]: _removed, ...others } = this.expandedHardpointGroups;
+
+      this.expandedHardpointGroups = groups.length
+        ? { ...others, [modelSlug]: groups }
+        : others;
+    },
+    toggleHardpointGroup(modelSlug: string, group: string) {
+      const groups = this.expandedHardpointGroups[modelSlug] || [];
+
+      this.setExpandedHardpointGroups(
+        modelSlug,
+        groups.includes(group)
+          ? groups.filter((name) => name !== group)
+          : [...groups, group],
+      );
     },
     toggleSection(modelSlug: string, section: string) {
       if (this.sectionCollapsed(modelSlug, section)) {
@@ -152,7 +177,8 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
-      "shipDetailsExpanded",
+      "shipMetricsAdvanced",
+      "expandedHardpointGroups",
       "collapsedSections",
       "modelState",
       "detailsVisible",

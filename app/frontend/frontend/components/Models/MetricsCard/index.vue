@@ -5,6 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -22,12 +27,15 @@ type Props = {
   // Names the card among a page's folded ones. It only folds on a page that
   // provides somewhere to remember that.
   collapseKey?: string;
+  // The body stays when folded, and the consumer swaps what is in it.
+  keepBody?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: "default",
   loading: false,
   collapseKey: undefined,
+  keepBody: false,
 });
 
 const { t } = useI18n();
@@ -69,29 +77,31 @@ const toggleCollapsed = () => {
     <div class="metrics-card__head">
       <PanelHeading
         :tone="PanelHeadingTonesEnum.METRIC"
+        :class="{ 'metrics-card__heading--foldable': foldable }"
         :compact="isSlim"
         :divider="isSlim"
       >
         {{ title }}
-        <template v-if="$slots.head || foldable" #actions>
+        <template v-if="$slots.head" #actions>
           <slot name="head" />
-          <button
-            v-if="foldable"
-            type="button"
-            class="metrics-card__collapse"
-            :aria-expanded="!collapsed"
-            :aria-label="t(collapsed ? 'labels.expand' : 'labels.collapse')"
-            data-test="metrics-card-collapse"
-            @click="toggleCollapsed"
-          >
-            <i
-              class="fa-solid"
-              :class="collapsed ? 'fa-chevron-down' : 'fa-chevron-up'"
-              aria-hidden="true"
-            />
-          </button>
         </template>
       </PanelHeading>
+      <Btn
+        v-if="foldable"
+        class="metrics-card__collapse"
+        :variant="BtnVariantsEnum.BARE"
+        :size="BtnSizesEnum.XS"
+        :aria-expanded="!collapsed"
+        :aria-label="t(collapsed ? 'labels.expand' : 'labels.collapse')"
+        data-test="metrics-card-collapse"
+        @click="toggleCollapsed"
+      >
+        <i
+          class="fa-solid"
+          :class="collapsed ? 'fa-chevron-down' : 'fa-chevron-up'"
+          aria-hidden="true"
+        />
+      </Btn>
       <LoadingLine
         :loading="loading"
         :label="t('labels.statsCard.loading', { name: title })"
@@ -101,7 +111,11 @@ const toggleCollapsed = () => {
 
     <!-- Only where the card folds: everywhere else the body stays a direct child
          of the panel. -->
-    <Collapsed v-if="foldable" :visible="!collapsed" :duration="200">
+    <Collapsed
+      v-if="foldable && !keepBody"
+      :visible="!collapsed"
+      :duration="200"
+    >
       <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
         <slot />
       </PanelBody>
@@ -110,7 +124,7 @@ const toggleCollapsed = () => {
       <slot />
     </PanelBody>
 
-    <template v-if="$slots.footer && !collapsed" #footer>
+    <template v-if="$slots.footer && (keepBody || !collapsed)" #footer>
       <slot name="footer" />
     </template>
   </Panel>
@@ -135,34 +149,22 @@ const toggleCollapsed = () => {
   padding: 6px 14px 14px;
 }
 
+/*
+ * Beside the title rather than in the heading's actions: a metric heading wraps
+ * so a card's chips can flow, and a long title took the control down with it.
+ * The title keeps clear of the corner and wraps on its own line instead.
+ */
+.metrics-card__heading--foldable {
+  padding-right: 52px;
+}
+
 .metrics-card__collapse {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 1px solid var(--color-edge-soft);
-  border-radius: var(--radius-control-bare);
-  background: none;
-  color: var(--color-muted);
-  font-size: 0.625rem;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+  position: absolute;
+  top: 13px;
+  right: 10px;
 }
 
-.metrics-card__collapse:hover,
-.metrics-card__collapse:focus-visible {
-  background: var(--color-control-hover);
-  color: var(--color-lifted);
-}
-
-@media (pointer: coarse) {
-  .metrics-card__collapse {
-    width: 44px;
-    height: 44px;
-  }
+.metrics-card--slim .metrics-card__collapse {
+  top: 9px;
 }
 </style>

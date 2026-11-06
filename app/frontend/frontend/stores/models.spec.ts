@@ -28,18 +28,41 @@ describe("models store sections", () => {
   });
 });
 
-describe("models store ship details", () => {
+describe("models store ship section", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
 
-  it("opens on the summary and remembers the choice", () => {
+  it("opens on the key figures and remembers advanced mode", () => {
     const store = useModelsStore();
 
-    expect(store.shipDetailsExpanded).toBe(false);
+    expect(store.shipMetricsAdvanced).toBe(false);
 
-    store.toggleShipDetails();
+    store.toggleShipMetricsAdvanced();
 
-    expect(store.shipDetailsExpanded).toBe(true);
+    expect(store.shipMetricsAdvanced).toBe(true);
+  });
+
+  it("expands a hardpoint card for one ship only", () => {
+    const store = useModelsStore();
+
+    store.toggleHardpointGroup("gladius", "weapon");
+
+    expect(store.hardpointGroupExpanded("gladius", "weapon")).toBe(true);
+    expect(store.hardpointGroupExpanded("gladius", "system")).toBe(false);
+    expect(store.hardpointGroupExpanded("carrack", "weapon")).toBe(false);
+  });
+
+  it("forgets a ship with every card back on its summary", () => {
+    const store = useModelsStore();
+
+    store.setExpandedHardpointGroups("gladius", ["weapon", "system"]);
+    store.toggleHardpointGroup("gladius", "weapon");
+
+    expect(store.expandedHardpointGroups).toEqual({ gladius: ["system"] });
+
+    store.setExpandedHardpointGroups("gladius", []);
+
+    expect(store.expandedHardpointGroups).toEqual({});
   });
 });

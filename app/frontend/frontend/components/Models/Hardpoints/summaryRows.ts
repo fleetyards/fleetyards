@@ -83,10 +83,11 @@ const place = (
 };
 
 // By name, not by the server's group key: that key reads a slot by what sits
-// inside it, and the same gun on two different mounts is still one row here.
+// inside it, and the same gun on two different mounts is still one row here. The
+// sub-type as well, because hydrogen and quantum tanks are both "Internal Tank".
 const stackKey = ({ component, groupKey, id, maxSize }: Hardpoint) =>
   component?.name
-    ? `${maxSize}|${component.name}`
+    ? `${maxSize}|${component.name}|${component.subType ?? ""}`
     : `${groupKey ?? id}|${JSON.stringify([component?.size, component?.typeData ?? null])}`;
 
 const thrustOf = (hardpoint: Hardpoint) =>

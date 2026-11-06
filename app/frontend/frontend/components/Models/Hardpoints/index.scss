@@ -16,9 +16,35 @@
     margin-bottom: 20px;
   }
 
-  &__source {
-    // Right-aligned whether or not the links are there to push it.
+  // Right-aligned whether or not the links are there to push it.
+  &__advanced {
     margin-inline-start: auto;
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  &__fold-all {
+    margin-inline-start: auto;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 20px;
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   // Beside the link group, not inside it. As a member of the BtnGroup track it
@@ -166,7 +192,8 @@
 // Metrics cards are packed rather than assigned to fixed columns: each spans a
 // measured number of 4px rows (see useMetricsMasonry) and `dense` flow lets a
 // later card backfill a column another card left short. Stacked on narrow
-// screens, three-up once there's room.
+// screens, two-up on a small desktop, where three squeeze a card's tiles into a
+// stack and wrap its title, and three-up once there's room.
 .metrics-grid {
   > * {
     margin: 0 0 20px;
@@ -174,7 +201,7 @@
 
   @media (min-width: 992px) {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: 4px;
     grid-auto-flow: row dense;
     column-gap: 20px;
@@ -186,5 +213,9 @@
       // height instead of stretching into that trailing space.
       align-self: start;
     }
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

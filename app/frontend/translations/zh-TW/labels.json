@@ -3037,8 +3037,9 @@
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
         "metricsCredit": "數據基於以下網站的計算公式",
-        "showDetails": "顯示全部詳情",
-        "showSummary": "顯示摘要",
+        "advancedMode": "進階模式",
+        "collapseAll": "全部收合",
+        "expandAll": "全部展開",
         "total": "總計",
         "guns": "機砲"
       },

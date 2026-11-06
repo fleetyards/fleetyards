@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
-import { minimalCategories } from "./rows";
+import { minimalCategories } from "./summaryRows";
 
 let nextId = 0;
 
@@ -105,6 +105,21 @@ describe("minimalCategories", () => {
         hardpoint(HardpointCategoryEnum.COOLER, "Bracer"),
       ]),
     ).toEqual([[HardpointCategoryEnum.COOLER, [1]]]);
+  });
+
+  it("keeps parts apart that share a name but not a sub-type", () => {
+    const tank = (subType: string) => {
+      const part = hardpoint(HardpointCategoryEnum.FUELTANKS, "Internal Tank");
+
+      return {
+        ...part,
+        component: { ...part.component, subType },
+      } as Hardpoint;
+    };
+
+    expect(shape([tank("Fuel"), tank("Fuel"), tank("QuantumFuel")])).toEqual([
+      [HardpointCategoryEnum.FUELTANKS, [2, 1]],
+    ]);
   });
 
   it("folds a thruster type into one total row, whatever their thrust", () => {

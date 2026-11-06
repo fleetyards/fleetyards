@@ -3037,8 +3037,9 @@
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
         "metricsCredit": "Metriche basate sulle formule di",
-        "showDetails": "Mostra tutti i dettagli",
-        "showSummary": "Mostra riepilogo",
+        "advancedMode": "Modalità avanzata",
+        "collapseAll": "Comprimi tutto",
+        "expandAll": "Espandi tutto",
         "total": "totale",
         "guns": "Cannoni"
       },
