@@ -223,11 +223,12 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   test "DELETE /vehicles/destroy-all-ingame keeps non-ingame vehicles" do
     create_list(:vehicle, 3, user: @user, bought_via: :pledge_store)
     create_list(:vehicle, 3, user: @user, bought_via: :ingame)
+    create_list(:vehicle, 2, user: @user, bought_via: :reward_or_loot)
     sign_in @user
 
     assert_api_response :delete, 204 do
       assert_equal 3, @user.vehicles.where(bought_via: :pledge_store).count
-      assert_equal 0, @user.vehicles.where(bought_via: :ingame).count
+      assert_equal 0, @user.vehicles.acquired_in_game.count
     end
   end
 

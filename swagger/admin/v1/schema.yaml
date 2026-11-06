@@ -12538,9 +12538,11 @@ components:
       enum:
       - pledge_store
       - ingame
+      - reward_or_loot
       x-enumNames:
       - PLEDGE_STORE
       - INGAME
+      - REWARD_OR_LOOT
       title: BoughtViaEnum
     CargoHold:
       type: object

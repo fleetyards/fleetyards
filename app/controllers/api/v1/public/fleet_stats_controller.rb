@@ -67,8 +67,9 @@ module Api
             vehicle.model unless vehicle.loaner?
           end
           ingame_models = ingame_vehicles.map(&:model)
-          upgrades = vehicles.map(&:model_upgrades).flatten
-          modules = vehicles.map(&:model_modules).flatten
+          paid_vehicles = vehicles.reject(&:bought_via_reward_or_loot?)
+          upgrades = paid_vehicles.flat_map(&:model_upgrades)
+          modules = paid_vehicles.flat_map(&:model_modules)
 
           @quick_stats = QuickStats.new(
             total: vehicles.count,

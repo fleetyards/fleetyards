@@ -84,6 +84,14 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_predicate Vehicle.find_by(user_id: @user.id), :wanted?
   end
 
+  test "keeps how a ship was acquired" do
+    import = import_for([{name: @model.name, slug: @model.slug, bought_via: "reward_or_loot"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_predicate Vehicle.find_by(user_id: @user.id), :bought_via_reward_or_loot?
+  end
+
   test "assigns the groups named in the file when no target group is set" do
     create_group("Main")
     import = import_for([{name: @model.name, slug: @model.slug, groups: ["Main"]}])

@@ -50,10 +50,9 @@ module Api
           vehicle.model unless vehicle.loaner?
         end
         ingame_models = ingame_vehicles.map(&:model)
-        upgrades = vehicles.map(&:model_upgrades)
-        upgrades.flatten!
-        modules = vehicles.map(&:model_modules)
-        modules.flatten!
+        paid_vehicles = vehicles.reject(&:bought_via_reward_or_loot?)
+        upgrades = paid_vehicles.flat_map(&:model_upgrades)
+        modules = paid_vehicles.flat_map(&:model_modules)
 
         # Blind to its own filter, as the hangar's group counts are. This list is
         # the chip row itself, not just its numbers, so deriving it from the

@@ -38,7 +38,7 @@ const boughtViaOptions = computed(() => {
   }
 
   return (boughtViaFilters.value || []).filter(
-    (option) => option.value === "ingame",
+    (option) => option.value !== "pledge_store",
   );
 });
 </script>

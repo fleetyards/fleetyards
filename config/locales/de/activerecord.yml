@@ -24,6 +24,7 @@ de:
         bought_via:
           pledge_store: Pledge-Store
           ingame: Ingame-Shop
+          reward_or_loot: Belohnung oder Beute
       component:
         item_classes:
           civilian: Zivil
@@ -200,7 +201,7 @@ de:
         temperature_rating: Temp.
         types:
           additional: Zusätzliche Ausrüstung
-          powerplant: Kraftwerk
+          powerplant: Power Plant
           primary_thrusters: Primäre Triebwerke
           shield: Schilde
           thrusters: Manövriertriebwerke

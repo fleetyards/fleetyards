@@ -25634,9 +25634,11 @@ components:
       enum:
       - pledge_store
       - ingame
+      - reward_or_loot
       x-enumNames:
       - PLEDGE_STORE
       - INGAME
+      - REWARD_OR_LOOT
       title: BoughtViaEnum
     BuybackDetailsSyncResult:
       type: object
@@ -51348,6 +51350,8 @@ components:
           type: string
         wanted:
           type: boolean
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
         flagship:
           type: boolean
         public:

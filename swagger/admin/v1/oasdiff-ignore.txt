@@ -629,3 +629,7 @@ GET /admin_users/{id} added the new `raffles` enum value to the `resourceAccess/
 PUT /admin_users/{id} added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
 GET /resource-access-catalog added the new `raffles` enum value to the `items/privileges/items/` response property for the response status `200`
 POST /sessions added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /vehicles added the new `reward_or_loot` enum value to the `items/items/boughtVia` response property for the response status `200`
+DELETE /vehicles/{id} added the new `reward_or_loot` enum value to the `boughtVia` response property for the response status `200`
+GET /vehicles/{id} added the new `reward_or_loot` enum value to the `boughtVia` response property for the response status `200`
+PUT /vehicles/{id} added the new `reward_or_loot` enum value to the `boughtVia` response property for the response status `200`

@@ -19,7 +19,7 @@ module Maintenance
   class RepairIngameOnlyBoughtViaTask < MaintenanceTasks::Task
     def collection
       Vehicle.where(model_id: Model.ingame_only.select(:id))
-        .where.not(bought_via: :ingame)
+        .where(bought_via: :pledge_store)
         .includes(:model)
     end
 
@@ -31,7 +31,7 @@ module Maintenance
     # so a flag cleared or an entry corrected part way through a run would
     # otherwise still be rewritten from the selection made before it.
     def process(vehicle)
-      return if vehicle.bought_via_ingame?
+      return unless vehicle.bought_via_pledge_store?
       return unless vehicle.model&.ingame_only?
 
       vehicle.update_columns(bought_via: Vehicle.bought_via[:ingame], updated_at: Time.zone.now)

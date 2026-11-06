@@ -213,7 +213,7 @@ class Vehicle < ApplicationRecord
   NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style plaque_locale].freeze
 
   enum :bought_via,
-    {pledge_store: 0, ingame: 1},
+    {pledge_store: 0, ingame: 1, reward_or_loot: 2},
     prefix: true
 
   before_validation :normalize_serial, if: :serial_changed?
@@ -517,6 +517,11 @@ class Vehicle < ApplicationRecord
 
   def self.purchased
     where(wanted: false)
+  end
+
+  # Everything that exists only on the game's side, and so goes when it is wiped.
+  def self.acquired_in_game
+    where(bought_via: %i[ingame reward_or_loot])
   end
 
   def self.wanted
@@ -933,7 +938,7 @@ class Vehicle < ApplicationRecord
     existing = Vehicle.where(bundled: true, vehicle_id: id, model_id: snub_craft_model.id, user_id:).first
 
     if existing.present?
-      existing.update(wanted:, hidden_by_user:) if existing.wanted != wanted || existing.hidden_by_user != hidden_by_user
+      existing.update(wanted:, hidden_by_user:, bought_via:) if existing.wanted != wanted || existing.hidden_by_user != hidden_by_user || existing.bought_via != bought_via
       return
     end
 
@@ -946,7 +951,8 @@ class Vehicle < ApplicationRecord
       vehicle_id: id,
       public: false,
       wanted:,
-      hidden_by_user:
+      hidden_by_user:,
+      bought_via:
     )
   end
 
@@ -1099,9 +1105,10 @@ class Vehicle < ApplicationRecord
 
   # A ship the pledge store never sells cannot have been bought there, whichever
   # way the row arrived -- by hand, through an import, or from a sync that
-  # stamps every entry it creates as a store purchase.
+  # stamps every entry it creates as a store purchase. Any other answer is one
+  # the game allows, so it stands.
   protected def force_ingame_bought_via
-    return if model.blank? || !model.ingame_only?
+    return if model.blank? || !model.ingame_only? || bought_via_reward_or_loot?
 
     self.bought_via = :ingame
   end

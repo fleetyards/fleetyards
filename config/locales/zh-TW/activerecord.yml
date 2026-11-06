@@ -24,6 +24,7 @@ zh-TW:
         bought_via:
           pledge_store: 質押商店
           ingame: 遊戲內商店
+          reward_or_loot: 獎勵或戰利品
       component:
         item_classes:
           civilian: 民用

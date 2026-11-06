@@ -140,7 +140,7 @@
         },
         "reset": {
           "title": "Nach einem Wipe im Spiel",
-          "text": "Setze hier deine im Spiel gekauften Schiffe zurück: Verschiebe alle auf die Wunschliste als Einkaufsliste oder entferne sie aus deinem Hangar. Mit Echtgeld gekaufte Schiffe bleiben erhalten."
+          "text": "Setze hier deine im Spiel erhaltenen Schiffe zurück: Verschiebe alle auf die Wunschliste als Einkaufsliste oder entferne sie aus deinem Hangar. Mit Echtgeld gekaufte Schiffe bleiben erhalten."
         },
         "exampleShip": {
           "title": "Beispielschiff",
@@ -353,7 +353,7 @@
         "wishlistHint": "Du möchtest dieses Schiff später haben."
       },
       "resetIngame": {
-        "info": "Ein Wipe nimmt dir die Schiffe, die du ingame gekauft hast. Verschiebe sie auf deine Wunschliste, um sie später erneut zu kaufen, oder entferne sie aus deinem Hangar. Schiffe, die du nicht ingame gekauft hast, bleiben unverändert."
+        "info": "Ein Wipe nimmt dir die Schiffe, die du ingame gekauft, erbeutet oder als Belohnung erhalten hast. Verschiebe sie auf deine Wunschliste, um sie dir später erneut zu holen, oder entferne sie aus deinem Hangar. Schiffe, die du nicht ingame erhalten hast, bleiben unverändert."
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

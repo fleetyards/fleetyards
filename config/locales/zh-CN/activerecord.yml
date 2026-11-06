@@ -24,6 +24,7 @@ zh-CN:
         bought_via:
           pledge_store: 质押商店
           ingame: 游戏内商店
+          reward_or_loot: 奖励或战利品
       component:
         item_classes:
           civilian: 民用

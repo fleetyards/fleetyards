@@ -140,7 +140,7 @@
         },
         "reset": {
           "title": "Tras un reinicio del juego",
-          "text": "Restablece aquí las naves compradas en el juego: muévelas todas a tu lista de deseos como lista de compras o elimínalas del hangar. Las naves compradas con dinero real se conservan."
+          "text": "Restablece aquí las naves obtenidas en el juego: muévelas todas a tu lista de deseos como lista de compras o elimínalas del hangar. Las naves compradas con dinero real se conservan."
         },
         "exampleShip": {
           "title": "Nave de ejemplo",
@@ -352,7 +352,7 @@
         "wishlistHint": "Quieres conseguir esta nave más adelante."
       },
       "resetIngame": {
-        "info": "Un wipe te quita las naves que compraste en el juego. Muévelas a tu lista de deseos para volver a comprarlas más tarde o elimínalas de tu hangar. Las naves que no compraste en el juego no cambian."
+        "info": "Un wipe te quita las naves que compraste, saqueaste o recibiste como recompensa en el juego. Muévelas a tu lista de deseos para volver a conseguirlas más tarde o elimínalas de tu hangar. Las naves que no obtuviste en el juego no cambian."
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

@@ -24,6 +24,7 @@ es:
         bought_via:
           pledge_store: Tienda de Pledge
           ingame: Tienda del juego
+          reward_or_loot: Recompensa o botín
       component:
         item_classes:
           civilian: Civil

@@ -2350,7 +2350,7 @@
         "types": {
           "radar": "Radar",
           "computers": "Computer",
-          "power_plants": "Kraftwerke",
+          "power_plants": "Power Plants",
           "coolers": "Kühler",
           "shield_generators": "Schildgeneratoren",
           "fuel_intakes": "Treibstoffeinlässe",
@@ -2382,7 +2382,7 @@
           "selfdestruct": "Selbstzerstörung",
           "batteries": "Batterien",
           "computers": "Computer",
-          "powerplant": "Kraftwerke",
+          "powerplant": "Power Plants",
           "cooler": "Kühler",
           "module": "Module",
           "shieldgenerator": "Schildgeneratoren",
@@ -3304,7 +3304,7 @@
         "viewImport": "Import dieses Syncs ansehen",
         "lastSynced": "Zuletzt synchronisiert",
         "syncShipComponents": "Schiffskomponenten synchronisieren",
-        "syncShipComponentsHint": "Ersetzt deine Schiffskomponenten (Kühler, Kraftwerke, Waffen, …) durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Schiffskomponenten unverändert."
+        "syncShipComponentsHint": "Ersetzt deine Schiffskomponenten (Kühler, Power Plants, Waffen, …) durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Schiffskomponenten unverändert."
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",
@@ -5048,7 +5048,7 @@
           "weapons": "Waffen",
           "missiles": "Raketen",
           "shields": "Schildgeneratoren",
-          "powerPlants": "Kraftwerke",
+          "powerPlants": "Power Plants",
           "coolers": "Kühler",
           "quantumDrives": "Quantum-Antriebe",
           "radar": "Radar",

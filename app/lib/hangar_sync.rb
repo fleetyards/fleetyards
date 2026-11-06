@@ -221,7 +221,12 @@ class HangarSync < HangarImporter
     imported_vehicles = []
     found_vehicles = []
     missing_models = []
-    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false, bought_via: :pledge_store).order(created_at: :asc)
+    # A row bound to a pledge stays that pledge's match whatever source its owner
+    # gives it, or relabelling a ship would make the next sync create it again.
+    syncable_vehicles = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false)
+    vehicle_scope = syncable_vehicles.where(bought_via: :pledge_store)
+      .or(syncable_vehicles.where.not(rsi_pledge_id: nil))
+      .order(created_at: :asc)
 
     @ships.each_with_index do |item, index|
       break if stop_requested?(index)

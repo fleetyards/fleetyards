@@ -17,6 +17,17 @@ class VehicleBundledSnubCraftsTest < ActiveSupport::TestCase
     @parent_model = create(:model).tap { |m| m.snub_crafts << @snub_model }
   end
 
+  test "a bundled child follows the way its parent was acquired" do
+    parent = create(:vehicle, user: @user, model: @parent_model, bought_via: :reward_or_loot)
+    bundled = Vehicle.find_by!(bundled: true, vehicle_id: parent.id)
+
+    assert_predicate bundled, :bought_via_reward_or_loot?
+
+    parent.update!(bought_via: :pledge_store)
+
+    assert_predicate bundled.reload, :bought_via_pledge_store?
+  end
+
   test "auto-creates a bundled child for each model.snub_crafts entry" do
     assert_difference -> { Vehicle.where(bundled: true, user_id: @user.id).count }, 1 do
       create(:vehicle, user: @user, model: @parent_model, wanted: false)
@@ -632,6 +643,31 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     vehicle.update!(bought_via: :pledge_store)
 
     assert vehicle.reload.bought_via_ingame?
+  end
+
+  test "keeps an in-game-only ship that came from a reward or loot" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, ingame_only: true), bought_via: :reward_or_loot)
+
+    vehicle.update!(flagship: true)
+
+    assert vehicle.reload.bought_via_reward_or_loot?
+  end
+
+  test "corrects an in-game-only ship that holds no source at all" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, ingame_only: true))
+    vehicle.update_columns(bought_via: nil)
+
+    vehicle.reload.update!(flagship: true)
+
+    assert vehicle.reload.bought_via_ingame?
+  end
+
+  test ".acquired_in_game leaves out what came from the pledge store" do
+    bought = create(:vehicle, user: @user, bought_via: :ingame)
+    looted = create(:vehicle, user: @user, bought_via: :reward_or_loot)
+    create(:vehicle, user: @user, bought_via: :pledge_store)
+
+    assert_equal [bought.id, looted.id].sort, Vehicle.acquired_in_game.pluck(:id).sort
   end
 
   test "leaves a pledge ship on the way it says it was bought" do

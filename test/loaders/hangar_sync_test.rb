@@ -468,6 +468,26 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal "99999", existing.vehicle_paints.sole.rsi_pledge_id
     end
 
+    test "keeps a pledge its owner relabelled instead of creating it again" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      relabelled = create(:vehicle, user: @user, model: gladius, bought_via: :reward_or_loot, rsi_pledge_id: "11111")
+
+      ::HangarSync.new([{"id" => "11111", "type" => "ship", "name" => "Gladius"}]).run(@user.id)
+
+      assert_predicate relabelled.reload, :bought_via_reward_or_loot?
+      assert_equal 1, Vehicle.where(user: @user, model: gladius).count
+    end
+
+    test "leaves a looted ship with no pledge out of the sync" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      looted = create(:vehicle, user: @user, model: gladius, bought_via: :reward_or_loot)
+
+      ::HangarSync.new([{"id" => "11111", "type" => "ship", "name" => "Gladius"}]).run(@user.id)
+
+      assert_nil looted.reload.rsi_pledge_id
+      assert_equal 2, Vehicle.where(user: @user, model: gladius).count
+    end
+
     test "leaves a plain pledge's hull to it when a painted pledge comes first" do
       gladius = Model.find_by!(slug: "aegs-gladius")
       create(:model_paint, model: gladius, name: "Dunlevy")

@@ -18,6 +18,7 @@ module V1
             shipName: {type: :string},
             shipSerial: {type: :string},
             wanted: {type: :boolean},
+            boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             flagship: {type: :boolean},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
