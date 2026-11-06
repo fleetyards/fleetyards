@@ -53,6 +53,26 @@ class Api::V1::FleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
     Sidekiq::Testing.fake!
   end
 
+  test "GET /fleets/:slug/stats/vehicles counts a looted ship as owned but not as money spent" do
+    sign_in @admin
+    user = @admin
+    fleet = @fleet
+    before = {}
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
+      before = {total: parsed_body["total"], money: parsed_body.dig("metrics", "totalMoney")}
+    end
+
+    create(:vehicle, user:, public: true, bought_via: :reward_or_loot, model: create(:model, pledge_price: 50),
+      model_module_ids: [create(:model_module, pledge_price: 30).id],
+      model_upgrade_ids: [create(:model_upgrade, pledge_price: 20).id])
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
+      assert_equal before[:total] + 1, parsed_body["total"]
+      assert_equal before[:money], parsed_body.dig("metrics", "totalMoney")
+    end
+  end
+
   test "GET /fleets/:slug/stats/vehicles returns vehicle stats" do
     sign_in @admin
 

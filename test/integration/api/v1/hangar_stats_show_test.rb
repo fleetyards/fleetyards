@@ -70,7 +70,9 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/stats counts a looted ship as owned but not as money or credits spent" do
     user = create(:user)
-    create(:vehicle, user:, bought_via: :reward_or_loot, model: create(:model, price: 1000, pledge_price: 50))
+    create(:vehicle, user:, bought_via: :reward_or_loot, model: create(:model, price: 1000, pledge_price: 50),
+      model_module_ids: [create(:model_module, pledge_price: 30).id],
+      model_upgrade_ids: [create(:model_upgrade, pledge_price: 20).id])
     sign_in user
 
     assert_api_response :get, 200 do

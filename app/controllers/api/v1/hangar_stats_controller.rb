@@ -33,10 +33,9 @@ module Api
           vehicle.model unless vehicle.loaner?
         end
         ingame_models = ingame_vehicles.map(&:model)
-        upgrades = vehicles.map(&:model_upgrades)
-        upgrades.flatten!
-        modules = vehicles.map(&:model_modules)
-        modules.flatten!
+        paid_vehicles = vehicles.reject(&:bought_via_reward_or_loot?)
+        upgrades = paid_vehicles.flat_map(&:model_upgrades)
+        modules = paid_vehicles.flat_map(&:model_modules)
 
         group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
 
