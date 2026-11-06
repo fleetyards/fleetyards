@@ -8,7 +8,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useMediaQuery, useResizeObserver } from "@vueuse/core";
+import { useResizeObserver } from "@vueuse/core";
 import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import { placeFloating } from "@/shared/utils/floatingPlacement";
 import { claimActive, releaseActive } from "./activePopover";
@@ -17,7 +17,7 @@ import {
   POPOVER_BASE_LAYER,
   POPOVER_SHEET_LAYER,
 } from "./layer";
-import { useSheetSwipe } from "./useSheetSwipe";
+import { setPageLocked, useSheetSwipe } from "./useSheetSwipe";
 import {
   type PopoverPlacement,
   type PopoverSide,
@@ -157,7 +157,13 @@ const anchorRect = (): DOMRect => {
   } as DOMRect;
 };
 
-const phoneWidth = useMediaQuery("(max-width: 575.98px)");
+// Read when it can matter rather than watched: a list mounts one of these per row.
+const phoneWidth = ref(false);
+
+const readPhoneWidth = () => {
+  phoneWidth.value =
+    window.matchMedia?.("(max-width: 575.98px)").matches ?? false;
+};
 
 // A card fills a phone from wherever it is anchored, covering what was tapped and
 // running under the navigation, so there a tap opens it as a sheet from the bottom.
@@ -204,11 +210,14 @@ let touchedWithin = false;
 
 const scrim = ref<HTMLElement | null>(null);
 
-const swipe = useSheetSwipe(
-  panel,
-  () => sheet.value,
-  () => close(),
-);
+// Focus had nowhere to go once its button or the sheet was gone, and a screen
+// reader would lose its place.
+const dismissSheet = () => {
+  close();
+  focusTarget()?.focus({ preventScroll: true });
+};
+
+const swipe = useSheetSwipe(panel, () => sheet.value, dismissSheet);
 const { offset: swipeOffset, dragging: swiping } = swipe;
 
 const onDocumentPointerdown = (event: PointerEvent) => {
@@ -243,7 +252,11 @@ const onWindowScroll = (event: Event) => {
   }
 };
 
-const onWindowResize = () => place();
+const onWindowResize = () => {
+  readPhoneWidth();
+  setPageLocked(sheet.value);
+  place();
+};
 
 const listen = () => {
   document.addEventListener("pointerdown", onDocumentPointerdown, true);
@@ -283,6 +296,7 @@ function close() {
   if (!open.value) return;
 
   open.value = false;
+  setPageLocked(false);
   releaseActive(close);
   unlisten();
   setDescribedBy(false);
@@ -298,13 +312,17 @@ const show = async (by: PopoverTrigger) => {
 
   claimActive(close);
   touchedWithin = false;
+  readPhoneWidth();
   open.value = true;
+  setPageLocked(sheet.value);
   listen();
   setDescribedBy(true);
   emit("open");
 
   await nextTick();
   place();
+
+  if (sheet.value) panel.value?.focus({ preventScroll: true });
 };
 
 const scheduleOpen = () => {
@@ -472,7 +490,7 @@ defineExpose({ open, show, close });
       class="popover-scrim"
       :style="{ zIndex }"
       data-test="popover-scrim"
-      @click="close"
+      @click="dismissSheet"
     />
     <div
       v-if="open"
@@ -499,6 +517,8 @@ defineExpose({ open, show, close });
             }
       "
       role="dialog"
+      :tabindex="sheet ? -1 : undefined"
+      :aria-modal="sheet ? true : undefined"
       :aria-label="label"
       data-test="popover"
       @mouseenter="onPanelMouseenter"
@@ -511,7 +531,7 @@ defineExpose({ open, show, close });
     >
       <div v-if="sheet" class="popover__sheet-close">
         <span class="popover__sheet-handle" aria-hidden="true" />
-        <AppModalCloseBtn data-test="popover-close" @click="close" />
+        <AppModalCloseBtn data-test="popover-close" @click="dismissSheet" />
       </div>
       <slot name="content" :close="close" />
     </div>

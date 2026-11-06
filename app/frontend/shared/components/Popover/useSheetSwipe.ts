@@ -1,9 +1,23 @@
+import { useScrollLock } from "@vueuse/core";
 import { type Ref } from "vue";
+
+let pageLock: Ref<boolean> | undefined;
+
+// A sheet is modal, so the page behind it holds still. One lock for all of them,
+// since only one card is ever open.
+export const setPageLocked = (locked: boolean) => {
+  if (!pageLock && !locked) return;
+
+  pageLock ??= useScrollLock(document.body);
+  pageLock.value = locked;
+};
 
 // How far, or how fast, a sheet has to be pulled to go rather than spring back.
 const DISMISS_DISTANCE = 100;
 const DISMISS_MIN_FLICK = 30;
 const DISMISS_SPEED = 0.5;
+// Enough of a move to tell which way the finger is going.
+const INTENT_DISTANCE = 8;
 
 /*
  * Pulling a sheet down by its body. Only from the top of its content, and only
@@ -18,6 +32,7 @@ export const useSheetSwipe = (
   const offset = ref(0);
   const dragging = ref(false);
 
+  let startX = 0;
   let startY = 0;
   let startTime = 0;
   let tracking = false;
@@ -31,6 +46,7 @@ export const useSheetSwipe = (
   const onTouchstart = (event: TouchEvent) => {
     if (!active() || event.touches.length !== 1) return;
 
+    startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
     startTime = event.timeStamp;
     tracking = (panel.value?.scrollTop ?? 0) <= 0;
@@ -41,9 +57,15 @@ export const useSheetSwipe = (
 
     const distance = event.touches[0].clientY - startY;
 
-    if (!dragging.value && distance <= 0) {
-      tracking = false;
-      return;
+    if (!dragging.value) {
+      const across = Math.abs(event.touches[0].clientX - startX);
+
+      if (Math.max(across, Math.abs(distance)) < INTENT_DISTANCE) return;
+
+      if (distance <= 0 || across > distance) {
+        tracking = false;
+        return;
+      }
     }
 
     dragging.value = true;

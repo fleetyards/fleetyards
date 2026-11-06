@@ -493,6 +493,20 @@ describe("Popover on a phone", () => {
     expect(scrim()).not.toBeNull();
   });
 
+  it("takes focus as a dialog and hands it back on closing", async () => {
+    phoneWidth(true);
+
+    await openByTap();
+
+    expect(document.activeElement).toBe(panel());
+    expect((panel() as HTMLElement).getAttribute("aria-modal")).toBe("true");
+
+    (scrim() as HTMLElement).click();
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(document.activeElement?.classList).toContain("trigger-link");
+  });
+
   it("closes from the scrim's click, not its press", async () => {
     phoneWidth(true);
 
@@ -509,10 +523,15 @@ describe("Popover on a phone", () => {
   });
 
   describe("swiping", () => {
-    const touch = (type: string, clientY?: number, timeStamp = 0) => {
+    const touch = (
+      type: string,
+      clientY?: number,
+      timeStamp = 0,
+      drift = 0,
+    ) => {
       const event = new Event(type, { bubbles: true, cancelable: true });
       Object.assign(event, {
-        touches: clientY === undefined ? [] : [{ clientY }],
+        touches: clientY === undefined ? [] : [{ clientX: drift, clientY }],
       });
       Object.defineProperty(event, "timeStamp", { value: timeStamp });
       panel()?.dispatchEvent(event);
@@ -564,6 +583,29 @@ describe("Popover on a phone", () => {
       await swipe(150);
 
       expect(panel()).not.toBeNull();
+    });
+
+    it("leaves a sideways swipe alone", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      touch("touchstart", 200, 0);
+      touch("touchmove", 215, 100, 80);
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect((panel() as HTMLElement).style.transform).toBe("");
+    });
+
+    it("holds the page still only while a sheet is up", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      expect(document.body.style.overflow).toBe("hidden");
+
+      (scrim() as HTMLElement).click();
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(document.body.style.overflow).not.toBe("hidden");
     });
 
     it("does not move an anchored card", async () => {

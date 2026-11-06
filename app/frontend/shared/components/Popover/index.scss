@@ -55,6 +55,10 @@
   }
 }
 
+.popover--sheet:focus {
+  outline: none;
+}
+
 .popover--swiping {
   transition: none;
 }
