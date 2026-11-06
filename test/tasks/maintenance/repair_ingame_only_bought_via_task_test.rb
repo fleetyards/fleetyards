@@ -35,6 +35,20 @@ module Maintenance
       assert_equal 0, @task.count
     end
 
+    test "#collection leaves an entry from a reward or loot alone" do
+      create(:vehicle, user: @user, model: @ingame_only, bought_via: :reward_or_loot)
+
+      assert_equal 0, @task.count
+    end
+
+    test "#process leaves an entry from a reward or loot alone" do
+      vehicle = create(:vehicle, user: @user, model: @ingame_only, bought_via: :reward_or_loot)
+
+      @task.process(vehicle)
+
+      assert vehicle.reload.bought_via_reward_or_loot?
+    end
+
     # The collection is walked in batches, so the flag can be cleared while the
     # run is still working through the rows it selected.
     test "#process leaves an entry alone once its ship is sold in the store again" do

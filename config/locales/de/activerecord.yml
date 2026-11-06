@@ -24,6 +24,7 @@ de:
         bought_via:
           pledge_store: Pledge-Store
           ingame: Ingame-Shop
+          reward_or_loot: Belohnung oder Beute
       component:
         item_classes:
           civilian: Zivil

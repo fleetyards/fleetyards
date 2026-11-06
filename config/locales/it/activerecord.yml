@@ -24,6 +24,7 @@ it:
         bought_via:
           pledge_store: Negozio Pledge
           ingame: Negozio in gioco
+          reward_or_loot: Ricompensa o bottino
       component:
         item_classes:
           civilian: Civile
