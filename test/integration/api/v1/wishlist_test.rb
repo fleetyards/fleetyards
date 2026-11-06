@@ -114,4 +114,15 @@ class Api::V1::WishlistTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, headers: oauth_headers_for(user, scopes: ["hangar", "hangar:read"])
   end
+
+  test "filters by the price ranges the filter form sends" do
+    user = create(:user)
+    sign_in user
+    wanted = create(:vehicle, user:, wanted: true, model: create(:model, pledge_price: 30))
+    create(:vehicle, user:, wanted: true, model: create(:model, pledge_price: 500))
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["25-50"]}} do
+      assert_equal [wanted.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
 end

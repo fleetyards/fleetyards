@@ -188,4 +188,15 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
       assert_equal 2, parsed_body["items"].count
     end
   end
+
+  test "filters by the price ranges the filter form sends" do
+    member = create(:user)
+    fleet = create(:fleet, public_fleet: true, members: [member])
+    cheap = create(:vehicle, :public, user: member, model: create(:model, pledge_price: 30))
+    create(:vehicle, :public, user: member, model: create(:model, pledge_price: 500))
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {pledgePriceIn: ["25-50"]}} do
+      assert_equal [cheap.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
 end

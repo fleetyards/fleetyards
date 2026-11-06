@@ -321,4 +321,16 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  test "filters by the price ranges the filter form sends" do
+    owner = create(:user)
+    fleet = create(:fleet, admins: [owner])
+    sign_in owner
+    cheap = create(:vehicle, user: owner, model: create(:model, pledge_price: 30))
+    create(:vehicle, user: owner, model: create(:model, pledge_price: 500))
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {pledgePriceIn: ["25-50"]}} do
+      assert_equal [cheap.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
 end

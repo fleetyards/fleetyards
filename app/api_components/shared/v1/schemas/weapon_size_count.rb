@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module V1
-  module Schemas
-    module Vehicles
+module Shared
+  module V1
+    module Schemas
       class WeaponSizeCount
         include OpenapiRuby::Components::Base
 

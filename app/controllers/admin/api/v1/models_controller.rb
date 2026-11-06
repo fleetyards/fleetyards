@@ -170,7 +170,7 @@ module Admin
             "name asc", "id asc"
           ]
 
-          Model.includes([:manufacturer]).ransack(model_query_params)
+          Model.includes(:manufacturer, :loadout_stats).ransack(model_query_params)
         end
 
         private def model_query_params

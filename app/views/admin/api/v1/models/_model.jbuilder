@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-json.cache! ["v7", model, model.facts, Manufacturer.artwork_version, local_assigns.fetch(:extended, false)] do
+stock_stat = model.stock_loadout_stat
+
+json.cache! ["v8", model, model.facts, stock_stat, Manufacturer.artwork_version, local_assigns.fetch(:extended, false)] do
   json.partial!("admin/api/v1/models/base", model:, extended: local_assigns.fetch(:extended, false))
+  json.partial!("api/v1/vehicles/weapons", stat: stock_stat)
 end
 
 # Outside the cache: a crop that found nothing to cut settles the list without

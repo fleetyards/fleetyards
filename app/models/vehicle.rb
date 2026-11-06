@@ -380,9 +380,7 @@ class Vehicle < ApplicationRecord
   ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
 
   # What a vehicle carries as fitted, as `loadout_stats` records it.
-  FITTED_STATS = {
-    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
-  }.freeze
+  FITTED_STATS = LoadoutStat::LIST_FIGURES
 
   # What a vehicle carries as fitted, which reads its loadouts.
   FITTED_COLUMNS = ["cargo", *FITTED_STATS.keys].freeze
@@ -452,12 +450,7 @@ class Vehicle < ApplicationRecord
         #{"AND fitted_loadouts.public = TRUE" if public_only}
         AND fitted_stats.environment = ?
     SQL
-    stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
-      SELECT stock_stats.#{column} FROM loadout_stats stock_stats
-      WHERE stock_stats.fitting_type = 'Model'
-        AND stock_stats.fitting_id = vehicles.model_id
-        AND stock_stats.environment = ?
-    SQL
+    stock_stat = LoadoutStat.stock_sql(column, "vehicles.model_id")
 
     # No guns sorts and compares as 0, rather than as a NULL that a descending
     # sort puts first.
@@ -499,8 +492,15 @@ class Vehicle < ApplicationRecord
     where(model_id: Model.focus_in(*keys).select(:id))
   }
 
+  scope :price_in, ->(*ranges) { where(model_id: Model.price_in(*ranges).select(:id)) }
+  scope :pledge_price_in, ->(*ranges) { where(model_id: Model.pledge_price_in(*ranges).select(:id)) }
+
   def self.ransackable_scopes(_auth_object = nil)
-    %i[image_source_eq focus_in]
+    %i[image_source_eq focus_in price_in pledge_price_in]
+  end
+
+  def self.ransackable_scopes_skip_sanitize_args
+    %i[price_in pledge_price_in]
   end
 
   serialize :alternative_names, type: Array, coder: YAML
@@ -997,7 +997,7 @@ class Vehicle < ApplicationRecord
   def fitted_loadout_stat(public_only: false)
     stat = fitted_loadout(public_only:)&.then { |loadout| LoadoutStat.for_environment(loadout.loadout_stats) }
 
-    stat || LoadoutStat.for_environment(model.loadout_stats)
+    stat || model.stock_loadout_stat
   end
 
   private def refresh_loadout_stats

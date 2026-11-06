@@ -80,6 +80,16 @@ module V1
 
             speeds: Shared::V1::Schemas::ModelSpeeds,
 
+            # The ship as it comes. Firepower without anyone's pips: alpha and
+            # burst with the guns powered, sustained at one weapon pip and at the
+            # most the plant gives.
+            maxWeaponSize: {type: [:integer, :null]},
+            weaponSizes: {type: :array, items: ::Shared::V1::Schemas::WeaponSizeCount},
+            alpha: {type: [:number, :null]},
+            burstDps: {type: [:number, :null]},
+            sustainedDpsMin: {type: [:number, :null]},
+            sustainedDpsMax: {type: [:number, :null]},
+
             holo: {type: :string, deprecated: true},
             brochure: {type: :string, deprecated: true},
 

@@ -4,6 +4,7 @@ import type { MetricRow } from "@/shared/composables/useModelMetricRows";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
+import { useListFigures } from "@/frontend/composables/useListFigures";
 
 // The list's figures a card's details otherwise leave out, named as the list
 // view's columns and sorts name them.
@@ -32,31 +33,8 @@ const FILTER_KEYS: Record<VehicleListFigureEnum, (keyof HangarQuery)[]> = {
   ],
 };
 
-const isSet = (value: unknown) =>
-  value != null &&
-  value !== "" &&
-  !(Array.isArray(value) && value.every((item) => item == null || item === ""));
-
-// The figures the list is sorted or filtered by, the sort's first: the card
-// shows what the list is ordered and narrowed on, as the list view's columns
-// would.
-export const useVehicleListFigures = (sort: () => string | undefined) => {
-  const route = useRoute();
-
-  return computed<VehicleListFigureEnum[]>(() => {
-    const figures = Object.values(VehicleListFigureEnum);
-    const sortField = sort()?.split(" ")[0];
-
-    const sorted = figures.filter((figure) => figure === sortField);
-    const filtered = figures.filter(
-      (figure) =>
-        figure !== sortField &&
-        FILTER_KEYS[figure].some((key) => isSet(route.query[key])),
-    );
-
-    return [...sorted, ...filtered];
-  });
-};
+export const useVehicleListFigures = (sort: () => string | undefined) =>
+  useListFigures<VehicleListFigureEnum>(FILTER_KEYS, sort);
 
 export const useVehicleFigureRows = () => {
   const { t, toDollar } = useI18n();

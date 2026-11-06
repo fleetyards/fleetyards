@@ -147,6 +147,22 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters by the price ranges the filter form sends, keeping the chosen sort" do
+    user = create(:user)
+    sign_in user
+    small = create(:vehicle, user:, model: create(:model, pledge_price: 30, length: 10, price: 100_000))
+    big = create(:vehicle, user:, model: create(:model, pledge_price: 40, length: 90, price: 200_000))
+    create(:vehicle, user:, model: create(:model, pledge_price: 500, price: 900_000))
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["25-50"], sorts: ["modelLength desc"]}} do
+      assert_equal [big.id, small.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {priceIn: ["-500000"]}} do
+      assert_equal [small.id, big.id].sort, parsed_body["items"].map { |item| item["id"] }.sort
+    end
+  end
+
   test "filters, sorts and lists the firepower a vehicle carries as fitted" do
     user = create(:user)
     sign_in user

@@ -70,6 +70,88 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "sorts by the figures a ship carries as it comes" do
+    light = create(:model, name: "Light")
+    create(:loadout_stat, fitting: light, max_weapon_size: 1, alpha: 10, burst_dps: 100, sustained_dps_max: 300)
+    heavy = create(:model, name: "Heavy")
+    create(:loadout_stat, fitting: heavy, max_weapon_size: 3, alpha: 100, burst_dps: 1000, sustained_dps_max: 200)
+    concept = create(:model, name: "Concept")
+
+    {
+      "maxWeaponSize" => [heavy, light, concept],
+      "alpha" => [heavy, light, concept],
+      "burstDps" => [heavy, light, concept],
+      "sustainedDpsMax" => [light, heavy, concept]
+    }.each do |sort, expected|
+      assert_api_response :get, 200, params: {q: {sorts: ["#{sort} desc"]}} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+  end
+
+  test "lists the figures a ship carries as it comes" do
+    gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      type_data: {damage_per_shot: {energy: 100}, fire_rate: 600})
+    armed = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: armed, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun)
+    LoadoutStat.refresh
+    bare = create(:model)
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      first, second = parsed_body["items"]
+
+      assert_equal armed.id, first["id"]
+      assert_equal 3, first["maxWeaponSize"]
+      assert_equal [{"size" => 3, "count" => 1}], first["weaponSizes"]
+      assert_in_delta 100, first["alpha"]
+      assert_in_delta 1000, first["burstDps"]
+      assert_in_delta 1000, first["sustainedDpsMax"]
+
+      assert_equal bare.id, second["id"]
+      assert_nil second["alpha"]
+      assert_equal [], second["weaponSizes"]
+    end
+  end
+
+  test "keeps ships sharing a figure in name order" do
+    names = %w[Cutter Avenger Buccaneer]
+    names.each { |name| create(:model, name:) }
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      assert_equal names.sort, parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "orders ships sharing a name and a figure the same way every time" do
+    first, second = 2.times.map { create(:model, name: "Twin", manufacturer: create(:manufacturer)) }.sort_by(&:id)
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      assert_equal [first.id, second.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "filters by the price ranges the filter form sends, keeping the chosen sort" do
+    cheap = create(:model, name: "Avenger", pledge_price: 30)
+    create(:loadout_stat, fitting: cheap, alpha: 10)
+    armed = create(:model, name: "Gladius", pledge_price: 40)
+    create(:loadout_stat, fitting: armed, alpha: 100)
+    open_ended = create(:model, name: "Idris", pledge_price: 1500, price: 900_000)
+    create(:model, name: "Cutter", pledge_price: 100, price: 50_000)
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["25-50"], sorts: ["alpha desc"]}} do
+      assert_equal [armed.id, cheap.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["-35", "1000-"], sorts: ["name asc"]}} do
+      assert_equal [cheap.id, open_ended.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {priceIn: ["500000-"]}} do
+      assert_equal [open_ended.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 

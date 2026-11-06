@@ -32,7 +32,7 @@ module V1
             # The guns fitted, by size: the active loadout's, or the ones the
             # ship comes with.
             maxWeaponSize: {type: [:integer, :null]},
-            weaponSizes: {type: :array, items: ::V1::Schemas::Vehicles::WeaponSizeCount},
+            weaponSizes: {type: :array, items: ::Shared::V1::Schemas::WeaponSizeCount},
             # Firepower without anyone's pips: alpha and burst with the guns
             # powered, sustained at one weapon pip and at the most the plant gives.
             alpha: {type: [:number, :null]},

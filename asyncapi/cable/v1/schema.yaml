@@ -3679,6 +3679,30 @@ components:
           type: string
         speeds:
           "$ref": "#/components/schemas/ModelSpeeds"
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
+        alpha:
+          type:
+          - number
+          - 'null'
+        burstDps:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMin:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMax:
+          type:
+          - number
+          - 'null'
         holo:
           type: string
           deprecated: true
