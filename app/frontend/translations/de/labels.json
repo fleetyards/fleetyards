@@ -4986,8 +4986,9 @@
         "cargoMeter": "Ladung",
         "configuration": "Konfiguration",
         "noPaint": "Standardlackierung",
+        "noModules": "Keine Module erfasst",
         "ownedPaints": "Deine Lackierungen",
-        "availablePaints": "Lackierungen",
+        "ownedModules": "Deine Module",
         "ownedPaintsCount": {
           "one": "%{count} Lackierung",
           "other": "%{count} Lackierungen"

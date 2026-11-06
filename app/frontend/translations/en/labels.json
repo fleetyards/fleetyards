@@ -5000,8 +5000,9 @@
         "cargoMeter": "Hold fill",
         "configuration": "Configuration",
         "noPaint": "Standard livery",
+        "noModules": "No modules recorded",
         "ownedPaints": "Your paints",
-        "availablePaints": "Paints",
+        "ownedModules": "Your modules",
         "ownedPaintsCount": {
           "one": "%{count} paint",
           "other": "%{count} paints"

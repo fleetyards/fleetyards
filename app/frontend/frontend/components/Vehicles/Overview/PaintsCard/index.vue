@@ -7,15 +7,12 @@ export default {
 <script lang="ts" setup>
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleOwnedPaints } from "@/frontend/composables/useVehicleOwnedPaints";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type Vehicle,
-  type VehiclePaint,
-  useVehiclePaints,
-} from "@/services/fyApi";
+import { type Vehicle, type VehiclePaint } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -23,31 +20,29 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const SHOWN_COUNT = 6;
-
 const { t } = useI18n();
 
-const { data: vehiclePaints, isLoading } = useVehiclePaints(
-  () => props.vehicle.id,
-);
-
-const all = computed<VehiclePaint[]>(() => vehiclePaints.value || []);
-
-const owned = computed(() => all.value.filter((entry) => entry.owned));
-
-// A ship that records no paint yet shows the model's paints instead of standing
-// empty.
-const shown = computed(() =>
-  (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
-);
+const { all, owned, pending } = useVehicleOwnedPaints(() => props.vehicle);
 
 const { openEditModal } = useVehicleModals();
 
-// A loaner's paints are the lender's, as on the configuration card.
-const editable = computed(() => !props.vehicle.loaner);
+// The modal offers its paint tab under the same conditions.
+const editable = computed(() => !props.vehicle.loaner && !props.vehicle.wanted);
+
+const visible = computed(
+  () =>
+    pending.value ||
+    owned.value.length > 0 ||
+    (editable.value && all.value.length > 0),
+);
 
 const openPicker = (paintId?: string) =>
   openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.PAINT, paintId });
+
+// Preselecting a paint marks the form as changed, which would stop the paint tab
+// from filling in the pledges. One that is only pledged is among those anyway.
+const openEntry = (entry: VehiclePaint) =>
+  openPicker(entry.owned ? entry.paint.id : undefined);
 
 const thumb = (entry: VehiclePaint) =>
   entry.paint.media.storeImage?.smallUrl || entry.paint.media.storeImage?.url;
@@ -55,13 +50,9 @@ const thumb = (entry: VehiclePaint) =>
 
 <template>
   <MetricsCard
-    v-if="isLoading || all.length"
-    :title="
-      owned.length
-        ? t('labels.vehicleOverview.ownedPaints')
-        : t('labels.vehicleOverview.availablePaints')
-    "
-    :loading="isLoading"
+    v-if="visible"
+    :title="t('labels.vehicleOverview.ownedPaints')"
+    :loading="pending"
     variant="slim"
     data-test="vehicle-overview-paints"
   >
@@ -75,16 +66,23 @@ const thumb = (entry: VehiclePaint) =>
         {{ t("actions.vehicleOverview.editPaints") }}
       </Btn>
     </template>
-    <div class="overview-paints">
+    <p
+      v-if="!pending && !owned.length"
+      class="overview-card-muted"
+      data-test="vehicle-overview-paints-empty"
+    >
+      {{ t("labels.vehicleOverview.noPaint") }}
+    </p>
+    <div v-else class="overview-paints">
       <button
-        v-for="entry in shown"
+        v-for="entry in owned"
         :key="entry.paint.id"
         type="button"
         class="overview-paints__paint"
         :class="{ 'overview-paints__paint--picture': entry.picture }"
         :disabled="!editable"
         data-test="vehicle-overview-paint"
-        @click="openPicker(entry.paint.id)"
+        @click="openEntry(entry)"
       >
         <img
           v-if="thumb(entry)"

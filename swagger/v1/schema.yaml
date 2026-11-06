@@ -17730,6 +17730,14 @@ paths:
           type: string
           default: 24
         required: false
+      - name: vehicleId
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: false
+        description: Also list the modules this ship of the signed-in user has, even
+          ones the catalogue hides
       responses:
         '200':
           description: successful

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleOwnedPaints } from "@/frontend/composables/useVehicleOwnedPaints";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -47,13 +48,26 @@ const openGroupsModal = () =>
 const editEquipment = (tab: VehicleEditTabsEnum) =>
   openEditModal(props.vehicle, { tab });
 
-const ownedPaints = computed(() =>
-  props.vehicle.modelPaintIds.length
-    ? t("labels.vehicleOverview.ownedPaintsCount", {
-        count: props.vehicle.modelPaintIds.length,
-      })
-    : t("labels.vehicleOverview.noPaint"),
+const { owned: ownedPaintEntries, loaded: paintsLoaded } =
+  useVehicleOwnedPaints(() => props.vehicle);
+
+const ownedPaintsCount = computed(() =>
+  paintsLoaded.value
+    ? ownedPaintEntries.value.length
+    : props.vehicle.modelPaintIds.length,
 );
+
+// Without the list a ship may still have pledged paints, so it is not yet known
+// to be in its standard livery.
+const ownedPaints = computed(() => {
+  if (ownedPaintsCount.value) {
+    return t("labels.vehicleOverview.ownedPaintsCount", {
+      count: ownedPaintsCount.value,
+    });
+  }
+
+  return paintsLoaded.value ? t("labels.vehicleOverview.noPaint") : "";
+});
 
 const facts = computed(() =>
   (

@@ -276,6 +276,7 @@ module Api
           .in_build
           .visible
           .active
+          .or(model.modules.where(id: owned_module_ids))
           .order(name: :asc)
           .page(page_params)
           .per(per_page(ModelModule))
@@ -408,6 +409,16 @@ module Api
           .visible
           .active
           .order(name: :asc)
+      end
+
+      # A module the asker's own ship has stays listed even once the catalogue
+      # hides it, or the ship would lose it. Hidden modules stay private to their
+      # owners: anyone else's ship finds nothing here.
+      private def owned_module_ids
+        vehicle_id = scalar_param(:vehicle_id)
+        return [] if vehicle_id.blank?
+
+        current_resource_owner&.vehicles&.find_by(id: vehicle_id)&.model_module_ids || []
       end
 
       # Every part the listed modules' ports hold, all the way down: a module's

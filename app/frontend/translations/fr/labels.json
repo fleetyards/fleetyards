@@ -4986,8 +4986,9 @@
         "cargoMeter": "Chargement",
         "configuration": "Configuration",
         "noPaint": "Peinture standard",
+        "noModules": "Aucun module enregistré",
         "ownedPaints": "Tes peintures",
-        "availablePaints": "Peintures",
+        "ownedModules": "Tes modules",
         "ownedPaintsCount": {
           "one": "%{count} peinture",
           "other": "%{count} peintures"

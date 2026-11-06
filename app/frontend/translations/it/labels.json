@@ -4986,8 +4986,9 @@
         "cargoMeter": "Carico",
         "configuration": "Configurazione",
         "noPaint": "Verniciatura standard",
+        "noModules": "Nessun modulo registrato",
         "ownedPaints": "Le tue verniciature",
-        "availablePaints": "Verniciature",
+        "ownedModules": "I tuoi moduli",
         "ownedPaintsCount": {
           "one": "%{count} verniciatura",
           "other": "%{count} verniciature"

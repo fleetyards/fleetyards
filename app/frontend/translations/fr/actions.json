@@ -611,6 +611,7 @@
         "openLog": "Ouvrir le journal",
         "applyPaint": "Appliquer %{paint}",
         "editPaints": "Modifier les peintures",
+        "editModules": "Modifier les modules",
         "editLocation": "Changer l'emplacement",
         "allPaints": "Les %{count} peintures",
         "fullscreenHolo": "Plein écran",

@@ -9,10 +9,10 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Addons from "@/frontend/components/Vehicles/EditModal/Addons/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleModuleCatalogue } from "@/frontend/composables/useVehicleModuleCatalogue";
 import {
   type Vehicle,
   type VehiclePublic,
-  useModelModules as useModelModulesQuery,
   useModelUpgrades as useModelUpgradesQuery,
 } from "@/services/fyApi";
 
@@ -29,12 +29,9 @@ const modelSlug = computed(() => props.vehicle.model?.slug ?? "");
 const hasModules = computed(() => !!props.vehicle.model?.hasModules);
 const hasUpgrades = computed(() => !!props.vehicle.model?.hasUpgrades);
 
-// An owned module beyond the first page of the catalogue would drop out of the
-// list, so this asks for the largest page the endpoint serves.
-const { data: modulesData, ...modulesAsyncStatus } = useModelModulesQuery(
-  modelSlug,
-  { perPage: "100" },
-  { query: { enabled: hasModules } },
+const { data: modulesData, ...modulesAsyncStatus } = useVehicleModuleCatalogue(
+  () => props.vehicle,
+  hasModules,
 );
 
 const { data: upgradesData, ...upgradesAsyncStatus } = useModelUpgradesQuery(

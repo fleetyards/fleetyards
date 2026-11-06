@@ -611,6 +611,7 @@
         "openLog": "Apri il diario",
         "applyPaint": "Applica %{paint}",
         "editPaints": "Modifica verniciature",
+        "editModules": "Modifica moduli",
         "editLocation": "Cambia posizione",
         "allPaints": "Tutte le %{count} verniciature",
         "fullscreenHolo": "Schermo intero",

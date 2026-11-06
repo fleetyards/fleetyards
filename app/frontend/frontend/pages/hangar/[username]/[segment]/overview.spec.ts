@@ -28,6 +28,9 @@ vi.mock("@/frontend/components/Vehicles/Overview/CargoCard/index.vue", () =>
 vi.mock("@/frontend/components/Vehicles/Overview/LoadoutsCard/index.vue", () =>
   stubCard("LoadoutsCard"),
 );
+vi.mock("@/frontend/components/Vehicles/Overview/ModulesCard/index.vue", () =>
+  stubCard("ModulesCard"),
+);
 vi.mock("@/frontend/components/Vehicles/Overview/PaintsCard/index.vue", () =>
   stubCard("PaintsCard"),
 );
@@ -128,6 +131,12 @@ describe("HangarVehicleOverviewPage", () => {
       false,
     );
     expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(false);
+  });
+
+  it("offers the ship's modules", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(wrapper.findComponent({ name: "ModulesCard" }).exists()).toBe(true);
   });
 
   it("lists the fleets the ship serves in", async () => {
