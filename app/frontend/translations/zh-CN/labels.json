@@ -4984,7 +4984,6 @@
         "configuration": "配置",
         "noPaint": "标准涂装",
         "ownedPaints": "你的涂装",
-        "availablePaints": "涂装",
         "ownedPaintsCount": {
           "one": "%{count} 款涂装",
           "other": "%{count} 款涂装"

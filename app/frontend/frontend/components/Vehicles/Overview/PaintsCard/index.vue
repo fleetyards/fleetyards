@@ -7,15 +7,12 @@ export default {
 <script lang="ts" setup>
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleOwnedPaints } from "@/frontend/composables/useVehicleOwnedPaints";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type Vehicle,
-  type VehiclePaint,
-  useVehiclePaints,
-} from "@/services/fyApi";
+import { type Vehicle, type VehiclePaint } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -27,24 +24,21 @@ const SHOWN_COUNT = 6;
 
 const { t } = useI18n();
 
-const { data: vehiclePaints, isLoading } = useVehiclePaints(
-  () => props.vehicle.id,
-);
+const { all, owned, isLoading } = useVehicleOwnedPaints(() => props.vehicle);
 
-const all = computed<VehiclePaint[]>(() => vehiclePaints.value || []);
-
-const owned = computed(() => all.value.filter((entry) => entry.owned));
-
-// A ship that records no paint yet shows the model's paints instead of standing
-// empty.
-const shown = computed(() =>
-  (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
-);
+const shown = computed(() => owned.value.slice(0, SHOWN_COUNT));
 
 const { openEditModal } = useVehicleModals();
 
-// A loaner's paints are the lender's, as on the configuration card.
-const editable = computed(() => !props.vehicle.loaner);
+// The modal offers its paint tab under the same conditions.
+const editable = computed(() => !props.vehicle.loaner && !props.vehicle.wanted);
+
+const visible = computed(
+  () =>
+    isLoading.value ||
+    owned.value.length > 0 ||
+    (editable.value && all.value.length > 0),
+);
 
 const openPicker = (paintId?: string) =>
   openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.PAINT, paintId });
@@ -55,12 +49,8 @@ const thumb = (entry: VehiclePaint) =>
 
 <template>
   <MetricsCard
-    v-if="isLoading || all.length"
-    :title="
-      owned.length
-        ? t('labels.vehicleOverview.ownedPaints')
-        : t('labels.vehicleOverview.availablePaints')
-    "
+    v-if="visible"
+    :title="t('labels.vehicleOverview.ownedPaints')"
     :loading="isLoading"
     variant="slim"
     data-test="vehicle-overview-paints"
@@ -75,7 +65,14 @@ const thumb = (entry: VehiclePaint) =>
         {{ t("actions.vehicleOverview.editPaints") }}
       </Btn>
     </template>
-    <div class="overview-paints">
+    <p
+      v-if="!isLoading && !owned.length"
+      class="overview-card-muted"
+      data-test="vehicle-overview-paints-empty"
+    >
+      {{ t("labels.vehicleOverview.noPaint") }}
+    </p>
+    <div v-else class="overview-paints">
       <button
         v-for="entry in shown"
         :key="entry.paint.id"

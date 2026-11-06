@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleOwnedPaints } from "@/frontend/composables/useVehicleOwnedPaints";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -47,10 +48,20 @@ const openGroupsModal = () =>
 const editEquipment = (tab: VehicleEditTabsEnum) =>
   openEditModal(props.vehicle, { tab });
 
+const { all: paints, owned: ownedPaintEntries } = useVehicleOwnedPaints(
+  () => props.vehicle,
+);
+
+const ownedPaintsCount = computed(() =>
+  paints.value.length
+    ? ownedPaintEntries.value.length
+    : props.vehicle.modelPaintIds.length,
+);
+
 const ownedPaints = computed(() =>
-  props.vehicle.modelPaintIds.length
+  ownedPaintsCount.value
     ? t("labels.vehicleOverview.ownedPaintsCount", {
-        count: props.vehicle.modelPaintIds.length,
+        count: ownedPaintsCount.value,
       })
     : t("labels.vehicleOverview.noPaint"),
 );

@@ -4987,7 +4987,6 @@
         "configuration": "Konfiguration",
         "noPaint": "Standardlackierung",
         "ownedPaints": "Deine Lackierungen",
-        "availablePaints": "Lackierungen",
         "ownedPaintsCount": {
           "one": "%{count} Lackierung",
           "other": "%{count} Lackierungen"

@@ -55,23 +55,72 @@ describe("VehicleOverviewPaintsCard", () => {
     openEditModal.mockReset();
   });
 
-  it("shows only the paints the owner has pledged for", async () => {
+  it("shows only the paints recorded on the ship or pledged for", async () => {
     paints.value = [
       entry("Rust Society", { owned: true }),
+      entry("Heritage", { pledged: true }),
       entry("Stormbringer"),
     ];
 
     const wrapper = await mount();
 
-    expect(names(wrapper)).toEqual(["Rust Society"]);
+    expect(names(wrapper)).toEqual(["Rust Society", "Heritage"]);
   });
 
-  it("offers the model's paints when none is owned", async () => {
+  it("lists no paint the ship does not own", async () => {
     paints.value = [entry("Rust Society"), entry("Stormbringer")];
 
     const wrapper = await mount();
 
-    expect(names(wrapper)).toEqual(["Rust Society", "Stormbringer"]);
+    expect(names(wrapper)).toEqual([]);
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paints-empty"]').text(),
+    ).toBe("Standard livery");
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paints-all"]').exists(),
+    ).toBe(true);
+  });
+
+  it("does not hand a pledge to a ship on the wishlist", async () => {
+    paints.value = [
+      entry("Rust Society", { owned: true }),
+      entry("Heritage", { pledged: true }),
+    ];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, wanted: true } });
+
+    expect(names(wrapper)).toEqual(["Rust Society"]);
+  });
+
+  it("does not hand a pledge to a loaner", async () => {
+    paints.value = [
+      entry("Rust Society", { owned: true }),
+      entry("Heritage", { pledged: true }),
+    ];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, loaner: true } });
+
+    expect(names(wrapper)).toEqual(["Rust Society"]);
+  });
+
+  it("leaves out the card when the model has no paints", async () => {
+    paints.value = [];
+
+    const wrapper = await mount();
+
+    expect(wrapper.find('[data-test="vehicle-overview-paints"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("leaves out the card for a loaner without an owned paint", async () => {
+    paints.value = [entry("Rust Society")];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, loaner: true } });
+
+    expect(wrapper.find('[data-test="vehicle-overview-paints"]').exists()).toBe(
+      false,
+    );
   });
 
   it("opens the vehicle paint tab without a preselection from the header", async () => {
@@ -101,6 +150,27 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(
       wrapper.find('[data-test="vehicle-overview-paint"]').attributes(),
     ).toHaveProperty("disabled");
+  });
+
+  it("shows a wishlist ship's owned paints without offering to edit them", async () => {
+    paints.value = [entry("Rust Society", { owned: true })];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, wanted: true } });
+
+    expect(names(wrapper)).toEqual(["Rust Society"]);
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paints-all"]').exists(),
+    ).toBe(false);
+  });
+
+  it("leaves out the card for a wishlist ship without an owned paint", async () => {
+    paints.value = [entry("Rust Society")];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, wanted: true } });
+
+    expect(wrapper.find('[data-test="vehicle-overview-paints"]').exists()).toBe(
+      false,
+    );
   });
 
   it("opens the vehicle paint tab from a paint", async () => {

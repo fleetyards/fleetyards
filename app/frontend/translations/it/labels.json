@@ -4987,7 +4987,6 @@
         "configuration": "Configurazione",
         "noPaint": "Verniciatura standard",
         "ownedPaints": "Le tue verniciature",
-        "availablePaints": "Verniciature",
         "ownedPaintsCount": {
           "one": "%{count} verniciatura",
           "other": "%{count} verniciature"

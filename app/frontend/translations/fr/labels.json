@@ -4987,7 +4987,6 @@
         "configuration": "Configuration",
         "noPaint": "Peinture standard",
         "ownedPaints": "Tes peintures",
-        "availablePaints": "Peintures",
         "ownedPaintsCount": {
           "one": "%{count} peinture",
           "other": "%{count} peintures"

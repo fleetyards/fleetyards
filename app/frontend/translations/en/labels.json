@@ -5001,7 +5001,6 @@
         "configuration": "Configuration",
         "noPaint": "Standard livery",
         "ownedPaints": "Your paints",
-        "availablePaints": "Paints",
         "ownedPaintsCount": {
           "one": "%{count} paint",
           "other": "%{count} paints"

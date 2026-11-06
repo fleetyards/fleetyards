@@ -13,6 +13,11 @@ vi.mock("@/frontend/composables/useVehicleModals", () => ({
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit }),
 }));
+const paints = ref<{ owned: boolean; pledged: boolean }[] | undefined>();
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/services/fyApi")>()),
+  useVehiclePaints: () => ({ data: paints, isLoading: ref(false) }),
+}));
 const vehicle = {
   id: "ship",
   model: { hasPaints: true },
@@ -23,6 +28,39 @@ const vehicle = {
   upgrade: { name: "Kit" },
   modulePackage: { name: "Package" },
 } as unknown as Vehicle;
+
+describe("Configuration paints", () => {
+  const paintFact = async (overrides: Partial<Vehicle> = {}) => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: { ...vehicle, ...overrides } },
+    });
+    return wrapper.get('[data-test="vehicle-fact-paint"]').text();
+  };
+
+  it("counts a pledged paint with the recorded ones", async () => {
+    paints.value = [
+      { owned: true, pledged: false },
+      { owned: false, pledged: true },
+      { owned: false, pledged: false },
+    ];
+
+    expect(await paintFact()).toContain("2 paints");
+  });
+
+  it("calls a ship with neither by its standard livery", async () => {
+    paints.value = [{ owned: false, pledged: false }];
+
+    expect(await paintFact()).toContain("Standard livery");
+  });
+
+  it("counts the recorded paints until the list is back", async () => {
+    paints.value = undefined;
+
+    expect(await paintFact({ modelPaintIds: ["a", "b"] })).toContain(
+      "2 paints",
+    );
+  });
+});
 
 describe("Configuration edits", () => {
   it("opens the editor for each editable value", async () => {
