@@ -167,4 +167,13 @@ const toggleCollapsed = () => {
 .metrics-card--slim .metrics-card__collapse {
   top: 9px;
 }
+
+/* A finger needs more than the chevron shows; the frame stays as drawn. */
+@media (pointer: coarse) {
+  .metrics-card__collapse::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
+}
 </style>
