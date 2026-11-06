@@ -50614,6 +50614,8 @@ components:
           type: string
         wanted:
           type: boolean
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
         flagship:
           type: boolean
         public:

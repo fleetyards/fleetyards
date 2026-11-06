@@ -44,6 +44,16 @@ class Api::V1::HangarExportTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/export says how a ship was acquired" do
+    user = create(:user)
+    create(:vehicle, user:, wanted: false, bought_via: :reward_or_loot)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal "reward_or_loot", parsed_body.sole["boughtVia"]
+    end
+  end
+
   test "GET /hangar/export lists the paints a ship owns" do
     user = create(:user)
     vehicle = create(:vehicle, user:, wanted: false)

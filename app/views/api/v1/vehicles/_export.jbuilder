@@ -9,6 +9,7 @@ json.paint_slugs vehicle.model_paints.map(&:slug)
 json.ship_name vehicle.name
 json.ship_serial vehicle.serial
 json.wanted vehicle.wanted
+json.bought_via vehicle.bought_via
 json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible
