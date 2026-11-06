@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { useModelsStore } from "@/frontend/stores/models";
+import { metricsCardFoldKey } from "./fold";
 import Component from "./index.vue";
 
 /*
@@ -94,20 +94,20 @@ describe("MetricsCard", () => {
   });
 
   describe("collapsing", () => {
-    const mountFolding = (slug: string) =>
+    const toggle = vi.fn();
+
+    const mountFolding = (folded: boolean) =>
       mountWithDefaults(
         defineComponent({
           components: { Card: Component },
           setup() {
-            provide("metricsCardsModelSlug", ref(slug));
+            provide(metricsCardFoldKey, {
+              collapsed: () => folded,
+              toggle,
+            });
           },
           template: "<Card title='Combat' collapse-key='combat' />",
         }),
-        {
-          initialState: {
-            models: { collapsedSections: { gladius: ["metrics-combat"] } },
-          },
-        },
       );
 
     it("offers no control off the ship page", async () => {
@@ -122,22 +122,20 @@ describe("MetricsCard", () => {
 
     const button = '[data-test="metrics-card-collapse"]';
 
-    it("reads folded on the ship it was folded on, and on no other", async () => {
-      const gladius = await mountFolding("gladius");
-      const carrack = await mountFolding("carrack");
+    it("reads as the page remembers it", async () => {
+      const folded = await mountFolding(true);
+      const open = await mountFolding(false);
 
-      expect(gladius.find(button).attributes("aria-expanded")).toBe("false");
-      expect(carrack.find(button).attributes("aria-expanded")).toBe("true");
+      expect(folded.find(button).attributes("aria-expanded")).toBe("false");
+      expect(open.find(button).attributes("aria-expanded")).toBe("true");
     });
 
-    it("toggles under the ship's slug", async () => {
-      const wrapper = await mountFolding("carrack");
-
-      const toggle = vi.spyOn(useModelsStore(), "toggleSection");
+    it("toggles under its own key", async () => {
+      const wrapper = await mountFolding(false);
 
       await wrapper.find(button).trigger("click");
 
-      expect(toggle).toHaveBeenCalledWith("carrack", "metrics-combat");
+      expect(toggle).toHaveBeenCalledWith("combat");
     });
   });
 });

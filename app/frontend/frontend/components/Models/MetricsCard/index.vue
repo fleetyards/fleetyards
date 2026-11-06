@@ -13,14 +13,14 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useModelsStore } from "@/frontend/stores/models";
+import { metricsCardFoldKey, type MetricsCardFold } from "./fold";
 
 type Props = {
   title: string;
   variant?: "default" | "slim";
   loading?: boolean;
-  // Names the card among a ship page's folded ones. A card only folds on a page
-  // that provides the ship to remember it for.
+  // Names the card among a page's folded ones. It only folds on a page that
+  // provides somewhere to remember that.
   collapseKey?: string;
 };
 
@@ -34,29 +34,16 @@ const { t } = useI18n();
 
 const isSlim = computed(() => props.variant === "slim");
 
-const modelSlug = inject<Ref<string> | undefined>(
-  "metricsCardsModelSlug",
-  undefined,
-);
+const fold = inject<MetricsCardFold | undefined>(metricsCardFoldKey, undefined);
 
-// Asked for only where it is used: these cards also render on embeds.
-const modelsStore = modelSlug ? useModelsStore() : undefined;
-
-const section = computed(() =>
-  props.collapseKey && modelSlug ? `metrics-${props.collapseKey}` : undefined,
-);
+const foldable = computed(() => !!fold && !!props.collapseKey);
 
 const collapsed = computed(
-  () =>
-    !!section.value &&
-    !!modelSlug &&
-    !!modelsStore?.sectionCollapsed(modelSlug.value, section.value),
+  () => !!props.collapseKey && !!fold?.collapsed(props.collapseKey),
 );
 
 const toggleCollapsed = () => {
-  if (section.value && modelSlug) {
-    modelsStore?.toggleSection(modelSlug.value, section.value);
-  }
+  if (props.collapseKey) fold?.toggle(props.collapseKey);
 };
 </script>
 
@@ -86,10 +73,10 @@ const toggleCollapsed = () => {
         :divider="isSlim"
       >
         {{ title }}
-        <template v-if="$slots.head || section" #actions>
+        <template v-if="$slots.head || foldable" #actions>
           <slot name="head" />
           <button
-            v-if="section"
+            v-if="foldable"
             type="button"
             class="metrics-card__collapse"
             :aria-expanded="!collapsed"
@@ -112,7 +99,9 @@ const toggleCollapsed = () => {
       />
     </div>
 
-    <Collapsed v-if="section" :visible="!collapsed" :duration="200">
+    <!-- Only where the card folds: everywhere else the body stays a direct child
+         of the panel. -->
+    <Collapsed v-if="foldable" :visible="!collapsed" :duration="200">
       <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
         <slot />
       </PanelBody>

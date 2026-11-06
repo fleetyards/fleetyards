@@ -11,6 +11,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import ViewInArBtn from "@/frontend/components/Models/ViewInArBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
+import { metricsCardFoldKey } from "@/frontend/components/Models/MetricsCard/fold";
 import HardpointsMinimal from "@/frontend/components/Models/HardpointsMinimal/index.vue";
 import CrewPositions from "@/frontend/components/Models/CrewPositions/index.vue";
 import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
@@ -157,11 +158,13 @@ const modelsStore = useModelsStore();
 const { holoviewerVisible, modelState, shipDetailsExpanded } =
   storeToRefs(modelsStore);
 
-// The metrics cards on this page fold, and stay folded for this ship.
-provide(
-  "metricsCardsModelSlug",
-  computed(() => props.model.slug),
-);
+// A reader may close a card on one ship and want it open on the next.
+provide(metricsCardFoldKey, {
+  collapsed: (key) =>
+    modelsStore.sectionCollapsed(props.model.slug, `metrics-${key}`),
+  toggle: (key) =>
+    modelsStore.toggleSection(props.model.slug, `metrics-${key}`),
+});
 
 const specs = ref<HTMLElement>();
 
@@ -704,20 +707,29 @@ const adiMap = computed(() => {
       </div>
       <hr />
       <div ref="specs" class="ship-specs">
-        <template v-if="shipDetailsExpanded">
-          <div class="ship-specs__toggle ship-specs__toggle--top">
-            <Btn
-              :size="BtnSizesEnum.SM"
-              data-test="ship-specs-toggle"
-              @click="toggleShipDetails"
-            >
-              {{ t("labels.hardpoints.showSummary") }}
-              <i class="fa-light fa-chevron-up" aria-hidden="true" />
-            </Btn>
-          </div>
-          <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
-        </template>
-        <template v-else>
+        <div
+          v-if="shipDetailsExpanded"
+          class="ship-specs__toggle ship-specs__toggle--top"
+        >
+          <Btn
+            :size="BtnSizesEnum.SM"
+            data-test="ship-specs-toggle"
+            @click="toggleShipDetails"
+          >
+            {{ t("labels.hardpoints.showSummary") }}
+            <i class="fa-light fa-chevron-up" aria-hidden="true" />
+          </Btn>
+        </div>
+        <!-- Kept alive: its pip settings are the reader's, and going to the
+             summary and back must not put them back on auto. -->
+        <KeepAlive>
+          <Hardpoints
+            v-if="shipDetailsExpanded"
+            :model="model"
+            :cargo-holds="combinedCargoHolds"
+          />
+        </KeepAlive>
+        <template v-if="!shipDetailsExpanded">
           <HardpointsMinimal :model="model" :cargo-holds="combinedCargoHolds" />
           <div class="ship-specs__toggle">
             <Btn
