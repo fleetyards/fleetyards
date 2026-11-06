@@ -22,6 +22,11 @@ export default defineConfig({
     },
     input: {
       target: "./swagger/v1/schema.yaml",
+      override: {
+        // axiosClient sends this on every request. As a declared parameter it
+        // would put `params` ahead of `options` in every generated hook.
+        transformer: "./orval.strip-sc-data-source.cjs",
+      },
     },
   },
   fyOAuthApi: {
