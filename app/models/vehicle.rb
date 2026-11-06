@@ -995,7 +995,7 @@ class Vehicle < ApplicationRecord
   def fitted_loadout_stat(public_only: false)
     stat = fitted_loadout(public_only:)&.then { |loadout| LoadoutStat.for_environment(loadout.loadout_stats) }
 
-    stat || LoadoutStat.for_environment(model.loadout_stats)
+    stat || model.stock_loadout_stat
   end
 
   private def refresh_loadout_stats

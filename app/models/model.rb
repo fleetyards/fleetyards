@@ -308,6 +308,10 @@ class Model < ApplicationRecord
 
   ransacker(:max_cargo) { Arel.sql(Model.max_cargo_sql) }
 
+  def stock_loadout_stat
+    LoadoutStat.for_environment(loadout_stats)
+  end
+
   # A figure of the ship as it comes, for the source the reader is on. No guns
   # and no figures yet both sort as 0, rather than as a NULL that a descending
   # sort puts first. A vehicle without a loadout reads the same row.
