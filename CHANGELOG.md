@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.43.0](https://github.com/fleetyards/fleetyards/compare/v9.42.0...v9.43.0) (2026-11-06)
+
+
+### Features
+
+* **factions:** faction pages with reputation ladders, in search and markdown ([#6204](https://github.com/fleetyards/fleetyards/issues/6204)) ([a897ac1](https://github.com/fleetyards/fleetyards/commit/a897ac152fa6f057e210ebdf5e5e008fe6efd2f1))
+* **hangar:** show a ship's owned modules and paints on its overview ([#6220](https://github.com/fleetyards/fleetyards/issues/6220)) ([e76219c](https://github.com/fleetyards/fleetyards/commit/e76219c6a44b7ea5025d512803fe61d5956e62df))
+* **ships:** summary metrics and hardpoints with an advanced mode ([#6219](https://github.com/fleetyards/fleetyards/issues/6219)) ([0d0e94c](https://github.com/fleetyards/fleetyards/commit/0d0e94c79f10e6bc8557a7e8237b986247bf1e13))
+* **trade-routes:** filter runs by start and target terminal ([#6207](https://github.com/fleetyards/fleetyards/issues/6207)) ([b8f3ae6](https://github.com/fleetyards/fleetyards/commit/b8f3ae604c94c862a2bbf05cf0df4772814bbf0e))
+* **vehicles:** add reward or loot as a bought-via source ([#6218](https://github.com/fleetyards/fleetyards/issues/6218)) ([399c4b5](https://github.com/fleetyards/fleetyards/commit/399c4b5ec040c9aaae1323b373b6692fec55dc54))
+
+
+### Bug Fixes
+
+* **compare:** wrap loadout rows on narrow columns ([#6223](https://github.com/fleetyards/fleetyards/issues/6223)) ([a5aa012](https://github.com/fleetyards/fleetyards/commit/a5aa012eab2fb48014d18c91bb99e227af96f3c3))
+* **paints:** share Ironclad paints with the Ironclad Assault ([#6216](https://github.com/fleetyards/fleetyards/issues/6216)) ([266ef38](https://github.com/fleetyards/fleetyards/commit/266ef38573d6ce766254cf308d8481ebf1f4d8f0))
+* **sc_data:** select the build with its own scDataSource parameter ([#6215](https://github.com/fleetyards/fleetyards/issues/6215)) ([10b545a](https://github.com/fleetyards/fleetyards/commit/10b545a1c835ce2c67f6ba6c47c99e68714fb950))
+
+
+### Chores
+
+* **ci:** cache apt packages and install only the libvips runtime ([#6205](https://github.com/fleetyards/fleetyards/issues/6205)) ([adfdd80](https://github.com/fleetyards/fleetyards/commit/adfdd8060449e7cb1d5240f9b1a014b7aa4bc1e4))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6212](https://github.com/fleetyards/fleetyards/issues/6212)) ([b4b9e07](https://github.com/fleetyards/fleetyards/commit/b4b9e07221a236c27b08dfe32f66f2afb1dc9b75))
+* **deps-dev:** bump the tailwindcss group across 1 directory with 2 updates ([#6210](https://github.com/fleetyards/fleetyards/issues/6210)) ([4f87358](https://github.com/fleetyards/fleetyards/commit/4f87358e64f19822559e2035172ab26c4bdce050))
+* **deps-dev:** bump vitest from 5.0.5 to 5.1.0 ([#6214](https://github.com/fleetyards/fleetyards/issues/6214)) ([d4bb827](https://github.com/fleetyards/fleetyards/commit/d4bb8279d4e22cb7619f876c1ba755295e35060d))
+* **deps:** bump @tanstack/vue-query from 5.105.1 to 5.105.3 ([#6213](https://github.com/fleetyards/fleetyards/issues/6213)) ([f3fe263](https://github.com/fleetyards/fleetyards/commit/f3fe2630d502d024c1b0846126aa4f14a39a625d))
+* **deps:** bump actions/setup-node ([#6209](https://github.com/fleetyards/fleetyards/issues/6209)) ([80c7bab](https://github.com/fleetyards/fleetyards/commit/80c7babeda2a9c406e23547de436402b406c3beb))
+* **deps:** bump nokogiri from 1.19.4 to 1.19.7 ([#6211](https://github.com/fleetyards/fleetyards/issues/6211)) ([d765363](https://github.com/fleetyards/fleetyards/commit/d7653638a9f13d47f9352d11e83c7c0223560f80))
+* **deps:** bump pnpm/action-setup ([#6222](https://github.com/fleetyards/fleetyards/issues/6222)) ([87b7e8f](https://github.com/fleetyards/fleetyards/commit/87b7e8f8a4c145d424fd2bdf67348dcd5ebd59ae))
+* **deps:** bump pnpm/action-setup from 6.1.0 to 6.1.1 ([#6221](https://github.com/fleetyards/fleetyards/issues/6221)) ([3307872](https://github.com/fleetyards/fleetyards/commit/3307872ec0d80bb8186fcc714709940e1377c0e2))
+
 ## [9.42.0](https://github.com/fleetyards/fleetyards/compare/v9.41.0...v9.42.0) (2026-11-05)
 
 
