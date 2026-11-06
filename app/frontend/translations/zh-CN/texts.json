@@ -140,7 +140,7 @@
         },
         "reset": {
           "title": "游戏清档之后",
-          "text": "在此重置游戏内购买的舰船：将它们全部移入愿望清单作为购物清单，或从机库中移除。使用真实货币购买的舰船会保留。"
+          "text": "在此重置游戏内获得的舰船：将它们全部移入愿望清单作为购物清单，或从机库中移除。使用真实货币购买的舰船会保留。"
         },
         "exampleShip": {
           "title": "示例舰船",
@@ -352,7 +352,7 @@
         "wishlistHint": "你想以后获得这艘飞船。"
       },
       "resetIngame": {
-        "info": "数据重置会清除你在游戏内购买的飞船。你可以将它们移至愿望清单以便日后再次购买，或将它们从机库中移除。不是在游戏内购买的飞船不受影响。"
+        "info": "数据重置会清除你在游戏内购买、掠夺或作为奖励获得的飞船。你可以将它们移至愿望清单以便日后再次获取，或将它们从机库中移除。不是在游戏内获得的飞船不受影响。"
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

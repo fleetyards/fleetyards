@@ -642,6 +642,14 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert vehicle.reload.bought_via_reward_or_loot?
   end
 
+  test ".acquired_in_game leaves out what came from the pledge store" do
+    bought = create(:vehicle, user: @user, bought_via: :ingame)
+    looted = create(:vehicle, user: @user, bought_via: :reward_or_loot)
+    create(:vehicle, user: @user, bought_via: :pledge_store)
+
+    assert_equal [bought.id, looted.id].sort, Vehicle.acquired_in_game.pluck(:id).sort
+  end
+
   test "leaves a pledge ship on the way it says it was bought" do
     vehicle = create(:vehicle, user: @user, model: create(:model), bought_via: :pledge_store)
 

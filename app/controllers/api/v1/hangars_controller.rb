@@ -217,7 +217,7 @@ module Api
         errors = []
 
         Vehicle.transaction do
-          scope = authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame)
+          scope = authorized_scope(Vehicle.all).purchased.acquired_in_game
 
           scope.find_each do |vehicle|
             next if vehicle.update(wanted: true)

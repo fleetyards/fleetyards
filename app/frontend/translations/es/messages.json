@@ -183,13 +183,13 @@
         },
         "resetIngame": {
           "moveToWishlist": {
-            "success": "Movidas todas las Naves compradas en el juego a tu Lista de Deseos.",
-            "failure": "No se pudieron mover todas las Naves compradas en el juego a tu Lista de Deseos."
+            "success": "Movidas todas las Naves obtenidas en el juego a tu Lista de Deseos.",
+            "failure": "No se pudieron mover todas las Naves obtenidas en el juego a tu Lista de Deseos."
           },
           "removeAll": {
-            "confirm": "¿Eliminar de tu hangar todas las naves compradas en el juego? Esta acción no se puede deshacer.",
-            "success": "Eliminadas todas las Naves compradas en el juego de tu Hangar.",
-            "failure": "No se pudieron eliminar todas las Naves compradas en el juego de tu Hangar."
+            "confirm": "¿Eliminar de tu hangar todas las naves obtenidas en el juego? Esta acción no se puede deshacer.",
+            "success": "Eliminadas todas las Naves obtenidas en el juego de tu Hangar.",
+            "failure": "No se pudieron eliminar todas las Naves obtenidas en el juego de tu Hangar."
           }
         }
       },

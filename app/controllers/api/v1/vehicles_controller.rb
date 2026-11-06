@@ -131,9 +131,9 @@ module Api
         authorize!
 
         Vehicle.transaction do
-          authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame).update_all(notify: false)
+          authorized_scope(Vehicle.all).purchased.acquired_in_game.update_all(notify: false)
 
-          vehicle_ids = current_resource_owner.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
+          vehicle_ids = current_resource_owner.vehicles.purchased.acquired_in_game.pluck(:id)
 
           Vehicle.delete_with_dependents(vehicle_ids)
         end

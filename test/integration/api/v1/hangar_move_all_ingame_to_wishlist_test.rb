@@ -38,6 +38,18 @@ class Api::V1::HangarMoveAllIngameToWishlistTest < ActionDispatch::IntegrationTe
     end
   end
 
+  test "PUT /hangar/move-all-ingame-to-wishlist moves looted ships but not pledged ones" do
+    user = create(:user)
+    looted = create(:vehicle, user: user, bought_via: :reward_or_loot)
+    pledged = create(:vehicle, user: user, bought_via: :pledge_store)
+    sign_in user
+
+    assert_api_response :put, 204, body: {} do
+      assert looted.reload.wanted
+      assert_not pledged.reload.wanted
+    end
+  end
+
   test "PUT /hangar/move-all-ingame-to-wishlist returns 401 when not signed in" do
     assert_api_response :put, 401, body: {}
   end

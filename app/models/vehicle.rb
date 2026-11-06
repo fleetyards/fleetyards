@@ -519,6 +519,11 @@ class Vehicle < ApplicationRecord
     where(wanted: false)
   end
 
+  # Everything that exists only on the game's side, and so goes when it is wiped.
+  def self.acquired_in_game
+    where(bought_via: %i[ingame reward_or_loot])
+  end
+
   def self.wanted
     where(wanted: true)
   end
