@@ -43,26 +43,26 @@ describe("models store ship section", () => {
     expect(store.shipMetricsAdvanced).toBe(true);
   });
 
-  it("expands a hardpoint card for one ship only", () => {
+  it("flips a hardpoint card for one ship only", () => {
     const store = useModelsStore();
 
     store.toggleHardpointGroup("gladius", "weapon");
 
-    expect(store.hardpointGroupExpanded("gladius", "weapon")).toBe(true);
-    expect(store.hardpointGroupExpanded("gladius", "system")).toBe(false);
-    expect(store.hardpointGroupExpanded("carrack", "weapon")).toBe(false);
+    expect(store.hardpointGroupFlipped("gladius", "weapon")).toBe(true);
+    expect(store.hardpointGroupFlipped("gladius", "system")).toBe(false);
+    expect(store.hardpointGroupFlipped("carrack", "weapon")).toBe(false);
   });
 
-  it("forgets a ship with every card back on its summary", () => {
+  it("forgets a ship with every card back as it opens", () => {
     const store = useModelsStore();
 
-    store.setExpandedHardpointGroups("gladius", ["weapon", "system"]);
+    store.setFlippedHardpointGroups("gladius", ["weapon", "system"]);
     store.toggleHardpointGroup("gladius", "weapon");
 
-    expect(store.expandedHardpointGroups).toEqual({ gladius: ["system"] });
+    expect(store.flippedHardpointGroups).toEqual({ gladius: ["system"] });
 
-    store.setExpandedHardpointGroups("gladius", []);
+    store.setFlippedHardpointGroups("gladius", []);
 
-    expect(store.expandedHardpointGroups).toEqual({});
+    expect(store.flippedHardpointGroups).toEqual({});
   });
 });

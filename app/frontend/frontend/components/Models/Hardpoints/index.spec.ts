@@ -7,6 +7,7 @@ import {
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
+import { useModelsStore } from "@/frontend/stores/models";
 import Component from "./index.vue";
 
 const queried = vi.fn();
@@ -58,7 +59,7 @@ describe("Hardpoints with a loadout's fitting", () => {
     expect(wrapper.text()).toContain("Cargo Module");
     expect(wrapper.find(".module-select-btn").exists()).toBe(false);
     expect(wrapper.find(".hardpoints__source").exists()).toBe(false);
-    expect(wrapper.find(".hardpoints__controls").exists()).toBe(false);
+    expect(wrapper.find(".hardpoints__links").exists()).toBe(false);
 
     wrapper.unmount();
   });
@@ -88,12 +89,110 @@ describe("Hardpoints with a loadout's fitting", () => {
 
   it("shows the fitting's figures whatever the model's in-game flag", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: { model: { ...model, inGame: false }, fitting: [moduleSlot] },
+      props: {
+        model: { ...model, inGame: false, metrics: { hullHealth: 1000 } },
+        fitting: [moduleSlot],
+      },
     });
 
-    expect(wrapper.find(".metrics-grid").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test='hardpoints-summary-figures']").exists(),
+    ).toBe(true);
 
     wrapper.unmount();
+  });
+
+  describe("cards", () => {
+    const cooler = {
+      id: "cooler",
+      name: "hardpoint_cooler",
+      group: HardpointGroupEnum.SYSTEM,
+      category: HardpointCategoryEnum.COOLER,
+      source: HardpointSourceEnum.GAME_FILES,
+      component: { id: "c1", name: "Bracer" },
+      hardpoints: [],
+    } as unknown as Hardpoint;
+
+    const gun = {
+      ...cooler,
+      id: "gun",
+      name: "hardpoint_gun",
+      group: HardpointGroupEnum.WEAPON,
+      category: HardpointCategoryEnum.WEAPONS,
+      component: { id: "g1", name: "Repeater" },
+    } as unknown as Hardpoint;
+
+    const mountFitting = (models: Record<string, unknown> = {}) =>
+      mountWithDefaults(Component, {
+        props: {
+          model,
+          fitting: [cooler, gun],
+          changed: new Set(["gun"]),
+          loadoutId: "loadout-1",
+        },
+        initialState: { models },
+      });
+
+    const summaryRows = (wrapper: Awaited<ReturnType<typeof mountFitting>>) =>
+      wrapper.findAll("[data-test='hardpoints-summary-row']");
+
+    it("opens the card holding a change in full and the others on a summary", async () => {
+      const wrapper = await mountFitting();
+
+      expect(summaryRows(wrapper)).toHaveLength(1);
+      expect(summaryRows(wrapper)[0].text()).toContain("Bracer");
+      expect(wrapper.findAll(".hardpoint-item")).toHaveLength(1);
+      expect(wrapper.find(".hardpoint-item").text()).toContain("Repeater");
+
+      wrapper.unmount();
+    });
+
+    it("remembers collapsing a card that opened in full, per loadout", async () => {
+      const flipped = await mountFitting({
+        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+      });
+
+      expect(summaryRows(flipped)).toHaveLength(2);
+      flipped.unmount();
+
+      const other = await mountFitting({
+        flippedHardpointGroups: { "loadout-2": [HardpointGroupEnum.WEAPON] },
+      });
+
+      expect(summaryRows(other)).toHaveLength(1);
+      other.unmount();
+    });
+
+    it("flips only what expand all has to", async () => {
+      const wrapper = await mountFitting({
+        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+      });
+      const store = useModelsStore();
+      const set = vi.spyOn(store, "setFlippedHardpointGroups");
+
+      await wrapper.find("[data-test='hardpoints-fold-all']").trigger("click");
+
+      expect(set).toHaveBeenCalledWith("loadout-1", [
+        HardpointGroupEnum.SYSTEM,
+      ]);
+
+      wrapper.unmount();
+    });
+
+    it("marks a changed part on its summary row", async () => {
+      const wrapper = await mountFitting({
+        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+      });
+
+      const marked = wrapper.findAll(
+        "[data-test='hardpoints-summary-row'][data-changed]",
+      );
+
+      expect(marked).toHaveLength(1);
+      expect(marked[0].text()).toContain("Repeater");
+
+      wrapper.unmount();
+    });
   });
 });
 
@@ -132,22 +231,6 @@ describe("Hardpoints on the ship page", () => {
     expect(
       wrapper.find("[data-test='hardpoints-summary-figures']").exists(),
     ).toBe(false);
-
-    wrapper.unmount();
-  });
-
-  it("keeps a loadout's cards in full, with nothing to fold", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: { model: ship, fitting: [moduleSlot] },
-    });
-
-    expect(wrapper.find(".metrics-grid").exists()).toBe(true);
-    expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
-      false,
-    );
-    expect(wrapper.find("[data-test='hardpoints-fold-all']").exists()).toBe(
-      false,
-    );
 
     wrapper.unmount();
   });

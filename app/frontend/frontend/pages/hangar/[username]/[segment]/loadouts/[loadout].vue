@@ -414,6 +414,7 @@ const edit = () => {
               :changed="changed"
               :crafted="crafted"
               :cargo-holds="cargoHolds"
+              :loadout-id="loadoutId"
             />
 
             <Empty
