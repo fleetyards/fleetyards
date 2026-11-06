@@ -49,7 +49,13 @@ export enum ModelSortFieldsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
-  // The ship page's sections a reader closed, by model slug and then anchor.
+  // The ship page's full metrics cards, rather than the row of key figures.
+  shipMetricsAdvanced: boolean;
+  // The hardpoint cards a reader set differently from how they open, by ship or
+  // loadout, as collapsed or not: a card that opens in full today may not after the
+  // loadout changes, and the reader's choice should not invert with it.
+  foldedHardpointGroups: Record<string, Record<string, boolean>>;
+  // The sections a reader closed, by model slug or loadout and then anchor.
   collapsedSections: Record<string, string[]>;
   modelState: ModelStateEnum;
   tableViewCols: ModelTableViewColsEnum[];
@@ -60,6 +66,8 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
+    shipMetricsAdvanced: false,
+    foldedHardpointGroups: {},
     collapsedSections: {},
     modelState: ModelStateEnum.FLIGHT,
     detailsVisible: false,
@@ -87,6 +95,10 @@ export const useModelsStore = defineStore("models", {
     ],
   }),
   getters: {
+    hardpointGroupFold(state) {
+      return (scope: string, group: string): boolean | undefined =>
+        state.foldedHardpointGroups[scope]?.[group];
+    },
     sectionCollapsed(state) {
       return (modelSlug: string, section: string) =>
         !!state.collapsedSections[modelSlug]?.includes(section);
@@ -95,6 +107,25 @@ export const useModelsStore = defineStore("models", {
   actions: {
     toggleHoloviewer() {
       this.holoviewerVisible = !this.holoviewerVisible;
+    },
+    toggleShipMetricsAdvanced() {
+      this.shipMetricsAdvanced = !this.shipMetricsAdvanced;
+    },
+    // An undefined fold forgets that card, so only real exceptions are kept.
+    setHardpointGroupFolds(
+      scope: string,
+      folds: Record<string, boolean | undefined>,
+    ) {
+      const { [scope]: current, ...others } = this.foldedHardpointGroups;
+      const next = Object.fromEntries(
+        Object.entries({ ...current, ...folds }).filter(
+          (entry): entry is [string, boolean] => entry[1] !== undefined,
+        ),
+      );
+
+      this.foldedHardpointGroups = Object.keys(next).length
+        ? { ...others, [scope]: next }
+        : others;
     },
     toggleSection(modelSlug: string, section: string) {
       if (this.sectionCollapsed(modelSlug, section)) {
@@ -146,6 +177,8 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
+      "shipMetricsAdvanced",
+      "foldedHardpointGroups",
       "collapsedSections",
       "modelState",
       "detailsVisible",

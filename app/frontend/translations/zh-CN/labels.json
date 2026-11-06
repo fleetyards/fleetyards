@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "货物",
-        "holdsSub": "分布于 %{count} 个货舱",
+        "holdsSub": {
+          "one": "分布于 %{count} 个货舱",
+          "other": "分布于 %{count} 个货舱"
+        },
         "maxContainerSub": "可装载的最大箱体",
         "containers": "集装箱容量",
         "boxCount": {
@@ -3036,7 +3039,12 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "数据基于以下网站的计算公式"
+        "metricsCredit": "数据基于以下网站的计算公式",
+        "advancedMode": "高级模式",
+        "collapseAll": "全部折叠",
+        "expandAll": "全部展开",
+        "total": "总计",
+        "guns": "机炮"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",

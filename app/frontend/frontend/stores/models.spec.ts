@@ -27,3 +27,42 @@ describe("models store sections", () => {
     expect(store.collapsedSections).toEqual({});
   });
 });
+
+describe("models store ship section", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
+  it("opens on the key figures and remembers advanced mode", () => {
+    const store = useModelsStore();
+
+    expect(store.shipMetricsAdvanced).toBe(false);
+
+    store.toggleShipMetricsAdvanced();
+
+    expect(store.shipMetricsAdvanced).toBe(true);
+  });
+
+  it("keeps a hardpoint card's fold for one ship only", () => {
+    const store = useModelsStore();
+
+    store.setHardpointGroupFolds("gladius", { weapon: false });
+
+    expect(store.hardpointGroupFold("gladius", "weapon")).toBe(false);
+    expect(store.hardpointGroupFold("gladius", "system")).toBeUndefined();
+    expect(store.hardpointGroupFold("carrack", "weapon")).toBeUndefined();
+  });
+
+  it("forgets a card set back, and a ship with none left", () => {
+    const store = useModelsStore();
+
+    store.setHardpointGroupFolds("gladius", { weapon: false, system: true });
+    store.setHardpointGroupFolds("gladius", { weapon: undefined });
+
+    expect(store.foldedHardpointGroups).toEqual({ gladius: { system: true } });
+
+    store.setHardpointGroupFolds("gladius", { system: undefined });
+
+    expect(store.foldedHardpointGroups).toEqual({});
+  });
+});

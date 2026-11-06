@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Cargo",
-        "holdsSub": "across %{count} holds",
+        "holdsSub": {
+          "one": "across %{count} hold",
+          "other": "across %{count} holds"
+        },
         "maxContainerSub": "largest box it takes",
         "containers": "Container Capacity",
         "boxCount": {
@@ -3036,7 +3039,12 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "Metrics based on the formulas of"
+        "metricsCredit": "Metrics based on the formulas of",
+        "advancedMode": "Advanced mode",
+        "collapseAll": "Collapse all",
+        "expandAll": "Expand all",
+        "total": "total",
+        "guns": "Guns"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",

@@ -15,6 +15,10 @@ interface FloatingOptions {
   // side has more room. Off by default: a one-line tooltip always fits, and
   // jumping sides between two hovers of the same anchor reads as jitter.
   flip?: boolean;
+  // Move a top/bottom box beside the anchor when it fits on neither, rather than
+  // sliding it back inside the viewport and over the anchor. It then runs down
+  // from the anchor's top, as far as the viewport lets it.
+  sideways?: boolean;
   avoidOverlap?: boolean;
   // The sides avoidOverlap may move the box to.
   sides?: FloatingPlacement[];
@@ -46,6 +50,29 @@ const flipped = (
   return placement;
 };
 
+const besideAnchor = (
+  anchor: DOMRect,
+  box: Size,
+  placement: FloatingPlacement,
+  gap: number,
+  margin: number,
+): FloatingPlacement => {
+  const roomFor = (space: number, size: number) => size <= space - gap - margin;
+
+  if (placement === "bottom" || placement === "top") {
+    const fits =
+      placement === "bottom"
+        ? roomFor(window.innerHeight - anchor.bottom, box.height)
+        : roomFor(anchor.top, box.height);
+
+    if (fits) return placement;
+    if (roomFor(window.innerWidth - anchor.right, box.width)) return "right";
+    if (roomFor(anchor.left, box.width)) return "left";
+  }
+
+  return placement;
+};
+
 /*
  * Where a floating box goes beside its anchor, in viewport coordinates for a
  * `position: fixed` box. Centred on the anchor along the other axis, then slid
@@ -63,6 +90,7 @@ export const placeFloating = (
     gap = 8,
     margin = 4,
     flip = false,
+    sideways = false,
     avoidOverlap = false,
     sides = ["bottom", "top", "right", "left"],
   }: FloatingOptions = {},
@@ -96,6 +124,10 @@ export const placeFloating = (
 
   if (flip) placement = flipped(anchor, box, placement, gap, margin);
 
+  const preferred = placement;
+
+  if (sideways) placement = besideAnchor(anchor, box, placement, gap, margin);
+
   let top = 0;
   let left = 0;
 
@@ -117,6 +149,10 @@ export const placeFloating = (
       left = anchor.left + anchor.width / 2 - box.width / 2;
       break;
   }
+
+  // Moved aside from below or above, it still reads down from the anchor rather
+  // than centring on it.
+  if (placement !== preferred) top = anchor.top;
 
   return {
     placement,

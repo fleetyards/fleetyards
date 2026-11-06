@@ -9,6 +9,17 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
+import { HARDPOINT_COLUMNS } from "./columns";
+import SummaryFigures from "./Summary/Figures/index.vue";
+import {
+  hardpointCardFoldKey,
+  metricsCardFoldKey,
+} from "@/frontend/components/Models/MetricsCard/fold";
+import { holdsAny } from "./summaryRows";
+import { useModelsStore } from "@/frontend/stores/models";
+import { useShieldStats } from "@/frontend/composables/useShieldStats";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
@@ -57,6 +68,8 @@ type Props = {
   changed?: Set<string>;
   // The ids of the fitting's hardpoints holding a crafted part.
   crafted?: Set<string>;
+  // Whose fitting it is, to remember the reader's folded cards against.
+  loadoutId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,7 +77,61 @@ const props = withDefaults(defineProps<Props>(), {
   fitting: undefined,
   changed: undefined,
   crafted: undefined,
+  loadoutId: undefined,
 });
+
+const modelsStore = useModelsStore();
+
+// A loadout's cards are remembered for that loadout, not for every one of the ship.
+const foldScope = computed(() => props.loadoutId ?? props.model.slug);
+
+provide(metricsCardFoldKey, {
+  collapsed: (key) =>
+    modelsStore.sectionCollapsed(foldScope.value, `metrics-${key}`),
+  toggle: (key) => modelsStore.toggleSection(foldScope.value, `metrics-${key}`),
+});
+
+// What differs from stock is what a loadout's page is for, so a card holding such
+// a part opens in full, ready to read. Every other card opens on its summary.
+const groupsOpeningExpanded = computed(() => {
+  const changed = props.changed;
+
+  return new Set(
+    changed
+      ? (props.fitting ?? [])
+          .filter((hardpoint) => holdsAny([hardpoint], changed))
+          .map((hardpoint) => hardpoint.group)
+      : [],
+  );
+});
+
+const opensCollapsed = (group: string) =>
+  !groupsOpeningExpanded.value.has(group as HardpointGroupEnum);
+
+const groupCollapsed = (group: string) =>
+  modelsStore.hardpointGroupFold(foldScope.value, group) ??
+  opensCollapsed(group);
+
+// A card set back to how it opens goes back to following that, so nothing is kept
+// for a reader who only looked.
+const setGroupsCollapsed = (groups: string[], collapsed: boolean) => {
+  modelsStore.setHardpointGroupFolds(
+    foldScope.value,
+    Object.fromEntries(
+      groups.map((group) => [
+        group,
+        collapsed === opensCollapsed(group) ? undefined : collapsed,
+      ]),
+    ),
+  );
+};
+
+provide(hardpointCardFoldKey, {
+  collapsed: groupCollapsed,
+  toggle: (group) => setGroupsCollapsed([group], !groupCollapsed(group)),
+});
+
+const metricsAdvanced = computed(() => modelsStore.shipMetricsAdvanced);
 
 provide(
   "hardpointsChanged",
@@ -160,9 +227,13 @@ const {
   isFetching,
   data: hardpoints,
   refetch,
-} = useModelHardpointsQuery(props.model.slug, modelHardpointsQueryParams, {
-  query: { enabled: () => !!props.model && !props.fitting },
-});
+} = useModelHardpointsQuery(
+  computed(() => props.model.slug),
+  modelHardpointsQueryParams,
+  {
+    query: { enabled: () => !!props.model && !props.fitting },
+  },
+);
 
 // Cards that read the hardpoints query render right away and spin while it is
 // in flight, so they never pop into the layout once the data lands.
@@ -294,6 +365,62 @@ const showMetrics = computed(
     source.value === HardpointSourceEnum.GAME_FILES,
 );
 
+// The summary answers for the ship on auto power. Pips set on the advanced cards
+// have no control in view there, and a shield on zero would just lose its tile.
+const autoPower = emptySplits().SCM;
+
+const summaryCombat = useLoadoutStats(
+  loadoutHardpoints,
+  () => props.model.metrics?.weaponPoolSize,
+  () => autoPower,
+  regenModifier,
+);
+
+const summaryPower = useLoadoutSim(
+  loadoutHardpoints,
+  () => props.model.metrics?.weaponPoolSize,
+  () => "SCM",
+  () => autoPower,
+  undefined,
+  regenModifier,
+);
+
+const summaryShield = useShieldStats(
+  loadoutHardpoints,
+  () => summaryPower.value.shieldPoolRatio,
+);
+
+const fittedByGroup = computed(() => {
+  const groups: Partial<Record<HardpointGroupEnum, Hardpoint[]>> = {};
+
+  loadoutHardpoints.value?.forEach((hardpoint) => {
+    if (hardpoint.group) {
+      (groups[hardpoint.group] ??= []).push(hardpoint);
+    }
+  });
+
+  return groups;
+});
+
+const shownGroups = computed(() =>
+  HARDPOINT_COLUMNS.flat().filter(
+    (group) => hardpointsForGroup(group).length > 0,
+  ),
+);
+
+// A column with nothing in it would leave a blank third of the page.
+const columns = computed(() =>
+  HARDPOINT_COLUMNS.filter((groups) =>
+    groups.some((group) => shownGroups.value.includes(group)),
+  ),
+);
+
+const allCollapsed = computed(() => shownGroups.value.every(groupCollapsed));
+
+const toggleAllGroups = () => {
+  setGroupsCollapsed(shownGroups.value, !allCollapsed.value);
+};
+
 const metricsGrid = ref<HTMLElement>();
 
 useMetricsMasonry(metricsGrid);
@@ -301,14 +428,11 @@ useMetricsMasonry(metricsGrid);
 
 <template>
   <div id="hardpoints" class="row hardpoints">
-    <div
-      class="col-12 hardpoints__layout"
-      :class="{ 'hardpoints__layout--split': showMetrics }"
-    >
-      <!-- The ship as built: planning tools and the data source. A loadout's
-           fitting is one plan, read from the game files. -->
-      <div v-if="!fitting" class="hardpoints__controls">
-        <template v-if="model.inGame">
+    <div class="col-12 hardpoints__layout">
+      <!-- Planning tools are for the ship as built: a loadout's fitting is one
+           plan already. -->
+      <div v-if="showMetrics" class="hardpoints__controls">
+        <template v-if="metricsAdvanced && !fitting">
           <span class="hardpoints__links-label text-muted">
             {{ t("labels.hardpoints.prefix") }}
           </span>
@@ -327,27 +451,30 @@ useMetricsMasonry(metricsGrid);
             </Btn>
           </BtnGroup>
         </template>
-        <BtnGroup segmented class="hardpoints__source">
-          <Btn
-            :active="source === HardpointSourceEnum.GAME_FILES"
-            :disabled="!model.inGame"
-            @click="source = HardpointSourceEnum.GAME_FILES"
-          >
-            {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.GAME_FILES}`)
-            }}
-          </Btn>
-          <Btn
-            :active="source === HardpointSourceEnum.SHIP_MATRIX"
-            @click="source = HardpointSourceEnum.SHIP_MATRIX"
-          >
-            {{
-              t(`labels.hardpoint.sources.${HardpointSourceEnum.SHIP_MATRIX}`)
-            }}
-          </Btn>
-        </BtnGroup>
+        <Toggle
+          class="hardpoints__advanced"
+          inline
+          :active="modelsStore.shipMetricsAdvanced"
+          :label="t('labels.hardpoints.advancedMode')"
+          @toggle="modelsStore.toggleShipMetricsAdvanced()"
+        />
       </div>
-      <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
+      <SummaryFigures
+        v-if="showMetrics && !metricsAdvanced"
+        :model="model"
+        :cargo-holds="cargoHolds"
+        :dps="summaryCombat.dps.total"
+        :missile-damage="summaryCombat.missileDamage"
+        :shield-hp="summaryShield.totalHp"
+        :fitted-holds="!!fitting"
+        :loading="loadingHardpoints"
+        :pending="isLoading"
+      />
+      <div
+        v-if="showMetrics && metricsAdvanced"
+        ref="metricsGrid"
+        class="metrics-grid"
+      >
         <ModelCombatMetrics
           :hardpoints="loadoutHardpoints"
           :model-name="model.name"
@@ -386,7 +513,7 @@ useMetricsMasonry(metricsGrid);
         <ModelWeaponRacks :model="model" />
         <ModelRefuelBoom :model="model" />
       </div>
-      <div v-if="showMetrics" class="hardpoints__credit">
+      <div v-if="showMetrics && metricsAdvanced" class="hardpoints__credit">
         <a
           class="hardpoints__credit-link"
           href="https://www.erkul.games/"
@@ -404,6 +531,47 @@ useMetricsMasonry(metricsGrid);
           />
         </a>
       </div>
+      <div class="hardpoints__toolbar">
+        <BtnGroup v-if="!fitting" segmented class="hardpoints__source">
+          <Btn
+            :active="source === HardpointSourceEnum.GAME_FILES"
+            :disabled="!model.inGame"
+            @click="source = HardpointSourceEnum.GAME_FILES"
+          >
+            {{
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.GAME_FILES}`)
+            }}
+          </Btn>
+          <Btn
+            :active="source === HardpointSourceEnum.SHIP_MATRIX"
+            @click="source = HardpointSourceEnum.SHIP_MATRIX"
+          >
+            {{
+              t(`labels.hardpoint.sources.${HardpointSourceEnum.SHIP_MATRIX}`)
+            }}
+          </Btn>
+        </BtnGroup>
+        <Btn
+          v-if="shownGroups.length && source === HardpointSourceEnum.GAME_FILES"
+          class="hardpoints__fold-all"
+          :variant="BtnVariantsEnum.BARE"
+          data-test="hardpoints-fold-all"
+          @click="toggleAllGroups"
+        >
+          {{
+            t(
+              allCollapsed
+                ? "labels.hardpoints.expandAll"
+                : "labels.hardpoints.collapseAll",
+            )
+          }}
+          <i
+            class="fa-solid"
+            :class="allCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"
+            aria-hidden="true"
+          />
+        </Btn>
+      </div>
       <div
         class="hardpoints__list"
         :class="{ 'hardpoints__list--loading': isLoading || isFetching }"
@@ -411,46 +579,19 @@ useMetricsMasonry(metricsGrid);
         <!-- First, so it sits at the top of the slot rather than after the
              rows a refetch keeps on screen. -->
         <Loader :loading="isLoading || isFetching" />
-        <div v-if="shownHardpoints?.length" class="row">
-          <div class="col-12 col-md-6 col-lg-4">
+        <div
+          v-if="shownHardpoints?.length"
+          class="hardpoints__columns"
+          :style="{ '--hardpoint-columns': columns.length }"
+        >
+          <div v-for="(groups, column) in columns" :key="column">
             <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.AVIONIC,
-                HardpointGroupEnum.SYSTEM,
-                HardpointGroupEnum.OTHER,
-                HardpointGroupEnum.ORE_POD,
-                HardpointGroupEnum.MINING,
-                HardpointGroupEnum.SALVAGE,
-                HardpointGroupEnum.SALVAGE_STORAGE,
-                HardpointGroupEnum.MODULE,
-                HardpointGroupEnum.EXTERNAL_FUEL_TANK,
-              ]"
+              v-for="group in groups"
               :key="group"
               :group="group"
               :hardpoints="hardpointsForGroup(group)"
-            />
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.PROPULSION,
-                HardpointGroupEnum.THRUSTER,
-              ]"
-              :key="group"
-              :group="group"
-              :hardpoints="hardpointsForGroup(group)"
-            />
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.WEAPON,
-                HardpointGroupEnum.DEFENSE,
-                HardpointGroupEnum.AUXILIARY,
-              ]"
-              :key="group"
-              :group="group"
-              :hardpoints="hardpointsForGroup(group)"
+              :fitted="fittedByGroup[group] ?? []"
+              :summary-only="source === HardpointSourceEnum.SHIP_MATRIX"
             />
           </div>
         </div>

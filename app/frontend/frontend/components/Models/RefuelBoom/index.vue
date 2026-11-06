@@ -38,6 +38,7 @@ const nozzleLabel = computed(() => {
 
 <template>
   <MetricsCard
+    collapse-key="refuel-boom"
     v-if="boom"
     :title="t('labels.model.refuelBoom')"
     class="refuel-boom-panel"

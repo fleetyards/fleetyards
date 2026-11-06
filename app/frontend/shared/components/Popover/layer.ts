@@ -4,6 +4,10 @@ import { type InjectionKey } from "vue";
 // cover a modal that later opens over it.
 export const POPOVER_BASE_LAYER = 1040;
 
+// A sheet covers the bottom of a phone, so it goes above the navigation there,
+// on the off-canvas layer.
+export const POPOVER_SHEET_LAYER = 2020;
+
 // The z-index of the overlay a popover's trigger sits in. The overlay provides
 // its own layer and the popover places itself one above it, so a card opened
 // from a hardpoint row inside a modal is not painted underneath that modal.

@@ -9,10 +9,20 @@ export default {
 
 <script lang="ts" setup>
 import { useResizeObserver } from "@vueuse/core";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import { placeFloating } from "@/shared/utils/floatingPlacement";
 import { claimActive, releaseActive } from "./activePopover";
-import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
-import { type PopoverPlacement, type PopoverTrigger } from "./types";
+import {
+  popoverLayerKey,
+  POPOVER_BASE_LAYER,
+  POPOVER_SHEET_LAYER,
+} from "./layer";
+import { setPageLocked, useSheetSwipe } from "./useSheetSwipe";
+import {
+  type PopoverPlacement,
+  type PopoverSide,
+  type PopoverTrigger,
+} from "./types";
 
 type Props = {
   // Names the card for assistive tech: it is a dialog, and the trigger it
@@ -51,6 +61,9 @@ const emit = defineEmits<{ open: []; close: [] }>();
 
 const GAP = 8;
 const MARGIN = 8;
+const LINE_HEIGHT = 40;
+// A mouse cursor's arrow, measured from its tip.
+const CURSOR = { above: 8, below: 22, before: 4, after: 14 };
 
 const id = useId();
 
@@ -59,7 +72,7 @@ const panel = ref<HTMLElement | null>(null);
 
 const open = ref(false);
 const openedBy = ref<PopoverTrigger>("hover");
-const placed = ref<PopoverPlacement>(props.placement);
+const placed = ref<PopoverSide>(props.placement);
 const position = ref({ top: 0, left: 0 });
 
 // Plain text has nothing to focus, so the keyboard could never reach its card.
@@ -105,26 +118,79 @@ const focusTarget = () =>
   host.value ??
   trigger.value;
 
+// The pointer over the trigger, relative to it so a card following the trigger
+// through a scroll keeps its place beside the cursor.
+let pointer: { x: number; y: number } | undefined;
+
+const trackPointer = ({ clientX, clientY, pointerType }: PointerEvent) => {
+  const rect = trigger.value?.getBoundingClientRect();
+
+  pointer =
+    rect && pointerType === "mouse" && Number.isFinite(clientX)
+      ? { x: clientX - rect.left, y: clientY - rect.top }
+      : undefined;
+};
+
+// What a card has to stay clear of: the cursor's arrow where a mouse opened it,
+// and the line of text under it, or the trigger itself otherwise.
+const anchorRect = (): DOMRect => {
+  const rect = trigger.value!.getBoundingClientRect();
+
+  if (openedBy.value !== "hover" || !pointer) return rect;
+
+  const x = rect.left + pointer.x;
+  const y = rect.top + pointer.y;
+  const isLine = rect.height <= LINE_HEIGHT;
+
+  const top = isLine ? rect.top : y - CURSOR.above;
+  const bottom = Math.max(isLine ? rect.bottom : 0, y + CURSOR.below);
+  const left = x - CURSOR.before;
+  const right = x + CURSOR.after;
+
+  return {
+    top,
+    bottom,
+    left,
+    right,
+    width: right - left,
+    height: bottom - top,
+  } as DOMRect;
+};
+
+// Read when it can matter rather than watched: a list mounts one of these per row.
+const phoneWidth = ref(false);
+
+const readPhoneWidth = () => {
+  phoneWidth.value =
+    window.matchMedia?.("(max-width: 575.98px)").matches ?? false;
+};
+
+// A card fills a phone from wherever it is anchored, covering what was tapped and
+// running under the navigation, so there a tap opens it as a sheet from the bottom.
+const sheet = computed(() => phoneWidth.value && openedBy.value === "tap");
+
 const place = () => {
-  if (!trigger.value || !panel.value) return;
+  if (sheet.value || !trigger.value || !panel.value) return;
 
   const { top, left, placement } = placeFloating(
-    trigger.value.getBoundingClientRect(),
+    anchorRect(),
     panel.value.getBoundingClientRect(),
     props.placement,
-    { gap: GAP, margin: MARGIN, flip: true },
+    { gap: GAP, margin: MARGIN, flip: true, sideways: true },
   );
 
-  placed.value = placement === "top" ? "top" : "bottom";
+  placed.value = placement;
   position.value = { top, left };
 };
 
 // A card opened from inside a modal belongs above that modal; anywhere else it
 // sits above the page and below any modal that opens over it.
 const layer = inject(popoverLayerKey, undefined);
-const zIndex = computed(() =>
-  layer === undefined ? POPOVER_BASE_LAYER : layer + 1,
-);
+const zIndex = computed(() => {
+  const anchored = layer === undefined ? POPOVER_BASE_LAYER : layer + 1;
+
+  return sheet.value ? Math.max(anchored, POPOVER_SHEET_LAYER) : anchored;
+});
 
 // A lazily loaded card changes size once its data arrives.
 useResizeObserver(panel, () => {
@@ -142,7 +208,23 @@ const within = (node: EventTarget | null) =>
 // reading the card, not leaving it.
 let touchedWithin = false;
 
+const scrim = ref<HTMLElement | null>(null);
+
+// Focus had nowhere to go once its button or the sheet was gone, and a screen
+// reader would lose its place.
+const dismissSheet = () => {
+  close();
+  focusTarget()?.focus({ preventScroll: true });
+};
+
+const swipe = useSheetSwipe(panel, () => sheet.value, dismissSheet);
+const { offset: swipeOffset, dragging: swiping } = swipe;
+
 const onDocumentPointerdown = (event: PointerEvent) => {
+  // Closed by its click instead. Gone on the press, the tap's click would land
+  // on whatever the scrim was covering.
+  if (event.target === scrim.value) return;
+
   touchedWithin = within(event.target);
 
   if (!touchedWithin) close();
@@ -170,7 +252,11 @@ const onWindowScroll = (event: Event) => {
   }
 };
 
-const onWindowResize = () => place();
+const onWindowResize = () => {
+  readPhoneWidth();
+  setPageLocked(sheet.value);
+  place();
+};
 
 const listen = () => {
   document.addEventListener("pointerdown", onDocumentPointerdown, true);
@@ -206,9 +292,11 @@ const setDescribedBy = (on: boolean) => {
 
 function close() {
   clearTimers();
+  swipe.reset();
   if (!open.value) return;
 
   open.value = false;
+  setPageLocked(false);
   releaseActive(close);
   unlisten();
   setDescribedBy(false);
@@ -224,13 +312,17 @@ const show = async (by: PopoverTrigger) => {
 
   claimActive(close);
   touchedWithin = false;
+  readPhoneWidth();
   open.value = true;
+  setPageLocked(sheet.value);
   listen();
   setDescribedBy(true);
   emit("open");
 
   await nextTick();
   place();
+
+  if (sheet.value) panel.value?.focus({ preventScroll: true });
 };
 
 const scheduleOpen = () => {
@@ -256,8 +348,15 @@ const scheduleClose = () => {
   }, props.closeDelay);
 };
 
+// Until the card is up: once it is, it stays where it opened rather than
+// chasing a cursor on its way across the trigger towards it.
+const onPointermove = (event: PointerEvent) => {
+  if (!open.value) trackPointer(event);
+};
+
 const onPointerover = (event: PointerEvent) => {
   pointerType = event.pointerType || "";
+  onPointermove(event);
 };
 
 const onMouseenter = () => {
@@ -374,6 +473,7 @@ defineExpose({ open, show, close });
     :aria-controls="open ? id : undefined"
     data-test="popover-trigger"
     @pointerover="onPointerover"
+    @pointermove="onPointermove"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
     @click.capture="onClickCapture"
@@ -385,23 +485,54 @@ defineExpose({ open, show, close });
 
   <Teleport to="body">
     <div
+      v-if="open && sheet"
+      ref="scrim"
+      class="popover-scrim"
+      :style="{ zIndex }"
+      data-test="popover-scrim"
+      @click="dismissSheet"
+    />
+    <div
       v-if="open"
       :id="id"
       ref="panel"
       class="popover"
-      :class="[`popover--${placed}`, { 'popover--passive': passive }]"
-      :style="{
-        top: `${position.top}px`,
-        left: `${position.left}px`,
-        zIndex,
-      }"
+      :class="
+        sheet
+          ? ['popover--sheet', { 'popover--swiping': swiping }]
+          : [`popover--${placed}`, { 'popover--passive': passive }]
+      "
+      :style="
+        sheet
+          ? {
+              zIndex,
+              transform: swipeOffset
+                ? `translateY(${swipeOffset}px)`
+                : undefined,
+            }
+          : {
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+              zIndex,
+            }
+      "
       role="dialog"
+      :tabindex="sheet ? -1 : undefined"
+      :aria-modal="sheet ? true : undefined"
       :aria-label="label"
       data-test="popover"
       @mouseenter="onPanelMouseenter"
       @mouseleave="onPanelMouseleave"
       @focusout="onFocusout"
+      @touchstart="swipe.onTouchstart"
+      @touchmove="swipe.onTouchmove"
+      @touchend="swipe.onTouchend"
+      @touchcancel="swipe.reset"
     >
+      <div v-if="sheet" class="popover__sheet-close">
+        <span class="popover__sheet-handle" aria-hidden="true" />
+        <AppModalCloseBtn data-test="popover-close" @click="dismissSheet" />
+      </div>
       <slot name="content" :close="close" />
     </div>
   </Teleport>

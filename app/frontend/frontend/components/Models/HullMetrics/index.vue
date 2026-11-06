@@ -67,6 +67,7 @@ const openPartsModal = () => {
 
 <template>
   <MetricsCard
+    collapse-key="hull"
     v-if="hasData"
     :title="t('labels.hull.title')"
     class="hull-panel"

@@ -67,6 +67,7 @@ const cards = computed<Card[]>(() =>
 
 <template>
   <MetricsCard
+    collapse-key="storage-containers"
     v-for="card in cards"
     :key="card.kind"
     :title="card.title"

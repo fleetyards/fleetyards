@@ -49,7 +49,7 @@ export interface RowPresentation {
   sizeless?: boolean;
 }
 
-const humanize = (name: string) =>
+export const humanize = (name: string) =>
   name
     .split("_")
     .join(" ")

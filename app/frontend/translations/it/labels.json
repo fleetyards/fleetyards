@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Carico",
-        "holdsSub": "su %{count} stive",
+        "holdsSub": {
+          "one": "su %{count} stiva",
+          "other": "su %{count} stive"
+        },
         "maxContainerSub": "il container più grande che accetta",
         "containers": "Capacità in container",
         "boxCount": {
@@ -3036,7 +3039,12 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "Metriche basate sulle formule di"
+        "metricsCredit": "Metriche basate sulle formule di",
+        "advancedMode": "Modalità avanzata",
+        "collapseAll": "Comprimi tutto",
+        "expandAll": "Espandi tutto",
+        "total": "totale",
+        "guns": "Cannoni"
       },
       "scunpacked": {
         "prefix": "Loadouts basato sui Gamefiles powered by",

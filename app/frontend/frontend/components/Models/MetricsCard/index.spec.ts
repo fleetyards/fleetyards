@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { metricsCardFoldKey } from "./fold";
 import Component from "./index.vue";
 
 /*
@@ -90,5 +91,51 @@ describe("MetricsCard", () => {
       "loading-line--active",
     );
     expect(wrapper.find("[role='status']").text()).toBe("");
+  });
+
+  describe("collapsing", () => {
+    const toggle = vi.fn();
+
+    const mountFolding = (folded: boolean) =>
+      mountWithDefaults(
+        defineComponent({
+          components: { Card: Component },
+          setup() {
+            provide(metricsCardFoldKey, {
+              collapsed: () => folded,
+              toggle,
+            });
+          },
+          template: "<Card title='Combat' collapse-key='combat' />",
+        }),
+      );
+
+    it("offers no control off the ship page", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { title: "Combat", collapseKey: "combat" },
+      });
+
+      expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
+        false,
+      );
+    });
+
+    const button = '[data-test="metrics-card-collapse"]';
+
+    it("reads as the page remembers it", async () => {
+      const folded = await mountFolding(true);
+      const open = await mountFolding(false);
+
+      expect(folded.find(button).attributes("aria-expanded")).toBe("false");
+      expect(open.find(button).attributes("aria-expanded")).toBe("true");
+    });
+
+    it("toggles under its own key", async () => {
+      const wrapper = await mountFolding(false);
+
+      await wrapper.find(button).trigger("click");
+
+      expect(toggle).toHaveBeenCalledWith("combat");
+    });
   });
 });

@@ -101,6 +101,7 @@ const openDeflectionCheck = () => {
 
 <template>
   <MetricsCard
+    collapse-key="defense"
     v-if="loading || hasData"
     :title="t('labels.defense.title')"
     :loading="loading"

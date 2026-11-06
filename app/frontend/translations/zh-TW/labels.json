@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "貨物",
-        "holdsSub": "分佈於 %{count} 個貨艙",
+        "holdsSub": {
+          "one": "分佈於 %{count} 個貨艙",
+          "other": "分佈於 %{count} 個貨艙"
+        },
         "maxContainerSub": "可裝載的最大貨櫃",
         "containers": "貨櫃容量",
         "boxCount": {
@@ -3036,7 +3039,12 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "數據基於以下網站的計算公式"
+        "metricsCredit": "數據基於以下網站的計算公式",
+        "advancedMode": "進階模式",
+        "collapseAll": "全部收合",
+        "expandAll": "全部展開",
+        "total": "總計",
+        "guns": "機砲"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",

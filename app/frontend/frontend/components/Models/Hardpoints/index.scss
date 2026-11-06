@@ -16,9 +16,38 @@
     margin-bottom: 20px;
   }
 
-  &__source {
-    // Right-aligned whether or not the links are there to push it.
+  // Right-aligned whether or not the links are there to push it.
+  &__advanced {
     margin-inline-start: auto;
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  &__fold-all {
+    margin-inline-start: auto;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 20px;
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(
+        var(--hardpoint-columns, 3),
+        minmax(0, 1fr)
+      );
+    }
   }
 
   // Beside the link group, not inside it. As a member of the BtnGroup track it
@@ -125,48 +154,13 @@
   &__list--loading {
     min-height: 160px;
   }
-
-  @media (min-width: map-get($grid-breakpoints, xxl)) {
-    // The metrics keep their three columns on the left and the list's three
-    // stacks run down beside them, rather than starting below the last card:
-    // six even columns across the page.
-    &__layout--split {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: auto auto auto;
-      column-gap: 20px;
-      align-items: start;
-
-      .hardpoints__controls {
-        grid-column: 1 / -1;
-      }
-
-      // Rows by number, not flow: a loadout's fitting has no controls row, and
-      // auto-placed the cards would take it and push the list down a row.
-      .metrics-grid {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      // Under the list, so the right-aligned credit closes the block at the
-      // page's edge rather than between the two columns.
-      .hardpoints__credit {
-        grid-column: 2;
-        grid-row: 3;
-      }
-
-      .hardpoints__list {
-        grid-column: 2;
-        grid-row: 2;
-      }
-    }
-  }
 }
 
 // Metrics cards are packed rather than assigned to fixed columns: each spans a
 // measured number of 4px rows (see useMetricsMasonry) and `dense` flow lets a
 // later card backfill a column another card left short. Stacked on narrow
-// screens, three-up once there's room.
+// screens, two-up on a small desktop, where three squeeze a card's tiles into a
+// stack and wrap its title, and three-up once there's room.
 .metrics-grid {
   > * {
     margin: 0 0 20px;
@@ -174,7 +168,7 @@
 
   @media (min-width: 992px) {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: 4px;
     grid-auto-flow: row dense;
     column-gap: 20px;
@@ -186,5 +180,9 @@
       // height instead of stretching into that trailing space.
       align-self: start;
     }
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
