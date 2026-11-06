@@ -40,7 +40,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     data: ref([
       { label: "Pledge Store", value: "pledge_store", category: "boughtVia" },
       { label: "In-Game", value: "ingame", category: "boughtVia" },
-      { label: "Reward or Loot", value: "reward_or_loot", category: "boughtVia" },
+      {
+        label: "Reward or Loot",
+        value: "reward_or_loot",
+        category: "boughtVia",
+      },
     ]),
   }),
   useHangarGroups: () => ({ data: ref([]) }),
