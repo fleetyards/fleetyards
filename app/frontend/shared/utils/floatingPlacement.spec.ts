@@ -97,6 +97,81 @@ describe("placeFloating", () => {
     ).toBe("top");
   });
 
+  describe("sideways", () => {
+    const tall = { width: 200, height: 500 };
+    const options = { flip: true, sideways: true };
+
+    it("stays below or above while the box fits there", () => {
+      expect(
+        placeFloating(rect(100, 400), tall, "bottom", options).placement,
+      ).toBe("bottom");
+      expect(
+        placeFloating(rect(700, 400), tall, "bottom", options).placement,
+      ).toBe("top");
+    });
+
+    it("goes beside the anchor, clear of it, when neither side has room", () => {
+      const anchor = rect(390, 400);
+      const { placement, left, top } = placeFloating(
+        anchor,
+        tall,
+        "bottom",
+        options,
+      );
+
+      expect(placement).toBe("right");
+      expect(left).toBeGreaterThanOrEqual(anchor.right);
+      expect(top).toBeGreaterThanOrEqual(0);
+      expect(top + tall.height).toBeLessThanOrEqual(800);
+    });
+
+    it("runs down from the anchor, sliding up only to stay inside", () => {
+      const roomy = { width: 200, height: 500 };
+
+      expect(
+        placeFloating(rect(390, 400), roomy, "bottom", {
+          ...options,
+          margin: 8,
+        }).top,
+      ).toBe(800 - 500 - 8);
+
+      Object.assign(window, { innerHeight: 1000 });
+
+      expect(placeFloating(rect(480, 400), roomy, "bottom", options).top).toBe(
+        480,
+      );
+    });
+
+    it("leaves a box asked to sit beside its anchor centred on it", () => {
+      expect(
+        placeFloating(rect(390, 400), { width: 100, height: 100 }, "right", {
+          sideways: true,
+        }).top,
+      ).toBe(350);
+    });
+
+    it("takes the left when the right has no room", () => {
+      const anchor = rect(390, 850);
+      const { placement, left } = placeFloating(
+        anchor,
+        tall,
+        "bottom",
+        options,
+      );
+
+      expect(placement).toBe("left");
+      expect(left + tall.width).toBeLessThanOrEqual(anchor.left);
+    });
+
+    it("falls back to sliding inside when no side has room", () => {
+      Object.assign(window, { innerWidth: 300 });
+
+      expect(
+        placeFloating(rect(390, 100), tall, "bottom", options).placement,
+      ).toBe("bottom");
+    });
+  });
+
   it("stays put when the other side has even less room", () => {
     const anchor = rect(390, 400);
 

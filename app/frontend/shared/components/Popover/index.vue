@@ -12,7 +12,11 @@ import { useResizeObserver } from "@vueuse/core";
 import { placeFloating } from "@/shared/utils/floatingPlacement";
 import { claimActive, releaseActive } from "./activePopover";
 import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
-import { type PopoverPlacement, type PopoverTrigger } from "./types";
+import {
+  type PopoverPlacement,
+  type PopoverSide,
+  type PopoverTrigger,
+} from "./types";
 
 type Props = {
   // Names the card for assistive tech: it is a dialog, and the trigger it
@@ -51,6 +55,9 @@ const emit = defineEmits<{ open: []; close: [] }>();
 
 const GAP = 8;
 const MARGIN = 8;
+const LINE_HEIGHT = 40;
+// A mouse cursor's arrow, measured from its tip.
+const CURSOR = { above: 8, below: 22, before: 4, after: 14 };
 
 const id = useId();
 
@@ -59,7 +66,7 @@ const panel = ref<HTMLElement | null>(null);
 
 const open = ref(false);
 const openedBy = ref<PopoverTrigger>("hover");
-const placed = ref<PopoverPlacement>(props.placement);
+const placed = ref<PopoverSide>(props.placement);
 const position = ref({ top: 0, left: 0 });
 
 // Plain text has nothing to focus, so the keyboard could never reach its card.
@@ -105,17 +112,56 @@ const focusTarget = () =>
   host.value ??
   trigger.value;
 
+// The pointer over the trigger, relative to it so a card following the trigger
+// through a scroll keeps its place beside the cursor.
+let pointer: { x: number; y: number } | undefined;
+
+const trackPointer = ({ clientX, clientY, pointerType }: PointerEvent) => {
+  const rect = trigger.value?.getBoundingClientRect();
+
+  pointer =
+    rect && pointerType === "mouse" && Number.isFinite(clientX)
+      ? { x: clientX - rect.left, y: clientY - rect.top }
+      : undefined;
+};
+
+// What a card has to stay clear of: the cursor's arrow where a mouse opened it,
+// and the line of text under it, or the trigger itself otherwise.
+const anchorRect = (): DOMRect => {
+  const rect = trigger.value!.getBoundingClientRect();
+
+  if (openedBy.value !== "hover" || !pointer) return rect;
+
+  const x = rect.left + pointer.x;
+  const y = rect.top + pointer.y;
+  const isLine = rect.height <= LINE_HEIGHT;
+
+  const top = isLine ? rect.top : y - CURSOR.above;
+  const bottom = Math.max(isLine ? rect.bottom : 0, y + CURSOR.below);
+  const left = x - CURSOR.before;
+  const right = x + CURSOR.after;
+
+  return {
+    top,
+    bottom,
+    left,
+    right,
+    width: right - left,
+    height: bottom - top,
+  } as DOMRect;
+};
+
 const place = () => {
   if (!trigger.value || !panel.value) return;
 
   const { top, left, placement } = placeFloating(
-    trigger.value.getBoundingClientRect(),
+    anchorRect(),
     panel.value.getBoundingClientRect(),
     props.placement,
-    { gap: GAP, margin: MARGIN, flip: true },
+    { gap: GAP, margin: MARGIN, flip: true, sideways: true },
   );
 
-  placed.value = placement === "top" ? "top" : "bottom";
+  placed.value = placement;
   position.value = { top, left };
 };
 
@@ -258,6 +304,13 @@ const scheduleClose = () => {
 
 const onPointerover = (event: PointerEvent) => {
   pointerType = event.pointerType || "";
+  trackPointer(event);
+};
+
+// Until the card is up: once it is, it stays where it opened rather than
+// chasing a cursor on its way across the trigger towards it.
+const onPointermove = (event: PointerEvent) => {
+  if (!open.value) trackPointer(event);
 };
 
 const onMouseenter = () => {
@@ -374,6 +427,7 @@ defineExpose({ open, show, close });
     :aria-controls="open ? id : undefined"
     data-test="popover-trigger"
     @pointerover="onPointerover"
+    @pointermove="onPointermove"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
     @click.capture="onClickCapture"

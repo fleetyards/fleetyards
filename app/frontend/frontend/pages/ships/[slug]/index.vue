@@ -11,8 +11,6 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import ViewInArBtn from "@/frontend/components/Models/ViewInArBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
-import { metricsCardFoldKey } from "@/frontend/components/Models/MetricsCard/fold";
-import HardpointsMinimal from "@/frontend/components/Models/HardpointsMinimal/index.vue";
 import CrewPositions from "@/frontend/components/Models/CrewPositions/index.vue";
 import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
 import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
@@ -155,28 +153,7 @@ const { expanded: descriptionExpanded, overflows: descriptionOverflows } =
 
 const modelsStore = useModelsStore();
 
-const { holoviewerVisible, modelState, shipDetailsExpanded } =
-  storeToRefs(modelsStore);
-
-// A reader may close a card on one ship and want it open on the next.
-provide(metricsCardFoldKey, {
-  collapsed: (key) =>
-    modelsStore.sectionCollapsed(props.model.slug, `metrics-${key}`),
-  toggle: (key) =>
-    modelsStore.toggleSection(props.model.slug, `metrics-${key}`),
-});
-
-const specs = ref<HTMLElement>();
-
-// The two views differ by thousands of pixels, so without this the reader lands
-// somewhere in the middle of the one they asked for.
-const toggleShipDetails = async () => {
-  modelsStore.toggleShipDetails();
-
-  await nextTick();
-
-  specs.value?.scrollIntoView({ behavior: "instant", block: "start" });
-};
+const { holoviewerVisible, modelState } = storeToRefs(modelsStore);
 
 const { availableStates, holoStates, resolveState } = useModelStates(
   () => props.model,
@@ -706,43 +683,7 @@ const adiMap = computed(() => {
         </div>
       </div>
       <hr />
-      <div ref="specs" class="ship-specs">
-        <div
-          v-if="shipDetailsExpanded"
-          class="ship-specs__toggle ship-specs__toggle--top"
-        >
-          <Btn
-            :size="BtnSizesEnum.SM"
-            data-test="ship-specs-toggle"
-            @click="toggleShipDetails"
-          >
-            {{ t("labels.hardpoints.showSummary") }}
-            <i class="fa-light fa-chevron-up" aria-hidden="true" />
-          </Btn>
-        </div>
-        <!-- Kept alive: its pip settings are the reader's, and going to the
-             summary and back must not put them back on auto. -->
-        <KeepAlive>
-          <Hardpoints
-            v-if="shipDetailsExpanded"
-            :model="model"
-            :cargo-holds="combinedCargoHolds"
-          />
-        </KeepAlive>
-        <template v-if="!shipDetailsExpanded">
-          <HardpointsMinimal :model="model" :cargo-holds="combinedCargoHolds" />
-          <div class="ship-specs__toggle">
-            <Btn
-              :size="BtnSizesEnum.SM"
-              data-test="ship-specs-toggle"
-              @click="toggleShipDetails"
-            >
-              {{ t("labels.hardpoints.showDetails") }}
-              <i class="fa-light fa-chevron-down" aria-hidden="true" />
-            </Btn>
-          </div>
-        </template>
-      </div>
+      <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
     </div>
   </div>
