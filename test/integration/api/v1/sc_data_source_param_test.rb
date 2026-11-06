@@ -42,6 +42,33 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
     assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
   end
 
+  # Endpoints use `source` for their own meaning, so it must never pick a build
+  # just because its value happens to name an environment.
+  test "source does not select a build" do
+    get "/api/v1/commodities", params: {source: "ptu"}
+
+    assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+  end
+
+  test "a build cannot be selected from a request body" do
+    body = {scDataSource: "ptu"}.to_json
+
+    get "/api/v1/commodities", env: {
+      "CONTENT_TYPE" => "application/json",
+      "CONTENT_LENGTH" => body.bytesize.to_s,
+      "rack.input" => StringIO.new(body)
+    }
+
+    assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+  end
+
+  test "every path of the public schema declares the parameter" do
+    paths = YAML.load_file(Rails.root.join("swagger/v1/schema.yaml"), aliases: true).fetch("paths")
+    reference = {"$ref" => "#/components/parameters/ScDataSourceParameter"}
+
+    assert_empty paths.reject { |_, item| item.fetch("parameters", []).include?(reference) }.keys
+  end
+
   # `ScData::Current` is reset for us at the end of every request, so a source
   # set for one cannot leak into the next on the same thread.
   test "a source does not leak into the next request" do

@@ -40,6 +40,12 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
 
+  test "GET /models/:slug/hardpoints refuses a build name as its source" do
+    get "/api/v1/models/#{create(:model).slug}/hardpoints", params: {source: "ptu"}
+
+    assert_response :bad_request
+  end
+
   test "GET /models/:slug/hardpoints filters by source while another build is selected" do
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", ptu: "1.1.0"}, default: "live"})
 
