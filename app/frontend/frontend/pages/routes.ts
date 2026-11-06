@@ -8,6 +8,7 @@ import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
 import {
   catalogueEntryRoute,
   catalogueTenantRoutes,
+  legacyCatalogueRedirects,
 } from "@/frontend/pages/catalogue/tenants";
 import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
@@ -130,17 +131,7 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
-  // The paths the pages shipped under before the section existed. Both are
-  // live -- the detail page has long been reachable and every hardpoint
-  // on every ship links to it -- so they redirect rather than 404.
-  {
-    path: "/components/",
-    redirect: { name: "components" },
-  },
-  {
-    path: "/components/:slug",
-    redirect: (to) => ({ name: "component", params: { slug: to.params.slug } }),
-  },
+  ...legacyCatalogueRedirects,
   {
     path: "/ships/",
     component: () => import("@/frontend/pages/ships.vue"),

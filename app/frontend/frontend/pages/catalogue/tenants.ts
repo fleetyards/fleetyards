@@ -89,5 +89,20 @@ export const catalogueTenantRoutes: RouteRecordRaw[] = CATALOGUE_TENANTS.map(
   }),
 );
 
+// The paths the pages shipped under before the section existed. Links to them
+// outlive the move, in bookmarks and pasted into chats, so they redirect rather
+// than land on the not-found page.
+export const legacyCatalogueRedirects: RouteRecordRaw[] =
+  CATALOGUE_TENANTS.flatMap((tenant) => [
+    { path: `/${tenant.key}/`, redirect: { name: tenant.listRoute } },
+    {
+      path: `/${tenant.key}/:slug`,
+      redirect: (to) => ({
+        name: tenant.detailRoutes[0],
+        params: { slug: to.params.slug },
+      }),
+    },
+  ]);
+
 export const isTenantActive = (tenant: CatalogueTenant, routeName: string) =>
   tenant.listRoute === routeName || tenant.detailRoutes.includes(routeName);
