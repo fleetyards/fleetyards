@@ -18,10 +18,15 @@ export interface MinimalCategory {
   rows: MinimalRow[];
 }
 
-// Fitted by the shipwright or too small a part of the picture for a summary.
-const LEFT_OUT: HardpointCategoryEnum[] = [
+// Fitted by the shipwright, so no list shows them.
+const NEVER_LISTED: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.CONTROLLER,
   HardpointCategoryEnum.UNKNOWN,
+];
+
+// Too small a part of the picture for a summary with full rows behind it.
+const LEFT_OUT: HardpointCategoryEnum[] = [
+  ...NEVER_LISTED,
   HardpointCategoryEnum.FUEL_INTAKES,
   HardpointCategoryEnum.LIFESUPPORT,
 ];
@@ -143,15 +148,18 @@ const rank = (category: HardpointCategoryEnum) => {
 
 export const minimalCategories = (
   hardpoints: Hardpoint[],
+  // Where these rows are all there is, nothing can be left for the full ones.
+  { complete = false }: { complete?: boolean } = {},
 ): MinimalCategory[] => {
+  const leftOut = complete ? NEVER_LISTED : LEFT_OUT;
+
   const categories = new Map<HardpointCategoryEnum, Hardpoint[]>();
 
   hardpoints
     .flatMap((hardpoint) => place(hardpoint))
     .filter(
       ({ hardpoint, category }) =>
-        !LEFT_OUT.includes(category) &&
-        !LEFT_OUT.includes(categoryOf(hardpoint)),
+        !leftOut.includes(category) && !leftOut.includes(categoryOf(hardpoint)),
     )
     .forEach(({ hardpoint, category }) => {
       categories.set(category, [

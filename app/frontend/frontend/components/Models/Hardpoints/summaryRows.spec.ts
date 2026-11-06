@@ -122,6 +122,18 @@ describe("minimalCategories", () => {
     ]);
   });
 
+  it("keeps them where the summary is all there is", () => {
+    expect(
+      minimalCategories(
+        [
+          hardpoint(HardpointCategoryEnum.LIFESUPPORT, "ComfortAir"),
+          hardpoint(HardpointCategoryEnum.CONTROLLER, "Controller"),
+        ],
+        { complete: true },
+      ).map(({ category }) => category),
+    ).toEqual([HardpointCategoryEnum.LIFESUPPORT]);
+  });
+
   it("folds a thruster type into one total row, whatever their thrust", () => {
     const thruster = (thrustCapacity: number) =>
       hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS, undefined, [], {

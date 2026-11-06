@@ -43,7 +43,11 @@ if (fold) {
 }
 
 const summaryCategories = computed(() =>
-  fold ? minimalCategories(props.fitted ?? props.hardpoints) : [],
+  fold || props.summaryOnly
+    ? minimalCategories(props.fitted ?? props.hardpoints, {
+        complete: props.summaryOnly,
+      })
+    : [],
 );
 
 const summary = computed(() =>
