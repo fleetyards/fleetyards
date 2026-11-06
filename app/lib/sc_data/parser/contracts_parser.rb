@@ -230,7 +230,7 @@ module ScData
 
       # Every contract in the generator tree, with its handler's org already
       # resolved. Memoised because both catalogues read it and the traversal --
-      # 107 files, one `Hash.from_xml` each -- is what either of them costs.
+      # one `Hash.from_xml` per file -- is what either of them costs.
       private def contract_entries
         @contract_entries ||= load_contract_generators.flat_map do |item|
           fallback = generator_org(item[:values])

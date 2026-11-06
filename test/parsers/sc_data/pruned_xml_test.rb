@@ -23,6 +23,25 @@ module ScData
         assert_equal({"root" => {"title" => %("a" & <b>), "child" => "x & <y>"}}, Hash.from_xml(xml))
       end
 
+      test ".read keeps a parent as a hash when its only child is dropped" do
+        xml = read(<<~XML)
+          <root>
+            <parent>
+              <drop />
+            </parent>
+            <kept>1</kept>
+          </root>
+        XML
+
+        assert_equal({"root" => {"parent" => nil, "kept" => "1"}}, Hash.from_xml(xml))
+      end
+
+      test ".read raises rather than returning a truncated file" do
+        error = assert_raises(ArgumentError) { read("<root><unclosed></root>") }
+
+        assert_match(/pruned.*\.xml/, error.message)
+      end
+
       private def read(content)
         Tempfile.create(["pruned", ".xml"]) do |file|
           file.write(content)
