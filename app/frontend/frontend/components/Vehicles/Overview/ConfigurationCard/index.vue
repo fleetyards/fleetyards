@@ -48,23 +48,26 @@ const openGroupsModal = () =>
 const editEquipment = (tab: VehicleEditTabsEnum) =>
   openEditModal(props.vehicle, { tab });
 
-const { all: paints, owned: ownedPaintEntries } = useVehicleOwnedPaints(
-  () => props.vehicle,
-);
+const { owned: ownedPaintEntries, loaded: paintsLoaded } =
+  useVehicleOwnedPaints(() => props.vehicle);
 
 const ownedPaintsCount = computed(() =>
-  paints.value.length
+  paintsLoaded.value
     ? ownedPaintEntries.value.length
     : props.vehicle.modelPaintIds.length,
 );
 
-const ownedPaints = computed(() =>
-  ownedPaintsCount.value
-    ? t("labels.vehicleOverview.ownedPaintsCount", {
-        count: ownedPaintsCount.value,
-      })
-    : t("labels.vehicleOverview.noPaint"),
-);
+// Without the list a ship may still have pledged paints, so it is not yet known
+// to be in its standard livery.
+const ownedPaints = computed(() => {
+  if (ownedPaintsCount.value) {
+    return t("labels.vehicleOverview.ownedPaintsCount", {
+      count: ownedPaintsCount.value,
+    });
+  }
+
+  return paintsLoaded.value ? t("labels.vehicleOverview.noPaint") : "";
+});
 
 const facts = computed(() =>
   (

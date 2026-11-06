@@ -89,6 +89,18 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/paints keeps a pledged paint once the catalogue hides it" do
+    item = create(:hangar_pledge_item, user: @user, name: "Ironclad - Rust Society Paint")
+    HangarPledgeItems::PaintLinker.new.link([item])
+    @rust.update!(hidden: true)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      pledged = parsed_body.find { |entry| entry["pledged"] }
+      assert_equal "Rust Society", pledged&.dig("paint", "name")
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/paints returns 404 for another user's ship" do
     sign_in create(:user)
 

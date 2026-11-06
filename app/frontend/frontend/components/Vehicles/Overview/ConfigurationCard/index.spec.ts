@@ -16,7 +16,11 @@ vi.mock("@/shared/composables/useComlink", () => ({
 const paints = ref<{ owned: boolean; pledged: boolean }[] | undefined>();
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
-  useVehiclePaints: () => ({ data: paints, isLoading: ref(false) }),
+  useVehiclePaints: () => ({
+    data: paints,
+    isLoading: ref(false),
+    isPlaceholderData: ref(false),
+  }),
 }));
 const vehicle = {
   id: "ship",
@@ -51,6 +55,12 @@ describe("Configuration paints", () => {
     paints.value = [{ owned: false, pledged: false }];
 
     expect(await paintFact()).toContain("Standard livery");
+  });
+
+  it("does not call a ship standard before the list is back", async () => {
+    paints.value = undefined;
+
+    expect(await paintFact()).not.toContain("Standard livery");
   });
 
   it("counts the recorded paints until the list is back", async () => {

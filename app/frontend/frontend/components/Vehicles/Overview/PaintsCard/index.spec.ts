@@ -10,7 +10,11 @@ const openEditModal = vi.fn();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
-  useVehiclePaints: () => ({ data: paints, isLoading: ref(false) }),
+  useVehiclePaints: () => ({
+    data: paints,
+    isLoading: ref(false),
+    isPlaceholderData: ref(false),
+  }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
@@ -171,6 +175,30 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(wrapper.find('[data-test="vehicle-overview-paints"]').exists()).toBe(
       false,
     );
+  });
+
+  it("lists every paint the ship owns", async () => {
+    paints.value = Array.from({ length: 8 }, (_, index) =>
+      entry(`Paint ${index}`, { owned: true }),
+    );
+
+    const wrapper = await mount();
+
+    expect(names(wrapper)).toHaveLength(8);
+  });
+
+  it("opens a pledged paint without preselecting it", async () => {
+    paints.value = [entry("Heritage", { pledged: true })];
+
+    const wrapper = await mount();
+
+    await wrapper.find('[data-test="vehicle-overview-paint"]').trigger("click");
+    await flushPromises();
+
+    expect(openEditModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paint",
+      paintId: undefined,
+    });
   });
 
   it("opens the vehicle paint tab from a paint", async () => {

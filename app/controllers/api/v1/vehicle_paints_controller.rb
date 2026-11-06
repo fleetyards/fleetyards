@@ -12,11 +12,12 @@ module Api
       def index
         authorize! @vehicle, to: :show?
 
-        # A paint the ship owns stays listed even once the catalogue hides it,
-        # or the card would lose it.
+        # A paint the ship owns or its owner pledged for stays listed even once
+        # the catalogue hides it, or the card would lose it.
         owned_ids = @vehicle.model_paint_ids
+        pledged_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner).paint_ids(@vehicle.model.paints)
         picture_id = @vehicle.picture_id if @vehicle.picture_type == "ModelPaint"
-        kept_ids = owned_ids | [picture_id].compact
+        kept_ids = owned_ids | pledged_ids | [picture_id].compact
         paints = @vehicle.model.paints
           .visible.active
           .or(@vehicle.model.paints.where(id: kept_ids))
@@ -24,7 +25,7 @@ module Api
           .order(name: :asc)
           .to_a
         @owned_ids = owned_ids.to_set
-        @pledged_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner).paint_ids(paints).to_set
+        @pledged_ids = pledged_ids.to_set
         @paints = paints.sort_by do |paint|
           if @owned_ids.include?(paint.id) then 0
           elsif @pledged_ids.include?(paint.id) then 1

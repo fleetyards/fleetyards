@@ -20,13 +20,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const SHOWN_COUNT = 6;
-
 const { t } = useI18n();
 
-const { all, owned, isLoading } = useVehicleOwnedPaints(() => props.vehicle);
-
-const shown = computed(() => owned.value.slice(0, SHOWN_COUNT));
+const { all, owned, pending } = useVehicleOwnedPaints(() => props.vehicle);
 
 const { openEditModal } = useVehicleModals();
 
@@ -35,13 +31,18 @@ const editable = computed(() => !props.vehicle.loaner && !props.vehicle.wanted);
 
 const visible = computed(
   () =>
-    isLoading.value ||
+    pending.value ||
     owned.value.length > 0 ||
     (editable.value && all.value.length > 0),
 );
 
 const openPicker = (paintId?: string) =>
   openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.PAINT, paintId });
+
+// Preselecting a paint marks the form as changed, which would stop the paint tab
+// from filling in the pledges. One that is only pledged is among those anyway.
+const openEntry = (entry: VehiclePaint) =>
+  openPicker(entry.owned ? entry.paint.id : undefined);
 
 const thumb = (entry: VehiclePaint) =>
   entry.paint.media.storeImage?.smallUrl || entry.paint.media.storeImage?.url;
@@ -51,7 +52,7 @@ const thumb = (entry: VehiclePaint) =>
   <MetricsCard
     v-if="visible"
     :title="t('labels.vehicleOverview.ownedPaints')"
-    :loading="isLoading"
+    :loading="pending"
     variant="slim"
     data-test="vehicle-overview-paints"
   >
@@ -66,7 +67,7 @@ const thumb = (entry: VehiclePaint) =>
       </Btn>
     </template>
     <p
-      v-if="!isLoading && !owned.length"
+      v-if="!pending && !owned.length"
       class="overview-card-muted"
       data-test="vehicle-overview-paints-empty"
     >
@@ -74,14 +75,14 @@ const thumb = (entry: VehiclePaint) =>
     </p>
     <div v-else class="overview-paints">
       <button
-        v-for="entry in shown"
+        v-for="entry in owned"
         :key="entry.paint.id"
         type="button"
         class="overview-paints__paint"
         :class="{ 'overview-paints__paint--picture': entry.picture }"
         :disabled="!editable"
         data-test="vehicle-overview-paint"
-        @click="openPicker(entry.paint.id)"
+        @click="openEntry(entry)"
       >
         <img
           v-if="thumb(entry)"

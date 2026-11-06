@@ -1,9 +1,16 @@
 import { type Vehicle, useVehiclePaints } from "@/services/fyApi";
 
 export const useVehicleOwnedPaints = (vehicle: () => Vehicle) => {
-  const { data, isLoading } = useVehiclePaints(() => vehicle().id);
+  const { data, isLoading, isPlaceholderData } = useVehiclePaints(
+    () => vehicle().id,
+  );
 
-  const all = computed(() => data.value ?? []);
+  // A placeholder is the previous ship's list.
+  const loaded = computed(() => !!data.value && !isPlaceholderData.value);
+
+  const pending = computed(() => isLoading.value || isPlaceholderData.value);
+
+  const all = computed(() => (loaded.value ? (data.value ?? []) : []));
 
   // A pledge names no ship, so it counts for any ship of the model the owner
   // really has, but not for one on loan or still on the wishlist.
@@ -15,5 +22,5 @@ export const useVehicleOwnedPaints = (vehicle: () => Vehicle) => {
     ),
   );
 
-  return { all, owned, isLoading };
+  return { all, owned, loaded, pending };
 };
