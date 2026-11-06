@@ -17,6 +17,8 @@ interface Props {
   dps?: number;
   missileDamage?: number;
   shieldHp?: number;
+  // A loadout's holds are its own, where the ship's are only its stock figure.
+  fittedHolds?: boolean;
   // In flight, first answer or refetch alike.
   loading?: boolean;
   // No answer yet, so the figures read off the hardpoints have nothing to show.
@@ -28,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   dps: 0,
   missileDamage: 0,
   shieldHp: 0,
+  fittedHolds: false,
   loading: false,
   pending: false,
 });
@@ -122,9 +125,10 @@ const figures = computed<Figure[]>(() => {
   // The figure the page's base metrics show, until a picked module changes what
   // the holds add up to.
   const pickedModule = Object.values(equippedModules.value).some(Boolean);
-  const cargo = pickedModule
-    ? props.cargoHolds.reduce((sum, hold) => sum + (hold.capacity || 0), 0)
-    : (metrics?.maxCargo ?? metrics?.cargo);
+  const cargo =
+    pickedModule || props.fittedHolds
+      ? props.cargoHolds.reduce((sum, hold) => sum + (hold.capacity || 0), 0)
+      : (metrics?.maxCargo ?? metrics?.cargo);
 
   if (cargo) {
     list.push({

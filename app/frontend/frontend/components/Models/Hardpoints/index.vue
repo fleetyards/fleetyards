@@ -93,23 +93,42 @@ provide(metricsCardFoldKey, {
 
 // What differs from stock is what a loadout's page is for, so a card holding such
 // a part opens in full, ready to read. Every other card opens on its summary.
-const altered = computed(
-  () => new Set([...(props.changed ?? []), ...(props.crafted ?? [])]),
-);
+const groupsOpeningExpanded = computed(() => {
+  const changed = props.changed;
 
-const opensExpanded = (group: string) =>
-  holdsAny(
-    (props.fitting ?? []).filter((hardpoint) => hardpoint.group === group),
-    altered.value,
+  return new Set(
+    changed
+      ? (props.fitting ?? [])
+          .filter((hardpoint) => holdsAny([hardpoint], changed))
+          .map((hardpoint) => hardpoint.group)
+      : [],
   );
+});
+
+const opensCollapsed = (group: string) =>
+  !groupsOpeningExpanded.value.has(group as HardpointGroupEnum);
 
 const groupCollapsed = (group: string) =>
-  opensExpanded(group) ===
-  modelsStore.hardpointGroupFlipped(foldScope.value, group);
+  modelsStore.hardpointGroupFold(foldScope.value, group) ??
+  opensCollapsed(group);
+
+// A card set back to how it opens goes back to following that, so nothing is kept
+// for a reader who only looked.
+const setGroupsCollapsed = (groups: string[], collapsed: boolean) => {
+  modelsStore.setHardpointGroupFolds(
+    foldScope.value,
+    Object.fromEntries(
+      groups.map((group) => [
+        group,
+        collapsed === opensCollapsed(group) ? undefined : collapsed,
+      ]),
+    ),
+  );
+};
 
 provide(hardpointCardFoldKey, {
   collapsed: groupCollapsed,
-  toggle: (group) => modelsStore.toggleHardpointGroup(foldScope.value, group),
+  toggle: (group) => setGroupsCollapsed([group], !groupCollapsed(group)),
 });
 
 const metricsAdvanced = computed(() => modelsStore.shipMetricsAdvanced);
@@ -398,14 +417,8 @@ const columns = computed(() =>
 
 const allCollapsed = computed(() => shownGroups.value.every(groupCollapsed));
 
-// Flips only the cards that do not already open the way that was asked for.
 const toggleAllGroups = () => {
-  const expanding = allCollapsed.value;
-
-  modelsStore.setFlippedHardpointGroups(
-    foldScope.value,
-    shownGroups.value.filter((group) => opensExpanded(group) !== expanding),
-  );
+  setGroupsCollapsed(shownGroups.value, !allCollapsed.value);
 };
 
 const metricsGrid = ref<HTMLElement>();
@@ -453,6 +466,7 @@ useMetricsMasonry(metricsGrid);
         :dps="summaryCombat.dps.total"
         :missile-damage="summaryCombat.missileDamage"
         :shield-hp="summaryShield.totalHp"
+        :fitted-holds="!!fitting"
         :loading="loadingHardpoints"
         :pending="isLoading"
       />

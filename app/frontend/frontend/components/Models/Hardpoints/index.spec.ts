@@ -148,40 +148,66 @@ describe("Hardpoints with a loadout's fitting", () => {
     });
 
     it("remembers collapsing a card that opened in full, per loadout", async () => {
-      const flipped = await mountFitting({
-        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+      const folded = await mountFitting({
+        foldedHardpointGroups: {
+          "loadout-1": { [HardpointGroupEnum.WEAPON]: true },
+        },
       });
 
-      expect(summaryRows(flipped)).toHaveLength(2);
-      flipped.unmount();
+      expect(summaryRows(folded)).toHaveLength(2);
+      folded.unmount();
 
       const other = await mountFitting({
-        flippedHardpointGroups: { "loadout-2": [HardpointGroupEnum.WEAPON] },
+        foldedHardpointGroups: {
+          "loadout-2": { [HardpointGroupEnum.WEAPON]: true },
+        },
       });
 
       expect(summaryRows(other)).toHaveLength(1);
       other.unmount();
     });
 
-    it("flips only what expand all has to", async () => {
+    it("keeps a reader's fold once the card's change is gone", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { model, fitting: [cooler, gun], loadoutId: "loadout-1" },
+        initialState: {
+          models: {
+            foldedHardpointGroups: {
+              "loadout-1": { [HardpointGroupEnum.SYSTEM]: false },
+            },
+          },
+        },
+      });
+
+      expect(wrapper.find(".hardpoint-item").text()).toContain("Bracer");
+
+      wrapper.unmount();
+    });
+
+    it("keeps only the cards expand all set differently from how they open", async () => {
       const wrapper = await mountFitting({
-        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+        foldedHardpointGroups: {
+          "loadout-1": { [HardpointGroupEnum.WEAPON]: true },
+        },
       });
       const store = useModelsStore();
-      const set = vi.spyOn(store, "setFlippedHardpointGroups");
+      const set = vi.spyOn(store, "setHardpointGroupFolds");
 
       await wrapper.find("[data-test='hardpoints-fold-all']").trigger("click");
 
-      expect(set).toHaveBeenCalledWith("loadout-1", [
-        HardpointGroupEnum.SYSTEM,
-      ]);
+      expect(set).toHaveBeenCalledWith("loadout-1", {
+        [HardpointGroupEnum.SYSTEM]: false,
+        [HardpointGroupEnum.WEAPON]: undefined,
+      });
 
       wrapper.unmount();
     });
 
     it("marks a changed part on its summary row", async () => {
       const wrapper = await mountFitting({
-        flippedHardpointGroups: { "loadout-1": [HardpointGroupEnum.WEAPON] },
+        foldedHardpointGroups: {
+          "loadout-1": { [HardpointGroupEnum.WEAPON]: true },
+        },
       });
 
       const marked = wrapper.findAll(

@@ -33,6 +33,18 @@ describe("HardpointsSummaryFigures", () => {
     expect(wrapper.find(figure("shield")).text()).toContain("–");
   });
 
+  it("uses a loadout's own holds", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        model: { ...model, metrics: { maxCargo: 696, cargo: 100 } } as Model,
+        cargoHolds: [{ capacity: 480 }] as never,
+        fittedHolds: true,
+      },
+    });
+
+    expect(wrapper.find(figure("cargo")).text()).toContain("480");
+  });
+
   it("uses the base metrics' cargo until a module changes the holds", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
