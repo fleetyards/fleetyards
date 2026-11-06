@@ -3036,7 +3036,11 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "Métricas basadas en las fórmulas de"
+        "metricsCredit": "Métricas basadas en las fórmulas de",
+        "showDetails": "Mostrar todos los detalles",
+        "showSummary": "Mostrar resumen",
+        "total": "total",
+        "guns": "Armas"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",

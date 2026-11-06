@@ -3036,7 +3036,11 @@
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer",
-        "metricsCredit": "數據基於以下網站的計算公式"
+        "metricsCredit": "數據基於以下網站的計算公式",
+        "showDetails": "顯示全部詳情",
+        "showSummary": "顯示摘要",
+        "total": "總計",
+        "guns": "機砲"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
