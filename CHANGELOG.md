@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.44.0](https://github.com/fleetyards/fleetyards/compare/v9.43.0...v9.44.0) (2026-11-06)
+
+
+### Features
+
+* **ships:** align sort options and figures with the hangar ([#6226](https://github.com/fleetyards/fleetyards/issues/6226)) ([263454c](https://github.com/fleetyards/fleetyards/commit/263454c40dbc132434de572332d3718bafde1951))
+
 ## [9.43.0](https://github.com/fleetyards/fleetyards/compare/v9.42.0...v9.43.0) (2026-11-06)
 
 
