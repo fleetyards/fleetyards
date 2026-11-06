@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "货物",
-        "holdsSub": "分布于 %{count} 个货舱",
+        "holdsSub": {
+          "one": "分布于 %{count} 个货舱",
+          "other": "分布于 %{count} 个货舱"
+        },
         "maxContainerSub": "可装载的最大箱体",
         "containers": "集装箱容量",
         "boxCount": {

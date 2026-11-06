@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Cargaison",
-        "holdsSub": "réparties sur %{count} soutes",
+        "holdsSub": {
+          "one": "répartie sur %{count} soute",
+          "other": "réparties sur %{count} soutes"
+        },
         "maxContainerSub": "plus grande caisse acceptée",
         "containers": "Capacité en conteneurs",
         "boxCount": {

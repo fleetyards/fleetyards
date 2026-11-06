@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Carga",
-        "holdsSub": "en %{count} bodegas",
+        "holdsSub": {
+          "one": "en %{count} bodega",
+          "other": "en %{count} bodegas"
+        },
         "maxContainerSub": "la caja más grande que admite",
         "containers": "Capacidad de contenedores",
         "boxCount": {

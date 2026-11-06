@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Cargo",
-        "holdsSub": "across %{count} holds",
+        "holdsSub": {
+          "one": "across %{count} hold",
+          "other": "across %{count} holds"
+        },
         "maxContainerSub": "largest box it takes",
         "containers": "Container Capacity",
         "boxCount": {

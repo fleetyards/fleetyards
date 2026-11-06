@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "貨物",
-        "holdsSub": "分佈於 %{count} 個貨艙",
+        "holdsSub": {
+          "one": "分佈於 %{count} 個貨艙",
+          "other": "分佈於 %{count} 個貨艙"
+        },
         "maxContainerSub": "可裝載的最大貨櫃",
         "containers": "貨櫃容量",
         "boxCount": {

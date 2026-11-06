@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Carico",
-        "holdsSub": "su %{count} stive",
+        "holdsSub": {
+          "one": "su %{count} stiva",
+          "other": "su %{count} stive"
+        },
         "maxContainerSub": "il container più grande che accetta",
         "containers": "Capacità in container",
         "boxCount": {

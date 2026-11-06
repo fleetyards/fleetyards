@@ -1550,7 +1550,10 @@
       },
       "cargo": {
         "title": "Fracht",
-        "holdsSub": "in %{count} Frachträumen",
+        "holdsSub": {
+          "one": "in %{count} Frachtraum",
+          "other": "in %{count} Frachträumen"
+        },
         "maxContainerSub": "größte Box, die sie aufnimmt",
         "containers": "Containerkapazität",
         "boxCount": {
