@@ -28,7 +28,7 @@ const mountRow = (row: Partial<MinimalRow>, provide = {}) =>
           provideValue(key, value);
         });
 
-        return { row: { key: "row", total: false, ...row } };
+        return { row: { key: "row", total: false, relatedIds: [], ...row } };
       },
       template: "<Row :row='row' />",
     }),

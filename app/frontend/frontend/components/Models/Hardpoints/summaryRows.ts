@@ -11,6 +11,9 @@ export interface MinimalRow {
   // One row for every thruster of a type, which differ too little to list and
   // whose figure is therefore what they push together.
   total: boolean;
+  // The hardpoints this row stands for, with any mount or rack it leaves out, so
+  // a change to one of those still shows on the row.
+  relatedIds: string[];
 }
 
 export interface MinimalCategory {
@@ -60,11 +63,13 @@ const categoryOf = ({ category }: Hardpoint) =>
 interface Placed {
   hardpoint: Hardpoint;
   category: HardpointCategoryEnum;
+  carriers: string[];
 }
 
 const place = (
   hardpoint: Hardpoint,
   heading?: HardpointCategoryEnum,
+  carriers: string[] = [],
 ): Placed[] => {
   const contents = partContents(hardpoint);
 
@@ -76,13 +81,15 @@ const place = (
         ? HardpointCategoryEnum.TURRET
         : undefined);
 
-    return contents.flatMap((part) => place(part, carried));
+    return contents.flatMap((part) =>
+      place(part, carried, [...carriers, hardpoint.id]),
+    );
   }
 
   const category = heading ?? categoryOf(hardpoint);
 
   return [
-    { hardpoint, category },
+    { hardpoint, category, carriers },
     ...contents.flatMap((part) => place(part, category)),
   ];
 };
@@ -109,34 +116,40 @@ const thrustOf = (hardpoint: Hardpoint) =>
   (hardpoint.component?.typeData as ComponentThruster | undefined)
     ?.thrustCapacity;
 
-const stacksOf = (hardpoints: Hardpoint[]): MinimalRow[] => {
-  const stacks = new Map<string, Hardpoint[]>();
+const rowOf = (key: string, placed: Placed[], total: boolean): MinimalRow => ({
+  key,
+  total,
+  hardpoints: placed.map(({ hardpoint }) => hardpoint),
+  relatedIds: placed.flatMap(({ hardpoint, carriers }) => [
+    hardpoint.id,
+    ...carriers,
+  ]),
+});
 
-  hardpoints.forEach((hardpoint) => {
-    const key = stackKey(hardpoint);
-    stacks.set(key, [...(stacks.get(key) ?? []), hardpoint]);
+const stacksOf = (placed: Placed[]): MinimalRow[] => {
+  const stacks = new Map<string, Placed[]>();
+
+  placed.forEach((entry) => {
+    const key = stackKey(entry.hardpoint);
+    stacks.set(key, [...(stacks.get(key) ?? []), entry]);
   });
 
-  return [...stacks].map(([key, stack]) => ({
-    key,
-    hardpoints: stack,
-    total: false,
-  }));
+  return [...stacks].map(([key, stack]) => rowOf(key, stack, false));
 };
 
 const rowsFor = (
   category: HardpointCategoryEnum,
-  hardpoints: Hardpoint[],
+  placed: Placed[],
 ): MinimalRow[] => {
-  const pushing = hardpoints.filter(thrustOf);
+  const pushing = placed.filter(({ hardpoint }) => thrustOf(hardpoint));
 
   if (!THRUSTERS.includes(category) || !pushing.length) {
-    return stacksOf(hardpoints);
+    return stacksOf(placed);
   }
 
   return [
-    { key: category, hardpoints: pushing, total: true },
-    ...stacksOf(hardpoints.filter((hardpoint) => !thrustOf(hardpoint))),
+    rowOf(category, pushing, true),
+    ...stacksOf(placed.filter(({ hardpoint }) => !thrustOf(hardpoint))),
   ];
 };
 
@@ -153,7 +166,7 @@ export const minimalCategories = (
 ): MinimalCategory[] => {
   const leftOut = complete ? NEVER_LISTED : LEFT_OUT;
 
-  const categories = new Map<HardpointCategoryEnum, Hardpoint[]>();
+  const categories = new Map<HardpointCategoryEnum, Placed[]>();
 
   hardpoints
     .flatMap((hardpoint) => place(hardpoint))
@@ -161,10 +174,10 @@ export const minimalCategories = (
       ({ hardpoint, category }) =>
         !leftOut.includes(category) && !leftOut.includes(categoryOf(hardpoint)),
     )
-    .forEach(({ hardpoint, category }) => {
-      categories.set(category, [
-        ...(categories.get(category) ?? []),
-        hardpoint,
+    .forEach((entry) => {
+      categories.set(entry.category, [
+        ...(categories.get(entry.category) ?? []),
+        entry,
       ]);
     });
 
@@ -172,3 +185,10 @@ export const minimalCategories = (
     .sort(([a], [b]) => rank(a) - rank(b) || String(a).localeCompare(String(b)))
     .map(([category, list]) => ({ category, rows: rowsFor(category, list) }));
 };
+
+// Whether any of these hardpoints, or what sits inside them, is one of the ids.
+export const holdsAny = (hardpoints: Hardpoint[], ids: Set<string>): boolean =>
+  hardpoints.some(
+    (hardpoint) =>
+      ids.has(hardpoint.id) || holdsAny(partContents(hardpoint), ids),
+  );

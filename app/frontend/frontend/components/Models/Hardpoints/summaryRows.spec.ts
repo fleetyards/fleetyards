@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
-import { minimalCategories } from "./summaryRows";
+import { holdsAny, minimalCategories } from "./summaryRows";
 
 let nextId = 0;
 
@@ -132,6 +132,30 @@ describe("minimalCategories", () => {
         { complete: true },
       ).map(({ category }) => category),
     ).toEqual([HardpointCategoryEnum.LIFESUPPORT]);
+  });
+
+  it("remembers the mounts a row leaves out", () => {
+    const held = gun("Cannon");
+    const mount = hardpoint(HardpointCategoryEnum.WEAPON_MOUNTS, "Gimbal", [
+      held,
+    ]);
+    const turret = hardpoint(HardpointCategoryEnum.TURRET, "Turret", [mount]);
+
+    const [{ rows }] = minimalCategories([turret]);
+
+    expect(rows[0].relatedIds.toSorted()).toEqual(
+      [held.id, mount.id, turret.id].toSorted(),
+    );
+  });
+
+  it("finds an id anywhere inside the hardpoints", () => {
+    const held = gun("Cannon");
+    const mount = hardpoint(HardpointCategoryEnum.WEAPON_MOUNTS, "Gimbal", [
+      held,
+    ]);
+
+    expect(holdsAny([mount], new Set([held.id]))).toBe(true);
+    expect(holdsAny([mount], new Set(["elsewhere"]))).toBe(false);
   });
 
   it("folds a thruster type into one total row, whatever their thrust", () => {
