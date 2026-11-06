@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
+import { HARDPOINT_COLUMNS } from "./columns";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
@@ -412,42 +413,13 @@ useMetricsMasonry(metricsGrid);
              rows a refetch keeps on screen. -->
         <Loader :loading="isLoading || isFetching" />
         <div v-if="shownHardpoints?.length" class="row">
-          <div class="col-12 col-md-6 col-lg-4">
+          <div
+            v-for="(groups, column) in HARDPOINT_COLUMNS"
+            :key="column"
+            class="col-12 col-md-6 col-lg-4"
+          >
             <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.AVIONIC,
-                HardpointGroupEnum.SYSTEM,
-                HardpointGroupEnum.OTHER,
-                HardpointGroupEnum.ORE_POD,
-                HardpointGroupEnum.MINING,
-                HardpointGroupEnum.SALVAGE,
-                HardpointGroupEnum.SALVAGE_STORAGE,
-                HardpointGroupEnum.MODULE,
-                HardpointGroupEnum.EXTERNAL_FUEL_TANK,
-              ]"
-              :key="group"
-              :group="group"
-              :hardpoints="hardpointsForGroup(group)"
-            />
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.PROPULSION,
-                HardpointGroupEnum.THRUSTER,
-              ]"
-              :key="group"
-              :group="group"
-              :hardpoints="hardpointsForGroup(group)"
-            />
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <HardpointGroup
-              v-for="group in [
-                HardpointGroupEnum.WEAPON,
-                HardpointGroupEnum.DEFENSE,
-                HardpointGroupEnum.AUXILIARY,
-              ]"
+              v-for="group in groups"
               :key="group"
               :group="group"
               :hardpoints="hardpointsForGroup(group)"
