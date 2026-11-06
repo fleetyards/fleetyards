@@ -2,7 +2,11 @@ import { mount, type VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { h } from "vue";
 import Popover from "./index.vue";
-import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
+import {
+  popoverLayerKey,
+  POPOVER_BASE_LAYER,
+  POPOVER_SHEET_LAYER,
+} from "./layer";
 
 const wrappers: VueWrapper[] = [];
 
@@ -10,6 +14,7 @@ const mountPopover = (trigger: "link" | "text" = "link", label = "Glacier") => {
   const wrapper = mount(Popover, {
     attachTo: document.body,
     props: { label },
+    global: { stubs: { AppModalCloseBtn: true } },
     slots: {
       default: () =>
         trigger === "link"
@@ -448,5 +453,147 @@ describe("Popover layering", () => {
     await vi.advanceTimersByTimeAsync(0);
 
     expect((panel() as HTMLElement).style.left).toBe(opened);
+  });
+});
+
+describe("Popover on a phone", () => {
+  const phoneWidth = (matches: boolean) => {
+    window.matchMedia = vi.fn().mockReturnValue({
+      matches,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+  };
+
+  afterEach(() => {
+    Reflect.deleteProperty(window, "matchMedia");
+  });
+
+  const openByTap = async () => {
+    const wrapper = mountPopover();
+
+    tap(wrapper.find("[data-test='popover-trigger']").element);
+    await vi.advanceTimersByTimeAsync(0);
+
+    return wrapper;
+  };
+
+  const scrim = () => document.querySelector("[data-test='popover-scrim']");
+
+  it("opens a tap as a sheet above the navigation", async () => {
+    phoneWidth(true);
+
+    await openByTap();
+
+    const sheet = panel() as HTMLElement;
+
+    expect(sheet.classList).toContain("popover--sheet");
+    expect(sheet.style.top).toBe("");
+    expect(sheet.style.zIndex).toBe(`${POPOVER_SHEET_LAYER}`);
+    expect(scrim()).not.toBeNull();
+  });
+
+  it("closes from the scrim's click, not its press", async () => {
+    phoneWidth(true);
+
+    await openByTap();
+
+    scrim()?.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(panel()).not.toBeNull();
+
+    (scrim() as HTMLElement).click();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(panel()).toBeNull();
+    expect(scrim()).toBeNull();
+  });
+
+  describe("swiping", () => {
+    const touch = (type: string, clientY?: number, timeStamp = 0) => {
+      const event = new Event(type, { bubbles: true, cancelable: true });
+      Object.assign(event, {
+        touches: clientY === undefined ? [] : [{ clientY }],
+      });
+      Object.defineProperty(event, "timeStamp", { value: timeStamp });
+      panel()?.dispatchEvent(event);
+    };
+
+    const swipe = async (distance: number, duration = 1000) => {
+      touch("touchstart", 200, 0);
+      touch("touchmove", 200 + distance, duration);
+      await vi.advanceTimersByTimeAsync(0);
+      const pulled = (panel() as HTMLElement).style.transform;
+      touch("touchend", undefined, duration);
+      await vi.advanceTimersByTimeAsync(0);
+
+      return pulled;
+    };
+
+    it("follows the finger and closes past the distance", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      expect(await swipe(120)).toBe("translateY(120px)");
+      expect(panel()).toBeNull();
+    });
+
+    it("springs back from a short, slow pull", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      await swipe(50);
+
+      expect(panel()).not.toBeNull();
+      expect((panel() as HTMLElement).style.transform).toBe("");
+    });
+
+    it("closes on a short flick", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      await swipe(50, 50);
+
+      expect(panel()).toBeNull();
+    });
+
+    it("leaves a card scrolled down to scroll", async () => {
+      phoneWidth(true);
+      await openByTap();
+
+      (panel() as HTMLElement).scrollTop = 40;
+      await swipe(150);
+
+      expect(panel()).not.toBeNull();
+    });
+
+    it("does not move an anchored card", async () => {
+      phoneWidth(false);
+      await openByTap();
+
+      expect(await swipe(150)).toBe("");
+      expect(panel()).not.toBeNull();
+    });
+  });
+
+  it("stays anchored on a wider screen", async () => {
+    phoneWidth(false);
+
+    await openByTap();
+
+    expect((panel() as HTMLElement).classList).not.toContain("popover--sheet");
+    expect(scrim()).toBeNull();
+  });
+
+  it("stays anchored when a mouse opens it, whatever the width", async () => {
+    phoneWidth(true);
+
+    const wrapper = mountPopover();
+    const trigger = wrapper.find("[data-test='popover-trigger']");
+
+    pointerover(trigger.element, "mouse");
+    await trigger.trigger("mouseenter");
+    await vi.advanceTimersByTimeAsync(300);
+
+    expect((panel() as HTMLElement).classList).not.toContain("popover--sheet");
   });
 });

@@ -8,10 +8,16 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useResizeObserver } from "@vueuse/core";
+import { useMediaQuery, useResizeObserver } from "@vueuse/core";
+import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import { placeFloating } from "@/shared/utils/floatingPlacement";
 import { claimActive, releaseActive } from "./activePopover";
-import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
+import {
+  popoverLayerKey,
+  POPOVER_BASE_LAYER,
+  POPOVER_SHEET_LAYER,
+} from "./layer";
+import { useSheetSwipe } from "./useSheetSwipe";
 import {
   type PopoverPlacement,
   type PopoverSide,
@@ -151,8 +157,14 @@ const anchorRect = (): DOMRect => {
   } as DOMRect;
 };
 
+const phoneWidth = useMediaQuery("(max-width: 575.98px)");
+
+// A card fills a phone from wherever it is anchored, covering what was tapped and
+// running under the navigation, so there a tap opens it as a sheet from the bottom.
+const sheet = computed(() => phoneWidth.value && openedBy.value === "tap");
+
 const place = () => {
-  if (!trigger.value || !panel.value) return;
+  if (sheet.value || !trigger.value || !panel.value) return;
 
   const { top, left, placement } = placeFloating(
     anchorRect(),
@@ -168,9 +180,11 @@ const place = () => {
 // A card opened from inside a modal belongs above that modal; anywhere else it
 // sits above the page and below any modal that opens over it.
 const layer = inject(popoverLayerKey, undefined);
-const zIndex = computed(() =>
-  layer === undefined ? POPOVER_BASE_LAYER : layer + 1,
-);
+const zIndex = computed(() => {
+  const anchored = layer === undefined ? POPOVER_BASE_LAYER : layer + 1;
+
+  return sheet.value ? Math.max(anchored, POPOVER_SHEET_LAYER) : anchored;
+});
 
 // A lazily loaded card changes size once its data arrives.
 useResizeObserver(panel, () => {
@@ -188,7 +202,20 @@ const within = (node: EventTarget | null) =>
 // reading the card, not leaving it.
 let touchedWithin = false;
 
+const scrim = ref<HTMLElement | null>(null);
+
+const swipe = useSheetSwipe(
+  panel,
+  () => sheet.value,
+  () => close(),
+);
+const { offset: swipeOffset, dragging: swiping } = swipe;
+
 const onDocumentPointerdown = (event: PointerEvent) => {
+  // Closed by its click instead. Gone on the press, the tap's click would land
+  // on whatever the scrim was covering.
+  if (event.target === scrim.value) return;
+
   touchedWithin = within(event.target);
 
   if (!touchedWithin) close();
@@ -252,6 +279,7 @@ const setDescribedBy = (on: boolean) => {
 
 function close() {
   clearTimers();
+  swipe.reset();
   if (!open.value) return;
 
   open.value = false;
@@ -439,23 +467,52 @@ defineExpose({ open, show, close });
 
   <Teleport to="body">
     <div
+      v-if="open && sheet"
+      ref="scrim"
+      class="popover-scrim"
+      :style="{ zIndex }"
+      data-test="popover-scrim"
+      @click="close"
+    />
+    <div
       v-if="open"
       :id="id"
       ref="panel"
       class="popover"
-      :class="[`popover--${placed}`, { 'popover--passive': passive }]"
-      :style="{
-        top: `${position.top}px`,
-        left: `${position.left}px`,
-        zIndex,
-      }"
+      :class="
+        sheet
+          ? ['popover--sheet', { 'popover--swiping': swiping }]
+          : [`popover--${placed}`, { 'popover--passive': passive }]
+      "
+      :style="
+        sheet
+          ? {
+              zIndex,
+              transform: swipeOffset
+                ? `translateY(${swipeOffset}px)`
+                : undefined,
+            }
+          : {
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+              zIndex,
+            }
+      "
       role="dialog"
       :aria-label="label"
       data-test="popover"
       @mouseenter="onPanelMouseenter"
       @mouseleave="onPanelMouseleave"
       @focusout="onFocusout"
+      @touchstart="swipe.onTouchstart"
+      @touchmove="swipe.onTouchmove"
+      @touchend="swipe.onTouchend"
+      @touchcancel="swipe.reset"
     >
+      <div v-if="sheet" class="popover__sheet-close">
+        <span class="popover__sheet-handle" aria-hidden="true" />
+        <AppModalCloseBtn data-test="popover-close" @click="close" />
+      </div>
       <slot name="content" :close="close" />
     </div>
   </Teleport>

@@ -16,7 +16,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 320px;
+  // A sheet is as wide as the phone, and the card fills it.
+  width: var(--stats-card-width, 320px);
   max-width: 100%;
 
   &__media {

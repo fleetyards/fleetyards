@@ -24,3 +24,66 @@
 .popover--passive {
   pointer-events: none;
 }
+
+.popover-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.popover--sheet {
+  --stats-card-width: 100%;
+
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  max-width: none;
+  max-height: 85vh;
+  max-height: 85dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-width: 1px 0 0;
+  border-radius: var(--radius-surface, 16px) var(--radius-surface, 16px) 0 0;
+  overscroll-behavior: contain;
+  transition: transform 0.2s ease-out;
+  animation: popover-sheet-in 0.2s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    animation: none;
+  }
+}
+
+.popover--swiping {
+  transition: none;
+}
+
+// No height of its own, so the card starts at the top of the sheet underneath it,
+// and sticky so it stays in reach while a long card scrolls.
+.popover__sheet-close {
+  position: sticky;
+  top: 8px;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  height: 0;
+  padding-right: 8px;
+}
+
+.popover__sheet-handle {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 40px;
+  height: 4px;
+  margin-left: -20px;
+  border-radius: 2px;
+  background: var(--color-endcap, #7a8288);
+}
+
+@keyframes popover-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
