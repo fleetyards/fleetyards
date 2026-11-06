@@ -114,7 +114,7 @@ module ScData
         [/special|holiday|lunar/, "consumer_goods"],
         [/processedgoods/, "processed_goods"],
         [/organic/, "food"],
-        [/consumergoods/, "consumer_goods"],
+        [/consumergoods|stolen_goods/, "consumer_goods"],
         [/harvestable|_cy_|_vlk_/, "natural"]
       ].freeze
 
