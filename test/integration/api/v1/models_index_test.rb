@@ -70,6 +70,63 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "sorts by the figures a ship carries as it comes" do
+    stat = ->(model, **figures) {
+      LoadoutStat.create!(fitting: model, environment: ::ScData::Source.current.environment,
+        version: ::ScData::Source.current.version, **figures)
+    }
+    light = create(:model, name: "Light")
+    stat.call(light, max_weapon_size: 1, alpha: 10, burst_dps: 100, sustained_dps_max: 300)
+    heavy = create(:model, name: "Heavy")
+    stat.call(heavy, max_weapon_size: 3, alpha: 100, burst_dps: 1000, sustained_dps_max: 200)
+    concept = create(:model, name: "Concept")
+
+    {
+      "maxWeaponSize" => [heavy, light, concept],
+      "alpha" => [heavy, light, concept],
+      "burstDps" => [heavy, light, concept],
+      "sustainedDpsMax" => [light, heavy, concept]
+    }.each do |sort, expected|
+      assert_api_response :get, 200, params: {q: {sorts: ["#{sort} desc"]}} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+  end
+
+  test "lists the figures a ship carries as it comes" do
+    gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      type_data: {damage_per_shot: {energy: 100}, fire_rate: 600})
+    armed = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: armed, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun)
+    LoadoutStat.refresh
+    bare = create(:model)
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      first, second = parsed_body["items"]
+
+      assert_equal armed.id, first["id"]
+      assert_equal 3, first["maxWeaponSize"]
+      assert_equal [{"size" => 3, "count" => 1}], first["weaponSizes"]
+      assert_in_delta 100, first["alpha"]
+      assert_in_delta 1000, first["burstDps"]
+      assert_in_delta 1000, first["sustainedDpsMax"]
+
+      assert_equal bare.id, second["id"]
+      assert_nil second["alpha"]
+      assert_equal [], second["weaponSizes"]
+    end
+  end
+
+  test "keeps ships sharing a figure in name order" do
+    names = %w[Cutter Avenger Buccaneer]
+    names.each { |name| create(:model, name:) }
+
+    assert_api_response :get, 200, params: {q: {sorts: ["alpha desc"]}} do
+      assert_equal names.sort, parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 

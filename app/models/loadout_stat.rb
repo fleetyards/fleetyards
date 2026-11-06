@@ -8,6 +8,11 @@
 # build, and until the refresh after a load has run, last build's guns are a
 # better answer than none.
 class LoadoutStat < ApplicationRecord
+  # The figures a ship list sorts on, with the type ransack reads each as.
+  LIST_FIGURES = {
+    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
+  }.freeze
+
   belongs_to :fitting, polymorphic: true
 
   def self.refresh(source = ::ScData::Source.current.served)

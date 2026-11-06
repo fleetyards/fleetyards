@@ -380,9 +380,7 @@ class Vehicle < ApplicationRecord
   ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
 
   # What a vehicle carries as fitted, as `loadout_stats` records it.
-  FITTED_STATS = {
-    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
-  }.freeze
+  FITTED_STATS = LoadoutStat::LIST_FIGURES
 
   # What a vehicle carries as fitted, which reads its loadouts.
   FITTED_COLUMNS = ["cargo", *FITTED_STATS.keys].freeze

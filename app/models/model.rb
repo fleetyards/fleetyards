@@ -308,6 +308,26 @@ class Model < ApplicationRecord
 
   ransacker(:max_cargo) { Arel.sql(Model.max_cargo_sql) }
 
+  # A figure of the ship as it comes, for the source the reader is on. No guns
+  # and no figures yet both sort as 0, rather than as a NULL that a descending
+  # sort puts first. A vehicle without a loadout reads the same row.
+  def self.stock_stat_sql(column)
+    raise ArgumentError, "not a list figure: #{column}" unless LoadoutStat::LIST_FIGURES.key?(column.to_s)
+
+    sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
+      COALESCE((
+        SELECT stock_stats.#{column} FROM loadout_stats stock_stats
+        WHERE stock_stats.fitting_type = 'Model'
+          AND stock_stats.fitting_id = models.id
+          AND stock_stats.environment = ?
+      ), 0)
+    SQL
+  end
+
+  LoadoutStat::LIST_FIGURES.each do |column, type|
+    ransacker(column.to_sym, type:) { Arel.sql(Model.stock_stat_sql(column)) }
+  end
+
   # The column still answers for a model no build describes -- every concept ship,
   # and every ship the export dropped before this table existed.
   ModelBuild::FACTS.each do |fact|
@@ -424,7 +444,7 @@ class Model < ApplicationRecord
       # Both, because every mechanics reader consults `build || last_build`.
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
-      :build, :last_build,
+      :build, :last_build, :loadout_stats,
       {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, {cargo_module_hardpoints: :model_module},
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
@@ -741,7 +761,8 @@ class Model < ApplicationRecord
     "cargo desc", "manufacturerName asc", "manufacturerName desc", "pledgePrice asc",
     "pledgePrice desc", "price asc", "price desc", "scmSpeed asc", "scmSpeed desc", "maxSpeed asc",
     "maxSpeed desc", "groundMaxSpeed asc", "groundMaxSpeed desc", "productionStatus asc",
-    "productionStatus desc", "rsiId asc", "rsiId desc"
+    "productionStatus desc", "rsiId asc", "rsiId desc", "maxWeaponSize asc", "maxWeaponSize desc",
+    "alpha asc", "alpha desc", "burstDps asc", "burstDps desc", "sustainedDpsMax asc", "sustainedDpsMax desc"
   ]
   ADMIN_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + %w[
     updatedAt crew hydrogenFuelTankSize quantumFuelTankSize hidden active
@@ -754,15 +775,15 @@ class Model < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "active", "base_model_id",
-      "beam", "cargo", "cargo_holds", "classification", "created_at", "crew", "description",
+      "active", "alpha", "base_model_id",
+      "beam", "burst_dps", "cargo", "cargo_holds", "classification", "created_at", "crew", "description",
       "dimensions_measured_at", "dock_size", "erkul_identifier", "fleetchart_image",
       "fleetchart_offset_length", "front_view",
       "ground", "ground_acceleration",
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only", "can_land_on_planets",
       "images_count", "last_updated_at", "length", "loaners_count",
-      "manufacturer", "manufacturer_id", "mass", "max_cargo", "max_speed", "model_paints_count", "module_hardpoints_count",
+      "manufacturer", "manufacturer_id", "mass", "max_cargo", "max_speed", "max_weapon_size", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "positions_need_curation", "price",
       "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
@@ -771,7 +792,7 @@ class Model < ApplicationRecord
       "rsi_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height", "sc_key",
       "sc_length", "scm_speed", "search",
-      "size", "slug", "stealth", "store_images_updated_at", "store_url", "top_view_colored",
+      "size", "slug", "stealth", "store_images_updated_at", "store_url", "sustained_dps_max", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
   end

@@ -43627,6 +43627,30 @@ components:
           type: string
         speeds:
           "$ref": "#/components/schemas/ModelSpeeds"
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
+        alpha:
+          type:
+          - number
+          - 'null'
+        burstDps:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMin:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMax:
+          type:
+          - number
+          - 'null'
         holo:
           type: string
           deprecated: true
@@ -43944,6 +43968,30 @@ components:
           type: string
         speeds:
           "$ref": "#/components/schemas/ModelSpeeds"
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
+        alpha:
+          type:
+          - number
+          - 'null'
+        burstDps:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMin:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMax:
+          type:
+          - number
+          - 'null'
         holo:
           type: string
           deprecated: true
@@ -45502,6 +45550,14 @@ components:
       - productionStatus desc
       - rsiId asc
       - rsiId desc
+      - maxWeaponSize asc
+      - maxWeaponSize desc
+      - alpha asc
+      - alpha desc
+      - burstDps asc
+      - burstDps desc
+      - sustainedDpsMax asc
+      - sustainedDpsMax desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
@@ -45533,6 +45589,14 @@ components:
       - PRODUCTION_STATUS_DESC
       - RSI_ID_ASC
       - RSI_ID_DESC
+      - MAX_WEAPON_SIZE_ASC
+      - MAX_WEAPON_SIZE_DESC
+      - ALPHA_ASC
+      - ALPHA_DESC
+      - BURST_DPS_ASC
+      - BURST_DPS_DESC
+      - SUSTAINED_DPS_MAX_ASC
+      - SUSTAINED_DPS_MAX_DESC
       title: ModelSortEnum
     ModelSpeeds:
       type: object

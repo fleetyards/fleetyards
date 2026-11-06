@@ -119,6 +119,7 @@ module FleetVehicleFiltersConcern
     sorts = Array(sorts)
 
     models = Model.where(id: query.result.pluck(:model_id))
+      .includes(:loadout_stats)
       .ransack(sorts: FleetVehicle.model_sorts(sorts))
       .result
 
