@@ -302,15 +302,15 @@ const scheduleClose = () => {
   }, props.closeDelay);
 };
 
-const onPointerover = (event: PointerEvent) => {
-  pointerType = event.pointerType || "";
-  trackPointer(event);
-};
-
 // Until the card is up: once it is, it stays where it opened rather than
 // chasing a cursor on its way across the trigger towards it.
 const onPointermove = (event: PointerEvent) => {
   if (!open.value) trackPointer(event);
+};
+
+const onPointerover = (event: PointerEvent) => {
+  pointerType = event.pointerType || "";
+  onPointermove(event);
 };
 
 const onMouseenter = () => {

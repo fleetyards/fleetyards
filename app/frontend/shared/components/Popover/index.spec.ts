@@ -427,4 +427,26 @@ describe("Popover layering", () => {
   it("sits one above the overlay its trigger is in", async () => {
     expect(await openIn(1050)).toBe("1051");
   });
+
+  it("stays where it opened when the cursor moves over the trigger", async () => {
+    const wrapper = mountPopover();
+    const el = wrapper.find(".popover__trigger").element;
+    const pointerAt = (clientX: number) => {
+      const event = new Event("pointerover", { bubbles: true });
+      Object.assign(event, { pointerType: "mouse", clientX, clientY: 20 });
+      el.dispatchEvent(event);
+    };
+
+    pointerAt(100);
+    el.dispatchEvent(new MouseEvent("mouseenter"));
+    await vi.advanceTimersByTimeAsync(300);
+
+    const opened = (panel() as HTMLElement).style.left;
+
+    pointerAt(500);
+    window.dispatchEvent(new Event("resize"));
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect((panel() as HTMLElement).style.left).toBe(opened);
+  });
 });
