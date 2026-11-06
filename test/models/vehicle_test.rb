@@ -642,6 +642,15 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert vehicle.reload.bought_via_reward_or_loot?
   end
 
+  test "corrects an in-game-only ship that holds no source at all" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, ingame_only: true))
+    vehicle.update_columns(bought_via: nil)
+
+    vehicle.reload.update!(flagship: true)
+
+    assert vehicle.reload.bought_via_ingame?
+  end
+
   test ".acquired_in_game leaves out what came from the pledge store" do
     bought = create(:vehicle, user: @user, bought_via: :ingame)
     looted = create(:vehicle, user: @user, bought_via: :reward_or_loot)

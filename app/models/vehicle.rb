@@ -1107,8 +1107,7 @@ class Vehicle < ApplicationRecord
   # stamps every entry it creates as a store purchase. Any other answer is one
   # the game allows, so it stands.
   protected def force_ingame_bought_via
-    return if model.blank? || !model.ingame_only?
-    return unless bought_via_pledge_store?
+    return if model.blank? || !model.ingame_only? || bought_via_reward_or_loot?
 
     self.bought_via = :ingame
   end
