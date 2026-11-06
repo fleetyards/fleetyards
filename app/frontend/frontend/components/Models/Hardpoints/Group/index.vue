@@ -42,10 +42,22 @@ if (fold) {
   provide(metricsCardFoldKey, fold);
 }
 
+const changedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsChanged",
+  ref(undefined),
+);
+
+const craftedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsCrafted",
+  ref(undefined),
+);
+
 const summaryCategories = computed(() =>
   fold || props.summaryOnly
     ? minimalCategories(props.fitted ?? props.hardpoints, {
         complete: props.summaryOnly,
+        changed: changedHardpoints.value,
+        crafted: craftedHardpoints.value,
       })
     : [],
 );

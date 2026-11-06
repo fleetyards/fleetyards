@@ -44,6 +44,25 @@ const equippedModules = inject<Ref<EquippedModules>>(
   ref({}),
 );
 
+// Set on a loadout's page: what it fits differently from the stock ship.
+const changedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsChanged",
+  ref(undefined),
+);
+
+const craftedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsCrafted",
+  ref(undefined),
+);
+
+const changed = computed(() =>
+  props.row.relatedIds.some((id) => changedHardpoints.value?.has(id)),
+);
+
+const crafted = computed(() =>
+  props.row.relatedIds.some((id) => craftedHardpoints.value?.has(id)),
+);
+
 const presentation = computed(() => rowPresentation(hardpoint.value.category));
 
 // A count of one: the figure beside "×2" is for one part, so a reader never has
@@ -116,7 +135,12 @@ const unit = computed(() => {
 </script>
 
 <template>
-  <div class="minimal-row" data-test="hardpoints-summary-row">
+  <div
+    class="minimal-row"
+    :class="{ 'minimal-row--changed': changed }"
+    :data-changed="changed || undefined"
+    data-test="hardpoints-summary-row"
+  >
     <span v-if="size" class="minimal-row__size"> S{{ size }} </span>
     <span class="minimal-row__name">
       <template v-if="!fromGameFiles">
@@ -146,6 +170,14 @@ const unit = computed(() => {
         <span class="minimal-row__grade">TBD</span>
       </template>
     </span>
+    <i
+      v-if="crafted"
+      v-tooltip="t('labels.vehicleLoadout.crafted')"
+      class="fa-solid fa-hammer minimal-row__crafted"
+      :aria-label="t('labels.vehicleLoadout.crafted')"
+      role="img"
+      data-test="hardpoint-crafted"
+    />
     <span v-if="count > 1" class="minimal-row__count">×{{ count }}</span>
     <span v-if="figure" class="minimal-row__figure">
       <span class="minimal-row__value">{{ figure.value }}</span>
@@ -160,6 +192,21 @@ const unit = computed(() => {
   align-items: center;
   gap: 10px;
   min-height: 30px;
+
+  // The frame the full row and the loadout editor mark a changed slot with, held
+  // out by its own padding so the row's contents stay in line with their neighbours.
+  &--changed {
+    margin: 2px -7px;
+    padding: 0 6px;
+    border: 1px solid var(--color-warning);
+    border-radius: var(--radius-control-bare);
+  }
+
+  &__crafted {
+    flex: none;
+    color: var(--color-text-dim);
+    font-size: 0.6875rem;
+  }
 
   &__size {
     flex: none;

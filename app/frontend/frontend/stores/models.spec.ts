@@ -43,26 +43,26 @@ describe("models store ship section", () => {
     expect(store.shipMetricsAdvanced).toBe(true);
   });
 
-  it("expands a hardpoint card for one ship only", () => {
+  it("keeps a hardpoint card's fold for one ship only", () => {
     const store = useModelsStore();
 
-    store.toggleHardpointGroup("gladius", "weapon");
+    store.setHardpointGroupFolds("gladius", { weapon: false });
 
-    expect(store.hardpointGroupExpanded("gladius", "weapon")).toBe(true);
-    expect(store.hardpointGroupExpanded("gladius", "system")).toBe(false);
-    expect(store.hardpointGroupExpanded("carrack", "weapon")).toBe(false);
+    expect(store.hardpointGroupFold("gladius", "weapon")).toBe(false);
+    expect(store.hardpointGroupFold("gladius", "system")).toBeUndefined();
+    expect(store.hardpointGroupFold("carrack", "weapon")).toBeUndefined();
   });
 
-  it("forgets a ship with every card back on its summary", () => {
+  it("forgets a card set back, and a ship with none left", () => {
     const store = useModelsStore();
 
-    store.setExpandedHardpointGroups("gladius", ["weapon", "system"]);
-    store.toggleHardpointGroup("gladius", "weapon");
+    store.setHardpointGroupFolds("gladius", { weapon: false, system: true });
+    store.setHardpointGroupFolds("gladius", { weapon: undefined });
 
-    expect(store.expandedHardpointGroups).toEqual({ gladius: ["system"] });
+    expect(store.foldedHardpointGroups).toEqual({ gladius: { system: true } });
 
-    store.setExpandedHardpointGroups("gladius", []);
+    store.setHardpointGroupFolds("gladius", { system: undefined });
 
-    expect(store.expandedHardpointGroups).toEqual({});
+    expect(store.foldedHardpointGroups).toEqual({});
   });
 });
