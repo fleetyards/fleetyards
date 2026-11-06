@@ -85,23 +85,26 @@ const place = (
 // By name, not by the server's group key: that key reads a slot by what sits
 // inside it, and the same gun on two different mounts is still one row here. The
 // sub-type as well, because hydrogen and quantum tanks are both "Internal Tank".
-const stackKey = ({ component, groupKey, id, maxSize }: Hardpoint) =>
-  component?.name
+// A module slot never stacks: its name comes from the reader's pick for that slot.
+const stackKey = ({
+  category,
+  component,
+  groupKey,
+  id,
+  maxSize,
+}: Hardpoint) => {
+  if (category === HardpointCategoryEnum.MODULE) return id;
+
+  return component?.name
     ? `${maxSize}|${component.name}|${component.subType ?? ""}`
     : `${groupKey ?? id}|${JSON.stringify([component?.size, component?.typeData ?? null])}`;
+};
 
 const thrustOf = (hardpoint: Hardpoint) =>
   (hardpoint.component?.typeData as ComponentThruster | undefined)
     ?.thrustCapacity;
 
-const rowsFor = (
-  category: HardpointCategoryEnum,
-  hardpoints: Hardpoint[],
-): MinimalRow[] => {
-  if (THRUSTERS.includes(category) && hardpoints.every(thrustOf)) {
-    return [{ key: category, hardpoints, total: true }];
-  }
-
+const stacksOf = (hardpoints: Hardpoint[]): MinimalRow[] => {
   const stacks = new Map<string, Hardpoint[]>();
 
   hardpoints.forEach((hardpoint) => {
@@ -114,6 +117,22 @@ const rowsFor = (
     hardpoints: stack,
     total: false,
   }));
+};
+
+const rowsFor = (
+  category: HardpointCategoryEnum,
+  hardpoints: Hardpoint[],
+): MinimalRow[] => {
+  const pushing = hardpoints.filter(thrustOf);
+
+  if (!THRUSTERS.includes(category) || !pushing.length) {
+    return stacksOf(hardpoints);
+  }
+
+  return [
+    { key: category, hardpoints: pushing, total: true },
+    ...stacksOf(hardpoints.filter((hardpoint) => !thrustOf(hardpoint))),
+  ];
 };
 
 const rank = (category: HardpointCategoryEnum) => {

@@ -139,6 +139,32 @@ describe("minimalCategories", () => {
     expect(rows[0].hardpoints).toHaveLength(3);
   });
 
+  it("totals the thrusters it can and lists an empty slot after them", () => {
+    const [{ rows }] = minimalCategories([
+      hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS, undefined, [], {
+        thrustCapacity: 1000,
+      }),
+      hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS, undefined, [], {
+        thrustCapacity: 1000,
+      }),
+      hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS),
+    ]);
+
+    expect(rows.map((row) => [row.total, row.hardpoints.length])).toEqual([
+      [true, 2],
+      [false, 1],
+    ]);
+  });
+
+  it("never stacks module slots, whose picks can differ", () => {
+    expect(
+      shape([
+        hardpoint(HardpointCategoryEnum.MODULE, "Cargo Module"),
+        hardpoint(HardpointCategoryEnum.MODULE, "Cargo Module"),
+      ]),
+    ).toEqual([[HardpointCategoryEnum.MODULE, [1, 1]]]);
+  });
+
   it("does not total thrusters when one has no figure", () => {
     const [{ rows }] = minimalCategories([
       hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS, "Named"),
