@@ -6,8 +6,8 @@
 # model, scope and ransacker underneath answers from it without being told --
 # which is what `ScData::Source.current` being a per-request value buys.
 #
-# Not `source`: endpoints use that for their own meaning, and a query parameter
-# replaces a body parameter of the same name.
+# From the query alone, and not called `source`: endpoints use that for their own
+# meaning, and `params` merges the query and the body into one namespace.
 #
 # Only a source that is **available** is accepted: one the config declares *and*
 # a catalogue carries builds for. An environment nothing has loaded would answer
@@ -32,7 +32,7 @@ module ScDataSource
   # for one gets the default rather than a failure, because the alternative is
   # a bookmarked link breaking the day an environment is retired.
   private def requested_sc_data_source
-    requested = params[:sc_data_source].presence
+    requested = request.query_parameters[:sc_data_source]
 
     return if requested.blank?
 
