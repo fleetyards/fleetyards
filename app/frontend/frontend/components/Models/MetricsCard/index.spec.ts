@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { useModelsStore } from "@/frontend/stores/models";
 import Component from "./index.vue";
 
 /*
@@ -90,5 +91,53 @@ describe("MetricsCard", () => {
       "loading-line--active",
     );
     expect(wrapper.find("[role='status']").text()).toBe("");
+  });
+
+  describe("collapsing", () => {
+    const mountFolding = (slug: string) =>
+      mountWithDefaults(
+        defineComponent({
+          components: { Card: Component },
+          setup() {
+            provide("metricsCardsModelSlug", ref(slug));
+          },
+          template: "<Card title='Combat' collapse-key='combat' />",
+        }),
+        {
+          initialState: {
+            models: { collapsedSections: { gladius: ["metrics-combat"] } },
+          },
+        },
+      );
+
+    it("offers no control off the ship page", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { title: "Combat", collapseKey: "combat" },
+      });
+
+      expect(wrapper.find("[data-test='metrics-card-collapse']").exists()).toBe(
+        false,
+      );
+    });
+
+    const button = '[data-test="metrics-card-collapse"]';
+
+    it("reads folded on the ship it was folded on, and on no other", async () => {
+      const gladius = await mountFolding("gladius");
+      const carrack = await mountFolding("carrack");
+
+      expect(gladius.find(button).attributes("aria-expanded")).toBe("false");
+      expect(carrack.find(button).attributes("aria-expanded")).toBe("true");
+    });
+
+    it("toggles under the ship's slug", async () => {
+      const wrapper = await mountFolding("carrack");
+
+      const toggle = vi.spyOn(useModelsStore(), "toggleSection");
+
+      await wrapper.find(button).trigger("click");
+
+      expect(toggle).toHaveBeenCalledWith("carrack", "metrics-combat");
+    });
   });
 });

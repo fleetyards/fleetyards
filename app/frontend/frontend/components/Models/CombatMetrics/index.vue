@@ -154,6 +154,7 @@ const showControlComposition = computed(() =>
 
 <template>
   <MetricsCard
+    collapse-key="combat"
     v-if="loading || stats.hasData"
     :title="t('labels.combat.title')"
     :loading="loading"

@@ -208,6 +208,7 @@ const rotations = computed(() =>
 
 <template>
   <MetricsCard
+    collapse-key="flight"
     v-if="hasData"
     :title="t('labels.flight.title')"
     class="flight-panel"

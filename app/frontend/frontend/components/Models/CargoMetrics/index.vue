@@ -53,6 +53,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
 
 <template>
   <MetricsCard
+    collapse-key="cargo"
     v-if="hasData"
     :title="t('labels.cargo.title')"
     class="cargo-panel"

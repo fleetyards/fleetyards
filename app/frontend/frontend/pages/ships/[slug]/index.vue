@@ -157,6 +157,12 @@ const modelsStore = useModelsStore();
 const { holoviewerVisible, modelState, shipDetailsExpanded } =
   storeToRefs(modelsStore);
 
+// The metrics cards on this page fold, and stay folded for this ship.
+provide(
+  "metricsCardsModelSlug",
+  computed(() => props.model.slug),
+);
+
 const specs = ref<HTMLElement>();
 
 // The two views differ by thousands of pixels, so without this the reader lands

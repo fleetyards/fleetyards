@@ -255,6 +255,7 @@ const cellHeight = (span: number) =>
 
 <template>
   <MetricsCard
+    collapse-key="power"
     v-if="loading || (columns.length && sim.totalSegments > 0)"
     :title="t('labels.power.title')"
     :loading="loading"

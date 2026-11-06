@@ -36,6 +36,7 @@ const groups = computed<CapacityGroup[]>(() =>
 
 <template>
   <MetricsCard
+    collapse-key="external-fuel-tanks"
     v-if="tanks.length"
     :title="t('labels.model.externalFuelTanks')"
     class="fuel-tanks-panel"

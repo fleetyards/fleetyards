@@ -82,7 +82,11 @@ const openAvailability = () => {
 </script>
 
 <template>
-  <MetricsCard :title="t('labels.metrics.base')" class="base-panel">
+  <MetricsCard
+    collapse-key="base"
+    :title="t('labels.metrics.base')"
+    class="base-panel"
+  >
     <template #head>
       <span
         v-if="state !== ModelStateEnum.FLIGHT"

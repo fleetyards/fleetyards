@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Collapsed from "@/shared/components/Collapsed.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -12,21 +13,51 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useModelsStore } from "@/frontend/stores/models";
 
 type Props = {
   title: string;
   variant?: "default" | "slim";
   loading?: boolean;
+  // Names the card among a ship page's folded ones. A card only folds on a page
+  // that provides the ship to remember it for.
+  collapseKey?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: "default",
   loading: false,
+  collapseKey: undefined,
 });
 
 const { t } = useI18n();
 
 const isSlim = computed(() => props.variant === "slim");
+
+const modelSlug = inject<Ref<string> | undefined>(
+  "metricsCardsModelSlug",
+  undefined,
+);
+
+// Asked for only where it is used: these cards also render on embeds.
+const modelsStore = modelSlug ? useModelsStore() : undefined;
+
+const section = computed(() =>
+  props.collapseKey && modelSlug ? `metrics-${props.collapseKey}` : undefined,
+);
+
+const collapsed = computed(
+  () =>
+    !!section.value &&
+    !!modelSlug &&
+    !!modelsStore?.sectionCollapsed(modelSlug.value, section.value),
+);
+
+const toggleCollapsed = () => {
+  if (section.value && modelSlug) {
+    modelsStore?.toggleSection(modelSlug.value, section.value);
+  }
+};
 </script>
 
 <template>
@@ -55,8 +86,23 @@ const isSlim = computed(() => props.variant === "slim");
         :divider="isSlim"
       >
         {{ title }}
-        <template v-if="$slots.head" #actions>
+        <template v-if="$slots.head || section" #actions>
           <slot name="head" />
+          <button
+            v-if="section"
+            type="button"
+            class="metrics-card__collapse"
+            :aria-expanded="!collapsed"
+            :aria-label="t(collapsed ? 'labels.expand' : 'labels.collapse')"
+            data-test="metrics-card-collapse"
+            @click="toggleCollapsed"
+          >
+            <i
+              class="fa-solid"
+              :class="collapsed ? 'fa-chevron-down' : 'fa-chevron-up'"
+              aria-hidden="true"
+            />
+          </button>
         </template>
       </PanelHeading>
       <LoadingLine
@@ -66,11 +112,16 @@ const isSlim = computed(() => props.variant === "slim");
       />
     </div>
 
-    <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
+    <Collapsed v-if="section" :visible="!collapsed" :duration="200">
+      <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
+        <slot />
+      </PanelBody>
+    </Collapsed>
+    <PanelBody v-else :class="{ 'metrics-card__body--slim': isSlim }">
       <slot />
     </PanelBody>
 
-    <template v-if="$slots.footer" #footer>
+    <template v-if="$slots.footer && !collapsed" #footer>
       <slot name="footer" />
     </template>
   </Panel>
@@ -93,5 +144,36 @@ const isSlim = computed(() => props.variant === "slim");
 
 .metrics-card__body--slim {
   padding: 6px 14px 14px;
+}
+
+.metrics-card__collapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: var(--radius-control-bare);
+  background: none;
+  color: var(--color-muted);
+  font-size: 0.625rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.metrics-card__collapse:hover,
+.metrics-card__collapse:focus-visible {
+  background: var(--color-control-hover);
+  color: var(--color-lifted);
+}
+
+@media (pointer: coarse) {
+  .metrics-card__collapse {
+    width: 44px;
+    height: 44px;
+  }
 }
 </style>

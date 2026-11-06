@@ -56,6 +56,7 @@ const groupSize = (group: RackSlotGroup) => {
 
 <template>
   <MetricsCard
+    collapse-key="weapon-racks"
     v-if="slotCount"
     :title="t('labels.model.weaponRacks')"
     data-test="weapon-racks"
