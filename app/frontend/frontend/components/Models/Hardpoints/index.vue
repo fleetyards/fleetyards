@@ -334,15 +334,42 @@ const showMetrics = computed(
     source.value === HardpointSourceEnum.GAME_FILES,
 );
 
-const shield = useShieldStats(
+// The summary answers for the ship on auto power. Pips set on the advanced cards
+// have no control in view there, and a shield on zero would just lose its tile.
+const autoPower = emptySplits().SCM;
+
+const summaryCombat = useLoadoutStats(
   loadoutHardpoints,
-  () => powerSim.value.shieldPoolRatio,
+  () => props.model.metrics?.weaponPoolSize,
+  () => autoPower,
+  regenModifier,
 );
 
-const fittedForGroup = (group: HardpointGroupEnum): Hardpoint[] =>
-  (loadoutHardpoints.value ?? []).filter(
-    (hardpoint) => hardpoint.group === group,
-  );
+const summaryPower = useLoadoutSim(
+  loadoutHardpoints,
+  () => props.model.metrics?.weaponPoolSize,
+  () => "SCM",
+  () => autoPower,
+  undefined,
+  regenModifier,
+);
+
+const summaryShield = useShieldStats(
+  loadoutHardpoints,
+  () => summaryPower.value.shieldPoolRatio,
+);
+
+const fittedByGroup = computed(() => {
+  const groups: Partial<Record<HardpointGroupEnum, Hardpoint[]>> = {};
+
+  loadoutHardpoints.value?.forEach((hardpoint) => {
+    if (hardpoint.group) {
+      (groups[hardpoint.group] ??= []).push(hardpoint);
+    }
+  });
+
+  return groups;
+});
 
 const shownGroups = computed(() =>
   HARDPOINT_COLUMNS.flat().filter(
@@ -418,9 +445,9 @@ useMetricsMasonry(metricsGrid);
         v-if="showMetrics && !metricsAdvanced"
         :model="model"
         :cargo-holds="cargoHolds"
-        :dps="combatStats.dps.total"
-        :missile-damage="combatStats.missileDamage"
-        :shield-hp="shield.totalHp"
+        :dps="summaryCombat.dps.total"
+        :missile-damage="summaryCombat.missileDamage"
+        :shield-hp="summaryShield.totalHp"
         :loading="loadingHardpoints"
         :pending="isLoading"
       />
@@ -536,6 +563,9 @@ useMetricsMasonry(metricsGrid);
         <div
           v-if="shownHardpoints?.length"
           :class="onShipPage ? 'hardpoints__columns' : 'row'"
+          :style="
+            onShipPage ? { '--hardpoint-columns': columns.length } : undefined
+          "
         >
           <div
             v-for="(groups, column) in columns"
@@ -547,7 +577,7 @@ useMetricsMasonry(metricsGrid);
               :key="group"
               :group="group"
               :hardpoints="hardpointsForGroup(group)"
-              :fitted="fittedForGroup(group)"
+              :fitted="onShipPage ? (fittedByGroup[group] ?? []) : undefined"
             />
           </div>
         </div>
