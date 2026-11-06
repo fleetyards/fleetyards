@@ -17,6 +17,17 @@ class VehicleBundledSnubCraftsTest < ActiveSupport::TestCase
     @parent_model = create(:model).tap { |m| m.snub_crafts << @snub_model }
   end
 
+  test "a bundled child follows the way its parent was acquired" do
+    parent = create(:vehicle, user: @user, model: @parent_model, bought_via: :reward_or_loot)
+    bundled = Vehicle.find_by!(bundled: true, vehicle_id: parent.id)
+
+    assert_predicate bundled, :bought_via_reward_or_loot?
+
+    parent.update!(bought_via: :pledge_store)
+
+    assert_predicate bundled.reload, :bought_via_pledge_store?
+  end
+
   test "auto-creates a bundled child for each model.snub_crafts entry" do
     assert_difference -> { Vehicle.where(bundled: true, user_id: @user.id).count }, 1 do
       create(:vehicle, user: @user, model: @parent_model, wanted: false)

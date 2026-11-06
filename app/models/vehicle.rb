@@ -938,7 +938,7 @@ class Vehicle < ApplicationRecord
     existing = Vehicle.where(bundled: true, vehicle_id: id, model_id: snub_craft_model.id, user_id:).first
 
     if existing.present?
-      existing.update(wanted:, hidden_by_user:) if existing.wanted != wanted || existing.hidden_by_user != hidden_by_user
+      existing.update(wanted:, hidden_by_user:, bought_via:) if existing.wanted != wanted || existing.hidden_by_user != hidden_by_user || existing.bought_via != bought_via
       return
     end
 
@@ -951,7 +951,8 @@ class Vehicle < ApplicationRecord
       vehicle_id: id,
       public: false,
       wanted:,
-      hidden_by_user:
+      hidden_by_user:,
+      bought_via:
     )
   end
 
