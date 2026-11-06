@@ -177,5 +177,13 @@ const figures = computed<Figure[]>(() => {
   .metrics-card__hero {
     margin-bottom: 0;
   }
+
+  // Between a phone's two columns and room for every figure on one line, an even
+  // 4 + 3 beats a full row left over and labels wrapping inside their tiles.
+  @media (min-width: 640px) and (max-width: 1359.98px) {
+    .metrics-card__tile {
+      flex: 1 1 24%;
+    }
+  }
 }
 </style>
