@@ -492,8 +492,15 @@ class Vehicle < ApplicationRecord
     where(model_id: Model.focus_in(*keys).select(:id))
   }
 
+  scope :price_in, ->(*ranges) { where(model_id: Model.price_in(*ranges).select(:id)) }
+  scope :pledge_price_in, ->(*ranges) { where(model_id: Model.pledge_price_in(*ranges).select(:id)) }
+
   def self.ransackable_scopes(_auth_object = nil)
-    %i[image_source_eq focus_in]
+    %i[image_source_eq focus_in price_in pledge_price_in]
+  end
+
+  def self.ransackable_scopes_skip_sanitize_args
+    %i[price_in pledge_price_in]
   end
 
   serialize :alternative_names, type: Array, coder: YAML

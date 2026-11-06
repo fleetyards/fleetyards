@@ -319,6 +319,19 @@ class Model < ApplicationRecord
     "COALESCE((#{LoadoutStat.stock_sql(column, "models.id")}), 0)"
   end
 
+  # What the price filters send: `25-50` is 25 up to but not including 50, and
+  # either end may be left open.
+  def self.price_range(range)
+    from, to = range.to_s.split("-")
+
+    (from.to_i...(to.presence&.to_i || Float::INFINITY))
+  end
+
+  # Named after the predicate they replace: ransack tries a scope first, and the
+  # predicate would read `25-50` as the number 25.
+  scope :price_in, ->(*ranges) { where(price: ranges.map { |range| price_range(range) }) }
+  scope :pledge_price_in, ->(*ranges) { where(pledge_price: ranges.map { |range| price_range(range) }) }
+
   LoadoutStat::LIST_FIGURES.each do |column, type|
     ransacker(column.to_sym, type:) { Arel.sql(Model.stock_stat_sql(column)) }
   end
@@ -997,7 +1010,11 @@ class Model < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in"]
+  end
+
+  def self.ransackable_scopes_skip_sanitize_args
+    %i[price_in pledge_price_in]
   end
 
   # A ship offers a berth either because one is built into it or because a

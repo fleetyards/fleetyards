@@ -16,52 +16,6 @@ module FleetVehicleFiltersConcern
     @loaner_param ||= vehicle_query_params.delete("loaner_eq")
   end
 
-  private def price_range
-    @price_range ||= price_in.map do |prices|
-      gt_price, lt_price = prices.split("-")
-      gt_price = if gt_price.blank?
-        0
-      else
-        gt_price.to_i
-      end
-      lt_price = if lt_price.blank?
-        Float::INFINITY
-      else
-        lt_price.to_i
-      end
-      (gt_price...lt_price)
-    end
-  end
-
-  private def pledge_price_range
-    @pledge_price_range ||= pledge_price_in.map do |prices|
-      gt_price, lt_price = prices.split("-")
-      gt_price = if gt_price.blank?
-        0
-      else
-        gt_price.to_i
-      end
-      lt_price = if lt_price.blank?
-        Float::INFINITY
-      else
-        lt_price.to_i
-      end
-      (gt_price...lt_price)
-    end
-  end
-
-  private def pledge_price_in
-    pledge_price_in = vehicle_query_params.delete("pledge_price_in")
-    pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
-    pledge_price_in
-  end
-
-  private def price_in
-    price_in = vehicle_query_params.delete("price_in")
-    price_in = price_in.to_s.split unless price_in.is_a?(Array)
-    price_in
-  end
-
   private def loaner_included?
     return false if loaner_param.blank?
 

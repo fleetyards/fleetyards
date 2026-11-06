@@ -21,16 +21,6 @@ module Api
         scope = authorized_scope(Vehicle.all).where(hidden: false).purchased
         scope = hidden_by_user_included?(scope)
 
-        if price_range.present?
-          vehicle_query_params["sorts"] = "model_price asc"
-          scope = scope.includes(:model).where(models: {price: price_range})
-        end
-
-        if pledge_price_range.present?
-          vehicle_query_params["sorts"] = "model_pledge_price asc"
-          scope = scope.includes(:model).where(models: {pledge_price: pledge_price_range})
-        end
-
         scope = loaner_included?(scope)
         scope = bundled_included?(scope)
         scope = scope.where("#{Vehicle.fitted_cargo_sql} >= 0.1") if vehicle_query_params.delete("with_cargo")

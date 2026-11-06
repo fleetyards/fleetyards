@@ -96,4 +96,14 @@ class Api::V1::PublicWishlistsShowTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "filters by the price ranges the filter form sends" do
+    user = create(:user, public_wishlist: true)
+    wanted = create(:vehicle, :public, user:, wanted: true, model: create(:model, pledge_price: 30))
+    create(:vehicle, :public, user:, wanted: true, model: create(:model, pledge_price: 500))
+
+    assert_api_response :get, 200, path_params: {username: user.normalized_username}, params: {q: {pledgePriceIn: ["25-50"]}} do
+      assert_equal [wanted.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
 end

@@ -80,10 +80,6 @@ module Api
         scope = scope.where(user_id: for_members) if for_members.present?
         scope = narrow_to_squadrons(scope)
 
-        scope = scope.joins(:model).where(models: {price: price_range}) if price_range.present?
-
-        scope = scope.joins(:model).where(models: {pledge_price: pledge_price_range}) if pledge_price_range.present?
-
         count_params = vehicle_query_params.except("sorts", "s")
         @q = scope.ransack(count_params)
 

@@ -215,13 +215,6 @@ module Api
         return if performed?
 
         scope = model.variants.includes(:manufacturer, :loadout_stats, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
-        if pledge_price_range.present?
-          scope = scope.where(pledge_price: pledge_price_range)
-        end
-        if price_range.present?
-          scope = scope.where(price: price_range)
-        end
-
         apply_model_sorts
 
         @q = scope.ransack(model_query_params)
@@ -238,14 +231,6 @@ module Api
         return if performed?
 
         scope = model.loaners.includes(:manufacturer, :loadout_stats, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
-
-        if pledge_price_range.present?
-          scope = scope.where(pledge_price: pledge_price_range)
-        end
-
-        if price_range.present?
-          scope = scope.where(price: price_range)
-        end
 
         apply_model_sorts
 
@@ -438,50 +423,8 @@ module Api
         ids
       end
 
-      private def price_range
-        @price_range ||= price_in.map do |prices|
-          gt_price, lt_price = prices.split("-")
-          gt_price = if gt_price.blank?
-            0
-          else
-            gt_price.to_i
-          end
-          lt_price = if lt_price.blank?
-            Float::INFINITY
-          else
-            lt_price.to_i
-          end
-          (gt_price...lt_price)
-        end
-      end
-
-      private def pledge_price_range
-        @pledge_price_range ||= pledge_price_in.map do |prices|
-          gt_price, lt_price = prices.split("-")
-          gt_price = if gt_price.blank?
-            0
-          else
-            gt_price.to_i
-          end
-          lt_price = if lt_price.blank?
-            Float::INFINITY
-          else
-            lt_price.to_i
-          end
-          (gt_price...lt_price)
-        end
-      end
-
       private def index_scope
         scope = Model.includes(Model.rendered_associations).visible.active
-
-        if pledge_price_range.present?
-          scope = scope.where(pledge_price: pledge_price_range)
-        end
-
-        if price_range.present?
-          scope = scope.where(price: price_range)
-        end
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
         scope = scope.where("#{Model.max_cargo_sql} >= 0.1") if model_query_params.delete("with_cargo")
@@ -560,18 +503,6 @@ module Api
 
       private def will_it_fit?(scope)
         will_it_fit_scope(scope, will_it_fit_carrier(model_query_params.delete("will_it_fit")&.downcase))
-      end
-
-      private def pledge_price_in
-        pledge_price_in = model_query_params.delete("pledge_price_in")
-        pledge_price_in = pledge_price_in.to_s.split unless pledge_price_in.is_a?(Array)
-        pledge_price_in
-      end
-
-      private def price_in
-        price_in = model_query_params.delete("price_in")
-        price_in = price_in.to_s.split unless price_in.is_a?(Array)
-        price_in
       end
 
       private def updated_range

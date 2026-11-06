@@ -131,6 +131,27 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters by the price ranges the filter form sends, keeping the chosen sort" do
+    cheap = create(:model, name: "Avenger", pledge_price: 30)
+    create(:loadout_stat, fitting: cheap, alpha: 10)
+    armed = create(:model, name: "Gladius", pledge_price: 40)
+    create(:loadout_stat, fitting: armed, alpha: 100)
+    open_ended = create(:model, name: "Idris", pledge_price: 1500, price: 900_000)
+    create(:model, name: "Cutter", pledge_price: 100, price: 50_000)
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["25-50"], sorts: ["alpha desc"]}} do
+      assert_equal [armed.id, cheap.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {pledgePriceIn: ["-35", "1000-"], sorts: ["name asc"]}} do
+      assert_equal [cheap.id, open_ended.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {priceIn: ["500000-"]}} do
+      assert_equal [open_ended.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 

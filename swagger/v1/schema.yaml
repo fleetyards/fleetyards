@@ -36134,7 +36134,7 @@ components:
         pledgePriceIn:
           type: array
           items:
-            type: number
+            type: string
         priceGteq:
           type: number
         priceLteq:
@@ -36142,7 +36142,7 @@ components:
         priceIn:
           type: array
           items:
-            type: number
+            type: string
         productionStatusIn:
           type: array
           items:
@@ -40112,7 +40112,7 @@ components:
         pledgePriceIn:
           type: array
           items:
-            type: number
+            type: string
         priceGteq:
           type: number
         priceLteq:
@@ -40120,7 +40120,7 @@ components:
         priceIn:
           type: array
           items:
-            type: number
+            type: string
         productionStatusIn:
           type: array
           items:
@@ -45411,7 +45411,7 @@ components:
         pledgePriceIn:
           type: array
           items:
-            type: number
+            type: string
         priceGteq:
           type: number
         priceLteq:
@@ -45419,7 +45419,7 @@ components:
         priceIn:
           type: array
           items:
-            type: number
+            type: string
         productionStatusIn:
           type: array
           items:
