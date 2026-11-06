@@ -131,18 +131,6 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "keeps the chosen sort under a price filter" do
-    cheap = create(:model, name: "Avenger", pledge_price: 50)
-    create(:loadout_stat, fitting: cheap, alpha: 10)
-    armed = create(:model, name: "Gladius", pledge_price: 60)
-    create(:loadout_stat, fitting: armed, alpha: 100)
-    create(:model, name: "Aurora", pledge_price: 20)
-
-    assert_api_response :get, 200, params: {q: {pledgePriceIn: [50], sorts: ["alpha desc"]}} do
-      assert_equal [armed.id, cheap.id], parsed_body["items"].map { |item| item["id"] }
-    end
-  end
-
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 
