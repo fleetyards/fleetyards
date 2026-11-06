@@ -11,13 +11,16 @@ deploy_timeout: 120
 image: fleetyards/app
 
 servers:
+  # Sized for the live cx43 hosts (16 GB). Every host runs web and worker, one
+  # also the Discord bot, and even that one keeps about 4 GB for the OS, Docker
+  # and kamal-proxy. Stage sets its own.
   web:
     options:
-      memory: 4g
+      memory: 5g
   worker:
     cmd: bundle exec sidekiq -C config/sidekiq.yml
     options:
-      memory: 3g
+      memory: 6g
   discord_bot:
     # Long-running Gateway listener that turns Discord scheduled-event RSVPs
     # into Fleetyards signups. Single instance per Discord application — do
