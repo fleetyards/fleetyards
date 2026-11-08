@@ -204,10 +204,12 @@ const cards = computed(() => [
       transparent 100%
     );
 
+  // The rest of the screen below the heading and the ship picker, however
+  // large the screen is.
   @media (min-width: $desktop-breakpoint) {
     position: sticky;
     top: 1rem;
-    height: min(72vh, 48rem);
+    height: max(32rem, calc(100dvh - 14rem));
   }
 }
 
