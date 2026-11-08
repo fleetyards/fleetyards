@@ -1001,7 +1001,12 @@ const copyShareLink = () => {
     grid-template-areas:
       "pieces stage outfit"
       "gear gear outfit";
-    grid-template-columns: minmax(16rem, 1fr) auto minmax(16rem, 1fr);
+    // The forms keep a reading width; every pixel a larger screen adds goes
+    // to the figure.
+    grid-template-columns:
+      minmax(16rem, 22rem)
+      minmax(0, 1fr)
+      minmax(16rem, 24rem);
     // The first row fits the slots and the stage; the right column's lists run
     // on past it beside the gear.
     grid-template-rows: auto 1fr;
@@ -1009,8 +1014,8 @@ const copyShareLink = () => {
   }
 }
 
-// Portrait, as a standing figure is: a landscape stage left most of itself
-// empty either side of it.
+// Portrait on a phone, as a standing figure is: a landscape stage would leave
+// most of itself empty either side of it.
 .dressing-room__stage {
   position: relative;
   height: min(70vh, 48rem);
@@ -1031,10 +1036,10 @@ const copyShareLink = () => {
       transparent 100%
     );
 
+  // Down to the foot of the screen, below the heading and lead above it.
   @media (min-width: $desktop-breakpoint) {
     grid-area: stage;
-    height: min(78vh, 56rem);
-    aspect-ratio: 3 / 4;
+    height: max(32rem, calc(100dvh - 13rem));
   }
 }
 
