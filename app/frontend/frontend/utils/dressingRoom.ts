@@ -1,4 +1,5 @@
 import { type LocationQuery } from "vue-router";
+import type { CharacterRig } from "@/shared/components/HoloViewer/character/types";
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 import {
   type BodyRegion,
@@ -422,9 +423,13 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
 // drawn as a dark undersuit. Under a helmet the head is drawn as the
 // undersuit's hood: its mesh runs down to the collar, and a helmet that
 // leaves the neck to it would float over a gap without it.
-const bodyCover = (worn: OutfitSlotEnum[]) => {
+//
+// A character's own face shows under a helmet that leaves the head on show.
+const bodyCover = (worn: OutfitSlotEnum[], character?: CharacterRig) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
-  const regions = coveredRegions(worn);
+  const regions = coveredRegions(worn).filter(
+    (region) => region !== "head" || !character || character.hideHead,
+  );
   const hide = regions.filter((region) => region !== "head" && undersuit);
   const cover = regions.filter((region) => !hide.includes(region));
 
@@ -458,6 +463,7 @@ export const riggedOutfitModel = (
   attachments: RigAttachment[] = [],
   worn: OutfitSlotEnum[] = [],
   failedPaths: string[] = [],
+  character?: CharacterRig,
 ): OutfitHoloModel => ({
   ...bodyHolo(body, failedPaths),
   rig: {
@@ -471,7 +477,8 @@ export const riggedOutfitModel = (
     })),
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),
-    ...bodyCover(worn),
+    ...bodyCover(worn, character),
+    ...(character ? { character } : {}),
     animations: body.animations?.url ?? undefined,
     clip:
       clip && body.clips.some((candidate) => candidate.name === clip)

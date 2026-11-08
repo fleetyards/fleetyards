@@ -13,6 +13,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
+import type { CharacterRig } from "./character/types";
 import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
 // A worn piece skinned to the body's skeleton: its own copy of the bones it
@@ -86,6 +87,9 @@ export type HoloRig = {
   clip?: string;
   // A plinth under the figure's feet.
   pedestal?: boolean;
+  // The user's own character: its face on the body's head, with its hair,
+  // brows, beard and piercings.
+  character?: CharacterRig;
 };
 
 const clips = new Map<string, Promise<AnimationClip[]>>();
@@ -293,6 +297,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             attachment.from,
           ]),
         ),
+        rig.character ? `character:${rig.character.key}` : "",
       ].join(";")
     : "";
 

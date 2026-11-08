@@ -47,6 +47,13 @@ import {
   partMaterials,
   preparePaintMap,
 } from "../paintMaps";
+import {
+  disposeCharacter,
+  dressHead,
+  fitPieceToFace,
+  loadCharacter,
+  type LoadedCharacter,
+} from "../character/applyCharacter";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -451,6 +458,8 @@ onUnmounted(() => {
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
   if (pedestal) disposePedestal(pedestal);
+  if (character) disposeCharacter(character);
+  fittedGeometries.forEach((geometry) => geometry.dispose());
 });
 
 const emit = defineEmits<{
@@ -553,6 +562,33 @@ let pedestal: Group | undefined;
 let rigRoot: Group | undefined;
 let rigRequest = 0;
 let rigClips: AnimationClip[] = [];
+
+// The character on the body: what it loaded, and how to put the body's own
+// head and skin back.
+let character: LoadedCharacter | undefined;
+let undressHead: (() => void) | undefined;
+// Hats moved onto the face for the figure as it is drawn now.
+let fittedGeometries: BufferGeometry[] = [];
+
+// The same character on a changed outfit is kept: baking its head again
+// would stall every change.
+const loadRigCharacter = async () => {
+  const wanted = props.model.rig?.character;
+  if (!wanted) return undefined;
+  if (
+    character?.key === wanted.key &&
+    character.textured === !!props.model.textured
+  ) {
+    return character;
+  }
+
+  try {
+    return await loadCharacter(wanted, !!props.model.textured);
+  } catch (error) {
+    console.warn("The character did not load", error);
+    return undefined;
+  }
+};
 
 // What shows of the body under armour: a dark, matte undersuit.
 const underlayMaterial = new MeshStandardMaterial({
@@ -706,15 +742,21 @@ const attachRig = async (scene: Group) => {
   const rig = props.model.rig;
   if (!rig) return true;
 
-  const [pieces, attachments, clips] = await Promise.all([
+  const [pieces, attachments, clips, loadedCharacter] = await Promise.all([
     Promise.all(rig.pieces.map(loadRigPiece)),
     Promise.all((rig.attachments ?? []).map(loadAttachment)),
     rig.animations
       ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
       : Promise.resolve([] as AnimationClip[]),
+    loadRigCharacter(),
   ]);
 
-  if (request !== rigRequest) return false;
+  if (request !== rigRequest) {
+    if (loadedCharacter && loadedCharacter !== character) {
+      disposeCharacter(loadedCharacter);
+    }
+    return false;
+  }
 
   const fellBack = [
     ...rig.pieces.filter(
@@ -733,6 +775,31 @@ const attachRig = async (scene: Group) => {
       ...(rigRoot.userData.attached as Object3D[]),
       ...(rigRoot.userData.grafted as Object3D[]),
     ].forEach((node) => node.removeFromParent());
+  }
+
+  undressHead?.();
+  undressHead = undefined;
+  if (character && character !== loadedCharacter) disposeCharacter(character);
+  character = loadedCharacter;
+
+  fittedGeometries.forEach((geometry) => geometry.dispose());
+  fittedGeometries = [];
+  const fitted: BufferGeometry[] = [];
+
+  if (character && rig.character) {
+    const faceWrap = new Set(rig.character.faceWrap);
+    pieces.forEach((piece, index) => {
+      if (piece && faceWrap.has(rig.pieces[index]?.path ?? "")) {
+        fitted.push(...fitPieceToFace(piece.scene, character!));
+      }
+    });
+    fittedGeometries = fitted;
+    undressHead = dressHead(
+      scene,
+      character,
+      rig.character,
+      !!props.model.textured,
+    );
   }
 
   const bones = bonesByName(scene);
@@ -754,6 +821,14 @@ const attachRig = async (scene: Group) => {
     });
     if (meshes.length) next.add(...meshes);
     else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
+    next.userData.grafted.push(...grafted);
+  });
+
+  // The character's hair, brows, beard and piercings, on the body's own
+  // skeleton like the pieces.
+  character?.accessories.forEach((accessory) => {
+    const { meshes, grafted } = bindToBones(cloneRigPiece(accessory), bones);
+    if (meshes.length) next.add(...meshes);
     next.userData.grafted.push(...grafted);
   });
 
