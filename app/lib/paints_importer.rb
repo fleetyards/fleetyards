@@ -560,7 +560,7 @@ class PaintsImporter
       "Scorpius Blight Green" => scorpius,
       "Scorpius Sunburn White Orange" => scorpius,
       "Scorpius Stormcloud Grey" => scorpius,
-      "Khartu-al" => ["Khartu-Al"],
+      "Khartu-al" => ["Khartu-al"],
       "Tumbril Cyclone" => cyclone,
       "Tumrbil Cyclone" => cyclone,
       "F8C" => f8c,
