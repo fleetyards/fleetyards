@@ -13,7 +13,8 @@ module V1
             items: {type: :array, items: ::V1::Schemas::Inputs::OutfitItemInput, description: "Everything the outfit wears; a slot left out is emptied"},
             storedItems: {type: :array, items: ::V1::Schemas::Inputs::OutfitStoredItemInput, description: "Everything kept in the worn pieces' storage; replaces what was there"},
             heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum,
-            body: ::V1::Schemas::Enums::OutfitBodyEnum
+            body: ::V1::Schemas::Enums::OutfitBodyEnum,
+            characterFaceId: {type: [:string, :null], format: :uuid, description: "One of your characters, for the outfit's body; null takes it off"}
           },
           additionalProperties: false
         })

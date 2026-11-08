@@ -2,6 +2,10 @@
 zh-TW:
   activerecord:
     attributes:
+      character_face:
+        file: "檔案"
+      outfit:
+        character_face: "角色"
       raffle:
         title: "標題"
         description: "描述"
@@ -313,10 +317,22 @@ zh-TW:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
+        character_face:
+          attributes:
+            base:
+              limit_reached: "最多只能有 %{count} 個角色"
+            file:
+              invalid: "不是星際公民角色檔案"
+              too_large: "對角色檔案來說太大了"
+              blank: "必須是角色檔案"
+              other_body: "是另一種體型的角色"
         outfit:
           attributes:
             base:
               outfit_limit_reached: "最多只能有 %{count} 套裝扮"
+            character_face:
+              other_body: "是另一種體型的角色"
+              not_owned: "不是你的角色"
             held_weapon:
               not_carried: "不是此裝扮攜帶的武器"
             items:

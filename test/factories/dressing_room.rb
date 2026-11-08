@@ -20,6 +20,19 @@ FactoryBot.define do
     end
   end
 
+  factory :character_face do
+    user
+    sequence(:name) { |n| "Character #{n}" }
+
+    transient do
+      fixture { "Macken" }
+    end
+
+    after(:build) do |face, evaluator|
+      face.file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/chf/#{evaluator.fixture}.chf"), "application/octet-stream")
+    end
+  end
+
   factory :outfit do
     user
     sequence(:name) { |n| "Outfit #{n}" }

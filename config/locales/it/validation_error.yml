@@ -145,6 +145,9 @@ it:
       create: "Impossibile creare il piano."
       update: "Impossibile aggiornare il piano."
       rebase: "Impossibile riallineare il piano all'hangar."
+    character_faces:
+      create: "Impossibile salvare il personaggio."
+      update: "Impossibile aggiornare il personaggio."
     outfits:
       create: "Impossibile salvare l'outfit."
       update: "Impossibile aggiornare l'outfit."

@@ -2,6 +2,10 @@
 es:
   activerecord:
     attributes:
+      character_face:
+        file: "Archivo"
+      outfit:
+        character_face: "Personaje"
       raffle:
         title: "Título"
         description: "Descripción"
@@ -313,10 +317,22 @@ es:
           attributes:
             base:
               plan_limit_reached: "puede tener como máximo %{count} planes"
+        character_face:
+          attributes:
+            base:
+              limit_reached: "puede tener como máximo %{count} personajes"
+            file:
+              invalid: "no es un archivo de personaje de Star Citizen"
+              too_large: "es demasiado grande para un archivo de personaje"
+              blank: "debe ser un archivo de personaje"
+              other_body: "es un personaje para el otro cuerpo"
         outfit:
           attributes:
             base:
               outfit_limit_reached: "puede tener como máximo %{count} atuendos"
+            character_face:
+              other_body: "es un personaje para el otro cuerpo"
+              not_owned: "no es uno de tus personajes"
             held_weapon:
               not_carried: "no es un arma que lleve este atuendo"
             items:

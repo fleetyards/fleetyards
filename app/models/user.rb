@@ -151,6 +151,7 @@ class User < ApplicationRecord
   has_many :hangar_plans, dependent: :destroy
   has_many :fleetchart_layouts, dependent: :destroy
   has_many :outfits, dependent: :destroy
+  has_many :character_faces, dependent: :destroy
   has_many :carts, dependent: :delete_all
   has_many :raffle_entries, dependent: :nullify
   has_many :cart_items, through: :carts

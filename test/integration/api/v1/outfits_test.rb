@@ -153,6 +153,39 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /outfits puts one of the user's characters in the outfit" do
+    face = create(:character_face, user: @user, name: "Macken")
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Recon", characterFaceId: face.id} do
+      assert_equal({"id" => face.id, "token" => face.token, "name" => "Macken", "body" => "male"}, parsed_body["characterFace"])
+    end
+  end
+
+  test "POST /outfits refuses someone else's character, an unknown one, and one for the other body" do
+    sign_in @user
+
+    [create(:character_face).id, SecureRandom.uuid].each do |id|
+      assert_api_response :post, 400, api_path: "/outfits", body: {name: "Recon #{id}", characterFaceId: id} do
+        assert_equal ["not_owned"], parsed_body["errors"].find { |error| error["attribute"] == "characterFace" }["messages"].pluck("code")
+      end
+    end
+
+    female = create(:character_face, user: @user, fixture: "meg")
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Recon", characterFaceId: female.id} do
+      assert_equal ["other_body"], parsed_body["errors"].find { |error| error["attribute"] == "characterFace" }["messages"].pluck("code")
+    end
+  end
+
+  test "PUT /outfits/{id} takes the character off again" do
+    @outfit.update!(character_face: create(:character_face, user: @user))
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}, body: {characterFaceId: nil} do
+      assert_nil parsed_body["characterFace"]
+    end
+  end
+
   test "POST /outfits refuses a pistol on the back and armour in a holster" do
     sign_in @user
     pistol = create(:equipment, sub_type: "Small")

@@ -152,6 +152,9 @@ de:
       create: "Plan konnte nicht erstellt werden."
       update: "Plan konnte nicht aktualisiert werden."
       rebase: "Plan konnte nicht auf den Hangar aktualisiert werden."
+    character_faces:
+      create: "Charakter konnte nicht gespeichert werden."
+      update: "Charakter konnte nicht aktualisiert werden."
     outfits:
       create: "Outfit konnte nicht gespeichert werden."
       update: "Outfit konnte nicht aktualisiert werden."

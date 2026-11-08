@@ -2,6 +2,10 @@
 de:
   activerecord:
     attributes:
+      character_face:
+        file: "Datei"
+      outfit:
+        character_face: "Charakter"
       raffle:
         title: "Titel"
         description: "Beschreibung"
@@ -313,10 +317,22 @@ de:
           attributes:
             base:
               plan_limit_reached: "kann höchstens %{count} Pläne enthalten"
+        character_face:
+          attributes:
+            base:
+              limit_reached: "kann höchstens %{count} Charaktere enthalten"
+            file:
+              invalid: "ist keine Star-Citizen-Charakterdatei"
+              too_large: "ist zu groß für eine Charakterdatei"
+              blank: "muss eine Charakterdatei sein"
+              other_body: "ist ein Charakter für den anderen Körper"
         outfit:
           attributes:
             base:
               outfit_limit_reached: "kann höchstens %{count} Outfits enthalten"
+            character_face:
+              other_body: "ist ein Charakter für den anderen Körper"
+              not_owned: "ist keiner deiner Charaktere"
             held_weapon:
               not_carried: "ist keine Waffe, die dieses Outfit trägt"
             items:

@@ -51,12 +51,18 @@ module Chf
       @worn = worn.map(&:downcase)
     end
 
-    def body
-      @body ||= case dna&.dig("gender_hash")
+    # The face block says which library a file needs; a preset without one
+    # goes by its body tag.
+    def self.body_for(chf)
+      case chf.dig("dna", "gender_hash")
       when FEMALE then "female"
       when MALE then "male"
-      else @chf["body_tag"].start_with?(FEMALE_TAG) ? "female" : "male"
+      else chf["body_tag"].start_with?(FEMALE_TAG) ? "female" : "male"
       end
+    end
+
+    def body
+      @body ||= self.class.body_for(@chf)
     end
 
     def library = @libraries.fetch(body)
