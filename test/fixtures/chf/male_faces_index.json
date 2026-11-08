@@ -1,0 +1,1113 @@
+{
+ "format": "sc-chf-faces",
+ "format_version": 1,
+ "body": "male",
+ "library": "male-6a268db0",
+ "generated": "2026-11-02T23:09:07Z",
+ "dna": {
+  "path": "Data/Objects/Characters/Human/heads/male/pu/protos_human_male_face_t1_pu/protos_human_male_face_t1_pu_head.dna",
+  "magic": "DNA V1.6",
+  "md5": "cd68ace2254a1bcc481c3d64b094a06d",
+  "stamp": "6a268db0",
+  "stamp_utc": "2026-06-08T09:38:56Z",
+  "gender_hash": "f6676cdd",
+  "game_builds_checked": {
+   "LIVE": "4.10.197.2878 (sc-alpha-4.10.2, CL 12913470)",
+   "PTU": "4.10.199.13454 (sc-alpha-4.10.2, CL 13055118)"
+  }
+ },
+ "body_glb": {
+  "path": "characters/male/body.glb",
+  "md5": "bfc2a3255663060a6a4e50a0feb7e08c",
+  "index_json_md5": "bfc2a3255663060a6a4e50a0feb7e08c"
+ },
+ "units": "metres; the POSITION space of the body.glb head/eyes/teeth primitives (skin bind space, CryEngine Z-up: x = character left(-)/right(+), y = forward, z = up; the CryEngine_Z_up node turns it to glTF Y-up)",
+ "head_count": 61,
+ "absent_heads": [
+  19
+ ],
+ "heads": [
+  {
+   "id": 0,
+   "name": "protos_human_male_face_t1_pu",
+   "available": true,
+   "ethnicity": {
+    "OTHER": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 1,
+   "name": "male_archetype_v001_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.2,
+    "AVERAGE": 0.8
+   }
+  },
+  {
+   "id": 2,
+   "name": "male_archetype_v002_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.7,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 3,
+   "name": "male_archetype_v003_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 4,
+   "name": "male_archetype_v004_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "MUSCULAR": 1.0
+   }
+  },
+  {
+   "id": 5,
+   "name": "male_archetype_v005_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.2,
+    "AVERAGE": 0.8
+   }
+  },
+  {
+   "id": 6,
+   "name": "male_archetype_v006_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.4,
+    "AVERAGE": 0.6
+   }
+  },
+  {
+   "id": 7,
+   "name": "male_archetype_v007_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 8,
+   "name": "male_archetype_v008_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "MUSCULAR": 0.2
+   }
+  },
+  {
+   "id": 9,
+   "name": "male_archetype_v009_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.7,
+    "AVERAGE": 0.3
+   }
+  },
+  {
+   "id": 10,
+   "name": "male_archetype_v010_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.6,
+    "HEAVY": 0.4
+   }
+  },
+  {
+   "id": 11,
+   "name": "male_archetype_v011_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.7,
+    "HEAVY": 0.3
+   }
+  },
+  {
+   "id": 12,
+   "name": "male_archetype_v012_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 13,
+   "name": "male_archetype_v013_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 14,
+   "name": "male_archetype_v014_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 1.0
+   }
+  },
+  {
+   "id": 15,
+   "name": "male_archetype_v015_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.7,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 16,
+   "name": "male16_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.3,
+    "HEAVY": 0.7
+   }
+  },
+  {
+   "id": 17,
+   "name": "silas_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 18,
+   "name": "bautista_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 19,
+   "name": "imperator_t1",
+   "available": false,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 20,
+   "name": "boss_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 21,
+   "name": "male23_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 22,
+   "name": "male25_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.7,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 23,
+   "name": "male26_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 24,
+   "name": "brunt_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 25,
+   "name": "parr_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 26,
+   "name": "darneely_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 27,
+   "name": "macken_t2",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 28,
+   "name": "eckhart_t2",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 29,
+   "name": "hawker_02_t3",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 30,
+   "name": "male22_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 1.0
+   }
+  },
+  {
+   "id": 31,
+   "name": "male20_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.6,
+    "MUSCULAR": 0.4
+   }
+  },
+  {
+   "id": 32,
+   "name": "male27_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 33,
+   "name": "hurston_t3",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 34,
+   "name": "klim_t3",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 35,
+   "name": "male29_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 0.7,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 36,
+   "name": "male24_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 37,
+   "name": "male31_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 38,
+   "name": "male34_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.7,
+    "AVERAGE": 0.3
+   }
+  },
+  {
+   "id": 39,
+   "name": "male17_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "MUSCULAR": 0.2
+   }
+  },
+  {
+   "id": 40,
+   "name": "male28_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 1.0
+   }
+  },
+  {
+   "id": 41,
+   "name": "male30_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 42,
+   "name": "male32_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.5,
+    "MUSCULAR": 0.5
+   }
+  },
+  {
+   "id": 43,
+   "name": "male33_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 44,
+   "name": "male18_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 45,
+   "name": "male19_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 46,
+   "name": "male21_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 47,
+   "name": "male35_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.6,
+    "AVERAGE": 0.4
+   }
+  },
+  {
+   "id": 48,
+   "name": "male36_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.4,
+    "AVERAGE": 0.6
+   }
+  },
+  {
+   "id": 49,
+   "name": "male37_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 50,
+   "name": "male38_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 51,
+   "name": "male39_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "HEAVY": 0.2
+   }
+  },
+  {
+   "id": 52,
+   "name": "male40_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.2,
+    "AVERAGE": 0.8
+   }
+  },
+  {
+   "id": 53,
+   "name": "male41_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "MUSCULAR": 0.2
+   }
+  },
+  {
+   "id": 54,
+   "name": "male42_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 55,
+   "name": "male43_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "MUSCULAR": 0.2
+   }
+  },
+  {
+   "id": 56,
+   "name": "male44_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 57,
+   "name": "male45_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 58,
+   "name": "male46_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.2,
+    "HEAVY": 0.8
+   }
+  },
+  {
+   "id": 59,
+   "name": "male47_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 0.8,
+    "CAUCASIAN": 0.2
+   },
+   "body_type": {
+    "AVERAGE": 0.4,
+    "MUSCULAR": 0.6
+   }
+  },
+  {
+   "id": 60,
+   "name": "male48_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 0.8,
+    "CAUCASIAN": 0.2
+   },
+   "body_type": {
+    "AVERAGE": 0.4,
+    "MUSCULAR": 0.6
+   }
+  }
+ ],
+ "parts": [
+  {
+   "index": 0,
+   "chf_part": "EyebrowLeft",
+   "region": "BROW_L",
+   "mirror": 1
+  },
+  {
+   "index": 1,
+   "chf_part": "EyebrowRight",
+   "region": "BROW_R",
+   "mirror": 0
+  },
+  {
+   "index": 2,
+   "chf_part": "EyeLeft",
+   "region": "EYE_L",
+   "mirror": 3
+  },
+  {
+   "index": 3,
+   "chf_part": "EyeRight",
+   "region": "EYE_R",
+   "mirror": 2
+  },
+  {
+   "index": 4,
+   "chf_part": "Nose",
+   "region": "NOSE_C",
+   "mirror": 4
+  },
+  {
+   "index": 5,
+   "chf_part": "EarLeft",
+   "region": "EAR_L",
+   "mirror": 6
+  },
+  {
+   "index": 6,
+   "chf_part": "EarRight",
+   "region": "EAR_R",
+   "mirror": 5
+  },
+  {
+   "index": 7,
+   "chf_part": "CheekLeft",
+   "region": "CHEEK_L",
+   "mirror": 8
+  },
+  {
+   "index": 8,
+   "chf_part": "CheekRight",
+   "region": "CHEEK_R",
+   "mirror": 7
+  },
+  {
+   "index": 9,
+   "chf_part": "Mouth",
+   "region": "MOUTH_C",
+   "mirror": 9
+  },
+  {
+   "index": 10,
+   "chf_part": "Jaw",
+   "region": "JAWLINE_C",
+   "mirror": 10
+  },
+  {
+   "index": 11,
+   "chf_part": "Crown",
+   "region": "CROWN_C",
+   "mirror": 11
+  },
+  {
+   "index": 12,
+   "chf_part": "Neck",
+   "region": "NECK_C",
+   "mirror": 12
+  }
+ ],
+ "files": {
+  "library.bin": {
+   "md5": "5f3ef6be364c5326d15001e56a81551e",
+   "size": 1884916
+  },
+  "normals.bin": {
+   "size": 677344,
+   "md5": "2c0cb20b030c4661f38203dd275f3bbe"
+  },
+  "topology.bin": {
+   "size": 103836,
+   "md5": "ecf59f20e14c226704ba35fffbb2d48f"
+  }
+ },
+ "meshes": {
+  "head": {
+   "gltf_mesh_name": "male_archetype_v001_t1_head",
+   "gltf_mesh_index": 1,
+   "vertex_count": 5552,
+   "raw_vertex_count": 5584,
+   "regions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "region_names": [
+    "BROW_L",
+    "BROW_R",
+    "EYE_L",
+    "EYE_R",
+    "NOSE_C",
+    "EAR_L",
+    "EAR_R",
+    "CHEEK_L",
+    "CHEEK_R",
+    "MOUTH_C",
+    "JAWLINE_C",
+    "CROWN_C",
+    "NECK_C"
+   ],
+   "chf_parts": [
+    "EyebrowLeft",
+    "EyebrowRight",
+    "EyeLeft",
+    "EyeRight",
+    "Nose",
+    "EarLeft",
+    "EarRight",
+    "CheekLeft",
+    "CheekRight",
+    "Mouth",
+    "Jaw",
+    "Crown",
+    "Neck"
+   ],
+   "base": {
+    "byteOffset": 0,
+    "type": "float32",
+    "shape": [
+     5552,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 66624,
+    "type": "uint8",
+    "shape": [
+     13,
+     5552
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 138800,
+    "type": "int8",
+    "shape": [
+     61,
+     3,
+     5552
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 1154816,
+    "type": "float32",
+    "shape": [
+     61,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 1155548,
+    "type": "uint16",
+    "shape": [
+     5552
+    ]
+   },
+   "normals": {
+    "file": "normals.bin",
+    "byteOffset": 0,
+    "type": "int8",
+    "shape": [
+     61,
+     2,
+     5552
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v]); the decoded values are octahedral normal coordinates * 127"
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 0,
+    "type": "uint16",
+    "shape": [
+     32178
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  },
+  "eyes": {
+   "gltf_mesh_name": "male_archetype_v001_t1_eyes",
+   "gltf_mesh_index": 2,
+   "vertex_count": 858,
+   "raw_vertex_count": 922,
+   "regions": [
+    2,
+    3
+   ],
+   "region_names": [
+    "EYE_L",
+    "EYE_R"
+   ],
+   "chf_parts": [
+    "EyeLeft",
+    "EyeRight"
+   ],
+   "base": {
+    "byteOffset": 1166652,
+    "type": "float32",
+    "shape": [
+     858,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 1176948,
+    "type": "uint8",
+    "shape": [
+     2,
+     858
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 1178664,
+    "type": "int8",
+    "shape": [
+     61,
+     3,
+     858
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 1335680,
+    "type": "float32",
+    "shape": [
+     61,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 1336412,
+    "type": "uint16",
+    "shape": [
+     858
+    ]
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 64356,
+    "type": "uint16",
+    "shape": [
+     4944
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  },
+  "teeth": {
+   "gltf_mesh_name": "male_archetype_v001_t1_teeth",
+   "gltf_mesh_index": 3,
+   "vertex_count": 2744,
+   "raw_vertex_count": 2756,
+   "regions": [
+    4,
+    9
+   ],
+   "region_names": [
+    "NOSE_C",
+    "MOUTH_C"
+   ],
+   "chf_parts": [
+    "Nose",
+    "Mouth"
+   ],
+   "base": {
+    "byteOffset": 1338128,
+    "type": "float32",
+    "shape": [
+     2744,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 1371056,
+    "type": "uint8",
+    "shape": [
+     2,
+     2744
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 1376544,
+    "type": "int8",
+    "shape": [
+     61,
+     3,
+     2744
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 1878696,
+    "type": "float32",
+    "shape": [
+     61,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 1879428,
+    "type": "uint16",
+    "shape": [
+     2744
+    ]
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 74244,
+    "type": "uint16",
+    "shape": [
+     14796
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  }
+ },
+ "build_checks": {
+  "head": {
+   "quant_max_err_mm": 0.0858,
+   "draco_pos_err_mm": 0.0168,
+   "draco_merged_vertices": 32,
+   "merged_dup_max_spread_mm": 0.0
+  },
+  "eyes": {
+   "quant_max_err_mm": 0.0383,
+   "draco_pos_err_mm": 0.0045,
+   "draco_merged_vertices": 64,
+   "merged_dup_max_spread_mm": 0.0
+  },
+  "teeth": {
+   "quant_max_err_mm": 0.0667,
+   "draco_pos_err_mm": 0.0038,
+   "draco_merged_vertices": 12,
+   "merged_dup_max_spread_mm": 0.0
+  }
+ },
+ "library_revision": 2,
+ "revisions": [
+  {
+   "revision": 1,
+   "date": "2026-11-02",
+   "note": "first build"
+  },
+  {
+   "revision": 2,
+   "date": "2026-11-08",
+   "note": "head 34 klim_t3 neckline moved onto the median of the other heads (max 12.7 mm before, 0.00 mm after; other heads within 0.48 mm of the median); correction faded out over 40 mm. Library id unchanged (same DNA); only library.bin changed."
+  }
+ ]
+}

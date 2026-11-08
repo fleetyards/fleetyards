@@ -1,0 +1,946 @@
+{
+ "format": "sc-chf-faces",
+ "format_version": 1,
+ "body": "female",
+ "library": "female-69d85b6e",
+ "generated": "2026-11-02T23:09:10Z",
+ "dna": {
+  "path": "Data/Objects/Characters/Human/heads/female/pu/protos_human_female_face_t1_pu/protos_human_female_face_t1_pu_head.dna",
+  "magic": "DNA V1.6",
+  "md5": "77e3b317441532f0ca09a46856a752a7",
+  "stamp": "69d85b6e",
+  "stamp_utc": "2026-04-10T02:07:42Z",
+  "gender_hash": "54ebf49e",
+  "game_builds_checked": {
+   "LIVE": "4.10.197.2878 (sc-alpha-4.10.2, CL 12913470)",
+   "PTU": "4.10.199.13454 (sc-alpha-4.10.2, CL 13055118)"
+  }
+ },
+ "body_glb": {
+  "path": "characters/female/body.glb",
+  "md5": "e6e763341716c46c21d6e364a49b8485",
+  "index_json_md5": "e6e763341716c46c21d6e364a49b8485"
+ },
+ "units": "metres; the POSITION space of the body.glb head/eyes/teeth primitives (skin bind space, CryEngine Z-up: x = character left(-)/right(+), y = forward, z = up; the CryEngine_Z_up node turns it to glTF Y-up)",
+ "head_count": 48,
+ "absent_heads": [],
+ "heads": [
+  {
+   "id": 0,
+   "name": "protos_human_female_face_t1_pu",
+   "available": true,
+   "ethnicity": {
+    "OTHER": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 1,
+   "name": "female_archetype_v001_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.5,
+    "AVERAGE": 0.5
+   }
+  },
+  {
+   "id": 2,
+   "name": "female_archetype_v002_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 3,
+   "name": "female_archetype_v003_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 4,
+   "name": "female_archetype_v004_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.7,
+    "AVERAGE": 0.3
+   }
+  },
+  {
+   "id": 5,
+   "name": "female_archetype_v005_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 6,
+   "name": "female_archetype_v006_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 7,
+   "name": "female_archetype_v007_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 0.7,
+    "HISPANIC": 0.3
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 8,
+   "name": "female_archetype_v008_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 9,
+   "name": "female_archetype_v009_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 10,
+   "name": "female_archetype_v010_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 11,
+   "name": "female_archetype_v011_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 0.4,
+    "CAUCASIAN": 0.6
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 12,
+   "name": "female_archetype_v012_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 13,
+   "name": "female_archetype_v013_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 14,
+   "name": "female_archetype_v014_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 15,
+   "name": "female15_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.5,
+    "HEAVY": 0.5
+   }
+  },
+  {
+   "id": 16,
+   "name": "female16_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 1.0
+   }
+  },
+  {
+   "id": 17,
+   "name": "female17_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 18,
+   "name": "female18_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.3,
+    "HEAVY": 0.7
+   }
+  },
+  {
+   "id": 19,
+   "name": "female19_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 20,
+   "name": "female20_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 21,
+   "name": "female24_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 22,
+   "name": "female22_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 23,
+   "name": "female25_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "HEAVY": 0.2
+   }
+  },
+  {
+   "id": 24,
+   "name": "female23_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.2,
+    "HEAVY": 0.8
+   }
+  },
+  {
+   "id": 25,
+   "name": "female21_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 26,
+   "name": "female28_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 27,
+   "name": "female27_t1",
+   "available": true,
+   "ethnicity": {
+    "HISPANIC": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.3,
+    "AVERAGE": 0.7
+   }
+  },
+  {
+   "id": 28,
+   "name": "female30_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0,
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 29,
+   "name": "female35_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.7,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 30,
+   "name": "female26_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.5,
+    "AVERAGE": 0.5
+   }
+  },
+  {
+   "id": 31,
+   "name": "female29_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 32,
+   "name": "female31_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "HEAVY": 1.0
+   }
+  },
+  {
+   "id": 33,
+   "name": "female34_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.5,
+    "AVERAGE": 0.5
+   }
+  },
+  {
+   "id": 34,
+   "name": "female36_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.5,
+    "HEAVY": 0.5
+   }
+  },
+  {
+   "id": 35,
+   "name": "female37_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 36,
+   "name": "female38_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 37,
+   "name": "female39_t1",
+   "available": true,
+   "ethnicity": {
+    "AFRICAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 38,
+   "name": "female40_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 39,
+   "name": "female32_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 40,
+   "name": "female33_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.8,
+    "AVERAGE": 0.2
+   }
+  },
+  {
+   "id": 41,
+   "name": "pacheco_t3",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 42,
+   "name": "battaglia_t3",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 43,
+   "name": "gibbs_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 1.0
+   }
+  },
+  {
+   "id": 44,
+   "name": "female41_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 1.0
+   }
+  },
+  {
+   "id": 45,
+   "name": "female42_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "MUSCULAR": 0.3
+   }
+  },
+  {
+   "id": 46,
+   "name": "female44_t1",
+   "available": true,
+   "ethnicity": {
+    "ASIAN": 1.0
+   },
+   "body_type": {
+    "AVERAGE": 0.8,
+    "HEAVY": 0.2
+   }
+  },
+  {
+   "id": 47,
+   "name": "female43_t1",
+   "available": true,
+   "ethnicity": {
+    "CAUCASIAN": 1.0
+   },
+   "body_type": {
+    "SKINNY": 0.3,
+    "AVERAGE": 0.7
+   }
+  }
+ ],
+ "parts": [
+  {
+   "index": 0,
+   "chf_part": "EyebrowLeft",
+   "region": "BROW_L",
+   "mirror": 1
+  },
+  {
+   "index": 1,
+   "chf_part": "EyebrowRight",
+   "region": "BROW_R",
+   "mirror": 0
+  },
+  {
+   "index": 2,
+   "chf_part": "EyeLeft",
+   "region": "EYE_L",
+   "mirror": 3
+  },
+  {
+   "index": 3,
+   "chf_part": "EyeRight",
+   "region": "EYE_R",
+   "mirror": 2
+  },
+  {
+   "index": 4,
+   "chf_part": "Nose",
+   "region": "NOSE_C",
+   "mirror": 4
+  },
+  {
+   "index": 5,
+   "chf_part": "EarLeft",
+   "region": "EAR_L",
+   "mirror": 6
+  },
+  {
+   "index": 6,
+   "chf_part": "EarRight",
+   "region": "EAR_R",
+   "mirror": 5
+  },
+  {
+   "index": 7,
+   "chf_part": "CheekLeft",
+   "region": "CHEEK_L",
+   "mirror": 8
+  },
+  {
+   "index": 8,
+   "chf_part": "CheekRight",
+   "region": "CHEEK_R",
+   "mirror": 7
+  },
+  {
+   "index": 9,
+   "chf_part": "Mouth",
+   "region": "MOUTH_C",
+   "mirror": 9
+  },
+  {
+   "index": 10,
+   "chf_part": "Jaw",
+   "region": "JAWLINE_C",
+   "mirror": 10
+  },
+  {
+   "index": 11,
+   "chf_part": "Crown",
+   "region": "CROWN_C",
+   "mirror": 11
+  },
+  {
+   "index": 12,
+   "chf_part": "Neck",
+   "region": "NECK_C",
+   "mirror": 12
+  }
+ ],
+ "files": {
+  "library.bin": {
+   "size": 1527440,
+   "md5": "5f20aec6575c8a0c0bed050f4e0408d6"
+  },
+  "normals.bin": {
+   "size": 532992,
+   "md5": "62ca8e0a73f1f62fcb8bcd08768c1011"
+  },
+  "topology.bin": {
+   "size": 103836,
+   "md5": "ecf59f20e14c226704ba35fffbb2d48f"
+  }
+ },
+ "meshes": {
+  "head": {
+   "gltf_mesh_name": "female_archetype_v001_t1_head",
+   "gltf_mesh_index": 1,
+   "vertex_count": 5552,
+   "raw_vertex_count": 5584,
+   "regions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "region_names": [
+    "BROW_L",
+    "BROW_R",
+    "EYE_L",
+    "EYE_R",
+    "NOSE_C",
+    "EAR_L",
+    "EAR_R",
+    "CHEEK_L",
+    "CHEEK_R",
+    "MOUTH_C",
+    "JAWLINE_C",
+    "CROWN_C",
+    "NECK_C"
+   ],
+   "chf_parts": [
+    "EyebrowLeft",
+    "EyebrowRight",
+    "EyeLeft",
+    "EyeRight",
+    "Nose",
+    "EarLeft",
+    "EarRight",
+    "CheekLeft",
+    "CheekRight",
+    "Mouth",
+    "Jaw",
+    "Crown",
+    "Neck"
+   ],
+   "base": {
+    "byteOffset": 0,
+    "type": "float32",
+    "shape": [
+     5552,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 66624,
+    "type": "uint8",
+    "shape": [
+     13,
+     5552
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 138800,
+    "type": "int8",
+    "shape": [
+     48,
+     3,
+     5552
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 938288,
+    "type": "float32",
+    "shape": [
+     48,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 938864,
+    "type": "uint16",
+    "shape": [
+     5552
+    ]
+   },
+   "normals": {
+    "file": "normals.bin",
+    "byteOffset": 0,
+    "type": "int8",
+    "shape": [
+     48,
+     2,
+     5552
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v]); the decoded values are octahedral normal coordinates * 127"
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 0,
+    "type": "uint16",
+    "shape": [
+     32178
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  },
+  "eyes": {
+   "gltf_mesh_name": "female_archetype_v001_t1_eyes",
+   "gltf_mesh_index": 2,
+   "vertex_count": 858,
+   "raw_vertex_count": 922,
+   "regions": [
+    2,
+    3
+   ],
+   "region_names": [
+    "EYE_L",
+    "EYE_R"
+   ],
+   "chf_parts": [
+    "EyeLeft",
+    "EyeRight"
+   ],
+   "base": {
+    "byteOffset": 949968,
+    "type": "float32",
+    "shape": [
+     858,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 960264,
+    "type": "uint8",
+    "shape": [
+     2,
+     858
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 961980,
+    "type": "int8",
+    "shape": [
+     48,
+     3,
+     858
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 1085532,
+    "type": "float32",
+    "shape": [
+     48,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 1086108,
+    "type": "uint16",
+    "shape": [
+     858
+    ]
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 64356,
+    "type": "uint16",
+    "shape": [
+     4944
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  },
+  "teeth": {
+   "gltf_mesh_name": "female_archetype_v001_t1_teeth",
+   "gltf_mesh_index": 3,
+   "vertex_count": 2744,
+   "raw_vertex_count": 2756,
+   "regions": [
+    4,
+    9
+   ],
+   "region_names": [
+    "NOSE_C",
+    "MOUTH_C"
+   ],
+   "chf_parts": [
+    "Nose",
+    "Mouth"
+   ],
+   "base": {
+    "byteOffset": 1087824,
+    "type": "float32",
+    "shape": [
+     2744,
+     3
+    ]
+   },
+   "masks": {
+    "byteOffset": 1120752,
+    "type": "uint8",
+    "shape": [
+     2,
+     2744
+    ],
+    "sum_per_vertex": 255
+   },
+   "deltas": {
+    "byteOffset": 1126240,
+    "type": "int8",
+    "shape": [
+     48,
+     3,
+     2744
+    ],
+    "encoding": "per row, delta-coded along the vertex index with int8 wrap-around: q[0] = d[0], q[v] = int8(q[v-1] + d[v])"
+   },
+   "delta_scale": {
+    "byteOffset": 1521376,
+    "type": "float32",
+    "shape": [
+     48,
+     3
+    ]
+   },
+   "raw_index": {
+    "byteOffset": 1521952,
+    "type": "uint16",
+    "shape": [
+     2744
+    ]
+   },
+   "indices": {
+    "file": "topology.bin",
+    "byteOffset": 74244,
+    "type": "uint16",
+    "shape": [
+     14796
+    ],
+    "note": "triangles of the decoded body.glb primitive (tools/OBJ only; a viewer uses body.glb)"
+   }
+  }
+ },
+ "build_checks": {
+  "head": {
+   "quant_max_err_mm": 0.1046,
+   "draco_pos_err_mm": 0.0162,
+   "draco_merged_vertices": 32,
+   "merged_dup_max_spread_mm": 0.0
+  },
+  "eyes": {
+   "quant_max_err_mm": 0.0293,
+   "draco_pos_err_mm": 0.0046,
+   "draco_merged_vertices": 64,
+   "merged_dup_max_spread_mm": 0.0
+  },
+  "teeth": {
+   "quant_max_err_mm": 0.0825,
+   "draco_pos_err_mm": 0.0039,
+   "draco_merged_vertices": 12,
+   "merged_dup_max_spread_mm": 0.0
+  }
+ }
+}

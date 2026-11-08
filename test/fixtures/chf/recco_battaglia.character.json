@@ -1,6 +1,6 @@
 {
  "format": "sc-chf-character",
- "version": 1,
+ "version": 3,
  "source": {
   "format_version": 8,
   "dna_stamp": "68f9d82f",
@@ -262,21 +262,31 @@
       "name": "brows",
       "mode": "hair_cards",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.00178,
         0.00028,
         1e-05
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/brows_textures/brows_texture_01_opac_alpha.webp",
+       "texCoord": 0,
        "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
        "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.35362297,
-       "metalness": 0.0
+       "roughness": 0.6122,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.1605,
+        0.006
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/hair_v2/textures/brows_textures/brows_texture_01_id.webp",
+       "texCoord": 0,
        "amount": 0.25,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -308,21 +318,31 @@
       "name": "brows_scalp",
       "mode": "hair_coat",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.00178,
         0.00028,
         1e-05
        ],
        "alphaMap": "characters/chf/textures/heads/shared/brows/male/npc/m_brows_001/textures/brows_001_opac_alpha.webp",
-       "alphaTest": 0.1,
-       "transparent": true,
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.33691800000000005,
-       "metalness": 0.0
+       "roughness": 0.6022,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.1605,
+        0.006
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/brows/male/npc/m_brows_001/textures/brows_001_id.webp",
+       "texCoord": 0,
        "amount": 0.25,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -365,21 +385,31 @@
       "name": "male_lash_up_m",
       "mode": "hair_cards",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.05348,
         0.02293,
         0.00503
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_opac_alpha.webp",
+       "texCoord": 0,
        "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 2.1765,
        "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.25,
-       "metalness": 0.0
+       "roughness": 0.55,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4287,
+        0.094
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_id.webp",
+       "texCoord": 0,
        "amount": 0.25,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -411,21 +441,31 @@
       "name": "male_lash_dn_m",
       "mode": "hair_cards",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.06409,
         0.02895,
         0.00697
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_opac_alpha.webp",
+       "texCoord": 0,
        "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 2.5,
        "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.25,
-       "metalness": 0.0
+       "roughness": 0.55,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4518,
+        0.1088
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_id.webp",
+       "texCoord": 0,
        "amount": 0.25,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -468,21 +508,31 @@
       "name": "hair_33_m",
       "mode": "hair_cards",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.26389,
         0.13233,
         0.01287
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_05_opac_alpha.webp",
+       "texCoord": 0,
        "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 3.4121,
        "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.38057703,
-       "metalness": 0.0
+       "roughness": 0.6283,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.5015,
+        0.0488
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_05_id.webp",
+       "texCoord": 0,
        "amount": 1.0,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -521,6 +571,7 @@
         0.0103
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/female/textures/f_hair_33_scalp_cap.webp",
+       "texCoord": 0,
        "transparent": true,
        "depthWrite": false,
        "opacity": 1.0,
@@ -568,21 +619,31 @@
       "name": "hair_shaved_scalp_m",
       "mode": "hair_coat",
       "three": {
-       "type": "MeshStandardMaterial",
+       "type": "MeshPhysicalMaterial",
        "color": [
         0.26389,
         0.13233,
         0.01287
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/hair_02_shaved_opac_alpha.webp",
-       "alphaTest": 0.1,
-       "transparent": true,
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
        "side": "DoubleSide",
-       "roughness": 0.35000001999999997,
-       "metalness": 0.0
+       "roughness": 0.61,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.5015,
+        0.0488
+       ]
       },
       "variation": {
        "map": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/hair_02_shaved_id.webp",
+       "texCoord": 0,
        "amount": 1.0,
        "rule": "color *= 1 + amount * (id - 0.5)"
       },
@@ -621,6 +682,7 @@
         0.0103
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/female/textures/f_hair_33_scalp_cap.webp",
+       "texCoord": 0,
        "transparent": true,
        "depthWrite": false,
        "opacity": 1.0,
