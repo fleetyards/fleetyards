@@ -100,6 +100,23 @@ module ScData
       assert_equal "hair", CharacterAsset.find_by!(path: "characters/male/chf/geometry/m_hair_02.glb").file.download
     end
 
+    test "copies what the catalogue says about head wear onto the equipment it names, and clears it once it is gone" do
+      helmet = create(:equipment, sc_key: "basl_combat_light_helmet_01_01_01")
+      hat = create(:equipment, sc_key: "987_hat_01_01_01")
+      gloves = create(:equipment, sc_key: "gloves_01", head_wear: {"type" => "stale"})
+      @objects["chf/catalog.json"] = {headwear_items: {
+        "basl_combat_light_helmet_01_01_01" => {type: "Char_Armor_Helmet", fit: "rigid", hairTag: "snoopy_cap", maskFacialHair: true, addsTags: [], hiddenParts: ["Hat_ItemPort"]},
+        "987_hat_01_01_01" => {type: "Char_Clothing_Hat", fit: "face_wrap", hairTag: "hatHair", maskFacialHair: false, addsTags: ["x"], hiddenParts: [], extra: 1}
+      }}.to_json
+
+      ::ScData::CharacterAssetsImportJob.new.perform
+
+      assert_equal({"type" => "Char_Armor_Helmet", "fit" => "rigid", "hairTag" => "snoopy_cap", "maskFacialHair" => true, "addsTags" => [], "hiddenParts" => ["Hat_ItemPort"]}, helmet.reload.head_wear)
+      assert_equal "face_wrap", hat.reload.head_wear["fit"]
+      assert_nil hat.head_wear["extra"]
+      assert_nil gloves.reload.head_wear
+    end
+
     test "does nothing without a configured store" do
       ::ScData::CharacterStore.stubs(:configured?).returns(false)
       @objects["chf/catalog.json"] = "{}"

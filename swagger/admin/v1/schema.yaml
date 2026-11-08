@@ -15544,6 +15544,12 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/EquipmentInventory"
           - type: 'null'
+        headWear:
+          description: What the item does to a character's hair and head while worn;
+            absent for anything not worn on the head
+          anyOf:
+          - "$ref": "#/components/schemas/EquipmentHeadWear"
+          - type: 'null'
         attachPoints:
           type:
           - object
@@ -15854,6 +15860,48 @@ components:
       required:
       - type
       title: EquipmentFitPortType
+    EquipmentHeadWear:
+      type: object
+      description: What a hat, helmet, mask or hood does to a character's hair, beard
+        and head while worn
+      properties:
+        type:
+          type: string
+          description: The game's item type, e.g. Char_Armor_Helmet
+        fit:
+          type: string
+          enum:
+          - rigid
+          - face_wrap
+          description: face_wrap follows the character's face like the hair; rigid
+            keeps its own shape
+        hairTag:
+          type:
+          - string
+          - 'null'
+          description: The hair variant it asks for, e.g. snoopy_cap or hatHair
+        maskFacialHair:
+          type: boolean
+          description: Whether it asks beards and stubble for their trimmed variant
+        addsTags:
+          type: array
+          items:
+            type: string
+          description: Further variant tags it pushes onto the character
+        hiddenParts:
+          type: array
+          items:
+            type: string
+          description: The game ports it hides, e.g. Hair_ItemPort
+      additionalProperties: false
+      required:
+      - type
+      - fit
+      - hairTag
+      - maskFacialHair
+      - addsTags
+      - hiddenParts
+      title: EquipmentHeadWear
     EquipmentHeat:
       type: object
       properties:

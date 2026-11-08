@@ -28,6 +28,7 @@ json.volume equipment.volume&.to_f
 json.volume_dimensions equipment.volume_dimensions
 json.fit equipment.fit
 json.inventory equipment.inventory
+json.head_wear equipment.head_wear
 
 json.damage_reduction equipment.damage_reduction&.to_f
 json.temperature_rating equipment.temperature_rating
