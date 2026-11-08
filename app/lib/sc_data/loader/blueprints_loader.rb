@@ -72,7 +72,10 @@ module ScData
         return if blueprint_data["ref"].blank?
         return if blueprint_data["key"].blank?
 
+        # By key as well: the export is free to reissue a GUID, and a second row
+        # for the same key would fail its uniqueness check and abort the load.
         blueprint = Blueprint.find_by(sc_ref: blueprint_data["ref"])
+        blueprint ||= Blueprint.find_by(sc_key: blueprint_data["key"])
         blueprint ||= Blueprint.new(sc_ref: blueprint_data["ref"])
 
         update_params = update_params(blueprint_data)

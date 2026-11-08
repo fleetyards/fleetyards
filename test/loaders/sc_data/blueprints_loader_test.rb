@@ -86,6 +86,15 @@ module ScData
         assert_nil fixture_build(retired)
       end
 
+      test "#all keeps the row of a blueprint whose ref the export reissued" do
+        blueprint = create(:blueprint, :without_build, sc_key: "bp_craft_amrs_lasercannon_s1", sc_ref: "00000000-0000-4000-8000-00000000abcd")
+
+        loader.all
+
+        assert_equal "280f47b7-8434-410c-b854-380768fdccec", blueprint.reload.sc_ref
+        assert_equal 1, Blueprint.where(sc_key: "bp_craft_amrs_lasercannon_s1").count
+      end
+
       test "#one links a component output by its ref" do
         component = create(:component, sc_ref: OUTPUT_REF, name: "Yubarev Pistol")
 
