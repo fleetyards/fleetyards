@@ -140,6 +140,75 @@ module ScData
       assert_equal "body_textured.glb", CharacterBody.find_by!(key: "male").holo_textured.filename.to_s
     end
 
+    FACES = {"index.json" => "{}", "library.bin" => "positions", "normals.bin" => "normals"}.freeze
+
+    private def publish_faces(key, files, library: "#{key}-6a268db0")
+      @index[key][:faces] = {
+        path: "characters/#{key}/faces/",
+        library:,
+        files: files.merge("README.md" => "spec").to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] }
+      }
+      @objects["index.json"] = {bodies: @index}.to_json
+      files.each { |name, content| @objects["#{key}/faces/#{name}"] = content }
+    end
+
+    test "attaches a body's face library and its skin tone, and names the build once all of it is there" do
+      publish("male", {"body.glb" => BODY})
+      @index["male"][:skin] = {tone: "#513428", note: "baked at"}
+      publish_faces("male", FACES)
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      body = CharacterBody.find_by!(key: "male")
+      assert_equal "male-6a268db0", body.face_library
+      assert_equal "#513428", body.skin_tone
+      assert_equal "positions", body.face_positions.download
+      assert_equal "normals", body.face_normals.download
+      assert_equal "index.json", body.face_index.filename.to_s
+      assert_not_includes fetched, "README.md"
+    end
+
+    test "names no build while a new one is half imported, and the new one once it is whole" do
+      publish("male", {"body.glb" => BODY})
+      publish_faces("male", FACES)
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      publish_faces("male", FACES.merge("library.bin" => "new positions"), library: "male-7b000000")
+      @objects.delete("male/faces/library.bin")
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      body = CharacterBody.find_by!(key: "male")
+      assert_nil body.face_library
+      assert_not body.face_library?
+
+      @objects["male/faces/library.bin"] = "new positions"
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal "male-7b000000", body.reload.face_library
+      assert_equal "new positions", body.face_positions.download
+    end
+
+    test "skips a face library whose listing has not changed" do
+      publish("male", {"body.glb" => BODY})
+      publish_faces("male", FACES)
+      ::ScData::CharacterBodiesImportJob.new.perform
+      @client.api_requests.clear
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal ["index.json"], fetched
+    end
+
+    test "drops a skin tone that is not a colour" do
+      publish("male", {"body.glb" => BODY})
+      @index["male"][:skin] = {tone: "dark"}
+      @objects["index.json"] = {bodies: @index}.to_json
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_nil CharacterBody.find_by!(key: "male").skin_tone
+    end
+
     test "does nothing without a configured store" do
       ::ScData::CharacterStore.stubs(:configured?).returns(false)
 
