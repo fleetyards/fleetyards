@@ -109,6 +109,7 @@
         "download": "Descargar el .chf",
         "confirmDelete": "¿Eliminar el personaje %{name}?",
         "unavailable": "El personaje de este enlace no se puede mostrar en este cuerpo.",
+        "notReady": "Este personaje está guardado, pero solo se podrá mostrar cuando se importen los datos del creador de personajes.",
         "messages": {
           "uploaded": "Personaje subido.",
           "uploadFailed": "No se pudo subir el personaje.",

@@ -711,6 +711,12 @@ const character = computed(() => {
   );
 });
 
+// A character the server has not resolved: the customizer data it needs is
+// not imported yet.
+const faceNotReady = computed(
+  () => !!shownFace.value && !shownFace.value.character,
+);
+
 // A character the link names that cannot be drawn: gone, or for the other
 // body.
 const faceUnavailable = computed(
@@ -1055,6 +1061,7 @@ const copyShareLink = () => {
           :token="faceToken"
           :shown="shownFace"
           :unavailable="faceUnavailable"
+          :not-ready="faceNotReady"
           @select="selectFace"
         />
         <WornStorage

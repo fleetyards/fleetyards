@@ -158,4 +158,12 @@ describe("DressingRoomCharacters", () => {
       "The character in this link cannot be shown on this body.",
     );
   });
+
+  it("says when a kept character cannot be drawn yet", async () => {
+    const wrapper = await mount({ token: "token-1", notReady: true });
+
+    expect(
+      wrapper.find('[data-test="dressing-room-character-not-ready"]').text(),
+    ).toContain("once the character creator's data is imported");
+  });
 });

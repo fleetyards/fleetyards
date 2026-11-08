@@ -109,6 +109,7 @@
         "download": "Download the .chf",
         "confirmDelete": "Delete the character %{name}?",
         "unavailable": "The character in this link cannot be shown on this body.",
+        "notReady": "This character is saved, but it can only be drawn once the character creator's data is imported.",
         "messages": {
           "uploaded": "Character uploaded.",
           "uploadFailed": "The character could not be uploaded.",

@@ -37,12 +37,16 @@ type Props = {
   shown?: SharedCharacterFace;
   // The shown character could not be found, or not drawn on this body.
   unavailable?: boolean;
+  // The shown character is kept, but cannot be drawn until the customizer
+  // data it needs is imported.
+  notReady?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   token: undefined,
   shown: undefined,
   unavailable: false,
+  notReady: false,
 });
 
 const emit = defineEmits<{
@@ -123,6 +127,13 @@ const remove = async (character: CharacterFace) => {
     </h2>
     <p v-if="unavailable" class="characters__warning">
       {{ t("dressingRoom.characters.unavailable") }}
+    </p>
+    <p
+      v-else-if="notReady"
+      class="characters__warning"
+      data-test="dressing-room-character-not-ready"
+    >
+      {{ t("dressingRoom.characters.notReady") }}
     </p>
     <div
       v-if="shown && !own"

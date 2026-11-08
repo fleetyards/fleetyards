@@ -109,6 +109,7 @@
         "download": "下载 .chf",
         "confirmDelete": "删除角色 %{name}？",
         "unavailable": "此链接中的角色无法在该体型上显示。",
+        "notReady": "该角色已保存，但需要导入角色创建器的数据后才能显示。",
         "messages": {
           "uploaded": "角色已上传。",
           "uploadFailed": "无法上传角色。",

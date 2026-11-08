@@ -109,6 +109,7 @@
         "download": ".chf herunterladen",
         "confirmDelete": "Den Charakter %{name} löschen?",
         "unavailable": "Der Charakter aus diesem Link kann auf diesem Körper nicht gezeigt werden.",
+        "notReady": "Dieser Charakter ist gespeichert, kann aber erst gezeigt werden, wenn die Daten des Charakter-Editors importiert sind.",
         "messages": {
           "uploaded": "Charakter hochgeladen.",
           "uploadFailed": "Der Charakter konnte nicht hochgeladen werden.",

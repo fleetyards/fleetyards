@@ -109,6 +109,7 @@
         "download": "Télécharger le .chf",
         "confirmDelete": "Supprimer le personnage %{name} ?",
         "unavailable": "Le personnage de ce lien ne peut pas être affiché sur ce corps.",
+        "notReady": "Ce personnage est enregistré, mais il ne pourra être affiché qu'une fois les données du créateur de personnage importées.",
         "messages": {
           "uploaded": "Personnage importé.",
           "uploadFailed": "Le personnage n'a pas pu être importé.",
