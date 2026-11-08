@@ -99,6 +99,21 @@
         "grenade": "手雷",
         "medpen": "医疗笔",
         "oxypen": "氧气笔"
+      },
+      "characters": {
+        "title": "你的角色",
+        "hint": "上传游戏角色创建器导出的 .chf 文件，人物就会换上你的脸、发型和肤色。",
+        "signIn": "登录后即可上传你自己的角色。",
+        "upload": "上传 .chf",
+        "takeOff": "默认头部",
+        "download": "下载 .chf",
+        "confirmDelete": "删除角色 %{name}？",
+        "unavailable": "此链接中的角色无法在该体型上显示。",
+        "messages": {
+          "uploaded": "角色已上传。",
+          "uploadFailed": "无法上传角色。",
+          "deleteFailed": "无法删除角色。"
+        }
       }
     }
   }

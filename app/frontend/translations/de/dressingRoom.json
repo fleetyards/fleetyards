@@ -99,6 +99,21 @@
         "grenade": "Granaten",
         "medpen": "Medpens",
         "oxypen": "Oxypens"
+      },
+      "characters": {
+        "title": "Dein Charakter",
+        "hint": "Lade die .chf hoch, die der Charakter-Editor des Spiels exportiert, und die Figur trägt dein Gesicht, deine Haare und deine Haut.",
+        "signIn": "Melde dich an, um deinen eigenen Charakter hochzuladen.",
+        "upload": ".chf hochladen",
+        "takeOff": "Standardkopf",
+        "download": ".chf herunterladen",
+        "confirmDelete": "Den Charakter %{name} löschen?",
+        "unavailable": "Der Charakter aus diesem Link kann auf diesem Körper nicht gezeigt werden.",
+        "messages": {
+          "uploaded": "Charakter hochgeladen.",
+          "uploadFailed": "Der Charakter konnte nicht hochgeladen werden.",
+          "deleteFailed": "Der Charakter konnte nicht gelöscht werden."
+        }
       }
     }
   }

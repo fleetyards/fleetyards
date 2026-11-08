@@ -168,6 +168,61 @@ const MALE: CharacterBody = {
 
 const bodies = ref<CharacterBody[]>([MALE]);
 
+const FACE_LIBRARY = {
+  library: "male-6a268db0",
+  index: media("index.json"),
+  positions: media("library.bin"),
+  normals: media("normals.bin"),
+};
+
+const RESOLVED = {
+  body: "male",
+  source: { face_library: "male-6a268db0", library_stamp_ok: true },
+  face: { weights: null },
+  skin: {
+    tone: "#a57158",
+    body_baseColorFactor: [1.2, 1.1, 1],
+    head: {
+      base: null,
+      tone_gain: [1, 1, 1],
+      layers: [],
+      normal: null,
+      orm: null,
+    },
+  },
+  eyes: { iris: null, iris_color: "#272727", sclera: "#d9d0c8" },
+  meshes: [
+    {
+      port: "hair_itemport",
+      item: "hair",
+      record: "hair_32",
+      kind: "hair",
+      url: "/m_hair_32.glb",
+      headwear_variant: null,
+      materials_by_submaterial: [],
+      headwear: {
+        snoopy_cap: {
+          url: "/m_rsi_snoopy_cap_01.glb",
+          materials_by_submaterial: [],
+        },
+      },
+    },
+  ],
+  hidden_parts: {
+    hair_itemport: ["hair_itemport", "universal_scalp_itemport"],
+  },
+};
+
+const SHARED_FACES: Record<string, unknown> = {
+  macken: {
+    token: "macken",
+    name: "Macken",
+    body: "male",
+    file: media("Macken.chf"),
+    character: RESOLVED,
+  },
+};
+
 const ARMOR_SETS: ArmorSet[] = [
   {
     name: "ADP Woodland",
@@ -196,6 +251,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
         : Promise.reject(new Error("not found")),
   }),
   useCharacterBodies: () => ({ data: bodies }),
+  useCharacterFaces: () => ({ data: ref([]), isLoading: ref(false) }),
+  useSharedCharacterFace: (token: () => string) => ({
+    data: computed(() => SHARED_FACES[token()]),
+    isError: computed(() => !!token() && !SHARED_FACES[token()]),
+  }),
 }));
 
 const copied = vi.fn((_text: string) => Promise.resolve());
@@ -631,6 +691,50 @@ describe("ToolsDressingRoomPage", () => {
     });
 
     bodies.value = [MALE];
+  });
+
+  describe("the user's own character", () => {
+    it("draws the character the address names on the body with its face library", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper } = await mount({ face: "macken" });
+      const character = viewerModel(wrapper).rig.character;
+
+      expect(character.library.id).toBe("male-6a268db0");
+      expect(character.meshes.map((mesh: { url: string }) => mesh.url)).toEqual(
+        ["/m_hair_32.glb"],
+      );
+      expect(
+        wrapper.find('[data-test="dressing-room-shared-character"]').text(),
+      ).toContain("Macken");
+
+      bodies.value = [MALE];
+    });
+
+    it("shares the character with the outfit", async () => {
+      const { wrapper } = await mount({ face: "macken", torso: "adp-core" });
+
+      await wrapper
+        .find('[data-test="dressing-room-copy-link"]')
+        .trigger("click");
+
+      const shared = new URL(copied.mock.calls.at(-1)![0].replace("#", ""));
+      expect(shared.searchParams.get("face")).toBe("macken");
+    });
+
+    it("says when the character the address names is gone", async () => {
+      const { wrapper } = await mount({ face: "gone" });
+
+      expect(
+        wrapper.find('[data-test="dressing-room-characters"]').text(),
+      ).toContain("The character in this link cannot be shown on this body.");
+    });
+
+    it("draws no character on a body without a face library", async () => {
+      const { wrapper } = await mount({ face: "macken", torso: "adp-core" });
+
+      expect(viewerModel(wrapper).rig.character).toBeUndefined();
+    });
   });
 
   it("closes the slots the undersuit offers no port for", async () => {

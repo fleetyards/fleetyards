@@ -99,6 +99,21 @@
         "grenade": "Grenades",
         "medpen": "Medpens",
         "oxypen": "Oxypens"
+      },
+      "characters": {
+        "title": "Votre personnage",
+        "hint": "Importez le .chf exporté par le créateur de personnage du jeu, et la figurine portera votre visage, vos cheveux et votre peau.",
+        "signIn": "Connectez-vous pour importer votre propre personnage.",
+        "upload": "Importer un .chf",
+        "takeOff": "Tête par défaut",
+        "download": "Télécharger le .chf",
+        "confirmDelete": "Supprimer le personnage %{name} ?",
+        "unavailable": "Le personnage de ce lien ne peut pas être affiché sur ce corps.",
+        "messages": {
+          "uploaded": "Personnage importé.",
+          "uploadFailed": "Le personnage n'a pas pu être importé.",
+          "deleteFailed": "Le personnage n'a pas pu être supprimé."
+        }
       }
     }
   }

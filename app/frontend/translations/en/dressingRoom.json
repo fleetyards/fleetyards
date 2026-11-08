@@ -99,6 +99,21 @@
         "grenade": "Grenades",
         "medpen": "Medpens",
         "oxypen": "Oxypens"
+      },
+      "characters": {
+        "title": "Your character",
+        "hint": "Upload the .chf the game's character creator exports, and the figure wears your face, hair and skin.",
+        "signIn": "Sign in to upload your own character.",
+        "upload": "Upload a .chf",
+        "takeOff": "Default head",
+        "download": "Download the .chf",
+        "confirmDelete": "Delete the character %{name}?",
+        "unavailable": "The character in this link cannot be shown on this body.",
+        "messages": {
+          "uploaded": "Character uploaded.",
+          "uploadFailed": "The character could not be uploaded.",
+          "deleteFailed": "The character could not be deleted."
+        }
       }
     }
   }

@@ -45,6 +45,9 @@ type Props = {
   blocked?: boolean;
   heldWeapon?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
+  // The viewer's own character on the figure, saved with the outfit; left
+  // as saved while it is not known yet.
+  characterFaceId?: string | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   blocked: false,
   heldWeapon: undefined,
   body: undefined,
+  characterFaceId: undefined,
 });
 
 const emit = defineEmits<{
@@ -132,6 +136,8 @@ const changed = computed(
     (active.value.name !== name.value.trim() ||
       contentsChanged.value ||
       (active.value.heldWeapon ?? undefined) !== props.heldWeapon ||
+      (props.characterFaceId !== undefined &&
+        (active.value.characterFace?.id ?? null) !== props.characterFaceId) ||
       (props.body !== undefined && active.value.body !== props.body)),
 );
 
@@ -155,6 +161,9 @@ const saveNew = async () => {
         storedItems: props.storedItems,
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
+        ...(props.characterFaceId !== undefined
+          ? { characterFaceId: props.characterFaceId }
+          : {}),
       },
     });
     await refresh();
@@ -178,6 +187,9 @@ const saveChanges = async () => {
           : {}),
         heldWeapon: props.heldWeapon ?? null,
         body: props.body,
+        ...(props.characterFaceId !== undefined
+          ? { characterFaceId: props.characterFaceId }
+          : {}),
       },
     });
     await refresh();

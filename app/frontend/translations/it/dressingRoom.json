@@ -99,6 +99,21 @@
         "grenade": "Granate",
         "medpen": "Medpen",
         "oxypen": "Oxypen"
+      },
+      "characters": {
+        "title": "Il tuo personaggio",
+        "hint": "Carica il .chf esportato dal creatore di personaggi del gioco e la figura avrà il tuo volto, i tuoi capelli e la tua pelle.",
+        "signIn": "Accedi per caricare il tuo personaggio.",
+        "upload": "Carica un .chf",
+        "takeOff": "Testa predefinita",
+        "download": "Scarica il .chf",
+        "confirmDelete": "Eliminare il personaggio %{name}?",
+        "unavailable": "Il personaggio di questo link non può essere mostrato su questo corpo.",
+        "messages": {
+          "uploaded": "Personaggio caricato.",
+          "uploadFailed": "Impossibile caricare il personaggio.",
+          "deleteFailed": "Impossibile eliminare il personaggio."
+        }
       }
     }
   }
