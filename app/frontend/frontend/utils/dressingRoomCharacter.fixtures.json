@@ -1,0 +1,827 @@
+[
+  {
+    "name": "Macken__basl_combat_light_helmet_01_01_01",
+    "headWear": {
+      "type": "Char_Armor_Helmet",
+      "fit": "rigid",
+      "hairTag": "snoopy_cap",
+      "maskFacialHair": true,
+      "addsTags": [],
+      "hiddenParts": [
+        "Facewear",
+        "Hat_ItemPort",
+        "Eye_Accessories_ItemPort",
+        "hair_flair_ItemPort"
+      ]
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_052.glb",
+          "materials_by_submaterial": [],
+          "port": "beard_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_brows_006.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_hair_32.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/male/chf/geometry/m_hair_32_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/male/chf/geometry/m_hair_32_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [],
+      "meshes": [
+        {
+          "port": "beard_itemport",
+          "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+          "headwear_variant": "maskFacialHair"
+        },
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/male/chf/geometry/m_brows_006.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "hair_itemport",
+          "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+          "headwear_variant": "snoopy_cap"
+        },
+        {
+          "port": "universal_scalp_itemport",
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "Stows_Face__basl_combat_light_helmet_01_01_01",
+    "headWear": {
+      "type": "Char_Armor_Helmet",
+      "fit": "rigid",
+      "hairTag": "snoopy_cap",
+      "maskFacialHair": true,
+      "addsTags": [],
+      "hiddenParts": [
+        "Facewear",
+        "Hat_ItemPort",
+        "Eye_Accessories_ItemPort",
+        "hair_flair_ItemPort"
+      ]
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_044.glb",
+          "materials_by_submaterial": [],
+          "port": "beard_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_brows_004.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_hair_21.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/male/chf/geometry/m_hair_21_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/male/chf/geometry/m_hair_21_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_plte_eyebrows.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_eyebrows_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_pite_r_ear.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_r_ear_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [],
+      "meshes": [
+        {
+          "port": "beard_itemport",
+          "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+          "headwear_variant": "maskFacialHair"
+        },
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/male/chf/geometry/m_brows_004.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "hair_itemport",
+          "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+          "headwear_variant": "snoopy_cap"
+        },
+        {
+          "port": "piercings_eyebrows_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_plte_eyebrows.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_r_ear_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_pite_r_ear.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "universal_scalp_itemport",
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "Stows_Face__ccc_combat_heavy_helmet_01_01_01",
+    "headWear": {
+      "type": "Char_Armor_Helmet",
+      "fit": "rigid",
+      "hairTag": "snoopy_cap",
+      "maskFacialHair": true,
+      "addsTags": [],
+      "hiddenParts": [
+        "Facewear",
+        "Hat_ItemPort",
+        "Eye_Accessories_ItemPort",
+        "hair_flair_ItemPort",
+        "Hair_ItemPort",
+        "Teeth_ItemPort",
+        "Beard_ItemPort"
+      ]
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_044.glb",
+          "materials_by_submaterial": [],
+          "port": "beard_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_brows_004.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_hair_21.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/male/chf/geometry/m_hair_21_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/male/chf/geometry/m_hair_21_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_plte_eyebrows.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_eyebrows_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_pite_r_ear.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_r_ear_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [
+        "beard_itemport",
+        "hair_itemport",
+        "stubble_itemport",
+        "teeth",
+        "universal_scalp_itemport"
+      ],
+      "meshes": [
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/male/chf/geometry/m_brows_004.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_eyebrows_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_plte_eyebrows.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_r_ear_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_pite_r_ear.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "art_kelvin__cbd_mask_01_01_01",
+    "headWear": {
+      "type": "Char_Clothing_Hat",
+      "fit": "face_wrap",
+      "hairTag": null,
+      "maskFacialHair": true,
+      "addsTags": ["maskFacialHair"],
+      "hiddenParts": ["Hair_ItemPort", "Beard_ItemPort"]
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+          "materials_by_submaterial": [],
+          "port": "beard_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_brows_002.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_hair_04.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/male/chf/geometry/m_hair_04_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/male/chf/geometry/m_hair_04_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_stud_eyebrow.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_eyebrows_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_pcg_helix_mouth.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_mouth_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_040.glb",
+          "materials_by_submaterial": [],
+          "port": "stubble_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_011.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [
+        "beard_itemport",
+        "hair_itemport",
+        "stubble_itemport",
+        "universal_scalp_itemport"
+      ],
+      "meshes": [
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/male/chf/geometry/m_brows_002.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_eyebrows_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_stud_eyebrow.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_mouth_itemport",
+          "url": "characters/male/chf/geometry/m_pcg_helix_mouth.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "femininedefault__987_hat_01_01_01",
+    "headWear": {
+      "type": "Char_Clothing_Hat",
+      "fit": "face_wrap",
+      "hairTag": "hatHair",
+      "maskFacialHair": false,
+      "addsTags": ["hatHair"],
+      "hiddenParts": []
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/female/chf/geometry/f_brows_001.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/female/chf/geometry/f_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/female/chf/geometry/f_hair_36.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/female/chf/geometry/f_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/female/chf/geometry/f_hair_36_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/female/chf/geometry/f_hair_36_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/female/chf/geometry/f_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [],
+      "meshes": [
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/female/chf/geometry/f_brows_001.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/female/chf/geometry/f_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "hair_itemport",
+          "url": "characters/female/chf/geometry/f_hair_36_casual.glb",
+          "headwear_variant": "hatHair"
+        },
+        {
+          "port": "universal_scalp_itemport",
+          "url": "characters/female/chf/geometry/f_universal_scalp.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "masculinedefault__alb_bandana_01_01_01",
+    "headWear": {
+      "type": "Char_Clothing_Hat",
+      "fit": "face_wrap",
+      "hairTag": null,
+      "maskFacialHair": false,
+      "addsTags": ["hatHair"],
+      "hiddenParts": ["Hair_ItemPort"]
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/male/chf/geometry/m_facial_hair_045.glb",
+          "materials_by_submaterial": [],
+          "port": "beard_itemport",
+          "headwear": {
+            "maskFacialHair": {
+              "url": "characters/male/chf/geometry/m_facial_hair_045.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_brows_002.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/male/chf/geometry/m_hair_31.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/male/chf/geometry/m_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair_mask": {
+              "url": "characters/male/chf/geometry/m_hair_31_mask.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/male/chf/geometry/m_hair_31_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": ["hair_itemport", "universal_scalp_itemport"],
+      "meshes": [
+        {
+          "port": "beard_itemport",
+          "url": "characters/male/chf/geometry/m_facial_hair_045.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/male/chf/geometry/m_brows_002.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/male/chf/geometry/m_lashes_01.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "meg__gys_mask_01_01_01",
+    "headWear": {
+      "type": "Char_Clothing_Hat",
+      "fit": "face_wrap",
+      "hairTag": null,
+      "maskFacialHair": true,
+      "addsTags": ["hatHair_mask"],
+      "hiddenParts": []
+    },
+    "character": {
+      "hidden_parts": {
+        "head_itemport": [
+          "head_itemport",
+          "eyes_itemport",
+          "hair_itemport",
+          "eyebrow_itemport",
+          "eyelashes_itemport",
+          "beard_itemport",
+          "stubble_itemport",
+          "universal_scalp_itemport",
+          "piercings_l_ear_itemport",
+          "piercings_r_ear_itemport",
+          "piercings_eyebrows_itemport",
+          "piercings_mouth_itemport",
+          "piercings_nose_itemport"
+        ],
+        "hair_itemport": ["hair_itemport", "universal_scalp_itemport"],
+        "beard_itemport": ["beard_itemport", "stubble_itemport"],
+        "eyebrow_itemport": ["eyebrow_itemport"],
+        "eyelashes_itemport": ["eyelashes_itemport"],
+        "eyes_itemport": ["eyes_itemport"],
+        "teeth_itemport": ["teeth"]
+      },
+      "meshes": [
+        {
+          "url": "characters/female/chf/geometry/f_brows_001.glb",
+          "materials_by_submaterial": [],
+          "port": "eyebrow_itemport"
+        },
+        {
+          "url": "characters/female/chf/geometry/f_lashes_01.glb",
+          "materials_by_submaterial": [],
+          "port": "eyelashes_itemport"
+        },
+        {
+          "url": "characters/female/chf/geometry/f_hair_93.glb",
+          "materials_by_submaterial": [],
+          "port": "hair_itemport",
+          "headwear": {
+            "snoopy_cap": {
+              "url": "characters/female/chf/geometry/f_rsi_snoopy_cap_01.glb",
+              "materials_by_submaterial": []
+            },
+            "hatHair": {
+              "url": "characters/female/chf/geometry/f_hair_93_casual.glb",
+              "materials_by_submaterial": []
+            }
+          }
+        },
+        {
+          "url": "characters/female/chf/geometry/f_pcg_ball_l_ear.glb",
+          "materials_by_submaterial": [],
+          "port": "piercings_l_ear_itemport"
+        },
+        {
+          "url": "characters/female/chf/geometry/f_universal_scalp.glb",
+          "materials_by_submaterial": [],
+          "port": "universal_scalp_itemport"
+        }
+      ]
+    },
+    "expected": {
+      "hidden_ports": [],
+      "meshes": [
+        {
+          "port": "eyebrow_itemport",
+          "url": "characters/female/chf/geometry/f_brows_001.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "eyelashes_itemport",
+          "url": "characters/female/chf/geometry/f_lashes_01.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "hair_itemport",
+          "url": "characters/female/chf/geometry/f_hair_93.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "piercings_l_ear_itemport",
+          "url": "characters/female/chf/geometry/f_pcg_ball_l_ear.glb",
+          "headwear_variant": null
+        },
+        {
+          "port": "universal_scalp_itemport",
+          "url": "characters/female/chf/geometry/f_universal_scalp.glb",
+          "headwear_variant": null
+        }
+      ]
+    }
+  }
+]
