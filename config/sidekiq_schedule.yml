@@ -69,6 +69,11 @@ sc_data_character_bodies_import_job:
   class: 'ScData::CharacterBodiesImportJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? && ScData::CharacterStore.configured? %>
+sc_data_character_assets_import_job:
+  cron: '43 22 */1 * *' # Daily at 22:43
+  class: 'ScData::CharacterAssetsImportJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? && ScData::CharacterStore.configured? %>
 sc_data_loading_screens_import_job:
   cron: '45 22 */1 * *' # Daily at 22:45
   class: 'ScData::LoadingScreensImportJob'

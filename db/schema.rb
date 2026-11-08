@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_08_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_08_210100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -374,6 +374,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_08_210000) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "name"], name: "index_carts_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_carts_on_user_id_active", unique: true, where: "active"
+  end
+
+  create_table "character_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "path", null: false
+    t.string "etag"
+    t.bigint "size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["path"], name: "index_character_assets_on_path", unique: true
   end
 
   create_table "character_bodies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

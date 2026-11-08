@@ -30,6 +30,15 @@ module ScData
       end
     end
 
+    # Every file a resolved character file can name: the item catalogue, the
+    # per-body geometry and skin sets, and the shared hair, makeup, tattoo,
+    # blemish and eye textures. The specs, reference scripts and test vectors
+    # beside them are not served.
+    ASSET = %r{\A(?:chf/(?:catalog\.json|textures/.+\.webp)|[a-z]+/chf/(?:index\.json|geometry/[^/]+\.glb|skin/[^/]+\.webp))\z}
+
+    # "<path below the prefix>" => RemoteObject.
+    def assets = remote_objects.select { |path, _| path.match?(ASSET) }
+
     # The customizer's light rigs, "<rig>" => {"lights" => [...]}: `review_<key>`
     # lights a body's whole outfit. Empty until the export lists them.
     def lighting_rigs(manifest = self.manifest)
