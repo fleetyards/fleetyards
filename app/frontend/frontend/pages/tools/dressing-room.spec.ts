@@ -157,6 +157,8 @@ const MALE: CharacterBody = {
   animations: media("animations.glb"),
   weaponInHand: null,
   lighting: [],
+  skinTone: null,
+  faceLibrary: null,
   clips: [
     { name: "shop_pose_01", static: true, looping: false },
     { name: "idle_stand", static: false, looping: true },

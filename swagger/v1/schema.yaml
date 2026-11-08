@@ -26393,6 +26393,18 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/CharacterBodyClip"
+        skinTone:
+          type:
+          - string
+          - 'null'
+          pattern: "^#[0-9a-fA-F]{6}$"
+          description: 'The sRGB skin tone the textured holo is baked at, e.g. #513428;
+            absent until exported'
+        faceLibrary:
+          description: The face library; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/CharacterBodyFaceLibrary"
+          - type: 'null'
       additionalProperties: false
       required:
       - key
@@ -26402,6 +26414,8 @@ components:
       - weaponInHand
       - lighting
       - clips
+      - skinTone
+      - faceLibrary
       title: CharacterBody
     CharacterBodyClip:
       type: object
@@ -26420,6 +26434,27 @@ components:
       - static
       - looping
       title: CharacterBodyClip
+    CharacterBodyFaceLibrary:
+      type: object
+      description: The library a character file's head, eyes and teeth are blended
+        from on this body
+      properties:
+        library:
+          type: string
+          description: The build, <body>-<DNA stamp>, e.g. male-6a268db0
+        index:
+          "$ref": "#/components/schemas/MediaFile"
+        positions:
+          "$ref": "#/components/schemas/MediaFile"
+        normals:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - library
+      - index
+      - positions
+      - normals
+      title: CharacterBodyFaceLibrary
     CharacterBodyHandBones:
       type: object
       properties:

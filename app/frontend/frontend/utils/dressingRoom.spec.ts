@@ -161,6 +161,8 @@ describe("riggedOutfitModel", () => {
     animations: file("/animations.glb", 3),
     weaponInHand: null,
     lighting: [],
+    skinTone: null,
+    faceLibrary: null,
     clips: [
       { name: "idle_stand", static: false, looping: true },
       { name: "shop_pose_01", static: true, looping: false },
@@ -241,6 +243,8 @@ describe("riggedOutfitModel body cover", () => {
     animations: null,
     weaponInHand: null,
     lighting: [],
+    skinTone: null,
+    faceLibrary: null,
     clips: [],
   };
 
