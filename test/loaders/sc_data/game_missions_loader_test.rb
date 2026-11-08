@@ -297,6 +297,15 @@ module ScData
         assert_empty dropped.builds.current(fixture_source)
       end
 
+      test "#all keeps the row of a mission whose ref the export reissued" do
+        mission = create(:game_mission, :without_build, sc_key: "2025content_firesale_cfp", sc_ref: "00000000-0000-4000-8000-00000000abcd")
+
+        loader.all
+
+        assert_equal "5aa96690-86e5-451a-b627-48b481c397e1", mission.reload.sc_ref
+        assert_equal 1, GameMission.where(sc_key: "2025content_firesale_cfp").count
+      end
+
       # The Firesale resupply's slots can only pick templates that stand for
       # PYR2 L4, and its description names Pyro -- the star, not "Pyro
       # System", which the longer name would have been.
