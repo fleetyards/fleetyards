@@ -11,6 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import Characters from "@/frontend/components/DressingRoom/Characters/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
 import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
@@ -38,7 +39,10 @@ import {
   useSharedCharacterFace,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
-import type { ResolvedCharacter } from "@/shared/components/HoloViewer/character/types";
+import type {
+  CharacterRig,
+  ResolvedCharacter,
+} from "@/shared/components/HoloViewer/character/types";
 import { characterRig } from "@/frontend/utils/dressingRoomCharacter";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
@@ -716,8 +720,8 @@ const chosenCharacter = computed(() => {
 
 // Without one, the game's own default character for the body: the head the
 // customizer opens with.
-const character = computed(() => {
-  if (chosenCharacter.value || !body.value) return chosenCharacter.value;
+const defaultCharacter = computed(() => {
+  if (!body.value) return undefined;
 
   const fallback = body.value.defaultCharacter as ResolvedCharacter | null;
   if (!fallback) return undefined;
@@ -728,6 +732,26 @@ const character = computed(() => {
     `default:${body.value.key}`,
     wornHeadWear.value,
   );
+});
+
+// The character the address names, still on its way: the body's default
+// would stand in for it only for a moment.
+const facePending = computed(
+  () => !!faceToken.value && !shownFace.value && !sharedFaceMissing.value,
+);
+
+// The character last drawn on each body, kept on the figure while the next
+// one is fetched.
+const drawnCharacters = new Map<string, CharacterRig | undefined>();
+
+const character = computed(() => {
+  if (!body.value) return undefined;
+  if (facePending.value) return drawnCharacters.get(body.value.key);
+
+  const drawn = chosenCharacter.value ?? defaultCharacter.value;
+  drawnCharacters.set(body.value.key, drawn);
+
+  return drawn;
 });
 
 // A character the server has not resolved: the customizer data it needs is
@@ -749,8 +773,13 @@ const faceUnavailable = computed(
             !chosenCharacter.value)))),
 );
 
-const model = computed(() =>
-  body.value
+const model = computed(() => {
+  // Nothing drawn yet: the figure waits for its character.
+  if (body.value && facePending.value && !drawnCharacters.has(body.value.key)) {
+    return undefined;
+  }
+
+  return body.value
     ? riggedOutfitModel(
         body.value,
         pieces.value,
@@ -760,8 +789,8 @@ const model = computed(() =>
         failedPaths.value,
         character.value,
       )
-    : outfitModel(pieces.value),
-);
+    : outfitModel(pieces.value);
+});
 
 // A weapon in hand is held, unless the address picks another pose.
 const pose = computed(() => {
@@ -938,6 +967,11 @@ const copyShareLink = () => {
         @unavailable="holoUnavailable"
         @unplaced="unplaced = $event"
         @fell-back="failedPaths = [...failedPaths, ...$event]"
+      />
+      <Loader
+        v-else-if="body && facePending"
+        :loading="true"
+        data-test="dressing-room-character-loading"
       />
       <div v-else class="dressing-room__empty" data-test="dressing-room-empty">
         <i class="fa-duotone fa-person" />

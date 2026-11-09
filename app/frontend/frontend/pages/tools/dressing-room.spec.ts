@@ -218,6 +218,9 @@ const RESOLVED = {
   },
 };
 
+// Characters still being fetched.
+const ARRIVING_FACES = new Set(["arriving"]);
+
 const SHARED_FACES: Record<string, unknown> = {
   macken: {
     token: "macken",
@@ -259,7 +262,9 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useCharacterFaces: () => ({ data: ownFaces, isLoading: ref(false) }),
   useSharedCharacterFace: (token: () => string) => ({
     data: computed(() => SHARED_FACES[token()]),
-    isError: computed(() => !!token() && !SHARED_FACES[token()]),
+    isError: computed(
+      () => !!token() && !SHARED_FACES[token()] && !ARRIVING_FACES.has(token()),
+    ),
   }),
 }));
 
@@ -801,6 +806,33 @@ describe("ToolsDressingRoomPage", () => {
       expect(
         wrapper.find('[data-test="dressing-room-characters"]').text(),
       ).toContain("The character in this link cannot be shown on this body.");
+    });
+
+    it("waits for the character the address names before drawing the figure", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper } = await mount({ face: "arriving" });
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(false);
+      expect(
+        wrapper.find('[data-test="dressing-room-character-loading"]').exists(),
+      ).toBe(true);
+
+      bodies.value = [MALE];
+    });
+
+    it("keeps the drawn character on the figure while the next one is fetched", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper, router } = await mount({ face: "macken" });
+      const drawn = viewerModel(wrapper).rig.character.key;
+
+      await router.push({ name: "dressing-room", query: { face: "arriving" } });
+      await flushPromises();
+
+      expect(viewerModel(wrapper).rig.character.key).toBe(drawn);
+
+      bodies.value = [MALE];
     });
 
     it("draws no character on a body without a face library", async () => {
