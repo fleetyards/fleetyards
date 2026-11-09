@@ -1,3 +1,4 @@
+import type { CharacterRig } from "@/shared/components/HoloViewer/character/types";
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
 import { OutfitBodyEnum, OutfitSlotEnum } from "@/services/fyApi";
@@ -161,6 +162,9 @@ describe("riggedOutfitModel", () => {
     animations: file("/animations.glb", 3),
     weaponInHand: null,
     lighting: [],
+    skinTone: null,
+    defaultCharacter: null,
+    faceLibrary: null,
     clips: [
       { name: "idle_stand", static: false, looping: true },
       { name: "shop_pose_01", static: true, looping: false },
@@ -241,10 +245,13 @@ describe("riggedOutfitModel body cover", () => {
     animations: null,
     weaponInHand: null,
     lighting: [],
+    skinTone: null,
+    defaultCharacter: null,
+    faceLibrary: null,
     clips: [],
   };
 
-  it("draws the body under armour and a helmet as a dark undersuit", () => {
+  it("leaves the body and head as they are under armour and a helmet", () => {
     const rig = riggedOutfitModel(
       body,
       [],
@@ -254,10 +261,9 @@ describe("riggedOutfitModel body cover", () => {
     ).rig;
 
     expect(rig?.hide).toBeUndefined();
-    expect(rig?.cover).toEqual(["legs", "head"]);
   });
 
-  it("keeps the neck under a helmet over an undersuit", () => {
+  it("hides the body under an undersuit, but not the head under its helmet", () => {
     const rig = riggedOutfitModel(
       body,
       [],
@@ -267,20 +273,18 @@ describe("riggedOutfitModel body cover", () => {
     ).rig;
 
     expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
-    expect(rig?.cover).toEqual(["head"]);
   });
 
-  it("hides the whole body under an undersuit", () => {
-    const rig = riggedOutfitModel(
-      body,
-      [],
-      undefined,
-      [],
-      ["undersuit", "torso"],
-    ).rig;
+  it("draws the whole head as the hood under a helmet that hides it, and only the neck under an open one", () => {
+    const closed = riggedOutfitModel(body, [], undefined, [], ["helmet"], [], {
+      key: "c",
+      hideHead: true,
+    } as CharacterRig).rig;
+    const open = riggedOutfitModel(body, [], undefined, [], ["helmet"]).rig;
 
-    expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
-    expect(rig?.cover).toBeUndefined();
+    expect(closed?.hide).toBeUndefined();
+    expect(closed?.collar).toBe("hood");
+    expect(open?.collar).toBe("neck");
   });
 });
 

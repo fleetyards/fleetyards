@@ -37,6 +37,15 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment/{slug} says what a helmet does to a character's hair" do
+    head_wear = {"type" => "Char_Armor_Helmet", "fit" => "rigid", "hairTag" => "snoopy_cap", "maskFacialHair" => true, "addsTags" => [], "hiddenParts" => ["Hat_ItemPort"]}
+    helmet = create(:equipment, name: "Helmet", sc_key: "basl_combat_light_helmet_01_01_01", head_wear:)
+
+    assert_api_response :get, 200, params: {slug: helmet.slug} do
+      assert_equal head_wear, parsed_body["headWear"]
+    end
+  end
+
   # Every section the stats can carry, read from the game files, so the schema
   # is checked against the shapes the parser actually writes.
   test "GET /equipment/{slug} returns what the gear does" do

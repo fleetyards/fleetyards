@@ -207,3 +207,5 @@ gem "irb"
 gem "logger"
 gem "ostruct"
 gem "reline"
+
+gem "zstd-ruby", "~> 2.0"

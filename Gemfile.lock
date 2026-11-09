@@ -856,6 +856,7 @@ GEM
       httparty
       json (>= 2.0)
     zeitwerk (2.8.3)
+    zstd-ruby (2.0.10)
 
 PLATFORMS
   arm64-darwin
@@ -984,6 +985,7 @@ DEPENDENCIES
   web-push
   webmock
   with_advisory_lock
+  zstd-ruby (~> 2.0)
 
 CHECKSUMS
   aasm (6.0.0) sha256=c96ce60ea9574eb194e33f29d801be430b8cade2f31c8a5d137a9870ee39d404
@@ -1301,6 +1303,7 @@ CHECKSUMS
   with_advisory_lock (7.6.0) sha256=638de2441fb1b50cc42752b80b74b4c0f3625fc68c7a8f24a0635ce5573b0336
   xrpc (0.1.7.2) sha256=1aea2ba0fa83927e9c42ae1b4ef2225a336130032fa6f8f6820862b4b578c1f9
   zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
+  zstd-ruby (2.0.10) sha256=b5f9410ccfad78ae25c3a5d7dfe16234d2bde8841fc79d8166773fd0a4028f9d
 
 RUBY VERSION
   ruby 4.0.9

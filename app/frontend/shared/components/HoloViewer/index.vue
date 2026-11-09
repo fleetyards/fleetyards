@@ -237,6 +237,12 @@ const enableFullscreen = () => {
 const disableFullscreen = () => {
   internalFullscreen.value = false;
 
+  // Panned only full screen: back from it, the model is centred again.
+  if (!props.panable && liveControls?.target) {
+    liveControls.target.set(0, 0, 0);
+    liveControls.update?.();
+  }
+
   // A turntable has no zoom of its own: back from full screen, it returns
   // to the framing it opened on rather than wherever full screen left it.
   if (props.turntable) cameraPosition.value = [...cameraPosition.value];
@@ -293,6 +299,9 @@ const modelColor = ref("#428bca");
 const autoRotateSpeed = 0.5;
 
 const loading = ref(false);
+
+// The model is loaded, but parts, a character or a paint are still coming in.
+const busy = ref(false);
 
 const progress = ref(0);
 
@@ -435,10 +444,15 @@ const canvas = ref<{
 // The camera as the controls left it, so a refit can keep the view.
 let liveCamera: PerspectiveCamera | undefined;
 
+type Controls = { object: Camera; target?: Vector3; update?: () => void };
+
+let liveControls: Controls | undefined;
+
 // The orbit controls move the camera without asking for a frame. Each change
 // asks for the next one, so a drag, its easing out and an auto-rotation all
 // keep drawing, and a camera at rest draws nothing.
-const handleControlsChange = (controls: { object: Camera }) => {
+const handleControlsChange = (controls: Controls) => {
+  liveControls = controls;
   liveCamera = (controls.object as PerspectiveCamera).isPerspectiveCamera
     ? (controls.object as PerspectiveCamera)
     : undefined;
@@ -874,6 +888,11 @@ defineExpose({
       :loading="loading"
       :progress="progress"
     />
+    <Loader
+      v-else-if="busy && webglSupported && !awaitingConfirmation"
+      :loading="true"
+      data-test="holo-viewer-busy"
+    />
     <input v-if="debug" v-model="modelColor" type="color" />
     <WebglFallback v-if="!webglSupported" />
     <div
@@ -940,7 +959,7 @@ defineExpose({
         :max-distance="maxZoomDistance"
         enable-damping
         :damping-factor="0.25"
-        :enable-pan="panable"
+        :enable-pan="panable || internalFullscreen"
         make-default
         @change="handleControlsChange"
       />
@@ -990,6 +1009,7 @@ defineExpose({
           @mount-point="emit('mountPoint', $event)"
           @unplaced="emit('unplaced', $event)"
           @fell-back="emit('fellBack', $event)"
+          @busy="busy = $event"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

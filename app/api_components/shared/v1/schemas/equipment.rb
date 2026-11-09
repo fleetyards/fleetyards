@@ -77,6 +77,10 @@ module Shared
               description: "What a worn piece can hold; absent for anything without storage of its own",
               anyOf: [::Shared::V1::Schemas::EquipmentInventory, {type: :null}]
             },
+            headWear: {
+              description: "What the item does to a character's hair and head while worn; absent for anything not worn on the head",
+              anyOf: [::Shared::V1::Schemas::EquipmentHeadWear, {type: :null}]
+            },
             attachPoints: {
               type: [:object, :null],
               description: "Where the item is hung when stowed -- on a back mount, in a holster, on a core -- by helper name; on the detail payload only",

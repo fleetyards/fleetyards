@@ -44,13 +44,14 @@ export const preparePaintMap = (
 
 // A paint with artwork of its own draws it on the stencil mesh, whose faces
 // cover the hull. Without a sheet the export's own stays: the maker's lettering.
+// Out of userData, which three copies through JSON when it clones a material.
+const ownStencils = new WeakMap<object, Texture | null>();
+
 export const applyStencilMap = (scene: Group, map?: Texture) => {
   partMaterials(scene, STENCIL_SUFFIX).forEach((material) => {
-    // Asked for by name: an own map of null has to stay remembered as null.
-    if (!("ownStencil" in material.userData)) {
-      material.userData.ownStencil = material.map;
-    }
-    const own = material.userData.ownStencil as Texture | null;
+    // Asked for by presence: an own map of null has to stay remembered as null.
+    if (!ownStencils.has(material)) ownStencils.set(material, material.map);
+    const own = ownStencils.get(material) ?? null;
 
     if (map) preparePaintMap(map, own, SRGBColorSpace);
 

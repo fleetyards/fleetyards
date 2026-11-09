@@ -28,10 +28,23 @@ module V1
               description: "The game customizer's review lights for a whole outfit, from the character's feet in glTF axes; empty until exported",
               items: ::V1::Schemas::DressingRoom::CharacterBodyLight
             },
-            clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip}
+            clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip},
+            skinTone: {
+              type: [:string, :null],
+              pattern: "^#[0-9a-fA-F]{6}$",
+              description: "The sRGB skin tone the textured holo is baked at, e.g. #513428; absent until exported"
+            },
+            defaultCharacter: {
+              description: "The game's default character for the body, resolved like a shared character's `character`; absent until the customizer export is imported",
+              anyOf: [{type: :object, additionalProperties: true}, {type: :null}]
+            },
+            faceLibrary: {
+              description: "The face library; absent until exported",
+              anyOf: [::V1::Schemas::DressingRoom::CharacterBodyFaceLibrary, {type: :null}]
+            }
           },
           additionalProperties: false,
-          required: %w[key holo holoTextured animations weaponInHand lighting clips]
+          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone defaultCharacter faceLibrary]
         })
       end
     end

@@ -43,6 +43,41 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /character-bodies serves a body's skin tone and its face library once it has all of it" do
+    create(:character_body, :with_holo, :with_face_library, key: "male", skin_tone: "#513428")
+    create(:character_body, :with_holo, :with_face_library, key: "female", face_library: nil)
+
+    assert_api_response :get, 200 do
+      female, male = parsed_body
+      assert_equal "#513428", male["skinTone"]
+      assert_equal "male-6a268db0", male.dig("faceLibrary", "library")
+      assert_equal %w[index.json library.bin normals.bin], %w[index positions normals].map { |file| male.dig("faceLibrary", file, "name") }
+      assert_nil female["faceLibrary"]
+      assert_nil female["skinTone"]
+    end
+  end
+
+  test "GET /character-bodies serves each body's default character, resolved, once the export is in" do
+    fixtures = Rails.root.join("test/fixtures/chf")
+    catalog = CharacterAsset.create!(path: Chf::Context::CATALOG, etag: "catalog-1")
+    catalog.file.attach(io: fixtures.join("catalog.json").open, filename: "catalog.json")
+    body = create(:character_body, :with_holo, :with_face_library, key: "male", skin_tone: "#513428")
+    body.face_index.attach(io: fixtures.join("male_faces_index.json").open, filename: "index.json")
+    body.chf.attach(io: fixtures.join("masculinedefault.chf").open, filename: "default.chf")
+    create(:character_body, :with_holo, key: "female")
+    Chf::Context.reset!
+
+    assert_api_response :get, 200 do
+      female, male = parsed_body
+      character = male["defaultCharacter"]
+      assert_equal "male", character["body"]
+      assert_includes character["hidden_parts"].keys, "hair_itemport"
+      assert(character["meshes"].all? { |mesh| mesh.key?("materials_by_submaterial") })
+      assert_nil female["defaultCharacter"]
+      assert_equal "male-6a268db0", male.dig("faceLibrary", "library")
+    end
+  end
+
   test "GET /character-bodies is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 

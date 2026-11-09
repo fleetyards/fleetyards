@@ -30,7 +30,6 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
-  MeshStandardMaterial,
   DefaultLoadingManager,
   NoColorSpace,
   SRGBColorSpace,
@@ -47,6 +46,14 @@ import {
   partMaterials,
   preparePaintMap,
 } from "../paintMaps";
+import {
+  disposeCharacter,
+  dressHead,
+  dressNeck,
+  fitPieceToFace,
+  loadCharacter,
+  type LoadedCharacter,
+} from "../character/applyCharacter";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -388,6 +395,19 @@ const setMaterials = (scene: Group) => {
 
 const mixer = shallowRef<AnimationMixer>();
 
+// Parts, a character or a paint loading after the model itself: the viewer
+// shows it is still at work until the last of them lands.
+let inFlight = 0;
+
+const whileBusy = async <T,>(work: Promise<T>) => {
+  if (inFlight++ === 0) emit("busy", true);
+  try {
+    return await work;
+  } finally {
+    if (--inFlight === 0) emit("busy", false);
+  }
+};
+
 const { onBeforeRender } = useLoop();
 
 // A viewer drawing on demand draws a frame only when asked: for every change
@@ -443,7 +463,6 @@ onUnmounted(() => {
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
-  underlayMaterial.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
   // A paint still loading would land after this and never be freed.
@@ -451,6 +470,12 @@ onUnmounted(() => {
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
   if (pedestal) disposePedestal(pedestal);
+  // The body model is cached for the next viewer: it gets its own head back.
+  undressNeck?.();
+  undressHead?.();
+  if (character) disposeCharacter(character);
+  if (readyCharacter) disposeCharacter(readyCharacter);
+  fittedGeometries.forEach((geometry) => geometry.dispose());
 });
 
 const emit = defineEmits<{
@@ -465,6 +490,8 @@ const emit = defineEmits<{
   // The painted rig pieces and attachments drawn from their plain holo
   // instead, by path: they did not load.
   fellBack: [paths: string[]];
+  // Loading parts, a character or a paint after the model itself.
+  busy: [busy: boolean];
 }>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
@@ -493,7 +520,9 @@ let mountRoot: Group | undefined;
 let mountsRequest = 0;
 
 // Whether these parts landed; a newer request supersedes them otherwise.
-const attachMounts = async (scene: Group) => {
+const attachMounts = (scene: Group) => whileBusy(attachMountsNow(scene));
+
+const attachMountsNow = async (scene: Group) => {
   const request = ++mountsRequest;
   const mounts = props.model.mounts;
   const next = mounts?.length ? await buildMounts(mounts) : undefined;
@@ -554,15 +583,72 @@ let rigRoot: Group | undefined;
 let rigRequest = 0;
 let rigClips: AnimationClip[] = [];
 
-// What shows of the body under armour: a dark, matte undersuit.
-const underlayMaterial = new MeshStandardMaterial({
-  color: "#1d2126",
-  roughness: 0.9,
-  metalness: 0,
-});
+// The character on the body: what it loaded, and how to put the body's own
+// head and skin back.
+let character: LoadedCharacter | undefined;
+let undressHead: (() => void) | undefined;
+let undressNeck: (() => void) | undefined;
+
+// Hats moved onto the face for the figure as it is drawn now.
+let fittedGeometries: BufferGeometry[] = [];
+
+// A character loads in the background: the figure is shown at once, with the
+// character it had or none, and dressed again once the new one is in. The
+// same character on a changed outfit is kept: baking its head again would
+// stall every change.
+let characterLoading: string | undefined;
+let readyCharacter: LoadedCharacter | undefined;
+
+const characterKey = (key: string) => `${key}|${!!props.model.textured}`;
+
+const characterFor = (scene: Group) => {
+  const wanted = props.model.rig?.character;
+  if (!wanted) return undefined;
+
+  const key = characterKey(wanted.key);
+  for (const candidate of [character, readyCharacter]) {
+    if (
+      candidate &&
+      characterKey(candidate.key) === key &&
+      candidate.textured === !!props.model.textured
+    ) {
+      return candidate;
+    }
+  }
+
+  if (characterLoading !== key) {
+    characterLoading = key;
+    void whileBusy(
+      loadCharacter(wanted, !!props.model.textured)
+        .catch((error) => {
+          console.warn("The character did not load", error);
+          return undefined;
+        })
+        .then((loaded) => {
+          if (characterLoading === key) characterLoading = undefined;
+          if (!loaded) return;
+
+          const still = props.model.rig?.character;
+          if (unmounted || !still || characterKey(still.key) !== key) {
+            disposeCharacter(loaded);
+            return;
+          }
+
+          if (readyCharacter && readyCharacter !== character) {
+            disposeCharacter(readyCharacter);
+          }
+          readyCharacter = loaded;
+          void attachRig(scene);
+        }),
+    );
+  }
+
+  // Until it is in, the one already on the figure stands in.
+  return character;
+};
 
 // The body's own skinned parts, each with the region it covers: hidden under
-// an undersuit, drawn as one under armour alone.
+// an undersuit or a helmet that hides the head.
 const hideCovered = (scene: Group) => {
   const parts: SkinnedMesh[] = [];
   scene.traverse((node) => {
@@ -579,14 +665,9 @@ const hideCovered = (scene: Group) => {
   });
 
   const hidden = new Set(props.model.rig?.hide ?? []);
-  const covered = new Set(props.model.rig?.cover ?? []);
   parts.forEach((part) => {
     part.userData.region ??= bodyRegion(part, height || 1);
-    part.userData.bare ??= part.material;
     part.visible = !hidden.has(part.userData.region);
-    part.material = covered.has(part.userData.region)
-      ? underlayMaterial
-      : part.userData.bare;
   });
 
   invalidate();
@@ -701,7 +782,9 @@ const loadRigPiece = async (piece: RigPiece) => {
 };
 
 // Whether these pieces landed; a newer request supersedes them otherwise.
-const attachRig = async (scene: Group) => {
+const attachRig = (scene: Group) => whileBusy(attachRigNow(scene));
+
+const attachRigNow = async (scene: Group) => {
   const request = ++rigRequest;
   const rig = props.model.rig;
   if (!rig) return true;
@@ -714,7 +797,9 @@ const attachRig = async (scene: Group) => {
       : Promise.resolve([] as AnimationClip[]),
   ]);
 
-  if (request !== rigRequest) return false;
+  if (request !== rigRequest) {
+    return false;
+  }
 
   const fellBack = [
     ...rig.pieces.filter(
@@ -735,6 +820,32 @@ const attachRig = async (scene: Group) => {
     ].forEach((node) => node.removeFromParent());
   }
 
+  undressNeck?.();
+  undressNeck = undefined;
+  undressHead?.();
+  undressHead = undefined;
+  const loadedCharacter = characterFor(scene);
+  if (character && character !== loadedCharacter) disposeCharacter(character);
+  if (readyCharacter === loadedCharacter) readyCharacter = undefined;
+  character = loadedCharacter;
+
+  fittedGeometries.forEach((geometry) => geometry.dispose());
+  fittedGeometries = [];
+  const fitted: BufferGeometry[] = [];
+
+  if (character && rig.character) {
+    const faceWrap = new Set(rig.character.faceWrap);
+    pieces.forEach((piece, index) => {
+      if (piece && faceWrap.has(rig.pieces[index]?.path ?? "")) {
+        fitted.push(...fitPieceToFace(piece.scene, character!));
+      }
+    });
+    fittedGeometries = fitted;
+    undressHead = dressHead(scene, character, !!props.model.textured);
+  }
+
+  if (rig.collar) undressNeck = dressNeck(scene, rig.collar === "hood");
+
   const bones = bonesByName(scene);
   const next = new Group();
   next.userData.grafted = [];
@@ -754,6 +865,14 @@ const attachRig = async (scene: Group) => {
     });
     if (meshes.length) next.add(...meshes);
     else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
+    next.userData.grafted.push(...grafted);
+  });
+
+  // The character's hair, brows, beard and piercings, on the body's own
+  // skeleton like the pieces.
+  character?.accessories.forEach((accessory) => {
+    const { meshes, grafted } = bindToBones(cloneRigPiece(accessory), bones);
+    if (meshes.length) next.add(...meshes);
     next.userData.grafted.push(...grafted);
   });
 
@@ -888,6 +1007,11 @@ type OwnPaint = {
   metalness: number;
 };
 
+// A material's own maps under a paint. Not in userData, which three copies
+// through JSON when it clones a material: the copy would come back as plain
+// objects where textures belong.
+const ownPaints = new WeakMap<Material, OwnPaint>();
+
 let paintMaps: Texture[] = [];
 let paintRequest = 0;
 
@@ -898,7 +1022,9 @@ const loadPaintMap = (url?: string) =>
         .catch(() => undefined)
     : Promise.resolve(undefined);
 
-const applyPaint = async (scene: Group) => {
+const applyPaint = (scene: Group) => whileBusy(applyPaintNow(scene));
+
+const applyPaintNow = async (scene: Group) => {
   const request = ++paintRequest;
   const [map, loadedOrm, loadedStencil] = await Promise.all([
     loadPaintMap(props.model.paint),
@@ -924,12 +1050,16 @@ const applyPaint = async (scene: Group) => {
   applyStencilMap(scene, stencil);
 
   partMaterials(scene, BODY_SUFFIX).forEach((bodyMaterial) => {
-    const own = (bodyMaterial.userData.ownPaint ??= {
-      map: bodyMaterial.map,
-      orm: bodyMaterial.roughnessMap,
-      roughness: bodyMaterial.roughness,
-      metalness: bodyMaterial.metalness,
-    }) as OwnPaint;
+    let own = ownPaints.get(bodyMaterial);
+    if (!own) {
+      own = {
+        map: bodyMaterial.map,
+        orm: bodyMaterial.roughnessMap,
+        roughness: bodyMaterial.roughness,
+        metalness: bodyMaterial.metalness,
+      };
+      ownPaints.set(bodyMaterial, own);
+    }
 
     if (map) preparePaintMap(map, own.map, SRGBColorSpace);
     if (orm) preparePaintMap(orm, own.map, NoColorSpace);
@@ -1044,10 +1174,7 @@ watch(
 );
 
 watch(
-  () =>
-    [props.model.rig?.hide ?? [], props.model.rig?.cover ?? []]
-      .map((regions) => regions.join(","))
-      .join("|"),
+  () => (props.model.rig?.hide ?? []).join(","),
   () => {
     if (state.value && rigRoot) hideCovered(state.value.scene);
   },
@@ -1088,8 +1215,13 @@ watch(
   },
 );
 
+// By value: an array built afresh on every read would fire on any change of
+// the model, and re-paint a figure that has no paint at all.
 watch(
-  () => [props.model.paint, props.model.paintOrm, props.model.paintStencil],
+  () =>
+    [props.model.paint, props.model.paintOrm, props.model.paintStencil].join(
+      "|",
+    ),
   () => {
     if (state.value && props.model.textured) void applyPaint(state.value.scene);
   },

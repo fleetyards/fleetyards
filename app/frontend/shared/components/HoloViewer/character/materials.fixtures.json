@@ -1,0 +1,2123 @@
+{
+  "Amelia_Boyd_Face": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female33_t1_head_material_base.webp",
+      "tone_gain": [0.93747, 0.80488, 0.71507],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.5070526599884033,
+            "opacity": 0.2543734610080719,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.25082892179489136,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp",
+          "channels": [
+            {
+              "color": "#020000",
+              "opacity": 0.6669242978096008,
+              "metalness": 0.33085426688194275,
+              "smoothness": 1.0
+            },
+            {
+              "color": "#6a1103",
+              "opacity": 0.6669242978096008,
+              "metalness": 0.33085426688194275,
+              "smoothness": 1.0
+            },
+            {
+              "color": "#160200",
+              "opacity": 0.6669242978096008,
+              "metalness": 0.33085426688194275,
+              "smoothness": 1.0
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 2,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 0.11483684927225113,
+              "metalness": 0.0,
+              "smoothness": 0.4314364492893219
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.11483684927225113,
+              "metalness": 0.0,
+              "smoothness": 0.4314364492893219
+            },
+            {
+              "color": "#160000",
+              "opacity": 0.11483684927225113,
+              "metalness": 0.0,
+              "smoothness": 0.4314364492893219
+            }
+          ],
+          "tiles": [8, 4],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 3,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp",
+          "channels": [
+            {
+              "color": "#190100",
+              "opacity": 0.5525912642478943,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#180000",
+              "opacity": 0.5525912642478943,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.5525912642478943,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        }
+      ],
+      "normal": "characters/female/chf/skin/female33_t1_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female33_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female33/female33_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.831373, 0.647059, 0.596078, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.823529, 0.639216, 0.556863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.003922, 0.0, 0.156863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.701961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.803922, 0.658824, 0.556863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.003922, 0.2, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.682353, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.831373, 0.627451, 0.556863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.788235, 0.596078, 0.505882, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female33_t1_head_material_base.webp": [
+          0.886275, 0.709804, 0.623529, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.8072, 0.5859, 0.5107],
+      "190,180": [0.7335, 0.5291, 0.435],
+      "190,330": [0.7069, 0.5382, 0.429],
+      "330,256": [0.8078, 0.5684, 0.4771],
+      "300,150": [0.739, 0.52, 0.4165],
+      "120,256": [0.8613, 0.6437, 0.535]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.00178, 0.00028, 1e-5],
+      "eyebrow_itemport/brows_scalp": [0.00178, 0.00028, 1e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_m": [0.00419, 0.00019, 0.0],
+      "hair_itemport/hair_scalp_m": [0.00335, 0.00015, 0.0],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.00419, 0.00019, 0.0],
+      "universal_scalp_itemport/hair_scalp_m": [0.00335, 0.00015, 0.0]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#4f2000",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "Macken": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male03_t2_head_material_base.webp",
+      "tone_gain": [0.83468, 0.77808, 0.89152],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.4211703836917877,
+            "opacity": 0.25005897879600525,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.25405874848365784,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        }
+      ],
+      "normal": "characters/male/chf/skin/male03_t2_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male03_t2_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male03/male03_t2_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.576471, 0.360784, 0.266667, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.607843, 0.419608, 0.313725, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.619608, 0.435294, 0.301961, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.423529, 0.294118, 0.215686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.631373, 0.466667, 0.345098, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male03_t2_head_material_base.webp": [
+          0.67451, 0.470588, 0.352941, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.5307, 0.3195, 0.2516],
+      "190,180": [0.5598, 0.3725, 0.2965],
+      "190,330": [0.5707, 0.3866, 0.2853],
+      "330,256": [0.3888, 0.2595, 0.203],
+      "300,150": [0.5816, 0.4149, 0.3264],
+      "120,256": [0.6216, 0.4184, 0.3339]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_shaved": [0.00178, 0.00028, 1e-5],
+      "beard_itemport/facial_hair_shadow": [0.00142, 0.00023, 1e-5],
+      "eyebrow_itemport/brows": [0.00234, 0.0011, 0.25703],
+      "eyebrow_itemport/brows_scalp": [0.00234, 0.0011, 0.25703],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_m": [0.36243, 0.24017, 0.10785],
+      "hair_itemport/hair_scalp_m": [0.28994, 0.19213, 0.08628],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [
+        0.36243, 0.24017, 0.10785
+      ],
+      "universal_scalp_itemport/hair_scalp_m": [0.28994, 0.19213, 0.08628]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#7b6b00",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "Stows_Face": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male10_t2_head_material_base.webp",
+      "tone_gain": [0.57129, 0.47696, 0.47395],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.29901713132858276,
+            "opacity": 0.5643516778945923,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.83014976978302,
+            "opacity": 0.5789660215377808,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "tattoo",
+          "texture": "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp",
+          "blend": "multiply",
+          "age": 0.43803533911705017,
+          "hue": 0.19645680487155914
+        }
+      ],
+      "normal": "characters/male/chf/skin/male10_t2_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male10_t2_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male10/male10_t2_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.447059, 0.247059, 0.219608, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.568627, 0.345098, 0.239216, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.52549, 0.321569, 0.25098, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.407843, 0.27451, 0.25098, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.592157, 0.376471, 0.286275, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          0.996078, 0.996078, 0.996078, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male10_t2_head_material_base.webp": [
+          0.662745, 0.415686, 0.329412, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/organic_01/tattoo_organic_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.3426, 0.1669, 0.1462],
+      "190,180": [0.4283, 0.2326, 0.1559],
+      "190,330": [0.3978, 0.2175, 0.1658],
+      "330,256": [0.3115, 0.187, 0.1692],
+      "300,150": [0.4553, 0.2606, 0.194],
+      "120,256": [0.5134, 0.2908, 0.2266]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_044": [0.02692, 0.01366, 0.00434],
+      "beard_itemport/facial_hair_044_scalp": [0.02153, 0.01093, 0.00348],
+      "eyebrow_itemport/brows": [0.00021, 0.00014, 6e-5],
+      "eyebrow_itemport/brows_scalp": [0.00021, 0.00014, 6e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_21_m": [0.00217, 0.00032, 1e-5],
+      "hair_itemport/hair_scalp_m": [0.00173, 0.00025, 1e-5],
+      "piercings_eyebrows_itemport/piercings_m": [0.2, 0.2, 0.21],
+      "piercings_r_ear_itemport/piercings_m": [0.2, 0.2, 0.21],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.00217, 0.00032, 1e-5],
+      "universal_scalp_itemport/hair_scalp_m": [0.00173, 0.00025, 1e-5]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#516e7d",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "amir_lucas": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male05_t2_head_material_base.webp",
+      "tone_gain": [0.98708, 1.18004, 1.09033],
+      "layers": [],
+      "normal": "characters/male/chf/skin/male05_t2_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male05_t2_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male05/male05_t2_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.584314, 0.333333, 0.282353, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.560784, 0.368627, 0.298039, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.568627, 0.392157, 0.317647, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.564706, 0.364706, 0.32549, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.654902, 0.431373, 0.364706, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male05_t2_head_material_base.webp": [
+          0.67451, 0.443137, 0.376471, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.5809, 0.3611, 0.2947],
+      "190,180": [0.5575, 0.3989, 0.311],
+      "190,330": [0.5653, 0.4241, 0.3313],
+      "330,256": [0.5614, 0.3947, 0.3395],
+      "300,150": [0.6511, 0.4661, 0.3801],
+      "120,256": [0.6706, 0.4787, 0.3923]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_shaved": [0.00112, 0.00014, 0.0],
+      "beard_itemport/facial_hair_shadow": [0.00089, 0.00011, 0.0],
+      "eyebrow_itemport/brows": [0.07897, 0.03487, 0.00761],
+      "eyebrow_itemport/brows_scalp": [0.07897, 0.03487, 0.00761],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_m": [0.07897, 0.03487, 0.00761],
+      "hair_itemport/hair_scalp_m": [0.06317, 0.02789, 0.00609],
+      "stubble_itemport/facial_hair_040": [0.39579, 0.26101, 0.12649],
+      "stubble_itemport/facial_hair_040_scalp": [0.38604, 0.2267, 0.09185],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [
+        0.07897, 0.03487, 0.00761
+      ],
+      "universal_scalp_itemport/hair_scalp_m": [0.06317, 0.02789, 0.00609]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#4c2d00",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "art_kelvin": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male23_t1_head_material_base.webp",
+      "tone_gain": [0.98701, 1.0, 0.97793],
+      "layers": [],
+      "normal": "characters/male/chf/skin/male23_t1_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male23_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male23/male23_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.666667, 0.45098, 0.345098, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.623529, 0.411765, 0.333333, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.619608, 0.415686, 0.32549, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.572549, 0.403922, 0.317647, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.647059, 0.45098, 0.34902, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male23_t1_head_material_base.webp": [
+          0.670588, 0.458824, 0.34902, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.6627, 0.451, 0.3414],
+      "190,180": [0.6198, 0.4118, 0.3297],
+      "190,330": [0.6159, 0.4157, 0.322],
+      "330,256": [0.5691, 0.4039, 0.3142],
+      "300,150": [0.6432, 0.451, 0.3453],
+      "120,256": [0.6666, 0.4588, 0.3453]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_011": [0.02568, 0.01784, 0.01222],
+      "beard_itemport/facial_hair_011_scalp_shadow": [
+        0.02055, 0.01427, 0.00978
+      ],
+      "eyebrow_itemport/brows": [0.00234, 0.0011, 0.25703],
+      "eyebrow_itemport/brows_scalp": [0.00234, 0.0011, 0.25703],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/mohawk_short_hair_01_m": [0.00092, 0.0, 0.00075],
+      "hair_itemport/hair_scalp_m": [0.00074, 0.0, 0.0006],
+      "hair_itemport/hair_shaved_scalp_m": [0.00074, 0.0, 0.0006],
+      "piercings_eyebrows_itemport/piercings_m": [0.85, 0.25, 0.45],
+      "piercings_mouth_itemport/piercings_m": [0.85, 0.25, 0.45],
+      "stubble_itemport/facial_hair_040": [0.39227, 0.25868, 0.12537],
+      "stubble_itemport/facial_hair_040_scalp": [0.39227, 0.25868, 0.12537],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.00092, 0.0, 0.00075],
+      "universal_scalp_itemport/hair_scalp_m": [0.00074, 0.0, 0.0006]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#352f00",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "defensecon_female_npc_06": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female09_t1_head_material_base.webp",
+      "tone_gain": [1.0, 0.98708, 1.0],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.9822400212287903,
+            "opacity": 0.9499526023864746,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.5860588550567627,
+            "opacity": 0.17255544662475586,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp",
+          "channels": [
+            {
+              "color": "#0c0c00",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#72145a",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#3e1008",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 2,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#771f20",
+              "opacity": 0.4531746506690979,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 4],
+          "offset": [0, 0]
+        },
+        {
+          "type": "tattoo",
+          "texture": "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp",
+          "blend": "multiply",
+          "age": 0.0,
+          "hue": 0.0
+        }
+      ],
+      "normal": "characters/female/chf/skin/female09_t1_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female09_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female09/female09_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.811765, 0.592157, 0.462745, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.8, 0.584314, 0.505882, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.392157, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.035294, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.74902, 0.541176, 0.443137, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.4, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.031373, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.788235, 0.596078, 0.505882, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.823529, 0.647059, 0.529412, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.992157, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female09_t1_head_material_base.webp": [
+          0.858824, 0.666667, 0.588235, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_04.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/flowers_01/tattoo_flowers_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.8081, 0.586, 0.4606],
+      "190,180": [0.6478, 0.4577, 0.3966],
+      "190,330": [0.6082, 0.4234, 0.3464],
+      "330,256": [0.7882, 0.5926, 0.5059],
+      "300,150": [0.6914, 0.4951, 0.4089],
+      "120,256": [0.8588, 0.6628, 0.5882]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.00178, 0.00028, 1e-5],
+      "eyebrow_itemport/brows_scalp": [0.00178, 0.00028, 1e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_49_m": [0.19929, 0.01698, 0.01564],
+      "hair_itemport/hair_scalp_m": [0.15944, 0.01359, 0.01251],
+      "piercings_l_ear_itemport/piercings_m": [0.85, 0.25, 0.45],
+      "piercings_nose_itemport/piercings_m": [0.2, 0.2, 0.21],
+      "piercings_r_ear_itemport/piercings_m": [0.61, 0.63, 0.0],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [
+        0.19929, 0.01698, 0.01564
+      ],
+      "universal_scalp_itemport/hair_scalp_m": [0.15944, 0.01359, 0.01251]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#54718e",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "defensecon_male_npc_05": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male28_t1_head_material_base.webp",
+      "tone_gain": [1.0, 0.98364, 1.0],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.6108080148696899,
+            "opacity": 0.3891889452934265,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.5346260070800781,
+            "opacity": 0.1502416729927063,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "tattoo",
+          "texture": "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp",
+          "blend": "multiply",
+          "age": 0.6505037546157837,
+          "hue": 0.19645680487155914
+        }
+      ],
+      "normal": "characters/male/chf/skin/male28_t1_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male28_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male28/male28_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.631373, 0.45098, 0.380392, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.647059, 0.47451, 0.388235, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.631373, 0.466667, 0.388235, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.564706, 0.435294, 0.376471, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.658824, 0.482353, 0.4, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male28_t1_head_material_base.webp": [
+          0.658824, 0.470588, 0.384314, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp": [
+          1.0, 1.0, 1.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.6314, 0.4475, 0.3804],
+      "190,180": [0.6432, 0.468, 0.3858],
+      "190,330": [0.6314, 0.4631, 0.3882],
+      "330,256": [0.5647, 0.4319, 0.3765],
+      "300,150": [0.6588, 0.4787, 0.4],
+      "120,256": [0.6588, 0.467, 0.3843]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_041": [0.11545, 0.05659, 0.01487],
+      "eyebrow_itemport/brows": [0.07901, 0.03085, 0.00507],
+      "eyebrow_itemport/brows_scalp": [0.07901, 0.03085, 0.00507],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_m": [0.07078, 0.03275, 0.00819],
+      "hair_itemport/hair_scalp_m": [0.07078, 0.03275, 0.00819],
+      "piercings_l_ear_itemport/piercings_m": [0.85, 0.25, 0.45],
+      "piercings_r_ear_itemport/piercings_m": [1.0, 0.71, 0.29],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [
+        0.07078, 0.03275, 0.00819
+      ],
+      "universal_scalp_itemport/hair_scalp_m": [0.07078, 0.03275, 0.00819]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#273427",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "femininedefault": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female16_t1_head_material_base.webp",
+      "tone_gain": [1.0, 0.98634, 0.98429],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.5070526599884033,
+            "opacity": 0.2543734610080719,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.25082892179489136,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp",
+          "channels": [
+            {
+              "color": "#0a345d",
+              "opacity": 0.7585535049438477,
+              "metalness": 0.2573779225349426,
+              "smoothness": 0.4525308310985565
+            },
+            {
+              "color": "#217fba",
+              "opacity": 0.7585535049438477,
+              "metalness": 0.2573779225349426,
+              "smoothness": 0.4525308310985565
+            },
+            {
+              "color": "#155681",
+              "opacity": 0.7585535049438477,
+              "metalness": 0.2573779225349426,
+              "smoothness": 0.4525308310985565
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 2,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#601a18",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 4],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 3,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp",
+          "channels": [
+            {
+              "color": "#1f75aa",
+              "opacity": 0.18635194003582,
+              "metalness": 1.0,
+              "smoothness": 1.0
+            },
+            {
+              "color": "#0f295d",
+              "opacity": 0.18635194003582,
+              "metalness": 1.0,
+              "smoothness": 1.0
+            },
+            {
+              "color": "#000a11",
+              "opacity": 0.18635194003582,
+              "metalness": 1.0,
+              "smoothness": 1.0
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        }
+      ],
+      "normal": "characters/female/chf/skin/female16_t1_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female16_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female16/female16_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.772549, 0.576471, 0.498039, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.8, 0.647059, 0.552941, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.701961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.768627, 0.615686, 0.505882, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.682353, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.756863, 0.572549, 0.490196, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.003922, 0.003922, 0.003922, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.764706, 0.572549, 0.494118, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female16_t1_head_material_base.webp": [
+          0.792157, 0.607843, 0.498039, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_05.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.7708, 0.5713, 0.493],
+      "190,180": [0.7128, 0.5558, 0.4741],
+      "190,330": [0.6896, 0.5317, 0.4361],
+      "330,256": [0.7561, 0.5685, 0.4865],
+      "300,150": [0.6868, 0.495, 0.4265],
+      "120,256": [0.7922, 0.6041, 0.4944]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.00178, 0.00028, 1e-5],
+      "eyebrow_itemport/brows_scalp": [0.00178, 0.00028, 1e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_36_m": [0.0, 0.00539, 0.03549],
+      "hair_itemport/hair_scalp_m": [0.0, 0.00431, 0.02839],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.0, 0.00539, 0.03549],
+      "universal_scalp_itemport/hair_scalp_m": [0.0, 0.00431, 0.02839]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#44536d",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "masculinedefault": {
+    "recipe": {
+      "base": "characters/male/chf/skin/male17_t1_head_material_base.webp",
+      "tone_gain": [1.0, 1.0, 0.95694],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.5092329978942871,
+            "opacity": 0.25005897879600525,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.2563323378562927,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        }
+      ],
+      "normal": "characters/male/chf/skin/male17_t1_head_material_normal.webp",
+      "orm": "characters/male/chf/skin/male17_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/male/npc/male17/male17_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.4, 0.27451, 0.227451, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.317647, 0.203922, 0.156863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.309804, 0.215686, 0.176471, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.305882, 0.215686, 0.184314, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.266667, 0.192157, 0.156863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/male/chf/skin/male17_t1_head_material_base.webp": [
+          0.360784, 0.227451, 0.184314, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.4, 0.2745, 0.2223],
+      "190,180": [0.3176, 0.2039, 0.153],
+      "190,330": [0.3098, 0.2157, 0.1723],
+      "330,256": [0.3059, 0.2157, 0.18],
+      "300,150": [0.2667, 0.1922, 0.153],
+      "120,256": [0.3608, 0.2275, 0.18]
+    },
+    "colors": {
+      "beard_itemport/facial_hair_045": [0.00259, 0.00034, 1e-5],
+      "beard_itemport/facial_hair_045_scalp": [0.00207, 0.00028, 1e-5],
+      "eyebrow_itemport/brows": [0.00234, 0.0011, 0.25703],
+      "eyebrow_itemport/brows_scalp": [0.00234, 0.0011, 0.25703],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_31_m": [0.00217, 0.00032, 1e-5],
+      "hair_itemport/hair_scalp_m": [0.00173, 0.00025, 1e-5],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.00217, 0.00032, 1e-5],
+      "universal_scalp_itemport/hair_scalp_m": [0.00173, 0.00025, 1e-5]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#37110a",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "meg": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female14_t2_head_material_base.webp",
+      "tone_gain": [0.98665, 1.0, 1.0],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.5670801997184753,
+            "opacity": 0.12428821623325348,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.5582705140113831,
+            "opacity": 0.23461374640464783,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#fee7c9",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#4d261a",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 3,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp",
+          "channels": [
+            {
+              "color": "#872830",
+              "opacity": 1.0,
+              "metalness": 0.4000000059604645,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#621714",
+              "opacity": 1.0,
+              "metalness": 0.4000000059604645,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#8a6c5b",
+              "opacity": 1.0,
+              "metalness": 0.4000000059604645,
+              "smoothness": 0.5
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        }
+      ],
+      "normal": "characters/female/chf/skin/female14_t2_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female14_t2_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female14/female14_t2_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.65098, 0.4, 0.258824, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.584314, 0.380392, 0.262745, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.003922, 0.0, 0.156863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.596078, 0.407843, 0.286275, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.003922, 0.2, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.54902, 0.360784, 0.254902, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.643137, 0.431373, 0.298039, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female14_t2_head_material_base.webp": [
+          0.647059, 0.447059, 0.352941, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_02.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_03.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.647, 0.4, 0.2588],
+      "190,180": [0.5426, 0.3515, 0.2422],
+      "190,330": [0.5515, 0.376, 0.2648],
+      "330,256": [0.5456, 0.3608, 0.2549],
+      "300,150": [0.6392, 0.4314, 0.298],
+      "120,256": [0.6431, 0.4471, 0.3529]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.19481, 0.11921, 0.04874],
+      "eyebrow_itemport/brows_scalp": [0.19481, 0.11921, 0.04874],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair": [0.06688, 0.0302, 0.00719],
+      "hair_itemport/hair_scalp": [0.05351, 0.02416, 0.00575],
+      "piercings_l_ear_itemport/piercings_m": [0.85, 0.25, 0.45],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.06688, 0.0302, 0.00719]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#42491e",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "recco_battaglia": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female05_t2_head_material_base.webp",
+      "tone_gain": [1.46345, 1.30869, 1.31938],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.5070526599884033,
+            "opacity": 0.2543734610080719,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.25082892179489136,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp",
+          "channels": [
+            {
+              "color": "#101400",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#4a380c",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#630b42",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 2,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#601a17",
+              "opacity": 0.4000000059604645,
+              "metalness": 0.0,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 4],
+          "offset": [0, 0]
+        }
+      ],
+      "normal": "characters/female/chf/skin/female05_t2_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female05_t2_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female05/female05_t2_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.52549, 0.360784, 0.290196, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.015686, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.498039, 0.356863, 0.290196, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.701961, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.552941, 0.419608, 0.356863, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.682353, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.517647, 0.376471, 0.309804, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.545098, 0.403922, 0.337255, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.67451, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female05_t2_head_material_base.webp": [
+          0.54902, 0.407843, 0.341176, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.6241, 0.409, 0.3315],
+      "190,180": [0.5429, 0.3512, 0.2877],
+      "190,330": [0.5972, 0.4138, 0.3537],
+      "330,256": [0.6161, 0.4277, 0.3545],
+      "300,150": [0.59, 0.399, 0.3351],
+      "120,256": [0.6529, 0.4627, 0.3897]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.00178, 0.00028, 1e-5],
+      "eyebrow_itemport/brows_scalp": [0.00178, 0.00028, 1e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_33_m": [0.26389, 0.13233, 0.01287],
+      "hair_itemport/hair_scalp_m": [0.21111, 0.10587, 0.0103],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [
+        0.26389, 0.13233, 0.01287
+      ],
+      "universal_scalp_itemport/hair_scalp_m": [0.21111, 0.10587, 0.0103]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#44536d",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  },
+  "tieno": {
+    "recipe": {
+      "base": "characters/female/chf/skin/female28_t1_head_material_base.webp",
+      "tone_gain": [0.97479, 0.9663, 1.02156],
+      "layers": [
+        {
+          "type": "blemish",
+          "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+          "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+          "freckles": {
+            "amount": 0.0,
+            "opacity": 0.0,
+            "channel": 0,
+            "darken": 0.55
+          },
+          "sunspots": {
+            "amount": 0.0,
+            "opacity": 0.0,
+            "channel": 1,
+            "darken": 0.75
+          }
+        },
+        {
+          "type": "makeup",
+          "slot": 1,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#000000",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            },
+            {
+              "color": "#4d261a",
+              "opacity": 1.0,
+              "metalness": 0.699999988079071,
+              "smoothness": 0.30000001192092896
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 2,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp",
+          "channels": [
+            {
+              "color": "#000000",
+              "opacity": 0.17213937640190125,
+              "metalness": 0.0,
+              "smoothness": 0.13701896369457245
+            },
+            {
+              "color": "#000000",
+              "opacity": 0.17213937640190125,
+              "metalness": 0.0,
+              "smoothness": 0.13701896369457245
+            },
+            {
+              "color": "#b74531",
+              "opacity": 0.17213937640190125,
+              "metalness": 0.0,
+              "smoothness": 0.13701896369457245
+            }
+          ],
+          "tiles": [8, 4],
+          "offset": [0, 0]
+        },
+        {
+          "type": "makeup",
+          "slot": 3,
+          "texture": "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp",
+          "channels": [
+            {
+              "color": "#631212",
+              "opacity": 1.0,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#000000",
+              "opacity": 1.0,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            },
+            {
+              "color": "#ad3f2d",
+              "opacity": 1.0,
+              "metalness": 0.20000000298023224,
+              "smoothness": 0.5
+            }
+          ],
+          "tiles": [8, 8],
+          "offset": [0, 0]
+        }
+      ],
+      "normal": "characters/female/chf/skin/female28_t1_head_material_normal.webp",
+      "orm": "characters/female/chf/skin/female28_t1_head_material_orm.webp",
+      "skin_set": "Objects/Characters/Human/heads/female/npc/female28/female28_t1_head_material.mtl"
+    },
+    "texels": {
+      "256,256": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.690196, 0.458824, 0.341176, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.023529, 0.0, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.678431, 0.945098, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,180": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.662745, 0.462745, 0.333333, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.34902, 0.003922, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.701961, 0.133333, 0.756863, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.701961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "190,330": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.670588, 0.478431, 0.345098, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.247059, 0.015686, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.709804, 0.709804, 0.901961, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.682353, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "330,256": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.666667, 0.45098, 0.345098, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.286275, 0.396078, 0.933333, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "300,150": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.694118, 0.498039, 0.376471, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.011765, 0.023529, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.741176, 0.65098, 0.917647, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.003922, 0.67451, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      },
+      "120,256": {
+        "characters/female/chf/skin/female28_t1_head_material_base.webp": [
+          0.678431, 0.466667, 0.341176, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_mask_mask.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/blemish/blemish_id_mask.webp": [
+          0.188235, 0.890196, 0.603922, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_eyes_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_blush_4x8_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ],
+        "characters/chf/textures/heads/shared/makeup/makeup_lips_01.webp": [
+          0.0, 0.0, 0.0, 1.0
+        ]
+      }
+    },
+    "expected": {
+      "256,256": [0.6824, 0.4512, 0.3444],
+      "190,180": [0.6629, 0.4379, 0.3232],
+      "190,330": [0.6696, 0.4528, 0.3347],
+      "330,256": [0.659, 0.4438, 0.3487],
+      "300,150": [0.6898, 0.4709, 0.3641],
+      "120,256": [0.6707, 0.4593, 0.3447]
+    },
+    "colors": {
+      "eyebrow_itemport/brows": [0.00178, 0.00028, 1e-5],
+      "eyebrow_itemport/brows_scalp": [0.00178, 0.00028, 1e-5],
+      "eyelashes_itemport/male_lash_up_m": [0.05348, 0.02293, 0.00503],
+      "eyelashes_itemport/male_lash_dn_m": [0.06409, 0.02895, 0.00697],
+      "hair_itemport/hair_m": [0.0, 0.0, 0.0],
+      "hair_itemport/hair_scalp_m": [0.0, 0.0, 0.0],
+      "piercings_l_ear_itemport/piercings_m": [0.2, 0.2, 0.21],
+      "piercings_r_ear_itemport/piercings_m": [0.61, 0.63, 0.0],
+      "universal_scalp_itemport/hair_shaved_scalp_m": [0.0, 0.0, 0.0],
+      "universal_scalp_itemport/hair_scalp_m": [0.0, 0.0, 0.0]
+    },
+    "eyes": {
+      "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+      "iris_color": "#733000",
+      "sclera": "#d9d0c8",
+      "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+    }
+  }
+}

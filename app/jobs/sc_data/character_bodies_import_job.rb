@@ -3,11 +3,14 @@
 module ScData
   # Attaches the rigged base bodies sc-tools publishes under `characters/` to a
   # CharacterBody per listed body, creating the record the first time a body
-  # is listed: the rest-pose body and the clips that pose it.
+  # is listed: the rest-pose body, the clips that pose it and the face library
+  # that reshapes its head.
   class CharacterBodiesImportJob < ApplicationJob
     include RenderImport
 
     sidekiq_options queue: "loaders"
+
+    SKIN_TONE = /\A#\h{6}\z/
 
     FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 
@@ -18,6 +21,8 @@ module ScData
       attached = {}
       manifest = store.manifest
       rigs = lighting_rigs(store, manifest)
+      faces = ::ScData::CharacterFacesImport.new(store)
+      defaults = ::ScData::CharacterDefaultImport.new(store)
 
       store.characters(manifest).each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
@@ -25,9 +30,21 @@ module ScData
         weapon_in_hand = weapon_in_hand(entry["weapon_in_hand"])
         body.update_columns(clips:) if body.clips != clips
         body.update_columns(weapon_in_hand:) if body.weapon_in_hand != weapon_in_hand
+        skin_tone = entry["skin_tone"] if entry["skin_tone"].to_s.match?(SKIN_TONE)
+        body.update_columns(skin_tone:) if body.skin_tone != skin_tone
         unless rigs.nil?
           lighting = lights(rigs.dig("review_#{key}", "lights"))
           body.update_columns(lighting:) if body.lighting != lighting
+        end
+
+        if entry["faces"]
+          face_fields = faces.call(body, entry["faces"])
+          attached["#{key} faces"] = face_fields if face_fields.any?
+        end
+
+        if entry["default_character"]
+          default_fields = defaults.call(body, entry["default_character"])
+          attached["#{key} default character"] = default_fields if default_fields.any?
         end
 
         # The index has no digest of its own for a body, so its file list is,

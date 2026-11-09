@@ -148,6 +148,9 @@ es:
       create: "No se pudo crear el plan."
       update: "No se pudo actualizar el plan."
       rebase: "No se pudo actualizar el plan con el hangar."
+    character_faces:
+      create: "No se pudo guardar el personaje."
+      update: "No se pudo actualizar el personaje."
     outfits:
       create: "No se pudo guardar el atuendo."
       update: "No se pudo actualizar el atuendo."

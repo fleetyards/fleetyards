@@ -86,6 +86,52 @@ describe("DressingRoomOutfits", () => {
     expect(wrapper.emitted("active")).toEqual([["outfit-2"]]);
   });
 
+  it("saves the user's own character with the outfit, and counts a changed one as a change", async () => {
+    outfits.value = [{ ...heavy, characterFace: null }];
+    const wrapper = await mount({
+      activeId: "outfit-1",
+      characterFaceId: "face-1",
+    });
+
+    await wrapper
+      .find(
+        '[data-test="dressing-room-save-changes"] button, [data-test="dressing-room-save-changes"]',
+      )
+      .trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: expect.objectContaining({ characterFaceId: "face-1" }),
+    });
+    outfits.value = [heavy];
+  });
+
+  it("leaves a saved character alone while the user's characters are still loading", async () => {
+    outfits.value = [
+      {
+        ...heavy,
+        characterFace: {
+          id: "face-1",
+          token: "t",
+          name: "Macken",
+          body: "male",
+        },
+      } as Outfit,
+    ];
+    const wrapper = await mount({
+      activeId: "outfit-1",
+      characterFaceId: undefined,
+    });
+
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-save-changes"]')
+        .attributes("disabled"),
+    ).toBeDefined();
+    outfits.value = [heavy];
+  });
+
   it("will not save a second outfit under a name already taken", async () => {
     const wrapper = await mount({});
 

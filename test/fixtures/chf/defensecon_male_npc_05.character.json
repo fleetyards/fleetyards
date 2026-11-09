@@ -1,0 +1,927 @@
+{
+ "format": "sc-chf-character",
+ "version": 3,
+ "source": {
+  "format_version": 8,
+  "dna_stamp": "68f90e3f",
+  "gender_hash": "f6676cdd",
+  "part_count": 13,
+  "face_library": "male-6a268db0",
+  "library_stamp_ok": true
+ },
+ "body": "male",
+ "assets": {
+  "body_glb": "characters/male/body_textured.glb",
+  "faces": "characters/male/faces/index.json",
+  "catalog": "characters/chf/catalog.json"
+ },
+ "face": {
+  "weights": [
+   {
+    "part": "EyebrowLeft",
+    "heads": [
+     [
+      2,
+      0.222343
+     ],
+     [
+      21,
+      0.777657
+     ]
+    ]
+   },
+   {
+    "part": "EyebrowRight",
+    "heads": [
+     [
+      2,
+      0.222343
+     ],
+     [
+      21,
+      0.777657
+     ]
+    ]
+   },
+   {
+    "part": "EyeLeft",
+    "heads": [
+     [
+      11,
+      0.211631
+     ],
+     [
+      58,
+      0.788369
+     ]
+    ]
+   },
+   {
+    "part": "EyeRight",
+    "heads": [
+     [
+      11,
+      0.211631
+     ],
+     [
+      58,
+      0.788369
+     ]
+    ]
+   },
+   {
+    "part": "Nose",
+    "heads": [
+     [
+      4,
+      0.085056
+     ],
+     [
+      6,
+      0.156532
+     ],
+     [
+      21,
+      0.281583
+     ],
+     [
+      41,
+      0.476828
+     ]
+    ]
+   },
+   {
+    "part": "EarLeft",
+    "heads": [
+     [
+      52,
+      0.725242
+     ],
+     [
+      60,
+      0.274758
+     ]
+    ]
+   },
+   {
+    "part": "EarRight",
+    "heads": [
+     [
+      52,
+      0.725242
+     ],
+     [
+      60,
+      0.274758
+     ]
+    ]
+   },
+   {
+    "part": "CheekLeft",
+    "heads": [
+     [
+      23,
+      0.780709
+     ],
+     [
+      40,
+      0.219291
+     ]
+    ]
+   },
+   {
+    "part": "CheekRight",
+    "heads": [
+     [
+      23,
+      0.780709
+     ],
+     [
+      40,
+      0.219291
+     ]
+    ]
+   },
+   {
+    "part": "Mouth",
+    "heads": [
+     [
+      11,
+      0.089618
+     ],
+     [
+      13,
+      0.196585
+     ],
+     [
+      41,
+      0.364696
+     ],
+     [
+      49,
+      0.349101
+     ]
+    ]
+   },
+   {
+    "part": "Jaw",
+    "heads": [
+     [
+      15,
+      0.407611
+     ],
+     [
+      40,
+      0.205942
+     ],
+     [
+      52,
+      0.241008
+     ],
+     [
+      58,
+      0.145438
+     ]
+    ]
+   },
+   {
+    "part": "Crown",
+    "heads": [
+     [
+      52,
+      0.296503
+     ],
+     [
+      59,
+      0.703497
+     ]
+    ]
+   },
+   {
+    "part": "Neck",
+    "heads": [
+     [
+      40,
+      0.379162
+     ],
+     [
+      52,
+      0.620838
+     ]
+    ]
+   }
+  ]
+ },
+ "skin": {
+  "tone": "#b68371",
+  "body_baseColorFactor": [
+   5.68508,
+   6.60941,
+   7.78228
+  ],
+  "head": {
+   "base": "characters/male/chf/skin/male28_t1_head_material_base.webp",
+   "tone_gain": [
+    1.0,
+    0.98364,
+    1.0
+   ],
+   "layers": [
+    {
+     "type": "blemish",
+     "mask": "characters/chf/textures/heads/blemish/blemish_mask_mask.webp",
+     "id": "characters/chf/textures/heads/blemish/blemish_id_mask.webp",
+     "freckles": {
+      "amount": 0.6108080148696899,
+      "opacity": 0.3891889452934265,
+      "channel": 0,
+      "darken": 0.55
+     },
+     "sunspots": {
+      "amount": 0.5346260070800781,
+      "opacity": 0.1502416729927063,
+      "channel": 1,
+      "darken": 0.75
+     }
+    },
+    {
+     "type": "tattoo",
+     "texture": "characters/chf/textures/heads/shared/tattoos/sc/javelin/tattoo_javelin_01_decal.webp",
+     "blend": "multiply",
+     "age": 0.6505037546157837,
+     "hue": 0.19645680487155914
+    }
+   ],
+   "normal": "characters/male/chf/skin/male28_t1_head_material_normal.webp",
+   "orm": "characters/male/chf/skin/male28_t1_head_material_orm.webp",
+   "skin_set": "Objects/Characters/Human/heads/male/npc/male28/male28_t1_head_material.mtl"
+  }
+ },
+ "eyes": {
+  "iris": "characters/chf/textures/heads/shared/eyes/textures/human_white_eye_diff.webp",
+  "iris_color": "#273427",
+  "sclera": "#d9d0c8",
+  "rule": "lin(out) = lerp(lin(sclera), lin(tex.rgb) * lin(iris_color) * 1.6, tex.a)"
+ },
+ "meshes": [
+  {
+   "port": "beard_itemport",
+   "item": "69889aed-7954-403d-8e97-b8a69a26ac83",
+   "record": "facial_hair_041",
+   "kind": "beard",
+   "url": "characters/male/chf/geometry/m_facial_hair_041.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "facial_hair_041",
+      "mode": "hair_cards",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.11545,
+        0.05659,
+        0.01487
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_01_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.7114,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4902,
+        0.1288
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_01_id.webp",
+       "texCoord": 0,
+       "amount": 0.5,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.6231558322906494,
+       "BaseMelaninRedness": 0.31088054180145264,
+       "BaseMelaninVariation": 0.5,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.02946433052420616,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.480932
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "eyebrow_itemport",
+   "item": "c40183e4-659c-4e4e-8f96-70b33a3b9d67",
+   "record": "brows_002",
+   "kind": "eyebrow",
+   "url": "characters/male/chf/geometry/m_brows_002.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "brows",
+      "mode": "hair_cards",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07901,
+        0.03085,
+        0.00507
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/brows_textures/brows_texture_01_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.6122,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.3904,
+        0.0641
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/textures/brows_textures/brows_texture_01_id.webp",
+       "texCoord": 0,
+       "amount": 0.10000000149011612,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7730132341384888,
+       "BaseMelaninRedness": 0.5600497126579285,
+       "BaseMelaninVariation": 0.10000000149011612,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0008839299553073943,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.64637703
+      }
+     }
+    },
+    {
+     "submaterial": 1,
+     "material": {
+      "name": "brows_scalp",
+      "mode": "hair_coat",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07901,
+        0.03085,
+        0.00507
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/brows/male/npc/m_brows_002/textures/brows_002_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.6022,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.3904,
+        0.0641
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/brows/male/npc/m_brows_002/textures/brows_002_id.webp",
+       "texCoord": 0,
+       "amount": 0.10000000149011612,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7730132341384888,
+       "BaseMelaninRedness": 0.5600497126579285,
+       "BaseMelaninVariation": 0.10000000149011612,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0008839299553073943,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.663082
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "eyelashes_itemport",
+   "item": "6217c113-a448-443b-82aa-1bb108ba8e11",
+   "record": "Head_Eyelashes",
+   "kind": "eyelashes",
+   "url": "characters/male/chf/geometry/m_lashes_01.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "male_lash_up_m",
+      "mode": "hair_cards",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.05348,
+        0.02293,
+        0.00503
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 2.1765,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.55,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4287,
+        0.094
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_id.webp",
+       "texCoord": 0,
+       "amount": 0.25,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.803922,
+       "BaseMelaninRedness": 0.0,
+       "BaseMelaninVariation": 0.25,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "DyeFadeout": 0.0,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "Smoothness": 0.75147903
+      }
+     }
+    },
+    {
+     "submaterial": 1,
+     "material": {
+      "name": "male_lash_dn_m",
+      "mode": "hair_cards",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.06409,
+        0.02895,
+        0.00697
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 2.5,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.55,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4518,
+        0.1088
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_id.webp",
+       "texCoord": 0,
+       "amount": 0.25,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.76168197,
+       "BaseMelaninRedness": 0.0,
+       "BaseMelaninVariation": 0.25,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.20863689,
+        0.12477184,
+        0.088655591
+       ],
+       "DyeFadeout": 0.0,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "Smoothness": 0.79881698
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "hair_itemport",
+   "item": "04262672-9cba-4a61-ba9b-59b90d93417f",
+   "record": "hair_70",
+   "kind": "hair",
+   "url": "characters/male/chf/geometry/m_hair_70.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "hair_m",
+      "mode": "hair_cards",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07078,
+        0.03275,
+        0.00819
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_01_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.33,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.6061,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4627,
+        0.1156
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_01_id.webp",
+       "texCoord": 0,
+       "amount": 0.5,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7363382577896118,
+       "BaseMelaninRedness": 0.022527815774083138,
+       "BaseMelaninVariation": 0.5,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0020625032484531403,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.65654999
+      }
+     }
+    },
+    {
+     "submaterial": 1,
+     "material": {
+      "name": "hair_scalp_m",
+      "mode": "hair_coat",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07078,
+        0.03275,
+        0.00819
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_70_coat_protos_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.6239,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4627,
+        0.1156
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_70_coat_id.webp",
+       "texCoord": 0,
+       "amount": 0.5,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7363382577896118,
+       "BaseMelaninRedness": 0.022527815774083138,
+       "BaseMelaninVariation": 0.5,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0020625032484531403,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.62676102
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "piercings_l_ear_itemport",
+   "item": "23dc9eae-9a20-48f1-b20d-d8de86c7a5bf",
+   "record": "pcg_ball_l_ear_06",
+   "kind": "piercing",
+   "url": "characters/male/chf/geometry/m_pcg_ball_l_ear.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "piercings_m",
+      "mode": "metal",
+      "three": {
+       "type": "MeshStandardMaterial",
+       "color": [
+        0.85,
+        0.25,
+        0.45
+       ],
+       "metalness": 1.0,
+       "roughness": 0.3
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "piercings_r_ear_itemport",
+   "item": "cd8ddd1b-1ece-42d3-bd04-faf6f1ea9440",
+   "record": "pcg_ball_r_ear_05",
+   "kind": "piercing",
+   "url": "characters/male/chf/geometry/m_pcg_ball_r_ear.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "piercings_m",
+      "mode": "metal",
+      "three": {
+       "type": "MeshStandardMaterial",
+       "color": [
+        1.0,
+        0.71,
+        0.29
+       ],
+       "metalness": 1.0,
+       "roughness": 0.3
+      }
+     }
+    }
+   ]
+  },
+  {
+   "port": "universal_scalp_itemport",
+   "item": "71268392-61f4-40f2-9280-92971478a719",
+   "record": "Shared_Scalp_Unified",
+   "kind": "scalp",
+   "url": "characters/male/chf/geometry/m_universal_scalp.glb",
+   "headwear_variant": null,
+   "deform": "head_binding",
+   "materials_by_submaterial": [
+    {
+     "submaterial": 0,
+     "material": {
+      "name": "hair_shaved_scalp_m",
+      "mode": "hair_coat",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07078,
+        0.03275,
+        0.00819
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/hair_02_shaved_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.61,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4627,
+        0.1156
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/hair_02_shaved_id.webp",
+       "texCoord": 0,
+       "amount": 0.5,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7363382577896118,
+       "BaseMelaninRedness": 0.022527815774083138,
+       "BaseMelaninVariation": 0.5,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0020625032484531403,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.64999998
+      }
+     }
+    },
+    {
+     "submaterial": 1,
+     "material": {
+      "name": "hair_scalp_m",
+      "mode": "hair_coat",
+      "three": {
+       "type": "MeshPhysicalMaterial",
+       "color": [
+        0.07078,
+        0.03275,
+        0.00819
+       ],
+       "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_70_coat_protos_opac_alpha.webp",
+       "texCoord": 0,
+       "alphaTest": 0.15,
+       "alphaToCoverage": true,
+       "alphaMipScale": 1.0,
+       "transparent": false,
+       "side": "DoubleSide",
+       "roughness": 0.6239,
+       "metalness": 0.0,
+       "specularIntensity": 0.5,
+       "specularColor": [
+        1.0,
+        0.4627,
+        0.1156
+       ]
+      },
+      "variation": {
+       "map": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_70_coat_id.webp",
+       "texCoord": 0,
+       "amount": 0.5,
+       "rule": "color *= 1 + amount * (id - 0.5)"
+      },
+      "game": {
+       "BaseMelanin": 0.7363382577896118,
+       "BaseMelaninRedness": 0.022527815774083138,
+       "BaseMelaninVariation": 0.5,
+       "DyeAmount": 0.0,
+       "DyeColor": [
+        0.12477181756095049,
+        0.011612245179743885,
+        0.008568125618069307
+       ],
+       "DyeFadeout": 0.0020625032484531403,
+       "DyeShift": 0.0,
+       "DyePigmentVariation": 0.0,
+       "BaseTintColor": [
+        0.9911020971138298,
+        0.9911020971138298,
+        0.9911020971138298
+       ],
+       "Smoothness": 0.62676102
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "worn": {
+  "items": [],
+  "tags": [],
+  "hidden_ports": [],
+  "fit": {}
+ },
+ "hidden_parts": {
+  "head_itemport": [
+   "head_itemport",
+   "eyes_itemport",
+   "hair_itemport",
+   "eyebrow_itemport",
+   "eyelashes_itemport",
+   "beard_itemport",
+   "stubble_itemport",
+   "universal_scalp_itemport",
+   "piercings_l_ear_itemport",
+   "piercings_r_ear_itemport",
+   "piercings_eyebrows_itemport",
+   "piercings_mouth_itemport",
+   "piercings_nose_itemport"
+  ],
+  "hair_itemport": [
+   "hair_itemport",
+   "universal_scalp_itemport"
+  ],
+  "beard_itemport": [
+   "beard_itemport",
+   "stubble_itemport"
+  ],
+  "eyebrow_itemport": [
+   "eyebrow_itemport"
+  ],
+  "eyelashes_itemport": [
+   "eyelashes_itemport"
+  ],
+  "eyes_itemport": [
+   "eyes_itemport"
+  ],
+  "teeth_itemport": [
+   "teeth"
+  ]
+ },
+ "unresolved_ports": {}
+}

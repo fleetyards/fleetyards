@@ -188,6 +188,9 @@ en:
       create: "Plan could not be created."
       update: "Plan could not be updated."
       rebase: "Plan could not be rebased on the hangar."
+    character_faces:
+      create: "Character could not be saved."
+      update: "Character could not be updated."
     outfits:
       create: "Outfit could not be saved."
       update: "Outfit could not be updated."

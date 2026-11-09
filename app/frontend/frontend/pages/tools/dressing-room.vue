@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useQueries } from "@tanstack/vue-query";
 import { onClickOutside } from "@vueuse/core";
+import { storeToRefs } from "pinia";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -15,6 +16,7 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import Characters from "@/frontend/components/DressingRoom/Characters/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
 import SlotRow from "@/frontend/components/DressingRoom/SlotRow/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
@@ -34,7 +36,12 @@ import {
   type OutfitWeaponSlotEnum,
   getEquipmentItemQueryOptions,
   useCharacterBodies,
+  useCharacterFaces,
+  useSharedCharacterFace,
 } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
+import type { ResolvedCharacter } from "@/shared/components/HoloViewer/character/types";
+import { characterRig } from "@/frontend/utils/dressingRoomCharacter";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
@@ -143,6 +150,9 @@ const bodyKey = computed(() => {
 
 const poseName = computed(() => queryValue("pose"));
 
+// The character on the figure, by its token.
+const faceToken = computed(() => queryValue("face"));
+
 // The weapon in hand, only while the outfit carries it.
 const heldWeapon = computed(() => {
   const held = queryValue("held");
@@ -155,6 +165,7 @@ type NavigationState = {
   pose?: string;
   held?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
+  face?: string;
 };
 
 const navigate = (
@@ -167,6 +178,7 @@ const navigate = (
     pose: poseName.value,
     held: heldWeapon.value,
     body: bodyKey.value,
+    face: faceToken.value,
     ...state,
   };
 
@@ -245,6 +257,7 @@ const loadOutfit = (outfit: Outfit) => {
       outfit: outfit.id,
       held: outfit.heldWeapon ?? undefined,
       body: outfit.body,
+      face: outfit.characterFace?.token,
     },
     outfit.storedItems.reduce<StoredSelection>(
       (list, item) => ({
@@ -261,6 +274,10 @@ const loadOutfit = (outfit: Outfit) => {
 
 const setActiveOutfit = (id: string | undefined) => {
   void navigate(selection.value, { outfit: id });
+};
+
+const selectFace = (token: string | undefined) => {
+  void navigate(selection.value, { face: token });
 };
 
 // A numbered gear slot reads by its kind; the one of a kind needs no number.
@@ -636,6 +653,101 @@ const slotRow = (slot: OutfitSlotEnum) => ({
   held: heldWeapon.value === slot,
 });
 
+const { isAuthenticated } = storeToRefs(useSessionStore());
+
+const { data: sharedFace, isError: sharedFaceMissing } = useSharedCharacterFace(
+  () => faceToken.value ?? "",
+  {
+    query: {
+      enabled: computed(() => !!faceToken.value),
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+);
+
+const { data: ownFaces } = useCharacterFaces({
+  query: { enabled: isAuthenticated, retry: false },
+});
+
+// Saved with an outfit only when it is the viewer's own, for the outfit's
+// body. Someone else's character, from a share link, cannot be saved and
+// leaves the outfit's own as saved, as does not knowing the viewer's
+// characters yet.
+const ownFaceId = computed(() => {
+  if (!faceToken.value) return null;
+  if (!ownFaces.value) return undefined;
+
+  const own = ownFaces.value.find((face) => face.token === faceToken.value);
+  if (!own) return undefined;
+
+  return own.body === bodyKey.value ? own.id : null;
+});
+
+const shownFace = computed(() =>
+  faceToken.value && sharedFace.value?.token === faceToken.value
+    ? sharedFace.value
+    : undefined,
+);
+
+// What the worn pieces do to the hair: a helmet swaps it for a cap, a closed
+// one hides the head.
+const wornHeadWear = computed(() =>
+  OUTFIT_SLOTS.flatMap((slot) => {
+    const headWear = items.value[slot]?.headWear;
+
+    return headWear ? [{ path: riggedHolos.value[slot]?.path, headWear }] : [];
+  }),
+);
+
+// The character the address names, when it can be drawn on this body.
+const chosenCharacter = computed(() => {
+  const resolved = shownFace.value?.character as ResolvedCharacter | null;
+  if (!body.value || !resolved || !faceToken.value) return undefined;
+
+  return characterRig(
+    body.value,
+    resolved,
+    faceToken.value,
+    wornHeadWear.value,
+  );
+});
+
+// Without one, the game's own default character for the body: the head the
+// customizer opens with.
+const character = computed(() => {
+  if (chosenCharacter.value || !body.value) return chosenCharacter.value;
+
+  const fallback = body.value.defaultCharacter as ResolvedCharacter | null;
+  if (!fallback) return undefined;
+
+  return characterRig(
+    body.value,
+    fallback,
+    `default:${body.value.key}`,
+    wornHeadWear.value,
+  );
+});
+
+// A character the server has not resolved: the customizer data it needs is
+// not imported yet.
+const faceNotReady = computed(
+  () => !!shownFace.value && !shownFace.value.character,
+);
+
+// A character the link names that cannot be drawn: gone, or for the other
+// body.
+const faceUnavailable = computed(
+  () =>
+    !!faceToken.value &&
+    (sharedFaceMissing.value ||
+      (!!shownFace.value &&
+        (shownFace.value.body !== bodyKey.value ||
+          (!!body.value &&
+            !!shownFace.value.character &&
+            !chosenCharacter.value)))),
+);
+
 const model = computed(() =>
   body.value
     ? riggedOutfitModel(
@@ -645,6 +757,7 @@ const model = computed(() =>
         attachments.value,
         OUTFIT_SLOTS.filter((slot) => riggedHolos.value[slot]),
         failedPaths.value,
+        character.value,
       )
     : outfitModel(pieces.value),
 );
@@ -764,6 +877,7 @@ const shareUrl = computed(
           pose: poseName.value,
           body:
             bodyKey.value === OutfitBodyEnum.MALE ? undefined : bodyKey.value,
+          face: faceToken.value,
         },
       }).href,
       window.location.origin,
@@ -829,7 +943,7 @@ const copyShareLink = () => {
           </Btn>
           <Btn
             :size="BtnSizesEnum.SM"
-            :disabled="!selectedSlots.length"
+            :disabled="!selectedSlots.length && !faceToken"
             data-test="dressing-room-copy-link"
             @click="copyShareLink"
           >
@@ -962,13 +1076,14 @@ const copyShareLink = () => {
           :searchable="false"
           data-test="dressing-room-pose"
         />
-        <WornStorage
-          :stored="stored"
-          :worn="items"
-          :stored-items="storedItems"
-          :loading="storedLoading || wornLoading"
-          @add="openStorage"
-          @quantity="changeStored"
+
+        <Characters
+          :body="bodyKey"
+          :token="faceToken"
+          :shown="shownFace"
+          :unavailable="faceUnavailable"
+          :not-ready="faceNotReady"
+          @select="selectFace"
         />
         <Outfits
           :items="outfitItems"
@@ -976,10 +1091,19 @@ const copyShareLink = () => {
           :blocked="saveBlocked"
           :held-weapon="heldWeapon"
           :body="bodyKey"
+          :character-face-id="ownFaceId"
           :pending="piecesPending"
           :active-id="activeOutfitId"
           @load="loadOutfit"
           @active="setActiveOutfit"
+        />
+        <WornStorage
+          :stored="stored"
+          :worn="items"
+          :stored-items="storedItems"
+          :loading="storedLoading || wornLoading"
+          @add="openStorage"
+          @quantity="changeStored"
         />
       </aside>
     </div>
@@ -1001,7 +1125,12 @@ const copyShareLink = () => {
     grid-template-areas:
       "pieces stage outfit"
       "gear gear outfit";
-    grid-template-columns: minmax(16rem, 1fr) auto minmax(16rem, 1fr);
+    // The forms keep a reading width; every pixel a larger screen adds goes
+    // to the figure.
+    grid-template-columns:
+      minmax(16rem, 22rem)
+      minmax(0, 1fr)
+      minmax(16rem, 24rem);
     // The first row fits the slots and the stage; the right column's lists run
     // on past it beside the gear.
     grid-template-rows: auto 1fr;
@@ -1009,8 +1138,8 @@ const copyShareLink = () => {
   }
 }
 
-// Portrait, as a standing figure is: a landscape stage left most of itself
-// empty either side of it.
+// Portrait on a phone, as a standing figure is: a landscape stage would leave
+// most of itself empty either side of it.
 .dressing-room__stage {
   position: relative;
   height: min(70vh, 48rem);
@@ -1031,10 +1160,10 @@ const copyShareLink = () => {
       transparent 100%
     );
 
+  // Down to the foot of the screen, below the heading and lead above it.
   @media (min-width: $desktop-breakpoint) {
     grid-area: stage;
-    height: min(78vh, 56rem);
-    aspect-ratio: 3 / 4;
+    height: max(32rem, calc(100dvh - 13rem));
   }
 }
 

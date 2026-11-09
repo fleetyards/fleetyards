@@ -145,6 +145,9 @@ fr:
       create: "Le plan n'a pas pu être créé."
       update: "Le plan n'a pas pu être mis à jour."
       rebase: "Le plan n'a pas pu être réaligné sur le hangar."
+    character_faces:
+      create: "Le personnage n'a pas pu être enregistré."
+      update: "Le personnage n'a pas pu être mis à jour."
     outfits:
       create: "La tenue n'a pas pu être enregistrée."
       update: "La tenue n'a pas pu être mise à jour."

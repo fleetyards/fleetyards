@@ -144,6 +144,9 @@ zh-TW:
       create: "無法建立計畫。"
       update: "無法更新計畫。"
       rebase: "無法依機庫更新計畫。"
+    character_faces:
+      create: "無法儲存角色。"
+      update: "無法更新角色。"
     outfits:
       create: "無法儲存裝扮。"
       update: "無法更新裝扮。"

@@ -99,6 +99,24 @@
         "grenade": "Granadas",
         "medpen": "Medpens",
         "oxypen": "Oxypens"
+      },
+      "characters": {
+        "title": "Tu personaje",
+        "default": "Predeterminado del juego",
+        "change": "Cambiar",
+        "hint": "Sube el .chf que exporta el creador de personajes del juego y la figura lucirá tu cara, tu pelo y tu piel.",
+        "signIn": "Inicia sesión para subir tu propio personaje.",
+        "upload": "Subir un .chf",
+        "none": "Aún no hay personajes.",
+        "download": "Descargar el .chf",
+        "confirmDelete": "¿Eliminar el personaje %{name}?",
+        "unavailable": "El personaje de este enlace no se puede mostrar en este cuerpo.",
+        "notReady": "Este personaje está guardado, pero solo se podrá mostrar cuando se importen los datos del creador de personajes.",
+        "messages": {
+          "uploaded": "Personaje subido.",
+          "uploadFailed": "No se pudo subir el personaje.",
+          "deleteFailed": "No se pudo eliminar el personaje."
+        }
       }
     }
   }

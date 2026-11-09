@@ -144,6 +144,9 @@ zh-CN:
       create: "无法创建计划。"
       update: "无法更新计划。"
       rebase: "无法按机库更新计划。"
+    character_faces:
+      create: "无法保存角色。"
+      update: "无法更新角色。"
     outfits:
       create: "无法保存装扮。"
       update: "无法更新装扮。"

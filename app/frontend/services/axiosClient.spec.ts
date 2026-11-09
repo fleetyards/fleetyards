@@ -52,4 +52,30 @@ describe("axiosClient", () => {
       scDataSource: "ptu",
     });
   });
+
+  it("sends JSON as JSON", async () => {
+    await axiosClient({
+      url: "/outfits",
+      method: "POST",
+      data: { name: "Recon" },
+    });
+
+    expect(sent.headers.getContentType()).toBe("application/json");
+    expect(sent.data).toBe('{"name":"Recon"}');
+  });
+
+  it("sends a form with a file as multipart, not as JSON", async () => {
+    const form = new FormData();
+    form.append("file", new Blob(["BB"]), "Macken.chf");
+
+    await axiosClient({
+      url: "/character-faces",
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      data: form,
+    });
+
+    expect(sent.data).toBeInstanceOf(FormData);
+    expect(String(sent.headers.getContentType() ?? "")).not.toContain("json");
+  });
 });

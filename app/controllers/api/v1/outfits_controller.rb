@@ -26,7 +26,7 @@ module Api
         authorize! with: OutfitPolicy
 
         @outfits = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(:character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .order(:name)
       end
 
@@ -72,7 +72,7 @@ module Api
 
       private def set_outfit
         @outfit = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(:character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .find(params[:id])
 
         authorize! @outfit, to: :show?, with: OutfitPolicy
@@ -80,7 +80,7 @@ module Api
 
       private def outfit_params
         permitted = params.transform_keys(&:underscore).permit(
-          :name, :held_weapon, :body,
+          :name, :held_weapon, :body, :character_face_id,
           items: %i[slot equipment_id],
           stored_items: %i[holder equipment_id quantity]
         )

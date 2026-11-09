@@ -13,6 +13,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
+import type { CharacterRig } from "./character/types";
 import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
 // A worn piece skinned to the body's skeleton: its own copy of the bones it
@@ -75,17 +76,21 @@ export type RigLight = {
 export type HoloRig = {
   pieces: RigPiece[];
   lights?: RigLight[];
-  // Under a worn undersuit: not drawn at all.
+  // Under a worn undersuit, or a helmet that hides the head: not drawn.
   hide?: BodyRegion[];
-  // Under armour alone: drawn as a dark undersuit, which is what shows
-  // through an opening in the armour in the game.
-  cover?: BodyRegion[];
   attachments?: RigAttachment[];
   // The clips that pose the body and every piece by bone name.
   animations?: string;
   clip?: string;
   // A plinth under the figure's feet.
   pedestal?: boolean;
+  // The user's own character: its face on the body's head, with its hair,
+  // brows, beard and piercings.
+  character?: CharacterRig;
+  // Under a helmet that leaves the head on show: the neck drawn as the
+  // undersuit's collar; under one that hides the head, the whole head as its
+  // hood.
+  collar?: "neck" | "hood";
 };
 
 const clips = new Map<string, Promise<AnimationClip[]>>();
@@ -293,6 +298,8 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             attachment.from,
           ]),
         ),
+        rig.character ? `character:${rig.character.key}` : "",
+        rig.collar ? `collar:${rig.collar}` : "",
       ].join(";")
     : "";
 

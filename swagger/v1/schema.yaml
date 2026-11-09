@@ -748,6 +748,182 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/character-faces":
+    get:
+      summary: Character faces
+      tags:
+      - DressingRoom
+      operationId: characterFaces
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CharacterFacesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Upload Character face
+      tags:
+      - DressingRoom
+      operationId: createCharacterFace
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/CharacterFaceCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CharacterFace"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/character-faces/shared/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Shared Character face
+      tags:
+      - DressingRoom
+      operationId: sharedCharacterFace
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SharedCharacterFace"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/character-faces/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Rename Character face
+      tags:
+      - DressingRoom
+      operationId: updateCharacterFace
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CharacterFaceUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CharacterFace"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Character face
+      tags:
+      - DressingRoom
+      operationId: destroyCharacterFace
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -26393,6 +26569,26 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/CharacterBodyClip"
+        skinTone:
+          type:
+          - string
+          - 'null'
+          pattern: "^#[0-9a-fA-F]{6}$"
+          description: 'The sRGB skin tone the textured holo is baked at, e.g. #513428;
+            absent until exported'
+        defaultCharacter:
+          description: The game's default character for the body, resolved like a
+            shared character's `character`; absent until the customizer export is
+            imported
+          anyOf:
+          - type: object
+            additionalProperties: true
+          - type: 'null'
+        faceLibrary:
+          description: The face library; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/CharacterBodyFaceLibrary"
+          - type: 'null'
       additionalProperties: false
       required:
       - key
@@ -26402,6 +26598,9 @@ components:
       - weaponInHand
       - lighting
       - clips
+      - skinTone
+      - defaultCharacter
+      - faceLibrary
       title: CharacterBody
     CharacterBodyClip:
       type: object
@@ -26420,6 +26619,27 @@ components:
       - static
       - looping
       title: CharacterBodyClip
+    CharacterBodyFaceLibrary:
+      type: object
+      description: The library a character file's head, eyes and teeth are blended
+        from on this body
+      properties:
+        library:
+          type: string
+          description: The build, <body>-<DNA stamp>, e.g. male-6a268db0
+        index:
+          "$ref": "#/components/schemas/MediaFile"
+        positions:
+          "$ref": "#/components/schemas/MediaFile"
+        normals:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - library
+      - index
+      - positions
+      - normals
+      title: CharacterBodyFaceLibrary
     CharacterBodyHandBones:
       type: object
       properties:
@@ -26490,6 +26710,93 @@ components:
       - bones
       - helper
       title: CharacterBodyWeaponInHand
+    CharacterFace:
+      type: object
+      description: A character exported from the game's character creator, kept as
+        the uploaded file
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        token:
+          type: string
+          description: Shows the character to anyone who has it, as a share link does
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+        dnaStamp:
+          type:
+          - string
+          - 'null'
+          description: The face library build the file was saved against; absent for
+            a preset without a face
+        genderHash:
+          type:
+          - string
+          - 'null'
+        formatVersion:
+          type: integer
+          description: 7 has 12 face parts, 8 adds the neck
+        gameVersion:
+          type:
+          - string
+          - 'null'
+          description: The live game version when the file was uploaded
+        file:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - token
+      - body
+      - dnaStamp
+      - genderHash
+      - formatVersion
+      - gameVersion
+      - file
+      - createdAt
+      - updatedAt
+      title: CharacterFace
+    CharacterFaceCreateInput:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The .chf the game's character creator exports
+        name:
+          type: string
+          maxLength: 100
+          description: Defaults to the file's name
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+      required:
+      - file
+      additionalProperties: false
+      title: CharacterFaceCreateInput
+    CharacterFaceUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - name
+      additionalProperties: false
+      title: CharacterFaceUpdateInput
+    CharacterFacesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CharacterFace"
+      title: CharacterFacesList
     Check:
       type: object
       properties:
@@ -29092,6 +29399,12 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/EquipmentInventory"
           - type: 'null'
+        headWear:
+          description: What the item does to a character's hair and head while worn;
+            absent for anything not worn on the head
+          anyOf:
+          - "$ref": "#/components/schemas/EquipmentHeadWear"
+          - type: 'null'
         attachPoints:
           type:
           - object
@@ -29409,6 +29722,48 @@ components:
       required:
       - type
       title: EquipmentFitPortType
+    EquipmentHeadWear:
+      type: object
+      description: What a hat, helmet, mask or hood does to a character's hair, beard
+        and head while worn
+      properties:
+        type:
+          type: string
+          description: The game's item type, e.g. Char_Armor_Helmet
+        fit:
+          type: string
+          enum:
+          - rigid
+          - face_wrap
+          description: face_wrap follows the character's face like the hair; rigid
+            keeps its own shape
+        hairTag:
+          type:
+          - string
+          - 'null'
+          description: The hair variant it asks for, e.g. snoopy_cap or hatHair
+        maskFacialHair:
+          type: boolean
+          description: Whether it asks beards and stubble for their trimmed variant
+        addsTags:
+          type: array
+          items:
+            type: string
+          description: Further variant tags it pushes onto the character
+        hiddenParts:
+          type: array
+          items:
+            type: string
+          description: The game ports it hides, e.g. Hair_ItemPort
+      additionalProperties: false
+      required:
+      - type
+      - fit
+      - hairTag
+      - maskFacialHair
+      - addsTags
+      - hiddenParts
+      title: EquipmentHeadWear
     EquipmentHeat:
       type: object
       properties:
@@ -47460,6 +47815,11 @@ components:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:
           "$ref": "#/components/schemas/OutfitBodyEnum"
+        characterFace:
+          description: The user's own character wearing the outfit
+          anyOf:
+          - "$ref": "#/components/schemas/OutfitCharacterFace"
+          - type: 'null'
         createdAt:
           type: string
           format: date-time
@@ -47474,6 +47834,7 @@ components:
       - storedItems
       - heldWeapon
       - body
+      - characterFace
       - createdAt
       - updatedAt
       title: Outfit
@@ -47486,6 +47847,25 @@ components:
       - MALE
       - FEMALE
       title: OutfitBodyEnum
+    OutfitCharacterFace:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        token:
+          type: string
+        name:
+          type: string
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+      additionalProperties: false
+      required:
+      - id
+      - token
+      - name
+      - body
+      title: OutfitCharacterFace
     OutfitCreateInput:
       type: object
       properties:
@@ -47507,6 +47887,13 @@ components:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:
           "$ref": "#/components/schemas/OutfitBodyEnum"
+        characterFaceId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: One of your characters, for the outfit's body; null takes it
+            off
       required:
       - name
       additionalProperties: false
@@ -47664,6 +48051,13 @@ components:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         body:
           "$ref": "#/components/schemas/OutfitBodyEnum"
+        characterFaceId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: One of your characters, for the outfit's body; null takes it
+            off
       additionalProperties: false
       title: OutfitUpdateInput
     OutfitWeaponSlotEnum:
@@ -49550,6 +49944,33 @@ components:
           type: string
       additionalProperties: false
       title: SetupOtpInput
+    SharedCharacterFace:
+      type: object
+      properties:
+        token:
+          type: string
+        name:
+          type: string
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+        file:
+          "$ref": "#/components/schemas/MediaFile"
+        character:
+          description: The resolved character in the export's sc-chf-character format,
+            with every asset path replaced by its URL (null while that asset is not
+            imported); absent until the customizer export is imported
+          anyOf:
+          - type: object
+            additionalProperties: true
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - token
+      - name
+      - body
+      - file
+      - character
+      title: SharedCharacterFace
     SharedFleetchartLayout:
       type: object
       properties:

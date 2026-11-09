@@ -99,6 +99,24 @@
         "grenade": "手榴彈",
         "medpen": "醫療筆",
         "oxypen": "氧氣筆"
+      },
+      "characters": {
+        "title": "你的角色",
+        "default": "遊戲預設",
+        "change": "更換",
+        "hint": "上傳遊戲角色創建器匯出的 .chf 檔案，人物就會換上你的臉、髮型和膚色。",
+        "signIn": "登入後即可上傳你自己的角色。",
+        "upload": "上傳 .chf",
+        "none": "還沒有角色。",
+        "download": "下載 .chf",
+        "confirmDelete": "刪除角色 %{name}？",
+        "unavailable": "此連結中的角色無法在該體型上顯示。",
+        "notReady": "該角色已儲存，但需要匯入角色創建器的資料後才能顯示。",
+        "messages": {
+          "uploaded": "角色已上傳。",
+          "uploadFailed": "無法上傳角色。",
+          "deleteFailed": "無法刪除角色。"
+        }
       }
     }
   }

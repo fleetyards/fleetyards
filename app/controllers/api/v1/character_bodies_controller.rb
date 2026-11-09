@@ -11,6 +11,7 @@ module Api
 
       def index
         @character_bodies = CharacterBody.with_holo
+        @context = ::Chf::Context.current
       end
     end
   end

@@ -1,4 +1,6 @@
 import { type LocationQuery } from "vue-router";
+import type { CharacterRig } from "@/shared/components/HoloViewer/character/types";
+
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 import {
   type BodyRegion,
@@ -418,20 +420,18 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
   ...new Set(slots.flatMap((slot) => COVERED_REGIONS[slot] ?? [])),
 ];
 
-// Under a drawn undersuit the body is not drawn; under armour alone it is
-// drawn as a dark undersuit. Under a helmet the head is drawn as the
-// undersuit's hood: its mesh runs down to the collar, and a helmet that
-// leaves the neck to it would float over a gap without it.
+// Under a drawn undersuit the body is not drawn; under armour alone it shows
+// as it is. The head always stays: an open helmet shows the face through its
+// visor with the neck below as the undersuit's collar, and a helmet that hides
+// the head, as the game does with a closed one, draws all of it as the
+// undersuit's hood, so no gap opens between helmet and core.
 const bodyCover = (worn: OutfitSlotEnum[]) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
-  const regions = coveredRegions(worn);
-  const hide = regions.filter((region) => region !== "head" && undersuit);
-  const cover = regions.filter((region) => !hide.includes(region));
+  const hide = coveredRegions(worn).filter(
+    (region) => region !== "head" && undersuit,
+  );
 
-  return {
-    ...(hide.length ? { hide } : {}),
-    ...(cover.length ? { cover } : {}),
-  };
+  return hide.length ? { hide } : {};
 };
 
 // The body with its skin, unless that did not load: then in clay.
@@ -458,6 +458,7 @@ export const riggedOutfitModel = (
   attachments: RigAttachment[] = [],
   worn: OutfitSlotEnum[] = [],
   failedPaths: string[] = [],
+  character?: CharacterRig,
 ): OutfitHoloModel => ({
   ...bodyHolo(body, failedPaths),
   rig: {
@@ -472,6 +473,10 @@ export const riggedOutfitModel = (
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),
     ...bodyCover(worn),
+    ...(worn.includes(OutfitSlotEnum.HELMET)
+      ? { collar: character?.hideHead ? ("hood" as const) : ("neck" as const) }
+      : {}),
+    ...(character ? { character } : {}),
     animations: body.animations?.url ?? undefined,
     clip:
       clip && body.clips.some((candidate) => candidate.name === clip)

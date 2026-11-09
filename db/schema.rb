@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_09_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -376,6 +376,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
     t.index ["user_id"], name: "index_carts_on_user_id_active", unique: true, where: "active"
   end
 
+  create_table "character_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "path", null: false
+    t.string "etag"
+    t.bigint "size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["path"], name: "index_character_assets_on_path", unique: true
+  end
+
   create_table "character_bodies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "key", null: false
     t.string "views_digest"
@@ -385,7 +394,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
     t.jsonb "clips", default: [], null: false
     t.jsonb "weapon_in_hand"
     t.jsonb "lighting", default: [], null: false
+    t.string "face_library"
+    t.string "faces_digest"
+    t.jsonb "face_md5s", default: {}, null: false
+    t.string "skin_tone"
+    t.string "default_digest"
+    t.jsonb "default_md5s", default: {}, null: false
+    t.jsonb "resolved"
+    t.string "resolved_digest"
     t.index ["key"], name: "index_character_bodies_on_key", unique: true
+  end
+
+  create_table "character_faces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name", null: false
+    t.string "token", null: false
+    t.string "body", null: false
+    t.string "dna_stamp"
+    t.string "gender_hash"
+    t.integer "format_version", null: false
+    t.string "game_version"
+    t.jsonb "resolved"
+    t.string "resolved_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_character_faces_on_token", unique: true
+    t.index ["user_id", "name"], name: "index_character_faces_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_character_faces_on_user_id"
   end
 
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -630,6 +665,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
     t.decimal "alpha_damage", precision: 15, scale: 2
     t.decimal "dps", precision: 15, scale: 2
     t.jsonb "inventory"
+    t.jsonb "head_wear"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["family_key"], name: "index_equipment_on_family_key"
     t.index ["item_type"], name: "index_equipment_on_item_type"
@@ -2757,6 +2793,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
     t.datetime "updated_at", null: false
     t.string "held_weapon"
     t.string "body", default: "male", null: false
+    t.uuid "character_face_id"
+    t.index ["character_face_id"], name: "index_outfits_on_character_face_id"
     t.index ["user_id", "name"], name: "index_outfits_on_user_id_and_name", unique: true
   end
 
@@ -3364,6 +3402,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
   add_foreign_key "cart_items", "carts", on_delete: :cascade
   add_foreign_key "cart_items", "item_prices", on_delete: :nullify
   add_foreign_key "carts", "users", on_delete: :cascade
+  add_foreign_key "character_faces", "users", on_delete: :cascade
   add_foreign_key "commodities", "commodities", column: "refines_into_id", on_delete: :nullify
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
@@ -3541,6 +3580,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_160100) do
   add_foreign_key "outfit_items", "outfits", on_delete: :cascade
   add_foreign_key "outfit_stored_items", "equipment"
   add_foreign_key "outfit_stored_items", "outfits", on_delete: :cascade
+  add_foreign_key "outfits", "character_faces", on_delete: :nullify
   add_foreign_key "outfits", "users"
   add_foreign_key "payout_entries", "payout_ledgers"
   add_foreign_key "payout_entries", "payout_participants"

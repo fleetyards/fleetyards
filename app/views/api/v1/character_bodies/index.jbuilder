@@ -26,4 +26,19 @@ json.array! @character_bodies do |body|
     json.static !!clip["static"]
     json.looping !!clip["looping"]
   end
+  json.skin_tone body.skin_tone
+  if body.face_library?
+    json.face_library do
+      json.library body.face_library
+      json.index { json.partial! "api/v1/shared/file", record: body, attr: :face_index }
+      json.positions { json.partial! "api/v1/shared/file", record: body, attr: :face_positions }
+      json.normals { json.partial! "api/v1/shared/file", record: body, attr: :face_normals }
+    end
+  else
+    json.face_library nil
+  end
+  # Served as resolved: its keys are data -- port names, headwear tags, three.js
+  # and game parameter names -- and camelizing them would break the lookups.
+  json.deep_format_keys! false
+  json.default_character body.character(@context)
 end

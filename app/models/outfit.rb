@@ -2,11 +2,13 @@
 
 # A set of worn equipment a user put together in the dressing room and kept
 # under a name: at most one item per worn, weapon or gear slot, which of the
-# weapons is in hand, and what is kept in the storage of the worn pieces.
+# weapons is in hand, what is kept in the storage of the worn pieces, and
+# optionally the user's own character wearing it.
 class Outfit < ApplicationRecord
   MAX_PER_USER = 50
 
   belongs_to :user
+  belongs_to :character_face, optional: true
 
   has_many :items, -> { order(:slot) },
     class_name: "OutfitItem", inverse_of: :outfit, dependent: :delete_all, autosave: true
@@ -19,6 +21,7 @@ class Outfit < ApplicationRecord
   validates :body, inclusion: {in: ItemViews::RIGGED_BODIES}
   validate :outfit_limit, on: :create
   validate :held_weapon_worn
+  validate :character_face_fits, if: :character_face_id
   # Only when the contents change: a patch that takes a port away must not stop
   # an old outfit from being renamed.
   validate :gear_on_offered_ports, if: -> { @contents_assigned }
@@ -94,6 +97,14 @@ class Outfit < ApplicationRecord
     return true if sides.blank?
 
     sides.sort.zip(inventory["dimensions"].values.sort).all? { |side, interior| side <= interior }
+  end
+
+  private def character_face_fits
+    if character_face.nil? || character_face.user_id != user_id
+      errors.add(:character_face, :not_owned)
+    elsif character_face.body != body
+      errors.add(:character_face, :other_body)
+    end
   end
 
   private def outfit_limit

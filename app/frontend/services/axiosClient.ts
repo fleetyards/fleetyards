@@ -20,10 +20,14 @@ export const axiosClient = <T>(config: AxiosRequestConfig): Promise<T> => {
   // reader who has never touched the switch sends what it always sent.
   const scDataSource = useScDataSourceStore().requestParam;
 
+  // A file upload goes as multipart with no type of our own: the browser
+  // fills in the boundary, and a JSON type would have axios turn the form
+  // into JSON.
+  const multipart = config.data instanceof FormData;
   const headers = {
     ...config.headers,
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type": multipart ? undefined : "application/json",
   };
 
   const promise = AXIOS_INSTANCE({
