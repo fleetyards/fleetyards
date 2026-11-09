@@ -33,6 +33,14 @@ describe("maintenance routes", () => {
     );
   });
 
+  it("sends the bare prefix to the dashboard", async () => {
+    const router = buildRouter();
+
+    await router.push("/maintenance");
+
+    expect(router.currentRoute.value.path).toBe("/");
+  });
+
   it("keeps the query", async () => {
     const router = buildRouter();
 

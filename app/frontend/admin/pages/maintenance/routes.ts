@@ -12,7 +12,7 @@ export const routes: RouteRecordRaw[] = [
     // Notifications stored before the move still link here.
     path: "/maintenance/:rest(.*)*",
     redirect: (to) => ({
-      path: to.path.replace(/^\/maintenance/, ""),
+      path: to.path.replace(/^\/maintenance/, "") || "/",
       query: to.query,
       hash: to.hash,
     }),
