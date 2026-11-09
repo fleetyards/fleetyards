@@ -54,6 +54,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
     t: (key: string, values?: Record<string, string>) =>
       values ? `${key} ${Object.values(values).join(" ")}` : key,
     toUEC: (value: number) => String(value),
+    toNumber: (value: number, unit: string) => `${value} ${unit}`,
   }),
 }));
 
@@ -209,7 +210,7 @@ describe("AdminModelEditModulesPage", () => {
     const wrapper = await mountPage();
 
     expect(wrapper.get("[data-test='model-module-cargo']").text()).toBe(
-      "32 number.units.cargo",
+      "32 cargo",
     );
   });
 

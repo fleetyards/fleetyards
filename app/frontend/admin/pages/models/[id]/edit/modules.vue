@@ -45,7 +45,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC } = useI18n();
+const { t, toUEC, toNumber } = useI18n();
 const queryClient = useQueryClient();
 const comlink = useComlink();
 const { displayConfirm, displayAlert } = useAppNotifications();
@@ -278,7 +278,7 @@ const onUnlink = (record: ModelModule) => {
       </template>
       <template v-if="item.cargo">
         <span class="text-muted" data-test="model-module-cargo">
-          {{ item.cargo }} {{ t("number.units.cargo") }}
+          {{ toNumber(item.cargo, "cargo") }}
         </span>
       </template>
     </template>
