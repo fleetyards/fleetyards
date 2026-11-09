@@ -40,8 +40,10 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type HangarGroupMetric,
   type HangarGroupPublic,
+  FeatureFlagName,
   HangarGroup,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -75,6 +77,12 @@ import {
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
+
+const { isFeatureEnabled } = useFeatures();
+
+const plannerEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER),
+);
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -523,6 +531,16 @@ const { activeFilters } = useShipFilterSummary(() =>
     </Btn>
 
     <Btn
+      v-if="plannerEnabled"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-plans' }"
+      data-test="hangar-planner-link"
+    >
+      <i class="fa-duotone fa-compass-drafting" />
+      {{ t("nav.hangar.plans") }}
+    </Btn>
+
+    <Btn
       :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
       data-tour="hangar-fleetchart"
@@ -585,6 +603,11 @@ const { activeFilters } = useShipFilterSummary(() =>
             <Btn :to="{ name: 'hangar-wishlist' }">
               <i class="fa-duotone fa-wand-sparkles" />
               <span>{{ t("labels.wishlist") }}</span>
+            </Btn>
+
+            <Btn v-if="plannerEnabled" :to="{ name: 'hangar-plans' }">
+              <i class="fa-duotone fa-compass-drafting" />
+              <span>{{ t("nav.hangar.plans") }}</span>
             </Btn>
 
             <Btn data-test="fleetchart-link" @click="toggleFleetchart">
