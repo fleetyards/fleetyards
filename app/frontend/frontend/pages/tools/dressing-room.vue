@@ -39,10 +39,7 @@ import {
   useSharedCharacterFace,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
-import type {
-  CharacterRig,
-  ResolvedCharacter,
-} from "@/shared/components/HoloViewer/character/types";
+import type { ResolvedCharacter } from "@/shared/components/HoloViewer/character/types";
 import { characterRig } from "@/frontend/utils/dressingRoomCharacter";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
@@ -705,17 +702,29 @@ const wornHeadWear = computed(() =>
   }),
 );
 
+// The character the address names, still on its way. Only a body with a
+// face library can draw one.
+const facePending = computed(
+  () =>
+    !!faceToken.value &&
+    !!body.value?.faceLibrary &&
+    !shownFace.value &&
+    !sharedFaceMissing.value,
+);
+
+// While the next character is fetched, the query still holds the last one:
+// the figure keeps it on rather than the default standing in for a moment.
+const drawnFace = computed(() =>
+  facePending.value ? sharedFace.value : shownFace.value,
+);
+
 // The character the address names, when it can be drawn on this body.
 const chosenCharacter = computed(() => {
-  const resolved = shownFace.value?.character as ResolvedCharacter | null;
-  if (!body.value || !resolved || !faceToken.value) return undefined;
+  const face = drawnFace.value;
+  const resolved = face?.character as ResolvedCharacter | null;
+  if (!body.value || !face || !resolved) return undefined;
 
-  return characterRig(
-    body.value,
-    resolved,
-    faceToken.value,
-    wornHeadWear.value,
-  );
+  return characterRig(body.value, resolved, face.token, wornHeadWear.value);
 });
 
 // Without one, the game's own default character for the body: the head the
@@ -734,25 +743,12 @@ const defaultCharacter = computed(() => {
   );
 });
 
-// The character the address names, still on its way: the body's default
-// would stand in for it only for a moment.
-const facePending = computed(
-  () => !!faceToken.value && !shownFace.value && !sharedFaceMissing.value,
+const character = computed(
+  () => chosenCharacter.value ?? defaultCharacter.value,
 );
 
-// The character last drawn on each body, kept on the figure while the next
-// one is fetched.
-const drawnCharacters = new Map<string, CharacterRig | undefined>();
-
-const character = computed(() => {
-  if (!body.value) return undefined;
-  if (facePending.value) return drawnCharacters.get(body.value.key);
-
-  const drawn = chosenCharacter.value ?? defaultCharacter.value;
-  drawnCharacters.set(body.value.key, drawn);
-
-  return drawn;
-});
+// Once drawn, the figure stays up while another character is fetched.
+const figureDrawn = ref(false);
 
 // A character the server has not resolved: the customizer data it needs is
 // not imported yet.
@@ -775,9 +771,7 @@ const faceUnavailable = computed(
 
 const model = computed(() => {
   // Nothing drawn yet: the figure waits for its character.
-  if (body.value && facePending.value && !drawnCharacters.has(body.value.key)) {
-    return undefined;
-  }
+  if (facePending.value && !figureDrawn.value) return undefined;
 
   return body.value
     ? riggedOutfitModel(
@@ -825,6 +819,14 @@ const holoUnavailable = (failed?: string) => {
     bodyFailed.value = true;
   }
 };
+
+watch(
+  model,
+  (drawn) => {
+    if (drawn?.rig) figureDrawn.value = true;
+  },
+  { immediate: true },
+);
 
 // The bodies the export has, in the order the enum lists them.
 const bodyOptions = computed(() =>
@@ -969,7 +971,7 @@ const copyShareLink = () => {
         @fell-back="failedPaths = [...failedPaths, ...$event]"
       />
       <Loader
-        v-else-if="body && facePending"
+        v-else-if="facePending"
         :loading="true"
         data-test="dressing-room-character-loading"
       />

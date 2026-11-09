@@ -260,12 +260,24 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   }),
   useCharacterBodies: () => ({ data: bodies }),
   useCharacterFaces: () => ({ data: ownFaces, isLoading: ref(false) }),
-  useSharedCharacterFace: (token: () => string) => ({
-    data: computed(() => SHARED_FACES[token()]),
-    isError: computed(
-      () => !!token() && !SHARED_FACES[token()] && !ARRIVING_FACES.has(token()),
-    ),
-  }),
+  useSharedCharacterFace: (token: () => string) => {
+    // As the app's query client does, the last face is kept while the next
+    // one is fetched.
+    let last: unknown;
+
+    return {
+      data: computed(() => {
+        if (ARRIVING_FACES.has(token())) return last;
+
+        last = SHARED_FACES[token()];
+        return last;
+      }),
+      isError: computed(
+        () =>
+          !!token() && !SHARED_FACES[token()] && !ARRIVING_FACES.has(token()),
+      ),
+    };
+  },
 }));
 
 const copied = vi.fn((_text: string) => Promise.resolve());
@@ -831,6 +843,25 @@ describe("ToolsDressingRoomPage", () => {
       await flushPromises();
 
       expect(viewerModel(wrapper).rig.character.key).toBe(drawn);
+
+      bodies.value = [MALE];
+    });
+
+    it("draws a body without a face library at once, as no character could go on it", async () => {
+      const { wrapper } = await mount({ face: "arriving" });
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(true);
+    });
+
+    it("keeps the figure up when a character is picked after none", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper, router } = await mount();
+
+      await router.push({ name: "dressing-room", query: { face: "arriving" } });
+      await flushPromises();
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(true);
 
       bodies.value = [MALE];
     });
