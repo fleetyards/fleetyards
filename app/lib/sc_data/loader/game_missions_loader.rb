@@ -14,7 +14,10 @@ module ScData
         return if mission_data["sc_ref"].blank?
         return if mission_data["sc_key"].blank?
 
+        # By key as well: the export is free to reissue a GUID, and a second row
+        # for the same key would fail its uniqueness check and abort the load.
         mission = GameMission.find_by(sc_ref: mission_data["sc_ref"])
+        mission ||= GameMission.find_by(sc_key: mission_data["sc_key"])
         mission ||= GameMission.new(sc_ref: mission_data["sc_ref"])
 
         update_params = update_params(mission_data)
