@@ -208,6 +208,36 @@ export const handMount = (body?: CharacterBody): Mount => ({
 // A rifle in hand is held in this pose unless another is picked.
 export const RIFLE_HOLD_CLIP = "hold_rifle_lowered";
 
+// The weight whose clip pushes the hands out furthest: a core whose weight is
+// missing or new still keeps the rifle out of it.
+const FALLBACK_ARMOR_WEIGHT = "Heavy";
+
+// The lowered hold made for the worn core's armour weight. The game's own clip
+// holds the hands against a bare chest, which puts the rifle inside a bulky
+// core; the export pushes the hands out per weight. Without a core, or where
+// the body lacks the clip, the game's own.
+export const rifleHoldClip = (
+  body?: CharacterBody,
+  core?: { subType?: string | null },
+) => {
+  const has = (name?: string): name is string =>
+    !!name && !!body?.clips.some((clip) => clip.name === name);
+  const clipFor = (weight: string | null) =>
+    body?.holdPoses.find((pose) => pose.armorWeight === weight)?.clip;
+
+  const candidates = [
+    ...(core
+      ? [
+          clipFor(core.subType || FALLBACK_ARMOR_WEIGHT),
+          clipFor(FALLBACK_ARMOR_WEIGHT),
+        ]
+      : []),
+    clipFor(null) ?? RIFLE_HOLD_CLIP,
+  ];
+
+  return candidates.find(has);
+};
+
 // Bound in this order: a backpack hangs from a bone the core brings, so the
 // core goes first.
 export const RIG_ORDER: OutfitSlotEnum[] = [

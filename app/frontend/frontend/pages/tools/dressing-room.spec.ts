@@ -157,6 +157,7 @@ const MALE: CharacterBody = {
   animations: media("animations.glb"),
   weaponInHand: null,
   lighting: [],
+  holdPoses: [],
   skinTone: null,
   defaultCharacter: null,
   faceLibrary: null,
@@ -536,6 +537,35 @@ describe("ToolsDressingRoomPage", () => {
       helper: { position: [0, 0, 0], rotation: [-0.707107, 0, 0, 0.707107] },
     });
 
+    bodies.value = [MALE];
+  });
+
+  it("holds a rifle out from a heavy core in the clip made for its weight", async () => {
+    const core = EQUIPMENT["adp-core"];
+    EQUIPMENT["adp-core"] = { ...core, subType: "Heavy" } as Equipment;
+    bodies.value = [
+      {
+        ...MALE,
+        clips: [
+          ...MALE.clips,
+          { name: "hold_rifle_lowered_heavy", static: false, looping: true },
+        ],
+        holdPoses: [
+          { armorWeight: null, clip: "hold_rifle_lowered" },
+          { armorWeight: "Heavy", clip: "hold_rifle_lowered_heavy" },
+        ],
+      },
+    ];
+
+    const { wrapper } = await mount({
+      torso: "adp-core",
+      primary: "p4-ar",
+      held: "primary",
+    });
+
+    expect(viewerModel(wrapper).rig.clip).toBe("hold_rifle_lowered_heavy");
+
+    EQUIPMENT["adp-core"] = core;
     bodies.value = [MALE];
   });
 

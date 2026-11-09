@@ -49,7 +49,7 @@ import {
   GEAR_COLUMNS,
   GEAR_KINDS,
   GEAR_SLOTS,
-  RIFLE_HOLD_CLIP,
+  rifleHoldClip,
   RIG_ORDER,
   handMount,
   OUTFIT_SLOTS,
@@ -769,11 +769,9 @@ const pose = computed(() => {
   const holdsRifle =
     heldWeapon.value === OutfitSlotEnum.PRIMARY ||
     heldWeapon.value === OutfitSlotEnum.SECONDARY;
-  const holdable = body.value?.clips.some(
-    (clip) => clip.name === RIFLE_HOLD_CLIP,
-  );
+  if (!holdsRifle) return undefined;
 
-  return holdsRifle && holdable ? RIFLE_HOLD_CLIP : undefined;
+  return rifleHoldClip(body.value, items.value[OutfitSlotEnum.TORSO]);
 });
 
 const holoUnavailable = (failed?: string) => {
