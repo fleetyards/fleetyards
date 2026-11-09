@@ -14,6 +14,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useSignInAndReturn } from "@/frontend/composables/useSignInAndReturn";
 import {
   type OutfitBodyEnum,
   type SharedCharacterFace,
@@ -45,6 +46,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { isAuthenticated } = storeToRefs(useSessionStore());
+
+const signIn = useSignInAndReturn();
 const comlink = useComlink();
 
 const open = () => {
@@ -110,9 +113,20 @@ const open = () => {
         {{ t("dressingRoom.characters.change") }}
       </Btn>
     </div>
-    <p v-if="!isAuthenticated" class="character__hint">
-      {{ t("dressingRoom.characters.signIn") }}
-    </p>
+    <template v-if="!isAuthenticated">
+      <p class="character__hint">
+        {{ t("dressingRoom.characters.signIn") }}
+      </p>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        class="character__sign-in"
+        data-test="dressing-room-character-sign-in"
+        @click="signIn"
+      >
+        <i class="fa-light fa-right-to-bracket" />
+        {{ t("actions.login") }}
+      </Btn>
+    </template>
   </section>
 </template>
 
@@ -130,6 +144,10 @@ const open = () => {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.character__sign-in {
+  align-self: flex-start;
 }
 
 .character__hint {

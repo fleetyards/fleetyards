@@ -18,6 +18,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useSignInAndReturn } from "@/frontend/composables/useSignInAndReturn";
 import {
   type Outfit,
   type OutfitItemInput,
@@ -68,6 +69,8 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
 const { isAuthenticated } = storeToRefs(useSessionStore());
+
+const signIn = useSignInAndReturn();
 const queryClient = useQueryClient();
 
 const { data: outfits, isLoading } = useOutfits({
@@ -246,9 +249,20 @@ const submit = () => {
 <template>
   <section class="outfits" data-test="dressing-room-outfits">
     <h2 class="outfits__title">{{ t("dressingRoom.savedOutfits") }}</h2>
-    <p v-if="!isAuthenticated" class="outfits__hint">
-      {{ t("dressingRoom.signInToSave") }}
-    </p>
+    <template v-if="!isAuthenticated">
+      <p class="outfits__hint">
+        {{ t("dressingRoom.signInToSave") }}
+      </p>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        class="outfits__sign-in"
+        data-test="dressing-room-outfits-sign-in"
+        @click="signIn"
+      >
+        <i class="fa-light fa-right-to-bracket" />
+        {{ t("actions.login") }}
+      </Btn>
+    </template>
     <template v-else>
       <form class="outfits__form" @submit.prevent="submit">
         <FormInput
@@ -329,6 +343,10 @@ const submit = () => {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.outfits__sign-in {
+  align-self: flex-start;
 }
 
 .outfits__title {
