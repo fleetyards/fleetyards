@@ -136,7 +136,9 @@ const mailState = (status?: string) =>
 
 const socialPosts = computed(() => {
   const { start, lastDay, drawn } = props.raffle.socialPosts;
-  return drawn ? [drawn] : [start, lastDay];
+  if (!props.raffle.drawnAt) return [start, lastDay];
+
+  return drawn ? [drawn] : [];
 });
 
 const entryState = (entry: RaffleEntry) => {
@@ -247,7 +249,7 @@ const entryState = (entry: RaffleEntry) => {
     </p>
   </Alert>
 
-  <section class="raffle-social-posts">
+  <section v-if="socialPosts.length" class="raffle-social-posts">
     <h2 class="raffle-social-posts__title">
       {{ t("labels.raffle.socialPosts") }}
     </h2>
