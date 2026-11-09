@@ -60,6 +60,7 @@ import {
   bodyRegion,
   bonesByName,
   buildRigLights,
+  STUDIO_KEY,
   rigLightsKey,
   type RigAttachment,
   type RigPiece,
@@ -569,7 +570,10 @@ const placeRigLights = (scene: Group) => {
   const lights = props.model.rig?.lights ?? [];
   if (!lights.length) return;
 
-  rigLights = buildRigLights(lights);
+  rigLights = buildRigLights(
+    lights,
+    props.model.rig?.environment ? STUDIO_KEY : 1,
+  );
   scene.add(rigLights);
   invalidate();
 };

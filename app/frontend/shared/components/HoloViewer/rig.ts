@@ -316,10 +316,16 @@ export const rigSize = (rig?: HoloRig) =>
     0,
   );
 
+// The studio as calibrated against the export's renders reads too frontal
+// beside the page: its key light, which faces the figure, is taken down and the
+// environment that wraps round to the back brought up.
+export const STUDIO_KEY = 0.5;
+export const STUDIO_FILL = 1.3;
+
 // The rig's lights as three.js lights under one group, each spot aimed down its
-// direction. The group goes into the figure's frame, so the lights turn and
-// centre with it.
-export const buildRigLights = (lights: RigLight[]) => {
+// direction, `scale` times as bright. The group goes into the figure's frame,
+// so the lights turn and centre with it.
+export const buildRigLights = (lights: RigLight[], scale = 1) => {
   const group = new Group();
 
   lights.forEach((light) => {
@@ -334,7 +340,7 @@ export const buildRigLights = (lights: RigLight[]) => {
     if (light.type === "spot" && light.direction) {
       const spot = new SpotLight(
         color,
-        light.intensity,
+        light.intensity * scale,
         light.range ?? 0,
         light.angle ?? Math.PI / 6,
         light.penumbra ?? 0.2,
@@ -359,7 +365,7 @@ export const buildRigLights = (lights: RigLight[]) => {
     } else {
       const point = new PointLight(
         color,
-        light.intensity,
+        light.intensity * scale,
         light.range ?? 0,
         light.decay ?? 2,
       );

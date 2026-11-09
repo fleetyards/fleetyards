@@ -52,6 +52,7 @@ import {
   type HoloRig,
   rigSize,
   rigTextured,
+  STUDIO_FILL,
 } from "@/shared/components/HoloViewer/rig";
 import {
   BACKDROP_RADIUS,
@@ -173,10 +174,6 @@ const textured = computed(() =>
       model.textured || mountsTextured(model.mounts) || rigTextured(model.rig),
   ),
 );
-
-// The studio as calibrated against the export's renders reads too bright
-// beside the page; half a stop down keeps its balance.
-const STUDIO_DIMMING = 2 ** -0.5;
 
 // A figure lit in the studio: its environment map and one key light, the
 // colours matched at an exposure of their own.
@@ -919,7 +916,7 @@ defineExpose({
       :clear-alpha="0"
       :shadows="!lowPower"
       :shadow-map-type="studio ? VSMShadowMap : PCFShadowMap"
-      :tone-mapping-exposure="studio ? studio.exposure * STUDIO_DIMMING : 1"
+      :tone-mapping-exposure="studio ? studio.exposure : 1"
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
@@ -949,7 +946,7 @@ defineExpose({
       <StudioLighting
         v-if="studio"
         :map="studio.map"
-        :intensity="studio.intensity"
+        :intensity="studio.intensity * STUDIO_FILL"
       />
       <RoomLighting v-else-if="textured" />
       <TresAmbientLight
