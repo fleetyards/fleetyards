@@ -30,7 +30,6 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
-  MeshStandardMaterial,
   DefaultLoadingManager,
   NoColorSpace,
   SRGBColorSpace,
@@ -450,7 +449,6 @@ onUnmounted(() => {
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
-  underlayMaterial.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
   // A paint still loading would land after this and never be freed.
@@ -590,15 +588,8 @@ const loadRigCharacter = async () => {
   }
 };
 
-// What shows of the body under armour: a dark, matte undersuit.
-const underlayMaterial = new MeshStandardMaterial({
-  color: "#1d2126",
-  roughness: 0.9,
-  metalness: 0,
-});
-
 // The body's own skinned parts, each with the region it covers: hidden under
-// an undersuit, drawn as one under armour alone.
+// an undersuit or a helmet that hides the head.
 const hideCovered = (scene: Group) => {
   const parts: SkinnedMesh[] = [];
   scene.traverse((node) => {
@@ -615,14 +606,9 @@ const hideCovered = (scene: Group) => {
   });
 
   const hidden = new Set(props.model.rig?.hide ?? []);
-  const covered = new Set(props.model.rig?.cover ?? []);
   parts.forEach((part) => {
     part.userData.region ??= bodyRegion(part, height || 1);
-    part.userData.bare ??= part.material;
     part.visible = !hidden.has(part.userData.region);
-    part.material = covered.has(part.userData.region)
-      ? underlayMaterial
-      : part.userData.bare;
   });
 
   invalidate();
@@ -1119,10 +1105,7 @@ watch(
 );
 
 watch(
-  () =>
-    [props.model.rig?.hide ?? [], props.model.rig?.cover ?? []]
-      .map((regions) => regions.join(","))
-      .join("|"),
+  () => (props.model.rig?.hide ?? []).join(","),
   () => {
     if (state.value && rigRoot) hideCovered(state.value.scene);
   },

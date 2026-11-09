@@ -372,7 +372,6 @@ describe("ToolsDressingRoomPage", () => {
       animations: "/animations.glb",
       clip: "idle_stand",
       pedestal: true,
-      cover: ["torso"],
     });
     expect(
       wrapper.find('[data-test="dressing-room-no-holo-legs"]').exists(),

@@ -254,19 +254,15 @@ export const dressHead = (
       const mesh = node as Mesh;
       if (!mesh.isMesh || [...meshes.values()].includes(mesh)) return;
 
-      // The skin as painted, whether or not armour draws it dark just now.
-      const bare = ((mesh.userData.bare as Material | undefined) ??
-        mesh.material) as MeshStandardMaterial;
+      const bare = mesh.material as MeshStandardMaterial;
       if (!bare?.userData?.skinTone) return;
 
       const tinted = bare.clone();
       tinted.color = new Color(bare.color).multiply(new Color(r, g, b));
       mesh.material = tinted;
-      mesh.userData.bare = tinted;
       undo.push(() => {
         tinted.dispose();
         mesh.material = bare;
-        mesh.userData.bare = bare;
       });
     });
 
@@ -276,17 +272,14 @@ export const dressHead = (
     ) => {
       const mesh = meshes.get(name);
       if (!mesh) return;
-      const bare = ((mesh.userData.bare as Material | undefined) ??
-        mesh.material) as MeshStandardMaterial;
+      const bare = mesh.material as MeshStandardMaterial;
       const changed = bare.clone();
       change(changed);
       changed.needsUpdate = true;
       mesh.material = changed;
-      mesh.userData.bare = changed;
       undo.push(() => {
         changed.dispose();
         mesh.material = bare;
-        mesh.userData.bare = bare;
       });
     };
 

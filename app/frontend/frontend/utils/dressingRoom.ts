@@ -419,24 +419,17 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
   ...new Set(slots.flatMap((slot) => COVERED_REGIONS[slot] ?? [])),
 ];
 
-// Under a drawn undersuit the body is not drawn; under armour alone it is
-// drawn as a dark undersuit. Under a helmet the head is drawn as the
-// undersuit's hood: its mesh runs down to the collar, and a helmet that
-// leaves the neck to it would float over a gap without it.
-//
-// A character's own face shows under a helmet that leaves the head on show.
+// Under a drawn undersuit the body is not drawn. Under armour alone it shows
+// as it is, and so does the head under a helmet: through a visor it is the
+// face that shows. Only a helmet that hides the character's whole head, as the
+// game does with a closed one, takes the head away.
 const bodyCover = (worn: OutfitSlotEnum[], character?: CharacterRig) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
-  const regions = coveredRegions(worn).filter(
-    (region) => region !== "head" || !character || character.hideHead,
+  const hide = coveredRegions(worn).filter((region) =>
+    region === "head" ? !!character?.hideHead : undersuit,
   );
-  const hide = regions.filter((region) => region !== "head" && undersuit);
-  const cover = regions.filter((region) => !hide.includes(region));
 
-  return {
-    ...(hide.length ? { hide } : {}),
-    ...(cover.length ? { cover } : {}),
-  };
+  return hide.length ? { hide } : {};
 };
 
 // The body with its skin, unless that did not load: then in clay.

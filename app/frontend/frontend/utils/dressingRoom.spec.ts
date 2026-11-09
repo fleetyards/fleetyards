@@ -1,3 +1,4 @@
+import type { CharacterRig } from "@/shared/components/HoloViewer/character/types";
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
 import { OutfitBodyEnum, OutfitSlotEnum } from "@/services/fyApi";
@@ -248,7 +249,7 @@ describe("riggedOutfitModel body cover", () => {
     clips: [],
   };
 
-  it("draws the body under armour and a helmet as a dark undersuit", () => {
+  it("leaves the body and head as they are under armour and a helmet", () => {
     const rig = riggedOutfitModel(
       body,
       [],
@@ -258,10 +259,9 @@ describe("riggedOutfitModel body cover", () => {
     ).rig;
 
     expect(rig?.hide).toBeUndefined();
-    expect(rig?.cover).toEqual(["legs", "head"]);
   });
 
-  it("keeps the neck under a helmet over an undersuit", () => {
+  it("hides the body under an undersuit, but not the head under its helmet", () => {
     const rig = riggedOutfitModel(
       body,
       [],
@@ -271,20 +271,21 @@ describe("riggedOutfitModel body cover", () => {
     ).rig;
 
     expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
-    expect(rig?.cover).toEqual(["head"]);
   });
 
-  it("hides the whole body under an undersuit", () => {
+  it("hides the head under a helmet that hides a character's whole head", () => {
+    const character = { key: "c", hideHead: true } as CharacterRig;
     const rig = riggedOutfitModel(
       body,
       [],
       undefined,
       [],
-      ["undersuit", "torso"],
+      ["helmet"],
+      [],
+      character,
     ).rig;
 
-    expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
-    expect(rig?.cover).toBeUndefined();
+    expect(rig?.hide).toEqual(["head"]);
   });
 });
 

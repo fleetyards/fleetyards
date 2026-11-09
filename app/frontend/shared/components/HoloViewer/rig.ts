@@ -76,11 +76,8 @@ export type RigLight = {
 export type HoloRig = {
   pieces: RigPiece[];
   lights?: RigLight[];
-  // Under a worn undersuit: not drawn at all.
+  // Under a worn undersuit, or a helmet that hides the head: not drawn.
   hide?: BodyRegion[];
-  // Under armour alone: drawn as a dark undersuit, which is what shows
-  // through an opening in the armour in the game.
-  cover?: BodyRegion[];
   attachments?: RigAttachment[];
   // The clips that pose the body and every piece by bone name.
   animations?: string;
