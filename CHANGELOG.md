@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.45.0](https://github.com/fleetyards/fleetyards/compare/v9.44.1...v9.45.0) (2026-11-09)
+
+
+### Features
+
+* **dressing-room:** draw the player's own character from their .chf ([#6236](https://github.com/fleetyards/fleetyards/issues/6236)) ([1868cbd](https://github.com/fleetyards/fleetyards/commit/1868cbdfa0069308db688a04e510390f910a0db7))
+* **dressing-room:** stage the figure and the ship on the whole page, with panels over them ([#6259](https://github.com/fleetyards/fleetyards/issues/6259)) ([7126095](https://github.com/fleetyards/fleetyards/commit/7126095ca1aee2d50b7762652c45a02499b52ede))
+* **hangar:** link the planner from the hangar header ([d1b54d8](https://github.com/fleetyards/fleetyards/commit/d1b54d8ef5c40e514a99220f2bf86f85f949a06e))
+
+
+### Bug Fixes
+
+* **admin:** admin notification links to the flattened maintenance pages ([#6257](https://github.com/fleetyards/fleetyards/issues/6257)) ([de6377d](https://github.com/fleetyards/fleetyards/commit/de6377d776020c280187796b5ab1e4bd88bebc43))
+* **admin:** edit module cargo from the model's modules tab ([#6260](https://github.com/fleetyards/fleetyards/issues/6260)) ([16695d0](https://github.com/fleetyards/fleetyards/commit/16695d0b61b8cf2cb69a3ebae637d6d8a4a692e8))
+* **dressing-room:** hold a rifle or pistol in the lowered pose made for the worn armour ([#6256](https://github.com/fleetyards/fleetyards/issues/6256)) ([56a1760](https://github.com/fleetyards/fleetyards/commit/56a17602601da962ebd489c15ef46f7d4e7650dc))
+* **imports:** map Khartu-al paints and loaners to the renamed model ([#6232](https://github.com/fleetyards/fleetyards/issues/6232)) ([62bb6dc](https://github.com/fleetyards/fleetyards/commit/62bb6dccc1325d6d2ae640e0e8c0bde51bfd11df))
+* **sc_data:** keep a row when the export reissues its ref ([#6238](https://github.com/fleetyards/fleetyards/issues/6238)) ([4e95a79](https://github.com/fleetyards/fleetyards/commit/4e95a79212c9cc3614381b85ee2484869b1f0432))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6247](https://github.com/fleetyards/fleetyards/issues/6247)) ([d0da8d2](https://github.com/fleetyards/fleetyards/commit/d0da8d219b8c07d33a1bcb35fcc9161fc83b88c7))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.44 to 3.5.45 ([#6245](https://github.com/fleetyards/fleetyards/issues/6245)) ([63fd726](https://github.com/fleetyards/fleetyards/commit/63fd7267795a949d0a932f1803c101a8145eb905))
+* **deps-dev:** bump msw from 3.0.3 to 3.0.4 ([#6248](https://github.com/fleetyards/fleetyards/issues/6248)) ([1e547af](https://github.com/fleetyards/fleetyards/commit/1e547afe264f00e5ade069770f6da5c658cb3027))
+* **deps-dev:** bump sass from 1.107.1 to 1.108.0 ([#6251](https://github.com/fleetyards/fleetyards/issues/6251)) ([082a21a](https://github.com/fleetyards/fleetyards/commit/082a21a736ea10ef18f07f1091a0dd26ec0827cc))
+* **deps-dev:** bump the playwright group with 2 updates ([#6240](https://github.com/fleetyards/fleetyards/issues/6240)) ([bd88fdd](https://github.com/fleetyards/fleetyards/commit/bd88fdd3b3c89810cd1803ab68871daa52257af9))
+* **deps-dev:** bump vite from 8.3.5 to 8.3.6 ([#6253](https://github.com/fleetyards/fleetyards/issues/6253)) ([bd583b9](https://github.com/fleetyards/fleetyards/commit/bd583b9d7bc08dce0a7b3d9eb31a6e3192999cf9))
+* **deps:** bump @rails/activestorage from 8.1.400 to 8.1.401 ([#6249](https://github.com/fleetyards/fleetyards/issues/6249)) ([1cea6ad](https://github.com/fleetyards/fleetyards/commit/1cea6ad63c557c81301d153275e6370aaa9f83bd))
+* **deps:** bump action_policy from 0.7.7 to 0.7.8 ([#6241](https://github.com/fleetyards/fleetyards/issues/6241)) ([5c72287](https://github.com/fleetyards/fleetyards/commit/5c722870b4724f6c2e596d1c634ce6f2eefda692))
+* **deps:** bump aws-sdk-s3 from 1.237.0 to 1.238.0 ([#6242](https://github.com/fleetyards/fleetyards/issues/6242)) ([3446bac](https://github.com/fleetyards/fleetyards/commit/3446bac0a4953bbc435794b987065d38bfb05221))
+* **deps:** bump docker/login-action from 4.7.0 to 4.8.0 ([#6254](https://github.com/fleetyards/fleetyards/issues/6254)) ([49cb134](https://github.com/fleetyards/fleetyards/commit/49cb134ec326278819b59c52e85ec6d4d7ba40e8))
+* **deps:** bump kaminari from 1.3.2 to 1.3.3 ([#6239](https://github.com/fleetyards/fleetyards/issues/6239)) ([fe0e9b7](https://github.com/fleetyards/fleetyards/commit/fe0e9b7a2c49160813a653b19d1ff987dc2eebd2))
+* **deps:** bump oj from 3.17.7 to 3.17.8 ([#6243](https://github.com/fleetyards/fleetyards/issues/6243)) ([a9d75d1](https://github.com/fleetyards/fleetyards/commit/a9d75d11511c09357b620dbfcc984edab5a0f737))
+* **deps:** bump rails from 8.1.4 to 8.1.4.1 ([#6246](https://github.com/fleetyards/fleetyards/issues/6246)) ([d1ba73e](https://github.com/fleetyards/fleetyards/commit/d1ba73edc7d58e18692f60c0501a9706cd223069))
+* **deps:** bump the tiptap group with 8 updates ([#6244](https://github.com/fleetyards/fleetyards/issues/6244)) ([a7e8b26](https://github.com/fleetyards/fleetyards/commit/a7e8b260dd39aaf82113b1529aaff658c27dbf1a))
+* **deps:** bump vue from 3.5.44 to 3.5.45 ([#6252](https://github.com/fleetyards/fleetyards/issues/6252)) ([b88fe7f](https://github.com/fleetyards/fleetyards/commit/b88fe7f7d8b493a2aa97b281f300cabd27806ba2))
+
 ## [9.44.1](https://github.com/fleetyards/fleetyards/compare/v9.44.0...v9.44.1) (2026-11-08)
 
 
