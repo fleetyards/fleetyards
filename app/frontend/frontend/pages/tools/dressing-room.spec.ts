@@ -169,6 +169,8 @@ const MALE: CharacterBody = {
 
 const bodies = ref<CharacterBody[]>([MALE]);
 
+const ownFaces = ref<{ id: string; token: string; body: string }[]>([]);
+
 const FACE_LIBRARY = {
   library: "male-6a268db0",
   index: media("index.json"),
@@ -252,7 +254,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
         : Promise.reject(new Error("not found")),
   }),
   useCharacterBodies: () => ({ data: bodies }),
-  useCharacterFaces: () => ({ data: ref([]), isLoading: ref(false) }),
+  useCharacterFaces: () => ({ data: ownFaces, isLoading: ref(false) }),
   useSharedCharacterFace: (token: () => string) => ({
     data: computed(() => SHARED_FACES[token()]),
     isError: computed(() => !!token() && !SHARED_FACES[token()]),
@@ -720,6 +722,48 @@ describe("ToolsDressingRoomPage", () => {
 
       const shared = new URL(copied.mock.calls.at(-1)![0].replace("#", ""));
       expect(shared.searchParams.get("face")).toBe("macken");
+    });
+
+    it("saves the viewer's own character with the outfit", async () => {
+      ownFaces.value = [{ id: "own-1", token: "macken", body: "male" }];
+
+      const { wrapper } = await mount({ face: "macken" });
+
+      expect(
+        wrapper
+          .findComponent({ name: "DressingRoomOutfits" })
+          .props("characterFaceId"),
+      ).toBe("own-1");
+
+      ownFaces.value = [];
+    });
+
+    it("leaves the outfit's character as saved under someone else's", async () => {
+      ownFaces.value = [{ id: "own-1", token: "mine", body: "male" }];
+
+      const { wrapper } = await mount({ face: "macken" });
+
+      expect(
+        wrapper
+          .findComponent({ name: "DressingRoomOutfits" })
+          .props("characterFaceId"),
+      ).toBeUndefined();
+
+      ownFaces.value = [];
+    });
+
+    it("takes the character off the outfit when it is for the other body", async () => {
+      ownFaces.value = [{ id: "own-1", token: "macken", body: "female" }];
+
+      const { wrapper } = await mount({ face: "macken" });
+
+      expect(
+        wrapper
+          .findComponent({ name: "DressingRoomOutfits" })
+          .props("characterFaceId"),
+      ).toBeNull();
+
+      ownFaces.value = [];
     });
 
     it("says when the character the address names is gone", async () => {

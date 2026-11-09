@@ -671,16 +671,17 @@ const { data: ownFaces } = useCharacterFaces({
 });
 
 // Saved with an outfit only when it is the viewer's own, for the outfit's
-// body; unknown, and left as saved, until the viewer's characters are in.
+// body. Someone else's character, from a share link, cannot be saved and
+// leaves the outfit's own as saved, as does not knowing the viewer's
+// characters yet.
 const ownFaceId = computed(() => {
   if (!faceToken.value) return null;
   if (!ownFaces.value) return undefined;
 
-  return (
-    ownFaces.value.find(
-      (face) => face.token === faceToken.value && face.body === bodyKey.value,
-    )?.id ?? null
-  );
+  const own = ownFaces.value.find((face) => face.token === faceToken.value);
+  if (!own) return undefined;
+
+  return own.body === bodyKey.value ? own.id : null;
 });
 
 const shownFace = computed(() =>
