@@ -3,6 +3,7 @@ import {
   DoubleSide,
   FrontSide,
   LinearSRGBColorSpace,
+  type Material,
   MeshStandardMaterial,
   NoColorSpace,
   SRGBColorSpace,
@@ -227,6 +228,10 @@ export const bakeEyes = (recipe: EyeRecipe) =>
 
 // A three.js material for one accessory sub-material; the strand variation
 // multiplies the colour by an ID map.
+// Textures a material made for itself, freed with it. Not in userData, which
+// three copies through JSON when it clones a material.
+export const ownedTextures = new WeakMap<Material, Texture[]>();
+
 // Hair, beard and brow strands as smooth as the export says catch the review
 // lights as white streaks: the game's hair highlight runs along the strand,
 // which a standard material cannot do, so they are kept matt enough for their
@@ -324,7 +329,7 @@ export const characterMaterial = async (
   }
 
   if (strandAlpha && strandAlpha !== alphaMap) {
-    material.userData.ownedTextures = [strandAlpha];
+    ownedTextures.set(material, [strandAlpha]);
   }
 
   return material;

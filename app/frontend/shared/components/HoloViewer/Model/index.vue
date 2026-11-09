@@ -50,6 +50,7 @@ import {
   disposeCharacter,
   dressEyes,
   dressHead,
+  dressNeck,
   loadDefaultEyes,
   fitPieceToFace,
   loadCharacter,
@@ -471,6 +472,10 @@ onUnmounted(() => {
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
   if (pedestal) disposePedestal(pedestal);
+  // The body model is cached for the next viewer: it gets its own head back.
+  undressNeck?.();
+  undressHead?.();
+  undressEyes?.();
   if (character) disposeCharacter(character);
   defaultEyes?.map?.dispose();
   fittedGeometries.forEach((geometry) => geometry.dispose());
@@ -589,6 +594,7 @@ let undressHead: (() => void) | undefined;
 // The default head's eyes, baked once per recipe.
 let defaultEyes: { key: string; map?: Texture } | undefined;
 let undressEyes: (() => void) | undefined;
+let undressNeck: (() => void) | undefined;
 
 const loadRigEyes = async () => {
   const recipe = props.model.rig?.eyes;
@@ -808,6 +814,8 @@ const attachRigNow = async (scene: Group) => {
     ].forEach((node) => node.removeFromParent());
   }
 
+  undressNeck?.();
+  undressNeck = undefined;
   undressHead?.();
   undressHead = undefined;
   undressEyes?.();
@@ -837,6 +845,8 @@ const attachRigNow = async (scene: Group) => {
       !!props.model.textured,
     );
   }
+
+  if (rig.collar) undressNeck = dressNeck(scene);
 
   const bones = bonesByName(scene);
   const next = new Group();
@@ -999,6 +1009,11 @@ type OwnPaint = {
   metalness: number;
 };
 
+// A material's own maps under a paint. Not in userData, which three copies
+// through JSON when it clones a material: the copy would come back as plain
+// objects where textures belong.
+const ownPaints = new WeakMap<Material, OwnPaint>();
+
 let paintMaps: Texture[] = [];
 let paintRequest = 0;
 
@@ -1037,12 +1052,16 @@ const applyPaintNow = async (scene: Group) => {
   applyStencilMap(scene, stencil);
 
   partMaterials(scene, BODY_SUFFIX).forEach((bodyMaterial) => {
-    const own = (bodyMaterial.userData.ownPaint ??= {
-      map: bodyMaterial.map,
-      orm: bodyMaterial.roughnessMap,
-      roughness: bodyMaterial.roughness,
-      metalness: bodyMaterial.metalness,
-    }) as OwnPaint;
+    let own = ownPaints.get(bodyMaterial);
+    if (!own) {
+      own = {
+        map: bodyMaterial.map,
+        orm: bodyMaterial.roughnessMap,
+        roughness: bodyMaterial.roughness,
+        metalness: bodyMaterial.metalness,
+      };
+      ownPaints.set(bodyMaterial, own);
+    }
 
     if (map) preparePaintMap(map, own.map, SRGBColorSpace);
     if (orm) preparePaintMap(orm, own.map, NoColorSpace);
@@ -1198,8 +1217,13 @@ watch(
   },
 );
 
+// By value: an array built afresh on every read would fire on any change of
+// the model, and re-paint a figure that has no paint at all.
 watch(
-  () => [props.model.paint, props.model.paintOrm, props.model.paintStencil],
+  () =>
+    [props.model.paint, props.model.paintOrm, props.model.paintStencil].join(
+      "|",
+    ),
   () => {
     if (state.value && props.model.textured) void applyPaint(state.value.scene);
   },

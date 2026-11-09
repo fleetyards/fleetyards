@@ -28,6 +28,7 @@ import {
   bakeHead,
   characterMaterial,
   loadTexture,
+  ownedTextures,
 } from "./materials";
 import type { CharacterRig, EyeRecipe } from "./types";
 
@@ -211,12 +212,31 @@ const faceMeshes = (scene: Object3D, library: FaceLibrary) => {
   return found;
 };
 
+// The body's own material and geometry as the model brought them, found from
+// whatever was made from them. The model is cached across viewers, so a change
+// undone too late, or never, must not become what the next character is built
+// on: a skin tinted twice goes dark. Kept out of userData, which three copies
+// through JSON whenever it clones.
+const derived = new WeakMap<object, object>();
+
+const derive = <T extends object>(made: T, from: T) => {
+  derived.set(made, derived.get(from) ?? from);
+  return made;
+};
+
+const originalMaterial = (mesh: Mesh) =>
+  (derived.get(mesh.material as Material) ??
+    mesh.material) as MeshStandardMaterial;
+
+const originalGeometry = (mesh: Mesh) =>
+  (derived.get(mesh.geometry) ?? mesh.geometry) as BufferGeometry;
+
 const withPositions = (
   geometry: BufferGeometry,
   positions: Float32Array,
   normals?: Float32Array,
 ) => {
-  const copy = geometry.clone();
+  const copy = derive(geometry.clone(), geometry);
   copy.setAttribute("position", new BufferAttribute(positions, 3));
   if (normals) copy.setAttribute("normal", new BufferAttribute(normals, 3));
   copy.computeBoundingBox();
@@ -236,7 +256,7 @@ export const dressHead = (
   const meshes = faceMeshes(scene, character.library);
 
   meshes.forEach((mesh, name) => {
-    const geometry = mesh.geometry;
+    const geometry = originalGeometry(mesh);
     mesh.geometry = withPositions(
       geometry,
       character.face[name],
@@ -254,10 +274,10 @@ export const dressHead = (
       const mesh = node as Mesh;
       if (!mesh.isMesh || [...meshes.values()].includes(mesh)) return;
 
-      const bare = mesh.material as MeshStandardMaterial;
-      if (!bare?.userData?.skinTone) return;
+      if (!(mesh.material as Material)?.userData?.skinTone) return;
+      const bare = originalMaterial(mesh);
 
-      const tinted = bare.clone();
+      const tinted = derive(bare.clone(), bare);
       tinted.color = new Color(bare.color).multiply(new Color(r, g, b));
       mesh.material = tinted;
       undo.push(() => {
@@ -272,8 +292,8 @@ export const dressHead = (
     ) => {
       const mesh = meshes.get(name);
       if (!mesh) return;
-      const bare = mesh.material as MeshStandardMaterial;
-      const changed = bare.clone();
+      const bare = originalMaterial(mesh);
+      const changed = derive(bare.clone(), bare);
       change(changed);
       changed.needsUpdate = true;
       mesh.material = changed;
@@ -321,8 +341,8 @@ export const dressEyes = (scene: Object3D, map: Texture) => {
   if (!eyes) return () => {};
 
   const mesh = eyes;
-  const bare = mesh.material as MeshStandardMaterial;
-  const changed = bare.clone();
+  const bare = originalMaterial(mesh);
+  const changed = derive(bare.clone(), bare);
   changed.map = map;
   changed.color = new Color(1, 1, 1);
   changed.needsUpdate = true;
@@ -331,6 +351,55 @@ export const dressEyes = (scene: Object3D, map: Texture) => {
   return () => {
     changed.dispose();
     mesh.material = bare;
+  };
+};
+
+// How far up the head mesh the neck runs, from its lowest point: the face
+// library's neck region tops out 6 cm up on both bodies, front and back.
+const NECK_HEIGHT = 0.06;
+const COLLAR = new Color("#1d2126");
+
+// Under a helmet, the undersuit's collar: the gap between the helmet's rim and
+// the core shows the neck, which is drawn dark, while the face stays as it is
+// and shows through a visor.
+export const dressNeck = (scene: Object3D) => {
+  let head: Mesh | undefined;
+  scene.traverse((node) => {
+    const mesh = node as Mesh;
+    if (mesh.isMesh && /_head$/.test(mesh.name)) head ??= mesh;
+  });
+  if (!head) return () => {};
+
+  const mesh = head;
+  const current = mesh.material as MeshStandardMaterial;
+  mesh.geometry.computeBoundingBox();
+  const cut = (mesh.geometry.boundingBox?.min.z ?? 0) + NECK_HEIGHT;
+  const collared = derive(current.clone(), current);
+  collared.onBeforeCompile = (shader) => {
+    shader.uniforms.collarCut = { value: cut };
+    shader.uniforms.collarColor = { value: COLLAR };
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nvarying float vBindZ;")
+      .replace(
+        "#include <begin_vertex>",
+        "#include <begin_vertex>\nvBindZ = position.z;",
+      );
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        "#include <common>",
+        "#include <common>\nvarying float vBindZ;\nuniform float collarCut;\nuniform vec3 collarColor;",
+      )
+      .replace(
+        "#include <map_fragment>",
+        "#include <map_fragment>\nif (vBindZ < collarCut) diffuseColor.rgb = collarColor;",
+      );
+  };
+  collared.customProgramCacheKey = () => `character-collar-${cut.toFixed(3)}`;
+  mesh.material = collared;
+
+  return () => {
+    collared.dispose();
+    if (mesh.material === collared) mesh.material = current;
   };
 };
 
@@ -356,9 +425,7 @@ export const disposeCharacter = (character: LoadedCharacter) => {
   character.eyeMap?.dispose();
   character.owned.geometries.forEach((geometry) => geometry.dispose());
   character.owned.materials.forEach((material) => {
-    (material.userData.ownedTextures as Texture[] | undefined)?.forEach(
-      (texture) => texture.dispose(),
-    );
+    ownedTextures.get(material)?.forEach((texture) => texture.dispose());
     material.dispose();
   });
 };

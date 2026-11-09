@@ -87,6 +87,9 @@ export type HoloRig = {
   // The user's own character: its face on the body's head, with its hair,
   // brows, beard and piercings.
   character?: CharacterRig;
+  // Under a helmet that leaves the head on show: the neck drawn as the
+  // undersuit's collar.
+  collar?: boolean;
   // Without a character: how to draw the eyes, which the textured body
   // paints as the iris alone on black.
   eyes?: EyeRecipe;
@@ -299,6 +302,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
         ),
         rig.character ? `character:${rig.character.key}` : "",
         rig.eyes ? `eyes:${rig.eyes.iris}:${rig.eyes.iris_color}` : "",
+        rig.collar ? "collar" : "",
       ].join(";")
     : "";
 
