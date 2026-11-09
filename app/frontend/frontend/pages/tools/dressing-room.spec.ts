@@ -158,7 +158,7 @@ const MALE: CharacterBody = {
   weaponInHand: null,
   lighting: [],
   skinTone: null,
-  defaultEyes: null,
+  defaultCharacter: null,
   faceLibrary: null,
   clips: [
     { name: "shop_pose_01", static: true, looping: false },

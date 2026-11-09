@@ -699,7 +699,8 @@ const wornHeadWear = computed(() =>
   }),
 );
 
-const character = computed(() => {
+// The character the address names, when it can be drawn on this body.
+const chosenCharacter = computed(() => {
   const resolved = shownFace.value?.character as ResolvedCharacter | null;
   if (!body.value || !resolved || !faceToken.value) return undefined;
 
@@ -707,6 +708,22 @@ const character = computed(() => {
     body.value,
     resolved,
     faceToken.value,
+    wornHeadWear.value,
+  );
+});
+
+// Without one, the game's own default character for the body: the head the
+// customizer opens with.
+const character = computed(() => {
+  if (chosenCharacter.value || !body.value) return chosenCharacter.value;
+
+  const fallback = body.value.defaultCharacter as ResolvedCharacter | null;
+  if (!fallback) return undefined;
+
+  return characterRig(
+    body.value,
+    fallback,
+    `default:${body.value.key}`,
     wornHeadWear.value,
   );
 });
@@ -725,7 +742,9 @@ const faceUnavailable = computed(
     (sharedFaceMissing.value ||
       (!!shownFace.value &&
         (shownFace.value.body !== bodyKey.value ||
-          (!!body.value && !!shownFace.value.character && !character.value)))),
+          (!!body.value &&
+            !!shownFace.value.character &&
+            !chosenCharacter.value)))),
 );
 
 const model = computed(() =>

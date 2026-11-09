@@ -1,8 +1,6 @@
 import { type LocationQuery } from "vue-router";
 import type { CharacterRig } from "@/shared/components/HoloViewer/character/types";
 
-// The game's eye white.
-const SCLERA = "#d9d0c8";
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 import {
   type BodyRegion,
@@ -478,15 +476,6 @@ export const riggedOutfitModel = (
       ? { collar: true }
       : {}),
     ...(character ? { character } : {}),
-    ...(!character && body.defaultEyes
-      ? {
-          eyes: {
-            iris: body.defaultEyes.iris,
-            iris_color: body.defaultEyes.irisColor,
-            sclera: SCLERA,
-          },
-        }
-      : {}),
     animations: body.animations?.url ?? undefined,
     clip:
       clip && body.clips.some((candidate) => candidate.name === clip)

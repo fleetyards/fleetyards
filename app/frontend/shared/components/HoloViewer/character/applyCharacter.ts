@@ -30,7 +30,7 @@ import {
   loadTexture,
   ownedTextures,
 } from "./materials";
-import type { CharacterRig, EyeRecipe } from "./types";
+import type { CharacterRig } from "./types";
 
 // A file without a face block is drawn on the archetype head body.glb
 // carries, library head 1.
@@ -324,34 +324,6 @@ export const dressHead = (
   }
 
   return () => undo.reverse().forEach((step) => step());
-};
-
-// The default head's eyes: the textured body paints the iris alone on black.
-export const loadDefaultEyes = async (recipe: EyeRecipe) => {
-  const canvas = await bakeEyes(recipe);
-  return canvas ? canvasTexture(canvas) : undefined;
-};
-
-export const dressEyes = (scene: Object3D, map: Texture) => {
-  let eyes: Mesh | undefined;
-  scene.traverse((node) => {
-    const mesh = node as Mesh;
-    if (mesh.isMesh && /_eyes$/.test(mesh.name)) eyes ??= mesh;
-  });
-  if (!eyes) return () => {};
-
-  const mesh = eyes;
-  const bare = originalMaterial(mesh);
-  const changed = derive(bare.clone(), bare);
-  changed.map = map;
-  changed.color = new Color(1, 1, 1);
-  changed.needsUpdate = true;
-  mesh.material = changed;
-
-  return () => {
-    changed.dispose();
-    mesh.material = bare;
-  };
 };
 
 // How far up the head mesh the neck runs, from its lowest point: the face
