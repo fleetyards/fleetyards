@@ -43,7 +43,7 @@
     "@floating-ui/dom": "^1.8.0",
     "@google/model-viewer": "^4.4.0",
     "@number-flow/vue": "^0.5.2",
-    "@rails/activestorage": "^8.1.400",
+    "@rails/activestorage": "^8.1.401",
     "@tanstack/vue-query": "^5.105.3",
     "@tiptap/core": "^3.32.2",
     "@tiptap/extension-details": "^3.32.2",
