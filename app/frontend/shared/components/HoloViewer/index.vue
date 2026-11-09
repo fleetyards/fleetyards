@@ -174,6 +174,10 @@ const textured = computed(() =>
   ),
 );
 
+// The studio as calibrated against the export's renders reads too bright
+// beside the page; half a stop down keeps its balance.
+const STUDIO_DIMMING = 2 ** -0.5;
+
 // A figure lit in the studio: its environment map and one key light, the
 // colours matched at an exposure of their own.
 const studio = computed(
@@ -915,7 +919,7 @@ defineExpose({
       :clear-alpha="0"
       :shadows="!lowPower"
       :shadow-map-type="studio ? VSMShadowMap : PCFShadowMap"
-      :tone-mapping-exposure="studio?.exposure ?? 1"
+      :tone-mapping-exposure="studio ? studio.exposure * STUDIO_DIMMING : 1"
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
