@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_08_230000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_09_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -398,6 +398,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_08_230000) do
     t.string "faces_digest"
     t.jsonb "face_md5s", default: {}, null: false
     t.string "skin_tone"
+    t.string "default_digest"
+    t.jsonb "default_md5s", default: {}, null: false
+    t.jsonb "resolved"
+    t.string "resolved_digest"
     t.index ["key"], name: "index_character_bodies_on_key", unique: true
   end
 

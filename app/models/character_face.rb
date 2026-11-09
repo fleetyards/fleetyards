@@ -9,6 +9,8 @@
 # Anyone holding the token sees the character and can download the file, which
 # is how an outfit share link carries it.
 class CharacterFace < ApplicationRecord
+  include ResolvedCharacterFile
+
   MAX_PER_USER = 20
 
   # Game files are 4 KB, zero-padded.
@@ -37,6 +39,8 @@ class CharacterFace < ApplicationRecord
 
   # The body the uploader is dressing; a file for the other one is refused.
   attr_accessor :expected_body
+
+  def character_body_key = body
 
   # What validation errors on `file` name.
   def file = chf
@@ -75,36 +79,11 @@ class CharacterFace < ApplicationRecord
       @named_after_file = true
       self.name = File.basename(upload.original_filename.to_s, ".*").presence
     end
-    @chf = chf
+    @parsed_chf = chf
 
     self.chf = {io: StringIO.new(bytes), filename: "#{name.presence || "character"}.chf", content_type: "application/octet-stream"}
   rescue Chf::Reader::Invalid
     @file_error = :invalid
-  end
-
-  # The resolved character, refreshed when the catalogue or a face library
-  # changed since it was last resolved. Nil until both are imported.
-  def character(context = Chf::Context.current)
-    return if context.nil? || !context.body?(body)
-
-    if resolved_digest != context.digest || resolved.nil?
-      spec = context.resolve(parsed)
-      update_columns(resolved: spec, resolved_digest: context.digest) if persisted?
-      self.resolved = spec
-      self.resolved_digest = context.digest
-    end
-
-    context.served(resolved)
-  rescue => e
-    # An export the resolver cannot read still lets a share link hand out the
-    # file; the character waits for an export it can.
-    Rails.logger.error("[chf] #{id} could not be resolved: #{e.class}: #{e.message}")
-    Appsignal.report_error(e)
-    nil
-  end
-
-  private def parsed
-    @chf ||= Chf::Reader.read(chf.download)
   end
 
   private def file_error? = @file_error.present?

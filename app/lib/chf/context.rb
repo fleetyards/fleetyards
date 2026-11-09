@@ -64,20 +64,6 @@ module Chf
       )
     end
 
-    # The customizer's white iris and the game's own iris colour: what a head
-    # with no character file looks out of. The textured body's eye texture is
-    # the iris alone on black, the game drawing the whites in its shader.
-    def default_eyes
-      iris = catalog.dig("eye", "iris")
-      color = catalog.dig("eye", "IrisColor_default")
-      return unless iris.is_a?(String) && color.is_a?(Array) && color.size >= 3
-
-      url = served({"iris" => iris})["iris"]
-      return unless url
-
-      {"iris" => url, "iris_color" => format("#%02x%02x%02x", *color.first(3).map { |c| (Resolver.linear_srgb(c.to_f) * 255).round })}
-    end
-
     def resolve(chf, worn: [])
       Resolver.new(chf, catalog:, libraries:, skin_tones:, worn:).spec
     end

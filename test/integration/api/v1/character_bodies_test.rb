@@ -57,19 +57,24 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /character-bodies says how to draw a head's eyes without a character file once the export is in" do
-    create(:character_body, :with_holo, key: "male")
-    catalog = CharacterAsset.create!(path: Chf::Context::CATALOG, etag: "eyes-1")
-    catalog.file.attach(io: StringIO.new({eye: {iris: "characters/chf/textures/iris.webp", IrisColor_default: [0.15292618, 0.15292618, 0.15292618]}}.to_json), filename: "catalog.json")
-    iris = CharacterAsset.create!(path: "characters/chf/textures/iris.webp", etag: "x")
-    iris.file.attach(io: StringIO.new("webp"), filename: "iris.webp")
-    create(:character_body, :with_holo, :with_face_library, key: "female")
+  test "GET /character-bodies serves each body's default character, resolved, once the export is in" do
+    fixtures = Rails.root.join("test/fixtures/chf")
+    catalog = CharacterAsset.create!(path: Chf::Context::CATALOG, etag: "catalog-1")
+    catalog.file.attach(io: fixtures.join("catalog.json").open, filename: "catalog.json")
+    body = create(:character_body, :with_holo, :with_face_library, key: "male", skin_tone: "#513428")
+    body.face_index.attach(io: fixtures.join("male_faces_index.json").open, filename: "index.json")
+    body.chf.attach(io: fixtures.join("masculinedefault.chf").open, filename: "default.chf")
+    create(:character_body, :with_holo, key: "female")
     Chf::Context.reset!
 
     assert_api_response :get, 200 do
-      eyes = parsed_body.first["defaultEyes"]
-      assert_equal "#6d6d6d", eyes["irisColor"]
-      assert_match %r{/iris\.webp}, eyes["iris"]
+      female, male = parsed_body
+      character = male["defaultCharacter"]
+      assert_equal "male", character["body"]
+      assert_includes character["hidden_parts"].keys, "hair_itemport"
+      assert(character["meshes"].all? { |mesh| mesh.key?("materials_by_submaterial") })
+      assert_nil female["defaultCharacter"]
+      assert_equal "male-6a268db0", male.dig("faceLibrary", "library")
     end
   end
 

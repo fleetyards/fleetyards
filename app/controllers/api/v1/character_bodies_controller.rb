@@ -11,16 +11,7 @@ module Api
 
       def index
         @character_bodies = CharacterBody.with_holo
-        @default_eyes = default_eyes
-      end
-
-      # Without the customizer export the bodies are still served, eyes as
-      # textured.
-      private def default_eyes
-        ::Chf::Context.current&.default_eyes
-      rescue => e
-        Rails.logger.error("[chf] default eyes could not be read: #{e.class}: #{e.message}")
-        nil
+        @context = ::Chf::Context.current
       end
     end
   end

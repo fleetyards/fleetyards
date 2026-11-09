@@ -25,7 +25,8 @@ module ScData
           "clips" => entry.fetch("clips", []),
           "weapon_in_hand" => entry["weaponInHand"],
           "skin_tone" => entry.dig("skin", "tone"),
-          "faces" => faces(entry["faces"])
+          "faces" => faces(entry["faces"]),
+          "default_character" => default_character(entry["defaultCharacter"])
         }]
       end
     end
@@ -46,6 +47,13 @@ module ScData
       return {} if file.blank?
 
       read_json(file.delete_prefix("#{prefix}/")).fetch("rigs", {})
+    end
+
+    # The game's default character: {"path", "files"}, or nil.
+    private def default_character(entry)
+      return unless entry.is_a?(Hash) && entry["chf"].is_a?(String) && entry["files"].is_a?(Hash)
+
+      {"path" => File.dirname(entry["chf"]).delete_prefix("#{prefix}/"), "files" => entry["files"]}
     end
 
     private def faces(entry)

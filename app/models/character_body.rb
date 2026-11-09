@@ -13,12 +13,17 @@
 # `face_normals`, and `face_library` names the build, which a character file
 # saved against an older head list still blends with.
 class CharacterBody < ApplicationRecord
+  include ResolvedCharacterFile
+
   has_one_attached :holo
   has_one_attached :holo_textured
   has_one_attached :animations
   has_one_attached :face_index
   has_one_attached :face_positions
   has_one_attached :face_normals
+  # The game's own default character for the body: what its head looks like
+  # before a player changes anything.
+  has_one_attached :chf
 
   validates :key, presence: true, uniqueness: true
 
@@ -26,8 +31,11 @@ class CharacterBody < ApplicationRecord
     joins(:holo_attachment)
       .with_attached_holo.with_attached_holo_textured.with_attached_animations
       .with_attached_face_index.with_attached_face_positions.with_attached_face_normals
+      .with_attached_chf
       .order(:key)
   }
+
+  def character_body_key = key
 
   # All three files of one build, or nothing: a viewer cannot blend from part
   # of a library.

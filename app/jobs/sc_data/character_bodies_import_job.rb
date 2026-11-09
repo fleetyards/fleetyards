@@ -22,6 +22,7 @@ module ScData
       manifest = store.manifest
       rigs = lighting_rigs(store, manifest)
       faces = ::ScData::CharacterFacesImport.new(store)
+      defaults = ::ScData::CharacterDefaultImport.new(store)
 
       store.characters(manifest).each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
@@ -39,6 +40,11 @@ module ScData
         if entry["faces"]
           face_fields = faces.call(body, entry["faces"])
           attached["#{key} faces"] = face_fields if face_fields.any?
+        end
+
+        if entry["default_character"]
+          default_fields = defaults.call(body, entry["default_character"])
+          attached["#{key} default character"] = default_fields if default_fields.any?
         end
 
         # The index has no digest of its own for a body, so its file list is,

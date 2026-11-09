@@ -199,6 +199,33 @@ module ScData
       assert_equal ["index.json"], fetched
     end
 
+    test "attaches a body's default character file and resolves it afresh when it changes" do
+      publish("male", {"body.glb" => BODY})
+      chf = "BB default"
+      @index["male"][:defaultCharacter] = {
+        chf: "characters/male/default/default.chf",
+        files: {"default.chf" => {md5: Digest::MD5.hexdigest(chf), size: chf.bytesize}, "default_character.glb" => {md5: "x", size: 1}}
+      }
+      @objects["index.json"] = {bodies: @index}.to_json
+      @objects["male/default/default.chf"] = chf
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      body = CharacterBody.find_by!(key: "male")
+      assert_equal chf, body.chf.download
+      assert_not_includes fetched, "default_character.glb"
+
+      body.update_columns(resolved: {"body" => "male"}, resolved_digest: "old")
+      changed = "BB changed"
+      @index["male"][:defaultCharacter][:files]["default.chf"] = {md5: Digest::MD5.hexdigest(changed), size: changed.bytesize}
+      @objects["index.json"] = {bodies: @index}.to_json
+      @objects["male/default/default.chf"] = changed
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal changed, body.reload.chf.download
+      assert_nil body.resolved
+    end
+
     test "drops a skin tone that is not a colour" do
       publish("male", {"body.glb" => BODY})
       @index["male"][:skin] = {tone: "dark"}
