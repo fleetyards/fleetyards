@@ -218,6 +218,9 @@ const RESOLVED = {
   },
 };
 
+// Characters still being fetched.
+const ARRIVING_FACES = new Set(["arriving"]);
+
 const SHARED_FACES: Record<string, unknown> = {
   macken: {
     token: "macken",
@@ -257,10 +260,24 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   }),
   useCharacterBodies: () => ({ data: bodies }),
   useCharacterFaces: () => ({ data: ownFaces, isLoading: ref(false) }),
-  useSharedCharacterFace: (token: () => string) => ({
-    data: computed(() => SHARED_FACES[token()]),
-    isError: computed(() => !!token() && !SHARED_FACES[token()]),
-  }),
+  useSharedCharacterFace: (token: () => string) => {
+    // As the app's query client does, the last face is kept while the next
+    // one is fetched.
+    let last: unknown;
+
+    return {
+      data: computed(() => {
+        if (ARRIVING_FACES.has(token())) return last;
+
+        last = SHARED_FACES[token()];
+        return last;
+      }),
+      isError: computed(
+        () =>
+          !!token() && !SHARED_FACES[token()] && !ARRIVING_FACES.has(token()),
+      ),
+    };
+  },
 }));
 
 const copied = vi.fn((_text: string) => Promise.resolve());
@@ -801,6 +818,52 @@ describe("ToolsDressingRoomPage", () => {
       expect(
         wrapper.find('[data-test="dressing-room-characters"]').text(),
       ).toContain("The character in this link cannot be shown on this body.");
+    });
+
+    it("waits for the character the address names before drawing the figure", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper } = await mount({ face: "arriving" });
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(false);
+      expect(
+        wrapper.find('[data-test="dressing-room-character-loading"]').exists(),
+      ).toBe(true);
+
+      bodies.value = [MALE];
+    });
+
+    it("keeps the drawn character on the figure while the next one is fetched", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper, router } = await mount({ face: "macken" });
+      const drawn = viewerModel(wrapper).rig.character.key;
+
+      await router.push({ name: "dressing-room", query: { face: "arriving" } });
+      await flushPromises();
+
+      expect(viewerModel(wrapper).rig.character.key).toBe(drawn);
+
+      bodies.value = [MALE];
+    });
+
+    it("draws a body without a face library at once, as no character could go on it", async () => {
+      const { wrapper } = await mount({ face: "arriving" });
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(true);
+    });
+
+    it("keeps the figure up when a character is picked after none", async () => {
+      bodies.value = [{ ...MALE, faceLibrary: FACE_LIBRARY }];
+
+      const { wrapper, router } = await mount();
+
+      await router.push({ name: "dressing-room", query: { face: "arriving" } });
+      await flushPromises();
+
+      expect(wrapper.find('[data-test="holo-viewer"]').exists()).toBe(true);
+
+      bodies.value = [MALE];
     });
 
     it("draws no character on a body without a face library", async () => {
