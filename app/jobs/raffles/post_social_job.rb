@@ -12,10 +12,12 @@ module Raffles
     def perform(raffle_id, kind = "start")
       raffle = Raffle.find_by(id: raffle_id)
       return if raffle.blank? || Raffles::SocialPost::KINDS.exclude?(kind) || !::Bsky::Post.configured?
-      return if kind == "drawn" && raffle.current_winner.blank?
 
       post = Raffles::SocialPost.new(raffle)
-      ::Bsky::Post.new.create(post.text(kind, ::Announcements::Platform::BLUESKY), link_card: post.link_card)
+      text = post.text(kind, ::Announcements::Platform::BLUESKY)
+      return if text.blank?
+
+      ::Bsky::Post.new.create(text, link_card: post.link_card)
     rescue => e
       Appsignal.report_error(e)
     end

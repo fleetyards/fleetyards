@@ -15,7 +15,8 @@ json.claim_period_days raffle.claim_period_days
 json.published raffle.published
 json.status raffle.status
 json.preview_url raffle.preview_url unless raffle.concluded?
-json.entries_count local_assigns.fetch(:entries_count) { raffle.entries.count }
+entries_count = local_assigns.fetch(:entries_count) { raffle.entries.count }
+json.entries_count entries_count
 json.drawn_at raffle.drawn_at.utc.iso8601 if raffle.drawn_at.present?
 json.drawn_by raffle.drawn_by.username if raffle.drawn_by.present?
 json.concluded_at raffle.concluded_at.utc.iso8601 if raffle.concluded_at.present?
@@ -24,11 +25,12 @@ json.last_day_announced_at raffle.last_day_announced_at.utc.iso8601 if raffle.la
 
 current_winner = raffle.current_winner if raffle.drawn?
 
-social_post = Raffles::SocialPost.new(raffle)
+social_post = Raffles::SocialPost.new(raffle, winner: current_winner, entries_count:)
 json.social_posts do
   json.start social_post.text(:start, Raffles::SocialPost::X)
   json.last_day social_post.text(:last_day, Raffles::SocialPost::X)
-  json.drawn social_post.text(:drawn, Raffles::SocialPost::X) if current_winner.present?
+  drawn_post = social_post.text(:drawn, Raffles::SocialPost::X)
+  json.drawn drawn_post if drawn_post.present?
 end
 
 if current_winner.present?

@@ -13,13 +13,20 @@ module Raffles
     # full keeps the copied text inside the limit either way.
     X = ::Announcements::Platform::Graphemes.new(:x, 280)
 
-    def initialize(raffle)
+    # A caller that already holds the winner or the entry count passes it in,
+    # so a list of raffles queries neither once per row.
+    def initialize(raffle, winner: nil, entries_count: nil)
       @raffle = raffle
+      @winner = winner
+      @entries_count = entries_count
     end
 
     # The title is what gives way when the post runs long; the link and the
-    # hashtag are kept whole.
+    # hashtag are kept whole. Nil for the drawn post while there is no winner
+    # to name.
     def text(kind, platform)
+      return if kind.to_s == "drawn" && winner.blank?
+
       fixed = "#{@raffle.frontend_url}\n#{HASHTAG}"
       lead = case kind.to_s
       when "last_day" then last_day_lead
@@ -52,11 +59,14 @@ module Raffles
       "Last day to enter the FleetYards raffle: #{@raffle.title}."
     end
 
-    # Names the winner the raffle page already shows publicly. Callers check
-    # there is one: a drawn raffle without a winner has nothing to announce.
+    # Names the winner the raffle page already shows publicly.
     private def drawn_lead
-      "Thank you to all #{@raffle.entries.count} citizens who joined, and better luck next time! " \
-        "Congratulations to #{@raffle.current_winner.display_username}, the winner of the FleetYards raffle: #{@raffle.title}"
+      "Thank you to all #{@entries_count || @raffle.entries.count} citizens who joined, and better luck next time! " \
+        "Congratulations to #{winner.display_username}, the winner of the FleetYards raffle: #{@raffle.title}"
+    end
+
+    private def winner
+      @winner ||= @raffle.current_winner if @raffle.drawn?
     end
 
     private def thumb
