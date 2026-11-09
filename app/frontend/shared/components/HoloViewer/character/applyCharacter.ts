@@ -73,6 +73,14 @@ const meshesOf = (root: Object3D) => {
   return meshes;
 };
 
+// Scalp hair cards are not shadowed by the cards above them as they are in
+// the game, and come out far too bright: their diffuse and ambient light is
+// scaled down. Beards, brows and lashes stay as they are.
+const SCALP_HAIR_OCCLUSION = 0.3;
+
+const hairOcclusion = (port: string | undefined, mode: string) =>
+  port === "hair_itemport" && mode === "hair_cards" ? SCALP_HAIR_OCCLUSION : 1;
+
 const loadAccessory = async (
   rig: CharacterRig,
   mesh: CharacterRig["meshes"][number],
@@ -105,6 +113,7 @@ const loadAccessory = async (
           part.material = await characterMaterial(
             entry.material.three,
             entry.material.variation,
+            hairOcclusion(mesh.port, entry.material.mode),
           );
           owned.materials.push(part.material);
         }

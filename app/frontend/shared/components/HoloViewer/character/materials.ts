@@ -314,6 +314,7 @@ const repeating = (texture?: Texture) => {
 export const characterMaterial = async (
   three: CharacterThreeMaterial,
   variation?: { map: string | null; amount: number },
+  occlusion = 1,
 ) => {
   const [map, loadedAlpha, loadedIds] = await Promise.all([
     three.map
@@ -370,7 +371,9 @@ export const characterMaterial = async (
   const mipScale = alphaMap ? (three.alphaMipScale ?? 0) : 0;
   const varied = !!(idMap && variation);
 
-  if (mipScale || varied) {
+  const occluded = occlusion < 1;
+
+  if (mipScale || varied || occluded) {
     material.onBeforeCompile = (shader) => {
       let uniforms = "";
       if (mipScale) {
@@ -406,13 +409,24 @@ export const characterMaterial = async (
             "#include <uv_vertex>\nvStrandUv = uv;",
           );
       }
+      if (occluded) {
+        shader.uniforms.hairOcclusion = { value: occlusion };
+        uniforms += "uniform float hairOcclusion;\n";
+        shader.fragmentShader = shader.fragmentShader.replace(
+          "#include <aomap_fragment>",
+          `reflectedLight.indirectDiffuse *= hairOcclusion;
+reflectedLight.indirectSpecular *= hairOcclusion;
+reflectedLight.directDiffuse *= hairOcclusion;
+#include <aomap_fragment>`,
+        );
+      }
       shader.fragmentShader = shader.fragmentShader.replace(
         "#include <common>",
         `#include <common>\n${uniforms}`,
       );
     };
     material.customProgramCacheKey = () =>
-      `character-strands-${mipScale ? 1 : 0}-${varied ? 1 : 0}`;
+      `character-strands-${mipScale ? 1 : 0}-${varied ? 1 : 0}-${occluded ? 1 : 0}`;
   }
 
   ownedTextures.set(

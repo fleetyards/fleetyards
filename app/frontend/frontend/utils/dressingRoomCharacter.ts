@@ -110,7 +110,8 @@ export const characterRig = (
       },
     },
     weights: character.face.weights,
-    meshes: meshes.map(({ url, materials_by_submaterial }) => ({
+    meshes: meshes.map(({ port, url, materials_by_submaterial }) => ({
+      port,
       url,
       materials_by_submaterial,
     })),
