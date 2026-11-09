@@ -64,10 +64,11 @@ const model = {
   moduleSlots: ["hardpoint_front_module", "hardpoint_rear_module"],
 } as unknown as ModelExtended;
 
-const mod = (slot?: string) =>
+const mod = (slot?: string, cargo?: number) =>
   ({
     id: "module-1",
     name: "Front Cargo Module",
+    cargo,
     moduleHardpoints: [
       { id: "mh-1", modelId: "model-1", slot },
       { id: "mh-2", modelId: "model-2", slot: "elsewhere" },
@@ -201,6 +202,35 @@ describe("AdminModelEditModulesPage", () => {
         text: expect.stringContaining("messages.modelModule.update.failure"),
       }),
     );
+  });
+
+  it("shows the module's cargo", async () => {
+    modules.value = { items: [mod("hardpoint_front_module", 32)] };
+    const wrapper = await mountPage();
+
+    expect(wrapper.get("[data-test='model-module-cargo']").text()).toBe(
+      "32 number.units.cargo",
+    );
+  });
+
+  it("saves the module's cargo", async () => {
+    modules.value = { items: [mod("hardpoint_front_module", 32)] };
+    const wrapper = await mountPage();
+
+    await wrapper.get("[data-test='start-edit']").trigger("click");
+    expect(
+      (wrapper.get("input[name='edit-cargo']").element as HTMLInputElement)
+        .value,
+    ).toBe("32");
+
+    await wrapper.get("input[name='edit-cargo']").setValue("64");
+    await wrapper.get("[data-test='save-edit']").trigger("click");
+    await flushPromises();
+
+    expect(updateModelModule).toHaveBeenCalledWith({
+      id: "module-1",
+      data: expect.objectContaining({ cargo: "64" }),
+    });
   });
 
   it("leaves the link alone when the slot did not change", async () => {
