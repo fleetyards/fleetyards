@@ -294,6 +294,9 @@ const autoRotateSpeed = 0.5;
 
 const loading = ref(false);
 
+// The model is loaded, but parts, a character or a paint are still coming in.
+const busy = ref(false);
+
 const progress = ref(0);
 
 const debug = ref(false);
@@ -874,6 +877,11 @@ defineExpose({
       :loading="loading"
       :progress="progress"
     />
+    <Loader
+      v-else-if="busy && webglSupported && !awaitingConfirmation"
+      :loading="true"
+      data-test="holo-viewer-busy"
+    />
     <input v-if="debug" v-model="modelColor" type="color" />
     <WebglFallback v-if="!webglSupported" />
     <div
@@ -990,6 +998,7 @@ defineExpose({
           @mount-point="emit('mountPoint', $event)"
           @unplaced="emit('unplaced', $event)"
           @fell-back="emit('fellBack', $event)"
+          @busy="busy = $event"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

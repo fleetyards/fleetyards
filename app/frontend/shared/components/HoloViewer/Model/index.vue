@@ -394,6 +394,19 @@ const setMaterials = (scene: Group) => {
 
 const mixer = shallowRef<AnimationMixer>();
 
+// Parts, a character or a paint loading after the model itself: the viewer
+// shows it is still at work until the last of them lands.
+let inFlight = 0;
+
+const whileBusy = async <T,>(work: Promise<T>) => {
+  if (inFlight++ === 0) emit("busy", true);
+  try {
+    return await work;
+  } finally {
+    if (--inFlight === 0) emit("busy", false);
+  }
+};
+
 const { onBeforeRender } = useLoop();
 
 // A viewer drawing on demand draws a frame only when asked: for every change
@@ -472,6 +485,8 @@ const emit = defineEmits<{
   // The painted rig pieces and attachments drawn from their plain holo
   // instead, by path: they did not load.
   fellBack: [paths: string[]];
+  // Loading parts, a character or a paint after the model itself.
+  busy: [busy: boolean];
 }>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
@@ -500,7 +515,9 @@ let mountRoot: Group | undefined;
 let mountsRequest = 0;
 
 // Whether these parts landed; a newer request supersedes them otherwise.
-const attachMounts = async (scene: Group) => {
+const attachMounts = (scene: Group) => whileBusy(attachMountsNow(scene));
+
+const attachMountsNow = async (scene: Group) => {
   const request = ++mountsRequest;
   const mounts = props.model.mounts;
   const next = mounts?.length ? await buildMounts(mounts) : undefined;
@@ -723,7 +740,9 @@ const loadRigPiece = async (piece: RigPiece) => {
 };
 
 // Whether these pieces landed; a newer request supersedes them otherwise.
-const attachRig = async (scene: Group) => {
+const attachRig = (scene: Group) => whileBusy(attachRigNow(scene));
+
+const attachRigNow = async (scene: Group) => {
   const request = ++rigRequest;
   const rig = props.model.rig;
   if (!rig) return true;
@@ -959,7 +978,9 @@ const loadPaintMap = (url?: string) =>
         .catch(() => undefined)
     : Promise.resolve(undefined);
 
-const applyPaint = async (scene: Group) => {
+const applyPaint = (scene: Group) => whileBusy(applyPaintNow(scene));
+
+const applyPaintNow = async (scene: Group) => {
   const request = ++paintRequest;
   const [map, loadedOrm, loadedStencil] = await Promise.all([
     loadPaintMap(props.model.paint),
