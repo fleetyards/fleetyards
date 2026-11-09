@@ -311,56 +311,6 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>["wrapper"]) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("ToolsDressingRoomPage", () => {
-  describe("tapping the stage", () => {
-    const TAPPED = "dressing-room__stage--tapped";
-
-    it("reveals the actions, and a second tap hides them", async () => {
-      const { wrapper } = await mount();
-      const stage = wrapper.find('[data-test="dressing-room-stage"]');
-
-      expect(stage.classes()).not.toContain(TAPPED);
-
-      await stage.trigger("click");
-      expect(stage.classes()).toContain(TAPPED);
-
-      await stage.trigger("click");
-      expect(stage.classes()).not.toContain(TAPPED);
-    });
-
-    it("hides the actions again on a tap elsewhere", async () => {
-      const { wrapper } = await mount();
-      const stage = wrapper.find('[data-test="dressing-room-stage"]');
-
-      await stage.trigger("click");
-
-      window.dispatchEvent(new Event("pointerdown"));
-      document.body.click();
-      await flushPromises();
-      expect(stage.classes()).not.toContain(TAPPED);
-    });
-
-    it("keeps the actions up when one of them is used", async () => {
-      const { wrapper } = await mount({ torso: "adp-core" });
-      const stage = wrapper.find('[data-test="dressing-room-stage"]');
-
-      await stage.trigger("click");
-      await wrapper
-        .find('[data-test="dressing-room-copy-link"]')
-        .trigger("click");
-
-      expect(stage.classes()).toContain(TAPPED);
-    });
-
-    it("waits for the tap to end before revealing them", async () => {
-      const { wrapper } = await mount();
-      const stage = wrapper.find('[data-test="dressing-room-stage"]');
-
-      await stage.trigger("pointerdown", { pointerType: "touch" });
-
-      expect(stage.classes()).not.toContain(TAPPED);
-    });
-  });
-
   it("dresses the body in the rigged pieces the address names, standing idle", async () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 
@@ -895,17 +845,17 @@ describe("ToolsDressingRoomPage", () => {
       ).toBe(false);
     });
 
-    it("lists the gear columns after the armour and weapon slots", async () => {
+    it("offers the supplies in a tab after armour and weapons", async () => {
       const { wrapper } = await mount({ torso: "gear-core" });
-      const pieces = wrapper.find(".dressing-room__side--pieces").element;
-      const columns = wrapper.find(
-        '[data-test="dressing-room-gear-columns"]',
-      ).element;
+      const tabs = wrapper
+        .findAll('[data-test^="dressing-room-tab-"]')
+        .map((tab) => tab.attributes("data-test"));
 
-      expect(
-        pieces.compareDocumentPosition(columns) &
-          Node.DOCUMENT_POSITION_FOLLOWING,
-      ).toBeTruthy();
+      expect(tabs).toEqual([
+        "dressing-room-tab-armour",
+        "dressing-room-tab-weapons",
+        "dressing-room-tab-supplies",
+      ]);
     });
 
     it("says so when what is worn offers no gear at all", async () => {

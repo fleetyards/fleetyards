@@ -1,7 +1,6 @@
 {
   "zh-TW": {
     "dressingRoom": {
-      "lead": "把護甲和內襯服搭配在一起，以 3D 檢視裝扮。透過連結分享，或登入後儲存。",
       "slots": {
         "helmet": "頭盔",
         "torso": "軀幹",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "護甲",
         "weapons": "武器",
-        "gear": "裝備"
+        "gear": "裝備",
+        "supplies": "補給"
       },
       "hold": "手持",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "無法上傳角色。",
           "deleteFailed": "無法刪除角色。"
         }
-      }
+      },
+      "filledOf": "%{count} / %{total}",
+      "viewControls": "檢視",
+      "loadout": "裝備"
     }
   }
 }

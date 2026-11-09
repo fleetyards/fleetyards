@@ -1,7 +1,6 @@
 {
   "es": {
     "dressingRoom": {
-      "lead": "Combina armadura y traje interior y mira el atuendo en 3D. Compártelo con un enlace o inicia sesión para guardarlo.",
       "slots": {
         "helmet": "Casco",
         "torso": "Torso",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "Armadura",
         "weapons": "Armas",
-        "gear": "Equipo"
+        "gear": "Equipo",
+        "supplies": "Suministros"
       },
       "hold": "Empuñar",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "No se pudo subir el personaje.",
           "deleteFailed": "No se pudo eliminar el personaje."
         }
-      }
+      },
+      "filledOf": "%{count} de %{total}",
+      "viewControls": "Vista",
+      "loadout": "Equipamiento"
     }
   }
 }

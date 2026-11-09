@@ -1,7 +1,6 @@
 {
   "fr": {
     "dressingRoom": {
-      "lead": "Assemblez une armure et une sous-combinaison et voyez la tenue en 3D. Partagez-la par lien ou connectez-vous pour l'enregistrer.",
       "slots": {
         "helmet": "Casque",
         "torso": "Torse",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "Armure",
         "weapons": "Armes",
-        "gear": "Équipement"
+        "gear": "Équipement",
+        "supplies": "Fournitures"
       },
       "hold": "Tenir en main",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "Le personnage n'a pas pu être importé.",
           "deleteFailed": "Le personnage n'a pas pu être supprimé."
         }
-      }
+      },
+      "filledOf": "%{count} sur %{total}",
+      "viewControls": "Vue",
+      "loadout": "Équipement"
     }
   }
 }
