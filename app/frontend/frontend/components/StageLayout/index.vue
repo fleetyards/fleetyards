@@ -145,7 +145,7 @@ const slots = useSlots();
   padding: 0.5rem;
   border: 1px solid var(--color-edge-soft);
   border-radius: var(--radius-surface-slim);
-  background: rgb(26 29 33 / 0.8);
+  background: rgba($gray-black, 0.8);
   backdrop-filter: blur(8px);
 
   @media (min-width: $desktop-breakpoint) {
