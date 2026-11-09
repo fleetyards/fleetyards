@@ -6,8 +6,8 @@
 # bind pose, and `animations` holds the clips that pose all of them by bone
 # name; `clips` is what the export says about each. `holo_textured` is the
 # same body with the game's skin, eye, teeth and underwear textures, baked at
-# `skin_tone`. `hold_poses` names the clip that holds a rifle lowered for each
-# worn core's armour weight.
+# `skin_tone`. `hold_poses` names the clip that holds a rifle or a pistol
+# lowered for each worn core's armour weight.
 #
 # The face library reshapes the body's head, eyes and teeth from a player's
 # character file: `face_index` describes the arrays in `face_positions` and

@@ -26571,8 +26571,8 @@ components:
             "$ref": "#/components/schemas/CharacterBodyClip"
         holdPoses:
           type: array
-          description: The clip that holds a rifle lowered for each worn core's armour
-            weight; empty until exported
+          description: The clip that holds a rifle or a pistol lowered for each worn
+            core's armour weight; empty until exported
           items:
             "$ref": "#/components/schemas/CharacterBodyHoldPose"
         skinTone:
@@ -26662,6 +26662,12 @@ components:
     CharacterBodyHoldPose:
       type: object
       properties:
+        weapon:
+          type: string
+          enum:
+          - rifle
+          - pistol
+          description: The kind of weapon the clip holds
         armorWeight:
           type:
           - string
@@ -26670,10 +26676,11 @@ components:
             Heavy; null for no core
         clip:
           type: string
-          description: The clip that holds a rifle lowered, in the body's animations
+          description: The clip that holds the weapon lowered, in the body's animations
             file
       additionalProperties: false
       required:
+      - weapon
       - armorWeight
       - clip
       title: CharacterBodyHoldPose

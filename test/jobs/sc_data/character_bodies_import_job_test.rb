@@ -84,7 +84,7 @@ module ScData
       assert_nil CharacterBody.find_by!(key: "male").weapon_in_hand
     end
 
-    test "keeps a body's lowered rifle holds per armour weight, a new weight among them, and nothing it cannot read" do
+    test "keeps a body's lowered rifle and pistol holds per armour weight, a new weight among them, and nothing it cannot read" do
       publish("male", {"body.glb" => BODY})
       @index["male"][:holdPoses] = {
         rifleLowered: {
@@ -95,6 +95,8 @@ module ScData
           Medium: 3
         },
         rifleReady: {any: "hold_rifle_ready"},
+        pistolLowered: {none: "hold_pistol_lowered", Heavy: "hold_pistol_lowered_heavy"},
+        pistolReady: {any: "hold_pistol_ready"},
         note: "the per-weight lowered clips are ours"
       }
       @objects["index.json"] = {bodies: @index}.to_json
@@ -102,16 +104,18 @@ module ScData
       ::ScData::CharacterBodiesImportJob.new.perform
 
       assert_equal [
-        {"armor_weight" => nil, "clip" => "hold_rifle_lowered"},
-        {"armor_weight" => "Light", "clip" => "hold_rifle_lowered_light"},
-        {"armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"},
-        {"armor_weight" => "SuperHeavy", "clip" => "hold_rifle_lowered_superheavy"}
+        {"weapon" => "rifle", "armor_weight" => nil, "clip" => "hold_rifle_lowered"},
+        {"weapon" => "rifle", "armor_weight" => "Light", "clip" => "hold_rifle_lowered_light"},
+        {"weapon" => "rifle", "armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"},
+        {"weapon" => "rifle", "armor_weight" => "SuperHeavy", "clip" => "hold_rifle_lowered_superheavy"},
+        {"weapon" => "pistol", "armor_weight" => nil, "clip" => "hold_pistol_lowered"},
+        {"weapon" => "pistol", "armor_weight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
       ], CharacterBody.find_by!(key: "male").hold_poses
     end
 
     test "drops a body's rifle holds once the export no longer lists them" do
       publish("male", {"body.glb" => BODY})
-      create(:character_body, key: "male", hold_poses: [{"armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}])
+      create(:character_body, key: "male", hold_poses: [{"weapon" => "rifle", "armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}])
 
       ::ScData::CharacterBodiesImportJob.new.perform
 

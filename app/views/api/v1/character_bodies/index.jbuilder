@@ -27,6 +27,7 @@ json.array! @character_bodies do |body|
     json.looping !!clip["looping"]
   end
   json.hold_poses body.hold_poses do |pose|
+    json.weapon pose["weapon"]
     # Merged rather than set: `Jbuilder.ignore_nil` would drop the null weight
     # of the hold for no core, and leave the required key missing.
     json.merge!(armor_weight: pose["armor_weight"]) # standard:disable Performance/RedundantMerge -- a Jbuilder, not a Hash: `[]=` would drop the nil

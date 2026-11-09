@@ -9,14 +9,15 @@ module V1
         schema({
           type: :object,
           properties: {
+            weapon: {type: :string, enum: %w[rifle pistol], description: "The kind of weapon the clip holds"},
             armorWeight: {
               type: [:string, :null],
               description: "The worn core's armour weight as its subType spells it, e.g. Heavy; null for no core"
             },
-            clip: {type: :string, description: "The clip that holds a rifle lowered, in the body's animations file"}
+            clip: {type: :string, description: "The clip that holds the weapon lowered, in the body's animations file"}
           },
           additionalProperties: false,
-          required: %w[armorWeight clip]
+          required: %w[weapon armorWeight clip]
         })
       end
     end

@@ -78,16 +78,16 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /character-bodies serves the clip that holds a rifle lowered per armour weight" do
+  test "GET /character-bodies serves the clip that holds each weapon lowered per armour weight" do
     create(:character_body, :with_holo, key: "male", hold_poses: [
-      {"armor_weight" => nil, "clip" => "hold_rifle_lowered"},
-      {"armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}
+      {"weapon" => "rifle", "armor_weight" => nil, "clip" => "hold_rifle_lowered"},
+      {"weapon" => "pistol", "armor_weight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
     ])
 
     assert_api_response :get, 200 do
       assert_equal [
-        {"armorWeight" => nil, "clip" => "hold_rifle_lowered"},
-        {"armorWeight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}
+        {"weapon" => "rifle", "armorWeight" => nil, "clip" => "hold_rifle_lowered"},
+        {"weapon" => "pistol", "armorWeight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
       ], parsed_body.first["holdPoses"]
     end
   end

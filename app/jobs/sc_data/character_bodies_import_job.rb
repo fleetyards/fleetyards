@@ -17,6 +17,10 @@ module ScData
     # export adds needs no change here.
     NO_ARMOR = "none"
 
+    # The export's lowered hold map per weapon held. The ready holds are one
+    # clip for every weight, the body's own, so they are not kept.
+    LOWERED_HOLDS = {"rifle" => "rifleLowered", "pistol" => "pistolLowered"}.freeze
+
     FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 
     def perform
@@ -119,16 +123,19 @@ module ScData
       {"bones" => bones.slice("right", "left"), "helper" => helper.slice("position", "rotation")}
     end
 
-    # The lowered rifle holds per armour weight. The ready hold is one clip
-    # for every weight, the body's own, so only the lowered ones are kept.
+    # The lowered holds per weapon and armour weight.
     private def hold_poses(value)
-      lowered = value["rifleLowered"] if value.is_a?(Hash)
-      return [] unless lowered.is_a?(Hash)
+      return [] unless value.is_a?(Hash)
 
-      lowered.filter_map do |weight, clip|
-        next unless weight.present? && clip.is_a?(String) && clip.present?
+      LOWERED_HOLDS.flat_map do |weapon, key|
+        lowered = value[key]
+        next [] unless lowered.is_a?(Hash)
 
-        {"armor_weight" => (weight unless weight == NO_ARMOR), "clip" => clip}
+        lowered.filter_map do |weight, clip|
+          next unless weight.present? && clip.is_a?(String) && clip.present?
+
+          {"weapon" => weapon, "armor_weight" => (weight unless weight == NO_ARMOR), "clip" => clip}
+        end
       end
     end
 

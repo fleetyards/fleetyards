@@ -31,7 +31,7 @@ module V1
             clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip},
             holdPoses: {
               type: :array,
-              description: "The clip that holds a rifle lowered for each worn core's armour weight; empty until exported",
+              description: "The clip that holds a rifle or a pistol lowered for each worn core's armour weight; empty until exported",
               items: ::V1::Schemas::DressingRoom::CharacterBodyHoldPose
             },
             skinTone: {

@@ -9,8 +9,8 @@ module ScData
     # "<key>" => {"path", "files", "clips", "weapon_in_hand", "hold_poses",
     # "skin_tone", "faces"}, where "path" is the folder the files sit in below
     # the prefix, "weapon_in_hand" the hand bones with the fixed turn a
-    # weapon's holo needs to sit in them, "hold_poses" the rifle hold clips
-    # per stance and armour weight, "skin_tone" the tone the textured body is
+    # weapon's holo needs to sit in them, "hold_poses" the hold clips per
+    # weapon, stance and armour weight, "skin_tone" the tone the textured body is
     # baked at, and "faces" the face library: {"path", "library", "files"}, or
     # nil.
     # The index itself, for a caller that reads both the bodies and the
