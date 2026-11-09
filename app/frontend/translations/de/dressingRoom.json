@@ -102,10 +102,12 @@
       },
       "characters": {
         "title": "Dein Charakter",
+        "default": "Spielstandard",
+        "change": "Ändern",
         "hint": "Lade die .chf hoch, die der Charakter-Editor des Spiels exportiert, und die Figur trägt dein Gesicht, deine Haare und deine Haut.",
         "signIn": "Melde dich an, um deinen eigenen Charakter hochzuladen.",
         "upload": ".chf hochladen",
-        "takeOff": "Standardkopf",
+        "none": "Noch keine Charaktere.",
         "download": ".chf herunterladen",
         "confirmDelete": "Den Charakter %{name} löschen?",
         "unavailable": "Der Charakter aus diesem Link kann auf diesem Körper nicht gezeigt werden.",

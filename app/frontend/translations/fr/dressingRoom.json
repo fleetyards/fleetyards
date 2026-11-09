@@ -102,10 +102,12 @@
       },
       "characters": {
         "title": "Votre personnage",
+        "default": "Par défaut du jeu",
+        "change": "Changer",
         "hint": "Importez le .chf exporté par le créateur de personnage du jeu, et la figurine portera votre visage, vos cheveux et votre peau.",
         "signIn": "Connectez-vous pour importer votre propre personnage.",
         "upload": "Importer un .chf",
-        "takeOff": "Tête par défaut",
+        "none": "Aucun personnage pour l'instant.",
         "download": "Télécharger le .chf",
         "confirmDelete": "Supprimer le personnage %{name} ?",
         "unavailable": "Le personnage de ce lien ne peut pas être affiché sur ce corps.",

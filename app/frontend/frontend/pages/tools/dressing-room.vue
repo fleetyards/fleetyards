@@ -1075,6 +1075,7 @@ const copyShareLink = () => {
           :searchable="false"
           data-test="dressing-room-pose"
         />
+
         <Characters
           :body="bodyKey"
           :token="faceToken"
@@ -1082,14 +1083,6 @@ const copyShareLink = () => {
           :unavailable="faceUnavailable"
           :not-ready="faceNotReady"
           @select="selectFace"
-        />
-        <WornStorage
-          :stored="stored"
-          :worn="items"
-          :stored-items="storedItems"
-          :loading="storedLoading || wornLoading"
-          @add="openStorage"
-          @quantity="changeStored"
         />
         <Outfits
           :items="outfitItems"
@@ -1102,6 +1095,14 @@ const copyShareLink = () => {
           :active-id="activeOutfitId"
           @load="loadOutfit"
           @active="setActiveOutfit"
+        />
+        <WornStorage
+          :stored="stored"
+          :worn="items"
+          :stored-items="storedItems"
+          :loading="storedLoading || wornLoading"
+          @add="openStorage"
+          @quantity="changeStored"
         />
       </aside>
     </div>

@@ -102,10 +102,12 @@
       },
       "characters": {
         "title": "Your character",
+        "default": "Game default",
+        "change": "Change",
         "hint": "Upload the .chf the game's character creator exports, and the figure wears your face, hair and skin.",
         "signIn": "Sign in to upload your own character.",
         "upload": "Upload a .chf",
-        "takeOff": "Default head",
+        "none": "No characters yet.",
         "download": "Download the .chf",
         "confirmDelete": "Delete the character %{name}?",
         "unavailable": "The character in this link cannot be shown on this body.",

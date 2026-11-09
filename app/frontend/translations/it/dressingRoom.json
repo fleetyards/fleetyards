@@ -102,10 +102,12 @@
       },
       "characters": {
         "title": "Il tuo personaggio",
+        "default": "Predefinito del gioco",
+        "change": "Cambia",
         "hint": "Carica il .chf esportato dal creatore di personaggi del gioco e la figura avrà il tuo volto, i tuoi capelli e la tua pelle.",
         "signIn": "Accedi per caricare il tuo personaggio.",
         "upload": "Carica un .chf",
-        "takeOff": "Testa predefinita",
+        "none": "Ancora nessun personaggio.",
         "download": "Scarica il .chf",
         "confirmDelete": "Eliminare il personaggio %{name}?",
         "unavailable": "Il personaggio di questo link non può essere mostrato su questo corpo.",

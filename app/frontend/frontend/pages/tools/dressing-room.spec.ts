@@ -706,7 +706,7 @@ describe("ToolsDressingRoomPage", () => {
         ["/m_hair_32.glb"],
       );
       expect(
-        wrapper.find('[data-test="dressing-room-shared-character"]').text(),
+        wrapper.find('[data-test="dressing-room-current-character"]').text(),
       ).toContain("Macken");
 
       bodies.value = [MALE];
