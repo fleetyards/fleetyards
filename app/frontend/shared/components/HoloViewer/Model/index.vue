@@ -592,11 +592,14 @@ let undressNeck: (() => void) | undefined;
 // Hats moved onto the face for the figure as it is drawn now.
 let fittedGeometries: BufferGeometry[] = [];
 
-// A character loads in the background: the figure is shown at once, with the
-// character it had or none, and dressed again once the new one is in. The
-// same character on a changed outfit is kept: baking its head again would
-// stall every change.
+// A character loads in the background: a figure already shown keeps the
+// character it had, and is dressed again once the new one is in. The same
+// character on a changed outfit is kept: baking its head again would stall
+// every change.
 let characterLoading: string | undefined;
+// Settles once the figure is dressed in it: false when another dressing
+// overtook that one.
+let characterPending: Promise<boolean> | undefined;
 let readyCharacter: LoadedCharacter | undefined;
 
 const characterKey = (key: string) => `${key}|${!!props.model.textured}`;
@@ -618,7 +621,7 @@ const characterFor = (scene: Group) => {
 
   if (characterLoading !== key) {
     characterLoading = key;
-    void whileBusy(
+    const pending = whileBusy(
       loadCharacter(wanted, !!props.model.textured)
         .catch((error) => {
           console.warn("The character did not load", error);
@@ -626,21 +629,26 @@ const characterFor = (scene: Group) => {
         })
         .then((loaded) => {
           if (characterLoading === key) characterLoading = undefined;
-          if (!loaded) return;
+          if (!loaded) return true;
 
           const still = props.model.rig?.character;
           if (unmounted || !still || characterKey(still.key) !== key) {
             disposeCharacter(loaded);
-            return;
+            return false;
           }
 
           if (readyCharacter && readyCharacter !== character) {
             disposeCharacter(readyCharacter);
           }
           readyCharacter = loaded;
-          void attachRig(scene);
+          return attachRig(scene);
         }),
     );
+    characterPending = pending;
+    const settle = () => {
+      if (characterPending === pending) characterPending = undefined;
+    };
+    void pending.then(settle, settle);
   }
 
   // Until it is in, the one already on the figure stands in.
@@ -1099,6 +1107,12 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
         if ((node as Mesh).isMesh) node.frustumCulled = false;
       });
       while (!unmounted && !(await attachRig(scene)));
+      // First shown wearing its character, never the body's own head for a
+      // moment: only a character that does not load leaves that one on.
+      while (!unmounted && characterPending) {
+        if (await characterPending) continue;
+        while (!unmounted && !(await attachRig(scene)));
+      }
 
       placeRigLights(scene);
 
