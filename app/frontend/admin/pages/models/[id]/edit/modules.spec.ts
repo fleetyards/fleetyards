@@ -11,6 +11,7 @@ const modules = vi.hoisted(() => ({
 
 const updateModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 const linkModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
+const createModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 const mutation = vi.hoisted(
   () => (fn: (...args: unknown[]) => Promise<unknown>) => () => ({
@@ -28,7 +29,7 @@ vi.mock("@/services/fyAdminApi", async () => {
       data: ref(modules.value),
       isLoading: ref(false),
     }),
-    useCreateModelModule: mutation(vi.fn(() => Promise.resolve({}))),
+    useCreateModelModule: mutation(createModelModule),
     useUpdateModelModule: mutation(updateModelModule),
     useDestroyModelModule: mutation(vi.fn(() => Promise.resolve({}))),
     useUnlinkModelModule: mutation(vi.fn(() => Promise.resolve({}))),
@@ -112,16 +113,16 @@ const mountPage = async () => {
           ManufacturerSelect: true,
           ProductionStatusSelect: true,
           FormInput: {
-            props: ["modelValue", "name"],
+            props: ["modelValue", "name", "type"],
             emits: ["update:modelValue"],
             template:
-              "<input :name='name' :value='modelValue' @input=\"$emit('update:modelValue', $event.target.value)\" />",
+              "<input :name='name' :value='modelValue' @input=\"$emit('update:modelValue', type === 'number' ? Number($event.target.value) : $event.target.value)\" />",
           },
           InlineEditableList: {
             props: ["items"],
-            emits: ["start-edit", "save-edit"],
+            emits: ["start-edit", "save-edit", "start-create", "save-create"],
             template:
-              "<div><div v-for='item in items' :key='item.id'><slot name='display' :item='item' /><button data-test='start-edit' @click=\"$emit('start-edit', item)\" /><slot name='edit' :item='item' /><button data-test='save-edit' @click=\"$emit('save-edit')\" /></div></div>",
+              "<div><div v-for='item in items' :key='item.id'><slot name='display' :item='item' /><button data-test='start-edit' @click=\"$emit('start-edit', item)\" /><slot name='edit' :item='item' /><button data-test='save-edit' @click=\"$emit('save-edit')\" /></div><button data-test='start-create' @click=\"$emit('start-create')\" /><slot name='create' /><button data-test='save-create' @click=\"$emit('save-create')\" /></div>",
             methods: { finishEdit() {}, finishCreate() {} },
             data: () => ({ editingId: "module-1", creating: false }),
           },
@@ -230,7 +231,21 @@ describe("AdminModelEditModulesPage", () => {
 
     expect(updateModelModule).toHaveBeenCalledWith({
       id: "module-1",
-      data: expect.objectContaining({ cargo: "64" }),
+      data: expect.objectContaining({ cargo: 64 }),
+    });
+  });
+
+  it("creates a module with its cargo", async () => {
+    modules.value = { items: [] };
+    const wrapper = await mountPage();
+
+    await wrapper.get("[data-test='start-create']").trigger("click");
+    await wrapper.get("input[name='create-cargo']").setValue("16");
+    await wrapper.get("[data-test='save-create']").trigger("click");
+    await flushPromises();
+
+    expect(createModelModule).toHaveBeenCalledWith({
+      data: expect.objectContaining({ modelId: "model-1", cargo: 16 }),
     });
   });
 
