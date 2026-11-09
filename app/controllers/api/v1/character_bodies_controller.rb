@@ -12,6 +12,8 @@ module Api
       def index
         @character_bodies = CharacterBody.with_holo
         @context = ::Chf::Context.current
+        maps = @character_bodies.filter_map { |body| body.environment&.dig("map") }
+        @environment_maps = CharacterAsset.where(path: maps).joins(:file_attachment).with_attached_file.index_by(&:path)
       end
     end
   end

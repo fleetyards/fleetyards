@@ -19,7 +19,8 @@ module V1
             range: {type: :number},
             decay: {type: :number},
             angle: {type: :number, description: "A spot's outer cone angle, in radians"},
-            penumbra: {type: :number}
+            penumbra: {type: :number},
+            castShadow: {type: :boolean, description: "A soft (VSM) shadow, set by the studio's key light"}
           },
           additionalProperties: false,
           required: %w[type position color intensity]

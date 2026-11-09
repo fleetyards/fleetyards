@@ -26576,6 +26576,11 @@ components:
           pattern: "^#[0-9a-fA-F]{6}$"
           description: 'The sRGB skin tone the textured holo is baked at, e.g. #513428;
             absent until exported'
+        environment:
+          description: The studio environment the figure is lit in; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/CharacterBodyEnvironment"
+          - type: 'null'
         defaultCharacter:
           description: The game's default character for the body, resolved like a
             shared character's `character`; absent until the customizer export is
@@ -26599,6 +26604,7 @@ components:
       - lighting
       - clips
       - skinTone
+      - environment
       - defaultCharacter
       - faceLibrary
       title: CharacterBody
@@ -26619,6 +26625,28 @@ components:
       - static
       - looping
       title: CharacterBodyClip
+    CharacterBodyEnvironment:
+      type: object
+      description: 'The studio the figure is lit in: an environment map, with `lighting`
+        its one key light'
+      properties:
+        map:
+          type: string
+          format: uri
+          description: Equirectangular Radiance HDR, linear radiance in three.js light
+            units
+        intensity:
+          type: number
+          description: scene.environmentIntensity
+        exposure:
+          type: number
+          description: toneMappingExposure, with NeutralToneMapping
+      additionalProperties: false
+      required:
+      - map
+      - intensity
+      - exposure
+      title: CharacterBodyEnvironment
     CharacterBodyFaceLibrary:
       type: object
       description: The library a character file's head, eyes and teeth are blended
@@ -26691,6 +26719,9 @@ components:
           description: A spot's outer cone angle, in radians
         penumbra:
           type: number
+        castShadow:
+          type: boolean
+          description: A soft (VSM) shadow, set by the studio's key light
       additionalProperties: false
       required:
       - type

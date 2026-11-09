@@ -46,7 +46,9 @@ module ScData
         "chf/reference_character.py" => "script",
         "chf/tests/Macken.chf" => "chf",
         "male/faces/library.bin" => "library",
-        "male/body.glb" => "body"
+        "male/body.glb" => "body",
+        "environment/studio.hdr" => "hdr",
+        "environment/studio_preview.png" => "png"
       )
 
       ::ScData::CharacterAssetsImportJob.new.perform
@@ -54,6 +56,7 @@ module ScData
       assert_equal %w[
         characters/chf/catalog.json
         characters/chf/textures/heads/blemish/blemish_mask_mask.webp
+        characters/environment/studio.hdr
         characters/female/chf/skin/female01_t2_head_material_base.webp
         characters/male/chf/geometry/m_hair_02.glb
         characters/male/chf/index.json

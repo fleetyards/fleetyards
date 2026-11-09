@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_09_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_09_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -402,6 +402,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_09_100000) do
     t.jsonb "default_md5s", default: {}, null: false
     t.jsonb "resolved"
     t.string "resolved_digest"
+    t.jsonb "environment"
     t.index ["key"], name: "index_character_bodies_on_key", unique: true
   end
 
