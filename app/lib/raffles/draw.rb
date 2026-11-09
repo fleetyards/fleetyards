@@ -18,7 +18,9 @@ module Raffles
       status = @raffle.with_lock { draw }
       return Result.new(status:) unless status == :drawn
 
-      Result.new(status:, winner: Succession.new(@raffle, now: @now).call)
+      winner = Succession.new(@raffle, now: @now).call
+      Raffles::PostSocialJob.perform_async(@raffle.id, "drawn") if winner
+      Result.new(status:, winner:)
     end
 
     private def draw

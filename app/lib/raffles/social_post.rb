@@ -2,10 +2,11 @@
 
 module Raffles
   # The text a raffle is announced with on social media: posted to Bluesky
-  # when it opens, and offered in the admin to copy for X by hand. English,
-  # like every post the FleetYards accounts make.
+  # when it opens, on its last day and once it is drawn, and offered in the
+  # admin to copy for X by hand. English, like every post the FleetYards
+  # accounts make.
   class SocialPost
-    KINDS = %w[start last_day].freeze
+    KINDS = %w[start last_day drawn].freeze
     HASHTAG = "#starcitizen"
 
     # X counts a link as 23 characters whatever its length; counting it in
@@ -20,7 +21,11 @@ module Raffles
     # hashtag are kept whole.
     def text(kind, platform)
       fixed = "#{@raffle.frontend_url}\n#{HASHTAG}"
-      lead = (kind.to_s == "last_day") ? last_day_lead : start_lead
+      lead = case kind.to_s
+      when "last_day" then last_day_lead
+      when "drawn" then drawn_lead
+      else start_lead
+      end
       budget = platform.limit - platform.length(fixed) - 1
       return fixed if budget <= 0
 
@@ -45,6 +50,13 @@ module Raffles
 
     private def last_day_lead
       "Last day to enter the FleetYards raffle: #{@raffle.title}."
+    end
+
+    # Names the winner the raffle page already shows publicly. Callers check
+    # there is one: a drawn raffle without a winner has nothing to announce.
+    private def drawn_lead
+      "Thank you to all #{@raffle.entries.count} citizens who joined, and better luck next time! " \
+        "Congratulations to #{@raffle.current_winner.display_username}, the winner of the FleetYards raffle: #{@raffle.title}"
     end
 
     private def thumb
