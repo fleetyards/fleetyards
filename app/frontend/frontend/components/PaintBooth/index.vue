@@ -159,6 +159,7 @@ const selectedName = computed(
         <section class="paint-booth__paints">
           <h2 class="paint-booth__title">
             <button
+              v-if="painted"
               type="button"
               class="paint-booth__toggle"
               :aria-expanded="!collapsed"
@@ -167,7 +168,7 @@ const selectedName = computed(
               @click="collapsed = !collapsed"
             >
               {{ t("paintBooth.paints") }}
-              <span v-if="painted" class="paint-booth__count">
+              <span class="paint-booth__count">
                 {{ holoPaints.length + 1 }}
               </span>
               <i
@@ -176,40 +177,43 @@ const selectedName = computed(
                 aria-hidden="true"
               />
             </button>
+            <template v-else>{{ t("paintBooth.paints") }}</template>
           </h2>
           <p
-            v-if="collapsed"
-            class="paint-booth__collapsed"
-            data-test="paint-booth-collapsed"
-          >
-            {{ selectedName }}
-          </p>
-          <p
-            v-else-if="!painted"
+            v-if="!painted"
             class="paint-booth__note"
             data-test="paint-booth-unavailable"
           >
             {{ t("paintBooth.unavailable") }}
           </p>
-          <ul
-            v-else
-            id="paint-booth-paints"
-            class="paint-booth__list"
-            data-test="paint-booth-paints"
-          >
-            <li
-              v-for="card in cards"
-              :key="card.key"
-              :data-test="`paint-booth-paint-${card.key}`"
+          <template v-else>
+            <p
+              v-if="collapsed"
+              class="paint-booth__collapsed"
+              data-test="paint-booth-collapsed"
             >
-              <PickerCard
-                :name="card.name"
-                :image="card.image"
-                :selected="card.selected"
-                @toggle="emit('update:paint', card.slug)"
-              />
-            </li>
-          </ul>
+              {{ selectedName }}
+            </p>
+            <ul
+              v-show="!collapsed"
+              id="paint-booth-paints"
+              class="paint-booth__list"
+              data-test="paint-booth-paints"
+            >
+              <li
+                v-for="card in cards"
+                :key="card.key"
+                :data-test="`paint-booth-paint-${card.key}`"
+              >
+                <PickerCard
+                  :name="card.name"
+                  :image="card.image"
+                  :selected="card.selected"
+                  @toggle="emit('update:paint', card.slug)"
+                />
+              </li>
+            </ul>
+          </template>
         </section>
       </StagePanel>
     </template>
