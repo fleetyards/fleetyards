@@ -14,7 +14,8 @@ import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import Characters from "@/frontend/components/DressingRoom/Characters/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
 import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
+import StageLayout from "@/frontend/components/StageLayout/index.vue";
+import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -909,40 +910,34 @@ const copyShareLink = () => {
       </div>
     </header>
 
-    <div class="dressing-room">
-      <div class="dressing-room__stage" data-test="dressing-room-stage">
-        <HoloViewer
-          v-if="model"
-          ref="viewer"
-          :key="model.path"
-          :models="[model]"
-          :azimuth="HOLO_AZIMUTH"
-          :elevation="HOLO_ELEVATION"
-          :auto-rotate="false"
-          :contain-padding="1.08"
-          contain
-          zoomable
-          turntable
-          backdrop
-          @unavailable="holoUnavailable"
-          @unplaced="unplaced = $event"
-          @fell-back="failedPaths = [...failedPaths, ...$event]"
-        />
-        <div
-          v-else
-          class="dressing-room__empty"
-          data-test="dressing-room-empty"
-        >
-          <i class="fa-duotone fa-person" />
-          <p>{{ t("dressingRoom.empty") }}</p>
-        </div>
+    <StageLayout
+      class="dressing-room"
+      :controls-label="t('dressingRoom.viewControls')"
+      data-test="dressing-room-stage"
+    >
+      <HoloViewer
+        v-if="model"
+        ref="viewer"
+        :key="model.path"
+        :models="[model]"
+        :azimuth="HOLO_AZIMUTH"
+        :elevation="HOLO_ELEVATION"
+        :auto-rotate="false"
+        :contain-padding="1.08"
+        contain
+        zoomable
+        turntable
+        backdrop
+        @unavailable="holoUnavailable"
+        @unplaced="unplaced = $event"
+        @fell-back="failedPaths = [...failedPaths, ...$event]"
+      />
+      <div v-else class="dressing-room__empty" data-test="dressing-room-empty">
+        <i class="fa-duotone fa-person" />
+        <p>{{ t("dressingRoom.empty") }}</p>
       </div>
 
-      <div
-        class="dressing-room__controls"
-        role="toolbar"
-        :aria-label="t('dressingRoom.viewControls')"
-      >
+      <template #controls>
         <BtnGroup
           v-if="bodyOptions.length > 1"
           segmented
@@ -988,14 +983,10 @@ const copyShareLink = () => {
         >
           <i class="fa-light fa-expand" />
         </Btn>
-      </div>
+      </template>
 
-      <Panel
-        translucent
-        :outer-spacing="false"
-        class="dressing-room__panel dressing-room__panel--loadout"
-      >
-        <div class="dressing-room__panel-body">
+      <template #start>
+        <StagePanel>
           <Loadout
             :tabs="loadoutTabs"
             :supplies="supplies"
@@ -1005,52 +996,46 @@ const copyShareLink = () => {
             @hold="toggleHeld"
             @clear="clear"
           />
-        </div>
-      </Panel>
+        </StagePanel>
+      </template>
 
-      <aside class="dressing-room__side">
-        <Panel translucent :outer-spacing="false" class="dressing-room__panel">
-          <div class="dressing-room__panel-body">
-            <Characters
-              :body="bodyKey"
-              :token="faceToken"
-              :shown="shownFace"
-              :unavailable="faceUnavailable"
-              :not-ready="faceNotReady"
-              @select="selectFace"
-            />
-          </div>
-        </Panel>
-        <Panel translucent :outer-spacing="false" class="dressing-room__panel">
-          <div class="dressing-room__panel-body">
-            <WornStorage
-              :stored="stored"
-              :worn="items"
-              :stored-items="storedItems"
-              :loading="storedLoading || wornLoading"
-              @add="openStorage"
-              @quantity="changeStored"
-            />
-          </div>
-        </Panel>
-        <Panel translucent :outer-spacing="false" class="dressing-room__panel">
-          <div class="dressing-room__panel-body">
-            <Outfits
-              :items="outfitItems"
-              :stored-items="storedInputs"
-              :blocked="saveBlocked"
-              :held-weapon="heldWeapon"
-              :body="bodyKey"
-              :character-face-id="ownFaceId"
-              :pending="piecesPending"
-              :active-id="activeOutfitId"
-              @load="loadOutfit"
-              @active="setActiveOutfit"
-            />
-          </div>
-        </Panel>
-      </aside>
-    </div>
+      <template #end>
+        <StagePanel>
+          <Characters
+            :body="bodyKey"
+            :token="faceToken"
+            :shown="shownFace"
+            :unavailable="faceUnavailable"
+            :not-ready="faceNotReady"
+            @select="selectFace"
+          />
+        </StagePanel>
+        <StagePanel>
+          <WornStorage
+            :stored="stored"
+            :worn="items"
+            :stored-items="storedItems"
+            :loading="storedLoading || wornLoading"
+            @add="openStorage"
+            @quantity="changeStored"
+          />
+        </StagePanel>
+        <StagePanel>
+          <Outfits
+            :items="outfitItems"
+            :stored-items="storedInputs"
+            :blocked="saveBlocked"
+            :held-weapon="heldWeapon"
+            :body="bodyKey"
+            :character-face-id="ownFaceId"
+            :pending="piecesPending"
+            :active-id="activeOutfitId"
+            @load="loadOutfit"
+            @active="setActiveOutfit"
+          />
+        </StagePanel>
+      </template>
+    </StageLayout>
   </div>
 </template>
 
@@ -1070,133 +1055,8 @@ const copyShareLink = () => {
   gap: 0.5rem;
 }
 
-// One cell holds the stage and, over its foot, the control bar; the panels
-// follow below it on a phone and float over it on a larger screen.
-.dressing-room {
-  display: grid;
-  grid-template-areas:
-    "stage"
-    "loadout"
-    "side";
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-
-  @media (min-width: $desktop-breakpoint) {
-    grid-template-areas:
-      "loadout . side"
-      "loadout controls side";
-    grid-template-columns:
-      minmax(17rem, 21rem)
-      minmax(0, 1fr)
-      minmax(17rem, 23rem);
-    grid-template-rows: minmax(0, 1fr) auto;
-    // Down to the foot of the screen, below the heading above it.
-    height: max(36rem, calc(100dvh - 12rem));
-    padding: 1rem;
-  }
-}
-
-// Portrait on a phone, as a standing figure is: a landscape stage would leave
-// most of itself empty either side of it.
-.dressing-room__stage {
-  position: relative;
-  grid-area: stage;
-  height: min(70vh, 44rem);
-  min-height: 24rem;
-  overflow: hidden;
-  border: 1px solid var(--color-edge-faint);
-  border-radius: var(--radius-surface);
-  // Lit by a spot behind the figure and a glow on the floor under its
-  // pedestal.
-  background:
-    radial-gradient(
-      ellipse 42% 12% at 50% 90%,
-      rgba($primary, 0.28),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 55% 60% at 50% 42%,
-      rgba($primary, 0.16),
-      rgba($background, 0.35) 70%,
-      transparent 100%
-    );
-
-  // Behind the whole layout, the panels and bar over it.
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: 1 / 1 / -1 / -1;
-    height: auto;
-    margin: -1rem;
-  }
-}
-
-.dressing-room__controls {
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  grid-area: stage;
-  align-items: center;
-  align-self: end;
-  justify-content: center;
-  justify-self: center;
-  gap: 0.5rem;
-  margin: 0.75rem;
-  padding: 0.5rem;
-  border: 1px solid var(--color-edge-soft);
-  border-radius: var(--radius-surface-slim);
-  background: rgb(26 29 33 / 0.8);
-  backdrop-filter: blur(8px);
-
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: controls;
-    margin: 0;
-  }
-}
-
 .dressing-room__pose {
   min-width: 10rem;
-}
-
-.dressing-room__panel {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  max-height: 100%;
-  backdrop-filter: blur(8px);
-}
-
-// A panel whose content draws nothing, such as storage with nothing worn
-// that has any, takes no frame either.
-.dressing-room__panel:has(> .dressing-room__panel-body:empty) {
-  display: none;
-}
-
-// Scrolled inside the frame: the frame's end-caps sit on its edge, and a
-// scrolling frame would count them as overflow.
-.dressing-room__panel-body {
-  min-height: 0;
-  padding: 1rem 1.125rem 1.125rem;
-  overflow-y: auto;
-}
-
-.dressing-room__panel--loadout {
-  grid-area: loadout;
-  align-self: start;
-}
-
-.dressing-room__side {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  grid-area: side;
-  gap: 1rem;
-  min-height: 0;
-
-  // Room for the first and last panel's end-caps, which sit on their edge.
-  @media (min-width: $desktop-breakpoint) {
-    padding-block: 1px;
-    overflow-y: auto;
-  }
 }
 
 .dressing-room__empty {
