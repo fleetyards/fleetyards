@@ -32,6 +32,21 @@ describe("ModelPickerSelect", () => {
     ).toBe(false);
   });
 
+  it("offers no clearing where a ship must stay picked", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        name: "ship",
+        label: "Your ship",
+        modelValue: "hull-c",
+        clearable: false,
+      },
+    });
+
+    expect(
+      wrapper.find('[data-test="model-picker-select-clear"]').exists(),
+    ).toBe(false);
+  });
+
   it("drops the visible label but keeps naming the field", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { name: "ship", label: "Your ship", noLabel: true },
