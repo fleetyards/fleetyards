@@ -390,6 +390,7 @@ describe("holdClip", () => {
     weaponInHand: null,
     lighting: [],
     skinTone: null,
+    defaultCharacter: null,
     faceLibrary: null,
     clips: [
       clip("hold_rifle_lowered"),
