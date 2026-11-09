@@ -124,6 +124,28 @@ export const GEAR_SLOTS: OutfitSlotEnum[] = GEAR_KINDS.flatMap(
 
 export const ALL_SLOTS = [...OUTFIT_SLOTS, ...WEAPON_SLOTS, ...GEAR_SLOTS];
 
+const SLOT_ICONS: Record<string, string> = {
+  helmet: "fa-helmet-battle",
+  torso: "fa-vest",
+  arms: "fa-hand-fist",
+  legs: "fa-boot",
+  backpack: "fa-backpack",
+  undersuit: "fa-shirt-long-sleeve",
+  primary: "fa-person-rifle",
+  secondary: "fa-person-rifle",
+  sidearm: "fa-gun",
+  grenade: "fa-bomb",
+  magazine: "fa-battery-full",
+  gadget: "fa-microchip",
+  medpen: "fa-syringe",
+  oxypen: "fa-lungs",
+  utility: "fa-toolbox",
+};
+
+// A light icon for the slot, gear by its kind.
+export const slotIcon = (slot: OutfitSlotEnum) =>
+  `fa-light ${SLOT_ICONS[gearKind(slot)?.key ?? slot] ?? "fa-circle-dashed"}`;
+
 export const isWeaponSlot = (slot?: string): slot is OutfitWeaponSlotEnum =>
   WEAPON_SLOTS.includes(slot as OutfitSlotEnum);
 
