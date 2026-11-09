@@ -62,54 +62,97 @@ const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
 // One texel of each texture a recipe names, 0..1, alpha last.
 export type Texels = (url: string) => number[] | undefined;
 
+// A head recipe made ready to run over a million texels: its colours, hue
+// turns and strengths worked out once, nothing allocated per texel.
+export const headCompositor = (recipe: HeadRecipe) => {
+  const gain = recipe.tone_gain;
+  const steps = recipe.layers.map((layer) => {
+    if (layer.type === "blemish") {
+      return { layer, blemishes: [layer.freckles, layer.sunspots] };
+    }
+    if (layer.type === "makeup") {
+      return {
+        layer,
+        tints: layer.channels.map((channel) => hexLinear(channel.color)),
+      };
+    }
+    return {
+      layer,
+      rotation: hueRotation(layer.hue),
+      strength: 1 - 0.5 * layer.age,
+    };
+  });
+  const ink = [0, 0, 0];
+
+  return (texels: Texels, out: number[]) => {
+    const base = recipe.base ? texels(recipe.base) : undefined;
+    let r = srgbToLinear(base?.[0] ?? 1) * gain[0];
+    let g = srgbToLinear(base?.[1] ?? 1) * gain[1];
+    let b = srgbToLinear(base?.[2] ?? 1) * gain[2];
+
+    for (const step of steps) {
+      const { layer } = step;
+      if (layer.type === "blemish") {
+        const mask = layer.mask ? texels(layer.mask) : undefined;
+        const id = layer.id ? texels(layer.id) : undefined;
+        if (!mask || !id) continue;
+        for (const blemish of step.blemishes!) {
+          const selected = id[blemish.channel] < blemish.amount ? 1 : 0;
+          const a = clamp01(mask[blemish.channel] * selected * blemish.opacity);
+          const f = 1 - a + a * blemish.darken;
+          r *= f;
+          g *= f;
+          b *= f;
+        }
+      } else if (layer.type === "makeup") {
+        const texture = layer.texture ? texels(layer.texture) : undefined;
+        if (!texture) continue;
+        layer.channels.forEach((channel, k) => {
+          const a = clamp01(texture[k] * channel.opacity);
+          const tint = step.tints![k];
+          r = r * (1 - a) + tint[0] * a;
+          g = g * (1 - a) + tint[1] * a;
+          b = b * (1 - a) + tint[2] * a;
+        });
+      } else {
+        const texture = layer.texture ? texels(layer.texture) : undefined;
+        if (!texture) continue;
+        const m = step.rotation!;
+        for (let c = 0; c < 3; c++) {
+          ink[c] = srgbToLinear(
+            clamp01(
+              m[c][0] * texture[0] +
+                m[c][1] * texture[1] +
+                m[c][2] * texture[2],
+            ),
+          );
+        }
+        const k = step.strength!;
+        if (layer.blend === "multiply") {
+          r *= 1 - k + k * ink[0];
+          g *= 1 - k + k * ink[1];
+          b *= 1 - k + k * ink[2];
+        } else {
+          const a = (texture[3] ?? 1) * k;
+          r = r * (1 - a) + ink[0] * a;
+          g = g * (1 - a) + ink[1] * a;
+          b = b * (1 - a) + ink[2] * a;
+        }
+      }
+    }
+
+    out[0] = linearToSrgb(r);
+    out[1] = linearToSrgb(g);
+    out[2] = linearToSrgb(b);
+  };
+};
+
 // The head's base colour at one texel, in sRGB: the skin set tinted to the
 // character's tone, then freckles and sun spots, makeup and the tattoo.
 export const compositeHeadTexel = (recipe: HeadRecipe, texels: Texels) => {
-  const base = recipe.base ? texels(recipe.base) : undefined;
-  let color = [0, 1, 2].map(
-    (c) => srgbToLinear(base?.[c] ?? 1) * recipe.tone_gain[c],
-  );
-
-  recipe.layers.forEach((layer) => {
-    if (layer.type === "blemish") {
-      const mask = layer.mask ? texels(layer.mask) : undefined;
-      const id = layer.id ? texels(layer.id) : undefined;
-      if (!mask || !id) return;
-      [layer.freckles, layer.sunspots].forEach((blemish) => {
-        const selected = id[blemish.channel] < blemish.amount ? 1 : 0;
-        const a = clamp01(mask[blemish.channel] * selected * blemish.opacity);
-        color = color.map((c) => c * (1 - a + a * blemish.darken));
-      });
-    } else if (layer.type === "makeup") {
-      const texture = layer.texture ? texels(layer.texture) : undefined;
-      if (!texture) return;
-      layer.channels.forEach((channel, k) => {
-        const a = clamp01(texture[k] * channel.opacity);
-        const tint = hexLinear(channel.color);
-        color = color.map((c, i) => c * (1 - a) + tint[i] * a);
-      });
-    } else if (layer.type === "tattoo") {
-      const texture = layer.texture ? texels(layer.texture) : undefined;
-      if (!texture) return;
-      const rotation = hueRotation(layer.hue);
-      const ink = rotation.map((row) =>
-        srgbToLinear(
-          clamp01(
-            row[0] * texture[0] + row[1] * texture[1] + row[2] * texture[2],
-          ),
-        ),
-      );
-      const k = 1 - 0.5 * layer.age;
-      if (layer.blend === "multiply") {
-        color = color.map((c, i) => c * (1 - k + k * ink[i]));
-      } else {
-        const a = (texture[3] ?? 1) * k;
-        color = color.map((c, i) => c * (1 - a) + ink[i] * a);
-      }
-    }
-  });
-
-  return color.map(linearToSrgb);
+  const out = [0, 0, 0];
+  headCompositor(recipe)(texels, out);
+  return out;
 };
 
 // The eye's colour at one texel, in sRGB: the customizer's white iris tinted
@@ -175,28 +218,42 @@ const pixels = async (urls: string[], size: number) => {
   return { canvas, context, images: new Map(entries) };
 };
 
+// Rows between yields, so a bake never holds the page for long.
+const BAKE_ROWS = 64;
+
 const bake = async (
   urls: string[],
   size: number,
-  texel: (texels: Texels) => number[],
+  texel: (texels: Texels, out: number[]) => void,
 ) => {
   const { canvas, context, images } = await pixels(urls, size);
   const out = context.createImageData(size, size);
-  const sample = new Map<string, number[]>(
-    [...images.keys()].map((url) => [url, [0, 0, 0, 0]]),
-  );
-  const texels: Texels = (url) => sample.get(url);
+  const sources = [...images.entries()].map(([url, data]) => ({
+    url,
+    data,
+    texel: [0, 0, 0, 0],
+  }));
+  const byUrl = new Map(sources.map((source) => [source.url, source.texel]));
+  const texels: Texels = (url) => byUrl.get(url);
+  const colour = [0, 0, 0];
 
-  for (let p = 0; p < size * size; p++) {
-    images.forEach((data, url) => {
-      const texel = sample.get(url)!;
-      for (let c = 0; c < 4; c++) texel[c] = data[p * 4 + c] / 255;
-    });
-    const [r, g, b] = texel(texels);
-    out.data[p * 4] = Math.round(r * 255);
-    out.data[p * 4 + 1] = Math.round(g * 255);
-    out.data[p * 4 + 2] = Math.round(b * 255);
-    out.data[p * 4 + 3] = 255;
+  for (let row = 0; row < size; row += BAKE_ROWS) {
+    const end = Math.min(size, row + BAKE_ROWS) * size;
+    for (let p = row * size; p < end; p++) {
+      for (const source of sources) {
+        const i = p * 4;
+        source.texel[0] = source.data[i] / 255;
+        source.texel[1] = source.data[i + 1] / 255;
+        source.texel[2] = source.data[i + 2] / 255;
+        source.texel[3] = source.data[i + 3] / 255;
+      }
+      texel(texels, colour);
+      out.data[p * 4] = Math.round(colour[0] * 255);
+      out.data[p * 4 + 1] = Math.round(colour[1] * 255);
+      out.data[p * 4 + 2] = Math.round(colour[2] * 255);
+      out.data[p * 4 + 3] = 255;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 0));
   }
 
   context.putImageData(out, 0, 0);
@@ -215,15 +272,19 @@ const headUrls = (recipe: HeadRecipe) =>
   ].filter((url): url is string => !!url);
 
 export const bakeHead = (recipe: HeadRecipe) =>
-  bake(headUrls(recipe), HEAD_SIZE, (texels) =>
-    compositeHeadTexel(recipe, texels),
-  );
+  bake(headUrls(recipe), HEAD_SIZE, headCompositor(recipe));
 
 export const bakeEyes = (recipe: EyeRecipe) =>
   recipe.iris
-    ? bake([recipe.iris], EYE_SIZE, (texels) =>
-        compositeEyeTexel(recipe, texels(recipe.iris!) ?? [1, 1, 1, 0]),
-      )
+    ? bake([recipe.iris], EYE_SIZE, (texels, out) => {
+        const [r, g, b] = compositeEyeTexel(
+          recipe,
+          texels(recipe.iris!) ?? [1, 1, 1, 0],
+        );
+        out[0] = r;
+        out[1] = g;
+        out[2] = b;
+      })
     : Promise.resolve(undefined);
 
 // A three.js material for one accessory sub-material; the strand variation
