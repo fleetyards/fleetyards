@@ -190,6 +190,7 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
       assert_equal 3, parsed_body["claimPeriodDays"]
       assert_equal 7, parsed_body["runDays"]
       assert_includes parsed_body.dig("socialPosts", "start"), "Win a Polaris"
+      assert_nil parsed_body.dig("socialPosts", "drawn")
       assert_not_includes response.body, "ABCD-EFGH-1234"
     end
   end
@@ -237,6 +238,18 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: raffle.id} do
       assert_equal "drawn", parsed_body["status"]
       assert_equal 1, parsed_body.dig("currentWinner", "drawPosition")
+      assert_includes parsed_body.dig("socialPosts", "drawn"), parsed_body.dig("currentWinner", "username")
+    end
+  end
+
+  test "GET /raffles/:id offers no drawn post once nobody is left to win" do
+    raffle = create(:raffle, :closed, drawn_at: 2.weeks.ago, concluded_at: 1.week.ago)
+    create(:raffle_entry, :after_close, raffle:, draw_position: 1, won_at: 2.weeks.ago, claim_deadline_at: 1.week.ago, forfeited_at: 1.week.ago)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {id: raffle.id} do
+      assert_nil parsed_body["currentWinner"]
+      assert_nil parsed_body.dig("socialPosts", "drawn")
     end
   end
 

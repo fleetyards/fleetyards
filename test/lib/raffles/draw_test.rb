@@ -34,6 +34,13 @@ module Raffles
       assert_equal [result.winner.id], Raffles::ClaimMailJob.jobs.last["args"]
     end
 
+    test "queues the drawn post once" do
+      Draw.new(@raffle, admin_user: @admin).call
+      Draw.new(@raffle, admin_user: @admin).call
+
+      assert_equal [[@raffle.id, "drawn"]], posts_for(@raffle)
+    end
+
     test "leaves unconfirmed entrants out of the order" do
       @entries.first.user.update_columns(confirmed_at: nil)
 
@@ -78,6 +85,11 @@ module Raffles
 
       assert_equal :no_entrants, Draw.new(@raffle, admin_user: @admin).call.status
       assert_not @raffle.reload.drawn?
+      assert_empty posts_for(@raffle)
+    end
+
+    private def posts_for(raffle)
+      Raffles::PostSocialJob.jobs.map { |job| job["args"] }.select { |args| args.first == raffle.id }
     end
   end
 end

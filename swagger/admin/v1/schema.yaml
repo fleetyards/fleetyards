@@ -23343,6 +23343,8 @@ components:
           type: string
         lastDay:
           type: string
+        drawn:
+          type: string
       additionalProperties: false
       required:
       - start

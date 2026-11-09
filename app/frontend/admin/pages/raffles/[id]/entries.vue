@@ -134,10 +134,12 @@ const columns: BaseTableCol<RaffleEntry>[] = [
 const mailState = (status?: string) =>
   status ? t(`labels.raffleEntry.mailStatuses.${status}`) : "—";
 
-const socialPosts = computed(() => [
-  props.raffle.socialPosts.start,
-  props.raffle.socialPosts.lastDay,
-]);
+const socialPosts = computed(() => {
+  const { start, lastDay, drawn } = props.raffle.socialPosts;
+  if (!props.raffle.drawnAt) return [start, lastDay];
+
+  return drawn ? [drawn] : [];
+});
 
 const entryState = (entry: RaffleEntry) => {
   if (entry.claimedAt) return t("labels.raffleEntry.states.claimed");
@@ -247,7 +249,7 @@ const entryState = (entry: RaffleEntry) => {
     </p>
   </Alert>
 
-  <section class="raffle-social-posts">
+  <section v-if="socialPosts.length" class="raffle-social-posts">
     <h2 class="raffle-social-posts__title">
       {{ t("labels.raffle.socialPosts") }}
     </h2>

@@ -11,7 +11,8 @@ module Admin
           type: :object,
           properties: {
             start: {type: :string},
-            lastDay: {type: :string}
+            lastDay: {type: :string},
+            drawn: {type: :string}
           },
           additionalProperties: false,
           required: %w[start lastDay]
