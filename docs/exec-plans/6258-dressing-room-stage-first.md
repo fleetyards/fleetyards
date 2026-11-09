@@ -8,10 +8,6 @@ Mockups: https://claude.ai/artifact/6GGZ8NU2cMAh5JdPoiQq6C (boards "B · Stage f
 
 The dressing room is one stage the figure fills, with the loadout, character, storage and outfits in translucent framed panels over it and every viewer control in one bar on the stage.
 
-## Open questions
-
-- Phone loadout: a fixed panel overlapping the stage's foot (planned), or a sheet the user can drag up? Dragging adds gesture handling for little gain.
-
 ## What changed
 
 ### Phase 1 — Stage and layout
