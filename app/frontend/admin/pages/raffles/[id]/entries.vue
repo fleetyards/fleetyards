@@ -134,10 +134,10 @@ const columns: BaseTableCol<RaffleEntry>[] = [
 const mailState = (status?: string) =>
   status ? t(`labels.raffleEntry.mailStatuses.${status}`) : "—";
 
-const socialPosts = computed(() => [
-  props.raffle.socialPosts.start,
-  props.raffle.socialPosts.lastDay,
-]);
+const socialPosts = computed(() => {
+  const { start, lastDay, drawn } = props.raffle.socialPosts;
+  return drawn ? [drawn] : [start, lastDay];
+});
 
 const entryState = (entry: RaffleEntry) => {
   if (entry.claimedAt) return t("labels.raffleEntry.states.claimed");

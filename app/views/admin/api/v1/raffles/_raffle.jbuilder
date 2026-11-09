@@ -22,13 +22,15 @@ json.concluded_at raffle.concluded_at.utc.iso8601 if raffle.concluded_at.present
 json.start_announced_at raffle.start_announced_at.utc.iso8601 if raffle.start_announced_at.present?
 json.last_day_announced_at raffle.last_day_announced_at.utc.iso8601 if raffle.last_day_announced_at.present?
 
+current_winner = raffle.current_winner if raffle.drawn?
+
 social_post = Raffles::SocialPost.new(raffle)
 json.social_posts do
   json.start social_post.text(:start, Raffles::SocialPost::X)
   json.last_day social_post.text(:last_day, Raffles::SocialPost::X)
+  json.drawn social_post.text(:drawn, Raffles::SocialPost::X) if current_winner.present?
 end
 
-current_winner = raffle.current_winner if raffle.drawn?
 if current_winner.present?
   json.current_winner do
     json.partial! "admin/api/v1/raffle_entries/entry", entry: current_winner
