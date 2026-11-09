@@ -164,6 +164,7 @@ describe("riggedOutfitModel", () => {
     lighting: [],
     skinTone: null,
     defaultCharacter: null,
+    environment: null,
     faceLibrary: null,
     clips: [
       { name: "idle_stand", static: false, looping: true },
@@ -247,6 +248,7 @@ describe("riggedOutfitModel body cover", () => {
     lighting: [],
     skinTone: null,
     defaultCharacter: null,
+    environment: null,
     faceLibrary: null,
     clips: [],
   };

@@ -472,6 +472,7 @@ export const riggedOutfitModel = (
     })),
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),
+    ...(body.environment ? { environment: body.environment } : {}),
     ...bodyCover(worn),
     ...(worn.includes(OutfitSlotEnum.HELMET)
       ? { collar: character?.hideHead ? ("hood" as const) : ("neck" as const) }

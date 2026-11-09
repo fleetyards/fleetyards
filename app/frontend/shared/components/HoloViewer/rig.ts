@@ -71,6 +71,7 @@ export type RigLight = {
   decay?: number;
   angle?: number;
   penumbra?: number;
+  castShadow?: boolean;
 };
 
 export type HoloRig = {
@@ -84,6 +85,8 @@ export type HoloRig = {
   clip?: string;
   // A plinth under the figure's feet.
   pedestal?: boolean;
+  // The studio it is lit in: an environment map with `lights` its key light.
+  environment?: { map: string; intensity: number; exposure: number };
   // The user's own character: its face on the body's head, with its hair,
   // brows, beard and piercings.
   character?: CharacterRig;
@@ -341,6 +344,17 @@ export const buildRigLights = (lights: RigLight[]) => {
       spot.target.position.copy(
         position.clone().add(new Vector3().fromArray(light.direction)),
       );
+      if (light.castShadow) {
+        // A soft studio shadow, framed on the figure from a few metres off.
+        spot.castShadow = true;
+        spot.shadow.mapSize.set(2048, 2048);
+        spot.shadow.radius = 10;
+        spot.shadow.blurSamples = 16;
+        spot.shadow.bias = -0.0003;
+        spot.shadow.normalBias = 0.01;
+        spot.shadow.camera.near = 1;
+        spot.shadow.camera.far = 8;
+      }
       group.add(spot, spot.target);
     } else {
       const point = new PointLight(

@@ -159,6 +159,7 @@ const MALE: CharacterBody = {
   lighting: [],
   skinTone: null,
   defaultCharacter: null,
+  environment: null,
   faceLibrary: null,
   clips: [
     { name: "shop_pose_01", static: true, looping: false },
