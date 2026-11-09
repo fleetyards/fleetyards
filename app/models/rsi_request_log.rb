@@ -18,7 +18,7 @@ class RsiRequestLog < ApplicationRecord
       title: "RSI blocked a request",
       body: url,
       severity: :error,
-      link: "/maintenance/rsi-api-status",
+      link: "/rsi-api-status/",
       record: self,
       dedupe_key: url
     )
@@ -33,7 +33,7 @@ class RsiRequestLog < ApplicationRecord
       type: :rsi_api_unblocked,
       title: "RSI unblocked a request",
       body: url,
-      link: "/maintenance/rsi-api-status",
+      link: "/rsi-api-status/",
       record: self,
       dedupe_key: url
     )

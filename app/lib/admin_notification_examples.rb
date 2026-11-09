@@ -36,7 +36,7 @@ module AdminNotificationExamples
         severity: :error,
         title: "RSI blocked a request",
         body: "https://robertsspaceindustries.com/ship-matrix/index",
-        link: "/maintenance/rsi-api-status",
+        link: "/rsi-api-status/",
         occurrences: 12,
         age: 8.minutes
       },
@@ -110,7 +110,7 @@ module AdminNotificationExamples
         type: :rsi_api_unblocked,
         title: "RSI unblocked a request",
         body: "https://robertsspaceindustries.com/ship-matrix/index",
-        link: "/maintenance/rsi-api-status",
+        link: "/rsi-api-status/",
         read: true,
         age: 4.days
       },
@@ -127,7 +127,7 @@ module AdminNotificationExamples
 
           Full numbers on the [stats page](/stats).
         BODY
-        link: "/stats",
+        link: "/",
         read: true,
         age: 12.days
       }

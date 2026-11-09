@@ -61,7 +61,7 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     notification = AdminNotification.where(admin_user:, notification_type: "rsi_markup_changed").sole
     assert_equal import, notification.record
     assert_includes notification.body, "could not read every item"
-    assert_includes notification.body, "`item without kind` (page 3, extension `1.4.0`, [import](/maintenance/imports/#{import.id}))"
+    assert_includes notification.body, "`item without kind` (page 3, extension `1.4.0`, [import](/imports/#{import.id}))"
     assert_not_includes notification.body, "Cutlass"
   end
 
