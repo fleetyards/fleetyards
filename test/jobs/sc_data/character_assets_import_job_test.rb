@@ -65,6 +65,27 @@ module ScData
       assert_equal 4, asset.size
     end
 
+    test "removes what the export no longer has" do
+      @objects["chf/catalog.json"] = "{}"
+      @objects["male/chf/geometry/m_hair_02.glb"] = "hair"
+      ::ScData::CharacterAssetsImportJob.new.perform
+
+      @objects.delete("male/chf/geometry/m_hair_02.glb")
+      ::ScData::CharacterAssetsImportJob.new.perform
+
+      assert_equal ["characters/chf/catalog.json"], CharacterAsset.pluck(:path)
+    end
+
+    test "keeps everything when the bucket lists nothing" do
+      @objects["chf/catalog.json"] = "{}"
+      ::ScData::CharacterAssetsImportJob.new.perform
+
+      @objects.clear
+      ::ScData::CharacterAssetsImportJob.new.perform
+
+      assert_equal ["characters/chf/catalog.json"], CharacterAsset.pluck(:path)
+    end
+
     test "fetches only what changed since the last run" do
       @objects["chf/catalog.json"] = "{}"
       @objects["male/chf/geometry/m_hair_02.glb"] = "hair"

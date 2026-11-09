@@ -17,10 +17,11 @@ module ScData
 
       store = ::ScData::CharacterStore.new
       assets = CharacterAsset.with_attached_file.index_by(&:path)
+      listed = store.assets
       attached = 0
       failed = 0
 
-      store.assets.each do |path, remote|
+      listed.each do |path, remote|
         asset = assets["#{PREFIX}#{path}"] || CharacterAsset.new(path: "#{PREFIX}#{path}")
         next if asset.etag == remote.etag && asset.file.attached?
 
@@ -28,6 +29,8 @@ module ScData
       end
 
       log(:info, "attached #{attached}, failed #{failed}") if attached.positive? || failed.positive?
+
+      remove_unlisted(listed.keys.map { |path| "#{PREFIX}#{path}" })
 
       apply_head_wear
     end
@@ -52,6 +55,18 @@ module ScData
       false
     ensure
       file&.close!
+    end
+
+    # What the export no longer has goes, file and all. An empty listing is
+    # taken for a bucket that could not be read rather than an export with
+    # nothing in it.
+    private def remove_unlisted(paths)
+      return if paths.empty?
+
+      gone = CharacterAsset.where.not(path: paths)
+      count = gone.count
+      gone.find_each(&:destroy!)
+      log(:info, "removed #{count} no longer exported") if count.positive?
     end
 
     FITS = %w[rigid face_wrap].freeze
