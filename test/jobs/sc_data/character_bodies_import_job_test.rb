@@ -84,7 +84,7 @@ module ScData
       assert_nil CharacterBody.find_by!(key: "male").weapon_in_hand
     end
 
-    test "keeps a body's lowered rifle holds per armour weight, and nothing it cannot read" do
+    test "keeps a body's lowered rifle holds per armour weight, a new weight among them, and nothing it cannot read" do
       publish("male", {"body.glb" => BODY})
       @index["male"][:holdPoses] = {
         rifleLowered: {
@@ -104,7 +104,8 @@ module ScData
       assert_equal [
         {"armor_weight" => nil, "clip" => "hold_rifle_lowered"},
         {"armor_weight" => "Light", "clip" => "hold_rifle_lowered_light"},
-        {"armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}
+        {"armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"},
+        {"armor_weight" => "SuperHeavy", "clip" => "hold_rifle_lowered_superheavy"}
       ], CharacterBody.find_by!(key: "male").hold_poses
     end
 

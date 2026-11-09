@@ -11,8 +11,7 @@ module V1
           properties: {
             armorWeight: {
               type: [:string, :null],
-              enum: ["Light", "Medium", "Heavy", nil],
-              description: "The worn core's armour weight, its subType; null for no core"
+              description: "The worn core's armour weight as its subType spells it, e.g. Heavy; null for no core"
             },
             clip: {type: :string, description: "The clip that holds a rifle lowered, in the body's animations file"}
           },

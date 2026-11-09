@@ -12,9 +12,10 @@ module ScData
 
     SKIN_TONE = /\A#\h{6}\z/
 
-    # The export's weight keys, as equipment spells a core's subType; "none"
-    # is no core worn.
-    ARMOR_WEIGHTS = {"none" => nil, "Light" => "Light", "Medium" => "Medium", "Heavy" => "Heavy"}.freeze
+    # The export's weight key for no core worn. The others are spelt as
+    # equipment spells a core's subType, and kept as they come: a weight the
+    # export adds needs no change here.
+    NO_ARMOR = "none"
 
     FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 
@@ -125,9 +126,9 @@ module ScData
       return [] unless lowered.is_a?(Hash)
 
       lowered.filter_map do |weight, clip|
-        next unless ARMOR_WEIGHTS.key?(weight) && clip.is_a?(String) && clip.present?
+        next unless weight.present? && clip.is_a?(String) && clip.present?
 
-        {"armor_weight" => ARMOR_WEIGHTS[weight], "clip" => clip}
+        {"armor_weight" => (weight unless weight == NO_ARMOR), "clip" => clip}
       end
     end
 
