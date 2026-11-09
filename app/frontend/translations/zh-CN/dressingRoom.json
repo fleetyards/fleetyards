@@ -1,7 +1,6 @@
 {
   "zh-CN": {
     "dressingRoom": {
-      "lead": "把护甲和内衬服搭配在一起，以 3D 查看装扮。通过链接分享，或登录后保存。",
       "slots": {
         "helmet": "头盔",
         "torso": "躯干",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "护甲",
         "weapons": "武器",
-        "gear": "装备"
+        "gear": "装备",
+        "supplies": "补给"
       },
       "hold": "手持",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "无法上传角色。",
           "deleteFailed": "无法删除角色。"
         }
-      }
+      },
+      "filledOf": "%{count} / %{total}",
+      "viewControls": "视图",
+      "loadout": "装备"
     }
   }
 }

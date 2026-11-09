@@ -68,26 +68,39 @@ const shownModel = computed(() => (shipSlug.value ? model.value : undefined));
   <div class="paint-booth-page">
     <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-    <div class="paint-booth-page__picker">
-      <ModelPickerSelect
-        name="paint-booth-ship"
-        :label="t('labels.selectModel')"
-        :model-value="shipSlug"
-        :query="PICKER_QUERY"
-        no-label
-        @update:model-value="pickShip"
-      />
-    </div>
-
     <PaintBooth
       v-if="shownModel"
       :key="shownModel.slug"
       :model="shownModel"
       :paint="paintSlug"
       @update:paint="navigate({ paint: $event })"
-    />
+    >
+      <template #controls>
+        <ModelPickerSelect
+          name="paint-booth-ship"
+          :label="t('labels.selectModel')"
+          :model-value="shipSlug"
+          :query="PICKER_QUERY"
+          no-label
+          :clearable="false"
+          inline
+          class="paint-booth-page__picker"
+          @update:model-value="pickShip"
+        />
+      </template>
+    </PaintBooth>
     <div v-else class="paint-booth-page__empty" data-test="paint-booth-empty">
       <i class="fa-duotone fa-spray-can-sparkles" />
+      <ModelPickerSelect
+        name="paint-booth-ship"
+        :label="t('labels.selectModel')"
+        :model-value="shipSlug"
+        :query="PICKER_QUERY"
+        no-label
+        :clearable="false"
+        class="paint-booth-page__picker"
+        @update:model-value="pickShip"
+      />
       <p v-if="shipSlug && isLoading">{{ t("labels.loading") }}</p>
       <p v-else-if="shipSlug && isError">{{ t("paintBooth.notFound") }}</p>
       <p v-else>{{ t("paintBooth.empty") }}</p>
@@ -96,9 +109,15 @@ const shownModel = computed(() => (shipSlug.value ? model.value : undefined));
 </template>
 
 <style lang="scss" scoped>
+// A size of its own: in the stage's bar, which is only as wide as what it
+// holds, a share of the bar would be a share of itself.
 .paint-booth-page__picker {
-  max-width: 24rem;
-  margin-bottom: 1.5rem;
+  flex: 1 1 12rem;
+  min-width: 0;
+
+  @media (min-width: $desktop-breakpoint) {
+    flex-basis: 18rem;
+  }
 }
 
 .paint-booth-page__empty {

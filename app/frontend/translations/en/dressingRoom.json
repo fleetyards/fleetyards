@@ -1,7 +1,6 @@
 {
   "en": {
     "dressingRoom": {
-      "lead": "Put armour and an undersuit together and see the outfit in 3D. Share it by link, or sign in to save it.",
       "slots": {
         "helmet": "Helmet",
         "torso": "Core",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "Armour",
         "weapons": "Weapons",
-        "gear": "Gear"
+        "gear": "Gear",
+        "supplies": "Supplies"
       },
       "hold": "Hold",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "The character could not be uploaded.",
           "deleteFailed": "The character could not be deleted."
         }
-      }
+      },
+      "filledOf": "%{count} of %{total}",
+      "viewControls": "View",
+      "loadout": "Loadout"
     }
   }
 }

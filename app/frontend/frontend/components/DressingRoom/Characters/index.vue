@@ -14,6 +14,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useSignInAndReturn } from "@/frontend/composables/useSignInAndReturn";
 import {
   type OutfitBodyEnum,
   type SharedCharacterFace,
@@ -45,6 +46,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { isAuthenticated } = storeToRefs(useSessionStore());
+
+const signIn = useSignInAndReturn();
 const comlink = useComlink();
 
 const open = () => {
@@ -74,6 +77,9 @@ const open = () => {
       {{ t("dressingRoom.characters.notReady") }}
     </p>
     <div class="character__current" data-test="dressing-room-current-character">
+      <span class="character__avatar" aria-hidden="true">
+        <i class="fa-light fa-user" />
+      </span>
       <span class="character__name">
         {{ shown?.name ?? t("dressingRoom.characters.default") }}
       </span>
@@ -87,31 +93,40 @@ const open = () => {
       >
         <i class="fa-light fa-download" />
       </a>
-    </div>
-    <div class="character__actions">
+      <Btn
+        v-if="token"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        :aria-label="t('actions.reset')"
+        v-tooltip="t('actions.reset')"
+        data-test="dressing-room-take-off-character"
+        @click="emit('select', undefined)"
+      >
+        <i class="fa-light fa-undo" />
+      </Btn>
       <Btn
         v-if="isAuthenticated"
         :size="BtnSizesEnum.SM"
         data-test="dressing-room-choose-character"
         @click="open"
       >
-        <i class="fa-light fa-user-pen" />
         {{ t("dressingRoom.characters.change") }}
       </Btn>
-      <Btn
-        v-if="token"
-        :size="BtnSizesEnum.SM"
-        :variant="BtnVariantsEnum.GHOST"
-        data-test="dressing-room-take-off-character"
-        @click="emit('select', undefined)"
-      >
-        <i class="fa-light fa-undo" />
-        {{ t("actions.reset") }}
-      </Btn>
     </div>
-    <p v-if="!isAuthenticated" class="character__hint">
-      {{ t("dressingRoom.characters.signIn") }}
-    </p>
+    <template v-if="!isAuthenticated">
+      <p class="character__hint">
+        {{ t("dressingRoom.characters.signIn") }}
+      </p>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        class="character__sign-in"
+        data-test="dressing-room-character-sign-in"
+        @click="signIn"
+      >
+        <i class="fa-light fa-right-to-bracket" />
+        {{ t("actions.login") }}
+      </Btn>
+    </template>
   </section>
 </template>
 
@@ -124,7 +139,15 @@ const open = () => {
 
 .character__title {
   margin: 0;
-  font-size: 1.1rem;
+  color: $gray-lighter;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.character__sign-in {
+  align-self: flex-start;
 }
 
 .character__hint {
@@ -140,15 +163,28 @@ const open = () => {
 .character__current {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-height: 2rem;
-  padding: 0 0.5rem;
-  border: 1px solid $primary;
-  border-radius: 4px;
+  gap: 0.75rem;
+}
+
+.character__avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-edge);
+  border-radius: 50%;
+  background: $gray-black;
+  color: $gray-lighter;
+  font-size: 1.25rem;
 }
 
 .character__name {
   flex: 1;
+  min-width: 0;
+  color: var(--color-lifted);
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -162,11 +198,5 @@ const open = () => {
   &:focus-visible {
     color: inherit;
   }
-}
-
-.character__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
 }
 </style>

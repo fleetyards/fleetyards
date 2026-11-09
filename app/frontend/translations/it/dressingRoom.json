@@ -1,7 +1,6 @@
 {
   "it": {
     "dressingRoom": {
-      "lead": "Abbina armatura e tuta interna e guarda l'outfit in 3D. Condividilo con un link o accedi per salvarlo.",
       "slots": {
         "helmet": "Casco",
         "torso": "Torso",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "Armatura",
         "weapons": "Armi",
-        "gear": "Equipaggiamento"
+        "gear": "Equipaggiamento",
+        "supplies": "Rifornimenti"
       },
       "hold": "Impugna",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "Impossibile caricare il personaggio.",
           "deleteFailed": "Impossibile eliminare il personaggio."
         }
-      }
+      },
+      "filledOf": "%{count} di %{total}",
+      "viewControls": "Vista",
+      "loadout": "Equipaggiamento"
     }
   }
 }

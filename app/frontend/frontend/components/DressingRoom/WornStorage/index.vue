@@ -224,7 +224,11 @@ const canAddOne = (
 
 .worn-storage__title {
   margin: 0;
-  font-size: 1.1rem;
+  color: $gray-lighter;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .worn-storage__holder {

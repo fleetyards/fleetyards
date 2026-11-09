@@ -9,7 +9,6 @@ import {
   type Material,
   Mesh,
   MeshBasicMaterial,
-  MeshStandardMaterial,
   type Object3D,
   PlaneGeometry,
   SRGBColorSpace,
@@ -193,28 +192,35 @@ export const buildBackdrop = (
     mirror.rotation.x = -Math.PI / 2;
     mirror.position.y = -0.006;
     group.add(mirror);
+  } else {
+    // Unlit: a lit gloss mirrors the room light's white sky and blows out.
+    const ground = new Mesh(
+      new CircleGeometry(BACKDROP_RADIUS, 64),
+      new MeshBasicMaterial({ color: "#050c13", toneMapped: false }),
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.006;
+    group.add(ground);
   }
 
-  // Over the mirror, dimming it to the gloss of a dark floor; on its own, the
+  // Over the mirror or the plain ground, dimming it to the gloss of a dark
   // floor.
-  const sheen = new Mesh(
-    new CircleGeometry(BACKDROP_RADIUS, 64),
-    reflective
-      ? new MeshBasicMaterial({
-          map: sheenTexture(),
-          transparent: true,
-          depthWrite: false,
-          toneMapped: false,
-        })
-      : new MeshStandardMaterial({
-          color: "#050c13",
-          metalness: 0.4,
-          roughness: 0.25,
-        }),
-  );
-  sheen.rotation.x = -Math.PI / 2;
-  sheen.position.y = -0.004;
-  group.add(sheen);
+  // Only with its gradient: untextured it would be a white disc.
+  const sheenMap = sheenTexture();
+  if (sheenMap) {
+    const sheen = new Mesh(
+      new CircleGeometry(BACKDROP_RADIUS, 64),
+      new MeshBasicMaterial({
+        map: sheenMap,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    );
+    sheen.rotation.x = -Math.PI / 2;
+    sheen.position.y = -0.004;
+    group.add(sheen);
+  }
 
   const panelMap = panelTexture();
   const haloMap = haloTexture();

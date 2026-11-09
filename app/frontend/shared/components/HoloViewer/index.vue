@@ -270,6 +270,14 @@ onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 // Kept out of the model's scene, so framing measures the figure alone.
 const backdrop = shallowRef<Group>();
 
+// Full screen, a staged model is shown as a ship or an item is: on a
+// background of its own choosing, free to turn and move all round.
+const staged = computed(() => props.backdrop && !internalFullscreen.value);
+
+const offersBackgrounds = computed(
+  () => props.backgrounds || (props.backdrop && internalFullscreen.value),
+);
+
 // The room grown to the model alone; see `roomScale` for the camera's part.
 const modelRoomScale = ref(1);
 
@@ -390,7 +398,7 @@ const backgroundName = (name: Background) =>
   t(`labels.holoViewer.background.${name}`);
 
 const skybox = computed(() =>
-  props.backgrounds ? SKYBOXES[background.value] : undefined,
+  offersBackgrounds.value ? SKYBOXES[background.value] : undefined,
 );
 
 // Hidden only: the model stays scaled and set down as it is on the grid.
@@ -506,13 +514,14 @@ const nearPlaneFor = (cameraDistance: number) =>
 
 // Inside the room's walls: past them the room reads as a ball in the dark.
 const maxZoomDistance = computed(() =>
-  props.backdrop
+  staged.value
     ? BACKDROP_RADIUS * roomScale.value * ROOM_ZOOM_REACH
     : Math.max(250, fitDistance.value * 3),
 );
 
 const starsVisible = computed(
-  () => props.backgrounds && (background.value === "space" || !!skybox.value),
+  () =>
+    offersBackgrounds.value && (background.value === "space" || !!skybox.value),
 );
 
 const STARS_RADIUS = 1.5;
@@ -814,7 +823,7 @@ defineExpose({
       'holo-viewer--inline': inline && !internalFullscreen,
       'holo-viewer--fullscreen': internalFullscreen,
       'holo-viewer--framed': backdrop && !internalFullscreen,
-      [`holo-viewer--${background}`]: backgrounds,
+      [`holo-viewer--${background}`]: offersBackgrounds,
     }"
   >
     <AppModalCloseBtn
@@ -860,7 +869,7 @@ defineExpose({
         <i class="fa-light fa-grid" />
       </Btn>
       <BtnDropdown
-        v-if="backgrounds"
+        v-if="offersBackgrounds"
         expand-top
         expand-left
         data-test="holo-viewer-background"
@@ -952,7 +961,7 @@ defineExpose({
         :enable-zoom="zoom && !turntableLocked"
         :min-polar-angle="turntableLocked ? turntablePolar : 0"
         :max-polar-angle="
-          turntableLocked ? turntablePolar : backdrop ? FLOOR_POLAR : Math.PI
+          turntableLocked ? turntablePolar : staged ? FLOOR_POLAR : Math.PI
         "
         :zoom-speed="0.5"
         :min-distance="-50"
@@ -974,7 +983,7 @@ defineExpose({
         :size="maxZoomDistance / 150"
       />
       <Skybox v-if="skybox" :src="skybox" />
-      <primitive v-if="backdrop" :object="backdrop" />
+      <primitive v-if="staged && backdrop" :object="backdrop" />
       <Grid
         v-if="grid && gridVisible"
         :args="[10, 10]"

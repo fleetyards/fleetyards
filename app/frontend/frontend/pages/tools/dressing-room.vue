@@ -6,19 +6,16 @@ export default {
 
 <script lang="ts" setup>
 import { useQueries } from "@tanstack/vue-query";
-import { onClickOutside } from "@vueuse/core";
 import { storeToRefs } from "pinia";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import Characters from "@/frontend/components/DressingRoom/Characters/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
-import SlotRow from "@/frontend/components/DressingRoom/SlotRow/index.vue";
+import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
+import StageLayout from "@/frontend/components/StageLayout/index.vue";
+import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -48,7 +45,6 @@ import {
   ALL_SLOTS,
   BACKPACK_MOUNT,
   GEAR_COLUMNS,
-  GEAR_KINDS,
   GEAR_SLOTS,
   holdClip,
   RIG_ORDER,
@@ -70,6 +66,7 @@ import {
   pieceHolo,
   riggedOutfitModel,
   riggedPieceHolo,
+  slotIcon,
   visibleGearSlots,
   wearArmorSet,
 } from "@/frontend/utils/dressingRoom";
@@ -102,22 +99,6 @@ const HOLO_AZIMUTH = 180;
 const HOLO_ELEVATION = 8;
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
-
-const stage = ref<HTMLElement>();
-const stageTapped = ref(false);
-
-// On click, not pointerdown: a tap's target is settled when the finger lifts, so
-// revealing any earlier would hand that same tap to a button nobody could see.
-// Dragging the figure round produces no click.
-const handleStageClick = (event: MouseEvent) => {
-  if ((event.target as Element).closest("button")) return;
-
-  stageTapped.value = !stageTapped.value;
-};
-
-onClickOutside(stage, () => {
-  stageTapped.value = false;
-});
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -305,36 +286,43 @@ const gearSlots = computed(() =>
   ),
 );
 
-const columnKinds = GEAR_COLUMNS.flat();
+const supplyKinds = GEAR_COLUMNS.flat();
 
-// The gear with a column under the stage, by column and kind, leaving out what
-// the worn pieces have no slot for.
-const gearColumns = computed(() =>
-  GEAR_COLUMNS.map((column, index) => ({
-    key: index,
-    kinds: GEAR_KINDS.filter((kind) => column.includes(kind.key))
-      .map((kind) => ({
-        key: kind.key,
-        slots: gearSlots.value.filter((slot) => kind.slots.includes(slot)),
-      }))
-      .filter((kind) => kind.slots.length),
-  })).filter((column) => column.kinds.length),
+const isSupply = (slot: OutfitSlotEnum) =>
+  supplyKinds.includes(gearKind(slot)?.key ?? "");
+
+// What pockets and pouches hold, by kind, leaving out what the worn pieces
+// have no slot for.
+const supplies = computed(() =>
+  supplyKinds
+    .map((key) => ({
+      key,
+      slots: gearSlots.value.filter((slot) => gearKind(slot)?.key === key),
+    }))
+    .filter((kind) => kind.slots.length),
 );
 
-const listedGearSlots = computed(() =>
-  gearSlots.value.filter(
-    (slot) => !columnKinds.includes(gearKind(slot)?.key ?? ""),
-  ),
-);
+// Said in the supplies tab while nothing worn carries any; with gadget or
+// tool slots in the gear tab, the tab is simply left out.
+const suppliesHint = computed(() => {
+  if (wornLoading.value) return "…";
+  if (gearSlots.value.length) return undefined;
 
-// The gear group stays while it has slots or something to say about having none.
-const SLOT_GROUPS = computed(() => [
-  { key: "armour", slots: OUTFIT_SLOTS },
-  { key: "weapons", slots: WEAPON_SLOTS },
-  ...(listedGearSlots.value.length || !gearColumns.value.length
-    ? [{ key: "gear", slots: listedGearSlots.value }]
-    : []),
-]);
+  return wearsGearProvider.value
+    ? t("dressingRoom.gearNone")
+    : t("dressingRoom.gearHint");
+});
+
+// The gear tab only while something worn takes a gadget or a tool.
+const loadoutTabs = computed(() => {
+  const gear = gearSlots.value.filter((slot) => !isSupply(slot));
+
+  return [
+    { key: "armour", slots: OUTFIT_SLOTS },
+    { key: "weapons", slots: WEAPON_SLOTS },
+    ...(gear.length ? [{ key: "gear", slots: gear }] : []),
+  ];
+});
 
 const selectedSlots = computed(() =>
   ALL_SLOTS.filter((slot) => selection.value[slot]),
@@ -640,6 +628,18 @@ const attachments = computed(() => [
   }),
 ]);
 
+// A supply reads by its number under its kind's heading.
+const loadoutRow = (slot: OutfitSlotEnum) => {
+  const supply = isSupply(slot);
+
+  return {
+    ...slotRow(slot),
+    label: supply ? String(gearNumber(slot)) : slotLabel(slot),
+    fullLabel: supply ? slotLabel(slot) : undefined,
+    icon: supply ? undefined : slotIcon(slot),
+  };
+};
+
 const slotRow = (slot: OutfitSlotEnum) => ({
   slot,
   item: items.value[slot],
@@ -899,167 +899,55 @@ const copyShareLink = () => {
 
 <template>
   <div class="dressing-room-page">
-    <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
-    <p class="dressing-room-page__lead">{{ t("dressingRoom.lead") }}</p>
-
-    <div class="dressing-room">
-      <div
-        ref="stage"
-        class="dressing-room__stage"
-        :class="{ 'dressing-room__stage--tapped': stageTapped }"
-        data-test="dressing-room-stage"
-        @click="handleStageClick"
-      >
-        <HoloViewer
-          v-if="model"
-          ref="viewer"
-          :key="model.path"
-          :models="[model]"
-          :azimuth="HOLO_AZIMUTH"
-          :elevation="HOLO_ELEVATION"
-          :auto-rotate="false"
-          :contain-padding="1.08"
-          contain
-          zoomable
-          turntable
-          backdrop
-          @unavailable="holoUnavailable"
-          @unplaced="unplaced = $event"
-          @fell-back="failedPaths = [...failedPaths, ...$event]"
-        />
-        <div
-          v-else
-          class="dressing-room__empty"
-          data-test="dressing-room-empty"
+    <header class="dressing-room-page__header">
+      <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+      <div class="dressing-room-page__actions">
+        <Btn data-test="dressing-room-open-armor-sets" @click="openArmorSets">
+          <i class="fa-light fa-layer-group" />
+          {{ t("dressingRoom.armorSets.open") }}
+        </Btn>
+        <Btn
+          :disabled="!selectedSlots.length && !faceToken"
+          data-test="dressing-room-copy-link"
+          @click="copyShareLink"
         >
-          <i class="fa-duotone fa-person" />
-          <p>{{ t("dressingRoom.empty") }}</p>
-        </div>
-        <div class="dressing-room__actions">
-          <Btn
-            v-if="model"
-            :size="BtnSizesEnum.SM"
-            :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
-            v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
-            data-test="dressing-room-fullscreen"
-            @click="viewer?.enableFullscreen()"
-          >
-            <i class="fa-light fa-expand" />
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :disabled="!selectedSlots.length && !faceToken"
-            data-test="dressing-room-copy-link"
-            @click="copyShareLink"
-          >
-            <i class="fa-light fa-link" />
-            {{ t("dressingRoom.copyLink") }}
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :variant="BtnVariantsEnum.GHOST"
-            :disabled="!selectedSlots.length && !activeOutfitId"
-            data-test="dressing-room-reset"
-            @click="reset"
-          >
-            <i class="fa-light fa-undo" />
-            {{ t("actions.reset") }}
-          </Btn>
-        </div>
+          <i class="fa-light fa-link" />
+          {{ t("dressingRoom.copyLink") }}
+        </Btn>
+      </div>
+    </header>
+
+    <StageLayout
+      class="dressing-room"
+      :controls-label="t('dressingRoom.viewControls')"
+      data-test="dressing-room-stage"
+    >
+      <HoloViewer
+        v-if="model"
+        ref="viewer"
+        :key="model.path"
+        :models="[model]"
+        :azimuth="HOLO_AZIMUTH"
+        :elevation="HOLO_ELEVATION"
+        :auto-rotate="false"
+        :contain-padding="1.08"
+        contain
+        zoomable
+        turntable
+        backdrop
+        @unavailable="holoUnavailable"
+        @unplaced="unplaced = $event"
+        @fell-back="failedPaths = [...failedPaths, ...$event]"
+      />
+      <div v-else class="dressing-room__empty" data-test="dressing-room-empty">
+        <i class="fa-duotone fa-person" />
+        <p>{{ t("dressingRoom.empty") }}</p>
       </div>
 
-      <aside class="dressing-room__side dressing-room__side--pieces">
-        <div class="dressing-room__groups">
-          <section
-            v-for="group in SLOT_GROUPS"
-            :key="group.key"
-            class="dressing-room__group"
-          >
-            <div class="dressing-room__group-header">
-              <h2 class="dressing-room__group-title">
-                {{ t(`dressingRoom.groups.${group.key}`) }}
-              </h2>
-              <Btn
-                v-if="group.key === 'armour'"
-                :size="BtnSizesEnum.SM"
-                :variant="BtnVariantsEnum.GHOST"
-                data-test="dressing-room-open-armor-sets"
-                @click="openArmorSets"
-              >
-                <i class="fa-light fa-layer-group" />
-                {{ t("dressingRoom.armorSets.open") }}
-              </Btn>
-            </div>
-            <p
-              v-if="group.key === 'gear' && !group.slots.length"
-              class="dressing-room__group-hint"
-              data-test="dressing-room-gear-hint"
-            >
-              {{
-                wornLoading
-                  ? "…"
-                  : wearsGearProvider
-                    ? t("dressingRoom.gearNone")
-                    : t("dressingRoom.gearHint")
-              }}
-            </p>
-            <ul
-              v-else
-              class="dressing-room__slots"
-              :data-test="`dressing-room-slots-${group.key}`"
-            >
-              <SlotRow
-                v-for="slot in group.slots"
-                :key="slot"
-                v-bind="slotRow(slot)"
-                :label="slotLabel(slot)"
-                @pick="openSlot(slot)"
-                @hold="toggleHeld(slot)"
-                @clear="clear(slot)"
-              />
-            </ul>
-          </section>
-        </div>
-      </aside>
-
-      <section
-        v-if="gearColumns.length"
-        class="dressing-room__gear"
-        data-test="dressing-room-gear-columns"
-      >
-        <div
-          v-for="column in gearColumns"
-          :key="column.key"
-          class="dressing-room__gear-column"
-        >
-          <template v-for="kind in column.kinds" :key="kind.key">
-            <h2 class="dressing-room__group-title">
-              {{ t(`dressingRoom.gearColumns.${kind.key}`) }}
-            </h2>
-            <ul
-              class="dressing-room__slots"
-              :data-test="`dressing-room-slots-${kind.key}`"
-            >
-              <SlotRow
-                v-for="slot in kind.slots"
-                :key="slot"
-                v-bind="slotRow(slot)"
-                :label="String(gearNumber(slot))"
-                :full-label="slotLabel(slot)"
-                compact
-                @pick="openSlot(slot)"
-                @clear="clear(slot)"
-              />
-            </ul>
-          </template>
-        </div>
-      </section>
-
-      <aside class="dressing-room__side dressing-room__side--outfit">
+      <template #controls>
         <BtnGroup
           v-if="bodyOptions.length > 1"
           segmented
-          class="dressing-room__bodies"
           data-test="dressing-room-bodies"
         >
           <Btn
@@ -1076,133 +964,106 @@ const copyShareLink = () => {
           v-if="poseOptions.length > 1"
           v-model="selectedPose"
           name="dressing-room-pose"
+          class="dressing-room__pose"
           :label="t('dressingRoom.pose')"
           :options="poseOptions"
           :searchable="false"
+          no-label
+          inline
           data-test="dressing-room-pose"
         />
+        <Btn
+          :aria-label="t('actions.reset')"
+          v-tooltip="t('actions.reset')"
+          :disabled="!selectedSlots.length && !activeOutfitId"
+          data-test="dressing-room-reset"
+          @click="reset"
+        >
+          <i class="fa-light fa-undo" />
+        </Btn>
+        <Btn
+          v-if="model"
+          :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+          v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+          data-test="dressing-room-fullscreen"
+          @click="viewer?.enableFullscreen()"
+        >
+          <i class="fa-light fa-expand" />
+        </Btn>
+      </template>
 
-        <Characters
-          :body="bodyKey"
-          :token="faceToken"
-          :shown="shownFace"
-          :unavailable="faceUnavailable"
-          :not-ready="faceNotReady"
-          @select="selectFace"
-        />
-        <Outfits
-          :items="outfitItems"
-          :stored-items="storedInputs"
-          :blocked="saveBlocked"
-          :held-weapon="heldWeapon"
-          :body="bodyKey"
-          :character-face-id="ownFaceId"
-          :pending="piecesPending"
-          :active-id="activeOutfitId"
-          @load="loadOutfit"
-          @active="setActiveOutfit"
-        />
-        <WornStorage
-          :stored="stored"
-          :worn="items"
-          :stored-items="storedItems"
-          :loading="storedLoading || wornLoading"
-          @add="openStorage"
-          @quantity="changeStored"
-        />
-      </aside>
-    </div>
+      <template #start>
+        <StagePanel>
+          <Loadout
+            :tabs="loadoutTabs"
+            :supplies="supplies"
+            :supplies-hint="suppliesHint"
+            :row="loadoutRow"
+            @pick="openSlot"
+            @hold="toggleHeld"
+            @clear="clear"
+          />
+        </StagePanel>
+      </template>
+
+      <template #end>
+        <StagePanel>
+          <Characters
+            :body="bodyKey"
+            :token="faceToken"
+            :shown="shownFace"
+            :unavailable="faceUnavailable"
+            :not-ready="faceNotReady"
+            @select="selectFace"
+          />
+        </StagePanel>
+        <StagePanel>
+          <WornStorage
+            :stored="stored"
+            :worn="items"
+            :stored-items="storedItems"
+            :loading="storedLoading || wornLoading"
+            @add="openStorage"
+            @quantity="changeStored"
+          />
+        </StagePanel>
+        <StagePanel>
+          <Outfits
+            :items="outfitItems"
+            :stored-items="storedInputs"
+            :blocked="saveBlocked"
+            :held-weapon="heldWeapon"
+            :body="bodyKey"
+            :character-face-id="ownFaceId"
+            :pending="piecesPending"
+            :active-id="activeOutfitId"
+            @load="loadOutfit"
+            @active="setActiveOutfit"
+          />
+        </StagePanel>
+      </template>
+    </StageLayout>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.dressing-room-page__lead {
-  max-width: 60rem;
-  color: $gray-lighter;
-}
-
-.dressing-room {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
-
-  @media (min-width: $desktop-breakpoint) {
-    grid-template-areas:
-      "pieces stage outfit"
-      "gear gear outfit";
-    // The forms keep a reading width; every pixel a larger screen adds goes
-    // to the figure.
-    grid-template-columns:
-      minmax(16rem, 22rem)
-      minmax(0, 1fr)
-      minmax(16rem, 24rem);
-    // The first row fits the slots and the stage; the right column's lists run
-    // on past it beside the gear.
-    grid-template-rows: auto 1fr;
-    align-items: start;
-  }
-}
-
-// Portrait on a phone, as a standing figure is: a landscape stage would leave
-// most of itself empty either side of it.
-.dressing-room__stage {
-  position: relative;
-  height: min(70vh, 48rem);
-  min-height: 24rem;
-  border-radius: 4px;
-  // No box of its own: the page shows through, lit by a spot behind the
-  // figure and a glow on the floor under its pedestal.
-  background:
-    radial-gradient(
-      ellipse 42% 12% at 50% 90%,
-      rgba($primary, 0.28),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 55% 60% at 50% 42%,
-      rgba($primary, 0.16),
-      rgba($background, 0.35) 70%,
-      transparent 100%
-    );
-
-  // Down to the foot of the screen, below the heading and lead above it.
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: stage;
-    height: max(32rem, calc(100dvh - 13rem));
-  }
-}
-
-// As wide as the slots and stage above: the stage's aspect ratio sizes its
-// column, and long item names here must not.
-.dressing-room__gear {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 1.25rem;
-  align-items: start;
-  width: 0;
-  min-width: 100%;
-
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: gear;
-  }
-}
-
-.dressing-room__gear-column {
+.dressing-room-page__header {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.dressing-room-page__actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.dressing-room__side--pieces {
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: pieces;
-  }
-}
-
-.dressing-room__side--outfit {
-  @media (min-width: $desktop-breakpoint) {
-    grid-area: outfit;
-  }
+.dressing-room__pose {
+  min-width: 10rem;
 }
 
 .dressing-room__empty {
@@ -1220,79 +1081,5 @@ const copyShareLink = () => {
     font-size: 4rem;
     opacity: 0.4;
   }
-}
-
-.dressing-room__actions {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  gap: 8px;
-  // Out of the figure's way until the stage is pointed at or tapped. Hidden
-  // buttons must not take taps: an unseen reset would wipe the outfit.
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-
-// Each kind of screen has its own reveal: a touch browser can hold on to :hover
-// long after the tap, and a mouse click must not pin the buttons in place.
-@media (hover: hover) {
-  .dressing-room__stage:hover .dressing-room__actions {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-@media (hover: none) {
-  .dressing-room__stage--tapped .dressing-room__actions {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-.dressing-room__actions:focus-within {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.dressing-room__side {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.dressing-room__groups {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.dressing-room__group-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.dressing-room__group-title {
-  margin: 0;
-  font-size: 1rem;
-  color: $gray-lighter;
-}
-
-.dressing-room__group-hint {
-  margin: 0;
-  color: $gray-light;
-}
-
-.dressing-room__slots {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 </style>

@@ -17,12 +17,18 @@ type Props = {
   query?: ModelQuery;
   // The label still names the field to assistive tech and titles the picker.
   noLabel?: boolean;
+  // Off where a ship must always be picked: another one replaces it.
+  clearable?: boolean;
+  // Without the field's bottom margin, for a toolbar.
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   query: undefined,
   noLabel: false,
+  clearable: true,
+  inline: false,
 });
 
 const emit = defineEmits<{
@@ -89,6 +95,7 @@ onUnmounted(() => {
 <template>
   <div
     class="base-select model-picker-select"
+    :class="{ inline }"
     :data-test="`model-picker-select-${name}`"
   >
     <div v-if="!noLabel" class="field-label">
@@ -119,7 +126,7 @@ onUnmounted(() => {
         <i class="fa fa-chevron-down" />
       </button>
       <button
-        v-if="modelValue"
+        v-if="clearable && modelValue"
         type="button"
         class="model-picker-select__clear"
         :aria-label="t('actions.clear')"

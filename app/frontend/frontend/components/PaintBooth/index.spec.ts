@@ -138,6 +138,28 @@ describe("PaintBooth", () => {
     ).toBe("true");
   });
 
+  it("folds the paints down to the one on the ship, and opens them again", async () => {
+    const wrapper = await mount({ paint: "ghoulish-green" });
+    const toggle = wrapper.find('[data-test="paint-booth-toggle"]');
+
+    await toggle.trigger("click");
+
+    expect(toggle.attributes("aria-expanded")).toBe("false");
+    expect(
+      wrapper.find('[data-test="paint-booth-paints"]').attributes("style"),
+    ).toContain("display: none");
+    expect(wrapper.find('[data-test="paint-booth-collapsed"]').text()).toBe(
+      "GHOULISH-GREEN",
+    );
+
+    await toggle.trigger("click");
+
+    expect(
+      wrapper.find('[data-test="paint-booth-paints"]').attributes("style") ??
+        "",
+    ).not.toContain("display: none");
+  });
+
   it("asks for a paint by its slug, and for the own colours by none", async () => {
     const wrapper = await mount({ paint: "blue-steel" });
 
@@ -180,6 +202,14 @@ describe("PaintBooth", () => {
       false,
     );
   });
+  it("offers no folding on a ship without paints", async () => {
+    const wrapper = await mount({}, { holo: file("holo.glb") });
+
+    expect(wrapper.find('[data-test="paint-booth-toggle"]').exists()).toBe(
+      false,
+    );
+  });
+
   it("says so for a ship without a textured export", async () => {
     const wrapper = await mount({}, { holo: file("holo.glb") });
 

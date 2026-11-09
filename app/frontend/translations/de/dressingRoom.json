@@ -1,7 +1,6 @@
 {
   "de": {
     "dressingRoom": {
-      "lead": "Stelle Rüstung und Unteranzug zusammen und sieh dir das Outfit in 3D an. Teile es per Link oder melde dich an, um es zu speichern.",
       "slots": {
         "helmet": "Helm",
         "torso": "Torso",
@@ -44,7 +43,8 @@
       "groups": {
         "armour": "Rüstung",
         "weapons": "Waffen",
-        "gear": "Ausrüstung"
+        "gear": "Ausrüstung",
+        "supplies": "Vorräte"
       },
       "hold": "In die Hand nehmen",
       "bodies": {
@@ -117,7 +117,10 @@
           "uploadFailed": "Der Charakter konnte nicht hochgeladen werden.",
           "deleteFailed": "Der Charakter konnte nicht gelöscht werden."
         }
-      }
+      },
+      "filledOf": "%{count} von %{total}",
+      "viewControls": "Ansicht",
+      "loadout": "Ausrüstung am Körper"
     }
   }
 }
