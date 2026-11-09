@@ -4,6 +4,8 @@ import {
   FrontSide,
   LinearSRGBColorSpace,
   type Material,
+  MeshPhysicalMaterial,
+  RepeatWrapping,
   MeshStandardMaterial,
   NoColorSpace,
   SRGBColorSpace,
@@ -293,23 +295,27 @@ export const bakeEyes = (recipe: EyeRecipe) =>
 // three copies through JSON when it clones a material.
 export const ownedTextures = new WeakMap<Material, Texture[]>();
 
-// Hair, beard and brow strands as smooth as the export says catch the review
-// lights as white streaks: the game's hair highlight runs along the strand,
-// which a standard material cannot do, so they are kept matt enough for their
-// colour to show.
-const STRAND_ROUGHNESS = 0.8;
-const STRAND_MODES = ["hair_cards", "hair_coat", "hair_cap"];
+// Strand textures repeat: some cards run past u = 1. A copy carries the
+// wrapping, as the loaded texture is shared, and is the material's to free.
+const repeating = (texture?: Texture) => {
+  if (!texture) return texture;
+  const copy = texture.clone();
+  copy.wrapS = RepeatWrapping;
+  copy.wrapT = RepeatWrapping;
+  copy.needsUpdate = true;
+  return copy;
+};
 
-// `channel` is the UV set the strand textures are laid out on: hair, beard
-// and brow cards keep their strand atlas on the second.
+// A three.js material for one accessory sub-material, as the export resolves
+// it. Strand cards keep their opacity as the texture is minified, as the
+// game's OpacityMipScale does: without it the mostly empty strand atlas
+// averages away in the lower mip levels and the cards vanish under the alpha
+// test. The strand variation multiplies the colour by an ID map.
 export const characterMaterial = async (
   three: CharacterThreeMaterial,
   variation?: { map: string | null; amount: number },
-  channel = 0,
-  mode?: string,
 ) => {
-  const strands = !!mode && STRAND_MODES.includes(mode);
-  const [map, alphaMap, idMap] = await Promise.all([
+  const [map, loadedAlpha, loadedIds] = await Promise.all([
     three.map
       ? loadTexture(three.map, SRGBColorSpace).catch(() => undefined)
       : undefined,
@@ -320,22 +326,10 @@ export const characterMaterial = async (
       ? loadTexture(variation.map).catch(() => undefined)
       : undefined,
   ]);
+  const alphaMap = repeating(loadedAlpha);
+  const idMap = repeating(loadedIds);
 
-  // The loaded texture is shared by every character; a copy carries the
-  // channel, and is the material's to free.
-  const onChannel = (texture?: Texture) => {
-    if (!texture || channel === 0) return texture;
-    const copy = texture.clone();
-    copy.channel = channel;
-    // The strand atlas is laid out on the second set upside down from glTF's
-    // texture space.
-    copy.flipY = true;
-    copy.needsUpdate = true;
-    return copy;
-  };
-  const strandAlpha = onChannel(alphaMap);
-
-  const material = new MeshStandardMaterial({
+  const parameters = {
     color: three.color
       ? new Color().setRGB(
           three.color[0],
@@ -345,53 +339,86 @@ export const characterMaterial = async (
         )
       : undefined,
     map: map ?? null,
-    alphaMap: strandAlpha ?? null,
+    alphaMap: alphaMap ?? null,
     alphaTest: three.alphaTest ?? 0,
+    alphaToCoverage: !!three.alphaToCoverage,
     transparent: !!three.transparent,
     depthWrite: three.depthWrite ?? true,
     opacity: three.opacity ?? 1,
     side: three.side === "DoubleSide" ? DoubleSide : FrontSide,
-    roughness: strands
-      ? Math.max(three.roughness ?? 1, STRAND_ROUGHNESS)
-      : (three.roughness ?? 1),
+    roughness: three.roughness ?? 1,
     metalness: three.metalness ?? 0,
     polygonOffset: !!three.polygonOffset,
     polygonOffsetFactor: three.polygonOffsetFactor ?? 0,
-  });
+  };
+  const material =
+    three.type === "MeshPhysicalMaterial"
+      ? new MeshPhysicalMaterial({
+          ...parameters,
+          specularIntensity: three.specularIntensity ?? 1,
+          specularColor: three.specularColor
+            ? new Color().setRGB(
+                three.specularColor[0],
+                three.specularColor[1],
+                three.specularColor[2],
+                LinearSRGBColorSpace,
+              )
+            : new Color(1, 1, 1),
+        })
+      : new MeshStandardMaterial(parameters);
 
-  if (idMap && variation) {
+  const mipScale = alphaMap ? (three.alphaMipScale ?? 0) : 0;
+  const varied = !!(idMap && variation);
+
+  if (mipScale || varied) {
     material.onBeforeCompile = (shader) => {
-      shader.uniforms.strandIds = { value: idMap };
-      shader.uniforms.strandVariation = { value: variation.amount };
-      shader.fragmentShader = shader.fragmentShader
-        .replace(
-          "#include <common>",
-          "#include <common>\nuniform sampler2D strandIds;\nuniform float strandVariation;",
-        )
-        .replace(
+      let uniforms = "";
+      if (mipScale) {
+        shader.uniforms.alphaMipScale = { value: mipScale };
+        uniforms += "uniform float alphaMipScale;\n";
+        shader.fragmentShader = shader.fragmentShader.replace(
+          "#include <alphamap_fragment>",
+          `#ifdef USE_ALPHAMAP
+  vec2 alphaTexels = vec2(textureSize(alphaMap, 0));
+  vec2 alphaDx = dFdx(vAlphaMapUv * alphaTexels);
+  vec2 alphaDy = dFdy(vAlphaMapUv * alphaTexels);
+  float alphaLod = max(0.0, 0.5 * log2(max(dot(alphaDx, alphaDx), dot(alphaDy, alphaDy))));
+  diffuseColor.a *= clamp(texture2D(alphaMap, vAlphaMapUv).g * (1.0 + alphaLod * alphaMipScale), 0.0, 1.0);
+#endif`,
+        );
+      }
+      if (varied) {
+        shader.uniforms.strandIds = { value: idMap };
+        shader.uniforms.strandVariation = { value: variation!.amount };
+        uniforms +=
+          "uniform sampler2D strandIds;\nuniform float strandVariation;\nvarying vec2 vStrandUv;\n";
+        shader.fragmentShader = shader.fragmentShader.replace(
           "#include <map_fragment>",
           "#include <map_fragment>\ndiffuseColor.rgb *= 1.0 + strandVariation * (texture2D(strandIds, vStrandUv).r - 0.5);",
         );
-      shader.vertexShader = shader.vertexShader
-        .replace(
-          "#include <common>",
-          "#include <common>\nvarying vec2 vStrandUv;",
-        )
-        .replace(
-          "#include <uv_vertex>",
-          `#include <uv_vertex>\nvStrandUv = ${channel === 1 ? "vec2(uv1.x, 1.0 - uv1.y)" : "uv"};`,
-        );
+        shader.vertexShader = shader.vertexShader
+          .replace(
+            "#include <common>",
+            "#include <common>\nvarying vec2 vStrandUv;",
+          )
+          .replace(
+            "#include <uv_vertex>",
+            "#include <uv_vertex>\nvStrandUv = uv;",
+          );
+      }
       shader.fragmentShader = shader.fragmentShader.replace(
         "#include <common>",
-        "#include <common>\nvarying vec2 vStrandUv;",
+        `#include <common>\n${uniforms}`,
       );
     };
-    material.customProgramCacheKey = () => `character-strands-${channel}`;
+    material.customProgramCacheKey = () =>
+      `character-strands-${mipScale ? 1 : 0}-${varied ? 1 : 0}`;
   }
 
-  if (strandAlpha && strandAlpha !== alphaMap) {
-    ownedTextures.set(material, [strandAlpha]);
-  }
+  ownedTextures.set(
+    material,
+    [alphaMap, idMap].filter((texture): texture is Texture => !!texture),
+  );
 
   return material;
 };

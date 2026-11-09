@@ -16,6 +16,12 @@ export type CharacterThreeMaterial = {
   metalness?: number;
   polygonOffset?: boolean;
   polygonOffsetFactor?: number;
+  texCoord?: number;
+  alphaToCoverage?: boolean;
+  // How much a strand card's opacity is raised per mip level.
+  alphaMipScale?: number;
+  specularIntensity?: number;
+  specularColor?: number[];
 };
 
 export type CharacterSubmaterial =

@@ -73,26 +73,6 @@ const meshesOf = (root: Object3D) => {
   return meshes;
 };
 
-// The UV set a primitive's alpha and strand maps are read on. Cards carry
-// their strand atlas on the second set; where that set is a single point --
-// lashes, shaved and shadow layers -- it is unused and the first holds them.
-export const strandChannel = (geometry: BufferGeometry) => {
-  const second = geometry.getAttribute("uv1");
-  if (!second || second.count === 0) return 0;
-
-  const u = second.getX(0);
-  const v = second.getY(0);
-  for (let i = 1; i < second.count; i++) {
-    if (
-      Math.abs(second.getX(i) - u) > 1e-4 ||
-      Math.abs(second.getY(i) - v) > 1e-4
-    ) {
-      return 1;
-    }
-  }
-  return 0;
-};
-
 const loadAccessory = async (
   rig: CharacterRig,
   mesh: CharacterRig["meshes"][number],
@@ -125,8 +105,6 @@ const loadAccessory = async (
           part.material = await characterMaterial(
             entry.material.three,
             entry.material.variation,
-            strandChannel(part.geometry),
-            entry.material.mode,
           );
           owned.materials.push(part.material);
         }
