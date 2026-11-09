@@ -12,7 +12,7 @@ GEM
       concurrent-ruby (~> 1.0)
     abbrev (0.1.2)
     accept_language (2.2.0)
-    action_policy (0.7.7)
+    action_policy (0.7.8)
       ruby-next-core (>= 1.0)
     action_text-trix (2.1.19)
       railties
@@ -989,7 +989,7 @@ CHECKSUMS
   aasm (6.0.0) sha256=c96ce60ea9574eb194e33f29d801be430b8cade2f31c8a5d137a9870ee39d404
   abbrev (0.1.2) sha256=ad1b4eaaaed4cb722d5684d63949e4bde1d34f2a95e20db93aecfe7cbac74242
   accept_language (2.2.0) sha256=7cc4d9a002b90d091619f82119b3c4b0e7ef753587043f03c52fc823e0d2440f
-  action_policy (0.7.7) sha256=e17a708d2a6bcc80a7fe3fcd5461138c284d1ef19553533b1eeaf58c0fadaf33
+  action_policy (0.7.8) sha256=26d136c9719eb885cf4e66b82f755e36a303fd028c36e113f1e1d64ab371c090
   action_text-trix (2.1.19) sha256=7012f59421009cf284aa651294896414d653a61a2417c9b8714c8476d2f74009
   actioncable (8.1.4.1) sha256=007670f7297973e94809e9f32a56624a7aa60b6e9d6696cd078064ce86d1c7fc
   actionmailbox (8.1.4.1) sha256=18b43dd842bf3a3e31b8e38b7917c21e48c128fc8b263c893481cc66ee1a8f78
