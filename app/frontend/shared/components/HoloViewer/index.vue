@@ -114,8 +114,8 @@ type Props = {
   onDemand?: boolean;
   // Mounted parts answer the pointer: hovered and clicked by their mount's id.
   pickable?: boolean;
-  // Turned only about its upright axis until shown full screen, where it
-  // orbits freely.
+  // Turned only about its upright axis, without zoom, until shown full
+  // screen, where it orbits freely.
   turntable?: boolean;
   // Room left around a contained model, as a factor of its fitted distance.
   containPadding?: number;
@@ -253,8 +253,8 @@ const disableFullscreen = () => {
     liveControls.update?.();
   }
 
-  // Back from full screen, a turntable returns to the framing it opened on
-  // rather than wherever full screen left it.
+  // A turntable has no zoom of its own: back from full screen, it returns
+  // to the framing it opened on rather than wherever full screen left it.
   if (props.turntable) cameraPosition.value = [...cameraPosition.value];
 };
 
@@ -844,7 +844,12 @@ defineExpose({
       >
         <i class="fa-light fa-planet-ringed" />
       </Btn>
-      <Btn v-tooltip="zoomTooltip" :active="zoom" @click="toggleZoom">
+      <Btn
+        v-if="!turntableLocked"
+        v-tooltip="zoomTooltip"
+        :active="zoom"
+        @click="toggleZoom"
+      >
         <i class="fa-light fa-search-plus" />
       </Btn>
       <Btn
@@ -963,7 +968,7 @@ defineExpose({
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
         :enable-rotate="controllable || internalFullscreen"
-        :enable-zoom="zoom"
+        :enable-zoom="zoom && !turntableLocked"
         :min-polar-angle="turntableLocked ? turntablePolar : 0"
         :max-polar-angle="
           turntableLocked ? turntablePolar : backdrop ? FLOOR_POLAR : Math.PI
