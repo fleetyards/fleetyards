@@ -11,6 +11,7 @@ import {
   type ArmorSet,
   type CharacterBody,
   type CharacterBodyClip,
+  HoldPoseWeaponEnum,
   type MediaFile,
   OutfitBodyEnum,
   OutfitSlotEnum,
@@ -205,8 +206,59 @@ export const handMount = (body?: CharacterBody): Mount => ({
   fixed: body?.weaponInHand?.helper,
 });
 
-// A rifle in hand is held in this pose unless another is picked.
-export const RIFLE_HOLD_CLIP = "hold_rifle_lowered";
+// The game's own lowered holds, made for a bare body.
+const LOWERED_HOLD_CLIPS: Record<HoldPoseWeaponEnum, string> = {
+  [HoldPoseWeaponEnum.RIFLE]: "hold_rifle_lowered",
+  [HoldPoseWeaponEnum.PISTOL]: "hold_pistol_lowered",
+};
+
+// The weight whose clip pushes the hands out furthest: a core whose weight is
+// not known, or has no clip of its own, still keeps the weapon out of it.
+const FALLBACK_ARMOR_WEIGHT = "Heavy";
+
+// A core's weight as the game's SubType spells it. A few cores come without a
+// SubType; their item type ("light_armor") still names the weight.
+const armorWeight = (core: {
+  subType?: string | null;
+  itemType?: string | null;
+}) => {
+  if (core.subType) return core.subType;
+
+  const weight = core.itemType?.match(/^([a-z]+)_armor$/)?.[1];
+
+  return weight ? weight.charAt(0).toUpperCase() + weight.slice(1) : undefined;
+};
+
+// The lowered hold for the weapon in hand, made for the worn core's armour
+// weight. The game's own clip holds the hands against a bare body, which puts
+// the weapon inside a bulky core; the export pushes the hands out per weight.
+// A core still loading counts as one of unknown weight. Without a core, the
+// game's own clip.
+export const holdClip = (
+  body: CharacterBody | undefined,
+  weapon: HoldPoseWeaponEnum,
+  core?: { subType?: string | null; itemType?: string | null },
+) => {
+  const has = (name?: string): name is string =>
+    !!name && !!body?.clips.some((clip) => clip.name === name);
+  const clipFor = (weight: string | null) =>
+    body?.holdPoses.find(
+      (pose) => pose.weapon === weapon && pose.armorWeight === weight,
+    )?.clip;
+
+  const candidates = [
+    ...(core
+      ? [
+          clipFor(armorWeight(core) ?? FALLBACK_ARMOR_WEIGHT),
+          clipFor(FALLBACK_ARMOR_WEIGHT),
+        ]
+      : []),
+    clipFor(null),
+    LOWERED_HOLD_CLIPS[weapon],
+  ];
+
+  return candidates.find(has);
+};
 
 // Bound in this order: a backpack hangs from a bone the core brings, so the
 // core goes first.

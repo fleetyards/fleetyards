@@ -84,6 +84,44 @@ module ScData
       assert_nil CharacterBody.find_by!(key: "male").weapon_in_hand
     end
 
+    test "keeps a body's lowered rifle and pistol holds per armour weight, a new weight among them, and nothing it cannot read" do
+      publish("male", {"body.glb" => BODY})
+      @index["male"][:holdPoses] = {
+        rifleLowered: {
+          none: "hold_rifle_lowered",
+          Light: "hold_rifle_lowered_light",
+          Heavy: "hold_rifle_lowered_heavy",
+          SuperHeavy: "hold_rifle_lowered_superheavy",
+          Medium: 3
+        },
+        rifleReady: {any: "hold_rifle_ready"},
+        pistolLowered: {none: "hold_pistol_lowered", Heavy: "hold_pistol_lowered_heavy"},
+        pistolReady: {any: "hold_pistol_ready"},
+        note: "the per-weight lowered clips are ours"
+      }
+      @objects["index.json"] = {bodies: @index}.to_json
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal [
+        {"weapon" => "rifle", "armor_weight" => nil, "clip" => "hold_rifle_lowered"},
+        {"weapon" => "rifle", "armor_weight" => "Light", "clip" => "hold_rifle_lowered_light"},
+        {"weapon" => "rifle", "armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"},
+        {"weapon" => "rifle", "armor_weight" => "SuperHeavy", "clip" => "hold_rifle_lowered_superheavy"},
+        {"weapon" => "pistol", "armor_weight" => nil, "clip" => "hold_pistol_lowered"},
+        {"weapon" => "pistol", "armor_weight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
+      ], CharacterBody.find_by!(key: "male").hold_poses
+    end
+
+    test "drops a body's rifle holds once the export no longer lists them" do
+      publish("male", {"body.glb" => BODY})
+      create(:character_body, key: "male", hold_poses: [{"weapon" => "rifle", "armor_weight" => "Heavy", "clip" => "hold_rifle_lowered_heavy"}])
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal [], CharacterBody.find_by!(key: "male").hold_poses
+    end
+
     test "keeps a body's lights when the lighting file cannot be read, and drops a light's non-numeric extras" do
       publish("male", {"body.glb" => BODY})
       @objects["lighting.json"] = {rigs: {review_male: {lights: [

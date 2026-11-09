@@ -26569,6 +26569,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/CharacterBodyClip"
+        holdPoses:
+          type: array
+          description: The clip that holds a rifle or a pistol lowered for each worn
+            core's armour weight; empty until exported
+          items:
+            "$ref": "#/components/schemas/CharacterBodyHoldPose"
         skinTone:
           type:
           - string
@@ -26598,6 +26604,7 @@ components:
       - weaponInHand
       - lighting
       - clips
+      - holdPoses
       - skinTone
       - defaultCharacter
       - faceLibrary
@@ -26652,6 +26659,27 @@ components:
       - right
       - left
       title: CharacterBodyHandBones
+    CharacterBodyHoldPose:
+      type: object
+      properties:
+        weapon:
+          "$ref": "#/components/schemas/HoldPoseWeaponEnum"
+        armorWeight:
+          type:
+          - string
+          - 'null'
+          description: The worn core's armour weight as its subType spells it, e.g.
+            Heavy; null for no core
+        clip:
+          type: string
+          description: The clip that holds the weapon lowered, in the body's animations
+            file
+      additionalProperties: false
+      required:
+      - weapon
+      - armorWeight
+      - clip
+      title: CharacterBodyHoldPose
     CharacterBodyLight:
       type: object
       properties:
@@ -41045,6 +41073,15 @@ components:
       - 'TRUE'
       - ONLY
       title: HiddenVehiclesFilterEnum
+    HoldPoseWeaponEnum:
+      type: string
+      enum:
+      - rifle
+      - pistol
+      x-enumNames:
+      - RIFLE
+      - PISTOL
+      title: HoldPoseWeaponEnum
     Homepage:
       type: object
       properties:

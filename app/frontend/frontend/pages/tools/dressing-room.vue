@@ -32,6 +32,7 @@ import {
   type OutfitItemInput,
   type OutfitStoredItemInput,
   OutfitBodyEnum,
+  HoldPoseWeaponEnum,
   OutfitSlotEnum,
   type OutfitWeaponSlotEnum,
   getEquipmentItemQueryOptions,
@@ -49,7 +50,7 @@ import {
   GEAR_COLUMNS,
   GEAR_KINDS,
   GEAR_SLOTS,
-  RIFLE_HOLD_CLIP,
+  holdClip,
   RIG_ORDER,
   handMount,
   OUTFIT_SLOTS,
@@ -762,18 +763,22 @@ const model = computed(() =>
     : outfitModel(pieces.value),
 );
 
-// A rifle in hand is held, unless the address picks another pose.
+// A weapon in hand is held, unless the address picks another pose.
 const pose = computed(() => {
   if (poseName.value) return poseName.value;
 
-  const holdsRifle =
-    heldWeapon.value === OutfitSlotEnum.PRIMARY ||
-    heldWeapon.value === OutfitSlotEnum.SECONDARY;
-  const holdable = body.value?.clips.some(
-    (clip) => clip.name === RIFLE_HOLD_CLIP,
-  );
+  if (!heldWeapon.value) return undefined;
 
-  return holdsRifle && holdable ? RIFLE_HOLD_CLIP : undefined;
+  // A core still loading is worn all the same.
+  const core = selection.value[OutfitSlotEnum.TORSO]
+    ? (items.value[OutfitSlotEnum.TORSO] ?? {})
+    : undefined;
+  const weapon =
+    heldWeapon.value === OutfitSlotEnum.SIDEARM
+      ? HoldPoseWeaponEnum.PISTOL
+      : HoldPoseWeaponEnum.RIFLE;
+
+  return holdClip(body.value, weapon, core);
 });
 
 const holoUnavailable = (failed?: string) => {

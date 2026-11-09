@@ -29,6 +29,11 @@ module V1
               items: ::V1::Schemas::DressingRoom::CharacterBodyLight
             },
             clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip},
+            holdPoses: {
+              type: :array,
+              description: "The clip that holds a rifle or a pistol lowered for each worn core's armour weight; empty until exported",
+              items: ::V1::Schemas::DressingRoom::CharacterBodyHoldPose
+            },
             skinTone: {
               type: [:string, :null],
               pattern: "^#[0-9a-fA-F]{6}$",
@@ -44,7 +49,7 @@ module V1
             }
           },
           additionalProperties: false,
-          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone defaultCharacter faceLibrary]
+          required: %w[key holo holoTextured animations weaponInHand lighting clips holdPoses skinTone defaultCharacter faceLibrary]
         })
       end
     end

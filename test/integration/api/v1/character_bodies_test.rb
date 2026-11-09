@@ -78,6 +78,20 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /character-bodies serves the clip that holds each weapon lowered per armour weight" do
+    create(:character_body, :with_holo, key: "male", hold_poses: [
+      {"weapon" => "rifle", "armor_weight" => nil, "clip" => "hold_rifle_lowered"},
+      {"weapon" => "pistol", "armor_weight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
+    ])
+
+    assert_api_response :get, 200 do
+      assert_equal [
+        {"weapon" => "rifle", "armorWeight" => nil, "clip" => "hold_rifle_lowered"},
+        {"weapon" => "pistol", "armorWeight" => "Heavy", "clip" => "hold_pistol_lowered_heavy"}
+      ], parsed_body.first["holdPoses"]
+    end
+  end
+
   test "GET /character-bodies is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 

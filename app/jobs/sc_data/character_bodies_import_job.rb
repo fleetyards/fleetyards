@@ -12,6 +12,15 @@ module ScData
 
     SKIN_TONE = /\A#\h{6}\z/
 
+    # The export's weight key for no core worn. The others are spelt as
+    # equipment spells a core's subType, and kept as they come: a weight the
+    # export adds needs no change here.
+    NO_ARMOR = "none"
+
+    # The export's lowered hold map per weapon held. The ready holds are one
+    # clip for every weight, the body's own, so they are not kept.
+    LOWERED_HOLDS = CharacterBody::HOLD_WEAPONS.to_h { |weapon| [weapon, "#{weapon}Lowered"] }.freeze
+
     FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 
     def perform
@@ -30,6 +39,8 @@ module ScData
         weapon_in_hand = weapon_in_hand(entry["weapon_in_hand"])
         body.update_columns(clips:) if body.clips != clips
         body.update_columns(weapon_in_hand:) if body.weapon_in_hand != weapon_in_hand
+        hold_poses = hold_poses(entry["hold_poses"])
+        body.update_columns(hold_poses:) if body.hold_poses != hold_poses
         skin_tone = entry["skin_tone"] if entry["skin_tone"].to_s.match?(SKIN_TONE)
         body.update_columns(skin_tone:) if body.skin_tone != skin_tone
         unless rigs.nil?
@@ -110,6 +121,22 @@ module ScData
       return unless helper.is_a?(Hash) && numbers?(helper["position"], 3) && numbers?(helper["rotation"], 4)
 
       {"bones" => bones.slice("right", "left"), "helper" => helper.slice("position", "rotation")}
+    end
+
+    # The lowered holds per weapon and armour weight.
+    private def hold_poses(value)
+      return [] unless value.is_a?(Hash)
+
+      LOWERED_HOLDS.flat_map do |weapon, key|
+        lowered = value[key]
+        next [] unless lowered.is_a?(Hash)
+
+        lowered.filter_map do |weight, clip|
+          next unless weight.present? && clip.is_a?(String) && clip.present?
+
+          {"weapon" => weapon, "armor_weight" => (weight unless weight == NO_ARMOR), "clip" => clip}
+        end
+      end
     end
 
     private def number(value) = (value if value.is_a?(Numeric))
