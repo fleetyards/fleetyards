@@ -771,7 +771,12 @@ const pose = computed(() => {
     heldWeapon.value === OutfitSlotEnum.SECONDARY;
   if (!holdsRifle) return undefined;
 
-  return rifleHoldClip(body.value, items.value[OutfitSlotEnum.TORSO]);
+  // A core still loading is worn all the same.
+  const core = selection.value[OutfitSlotEnum.TORSO]
+    ? (items.value[OutfitSlotEnum.TORSO] ?? {})
+    : undefined;
+
+  return rifleHoldClip(body.value, core);
 });
 
 const holoUnavailable = (failed?: string) => {

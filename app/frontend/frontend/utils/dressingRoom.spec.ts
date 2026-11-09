@@ -428,6 +428,21 @@ describe("rifleHoldClip", () => {
     );
   });
 
+  it("reads the weight of a core without a subType from its item type", () => {
+    expect(
+      rifleHoldClip(body, { subType: null, itemType: "light_armor" }),
+    ).toBe("hold_rifle_lowered_light");
+  });
+
+  it("falls back to the game's clip where the body lacks the no-core clip the export names", () => {
+    expect(
+      rifleHoldClip({
+        ...body,
+        holdPoses: [{ armorWeight: null, clip: "hold_rifle_lowered_v2" }],
+      }),
+    ).toBe("hold_rifle_lowered");
+  });
+
   it("keeps the game's clip on a body the export gives no hold poses", () => {
     expect(
       rifleHoldClip({ ...body, holdPoses: [] }, { subType: "Heavy" }),

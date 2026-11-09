@@ -557,16 +557,18 @@ describe("ToolsDressingRoomPage", () => {
       },
     ];
 
-    const { wrapper } = await mount({
-      torso: "adp-core",
-      primary: "p4-ar",
-      held: "primary",
-    });
+    try {
+      const { wrapper } = await mount({
+        torso: "adp-core",
+        primary: "p4-ar",
+        held: "primary",
+      });
 
-    expect(viewerModel(wrapper).rig.clip).toBe("hold_rifle_lowered_heavy");
-
-    EQUIPMENT["adp-core"] = core;
-    bodies.value = [MALE];
+      expect(viewerModel(wrapper).rig.clip).toBe("hold_rifle_lowered_heavy");
+    } finally {
+      EQUIPMENT["adp-core"] = core;
+      bodies.value = [MALE];
+    }
   });
 
   it("takes a weapon out of hand when it is held again", async () => {
