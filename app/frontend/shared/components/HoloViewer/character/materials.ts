@@ -227,10 +227,22 @@ export const bakeEyes = (recipe: EyeRecipe) =>
 
 // A three.js material for one accessory sub-material; the strand variation
 // multiplies the colour by an ID map.
+// Hair, beard and brow strands as smooth as the export says catch the review
+// lights as white streaks: the game's hair highlight runs along the strand,
+// which a standard material cannot do, so they are kept matt enough for their
+// colour to show.
+const STRAND_ROUGHNESS = 0.8;
+const STRAND_MODES = ["hair_cards", "hair_coat", "hair_cap"];
+
+// `channel` is the UV set the strand textures are laid out on: hair, beard
+// and brow cards keep their strand atlas on the second.
 export const characterMaterial = async (
   three: CharacterThreeMaterial,
   variation?: { map: string | null; amount: number },
+  channel = 0,
+  mode?: string,
 ) => {
+  const strands = !!mode && STRAND_MODES.includes(mode);
   const [map, alphaMap, idMap] = await Promise.all([
     three.map
       ? loadTexture(three.map, SRGBColorSpace).catch(() => undefined)
@@ -243,6 +255,20 @@ export const characterMaterial = async (
       : undefined,
   ]);
 
+  // The loaded texture is shared by every character; a copy carries the
+  // channel, and is the material's to free.
+  const onChannel = (texture?: Texture) => {
+    if (!texture || channel === 0) return texture;
+    const copy = texture.clone();
+    copy.channel = channel;
+    // The strand atlas is laid out on the second set upside down from glTF's
+    // texture space.
+    copy.flipY = true;
+    copy.needsUpdate = true;
+    return copy;
+  };
+  const strandAlpha = onChannel(alphaMap);
+
   const material = new MeshStandardMaterial({
     color: three.color
       ? new Color().setRGB(
@@ -253,13 +279,15 @@ export const characterMaterial = async (
         )
       : undefined,
     map: map ?? null,
-    alphaMap: alphaMap ?? null,
+    alphaMap: strandAlpha ?? null,
     alphaTest: three.alphaTest ?? 0,
     transparent: !!three.transparent,
     depthWrite: three.depthWrite ?? true,
     opacity: three.opacity ?? 1,
     side: three.side === "DoubleSide" ? DoubleSide : FrontSide,
-    roughness: three.roughness ?? 1,
+    roughness: strands
+      ? Math.max(three.roughness ?? 1, STRAND_ROUGHNESS)
+      : (three.roughness ?? 1),
     metalness: three.metalness ?? 0,
     polygonOffset: !!three.polygonOffset,
     polygonOffsetFactor: three.polygonOffsetFactor ?? 0,
@@ -285,14 +313,18 @@ export const characterMaterial = async (
         )
         .replace(
           "#include <uv_vertex>",
-          "#include <uv_vertex>\nvStrandUv = uv;",
+          `#include <uv_vertex>\nvStrandUv = ${channel === 1 ? "vec2(uv1.x, 1.0 - uv1.y)" : "uv"};`,
         );
       shader.fragmentShader = shader.fragmentShader.replace(
         "#include <common>",
         "#include <common>\nvarying vec2 vStrandUv;",
       );
     };
-    material.customProgramCacheKey = () => "character-strands";
+    material.customProgramCacheKey = () => `character-strands-${channel}`;
+  }
+
+  if (strandAlpha && strandAlpha !== alphaMap) {
+    material.userData.ownedTextures = [strandAlpha];
   }
 
   return material;
