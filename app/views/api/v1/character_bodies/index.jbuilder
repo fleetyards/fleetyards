@@ -27,6 +27,14 @@ json.array! @character_bodies do |body|
     json.looping !!clip["looping"]
   end
   json.skin_tone body.skin_tone
+  if @default_eyes
+    json.default_eyes do
+      json.iris @default_eyes["iris"]
+      json.iris_color @default_eyes["iris_color"]
+    end
+  else
+    json.default_eyes nil
+  end
   if body.face_library?
     json.face_library do
       json.library body.face_library

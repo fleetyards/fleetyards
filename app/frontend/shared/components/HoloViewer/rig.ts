@@ -13,7 +13,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
-import type { CharacterRig } from "./character/types";
+import type { CharacterRig, EyeRecipe } from "./character/types";
 import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
 // A worn piece skinned to the body's skeleton: its own copy of the bones it
@@ -87,6 +87,9 @@ export type HoloRig = {
   // The user's own character: its face on the body's head, with its hair,
   // brows, beard and piercings.
   character?: CharacterRig;
+  // Without a character: how to draw the eyes, which the textured body
+  // paints as the iris alone on black.
+  eyes?: EyeRecipe;
 };
 
 const clips = new Map<string, Promise<AnimationClip[]>>();
@@ -295,6 +298,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
           ]),
         ),
         rig.character ? `character:${rig.character.key}` : "",
+        rig.eyes ? `eyes:${rig.eyes.iris}:${rig.eyes.iris_color}` : "",
       ].join(";")
     : "";
 

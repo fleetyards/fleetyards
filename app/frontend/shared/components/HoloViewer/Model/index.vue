@@ -48,7 +48,9 @@ import {
 } from "../paintMaps";
 import {
   disposeCharacter,
+  dressEyes,
   dressHead,
+  loadDefaultEyes,
   fitPieceToFace,
   loadCharacter,
   type LoadedCharacter,
@@ -470,6 +472,7 @@ onUnmounted(() => {
   if (mountRoot) disposeFading(mountRoot);
   if (pedestal) disposePedestal(pedestal);
   if (character) disposeCharacter(character);
+  defaultEyes?.map?.dispose();
   fittedGeometries.forEach((geometry) => geometry.dispose());
 });
 
@@ -582,6 +585,25 @@ let rigClips: AnimationClip[] = [];
 // head and skin back.
 let character: LoadedCharacter | undefined;
 let undressHead: (() => void) | undefined;
+
+// The default head's eyes, baked once per recipe.
+let defaultEyes: { key: string; map?: Texture } | undefined;
+let undressEyes: (() => void) | undefined;
+
+const loadRigEyes = async () => {
+  const recipe = props.model.rig?.eyes;
+  if (!recipe || !props.model.textured) return undefined;
+
+  const key = `${recipe.iris}:${recipe.iris_color}`;
+  if (defaultEyes?.key === key) return defaultEyes;
+
+  try {
+    return { key, map: await loadDefaultEyes(recipe) };
+  } catch (error) {
+    console.warn("The default eyes did not load", error);
+    return undefined;
+  }
+};
 // Hats moved onto the face for the figure as it is drawn now.
 let fittedGeometries: BufferGeometry[] = [];
 
@@ -747,19 +769,23 @@ const attachRigNow = async (scene: Group) => {
   const rig = props.model.rig;
   if (!rig) return true;
 
-  const [pieces, attachments, clips, loadedCharacter] = await Promise.all([
-    Promise.all(rig.pieces.map(loadRigPiece)),
-    Promise.all((rig.attachments ?? []).map(loadAttachment)),
-    rig.animations
-      ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
-      : Promise.resolve([] as AnimationClip[]),
-    loadRigCharacter(),
-  ]);
+  const [pieces, attachments, clips, loadedCharacter, eyes] = await Promise.all(
+    [
+      Promise.all(rig.pieces.map(loadRigPiece)),
+      Promise.all((rig.attachments ?? []).map(loadAttachment)),
+      rig.animations
+        ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
+        : Promise.resolve([] as AnimationClip[]),
+      loadRigCharacter(),
+      loadRigEyes(),
+    ],
+  );
 
   if (request !== rigRequest) {
     if (loadedCharacter && loadedCharacter !== character) {
       disposeCharacter(loadedCharacter);
     }
+    if (eyes && eyes !== defaultEyes) eyes.map?.dispose();
     return false;
   }
 
@@ -784,6 +810,11 @@ const attachRigNow = async (scene: Group) => {
 
   undressHead?.();
   undressHead = undefined;
+  undressEyes?.();
+  undressEyes = undefined;
+  if (defaultEyes && defaultEyes !== eyes) defaultEyes.map?.dispose();
+  defaultEyes = eyes;
+  if (eyes?.map) undressEyes = dressEyes(scene, eyes.map);
   if (character && character !== loadedCharacter) disposeCharacter(character);
   character = loadedCharacter;
 

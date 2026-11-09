@@ -34,13 +34,17 @@ module V1
               pattern: "^#[0-9a-fA-F]{6}$",
               description: "The sRGB skin tone the textured holo is baked at, e.g. #513428; absent until exported"
             },
+            defaultEyes: {
+              description: "How to draw the eyes of a head without a character file; absent until the customizer export is imported",
+              anyOf: [::V1::Schemas::DressingRoom::CharacterBodyEyes, {type: :null}]
+            },
             faceLibrary: {
               description: "The face library; absent until exported",
               anyOf: [::V1::Schemas::DressingRoom::CharacterBodyFaceLibrary, {type: :null}]
             }
           },
           additionalProperties: false,
-          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone faceLibrary]
+          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone defaultEyes faceLibrary]
         })
       end
     end

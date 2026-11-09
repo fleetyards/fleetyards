@@ -29,7 +29,7 @@ import {
   characterMaterial,
   loadTexture,
 } from "./materials";
-import type { CharacterRig } from "./types";
+import type { CharacterRig, EyeRecipe } from "./types";
 
 // A file without a face block is drawn on the archetype head body.glb
 // carries, library head 1.
@@ -304,6 +304,34 @@ export const dressHead = (
   }
 
   return () => undo.reverse().forEach((step) => step());
+};
+
+// The default head's eyes: the textured body paints the iris alone on black.
+export const loadDefaultEyes = async (recipe: EyeRecipe) => {
+  const canvas = await bakeEyes(recipe);
+  return canvas ? canvasTexture(canvas) : undefined;
+};
+
+export const dressEyes = (scene: Object3D, map: Texture) => {
+  let eyes: Mesh | undefined;
+  scene.traverse((node) => {
+    const mesh = node as Mesh;
+    if (mesh.isMesh && /_eyes$/.test(mesh.name)) eyes ??= mesh;
+  });
+  if (!eyes) return () => {};
+
+  const mesh = eyes;
+  const bare = mesh.material as MeshStandardMaterial;
+  const changed = bare.clone();
+  changed.map = map;
+  changed.color = new Color(1, 1, 1);
+  changed.needsUpdate = true;
+  mesh.material = changed;
+
+  return () => {
+    changed.dispose();
+    mesh.material = bare;
+  };
 };
 
 // A hat, cap, bandana or mask worn as a rig piece, moved onto the blended

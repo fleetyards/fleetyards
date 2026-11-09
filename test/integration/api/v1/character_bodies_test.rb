@@ -57,6 +57,22 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /character-bodies says how to draw a head's eyes without a character file once the export is in" do
+    create(:character_body, :with_holo, key: "male")
+    catalog = CharacterAsset.create!(path: Chf::Context::CATALOG, etag: "eyes-1")
+    catalog.file.attach(io: StringIO.new({eye: {iris: "characters/chf/textures/iris.webp", IrisColor_default: [0.15292618, 0.15292618, 0.15292618]}}.to_json), filename: "catalog.json")
+    iris = CharacterAsset.create!(path: "characters/chf/textures/iris.webp", etag: "x")
+    iris.file.attach(io: StringIO.new("webp"), filename: "iris.webp")
+    create(:character_body, :with_holo, :with_face_library, key: "female")
+    Chf::Context.reset!
+
+    assert_api_response :get, 200 do
+      eyes = parsed_body.first["defaultEyes"]
+      assert_equal "#6d6d6d", eyes["irisColor"]
+      assert_match %r{/iris\.webp}, eyes["iris"]
+    end
+  end
+
   test "GET /character-bodies is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 
