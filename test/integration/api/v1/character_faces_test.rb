@@ -286,6 +286,20 @@ class Api::V1::CharacterFacesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /character-faces/shared/{token} tries an export it cannot resolve only once" do
+    import_customizer
+    face = create(:character_face, user: @user)
+    Chf::Resolver.any_instance.expects(:spec).once.raises(ArgumentError, "unexpected export")
+    Appsignal.expects(:report_error).once
+
+    2.times do
+      get "/api/v1/character-faces/shared/#{face.token}"
+
+      assert_response :ok
+      assert_nil parsed_body["character"]
+    end
+  end
+
   test "PUT /character-faces/{id} names the download after the character" do
     face = create(:character_face, user: @user, name: "Old")
     sign_in @user
