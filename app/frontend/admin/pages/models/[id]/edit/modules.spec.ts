@@ -11,6 +11,7 @@ const modules = vi.hoisted(() => ({
 
 const updateModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 const linkModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
+const createModelModule = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 const mutation = vi.hoisted(
   () => (fn: (...args: unknown[]) => Promise<unknown>) => () => ({
@@ -28,7 +29,7 @@ vi.mock("@/services/fyAdminApi", async () => {
       data: ref(modules.value),
       isLoading: ref(false),
     }),
-    useCreateModelModule: mutation(vi.fn(() => Promise.resolve({}))),
+    useCreateModelModule: mutation(createModelModule),
     useUpdateModelModule: mutation(updateModelModule),
     useDestroyModelModule: mutation(vi.fn(() => Promise.resolve({}))),
     useUnlinkModelModule: mutation(vi.fn(() => Promise.resolve({}))),
@@ -54,6 +55,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
     t: (key: string, values?: Record<string, string>) =>
       values ? `${key} ${Object.values(values).join(" ")}` : key,
     toUEC: (value: number) => String(value),
+    toNumber: (value: number, unit: string) => `${value} ${unit}`,
   }),
 }));
 
@@ -64,10 +66,11 @@ const model = {
   moduleSlots: ["hardpoint_front_module", "hardpoint_rear_module"],
 } as unknown as ModelExtended;
 
-const mod = (slot?: string) =>
+const mod = (slot?: string, cargo?: number) =>
   ({
     id: "module-1",
     name: "Front Cargo Module",
+    cargo,
     moduleHardpoints: [
       { id: "mh-1", modelId: "model-1", slot },
       { id: "mh-2", modelId: "model-2", slot: "elsewhere" },
@@ -110,16 +113,16 @@ const mountPage = async () => {
           ManufacturerSelect: true,
           ProductionStatusSelect: true,
           FormInput: {
-            props: ["modelValue", "name"],
+            props: ["modelValue", "name", "type"],
             emits: ["update:modelValue"],
             template:
-              "<input :name='name' :value='modelValue' @input=\"$emit('update:modelValue', $event.target.value)\" />",
+              "<input :name='name' :value='modelValue' @input=\"$emit('update:modelValue', type === 'number' ? Number($event.target.value) : $event.target.value)\" />",
           },
           InlineEditableList: {
             props: ["items"],
-            emits: ["start-edit", "save-edit"],
+            emits: ["start-edit", "save-edit", "start-create", "save-create"],
             template:
-              "<div><div v-for='item in items' :key='item.id'><slot name='display' :item='item' /><button data-test='start-edit' @click=\"$emit('start-edit', item)\" /><slot name='edit' :item='item' /><button data-test='save-edit' @click=\"$emit('save-edit')\" /></div></div>",
+              "<div><div v-for='item in items' :key='item.id'><slot name='display' :item='item' /><button data-test='start-edit' @click=\"$emit('start-edit', item)\" /><slot name='edit' :item='item' /><button data-test='save-edit' @click=\"$emit('save-edit')\" /></div><button data-test='start-create' @click=\"$emit('start-create')\" /><slot name='create' /><button data-test='save-create' @click=\"$emit('save-create')\" /></div>",
             methods: { finishEdit() {}, finishCreate() {} },
             data: () => ({ editingId: "module-1", creating: false }),
           },
@@ -201,6 +204,49 @@ describe("AdminModelEditModulesPage", () => {
         text: expect.stringContaining("messages.modelModule.update.failure"),
       }),
     );
+  });
+
+  it("shows the module's cargo", async () => {
+    modules.value = { items: [mod("hardpoint_front_module", 32)] };
+    const wrapper = await mountPage();
+
+    expect(wrapper.get("[data-test='model-module-cargo']").text()).toBe(
+      "32 cargo",
+    );
+  });
+
+  it("saves the module's cargo", async () => {
+    modules.value = { items: [mod("hardpoint_front_module", 32)] };
+    const wrapper = await mountPage();
+
+    await wrapper.get("[data-test='start-edit']").trigger("click");
+    expect(
+      (wrapper.get("input[name='edit-cargo']").element as HTMLInputElement)
+        .value,
+    ).toBe("32");
+
+    await wrapper.get("input[name='edit-cargo']").setValue("64");
+    await wrapper.get("[data-test='save-edit']").trigger("click");
+    await flushPromises();
+
+    expect(updateModelModule).toHaveBeenCalledWith({
+      id: "module-1",
+      data: expect.objectContaining({ cargo: 64 }),
+    });
+  });
+
+  it("creates a module with its cargo", async () => {
+    modules.value = { items: [] };
+    const wrapper = await mountPage();
+
+    await wrapper.get("[data-test='start-create']").trigger("click");
+    await wrapper.get("input[name='create-cargo']").setValue("16");
+    await wrapper.get("[data-test='save-create']").trigger("click");
+    await flushPromises();
+
+    expect(createModelModule).toHaveBeenCalledWith({
+      data: expect.objectContaining({ modelId: "model-1", cargo: 16 }),
+    });
   });
 
   it("leaves the link alone when the slot did not change", async () => {

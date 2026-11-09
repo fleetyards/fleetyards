@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputAlignmentsEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
@@ -42,7 +45,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC } = useI18n();
+const { t, toUEC, toNumber } = useI18n();
 const queryClient = useQueryClient();
 const comlink = useComlink();
 const { displayConfirm, displayAlert } = useAppNotifications();
@@ -100,6 +103,7 @@ const onStartEdit = (record: ModelModule) => {
     description: record.description,
     manufacturerId: record.manufacturer?.id,
     pledgePrice: record.pledgePrice,
+    cargo: record.cargo,
     productionStatus: record.productionStatus,
     scKey: record.scKey,
     storeImage: undefined,
@@ -272,6 +276,11 @@ const onUnlink = (record: ModelModule) => {
       <template v-if="item.pledgePrice">
         <span class="text-muted" v-html="toUEC(item.pledgePrice)" />
       </template>
+      <template v-if="item.cargo">
+        <span class="text-muted" data-test="model-module-cargo">
+          {{ toNumber(item.cargo, "cargo") }}
+        </span>
+      </template>
     </template>
 
     <template #actions="{ item, mobile }">
@@ -345,6 +354,14 @@ const onUnlink = (record: ModelModule) => {
           translation-key="modelModule.pledgePrice"
         />
         <FormInput
+          v-model="editForm.cargo"
+          name="edit-cargo"
+          :type="InputTypesEnum.NUMBER"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          :suffix="t('number.units.cargo')"
+          translation-key="modelModule.cargo"
+        />
+        <FormInput
           v-model="editForm.scKey"
           name="edit-sc-key"
           translation-key="modelModule.scKey"
@@ -400,6 +417,14 @@ const onUnlink = (record: ModelModule) => {
           name="create-pledge-price"
           :type="InputTypesEnum.NUMBER"
           translation-key="modelModule.pledgePrice"
+        />
+        <FormInput
+          v-model="createForm.cargo"
+          name="create-cargo"
+          :type="InputTypesEnum.NUMBER"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          :suffix="t('number.units.cargo')"
+          translation-key="modelModule.cargo"
         />
         <FormInput
           v-model="createForm.scKey"
