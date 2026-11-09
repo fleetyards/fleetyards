@@ -13,7 +13,7 @@ The dressing room is one stage the figure fills, with the loadout, character, st
 ### Phase 1 — Stage and layout
 1. `pages/tools/dressing-room.vue`: the stage becomes the page's backdrop on desktop (`$desktop-breakpoint` and up): full width below the heading, `100dvh` minus the header; the side columns become absolutely placed overlays (left loadout, right column) with their own scroll.
 2. Panels: `Panel` with `translucent` (plus a backdrop blur) for each overlay, so the end-caps and frame match the rest of the app.
-3. Heading row: title, then Armour sets, Copy link and Save outfit on the right. Lead text goes.
+3. Heading row: title, then Armour sets and Copy link on the right. Lead text goes.
 
 ### Phase 2 — Loadout tabs
 1. New `DressingRoom/Loadout` component: tabs Armour, Weapons, Gear, Supplies as a segmented `BtnGroup` with `role="tablist"`; the active tab kept in the component (not the URL).
@@ -27,10 +27,9 @@ The dressing room is one stage the figure fills, with the loadout, character, st
 
 ### Phase 4 — Right column
 1. Characters, WornStorage and Outfits each in their own translucent panel.
-2. Save outfit: Outfits exposes its save so the heading's button triggers it; the name input stays in the Outfits panel.
 
 ### Phase 5 — Phone
-1. Below `$desktop-breakpoint`: heading, stage with its control bar over the figure's feet, then the loadout panel overlapping the stage's foot, Armour sets and Save outfit at its end, then the right column panels.
+1. Below `$desktop-breakpoint`: heading, stage with its control bar over the figure's feet, then the loadout panel overlapping the stage's foot, then the right column panels.
 2. Fix the stage floor blowing out white on phones (check the backdrop's floor material and the low-power path).
 
 ### Phase 6 — Strings and checks
@@ -43,7 +42,7 @@ The dressing room is one stage the figure fills, with the loadout, character, st
 - [ ] **Loadout tabs** — Armour, Weapons, Gear, Supplies; empty slots read "Add …" with a slot icon.
 - [ ] **Supplies in the loadout** — no slot rows below the stage; supplies show "n of m".
 - [ ] **One control bar** — body, pose, reset and full screen on the stage.
-- [ ] **Heading actions** — Armour sets, Copy link, Save outfit.
+- [ ] **Heading actions** — Armour sets, Copy link.
 - [ ] **Phone** — stage on top, loadout panel with tabs below, no white floor.
 - [ ] **Nothing lost** — pickers, links, outfits, storage, characters and share links behave as before (existing specs pass).
 - [ ] **Locales** — every new key in en, de, es, fr, it, zh-CN, zh-TW.
