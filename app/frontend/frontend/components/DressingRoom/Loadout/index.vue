@@ -62,8 +62,6 @@ const id = useId();
 const tabId = (key: string) => `${id}-tab-${key}`;
 const panelId = (key: string) => `${id}-panel-${key}`;
 
-const tabButtons = ref<HTMLButtonElement[]>([]);
-
 // The arrow keys, Home and End move along the tabs, as a tab list's do.
 const moveTab = (event: KeyboardEvent) => {
   const keys = tabKeys.value;
@@ -78,7 +76,7 @@ const moveTab = (event: KeyboardEvent) => {
 
   event.preventDefault();
   picked.value = keys[next];
-  tabButtons.value[next]?.focus();
+  document.getElementById(tabId(keys[next]))?.focus();
 };
 
 const filled = (slots: OutfitSlotEnum[]) =>
@@ -96,7 +94,6 @@ const filled = (slots: OutfitSlotEnum[]) =>
       <button
         v-for="key in tabKeys"
         :id="tabId(key)"
-        ref="tabButtons"
         :key="key"
         type="button"
         class="loadout__tab"
