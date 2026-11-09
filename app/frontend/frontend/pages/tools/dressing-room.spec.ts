@@ -6,6 +6,7 @@ import {
   type ArmorSet,
   type CharacterBody,
   type Equipment,
+  HoldPoseWeaponEnum,
   OutfitSlotEnum,
 } from "@/services/fyApi";
 
@@ -551,9 +552,13 @@ describe("ToolsDressingRoomPage", () => {
           { name: "hold_rifle_lowered_heavy", static: false, looping: true },
         ],
         holdPoses: [
-          { weapon: "rifle", armorWeight: null, clip: "hold_rifle_lowered" },
           {
-            weapon: "rifle",
+            weapon: HoldPoseWeaponEnum.RIFLE,
+            armorWeight: null,
+            clip: "hold_rifle_lowered",
+          },
+          {
+            weapon: HoldPoseWeaponEnum.RIFLE,
             armorWeight: "Heavy",
             clip: "hold_rifle_lowered_heavy",
           },
@@ -584,8 +589,16 @@ describe("ToolsDressingRoomPage", () => {
           { name: "hold_pistol_lowered", static: true, looping: false },
         ],
         holdPoses: [
-          { weapon: "rifle", armorWeight: null, clip: "hold_rifle_lowered" },
-          { weapon: "pistol", armorWeight: null, clip: "hold_pistol_lowered" },
+          {
+            weapon: HoldPoseWeaponEnum.RIFLE,
+            armorWeight: null,
+            clip: "hold_rifle_lowered",
+          },
+          {
+            weapon: HoldPoseWeaponEnum.PISTOL,
+            armorWeight: null,
+            clip: "hold_pistol_lowered",
+          },
         ],
       },
     ];

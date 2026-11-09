@@ -32,6 +32,7 @@ import {
   type OutfitItemInput,
   type OutfitStoredItemInput,
   OutfitBodyEnum,
+  HoldPoseWeaponEnum,
   OutfitSlotEnum,
   type OutfitWeaponSlotEnum,
   getEquipmentItemQueryOptions,
@@ -773,7 +774,9 @@ const pose = computed(() => {
     ? (items.value[OutfitSlotEnum.TORSO] ?? {})
     : undefined;
   const weapon =
-    heldWeapon.value === OutfitSlotEnum.SIDEARM ? "pistol" : "rifle";
+    heldWeapon.value === OutfitSlotEnum.SIDEARM
+      ? HoldPoseWeaponEnum.PISTOL
+      : HoldPoseWeaponEnum.RIFLE;
 
   return holdClip(body.value, weapon, core);
 });

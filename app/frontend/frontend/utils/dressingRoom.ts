@@ -11,6 +11,7 @@ import {
   type ArmorSet,
   type CharacterBody,
   type CharacterBodyClip,
+  HoldPoseWeaponEnum,
   type MediaFile,
   OutfitBodyEnum,
   OutfitSlotEnum,
@@ -205,12 +206,10 @@ export const handMount = (body?: CharacterBody): Mount => ({
   fixed: body?.weaponInHand?.helper,
 });
 
-export type HeldWeapon = "rifle" | "pistol";
-
-// The game's own lowered holds, made for a bare chest.
-const LOWERED_HOLD_CLIPS: Record<HeldWeapon, string> = {
-  rifle: "hold_rifle_lowered",
-  pistol: "hold_pistol_lowered",
+// The game's own lowered holds, made for a bare body.
+const LOWERED_HOLD_CLIPS: Record<HoldPoseWeaponEnum, string> = {
+  [HoldPoseWeaponEnum.RIFLE]: "hold_rifle_lowered",
+  [HoldPoseWeaponEnum.PISTOL]: "hold_pistol_lowered",
 };
 
 // The weight whose clip pushes the hands out furthest: a core whose weight is
@@ -237,7 +236,7 @@ const armorWeight = (core: {
 // game's own clip.
 export const holdClip = (
   body: CharacterBody | undefined,
-  weapon: HeldWeapon,
+  weapon: HoldPoseWeaponEnum,
   core?: { subType?: string | null; itemType?: string | null },
 ) => {
   const has = (name?: string): name is string =>
