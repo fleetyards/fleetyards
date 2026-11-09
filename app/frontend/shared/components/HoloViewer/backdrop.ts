@@ -205,18 +205,22 @@ export const buildBackdrop = (
 
   // Over the mirror or the plain ground, dimming it to the gloss of a dark
   // floor.
-  const sheen = new Mesh(
-    new CircleGeometry(BACKDROP_RADIUS, 64),
-    new MeshBasicMaterial({
-      map: sheenTexture(),
-      transparent: true,
-      depthWrite: false,
-      toneMapped: false,
-    }),
-  );
-  sheen.rotation.x = -Math.PI / 2;
-  sheen.position.y = -0.004;
-  group.add(sheen);
+  // Only with its gradient: untextured it would be a white disc.
+  const sheenMap = sheenTexture();
+  if (sheenMap) {
+    const sheen = new Mesh(
+      new CircleGeometry(BACKDROP_RADIUS, 64),
+      new MeshBasicMaterial({
+        map: sheenMap,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    );
+    sheen.rotation.x = -Math.PI / 2;
+    sheen.position.y = -0.004;
+    group.add(sheen);
+  }
 
   const panelMap = panelTexture();
   const haloMap = haloTexture();
