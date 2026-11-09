@@ -88,8 +88,9 @@ export type HoloRig = {
   // brows, beard and piercings.
   character?: CharacterRig;
   // Under a helmet that leaves the head on show: the neck drawn as the
-  // undersuit's collar.
-  collar?: boolean;
+  // undersuit's collar; under one that hides the head, the whole head as its
+  // hood.
+  collar?: "neck" | "hood";
 };
 
 const clips = new Map<string, Promise<AnimationClip[]>>();
@@ -298,7 +299,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
           ]),
         ),
         rig.character ? `character:${rig.character.key}` : "",
-        rig.collar ? "collar" : "",
+        rig.collar ? `collar:${rig.collar}` : "",
       ].join(";")
     : "";
 

@@ -334,45 +334,53 @@ const COLLAR = new Color("#1d2126");
 // Under a helmet, the undersuit's collar: the gap between the helmet's rim and
 // the core shows the neck, which is drawn dark, while the face stays as it is
 // and shows through a visor.
-export const dressNeck = (scene: Object3D) => {
-  let head: Mesh | undefined;
+export const dressNeck = (scene: Object3D, hood = false) => {
+  const names = hood ? /_(head|eyes|teeth)$/ : /_head$/;
+  const meshes: Mesh[] = [];
   scene.traverse((node) => {
     const mesh = node as Mesh;
-    if (mesh.isMesh && /_head$/.test(mesh.name)) head ??= mesh;
+    if (mesh.isMesh && names.test(mesh.name)) meshes.push(mesh);
   });
-  if (!head) return () => {};
 
-  const mesh = head;
-  const current = mesh.material as MeshStandardMaterial;
-  mesh.geometry.computeBoundingBox();
-  const cut = (mesh.geometry.boundingBox?.min.z ?? 0) + NECK_HEIGHT;
-  const collared = derive(current.clone(), current);
-  collared.onBeforeCompile = (shader) => {
-    shader.uniforms.collarCut = { value: cut };
-    shader.uniforms.collarColor = { value: COLLAR };
-    shader.vertexShader = shader.vertexShader
-      .replace("#include <common>", "#include <common>\nvarying float vBindZ;")
-      .replace(
-        "#include <begin_vertex>",
-        "#include <begin_vertex>\nvBindZ = position.z;",
-      );
-    shader.fragmentShader = shader.fragmentShader
-      .replace(
-        "#include <common>",
-        "#include <common>\nvarying float vBindZ;\nuniform float collarCut;\nuniform vec3 collarColor;",
-      )
-      .replace(
-        "#include <map_fragment>",
-        "#include <map_fragment>\nif (vBindZ < collarCut) diffuseColor.rgb = collarColor;",
-      );
-  };
-  collared.customProgramCacheKey = () => `character-collar-${cut.toFixed(3)}`;
-  mesh.material = collared;
+  const undo = meshes.map((mesh) => {
+    const current = mesh.material as MeshStandardMaterial;
+    mesh.geometry.computeBoundingBox();
+    const cut = hood
+      ? Number.POSITIVE_INFINITY
+      : (mesh.geometry.boundingBox?.min.z ?? 0) + NECK_HEIGHT;
+    const collared = derive(current.clone(), current);
+    collared.onBeforeCompile = (shader) => {
+      shader.uniforms.collarCut = { value: cut };
+      shader.uniforms.collarColor = { value: COLLAR };
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nvarying float vBindZ;",
+        )
+        .replace(
+          "#include <begin_vertex>",
+          "#include <begin_vertex>\nvBindZ = position.z;",
+        );
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nvarying float vBindZ;\nuniform float collarCut;\nuniform vec3 collarColor;",
+        )
+        .replace(
+          "#include <map_fragment>",
+          "#include <map_fragment>\nif (vBindZ < collarCut) diffuseColor.rgb = collarColor;",
+        );
+    };
+    collared.customProgramCacheKey = () => "character-collar";
+    mesh.material = collared;
 
-  return () => {
-    collared.dispose();
-    if (mesh.material === collared) mesh.material = current;
-  };
+    return () => {
+      collared.dispose();
+      if (mesh.material === collared) mesh.material = current;
+    };
+  });
+
+  return () => undo.forEach((step) => step());
 };
 
 // A hat, cap, bandana or mask worn as a rig piece, moved onto the blended

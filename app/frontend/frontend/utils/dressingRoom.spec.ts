@@ -275,19 +275,16 @@ describe("riggedOutfitModel body cover", () => {
     expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
   });
 
-  it("hides the head under a helmet that hides a character's whole head", () => {
-    const character = { key: "c", hideHead: true } as CharacterRig;
-    const rig = riggedOutfitModel(
-      body,
-      [],
-      undefined,
-      [],
-      ["helmet"],
-      [],
-      character,
-    ).rig;
+  it("draws the whole head as the hood under a helmet that hides it, and only the neck under an open one", () => {
+    const closed = riggedOutfitModel(body, [], undefined, [], ["helmet"], [], {
+      key: "c",
+      hideHead: true,
+    } as CharacterRig).rig;
+    const open = riggedOutfitModel(body, [], undefined, [], ["helmet"]).rig;
 
-    expect(rig?.hide).toEqual(["head"]);
+    expect(closed?.hide).toBeUndefined();
+    expect(closed?.collar).toBe("hood");
+    expect(open?.collar).toBe("neck");
   });
 });
 

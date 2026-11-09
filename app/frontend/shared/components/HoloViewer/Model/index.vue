@@ -474,6 +474,7 @@ onUnmounted(() => {
   undressNeck?.();
   undressHead?.();
   if (character) disposeCharacter(character);
+  if (readyCharacter) disposeCharacter(readyCharacter);
   fittedGeometries.forEach((geometry) => geometry.dispose());
 });
 
@@ -591,24 +592,59 @@ let undressNeck: (() => void) | undefined;
 // Hats moved onto the face for the figure as it is drawn now.
 let fittedGeometries: BufferGeometry[] = [];
 
-// The same character on a changed outfit is kept: baking its head again
-// would stall every change.
-const loadRigCharacter = async () => {
+// A character loads in the background: the figure is shown at once, with the
+// character it had or none, and dressed again once the new one is in. The
+// same character on a changed outfit is kept: baking its head again would
+// stall every change.
+let characterLoading: string | undefined;
+let readyCharacter: LoadedCharacter | undefined;
+
+const characterKey = (key: string) => `${key}|${!!props.model.textured}`;
+
+const characterFor = (scene: Group) => {
   const wanted = props.model.rig?.character;
   if (!wanted) return undefined;
-  if (
-    character?.key === wanted.key &&
-    character.textured === !!props.model.textured
-  ) {
-    return character;
+
+  const key = characterKey(wanted.key);
+  for (const candidate of [character, readyCharacter]) {
+    if (
+      candidate &&
+      characterKey(candidate.key) === key &&
+      candidate.textured === !!props.model.textured
+    ) {
+      return candidate;
+    }
   }
 
-  try {
-    return await loadCharacter(wanted, !!props.model.textured);
-  } catch (error) {
-    console.warn("The character did not load", error);
-    return undefined;
+  if (characterLoading !== key) {
+    characterLoading = key;
+    void whileBusy(
+      loadCharacter(wanted, !!props.model.textured)
+        .catch((error) => {
+          console.warn("The character did not load", error);
+          return undefined;
+        })
+        .then((loaded) => {
+          if (characterLoading === key) characterLoading = undefined;
+          if (!loaded) return;
+
+          const still = props.model.rig?.character;
+          if (unmounted || !still || characterKey(still.key) !== key) {
+            disposeCharacter(loaded);
+            return;
+          }
+
+          if (readyCharacter && readyCharacter !== character) {
+            disposeCharacter(readyCharacter);
+          }
+          readyCharacter = loaded;
+          void attachRig(scene);
+        }),
+    );
   }
+
+  // Until it is in, the one already on the figure stands in.
+  return character;
 };
 
 // The body's own skinned parts, each with the region it covers: hidden under
@@ -753,19 +789,15 @@ const attachRigNow = async (scene: Group) => {
   const rig = props.model.rig;
   if (!rig) return true;
 
-  const [pieces, attachments, clips, loadedCharacter] = await Promise.all([
+  const [pieces, attachments, clips] = await Promise.all([
     Promise.all(rig.pieces.map(loadRigPiece)),
     Promise.all((rig.attachments ?? []).map(loadAttachment)),
     rig.animations
       ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
       : Promise.resolve([] as AnimationClip[]),
-    loadRigCharacter(),
   ]);
 
   if (request !== rigRequest) {
-    if (loadedCharacter && loadedCharacter !== character) {
-      disposeCharacter(loadedCharacter);
-    }
     return false;
   }
 
@@ -792,7 +824,9 @@ const attachRigNow = async (scene: Group) => {
   undressNeck = undefined;
   undressHead?.();
   undressHead = undefined;
+  const loadedCharacter = characterFor(scene);
   if (character && character !== loadedCharacter) disposeCharacter(character);
+  if (readyCharacter === loadedCharacter) readyCharacter = undefined;
   character = loadedCharacter;
 
   fittedGeometries.forEach((geometry) => geometry.dispose());
@@ -815,7 +849,7 @@ const attachRigNow = async (scene: Group) => {
     );
   }
 
-  if (rig.collar) undressNeck = dressNeck(scene);
+  if (rig.collar) undressNeck = dressNeck(scene, rig.collar === "hood");
 
   const bones = bonesByName(scene);
   const next = new Group();

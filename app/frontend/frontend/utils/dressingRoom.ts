@@ -420,14 +420,15 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
   ...new Set(slots.flatMap((slot) => COVERED_REGIONS[slot] ?? [])),
 ];
 
-// Under a drawn undersuit the body is not drawn. Under armour alone it shows
-// as it is, and so does the head under a helmet: through a visor it is the
-// face that shows. Only a helmet that hides the character's whole head, as the
-// game does with a closed one, takes the head away.
-const bodyCover = (worn: OutfitSlotEnum[], character?: CharacterRig) => {
+// Under a drawn undersuit the body is not drawn; under armour alone it shows
+// as it is. The head always stays: an open helmet shows the face through its
+// visor with the neck below as the undersuit's collar, and a helmet that hides
+// the head, as the game does with a closed one, draws all of it as the
+// undersuit's hood, so no gap opens between helmet and core.
+const bodyCover = (worn: OutfitSlotEnum[]) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
-  const hide = coveredRegions(worn).filter((region) =>
-    region === "head" ? !!character?.hideHead : undersuit,
+  const hide = coveredRegions(worn).filter(
+    (region) => region !== "head" && undersuit,
   );
 
   return hide.length ? { hide } : {};
@@ -471,9 +472,9 @@ export const riggedOutfitModel = (
     })),
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),
-    ...bodyCover(worn, character),
-    ...(worn.includes(OutfitSlotEnum.HELMET) && !character?.hideHead
-      ? { collar: true }
+    ...bodyCover(worn),
+    ...(worn.includes(OutfitSlotEnum.HELMET)
+      ? { collar: character?.hideHead ? ("hood" as const) : ("neck" as const) }
       : {}),
     ...(character ? { character } : {}),
     animations: body.animations?.url ?? undefined,
