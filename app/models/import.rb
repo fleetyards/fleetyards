@@ -243,7 +243,7 @@ class Import < ApplicationRecord
       title: "#{label} #{aasm_state}",
       body: info.presence,
       severity: failed? ? :error : :info,
-      link: "/maintenance/imports",
+      link: "/imports/",
       record: self
     )
   end

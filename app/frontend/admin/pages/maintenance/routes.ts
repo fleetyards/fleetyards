@@ -9,6 +9,15 @@ import { routes as featureRoutes } from "@/admin/pages/features/[name]/routes";
  */
 export const routes: RouteRecordRaw[] = [
   {
+    // Notifications stored before the move still link here.
+    path: "/maintenance/:rest(.*)*",
+    redirect: (to) => ({
+      path: to.path.replace(/^\/maintenance/, "") || "/",
+      query: to.query,
+      hash: to.hash,
+    }),
+  },
+  {
     path: "/imports/",
     name: "imports",
     component: () => import("@/admin/pages/maintenance/imports.vue"),

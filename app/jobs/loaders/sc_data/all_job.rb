@@ -50,7 +50,7 @@ module Loaders
           title: "sc_data Import Results (#{source})",
           body: results_body(source, stats),
           actionable: empty_catalogue?(stats),
-          link: "/maintenance/imports",
+          link: "/imports/",
           record: import
         )
 

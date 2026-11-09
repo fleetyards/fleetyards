@@ -204,9 +204,9 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
 
       notification = notifications.sole
       assert_equal import, notification.record
-      assert_equal "/maintenance/imports/#{import.id}", notification.link
+      assert_equal "/imports/#{import.id}", notification.link
       assert_includes notification.body, "stopped on a page"
-      assert_includes notification.body, "(page 22, [import](/maintenance/imports/#{import.id}))"
+      assert_includes notification.body, "(page 22, [import](/imports/#{import.id}))"
       assert_not_includes notification.body, "Cutlass"
     end
   end
@@ -219,9 +219,9 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
 
     first, second = Imports::HangarSync.order(:created_at).to_a
     body = notifications.sole.body
-    assert_includes body, "`first` ([import](/maintenance/imports/#{first.id}))"
-    assert_includes body, "`second` ([import](/maintenance/imports/#{second.id}))"
-    assert_equal "/maintenance/imports/#{second.id}", notifications.sole.link
+    assert_includes body, "`first` ([import](/imports/#{first.id}))"
+    assert_includes body, "`second` ([import](/imports/#{second.id}))"
+    assert_equal "/imports/#{second.id}", notifications.sole.link
   end
 
   test "POST /hangar/rsi-page-reports keeps a sync that stopped apart from one that finished" do

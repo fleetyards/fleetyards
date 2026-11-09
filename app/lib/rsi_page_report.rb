@@ -125,7 +125,7 @@ class RsiPageReport
   private_class_method :record_import
 
   def self.import_path(import)
-    "/maintenance/imports/#{import.id}"
+    "/imports/#{import.id}"
   end
   private_class_method :import_path
 
