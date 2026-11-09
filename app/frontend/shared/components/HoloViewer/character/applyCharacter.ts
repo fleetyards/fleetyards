@@ -41,6 +41,8 @@ const ARCHETYPE_WEIGHTS: FaceWeights = FACE_PARTS.map((part) => ({
 
 export type LoadedCharacter = {
   key: string;
+  // What it was built from: its skin, among the rest.
+  rig: CharacterRig;
   // Painted: built with its materials, skin and eyes; clay otherwise.
   textured: boolean;
   library: FaceLibrary;
@@ -167,6 +169,7 @@ export const loadCharacter = async (
 
   return {
     key: rig.key,
+    rig,
     textured,
     library,
     face,
@@ -236,7 +239,6 @@ const withPositions = (
 export const dressHead = (
   scene: Object3D,
   character: LoadedCharacter,
-  rig: CharacterRig,
   textured: boolean,
 ) => {
   const undo: (() => void)[] = [];
@@ -256,7 +258,7 @@ export const dressHead = (
   });
 
   if (textured) {
-    const [r, g, b] = rig.skin.body_baseColorFactor;
+    const [r, g, b] = character.rig.skin.body_baseColorFactor;
     scene.traverse((node) => {
       const mesh = node as Mesh;
       if (!mesh.isMesh || [...meshes.values()].includes(mesh)) return;

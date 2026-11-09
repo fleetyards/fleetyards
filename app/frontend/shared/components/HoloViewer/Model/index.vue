@@ -841,12 +841,7 @@ const attachRigNow = async (scene: Group) => {
       }
     });
     fittedGeometries = fitted;
-    undressHead = dressHead(
-      scene,
-      character,
-      rig.character,
-      !!props.model.textured,
-    );
+    undressHead = dressHead(scene, character, !!props.model.textured);
   }
 
   if (rig.collar) undressNeck = dressNeck(scene, rig.collar === "hood");
