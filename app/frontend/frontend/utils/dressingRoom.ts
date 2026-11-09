@@ -205,11 +205,16 @@ export const handMount = (body?: CharacterBody): Mount => ({
   fixed: body?.weaponInHand?.helper,
 });
 
-// The game's own lowered rifle hold, made for a bare chest.
-const RIFLE_HOLD_CLIP = "hold_rifle_lowered";
+export type HeldWeapon = "rifle" | "pistol";
+
+// The game's own lowered holds, made for a bare chest.
+const LOWERED_HOLD_CLIPS: Record<HeldWeapon, string> = {
+  rifle: "hold_rifle_lowered",
+  pistol: "hold_pistol_lowered",
+};
 
 // The weight whose clip pushes the hands out furthest: a core whose weight is
-// not known, or has no clip of its own, still keeps the rifle out of it.
+// not known, or has no clip of its own, still keeps the weapon out of it.
 const FALLBACK_ARMOR_WEIGHT = "Heavy";
 
 // A core's weight as the game's SubType spells it. A few cores come without a
@@ -225,18 +230,22 @@ const armorWeight = (core: {
   return weight ? weight.charAt(0).toUpperCase() + weight.slice(1) : undefined;
 };
 
-// The lowered hold made for the worn core's armour weight. The game's own clip
-// holds the hands against a bare chest, which puts the rifle inside a bulky
-// core; the export pushes the hands out per weight. A core still loading
-// counts as one of unknown weight. Without a core, the game's own clip.
-export const rifleHoldClip = (
-  body?: CharacterBody,
+// The lowered hold for the weapon in hand, made for the worn core's armour
+// weight. The game's own clip holds the hands against a bare body, which puts
+// the weapon inside a bulky core; the export pushes the hands out per weight.
+// A core still loading counts as one of unknown weight. Without a core, the
+// game's own clip.
+export const holdClip = (
+  body: CharacterBody | undefined,
+  weapon: HeldWeapon,
   core?: { subType?: string | null; itemType?: string | null },
 ) => {
   const has = (name?: string): name is string =>
     !!name && !!body?.clips.some((clip) => clip.name === name);
   const clipFor = (weight: string | null) =>
-    body?.holdPoses.find((pose) => pose.armorWeight === weight)?.clip;
+    body?.holdPoses.find(
+      (pose) => pose.weapon === weapon && pose.armorWeight === weight,
+    )?.clip;
 
   const candidates = [
     ...(core
@@ -246,7 +255,7 @@ export const rifleHoldClip = (
         ]
       : []),
     clipFor(null),
-    RIFLE_HOLD_CLIP,
+    LOWERED_HOLD_CLIPS[weapon],
   ];
 
   return candidates.find(has);

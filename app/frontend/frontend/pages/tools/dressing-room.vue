@@ -49,7 +49,7 @@ import {
   GEAR_COLUMNS,
   GEAR_KINDS,
   GEAR_SLOTS,
-  rifleHoldClip,
+  holdClip,
   RIG_ORDER,
   handMount,
   OUTFIT_SLOTS,
@@ -762,21 +762,20 @@ const model = computed(() =>
     : outfitModel(pieces.value),
 );
 
-// A rifle in hand is held, unless the address picks another pose.
+// A weapon in hand is held, unless the address picks another pose.
 const pose = computed(() => {
   if (poseName.value) return poseName.value;
 
-  const holdsRifle =
-    heldWeapon.value === OutfitSlotEnum.PRIMARY ||
-    heldWeapon.value === OutfitSlotEnum.SECONDARY;
-  if (!holdsRifle) return undefined;
+  if (!heldWeapon.value) return undefined;
 
   // A core still loading is worn all the same.
   const core = selection.value[OutfitSlotEnum.TORSO]
     ? (items.value[OutfitSlotEnum.TORSO] ?? {})
     : undefined;
+  const weapon =
+    heldWeapon.value === OutfitSlotEnum.SIDEARM ? "pistol" : "rifle";
 
-  return rifleHoldClip(body.value, core);
+  return holdClip(body.value, weapon, core);
 });
 
 const holoUnavailable = (failed?: string) => {

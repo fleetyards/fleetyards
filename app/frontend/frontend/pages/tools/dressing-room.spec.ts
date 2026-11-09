@@ -551,8 +551,12 @@ describe("ToolsDressingRoomPage", () => {
           { name: "hold_rifle_lowered_heavy", static: false, looping: true },
         ],
         holdPoses: [
-          { armorWeight: null, clip: "hold_rifle_lowered" },
-          { armorWeight: "Heavy", clip: "hold_rifle_lowered_heavy" },
+          { weapon: "rifle", armorWeight: null, clip: "hold_rifle_lowered" },
+          {
+            weapon: "rifle",
+            armorWeight: "Heavy",
+            clip: "hold_rifle_lowered_heavy",
+          },
         ],
       },
     ];
@@ -569,6 +573,36 @@ describe("ToolsDressingRoomPage", () => {
       EQUIPMENT["adp-core"] = core;
       bodies.value = [MALE];
     }
+  });
+
+  it("holds a pistol in the pistol's own clip, not a rifle's", async () => {
+    bodies.value = [
+      {
+        ...MALE,
+        clips: [
+          ...MALE.clips,
+          { name: "hold_pistol_lowered", static: true, looping: false },
+        ],
+        holdPoses: [
+          { weapon: "rifle", armorWeight: null, clip: "hold_rifle_lowered" },
+          { weapon: "pistol", armorWeight: null, clip: "hold_pistol_lowered" },
+        ],
+      },
+    ];
+
+    try {
+      const { wrapper } = await mount({ sidearm: "s-38", held: "sidearm" });
+
+      expect(viewerModel(wrapper).rig.clip).toBe("hold_pistol_lowered");
+    } finally {
+      bodies.value = [MALE];
+    }
+  });
+
+  it("leaves a pistol in the standing pose on a body without a pistol clip", async () => {
+    const { wrapper } = await mount({ sidearm: "s-38", held: "sidearm" });
+
+    expect(viewerModel(wrapper).rig.clip).toBe("idle_stand");
   });
 
   it("takes a weapon out of hand when it is held again", async () => {

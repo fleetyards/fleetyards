@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { type CharacterBody, type MediaFile } from "@/services/fyApi";
 import { OutfitBodyEnum, OutfitSlotEnum } from "@/services/fyApi";
 import {
-  rifleHoldClip,
+  holdClip,
   OUTFIT_SLOTS,
   RIG_ORDER,
   clipLabel,
@@ -376,7 +376,7 @@ describe("visibleGearSlots", () => {
   });
 });
 
-describe("rifleHoldClip", () => {
+describe("holdClip", () => {
   const clip = (name: string) => ({ name, static: false, looping: true });
   const body: CharacterBody = {
     key: "male",
@@ -391,68 +391,107 @@ describe("rifleHoldClip", () => {
       clip("hold_rifle_lowered"),
       clip("hold_rifle_lowered_light"),
       clip("hold_rifle_lowered_heavy"),
+      clip("hold_pistol_lowered"),
+      clip("hold_pistol_lowered_heavy"),
     ],
     holdPoses: [
-      { armorWeight: null, clip: "hold_rifle_lowered" },
-      { armorWeight: "Light", clip: "hold_rifle_lowered_light" },
-      { armorWeight: "Medium", clip: "hold_rifle_lowered_medium" },
-      { armorWeight: "Heavy", clip: "hold_rifle_lowered_heavy" },
+      { weapon: "rifle", armorWeight: null, clip: "hold_rifle_lowered" },
+      {
+        weapon: "rifle",
+        armorWeight: "Light",
+        clip: "hold_rifle_lowered_light",
+      },
+      {
+        weapon: "rifle",
+        armorWeight: "Medium",
+        clip: "hold_rifle_lowered_medium",
+      },
+      {
+        weapon: "rifle",
+        armorWeight: "Heavy",
+        clip: "hold_rifle_lowered_heavy",
+      },
+      { weapon: "pistol", armorWeight: null, clip: "hold_pistol_lowered" },
+      {
+        weapon: "pistol",
+        armorWeight: "Heavy",
+        clip: "hold_pistol_lowered_heavy",
+      },
     ],
   };
 
-  it("holds the rifle out from a core of the weight it is made for", () => {
-    expect(rifleHoldClip(body, { subType: "Light" })).toBe(
+  it("holds a rifle out from a core of the weight it is made for", () => {
+    expect(holdClip(body, "rifle", { subType: "Light" })).toBe(
       "hold_rifle_lowered_light",
     );
-    expect(rifleHoldClip(body, { subType: "Heavy" })).toBe(
+    expect(holdClip(body, "rifle", { subType: "Heavy" })).toBe(
       "hold_rifle_lowered_heavy",
+    );
+  });
+
+  it("holds a pistol in the pistol's own clips", () => {
+    expect(holdClip(body, "pistol")).toBe("hold_pistol_lowered");
+    expect(holdClip(body, "pistol", { subType: "Heavy" })).toBe(
+      "hold_pistol_lowered_heavy",
     );
   });
 
   it("keeps the game's clip without a core", () => {
-    expect(rifleHoldClip(body)).toBe("hold_rifle_lowered");
+    expect(holdClip(body, "rifle")).toBe("hold_rifle_lowered");
   });
 
-  it("holds a rifle out the furthest from a core of no or an unknown weight", () => {
-    expect(rifleHoldClip(body, { subType: null })).toBe(
+  it("holds a weapon out the furthest from a core of no or an unknown weight", () => {
+    expect(holdClip(body, "rifle", { subType: null })).toBe(
       "hold_rifle_lowered_heavy",
     );
-    expect(rifleHoldClip(body, { subType: "SuperHeavy" })).toBe(
-      "hold_rifle_lowered_heavy",
+    expect(holdClip(body, "pistol", { subType: "SuperHeavy" })).toBe(
+      "hold_pistol_lowered_heavy",
     );
   });
 
-  it("holds a rifle out the furthest where the body lacks the clip for the weight", () => {
-    expect(rifleHoldClip(body, { subType: "Medium" })).toBe(
+  it("holds a weapon out the furthest where the body lacks the clip for the weight", () => {
+    expect(holdClip(body, "rifle", { subType: "Medium" })).toBe(
       "hold_rifle_lowered_heavy",
     );
   });
 
   it("reads the weight of a core without a subType from its item type", () => {
     expect(
-      rifleHoldClip(body, { subType: null, itemType: "light_armor" }),
+      holdClip(body, "rifle", { subType: null, itemType: "light_armor" }),
     ).toBe("hold_rifle_lowered_light");
   });
 
   it("falls back to the game's clip where the body lacks the no-core clip the export names", () => {
     expect(
-      rifleHoldClip({
-        ...body,
-        holdPoses: [{ armorWeight: null, clip: "hold_rifle_lowered_v2" }],
-      }),
+      holdClip(
+        {
+          ...body,
+          holdPoses: [
+            {
+              weapon: "rifle",
+              armorWeight: null,
+              clip: "hold_rifle_lowered_v2",
+            },
+          ],
+        },
+        "rifle",
+      ),
     ).toBe("hold_rifle_lowered");
   });
 
   it("keeps the game's clip on a body the export gives no hold poses", () => {
     expect(
-      rifleHoldClip({ ...body, holdPoses: [] }, { subType: "Heavy" }),
+      holdClip({ ...body, holdPoses: [] }, "rifle", { subType: "Heavy" }),
     ).toBe("hold_rifle_lowered");
   });
 
-  it("holds nothing on a body without a rifle clip", () => {
-    expect(rifleHoldClip({ ...body, clips: [], holdPoses: [] })).toBe(
-      undefined,
-    );
-    expect(rifleHoldClip(undefined, { subType: "Heavy" })).toBe(undefined);
+  it("holds nothing on a body without a clip for the weapon", () => {
+    expect(
+      holdClip(
+        { ...body, clips: [clip("hold_rifle_lowered")], holdPoses: [] },
+        "pistol",
+      ),
+    ).toBe(undefined);
+    expect(holdClip(undefined, "rifle", { subType: "Heavy" })).toBe(undefined);
   });
 });
