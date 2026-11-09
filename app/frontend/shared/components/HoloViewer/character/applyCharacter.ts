@@ -73,28 +73,12 @@ const meshesOf = (root: Object3D) => {
   return meshes;
 };
 
-// Scalp hair cards are not shadowed by the cards above them as they are in
-// the game, and come out about three times too bright under the studio's
-// environment light: their diffuse and ambient light is scaled down. Beards,
-// brows and lashes, and every layer without the studio, stay as they are.
-const SCALP_HAIR_OCCLUSION = 0.3;
-
-const hairOcclusion = (
-  port: string | undefined,
-  mode: string,
-  studio: boolean,
-) =>
-  studio && port === "hair_itemport" && mode === "hair_cards"
-    ? SCALP_HAIR_OCCLUSION
-    : 1;
-
 const loadAccessory = async (
   rig: CharacterRig,
   mesh: CharacterRig["meshes"][number],
   offsets: Float32Array,
   textured: boolean,
   owned: LoadedCharacter["owned"],
-  studio: boolean,
 ) => {
   if (!mesh.url) return undefined;
 
@@ -121,7 +105,6 @@ const loadAccessory = async (
           part.material = await characterMaterial(
             entry.material.three,
             entry.material.variation,
-            hairOcclusion(mesh.port, entry.material.mode, studio),
           );
           owned.materials.push(part.material);
         }
@@ -138,7 +121,6 @@ const loadAccessory = async (
 export const loadCharacter = async (
   rig: CharacterRig,
   textured: boolean,
-  studio = false,
 ): Promise<LoadedCharacter> => {
   const library = await loadFaceLibrary(rig.library.id, rig.library.urls);
   const face = blendFace(library, rig.weights ?? ARCHETYPE_WEIGHTS);
@@ -152,7 +134,7 @@ export const loadCharacter = async (
         ? Promise.resolve([])
         : Promise.all(
             rig.meshes.map((mesh) =>
-              loadAccessory(rig, mesh, offsets, textured, owned, studio),
+              loadAccessory(rig, mesh, offsets, textured, owned),
             ),
           ),
       textured && head.base

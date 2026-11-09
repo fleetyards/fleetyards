@@ -38,8 +38,6 @@ export type CharacterSubmaterial =
     };
 
 export type CharacterMeshVariant = {
-  // On a rig: the port it is worn on.
-  port?: string;
   url: string | null;
   materials_by_submaterial: CharacterSubmaterial[];
 };

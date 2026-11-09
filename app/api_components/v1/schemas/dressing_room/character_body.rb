@@ -34,10 +34,6 @@ module V1
               pattern: "^#[0-9a-fA-F]{6}$",
               description: "The sRGB skin tone the textured holo is baked at, e.g. #513428; absent until exported"
             },
-            environment: {
-              description: "The studio environment the figure is lit in; absent until exported",
-              anyOf: [::V1::Schemas::DressingRoom::CharacterBodyEnvironment, {type: :null}]
-            },
             defaultCharacter: {
               description: "The game's default character for the body, resolved like a shared character's `character`; absent until the customizer export is imported",
               anyOf: [{type: :object, additionalProperties: true}, {type: :null}]
@@ -48,7 +44,7 @@ module V1
             }
           },
           additionalProperties: false,
-          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone environment defaultCharacter faceLibrary]
+          required: %w[key holo holoTextured animations weaponInHand lighting clips skinTone defaultCharacter faceLibrary]
         })
       end
     end

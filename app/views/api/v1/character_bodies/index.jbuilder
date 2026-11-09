@@ -27,16 +27,6 @@ json.array! @character_bodies do |body|
     json.looping !!clip["looping"]
   end
   json.skin_tone body.skin_tone
-  environment_map = body.environment && @environment_maps[body.environment["map"]]
-  if environment_map
-    json.environment do
-      json.map rails_blob_url(environment_map.file)
-      json.intensity body.environment["intensity"]
-      json.exposure body.environment["exposure"]
-    end
-  else
-    json.environment nil
-  end
   if body.face_library?
     json.face_library do
       json.library body.face_library

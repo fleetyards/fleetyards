@@ -19,8 +19,6 @@ import {
   type Mesh,
   NeutralToneMapping,
   type Object3D,
-  PCFShadowMap,
-  VSMShadowMap,
   type PerspectiveCamera,
   type SkinnedMesh,
   Sphere,
@@ -35,7 +33,6 @@ import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
-import StudioLighting from "./StudioLighting/index.vue";
 import Skybox from "./Skybox/index.vue";
 import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
 import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
@@ -52,7 +49,6 @@ import {
   type HoloRig,
   rigSize,
   rigTextured,
-  STUDIO_FILL,
 } from "@/shared/components/HoloViewer/rig";
 import {
   BACKDROP_RADIUS,
@@ -173,12 +169,6 @@ const textured = computed(() =>
     (model) =>
       model.textured || mountsTextured(model.mounts) || rigTextured(model.rig),
   ),
-);
-
-// A figure lit in the studio: its environment map and one key light, the
-// colours matched at an exposure of their own.
-const studio = computed(
-  () => props.models.find((model) => model.rig?.environment)?.rig?.environment,
 );
 
 // A rigged figure that brings the game's own lights is lit by them alone,
@@ -926,16 +916,12 @@ defineExpose({
       class="holo-viewer__canvas"
       :clear-alpha="0"
       :shadows="!lowPower"
-      :shadow-map-type="studio ? VSMShadowMap : PCFShadowMap"
-      :tone-mapping-exposure="studio ? studio.exposure : 1"
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
       ref="canvas"
       :render-mode="renderMode"
-      :tone-mapping="
-        textured || studio ? NeutralToneMapping : ACESFilmicToneMapping
-      "
+      :tone-mapping="textured ? NeutralToneMapping : ACESFilmicToneMapping"
       alpha
       :on-error="handleRenderError"
     >
@@ -954,12 +940,7 @@ defineExpose({
         :intensity="textured ? 1.5 : 2"
         :cast-shadow="!lowPower"
       />
-      <StudioLighting
-        v-if="studio"
-        :map="studio.map"
-        :intensity="studio.intensity * STUDIO_FILL"
-      />
-      <RoomLighting v-else-if="textured" />
+      <RoomLighting v-if="textured" />
       <TresAmbientLight
         v-else
         :intensity="ownLighting ? 0.15 : lowPower ? 0.8 : 0.5"

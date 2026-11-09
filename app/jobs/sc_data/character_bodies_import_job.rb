@@ -20,9 +20,7 @@ module ScData
       store = ::ScData::CharacterStore.new
       attached = {}
       manifest = store.manifest
-      file = lighting(store, manifest)
-      rigs = file&.fetch("rigs", {})
-      environment = environment(file&.dig("environment"))
+      rigs = lighting_rigs(store, manifest)
       faces = ::ScData::CharacterFacesImport.new(store)
       defaults = ::ScData::CharacterDefaultImport.new(store)
 
@@ -35,11 +33,8 @@ module ScData
         skin_tone = entry["skin_tone"] if entry["skin_tone"].to_s.match?(SKIN_TONE)
         body.update_columns(skin_tone:) if body.skin_tone != skin_tone
         unless rigs.nil?
-          # In the studio the figure is lit by its environment and one key
-          # light; without one, by the customizer's review rig.
-          lighting = lights(rigs.dig(environment ? "studio" : "review_#{key}", "lights"))
+          lighting = lights(rigs.dig("review_#{key}", "lights"))
           body.update_columns(lighting:) if body.lighting != lighting
-          body.update_columns(environment:) if body.environment != environment
         end
 
         if entry["faces"]
@@ -70,8 +65,8 @@ module ScData
 
     # A rig that cannot be read leaves the bodies lit as they were: nil, where
     # an export that lists no lighting at all is an empty rig.
-    private def lighting(store, manifest)
-      store.lighting(manifest)
+    private def lighting_rigs(store, manifest)
+      store.lighting_rigs(manifest)
     rescue => e
       log(:warn, "lighting could not be read: #{e.class}: #{e.message}")
       nil
@@ -87,26 +82,19 @@ module ScData
         next unless numbers?(light["position"], 3) && numbers?(light["color"], 3) && light["intensity"].is_a?(Numeric)
 
         spot = light["type"] == "spot"
-        direction = light["direction"]
-        if spot && !numbers?(direction, 3) && numbers?(light["target"], 3)
-          direction = light["target"].zip(light["position"]).map { |target, from| target - from }
-          length = Math.sqrt(direction.sum { |d| d * d })
-          direction = length.positive? ? direction.map { |d| d / length } : nil
-        end
-        next if spot && !numbers?(direction, 3)
+        next if spot && !numbers?(light["direction"], 3)
 
         # The rest is optional, and kept only as a number.
         {
           "type" => light["type"],
           "position" => light["position"],
-          "direction" => (direction if spot),
+          "direction" => (light["direction"] if spot),
           "color" => light["color"],
           "intensity" => light["intensity"],
           "range" => number(light["range"]),
           "decay" => number(light["decay"]),
           "angle" => (number(light.dig("three", "angle")) || number(light["outerConeAngle"]) if spot),
-          "penumbra" => (number(light.dig("three", "penumbra")) if spot),
-          "cast_shadow" => (true if light["castShadow"] == true)
+          "penumbra" => (number(light.dig("three", "penumbra")) if spot)
         }.compact
       end
     end
@@ -122,15 +110,6 @@ module ScData
       return unless helper.is_a?(Hash) && numbers?(helper["position"], 3) && numbers?(helper["rotation"], 4)
 
       {"bones" => bones.slice("right", "left"), "helper" => helper.slice("position", "rotation")}
-    end
-
-    # The studio environment, kept only whole: the map, how bright, and the
-    # exposure its colours were matched at.
-    private def environment(value)
-      return unless value.is_a?(Hash) && value["url"].is_a?(String) && value["url"].end_with?(".hdr")
-      return unless value["intensity"].is_a?(Numeric) && value["toneMappingExposure"].is_a?(Numeric)
-
-      {"map" => value["url"], "intensity" => value["intensity"], "exposure" => value["toneMappingExposure"]}
     end
 
     private def number(value) = (value if value.is_a?(Numeric))

@@ -103,27 +103,6 @@ module ScData
       assert_equal 1, CharacterBody.find_by!(key: "male").lighting.size
     end
 
-    test "lights a body in the studio when the lighting file has one: its environment and the studio's key light" do
-      publish("male", {"body.glb" => BODY})
-      @objects["lighting.json"] = {
-        environment: {url: "characters/environment/studio.hdr", intensity: 1.0, toneMappingExposure: 0.6156},
-        rigs: {
-          review_male: {lights: [{type: "point", position: [0, 2, 0], color: [1, 1, 1], intensity: 5}]},
-          studio: {lights: [{type: "spot", position: [1.6, 2.6, -2.4], target: [0, 1.3, 0], color: [1, 1, 1], intensity: 190, decay: 2, castShadow: true, three: {angle: 0.62, penumbra: 0.6}}]}
-        }
-      }.to_json
-      @objects["index.json"] = JSON.parse(@objects["index.json"]).merge("lighting" => {"file" => "characters/lighting.json"}).to_json
-
-      ::ScData::CharacterBodiesImportJob.new.perform
-
-      body = CharacterBody.find_by!(key: "male")
-      assert_equal({"map" => "characters/environment/studio.hdr", "intensity" => 1.0, "exposure" => 0.6156}, body.environment)
-      key = body.lighting.sole
-      assert_equal "spot", key["type"]
-      assert key["cast_shadow"]
-      assert_in_delta(-0.5057, key["direction"][0], 0.001)
-    end
-
     test "takes in a changed clip list without fetching the files again" do
       publish("male", {"body.glb" => BODY})
       ::ScData::CharacterBodiesImportJob.new.perform

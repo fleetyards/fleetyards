@@ -60,7 +60,6 @@ import {
   bodyRegion,
   bonesByName,
   buildRigLights,
-  STUDIO_KEY,
   rigLightsKey,
   type RigAttachment,
   type RigPiece,
@@ -570,10 +569,7 @@ const placeRigLights = (scene: Group) => {
   const lights = props.model.rig?.lights ?? [];
   if (!lights.length) return;
 
-  rigLights = buildRigLights(
-    lights,
-    props.model.rig?.environment ? STUDIO_KEY : 1,
-  );
+  rigLights = buildRigLights(lights);
   scene.add(rigLights);
   invalidate();
 };
@@ -603,8 +599,7 @@ let fittedGeometries: BufferGeometry[] = [];
 let characterLoading: string | undefined;
 let readyCharacter: LoadedCharacter | undefined;
 
-const characterKey = (key: string) =>
-  `${key}|${!!props.model.textured}|${!!props.model.rig?.environment}`;
+const characterKey = (key: string) => `${key}|${!!props.model.textured}`;
 
 const characterFor = (scene: Group) => {
   const wanted = props.model.rig?.character;
@@ -624,11 +619,7 @@ const characterFor = (scene: Group) => {
   if (characterLoading !== key) {
     characterLoading = key;
     void whileBusy(
-      loadCharacter(
-        wanted,
-        !!props.model.textured,
-        !!props.model.rig?.environment,
-      )
+      loadCharacter(wanted, !!props.model.textured)
         .catch((error) => {
           console.warn("The character did not load", error);
           return undefined;
@@ -910,18 +901,6 @@ const attachRigNow = async (scene: Group) => {
   });
 
   scene.add(next);
-
-  // In the studio the key light casts a soft shadow: everything opaque casts
-  // and takes it, see-through hair caps only take it.
-  if (rig.environment) {
-    scene.traverse((node) => {
-      const mesh = node as Mesh;
-      if (!mesh.isMesh) return;
-      const materials = [mesh.material].flat() as Material[];
-      mesh.castShadow = !materials.some((material) => material.transparent);
-      mesh.receiveShadow = true;
-    });
-  }
   rigRoot = next;
   rigClips = clips;
 
