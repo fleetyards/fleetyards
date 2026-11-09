@@ -54,6 +54,7 @@ import {
   loadCharacter,
   type LoadedCharacter,
 } from "../character/applyCharacter";
+import { awaitCharacter } from "../character/awaitCharacter";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -597,6 +598,8 @@ let fittedGeometries: BufferGeometry[] = [];
 // character on a changed outfit is kept: baking its head again would stall
 // every change.
 let characterLoading: string | undefined;
+// How long a new figure is held back for its character, at most.
+const CHARACTER_WAIT = 15_000;
 // Settles once the figure is dressed in it: false when another dressing
 // overtook that one.
 let characterPending: Promise<boolean> | undefined;
@@ -1108,11 +1111,16 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
       });
       while (!unmounted && !(await attachRig(scene)));
       // First shown wearing its character, never the body's own head for a
-      // moment: only a character that does not load leaves that one on.
-      while (!unmounted && characterPending) {
-        if (await characterPending) continue;
-        while (!unmounted && !(await attachRig(scene)));
-      }
+      // moment: only a character that does not load, or not in time, leaves
+      // that one on.
+      await awaitCharacter({
+        pending: () => characterPending,
+        redress: async () => {
+          while (!unmounted && !(await attachRig(scene)));
+        },
+        stopped: () => unmounted,
+        timeout: CHARACTER_WAIT,
+      });
 
       placeRigLights(scene);
 
