@@ -26663,11 +26663,7 @@ components:
       type: object
       properties:
         weapon:
-          type: string
-          enum:
-          - rifle
-          - pistol
-          description: The kind of weapon the clip holds
+          "$ref": "#/components/schemas/HoldPoseWeaponEnum"
         armorWeight:
           type:
           - string
@@ -41077,6 +41073,15 @@ components:
       - 'TRUE'
       - ONLY
       title: HiddenVehiclesFilterEnum
+    HoldPoseWeaponEnum:
+      type: string
+      enum:
+      - rifle
+      - pistol
+      x-enumNames:
+      - RIFLE
+      - PISTOL
+      title: HoldPoseWeaponEnum
     Homepage:
       type: object
       properties:

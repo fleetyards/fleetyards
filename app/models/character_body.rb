@@ -16,6 +16,9 @@
 class CharacterBody < ApplicationRecord
   include ResolvedCharacterFile
 
+  # The weapons a hold pose is for.
+  HOLD_WEAPONS = %w[rifle pistol].freeze
+
   has_one_attached :holo
   has_one_attached :holo_textured
   has_one_attached :animations

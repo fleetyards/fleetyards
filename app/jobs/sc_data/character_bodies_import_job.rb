@@ -19,7 +19,7 @@ module ScData
 
     # The export's lowered hold map per weapon held. The ready holds are one
     # clip for every weight, the body's own, so they are not kept.
-    LOWERED_HOLDS = {"rifle" => "rifleLowered", "pistol" => "pistolLowered"}.freeze
+    LOWERED_HOLDS = CharacterBody::HOLD_WEAPONS.to_h { |weapon| [weapon, "#{weapon}Lowered"] }.freeze
 
     FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 

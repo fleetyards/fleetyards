@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            weapon: {type: :string, enum: %w[rifle pistol], description: "The kind of weapon the clip holds"},
+            weapon: {"$ref": "#/components/schemas/HoldPoseWeaponEnum"},
             armorWeight: {
               type: [:string, :null],
               description: "The worn core's armour weight as its subType spells it, e.g. Heavy; null for no core"
