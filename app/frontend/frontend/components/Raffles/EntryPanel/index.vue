@@ -26,7 +26,7 @@ import {
 } from "@/services/fyApi";
 import { isRaffleOver } from "@/frontend/utils/raffleStatus";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useRedirectBackStore } from "@/shared/stores/redirectBack";
+import { useSignInAndReturn } from "@/frontend/composables/useSignInAndReturn";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -41,7 +41,6 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
-const route = useRoute();
 const { displayAlert, displaySuccess, displayConfirm } = useAppNotifications();
 const { isAuthenticated, currentUser } = storeToRefs(useSessionStore());
 
@@ -54,13 +53,7 @@ const withdrawMutation = useWithdrawFromRaffle({
 
 const conditionsAccepted = ref(false);
 
-// Login returns to the stored back route; a public page sets none on its own.
-const redirectBackStore = useRedirectBackStore();
-const router = useRouter();
-const signIn = async () => {
-  redirectBackStore.setBackRoute(route.fullPath);
-  await router.push({ name: "login" });
-};
+const signIn = useSignInAndReturn();
 
 const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
