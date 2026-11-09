@@ -301,9 +301,11 @@ const supplies = computed(() =>
     .filter((kind) => kind.slots.length),
 );
 
-// Said in the supplies tab while nothing worn carries any.
+// Said in the supplies tab while nothing worn carries any; with gadget or
+// tool slots in the gear tab, the tab is simply left out.
 const suppliesHint = computed(() => {
   if (wornLoading.value) return "…";
+  if (gearSlots.value.length) return undefined;
 
   return wearsGearProvider.value
     ? t("dressingRoom.gearNone")

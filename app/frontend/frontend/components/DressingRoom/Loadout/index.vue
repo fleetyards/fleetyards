@@ -17,14 +17,14 @@ type Row = Omit<InstanceType<typeof SlotRow>["$props"], "slot"> & {
 type Tab = {
   key: string;
   slots: OutfitSlotEnum[];
-  // Said in place of the slots when there are none.
-  hint?: string;
 };
 
 type Props = {
   tabs: Tab[];
   // The gear a pocket or holster holds, by kind.
   supplies: { key: string; slots: OutfitSlotEnum[] }[];
+  // Said in a supplies tab with nothing to hold; without one, and without
+  // supplies, the tab is left out.
   suppliesHint?: string;
   row: (slot: OutfitSlotEnum) => Row;
 };
@@ -43,9 +43,43 @@ const { t } = useI18n();
 
 const SUPPLIES = "supplies";
 
-const tabKeys = computed(() => [...props.tabs.map((tab) => tab.key), SUPPLIES]);
+const tabKeys = computed(() => [
+  ...props.tabs.map((tab) => tab.key),
+  ...(props.supplies.length || props.suppliesHint ? [SUPPLIES] : []),
+]);
 
-const active = ref(props.tabs[0]?.key ?? SUPPLIES);
+const picked = ref<string>();
+
+// The tab picked while it is offered, else the first: the gear tab goes
+// when what is worn stops taking gear.
+const active = computed(() =>
+  picked.value && tabKeys.value.includes(picked.value)
+    ? picked.value
+    : tabKeys.value[0],
+);
+
+const id = useId();
+const tabId = (key: string) => `${id}-tab-${key}`;
+const panelId = (key: string) => `${id}-panel-${key}`;
+
+const tabButtons = ref<HTMLButtonElement[]>([]);
+
+// The arrow keys, Home and End move along the tabs, as a tab list's do.
+const moveTab = (event: KeyboardEvent) => {
+  const keys = tabKeys.value;
+  const index = keys.indexOf(active.value ?? "");
+  const next = {
+    ArrowRight: (index + 1) % keys.length,
+    ArrowLeft: (index - 1 + keys.length) % keys.length,
+    Home: 0,
+    End: keys.length - 1,
+  }[event.key];
+  if (next === undefined) return;
+
+  event.preventDefault();
+  picked.value = keys[next];
+  tabButtons.value[next]?.focus();
+};
 
 const filled = (slots: OutfitSlotEnum[]) =>
   slots.filter((slot) => props.row(slot).selected).length;
@@ -57,17 +91,22 @@ const filled = (slots: OutfitSlotEnum[]) =>
       class="loadout__tabs"
       role="tablist"
       :aria-label="t('dressingRoom.loadout')"
+      @keydown="moveTab"
     >
       <button
         v-for="key in tabKeys"
+        :id="tabId(key)"
+        ref="tabButtons"
         :key="key"
         type="button"
         class="loadout__tab"
         :class="{ 'loadout__tab--active': key === active }"
         role="tab"
         :aria-selected="key === active"
+        :aria-controls="panelId(key)"
+        :tabindex="key === active ? 0 : -1"
         :data-test="`dressing-room-tab-${key}`"
-        @click="active = key"
+        @click="picked = key"
       >
         {{ t(`dressingRoom.groups.${key}`) }}
       </button>
@@ -76,22 +115,13 @@ const filled = (slots: OutfitSlotEnum[]) =>
     <div
       v-for="tab in tabs"
       v-show="tab.key === active"
+      :id="panelId(tab.key)"
       :key="tab.key"
       role="tabpanel"
+      :aria-labelledby="tabId(tab.key)"
       class="loadout__panel"
     >
-      <p
-        v-if="!tab.slots.length && tab.hint"
-        class="loadout__hint"
-        :data-test="`dressing-room-${tab.key}-hint`"
-      >
-        {{ tab.hint }}
-      </p>
-      <ul
-        v-else
-        class="loadout__slots"
-        :data-test="`dressing-room-slots-${tab.key}`"
-      >
+      <ul class="loadout__slots" :data-test="`dressing-room-slots-${tab.key}`">
         <SlotRow
           v-for="slot in tab.slots"
           :key="slot"
@@ -104,8 +134,11 @@ const filled = (slots: OutfitSlotEnum[]) =>
     </div>
 
     <div
+      v-if="tabKeys.includes(SUPPLIES)"
       v-show="active === SUPPLIES"
+      :id="panelId(SUPPLIES)"
       role="tabpanel"
+      :aria-labelledby="tabId(SUPPLIES)"
       class="loadout__panel"
       data-test="dressing-room-gear-columns"
     >
