@@ -6,9 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import PickerCard from "@/shared/components/PickerCard/index.vue";
+import StageLayout from "@/frontend/components/StageLayout/index.vue";
+import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import { type MediaFile, type Model } from "@/services/fyApi";
 import {
   ModelStateEnum,
@@ -84,6 +85,9 @@ const painted = computed(
 const cardImage = (image?: MediaFile) =>
   image?.mediumUrl ?? image?.smallUrl ?? undefined;
 
+// Folded down to the paint on the ship, leaving the stage to it.
+const collapsed = ref(false);
+
 // The ship's own colours first, then its paints, as the ship page lists them.
 const cards = computed(() => [
   {
@@ -101,36 +105,46 @@ const cards = computed(() => [
     selected: holoPaint.value?.id === paint.id,
   })),
 ]);
+
+// What the folded card still says: the paint on the ship.
+const selectedName = computed(
+  () => cards.value.find((card) => card.selected)?.name,
+);
 </script>
 
 <template>
-  <div class="paint-booth">
-    <div class="paint-booth__stage" data-test="paint-booth-stage">
-      <HoloViewer
-        v-if="holoModel"
-        ref="viewer"
-        :key="holoModel.path"
-        :models="[holoModel]"
-        :azimuth="HOLO_AZIMUTH"
-        :elevation="HOLO_ELEVATION"
-        :contain-padding="1.1"
-        :auto-rotate="false"
-        contain
-        zoomable
-        turntable
-        backdrop
-        @unavailable="holoUnavailable"
-      />
-      <!-- A ship painted only, whose painted holo failed, has no plain one to
-           fall back to. -->
-      <div v-else class="paint-booth__no-holo" data-test="paint-booth-no-holo">
-        <i class="fa-duotone fa-cube" />
-        <p>{{ t("paintBooth.unavailable") }}</p>
-      </div>
+  <StageLayout
+    landscape
+    class="paint-booth"
+    :controls-label="t('dressingRoom.viewControls')"
+    data-test="paint-booth-stage"
+  >
+    <HoloViewer
+      v-if="holoModel"
+      ref="viewer"
+      :key="holoModel.path"
+      :models="[holoModel]"
+      :azimuth="HOLO_AZIMUTH"
+      :elevation="HOLO_ELEVATION"
+      :contain-padding="1.1"
+      :auto-rotate="false"
+      contain
+      zoomable
+      turntable
+      backdrop
+      @unavailable="holoUnavailable"
+    />
+    <!-- A ship painted only, whose painted holo failed, has no plain one to
+         fall back to. -->
+    <div v-else class="paint-booth__no-holo" data-test="paint-booth-no-holo">
+      <i class="fa-duotone fa-cube" />
+      <p>{{ t("paintBooth.unavailable") }}</p>
+    </div>
+
+    <template #controls>
+      <slot name="controls" />
       <Btn
         v-if="holoModel"
-        :size="BtnSizesEnum.SM"
-        class="paint-booth__fullscreen"
         :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
         v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
         data-test="paint-booth-fullscreen"
@@ -138,81 +152,71 @@ const cards = computed(() => [
       >
         <i class="fa-light fa-expand" />
       </Btn>
-    </div>
+    </template>
 
-    <aside class="paint-booth__paints">
-      <h2 class="paint-booth__title">
-        {{ t("paintBooth.paints") }}
-        <span v-if="painted" class="paint-booth__count">
-          {{ holoPaints.length + 1 }}
-        </span>
-      </h2>
-      <p
-        v-if="!painted"
-        class="paint-booth__note"
-        data-test="paint-booth-unavailable"
-      >
-        {{ t("paintBooth.unavailable") }}
-      </p>
-      <ul v-else class="paint-booth__list" data-test="paint-booth-paints">
-        <li
-          v-for="card in cards"
-          :key="card.key"
-          :data-test="`paint-booth-paint-${card.key}`"
-        >
-          <PickerCard
-            :name="card.name"
-            :image="card.image"
-            :selected="card.selected"
-            @toggle="emit('update:paint', card.slug)"
-          />
-        </li>
-      </ul>
-    </aside>
-  </div>
+    <template #end>
+      <StagePanel>
+        <section class="paint-booth__paints">
+          <h2 class="paint-booth__title">
+            <button
+              type="button"
+              class="paint-booth__toggle"
+              :aria-expanded="!collapsed"
+              aria-controls="paint-booth-paints"
+              data-test="paint-booth-toggle"
+              @click="collapsed = !collapsed"
+            >
+              {{ t("paintBooth.paints") }}
+              <span v-if="painted" class="paint-booth__count">
+                {{ holoPaints.length + 1 }}
+              </span>
+              <i
+                class="fa-light fa-chevron-up paint-booth__chevron"
+                :class="{ 'paint-booth__chevron--collapsed': collapsed }"
+                aria-hidden="true"
+              />
+            </button>
+          </h2>
+          <p
+            v-if="collapsed"
+            class="paint-booth__collapsed"
+            data-test="paint-booth-collapsed"
+          >
+            {{ selectedName }}
+          </p>
+          <p
+            v-else-if="!painted"
+            class="paint-booth__note"
+            data-test="paint-booth-unavailable"
+          >
+            {{ t("paintBooth.unavailable") }}
+          </p>
+          <ul
+            v-else
+            id="paint-booth-paints"
+            class="paint-booth__list"
+            data-test="paint-booth-paints"
+          >
+            <li
+              v-for="card in cards"
+              :key="card.key"
+              :data-test="`paint-booth-paint-${card.key}`"
+            >
+              <PickerCard
+                :name="card.name"
+                :image="card.image"
+                :selected="card.selected"
+                @toggle="emit('update:paint', card.slug)"
+              />
+            </li>
+          </ul>
+        </section>
+      </StagePanel>
+    </template>
+  </StageLayout>
 </template>
 
 <style lang="scss" scoped>
-.paint-booth {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
-
-  @media (min-width: $desktop-breakpoint) {
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
-    align-items: start;
-  }
-}
-
-// Landscape, as a ship lies: no box of its own, the page lit by a spot
-// behind the hull and a glow on the floor under its pedestal.
-.paint-booth__stage {
-  position: relative;
-  height: min(45vh, 40rem);
-  min-height: 20rem;
-  border-radius: 4px;
-  background:
-    radial-gradient(
-      ellipse 45% 12% at 50% 88%,
-      rgba($primary, 0.28),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 60% 60% at 50% 45%,
-      rgba($primary, 0.16),
-      rgba($background, 0.35) 70%,
-      transparent 100%
-    );
-
-  // The rest of the screen below the heading and the ship picker, however
-  // large the screen is.
-  @media (min-width: $desktop-breakpoint) {
-    position: sticky;
-    top: 1rem;
-    height: max(32rem, calc(100dvh - 14rem));
-  }
-}
-
 .paint-booth__no-holo {
   display: flex;
   flex-direction: column;
@@ -230,38 +234,73 @@ const cards = computed(() => [
   }
 }
 
-.paint-booth__fullscreen {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
-
 .paint-booth__paints {
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
 }
 
 .paint-booth__title {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
+  margin: 0;
   color: $gray-lighter;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.paint-booth__toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: $tap-target-min;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: $text-color;
+  }
+}
+
+.paint-booth__chevron {
+  margin-left: auto;
+  transition: transform 0.15s ease;
+}
+
+.paint-booth__chevron--collapsed {
+  transform: rotate(180deg);
+}
+
+.paint-booth__collapsed {
+  margin: 0;
+  color: var(--color-lifted);
+  font-weight: 600;
 }
 
 .paint-booth__count {
-  font-size: 0.85em;
   color: $gray-light;
   font-variant-numeric: tabular-nums;
+  letter-spacing: normal;
 }
 
 .paint-booth__note {
+  margin: 0;
   color: $gray-lighter;
 }
 
 // A paint is judged on the ship, so picking one must not scroll the ship away:
-// a strip under the stage on a phone, a two-column rail beside it on a desktop.
+// a strip under the stage on a phone, a two-column grid beside it on a desktop.
 .paint-booth__list {
   display: flex;
   gap: 10px;

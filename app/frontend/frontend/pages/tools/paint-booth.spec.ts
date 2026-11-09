@@ -37,7 +37,7 @@ vi.mock("@/frontend/components/PaintBooth/index.vue", () => ({
     name: "PaintBooth",
     props: ["model", "paint"],
     emits: ["update:paint"],
-    template: "<div data-test='paint-booth' />",
+    template: "<div data-test='paint-booth'><slot name='controls' /></div>",
   },
 }));
 

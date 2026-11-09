@@ -138,6 +138,27 @@ describe("PaintBooth", () => {
     ).toBe("true");
   });
 
+  it("folds the paints down to the one on the ship, and opens them again", async () => {
+    const wrapper = await mount({ paint: "ghoulish-green" });
+    const toggle = wrapper.find('[data-test="paint-booth-toggle"]');
+
+    await toggle.trigger("click");
+
+    expect(toggle.attributes("aria-expanded")).toBe("false");
+    expect(wrapper.find('[data-test="paint-booth-paints"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('[data-test="paint-booth-collapsed"]').text()).toBe(
+      "GHOULISH-GREEN",
+    );
+
+    await toggle.trigger("click");
+
+    expect(wrapper.find('[data-test="paint-booth-paints"]').exists()).toBe(
+      true,
+    );
+  });
+
   it("asks for a paint by its slug, and for the own colours by none", async () => {
     const wrapper = await mount({ paint: "blue-steel" });
 
