@@ -308,7 +308,7 @@ const { activeFilters } = useShipFilterSummary(() =>
         :aria-label="t('actions.models.openTableConfiguration')"
         @click="openDisplayOptionsModal"
       >
-        <i class="fa-duotone fa-cog" />
+        <i class="fa-duotone fa-sliders" />
       </Btn>
       <!-- The page's menu. On a phone it already carries the header's buttons
            too, so it moves up to the header as the page's one menu and the
