@@ -441,6 +441,7 @@ const { activeFilters } = useShipFilterSummary();
             <template #filter>
               <SquadronFilter
                 :fleet="props.fleet"
+                menu
                 class="fleetchart-squadron-filter"
               />
               <FleetVehiclesFilterForm />

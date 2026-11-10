@@ -62,10 +62,11 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (squadronsEnabled = true) => {
+const mount = async (squadronsEnabled = true, menu = false) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
       fleet: { slug: "maru", squadronsEnabled } as Fleet,
+      menu,
     },
   });
 
@@ -115,6 +116,17 @@ describe("FleetSquadronFilter", () => {
       "squadron-filter-combat",
       "squadron-filter-rota",
     ]);
+  });
+
+  // A narrow column, such as the fleetchart's filter panel, cannot hold a
+  // segment per squadron however wide the screen is.
+  it("is one button at any width when asked for the menu", async () => {
+    const subject = await mount(true, true);
+
+    expect(subject.find("[data-test='squadron-filter-menu']").exists()).toBe(
+      true,
+    );
+    expect(subject.find(".btn-group").exists()).toBe(false);
   });
 
   describe("on a phone", () => {
