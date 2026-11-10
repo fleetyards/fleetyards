@@ -32,6 +32,14 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_includes line.errors[:base], I18n.t("activerecord.errors.messages.contract_item_on_mission")
   end
 
+  test "a goods draft that keeps its lines cannot become a mission" do
+    contract = create(:fleet_contract, :with_item)
+
+    assert_not contract.update(kind: :mission, game_mission: create(:game_mission),
+      destination_fleet_inventory: nil)
+    assert_includes contract.errors.attribute_names, :fleet_contract_items
+  end
+
   test "only a mission contract carries a mission" do
     assert_not build(:fleet_contract, kind: :mission, destination_fleet_inventory: nil).valid?
     assert_not build(:fleet_contract, game_mission: create(:game_mission)).valid?
