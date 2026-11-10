@@ -436,6 +436,9 @@ const { activeFilters } = useShipFilterSummary();
             :download-name="`${fleet.slug}-fleetchart`"
             :groups="fleetchartGroups"
           >
+            <template #filter>
+              <FleetVehiclesFilterForm />
+            </template>
             <template #controls>
               <Btn
                 v-tooltip="t('actions.groupedByModel')"
