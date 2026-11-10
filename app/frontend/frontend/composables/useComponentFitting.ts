@@ -117,6 +117,15 @@ const fittedParts = (entries: FittedSlot[]): CarriedPart[] =>
     entry.content ? [entry.content, ...fittedParts(entry.children)] : [],
   );
 
+// A slot of the fitting, by what it carries now.
+export const fittedCategory = (entry: FittedSlot) =>
+  categoryCarrying(entry.slot.category, fittedParts(entry.children));
+
+export const componentTabOf = (category?: string) =>
+  COMPONENT_TABS.find((tab) =>
+    tab.categories.includes(category as HardpointCategoryEnum),
+  );
+
 // A slot of the fitting as it stands in the form: the slot, what sits in it,
 // and the slots that part brings.
 export interface FittedSlot {
@@ -595,10 +604,7 @@ export const useComponentFitting = () => {
         return roots(entry.children, tab);
       }
 
-      const category = categoryCarrying(
-        entry.slot.category,
-        fittedParts(entry.children),
-      );
+      const category = fittedCategory(entry);
 
       return category && tab.categories.includes(category) ? [entry] : [];
     });

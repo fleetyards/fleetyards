@@ -116,17 +116,27 @@ const side = props.mobile ? FrontSide : DoubleSide;
 const MaterialClass =
   props.mobile || props.hologram ? MeshLambertMaterial : MeshPhongMaterial;
 
-// A hologram does not hide what is behind it, so it writes no depth: the far
-// side of the hull shows through the near one.
+// A hologram's hull is a dimmed silhouette the parts stand out against. It
+// writes no depth, so a part inside it -- a cooler, a drive -- still shows,
+// and its layers stack: much more opaque, the far side's surfaces add up to
+// the hull's own colour, and a dark one reads as black.
+const SILHOUETTE_COLOR = "#2a5680";
+// Lit a little of itself, so a side turned from the light keeps its colour.
+const SILHOUETTE_EMISSIVE = 0.25;
+
 const hologramLook = props.hologram
   ? { transparent: true, opacity: 0.35, depthWrite: false }
   : {};
 
 const material = new MaterialClass({
-  color: props.color,
+  color: props.hologram ? SILHOUETTE_COLOR : props.color,
   side,
   ...hologramLook,
 });
+
+if (props.hologram) {
+  material.emissive.set(SILHOUETTE_COLOR).multiplyScalar(SILHOUETTE_EMISSIVE);
+}
 
 // A part the viewer has picked out, in the gold the grid's sections use.
 const HIGHLIGHT_COLOR = new Color("#fbb03b");
@@ -135,11 +145,17 @@ const HIGHLIGHT_COLOR = new Color("#fbb03b");
 // the see-through hull, in its own colour, a cooler or a drive is lost in it.
 const PART_SATURATION = props.hologram ? 0.2 : 0;
 const PART_LIGHTNESS = props.hologram ? 0.1 : 0;
-const PART_OPACITY = 0.5;
+const PART_OPACITY = 0.8;
 const partColor = new Color();
 
 const updatePartColor = () =>
-  partColor.copy(material.color).offsetHSL(0, PART_SATURATION, PART_LIGHTNESS);
+  partColor.set(props.color).offsetHSL(0, PART_SATURATION, PART_LIGHTNESS);
+
+// A coloured part keeps its colour on its unlit side, and lights up towards
+// white when picked out: the gold would read as one of the colours.
+const PART_EMISSIVE = 0.15;
+const WHITE = new Color("#ffffff");
+const COLORED_HIGHLIGHT = 0.55;
 
 // The hologram's layers in a fixed order. Sorted by distance instead, a part
 // sat over the hull from one side and under it from the other, and a body and
@@ -174,10 +190,12 @@ const edgesFor = (geometry: BufferGeometry) => {
   return edges;
 };
 
-const WIRE_OPACITY = 0.35;
+// The silhouette's outline, faint enough to leave the parts the brightest
+// thing in the holo.
+const WIRE_OPACITY = props.hologram ? 0.3 : 0.35;
 // Fainter on a part: drawn over its body, its dense lines at the hull's
 // strength washed it out to near white.
-const PART_WIRE_OPACITY = 0.15;
+const PART_WIRE_OPACITY = 0.25;
 const HIGHLIGHT_WIRE_OPACITY = 0.7;
 
 const wireLook = { transparent: true, depthWrite: false };
@@ -218,6 +236,28 @@ const disposeOriginal = (original: Material | Material[]) => {
   }
 };
 
+const mountColor = (node: Object3D): string | undefined => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current.userData.color) return current.userData.color;
+  }
+
+  return undefined;
+};
+
+// A part's colour pair: its mount's in a hologram, or the holo's own with the
+// gold.
+const paintEntry = (entry: Fading) => {
+  const color = props.hologram ? mountColor(entry.mesh) : undefined;
+
+  if (color) {
+    entry.base.set(color);
+    entry.highlight.copy(entry.base).lerp(WHITE, COLORED_HIGHLIGHT);
+  } else {
+    entry.base.copy(partColor);
+    entry.highlight.copy(HIGHLIGHT_COLOR);
+  }
+};
+
 const highlighted = (node: Object3D) => {
   for (let current: Object3D | null = node; current; current = current.parent) {
     if (current.userData.highlighted) return true;
@@ -230,7 +270,10 @@ const highlighted = (node: Object3D) => {
 // the highlight: `glow` runs from 0 to 1 and follows `target`.
 type Fading = {
   mesh: Mesh;
-  body: Material & { color: Color };
+  body: Material & { color: Color; emissive?: Color };
+  // Its own colour, and the one it eases to when picked out.
+  base: Color;
+  highlight: Color;
   wire?: LineBasicMaterial;
   // The glow seen through the hull: coolers and drives sit inside it. Its own
   // layer, faded with the glow, so the part never jumps behind the hull.
@@ -250,13 +293,17 @@ const applyGlow = (entry: Fading) => {
   // Eased at both ends rather than run at a constant rate.
   const glow = entry.glow * entry.glow * (3 - 2 * entry.glow);
 
-  entry.body.color.copy(partColor).lerp(HIGHLIGHT_COLOR, glow);
+  entry.body.color.copy(entry.base).lerp(entry.highlight, glow);
+  if (props.hologram) {
+    entry.body.emissive?.copy(entry.body.color).multiplyScalar(PART_EMISSIVE);
+  }
 
+  entry.overlay.material.color.copy(entry.highlight);
   entry.overlay.material.opacity = OVERLAY_OPACITY * glow;
   entry.overlay.visible = glow > 0;
 
   if (entry.wire) {
-    entry.wire.color.copy(partColor).lerp(HIGHLIGHT_COLOR, glow);
+    entry.wire.color.copy(entry.base).lerp(entry.highlight, glow);
     entry.wire.opacity =
       PART_WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - PART_WIRE_OPACITY) * glow;
   }
@@ -372,14 +419,18 @@ const setMaterials = (scene: Group) => {
       entry = {
         mesh: body,
         body: partMaterial(),
+        base: new Color(),
+        highlight: new Color(),
         wire: props.hologram ? wireMaterial.clone() : undefined,
         overlay: overlayFor(body),
         glow: target,
         target,
       };
       fading.set(body, entry);
-      applyGlow(entry);
     }
+
+    paintEntry(entry);
+    applyGlow(entry);
 
     entry.target = target;
     body.material = entry.body;
@@ -1252,10 +1303,13 @@ watch(
 watch(
   () => props.color,
   (color) => {
-    material.color.set(color);
+    if (!props.hologram) material.color.set(color);
     wireMaterial.color.set(color);
     updatePartColor();
-    fading.forEach(applyGlow);
+    fading.forEach((entry) => {
+      paintEntry(entry);
+      applyGlow(entry);
+    });
   },
 );
 </script>

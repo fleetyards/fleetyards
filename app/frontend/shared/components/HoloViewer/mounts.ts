@@ -24,6 +24,8 @@ export type HoloMount = {
   id?: string;
   // Drawn in the highlight colour, with everything mounted on it.
   highlighted?: boolean;
+  // Drawn in this colour, with whatever is mounted on it that has none.
+  color?: string;
   mounts: HoloMount[];
 };
 
@@ -46,12 +48,13 @@ export const mountsSize = (mounts: HoloMount[] = []): number =>
     0,
   );
 
-// Only what is highlighted, by place in the tree: a change here only repaints.
+// Only what is highlighted and coloured, by place in the tree: a change here
+// only repaints.
 export const mountsHighlightKey = (mounts: HoloMount[] = []): string =>
   mounts
     .map(
       (mount) =>
-        `${mount.highlighted ? 1 : 0}(${mountsHighlightKey(mount.mounts)})`,
+        `${mount.highlighted ? 1 : 0}${mount.color ?? ""}(${mountsHighlightKey(mount.mounts)})`,
     )
     .join("");
 
@@ -141,6 +144,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         group.quaternion.fromArray(mount.rotation);
         group.userData.highlighted = !!mount.highlighted;
         group.userData.mountId = mount.id;
+        group.userData.color = mount.color;
         group.userData.textured = !!mount.textured;
         group.userData.mountGroups = [];
         parent.add(group);
@@ -175,7 +179,8 @@ export const buildMounts = async (mounts: HoloMount[]) => {
   return root;
 };
 
-// Marks the groups a built tree holds with the mounts' highlights and ids.
+// Marks the groups a built tree holds with the mounts' highlights, colours and
+// ids.
 export const applyHighlights = (root: Object3D, mounts: HoloMount[]) => {
   const walk = (parent: Object3D, list: HoloMount[]) => {
     const groups: Object3D[] = parent.userData.mountGroups ?? [];
@@ -186,6 +191,7 @@ export const applyHighlights = (root: Object3D, mounts: HoloMount[]) => {
 
       group.userData.highlighted = !!mount.highlighted;
       group.userData.mountId = mount.id;
+      group.userData.color = mount.color;
       walk(group, mount.mounts);
     });
   };

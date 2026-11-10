@@ -4,7 +4,12 @@ import type {
   ModelLoadoutPreview,
   ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
-import type { FittedSlot } from "@/frontend/composables/useComponentFitting";
+import {
+  componentTabOf,
+  type FittedSlot,
+  filedCategory,
+  fittedCategory,
+} from "@/frontend/composables/useComponentFitting";
 import type { HoloMount } from "@/shared/components/HoloViewer/mounts";
 
 // A slot as the preview reads it: the part in it -- null for none -- and the
@@ -19,7 +24,30 @@ export type PreviewSlot = {
   // Holding another part than the stock one, whose ports the stock part's
   // defaults do not describe.
   refitted?: boolean;
+  // What the slot is filed under, which picks the colour of its part.
+  category?: string;
   slots: PreviewSlot[];
+};
+
+// One colour per tab of the editor, so a part on the holo reads as the tab
+// that lists it.
+export const TAB_COLORS: Record<string, string> = {
+  weapons: "#c25450",
+  missiles: "#c9783f",
+  shields: "#4f7fc4",
+  powerPlants: "#c9a83a",
+  coolers: "#46a9b8",
+  quantumDrives: "#8a62c0",
+  radar: "#4f9e66",
+  lifeSupport: "#c06a96",
+  flightBlades: "#a8b3c2",
+  auxiliary: "#8fae4a",
+};
+
+export const categoryColor = (category?: string) => {
+  const tab = componentTabOf(category);
+
+  return tab ? TAB_COLORS[tab.id] : undefined;
 };
 
 // A saved loadout's tree.
@@ -28,6 +56,7 @@ export const previewSlotsFromLoadout = (slots: LoadoutSlot[]): PreviewSlot[] =>
     name: slot.name,
     part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
     refitted: !!slot.fitted && slot.fitted.id !== slot.stock?.id,
+    category: filedCategory(slot),
     slots: previewSlotsFromLoadout(slot.slots),
   }));
 
@@ -43,6 +72,7 @@ export const previewSlotsFromFitting = (
     part: entry.content ?? null,
     active: activePaths.includes(entry.path),
     refitted: !!entry.content && entry.content.id !== entry.slot.stock?.id,
+    category: fittedCategory(entry),
     slots: previewSlotsFromFitting(entry.children, activePaths),
   }));
 
@@ -101,6 +131,7 @@ export const loadoutMounts = (
     nodes: PortNode[],
     levelSlots?: PreviewSlot[],
     parentRefitted = false,
+    parentColor?: string,
   ) =>
     nodes.flatMap((node): HoloMount[] => {
       const { port } = node;
@@ -129,7 +160,16 @@ export const loadoutMounts = (
         }
       }
 
-      const mounts = build(node.children, slot?.slots, !!slot?.refitted);
+      // A gun in a turret is the turret's colour; a slot filed apart -- a
+      // missile rack on a turret -- has its own.
+      const color = categoryColor(slot?.category) ?? parentColor;
+
+      const mounts = build(
+        node.children,
+        slot?.slots,
+        !!slot?.refitted,
+        color,
+      );
 
       if (!path && !mounts.length) return [];
 
@@ -140,6 +180,7 @@ export const loadoutMounts = (
           path,
           id: slot?.path,
           highlighted: !!slot?.active,
+          color,
           mounts,
         },
       ];

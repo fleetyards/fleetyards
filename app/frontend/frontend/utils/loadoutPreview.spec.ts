@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
-import type {
-  LoadoutSlot,
-  ModelLoadoutPreview,
-  ModelLoadoutPreviewPort,
+import {
+  HardpointCategoryEnum,
+  type LoadoutSlot,
+  type ModelLoadoutPreview,
+  type ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
 import {
+  categoryColor,
   loadoutMounts,
   portTree,
   previewSlotsFromLoadout,
+  TAB_COLORS,
 } from "./loadoutPreview";
 
 const port = (
@@ -215,6 +218,43 @@ describe("loadoutMounts", () => {
 
     expect(nose.highlighted).toBe(true);
     expect(left.highlighted).toBe(false);
+  });
+
+  it("colours each part by the tab that lists its slot", () => {
+    const [nose, left] = loadoutMounts(preview, [
+      {
+        name: "hardpoint_gun_nose",
+        part: { holoUrl: holo("gimbal") },
+        category: HardpointCategoryEnum.WEAPONS,
+        slots: [
+          {
+            name: "hardpoint_class_2",
+            part: { holoUrl: holo("gun") },
+            slots: [],
+          },
+        ],
+      },
+      {
+        name: "hardpoint_missilerack_left",
+        part: { holoUrl: holo("rack") },
+        category: HardpointCategoryEnum.MISSILE_RACKS,
+        slots: [],
+      },
+    ]);
+
+    expect(nose.color).toBe(TAB_COLORS.weapons);
+    expect(nose.mounts[0].color).toBe(TAB_COLORS.weapons);
+    expect(left.color).toBe(TAB_COLORS.missiles);
+  });
+
+  it("files a saved slot's category for its colour", () => {
+    const [mount] = previewSlotsFromLoadout([
+      slot("hardpoint_shield", {
+        category: HardpointCategoryEnum.SHIELDGENERATOR,
+      }),
+    ]);
+
+    expect(categoryColor(mount.category)).toBe(TAB_COLORS.shields);
   });
 
   it("places a part the export never draws from its own holo", () => {
