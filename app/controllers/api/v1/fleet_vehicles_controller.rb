@@ -29,18 +29,9 @@ module Api
       def index
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
-
-        scope = scope.where(loaner: loaner_included?)
-
-        scope = scope.where(user_id: for_members) if for_members.present?
-        scope = narrow_to_squadrons(scope)
-
-        normalize_sort_params(vehicle_query_params)
-        sorts = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
-        vehicle_query_params["sorts"] = FleetVehicle.vehicle_sorts(sorts)
-
-        @q = scope.ransack(vehicle_query_params)
+        @q, sorts = filtered_vehicles(
+          vehicle_scope.includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
+        )
 
         if ActiveModel::Type::Boolean.new.cast(params["grouped"])
           @models = result_with_pagination(grouped_models(@q, sorts), per_page(FleetVehicle))
@@ -69,21 +60,41 @@ module Api
         @vehicles = export_vehicles
       end
 
+      # Every ship the filters admit, unpaginated and stripped to what a chart
+      # draws from. A full vehicle carries its whole model, which for a fleet of
+      # thousands is hundreds of megabytes; here each model is sent once.
       def fleetchart
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
+        @q, _sorts = filtered_vehicles(vehicle_scope)
 
-        scope = scope.where(loaner: loaner_included?)
-        scope = narrow_to_squadrons(scope)
-
-        @q = scope.ransack(vehicle_query_params)
         @vehicles = Vehicle.where(
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
-          .joins(:model)
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+          .order(@q.result.order_values)
+          .joins(model: :manufacturer)
+          .includes(:user)
+          .to_a
+
+        @models = Model.where(id: @vehicles.map(&:model_id).uniq).includes(:manufacturer)
+        @module_packages = ModelModulePackage
+          .where(id: @vehicles.filter_map(&:module_package_id).uniq)
+          .includes(:model_modules)
+        @squadrons_by_user = squadrons_by_user
+      end
+
+      # The list and its chart show the same ships, so both filter through here.
+      # Returns the search and the sorts it was given.
+      private def filtered_vehicles(scope)
+        scope = scope.where(loaner: loaner_included?)
+        scope = scope.where(user_id: for_members) if for_members.present?
+        scope = narrow_to_squadrons(scope)
+
+        normalize_sort_params(vehicle_query_params)
+        sorts = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
+        vehicle_query_params["sorts"] = FleetVehicle.vehicle_sorts(sorts)
+
+        [scope.ransack(vehicle_query_params), sorts]
       end
 
       private def export_vehicles
@@ -111,6 +122,21 @@ module Api
             {user: {avatar_attachment: :blob}}
           )
           .joins(:model)
+      end
+
+      # The ordinary squadron each member flies in. Teams are left out: a member
+      # holds at most one ordinary squadron, but any number of teams, and a ship
+      # is grouped under one heading.
+      private def squadrons_by_user
+        return {} unless @fleet.squadrons_enabled
+        return {} unless allowed_to?(:index?, with: FleetSquadronPolicy, context: {fleet: @fleet})
+
+        FleetSquadron
+          .joins(fleet_squadron_memberships: :fleet_membership)
+          .merge(FleetMembership.kept.accepted)
+          .where(fleet_id: @fleet.id, team: false)
+          .select("fleet_squadrons.*", "fleet_memberships.user_id AS member_user_id")
+          .index_by(&:member_user_id)
       end
 
       # `nil` means no squadron was named and the scope is left alone; an empty
