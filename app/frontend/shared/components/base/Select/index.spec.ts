@@ -6,7 +6,15 @@
  */
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import Component from "./index.vue";
 
 const options = [
@@ -32,9 +40,13 @@ const BaseSelect = Component as unknown as new (...args: never[]) => {
   clearSearch: () => void;
 };
 
-const mount = (props: Record<string, unknown> = {}) =>
+const mount = (
+  props: Record<string, unknown> = {},
+  attachTo?: Element | string,
+) =>
   mountWithDefaults<typeof BaseSelect>(BaseSelect, {
     props: { name: "ships", options, ...props },
+    attachTo,
   });
 
 type Wrapper = Awaited<ReturnType<typeof mount>>;
@@ -656,13 +668,30 @@ describe("BaseSelect", () => {
   describe("the popover's positioning mode", () => {
     const ESCAPES_CLIP = "base-select-items-wrapper--escapes-clip";
 
-    // jsdom reports every ancestor as `overflow: visible`, so the clipping the
-    // fixed mode exists for has to be put there.
-    const clip = (wrapper: Wrapper) => {
-      const host = wrapper.element.parentElement as HTMLElement;
-      host.style.overflow = "hidden";
+    // jsdom computes no style for a detached element, so the select is rendered
+    // into a host in the document, and that host carries the clipping the fixed
+    // mode exists for.
+    let host: HTMLElement;
+    let mounted: Wrapper | undefined;
 
-      return host;
+    beforeEach(() => {
+      host = document.body.appendChild(document.createElement("div"));
+    });
+
+    afterEach(() => {
+      mounted?.unmount();
+      mounted = undefined;
+      host.remove();
+    });
+
+    const mountInHost = async () => {
+      mounted = await mount({}, host);
+
+      return mounted;
+    };
+
+    const clip = () => {
+      host.style.overflow = "hidden";
     };
 
     const popoverIn = (wrapper: Wrapper) =>
@@ -679,8 +708,8 @@ describe("BaseSelect", () => {
     };
 
     it("holds the fixed mode through the closing animation", async () => {
-      const wrapper = await mount();
-      clip(wrapper);
+      const wrapper = await mountInHost();
+      clip();
 
       await openWith(wrapper);
 
@@ -697,7 +726,7 @@ describe("BaseSelect", () => {
     });
 
     it("takes stale fixed coordinates off when it opens unclipped", async () => {
-      const wrapper = await mount();
+      const wrapper = await mountInHost();
       const popover = popoverIn(wrapper).element as HTMLElement;
 
       // What an earlier open in the fixed mode leaves on the element. The same

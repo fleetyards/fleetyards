@@ -204,9 +204,14 @@ const vehicle = (
     },
   }) as unknown as Vehicle;
 
-const mountClosed = (v: Vehicle, props: Record<string, unknown> = {}) =>
+const mountClosed = (
+  v: Vehicle,
+  props: Record<string, unknown> = {},
+  attachTo?: Element,
+) =>
   mountWithDefaults(Component, {
     props: { vehicle: v, editable: true, ...props },
+    attachTo,
   });
 
 type Wrapper = Awaited<ReturnType<typeof mountClosed>>;
@@ -220,8 +225,12 @@ const openPicker = async (wrapper: Wrapper) => {
 };
 
 // Open, for the specs about what happens inside the picker.
-const mountModal = async (v: Vehicle, props: Record<string, unknown> = {}) => {
-  const wrapper = await mountClosed(v, props);
+const mountModal = async (
+  v: Vehicle,
+  props: Record<string, unknown> = {},
+  attachTo?: Element,
+) => {
+  const wrapper = await mountClosed(v, props, attachTo);
   await openPicker(wrapper);
 
   return wrapper;
@@ -707,7 +716,13 @@ describe("VehicleLoadoutModal", () => {
   });
 
   it("switches a new loadout to a link to a build planned elsewhere, and back", async () => {
-    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    // isVisible reads computed styles, which a detached element does not have.
+    const host = document.body.appendChild(document.createElement("div"));
+    const wrapper = await mountModal(
+      vehicle(["m1"]),
+      { newLoadout: true },
+      host,
+    );
     await flushPromises();
 
     expect(wrapper.find("[data-test='vehicle-loadout-link']").exists()).toBe(
@@ -736,6 +751,9 @@ describe("VehicleLoadoutModal", () => {
       public: false,
     });
     expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
+
+    wrapper.unmount();
+    host.remove();
   });
 
   it("edits a linked loadout by its name and address", async () => {
@@ -828,7 +846,12 @@ describe("VehicleLoadoutModal", () => {
   });
 
   it("goes back to the fitting from the link", async () => {
-    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    const host = document.body.appendChild(document.createElement("div"));
+    const wrapper = await mountModal(
+      vehicle(["m1"]),
+      { newLoadout: true },
+      host,
+    );
     await flushPromises();
 
     const mode = wrapper.get("[data-test='vehicle-loadout-mode']");
@@ -841,6 +864,9 @@ describe("VehicleLoadoutModal", () => {
     expect(wrapper.get("[data-test='vehicle-loadout-ship']").isVisible()).toBe(
       true,
     );
+
+    wrapper.unmount();
+    host.remove();
   });
 
   it("offers a link only for a new loadout", async () => {
