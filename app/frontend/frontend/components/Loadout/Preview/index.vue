@@ -53,9 +53,9 @@ const emit = defineEmits<{
 const ANGLED_AZIMUTH = -135;
 const ANGLED_ELEVATION = 35;
 
-// The editor's backdrop fills its frame, with only a little room around the
-// ship.
-const BACKDROP_PADDING = 1.1;
+// The editor's backdrop fills its frame, with some room around the ship so
+// the parts at its edges stay clear of the panels.
+const BACKDROP_PADDING = 1.22;
 
 // The inline holo's own low look, framed to the ship rather than to the
 // circle it turns through, so a larger box shows a larger ship.
