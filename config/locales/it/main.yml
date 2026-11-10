@@ -103,6 +103,7 @@ it:
       transport: "Trasportare %{goods}"
       procurement: "Comprare %{goods}"
       crafting: "Fabbricare %{goods}"
+      mission: "Completare %{mission}"
       goods: "%{quantity} %{unit} %{name}"
       more: "%{goods} e altri %{count}"
       quality:
@@ -112,3 +113,4 @@ it:
         transport: Trasporto senza titolo
         procurement: Acquisto senza titolo
         crafting: Fabbricazione senza titolo
+        mission: "Missione senza titolo"

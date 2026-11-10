@@ -294,6 +294,7 @@ zh-TW:
         drawn: "已開獎的抽獎無法刪除"
         contract_item_already_asked_for: "該合約中已有相同類別和單位的這項貨物"
         contract_item_needs_reward_rate: "每一行都需要設定每 SCU 或每件的報酬"
+        contract_item_on_mission: "任務合約不需要貨物"
         entry_goods_in_transit: "在其所屬的轉移得到回覆之前無法刪除"
         inventory_goods_in_transit: "在已傳送的轉移得到回覆之前無法刪除"
         inventory_contract_destination: "在有未完成的艦隊合約向其交付期間無法刪除"
@@ -501,6 +502,8 @@ zh-TW:
               forbidden: "不被允許"
         fleet_contract:
           attributes:
+            reward_type:
+              per_unit_needs_goods: "不能按 SCU 或每件計酬，任務合約不交付貨物"
             destination_inventory:
               not_the_authors: "必須是你自己的庫存之一"
               personal_contracts_disabled: "不能是你自己的庫存；此艦隊不允許個人合約"

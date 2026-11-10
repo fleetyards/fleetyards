@@ -50,6 +50,8 @@ module Contracts
     # two inventories could be filed under any contract the actor happens to
     # work on.
     private def touches_contract?
+      return false if @contract.mission?
+
       # Decided before any of the shortcuts below: a transport's source would
       # otherwise vouch for a delivery into the author's hangar by somebody
       # who is not working the contract.

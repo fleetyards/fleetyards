@@ -33,8 +33,17 @@ FactoryBot.define do
       kind { :crafting }
     end
 
+    # Runs a catalogue mission: no goods and nowhere to deliver them.
+    trait :mission do
+      kind { :mission }
+      game_mission
+      destination_fleet_inventory { nil }
+    end
+
     trait :with_item do
       after(:create) do |contract|
+        next if contract.mission?
+
         create(:fleet_contract_item, fleet_contract: contract)
       end
     end

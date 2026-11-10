@@ -294,6 +294,7 @@ zh-CN:
         drawn: "已开奖的抽奖无法删除"
         contract_item_already_asked_for: "该合约中已有相同类别和单位的这项货物"
         contract_item_needs_reward_rate: "每一行都需要设置每 SCU 或每件的报酬"
+        contract_item_on_mission: "任务合约不需要货物"
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"
         inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"
         inventory_contract_destination: "在有未完成的舰队合同向其交付期间无法删除"
@@ -501,6 +502,8 @@ zh-CN:
               forbidden: "不被允许"
         fleet_contract:
           attributes:
+            reward_type:
+              per_unit_needs_goods: "不能按 SCU 或每件计酬，任务合约不交付货物"
             destination_inventory:
               not_the_authors: "必须是你自己的库存之一"
               personal_contracts_disabled: "不能是你自己的库存；此舰队不允许个人合同"

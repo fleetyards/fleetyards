@@ -54,6 +54,7 @@ zh-TW:
       transport: "運送 %{goods}"
       procurement: "採購 %{goods}"
       crafting: "製造 %{goods}"
+      mission: "執行 %{mission}"
       goods: "%{quantity} %{unit} %{name}"
       more: "%{goods} 等 %{count} 項"
       quality:
@@ -63,3 +64,4 @@ zh-TW:
         transport: 未命名運送合約
         procurement: 未命名採購合約
         crafting: 未命名製造合約
+        mission: "未命名任務合約"

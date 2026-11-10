@@ -55,6 +55,7 @@ fr:
       transport: "Transporter %{goods}"
       procurement: "Acheter %{goods}"
       crafting: "Fabriquer %{goods}"
+      mission: "Accomplir %{mission}"
       goods: "%{quantity} %{unit} %{name}"
       more: "%{goods} et %{count} de plus"
       quality:
@@ -64,3 +65,4 @@ fr:
         transport: Transport sans titre
         procurement: Achat sans titre
         crafting: Fabrication sans titre
+        mission: "Mission sans titre"

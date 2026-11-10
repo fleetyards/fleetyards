@@ -29,6 +29,7 @@ class FleetContractItem < ApplicationRecord
   enum :quality_match, QUALITY_MATCHES, prefix: :quality
 
   validates :name, presence: true
+  validate :contract_asks_for_goods
   validates :quantity, numericality: {greater_than: 0}
   validates :quality,
     numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000},
@@ -175,5 +176,11 @@ class FleetContractItem < ApplicationRecord
     return unless item_type.in?(::InventoryLedgerEntry::ITEM_TYPES)
 
     item
+  end
+
+  private def contract_asks_for_goods
+    return unless fleet_contract&.mission?
+
+    errors.add(:base, I18n.t("activerecord.errors.messages.contract_item_on_mission"))
   end
 end

@@ -137,6 +137,13 @@ module Contracts
       contract
     end
 
+    test "nothing can be filed under a mission contract, not even goods addressed to the fleet" do
+      mission = create(:fleet_contract, :mission, :in_progress, fleet: @fleet)
+      create(:fleet_contract_assignment, :lead, fleet_contract: mission, user: @lead)
+
+      assert_not link(actor: @lead, source: @hold, recipient: @fleet, contract: mission).call
+    end
+
     private def link(actor:, source:, destination: nil, recipient: nil, contract: @contract)
       TransferLink.new(contract: contract, actor: actor, source: source,
         destination: destination, recipient: recipient)
