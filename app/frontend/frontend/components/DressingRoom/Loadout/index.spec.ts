@@ -10,8 +10,12 @@ const row = (slot: OutfitSlotEnum) => ({
   selected: slot === OutfitSlotEnum.MAGAZINE_1,
 });
 
-const mount = (props: Record<string, unknown> = {}) =>
+const mount = (
+  props: Record<string, unknown> = {},
+  slots: { storage?: string } = {},
+) =>
   mountWithDefaults<typeof Loadout>(Loadout, {
+    slots: slots as never,
     props: {
       tabs: [
         { key: "armour", slots: [OutfitSlotEnum.HELMET] },
@@ -148,5 +152,26 @@ describe("DressingRoomLoadout", () => {
     expect(wrapper.emitted("fill")).toEqual([
       [[OutfitSlotEnum.MAGAZINE_1, OutfitSlotEnum.MAGAZINE_2]],
     ]);
+  });
+
+  it("adds a storage tab for what the page puts in it", async () => {
+    const wrapper = await mount(
+      {},
+      { storage: '<p data-test="stored">Backpack</p>' },
+    );
+
+    await wrapper
+      .find('[data-test="dressing-room-tab-storage"]')
+      .trigger("click");
+
+    expect(visible(wrapper, "stored")?.style.display).not.toBe("none");
+  });
+
+  it("leaves the storage tab out without anything to put in it", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper.find('[data-test="dressing-room-tab-storage"]').exists(),
+    ).toBe(false);
   });
 });

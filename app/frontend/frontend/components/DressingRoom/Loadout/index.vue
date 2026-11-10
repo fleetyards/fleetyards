@@ -47,11 +47,27 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+const slots = useSlots();
+
+// Five tabs do not fit the column by name: each is an icon, and only the open
+// one is named.
+const TAB_ICONS: Record<string, string> = {
+  armour: "fa-helmet-battle",
+  weapons: "fa-person-rifle",
+  gear: "fa-toolbox",
+  supplies: "fa-syringe",
+  storage: "fa-backpack",
+};
+
+const tabLabel = (key: string) => t(`dressingRoom.groups.${key}`);
+
 const SUPPLIES = "supplies";
+const STORAGE = "storage";
 
 const tabKeys = computed(() => [
   ...props.tabs.map((tab) => tab.key),
   ...(props.supplies.length || props.suppliesHint ? [SUPPLIES] : []),
+  ...(slots.storage ? [STORAGE] : []),
 ]);
 
 const picked = ref<string>();
@@ -111,10 +127,15 @@ const filled = (slots: OutfitSlotEnum[]) =>
         :aria-selected="key === active"
         :aria-controls="panelId(key)"
         :tabindex="key === active ? 0 : -1"
+        :aria-label="tabLabel(key)"
+        v-tooltip="key === active ? undefined : tabLabel(key)"
         :data-test="`dressing-room-tab-${key}`"
         @click="picked = key"
       >
-        {{ t(`dressingRoom.groups.${key}`) }}
+        <i :class="`fa-light ${TAB_ICONS[key] ?? 'fa-circle'}`" />
+        <span v-if="key === active" class="loadout__tab-label">
+          {{ tabLabel(key) }}
+        </span>
       </button>
     </div>
 
@@ -195,6 +216,17 @@ const filled = (slots: OutfitSlotEnum[]) =>
         </ul>
       </section>
     </div>
+
+    <div
+      v-if="tabKeys.includes(STORAGE)"
+      v-show="active === STORAGE"
+      :id="panelId(STORAGE)"
+      role="tabpanel"
+      :aria-labelledby="tabId(STORAGE)"
+      class="loadout__panel"
+    >
+      <slot name="storage" />
+    </div>
   </section>
 </template>
 
@@ -214,8 +246,12 @@ const filled = (slots: OutfitSlotEnum[]) =>
 }
 
 .loadout__tab {
+  display: flex;
   flex: 1 1 0;
-  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: $tap-target-min;
   min-height: $tap-target-min;
   padding: 0 0.5rem;
   border: 0;
@@ -232,7 +268,15 @@ const filled = (slots: OutfitSlotEnum[]) =>
   }
 }
 
+.loadout__tab-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .loadout__tab--active {
+  flex-grow: 2.5;
   background: var(--color-seam);
   color: var(--color-lifted);
 }

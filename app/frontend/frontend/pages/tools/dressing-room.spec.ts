@@ -997,6 +997,7 @@ describe("ToolsDressingRoomPage", () => {
         "dressing-room-tab-armour",
         "dressing-room-tab-weapons",
         "dressing-room-tab-supplies",
+        "dressing-room-tab-storage",
       ]);
     });
 
@@ -1124,12 +1125,12 @@ describe("ToolsDressingRoomPage", () => {
   });
 
   describe("worn storage", () => {
-    it("shows no storage until a piece with room is worn", async () => {
+    it("says what to wear until a piece with room is worn", async () => {
       const { wrapper } = await mount({ torso: "gear-core" });
 
-      expect(wrapper.find('[data-test="dressing-room-storage"]').exists()).toBe(
-        false,
-      );
+      expect(
+        wrapper.find('[data-test="dressing-room-storage-hint"]').text(),
+      ).toContain("Wear a backpack");
     });
 
     it("lists what a piece holds and how much room it takes", async () => {

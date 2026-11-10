@@ -1074,7 +1074,18 @@ const copyShareLink = () => {
             @fill="openFill"
             @hold="toggleHeld"
             @clear="clear"
-          />
+          >
+            <template #storage>
+              <WornStorage
+                :stored="stored"
+                :worn="items"
+                :stored-items="storedItems"
+                :loading="storedLoading || wornLoading"
+                @add="openStorage"
+                @quantity="changeStored"
+              />
+            </template>
+          </Loadout>
         </StagePanel>
       </template>
 
@@ -1087,16 +1098,6 @@ const copyShareLink = () => {
             :unavailable="faceUnavailable"
             :not-ready="faceNotReady"
             @select="selectFace"
-          />
-        </StagePanel>
-        <StagePanel>
-          <WornStorage
-            :stored="stored"
-            :worn="items"
-            :stored-items="storedItems"
-            :loading="storedLoading || wornLoading"
-            @add="openStorage"
-            @quantity="changeStored"
           />
         </StagePanel>
         <StagePanel>

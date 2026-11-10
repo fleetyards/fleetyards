@@ -98,12 +98,14 @@ const canAddOne = (
 </script>
 
 <template>
-  <section
-    v-if="holders.length"
-    class="worn-storage"
-    data-test="dressing-room-storage"
-  >
-    <h2 class="worn-storage__title">{{ t("dressingRoom.storage.title") }}</h2>
+  <section class="worn-storage" data-test="dressing-room-storage">
+    <p
+      v-if="!holders.length"
+      class="worn-storage__hint"
+      data-test="dressing-room-storage-hint"
+    >
+      {{ loading ? "…" : t("dressingRoom.storage.hint") }}
+    </p>
     <div
       v-for="{ holder, inventory, entries, used, percent, problem } in holders"
       :key="holder"
@@ -222,13 +224,9 @@ const canAddOne = (
   gap: 1rem;
 }
 
-.worn-storage__title {
+.worn-storage__hint {
   margin: 0;
-  color: $gray-lighter;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: $gray-light;
 }
 
 .worn-storage__holder {

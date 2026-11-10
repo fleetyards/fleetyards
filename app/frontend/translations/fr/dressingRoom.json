@@ -44,7 +44,8 @@
         "armour": "Armure",
         "weapons": "Armes",
         "gear": "Équipement",
-        "supplies": "Fournitures"
+        "supplies": "Fournitures",
+        "storage": "Rangement"
       },
       "hold": "Tenir en main",
       "bodies": {
@@ -76,6 +77,7 @@
       "saveBlocked": "Corrigez ce qui est signalé ci-dessus pour enregistrer cette tenue.",
       "storage": {
         "title": "Rangement",
+        "hint": "Portez un sac à dos ou une armure avec du rangement pour emporter des objets.",
         "space": "%{used} sur %{capacity}",
         "add": "Ajouter un objet",
         "fewer": "Un de moins",

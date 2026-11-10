@@ -44,7 +44,8 @@
         "armour": "護甲",
         "weapons": "武器",
         "gear": "裝備",
-        "supplies": "補給"
+        "supplies": "補給",
+        "storage": "儲物"
       },
       "hold": "手持",
       "bodies": {
@@ -76,6 +77,7 @@
       "saveBlocked": "請先修正上方標記的問題，再儲存此裝扮。",
       "storage": {
         "title": "儲物",
+        "hint": "穿上背包或帶儲物空間的護甲，即可存放物品。",
         "space": "%{used} / %{capacity}",
         "add": "新增物品",
         "fewer": "減少一個",

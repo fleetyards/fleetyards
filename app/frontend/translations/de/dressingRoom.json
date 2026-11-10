@@ -44,7 +44,8 @@
         "armour": "Rüstung",
         "weapons": "Waffen",
         "gear": "Ausrüstung",
-        "supplies": "Vorräte"
+        "supplies": "Vorräte",
+        "storage": "Stauraum"
       },
       "hold": "In die Hand nehmen",
       "bodies": {
@@ -76,6 +77,7 @@
       "saveBlocked": "Behebe die oben markierten Punkte, um dieses Outfit zu speichern.",
       "storage": {
         "title": "Stauraum",
+        "hint": "Trage einen Rucksack oder eine Rüstung mit Stauraum, um Gegenstände zu verstauen.",
         "space": "%{used} von %{capacity}",
         "add": "Gegenstand hinzufügen",
         "fewer": "Einen weniger",

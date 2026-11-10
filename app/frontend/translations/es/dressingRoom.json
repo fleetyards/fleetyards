@@ -44,7 +44,8 @@
         "armour": "Armadura",
         "weapons": "Armas",
         "gear": "Equipo",
-        "supplies": "Suministros"
+        "supplies": "Suministros",
+        "storage": "Almacenamiento"
       },
       "hold": "Empuñar",
       "bodies": {
@@ -76,6 +77,7 @@
       "saveBlocked": "Corrige lo marcado arriba para guardar este atuendo.",
       "storage": {
         "title": "Almacenamiento",
+        "hint": "Ponte una mochila o una armadura con espacio para guardar objetos.",
         "space": "%{used} de %{capacity}",
         "add": "Añadir objeto",
         "fewer": "Uno menos",

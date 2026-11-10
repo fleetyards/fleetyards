@@ -44,7 +44,8 @@
         "armour": "Armatura",
         "weapons": "Armi",
         "gear": "Equipaggiamento",
-        "supplies": "Rifornimenti"
+        "supplies": "Rifornimenti",
+        "storage": "Spazio"
       },
       "hold": "Impugna",
       "bodies": {
@@ -76,6 +77,7 @@
       "saveBlocked": "Correggi ciò che è segnalato sopra per salvare questo outfit.",
       "storage": {
         "title": "Spazio",
+        "hint": "Indossa uno zaino o un'armatura con spazio per riporre oggetti.",
         "space": "%{used} di %{capacity}",
         "add": "Aggiungi oggetto",
         "fewer": "Uno in meno",
