@@ -465,8 +465,22 @@ describe("Popover on a phone", () => {
     });
   };
 
+  // A browser leaves focus handed back after a tap out of :focus-visible, while
+  // jsdom matches it on any focused element and would reopen the card.
+  beforeEach(() => {
+    vi.spyOn(HTMLElement.prototype, "matches").mockImplementation(function (
+      this: HTMLElement,
+      selector: string,
+    ) {
+      return selector === ":focus-visible"
+        ? false
+        : Element.prototype.matches.call(this, selector);
+    });
+  });
+
   afterEach(() => {
     Reflect.deleteProperty(window, "matchMedia");
+    vi.restoreAllMocks();
   });
 
   const openByTap = async () => {
