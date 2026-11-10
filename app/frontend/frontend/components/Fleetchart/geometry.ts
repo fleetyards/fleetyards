@@ -207,11 +207,15 @@ const pictureWidth = (
   const pictureState = stateOfPicture(entry, view, picture, state);
   const { length, beam } = metricsOf(entry, pictureState);
   const measured = MEASURED_EXTENTS[view];
+  const packageMedia = modulePackageOf(entry)?.media;
+  // A package's picture can hold its modules beside the ship, so the ship's own
+  // outline says nothing about how wide it is.
   const extent =
     measured &&
-    (modelOf(entry).media as FleetchartViewMedia | undefined)?.angledExtents?.[
-      pictureState
-    ]?.[measured];
+    (packageMedia && picture === packageMedia[view as keyof typeof packageMedia]
+      ? packageMedia.angledExtent
+      : (modelOf(entry).media as FleetchartViewMedia | undefined)
+          ?.angledExtents?.[pictureState]?.[measured]);
   const shares = ANGLED_VIEW_SHARES[view];
 
   if (extent) {
