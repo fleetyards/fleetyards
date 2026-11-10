@@ -1,9 +1,13 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   skip_forgery_protection
 
-  # Someone declining the provider's consent screen or finishing a sign-in in a
-  # stale tab is not a fault on either side.
-  EXPECTED_FAILURE_TYPES = %w[access_denied csrf_detected].freeze
+  # Someone declining the provider's consent screen, leaving its sign-in
+  # unfinished or finishing a sign-in in a stale tab is not a fault on either
+  # side. The OpenID Connect codes are how CitizenID says the first two.
+  EXPECTED_FAILURE_TYPES = %w[
+    access_denied csrf_detected
+    consent_required login_required interaction_required account_selection_required
+  ].freeze
 
   def failure
     report_failure

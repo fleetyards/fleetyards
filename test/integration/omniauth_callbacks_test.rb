@@ -220,6 +220,17 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "#failure does not report a CitizenID consent that was not given" do
+    Appsignal.expects(:report_error).never
+
+    error = OmniAuth::Strategies::OpenIDConnect::CallbackError.new(error: "consent_required", reason: "The logged in user did not authorize the request.")
+    with_omniauth_failure(error, type: "consent_required") do
+      get "/users/auth/citizenid/callback"
+    end
+
+    assert_response :redirect
+  end
+
   # Test mode fails without an exception, so the one a real strategy would
   # raise is put back before the failure endpoint sees the request.
   private def with_omniauth_failure(error, type:)
