@@ -48,6 +48,9 @@ export interface GearKind {
   sizes?: string[];
 }
 
+// The game lets any pen into either pen port.
+const PEN_SUB_TYPES = ["MedPack", "Medical", "OxygenCap"];
+
 export const GEAR_KINDS: GearKind[] = [
   {
     key: "grenade",
@@ -93,7 +96,7 @@ export const GEAR_KINDS: GearKind[] = [
     port: "medPen_attach",
     providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
     equipmentTypes: ["medical"],
-    subTypes: ["MedPack", "Medical"],
+    subTypes: PEN_SUB_TYPES,
   },
   {
     key: "oxypen",
@@ -101,7 +104,7 @@ export const GEAR_KINDS: GearKind[] = [
     port: "oxyPen_attach",
     providers: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.LEGS],
     equipmentTypes: ["medical"],
-    subTypes: ["OxygenCap"],
+    subTypes: PEN_SUB_TYPES,
   },
   {
     key: "utility",

@@ -215,6 +215,22 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /outfits takes either pen in either pen slot" do
+    sign_in @user
+    legs = create(:worn_equipment, slot: "legs", fit: worn_fit("medPen_attach_1", "oxyPen_attach_1"))
+    medpen = create(:equipment, equipment_type: "medical", sub_type: "MedPack")
+    oxypen = create(:equipment, equipment_type: "medical", sub_type: "OxygenCap")
+
+    body = {name: "Swapped", items: [
+      {slot: "legs", equipmentId: legs.id},
+      {slot: "medpen_1", equipmentId: oxypen.id}, {slot: "oxypen_1", equipmentId: medpen.id}
+    ]}
+
+    assert_api_response :post, 201, api_path: "/outfits", body: do
+      assert_equal %w[legs medpen_1 oxypen_1], parsed_body["items"].pluck("slot").sort
+    end
+  end
+
   test "POST /outfits refuses gear no worn piece has a port for" do
     sign_in @user
     core = create(:worn_equipment, slot: "torso", fit: worn_fit("grenade_attach_1"))

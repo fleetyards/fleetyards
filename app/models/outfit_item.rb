@@ -38,14 +38,14 @@ class OutfitItem < ApplicationRecord
     "utility" => "utility_attach"
   }.freeze
 
-  # What each kind of gear slot takes. The pen ports accept any consumable, so
-  # which pen goes where is told apart here by its sub type.
+  # What each kind of gear slot takes. The game lets any pen into either pen
+  # port, so both pen kinds take medpens and oxypens alike.
   GEAR_ITEMS = {
     "grenade" => {equipment_types: %w[weapon tool], sub_types: %w[Grenade]},
     "magazine" => {equipment_types: %w[weapon_attachment], sub_types: %w[Magazine]},
     "gadget" => {equipment_types: %w[mining_gadget], sub_types: %w[Gadget]},
-    "medpen" => {equipment_types: %w[medical], sub_types: %w[MedPack Medical]},
-    "oxypen" => {equipment_types: %w[medical], sub_types: %w[OxygenCap]},
+    "medpen" => {equipment_types: %w[medical], sub_types: %w[MedPack Medical OxygenCap]},
+    "oxypen" => {equipment_types: %w[medical], sub_types: %w[MedPack Medical OxygenCap]},
     "utility" => {equipment_types: %w[weapon tool], sub_types: %w[Knife Gadget], sizes: %w[1]}
   }.freeze
 
