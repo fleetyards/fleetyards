@@ -7,6 +7,9 @@ module Maintenance
         content_type: %w[image/png image/jpeg image/webp image/gif]
       ).where.not(
         id: ActiveStorage::VariantRecord.select(:blob_id)
+      ).where.not(
+        # A processed variant is an image without variants of its own.
+        id: ActiveStorage::Attachment.where(record_type: "ActiveStorage::VariantRecord").select(:blob_id)
       )
     end
 
