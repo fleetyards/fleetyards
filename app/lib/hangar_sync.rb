@@ -71,7 +71,9 @@ class HangarSync < HangarImporter
     return if import.cancelled?
 
     @import = import
-    import.start!
+    # Already started when Sidekiq requeued the job after a deploy stopped it
+    # mid-run. The sync reconciles, so running it again from the top is safe.
+    import.start! unless import.started?
 
     outcome = sync_outcome
     output = (outcome == "synced") ? sync_everything(import) : (SUMMARY_KEYS + WARNING_KEYS).index_with { [] }

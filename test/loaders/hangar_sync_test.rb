@@ -73,6 +73,15 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert @jav_ship.reload.wanted
     end
 
+    test "finishes an import a stopped worker had already started" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input)
+      import.start!
+
+      ::HangarSync.new(@input).run_with_import(import)
+
+      assert_predicate import.reload, :finished?
+    end
+
     test "files every vehicle it touched into the target group" do
       group = HangarGroup.create!(user_id: @user.id, name: "RSI", color: "#ffffff")
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, hangar_group_id: group.id)
