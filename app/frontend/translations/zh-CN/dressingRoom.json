@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} / %{total}",
+      "fillAll": "填满所有槽位：%{kind}",
       "viewControls": "视图",
       "loadout": "装备"
     }

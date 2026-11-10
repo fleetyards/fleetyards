@@ -1000,6 +1000,45 @@ describe("ToolsDressingRoomPage", () => {
       ]);
     });
 
+    it("fills every slot of a kind with one pick", async () => {
+      const opened = vi.fn();
+      const { useComlink } = await import("@/shared/composables/useComlink");
+      const stop = useComlink().on("open-modal", opened);
+
+      const { wrapper, router } = await mount({
+        torso: "gear-core",
+        grenade_1: "plain-grenade",
+      });
+
+      await wrapper
+        .find('[data-test="dressing-room-fill-grenade"]')
+        .trigger("click");
+
+      const { props: modal } = opened.mock.calls[0]?.[0] as {
+        props: {
+          slot: string;
+          title: string;
+          selectedSlug: () => string | undefined;
+          onSelect: (item: Equipment) => void;
+        };
+      };
+      expect(modal.slot).toBe("grenade_1");
+      expect(modal.title).toBe("Fill all slots: Grenades");
+      expect(modal.selectedSlug()).toBeUndefined();
+
+      modal.onSelect(GEAR["plain-grenade"] as Equipment);
+      await flushPromises();
+
+      expect(router.currentRoute.value.query).toMatchObject({
+        torso: "gear-core",
+        grenade_1: "plain-grenade",
+        grenade_2: "plain-grenade",
+      });
+      expect(modal.selectedSlug()).toBe("plain-grenade");
+
+      stop();
+    });
+
     it("says so when what is worn offers no gear at all", async () => {
       const { wrapper } = await mount({ undersuit: "flight-suit" });
 

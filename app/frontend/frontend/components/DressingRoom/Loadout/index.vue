@@ -6,6 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import SlotRow from "@/frontend/components/DressingRoom/SlotRow/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type OutfitSlotEnum } from "@/services/fyApi";
 
@@ -37,6 +42,7 @@ const emit = defineEmits<{
   pick: [slot: OutfitSlotEnum];
   hold: [slot: OutfitSlotEnum];
   clear: [slot: OutfitSlotEnum];
+  fill: [slots: OutfitSlotEnum[]];
 }>();
 
 const { t } = useI18n();
@@ -78,6 +84,9 @@ const moveTab = (event: KeyboardEvent) => {
   picked.value = keys[next];
   document.getElementById(tabId(keys[next]))?.focus();
 };
+
+const fillLabel = (key: string) =>
+  t("dressingRoom.fillAll", { kind: t(`dressingRoom.gearColumns.${key}`) });
 
 const filled = (slots: OutfitSlotEnum[]) =>
   slots.filter((slot) => props.row(slot).selected).length;
@@ -157,6 +166,18 @@ const filled = (slots: OutfitSlotEnum[]) =>
               })
             }}
           </span>
+          <Btn
+            v-if="kind.slots.length > 1"
+            class="loadout__fill"
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="fillLabel(kind.key)"
+            v-tooltip="fillLabel(kind.key)"
+            :data-test="`dressing-room-fill-${kind.key}`"
+            @click="emit('fill', kind.slots)"
+          >
+            <i class="fa-light fa-layer-group" />
+          </Btn>
         </h3>
         <ul
           class="loadout__cells"
@@ -244,7 +265,7 @@ const filled = (slots: OutfitSlotEnum[]) =>
 
 .loadout__kind-title {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 0.5rem;
   margin: 0;
   color: $gray-lighter;
@@ -255,6 +276,7 @@ const filled = (slots: OutfitSlotEnum[]) =>
 }
 
 .loadout__kind-count {
+  margin-left: auto;
   font-weight: 400;
   letter-spacing: normal;
   text-transform: none;

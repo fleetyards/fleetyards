@@ -137,4 +137,16 @@ describe("DressingRoomLoadout", () => {
 
     expect(wrapper.emitted("pick")).toEqual([[OutfitSlotEnum.MAGAZINE_2]]);
   });
+
+  it("hands every slot of a kind up to fill at once", async () => {
+    const wrapper = await mount();
+
+    await wrapper
+      .find('[data-test="dressing-room-fill-magazine"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("fill")).toEqual([
+      [[OutfitSlotEnum.MAGAZINE_1, OutfitSlotEnum.MAGAZINE_2]],
+    ]);
+  });
 });

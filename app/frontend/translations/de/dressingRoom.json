@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} von %{total}",
+      "fillAll": "Alle Slots füllen: %{kind}",
       "viewControls": "Ansicht",
       "loadout": "Ausrüstung am Körper"
     }

@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} sur %{total}",
+      "fillAll": "Remplir tous les emplacements : %{kind}",
       "viewControls": "Vue",
       "loadout": "Équipement"
     }

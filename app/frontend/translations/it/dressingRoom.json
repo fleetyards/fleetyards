@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} di %{total}",
+      "fillAll": "Riempi tutti gli slot: %{kind}",
       "viewControls": "Vista",
       "loadout": "Equipaggiamento"
     }

@@ -215,6 +215,40 @@ const openSlot = (slot: OutfitSlotEnum) => {
   });
 };
 
+// One pick for every slot of a kind. The slots share a port, so the first
+// one's fit stands for them all.
+const openFill = (slots: OutfitSlotEnum[]) => {
+  const [first] = slots;
+  const kind = gearKind(first);
+  if (!kind) return;
+
+  const shared = () => {
+    const slugs = new Set(slots.map((slot) => selection.value[slot]));
+
+    return slugs.size === 1 ? [...slugs][0] : undefined;
+  };
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/DressingRoom/SlotPickerModal/index.vue"),
+    props: {
+      slot: first,
+      selectedSlug: shared,
+      fit: () => slotFits.value[first],
+      title: t("dressingRoom.fillAll", {
+        kind: t(`dressingRoom.gearColumns.${kind.key}`),
+      }),
+      onSelect: (item: Equipment) => {
+        void navigate({
+          ...selection.value,
+          ...Object.fromEntries(slots.map((slot) => [slot, item.slug])),
+        });
+      },
+    },
+    wide: true,
+  });
+};
+
 const reset = () => {
   void navigate(
     {},
@@ -1037,6 +1071,7 @@ const copyShareLink = () => {
             :supplies-hint="suppliesHint"
             :row="loadoutRow"
             @pick="openSlot"
+            @fill="openFill"
             @hold="toggleHeld"
             @clear="clear"
           />

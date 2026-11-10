@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} de %{total}",
+      "fillAll": "Llenar todas las ranuras: %{kind}",
       "viewControls": "Vista",
       "loadout": "Equipamiento"
     }

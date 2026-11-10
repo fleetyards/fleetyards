@@ -119,6 +119,7 @@
         }
       },
       "filledOf": "%{count} of %{total}",
+      "fillAll": "Fill all slots: %{kind}",
       "viewControls": "View",
       "loadout": "Loadout"
     }
