@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.47.0](https://github.com/fleetyards/fleetyards/compare/v9.46.0...v9.47.0) (2026-11-10)
+
+
+### Features
+
+* **contracts:** mission contracts that run a catalogue mission ([#6273](https://github.com/fleetyards/fleetyards/issues/6273)) ([c80c275](https://github.com/fleetyards/fleetyards/commit/c80c27581cda056a4e69f940b180bc0ec70a3f63))
+* **fleetchart:** group fleet ships by squadron or captain, and load whole fleets ([#6274](https://github.com/fleetyards/fleetyards/issues/6274)) ([00339a8](https://github.com/fleetyards/fleetyards/commit/00339a8c1e8cd91e51a61af7ad9866d7523b8db8))
+
+
+### Bug Fixes
+
+* **fleetchart:** draw module package angled pictures at their own width ([#6275](https://github.com/fleetyards/fleetyards/issues/6275)) ([29ddb3c](https://github.com/fleetyards/fleetyards/commit/29ddb3cfa3c072b4f58c2961b7c518f165b326a9))
+* **paint-booth:** keep the full-screen button beside the ship picker ([cffbe9f](https://github.com/fleetyards/fleetyards/commit/cffbe9f0d612d94db6f256d74aaad5e2ab3e2f7a))
+
 ## [9.46.0](https://github.com/fleetyards/fleetyards/compare/v9.45.0...v9.46.0) (2026-11-10)
 
 
