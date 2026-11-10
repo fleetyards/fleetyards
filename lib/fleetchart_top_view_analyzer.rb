@@ -8,6 +8,13 @@ class FleetchartTopViewAnalyzer < ActiveStorage::Analyzer::ImageAnalyzer::Vips
     top_view top_view_colored extended_top_view extended_top_view_colored landed_top_view landed_top_view_colored
   ].freeze
 
+  # A package's pictures show its modules beside the ship, so they are wider at
+  # an angle than the ship's own outline says.
+  MEASURED_ATTACHMENTS = {
+    "Model" => TOP_VIEW_NAMES,
+    "ModelModulePackage" => %w[top_view]
+  }.freeze
+
   # Fitted to the shape of all angled pictures against their ships' outlines.
   ANGLED_YAW = 45.0
   ANGLED_REAR_YAW = -51.5
@@ -16,7 +23,7 @@ class FleetchartTopViewAnalyzer < ActiveStorage::Analyzer::ImageAnalyzer::Vips
   OPAQUE = 64
 
   def self.accept?(blob)
-    super && blob.attachments.any? { |attachment| attachment.record_type == "Model" && TOP_VIEW_NAMES.include?(attachment.name) }
+    super && blob.attachments.any? { |attachment| MEASURED_ATTACHMENTS.fetch(attachment.record_type, []).include?(attachment.name) }
   end
 
   def metadata
