@@ -53,6 +53,9 @@ module V1
             crewCount: {type: :integer},
             source: ::V1::Schemas::Contracts::FleetContractEndpoint,
             destination: ::V1::Schemas::Contracts::FleetContractEndpoint,
+            # The catalogue mission a `mission` contract asks the crew to run;
+            # null for every other kind.
+            gameMission: {anyOf: [::Shared::V1::Schemas::GameMissionLink, {type: :null}]},
             createdBy: ::V1::Schemas::Contracts::FleetContractAuthor,
             publishedAt: {type: [:string, :null], format: "date-time"},
             claimedAt: {type: [:string, :null], format: "date-time"},
@@ -64,7 +67,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title slug kind state reward rewardType maxReward rewardRate requiresPickup personal destination crewPreview progress itemsCount crewCount]
+          required: %w[id title slug kind state reward rewardType maxReward rewardRate requiresPickup personal destination gameMission crewPreview progress itemsCount crewCount]
         })
       end
     end

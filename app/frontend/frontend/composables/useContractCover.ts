@@ -13,6 +13,7 @@ const STAND_IN_FOR_KIND: Record<string, string> = {
   transport: "cargo_hauling",
   procurement: "other",
   crafting: "mining",
+  mission: "combined_combat",
 };
 
 const standInFor = (kind: string) =>

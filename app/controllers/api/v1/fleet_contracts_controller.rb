@@ -52,6 +52,7 @@ module Api
           @q.result.includes(:destination_fleet_inventory, :destination_inventory,
             :source_fleet_inventory,
             :created_by, {fleet_contract_items: :crafted_blueprint}, {fleet_contract_assignments: :user},
+            {game_mission: %i[build last_build]},
             # The serializer asks every row whether it carries a cover, which is
             # a query each without this, and a second one per row that does.
             {cover_image_attachment: :blob},

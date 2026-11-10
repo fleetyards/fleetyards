@@ -40,6 +40,7 @@ en:
       transport: "Haul %{goods}"
       procurement: "Buy %{goods}"
       crafting: "Craft %{goods}"
+      mission: "Run %{mission}"
       goods: "%{quantity} %{unit} %{name}"
       more: "%{goods} and %{count} more"
       quality:
@@ -49,3 +50,4 @@ en:
         transport: Untitled haul
         procurement: Untitled purchase
         crafting: Untitled crafting job
+        mission: "Untitled mission"

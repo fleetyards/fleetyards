@@ -2284,6 +2284,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         crafting:
           "$ref": "#/components/schemas/MediaFile"
+        mission:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
     FleetInventoryChangedMessage:
       type: object

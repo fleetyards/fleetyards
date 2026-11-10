@@ -1240,7 +1240,8 @@
         "contractCovers": {
           "transport": "Transport cover",
           "procurement": "Procurement cover",
-          "crafting": "Crafting cover"
+          "crafting": "Crafting cover",
+          "mission": "Mission cover"
         }
       },
       "hangarGroup": {
@@ -4277,8 +4278,13 @@
             "label": "Type",
             "transport": "Transport",
             "procurement": "Procurement",
-            "crafting": "Crafting"
+            "crafting": "Crafting",
+            "mission": "Mission"
           },
+          "gameMission": "Mission",
+          "missionBlueprints": "Blueprints it unlocks",
+          "missionBlueprintsHint": "Each crew member unlocks these in game by running the mission. The fleet does not pay them out.",
+          "noMissionBlueprints": "This mission unlocks no blueprints.",
           "state": {
             "draft": "Draft",
             "open": "Open",

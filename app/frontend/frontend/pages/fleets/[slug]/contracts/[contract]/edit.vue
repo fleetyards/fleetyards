@@ -11,6 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import ContractForm from "@/frontend/components/Fleets/Contracts/ContractForm/index.vue";
 import ContractItemsForm from "@/frontend/components/Fleets/Contracts/ContractItemsForm/index.vue";
 import {
+  FleetContractKindEnum,
   type Fleet,
   type FleetMember,
   FleetContractRewardTypeEnum,
@@ -44,6 +45,7 @@ const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
 // switch to paying per unit is saved is what lets that switch through. The
 // saved choice counts too, since a line is checked against it until then.
 const rewardType = ref<FleetContractRewardTypeEnum | null>(null);
+const kind = ref<FleetContractKindEnum | null>(null);
 
 const perUnit = computed(() =>
   [rewardType.value, contract.value?.rewardType].includes(
@@ -110,9 +112,13 @@ const crumbs = computed<Crumb[]>(() => [
       :fleet="fleet"
       :contract="contract"
       @cancel="cancel"
+      @kind-change="kind = $event"
       @reward-type-change="rewardType = $event"
     >
-      <template #sections>
+      <template
+        v-if="kind !== FleetContractKindEnum.MISSION || contract.items.length"
+        #sections
+      >
         <ContractItemsForm
           :fleet="fleet"
           :contract="contract"

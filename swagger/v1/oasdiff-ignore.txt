@@ -3960,3 +3960,12 @@ GET /public/wishlists/{username} for the `query` request parameter `q`, the type
 GET /public/wishlists/{username} for the `query` request parameter `q`, the type/format of property `priceIn/items/` was changed from `number`/`` to `string`/``
 GET /wishlist for the `query` request parameter `q`, the type/format of property `pledgePriceIn/items/` was changed from `number`/`` to `string`/``
 GET /wishlist for the `query` request parameter `q`, the type/format of property `priceIn/items/` was changed from `number`/`` to `string`/``
+GET /fleets/{fleetSlug}/contracts added the new `mission` enum value to the `items/items/kind` response property for the response status `200`
+POST /fleets/{fleetSlug}/contracts added the new `mission` enum value to the `kind` response property for the response status `201`
+GET /fleets/{fleetSlug}/contracts/{slug} added the new `mission` enum value to the `kind` response property for the response status `200`
+PATCH /fleets/{fleetSlug}/contracts/{slug} added the new `mission` enum value to the `kind` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/cancel added the new `mission` enum value to the `kind` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/claim added the new `mission` enum value to the `kind` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/fulfil added the new `mission` enum value to the `kind` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/publish added the new `mission` enum value to the `kind` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/release added the new `mission` enum value to the `kind` response property for the response status `200`

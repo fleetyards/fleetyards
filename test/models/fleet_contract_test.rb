@@ -16,6 +16,35 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_nil fleet.contract_cover_for("nonsense")
   end
 
+  test "a mission contract names itself after the mission and publishes without goods" do
+    contract = create(:fleet_contract, :mission, title: nil,
+      game_mission: create(:game_mission, name: "Tactical Strike Group Needed"))
+
+    assert_equal "Run Tactical Strike Group Needed", contract.display_title
+    assert_predicate contract, :ready_to_publish?
+  end
+
+  test "a mission contract asks for no goods" do
+    contract = create(:fleet_contract, :mission)
+    line = build(:fleet_contract_item, fleet_contract: contract)
+
+    assert_not line.valid?
+    assert_includes line.errors[:base], I18n.t("activerecord.errors.messages.contract_item_on_mission")
+  end
+
+  test "a goods draft that keeps its lines cannot become a mission" do
+    contract = create(:fleet_contract, :with_item)
+
+    assert_not contract.update(kind: :mission, game_mission: create(:game_mission),
+      destination_fleet_inventory: nil)
+    assert_includes contract.errors.attribute_names, :fleet_contract_items
+  end
+
+  test "only a mission contract carries a mission" do
+    assert_not build(:fleet_contract, kind: :mission, destination_fleet_inventory: nil).valid?
+    assert_not build(:fleet_contract, game_mission: create(:game_mission)).valid?
+  end
+
   test "a contract cover refuses a vector image" do
     fleet = build(:fleet)
     fleet.transport_contract_cover.attach(

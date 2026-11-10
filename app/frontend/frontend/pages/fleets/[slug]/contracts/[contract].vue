@@ -26,6 +26,7 @@ import {
   type FleetMember,
   FeatureFlagName,
   FleetContractStateEnum,
+  FleetContractKindEnum,
   FleetContractCrewRoleEnum,
   FleetContractCrewStateEnum,
   FleetContractRewardTypeEnum,
@@ -109,6 +110,18 @@ const canEdit = computed(
 
 const crew = computed(() => contract.value?.crew ?? []);
 
+// Run in game rather than delivered, so there is no route and no ledger to
+// show -- the mission and what it unlocks stand in for both.
+const isMission = computed(
+  () => contract.value?.kind === FleetContractKindEnum.MISSION,
+);
+
+const isAuthor = computed(
+  () =>
+    !!currentUserId.value &&
+    contract.value?.createdBy?.id === currentUserId.value,
+);
+
 const lead = computed(() =>
   crew.value.find(
     (member) =>
@@ -156,9 +169,12 @@ const FULFILLABLE_STATES: FleetContractStateEnum[] = [
   FleetContractStateEnum.EXPIRED,
 ];
 
+// A mission has nothing in the ledger to fulfil it, so its author marks the
+// run done as well -- unless they worked it, and would be paying themselves.
 const canFulfil = computed(
   () =>
-    canManage.value &&
+    (canManage.value ||
+      (isMission.value && isAuthor.value && !isContractor.value)) &&
     contract.value !== undefined &&
     FULFILLABLE_STATES.includes(contract.value.state),
 );
@@ -389,7 +405,7 @@ const crumbs = computed<Crumb[]>(() => [
           v-html="maxRewardLabel(contract)"
         />
       </div>
-      <div class="metrics-card__tile">
+      <div v-if="!isMission" class="metrics-card__tile">
         <div class="metrics-card__tile__label">
           {{ t("labels.fleets.contracts.delivered") }}
         </div>
@@ -518,8 +534,57 @@ const crumbs = computed<Crumb[]>(() => [
       :source="contract.description"
     />
 
+    <Panel v-if="isMission && contract.gameMission">
+      <PanelBody>
+        <div class="contract-mission" data-test="contract-mission">
+          <div class="contract-route__label">
+            {{ t("labels.fleets.contracts.gameMission") }}
+          </div>
+          <RouterLink
+            :to="{
+              name: 'mission',
+              params: { slug: contract.gameMission.slug },
+            }"
+            class="contract-route__place"
+          >
+            {{ contract.gameMission.name ?? contract.gameMission.slug }}
+          </RouterLink>
+
+          <div class="contract-route__label contract-mission__blueprints-label">
+            {{ t("labels.fleets.contracts.missionBlueprints") }}
+          </div>
+          <ul
+            v-if="contract.missionBlueprints.length"
+            class="contract-mission__blueprints"
+            data-test="contract-mission-blueprints"
+          >
+            <li
+              v-for="blueprint in contract.missionBlueprints"
+              :key="blueprint.id"
+            >
+              <RouterLink
+                :to="{ name: 'blueprint', params: { slug: blueprint.slug } }"
+              >
+                {{ blueprint.name ?? blueprint.slug }}
+              </RouterLink>
+            </li>
+          </ul>
+          <p v-else class="contract-detail__hint">
+            {{ t("labels.fleets.contracts.noMissionBlueprints") }}
+          </p>
+          <p
+            v-if="contract.missionBlueprints.length"
+            class="contract-detail__hint"
+          >
+            <i class="fa-duotone fa-circle-info" />
+            {{ t("labels.fleets.contracts.missionBlueprintsHint") }}
+          </p>
+        </div>
+      </PanelBody>
+    </Panel>
+
     <!-- A haul has two ends, so it reads as one leg rather than two facts. -->
-    <Panel>
+    <Panel v-else>
       <PanelBody>
         <div class="contract-route">
           <div v-if="contract.source" class="contract-route__end">
@@ -562,8 +627,21 @@ const crumbs = computed<Crumb[]>(() => [
       </PanelBody>
     </Panel>
 
+    <p
+      v-if="isMission && isContractor && isInProgress"
+      class="contract-detail__hint"
+      data-test="contract-mission-hint"
+    >
+      <i class="fa-duotone fa-circle-info" />
+      {{
+        t("messages.fleets.contracts.missionHint", {
+          username: contract.createdBy?.username ?? "",
+        })
+      }}
+    </p>
+
     <div class="contract-detail__columns">
-      <Panel>
+      <Panel v-if="!isMission">
         <PanelBody>
           <Heading>{{ t("headlines.fleets.contracts.progress") }}</Heading>
 
@@ -836,6 +914,25 @@ const crumbs = computed<Crumb[]>(() => [
     &__leg {
       justify-content: center;
     }
+  }
+}
+
+.contract-mission {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &__blueprints-label {
+    margin-top: 1rem;
+  }
+
+  &__blueprints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 }
 </style>

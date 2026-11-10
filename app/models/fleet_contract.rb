@@ -2,11 +2,15 @@
 
 # A job a fleet posts for its members.
 #
-# Three kinds, and the difference between them is only where the goods come
-# from: a `transport` contract moves them between two of the fleet's own
+# Three goods kinds, and the difference between them is only where the goods
+# come from: a `transport` contract moves them between two of the fleet's own
 # inventories, `procurement` buys them from outside, and `crafting` makes them
 # to a required quality. All three end the same way -- the goods are deposited
 # into the destination inventory by a transfer that names this contract.
+#
+# A `mission` contract is the odd one out: it asks the crew to run a mission
+# from the game's catalogue. Nothing is delivered, so nothing in the ledger can
+# say it is done -- whoever posted it marks it complete.
 #
 # Nothing here records how much has been delivered. That is a sum over the
 # ledger entries those transfers wrote, and `Contracts::Progress` is the only
@@ -21,7 +25,7 @@ class FleetContract < ApplicationRecord
 
   paginates_per 24
 
-  KINDS = {transport: 0, procurement: 1, crafting: 2}.freeze
+  KINDS = {transport: 0, procurement: 1, crafting: 2, mission: 3}.freeze
 
   # How the contract pays: `reward` as the whole payment, each line's own rate
   # per SCU or unit delivered, or nothing at all. No default -- a contract that
@@ -52,6 +56,7 @@ class FleetContract < ApplicationRecord
   # The author's own inventory, for an author who cannot accept deliveries into
   # the fleet's. Deliveries into it are addressed to the author.
   belongs_to :destination_inventory, class_name: "Inventory", optional: true
+  belongs_to :game_mission, optional: true
 
   has_many :fleet_contract_items, -> { order(:position) }, dependent: :destroy
   accepts_nested_attributes_for :fleet_contract_items
@@ -89,8 +94,13 @@ class FleetContract < ApplicationRecord
   # save, and a failed `cancel!` or `expire!` is silent.
   validates :reward, numericality: {greater_than: 0}, if: -> { reward_fixed? && reward_being_set? }
   validate :lines_have_rates, if: -> { persisted? && reward_per_unit? && will_save_change_to_reward_type? }
+  validates :game_mission, presence: true, if: :mission?
+  validates :game_mission, absence: true, unless: :mission?
+  validate :mission_paid_whole, if: :mission?
+  validate :mission_has_no_goods, if: :mission?
+  validate :mission_in_catalogue, if: -> { mission? && will_save_change_to_game_mission_id? }
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
-  validate :exactly_one_destination, if: :destination_being_set?
+  validate :exactly_one_destination, if: -> { !mission? && destination_being_set? }
   validates :source_fleet_inventory, presence: true, if: :transport?
   validates :source_fleet_inventory, absence: true, unless: :transport?
   validate :inventories_belong_to_the_fleet
@@ -346,6 +356,7 @@ class FleetContract < ApplicationRecord
   # places. The API publishes this as `title`.
   def display_title
     return title if title.present?
+    return I18n.t("fleet_contracts.generated_title.mission", mission: game_mission.name) if mission? && game_mission
 
     goods = fleet_contract_items.ordered.to_a
 
@@ -437,7 +448,18 @@ class FleetContract < ApplicationRecord
   # Publishing a contract with nothing to deliver would create a job that is
   # fulfilled the moment it is claimed.
   def ready_to_publish?
+    return game_mission.present? if mission?
+
     destination.present? && fleet_contract_items.any?
+  end
+
+  # The blueprints running the mission can unlock, read from the build the
+  # catalogue serves now. Each crew member earns them in game; the fleet pays
+  # nothing out for them.
+  def mission_blueprints
+    return ::Blueprint.none unless mission? && game_mission
+
+    game_mission.blueprints.order(:name)
   end
 
   # The two inventories this contract's transfers are allowed to touch. Anything
@@ -503,6 +525,28 @@ class FleetContract < ApplicationRecord
     end
 
     released
+  end
+
+  private def mission_paid_whole
+    return unless reward_per_unit?
+
+    errors.add(:reward_type, :per_unit_needs_goods)
+  end
+
+  private def mission_has_no_goods
+    errors.add(:destination_fleet_inventory, :present) if destination.present?
+    return if fleet_contract_items.target.reject(&:marked_for_destruction?).empty? && !fleet_contract_items.exists?
+
+    errors.add(:fleet_contract_items, :present)
+  end
+
+  # Only a mission the catalogue offers: one without a name has no page to
+  # link to and nothing to call the contract.
+  private def mission_in_catalogue
+    return if game_mission.blank?
+    return if ::GameMission.named(::GameMission.served_source).exists?(id: game_mission_id)
+
+    errors.add(:game_mission, :invalid)
   end
 
   private def inventories_belong_to_the_fleet

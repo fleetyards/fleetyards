@@ -12,7 +12,11 @@ import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractSt
 import ContractDeliveredBar from "@/frontend/components/Fleets/Contracts/ContractDeliveredBar/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
-import { type Fleet, type FleetContract } from "@/services/fyApi";
+import {
+  type Fleet,
+  type FleetContract,
+  FleetContractKindEnum,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractCover } from "@/frontend/composables/useContractCover";
@@ -139,6 +143,7 @@ const openContract = (contract: FleetContract) => {
 
     <template #col-delivered="{ record }">
       <ContractDeliveredBar
+        v-if="(record as FleetContract).kind !== FleetContractKindEnum.MISSION"
         :progress="(record as FleetContract).progress"
         :state="(record as FleetContract).state"
       />

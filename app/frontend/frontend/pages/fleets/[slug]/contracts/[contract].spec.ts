@@ -28,6 +28,8 @@ const routerWithRoutes = async () => {
     history: createWebHashHistory(),
     routes: [
       { path: "/", name: "home", component: Stub },
+      { path: "/missions/:slug", name: "mission", component: Stub },
+      { path: "/blueprints/:slug", name: "blueprint", component: Stub },
       { path: "/fleet", name: "fleet", component: Stub },
       { path: "/contracts", name: "fleet-contracts", component: Stub },
       { path: "/contracts/:contract", name: "fleet-contract", component: Stub },
@@ -127,11 +129,38 @@ afterEach(() => {
   vi.resetAllMocks();
 });
 
+const AUTHOR_ID = "22222222-2222-4222-8222-222222222222";
+
+const missionContract = (
+  state: FleetContractStateEnum,
+  authorId: string,
+  leadId = CONTRACTOR_ID,
+): FleetContract =>
+  ({
+    ...contract(state),
+    crew: [
+      {
+        id: "seat",
+        role: FleetContractCrewRoleEnum.LEAD,
+        state: FleetContractCrewStateEnum.ACCEPTED,
+        user: { id: leadId, username: "runner" },
+      },
+    ],
+    kind: "mission",
+    destination: null,
+    createdBy: { id: authorId, username: "poster" },
+    gameMission: { id: "mission", name: "Strike Group", slug: "strike" },
+    missionBlueprints: [
+      { id: "bp", name: "Bulldog Repeater", slug: "bulldog" },
+    ],
+  }) as unknown as FleetContract;
+
 const mount = async (
   state: FleetContractStateEnum,
   resourceAccess = ["fleet:contracts:read"],
+  record?: FleetContract,
 ) => {
-  current.value = contract(state);
+  current.value = record ?? contract(state);
 
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
@@ -146,6 +175,63 @@ const mount = async (
 };
 
 describe("FleetContractPage", () => {
+  it("shows a mission contract's mission and blueprints instead of a route and progress", async () => {
+    const subject = await mount(
+      FleetContractStateEnum.IN_PROGRESS,
+      undefined,
+      missionContract(FleetContractStateEnum.IN_PROGRESS, AUTHOR_ID),
+    );
+
+    expect(subject.find("[data-test='contract-mission']").text()).toContain(
+      "Strike Group",
+    );
+    expect(
+      subject.find("[data-test='contract-mission-blueprints']").text(),
+    ).toContain("Bulldog Repeater");
+    expect(subject.find("[data-test='contract-mission-hint']").exists()).toBe(
+      true,
+    );
+    expect(subject.find("[data-test='contract-deliver-hint']").exists()).toBe(
+      false,
+    );
+  });
+
+  // Nothing in the ledger can say a mission was run, so its author vouches
+  // for it -- but not the lead, who would be certifying their own pay.
+  it("lets the author of a mission contract mark it fulfilled, not the lead", async () => {
+    const asLead = await mount(
+      FleetContractStateEnum.IN_PROGRESS,
+      undefined,
+      missionContract(FleetContractStateEnum.IN_PROGRESS, AUTHOR_ID),
+    );
+    expect(document.querySelector("[data-test='fulfil-contract']")).toBeNull();
+    asLead.unmount();
+    wrapper = undefined;
+
+    await mount(
+      FleetContractStateEnum.IN_PROGRESS,
+      undefined,
+      missionContract(
+        FleetContractStateEnum.IN_PROGRESS,
+        CONTRACTOR_ID,
+        AUTHOR_ID,
+      ),
+    );
+    expect(
+      document.querySelector("[data-test='fulfil-contract']"),
+    ).not.toBeNull();
+  });
+
+  it("keeps the fulfil button from an author who worked the mission themselves", async () => {
+    await mount(
+      FleetContractStateEnum.IN_PROGRESS,
+      undefined,
+      missionContract(FleetContractStateEnum.IN_PROGRESS, CONTRACTOR_ID),
+    );
+
+    expect(document.querySelector("[data-test='fulfil-contract']")).toBeNull();
+  });
+
   it("invites the crew to deliver while the contract is in progress", async () => {
     const subject = await mount(FleetContractStateEnum.IN_PROGRESS);
 

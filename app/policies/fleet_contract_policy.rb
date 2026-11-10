@@ -129,8 +129,19 @@ class FleetContractPolicy < FleetBasePolicy
   # Forcing a fulfilment early is a manager's call -- it is what makes a
   # part-delivered or renegotiated job payable at all. An expired contract that
   # was part-delivered is the same case, so it may be forced as well.
+  #
+  # A mission has no ledger to fulfil it, so its author vouches for the run --
+  # unless they worked it themselves, which would be certifying their own pay.
   def fulfil?
-    manage? && (record.in_progress? || record.expired?)
+    return false unless record.in_progress? || record.expired?
+
+    manage? || vouching_author?
+  end
+
+  private def vouching_author?
+    return false unless record.mission? && user.present? && record.created_by_id == user.id
+
+    show? && !record.contractor?(user)
   end
 
   alias_rule :progress?, to: :show?
@@ -143,7 +154,7 @@ class FleetContractPolicy < FleetBasePolicy
     params.permit(:title, :description, :kind, :reward, :reward_type, :reimburse_expenses,
       :crew_limit, :deadline, :cover_image, :cover_image_preset,
       :source_fleet_inventory_id, :destination_fleet_inventory_id, :destination_inventory_id,
-      :visibility, fleet_squadron_ids: [],
+      :visibility, :game_mission_id, fleet_squadron_ids: [],
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
         :item_id, :position, :crafted_blueprint_id, :reward_rate, {crafted_qualities: {}}])
   end

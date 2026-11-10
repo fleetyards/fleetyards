@@ -1240,7 +1240,8 @@
         "contractCovers": {
           "transport": "运送封面图",
           "procurement": "采购封面图",
-          "crafting": "制造封面图"
+          "crafting": "制造封面图",
+          "mission": "任务封面图"
         }
       },
       "hangarGroup": {
@@ -4260,8 +4261,13 @@
             "label": "类型",
             "transport": "运输",
             "procurement": "采购",
-            "crafting": "制造"
+            "crafting": "制造",
+            "mission": "任务"
           },
+          "gameMission": "任务",
+          "missionBlueprints": "解锁的蓝图",
+          "missionBlueprintsHint": "每位船员在游戏中完成任务即可解锁这些蓝图，舰队不会发放。",
+          "noMissionBlueprints": "此任务不解锁任何蓝图。",
           "state": {
             "draft": "草稿",
             "open": "开放",

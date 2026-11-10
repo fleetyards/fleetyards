@@ -1137,7 +1137,8 @@
         "contracts": {
           "deliverHint": "從你的倉庫發送貨物並選擇此合約，交付才會計入進度。",
           "expiredHint": "此合約已過期，不再接受新的交付。已在途中的交付在被接收後仍會計入進度。",
-          "actionFailed": "操作未成功——合約可能已在此期間變更"
+          "actionFailed": "操作未成功——合約可能已在此期間變更",
+          "missionHint": "在遊戲中完成任務。完成後由 %{username} 將合約標記為已完成。"
         }
       },
       "notifications": {

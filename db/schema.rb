@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_09_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -907,14 +907,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_09_130000) do
     t.uuid "destination_inventory_id"
     t.datetime "settled_at"
     t.integer "reward_type", default: 0, null: false
+    t.uuid "game_mission_id"
     t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
     t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"
     t.index ["destination_inventory_id"], name: "index_fleet_contracts_on_destination_inventory_id"
     t.index ["fleet_id", "aasm_state"], name: "index_fleet_contracts_on_fleet_id_and_aasm_state"
     t.index ["fleet_id", "kind"], name: "index_fleet_contracts_on_fleet_id_and_kind"
     t.index ["fleet_id", "slug"], name: "index_fleet_contracts_on_fleet_id_and_slug", unique: true
+    t.index ["game_mission_id"], name: "index_fleet_contracts_on_game_mission_id"
     t.index ["source_fleet_inventory_id"], name: "index_fleet_contracts_on_source_fleet_inventory_id"
+    t.check_constraint "(kind = 3) = (game_mission_id IS NOT NULL)", name: "fleet_contracts_game_mission_only_for_mission"
     t.check_constraint "crew_limit IS NULL OR crew_limit > 0", name: "fleet_contracts_crew_limit_positive"
+    t.check_constraint "kind <> 3 OR destination_fleet_inventory_id IS NULL AND destination_inventory_id IS NULL AND reward_type <> 1", name: "fleet_contracts_mission_has_no_goods"
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
     t.check_constraint "num_nonnulls(destination_fleet_inventory_id, destination_inventory_id) <= 1", name: "fleet_contracts_single_destination"
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
@@ -3431,6 +3435,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_09_130000) do
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleets"
+  add_foreign_key "fleet_contracts", "game_missions"
   add_foreign_key "fleet_contracts", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "fleet_discord_role_holders", "fleets"

@@ -15,13 +15,19 @@ module V1
               type: :array,
               items: ::V1::Schemas::Contracts::FleetContractItem
             },
+            # What running the mission unlocks for each crew member. Earned in
+            # game, never paid out by the fleet.
+            missionBlueprints: {
+              type: :array,
+              items: ::Shared::V1::Schemas::GameMissionBlueprint
+            },
             crew: {
               type: :array,
               items: ::V1::Schemas::Contracts::FleetContractCrewMember
             },
             progress: ::V1::Schemas::Contracts::FleetContractProgress
           },
-          required: %w[items crew progress]
+          required: %w[items missionBlueprints crew progress]
         })
       end
     end

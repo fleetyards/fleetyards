@@ -31,6 +31,16 @@ end
 
 json.partial! "api/v1/fleet_contracts/endpoint",
   inventory: fleet_contract.source_fleet_inventory, name: :source
+
+if fleet_contract.game_mission.present?
+  json.game_mission do
+    json.id fleet_contract.game_mission.id
+    json.name fleet_contract.game_mission.name
+    json.slug fleet_contract.game_mission.slug
+  end
+else
+  json.game_mission nil
+end
 json.partial! "api/v1/fleet_contracts/endpoint",
   inventory: fleet_contract.destination, name: :destination
 

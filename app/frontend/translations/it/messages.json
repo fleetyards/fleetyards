@@ -1143,7 +1143,8 @@
         "contracts": {
           "deliverHint": "Invia le merci da uno dei tuoi inventari e scegli questo contratto, così la consegna viene conteggiata.",
           "expiredHint": "Questo contratto è scaduto e non accetta nuove consegne. Le consegne già in viaggio contano comunque una volta accettate.",
-          "actionFailed": "Non ha funzionato: il contratto potrebbe essere cambiato nel frattempo"
+          "actionFailed": "Non ha funzionato: il contratto potrebbe essere cambiato nel frattempo",
+          "missionHint": "Completa la missione in gioco. %{username} segnerà il contratto come adempiuto una volta conclusa."
         }
       },
       "notifications": {

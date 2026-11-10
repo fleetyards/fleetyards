@@ -4,7 +4,11 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type ContractEnds = Pick<FleetContract, "source" | "destination" | "createdBy">;
+type ContractEnds = Pick<
+  FleetContract,
+  "source" | "destination" | "createdBy"
+> &
+  Partial<Pick<FleetContract, "gameMission">>;
 
 // How a contract names where its goods go. A destination in the author's own
 // hangar says whose it is: to a contractor it is somebody else's inventory,
@@ -28,8 +32,13 @@ export const useContractRoute = () => {
     });
   };
 
-  // A haul has both ends; the other kinds only have somewhere to deliver.
+  // A haul has both ends; the goods kinds only have somewhere to deliver, and
+  // a mission has neither -- it is named instead.
   const routeLabel = (contract: ContractEnds) => {
+    if (contract.gameMission) {
+      return contract.gameMission.name ?? contract.gameMission.slug;
+    }
+
     const to = destinationName(contract);
     const from = contract.source?.name;
 

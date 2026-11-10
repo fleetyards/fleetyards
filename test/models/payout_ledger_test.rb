@@ -206,6 +206,20 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_equal 1_000, reward.amount
   end
 
+  test "seeds a mission contract with the fleet paying its whole reward, split evenly over the crew" do
+    contract = create(:fleet_contract, :mission, :fulfilled, reward: 900)
+    lead = create(:fleet_contract_assignment, :lead, :accepted, fleet_contract: contract).user
+    crew = create(:fleet_contract_assignment, :accepted, fleet_contract: contract).user
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    assert_equal 1, ledger.payout_participants.find_by!(user_id: lead.id).weight
+    assert_equal 1, ledger.payout_participants.find_by!(user_id: crew.id).weight
+    assert ledger.payout_participants.find_by!(fleet_id: contract.fleet_id).payer
+    assert_equal 900, ledger.payout_entries.sole.amount
+  end
+
   test "a per-unit reward pays each contractor what their goods earned" do
     lead = create(:user)
     crew = create(:user)
