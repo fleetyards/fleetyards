@@ -49,6 +49,8 @@ import {
 } from "@/frontend/components/Fleetchart/layouts";
 import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
 import {
+  BASE_GROUPS,
+  effectiveGroup,
   groupTitleOf,
   sortEntries,
 } from "@/frontend/components/Fleetchart/options";
@@ -88,6 +90,7 @@ interface Props {
   readOnly?: boolean;
   // False until `items` holds everything that can be arranged.
   arrangeReady?: boolean;
+  groups?: FleetchartGroups[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -96,6 +99,7 @@ const props = withDefaults(defineProps<Props>(), {
   canArrange: false,
   readOnly: false,
   arrangeReady: true,
+  groups: () => BASE_GROUPS,
 });
 
 const SCENE_PADDING = 40;
@@ -166,9 +170,13 @@ const colored = computed(() =>
   fleetchartStore.coloredByDefault(props.namespace),
 );
 
-const options = computed(() =>
-  fleetchartStore.fleetchartOptions(props.namespace),
-);
+// The one place a stored group meets what this chart offers: one chosen on a
+// fleet's chart reads as none on a chart without captains or squadrons.
+const options = computed(() => {
+  const stored = fleetchartStore.fleetchartOptions(props.namespace);
+
+  return { ...stored, group: effectiveGroup(stored.group, props.groups) };
+});
 
 const selectedScreenHeight = computed(() =>
   fleetchartStore.fleetchartScreenHeight(props.namespace),
@@ -289,15 +297,24 @@ const placements = computed(() =>
 
 const facingOf = (id: string) => placements.value[id]?.facing ?? facing.value;
 
+// A captain is missing only when they chose not to be shown.
+const emptyGroupTitle = (option: FleetchartGroups) => {
+  switch (option) {
+    case FleetchartGroups.SQUADRON:
+      return t("labels.fleetchartApp.noSquadron");
+    case FleetchartGroups.CAPTAIN:
+      return t("labels.fleetchartApp.unknownCaptain");
+    default:
+      return t("labels.fleetchartApp.groupOptions.none");
+  }
+};
+
 const groupTitle = (entry: FleetchartEntry) => {
   if (group.value === FleetchartGroups.NONE) {
     return undefined;
   }
 
-  return (
-    groupTitleOf(entry, group.value, t) ||
-    t("labels.fleetchartApp.groupOptions.none")
-  );
+  return groupTitleOf(entry, group.value, t) || emptyGroupTitle(group.value);
 };
 
 // Not every ship has every view, and one without the chosen view is shown from one
@@ -1592,7 +1609,7 @@ const toggleLabels = () => {
           </Btn>
           <hr />
           <Btn
-            v-for="option in FleetchartGroups"
+            v-for="option in groups"
             :key="option"
             :active="group === option"
             :data-test="`fleetchart-arrange-group-${option}`"
@@ -1751,6 +1768,8 @@ const toggleLabels = () => {
     <FleetchartCanvasSettings
       v-if="settingsOpen"
       :namespace="namespace"
+      :options="options"
+      :groups="groups"
       :can-arrange="canArrange"
     />
 

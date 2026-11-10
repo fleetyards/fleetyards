@@ -53,7 +53,15 @@ export enum FleetchartGroups {
   MANUFACTURER = "manufacturer",
   CLASSIFICATION = "classification",
   STATUS = "status",
+  SQUADRON = "squadron",
+  CAPTAIN = "captain",
 }
+
+// Only a fleet's own ships know who flies them and in which squadron.
+export const FLEET_SHIP_GROUPS = [
+  FleetchartGroups.SQUADRON,
+  FleetchartGroups.CAPTAIN,
+];
 
 export enum FleetchartSpacings {
   COMPACT = "compact",
@@ -153,6 +161,7 @@ type FleetchartState = {
   color: string[];
   plain: string[];
   extended: string[];
+  modelGrouped: string[];
 };
 
 export const useFleetchartStore = defineStore("fleetchart", {
@@ -170,6 +179,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     color: [],
     plain: [],
     extended: [],
+    modelGrouped: [],
   }),
   getters: {
     isVisible: (state) => {
@@ -187,6 +197,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     extendedState: (state) => {
       return (namespace: string) => (state.extended || []).includes(namespace);
+    },
+    groupedByModel: (state) => {
+      return (namespace: string) =>
+        (state.modelGrouped || []).includes(namespace);
     },
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
@@ -292,6 +306,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
       } else {
         this.extended = [...current, namespace];
       }
+    },
+    toggleGroupedByModel(namespace: string) {
+      const current = this.modelGrouped || [];
+
+      this.modelGrouped = current.includes(namespace)
+        ? current.filter((item) => item !== namespace)
+        : [...current, namespace];
     },
     toggleLabels(namespace: string) {
       if (this.labelsVisible.includes(namespace)) {

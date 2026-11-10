@@ -14,8 +14,8 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
   FeatureFlagName,
-  type Vehicle,
   type Model,
+  type Vehicle,
   type VehiclePublic,
 } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -29,11 +29,16 @@ import { FleetchartLayouts, FleetchartModes } from "@/shared/stores/fleetchart";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFleetchartViews } from "@/frontend/composables/useFleetchartViews";
-import { modelOf } from "@/frontend/components/Fleetchart/geometry";
+import {
+  modelOf,
+  type FleetchartEntry,
+} from "@/frontend/components/Fleetchart/geometry";
+import { BASE_GROUPS } from "@/frontend/components/Fleetchart/options";
+import type { FleetchartGroups } from "@/shared/stores/fleetchart";
 
 type Props = {
   namespace: string;
-  items: (Vehicle | Model | VehiclePublic)[];
+  items: FleetchartEntry[];
   myShip?: boolean;
   downloadName?: string;
   loading?: boolean;
@@ -44,10 +49,12 @@ type Props = {
   shareTitle?: string;
   /** Everything a free arrangement can hold, once `arrangeLoaded`. Offers the free
    *  layout when given, as it cannot work on one page of a list. */
-  arrangeItems?: (Vehicle | Model | VehiclePublic)[];
+  arrangeItems?: FleetchartEntry[];
   arrangeLoaded?: boolean;
   /** Shows a saved arrangement as it is, for someone it was shared with. */
   readOnly?: boolean;
+  /** What the ships can be grouped by, which a fleet's own ships widen. */
+  groups?: FleetchartGroups[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,13 +66,14 @@ const props = withDefaults(defineProps<Props>(), {
   arrangeItems: undefined,
   arrangeLoaded: false,
   readOnly: false,
+  groups: () => BASE_GROUPS,
 });
 
 const { t } = useI18n();
 
 const fleetchartStore = useFleetchartStore();
 
-const innerItems = ref<(Vehicle | Model | VehiclePublic)[]>([]);
+const innerItems = ref<FleetchartEntry[]>([]);
 
 const isOpen = ref(false);
 
@@ -133,7 +141,11 @@ const slugs = computed(() =>
 
 // Fetched only while the chart is open: the lists no longer carry the views, and
 // most visitors never open it.
-const { viewsFor, revision } = useFleetchartViews(
+const {
+  viewsFor,
+  revision,
+  loading: viewsLoading,
+} = useFleetchartViews(
   () => slugs.value,
   () => visible.value,
 );
@@ -154,14 +166,16 @@ const extendedTooltip = computed(() => {
 
 const hasExtendedItems = computed(() => {
   return sourceItems.value.some((item) => {
-    const model = (item as Vehicle).model || (item as Model | VehiclePublic);
+    const model = modelOf(item);
+    const media = model.media as Model["media"] | undefined;
+
     return Boolean(
       model.metrics?.extendedLength ||
-      model.media?.extendedHolo ||
-      model.media?.extendedTopView ||
-      model.media?.extendedPortView ||
-      model.media?.extendedAngledView ||
-      model.media?.extendedFrontView,
+      media?.extendedHolo ||
+      media?.extendedTopView ||
+      media?.extendedPortView ||
+      media?.extendedAngledView ||
+      media?.extendedFrontView,
     );
   });
 });
@@ -230,7 +244,7 @@ const toggleFilter = () => {
 
 // Merged into this component's own copy of the items, so the item components go
 // on reading `model.media` and need no knowledge of where the views came from.
-const withViews = (items: (Vehicle | Model | VehiclePublic)[]) => {
+const withViews = (items: FleetchartEntry[]) => {
   items.forEach((item) => {
     const model = modelOf(item);
     const views = model?.slug && viewsFor(model.slug);
@@ -251,48 +265,22 @@ const updateItems = () => {
     return;
   }
 
-  // The comparator takes the full item union now: it used to receive `any` from
-  // `JSON.parse`, and going through `withViews` gives the array a real type.
   innerItems.value = withViews(JSON.parse(JSON.stringify(props.items))).sort(
-    (
-      a: Vehicle | Model | VehiclePublic,
-      b: Vehicle | Model | VehiclePublic,
-    ) => {
-      if (
-        (a as Vehicle).model?.metrics?.length &&
-        (b as Vehicle).model?.metrics?.length
-      ) {
-        if (
-          (a as Vehicle).model.metrics.length! <
-          (b as Vehicle).model.metrics.length!
-        ) {
-          return -1;
-        }
+    (a: FleetchartEntry, b: FleetchartEntry) => {
+      const lengthA = modelOf(a).metrics?.length;
+      const lengthB = modelOf(b).metrics?.length;
 
-        if (
-          (a as Vehicle).model.metrics.length! >
-          (b as Vehicle).model.metrics.length!
-        ) {
-          return 1;
-        }
-
-        return 0;
-      } else if ((a as Model).metrics?.length && (b as Model).metrics?.length) {
-        if ((a as Model).metrics.length! < (b as Model).metrics.length!) {
-          return -1;
-        }
-
-        if ((a as Model).metrics.length! > (b as Model).metrics.length!) {
-          return 1;
-        }
-
-        return 0;
-      }
-
-      return 0;
+      return lengthA && lengthB ? lengthA - lengthB : 0;
     },
   );
 };
+
+// The charts behind the flag are typed against full models, but read only what a
+// fleet's slim ships carry as well: names, metrics, status and the merged views,
+// whose `media` starts out empty.
+const legacyItems = computed(
+  () => innerItems.value as (Vehicle | Model | VehiclePublic)[],
+);
 
 const emit = defineEmits(["fleetchart-opened", "fleetchart-closed"]);
 
@@ -440,6 +428,8 @@ const closeFleetchart = async () => {
           :container="root"
           no-label
         />
+
+        <slot name="controls" />
       </div>
 
       <AppModalCloseBtn
@@ -477,24 +467,25 @@ const closeFleetchart = async () => {
           :can-arrange="canArrange"
           :read-only="readOnly"
           :arrange-ready="!arranging || arrangeLoaded"
+          :groups="groups"
         />
         <FleetchartListPanzoom
           v-else-if="mode == 'panzoom'"
-          :items="innerItems"
+          :items="legacyItems"
           :my-ship="myShip"
           :namespace="namespace"
           :download-name="downloadName"
         />
         <FleetchartList
           v-else
-          :items="innerItems"
+          :items="legacyItems"
           :my-ship="myShip"
           :namespace="namespace"
           :download-name="downloadName"
         />
       </template>
 
-      <Loader :loading="loading" :fixed="true" />
+      <Loader :loading="loading || viewsLoading" :fixed="true" />
     </div>
   </div>
 </template>

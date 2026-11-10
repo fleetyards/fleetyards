@@ -529,7 +529,9 @@
           "none": "無",
           "manufacturer": "製造商",
           "classification": "分類",
-          "status": "生產狀態"
+          "status": "生產狀態",
+          "squadron": "中隊",
+          "captain": "艦長"
         },
         "background": "背景",
         "backgroundOptions": {
@@ -574,6 +576,8 @@
         "sharedLayoutBy": "由 %{username} 分享",
         "sharedLayoutEmpty": "此配置中沒有公開的艦船。",
         "groupBy": "分組:%{group}",
+        "noSquadron": "無中隊",
+        "unknownCaptain": "艦長未公開",
         "arrange": "排列",
         "arrangeSelected": "排列所選 %{count} 艘",
         "facing": "朝向",

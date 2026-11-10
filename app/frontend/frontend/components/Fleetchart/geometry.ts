@@ -1,4 +1,6 @@
 import type {
+  FleetFleetchartShip,
+  FleetchartModel,
   FleetchartViewMedia,
   MediaFile,
   Model,
@@ -11,7 +13,23 @@ import {
   FleetchartViewpoints,
 } from "@/shared/stores/fleetchart";
 
-export type FleetchartEntry = Vehicle | Model | VehiclePublic;
+// The pictures are merged in once the chart has fetched them.
+export type FleetchartSlimModel = FleetchartModel & {
+  media?: FleetchartViewMedia;
+};
+
+// A fleet ship as the fleetchart endpoint sends it, joined to its model and
+// module package on the client.
+export type FleetchartShip = Omit<
+  FleetFleetchartShip,
+  "modelId" | "modulePackageId"
+> & {
+  model: FleetchartSlimModel;
+  modulePackage?: ModelModulePackage;
+};
+
+export type FleetchartEntry =
+  Vehicle | Model | VehiclePublic | FleetchartShip | FleetchartSlimModel;
 
 export const PIXELS_PER_METRE = 4;
 
@@ -56,8 +74,8 @@ const VIEW_BY_VIEWPOINT: Record<FleetchartViewpoints, ViewName> = {
 // layouts that fit each view tightly, a ship's box should hold between viewpoints.
 const SIZING_VIEWS: ViewName[] = ["angledView", "portView", "topView"];
 
-export const modelOf = (entry: FleetchartEntry): Model =>
-  (entry as Vehicle).model ?? (entry as Model);
+export const modelOf = (entry: FleetchartEntry): Model | FleetchartSlimModel =>
+  (entry as Vehicle | FleetchartShip).model ?? (entry as Model);
 
 const modulePackageOf = (entry: FleetchartEntry) =>
   (entry as Vehicle).modulePackage as ModelModulePackage | null | undefined;

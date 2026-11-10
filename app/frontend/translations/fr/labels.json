@@ -529,7 +529,9 @@
           "none": "Aucun",
           "manufacturer": "Fabricant",
           "classification": "Classification",
-          "status": "Statut de production"
+          "status": "Statut de production",
+          "squadron": "Escadron",
+          "captain": "Capitaine"
         },
         "background": "Arrière-plan",
         "backgroundOptions": {
@@ -574,6 +576,8 @@
         "sharedLayoutBy": "Partagée par %{username}",
         "sharedLayoutEmpty": "Aucun vaisseau de cette disposition n'est public.",
         "groupBy": "Groupe : %{group}",
+        "noSquadron": "Sans escadron",
+        "unknownCaptain": "Capitaine non affiché",
         "arrange": "Organiser",
         "arrangeSelected": "Organiser %{count} sélectionnés",
         "facing": "Orientation",

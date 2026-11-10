@@ -529,7 +529,9 @@
           "none": "None",
           "manufacturer": "Manufacturer",
           "classification": "Classification",
-          "status": "Production status"
+          "status": "Production status",
+          "squadron": "Squadron",
+          "captain": "Captain"
         },
         "background": "Background",
         "backgroundOptions": {
@@ -574,6 +576,8 @@
         "sharedLayoutBy": "Shared by %{username}",
         "sharedLayoutEmpty": "None of the ships in this layout are public.",
         "groupBy": "Group: %{group}",
+        "noSquadron": "No squadron",
+        "unknownCaptain": "Captain not shown",
         "arrange": "Arrange",
         "arrangeSelected": "Arrange %{count} selected",
         "facing": "Facing",

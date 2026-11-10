@@ -5,6 +5,7 @@ import FleetchartCanvas from "./index.vue";
 import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry";
 import {
   FleetchartFacings,
+  FleetchartGroups,
   FleetchartLayouts,
   FleetchartShipStates,
   FleetchartViewpoints,
@@ -190,6 +191,71 @@ describe("FleetchartCanvas", () => {
     await nextTick();
 
     expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
+  });
+
+  describe("grouping a fleet's ships", () => {
+    const captained = (id: string, username: string) =>
+      ({
+        id,
+        name: id,
+        username,
+        model: entry(id),
+      }) as unknown as FleetchartEntry;
+
+    const ships = [
+      captained("a", "kirk"),
+      captained("b", "picard"),
+      captained("c", "kirk"),
+    ];
+
+    const groupByCaptain = () => {
+      showInColumns();
+      useFleetchartStore().updateOptions({
+        namespace: "hangar",
+        options: { group: FleetchartGroups.CAPTAIN },
+      });
+    };
+
+    const headings = (wrapper: ReturnType<typeof mountCanvas>) =>
+      wrapper
+        .findAll("[data-test='fleetchart-group-heading']")
+        .map((heading) => heading.text())
+        .sort();
+
+    it("leaves a captain grouping out on a chart that does not offer it", async () => {
+      groupByCaptain();
+
+      const wrapper = mountCanvas(ships);
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+
+      expect(headings(wrapper)).toEqual([]);
+      expect(
+        wrapper.find("[data-test='fleetchart-group-captain']").exists(),
+      ).toBe(false);
+    });
+
+    it("heads each captain's ships where it is offered", async () => {
+      groupByCaptain();
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: {
+            namespace: "hangar",
+            items: ships,
+            groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+          },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+
+      expect(headings(wrapper)).toEqual(["kirk", "picard"]);
+      expect(
+        wrapper.find("[data-test='fleetchart-group-captain']").exists(),
+      ).toBe(true);
+    });
   });
 
   it("turns a ship and lays it out by its turned size", async () => {
