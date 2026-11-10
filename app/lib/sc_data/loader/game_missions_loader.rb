@@ -16,11 +16,20 @@ module ScData
 
         # By key as well: the export is free to reissue a GUID, and a second row
         # for the same key would fail its uniqueness check and abort the load.
+        key_holder = GameMission.find_by(sc_key: mission_data["sc_key"])
         mission = GameMission.find_by(sc_ref: mission_data["sc_ref"])
-        mission ||= GameMission.find_by(sc_key: mission_data["sc_key"])
+        mission ||= key_holder
         mission ||= GameMission.new(sc_ref: mission_data["sc_ref"])
 
         update_params = update_params(mission_data)
+
+        # A contract keeps its key when another row already holds the new one.
+        # Rows are shared by every environment, and PTU has renamed a contract
+        # onto a key live still files under another.
+        if key_holder && key_holder != mission
+          Rails.logger.warn("[#{self.class.name}] #{mission_data["sc_ref"]} keeps #{mission.sc_key}: #{mission_data["sc_key"]} belongs to #{key_holder.sc_ref}")
+          update_params = update_params.except(:sc_key)
+        end
 
         # One transaction for the row, its build and the rewards. Nothing above
         # opens one -- `Loaders::ScData::AllJob` only sets the source -- so a
