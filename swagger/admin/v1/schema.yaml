@@ -21265,6 +21265,9 @@ components:
     ModelModulePackageMedia:
       type: object
       properties:
+        angledExtent:
+          type: number
+          description: How wide the angled picture is, as a share of the ship's length
         angledView:
           "$ref": "#/components/schemas/MediaFile"
         portView:

@@ -23,6 +23,9 @@ json.media do
   json.top_view do
     json.partial! "api/v1/shared/file", record: module_package, attr: :top_view
   end
+
+  angled_extent = module_package.top_view.attached? && module_package.top_view.metadata[:angled_extent]
+  json.angled_extent angled_extent if angled_extent
 end
 
 json.modules do
