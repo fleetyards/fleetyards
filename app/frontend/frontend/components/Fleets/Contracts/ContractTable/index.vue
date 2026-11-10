@@ -139,6 +139,7 @@ const openContract = (contract: FleetContract) => {
 
     <template #col-delivered="{ record }">
       <ContractDeliveredBar
+        v-if="(record as FleetContract).itemsCount"
         :progress="(record as FleetContract).progress"
         :state="(record as FleetContract).state"
       />

@@ -53,4 +53,13 @@ describe("useContractRoute", () => {
       "labels.fleets.contracts.destinationRemoved()",
     );
   });
+
+  it("names the mission a mission contract runs instead of a destination", () => {
+    const contract = {
+      destination: null,
+      gameMission: { id: "m", name: "Strike Group", slug: "strike" },
+    };
+
+    expect(routeLabel(contract as never)).toBe("Strike Group");
+  });
 });
