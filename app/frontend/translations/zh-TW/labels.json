@@ -1240,7 +1240,8 @@
         "contractCovers": {
           "transport": "運送封面圖",
           "procurement": "採購封面圖",
-          "crafting": "製造封面圖"
+          "crafting": "製造封面圖",
+          "mission": "任務封面圖"
         }
       },
       "hangarGroup": {
@@ -4260,8 +4261,13 @@
             "label": "類型",
             "transport": "運輸",
             "procurement": "採購",
-            "crafting": "製造"
+            "crafting": "製造",
+            "mission": "任務"
           },
+          "gameMission": "任務",
+          "missionBlueprints": "解鎖的藍圖",
+          "missionBlueprintsHint": "每位船員在遊戲中完成任務即可解鎖這些藍圖，艦隊不會發放。",
+          "noMissionBlueprints": "此任務不解鎖任何藍圖。",
           "state": {
             "draft": "草稿",
             "open": "開放",

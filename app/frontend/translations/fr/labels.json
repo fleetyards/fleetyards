@@ -1240,7 +1240,8 @@
         "contractCovers": {
           "transport": "Visuel transport",
           "procurement": "Visuel approvisionnement",
-          "crafting": "Visuel fabrication"
+          "crafting": "Visuel fabrication",
+          "mission": "Visuel mission"
         }
       },
       "hangarGroup": {
@@ -4263,8 +4264,13 @@
             "label": "Type",
             "transport": "Transport",
             "procurement": "Approvisionnement",
-            "crafting": "Fabrication"
+            "crafting": "Fabrication",
+            "mission": "Mission"
           },
+          "gameMission": "Mission",
+          "missionBlueprints": "Plans débloqués",
+          "missionBlueprintsHint": "Chaque membre de l'équipage les débloque en jeu en accomplissant la mission. La flotte ne les verse pas.",
+          "noMissionBlueprints": "Cette mission ne débloque aucun plan.",
           "state": {
             "draft": "Brouillon",
             "open": "Ouvert",

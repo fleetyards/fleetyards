@@ -1240,7 +1240,8 @@
         "contractCovers": {
           "transport": "Copertina trasporto",
           "procurement": "Copertina approvvigionamento",
-          "crafting": "Copertina fabbricazione"
+          "crafting": "Copertina fabbricazione",
+          "mission": "Copertina missione"
         }
       },
       "hangarGroup": {
@@ -4263,8 +4264,13 @@
             "label": "Tipo",
             "transport": "Trasporto",
             "procurement": "Approvvigionamento",
-            "crafting": "Fabbricazione"
+            "crafting": "Fabbricazione",
+            "mission": "Missione"
           },
+          "gameMission": "Missione",
+          "missionBlueprints": "Progetti sbloccati",
+          "missionBlueprintsHint": "Ogni membro dell'equipaggio li sblocca in gioco completando la missione. La flotta non li paga.",
+          "noMissionBlueprints": "Questa missione non sblocca progetti.",
           "state": {
             "draft": "Bozza",
             "open": "Aperto",

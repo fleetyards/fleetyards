@@ -70,7 +70,7 @@ const crumbs = computed<Crumb[]>(() => [
     @kind-change="kind = $event"
     @reward-type-change="rewardType = $event"
   >
-    <template #sections>
+    <template v-if="kind !== FleetContractKindEnum.MISSION" #sections>
       <ContractItemsForm
         :fleet="fleet"
         :kind="kind"

@@ -34,6 +34,7 @@ vi.mock("@/services/fyApi", () => ({
     TRANSPORT: "transport",
     PROCUREMENT: "procurement",
     CRAFTING: "crafting",
+    MISSION: "mission",
   },
   FleetContractDestinationHolderEnum: { FLEET: "fleet", USER: "user" },
   FleetContractRewardTypeEnum: {
@@ -51,6 +52,7 @@ vi.mock("@/services/fyApi", () => ({
   },
   useCreateFleetContract: () => ({ mutateAsync: createMutation }),
   useUpdateFleetContract: () => ({ mutateAsync: updateMutation }),
+  gameMissions: vi.fn(() => Promise.resolve({ items: [] })),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -510,5 +512,71 @@ describe("ContractForm reward", () => {
 
     expect(data.rewardType).toBe("none");
     expect(data.reward).toBe("0");
+  });
+});
+
+describe("ContractForm mission", () => {
+  const select = (wrapper: ReturnType<typeof mountForm>, name: string) =>
+    wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((component) => component.attributes("name") === name);
+
+  const MISSION_DRAFT = {
+    slug: "strike-group",
+    kind: "mission",
+    rewardType: "fixed",
+    reward: "50000.0",
+    gameMission: { id: "mission-1", name: "Strike Group", slug: "strike" },
+  };
+
+  it("asks for a mission instead of a destination", () => {
+    const wrapper = mountForm(MISSION_DRAFT);
+
+    expect(select(wrapper, "gameMissionId")?.props("modelValue")).toBe(
+      "mission-1",
+    );
+    expect(select(wrapper, "destination")).toBeUndefined();
+  });
+
+  it("asks for no mission on a goods contract", () => {
+    const wrapper = mountForm();
+
+    expect(select(wrapper, "gameMissionId")).toBeUndefined();
+    expect(select(wrapper, "destination")).toBeDefined();
+  });
+
+  // Nothing is delivered, so there is no quantity a rate could be paid on.
+  it("offers no per-unit reward and drops one picked before", async () => {
+    const wrapper = mountForm();
+
+    await select(wrapper, "rewardType")!.vm.$emit(
+      "update:modelValue",
+      "per_unit",
+    );
+    await select(wrapper, "kind")!.vm.$emit("update:modelValue", "mission");
+    await flushPromises();
+
+    const offered = select(wrapper, "rewardType")!
+      .props("options")
+      .map((option: { value: string }) => option.value);
+
+    expect(offered).toEqual(["fixed", "none"]);
+    expect(select(wrapper, "rewardType")!.props("modelValue")).toBeNull();
+  });
+
+  it("sends the mission and no destination", async () => {
+    updateMutation.mockClear();
+    const wrapper = mountForm(MISSION_DRAFT);
+
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    const { data } = (updateMutation.mock.calls.at(-1) as unknown[])[0] as {
+      data: Record<string, unknown>;
+    };
+
+    expect(data.gameMissionId).toBe("mission-1");
+    expect(data.destinationFleetInventoryId).toBeNull();
+    expect(data.destinationInventoryId).toBeNull();
   });
 });

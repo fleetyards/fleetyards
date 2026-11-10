@@ -1147,7 +1147,8 @@
         "contracts": {
           "deliverHint": "Send the goods from one of your own inventories and pick this contract, so the delivery counts towards it.",
           "expiredHint": "This contract has expired and takes no new deliveries. Deliveries already on their way still count once they are accepted.",
-          "actionFailed": "That did not work - the contract may have changed in the meantime"
+          "actionFailed": "That did not work - the contract may have changed in the meantime",
+          "missionHint": "Run the mission in game. %{username} marks the contract fulfilled once it is done."
         }
       },
       "notifications": {

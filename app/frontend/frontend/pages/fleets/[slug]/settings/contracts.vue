@@ -52,6 +52,7 @@ const { defineField, handleSubmit, meta, setErrors } =
       transportContractCover: undefined,
       procurementContractCover: undefined,
       craftingContractCover: undefined,
+      missionContractCover: undefined,
     },
   });
 
@@ -66,6 +67,9 @@ const [procurementContractCover, procurementContractCoverProps] = defineField(
 );
 const [craftingContractCover, craftingContractCoverProps] = defineField(
   "craftingContractCover",
+);
+const [missionContractCover, missionContractCoverProps] = defineField(
+  "missionContractCover",
 );
 
 const fields = computed(() => [
@@ -89,6 +93,13 @@ const fields = computed(() => [
     model: craftingContractCover,
     bind: craftingContractCoverProps.value,
     file: props.fleet.contractCovers?.crafting,
+  },
+  {
+    kind: FleetContractKindEnum.MISSION,
+    name: "missionContractCover",
+    model: missionContractCover,
+    bind: missionContractCoverProps.value,
+    file: props.fleet.contractCovers?.mission,
   },
 ]);
 

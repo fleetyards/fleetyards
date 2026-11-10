@@ -19,7 +19,9 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
-import BaseSelect from "@/shared/components/base/Select/index.vue";
+import BaseSelect, {
+  type BaseSelectParams,
+} from "@/shared/components/base/Select/index.vue";
 import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
 import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -33,6 +35,7 @@ import {
   type FleetContractDetail,
   type FleetContractDestination,
   type FleetContractEndpoint,
+  type GameMission,
   FleetContractDestinationHolderEnum,
   FleetContractKindEnum,
   FleetContractRewardTypeEnum,
@@ -40,6 +43,7 @@ import {
   useFleetInventories,
   useCreateFleetContract,
   useUpdateFleetContract,
+  gameMissions,
 } from "@/services/fyApi";
 import { useRouter } from "vue-router";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -163,13 +167,36 @@ const kindOptions = computed<FilterOption[]>(() =>
 );
 
 // Never preselected: a contract that pays nothing has to be told so, rather
-// than arriving at it because nobody filled in the amount.
+// than arriving at it because nobody filled in the amount. A mission delivers
+// nothing a rate could be paid on.
 const rewardTypeOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetContractRewardTypeEnum).map((value) => ({
-    value,
-    label: t(`labels.fleets.contracts.rewardType.${value}`),
-  })),
+  Object.values(FleetContractRewardTypeEnum)
+    .filter(
+      (value) =>
+        !isMission.value || value !== FleetContractRewardTypeEnum.PER_UNIT,
+    )
+    .map((value) => ({
+      value,
+      label: t(`labels.fleets.contracts.rewardType.${value}`),
+    })),
 );
+
+const fetchMissionOptions = (params: BaseSelectParams<FilterOption>) => {
+  const q: Record<string, unknown> = {};
+  if (params.search) q.nameOrOrgNameCont = params.search;
+  if (params.missing) q.idIn = [params.missing as string];
+
+  return gameMissions({ page: String(params.page || 1), q: q as never });
+};
+
+const formatMissions = (response: { items: GameMission[] }) =>
+  (response.items || []).map((mission) => ({
+    label: mission.org?.name
+      ? `${mission.name ?? mission.slug} — ${mission.org.name}`
+      : (mission.name ?? mission.slug),
+    value: mission.id,
+    object: mission,
+  }));
 
 const { defineField, handleSubmit, meta, setErrors } = useForm({
   initialValues: {
@@ -189,6 +216,7 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
     ),
     deadline: props.contract?.deadline ?? null,
     sourceFleetInventoryId: props.contract?.source?.id ?? null,
+    gameMissionId: props.contract?.gameMission?.id ?? null,
     destination: props.contract?.destination
       ? destinationKey(props.contract.destination)
       : null,
@@ -200,6 +228,11 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
 const [kind, kindProps] = defineField("kind");
+const [gameMissionId, gameMissionIdProps] = defineField("gameMissionId");
+
+// A mission is run, not delivered: it names the mission instead of a
+// destination and goods.
+const isMission = computed(() => kind.value === FleetContractKindEnum.MISSION);
 
 watch(kind, (value) => emit("kind-change", value as FleetContractKindEnum), {
   immediate: true,
@@ -268,6 +301,10 @@ watch(requiresSource, (needed) => {
   if (!needed) sourceFleetInventoryId.value = null;
 });
 
+watch(isMission, (mission) => {
+  if (mission && perUnit.value) rewardType.value = null;
+});
+
 const sessionStore = useSessionStore();
 
 // Which hint the picked hangar destination earns. A hangar destination is
@@ -328,8 +365,9 @@ const onSubmit = handleSubmit(async (values) => {
       ? values.sourceFleetInventoryId
       : null,
     // Both keys, one of them null: the contract has a single destination and
-    // naming one kind is what clears the other.
-    ...destinationIds(values.destination),
+    // naming one kind is what clears the other. A mission has neither.
+    ...destinationIds(isMission.value ? null : values.destination),
+    gameMissionId: isMission.value ? values.gameMissionId : null,
     // The field keeps the two exclusive itself -- an upload retires the preset,
     // a preset clears the upload -- so this is passed on as it stands.
     coverImagePreset: values.coverImagePreset,
@@ -348,7 +386,12 @@ const onSubmit = handleSubmit(async (values) => {
       })
     : createMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
-        data: { ...data, items: props.items?.map(contractItemInput) },
+        data: {
+          ...data,
+          items: isMission.value
+            ? undefined
+            : props.items?.map(contractItemInput),
+        },
       });
 
   await mutation
@@ -368,7 +411,7 @@ const onSubmit = handleSubmit(async (values) => {
           // that can still add them: `publish` refuses a contract with none,
           // and leaving that behind an Edit button hides the step.
           name:
-            isEdit.value || props.items?.length
+            isEdit.value || isMission.value || props.items?.length
               ? "fleet-contract"
               : "fleet-contract-edit",
           params: { slug: props.fleet.slug, contract: targetSlug },
@@ -379,6 +422,7 @@ const onSubmit = handleSubmit(async (values) => {
       const { message, formErrors } = validationErrorFrom(error, {
         destinationFleetInventory: "destination",
         destinationInventory: "destination",
+        gameMission: "gameMissionId",
       });
 
       setErrors(formErrors);
@@ -403,7 +447,7 @@ const onSubmit = handleSubmit(async (values) => {
       <FormTab
         id="details"
         :label="t('labels.fleets.contracts.tabs.details')"
-        :fields="['title', 'kind']"
+        :fields="['title', 'kind', 'gameMissionId']"
       >
         <div class="row">
           <div class="col-12">
@@ -429,6 +473,19 @@ const onSubmit = handleSubmit(async (values) => {
               :label="t('labels.fleets.contracts.kind.label')"
               name="kind"
               :searchable="false"
+            />
+          </div>
+          <div v-if="isMission" class="col-12 col-md-6">
+            <BaseSelect
+              v-model="gameMissionId"
+              v-bind="gameMissionIdProps"
+              :query-fn="fetchMissionOptions"
+              :query-response-formatter="formatMissions"
+              :label="t('labels.fleets.contracts.gameMission')"
+              name="gameMissionId"
+              searchable
+              paginated
+              data-test="contract-game-mission"
             />
           </div>
         </div>
@@ -482,7 +539,7 @@ const onSubmit = handleSubmit(async (values) => {
               name="sourceFleetInventoryId"
             />
           </div>
-          <div class="col-12 col-md-6">
+          <div v-if="!isMission" class="col-12 col-md-6">
             <BaseSelect
               v-model="destination"
               v-bind="destinationProps"

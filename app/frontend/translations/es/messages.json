@@ -1137,7 +1137,8 @@
         "contracts": {
           "deliverHint": "Envía las mercancías desde uno de tus inventarios y elige este contrato para que la entrega cuente.",
           "expiredHint": "Este contrato ha caducado y no admite nuevas entregas. Las entregas que ya están en camino siguen contando cuando se aceptan.",
-          "actionFailed": "No ha funcionado: puede que el contrato haya cambiado mientras tanto"
+          "actionFailed": "No ha funcionado: puede que el contrato haya cambiado mientras tanto",
+          "missionHint": "Completa la misión en el juego. %{username} marcará el contrato como cumplido cuando esté hecha."
         }
       },
       "notifications": {
