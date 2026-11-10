@@ -98,6 +98,7 @@ class FleetContract < ApplicationRecord
   validates :game_mission, absence: true, unless: :mission?
   validate :mission_paid_whole, if: :mission?
   validate :mission_has_no_goods, if: :mission?
+  validate :mission_in_catalogue, if: -> { mission? && will_save_change_to_game_mission_id? }
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validate :exactly_one_destination, if: -> { !mission? && destination_being_set? }
   validates :source_fleet_inventory, presence: true, if: :transport?
@@ -458,7 +459,7 @@ class FleetContract < ApplicationRecord
   def mission_blueprints
     return ::Blueprint.none unless mission? && game_mission
 
-    game_mission.blueprints
+    game_mission.blueprints.order(:name)
   end
 
   # The two inventories this contract's transfers are allowed to touch. Anything
@@ -537,6 +538,15 @@ class FleetContract < ApplicationRecord
     return if fleet_contract_items.target.reject(&:marked_for_destruction?).empty? && !fleet_contract_items.exists?
 
     errors.add(:fleet_contract_items, :present)
+  end
+
+  # Only a mission the catalogue offers: one without a name has no page to
+  # link to and nothing to call the contract.
+  private def mission_in_catalogue
+    return if game_mission.blank?
+    return if ::GameMission.named(::GameMission.served_source).exists?(id: game_mission_id)
+
+    errors.add(:game_mission, :invalid)
   end
 
   private def inventories_belong_to_the_fleet
