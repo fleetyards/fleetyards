@@ -10,6 +10,10 @@ import {
 // They are about half the bytes of a model in a list response, and most visitors
 // never open the chart. Requested only while `enabled` is true, and cached by slug
 // so paging back to a page already seen costs nothing.
+// The slugs travel in the query string, which a whole fleet's models would push
+// past what a server accepts.
+const SLUGS_PER_REQUEST = 100;
+
 export const useFleetchartViews = (
   slugs: MaybeRefOrGetter<string[]>,
   enabled: MaybeRefOrGetter<boolean>,
@@ -22,7 +26,9 @@ export const useFleetchartViews = (
       return;
     }
 
-    const missing = toValue(slugs).filter((slug) => !cache.value[slug]);
+    const missing = [...new Set(toValue(slugs))].filter(
+      (slug) => !cache.value[slug],
+    );
 
     if (!missing.length) {
       return;
@@ -31,12 +37,39 @@ export const useFleetchartViews = (
     pending.value += 1;
 
     try {
-      const views = await fetchFleetchartViews({ q: { slugIn: missing } });
-
-      cache.value = views.reduce(
-        (acc, view) => (view.media ? { ...acc, [view.slug]: view.media } : acc),
-        { ...cache.value },
+      const chunks = Array.from(
+        { length: Math.ceil(missing.length / SLUGS_PER_REQUEST) },
+        (_, index) =>
+          missing.slice(
+            index * SLUGS_PER_REQUEST,
+            (index + 1) * SLUGS_PER_REQUEST,
+          ),
       );
+      const results = await Promise.allSettled(
+        chunks.map((slugIn) => fetchFleetchartViews({ q: { slugIn } })),
+      );
+
+      // A model without views is remembered as having none, so a changed list
+      // does not ask for it again; a failed chunk stays uncached to be retried.
+      const next = { ...cache.value };
+
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          console.info("fleetchart views failed", result.reason);
+
+          return;
+        }
+
+        const found = new Map(
+          result.value.map((view) => [view.slug, view.media]),
+        );
+
+        chunks[index].forEach((slug) => {
+          next[slug] = found.get(slug) ?? {};
+        });
+      });
+
+      cache.value = next;
     } catch (error) {
       // The chart draws its placeholders instead. Left uncached so reopening
       // retries rather than showing an empty chart for the rest of the session.
