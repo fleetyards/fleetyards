@@ -55,6 +55,10 @@ const slots = useSlots();
 // One cell holds the stage and, over its foot, the control bar; the columns
 // follow below it on a phone and float over it on a larger screen.
 .stage-layout {
+  // Narrow on a small screen, where the stage needs the room, growing with
+  // the width to what a card reads well at.
+  --stage-layout-column: clamp(16rem, 22%, 37.5rem);
+
   display: grid;
   grid-template-areas:
     "stage"
@@ -66,11 +70,11 @@ const slots = useSlots();
   @media (min-width: $desktop-breakpoint) {
     grid-template-areas:
       ". . end"
-      "controls controls controls";
+      ". controls end";
     grid-template-columns:
       0
       minmax(0, 1fr)
-      minmax(17rem, 23rem);
+      var(--stage-layout-column);
     grid-template-rows: minmax(0, 1fr) auto;
     // Down to the foot of the screen, below the heading above it.
     height: max(36rem, calc(100dvh - 12rem));
@@ -82,11 +86,11 @@ const slots = useSlots();
   @media (min-width: $desktop-breakpoint) {
     grid-template-areas:
       "start . end"
-      "controls controls controls";
+      "start controls end";
     grid-template-columns:
-      minmax(17rem, 21rem)
+      var(--stage-layout-column)
       minmax(0, 1fr)
-      minmax(17rem, 23rem);
+      var(--stage-layout-column);
   }
 }
 
@@ -149,7 +153,6 @@ const slots = useSlots();
   backdrop-filter: blur(8px);
 
   @media (min-width: $desktop-breakpoint) {
-    flex-wrap: nowrap;
     grid-area: controls;
     max-width: 100%;
     margin: 0;
@@ -176,11 +179,5 @@ const slots = useSlots();
 
 .stage-layout__end {
   grid-area: end;
-
-  // Clear of the viewer's own buttons in the stage's lower corner.
-  @media (min-width: $desktop-breakpoint) {
-    align-self: start;
-    max-height: min(60dvh, 100%);
-  }
 }
 </style>
