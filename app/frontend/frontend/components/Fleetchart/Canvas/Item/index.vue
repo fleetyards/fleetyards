@@ -80,6 +80,17 @@ const view = computed(() =>
 
 const imageWidth = computed(() => props.geometry.imageWidth * PIXELS_PER_METRE);
 
+// Only a different picture counts as loading again: a sharper copy of the same
+// one, fetched as the chart zooms in, should not blank the ship meanwhile.
+const loaded = ref(false);
+
+watch(
+  () => view.value?.url,
+  () => {
+    loaded.value = false;
+  },
+);
+
 const image = computed(() => {
   if (!view.value) {
     return undefined;
@@ -131,9 +142,15 @@ const image = computed(() => {
         draggable="false"
         :style="{
           width: `${imageWidth}px`,
+          height: loaded
+            ? undefined
+            : `${geometry.imageHeight * PIXELS_PER_METRE}px`,
           'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
         }"
+        :class="{ 'skeleton-well': !loaded }"
         class="fleetchart-canvas-item__image"
+        @load="loaded = true"
+        @error="loaded = true"
       />
     </div>
   </div>

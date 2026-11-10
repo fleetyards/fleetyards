@@ -23,6 +23,15 @@ const props = withDefaults(defineProps<Props>(), {
 const internalWidth = computed(() => {
   return `${props.width}px` || "auto";
 });
+
+const loaded = ref(false);
+
+watch(
+  () => props.src,
+  () => {
+    loaded.value = false;
+  },
+);
 </script>
 
 <template>
@@ -31,14 +40,22 @@ const internalWidth = computed(() => {
     :src="src"
     :style="{
       width: internalWidth,
+      height: !loaded && height ? `${height}px` : undefined,
       'max-height': height ? `${height}px` : undefined,
       'max-width': maxWidth,
     }"
     :alt="label"
+    :class="{ 'skeleton-well': !loaded }"
     class="fleetchart-item-image"
+    @load="loaded = true"
+    @error="loaded = true"
   />
   <span v-else>
     <i class="fa-light fa-question-circle" />
     <p>{{ label }}</p>
   </span>
 </template>
+
+<style lang="scss" scoped>
+@import "@/shared/components/skeleton";
+</style>
