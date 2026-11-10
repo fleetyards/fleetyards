@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import "highlight.js";
+import hljs from "highlight.js";
 import { useCopy } from "@/docs/composables/useCopy";
 
 type Props = {
@@ -19,7 +19,14 @@ const props = withDefaults(defineProps<Props>(), {
   flush: false,
 });
 
+// highlight.js marks an element it has highlighted and skips it from then on,
+// so code that changes after mounting is highlighted to a string instead.
+const highlighted = computed(
+  () => hljs.highlight(props.code, { language: props.language }).value,
+);
+
 const { copy } = useCopy();
+
 </script>
 
 <template>
@@ -29,9 +36,8 @@ const { copy } = useCopy();
     @click="copy(props.code)"
   >
     <i class="fa-solid fa-copy code-example__copy"></i>
-    <pre
-      v-highlightjs="code"
-    ><code :class="language" class="rounded !py-5 !px-4"></code></pre>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <pre><code :class="`hljs language-${language}`" class="rounded !py-5 !px-4" v-html="highlighted"></code></pre>
   </div>
 </template>
 
