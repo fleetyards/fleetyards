@@ -116,7 +116,7 @@ describe("DressingRoomSlotPickerModal", () => {
       expect.objectContaining({
         q: expect.objectContaining({
           equipmentTypeIn: ["medical"],
-          subTypeIn: ["MedPack", "Medical"],
+          subTypeIn: ["MedPack", "Medical", "OxygenCap"],
         }),
       }),
     );
