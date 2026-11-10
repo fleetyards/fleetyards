@@ -12,6 +12,7 @@ import {
 } from "@/frontend/utils/loadoutPreview";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
+import type { HoloFrameInsets } from "@/shared/components/HoloViewer/frameInsets";
 
 type Props = {
   modelSlug: string;
@@ -28,6 +29,9 @@ type Props = {
   zoomable?: boolean;
   // A part on the holo answers the pointer with its slot's path.
   pickable?: boolean;
+  // How far the controls laid over a backdrop reach into it: the ship is
+  // fitted into the rest.
+  insets?: HoloFrameInsets;
   testId?: string;
 };
 
@@ -37,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   interactive: false,
   zoomable: false,
   pickable: false,
+  insets: undefined,
   testId: "loadout-preview",
 });
 
@@ -53,9 +58,10 @@ const emit = defineEmits<{
 const ANGLED_AZIMUTH = -135;
 const ANGLED_ELEVATION = 35;
 
-// The editor's backdrop fills its frame, with some room around the ship so
-// the parts at its edges stay clear of the panels.
-const BACKDROP_PADDING = 1.22;
+// The editor's backdrop fills the part of its frame the controls leave clear,
+// with only a little room around the ship: fitted to every angle it turns
+// to, it is already clear of the edges at most of them.
+const BACKDROP_PADDING = 1.03;
 
 // The inline holo's own low look, framed to the ship rather than to the
 // circle it turns through, so a larger box shows a larger ship.
@@ -156,6 +162,9 @@ onBeforeUnmount(() => {
       :controllable="interactive"
       :zoomable="interactive && zoomable"
       :contain-padding="BACKDROP_PADDING"
+      :contain-insets="insets"
+      :contain-any-angle="interactive"
+      contain-align="end"
       contain
       hologram
       on-demand

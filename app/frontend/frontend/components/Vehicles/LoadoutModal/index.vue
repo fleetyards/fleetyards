@@ -45,6 +45,7 @@ import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { previewSlotsFromFitting } from "@/frontend/utils/loadoutPreview";
+import { useHoloShareInsets } from "@/frontend/composables/useHoloShareInsets";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -656,6 +657,18 @@ const choosingFor = (tabId: string) =>
 const fitted = computed(() => fittedModules.value || {});
 
 const formRoot = ref<HTMLElement>();
+
+// The ship takes the right two thirds of the editor, at its full height; the
+// holo's frame reaches further left, fading in under the controls.
+const PREVIEW_SHARE = 2 / 3;
+
+const previewTrack = ref<HTMLElement>();
+
+const previewInsets = useHoloShareInsets(
+  previewTrack,
+  formRoot,
+  PREVIEW_SHARE,
+);
 
 const picker = ref<{ focus: () => void }>();
 
@@ -1519,6 +1532,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       <div
         v-if="flightReady && !initialising"
         v-show="!linking"
+        ref="previewTrack"
         class="vehicle-loadout__preview"
       >
         <div class="vehicle-loadout__preview-frame">
@@ -1528,6 +1542,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             :zoomable="inspecting"
             interactive
             :pickable="editable"
+            :insets="previewInsets"
             variant="backdrop"
             test-id="vehicle-loadout-preview"
             @available="previewShown = $event"

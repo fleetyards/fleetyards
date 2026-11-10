@@ -41,6 +41,10 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
 import {
+  clearFrame,
+  type HoloFrameInsets,
+} from "@/shared/components/HoloViewer/frameInsets";
+import {
   type HoloMount,
   mountsSize,
   mountsTextured,
@@ -115,6 +119,16 @@ type Props = {
   turntable?: boolean;
   // Room left around a contained model, as a factor of its fitted distance.
   containPadding?: number;
+  // How far other things laid over the frame reach into it from each edge, in
+  // pixels: a contained model is fitted into the rest and centred there. Full
+  // screen, nothing covers it.
+  containInsets?: HoloFrameInsets;
+  // Contained so that it stays in frame however it is turned, not only from
+  // the angle it starts at.
+  containAnyAngle?: boolean;
+  // Where a model contained at any angle sits when the frame is wider than it
+  // needs: in the middle, or against the right edge.
+  containAlign?: "center" | "end";
   // Stood in a lit room with a glossy floor rather than in an empty frame.
   backdrop?: boolean;
 };
@@ -137,6 +151,9 @@ const props = withDefaults(defineProps<Props>(), {
   pickable: false,
   turntable: false,
   containPadding: 1.35,
+  containInsets: undefined,
+  containAnyAngle: false,
+  containAlign: "center",
   backdrop: false,
 });
 
@@ -452,6 +469,8 @@ const canvas = ref<{
 // The camera as the controls left it, so a refit can keep the view.
 let liveCamera: PerspectiveCamera | undefined;
 
+const camera = shallowRef<PerspectiveCamera>();
+
 type Controls = { object: Camera; target?: Vector3; update?: () => void };
 
 let liveControls: Controls | undefined;
@@ -637,11 +656,17 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
   if (props.contain) {
     // The frame as it is now: the cached aspect is the one it mounted with.
     const frame = holoViewer.value;
-    const frameAspect =
-      frame && frame.clientHeight ? frame.clientWidth / frame.clientHeight : 1;
+    const frameWidth = frame?.clientWidth ?? 0;
+    const frameHeight = frame?.clientHeight ?? 0;
+    const clear = frameHeight
+      ? clearFrame(frameWidth, frameHeight, frameInsets.value)
+      : undefined;
     const elevation = ((props.elevation ?? 0) * Math.PI) / 180;
-    const tanVertical = Math.tan(fovRadians / 2);
-    const tanHorizontal = tanVertical * frameAspect;
+    // The field of view the clear part of the frame spans.
+    const tanVertical =
+      Math.tan(fovRadians / 2) * (clear ? clear.height / frameHeight : 1);
+    const tanHorizontal =
+      Math.tan(fovRadians / 2) * (clear ? clear.width / frameHeight : 1);
 
     // The camera's axes, looking at the centred model from the pose. A
     // turntable is framed from every side it can be turned to: fitted from
@@ -669,6 +694,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     // the box's far corners stand well clear of the ship itself. A sample of
     // each mesh's points is enough to find the silhouette's edges.
     let reach = 0;
+    let radius = 0;
     const point = new Vector3();
     scene.updateMatrixWorld(true);
     scene.traverse((node) => {
@@ -688,6 +714,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
           point.fromBufferAttribute(positions, index);
         }
         point.applyMatrix4(mesh.matrixWorld);
+        radius = Math.max(radius, point.length());
 
         for (const { toCamera, right, up } of views) {
           const depth = point.dot(toCamera);
@@ -699,9 +726,32 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
         }
       }
     });
+    // The sphere it turns in, about the centre the camera orbits, fitted to
+    // the narrower side of the frame.
+    if (props.containAnyAngle) {
+      const tanNarrow = Math.min(tanHorizontal, tanVertical);
+      reach = Math.max(
+        reach,
+        radius / Math.sin(Math.atan(tanNarrow)),
+      );
+    }
+
     // Room around it: a frame rarely shows its edges whole, the editor's fades
     // in from the left under the controls.
     reach *= props.containPadding;
+
+    // Pushed to the right edge of the clear part when it is narrower there
+    // than the room: the sphere it turns in, as wide as it is drawn.
+    let offset = clear;
+    if (clear && props.containAnyAngle && props.containAlign === "end") {
+      const angle = Math.asin(Math.min(1, radius / reach));
+      const halfWidth =
+        (Math.tan(angle) / Math.tan(fovRadians / 2)) * (frameHeight / 2);
+      const spare = clear.width / 2 - halfWidth - clear.width * END_MARGIN;
+
+      if (spare > 0) offset = { ...clear, offsetX: clear.offsetX - spare };
+    }
+    applyViewOffset(frameWidth, frameHeight, offset);
 
     const previousReach = fitDistance.value;
     fitDistance.value = reach;
@@ -753,6 +803,49 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
   cameraPosition.value = position;
   lightPosition.value = position;
 };
+
+// A model against the right edge keeps this share of the clear width beside
+// it.
+const END_MARGIN = 0.08;
+
+const frameInsets = computed(() =>
+  internalFullscreen.value ? undefined : props.containInsets,
+);
+
+// The model's centre drawn at the clear part's centre rather than the frame's:
+// the projection shifts, so orbiting and picking follow it.
+const applyViewOffset = (
+  width: number,
+  height: number,
+  clear?: ReturnType<typeof clearFrame>,
+) => {
+  const target = camera.value;
+  if (!target) return;
+
+  if (clear && (clear.offsetX || clear.offsetY)) {
+    target.setViewOffset(
+      width,
+      height,
+      clear.offsetX,
+      clear.offsetY,
+      width,
+      height,
+    );
+  } else {
+    target.clearViewOffset();
+  }
+
+  canvas.value?.context?.renderer?.invalidate();
+};
+
+watch(
+  () => JSON.stringify(frameInsets.value ?? null),
+  () => {
+    if (!props.contain || !framed.value) return;
+
+    frameModel(framed.value.size, framed.value.scene, true);
+  },
+);
 
 const refitContained = useDebounceFn(() => {
   const frame = holoViewer.value;
@@ -938,6 +1031,7 @@ defineExpose({
            is copied over, and the orbit controls, keyed by that uuid, come back
            without their change listener, so the light stops following. -->
       <TresPerspectiveCamera
+        ref="camera"
         :position="cameraPosition"
         :fov="CAMERA_FOV"
         :near="cameraNear"
