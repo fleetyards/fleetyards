@@ -436,7 +436,13 @@ const { activeFilters } = useShipFilterSummary();
             :download-name="`${fleet.slug}-fleetchart`"
             :groups="fleetchartGroups"
           >
+            <!-- The chart covers the list's toolbar, so the squadron control
+                 comes along into the chart's own filter panel. -->
             <template #filter>
+              <SquadronFilter
+                :fleet="props.fleet"
+                class="fleetchart-squadron-filter"
+              />
               <FleetVehiclesFilterForm />
             </template>
             <template #controls>
@@ -472,3 +478,9 @@ const { activeFilters } = useShipFilterSummary();
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.fleetchart-squadron-filter {
+  margin-bottom: 20px;
+}
+</style>
