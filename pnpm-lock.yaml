@@ -114,6 +114,7 @@ overrides:
   ajv@6: '>=6.14.0 <7'
   jsonpath-plus@7: '>=10.3.0'
   js-yaml@4: '>=4.3.2 <5'
+  parse5@8: '>=8.1.0 <9'
 
 patchedDependencies:
   '@vue/language-core@3.3.13': d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15
