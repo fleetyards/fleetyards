@@ -664,11 +664,7 @@ const PREVIEW_SHARE = 2 / 3;
 
 const previewTrack = ref<HTMLElement>();
 
-const previewInsets = useHoloShareInsets(
-  previewTrack,
-  formRoot,
-  PREVIEW_SHARE,
-);
+const previewInsets = useHoloShareInsets(previewTrack, formRoot, PREVIEW_SHARE);
 
 const picker = ref<{ focus: () => void }>();
 

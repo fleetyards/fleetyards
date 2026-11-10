@@ -164,12 +164,7 @@ export const loadoutMounts = (
       // missile rack on a turret -- has its own.
       const color = categoryColor(slot?.category) ?? parentColor;
 
-      const mounts = build(
-        node.children,
-        slot?.slots,
-        !!slot?.refitted,
-        color,
-      );
+      const mounts = build(node.children, slot?.slots, !!slot?.refitted, color);
 
       if (!path && !mounts.length) return [];
 

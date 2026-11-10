@@ -733,10 +733,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     // the narrower side of the frame.
     if (props.containAnyAngle) {
       const tanNarrow = Math.min(tanHorizontal, tanVertical);
-      reach = Math.max(
-        reach,
-        radius / Math.sin(Math.atan(tanNarrow)),
-      );
+      reach = Math.max(reach, radius / Math.sin(Math.atan(tanNarrow)));
     }
 
     // Room around it: a frame rarely shows its edges whole, the editor's fades

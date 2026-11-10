@@ -478,7 +478,10 @@ const setMaterials = (scene: Group) => {
     if (!own) {
       body.material = material;
 
-      if (props.hologram && !body.children.some((child) => child.userData.depth)) {
+      if (
+        props.hologram &&
+        !body.children.some((child) => child.userData.depth)
+      ) {
         const depth = new Mesh(body.geometry, depthMaterial);
         depth.userData.depth = true;
         body.add(depth);
