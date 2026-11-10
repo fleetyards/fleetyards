@@ -54,6 +54,11 @@ const props = withDefaults(defineProps<Props>(), {
   order: undefined,
 });
 
+const emit = defineEmits<{
+  "image-pending": [];
+  "image-settled": [];
+}>();
+
 const { t } = useI18n();
 
 const model = computed(() => modelOf(props.entry));
@@ -80,16 +85,23 @@ const view = computed(() =>
 
 const imageWidth = computed(() => props.geometry.imageWidth * PIXELS_PER_METRE);
 
-// Only a different picture counts as loading again: a sharper copy of the same
-// one, fetched as the chart zooms in, should not blank the ship meanwhile.
-const loaded = ref(false);
-
+// Reported to the chart, which shows one count for all its ships. Only a different
+// picture counts: a sharper copy of the same one, fetched on zooming in, does not.
 watch(
   () => view.value?.url,
-  () => {
-    loaded.value = false;
+  (url) => {
+    if (url) {
+      emit("image-pending");
+    } else {
+      emit("image-settled");
+    }
   },
+  { immediate: true },
 );
+
+onBeforeUnmount(() => {
+  emit("image-settled");
+});
 
 const image = computed(() => {
   if (!view.value) {
@@ -142,15 +154,11 @@ const image = computed(() => {
         draggable="false"
         :style="{
           width: `${imageWidth}px`,
-          height: loaded
-            ? undefined
-            : `${geometry.imageHeight * PIXELS_PER_METRE}px`,
           'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
         }"
-        :class="{ 'skeleton-well': !loaded }"
         class="fleetchart-canvas-item__image"
-        @load="loaded = true"
-        @error="loaded = true"
+        @load="emit('image-settled')"
+        @error="emit('image-settled')"
       />
     </div>
   </div>

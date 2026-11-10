@@ -578,6 +578,7 @@
         "groupBy": "分组:%{group}",
         "noSquadron": "无中队",
         "unknownCaptain": "舰长未公开",
+        "loadingPictures": "正在加载图片 %{loaded} / %{total}",
         "arrange": "排列",
         "arrangeSelected": "排列所选 %{count} 艘",
         "facing": "朝向",

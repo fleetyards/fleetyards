@@ -146,7 +146,7 @@ const BACKGROUND_IMAGES: Partial<Record<FleetchartBackgrounds, string>> = {
   [FleetchartBackgrounds.PYRO]: pyroNebula,
 };
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
 const mobile = useMobile();
 
@@ -521,6 +521,33 @@ const scaleBarWidth = computed(
 const settingsOpen = ref(false);
 
 const exporting = ref(false);
+
+// One count for the whole chart rather than a placeholder on each ship, which on
+// a fleet of thousands is more noise than the ships themselves. A round of loading
+// starts with the first picture asked for and ends when the last has arrived.
+const pendingImages = ref(new Set<string>());
+const imagesRequested = ref(0);
+
+const imagePending = (id: string) => {
+  if (pendingImages.value.has(id)) {
+    return;
+  }
+
+  if (!pendingImages.value.size) {
+    imagesRequested.value = 0;
+  }
+
+  pendingImages.value.add(id);
+  imagesRequested.value += 1;
+};
+
+const imageSettled = (id: string) => {
+  pendingImages.value.delete(id);
+};
+
+const imagesLoaded = computed(
+  () => imagesRequested.value - pendingImages.value.size,
+);
 
 // The images drawn while zoomed out are too small for a full-size export, so the
 // larger ones are only fetched for as long as an export needs them.
@@ -1785,6 +1812,21 @@ const toggleLabels = () => {
       {{ gridCell }} m
     </div>
 
+    <div
+      v-if="pendingImages.size && !exporting"
+      class="fleetchart-canvas__image-progress"
+      role="status"
+      data-test="fleetchart-image-progress"
+    >
+      <i class="fa-duotone fa-spinner-third fa-spin" />
+      {{
+        t("labels.fleetchartApp.loadingPictures", {
+          loaded: toNumber(imagesLoaded),
+          total: toNumber(imagesRequested),
+        })
+      }}
+    </div>
+
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
     </div>
@@ -1895,6 +1937,8 @@ const toggleLabels = () => {
           :arranging="arranging"
           :order="isFree ? placements[ship.id]?.order : undefined"
           @pointerdown="startDrag(ship.id, $event)"
+          @image-pending="imagePending(ship.id)"
+          @image-settled="imageSettled(ship.id)"
         />
 
         <div

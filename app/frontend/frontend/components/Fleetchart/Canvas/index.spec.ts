@@ -28,7 +28,7 @@ vi.mock("vue-router", async (importOriginal) => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({ t: (key: string) => key, toNumber: String }),
 }));
 
 const comlinkEmit = vi.hoisted(() => vi.fn());
@@ -191,6 +191,25 @@ describe("FleetchartCanvas", () => {
     await nextTick();
 
     expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
+  });
+
+  it("counts the chart's pictures while they load, then gets out of the way", async () => {
+    const wrapper = mountCanvas([entry("a"), entry("b")]);
+    await nextTick();
+
+    const progress = () =>
+      wrapper.find("[data-test='fleetchart-image-progress']");
+
+    expect(progress().text()).toContain("labels.fleetchartApp.loadingPictures");
+
+    const images = wrapper.findAll(".fleetchart-canvas-item__image");
+    await images[0].trigger("load");
+
+    expect(progress().exists()).toBe(true);
+
+    await images[1].trigger("error");
+
+    expect(progress().exists()).toBe(false);
   });
 
   describe("grouping a fleet's ships", () => {

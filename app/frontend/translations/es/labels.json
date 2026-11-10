@@ -578,6 +578,7 @@
         "groupBy": "Grupo: %{group}",
         "noSquadron": "Sin escuadrón",
         "unknownCaptain": "Capitán no visible",
+        "loadingPictures": "Cargando imágenes %{loaded} / %{total}",
         "arrange": "Organizar",
         "arrangeSelected": "Organizar %{count} seleccionadas",
         "facing": "Orientación",
