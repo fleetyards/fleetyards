@@ -242,12 +242,8 @@ describe("FleetchartCanvas", () => {
         .map((heading) => heading.text())
         .sort();
 
-    it("grows its headings with the number of ships when asked to", async () => {
+    it("grows its headings with the number of ships by default", async () => {
       groupByCaptain();
-      useFleetchartStore().updateOptions({
-        namespace: "hangar",
-        options: { headingSize: FleetchartHeadingSizes.FLEET },
-      });
 
       const fontSizeFor = (count: number) => {
         const wrapper = track(
@@ -277,8 +273,12 @@ describe("FleetchartCanvas", () => {
       expect(fontSizeFor(100)).toBeCloseTo(few * 2);
     });
 
-    it("keeps headings at a headline's size by default, however many ships", () => {
+    it("keeps headings at a headline's size when set to normal, however many ships", () => {
       groupByCaptain();
+      useFleetchartStore().updateOptions({
+        namespace: "hangar",
+        options: { headingSize: FleetchartHeadingSizes.NORMAL },
+      });
 
       const fontSizes = [4, 400].map((count) => {
         const wrapper = track(

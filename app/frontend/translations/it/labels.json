@@ -527,10 +527,10 @@
         "group": "Gruppo",
         "headingSize": "Dimensione dei titoli",
         "headingSizeOptions": {
+          "fleet": "Automatico",
           "normal": "Normale",
           "large": "Grande",
-          "extraLarge": "Molto grande",
-          "fleet": "Cresce con la flotta"
+          "extraLarge": "Molto grande"
         },
         "groupOptions": {
           "none": "Nessuno",

@@ -527,10 +527,10 @@
         "group": "Gruppe",
         "headingSize": "Überschriftengröße",
         "headingSizeOptions": {
+          "fleet": "Automatisch",
           "normal": "Normal",
           "large": "Groß",
-          "extraLarge": "Sehr groß",
-          "fleet": "Wächst mit der Flotte"
+          "extraLarge": "Sehr groß"
         },
         "groupOptions": {
           "none": "Keine",

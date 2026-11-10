@@ -527,10 +527,10 @@
         "group": "分組",
         "headingSize": "標題大小",
         "headingSizeOptions": {
+          "fleet": "自動",
           "normal": "正常",
           "large": "大",
-          "extraLarge": "特大",
-          "fleet": "隨艦隊規模增大"
+          "extraLarge": "特大"
         },
         "groupOptions": {
           "none": "無",

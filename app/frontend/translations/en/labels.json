@@ -527,10 +527,10 @@
         "group": "Group",
         "headingSize": "Heading size",
         "headingSizeOptions": {
+          "fleet": "Auto",
           "normal": "Normal",
           "large": "Large",
-          "extraLarge": "Extra large",
-          "fleet": "Grows with fleet"
+          "extraLarge": "Extra large"
         },
         "groupOptions": {
           "none": "None",

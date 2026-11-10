@@ -64,10 +64,10 @@ export const FLEET_SHIP_GROUPS = [
 ];
 
 export enum FleetchartHeadingSizes {
+  FLEET = "fleet",
   NORMAL = "normal",
   LARGE = "large",
   EXTRA_LARGE = "extraLarge",
-  FLEET = "fleet",
 }
 
 export enum FleetchartSpacings {
@@ -111,7 +111,7 @@ export interface FleetchartOptions {
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   sort: FleetchartSorts.LENGTH_ASC,
   group: FleetchartGroups.NONE,
-  headingSize: FleetchartHeadingSizes.NORMAL,
+  headingSize: FleetchartHeadingSizes.FLEET,
   spacing: FleetchartSpacings.NORMAL,
   scaleBar: false,
   solidExport: false,
