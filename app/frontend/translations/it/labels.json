@@ -525,11 +525,20 @@
           "list": "Ordine della lista"
         },
         "group": "Gruppo",
+        "headingSize": "Dimensione dei titoli",
+        "headingSizeOptions": {
+          "fleet": "Automatico",
+          "normal": "Normale",
+          "large": "Grande",
+          "extraLarge": "Molto grande"
+        },
         "groupOptions": {
           "none": "Nessuno",
           "manufacturer": "Produttore",
           "classification": "Classificazione",
-          "status": "Stato di produzione"
+          "status": "Stato di produzione",
+          "squadron": "Squadriglia",
+          "captain": "Capitano"
         },
         "background": "Sfondo",
         "backgroundOptions": {
@@ -574,6 +583,12 @@
         "sharedLayoutBy": "Condivisa da %{username}",
         "sharedLayoutEmpty": "Nessuna nave di questa disposizione è pubblica.",
         "groupBy": "Gruppo: %{group}",
+        "noSquadron": "Nessuna squadriglia",
+        "unknownCaptain": "Capitano non visibile",
+        "loadingPictures": "Caricamento immagini %{loaded} / %{total}",
+        "exportPictures": "Caricamento immagini a dimensione piena %{loaded} / %{total}",
+        "exportDrawing": "Disegno del grafico…",
+        "exportSaving": "Salvataggio del PNG…",
         "arrange": "Disponi",
         "arrangeSelected": "Disponi %{count} selezionate",
         "facing": "Orientamento",

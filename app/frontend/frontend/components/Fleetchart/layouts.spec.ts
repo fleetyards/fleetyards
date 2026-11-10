@@ -12,6 +12,7 @@ import {
   withHeadings,
   withRowWidth,
   type FleetchartLayoutShip,
+  type FleetchartPositions,
 } from "./layouts";
 
 const ship = (
@@ -382,6 +383,25 @@ describe("groups", () => {
     const [heading] = groupHeadings(ships, positions);
 
     expect(boundsOf(ships, positions).minY).toBeLessThan(heading.y);
+  });
+
+  it("makes room for a taller heading in every layout", () => {
+    const tall = (id: string) => ({ ...grouped(id, "one"), headingRoom: 100 });
+    const gapUnder = (
+      arrange: (ships: FleetchartLayoutShip[]) => FleetchartPositions,
+    ) => {
+      const plain = arrange([grouped("a", "one")]);
+      const roomy = arrange([tall("a")]);
+      const [heading] = groupHeadings([tall("a")], roomy);
+
+      expect(heading.y).toBe(boundsOf([tall("a")], roomy).minY + 50);
+
+      return roomy.a.y - plain.a.y;
+    };
+
+    expect(gapUnder((ships) => arrangeColumns(ships, 500))).toBe(85);
+    expect(gapUnder((ships) => arrangeClassic(ships, 500))).toBe(85);
+    expect(gapUnder((ships) => arrangePacked(ships, 1))).toBe(85);
   });
 
   it("has no headings without groups", () => {

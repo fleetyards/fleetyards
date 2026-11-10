@@ -39,6 +39,7 @@ interface Props {
   selected?: boolean;
   arranging?: boolean;
   order?: number;
+  shadow?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -52,7 +53,13 @@ const props = withDefaults(defineProps<Props>(), {
   selected: false,
   arranging: false,
   order: undefined,
+  shadow: true,
 });
+
+const emit = defineEmits<{
+  "image-pending": [];
+  "image-settled": [];
+}>();
 
 const { t } = useI18n();
 
@@ -69,6 +76,7 @@ const cssClasses = computed(() => [
   props.showStatus ? `status-${model.value.productionStatus}` : undefined,
   props.selected ? "fleetchart-canvas-item--selected" : undefined,
   props.arranging ? "fleetchart-canvas-item--arranging" : undefined,
+  props.shadow ? "fleetchart-canvas-item--shadow" : undefined,
 ]);
 
 const view = computed(() =>
@@ -79,6 +87,24 @@ const view = computed(() =>
 );
 
 const imageWidth = computed(() => props.geometry.imageWidth * PIXELS_PER_METRE);
+
+// Reported to the chart, which shows one count for all its ships. Only a different
+// picture counts: a sharper copy of the same one, fetched on zooming in, does not.
+watch(
+  () => view.value?.url,
+  (url) => {
+    if (url) {
+      emit("image-pending");
+    } else {
+      emit("image-settled");
+    }
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(() => {
+  emit("image-settled");
+});
 
 const image = computed(() => {
   if (!view.value) {
@@ -134,6 +160,8 @@ const image = computed(() => {
           'max-height': `${geometry.height * PIXELS_PER_METRE}px`,
         }"
         class="fleetchart-canvas-item__image"
+        @load="emit('image-settled')"
+        @error="emit('image-settled')"
       />
     </div>
   </div>

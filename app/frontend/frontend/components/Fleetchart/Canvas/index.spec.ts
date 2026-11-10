@@ -5,6 +5,8 @@ import FleetchartCanvas from "./index.vue";
 import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry";
 import {
   FleetchartFacings,
+  FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartShipStates,
   FleetchartViewpoints,
@@ -27,7 +29,7 @@ vi.mock("vue-router", async (importOriginal) => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({ t: (key: string) => key, currentLocale: () => "en" }),
 }));
 
 const comlinkEmit = vi.hoisted(() => vi.fn());
@@ -190,6 +192,151 @@ describe("FleetchartCanvas", () => {
     await nextTick();
 
     expect(panzoomInstance.moveTo).toHaveBeenCalledWith(0, 0);
+  });
+
+  it("counts the chart's pictures while they load, then gets out of the way", async () => {
+    const wrapper = mountCanvas([entry("a"), entry("b")]);
+    await nextTick();
+
+    const progress = () =>
+      wrapper.find("[data-test='fleetchart-image-progress']");
+
+    expect(progress().text()).toContain("labels.fleetchartApp.loadingPictures");
+
+    const images = wrapper.findAll(".fleetchart-canvas-item__image");
+    await images[0].trigger("load");
+
+    expect(progress().exists()).toBe(true);
+
+    await images[1].trigger("error");
+
+    expect(progress().exists()).toBe(false);
+  });
+
+  describe("grouping a fleet's ships", () => {
+    const captained = (id: string, username: string) =>
+      ({
+        id,
+        name: id,
+        username,
+        model: entry(id),
+      }) as unknown as FleetchartEntry;
+
+    const ships = [
+      captained("a", "kirk"),
+      captained("b", "picard"),
+      captained("c", "kirk"),
+    ];
+
+    const groupByCaptain = () => {
+      showInColumns();
+      useFleetchartStore().updateOptions({
+        namespace: "hangar",
+        options: { group: FleetchartGroups.CAPTAIN },
+      });
+    };
+
+    const headings = (wrapper: ReturnType<typeof mountCanvas>) =>
+      wrapper
+        .findAll("[data-test='fleetchart-group-heading']")
+        .map((heading) => heading.text())
+        .sort();
+
+    it("grows its headings with the number of ships by default", async () => {
+      groupByCaptain();
+
+      const fontSizeFor = (count: number) => {
+        const wrapper = track(
+          mount(FleetchartCanvas, {
+            props: {
+              namespace: "hangar",
+              items: Array.from({ length: count }, (_, index) =>
+                captained(`ship-${index}`, "kirk"),
+              ),
+              groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+            },
+            global: { stubs: canvasStubs, directives: { tooltip: {} } },
+          }),
+        );
+
+        return parseFloat(
+          (
+            wrapper.get("[data-test='fleetchart-group-heading']")
+              .element as HTMLElement
+          ).style.fontSize,
+        );
+      };
+
+      const few = fontSizeFor(4);
+
+      expect(fontSizeFor(25)).toBe(few);
+      expect(fontSizeFor(100)).toBeCloseTo(few * 2);
+    });
+
+    it("keeps headings at a headline's size when set to normal, however many ships", () => {
+      groupByCaptain();
+      useFleetchartStore().updateOptions({
+        namespace: "hangar",
+        options: { headingSize: FleetchartHeadingSizes.NORMAL },
+      });
+
+      const fontSizes = [4, 400].map((count) => {
+        const wrapper = track(
+          mount(FleetchartCanvas, {
+            props: {
+              namespace: "hangar",
+              items: Array.from({ length: count }, (_, index) =>
+                captained(`ship-${index}`, "kirk"),
+              ),
+              groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+            },
+            global: { stubs: canvasStubs, directives: { tooltip: {} } },
+          }),
+        );
+
+        return (
+          wrapper.get("[data-test='fleetchart-group-heading']")
+            .element as HTMLElement
+        ).style.fontSize;
+      });
+
+      expect(fontSizes[0]).toBe(fontSizes[1]);
+    });
+
+    it("leaves a captain grouping out on a chart that does not offer it", async () => {
+      groupByCaptain();
+
+      const wrapper = mountCanvas(ships);
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+
+      expect(headings(wrapper)).toEqual([]);
+      expect(
+        wrapper.find("[data-test='fleetchart-group-captain']").exists(),
+      ).toBe(false);
+    });
+
+    it("heads each captain's ships where it is offered", async () => {
+      groupByCaptain();
+
+      const wrapper = track(
+        mount(FleetchartCanvas, {
+          props: {
+            namespace: "hangar",
+            items: ships,
+            groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+          },
+          global: { stubs: canvasStubs, directives: { tooltip: {} } },
+        }),
+      );
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+
+      expect(headings(wrapper)).toEqual(["kirk", "picard"]);
+      expect(
+        wrapper.find("[data-test='fleetchart-group-captain']").exists(),
+      ).toBe(true);
+    });
   });
 
   it("turns a ship and lays it out by its turned size", async () => {

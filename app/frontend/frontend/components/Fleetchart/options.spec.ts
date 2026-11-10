@@ -123,3 +123,67 @@ describe("groupTitleOf", () => {
     );
   });
 });
+
+describe("grouping a fleet's ships", () => {
+  const t = (key: string) => key;
+
+  const fleetShip = (
+    name: string,
+    owner: { username?: string; userDisplayName?: string },
+    squadron?: string,
+  ) =>
+    ({
+      id: name,
+      name,
+      ...owner,
+      squadron: squadron
+        ? { id: squadron, name: squadron, slug: squadron }
+        : undefined,
+      model: {
+        name,
+        manufacturer: { code: "X", name: "RSI" },
+        metrics: { fleetchartOffsetLength: 10 },
+      },
+    }) as unknown as FleetchartEntry;
+
+  it("titles a ship with its squadron", () => {
+    expect(
+      groupTitleOf(
+        fleetShip("a", {}, "Alpha Wing"),
+        FleetchartGroups.SQUADRON,
+        t,
+      ),
+    ).toBe("Alpha Wing");
+  });
+
+  it("titles a ship with its captain's display name before the username", () => {
+    expect(
+      groupTitleOf(
+        fleetShip("a", { username: "kirk", userDisplayName: "James" }),
+        FleetchartGroups.CAPTAIN,
+        t,
+      ),
+    ).toBe("James");
+    expect(
+      groupTitleOf(
+        fleetShip("a", { username: "kirk" }),
+        FleetchartGroups.CAPTAIN,
+        t,
+      ),
+    ).toBe("kirk");
+  });
+
+  it("keeps a squadron's ships together", () => {
+    const ships = [
+      fleetShip("a", {}, "Bravo"),
+      fleetShip("b", {}, "Alpha"),
+      fleetShip("c", {}, "Bravo"),
+    ];
+
+    expect(
+      names(
+        sortEntries(ships, FleetchartSorts.LIST, FleetchartGroups.SQUADRON),
+      ),
+    ).toEqual(["b", "a", "c"]);
+  });
+});

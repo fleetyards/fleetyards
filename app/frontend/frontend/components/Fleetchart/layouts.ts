@@ -8,9 +8,10 @@ export interface FleetchartLayoutShip {
   // Room for a label to the left of the ship, and the height that label needs.
   gutter?: number;
   minHeight?: number;
-  // Ships of one group stay together, under a heading this wide.
+  // Ships of one group stay together, under a heading this wide and this tall.
   group?: string;
   headingWidth?: number;
+  headingRoom?: number;
   // Overrides the spacing around this ship.
   padding?: number;
 }
@@ -54,6 +55,9 @@ const MAX_FACTOR = 20;
 const FACTOR_STEP = 0.25;
 
 const paddingOf = (ship: FleetchartLayoutShip) => ship.padding ?? SHIP_PADDING;
+
+const headingRoomOf = (ship: FleetchartLayoutShip) =>
+  ship.group ? (ship.headingRoom ?? HEADING_ROOM) : 0;
 
 const boxWidth = (ship: FleetchartLayoutShip) =>
   ship.width + (ship.gutter || 0) + paddingOf(ship);
@@ -163,7 +167,7 @@ export const arrangeColumns = (
   }: { centred?: boolean; leftAligned?: boolean } = {},
 ): FleetchartPositions => {
   const positions: FleetchartPositions = {};
-  const headingRoom = ships.some((ship) => ship.group) ? HEADING_ROOM : 0;
+  const headingRoom = Math.max(0, ...ships.map(headingRoomOf));
   let columnLeft = 0;
 
   splitColumns(ships, maxColumnHeight).forEach((column) => {
@@ -223,7 +227,7 @@ export const arrangeClassic = (
 
   rows.forEach((row, index) => {
     if (row[0].group && row[0].group !== rows[index - 1]?.[0].group) {
-      top += HEADING_ROOM;
+      top += headingRoomOf(row[0]);
     }
 
     const width = row.reduce((sum, ship) => sum + boxWidth(ship), 0);
@@ -404,7 +408,7 @@ export const arrangePacked = (
     key,
     members,
     packing: bestPacking(members.map(toBox), aspectRatio),
-    headingRoom: key ? HEADING_ROOM : 0,
+    headingRoom: key ? headingRoomOf(members[0]) : 0,
     headingWidth: members[0].headingWidth || 0,
   }));
 
@@ -458,9 +462,7 @@ export const boundsOf = (
   const right = (ship: FleetchartLayoutShip) =>
     positions[ship.id].x + ship.width / 2 + paddingOf(ship) / 2;
   const top = (ship: FleetchartLayoutShip) =>
-    positions[ship.id].y -
-    boxHeight(ship) / 2 -
-    (ship.group ? HEADING_ROOM : 0);
+    positions[ship.id].y - boxHeight(ship) / 2 - headingRoomOf(ship);
   const bottom = (ship: FleetchartLayoutShip) =>
     positions[ship.id].y + boxHeight(ship) / 2;
 
@@ -497,7 +499,7 @@ export const groupHeadings = (
     return {
       title,
       x: minX + (align === "left" ? 0 : align === "centre" ? room / 2 : room),
-      y: minY + HEADING_ROOM / 2,
+      y: minY + headingRoomOf(members[0]) / 2,
       width: headingWidth,
     };
   });

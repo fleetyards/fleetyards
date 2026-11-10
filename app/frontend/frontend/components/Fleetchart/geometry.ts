@@ -1,4 +1,6 @@
 import type {
+  FleetFleetchartShip,
+  FleetchartModel,
   FleetchartViewMedia,
   MediaFile,
   Model,
@@ -11,7 +13,23 @@ import {
   FleetchartViewpoints,
 } from "@/shared/stores/fleetchart";
 
-export type FleetchartEntry = Vehicle | Model | VehiclePublic;
+// The pictures are merged in once the chart has fetched them.
+export type FleetchartSlimModel = FleetchartModel & {
+  media?: FleetchartViewMedia;
+};
+
+// A fleet ship as the fleetchart endpoint sends it, joined to its model and
+// module package on the client.
+export type FleetchartShip = Omit<
+  FleetFleetchartShip,
+  "modelId" | "modulePackageId"
+> & {
+  model: FleetchartSlimModel;
+  modulePackage?: ModelModulePackage;
+};
+
+export type FleetchartEntry =
+  Vehicle | Model | VehiclePublic | FleetchartShip | FleetchartSlimModel;
 
 export const PIXELS_PER_METRE = 4;
 
@@ -56,8 +74,8 @@ const VIEW_BY_VIEWPOINT: Record<FleetchartViewpoints, ViewName> = {
 // layouts that fit each view tightly, a ship's box should hold between viewpoints.
 const SIZING_VIEWS: ViewName[] = ["angledView", "portView", "topView"];
 
-export const modelOf = (entry: FleetchartEntry): Model =>
-  (entry as Vehicle).model ?? (entry as Model);
+export const modelOf = (entry: FleetchartEntry): Model | FleetchartSlimModel =>
+  (entry as Vehicle | FleetchartShip).model ?? (entry as Model);
 
 const modulePackageOf = (entry: FleetchartEntry) =>
   (entry as Vehicle).modulePackage as ModelModulePackage | null | undefined;
@@ -285,6 +303,7 @@ export const shipLabelOf = (entry: FleetchartEntry) => {
 
 const FULL_IMAGE_MIN_WIDTH = 1900;
 const LARGE_IMAGE_MIN_WIDTH = 900;
+const MEDIUM_IMAGE_MIN_WIDTH = 450;
 
 export const imageUrlFor = (view: MediaFile, renderedWidth: number) => {
   if (renderedWidth > FULL_IMAGE_MIN_WIDTH) {
@@ -295,5 +314,11 @@ export const imageUrlFor = (view: MediaFile, renderedWidth: number) => {
     return view.largeUrl;
   }
 
-  return view.mediumUrl;
+  // A zoomed-out fleet of thousands draws every ship this small, and holding a
+  // larger copy of each picture is what runs the browser out of memory.
+  if (renderedWidth > MEDIUM_IMAGE_MIN_WIDTH) {
+    return view.mediumUrl;
+  }
+
+  return view.smallUrl ?? view.mediumUrl;
 };

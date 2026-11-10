@@ -17,9 +17,14 @@ import { useFleetSquadrons, type Fleet } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  /** Draws the one-button menu at any width, for a column too narrow to hold a
+   *  segment per squadron, with the chosen squadron named beside its emblem. */
+  menu?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  menu: false,
+});
 
 type SquadronFilters = { squadronSlugIn?: string[] };
 
@@ -92,14 +97,17 @@ const current = computed(() =>
        a segment per squadron took the toolbar's row and pushed the paginator
        below it. The menu names each one, which the emblems alone do not. -->
   <BtnDropdown
-    v-if="squadronList.length && mobile"
+    v-if="squadronList.length && (mobile || menu)"
     class="squadron-filter"
+    :block="menu"
     data-test="squadron-filter-menu"
   >
     <template #label>
       <SquadronEmblem v-if="current" :squadron="current" :size="18" />
       <span v-else>{{ t("labels.all") }}</span>
-      <span v-if="current" class="sr-only">{{ current.name }}</span>
+      <span v-if="current" :class="{ 'sr-only': !menu }">{{
+        current.name
+      }}</span>
       <i class="fa-light fa-chevron-down" />
     </template>
     <Btn :active="showingAll" data-test="squadron-filter-all" @click="clear">

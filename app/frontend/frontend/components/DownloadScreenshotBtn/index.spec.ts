@@ -157,6 +157,31 @@ describe("DownloadScreenshotBtn", () => {
     expect(html2canvas).toHaveBeenCalled();
   });
 
+  it("reports drawing before the capture and saving after it", async () => {
+    chart(1000, 500);
+    html2canvas.mockImplementation(async () => {
+      order.push("capture");
+
+      return canvas(new Blob(["png"]));
+    });
+
+    const order: string[] = [];
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        element: "#fleetchart",
+        stage: async (stage: string) => {
+          order.push(stage);
+        },
+      },
+    });
+    mounted.push(wrapper);
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(order).toEqual(["drawing", "capture", "saving"]);
+    expect(downloadJs).toHaveBeenCalled();
+  });
+
   it("tells the user and reports it when the chart cannot be drawn", async () => {
     const element = chart(1000, 500);
     const error = new Error("boom");

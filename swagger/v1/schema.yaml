@@ -11169,6 +11169,57 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/vehicles/fleetchart":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Fleet ships for a fleetchart
+      tags:
+      - Fleets
+      operationId: fleetVehiclesFleetchart
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetFleetchart"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleet_slug}/allies":
     parameters:
     - name: fleet_slug
@@ -33587,6 +33638,50 @@ components:
       - availability
       - fid
       title: FleetFidClaimStatus
+    FleetFleetchart:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetchartModel"
+        modulePackages:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModulePackage"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetFleetchartShip"
+      required:
+      - models
+      - modulePackages
+      - items
+      title: FleetFleetchart
+    FleetFleetchartShip:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        modelId:
+          type: string
+          format: uuid
+        modulePackageId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        userDisplayName:
+          type: string
+        squadron:
+          "$ref": "#/components/schemas/FleetVehicleSquadron"
+      required:
+      - id
+      - modelId
+      title: FleetFleetchartShip
     FleetInventoriesList:
       type: object
       properties:
@@ -36666,6 +36761,25 @@ components:
       - VEHICLES_COUNT_ASC
       - VEHICLES_COUNT_DESC
       title: FleetVehicleSortEnum
+    FleetVehicleSquadron:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - name
+      - slug
+      title: FleetVehicleSquadron
     FleetVehicles:
       type: object
       properties:
@@ -36867,6 +36981,100 @@ components:
       items:
         "$ref": "#/components/schemas/FleetchartLayout"
       title: FleetchartLayoutsList
+    FleetchartModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        classification:
+          type:
+          - string
+          - 'null'
+        classificationLabel:
+          type:
+          - string
+          - 'null'
+        productionStatus:
+          type:
+          - string
+          - 'null'
+        manufacturer:
+          type: object
+          properties:
+            name:
+              type: string
+            code:
+              type:
+              - string
+              - 'null'
+            slug:
+              type: string
+          required:
+          - name
+          - slug
+        metrics:
+          type: object
+          properties:
+            length:
+              type: number
+            beam:
+              type: number
+            height:
+              type: number
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
+              type: number
+            extendedLength:
+              type:
+              - number
+              - 'null'
+            extendedBeam:
+              type:
+              - number
+              - 'null'
+            extendedFleetchartOffsetLength:
+              type:
+              - number
+              - 'null'
+            extendedFleetchartOffsetBeam:
+              type:
+              - number
+              - 'null'
+            landedLength:
+              type:
+              - number
+              - 'null'
+            landedBeam:
+              type:
+              - number
+              - 'null'
+            landedFleetchartOffsetLength:
+              type:
+              - number
+              - 'null'
+            landedFleetchartOffsetBeam:
+              type:
+              - number
+              - 'null'
+          required:
+          - length
+          - beam
+          - height
+          - fleetchartOffsetLength
+          - fleetchartOffsetBeam
+      required:
+      - id
+      - name
+      - slug
+      - manufacturer
+      - metrics
+      title: FleetchartModel
     FleetchartPlacement:
       type: object
       properties:

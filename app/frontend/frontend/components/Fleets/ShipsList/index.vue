@@ -34,15 +34,25 @@ import { FleetVehiclesChannel } from "@/services/fyCable/channels/FleetVehiclesC
 import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";
-import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import {
+  FleetchartGroups,
+  useFleetchartStore,
+} from "@/shared/stores/fleetchart";
+import { BASE_GROUPS } from "@/frontend/components/Fleetchart/options";
+import {
+  joinFleetchartShips,
+  modelsOfShips,
+} from "@/frontend/components/Fleetchart/fleetShips";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { storeToRefs } from "pinia";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useFleetModelCounts as useFleetModelCountsQuery,
   useFleetVehiclesStats as useFleetVehiclesStatsQuery,
   fleetVehiclesExport as fetchFleetVehiclesExport,
   fleetVehiclesHangarLinkExport as fetchFleetVehiclesHangarLinkExport,
   useFleetVehicles as useFleetVehiclesQuery,
+  useFleetVehiclesFleetchart as useFleetVehiclesFleetchartQuery,
+  useFleetMembership as useFleetMembershipQuery,
   type FleetVehicleQuery,
   type Fleet,
   type VehicleExport,
@@ -92,6 +102,41 @@ const fleetchartShareUrl = useFleetchartShareUrl(() =>
 
 const fleetchartVisible = computed(() => {
   return fleetchartStore.isVisible("fleet");
+});
+
+const fleetchartGroupedByModel = computed(() =>
+  fleetchartStore.groupedByModel("fleet"),
+);
+
+const toggleFleetchartGroupedByModel = () => {
+  fleetchartStore.toggleGroupedByModel("fleet");
+};
+
+const { isFleetSquadronsEnabled } = useFeatures();
+
+// The ships name their squadron only for someone allowed to read squadrons.
+const { data: membership } = useFleetMembershipQuery(
+  computed(() => props.fleet.slug),
+  { query: { retry: false } },
+);
+
+const squadronsGroupable = computed(
+  () =>
+    isFleetSquadronsEnabled(props.fleet) &&
+    (membership.value?.capabilities?.readSquadrons ?? false),
+);
+
+// A model stands for several ships, so it has no one captain or squadron.
+const fleetchartGroups = computed(() => {
+  if (fleetchartGroupedByModel.value) {
+    return BASE_GROUPS;
+  }
+
+  return [
+    ...BASE_GROUPS,
+    ...(squadronsGroupable.value ? [FleetchartGroups.SQUADRON] : []),
+    FleetchartGroups.CAPTAIN,
+  ];
 });
 
 watch(
@@ -198,7 +243,37 @@ const {
   ...asyncStatus
 } = useFleetVehiclesQuery(fleetSlug, fleetVehiclesQueryParams);
 
-const refresh = useDebouncedRefresh(refetch);
+// The chart shows the whole fleet rather than the list's page, so it has its own
+// request, sent only while the chart is open.
+const fleetchartQueryParams = computed(() => ({ q: getQuery() }));
+
+// A filter change is a new query key, which fetches on its own; only a change
+// pushed over the cable has to ask again. Background refetches keep the chart up
+// rather than covering it with the loader.
+const {
+  data: fleetchartData,
+  isLoading: fleetchartLoading,
+  refetch: refetchFleetchart,
+} = useFleetVehiclesFleetchartQuery(fleetSlug, fleetchartQueryParams, {
+  query: { enabled: fleetchartVisible },
+});
+
+const fleetchartShips = computed(() =>
+  joinFleetchartShips(fleetchartData.value),
+);
+
+const fleetchartItems = computed(() =>
+  fleetchartGroupedByModel.value
+    ? modelsOfShips(fleetchartShips.value)
+    : fleetchartShips.value,
+);
+
+const refresh = useDebouncedRefresh(async () => {
+  await Promise.all([
+    refetch(),
+    fleetchartVisible.value ? refetchFleetchart() : undefined,
+  ]);
+});
 
 useSubscription({
   channel: FleetVehiclesChannel,
@@ -353,20 +428,35 @@ const { activeFilters } = useShipFilterSummary();
           />
 
           <FleetchartApp
-            :items="fleetVehicles?.items || []"
+            :items="fleetchartItems"
             namespace="fleet"
             :share-url="fleet.publicFleet ? fleetchartShareUrl : undefined"
             :share-title="fleet.name"
-            :loading="loading"
+            :loading="fleetchartLoading"
             :download-name="`${fleet.slug}-fleetchart`"
+            :groups="fleetchartGroups"
           >
-            <template #pagination>
-              <Paginator
-                :query-result-ref="fleetVehicles"
-                :per-page="perPage"
-                :size="BtnSizesEnum.SM"
-                :update-per-page="updatePerPage"
+            <!-- The chart covers the list's toolbar, so the squadron control
+                 comes along into the chart's own filter panel. -->
+            <template #filter>
+              <SquadronFilter
+                :fleet="props.fleet"
+                menu
+                class="fleetchart-squadron-filter"
               />
+              <FleetVehiclesFilterForm />
+            </template>
+            <template #controls>
+              <Btn
+                v-tooltip="t('actions.groupedByModel')"
+                :active="fleetchartGroupedByModel"
+                :aria-label="t('actions.groupedByModel')"
+                :aria-pressed="fleetchartGroupedByModel"
+                data-test="fleetchart-grouped-by-model"
+                @click="toggleFleetchartGroupedByModel"
+              >
+                <i class="fa-duotone fa-clone" />
+              </Btn>
             </template>
           </FleetchartApp>
         </template>
@@ -389,3 +479,9 @@ const { activeFilters } = useShipFilterSummary();
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.fleetchart-squadron-filter {
+  margin-bottom: 20px;
+}
+</style>

@@ -11,6 +11,7 @@ import {
   FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartShipStates,
   FleetchartSorts,
@@ -21,18 +22,19 @@ import {
 
 interface Props {
   namespace: string;
+  // Resolved by the canvas, so a group this chart does not offer reads as none.
+  options: FleetchartOptions;
+  groups: FleetchartGroups[];
   canArrange?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canArrange: false,
+});
 
 const { t } = useI18n();
 
 const fleetchartStore = useFleetchartStore();
-
-const options = computed(() =>
-  fleetchartStore.fleetchartOptions(props.namespace),
-);
 
 const update = (changes: Partial<FleetchartOptions>) => {
   fleetchartStore.updateOptions({
@@ -91,8 +93,18 @@ const choices = computed(() => [
           name: "group" as const,
           labelKey: "group",
           optionsKey: "groupOptions",
-          values: Object.values(FleetchartGroups) as string[],
+          values: props.groups as string[],
         },
+        ...(props.options.group === FleetchartGroups.NONE
+          ? []
+          : [
+              {
+                name: "headingSize" as const,
+                labelKey: "headingSize",
+                optionsKey: "headingSizeOptions",
+                values: Object.values(FleetchartHeadingSizes) as string[],
+              },
+            ]),
       ]
     : []),
   ...(groupable.value

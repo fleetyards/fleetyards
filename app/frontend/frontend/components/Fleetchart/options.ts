@@ -3,12 +3,25 @@ import {
   modelOf,
   shipLabelOf,
   type FleetchartEntry,
+  type FleetchartShip,
 } from "@/frontend/components/Fleetchart/geometry";
 import {
+  FLEET_SHIP_GROUPS,
   FleetchartGroups,
   FleetchartShipStates,
   FleetchartSorts,
 } from "@/shared/stores/fleetchart";
+
+// What any list of ships can be grouped by.
+export const BASE_GROUPS = Object.values(FleetchartGroups).filter(
+  (group) => !FLEET_SHIP_GROUPS.includes(group),
+);
+
+// A group chosen on a chart that offers it falls back to none on one that does not.
+export const effectiveGroup = (
+  group: FleetchartGroups,
+  available: FleetchartGroups[],
+) => (available.includes(group) ? group : FleetchartGroups.NONE);
 
 const groupKeyOf = (entry: FleetchartEntry, group: FleetchartGroups) => {
   const model = modelOf(entry);
@@ -20,6 +33,14 @@ const groupKeyOf = (entry: FleetchartEntry, group: FleetchartGroups) => {
       return model.classificationLabel ?? model.classification ?? "";
     case FleetchartGroups.STATUS:
       return model.productionStatus ?? "";
+    case FleetchartGroups.SQUADRON:
+      return (entry as FleetchartShip).squadron?.name ?? "";
+    case FleetchartGroups.CAPTAIN:
+      return (
+        (entry as FleetchartShip).userDisplayName ||
+        (entry as FleetchartShip).username ||
+        ""
+      );
     default:
       return "";
   }

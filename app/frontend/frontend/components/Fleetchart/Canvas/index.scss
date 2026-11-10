@@ -88,7 +88,7 @@
 .fleetchart-canvas__heading {
   position: absolute;
   color: darken($text-color, 10%);
-  font-size: 120%;
+  line-height: 1;
   font-family: "Orbitron", sans-serif;
   white-space: nowrap;
   transform: translateY(-50%);

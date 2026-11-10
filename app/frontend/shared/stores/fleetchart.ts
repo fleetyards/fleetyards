@@ -53,6 +53,21 @@ export enum FleetchartGroups {
   MANUFACTURER = "manufacturer",
   CLASSIFICATION = "classification",
   STATUS = "status",
+  SQUADRON = "squadron",
+  CAPTAIN = "captain",
+}
+
+// Only a fleet's own ships know who flies them and in which squadron.
+export const FLEET_SHIP_GROUPS = [
+  FleetchartGroups.SQUADRON,
+  FleetchartGroups.CAPTAIN,
+];
+
+export enum FleetchartHeadingSizes {
+  FLEET = "fleet",
+  NORMAL = "normal",
+  LARGE = "large",
+  EXTRA_LARGE = "extraLarge",
 }
 
 export enum FleetchartSpacings {
@@ -84,6 +99,7 @@ export enum FleetchartBackgrounds {
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
+  headingSize: FleetchartHeadingSizes;
   spacing: FleetchartSpacings;
   scaleBar: boolean;
   solidExport: boolean;
@@ -95,6 +111,7 @@ export interface FleetchartOptions {
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   sort: FleetchartSorts.LENGTH_ASC,
   group: FleetchartGroups.NONE,
+  headingSize: FleetchartHeadingSizes.FLEET,
   spacing: FleetchartSpacings.NORMAL,
   scaleBar: false,
   solidExport: false,
@@ -153,6 +170,7 @@ type FleetchartState = {
   color: string[];
   plain: string[];
   extended: string[];
+  modelGrouped: string[];
 };
 
 export const useFleetchartStore = defineStore("fleetchart", {
@@ -170,6 +188,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     color: [],
     plain: [],
     extended: [],
+    modelGrouped: [],
   }),
   getters: {
     isVisible: (state) => {
@@ -187,6 +206,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     extendedState: (state) => {
       return (namespace: string) => (state.extended || []).includes(namespace);
+    },
+    groupedByModel: (state) => {
+      return (namespace: string) =>
+        (state.modelGrouped || []).includes(namespace);
     },
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
@@ -292,6 +315,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
       } else {
         this.extended = [...current, namespace];
       }
+    },
+    toggleGroupedByModel(namespace: string) {
+      const current = this.modelGrouped || [];
+
+      this.modelGrouped = current.includes(namespace)
+        ? current.filter((item) => item !== namespace)
+        : [...current, namespace];
     },
     toggleLabels(namespace: string) {
       if (this.labelsVisible.includes(namespace)) {

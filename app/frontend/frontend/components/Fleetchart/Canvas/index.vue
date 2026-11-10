@@ -17,6 +17,7 @@ import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
+import FleetchartCanvasProgress from "./Progress/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
@@ -48,7 +49,12 @@ import {
   type FleetchartPositions,
 } from "@/frontend/components/Fleetchart/layouts";
 import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
+import { createImageProgress } from "@/frontend/components/Fleetchart/imageProgress";
+import { createExportProgress } from "@/frontend/components/Fleetchart/exportProgress";
+import type { DownloadScreenshotStage } from "@/frontend/components/DownloadScreenshotBtn/types";
 import {
+  BASE_GROUPS,
+  effectiveGroup,
   groupTitleOf,
   sortEntries,
 } from "@/frontend/components/Fleetchart/options";
@@ -69,6 +75,7 @@ import {
   FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartScreenHeights,
   FleetchartShipStates,
@@ -88,6 +95,7 @@ interface Props {
   readOnly?: boolean;
   // False until `items` holds everything that can be arranged.
   arrangeReady?: boolean;
+  groups?: FleetchartGroups[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -96,6 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
   canArrange: false,
   readOnly: false,
   arrangeReady: true,
+  groups: () => BASE_GROUPS,
 });
 
 const SCENE_PADDING = 40;
@@ -113,6 +122,23 @@ const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
 const LABEL_MARGIN = 20;
+// A heading starts at the size of a page's own headline.
+const HEADING_FONT_REM = 1.5;
+const HEADING_LINE_HEIGHT = 2;
+const HEADING_SIZE_FACTORS: Record<
+  Exclude<FleetchartHeadingSizes, FleetchartHeadingSizes.FLEET>,
+  number
+> = {
+  normal: 1,
+  large: 2,
+  extraLarge: 4,
+};
+// Growing with the fleet keeps the base size up to this many ships, then follows
+// the square root of the count, as the chart's sides do, so a heading stays the
+// same size against the ships around it however many there are.
+const HEADING_BASE_SHIPS = 25;
+const MAX_HEADING_GROWTH = 20;
+const MAX_SHADOWED_SHIPS = 250;
 // Ships added one after another would otherwise land exactly on top of each other.
 const ADDED_SHIP_OFFSET = 8;
 const ADDED_SHIP_OFFSETS = 6;
@@ -166,9 +192,13 @@ const colored = computed(() =>
   fleetchartStore.coloredByDefault(props.namespace),
 );
 
-const options = computed(() =>
-  fleetchartStore.fleetchartOptions(props.namespace),
-);
+// The one place a stored group meets what this chart offers: one chosen on a
+// fleet's chart reads as none on a chart without captains or squadrons.
+const options = computed(() => {
+  const stored = fleetchartStore.fleetchartOptions(props.namespace);
+
+  return { ...stored, group: effectiveGroup(stored.group, props.groups) };
+});
 
 const selectedScreenHeight = computed(() =>
   fleetchartStore.fleetchartScreenHeight(props.namespace),
@@ -205,6 +235,7 @@ const labelMeasure = computed(() => {
   }
 
   return {
+    fontSize,
     lineHeight: fontSize * LABEL_LINE_HEIGHT,
     width: (text: string) => {
       if (!widths.has(text)) {
@@ -214,6 +245,35 @@ const labelMeasure = computed(() => {
       return widths.get(text) as number;
     },
   };
+});
+
+const headingGrowth = computed(() => {
+  const size = options.value.headingSize;
+
+  if (size === FleetchartHeadingSizes.FLEET) {
+    return Math.min(
+      MAX_HEADING_GROWTH,
+      Math.max(1, Math.sqrt(props.items.length / HEADING_BASE_SHIPS)),
+    );
+  }
+
+  return HEADING_SIZE_FACTORS[size] ?? 1;
+});
+
+const headingFontSize = computed(
+  () =>
+    parseFloat(getComputedStyle(document.documentElement).fontSize) *
+    HEADING_FONT_REM *
+    headingGrowth.value,
+);
+
+// Measured in the label font and scaled, as the heading uses the same face.
+const headingRoomFor = (title: string) => ({
+  headingWidth:
+    (labelMeasure.value.width(title) *
+      (headingFontSize.value / labelMeasure.value.fontSize)) /
+    PIXELS_PER_METRE,
+  headingRoom: (headingFontSize.value * HEADING_LINE_HEIGHT) / PIXELS_PER_METRE,
 });
 
 const labelRoom = (entry: FleetchartEntry) => {
@@ -289,15 +349,24 @@ const placements = computed(() =>
 
 const facingOf = (id: string) => placements.value[id]?.facing ?? facing.value;
 
+// A captain is missing only when they chose not to be shown.
+const emptyGroupTitle = (option: FleetchartGroups) => {
+  switch (option) {
+    case FleetchartGroups.SQUADRON:
+      return t("labels.fleetchartApp.noSquadron");
+    case FleetchartGroups.CAPTAIN:
+      return t("labels.fleetchartApp.unknownCaptain");
+    default:
+      return t("labels.fleetchartApp.groupOptions.none");
+  }
+};
+
 const groupTitle = (entry: FleetchartEntry) => {
   if (group.value === FleetchartGroups.NONE) {
     return undefined;
   }
 
-  return (
-    groupTitleOf(entry, group.value, t) ||
-    t("labels.fleetchartApp.groupOptions.none")
-  );
+  return groupTitleOf(entry, group.value, t) || emptyGroupTitle(group.value);
 };
 
 // Not every ship has every view, and one without the chosen view is shown from one
@@ -369,9 +438,7 @@ const shipsFor = (kind: FleetchartLayouts, keepShipSettings = false) => {
           facing: shipFacing,
           viewpoint: shipViewpoint,
           group: shipGroup,
-          headingWidth: shipGroup
-            ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
-            : 0,
+          ...(shipGroup ? headingRoomFor(shipGroup) : {}),
           padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
           ...labelRoom(entry),
         },
@@ -505,6 +572,12 @@ const settingsOpen = ref(false);
 
 const exporting = ref(false);
 
+// One count for the whole chart rather than a placeholder on each ship, which on
+// a fleet of thousands is more noise than the ships themselves.
+const imageProgress = createImageProgress();
+
+const exportProgress = createExportProgress();
+
 // The images drawn while zoomed out are too small for a full-size export, so the
 // larger ones are only fetched for as long as an export needs them.
 const prepareExport = async () => {
@@ -514,16 +587,35 @@ const prepareExport = async () => {
 
   const images = [...(scene.value?.querySelectorAll("img") ?? [])];
 
+  exportProgress.start(images.length);
+
   await Promise.race([
-    Promise.all(images.map((image) => image.decode().catch(() => {}))),
+    Promise.all(
+      images.map((image) =>
+        image
+          .decode()
+          .catch(() => {})
+          .finally(exportProgress.pictureReady),
+      ),
+    ),
     new Promise((resolve) => {
       setTimeout(resolve, EXPORT_IMAGE_TIMEOUT);
     }),
   ]);
 };
 
+// Shown before the capture starts, as drawing holds up the page until it is done.
+const exportStage = async (stage: DownloadScreenshotStage) => {
+  exportProgress.stage.value = stage;
+
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => setTimeout(resolve));
+  });
+};
+
 const finishExport = () => {
   exporting.value = false;
+  exportProgress.finish();
 };
 
 const gridCanvas = ref<HTMLCanvasElement>();
@@ -1592,7 +1684,7 @@ const toggleLabels = () => {
           </Btn>
           <hr />
           <Btn
-            v-for="option in FleetchartGroups"
+            v-for="option in groups"
             :key="option"
             :active="group === option"
             :data-test="`fleetchart-arrange-group-${option}`"
@@ -1727,6 +1819,7 @@ const toggleLabels = () => {
             "
             ignore-transform
             :prepare="prepareExport"
+            :stage="exportStage"
             :finish="finishExport"
           />
 
@@ -1751,6 +1844,8 @@ const toggleLabels = () => {
     <FleetchartCanvasSettings
       v-if="settingsOpen"
       :namespace="namespace"
+      :options="options"
+      :groups="groups"
       :can-arrange="canArrange"
     />
 
@@ -1765,6 +1860,11 @@ const toggleLabels = () => {
       />
       {{ gridCell }} m
     </div>
+
+    <FleetchartCanvasProgress
+      :images="imageProgress"
+      :export-progress="exportProgress"
+    />
 
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
@@ -1849,6 +1949,7 @@ const toggleLabels = () => {
           :style="{
             left: `${sceneX(heading.x)}px`,
             top: `${sceneY(heading.y)}px`,
+            fontSize: `${headingFontSize}px`,
           }"
           data-test="fleetchart-group-heading"
         >
@@ -1875,7 +1976,10 @@ const toggleLabels = () => {
           :selected="isFree && !exporting && selectedIds.includes(ship.id)"
           :arranging="arranging"
           :order="isFree ? placements[ship.id]?.order : undefined"
+          :shadow="ships.length <= MAX_SHADOWED_SHIPS"
           @pointerdown="startDrag(ship.id, $event)"
+          @image-pending="imageProgress.pending(ship.id)"
+          @image-settled="imageProgress.settled(ship.id)"
         />
 
         <div

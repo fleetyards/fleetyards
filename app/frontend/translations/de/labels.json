@@ -525,11 +525,20 @@
           "list": "Listenreihenfolge"
         },
         "group": "Gruppe",
+        "headingSize": "Überschriftengröße",
+        "headingSizeOptions": {
+          "fleet": "Automatisch",
+          "normal": "Normal",
+          "large": "Groß",
+          "extraLarge": "Sehr groß"
+        },
         "groupOptions": {
           "none": "Keine",
           "manufacturer": "Hersteller",
           "classification": "Klassifizierung",
-          "status": "Produktionsstatus"
+          "status": "Produktionsstatus",
+          "squadron": "Staffel",
+          "captain": "Captain"
         },
         "background": "Hintergrund",
         "backgroundOptions": {
@@ -574,6 +583,12 @@
         "sharedLayoutBy": "Geteilt von %{username}",
         "sharedLayoutEmpty": "Keines der Schiffe in diesem Layout ist öffentlich.",
         "groupBy": "Gruppe: %{group}",
+        "noSquadron": "Keine Staffel",
+        "unknownCaptain": "Captain nicht sichtbar",
+        "loadingPictures": "Bilder werden geladen %{loaded} / %{total}",
+        "exportPictures": "Bilder in voller Größe werden geladen %{loaded} / %{total}",
+        "exportDrawing": "Chart wird gezeichnet…",
+        "exportSaving": "PNG wird gespeichert…",
         "arrange": "Anordnen",
         "arrangeSelected": "%{count} ausgewählte anordnen",
         "facing": "Ausrichtung",

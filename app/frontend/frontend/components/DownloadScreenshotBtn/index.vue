@@ -15,6 +15,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import type { DownloadScreenshotStage } from "./types";
 
 type Props = {
   element: string;
@@ -29,6 +30,10 @@ type Props = {
   /** Runs before the capture, for what only an export needs. */
   prepare?: () => Promise<void>;
   finish?: () => void;
+  /** Told when the capture starts drawing and when it starts saving, and
+   *  awaited, so whatever it shows can paint before the drawing holds up the
+   *  page. */
+  stage?: (stage: DownloadScreenshotStage) => Promise<void> | void;
 };
 
 // Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
@@ -80,6 +85,7 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreTransform: false,
   prepare: undefined,
   finish: undefined,
+  stage: undefined,
 });
 
 const { t } = useI18n();
@@ -115,6 +121,7 @@ const download = async () => {
 
   try {
     await props.prepare?.();
+    await props.stage?.("drawing");
 
     const canvas = await html2canvas(element, {
       backgroundColor: props.backgroundColor,
@@ -128,6 +135,8 @@ const download = async () => {
       windowWidth: parentNode.scrollWidth,
       windowHeight: parentNode.scrollHeight + 100,
     });
+
+    await props.stage?.("saving");
 
     downloadJs(await pngBlob(canvas), `fleetyards-${props.filename}.png`);
   } catch (error) {
