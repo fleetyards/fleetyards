@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.46.0](https://github.com/fleetyards/fleetyards/compare/v9.45.0...v9.46.0) (2026-11-10)
+
+
+### Features
+
+* **docs:** add a media and linking page with a link builder ([#6270](https://github.com/fleetyards/fleetyards/issues/6270)) ([cd0429e](https://github.com/fleetyards/fleetyards/commit/cd0429e21f89a6f7956c76b87013560b82119362))
+* **dressing-room:** fill every slot of a supply kind at once ([036efdd](https://github.com/fleetyards/fleetyards/commit/036efdde53d41c94dc59b43bb52b5bcb30f5a265))
+* **dressing-room:** move storage into a loadout tab, with the tabs shown as icons ([9195846](https://github.com/fleetyards/fleetyards/commit/9195846a9f8e2e470e66469fda240cfddd2a9cfd))
+* **holo-viewer:** keep the dressing room's and paint booth's viewer buttons to full screen ([564ac90](https://github.com/fleetyards/fleetyards/commit/564ac902bf0259f19ac6d7fb7440b081eff16e97))
+* **loadout-editor:** colour the holo's parts by category on a dimmed hull ([94762ff](https://github.com/fleetyards/fleetyards/commit/94762ff8f1b3425bbe7de7f200457afedf69dc3e))
+* **loadout-editor:** draw the holo 10% smaller ([71cb70a](https://github.com/fleetyards/fleetyards/commit/71cb70ae0fa89ea151c6f27f8e1e697b0f02d48c))
+* **loadout-editor:** draw the holo's hull as one even layer with its interior faint behind it ([6b294dd](https://github.com/fleetyards/fleetyards/commit/6b294dd72172b5b7d871fec00733864160f37fdf))
+* **loadout-editor:** fit the holo to the right two thirds at any angle, against the right edge ([1c721ff](https://github.com/fleetyards/fleetyards/commit/1c721ff1052f4896428d3bcfb36d4e0dfcd71736))
+* **raffles:** post the winner when a raffle is drawn ([#6261](https://github.com/fleetyards/fleetyards/issues/6261)) ([9f4aa76](https://github.com/fleetyards/fleetyards/commit/9f4aa76be2bb164a7895311c519ba4913c090e32))
+* **stage-layout:** run the side cards the full height and size them with the screen ([41d50b3](https://github.com/fleetyards/fleetyards/commit/41d50b37b0f18b47e0aa145ae7b7ccb14c9277c7))
+* **storage:** build commodity, equipment, shop and location representations on upload ([b8a228a](https://github.com/fleetyards/fleetyards/commit/b8a228a4048083c5bdbe28e68ca8aeebbce64fce))
+
+
+### Bug Fixes
+
+* **admin:** keep the maintenance redirect out of the nav ([a0c31de](https://github.com/fleetyards/fleetyards/commit/a0c31de54a50ec4eb41da4e098e8d8b5dcc438a1))
+* **admin:** put build compare in the system group ([9865745](https://github.com/fleetyards/fleetyards/commit/986574580d89c131ca0e362fe58fdd8d1327ca79))
+* **auth:** stop reporting CitizenID sign-ins the user did not finish ([ccb265b](https://github.com/fleetyards/fleetyards/commit/ccb265b2f879fc23513105fefaa10c4b3975ea9c))
+* **dressing-room:** let either pen go in either pen slot ([5576a23](https://github.com/fleetyards/fleetyards/commit/5576a2344a49c4e89b1af58c261e9a888d29e283))
+* **dressing-room:** never show the fallback head while a character loads ([#6262](https://github.com/fleetyards/fleetyards/issues/6262)) ([adac34d](https://github.com/fleetyards/fleetyards/commit/adac34d47a7cc0e637f2bb02a2b6119572c79770))
+* **hangar-sync:** resume an import a stopped worker had already started ([3254280](https://github.com/fleetyards/fleetyards/commit/3254280b3116298c477d6101f91d74a58502887b))
+* **sc-data:** keep a mission's key when another row already holds the new one ([268fc99](https://github.com/fleetyards/fleetyards/commit/268fc991754d55b47cd713050298dc255fe3ed1f))
+* **storage:** give ActiveStorage analyses and purges their own capsule, and back off S3 throttling ([888b463](https://github.com/fleetyards/fleetyards/commit/888b4632c4055a22159a5cfc8a56a7e5f67bb592))
+* **storage:** keep processed variants out of the representations backfill ([c6b1efa](https://github.com/fleetyards/fleetyards/commit/c6b1efae39290457c096255248cb0ca2b2007b04))
+* **storage:** skip the analysis of processed variants ([e02c210](https://github.com/fleetyards/fleetyards/commit/e02c210e98f1f64bcb14f338feafff099048c79c))
+* **uex:** skip trade routes whose stock overflows the column ([acd5de9](https://github.com/fleetyards/fleetyards/commit/acd5de95d8ed146ec550aebe6e5eaa722c49f88f))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6269](https://github.com/fleetyards/fleetyards/issues/6269)) ([564d837](https://github.com/fleetyards/fleetyards/commit/564d83763e09258e46964caf625b52db45c6d205))
+* **deps-dev:** bump jsdom from 30.1.3 to 31.0.0 ([#6266](https://github.com/fleetyards/fleetyards/issues/6266)) ([a83509b](https://github.com/fleetyards/fleetyards/commit/a83509bc872058eabb83b9ec06ffeba9bbbaae09))
+* **deps-dev:** bump sass from 1.108.0 to 1.108.1 ([#6267](https://github.com/fleetyards/fleetyards/issues/6267)) ([a9da768](https://github.com/fleetyards/fleetyards/commit/a9da7681b24a462cb3100ae66ee7794883f3fae4))
+* **deps-dev:** bump the tailwindcss group across 1 directory with 2 updates ([#6264](https://github.com/fleetyards/fleetyards/issues/6264)) ([cf3d42e](https://github.com/fleetyards/fleetyards/commit/cf3d42e49246733e215c64c9a91c1ecfb67aba26))
+* **deps:** bump @tanstack/vue-query from 5.105.3 to 5.106.1 ([#6250](https://github.com/fleetyards/fleetyards/issues/6250)) ([fadc8a9](https://github.com/fleetyards/fleetyards/commit/fadc8a95b0d51ed229a417b539f9883e99122a69))
+* **deps:** bump @tanstack/vue-query from 5.106.1 to 5.107.1 ([#6268](https://github.com/fleetyards/fleetyards/issues/6268)) ([be00583](https://github.com/fleetyards/fleetyards/commit/be0058322fb7fbf1a5b6ad1b907d7c767693b603))
+* **deps:** bump aws-sdk-s3 from 1.238.0 to 1.239.0 ([#6265](https://github.com/fleetyards/fleetyards/issues/6265)) ([eb98744](https://github.com/fleetyards/fleetyards/commit/eb98744c27b1bd910bd98dbaab4bb3abbe80877d))
+
 ## [9.45.0](https://github.com/fleetyards/fleetyards/compare/v9.44.1...v9.45.0) (2026-11-09)
 
 
