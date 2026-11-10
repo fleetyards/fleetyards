@@ -299,9 +299,6 @@ importers:
       vue-router:
         specifier: 5.4.0
         version: 5.4.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.45(typescript@6.0.3)))(rolldown@1.2.5)(rollup@4.60.3)(vite@8.3.6(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.1)(terser@5.46.2)(yaml@2.9.0))(vue@3.5.45(typescript@6.0.3))
-      vue3-highlightjs:
-        specifier: ^1.0.5
-        version: 1.0.5(vue@3.5.45(typescript@6.0.3))
       vue3-swatches:
         specifier: ^1.2.4
         version: 1.2.4(vue@3.5.45(typescript@6.0.3))
@@ -4818,9 +4815,6 @@ packages:
       svg2pdf.js:
         optional: true
 
-  highlight.js@10.7.3:
-    resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
-
   highlight.js@11.12.0:
     resolution: {integrity: sha512-nbfWpyRMcMrPMmDwJB+dhX/eiaPKtc2RB+0QZskqJ3WjRA/FDS0e9hZrx8EC/lbEv8gXy98FcDbNa/dspAaJMg==}
     engines: {node: '>=12.0.0'}
@@ -7069,11 +7063,6 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '>=5.0.0'
-
-  vue3-highlightjs@1.0.5:
-    resolution: {integrity: sha512-Q4YNPXu0X5VMBnwPVOk+IQf1Ohp9jFdMitEAmzaz8qVVefcQpN6Dx4BnDGKxja3TLDVF+EgL136wC8YzmoCX9w==}
-    peerDependencies:
-      vue: ^3.0.0
 
   vue3-swatches@1.2.4:
     resolution: {integrity: sha512-CvkzYgB2IO1ifPwRFWfzky17OvOjYmLBMWAa+hjlxBitiB6IYPNWBYyps18LRAXnW5lJYPC+r6RL+0WtesuB4Q==}
@@ -11880,8 +11869,6 @@ snapshots:
 
   highcharts@13.1.1: {}
 
-  highlight.js@10.7.3: {}
-
   highlight.js@11.12.0: {}
 
   hookable@5.5.3: {}
@@ -14270,11 +14257,6 @@ snapshots:
       '@volar/typescript': 2.4.28(typescript@6.0.3)
       '@vue/language-core': 3.3.13(patch_hash=d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15)
       typescript: 6.0.3
-
-  vue3-highlightjs@1.0.5(vue@3.5.45(typescript@6.0.3)):
-    dependencies:
-      highlight.js: 10.7.3
-      vue: 3.5.45(typescript@6.0.3)
 
   vue3-swatches@1.2.4(vue@3.5.45(typescript@6.0.3)):
     dependencies:

@@ -3,7 +3,6 @@ import { createApp } from "vue";
 import App from "@/docs/App.vue";
 import router from "@/docs/plugins/Router";
 import Tooltip from "@/shared/plugins/Tooltip";
-import VueHighlightJS from "vue3-highlightjs";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { VueQueryPlugin } from "@tanstack/vue-query";
@@ -17,6 +16,5 @@ app.use(VueQueryPlugin);
 app.use(router);
 app.use(pinia);
 app.use(Tooltip);
-app.use(VueHighlightJS);
 
 app.mount("#docs-app");
