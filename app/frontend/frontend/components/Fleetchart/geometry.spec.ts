@@ -304,13 +304,13 @@ describe("shipGeometry", () => {
           FleetchartViewpoints.ANGLED,
         )?.imageWidth,
       ).toBeCloseTo(210.8, 1);
-      // Unmeasured, it is not drawn at the width of the ship's outline alone.
+      // Until the package is measured, the ship's outline is the closer guess.
       expect(
         shipGeometry(
           vehicle({ angledView: view("master", 3719, 2154) }),
           FleetchartViewpoints.ANGLED,
         )?.imageWidth,
-      ).toBeCloseTo(145.3, 1);
+      ).toBeCloseTo(148.5, 1);
       expect(
         shipGeometry(
           vehicle({ portView: view("port", 3528, 796) }),
