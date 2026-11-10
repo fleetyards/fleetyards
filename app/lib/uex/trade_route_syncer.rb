@@ -6,10 +6,15 @@ module Uex
     # syncers and for a retry.
     REQUEST_INTERVAL = 1.second
 
-    Result = Struct.new(:commodities, :routes, :failed, :unprofitable, :unknown_terminals, :unloadable) do
+    # The stock columns are 4-byte integers. UEX has reported billions of SCU
+    # for a terminal, which is a broken report rather than a figure to rank by.
+    MAX_SCU = 2_147_483_647
+
+    Result = Struct.new(:commodities, :routes, :failed, :unprofitable, :unknown_terminals, :unloadable, :implausible) do
       def to_s
         "commodities=#{commodities} routes=#{routes} failed=#{failed.size} " \
-          "unprofitable=#{unprofitable} unknown_terminals=#{unknown_terminals} unloadable=#{unloadable}"
+          "unprofitable=#{unprofitable} unknown_terminals=#{unknown_terminals} unloadable=#{unloadable} " \
+          "implausible=#{implausible}"
       end
     end
 
@@ -22,7 +27,7 @@ module Uex
       terminals = Terminal.pluck(:uex_id, :id).to_h
       commodities = Commodity.where.not(uex_id: nil).includes(:build).order(:uex_id).to_a
       freshness = price_freshness
-      result = Result.new(0, 0, [], 0, 0, 0)
+      result = Result.new(0, 0, [], 0, 0, 0, 0)
 
       commodities.each_with_index do |commodity, index|
         @pause.call(REQUEST_INTERVAL) if index.positive?
@@ -58,6 +63,14 @@ module Uex
         return
       end
 
+      scu_origin = row["scu_origin"].to_i
+      scu_destination = row["scu_destination"].to_i
+
+      if scu_origin > MAX_SCU || scu_destination > MAX_SCU
+        result.implausible += 1
+        return
+      end
+
       origin_id = terminals[row["id_terminal_origin"]]
       destination_id = terminals[row["id_terminal_destination"]]
 
@@ -81,8 +94,8 @@ module Uex
         destination_terminal_id: destination_id,
         price_origin:,
         price_destination:,
-        scu_origin: row["scu_origin"].to_i,
-        scu_destination: row["scu_destination"].to_i,
+        scu_origin:,
+        scu_destination:,
         container_sizes_origin: origin_sizes,
         container_sizes_destination: destination_sizes,
         container_sizes: sizes,

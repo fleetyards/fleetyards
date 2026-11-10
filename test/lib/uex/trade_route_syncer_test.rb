@@ -31,6 +31,17 @@ module Uex
       assert_equal 2, result.unprofitable
     end
 
+    test "#run drops routes whose stock overflows what a route can hold" do
+      rows = uex_fixture("commodities_routes").map do |row|
+        (row["id_terminal_origin"] == 104 && row["id_terminal_destination"] == 105) ? row.merge("scu_origin" => 8_737_120_000) : row
+      end
+
+      result = sync(commodity_routes: rows)
+
+      assert_equal 1, result.implausible
+      assert_equal [[105, 102]], routes_for(@commodities[:gold])
+    end
+
     test "#run drops routes to a terminal we do not know" do
       result = sync
 
