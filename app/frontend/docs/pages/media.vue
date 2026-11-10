@@ -107,7 +107,7 @@ const linkPatterns: LinkPattern[] = [
   {
     name: "Ship",
     path: "/ships/<slug>/",
-    note: "Slugs are listed at api.fleetyards.net/v1/models/slugs.",
+    note: `Slugs are listed at ${window.API_ENDPOINT}/models/slugs.`,
   },
   {
     name: "Hangar",
