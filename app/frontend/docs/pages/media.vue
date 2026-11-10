@@ -39,6 +39,11 @@ const frontendEndpoint = window.FRONTEND_ENDPOINT;
 
 const assetUrl = (file: string) => `${frontendEndpoint}/media/${file}`;
 
+// The download attribute only works on a same-origin link. The docs host is
+// served by the same app as the frontend, so a root-relative path is the same
+// file on the docs origin.
+const downloadPath = (file: string) => `/media/${file}`;
+
 const banner: MediaAsset = {
   key: "banner",
   name: "Banner",
@@ -176,7 +181,11 @@ const scrollTo = (id: string) => {
         </div>
       </div>
       <div class="media-page__actions">
-        <Btn :href="assetUrl(banner.file)">
+        <Btn
+          :href="downloadPath(banner.file)"
+          target="_self"
+          :download="banner.file"
+        >
           <i class="fa-light fa-download" aria-hidden="true"></i>
           <span>Download</span>
         </Btn>
@@ -226,7 +235,11 @@ const scrollTo = (id: string) => {
         </BaseText>
         <code class="media-page__url">{{ assetUrl(logo.file) }}</code>
         <div class="media-page__actions">
-          <Btn :href="assetUrl(logo.file)">
+          <Btn
+            :href="downloadPath(logo.file)"
+            target="_self"
+            :download="logo.file"
+          >
             <i class="fa-light fa-download" aria-hidden="true"></i>
             <span>Download</span>
           </Btn>
