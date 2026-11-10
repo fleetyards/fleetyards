@@ -27,6 +27,8 @@ const targets: {
   icon: string;
   field: string;
   example: string;
+  placeholder: string;
+  slug: boolean;
   path: (value: string) => string;
   text: string;
 }[] = [
@@ -36,6 +38,8 @@ const targets: {
     icon: "fa-light fa-warehouse",
     field: "Username",
     example: "torlekmaru",
+    placeholder: "<username>",
+    slug: false,
     path: (value) => `/hangar/${value}/`,
     text: "My hangar on FleetYards.net",
   },
@@ -45,6 +49,8 @@ const targets: {
     icon: "fa-light fa-users",
     field: "Fleet ID",
     example: "maru",
+    placeholder: "<fleet-id>",
+    slug: true,
     path: (value) => `/fleets/${value}/`,
     text: "Our fleet on FleetYards.net",
   },
@@ -54,6 +60,8 @@ const targets: {
     icon: "fa-light fa-rocket",
     field: "Ship slug",
     example: "600i-touring",
+    placeholder: "<slug>",
+    slug: true,
     path: (value) => `/ships/${value}/`,
     text: "View on FleetYards.net",
   },
@@ -86,12 +94,26 @@ const value = computed({
   },
 });
 
-const url = computed(() => {
-  const segment = value.value.trim()
-    ? encodeURIComponent(value.value.trim())
-    : `<${currentTarget.value.field.toLowerCase().replace(" ", "-")}>`;
+// Mirrors ActiveSupport's `parameterize`, which fleet and ship slugs are made
+// with: an ID typed as "MARU" or a name as "600i Touring" would otherwise 404.
+const toSlug = (input: string) =>
+  input
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\-_]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-|-$/g, "");
 
-  return `${props.frontendEndpoint}${currentTarget.value.path(segment)}`;
+const url = computed(() => {
+  const input = value.value.trim();
+  const segment = currentTarget.value.slug ? toSlug(input) : input;
+
+  const path = segment
+    ? encodeURIComponent(segment)
+    : currentTarget.value.placeholder;
+
+  return `${props.frontendEndpoint}${currentTarget.value.path(path)}`;
 });
 
 const snippet = computed(() => {

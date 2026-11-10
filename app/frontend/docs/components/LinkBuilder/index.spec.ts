@@ -1,21 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
-import type { Plugin } from "vue";
 import CodeExample from "@/docs/components/CodeExample/index.vue";
 import Component from "./index.vue";
 
 const ICON = "https://fleetyards.test/media/fleetyards-icon-128.png";
 
-const highlightjs: Plugin = {
-  install: (app) => {
-    app.directive("highlightjs", {});
-  },
-};
-
 const mountBuilder = () =>
   mountWithDefaults(Component, {
     props: { frontendEndpoint: "https://fleetyards.test", iconUrl: ICON },
-    plugins: [highlightjs],
   });
 
 const snippet = (wrapper: Awaited<ReturnType<typeof mountBuilder>>) =>
@@ -50,6 +42,40 @@ describe("LinkBuilder", () => {
     await wrapper.find("input").setValue('a"b/c');
 
     expect(snippet(wrapper)).toContain("/hangar/a%22b%2Fc/");
+  });
+
+  it("turns a fleet ID or ship name into the slug the page is found by", async () => {
+    const wrapper = await mountBuilder();
+
+    await wrapper
+      .find('[data-test="link-builder-target-fleet"]')
+      .trigger("click");
+    await wrapper.find("input").setValue("MARU");
+
+    expect(snippet(wrapper)).toContain("/fleets/maru/");
+
+    await wrapper
+      .find('[data-test="link-builder-target-ship"]')
+      .trigger("click");
+    await wrapper.find("input").setValue("  600i  Touring ");
+
+    expect(snippet(wrapper)).toContain("/ships/600i-touring/");
+  });
+
+  it("uses the address table's placeholders while a field is empty", async () => {
+    const wrapper = await mountBuilder();
+
+    await wrapper
+      .find('[data-test="link-builder-target-ship"]')
+      .trigger("click");
+
+    expect(snippet(wrapper)).toContain("/ships/<slug>/");
+
+    await wrapper
+      .find('[data-test="link-builder-target-fleet"]')
+      .trigger("click");
+
+    expect(snippet(wrapper)).toContain("/fleets/<fleet-id>/");
   });
 
   it("keeps a value per target", async () => {
