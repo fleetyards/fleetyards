@@ -109,14 +109,16 @@ const shownModel = computed(() => (shipSlug.value ? model.value : undefined));
 </template>
 
 <style lang="scss" scoped>
-// A size of its own: in the stage's bar, which is only as wide as what it
-// holds, a share of the bar would be a share of itself.
+// A width rather than a flex-basis: the stage's bar is only as wide as what it
+// holds, and that is measured from the width, so a basis the picker grows to
+// afterwards pushes the button beside it onto a second row.
 .paint-booth-page__picker {
-  flex: 1 1 12rem;
+  flex: 0 1 auto;
+  width: 12rem;
   min-width: 0;
 
   @media (min-width: $desktop-breakpoint) {
-    flex-basis: 18rem;
+    width: 18rem;
   }
 }
 
