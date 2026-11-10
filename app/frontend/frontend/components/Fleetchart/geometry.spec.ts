@@ -285,6 +285,41 @@ describe("shipGeometry", () => {
       ).toBeCloseTo(43.18, 1);
     });
 
+    it("draws a module package's angled picture at the package's own width", () => {
+      const endeavor = model(
+        {
+          angledView: view("angled", 3840, 2280),
+          angledExtents: { flight: { angled: 0.7425, angledRear: 0.8 } },
+        },
+        { fleetchartOffsetLength: 200, fleetchartOffsetBeam: 47.32 },
+      );
+      const vehicle = (media: object) =>
+        ({ model: endeavor, modulePackage: { media } }) as FleetchartEntry;
+
+      expect(
+        shipGeometry(
+          vehicle({
+            angledView: view("master", 3719, 2154),
+            angledExtent: 1.054,
+          }),
+          FleetchartViewpoints.ANGLED,
+        )?.imageWidth,
+      ).toBeCloseTo(210.8, 1);
+      // Until the package is measured, the ship's outline is the closer guess.
+      expect(
+        shipGeometry(
+          vehicle({ angledView: view("master", 3719, 2154) }),
+          FleetchartViewpoints.ANGLED,
+        )?.imageWidth,
+      ).toBeCloseTo(148.5, 1);
+      expect(
+        shipGeometry(
+          vehicle({ portView: view("port", 3528, 796) }),
+          FleetchartViewpoints.ANGLED,
+        )?.imageWidth,
+      ).toBeCloseTo(148.5, 1);
+    });
+
     it("keeps a borrowed flight picture at its flight size", () => {
       const scorpius = {
         metrics: {

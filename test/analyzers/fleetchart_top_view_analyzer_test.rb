@@ -50,6 +50,38 @@ class FleetchartTopViewAnalyzerTest < ActiveSupport::TestCase
     assert_equal [model.top_view.blob], analyzed
   end
 
+  test "measures a module package's top view, which holds its modules beside the ship" do
+    metadata = attach(create(:model_module_package), :top_view, picture(400, 400, 0, 0, 400, 400))
+
+    assert_in_delta 1.414, metadata[:angled_extent], 0.01
+  end
+
+  test "leaves a module package's other pictures alone" do
+    metadata = attach(create(:model_module_package), :angled_view, picture(100, 100, 0, 0, 100, 100))
+
+    assert_not metadata.key?(:angled_extent)
+  end
+
+  test "the package backfill measures the package top views already there, and only those" do
+    require Rails.root.join("db/data/20261110190000_measure_module_package_top_views").to_s
+
+    package = create(:model_module_package)
+
+    package.top_view.attach(io: picture(100, 100, 0, 0, 100, 100), filename: "top.png", content_type: "image/png")
+    package.port_view.attach(io: picture(100, 100, 0, 0, 100, 100), filename: "port.png", content_type: "image/png")
+    package.model.top_view.attach(io: picture(100, 100, 0, 0, 100, 100), filename: "model-top.png", content_type: "image/png")
+
+    analyzed = []
+    job = ActiveStorage::AnalyzeJob
+    original = job.method(:perform_later)
+
+    job.define_singleton_method(:perform_later) { |blob| analyzed << blob }
+    MeasureModulePackageTopViews.new.up
+    job.define_singleton_method(:perform_later, original)
+
+    assert_equal [package.top_view.blob], analyzed
+  end
+
   test "leaves other pictures alone" do
     model = create(:model)
 

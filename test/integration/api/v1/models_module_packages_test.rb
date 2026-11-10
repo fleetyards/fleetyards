@@ -34,6 +34,16 @@ class Api::V1::ModelsModulePackagesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: model.slug}
   end
 
+  test "GET /models/:slug/module-packages sends how wide a package's angled picture is" do
+    package = create(:model_module_package)
+    package.top_view.attach(io: file_fixture("test.png").open, filename: "top.png", content_type: "image/png")
+    package.top_view.blob.update!(metadata: package.top_view.blob.metadata.merge(angled_extent: 1.054))
+
+    assert_api_response :get, 200, path_params: {slug: package.model.slug}
+
+    assert_in_delta 1.054, response.parsed_body["items"].first.dig("media", "angledExtent")
+  end
+
   test "GET /models/:slug/module-packages returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
