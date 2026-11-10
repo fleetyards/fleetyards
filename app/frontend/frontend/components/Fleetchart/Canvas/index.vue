@@ -17,7 +17,7 @@ import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
-import FleetchartCanvasImageProgress from "./ImageProgress/index.vue";
+import FleetchartCanvasProgress from "./Progress/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
@@ -50,6 +50,8 @@ import {
 } from "@/frontend/components/Fleetchart/layouts";
 import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
 import { createImageProgress } from "@/frontend/components/Fleetchart/imageProgress";
+import { createExportProgress } from "@/frontend/components/Fleetchart/exportProgress";
+import type { DownloadScreenshotStage } from "@/frontend/components/DownloadScreenshotBtn/types";
 import {
   BASE_GROUPS,
   effectiveGroup,
@@ -574,6 +576,8 @@ const exporting = ref(false);
 // a fleet of thousands is more noise than the ships themselves.
 const imageProgress = createImageProgress();
 
+const exportProgress = createExportProgress();
+
 // The images drawn while zoomed out are too small for a full-size export, so the
 // larger ones are only fetched for as long as an export needs them.
 const prepareExport = async () => {
@@ -583,16 +587,35 @@ const prepareExport = async () => {
 
   const images = [...(scene.value?.querySelectorAll("img") ?? [])];
 
+  exportProgress.start(images.length);
+
   await Promise.race([
-    Promise.all(images.map((image) => image.decode().catch(() => {}))),
+    Promise.all(
+      images.map((image) =>
+        image
+          .decode()
+          .catch(() => {})
+          .finally(exportProgress.pictureReady),
+      ),
+    ),
     new Promise((resolve) => {
       setTimeout(resolve, EXPORT_IMAGE_TIMEOUT);
     }),
   ]);
 };
 
+// Shown before the capture starts, as drawing holds up the page until it is done.
+const exportStage = async (stage: DownloadScreenshotStage) => {
+  exportProgress.stage.value = stage;
+
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => setTimeout(resolve));
+  });
+};
+
 const finishExport = () => {
   exporting.value = false;
+  exportProgress.finish();
 };
 
 const gridCanvas = ref<HTMLCanvasElement>();
@@ -1796,6 +1819,7 @@ const toggleLabels = () => {
             "
             ignore-transform
             :prepare="prepareExport"
+            :stage="exportStage"
             :finish="finishExport"
           />
 
@@ -1837,9 +1861,9 @@ const toggleLabels = () => {
       {{ gridCell }} m
     </div>
 
-    <FleetchartCanvasImageProgress
-      v-if="!exporting"
-      :progress="imageProgress"
+    <FleetchartCanvasProgress
+      :images="imageProgress"
+      :export-progress="exportProgress"
     />
 
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">

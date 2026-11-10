@@ -1,0 +1,81 @@
+// Held back a moment, so pictures already in the browser's cache never flash it.
+// Above the control row, which reaches the middle of a narrower screen.
+.fleetchart-canvas-progress {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  z-index: 900;
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+  text-shadow: 0 0 2px black;
+  transform: translateX(-50%);
+  animation: fleetchart-canvas-progress-in 0.2s ease 0.5s both;
+
+  // An export was asked for, so it answers at once.
+  &--now {
+    animation: none;
+  }
+}
+
+.fleetchart-canvas-progress__label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+// Drawing and saving report nothing along the way, and hold up the page while
+// they run. A transform animation still moves then, as the compositor runs it.
+.fleetchart-canvas-progress__working {
+  position: relative;
+  height: 25px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  background-color: $gray-darker;
+  border-radius: 4px;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    background-color: #3b82f6;
+    border-radius: 4px;
+    animation: fleetchart-canvas-progress-working 1.2s ease-in-out infinite;
+    content: "";
+  }
+}
+
+@keyframes fleetchart-canvas-progress-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fleetchart-canvas-progress-working {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fleetchart-canvas-progress__working::after {
+    width: 100%;
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-canvas-progress {
+    bottom: 140px;
+  }
+}
