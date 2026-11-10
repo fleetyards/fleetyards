@@ -9,14 +9,10 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
-import BaseSpacer from "@/shared/components/base/Spacer/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import "highlight.js";
-import copyText from "@/shared/utils/CopyText";
+import CodeExample from "@/docs/components/CodeExample/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \<script\>
@@ -40,25 +36,6 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
 \</script\>
 \<noscript\>Please enable JavaScript to view your custom Fleetview powered by FleetYards.net.\</noscript\>
 `;
-
-const { t } = useI18n();
-
-const { displayInfo, displayAlert } = useAppNotifications();
-
-const copyExample = () => {
-  copyText(widgetExample).then(
-    () => {
-      displayInfo({
-        text: t("messages.copy.success"),
-      });
-    },
-    () => {
-      displayAlert({
-        text: t("messages.copy.failure"),
-      });
-    },
-  );
-};
 </script>
 
 <template>
@@ -72,16 +49,9 @@ const copyExample = () => {
         List.
       </BaseText>
 
-      <div class="code-highlight" @click="copyExample">
-        <i class="fa-solid fa-copy copy-icon"></i>
-        <pre
-          v-highlightjs="widgetExample"
-        ><code class="javascript rounded !py-5 !px-4"></code></pre>
-      </div>
+      <CodeExample :code="widgetExample" language="html" />
     </PanelBody>
   </Panel>
-
-  <BaseSpacer />
 
   <Panel>
     <PanelHeading>Options</PanelHeading>
@@ -178,43 +148,3 @@ const copyExample = () => {
     </PanelBody>
   </Panel>
 </template>
-
-<style lang="scss">
-.code-highlight {
-  position: relative;
-  cursor: pointer;
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
-  margin-left: 6rem;
-  margin-right: 6rem;
-
-  .v-code-block--tab-highlightjs-atom-one-dark-icon {
-    color: $primary !important;
-    fill: $primary !important;
-  }
-
-  pre {
-    margin: 0 !important;
-    border-radius: 0.375rem !important; // rounded
-    border: 0.3em solid hsl(30, 20%, 40%);
-    padding: 0.3rem;
-  }
-
-  pre > code {
-    padding: 20px 15px;
-    background: #282c34 !important; // atom-one-dark background
-  }
-
-  .copy-icon {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  &:hover .copy-icon {
-    opacity: 1;
-  }
-}
-</style>

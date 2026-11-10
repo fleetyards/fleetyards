@@ -61,4 +61,14 @@ export const routes: RouteRecordRaw[] = [
       mobileNav: 2,
     },
   },
+  {
+    path: "/media/",
+    name: "media",
+    component: () => import("@/docs/pages/media.vue"),
+    meta: {
+      title: "media",
+      icon: "fa-duotone fa-photo-film",
+      mobileNav: 3,
+    },
+  },
 ];
