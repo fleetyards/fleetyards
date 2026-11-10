@@ -12,11 +12,13 @@ type Props = {
   code: string;
   language?: "javascript" | "html" | "markdown" | "plaintext";
   flush?: boolean;
+  copyOnClick?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   language: "javascript",
   flush: false,
+  copyOnClick: true,
 });
 
 // highlight.js marks an element it has highlighted and skips it from then on,
@@ -27,15 +29,23 @@ const highlighted = computed(
 
 const { copy } = useCopy();
 
+const onClick = () => {
+  if (props.copyOnClick) {
+    void copy(props.code);
+  }
+};
 </script>
 
 <template>
   <div
     class="code-example"
-    :class="{ 'code-example--flush': flush }"
-    @click="copy(props.code)"
+    :class="{
+      'code-example--flush': flush,
+      'code-example--copyable': copyOnClick,
+    }"
+    @click="onClick"
   >
-    <i class="fa-solid fa-copy code-example__copy"></i>
+    <i v-if="copyOnClick" class="fa-solid fa-copy code-example__copy"></i>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <pre><code :class="`hljs language-${language}`" class="rounded !py-5 !px-4" v-html="highlighted"></code></pre>
   </div>
@@ -44,7 +54,6 @@ const { copy } = useCopy();
 <style lang="scss" scoped>
 .code-example {
   position: relative;
-  cursor: pointer;
   margin: 2.5rem 0;
 
   @media (min-width: 1024px) {
@@ -64,6 +73,10 @@ const { copy } = useCopy();
     padding: 20px 15px;
     background: #282c34 !important;
   }
+}
+
+.code-example--copyable {
+  cursor: pointer;
 }
 
 .code-example--flush {

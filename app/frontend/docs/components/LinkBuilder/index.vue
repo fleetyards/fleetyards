@@ -230,6 +230,7 @@ const { copy } = useCopy();
         :code="snippet"
         :language="snippetLanguage"
         flush
+        :copy-on-click="false"
         data-test="link-builder-snippet"
       />
     </div>
