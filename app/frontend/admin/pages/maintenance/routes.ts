@@ -16,6 +16,9 @@ export const routes: RouteRecordRaw[] = [
       query: to.query,
       hash: to.hash,
     }),
+    meta: {
+      nav: "hidden",
+    },
   },
   {
     path: "/imports/",
