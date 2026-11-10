@@ -63,6 +63,13 @@ export const FLEET_SHIP_GROUPS = [
   FleetchartGroups.CAPTAIN,
 ];
 
+export enum FleetchartHeadingSizes {
+  NORMAL = "normal",
+  LARGE = "large",
+  EXTRA_LARGE = "extraLarge",
+  FLEET = "fleet",
+}
+
 export enum FleetchartSpacings {
   COMPACT = "compact",
   NORMAL = "normal",
@@ -92,6 +99,7 @@ export enum FleetchartBackgrounds {
 export interface FleetchartOptions {
   sort: FleetchartSorts;
   group: FleetchartGroups;
+  headingSize: FleetchartHeadingSizes;
   spacing: FleetchartSpacings;
   scaleBar: boolean;
   solidExport: boolean;
@@ -103,6 +111,7 @@ export interface FleetchartOptions {
 export const DEFAULT_FLEETCHART_OPTIONS: FleetchartOptions = {
   sort: FleetchartSorts.LENGTH_ASC,
   group: FleetchartGroups.NONE,
+  headingSize: FleetchartHeadingSizes.NORMAL,
   spacing: FleetchartSpacings.NORMAL,
   scaleBar: false,
   solidExport: false,

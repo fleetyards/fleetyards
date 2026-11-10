@@ -525,6 +525,13 @@
           "list": "Ordine della lista"
         },
         "group": "Gruppo",
+        "headingSize": "Dimensione dei titoli",
+        "headingSizeOptions": {
+          "normal": "Normale",
+          "large": "Grande",
+          "extraLarge": "Molto grande",
+          "fleet": "Cresce con la flotta"
+        },
         "groupOptions": {
           "none": "Nessuno",
           "manufacturer": "Produttore",

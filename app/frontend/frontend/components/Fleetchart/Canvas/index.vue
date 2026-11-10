@@ -73,6 +73,7 @@ import {
   FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartScreenHeights,
   FleetchartShipStates,
@@ -119,6 +120,22 @@ const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
 const LABEL_MARGIN = 20;
+// A heading starts at the size of a page's own headline.
+const HEADING_FONT_REM = 1.5;
+const HEADING_LINE_HEIGHT = 2;
+const HEADING_SIZE_FACTORS: Record<
+  Exclude<FleetchartHeadingSizes, FleetchartHeadingSizes.FLEET>,
+  number
+> = {
+  normal: 1,
+  large: 2,
+  extraLarge: 4,
+};
+// Growing with the fleet keeps the base size up to this many ships, then follows
+// the square root of the count, as the chart's sides do, so a heading stays the
+// same size against the ships around it however many there are.
+const HEADING_BASE_SHIPS = 25;
+const MAX_HEADING_GROWTH = 20;
 const MAX_SHADOWED_SHIPS = 250;
 // Ships added one after another would otherwise land exactly on top of each other.
 const ADDED_SHIP_OFFSET = 8;
@@ -216,6 +233,7 @@ const labelMeasure = computed(() => {
   }
 
   return {
+    fontSize,
     lineHeight: fontSize * LABEL_LINE_HEIGHT,
     width: (text: string) => {
       if (!widths.has(text)) {
@@ -225,6 +243,35 @@ const labelMeasure = computed(() => {
       return widths.get(text) as number;
     },
   };
+});
+
+const headingGrowth = computed(() => {
+  const size = options.value.headingSize;
+
+  if (size === FleetchartHeadingSizes.FLEET) {
+    return Math.min(
+      MAX_HEADING_GROWTH,
+      Math.max(1, Math.sqrt(props.items.length / HEADING_BASE_SHIPS)),
+    );
+  }
+
+  return HEADING_SIZE_FACTORS[size] ?? 1;
+});
+
+const headingFontSize = computed(
+  () =>
+    parseFloat(getComputedStyle(document.documentElement).fontSize) *
+    HEADING_FONT_REM *
+    headingGrowth.value,
+);
+
+// Measured in the label font and scaled, as the heading uses the same face.
+const headingRoomFor = (title: string) => ({
+  headingWidth:
+    (labelMeasure.value.width(title) *
+      (headingFontSize.value / labelMeasure.value.fontSize)) /
+    PIXELS_PER_METRE,
+  headingRoom: (headingFontSize.value * HEADING_LINE_HEIGHT) / PIXELS_PER_METRE,
 });
 
 const labelRoom = (entry: FleetchartEntry) => {
@@ -389,9 +436,7 @@ const shipsFor = (kind: FleetchartLayouts, keepShipSettings = false) => {
           facing: shipFacing,
           viewpoint: shipViewpoint,
           group: shipGroup,
-          headingWidth: shipGroup
-            ? labelMeasure.value.width(shipGroup) / PIXELS_PER_METRE
-            : 0,
+          ...(shipGroup ? headingRoomFor(shipGroup) : {}),
           padding: SHIP_PADDING * SPACING_FACTORS[spacing.value],
           ...labelRoom(entry),
         },
@@ -1880,6 +1925,7 @@ const toggleLabels = () => {
           :style="{
             left: `${sceneX(heading.x)}px`,
             top: `${sceneY(heading.y)}px`,
+            fontSize: `${headingFontSize}px`,
           }"
           data-test="fleetchart-group-heading"
         >

@@ -525,6 +525,13 @@
           "list": "清單順序"
         },
         "group": "分組",
+        "headingSize": "標題大小",
+        "headingSizeOptions": {
+          "normal": "正常",
+          "large": "大",
+          "extraLarge": "特大",
+          "fleet": "隨艦隊規模增大"
+        },
         "groupOptions": {
           "none": "無",
           "manufacturer": "製造商",

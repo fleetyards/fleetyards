@@ -11,6 +11,7 @@ import {
   FleetchartBackgrounds,
   FleetchartFacings,
   FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartShipStates,
   FleetchartSorts,
@@ -94,6 +95,16 @@ const choices = computed(() => [
           optionsKey: "groupOptions",
           values: props.groups as string[],
         },
+        ...(props.options.group === FleetchartGroups.NONE
+          ? []
+          : [
+              {
+                name: "headingSize" as const,
+                labelKey: "headingSize",
+                optionsKey: "headingSizeOptions",
+                values: Object.values(FleetchartHeadingSizes) as string[],
+              },
+            ]),
       ]
     : []),
   ...(groupable.value

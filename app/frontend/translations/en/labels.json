@@ -525,6 +525,13 @@
           "list": "List order"
         },
         "group": "Group",
+        "headingSize": "Heading size",
+        "headingSizeOptions": {
+          "normal": "Normal",
+          "large": "Large",
+          "extraLarge": "Extra large",
+          "fleet": "Grows with fleet"
+        },
         "groupOptions": {
           "none": "None",
           "manufacturer": "Manufacturer",

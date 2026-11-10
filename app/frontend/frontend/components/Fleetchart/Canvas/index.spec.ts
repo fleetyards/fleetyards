@@ -6,6 +6,7 @@ import type { FleetchartEntry } from "@/frontend/components/Fleetchart/geometry"
 import {
   FleetchartFacings,
   FleetchartGroups,
+  FleetchartHeadingSizes,
   FleetchartLayouts,
   FleetchartShipStates,
   FleetchartViewpoints,
@@ -240,6 +241,67 @@ describe("FleetchartCanvas", () => {
         .findAll("[data-test='fleetchart-group-heading']")
         .map((heading) => heading.text())
         .sort();
+
+    it("grows its headings with the number of ships when asked to", async () => {
+      groupByCaptain();
+      useFleetchartStore().updateOptions({
+        namespace: "hangar",
+        options: { headingSize: FleetchartHeadingSizes.FLEET },
+      });
+
+      const fontSizeFor = (count: number) => {
+        const wrapper = track(
+          mount(FleetchartCanvas, {
+            props: {
+              namespace: "hangar",
+              items: Array.from({ length: count }, (_, index) =>
+                captained(`ship-${index}`, "kirk"),
+              ),
+              groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+            },
+            global: { stubs: canvasStubs, directives: { tooltip: {} } },
+          }),
+        );
+
+        return parseFloat(
+          (
+            wrapper.get("[data-test='fleetchart-group-heading']")
+              .element as HTMLElement
+          ).style.fontSize,
+        );
+      };
+
+      const few = fontSizeFor(4);
+
+      expect(fontSizeFor(25)).toBe(few);
+      expect(fontSizeFor(100)).toBeCloseTo(few * 2);
+    });
+
+    it("keeps headings at a headline's size by default, however many ships", () => {
+      groupByCaptain();
+
+      const fontSizes = [4, 400].map((count) => {
+        const wrapper = track(
+          mount(FleetchartCanvas, {
+            props: {
+              namespace: "hangar",
+              items: Array.from({ length: count }, (_, index) =>
+                captained(`ship-${index}`, "kirk"),
+              ),
+              groups: [FleetchartGroups.NONE, FleetchartGroups.CAPTAIN],
+            },
+            global: { stubs: canvasStubs, directives: { tooltip: {} } },
+          }),
+        );
+
+        return (
+          wrapper.get("[data-test='fleetchart-group-heading']")
+            .element as HTMLElement
+        ).style.fontSize;
+      });
+
+      expect(fontSizes[0]).toBe(fontSizes[1]);
+    });
 
     it("leaves a captain grouping out on a chart that does not offer it", async () => {
       groupByCaptain();
