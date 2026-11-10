@@ -9,7 +9,6 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
-import BaseSpacer from "@/shared/components/base/Spacer/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import CodeExample from "@/docs/components/CodeExample/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -53,8 +52,6 @@ const widgetExample = `\<div id="fleetyards-view"\>\</div\>
       <CodeExample :code="widgetExample" language="html" />
     </PanelBody>
   </Panel>
-
-  <BaseSpacer />
 
   <Panel>
     <PanelHeading>Options</PanelHeading>
