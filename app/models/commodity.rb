@@ -23,6 +23,7 @@ class Commodity < ApplicationRecord
       reason: :update_reason,
       reason_description: :update_reason_description
     }
+  include ActiveStorageVariants
   include AttachmentRansackers
   include ItemPriceConcern
   include ScDataVersioned

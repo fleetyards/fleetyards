@@ -4,6 +4,7 @@
 # city, an outpost, an asteroid base. Loaded from the starmap -- see
 # `ScData::Parser::StarmapParser` for how the export's records become places.
 class Location < ApplicationRecord
+  include ActiveStorageVariants
   include SlugConcern
   include ScDataVersioned
 
