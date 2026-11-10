@@ -36,6 +36,7 @@ import {
   type FleetContractDestination,
   type FleetContractEndpoint,
   type GameMission,
+  type GameMissionQuery,
   FleetContractDestinationHolderEnum,
   FleetContractKindEnum,
   FleetContractRewardTypeEnum,
@@ -182,11 +183,11 @@ const rewardTypeOptions = computed<FilterOption[]>(() =>
 );
 
 const fetchMissionOptions = (params: BaseSelectParams<FilterOption>) => {
-  const q: Record<string, unknown> = {};
+  const q: GameMissionQuery = {};
   if (params.search) q.nameOrOrgNameCont = params.search;
   if (params.missing) q.idIn = [params.missing as string];
 
-  return gameMissions({ page: String(params.page || 1), q: q as never });
+  return gameMissions({ page: String(params.page || 1), q });
 };
 
 const formatMissions = (response: { items: GameMission[] }) =>
