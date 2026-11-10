@@ -966,6 +966,7 @@ const copyShareLink = () => {
         zoomable
         turntable
         backdrop
+        fullscreen-actions
         @unavailable="holoUnavailable"
         @unplaced="unplaced = $event"
         @fell-back="failedPaths = [...failedPaths, ...$event]"

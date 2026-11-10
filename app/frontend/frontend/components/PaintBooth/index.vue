@@ -132,6 +132,7 @@ const selectedName = computed(
       zoomable
       turntable
       backdrop
+      fullscreen-actions
       @unavailable="holoUnavailable"
     />
     <!-- A ship painted only, whose painted holo failed, has no plain one to

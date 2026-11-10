@@ -131,6 +131,8 @@ type Props = {
   containAlign?: "center" | "end";
   // Stood in a lit room with a glossy floor rather than in an empty frame.
   backdrop?: boolean;
+  // Its buttons show only in full screen.
+  fullscreenActions?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -155,6 +157,7 @@ const props = withDefaults(defineProps<Props>(), {
   containAnyAngle: false,
   containAlign: "center",
   backdrop: false,
+  fullscreenActions: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -926,7 +929,7 @@ defineExpose({
       @click.prevent.stop="disableFullscreen"
     />
     <BtnGroup
-      v-if="controllable || internalFullscreen"
+      v-if="internalFullscreen || (controllable && !fullscreenActions)"
       class="holo-viewer__actions"
     >
       <Btn
