@@ -16,6 +16,10 @@ cloud:
   public: true
   upload:
     acl: "public-read"
+  # The SDK's standard mode backs a throttled request off with jitter, which
+  # the legacy default does not; Hetzner answers a busy bucket with SlowDown.
+  retry_mode: standard
+  retry_limit: 5
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:

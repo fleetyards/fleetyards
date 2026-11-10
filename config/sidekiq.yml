@@ -11,4 +11,5 @@
   - loaders
   - cleanup
   - updater
-  # preprocessing runs in its own capsule, see config/initializers/sidekiq.rb
+  # preprocessing and storage run in capsules of their own, see
+  # config/initializers/sidekiq.rb

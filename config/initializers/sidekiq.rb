@@ -28,6 +28,13 @@ Sidekiq.configure_server do |config|
     capsule.queues = %w[preprocessing]
   end
 
+  # ActiveStorage's analyses and purges, see config/application.rb. Few enough
+  # that an import's burst stays under the bucket's request limit.
+  config.capsule("storage") do |capsule|
+    capsule.concurrency = Integer(ENV.fetch("STORAGE_CONCURRENCY", 2))
+    capsule.queues = %w[storage]
+  end
+
   config.on(:startup) do
     schedule_file = Rails.root.join("config/sidekiq_schedule.yml")
     schedule_yaml = ERB.new(File.read(schedule_file)).result
