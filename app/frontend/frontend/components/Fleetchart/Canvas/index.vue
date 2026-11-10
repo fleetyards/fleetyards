@@ -17,6 +17,7 @@ import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import FleetChartStatusBtn from "@/frontend/components/FleetChartStatusBtn/index.vue";
+import FleetchartCanvasImageProgress from "./ImageProgress/index.vue";
 import FleetchartCanvasItem from "./Item/index.vue";
 import FleetchartCanvasSavedLayouts from "./SavedLayouts/index.vue";
 import FleetchartCanvasSettings from "./Settings/index.vue";
@@ -48,6 +49,7 @@ import {
   type FleetchartPositions,
 } from "@/frontend/components/Fleetchart/layouts";
 import { isCatalogueEntry } from "@/frontend/components/Fleetchart/catalogueShips";
+import { createImageProgress } from "@/frontend/components/Fleetchart/imageProgress";
 import {
   BASE_GROUPS,
   effectiveGroup,
@@ -117,6 +119,7 @@ const MAX_ZOOM = 20;
 const LABEL_FONT_SCALE = 1.2;
 const LABEL_LINE_HEIGHT = 1.5;
 const LABEL_MARGIN = 20;
+const MAX_SHADOWED_SHIPS = 250;
 // Ships added one after another would otherwise land exactly on top of each other.
 const ADDED_SHIP_OFFSET = 8;
 const ADDED_SHIP_OFFSETS = 6;
@@ -146,7 +149,7 @@ const BACKGROUND_IMAGES: Partial<Record<FleetchartBackgrounds, string>> = {
   [FleetchartBackgrounds.PYRO]: pyroNebula,
 };
 
-const { t, toNumber } = useI18n();
+const { t } = useI18n();
 
 const mobile = useMobile();
 
@@ -523,31 +526,8 @@ const settingsOpen = ref(false);
 const exporting = ref(false);
 
 // One count for the whole chart rather than a placeholder on each ship, which on
-// a fleet of thousands is more noise than the ships themselves. A round of loading
-// starts with the first picture asked for and ends when the last has arrived.
-const pendingImages = ref(new Set<string>());
-const imagesRequested = ref(0);
-
-const imagePending = (id: string) => {
-  if (pendingImages.value.has(id)) {
-    return;
-  }
-
-  if (!pendingImages.value.size) {
-    imagesRequested.value = 0;
-  }
-
-  pendingImages.value.add(id);
-  imagesRequested.value += 1;
-};
-
-const imageSettled = (id: string) => {
-  pendingImages.value.delete(id);
-};
-
-const imagesLoaded = computed(
-  () => imagesRequested.value - pendingImages.value.size,
-);
+// a fleet of thousands is more noise than the ships themselves.
+const imageProgress = createImageProgress();
 
 // The images drawn while zoomed out are too small for a full-size export, so the
 // larger ones are only fetched for as long as an export needs them.
@@ -1812,20 +1792,10 @@ const toggleLabels = () => {
       {{ gridCell }} m
     </div>
 
-    <div
-      v-if="pendingImages.size && !exporting"
-      class="fleetchart-canvas__image-progress"
-      role="status"
-      data-test="fleetchart-image-progress"
-    >
-      <i class="fa-duotone fa-spinner-third fa-spin" />
-      {{
-        t("labels.fleetchartApp.loadingPictures", {
-          loaded: toNumber(imagesLoaded),
-          total: toNumber(imagesRequested),
-        })
-      }}
-    </div>
+    <FleetchartCanvasImageProgress
+      v-if="!exporting"
+      :progress="imageProgress"
+    />
 
     <div v-if="gridEnabled" class="fleetchart-canvas__grid-label">
       {{ t("labels.fleetchartApp.gridSize", { size: gridCell }) }}
@@ -1936,9 +1906,10 @@ const toggleLabels = () => {
           :selected="isFree && !exporting && selectedIds.includes(ship.id)"
           :arranging="arranging"
           :order="isFree ? placements[ship.id]?.order : undefined"
+          :shadow="ships.length <= MAX_SHADOWED_SHIPS"
           @pointerdown="startDrag(ship.id, $event)"
-          @image-pending="imagePending(ship.id)"
-          @image-settled="imageSettled(ship.id)"
+          @image-pending="imageProgress.pending(ship.id)"
+          @image-settled="imageProgress.settled(ship.id)"
         />
 
         <div

@@ -28,7 +28,7 @@ vi.mock("vue-router", async (importOriginal) => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key, toNumber: String }),
+  useI18n: () => ({ t: (key: string) => key, currentLocale: () => "en" }),
 }));
 
 const comlinkEmit = vi.hoisted(() => vi.fn());

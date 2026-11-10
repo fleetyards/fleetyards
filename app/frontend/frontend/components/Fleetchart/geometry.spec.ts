@@ -16,6 +16,7 @@ const view = (name: string, width = 1000, height = 500) => ({
   url: `${name}.png`,
   largeUrl: `${name}-large.png`,
   mediumUrl: `${name}-medium.png`,
+  smallUrl: `${name}-small.png`,
   width,
   height,
 });
@@ -409,8 +410,15 @@ describe("imageUrlFor", () => {
   it("picks the smallest image that covers the rendered width", () => {
     const file = view("port") as MediaFile;
 
-    expect(imageUrlFor(file, 400)).toBe("port-medium.png");
+    expect(imageUrlFor(file, 100)).toBe("port-small.png");
+    expect(imageUrlFor(file, 600)).toBe("port-medium.png");
     expect(imageUrlFor(file, 1000)).toBe("port-large.png");
     expect(imageUrlFor(file, 2000)).toBe("port.png");
+  });
+
+  it("falls back to the medium image when there is no small one", () => {
+    const { smallUrl: _small, ...file } = view("port");
+
+    expect(imageUrlFor(file as MediaFile, 100)).toBe("port-medium.png");
   });
 });

@@ -1,0 +1,35 @@
+// Held back a moment, so pictures already in the browser's cache never flash it.
+// Above the control row, which reaches the middle of a narrower screen.
+.fleetchart-canvas-image-progress {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  z-index: 900;
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+  text-shadow: 0 0 2px black;
+  transform: translateX(-50%);
+  animation: fleetchart-image-progress-in 0.2s ease 0.5s both;
+}
+
+.fleetchart-canvas-image-progress__label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+@keyframes fleetchart-image-progress-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .fleetchart-canvas-image-progress {
+    bottom: 140px;
+  }
+}

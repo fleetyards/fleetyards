@@ -25,26 +25,6 @@
   z-index: 0;
 }
 
-// Held back a moment, so pictures already in the browser's cache never flash it.
-.fleetchart-canvas__image-progress {
-  position: fixed;
-  bottom: 24px;
-  left: 20px;
-  z-index: 900;
-  text-shadow: 0 0 2px black;
-  animation: fleetchart-image-progress-in 0.2s ease 0.5s both;
-}
-
-@keyframes fleetchart-image-progress-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 .fleetchart-canvas__grid-label {
   position: fixed;
   bottom: 70px;
@@ -138,13 +118,6 @@
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-canvas__scale {
     bottom: 120px;
-  }
-
-  .fleetchart-canvas__image-progress {
-    right: 10px;
-    bottom: 66px;
-    left: 10px;
-    text-align: center;
   }
 
   .fleetchart-canvas__grid-label {

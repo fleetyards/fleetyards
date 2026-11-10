@@ -303,6 +303,7 @@ export const shipLabelOf = (entry: FleetchartEntry) => {
 
 const FULL_IMAGE_MIN_WIDTH = 1900;
 const LARGE_IMAGE_MIN_WIDTH = 900;
+const MEDIUM_IMAGE_MIN_WIDTH = 450;
 
 export const imageUrlFor = (view: MediaFile, renderedWidth: number) => {
   if (renderedWidth > FULL_IMAGE_MIN_WIDTH) {
@@ -313,5 +314,11 @@ export const imageUrlFor = (view: MediaFile, renderedWidth: number) => {
     return view.largeUrl;
   }
 
-  return view.mediumUrl;
+  // A zoomed-out fleet of thousands draws every ship this small, and holding a
+  // larger copy of each picture is what runs the browser out of memory.
+  if (renderedWidth > MEDIUM_IMAGE_MIN_WIDTH) {
+    return view.mediumUrl;
+  }
+
+  return view.smallUrl ?? view.mediumUrl;
 };

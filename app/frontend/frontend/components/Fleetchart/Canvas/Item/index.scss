@@ -1,17 +1,19 @@
 .fleetchart-canvas-item {
   position: absolute;
-  filter: drop-shadow(2px 4px 6px black);
   transition:
     left $transition-base-speed ease,
     top $transition-base-speed ease;
 
-  &.status-in-concept {
-    filter: opacity(0.5) drop-shadow(0 0 0 black);
-  }
-
+  &.status-in-concept,
   &.status-in-production {
-    filter: opacity(0.5) drop-shadow(0 0 0 #06f);
+    opacity: 0.5;
   }
+}
+
+// A filter renders its element on a surface of its own, and thousands of them run
+// the GPU out of memory, so a large chart goes without.
+.fleetchart-canvas-item--shadow {
+  filter: drop-shadow(2px 4px 6px black);
 }
 
 // A ship being dragged has to stay under the cursor rather than ease towards it.

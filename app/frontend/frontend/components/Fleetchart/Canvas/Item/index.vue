@@ -39,6 +39,7 @@ interface Props {
   selected?: boolean;
   arranging?: boolean;
   order?: number;
+  shadow?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   selected: false,
   arranging: false,
   order: undefined,
+  shadow: true,
 });
 
 const emit = defineEmits<{
@@ -74,6 +76,7 @@ const cssClasses = computed(() => [
   props.showStatus ? `status-${model.value.productionStatus}` : undefined,
   props.selected ? "fleetchart-canvas-item--selected" : undefined,
   props.arranging ? "fleetchart-canvas-item--arranging" : undefined,
+  props.shadow ? "fleetchart-canvas-item--shadow" : undefined,
 ]);
 
 const view = computed(() =>
