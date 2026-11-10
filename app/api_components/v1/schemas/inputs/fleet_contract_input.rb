@@ -35,6 +35,9 @@ module V1
             # to, or one of the author's own. Sending one clears the other.
             destinationFleetInventoryId: {type: [:string, :null], format: :uuid},
             destinationInventoryId: {type: [:string, :null], format: :uuid},
+            # The catalogue mission, for a `mission` contract and only for one.
+            # A mission contract has no destination and no goods.
+            gameMissionId: {type: [:string, :null], format: :uuid},
             # Who the work is for. `squadronOnly` with the squadrons it names
             # keeps the board to them; see SquadronRestrictable.
             visibility: ::V1::Schemas::Enums::FleetContractVisibilityEnum,

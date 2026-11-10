@@ -8,6 +8,14 @@ json.items do
     as: :fleet_contract_item
 end
 
+# What running the mission unlocks for each crew member, from the build the
+# catalogue serves now. Empty for every goods contract.
+json.mission_blueprints @fleet_contract.mission_blueprints do |blueprint|
+  json.id blueprint.id
+  json.name blueprint.name
+  json.slug blueprint.slug
+end
+
 json.crew do
   json.array! @fleet_contract.fleet_contract_assignments
     .where.not(aasm_state: %w[withdrawn removed declined]).includes(:user).order(:role, :created_at),

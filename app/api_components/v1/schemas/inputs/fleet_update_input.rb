@@ -18,6 +18,7 @@ module V1
             transportContractCover: {type: [:string, :null]},
             procurementContractCover: {type: [:string, :null]},
             craftingContractCover: {type: [:string, :null]},
+            missionContractCover: {type: [:string, :null]},
             removeBackground: {type: :boolean},
             description: {type: [:string, :null]},
             publicFleet: {type: :boolean},

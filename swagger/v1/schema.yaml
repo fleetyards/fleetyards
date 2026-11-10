@@ -31151,6 +31151,10 @@ components:
           "$ref": "#/components/schemas/FleetContractEndpoint"
         destination:
           "$ref": "#/components/schemas/FleetContractEndpoint"
+        gameMission:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionLink"
+          - type: 'null'
         createdBy:
           "$ref": "#/components/schemas/FleetContractAuthor"
         publishedAt:
@@ -31207,6 +31211,7 @@ components:
       - requiresPickup
       - personal
       - destination
+      - gameMission
       - crewPreview
       - progress
       - itemsCount
@@ -31266,6 +31271,8 @@ components:
         procurement:
           "$ref": "#/components/schemas/MediaFile"
         crafting:
+          "$ref": "#/components/schemas/MediaFile"
+        mission:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: FleetContractCovers
@@ -31467,6 +31474,10 @@ components:
           "$ref": "#/components/schemas/FleetContractEndpoint"
         destination:
           "$ref": "#/components/schemas/FleetContractEndpoint"
+        gameMission:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionLink"
+          - type: 'null'
         createdBy:
           "$ref": "#/components/schemas/FleetContractAuthor"
         publishedAt:
@@ -31513,6 +31524,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetContractItem"
+        missionBlueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
         crew:
           type: array
           items:
@@ -31531,11 +31546,13 @@ components:
       - requiresPickup
       - personal
       - destination
+      - gameMission
       - crewPreview
       - progress
       - itemsCount
       - crewCount
       - items
+      - missionBlueprints
       - crew
       title: FleetContractDetail
     FleetContractEndpoint:
@@ -31614,6 +31631,11 @@ components:
           - 'null'
           format: uuid
         destinationInventoryId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        gameMissionId:
           type:
           - string
           - 'null'
@@ -31765,10 +31787,12 @@ components:
       - transport
       - procurement
       - crafting
+      - mission
       x-enumNames:
       - TRANSPORT
       - PROCUREMENT
       - CRAFTING
+      - MISSION
       title: FleetContractKindEnum
     FleetContractProgress:
       type: object
@@ -36340,6 +36364,10 @@ components:
           - string
           - 'null'
         craftingContractCover:
+          type:
+          - string
+          - 'null'
+        missionContractCover:
           type:
           - string
           - 'null'

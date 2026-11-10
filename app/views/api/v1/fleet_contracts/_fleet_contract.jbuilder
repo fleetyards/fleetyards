@@ -3,9 +3,11 @@
 # The squadrons are in the key for the reason the member partial gives. The
 # two ends and the author are there because renaming an inventory or a user
 # does not touch the contracts that name them, and so are the places the ends
-# link to.
-json.cache! ["v7", fleet_contract,
-  *[fleet_contract.source_fleet_inventory, fleet_contract.destination, fleet_contract.created_by].compact,
+# link to. A mission's name comes from whichever build is served, so that
+# build is in the key as well.
+json.cache! ["v8", fleet_contract,
+  *[fleet_contract.source_fleet_inventory, fleet_contract.destination, fleet_contract.created_by,
+    fleet_contract.game_mission, fleet_contract.game_mission&.facts].compact,
   *[fleet_contract.source_fleet_inventory, fleet_contract.destination].compact.filter_map { |inventory| inventory.try(:linked_location)&.link_cache_key },
   *fleet_contract.fleet_squadrons] do
   json.partial!("api/v1/fleet_contracts/base", fleet_contract:)

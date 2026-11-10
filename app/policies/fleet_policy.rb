@@ -66,7 +66,8 @@ class FleetPolicy < FleetBasePolicy
         :allies_fleet, :allies_fleet_stats, :allies_fleet_members, :squadrons_enabled, :personal_contracts_enabled,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
         :twitch, :alignment, :headquarters, :headquarters_location_id,
-        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
+        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover,
+        :mission_contract_cover
       ]
     end
 
@@ -84,7 +85,8 @@ class FleetPolicy < FleetBasePolicy
       # The contract covers are images, so the image privilege reaches them too.
       allowed_params << [
         :logo, :background_image, :remove_logo, :remove_background,
-        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
+        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover,
+        :mission_contract_cover
       ]
     end
 

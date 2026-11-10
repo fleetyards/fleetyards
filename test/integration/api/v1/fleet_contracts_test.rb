@@ -887,6 +887,132 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, slug: cancelled.slug}
   end
 
+  test "POST creates a mission contract that delivers nowhere" do
+    mission = create(:game_mission, name: "Tactical Strike Group Needed")
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", gameMissionId: mission.id, rewardType: "fixed", reward: "50000.00"} do
+      assert_equal "mission", parsed_body["kind"]
+      assert_equal "Run Tactical Strike Group Needed", parsed_body["title"]
+      assert_equal({"id" => mission.id, "name" => mission.name, "slug" => mission.slug}, parsed_body["gameMission"])
+      assert_nil parsed_body["destination"]
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  test "POST refuses a mission contract without a mission" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", rewardType: "none"}
+  end
+
+  test "POST refuses a mission contract that pays per unit or asks for goods" do
+    mission = create(:game_mission)
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", gameMissionId: mission.id, rewardType: "per_unit"}
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", gameMissionId: mission.id, rewardType: "none",
+             destinationFleetInventoryId: @depot.id}
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", gameMissionId: mission.id, rewardType: "none",
+             items: [{name: "Titanium", category: "commodity", unit: "scu", quantity: 10}]}
+  end
+
+  test "POST refuses a mission on a goods contract" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", gameMissionId: create(:game_mission).id, rewardType: "none",
+             destinationFleetInventoryId: @depot.id}
+  end
+
+  test "PUT publish opens a mission contract with nothing to deliver" do
+    contract = create(:fleet_contract, :mission, fleet: @fleet)
+    sign_in @officer
+
+    assert_api_response :put, 200,
+      api_path: PUBLISH_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "open", parsed_body["state"]
+    end
+  end
+
+  test "GET one names the blueprints the mission unlocks" do
+    contract = create(:fleet_contract, :mission, :published, fleet: @fleet)
+    pool_ref = Digest::UUID.uuid_v5(Digest::UUID::DNS_NAMESPACE, "contract-pool")
+    contract.game_mission.update!(blueprint_pool_refs: [pool_ref])
+    contract.game_mission.build.update!(blueprint_pool_refs: [pool_ref])
+    blueprint = create(:blueprint, name: "Bulldog Repeater")
+    create(:blueprint_source, build: blueprint.build, pool_sc_ref: pool_ref)
+
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal ["Bulldog Repeater"], parsed_body["missionBlueprints"].pluck("name")
+    end
+  end
+
+  test "GET one names no blueprints for a goods contract" do
+    contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_empty parsed_body["missionBlueprints"]
+      assert_nil parsed_body["gameMission"]
+    end
+  end
+
+  test "PUT fulfil lets the author of a mission contract mark it complete, not its lead" do
+    contract = create(:fleet_contract, :mission, :published, fleet: @fleet, created_by: @member)
+    contract.claim_by(@crewmate)
+
+    sign_in @crewmate
+    assert_api_response :put, 403,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug}
+
+    sign_in @member
+    assert_api_response :put, 200,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "fulfilled", parsed_body["state"]
+    end
+  end
+
+  test "PUT fulfil stays a manager's call for the author of a goods contract" do
+    contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
+      created_by: @member)
+    contract.claim_by(@crewmate)
+
+    sign_in @member
+
+    assert_api_response :put, 403,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug}
+  end
+
   test "PUT cancel closes a contract" do
     contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
     sign_in @officer
