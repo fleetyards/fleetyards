@@ -1001,6 +1001,26 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT fulfil refuses the author of a mission contract they worked themselves" do
+    contract = create(:fleet_contract, :mission, :published, fleet: @fleet, created_by: @member)
+    contract.claim_by(@member)
+
+    sign_in @member
+
+    assert_api_response :put, 403,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug}
+  end
+
+  test "POST refuses a mission the catalogue does not offer" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "mission", gameMissionId: create(:game_mission, name: nil).id, rewardType: "none"}
+  end
+
   test "PUT fulfil stays a manager's call for the author of a goods contract" do
     contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
       created_by: @member)

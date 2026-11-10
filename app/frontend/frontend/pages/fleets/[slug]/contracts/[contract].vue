@@ -170,10 +170,11 @@ const FULFILLABLE_STATES: FleetContractStateEnum[] = [
 ];
 
 // A mission has nothing in the ledger to fulfil it, so its author marks the
-// run done as well.
+// run done as well -- unless they worked it, and would be paying themselves.
 const canFulfil = computed(
   () =>
-    (canManage.value || (isMission.value && isAuthor.value)) &&
+    (canManage.value ||
+      (isMission.value && isAuthor.value && !isContractor.value)) &&
     contract.value !== undefined &&
     FULFILLABLE_STATES.includes(contract.value.state),
 );

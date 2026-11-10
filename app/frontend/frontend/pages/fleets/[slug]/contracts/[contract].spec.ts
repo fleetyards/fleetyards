@@ -134,9 +134,18 @@ const AUTHOR_ID = "22222222-2222-4222-8222-222222222222";
 const missionContract = (
   state: FleetContractStateEnum,
   authorId: string,
+  leadId = CONTRACTOR_ID,
 ): FleetContract =>
   ({
     ...contract(state),
+    crew: [
+      {
+        id: "seat",
+        role: FleetContractCrewRoleEnum.LEAD,
+        state: FleetContractCrewStateEnum.ACCEPTED,
+        user: { id: leadId, username: "runner" },
+      },
+    ],
     kind: "mission",
     destination: null,
     createdBy: { id: authorId, username: "poster" },
@@ -202,11 +211,25 @@ describe("FleetContractPage", () => {
     await mount(
       FleetContractStateEnum.IN_PROGRESS,
       undefined,
-      missionContract(FleetContractStateEnum.IN_PROGRESS, CONTRACTOR_ID),
+      missionContract(
+        FleetContractStateEnum.IN_PROGRESS,
+        CONTRACTOR_ID,
+        AUTHOR_ID,
+      ),
     );
     expect(
       document.querySelector("[data-test='fulfil-contract']"),
     ).not.toBeNull();
+  });
+
+  it("keeps the fulfil button from an author who worked the mission themselves", async () => {
+    await mount(
+      FleetContractStateEnum.IN_PROGRESS,
+      undefined,
+      missionContract(FleetContractStateEnum.IN_PROGRESS, CONTRACTOR_ID),
+    );
+
+    expect(document.querySelector("[data-test='fulfil-contract']")).toBeNull();
   });
 
   it("invites the crew to deliver while the contract is in progress", async () => {
