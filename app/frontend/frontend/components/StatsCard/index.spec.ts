@@ -71,7 +71,7 @@ describe("StatsCard", () => {
 
     const strip = wrapper.find(".stats-card__specs");
     expect(strip.attributes("style")).toContain(
-      "grid-template-columns: repeat(2, minmax(0, max-content)) minmax(0, 1fr)",
+      "grid-template-columns: repeat(2, minmax(0px, max-content)) minmax(0px, 1fr)",
     );
     // The full value stays readable where the strip cuts it short.
     expect(
@@ -91,7 +91,7 @@ describe("StatsCard", () => {
     const strip = wrapper.find(".stats-card__specs");
     expect(strip.classes()).toContain("stats-card__specs--prominent");
     expect(strip.attributes("style")).toContain(
-      "grid-template-columns: repeat(2, minmax(0, 1fr))",
+      "grid-template-columns: repeat(2, minmax(0px, 1fr))",
     );
     expect(strip.text()).toContain("aUEC");
   });
