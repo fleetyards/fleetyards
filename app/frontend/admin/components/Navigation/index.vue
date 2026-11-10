@@ -95,6 +95,7 @@ const GROUPS = [
       "/homepage/",
       "/oauth-applications/",
       "/imports/",
+      "/build-compare/",
       "/features/",
       "/jobs/",
       "/database/",
