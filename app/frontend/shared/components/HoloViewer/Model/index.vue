@@ -37,6 +37,7 @@ import {
   Raycaster,
   Vector2,
 } from "three";
+import { surfaceArea, surfaceLayers } from "../surfaceArea";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { extrasLoadingManager, prepareGltfLoader } from "../gltfLoader";
 import { gridScale } from "../gridScale";
@@ -116,27 +117,29 @@ const side = props.mobile ? FrontSide : DoubleSide;
 const MaterialClass =
   props.mobile || props.hologram ? MeshLambertMaterial : MeshPhongMaterial;
 
-// A hologram's hull is a dimmed silhouette the parts stand out against. It
-// writes no depth, so a part inside it -- a cooler, a drive -- still shows,
-// and its layers stack: much more opaque, the far side's surfaces add up to
-// the hull's own colour, and a dark one reads as black.
-const SILHOUETTE_COLOR = "#2a5680";
-// Lit a little of itself, so a side turned from the light keeps its colour.
-const SILHOUETTE_EMISSIVE = 0.25;
-
+// A hologram's hull is see-through, for the parts to stand out against: one
+// layer of it, its nearest surface, however much the ship holds.
 const hologramLook = props.hologram
-  ? { transparent: true, opacity: 0.35, depthWrite: false }
+  ? { transparent: true, opacity: 0.4, depthWrite: false }
   : {};
 
 const material = new MaterialClass({
-  color: props.hologram ? SILHOUETTE_COLOR : props.color,
+  color: props.color,
   side,
   ...hologramLook,
 });
 
-if (props.hologram) {
-  material.emissive.set(SILHOUETTE_COLOR).multiplyScalar(SILHOUETTE_EMISSIVE);
-}
+// Faint over a dark page, a hull lit only by the light reads as black on the
+// side turned from it: a hologram glows evenly in its own colour.
+const HULL_EMISSIVE = 0.6;
+
+const updateHullGlow = () => {
+  if (props.hologram) {
+    material.emissive.set(props.color).multiplyScalar(HULL_EMISSIVE);
+  }
+};
+
+updateHullGlow();
 
 // A part the viewer has picked out, in the gold the grid's sections use.
 const HIGHLIGHT_COLOR = new Color("#fbb03b");
@@ -199,11 +202,58 @@ const PART_WIRE_OPACITY = 0.25;
 const HIGHLIGHT_WIRE_OPACITY = 0.7;
 
 const wireLook = { transparent: true, depthWrite: false };
+
+// Only a hologram hull's nearest surface takes its colour: drawn through, a
+// large ship's many inner layers added up to a far brighter hull than a
+// fighter's few. Its depth goes down first, unseen, and pushed back a little
+// so the surface and its edges drawn at that depth still pass.
+const depthMaterial = new MeshBasicMaterial({
+  colorWrite: false,
+  side,
+  polygonOffset: true,
+  polygonOffsetFactor: 1,
+  polygonOffsetUnits: 1,
+});
+
 const wireMaterial = new LineBasicMaterial({
   color: props.color,
   opacity: WIRE_OPACITY,
   ...wireLook,
 });
+// The hull's inside, seen through its one surface: every layer drawn faint,
+// the fainter the more surface the ship has for its size, so a large ship's
+// decks show as well as a fighter's few without it shining brighter.
+const INTERIOR_OPACITY = 0.25;
+const interiorMaterial = new MaterialClass({
+  color: props.color,
+  side,
+  transparent: true,
+  opacity: INTERIOR_OPACITY,
+  depthTest: false,
+  depthWrite: false,
+});
+
+const fitInteriorOpacity = (hull: Mesh[]) => {
+  if (!hull.length) return;
+
+  let area = 0;
+  const box = new Box3();
+  const scale = new Vector3();
+
+  for (const mesh of hull) {
+    mesh.updateWorldMatrix(true, false);
+    scale.setFromMatrixScale(mesh.matrixWorld);
+    area += surfaceArea(mesh.geometry) * Math.abs(scale.x * scale.y);
+    box.expandByObject(mesh);
+  }
+
+  interiorMaterial.opacity =
+    INTERIOR_OPACITY / surfaceLayers(area, box.getSize(new Vector3()));
+};
+
+// Under the hull's surface, over its windows.
+const INTERIOR_RENDER_ORDER = -0.5;
+
 const windowMaterial = new MaterialClass({
   color: props.windowColor,
   opacity: 0.8,
@@ -309,9 +359,20 @@ const applyGlow = (entry: Fading) => {
   }
 };
 
+const partWireMaterial = () => {
+  const own = wireMaterial.clone();
+  own.depthTest = false;
+
+  return own;
+};
+
+// A part is drawn whole over the hull, inside it or not.
 const partMaterial = () => {
   const own = material.clone() as Fading["body"];
-  if (props.hologram) own.opacity = PART_OPACITY;
+  if (props.hologram) {
+    own.opacity = PART_OPACITY;
+    own.depthTest = false;
+  }
 
   return own;
 };
@@ -375,11 +436,19 @@ const overlayFor = (body: Mesh) => {
 // materials: a mounted part's originals belong to the holo cache.
 const setMaterials = (scene: Group) => {
   const bodies: Mesh[] = [];
+  const interiorHull: Mesh[] = [];
 
   scene.traverse((node) => {
     const mesh = node as Mesh;
 
-    if (!mesh.isMesh || mesh.userData.wire || mesh.userData.overlay) return;
+    if (
+      !mesh.isMesh ||
+      mesh.userData.wire ||
+      mesh.userData.overlay ||
+      mesh.userData.depth
+    ) {
+      return;
+    }
     if (withinTexturedMount(mesh)) return;
 
     if (!mesh.userData.shared) disposeOriginal(mesh.material);
@@ -408,6 +477,19 @@ const setMaterials = (scene: Group) => {
 
     if (!own) {
       body.material = material;
+
+      if (props.hologram && !body.children.some((child) => child.userData.depth)) {
+        const depth = new Mesh(body.geometry, depthMaterial);
+        depth.userData.depth = true;
+        body.add(depth);
+
+        const interior = new Mesh(body.geometry, interiorMaterial);
+        interior.userData.depth = true;
+        interior.renderOrder = INTERIOR_RENDER_ORDER;
+        body.add(interior);
+        interiorHull.push(body);
+      }
+
       continue;
     }
 
@@ -421,7 +503,7 @@ const setMaterials = (scene: Group) => {
         body: partMaterial(),
         base: new Color(),
         highlight: new Color(),
-        wire: props.hologram ? wireMaterial.clone() : undefined,
+        wire: props.hologram ? partWireMaterial() : undefined,
         overlay: overlayFor(body),
         glow: target,
         target,
@@ -441,6 +523,8 @@ const setMaterials = (scene: Group) => {
     if (wire && entry.wire) wire.material = entry.wire;
     if (wire) wire.renderOrder = RENDER_ORDER.partWire;
   }
+
+  fitInteriorOpacity(interiorHull);
 
   invalidate();
 };
@@ -517,6 +601,8 @@ onUnmounted(() => {
   material.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
+  depthMaterial.dispose();
+  interiorMaterial.dispose();
   // A paint still loading would land after this and never be freed.
   paintRequest += 1;
   paintMaps.forEach((map) => map.dispose());
@@ -1303,8 +1389,10 @@ watch(
 watch(
   () => props.color,
   (color) => {
-    if (!props.hologram) material.color.set(color);
+    material.color.set(color);
+    updateHullGlow();
     wireMaterial.color.set(color);
+    interiorMaterial.color.set(color);
     updatePartColor();
     fading.forEach((entry) => {
       paintEntry(entry);
