@@ -573,9 +573,9 @@ const hasFilters = computed(() =>
   </div>
 </template>
 
-<style lang="scss" scoped>
-@use "../view";
+<style lang="scss" scoped src="../view.scss"></style>
 
+<style lang="scss" scoped>
 .slot-view__head {
   display: flex;
   flex-wrap: wrap;

@@ -302,6 +302,4 @@ const removable = computed(() => !!props.acquisition || !!props.vehicleId);
   </div>
 </template>
 
-<style lang="scss" scoped>
-@use "../view";
-</style>
+<style lang="scss" scoped src="../view.scss"></style>

@@ -1062,9 +1062,9 @@ const onSubmit = async () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@use "../view";
+<style lang="scss" scoped src="../view.scss"></style>
 
+<style lang="scss" scoped>
 .route-view__fieldset {
   min-width: 0;
   margin: 0;
