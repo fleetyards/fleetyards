@@ -23,7 +23,11 @@ module BuiltFromSquadron
   end
 
   private def fleet_squadron_belongs_to_the_fleet
-    return if fleet_squadron.blank?
+    return if fleet_squadron_id.blank?
+
+    # An id that names no squadron would otherwise only be stopped by the
+    # foreign key, as a 500.
+    return errors.add(:fleet_squadron, :not_in_fleet) if fleet_squadron.blank?
 
     fleet_id = squadron_fleet_id
     return if fleet_id.blank? || fleet_squadron.fleet_id == fleet_id

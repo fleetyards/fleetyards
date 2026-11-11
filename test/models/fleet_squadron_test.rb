@@ -241,4 +241,21 @@ class FleetSquadronTest < ActiveSupport::TestCase
 
     assert_nil FleetSquadron.find_by(id: squadron.id)
   end
+
+  test "deleting a squadron touches the events and templates its teams belong to" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    event = create(:fleet_event, fleet: @fleet)
+    mission = create(:mission, fleet: @fleet)
+    event_team = create(:fleet_event_team, fleet_event: event, fleet_squadron: squadron)
+    mission_team = create(:mission_team, mission: mission, fleet_squadron: squadron)
+
+    travel 1.minute do
+      squadron.destroy!
+
+      assert_in_delta Time.current, event.reload.updated_at, 1.second
+      assert_in_delta Time.current, mission.reload.updated_at, 1.second
+      assert_nil event_team.reload.fleet_squadron_id
+      assert_nil mission_team.reload.fleet_squadron_id
+    end
+  end
 end

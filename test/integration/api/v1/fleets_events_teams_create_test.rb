@@ -109,4 +109,12 @@ class Api::V1::FleetsEventsTeamsCreateTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
       body: {title: "Strike Team", fleetSquadronId: foreign.id}
   end
+
+  test "refuses a squadron id that names no squadron" do
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
+      body: {title: "Strike Team", fleetSquadronId: SecureRandom.uuid}
+  end
 end
