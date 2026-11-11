@@ -288,7 +288,16 @@ const buybackOptions = computed<StartOption[]>(() =>
           reason,
           ship: shown,
           title: pledge.name,
-          meta: [shown.name, insuranceLabel(pledge)].join(" · "),
+          meta: shown.name,
+          tags: [
+            {
+              label: insuranceLabel(pledge),
+              variant: pledge.lifetimeInsurance
+                ? PillVariantsEnum.DEFAULT
+                : PillVariantsEnum.NEUTRAL,
+            },
+          ],
+          preferred: pledge.lifetimeInsurance,
           keywords: pledge.models.map((entry) => entry.name).join(" "),
           price: money(cost),
           priceNote: t("hangarPlanner.panel.buybackPrice", {

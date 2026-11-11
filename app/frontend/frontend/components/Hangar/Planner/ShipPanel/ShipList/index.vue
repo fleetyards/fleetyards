@@ -100,6 +100,31 @@ const byOrder = (a: ShipListItem, b: ShipListItem) => {
 const countOf = (section: string) =>
   searched.value.filter((item) => item.section === section).length;
 
+// Rows for the same ship keep their places in the sort, but the preferred
+// ones take the first of those places.
+const preferFirst = (items: ShipListItem[]) => {
+  const byShip = new Map<string, number[]>();
+  items.forEach((item, index) => {
+    if (!item.ship) return;
+    byShip.set(item.ship.id, [...(byShip.get(item.ship.id) ?? []), index]);
+  });
+
+  const result = [...items];
+  byShip.forEach((places) => {
+    if (places.length < 2) return;
+    const rows = places.map((place) => items[place]);
+    const ordered = [
+      ...rows.filter((row) => row.preferred),
+      ...rows.filter((row) => !row.preferred),
+    ];
+    places.forEach((place, index) => {
+      result[place] = ordered[index];
+    });
+  });
+
+  return result;
+};
+
 const shownSections = computed(() =>
   props.sections
     .filter((section) => countOf(section.key) > 0)
@@ -108,9 +133,11 @@ const shownSections = computed(() =>
     )
     .map((section) => ({
       ...section,
-      items: searched.value
-        .filter((item) => item.section === section.key)
-        .sort(byOrder),
+      items: preferFirst(
+        searched.value
+          .filter((item) => item.section === section.key)
+          .sort(byOrder),
+      ),
     })),
 );
 

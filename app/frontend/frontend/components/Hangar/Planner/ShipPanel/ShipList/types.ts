@@ -35,6 +35,9 @@ export type ShipListItem = {
   sortPrice?: number | null;
   // Held above the rest of its section whatever the sort.
   pinned?: boolean;
+  // Comes first among the rows for the same ship, whatever the sort, such as
+  // a pledge with lifetime insurance.
+  preferred?: boolean;
   // Listed but not pickable, with why, so a ship that cannot take part does
   // not simply go missing.
   reason?: string;

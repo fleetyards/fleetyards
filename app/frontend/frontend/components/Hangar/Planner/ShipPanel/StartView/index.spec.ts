@@ -478,4 +478,39 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
 
     resources.value = before;
   });
+
+  it("shows a buy-back's insurance, lifetime first for the same ship", async () => {
+    const before = resources.value;
+    resources.value = {
+      ...before,
+      buybacks: [
+        buyback("aurora-months", {
+          name: "Standalone Ship - Aurora MR - 6 Month",
+          price: 25,
+          lifetimeInsurance: false,
+          insuranceMonths: 6,
+        }),
+        buyback("aurora-lti", { name: "Standalone Ship - Aurora MR - LTI" }),
+      ],
+    };
+
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    const rows = wrapper
+      .find('[data-test="ship-list-group-buyback"]')
+      .findAll('[data-test="ship-list-row"]');
+    // Dearer, yet first: the same ship with lifetime insurance.
+    expect(rows.map((row) => row.find(".ship-list__title").text())).toEqual([
+      "Standalone Ship - Aurora MR - LTI",
+      "Standalone Ship - Aurora MR - 6 Month",
+    ]);
+    expect(
+      rows.map((row) => row.find('[data-test="ship-list-tag"]').text()),
+    ).toEqual(["LTI", "6 months"]);
+
+    resources.value = before;
+  });
 });
