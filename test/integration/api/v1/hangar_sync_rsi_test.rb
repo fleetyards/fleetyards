@@ -44,6 +44,22 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, body: body
   end
 
+  test "PUT /hangar/sync-rsi-hangar keeps the store credit it was sent" do
+    user = create(:user, rsi_store_credit: 100)
+    sign_in user
+
+    assert_api_response :put, 200, body: {items: [], storeCredit: 1234.5}
+    assert_in_delta 1234.5, user.reload.rsi_store_credit
+  end
+
+  test "PUT /hangar/sync-rsi-hangar leaves the store credit alone when not sent" do
+    user = create(:user, rsi_store_credit: 100)
+    sign_in user
+
+    assert_api_response :put, 200, body: {items: []}
+    assert_in_delta 100.0, user.reload.rsi_store_credit
+  end
+
   test "PUT /hangar/sync-rsi-hangar keeps the pages it read only in part and tells the admins" do
     AdminNotificationsChannel.stubs(:broadcast_to)
     admin_user = create(:admin_user, resource_access: [:"rsi-api-status"])

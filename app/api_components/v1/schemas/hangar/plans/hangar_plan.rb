@@ -14,10 +14,11 @@ module V1
               name: {type: :string},
               description: {type: [:string, :null]},
               basedOnAt: {type: :string, format: "date-time"},
-              startingCredit: {type: :number},
+              startingCredit: {type: [:number, :null], description: "The plan's own store credit; null uses the synced one"},
               buybackTokens: {type: [:integer, :null], description: "Buy-back tokens the user holds; each lets one buy-back be paid with store credit. Null uses what the last buy-back sync read"},
               vatRate: {type: [:number, :null], description: "VAT in percent that RSI adds to new money; store credit carries none"},
               syncedBuybackTokens: {type: [:integer, :null], description: "The buy-back tokens the user's last buy-back sync read from RSI"},
+              syncedStoreCredit: {type: [:number, :null], description: "The store credit the user's last hangar sync read from RSI"},
               shared: {type: :boolean},
               shareToken: {type: [:string, :null]},
               slotsCount: {type: :integer},
@@ -32,7 +33,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name basedOnAt startingCredit buybackTokens vatRate syncedBuybackTokens shared slotsCount slots melts vehicleMarks createdAt updatedAt]
+            required: %w[id name basedOnAt startingCredit buybackTokens vatRate syncedBuybackTokens syncedStoreCredit shared slotsCount slots melts vehicleMarks createdAt updatedAt]
           })
         end
       end
