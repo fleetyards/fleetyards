@@ -183,9 +183,18 @@ const onKeydown = (event: KeyboardEvent) => {
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
     move(-1);
-  } else if (event.key === "Enter" && selected.value) {
+  } else if (event.key === "Enter") {
+    // Only from a row itself: Enter in the search field or on a sort button
+    // means something else, and must not use a ship the list picked for the
+    // detail pane on its own.
+    const id = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+      "[data-id]",
+    )?.dataset.id;
+    const item = pickable.value.find((entry) => entry.id === id);
+    if (!item) return;
+
     event.preventDefault();
-    emit("commit", selected.value);
+    emit("commit", item);
   }
 };
 </script>

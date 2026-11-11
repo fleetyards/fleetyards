@@ -303,7 +303,11 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
     // The first start is shown until another is picked.
     await list.trigger("keydown", { key: "ArrowDown" });
     await list.trigger("keydown", { key: "ArrowDown" });
-    await list.trigger("keydown", { key: "Enter" });
+    await rows(wrapper)
+      .find(
+        (row) => row.attributes("data-id") === "vehicle:vehicle-prospector",
+      )!
+      .trigger("keydown", { key: "Enter" });
     await flushPromises();
 
     expect(pairStart).toHaveBeenLastCalledWith(
@@ -338,5 +342,20 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
       { acquisition },
     );
     expect(wrapper.emitted("done")).toHaveLength(1);
+  });
+
+  it("does not use a start on Enter in the search field", async () => {
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+    pairStart.mockClear();
+
+    await wrapper
+      .find('[data-test="ship-list-start"] input')
+      .trigger("keydown", { key: "Enter" });
+    await flushPromises();
+
+    expect(pairStart).not.toHaveBeenCalled();
   });
 });
