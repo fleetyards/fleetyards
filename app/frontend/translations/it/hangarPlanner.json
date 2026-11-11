@@ -74,6 +74,7 @@
         "startingCredit": "Credito store",
         "startingCreditInfo": "Credito dello store che hai già, in USD. Lascia vuoto per usare quello che una sincronizzazione dell'hangar legge da RSI.",
         "startingCreditSynced": "Credito dello store che hai già, in USD. La tua ultima sincronizzazione dell'hangar ha letto %{credit} da RSI; lascia vuoto per usarlo.",
+        "useSyncedCredit": "Usa i %{credit} dell'hangar",
         "source": "Parti da",
         "sourcePlan": "Piano da copiare",
         "slotLabel": "Ruolo",

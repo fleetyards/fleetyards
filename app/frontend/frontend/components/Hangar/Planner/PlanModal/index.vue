@@ -9,7 +9,11 @@ import { useForm } from "vee-validate";
 import { useRouter } from "vue-router";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -26,6 +30,7 @@ import {
   HangarPlanSourceEnum,
   useCreateHangarPlan,
   useHangarPlans,
+  useMe,
   useUpdateHangarPlan,
 } from "@/services/fyApi";
 
@@ -38,11 +43,15 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { money } = usePlanMoney();
 
-const syncedCredit = computed(() =>
-  typeof props.plan?.syncedStoreCredit === "number"
-    ? props.plan.syncedStoreCredit
-    : undefined,
-);
+// The current user rather than the plan: a new plan has none, and a sync run
+// since the plan loaded is newer.
+const { data: me } = useMe();
+
+const syncedCredit = computed(() => {
+  const credit = me.value?.rsiStoreCredit ?? props.plan?.syncedStoreCredit;
+
+  return typeof credit === "number" ? credit : undefined;
+});
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const router = useRouter();
@@ -68,6 +77,14 @@ useModalDirty(useFormDirty(values, initialValues));
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [startingCredit, startingCreditProps] = defineField("startingCredit");
+
+const ownCredit = computed(
+  () => startingCredit.value !== "" && startingCredit.value !== null,
+);
+
+const useSyncedCredit = () => {
+  startingCredit.value = "";
+};
 const [buybackTokens, buybackTokensProps] = defineField("buybackTokens");
 const [vatRate, vatRateProps] = defineField("vatRate");
 const [source, sourceProps] = defineField("source");
@@ -178,7 +195,22 @@ const onSubmit = handleSubmit(async (values) => {
               })
         "
         :placeholder="syncedCredit === undefined ? '0' : String(syncedCredit)"
-      />
+      >
+        <template v-if="syncedCredit !== undefined && ownCredit" #subline>
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
+            data-test="hangar-plan-use-synced-credit"
+            @click="useSyncedCredit"
+          >
+            {{
+              t("hangarPlanner.fields.useSyncedCredit", {
+                credit: money(syncedCredit),
+              })
+            }}
+          </Btn>
+        </template>
+      </FormInput>
       <FormInput
         v-model="buybackTokens"
         v-bind="buybackTokensProps"

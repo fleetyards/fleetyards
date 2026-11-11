@@ -74,6 +74,7 @@
         "startingCredit": "Crédito de tienda",
         "startingCreditInfo": "Crédito de la tienda que ya tienes, en USD. Déjalo vacío para usar lo que una sincronización del hangar lee de RSI.",
         "startingCreditSynced": "Crédito de la tienda que ya tienes, en USD. Tu última sincronización del hangar leyó %{credit} de RSI; déjalo vacío para usarlo.",
+        "useSyncedCredit": "Usar los %{credit} del hangar",
         "source": "Empezar desde",
         "sourcePlan": "Plan a copiar",
         "slotLabel": "Rol",
