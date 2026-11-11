@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "Rüstungssets",
+        "size": "Größe",
         "count": {
           "one": "%{count} Set",
           "other": "%{count} Sets"

@@ -1,13 +1,21 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
-import { type ArmorSet, OutfitSlotEnum } from "@/services/fyApi";
+import {
+  type ArmorSet,
+  type FilterOption,
+  OutfitSlotEnum,
+} from "@/services/fyApi";
 
-const set = (name: string, slug = name): ArmorSet => ({
+const set = (
+  name: string,
+  slug = name,
+  itemType = "heavy_armor",
+): ArmorSet => ({
   name,
   manufacturerName: "Clark Defense Systems",
-  itemType: "heavy_armor",
-  itemTypeLabel: "Heavy Armor",
+  itemType,
+  itemTypeLabel: `${itemType} label`,
   image: null,
   pieces: [{ slot: OutfitSlotEnum.TORSO, slug, name: `${name} Core` }],
 });
@@ -20,6 +28,8 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 const { default: ArmorSetsModal } = await import("./index.vue");
+const { default: BaseSelect } =
+  await import("@/shared/components/base/Select/index.vue");
 
 const mount = () =>
   mountWithDefaults<typeof ArmorSetsModal>(ArmorSetsModal, {
@@ -61,5 +71,31 @@ describe("DressingRoomArmorSetsModal", () => {
 
     expect(wrapper.find(card("set-49")).exists()).toBe(true);
     expect(wrapper.find(more).exists()).toBe(false);
+  });
+
+  it("offers the sizes light to heavy and keeps to the ones picked", async () => {
+    sets.value = [
+      set("orc", "orc", "heavy_armor"),
+      set("adp", "adp", "medium_armor"),
+      set("geist", "geist", "light_armor"),
+    ];
+
+    const wrapper = await mount();
+    const sizeSelect = wrapper.findComponent(BaseSelect);
+
+    const { options } = sizeSelect.props() as { options: FilterOption[] };
+
+    expect(options.map((option) => option.value)).toEqual([
+      "light_armor",
+      "medium_armor",
+      "heavy_armor",
+    ]);
+
+    sizeSelect.vm.$emit("update:modelValue", ["light_armor", "heavy_armor"]);
+    await flushPromises();
+
+    expect(wrapper.find(card("geist")).exists()).toBe(true);
+    expect(wrapper.find(card("orc")).exists()).toBe(true);
+    expect(wrapper.find(card("adp")).exists()).toBe(false);
   });
 });

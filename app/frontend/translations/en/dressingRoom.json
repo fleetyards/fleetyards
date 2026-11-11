@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "Armour sets",
+        "size": "Size",
         "count": {
           "one": "%{count} Set",
           "other": "%{count} Sets"

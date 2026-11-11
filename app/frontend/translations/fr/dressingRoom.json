@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "Ensembles d'armure",
+        "size": "Taille",
         "count": {
           "one": "%{count} ensemble",
           "other": "%{count} ensembles"

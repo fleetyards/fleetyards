@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "护甲套装",
+        "size": "尺寸",
         "count": {
           "one": "%{count} 套",
           "other": "%{count} 套"

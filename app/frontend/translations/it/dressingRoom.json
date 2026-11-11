@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "Set di armatura",
+        "size": "Taglia",
         "count": {
           "one": "%{count} set",
           "other": "%{count} set"

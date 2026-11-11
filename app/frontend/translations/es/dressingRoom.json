@@ -60,6 +60,7 @@
       },
       "armorSets": {
         "open": "Conjuntos de armadura",
+        "size": "Tamaño",
         "count": {
           "one": "%{count} conjunto",
           "other": "%{count} conjuntos"

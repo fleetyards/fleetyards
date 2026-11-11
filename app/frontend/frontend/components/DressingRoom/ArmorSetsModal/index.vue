@@ -8,6 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import PickerCard from "@/shared/components/PickerCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import CataloguePickerLayout from "@/frontend/components/CataloguePicker/Layout/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -16,7 +17,11 @@ import {
   type OutfitSelection,
   wearsArmorSet,
 } from "@/frontend/utils/dressingRoom";
-import { type ArmorSet, useArmorSets } from "@/services/fyApi";
+import {
+  type ArmorSet,
+  type FilterOption,
+  useArmorSets,
+} from "@/services/fyApi";
 
 interface Props {
   selection: OutfitSelection;
@@ -31,21 +36,48 @@ const emit = defineEmits<{
 // The whole list comes at once, so paging only keeps the grid light.
 const PER_PAGE = 48;
 
+const SIZE_ORDER = ["light_armor", "medium_armor", "heavy_armor"];
+
 const { t } = useI18n();
 
 const comlink = useComlink();
 
 const search = ref("");
+const sizes = ref<string[]>([]);
 const shown = ref(PER_PAGE);
 
 const { data: sets, isLoading } = useArmorSets({
   query: { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 },
 });
 
+const sizeRank = (itemType: string) => {
+  const rank = SIZE_ORDER.indexOf(itemType);
+
+  return rank === -1 ? SIZE_ORDER.length : rank;
+};
+
+const sizeOptions = computed<FilterOption[]>(() => {
+  const labels = new Map<string, string>();
+
+  (sets.value ?? []).forEach((set) => {
+    if (set.itemType && !labels.has(set.itemType)) {
+      labels.set(set.itemType, set.itemTypeLabel ?? set.itemType);
+    }
+  });
+
+  return [...labels]
+    .sort(([a], [b]) => sizeRank(a) - sizeRank(b))
+    .map(([value, label]) => ({ value, label }));
+});
+
 const filtered = computed(() => {
   const terms = search.value.toLowerCase().split(/\s+/).filter(Boolean);
 
   return (sets.value ?? []).filter((set) => {
+    if (sizes.value.length && !sizes.value.includes(set.itemType ?? "")) {
+      return false;
+    }
+
     const haystack = [set.name, set.manufacturerName, set.itemTypeLabel]
       .filter(Boolean)
       .join(" ")
@@ -57,7 +89,7 @@ const filtered = computed(() => {
 
 const visible = computed(() => filtered.value.slice(0, shown.value));
 
-watch(search, () => {
+watch([search, sizes], () => {
   shown.value = PER_PAGE;
 });
 
@@ -89,6 +121,19 @@ const pick = (set: ArmorSet) => {
       :empty="!filtered.length"
       data-test="dressing-room-armor-sets"
     >
+      <template #filters>
+        <BaseSelect
+          v-model="sizes"
+          class="armor-sets-modal__size"
+          name="dressing-room-armor-sets-size"
+          :options="sizeOptions"
+          :label="t('dressingRoom.armorSets.size')"
+          no-label
+          multiple
+          unsorted
+        />
+      </template>
+
       <PickerCard
         v-for="set in visible"
         :key="setKey(set)"
@@ -120,6 +165,10 @@ const pick = (set: ArmorSet) => {
 </template>
 
 <style lang="scss" scoped>
+.armor-sets-modal__size {
+  min-width: 200px;
+}
+
 .armor-sets-modal__slots {
   font-size: 0.85em;
   opacity: 0.6;
