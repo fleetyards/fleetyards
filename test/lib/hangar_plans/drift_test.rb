@@ -91,10 +91,10 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_not HangarPlans::Drift.new(@plan).drifted?
   end
 
-  test "a rebase drops the marks of ships that left the hangar" do
+  test "a rebase drops the marks of ships deleted from the hangar" do
     gone = create(:vehicle, user: @user, model: @carrack)
     @plan.vehicle_marks.create!(vehicle: gone, mark: "keep")
-    gone.update!(hidden: true)
+    gone.destroy!
 
     HangarPlans::Drift.new(@plan.reload).rebase!
 
@@ -102,5 +102,15 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_not @plan.vehicle_marks.exists?(vehicle_id: gone.id)
     assert @plan.vehicle_marks.exists?(vehicle_id: @kept.id)
     assert_not HangarPlans::Drift.new(@plan).drifted?
+  end
+
+  test "a rebase keeps the mark of a ship hidden for now" do
+    hidden = create(:vehicle, user: @user, model: @carrack)
+    @plan.vehicle_marks.create!(vehicle: hidden, mark: "keep")
+    hidden.update!(hidden: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_equal "keep", @plan.vehicle_marks.find_by(vehicle_id: hidden.id).mark
   end
 end
