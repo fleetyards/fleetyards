@@ -6,7 +6,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import type { FilterOption } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const { sizes, grades, slots } = vi.hoisted(() => ({
+const { sizes, grades, slots, makers } = vi.hoisted(() => ({
+  makers: [
+    { category: "manufacturer", label: "Behring", value: "behring" },
+    { category: "manufacturer", label: "Clark Defense", value: "clark" },
+  ],
   sizes: [
     { category: "size", label: "Size 1", value: "1" },
     { category: "size", label: "Size 3", value: "3" },
@@ -31,6 +35,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   return {
     ...(await importOriginal<Record<string, unknown>>()),
     useEquipmentTypesFilters: empty,
+    useEquipmentManufacturersFilters: (params: MaybeRef<Params>) => ({
+      data: computed<FilterOption[]>(() =>
+        toValue(params).q?.equipmentTypeIn?.includes("armor")
+          ? makers.slice(1)
+          : makers,
+      ),
+    }),
     useEquipmentItemTypesFilters: empty,
     useEquipmentSubTypesFilters: empty,
     useEquipmentWeaponClassesFilters: empty,
@@ -108,6 +119,26 @@ describe("EquipmentFilterForm", () => {
 
     expect(router.currentRoute.value.query.sizeIn).toEqual(["3"]);
     expect(router.currentRoute.value.query.gradeIn).toEqual(["1", "2"]);
+  });
+
+  it("offers the makers of the chosen type and drops one it no longer has", async () => {
+    vi.useFakeTimers();
+    const { router, wrapper } = await mountAt({
+      manufacturerSlugIn: ["behring", "clark"],
+    });
+
+    expect(select(wrapper, "manufacturer").props("options")).toEqual(makers);
+
+    select(wrapper, "equipmentType").vm.$emit("update:modelValue", ["armor"]);
+
+    await vi.advanceTimersByTimeAsync(400);
+
+    expect(select(wrapper, "manufacturer").props("options")).toEqual([
+      makers[1],
+    ]);
+    expect(router.currentRoute.value.query.manufacturerSlugIn).toEqual([
+      "clark",
+    ]);
   });
 
   it("prefills from a single value in the URL as a list", async () => {
