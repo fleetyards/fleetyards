@@ -42,8 +42,11 @@ module HangarPlans
 
       check_slot_limit(ships.size)
       slot_ids = ships.map { SecureRandom.uuid }
+      first = (plan.slots.maximum(:position) || -1) + 1
       HangarPlanSlot.insert_all!(
-        ships.each_with_index.map { |(_, label), position| {id: slot_ids[position], hangar_plan_id: plan.id, label:, position:} }
+        ships.each_with_index.map do |(_, label), index|
+          {id: slot_ids[index], hangar_plan_id: plan.id, label:, position: first + index}
+        end
       )
       HangarPlanCandidate.insert_all!(
         ships.zip(slot_ids).map do |((model_id, model_paint_id, model_module_ids, model_upgrade_ids), _), slot_id|
