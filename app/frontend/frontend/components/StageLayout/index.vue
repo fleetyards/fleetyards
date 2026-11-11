@@ -71,8 +71,10 @@ const slots = useSlots();
     grid-template-areas:
       ". . end"
       ". controls end";
+    // An empty column the end's width on the left too, so the control bar
+    // sits under the middle of the stage rather than of what the end leaves.
     grid-template-columns:
-      0
+      var(--stage-layout-column)
       minmax(0, 1fr)
       var(--stage-layout-column);
     grid-template-rows: minmax(0, 1fr) auto;
@@ -87,10 +89,6 @@ const slots = useSlots();
     grid-template-areas:
       "start . end"
       "start controls end";
-    grid-template-columns:
-      var(--stage-layout-column)
-      minmax(0, 1fr)
-      var(--stage-layout-column);
   }
 }
 
