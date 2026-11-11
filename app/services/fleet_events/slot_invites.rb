@@ -13,13 +13,18 @@ module FleetEvents
   class SlotInvites
     INVITING_STATUSES = %w[open locked].freeze
 
+    COMMITTED_STATUSES = %w[confirmed pending].freeze
+
     def self.offer_all!(event)
       return unless inviting?(event)
 
+      teams = event.fleet_event_teams.select(:id)
+      ships = FleetEventShip.where(fleet_event_team_id: teams).select(:id)
+
       FleetEventSlot
+        .where(slottable_type: "FleetEventTeam", slottable_id: teams)
+        .or(FleetEventSlot.where(slottable_type: "FleetEventShip", slottable_id: ships))
         .where(id: FleetEventSlotCandidate.waiting.select(:fleet_event_slot_id))
-        .includes(:slottable)
-        .select { |slot| slot.fleet_event&.id == event.id }
         .each { |slot| new(slot).offer! }
     end
 
@@ -71,6 +76,9 @@ module FleetEvents
 
     # A member already waiting in the event's pool is moved into the slot
     # rather than signed up twice; one already in another slot has a seat.
+    # Somebody who already committed to the event keeps that commitment in the
+    # slot: turning it into an invitation would let a decline drop them from
+    # the event they said yes to.
     private def invite(event, candidate)
       membership = candidate.fleet_membership
       return unless membership&.kept? && membership.accepted?
@@ -82,13 +90,18 @@ module FleetEvents
       return if existing&.fleet_event_slot_id.present?
 
       signup = existing || event.fleet_event_signups.new(fleet_membership: membership)
-      signup.assign_attributes(fleet_event_slot: slot, status: "invited")
+      committed = existing.present? && COMMITTED_STATUSES.include?(existing.status)
+      signup.assign_attributes(fleet_event_slot: slot, status: committed ? existing.status : "invited")
       signup.vehicle = candidate.vehicle if candidate.vehicle&.user_id == membership.user_id
 
       return unless signup.save_without_conflict
 
       ActiveRecord.after_all_transactions_commit do
-        ActiveSupport::Notifications.instrument("fleet_event_signup.invited", signup:)
+        if committed
+          ActiveSupport::Notifications.instrument("fleet_event_signup.assigned", signup:, previous_slot_id: nil)
+        else
+          ActiveSupport::Notifications.instrument("fleet_event_signup.invited", signup:)
+        end
       end
 
       signup
