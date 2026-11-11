@@ -1,19 +1,46 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, toValue, type MaybeRefOrGetter } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { ScDataPatchSummary } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const summary = ref<ScDataPatchSummary | undefined>();
 const screens = ref<{ url: string; largeUrl: string }[]>([]);
+const previewScreens = ref<{ url: string; largeUrl: string }[]>([]);
+const sources = ref<
+  { environment: string; version: string; default: boolean }[]
+>([]);
+const summaryParams =
+  ref<MaybeRefOrGetter<{ environment?: string } | undefined>>();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useScDataPatchSummary: () => ({ data: summary, isLoading: ref(false) }),
+  useScDataPatchSummary: (
+    params: MaybeRefOrGetter<{ environment?: string } | undefined>,
+  ) => {
+    summaryParams.value = params;
+
+    return { data: summary, isLoading: ref(false) };
+  },
+  useScDataSources: () => ({
+    data: computed(() => ({ items: sources.value })),
+  }),
   useScDataBuilds: () => ({
     data: ref({
       items: [
+        {
+          environment: "ptu",
+          version: "4.10.3-ptu.4",
+          default: false,
+          loadingScreens: [],
+        },
+        {
+          environment: "ptu",
+          version: "4.10.3-ptu.3",
+          default: false,
+          loadingScreens: previewScreens.value,
+        },
         {
           environment: "live",
           version: "4.10.2-live.2",
@@ -91,6 +118,10 @@ describe("HomeLandingPatch", () => {
   beforeEach(() => {
     summary.value = base();
     screens.value = [];
+    previewScreens.value = [];
+    sources.value = [
+      { environment: "live", version: "4.10.2-live.2", default: true },
+    ];
   });
 
   it("leads with the new ships and the biggest change", async () => {
@@ -140,5 +171,41 @@ describe("HomeLandingPatch", () => {
     expect(
       wrapper.get("[data-test='home-landing-patch-banner']").element.tagName,
     ).toBe("BUTTON");
+  });
+
+  it("offers no switch while there is no preview ahead of live", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper.find("[data-test='home-landing-patch-environment']").exists(),
+    ).toBe(false);
+    expect(toValue(summaryParams.value)).toEqual({ environment: "live" });
+  });
+
+  it("switches the section to the preview", async () => {
+    sources.value = [
+      ...sources.value,
+      { environment: "ptu", version: "4.10.3-ptu.4", default: false },
+    ];
+    previewScreens.value = [{ url: "/ptu.png", largeUrl: "/ptu.webp" }];
+
+    const wrapper = await mount();
+    const segments = wrapper.findAll(
+      "[data-test='home-landing-patch-environment'] button",
+    );
+
+    expect(segments.map((segment) => segment.text())).toEqual([
+      "LIVE 4.10.2",
+      "PTU 4.10.3",
+    ]);
+
+    await segments[1].trigger("click");
+
+    expect(toValue(summaryParams.value)).toEqual({ environment: "ptu" });
+    expect(
+      wrapper
+        .get("[data-test='home-landing-patch-banner']")
+        .attributes("style"),
+    ).toContain("/ptu.webp");
   });
 });
