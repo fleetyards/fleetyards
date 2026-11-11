@@ -19,6 +19,7 @@ module V1
               crew: {type: [:integer, :null]},
               cargo: {type: :integer},
               image: ::Shared::V1::Schemas::MediaFile,
+              angledView: ::Shared::V1::Schemas::MediaFile,
               positionCount: {type: :integer}
             }
           })
