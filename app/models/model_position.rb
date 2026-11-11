@@ -184,10 +184,22 @@ class ModelPosition < ApplicationRecord
     return :copilot if sc_name.include?("_copilot")
     return :engineer if sc_name.include?("engineer_console") || sc_name.start_with?("hardpoint_engineering")
     return :turret_gunner if sc_name.include?("turret_console")
-    return :operator if sc_name.include?("_seat_")
 
-    :operator
+    seat_role(hardpoint) || :operator
   end
+
+  # What the seat fitted to a port says it is for, where the port's own name
+  # does not: the Ironclad flies from a seat on a remote turret port.
+  def self.seat_role(hardpoint)
+    seat_key = hardpoint.component&.sc_key.to_s
+
+    if seat_key.match?(/_(co_?pilot|codriver)/)
+      :copilot
+    elsif seat_key.include?("_pilot")
+      :pilot
+    end
+  end
+  private_class_method :seat_role
 
   def self.derive_name(hardpoint)
     sc_name = hardpoint.sc_name.to_s
@@ -209,6 +221,13 @@ class ModelPosition < ApplicationRecord
       return sc_name.sub(/hardpoint_engineering(screen)?_?/, "")
           .tr("_", " ").strip.titleize.presence || "Engineer"
     end
+
+    case seat_role(hardpoint)
+    when :pilot then return "Pilot"
+    when :copilot then return "Copilot"
+    end
+
+    return "Operations" if hardpoint.component&.sc_key.to_s.end_with?("_operations")
 
     sc_name.sub(/^hardpoint_(seat_)?/, "").tr("_", " ").strip.titleize
   end

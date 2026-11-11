@@ -66,6 +66,22 @@ class ModelPositionTest < ActiveSupport::TestCase
     assert_equal [curated.id], model.model_positions.reload.pluck(:id)
   end
 
+  def seat_item(sc_key)
+    create(:component, category: "seat", sc_key:)
+  end
+
+  test ".generate_for_model! takes the role from the seat a port holds when its name gives none" do
+    model = create(:model)
+    create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_seat_remote_turret_left", component: seat_item("drak_ironclad_scitem_seatdashboard_pilot"))
+    create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_seat_passenger", component: seat_item("rsi_ursa_rover_scitem_seat_copilot"))
+    create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_seat_remote_turret_right", component: seat_item("drak_ironclad_scitem_seatdashboard_operations"))
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal [["pilot", "Pilot"], ["copilot", "Copilot"], ["operator", "Operations"]],
+      model.model_positions.reload.order(:position).pluck(:position_type, :name)
+  end
+
   def two_environments
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0", ptu: "3.24.1-ptu.2"}, default: "live"})
     [ScData::Source.find(:live), ScData::Source.find(:ptu)]
