@@ -14,6 +14,11 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import MetricsTable from "@/frontend/components/Hangar/Planner/MetricsTable/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
@@ -52,11 +57,27 @@ const value = (totals: HangarPlanTotals, row: (typeof totalRows)[number]) =>
     totals[row.max] as number,
   );
 
+const PREVIEW_COUNT = 10;
+
+// The biggest moves first, so the preview shows what the plans differ in most.
 const changed = computed(() =>
-  (compare.value?.models ?? []).filter(
-    (diff) => diff.change !== HangarPlanModelChangeEnum.UNCHANGED,
-  ),
+  (compare.value?.models ?? [])
+    .filter((diff) => diff.change !== HangarPlanModelChangeEnum.UNCHANGED)
+    .sort(
+      (a, b) =>
+        Math.abs(b.rightCount - b.leftCount) -
+          Math.abs(a.rightCount - a.leftCount) ||
+        a.model.name.localeCompare(b.model.name),
+    ),
 );
+
+const showAllChanges = ref(false);
+
+const shownChanges = computed(() =>
+  showAllChanges.value ? changed.value : changed.value.slice(0, PREVIEW_COUNT),
+);
+
+const hiddenCount = computed(() => changed.value.length - PREVIEW_COUNT);
 </script>
 
 <template>
@@ -116,7 +137,7 @@ const changed = computed(() =>
         </p>
         <ul class="plan-compare__changes">
           <li
-            v-for="diff in changed"
+            v-for="diff in shownChanges"
             :key="diff.model.id"
             data-test="hangar-plan-compare-diff"
           >
@@ -131,6 +152,20 @@ const changed = computed(() =>
             </span>
           </li>
         </ul>
+        <Btn
+          v-if="hiddenCount > 0"
+          :size="BtnSizesEnum.XS"
+          :variant="BtnVariantsEnum.BARE"
+          class="plan-compare__more"
+          data-test="hangar-plan-compare-more"
+          @click="showAllChanges = !showAllChanges"
+        >
+          {{
+            showAllChanges
+              ? t("hangarPlanner.comparison.showFewer")
+              : t("hangarPlanner.comparison.showMore", { count: hiddenCount })
+          }}
+        </Btn>
       </PanelBody>
     </Panel>
 
@@ -206,6 +241,10 @@ const changed = computed(() =>
   white-space: nowrap;
   color: var(--color-text-dim);
   font-variant-numeric: tabular-nums;
+}
+
+.plan-compare__more {
+  margin-top: 8px;
 }
 
 .plan-compare__muted {
