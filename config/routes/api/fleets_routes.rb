@@ -53,6 +53,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
 
     resource :fleet_squadron_ship_selection, path: "my-ships", only: %i[show update]
+
+    resources :fleet_squadron_ship_requests, path: "ship-requests", only: %i[index create destroy] do
+      put :accept, on: :member
+    end
   end
 
   resources :fleet_squadron_roles, path: "squadron-roles", only: %i[index update]

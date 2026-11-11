@@ -141,6 +141,10 @@ it:
       title: "%{username} vuole unirsi a %{squadron}"
     fleet_squadron_request_accepted:
       title: "Ti sei unito a %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} chiede la tua %{ship} per %{squadron}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} ha dato la sua %{ship} a %{squadron}"
     payout_ledger_settled:
       title: "I pagamenti di %{subject} sono stati definiti"
     payout_entry_pending_review:

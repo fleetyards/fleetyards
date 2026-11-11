@@ -3994,6 +3994,8 @@
         "tour_join_request_accepted": "Teilnahme-Anfrage angenommen",
         "fleet_squadron_request_received": "Staffel-Beitrittsanfrage",
         "fleet_squadron_request_accepted": "Staffel-Anfrage angenommen",
+        "fleet_squadron_ship_request_received": "Schiff für eine Staffel angefragt",
+        "fleet_squadron_ship_request_accepted": "Schiffsanfrage angenommen",
         "fleet_contract_published": "Auftrag veröffentlicht",
         "fleet_announcement_posted": "Ankündigung veröffentlicht",
         "fleet_contract_claimed": "Auftrag übernommen",

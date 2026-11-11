@@ -586,6 +586,14 @@ es:
               already_a_member: "ya te incluye"
               exclusive_conflict: "entra en conflicto con %{squadron} — un miembro pertenece a un solo escuadrón salvo que sea un equipo"
               request_pending: "no se puede solicitar mientras tu solicitud para unirte a %{squadron} esté pendiente — retírala primero"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "debe ser una de las naves del propio miembro"
+              not_in_fleet: "debe estar compartida con la flota"
+              already_given: "ya es una de las naves del escuadrón"
+            vehicle_id:
+              already_requested: "ya se ha solicitado"
         fleet_squadron_role:
           attributes:
             default_rank:

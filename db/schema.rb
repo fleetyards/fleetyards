@@ -1340,6 +1340,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.index ["fleet_id"], name: "index_fleet_squadron_roles_on_one_default_per_fleet", unique: true, where: "default_rank"
   end
 
+  create_table "fleet_squadron_ship_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_squadron_membership_id", null: false
+    t.uuid "vehicle_id", null: false
+    t.uuid "requested_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_squadron_membership_id", "vehicle_id"], name: "index_squadron_ship_requests_on_membership_and_vehicle", unique: true
+    t.index ["requested_by_id"], name: "index_fleet_squadron_ship_requests_on_requested_by_id"
+    t.index ["vehicle_id"], name: "index_fleet_squadron_ship_requests_on_vehicle_id"
+  end
+
   create_table "fleet_squadrons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_id", null: false
     t.string "name", null: false
@@ -3515,6 +3526,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
   add_foreign_key "fleet_squadron_requests", "fleet_memberships"
   add_foreign_key "fleet_squadron_requests", "fleet_squadrons"
   add_foreign_key "fleet_squadron_roles", "fleets"
+  add_foreign_key "fleet_squadron_ship_requests", "fleet_memberships", column: "requested_by_id", on_delete: :nullify
+  add_foreign_key "fleet_squadron_ship_requests", "fleet_squadron_memberships", on_delete: :cascade
+  add_foreign_key "fleet_squadron_ship_requests", "vehicles", on_delete: :cascade
   add_foreign_key "fleet_squadrons", "fleets"
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
   add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify

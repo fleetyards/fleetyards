@@ -3994,6 +3994,8 @@
         "tour_join_request_accepted": "Demande de participation acceptée",
         "fleet_squadron_request_received": "Demande pour rejoindre l'escadron",
         "fleet_squadron_request_accepted": "Demande d'escadron acceptée",
+        "fleet_squadron_ship_request_received": "Vaisseau demandé pour un escadron",
+        "fleet_squadron_ship_request_accepted": "Demande de vaisseau acceptée",
         "fleet_contract_published": "Contrat publié",
         "fleet_announcement_posted": "Annonce publiée",
         "fleet_contract_claimed": "Contrat pris en charge",

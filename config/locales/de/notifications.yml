@@ -141,6 +141,10 @@ de:
       title: "%{username} möchte %{squadron} beitreten"
     fleet_squadron_request_accepted:
       title: "Du bist jetzt in %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} bittet in %{squadron} um deine %{ship}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} hat %{squadron} die %{ship} gegeben"
     payout_ledger_settled:
       title: "Die Auszahlung für %{subject} steht fest"
     payout_entry_pending_review:

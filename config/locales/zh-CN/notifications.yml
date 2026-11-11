@@ -141,6 +141,10 @@ zh-CN:
       title: "%{username} 申请加入 %{squadron}"
     fleet_squadron_request_accepted:
       title: "你已加入 %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} 请求将你的 %{ship} 编入 %{squadron}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} 已将其 %{ship} 编入 %{squadron}"
     payout_ledger_settled:
       title: "%{subject} 的分账已结算"
     payout_entry_pending_review:

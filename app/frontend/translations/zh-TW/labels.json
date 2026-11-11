@@ -3991,6 +3991,8 @@
         "tour_join_request_accepted": "參加申請已通過",
         "fleet_squadron_request_received": "中隊加入申請",
         "fleet_squadron_request_accepted": "中隊申請已通過",
+        "fleet_squadron_ship_request_received": "中隊請求艦船",
+        "fleet_squadron_ship_request_accepted": "艦船請求已通過",
         "fleet_contract_published": "合約已發布",
         "fleet_announcement_posted": "公告已發布",
         "fleet_contract_claimed": "合約已接取",

@@ -4008,6 +4008,8 @@
         "tour_join_request_accepted": "Join request accepted",
         "fleet_squadron_request_received": "Squadron join request",
         "fleet_squadron_request_accepted": "Squadron request accepted",
+        "fleet_squadron_ship_request_received": "Ship requested for a squadron",
+        "fleet_squadron_ship_request_accepted": "Ship request accepted",
         "fleet_contract_published": "Contract posted",
         "fleet_announcement_posted": "Announcement posted",
         "fleet_contract_claimed": "Contract claimed",

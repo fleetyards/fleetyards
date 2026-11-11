@@ -8,6 +8,7 @@ class FleetSquadronMembership < ApplicationRecord
 
   has_many :fleet_squadron_membership_vehicles, dependent: :destroy
   has_many :picked_vehicles, through: :fleet_squadron_membership_vehicles, source: :vehicle
+  has_many :fleet_squadron_ship_requests, dependent: :destroy
 
   # Which of the member's ships the squadron gets. Every choice narrows what the
   # member already shares with the fleet, never widens it: the squadron's ships

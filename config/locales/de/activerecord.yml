@@ -586,6 +586,14 @@ de:
               already_a_member: "enthält dich bereits"
               exclusive_conflict: "kollidiert mit %{squadron} — ein Mitglied gehört zu einer Staffel, außer es ist ein Team"
               request_pending: "kann nicht angefragt werden, solange deine Anfrage bei %{squadron} offen ist — ziehe diese zuerst zurück"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "muss ein eigenes Schiff des Mitglieds sein"
+              not_in_fleet: "muss mit der Flotte geteilt sein"
+              already_given: "gehört bereits zu den Schiffen der Staffel"
+            vehicle_id:
+              already_requested: "wurde bereits angefragt"
         fleet_squadron_role:
           attributes:
             default_rank:

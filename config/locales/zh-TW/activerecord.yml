@@ -586,6 +586,14 @@ zh-TW:
               already_a_member: "已包含你"
               exclusive_conflict: "與 %{squadron} 衝突——除團隊外，成員只能屬於一個中隊"
               request_pending: "無法申請：你加入 %{squadron} 的申請仍在等待中——請先撤回"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "必須是該成員自己的艦船"
+              not_in_fleet: "必須已與艦隊共享"
+              already_given: "已在該中隊的艦船中"
+            vehicle_id:
+              already_requested: "已被請求過"
         fleet_squadron_role:
           attributes:
             default_rank:
