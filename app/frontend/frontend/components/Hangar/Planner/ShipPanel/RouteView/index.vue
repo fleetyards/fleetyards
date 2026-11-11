@@ -818,43 +818,42 @@ const onSubmit = async () => {
                           })
                         }}
                       </span>
-                      <span class="route-view__step-tools">
-                        <BtnGroup
-                          segmented
-                          :size="BtnSizesEnum.SM"
-                          :aria-label="t('hangarPlanner.fields.upgradeSource')"
-                        >
-                          <Btn
-                            v-for="kind in stepSources"
-                            :key="kind"
-                            v-tooltip="
-                              compactSource
-                                ? t(`hangarPlanner.upgradeSources.${kind}`)
-                                : undefined
-                            "
-                            :active="step.sourceKind === kind"
-                            :data-test="`hangar-plan-route-step-source-${kind}`"
-                            @click="setSource(index, kind)"
-                          >
-                            <i :class="sourceIcons[kind]" />
-                            <span :class="{ 'sr-only': compactSource }">
-                              {{ t(`hangarPlanner.upgradeSources.${kind}`) }}
-                            </span>
-                          </Btn>
-                        </BtnGroup>
-                        <Btn
-                          :size="BtnSizesEnum.XS"
-                          :variant="BtnVariantsEnum.BARE"
-                          :tone="BtnTonesEnum.DANGER"
-                          :aria-label="t('hangarPlanner.removeStep')"
-                          :class="{ invisible: !removable(index) }"
-                          :disabled="!removable(index)"
-                          @click="removeStep(step.key)"
-                        >
-                          <i class="fa-light fa-trash" />
-                        </Btn>
-                      </span>
+                      <Btn
+                        :size="BtnSizesEnum.XS"
+                        :variant="BtnVariantsEnum.BARE"
+                        :tone="BtnTonesEnum.DANGER"
+                        :aria-label="t('hangarPlanner.removeStep')"
+                        :class="{ invisible: !removable(index) }"
+                        :disabled="!removable(index)"
+                        @click="removeStep(step.key)"
+                      >
+                        <i class="fa-light fa-trash" />
+                      </Btn>
                     </div>
+                    <BtnGroup
+                      class="route-view__sources"
+                      segmented
+                      :size="BtnSizesEnum.SM"
+                      :aria-label="t('hangarPlanner.fields.upgradeSource')"
+                    >
+                      <Btn
+                        v-for="kind in stepSources"
+                        :key="kind"
+                        v-tooltip="
+                          compactSource
+                            ? t(`hangarPlanner.upgradeSources.${kind}`)
+                            : undefined
+                        "
+                        :active="step.sourceKind === kind"
+                        :data-test="`hangar-plan-route-step-source-${kind}`"
+                        @click="setSource(index, kind)"
+                      >
+                        <i :class="sourceIcons[kind]" />
+                        <span :class="{ 'sr-only': compactSource }">
+                          {{ t(`hangarPlanner.upgradeSources.${kind}`) }}
+                        </span>
+                      </Btn>
+                    </BtnGroup>
 
                     <p class="route-view__from">
                       <span class="panel-view__muted">
@@ -1163,10 +1162,9 @@ const onSubmit = async () => {
   justify-content: space-between;
 }
 
-.route-view__step-tools {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+// A line of its own, so each source keeps its whole label.
+.route-view__sources {
+  width: 100%;
 }
 
 .route-view__from {
