@@ -172,6 +172,7 @@ de:
     hangar_plan_slots:
       create: "Platz konnte nicht hinzugefügt werden."
       update: "Platz konnte nicht aktualisiert werden."
+      copy: "Platz konnte nicht kopiert werden."
     hangar_plan_candidates:
       create: "Schiff konnte dem Platz nicht hinzugefügt werden."
       update: "Schiff konnte nicht aktualisiert werden."

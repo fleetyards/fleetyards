@@ -54,8 +54,8 @@ module HangarPlans
 
     def remaining_credit_max = [credit_total - (spend_min - buyback_cash), 0].max
 
-    # Units of a decided slot still without a route. An open slot's units are
-    # counted as the open slot, not again here.
+    # Decided slots still without a route. An open slot is counted as open, not
+    # again here.
     def unresolved_count = slot_costs.select { |cost| cost.state == "decided" }.sum(&:unresolved_count)
 
     def count_of(state) = slot_costs.count { |cost| cost.state == state }
@@ -69,7 +69,7 @@ module HangarPlans
     def decided_spend(snapshot: false)
       slots.select { |slot| slot.state == "decided" }.sum do |slot|
         candidate = slot.candidates.first
-        routed(candidate, slot).sum do |acquisition|
+        routed(candidate).sum do |acquisition|
           route_cost(acquisition, candidate, snapshot:, record: false) || 0
         end
       end
@@ -78,7 +78,7 @@ module HangarPlans
     def routed_spend = slot_costs.select { |cost| cost.state == "decided" }.sum(&:min_cost)
 
     # The most the plan can come to: every undecided slot at its dearest ship and
-    # every unit without a finished route bought in the store. A slot with no
+    # every ship without a finished route bought in the store. A slot with no
     # ship yet, or a ship with no price, has nothing to add and is reported.
     def max_spend = spend_max + slot_costs.sum(&:uncounted_max)
 
@@ -100,7 +100,7 @@ module HangarPlans
     # and whether the user spends a token on it.
     private def buybacks
       @buybacks ||= slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
-        routed(slot.candidates.first, slot).flat_map do |acquisition|
+        routed(slot.candidates.first).flat_map do |acquisition|
           start = HangarPlanAcquisition::BUYBACK_START_KINDS.include?(acquisition.start_kind) ? [acquisition] : []
           steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
           (start + steps).filter_map do |record|
@@ -142,7 +142,7 @@ module HangarPlans
       case slot.state
       when "open"
         SlotCost.new(slot_id: slot.id, state: "open", min_cost: 0, max_cost: 0, store_cost_min: 0, store_cost: 0, uncounted_max: 0,
-          unresolved_count: slot.quantity, complete: false)
+          unresolved_count: 1, complete: false)
       when "decided" then decided_cost(slot)
       else undecided_cost(slot)
       end
@@ -150,10 +150,10 @@ module HangarPlans
 
     private def decided_cost(slot)
       candidate = slot.candidates.first
-      acquisitions = routed(candidate, slot)
+      acquisitions = routed(candidate)
       costs = acquisitions.map { |acquisition| route_cost(acquisition, candidate, slot_id: slot.id) }
       total = costs.compact.sum(0)
-      unresolved = slot.quantity - acquisitions.size
+      unresolved = 1 - acquisitions.size
 
       SlotCost.new(slot_id: slot.id, state: "decided", min_cost: total, max_cost: total,
         store_cost_min: cheapest_start(slot, candidate), store_cost: store_cost(slot, candidate),
@@ -164,7 +164,7 @@ module HangarPlans
     # its route is left out: it has a ship to start from, so buying the slot's
     # ship is no longer what it would cost.
     private def store_cost(slot, candidate)
-      missing = units_without_start(slot, candidate)
+      missing = units_without_start(candidate)
       return 0 if missing.zero?
 
       unit = unit_price(candidate)
@@ -174,14 +174,14 @@ module HangarPlans
 
     # A start on another ship can only lower what the store asks for the unit.
     private def uncounted_max(slot, candidate)
-      (unit_price(candidate) || 0) * (slot.quantity - routed(candidate, slot).size)
+      (unit_price(candidate) || 0) * (1 - routed(candidate).size)
     end
 
     # The least those units could come to from the ships still free: one of the
     # same model costs nothing, and otherwise the dearest one upgrades can lead
     # from saves its price. Each free ship serves one unit, here as in the plan.
     private def cheapest_start(slot, candidate)
-      missing = units_without_start(slot, candidate)
+      missing = units_without_start(candidate)
       return 0 if missing.zero?
 
       unit = unit_price(candidate)
@@ -190,8 +190,8 @@ module HangarPlans
       Array.new(missing) { cost_from_free_ship(candidate.model, unit) }.sum
     end
 
-    private def units_without_start(slot, candidate)
-      [slot.quantity - candidate.acquisitions.size, 0].max
+    private def units_without_start(candidate)
+      [1 - candidate.acquisitions.size, 0].max
     end
 
     private def cost_from_free_ship(model, unit)
@@ -228,8 +228,8 @@ module HangarPlans
     # wanting that model does not count them again.
     private def undecided_cost(slot)
       options = slot.candidates.filter_map do |candidate|
-        held = [owned_pool.fetch(candidate.model_id, 0), slot.quantity].min
-        needed = slot.quantity - held
+        held = [owned_pool.fetch(candidate.model_id, 0), 1].min
+        needed = 1 - held
 
         unit = unit_price(candidate)
         if unit.nil? && needed.positive?
@@ -250,8 +250,8 @@ module HangarPlans
 
     # A start whose route to the slot's ship is still to be planned holds a unit
     # without saying what it costs, so it stays unresolved.
-    private def routed(candidate, slot)
-      candidate.acquisitions.first(slot.quantity).select(&:route_complete?)
+    private def routed(candidate)
+      candidate.acquisitions.first(1).select(&:route_complete?)
     end
 
     # Nil when any part of the route has no price, after reporting which.

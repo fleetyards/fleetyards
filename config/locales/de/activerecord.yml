@@ -369,14 +369,12 @@ de:
               not_offered: "ist kein Preis, zu dem dieser Artikel verkauft wird"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "hat Wege für %{count} Schiffe; entferne zuerst Wege"
             base:
               slot_limit_reached: "kann höchstens %{count} Plätze enthalten"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "dieser Platz hat bereits für jedes seiner Schiffe einen Weg"
+              slot_filled: "dieser Platz hat bereits einen Weg"
               holder_invalid: "ein Start gehört zu einem Schiff des Platzes oder zu einem Platz, der noch keine Schiffe hat"
               chain_mismatch: "der Weg muss beim Schiff des Platzes enden"
               chain_broken: "jedes Upgrade muss bei dem Schiff beginnen, bei dem der Schritt davor endet"

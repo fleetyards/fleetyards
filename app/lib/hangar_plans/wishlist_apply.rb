@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module HangarPlans
-  # Puts the ships a plan still has to obtain on the wishlist: every unit of a
-  # decided slot that is not a ship the user already has. A ship they hold but
+  # Puts the ships a plan still has to obtain on the wishlist: every decided
+  # slot whose ship is not one the user already has. A ship they hold but
   # gave no route, or already wish for, counts as had, so running it again adds
   # nothing. The hangar itself is left alone; RSI sync owns the purchased ships.
   class WishlistApply
@@ -29,7 +29,7 @@ module HangarPlans
           next if candidate.nil?
 
           owned = candidate.acquisitions.count { |acquisition| acquisition.start_kind == "owned" }
-          needed = [slot.quantity - owned, 0].max
+          needed = [1 - owned, 0].max
           covered = [had.fetch(candidate.model_id, 0), needed].min
           had[candidate.model_id] = had.fetch(candidate.model_id, 0) - covered
 

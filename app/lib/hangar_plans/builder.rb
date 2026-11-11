@@ -2,8 +2,8 @@
 
 module HangarPlans
   # Creates a plan, empty or filled from the hangar, the wishlist or another
-  # plan. Ships that share a model and fitting become one slot with a quantity,
-  # so a hangar of 30 Gladii does not need 30 slots.
+  # plan. Every ship takes a slot of its own, and ships that share a model and
+  # fitting sit next to each other.
   class Builder
     SOURCES = %w[empty hangar wishlist plan].freeze
 
@@ -38,9 +38,11 @@ module HangarPlans
       end
 
       groups.each do |(model_id, paint_id, module_ids, upgrade_ids), group|
-        slot = plan.slots.create!(label: group.first.model.name, quantity: group.size)
-        slot.candidates.create!(model_id:, model_paint_id: paint_id,
-          model_module_ids: module_ids, model_upgrade_ids: upgrade_ids)
+        group.each do |vehicle|
+          slot = plan.slots.create!(label: vehicle.model.name)
+          slot.candidates.create!(model_id:, model_paint_id: paint_id,
+            model_module_ids: module_ids, model_upgrade_ids: upgrade_ids)
+        end
       end
     end
 
@@ -50,7 +52,7 @@ module HangarPlans
       plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at, :based_on_vehicle_ids))
 
       source_plan.slots.includes(:starts, candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
-        slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :quantity, :position))
+        slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :position))
         source_slot.starts.each { |start| copy_acquisition(start, slot:) }
         source_slot.candidates.each do |source_candidate|
           candidate = slot.candidates.create!(

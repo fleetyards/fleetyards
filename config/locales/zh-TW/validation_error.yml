@@ -164,6 +164,7 @@ zh-TW:
     hangar_plan_slots:
       create: "無法新增欄位。"
       update: "無法更新欄位。"
+      copy: "無法複製欄位。"
     hangar_plan_candidates:
       create: "無法將艦船加入欄位。"
       update: "無法更新艦船。"

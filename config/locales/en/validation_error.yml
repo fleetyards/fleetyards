@@ -208,6 +208,7 @@ en:
     hangar_plan_slots:
       create: "Slot could not be added."
       update: "Slot could not be updated."
+      copy: "Slot could not be copied."
     hangar_plan_candidates:
       create: "Ship could not be added to the slot."
       update: "Ship could not be updated."

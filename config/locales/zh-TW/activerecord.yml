@@ -369,14 +369,12 @@ zh-TW:
               not_offered: "不是該物品的售價"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "已有 %{count} 艘艦船的取得途徑，請先刪除途徑"
             base:
               slot_limit_reached: "最多只能有 %{count} 個欄位"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "此欄位的每艘艦船都已有取得路線"
+              slot_filled: "此欄位已有取得路線"
               holder_invalid: "起點屬於此欄位的某艘艦船，或屬於尚無艦船的欄位"
               chain_mismatch: "取得路線必須以該欄位的艦船結束"
               chain_broken: "每次升級都必須從上一步結束的艦船開始"

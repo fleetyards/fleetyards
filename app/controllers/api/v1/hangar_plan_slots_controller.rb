@@ -10,7 +10,7 @@ module Api
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" }, unless: :user_signed_in?
       before_action :check_hangar_planner_feature
       before_action :set_hangar_plan
-      before_action :set_slot, only: %i[update destroy choose]
+      before_action :set_slot, only: %i[update destroy choose copy]
 
       def create
         @slot = @hangar_plan.slots.new(slot_params)
@@ -34,6 +34,14 @@ module Api
         @slot.destroy!
 
         render_hangar_plan
+      end
+
+      def copy
+        @slot.copy!
+
+        render_hangar_plan(status: :created)
+      rescue ActiveRecord::RecordInvalid => e
+        render json: ValidationError.new("hangar_plan_slots.copy", errors: e.record.errors), status: :bad_request
       end
 
       def sort
@@ -65,7 +73,7 @@ module Api
 
       # A sent filter set replaces the stored one whole, so an empty one clears it.
       private def slot_params
-        permitted = params.permit(:label, :quantity, :description)
+        permitted = params.permit(:label, :description)
         return permitted unless params.key?(:filters)
 
         list_filters = HangarPlanSlot::LIST_FILTERS.index_with { [] }

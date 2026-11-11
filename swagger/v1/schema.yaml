@@ -14928,6 +14928,53 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/slots/{id}/copy":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Copy Hangar Plan Slot
+      tags:
+      - HangarPlans
+      operationId: copyHangarPlanSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/plans/{hangarPlanId}/vehicle-marks":
     parameters:
     - name: hangarPlanId
@@ -39890,8 +39937,6 @@ components:
           - 'null'
         filters:
           "$ref": "#/components/schemas/HangarPlanSlotFilters"
-        quantity:
-          type: integer
         position:
           type: integer
         state:
@@ -39910,7 +39955,6 @@ components:
       required:
       - id
       - label
-      - quantity
       - position
       - state
       - filters
@@ -39977,9 +40021,6 @@ components:
           - 'null'
         filters:
           "$ref": "#/components/schemas/HangarPlanSlotFilters"
-        quantity:
-          type: integer
-          minimum: 1
       required:
       - label
       additionalProperties: false
@@ -40098,9 +40139,6 @@ components:
           - 'null'
         filters:
           "$ref": "#/components/schemas/HangarPlanSlotFilters"
-        quantity:
-          type: integer
-          minimum: 1
       additionalProperties: false
       title: HangarPlanSlotUpdateInput
     HangarPlanSourceEnum:

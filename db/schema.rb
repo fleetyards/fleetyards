@@ -1726,7 +1726,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_180000) do
   create_table "hangar_plan_slots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hangar_plan_id", null: false
     t.string "label", null: false
-    t.integer "quantity", default: 1, null: false
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -47,10 +47,10 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
   end
 
   test "a buy-back costs what RSI asks for it, and an override wins" do
-    candidate = decided_slot(@carrack, quantity: 2)
+    bought_back, bought = decided_slots(@carrack, 2)
     pledge = create(:buyback_pledge, user: @user, price: 550)
-    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
-    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack, price_override: 480)
+    @plan.acquisitions.create!(candidate: bought_back, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    @plan.acquisitions.create!(candidate: bought, start_kind: "store", start_model: @carrack, price_override: 480)
 
     assert_equal 1030, HangarPlans::Summary.new(@plan).spend_min
   end
@@ -78,31 +78,31 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal "Retired", issue&.name
   end
 
-  test "units without a route are gaps, not assumed purchases" do
-    decided_slot(@carrack, quantity: 3)
-    create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+  test "slots without a route are gaps, not assumed purchases" do
+    decided_slots(@carrack, 3)
+    2.times { create(:hangar_plan_slot, hangar_plan: @plan) }
 
     summary = HangarPlans::Summary.new(@plan)
 
     assert_equal 0, summary.spend_max
     assert_equal 3, summary.unresolved_count
-    assert_equal 1, summary.count_of("open")
+    assert_equal 2, summary.count_of("open")
     assert_not summary.complete?
   end
 
-  test "units without a start report their store price, outside the totals" do
-    slot = decided_slot(@carrack, quantity: 3)
-    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @carrack)
-    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)
+  test "slots without a start report their store price, outside the totals" do
+    routed, started, _empty = decided_slots(@carrack, 3)
+    @plan.acquisitions.create!(candidate: routed, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: started, start_kind: "store", start_model: @cutlass)
 
     summary = HangarPlans::Summary.new(@plan)
 
-    assert_equal 600, summary.slot_costs.first.store_cost
+    assert_equal [0, 0, 600], summary.slot_costs.map(&:store_cost)
     assert_equal 600, summary.spend_max
   end
 
   test "the routed spend covers routes only, the maximum every slot with a ship" do
-    decided = decided_slot(@carrack, quantity: 2)
+    decided, = decided_slots(@carrack, 2)
     @plan.acquisitions.create!(candidate: decided, start_kind: "store", start_model: @carrack)
     undecided = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot: undecided, model: @cutlass)
@@ -131,10 +131,10 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal 600, HangarPlans::Summary.new(@plan).slot_costs.first.store_cost_min
   end
 
-  test "the maximum covers every unit without a finished route" do
-    slot = decided_slot(@carrack, quantity: 3)
-    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @carrack)
-    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)
+  test "the maximum covers every slot without a finished route" do
+    routed, started, _empty = decided_slots(@carrack, 3)
+    @plan.acquisitions.create!(candidate: routed, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: started, start_kind: "store", start_model: @cutlass)
 
     assert_equal 1800, HangarPlans::Summary.new(@plan).max_spend
   end
@@ -148,14 +148,14 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_includes summary.issues.map(&:name), "Unpriced"
   end
 
-  test "a free ship serves one unit, and one of the same model costs nothing" do
+  test "a free ship serves one slot, and one of the same model costs nothing" do
     create(:vehicle, user: @user, model: @carrack)
-    decided_slot(@carrack, quantity: 2)
+    decided_slots(@carrack, 2)
 
-    cost = HangarPlans::Summary.new(@plan).slot_costs.first
+    costs = HangarPlans::Summary.new(@plan).slot_costs
 
-    assert_equal 600, cost.store_cost_min
-    assert_equal 1200, cost.store_cost
+    assert_equal [0, 600], costs.map(&:store_cost_min)
+    assert_equal [600, 600], costs.map(&:store_cost)
   end
 
   test "a ship the plan already melts is no start" do
@@ -197,15 +197,15 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
   end
 
   test "an undecided slot costs between its cheapest and dearest candidate, less ships already held" do
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot:, model: @cutlass)
     create(:hangar_plan_candidate, slot:, model: @carrack)
     create(:vehicle, user: @user, model: @carrack)
 
     summary = HangarPlans::Summary.new(@plan)
 
-    assert_equal 200, summary.spend_min
-    assert_equal 600, summary.spend_max
+    assert_equal 0, summary.spend_min
+    assert_equal 100, summary.spend_max
     assert_not summary.complete?
   end
 
@@ -237,21 +237,20 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
 
   test "extras add to a purchase but not to a ship already held" do
     paint = create(:model_paint, model: @carrack, pledge_price: 20)
-    candidate = decided_slot(@carrack, quantity: 2)
-    candidate.update!(model_paint: paint)
-    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
-    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model: @carrack))
+    bought, held = decided_slots(@carrack, 2).each { |candidate| candidate.update!(model_paint: paint) }
+    @plan.acquisitions.create!(candidate: bought, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: held, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model: @carrack))
 
     assert_equal 620, HangarPlans::Summary.new(@plan).spend_min
   end
 
   test "a buy-back is paid in new money unless it spends a token the user holds" do
     @plan.update!(starting_credit: 1000)
-    candidate = decided_slot(@carrack, quantity: 2)
+    bought_back, bought = decided_slots(@carrack, 2)
     pledge = create(:buyback_pledge, user: @user, price: 550)
-    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
+    @plan.acquisitions.create!(candidate: bought_back, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
       uses_buyback_token: true)
-    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: bought, start_kind: "store", start_model: @carrack)
 
     summary = HangarPlans::Summary.new(@plan)
 
@@ -272,10 +271,10 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
 
   test "buy-backs spend the tokens held without being marked, the dearest first" do
     @plan.update!(starting_credit: 1000, buyback_tokens: 2)
-    candidate = decided_slot(@carrack, quantity: 3)
-    [550, 120, 300].each do |price|
+    candidates = decided_slots(@carrack, 3)
+    [550, 120, 300].each_with_index do |price, index|
       pledge = create(:buyback_pledge, user: @user, price:)
-      @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+      @plan.acquisitions.create!(candidate: candidates[index], start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
     end
 
     summary = HangarPlans::Summary.new(@plan)
@@ -333,12 +332,12 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
 
   test "marked beyond the tokens held, the dearest buy-back keeps its token" do
     @plan.update!(starting_credit: 0, buyback_tokens: 1)
-    candidate = decided_slot(@carrack, quantity: 2)
+    first, second = decided_slots(@carrack, 2)
     dear = create(:buyback_pledge, user: @user, price: 550)
     cheap = create(:buyback_pledge, user: @user, price: 120)
-    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: dear, start_model: @carrack,
+    @plan.acquisitions.create!(candidate: first, start_kind: "buyback", buyback_pledge: dear, start_model: @carrack,
       uses_buyback_token: true)
-    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: cheap, start_model: @carrack,
+    @plan.acquisitions.create!(candidate: second, start_kind: "buyback", buyback_pledge: cheap, start_model: @carrack,
       uses_buyback_token: true)
 
     summary = HangarPlans::Summary.new(@plan)
@@ -379,8 +378,12 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal [300, 300], [summary.melt_credit_at, summary.melt_credit_at(snapshot: true)]
   end
 
-  private def decided_slot(model, quantity: 1)
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
+  private def decided_slot(model)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot:, model:)
+  end
+
+  private def decided_slots(model, count)
+    Array.new(count) { decided_slot(model) }
   end
 end

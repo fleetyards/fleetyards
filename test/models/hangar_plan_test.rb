@@ -113,10 +113,9 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   test "an owned ship starts a route once" do
     vehicle = create(:vehicle, user: @user, model: @carrack)
-    @slot.update!(quantity: 2)
 
     create_acquisition(start_kind: "owned", source_vehicle: vehicle)
-    second = build_acquisition(start_kind: "owned", source_vehicle: vehicle)
+    second = @plan.acquisitions.new(candidate: candidate_on_new_slot, start_kind: "owned", source_vehicle: vehicle)
 
     assert_not second.valid?
     assert second.errors.of_kind?(:source_vehicle_id, :taken)
@@ -138,14 +137,6 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert acquisition.reload.update(price_override: 10)
   end
 
-  test "a slot cannot drop below the routes it has" do
-    @slot.update!(quantity: 2)
-    2.times { create_acquisition(start_kind: "store", start_model: @carrack) }
-
-    assert_not @slot.update(quantity: 1)
-    assert @slot.errors.of_kind?(:quantity, :below_routes)
-  end
-
   test "another user's ship cannot start a route" do
     vehicle = create(:vehicle, model: @carrack)
 
@@ -160,9 +151,8 @@ class HangarPlanTest < ActiveSupport::TestCase
     kept = create(:vehicle, user: @user, model: @carrack)
     create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
     create_acquisition(start_kind: "owned", source_vehicle: kept)
-    @slot.update!(quantity: 2)
 
-    acquisition = build_acquisition(start_kind: "owned", source_vehicle: melted)
+    acquisition = @plan.acquisitions.new(candidate: candidate_on_new_slot, start_kind: "owned", source_vehicle: melted)
     melt = build(:hangar_plan_melt, hangar_plan: @plan, vehicle: kept)
 
     assert acquisition.errors.of_kind?(:source_vehicle_id, :melted) unless acquisition.valid?
@@ -170,7 +160,7 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert melt.errors.of_kind?(:vehicle_id, :taken)
   end
 
-  test "a slot takes no more routes than its quantity" do
+  test "a slot takes one route" do
     create_acquisition(start_kind: "store", start_model: @carrack)
 
     acquisition = build_acquisition(start_kind: "store", start_model: @carrack)
@@ -202,7 +192,7 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert_not acquisition.valid?
     assert acquisition.errors.of_kind?(:base, :slot_filled)
 
-    full.slot.update!(quantity: 2)
+    full.acquisitions.destroy_all
     assert acquisition.reload.update(candidate: full)
   end
 
@@ -273,10 +263,9 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   test "an upgrade held twice can be spent twice across the plan" do
     ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Cutlass To Carrack", quantity: 2)
-    @slot.update!(quantity: 3)
 
     2.times do
-      acquisition = build_acquisition(start_kind: "store", start_model: @cutlass)
+      acquisition = @plan.acquisitions.new(candidate: candidate_on_new_slot, start_kind: "store", start_model: @cutlass)
       acquisition.upgrade_steps.build(source_kind: "owned_ccu", hangar_pledge_item: ccu, origin_model: @cutlass, target_model: @carrack, position: 0)
       acquisition.save!
     end
@@ -289,10 +278,10 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   test "a buy-back pledge is spent once" do
     pledge = create(:buyback_pledge, user: @user)
-    @slot.update!(quantity: 2)
     create_acquisition(start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
 
-    second = build_acquisition(start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    second = @plan.acquisitions.new(candidate: candidate_on_new_slot, start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @carrack)
 
     assert_not second.valid?
     assert second.errors.of_kind?(:buyback_pledge_id, :taken)
@@ -331,7 +320,7 @@ class HangarPlanTest < ActiveSupport::TestCase
       vehicle: create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "unread")).valid?
   end
 
-  test "a slot with no ship holds a start, up to its quantity" do
+  test "a slot with no ship holds one start" do
     slot = create(:hangar_plan_slot, hangar_plan: @plan)
     vehicle = create(:vehicle, user: @user, model: @cutlass)
 
@@ -345,7 +334,7 @@ class HangarPlanTest < ActiveSupport::TestCase
   end
 
   test "a start to buy names no ship until the slot has one, any other start has to" do
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
 
     assert @plan.acquisitions.new(slot:, start_kind: "store").valid?
     assert @plan.acquisitions.new(slot:, start_kind: "ingame").valid?
@@ -373,15 +362,17 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert start.errors.of_kind?(:base, :chain_mismatch)
   end
 
-  test "a slot's first ship takes the starts it holds, and a ship to buy becomes that ship" do
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+  test "a slot's first ship takes the start it holds, and a ship to buy becomes that ship" do
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    other_slot = create(:hangar_plan_slot, hangar_plan: @plan)
     vehicle = create(:vehicle, user: @user, model: @cutlass)
     owned = @plan.acquisitions.create!(slot:, start_kind: "owned", source_vehicle: vehicle)
-    bought = @plan.acquisitions.create!(slot:, start_kind: "store")
+    bought = @plan.acquisitions.create!(slot: other_slot, start_kind: "store")
 
     candidate = create(:hangar_plan_candidate, slot:, model: @constellation)
+    other = create(:hangar_plan_candidate, slot: other_slot, model: @constellation)
 
-    assert_equal [candidate, candidate], [owned.reload.candidate, bought.reload.candidate]
+    assert_equal [candidate, other], [owned.reload.candidate, bought.reload.candidate]
     assert_empty slot.reload.starts
     assert_equal @cutlass, owned.start_model
     assert_equal @constellation, bought.start_model
@@ -389,12 +380,17 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert bought.route_complete?
   end
 
-  test "a slot cannot drop below the starts it holds" do
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
-    2.times { @plan.acquisitions.create!(slot:, start_kind: "store") }
+  test "a copied slot lands right after it, even among slots sharing a position" do
+    create_acquisition(start_kind: "store", start_model: @carrack)
+    tied = create(:hangar_plan_slot, hangar_plan: @plan, label: "Tied")
+    HangarPlanSlot.where(id: [@slot.id, tied.id]).update_all(position: 0)
 
-    assert_not slot.update(quantity: 1)
-    assert slot.errors.of_kind?(:quantity, :below_routes)
+    copy = @slot.copy!
+
+    assert_equal [@slot, copy, tied], @plan.slots.reload.to_a
+    assert_equal [@carrack], copy.candidates.map(&:model)
+    assert_empty HangarPlanAcquisition.where(candidate: copy.candidates)
+    assert_equal 1, @candidate.acquisitions.count
   end
 
   private def build_acquisition(**attributes)
@@ -403,6 +399,10 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   private def create_acquisition(**attributes)
     build_acquisition(**attributes).tap(&:save!)
+  end
+
+  private def candidate_on_new_slot(model = @carrack)
+    create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model:)
   end
 
   private def create_acquisition_on_new_slot(model)

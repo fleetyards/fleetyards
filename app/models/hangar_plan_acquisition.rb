@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# How one ship of a slot is obtained: kept from the hangar, bought on the
+# How a slot's ship is obtained: kept from the hangar, bought on the
 # store or in game, or bought back (a pledge already in the buy-back list, or
 # the pledge of a ship the plan melts), then optionally upgraded step by step until
 # it is the planned ship. The start and every step are resources the user owns
@@ -41,7 +41,7 @@ class HangarPlanAcquisition < ApplicationRecord
   validate :held_by_a_ship_or_an_empty_slot
   validate :start_model_known
   validate :start_source, if: :start_changed?
-  validate :quantity_available, if: -> {
+  validate :slot_available, if: -> {
     new_record? || will_save_change_to_hangar_plan_candidate_id? || will_save_change_to_hangar_plan_slot_id?
   }
   validate :chain_ends_on_candidate
@@ -242,13 +242,15 @@ class HangarPlanAcquisition < ApplicationRecord
       hangar_plan.upgrade_steps.where(buyback_pledge_id:).exists?
   end
 
-  private def quantity_available
-    taken, quantity = if candidate.present?
-      [candidate.acquisitions, candidate.slot.quantity]
+  # A slot is one ship, so each of its candidates, or the slot while it has none,
+  # holds one start.
+  private def slot_available
+    taken = if candidate.present?
+      candidate.acquisitions
     elsif slot.present?
-      [slot.starts, slot.quantity]
+      slot.starts
     end
-    return if taken.nil? || taken.where.not(id:).count < quantity
+    return if taken.nil? || taken.where.not(id:).none?
 
     errors.add(:base, :slot_filled)
   end

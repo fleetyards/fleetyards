@@ -11,8 +11,7 @@ module V1
           properties: {
             label: {type: :string},
             description: {type: [:string, :null]},
-            filters: ::V1::Schemas::Hangar::Plans::HangarPlanSlotFilters,
-            quantity: {type: :integer, minimum: 1}
+            filters: ::V1::Schemas::Hangar::Plans::HangarPlanSlotFilters
           },
           required: %w[label],
           additionalProperties: false

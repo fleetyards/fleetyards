@@ -78,8 +78,7 @@ module HangarPlans
         candidate = slot.decided_candidate
         next if candidate.nil?
 
-        missing = slot.quantity - candidate.acquisitions.size
-        Gap.new(slot:, model: candidate.model, count: missing) if missing.positive?
+        Gap.new(slot:, model: candidate.model, count: 1) if candidate.acquisitions.empty?
       end
     end
 
@@ -119,7 +118,7 @@ module HangarPlans
       @after_models ||= fleet.map(&:model)
     end
 
-    # Each unit of a decided slot, by the hangar ship routed to it where one is.
+    # The ship of each decided slot, by the hangar ship routed to it where one is.
     private def slot_entries
       by_candidate = decided_routes.values.group_by(&:hangar_plan_candidate_id)
       vehicles_by_id = live_vehicles.index_by(&:id)
@@ -129,7 +128,7 @@ module HangarPlans
         next [] if candidate.nil?
 
         routed = by_candidate.fetch(candidate.id, []).filter_map { |route| vehicles_by_id[route.source_vehicle_id] }
-        Array.new(slot.quantity) { |index| FleetEntry.new(model: candidate.model, slot:, vehicle: routed[index]) }
+        [FleetEntry.new(model: candidate.model, slot:, vehicle: routed.first)]
       end
     end
 

@@ -165,6 +165,7 @@ fr:
     hangar_plan_slots:
       create: "L'emplacement n'a pas pu être ajouté."
       update: "L'emplacement n'a pas pu être mis à jour."
+      copy: "L'emplacement n'a pas pu être copié."
     hangar_plan_candidates:
       create: "Le vaisseau n'a pas pu être ajouté à l'emplacement."
       update: "Le vaisseau n'a pas pu être mis à jour."
