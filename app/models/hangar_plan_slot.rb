@@ -76,15 +76,17 @@ class HangarPlanSlot < ApplicationRecord
   # pledges, which a plan uses once. It lands right after this slot.
   def copy!
     transaction do
+      hangar_plan.lock!
       renumber_plan_slots
       reload
       hangar_plan.slots.where("position > ?", position).update_all("position = position + 1")
 
       copy = hangar_plan.slots.create!(slice(:label, :description, :filters).merge(position: position + 1))
-      candidates.each do |candidate|
-        copy.candidates.new(candidate.slice(:model_id, :model_paint_id, :model_module_ids, :model_upgrade_ids, :position))
-          .save!(validate: false)
+      rows = candidates.map do |candidate|
+        candidate.slice(:model_id, :model_paint_id, :model_module_ids, :model_upgrade_ids, :position)
+          .merge(hangar_plan_slot_id: copy.id)
       end
+      HangarPlanCandidate.insert_all!(rows) if rows.any?
       copy
     end
   end
@@ -174,7 +176,7 @@ class HangarPlanSlot < ApplicationRecord
     sql = <<~SQL.squish
       UPDATE hangar_plan_slots SET position = ordered.index
       FROM (
-        SELECT id, row_number() OVER (ORDER BY position, created_at) - 1 AS index
+        SELECT id, row_number() OVER (ORDER BY position, created_at, id) - 1 AS index
         FROM hangar_plan_slots WHERE hangar_plan_id = ?
       ) ordered
       WHERE hangar_plan_slots.id = ordered.id
