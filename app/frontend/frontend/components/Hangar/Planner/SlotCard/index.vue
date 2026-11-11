@@ -113,10 +113,11 @@ const decidedCandidate = computed(() =>
 
 const unresolved = computed(() =>
   decidedCandidate.value
-    ? props.slot.quantity -
-      decidedCandidate.value.acquisitions.filter(
-        (acquisition) => acquisition.routeComplete,
-      ).length
+    ? Number(
+        !decidedCandidate.value.acquisitions.some(
+          (acquisition) => acquisition.routeComplete,
+        ),
+      )
     : 0,
 );
 
@@ -148,9 +149,6 @@ const routeCost = (acquisition: HangarPlanAcquisition) => {
   >
     <PanelHeading compact divider>
       {{ slot.label }}
-      <span v-if="slot.quantity > 1" class="plan-slot__quantity">
-        × {{ slot.quantity }}
-      </span>
       <template #subtitle>
         <Pill :variant="stateVariant" data-test="hangar-plan-slot-state">
           {{ t(`hangarPlanner.states.${slot.state}`) }}
@@ -303,7 +301,6 @@ const routeCost = (acquisition: HangarPlanAcquisition) => {
   }
 }
 
-.plan-slot__quantity,
 .plan-slot__hint,
 .plan-slot__meta {
   color: var(--color-text-dim);

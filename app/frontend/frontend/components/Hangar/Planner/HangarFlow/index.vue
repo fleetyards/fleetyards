@@ -65,6 +65,7 @@ const emit = defineEmits<{
   decide: [vehicleId: string, decision: HangarFlowDecision];
   open: [target: HangarFlowTarget];
   editSlot: [slot: HangarPlanSlot];
+  copySlot: [slot: HangarPlanSlot];
   removeSlot: [slot: HangarPlanSlot];
 }>();
 
@@ -279,14 +280,6 @@ const routeCost = (acquisition: HangarPlanAcquisition) => {
   return prices.reduce<number>((sum, price) => sum + (price ?? 0), 0);
 };
 
-const slotSub = (slot: HangarPlanSlot, index: number) =>
-  slot.quantity > 1
-    ? `${slot.label} · ${t("hangarPlanner.comparison.flow.shipOf", {
-        number: index + 1,
-        count: slot.quantity,
-      })}`
-    : slot.label;
-
 const hangarCard = (entry: HangarPlanVehicleStatus): Card => {
   const { name, model } = entry;
 
@@ -306,7 +299,7 @@ const hangarCard = (entry: HangarPlanVehicleStatus): Card => {
 
 const slotCard = (route: PlannedRoute): Card => ({
   title: route.model.name,
-  sub: slotSub(route.slot, route.index),
+  sub: route.slot.label,
   model: route.model,
   pill: route.acquisition.routeComplete ? decidedPill.value : undefined,
   tone: route.acquisition.routeComplete ? undefined : "warning",
@@ -682,14 +675,12 @@ const neededRows = computed<Row[]>(() => {
       ...waitingRow(start, startCard(start.acquisition)),
     }));
 
-  // A slot still choosing its ship keeps a row for each unit no start was
-  // picked for yet.
+  // A slot still choosing its ship keeps a row until a start is picked for it.
   const undecided = props.plan.slots
     .filter(
       (slot) =>
         slot.state === HangarPlanSlotStateEnum.UNDECIDED &&
-        waitingStarts.value.filter((start) => start.slot.id === slot.id)
-          .length < slot.quantity,
+        !waitingStarts.value.some((start) => start.slot.id === slot.id),
     )
     .map((slot): Row => {
       const cost = slotCost(slot);
@@ -723,12 +714,11 @@ const neededRows = computed<Row[]>(() => {
       ...heldRow(entry, startCard(entry.start)),
     }));
 
-  // An open slot keeps a row while a unit of it has no start yet.
+  // An open slot keeps a row while it has no start yet.
   const open = props.plan.slots
     .filter(
       (slot) =>
-        slot.state === HangarPlanSlotStateEnum.OPEN &&
-        slot.starts.length < slot.quantity,
+        slot.state === HangarPlanSlotStateEnum.OPEN && slot.starts.length === 0,
     )
     .map((slot): Row => ({
       key: `open-${slot.id}`,
@@ -1093,6 +1083,7 @@ const imageOf = (model?: HangarPlanModel) =>
           <SlotActions
             v-if="slotOf(row)"
             @edit="emit('editSlot', slotOf(row)!)"
+            @copy="emit('copySlot', slotOf(row)!)"
             @remove="emit('removeSlot', slotOf(row)!)"
           />
         </div>
@@ -1128,6 +1119,7 @@ const imageOf = (model?: HangarPlanModel) =>
           <SlotActions
             v-if="slotOf(row)"
             @edit="emit('editSlot', slotOf(row)!)"
+            @copy="emit('copySlot', slotOf(row)!)"
             @remove="emit('removeSlot', slotOf(row)!)"
           />
         </div>

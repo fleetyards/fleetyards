@@ -38,17 +38,17 @@ const counts = computed(() => {
 
   props.slots.forEach((slot) => {
     if (slot.state === HangarPlanSlotStateEnum.OPEN) {
-      open += slot.quantity;
+      open += 1;
       return;
     }
 
     if (slot.state === HangarPlanSlotStateEnum.UNDECIDED) {
-      pending += slot.quantity;
+      pending += 1;
       return;
     }
 
     const unresolved = unresolvedCount(slot);
-    routed += slot.quantity - unresolved;
+    routed += 1 - unresolved;
     pending += unresolved;
   });
 
@@ -59,13 +59,11 @@ const unresolvedCount = (slot: HangarPlanSlot) => {
   const cost = props.costs.find((entry) => entry.slotId === slot.id);
   if (cost) return cost.unresolvedCount;
 
-  return Math.max(
-    0,
-    slot.quantity -
-      (slot.candidates[0]?.acquisitions.filter(
-        (acquisition) => acquisition.routeComplete,
-      ).length ?? 0),
-  );
+  return slot.candidates[0]?.acquisitions.some(
+    (acquisition) => acquisition.routeComplete,
+  )
+    ? 0
+    : 1;
 };
 
 const attention = computed<Attention[]>(() =>

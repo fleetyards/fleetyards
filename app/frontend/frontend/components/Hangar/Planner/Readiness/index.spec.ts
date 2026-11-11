@@ -7,14 +7,9 @@ import {
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const slot = (
-  id: string,
-  state: HangarPlanSlotStateEnum,
-  quantity = 1,
-): HangarPlanSlot => ({
+const slot = (id: string, state: HangarPlanSlotStateEnum): HangarPlanSlot => ({
   id,
   label: id,
-  quantity,
   position: 0,
   state,
   filters: {},
@@ -38,11 +33,12 @@ describe("Hangar/Planner/Readiness", () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         slots: [
-          slot("Escort", HangarPlanSlotStateEnum.DECIDED, 2),
+          slot("Escort", HangarPlanSlotStateEnum.DECIDED),
+          slot("Wingman", HangarPlanSlotStateEnum.DECIDED),
           slot("Mining", HangarPlanSlotStateEnum.UNDECIDED),
           slot("Explorer", HangarPlanSlotStateEnum.OPEN),
         ],
-        costs: [cost("Escort", 1)],
+        costs: [cost("Escort", 0), cost("Wingman", 1)],
       },
     });
 
@@ -50,7 +46,7 @@ describe("Hangar/Planner/Readiness", () => {
 
     const issues = wrapper.findAll('[data-test="hangar-plan-readiness-issue"]');
     expect(issues.map((issue) => issue.text())).toEqual([
-      "Escort: 1 ship without a route",
+      "Wingman: 1 ship without a route",
       "Mining is undecided",
       "Explorer has no ship",
     ]);

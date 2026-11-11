@@ -36,6 +36,7 @@
       "editSlot": "Editar slot",
       "editSlotOf": "Editar %{slot}",
       "slotSettings": "Nombre y filtros",
+      "copySlot": "Copiar slot",
       "removeSlot": "Quitar slot",
       "confirmRemoveSlot": "¿Quitar este slot junto con sus naves y vías de obtención?",
       "openSlotHint": "Aún no has elegido ninguna nave. Añade una, o varias si estás indeciso.",
@@ -79,7 +80,6 @@
         "sourcePlan": "Plan a copiar",
         "slotLabel": "Rol",
         "slotLabelPlaceholder": "p. ej. Carguero principal",
-        "quantity": "Naves",
         "startKind": "Empieza como",
         "ownedShip": "Nave de tu hangar",
         "buyback": "Pledge de buy-back",
@@ -240,7 +240,6 @@
             "one": "%{count} mejora · %{price}",
             "other": "%{count} mejoras · %{price}"
           },
-          "shipOf": "nave %{number} de %{count}",
           "noRoute": "Aún sin vía",
           "planRoute": "Planificar ruta",
           "noUpgrade": "No hay mejora posible",

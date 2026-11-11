@@ -44,7 +44,6 @@ const candidate = (shipModel: HangarPlanModel): HangarPlanCandidate => ({
 const slot = (id: string, shipModel: HangarPlanModel): HangarPlanSlot => ({
   id,
   label: id,
-  quantity: 1,
   position: 0,
   state: HangarPlanSlotStateEnum.DECIDED,
   filters: {},

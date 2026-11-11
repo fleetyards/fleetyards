@@ -52,7 +52,6 @@ const filters = props.slot?.filters ?? {};
 const initialValues = {
   label: props.slot?.label ?? props.label ?? "",
   description: props.slot?.description ?? "",
-  quantity: props.slot?.quantity ?? 1,
   pledgePriceGteq: filters.pledgePriceGteq?.toString() ?? "",
   pledgePriceLteq: filters.pledgePriceLteq?.toString() ?? "",
   cargoGteq: filters.cargoGteq?.toString() ?? "",
@@ -86,7 +85,6 @@ const listsDirty = computed(
 useModalDirty(computed(() => toValue(formDirty) || listsDirty.value));
 
 const [label, labelProps] = defineField("label");
-const [quantity, quantityProps] = defineField("quantity");
 const [description, descriptionProps] = defineField("description");
 const [pledgePriceGteq, pledgePriceGteqProps] = defineField("pledgePriceGteq");
 const [pledgePriceLteq, pledgePriceLteqProps] = defineField("pledgePriceLteq");
@@ -139,7 +137,6 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     const data = {
       description: values.description || null,
-      quantity: Number(values.quantity) || 1,
       filters: filterValues(values),
     };
 
@@ -178,17 +175,6 @@ const onSubmit = handleSubmit(async (values) => {
         :placeholder="
           slot ? t('hangarPlanner.fields.slotLabelPlaceholder') : newLabel('')
         "
-      />
-      <FormInput
-        v-model="quantity"
-        v-bind="quantityProps"
-        name="quantity"
-        :type="InputTypesEnum.NUMBER"
-        :min="1"
-        :max="999"
-        :step="1"
-        :label="t('hangarPlanner.fields.quantity')"
-        no-placeholder
       />
       <FormTextarea
         v-model="description"

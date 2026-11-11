@@ -63,7 +63,6 @@ const candidate = (
 const slot = (attrs: Partial<HangarPlanSlot> = {}): HangarPlanSlot => ({
   id: "slot",
   label: "Main hauler",
-  quantity: 1,
   position: 0,
   state: HangarPlanSlotStateEnum.OPEN,
   filters: {},
@@ -86,34 +85,38 @@ describe("Hangar/Planner/SlotCard", () => {
     expect(wrapper.text()).toContain("No ship picked yet");
   });
 
-  it("counts the ships of a decided slot that have no route yet", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: {
-        slot: slot({
-          quantity: 3,
-          state: HangarPlanSlotStateEnum.DECIDED,
-          candidates: [
-            candidate("Carrack", {
-              acquisitions: [
-                {
-                  id: "route",
-                  startKind: HangarPlanStartKindEnum.STORE,
-                  startModel: model("Carrack", 600),
-                  price: 600,
-                  routeComplete: true,
-                  sourceMissing: false,
-                  usesBuybackToken: false,
-                  steps: [],
-                },
-              ],
-            }),
-          ],
-        }),
-      },
+  it("says when a decided slot's ship has no route yet", async () => {
+    const decided = (routeComplete: boolean) =>
+      slot({
+        state: HangarPlanSlotStateEnum.DECIDED,
+        candidates: [
+          candidate("Carrack", {
+            acquisitions: [
+              {
+                id: "route",
+                startKind: HangarPlanStartKindEnum.STORE,
+                startModel: model("Cutlass", 100),
+                price: 100,
+                routeComplete,
+                sourceMissing: false,
+                usesBuybackToken: false,
+                steps: [],
+              },
+            ],
+          }),
+        ],
+      });
+
+    const unrouted = await mountWithDefaults(Component, {
+      props: { slot: decided(false) },
+    });
+    const routed = await mountWithDefaults(Component, {
+      props: { slot: decided(true) },
     });
 
-    expect(wrapper.findAll('[data-test="hangar-plan-route"]')).toHaveLength(1);
-    expect(wrapper.text()).toContain("2 ships have no route yet");
+    expect(unrouted.findAll('[data-test="hangar-plan-route"]')).toHaveLength(1);
+    expect(unrouted.text()).toContain("1 ship has no route yet");
+    expect(routed.text()).not.toContain("no route yet");
   });
 
   it("shows what the slot is for and marks a ship outside its filters", async () => {

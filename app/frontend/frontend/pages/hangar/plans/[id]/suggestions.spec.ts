@@ -29,7 +29,6 @@ const freelancer = model("Freelancer", 125);
 const hauler = {
   id: "hauler",
   label: "Hauler",
-  quantity: 1,
   position: 0,
   state: HangarPlanSlotStateEnum.DECIDED,
   filters: {},

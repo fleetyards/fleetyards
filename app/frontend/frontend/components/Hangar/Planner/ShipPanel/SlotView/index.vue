@@ -36,6 +36,7 @@ import {
   type ModelQuery,
   HangarPlanSlotStateEnum,
   useChooseHangarPlanSlotCandidate,
+  useCopyHangarPlanSlot,
   useCreateHangarPlanCandidate,
   useDestroyHangarPlanCandidate,
   useDestroyHangarPlanSlot,
@@ -128,6 +129,7 @@ const choose = useChooseHangarPlanSlotCandidate();
 const createCandidate = useCreateHangarPlanCandidate();
 const destroyCandidate = useDestroyHangarPlanCandidate();
 const destroySlot = useDestroyHangarPlanSlot();
+const copySlotMutation = useCopyHangarPlanSlot();
 const updateAcquisition = useUpdateHangarPlanAcquisition();
 
 const chooseCandidate = async (candidate: HangarPlanCandidate) => {
@@ -158,6 +160,14 @@ const removeSlot = async () => {
   );
   if (answer) emit("done");
 };
+
+const copySlot = () =>
+  run("copy", () =>
+    copySlotMutation.mutateAsync({
+      hangarPlanId: props.planId,
+      id: props.slot.id,
+    }),
+  );
 
 // The slot's first ship took the starts it held, before the ships added
 // after it existed; each now moves to the ship it comes closest to. Answers
@@ -595,6 +605,16 @@ const hasFilters = computed(() =>
       </Btn>
       <Btn
         :disabled="!!busy"
+        :loading="busy === 'copy'"
+        class="slot-view__copy"
+        data-test="hangar-plan-slot-copy"
+        @click="copySlot"
+      >
+        <i class="fa-light fa-copy" />
+        {{ t("hangarPlanner.copySlot") }}
+      </Btn>
+      <Btn
+        :disabled="!!busy"
         data-test="hangar-plan-slot-settings"
         @click="emit('settings', current)"
       >
@@ -608,6 +628,10 @@ const hasFilters = computed(() =>
 <style lang="scss" scoped src="../view.scss"></style>
 
 <style lang="scss" scoped>
+.slot-view__copy {
+  margin-left: auto;
+}
+
 .slot-view__head {
   display: flex;
   flex-wrap: wrap;
