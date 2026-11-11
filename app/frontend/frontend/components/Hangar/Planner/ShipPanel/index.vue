@@ -33,8 +33,8 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const comlink = useComlink();
 
-// Under the desktop layout the panel is a sheet over the page rather than a
-// column beside it.
+// It slides over the page from the right, or up from the bottom as a sheet
+// under the desktop layout, and leaves the page's own layout alone.
 const sheet = useMobile();
 
 const { data: plan } = useHangarPlan(() => props.planId);
@@ -183,7 +183,14 @@ const openSettings = (from: HangarPlanSlot) => {
   });
 };
 
-onMounted(focus);
+// The page under it stays put while the panel scrolls, as under the app's
+// own off-canvas.
+onMounted(() => {
+  focus();
+  document.body.classList.add("no-scroll");
+});
+
+onUnmounted(() => document.body.classList.remove("no-scroll"));
 
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key !== "Escape" || event.defaultPrevented) return;
@@ -193,7 +200,12 @@ const onKeydown = (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <div v-if="sheet" class="ship-panel__backdrop" @click="close" />
+  <div
+    class="ship-panel__backdrop"
+    :class="{ 'ship-panel__backdrop--sheet': sheet }"
+    data-test="hangar-plan-panel-backdrop"
+    @click="close"
+  />
   <aside
     ref="root"
     class="ship-panel"
@@ -270,7 +282,7 @@ const onKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
-// Docked beside the plan, under any modal it opens.
+// Over the plan, under any modal it opens.
 .ship-panel {
   position: fixed;
   top: 0;
@@ -279,15 +291,35 @@ const onKeydown = (event: KeyboardEvent) => {
   z-index: 1040;
   display: flex;
   flex-direction: column;
-  width: var(--ship-panel-width);
+  width: min(860px, 58vw);
   border-left: 2px solid var(--color-edge);
   background: rgb(22 24 28 / 0.97);
   box-shadow: -18px 0 40px -20px rgb(0 0 0 / 0.9);
   outline: none;
+  animation: ship-panel-in 0.2s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes ship-panel-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+
+@keyframes ship-panel-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
 }
 
 .ship-panel--sheet {
   top: 64px;
+  animation-name: ship-panel-up;
   left: 0;
   z-index: 2010;
   width: auto;
@@ -296,9 +328,16 @@ const onKeydown = (event: KeyboardEvent) => {
   border-radius: 16px 16px 0 0;
 }
 
+// Lighter beside the panel than under a modal, so the row it is open for
+// still reads at the page's left.
 .ship-panel__backdrop {
   position: fixed;
   inset: 0;
+  z-index: 1039;
+  background: rgb(0 0 0 / 0.45);
+}
+
+.ship-panel__backdrop--sheet {
   z-index: 2009;
   background: rgb(0 0 0 / 0.6);
 }

@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import type { Component } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useElementBounding } from "@vueuse/core";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PageActions from "@/shared/components/PageActions/index.vue";
@@ -40,7 +39,6 @@ import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useMobile } from "@/shared/composables/useMobile";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
@@ -197,24 +195,6 @@ watch(plan, (current) => {
   if (!current.slots.some((slot) => slot.id === slotId)) closePanel();
 });
 
-// Beside the open panel the page keeps to the room left of it, so the row
-// being worked on stays in view and nothing hides under the panel.
-const mobile = useMobile();
-const docked = computed(() => !!panel.value && !mobile.value);
-
-const PANEL_WIDTH = "min(860px, 58vw)";
-
-const page = useTemplateRef<HTMLElement>("page");
-const { left: pageLeft } = useElementBounding(page);
-
-const pageStyle = computed(() =>
-  docked.value
-    ? {
-        "--ship-panel-width": PANEL_WIDTH,
-        maxWidth: `calc(100vw - ${PANEL_WIDTH} - ${Math.max(pageLeft.value, 0)}px - 24px)`,
-      }
-    : { "--ship-panel-width": PANEL_WIDTH },
-);
 const editSlotDetails = (slot: HangarPlanSlot) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
@@ -332,7 +312,7 @@ const onDestroy = async () => {
   />
   <Loader :loading="isLoading" />
 
-  <div v-if="plan" ref="page" class="plan-page" :style="pageStyle">
+  <template v-if="plan">
     <Heading size="hero" hero>{{ plan.name }}</Heading>
     <p v-if="plan.description" class="plan-description">
       {{ plan.description }}
@@ -458,7 +438,7 @@ const onDestroy = async () => {
     <CostTiles v-if="summary" :totals="summary.totals" />
     <Readiness :slots="plan.slots" :costs="summary?.slots" />
 
-    <div class="plan-layout" :class="{ 'plan-layout--docked': docked }">
+    <div class="plan-layout">
       <section class="plan-flow">
         <div
           v-if="tallies.length || pendingIds.length"
@@ -502,7 +482,7 @@ const onDestroy = async () => {
         />
       </section>
 
-      <aside v-show="!docked" class="plan-side">
+      <aside class="plan-side">
         <SummaryPanel :summary="summary" :loading="summaryFetching" />
 
         <Panel :variant="PanelVariantsEnum.SLIM" data-test="hangar-plan-melts">
@@ -572,7 +552,7 @@ const onDestroy = async () => {
       :target="panel"
       @close="closePanel"
     />
-  </div>
+  </template>
 </template>
 
 <style lang="scss" scoped>
@@ -603,10 +583,6 @@ const onDestroy = async () => {
   @media (max-width: 991px) {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.plan-layout--docked {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 .plan-tallies {

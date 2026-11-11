@@ -140,7 +140,7 @@ describe("Hangar/Planner/ShipPanel", () => {
     expect(wrapper.find('[data-test="view-slot"]').exists()).toBe(true);
   });
 
-  it("closes from its button and with Escape", async () => {
+  it("closes from its button, its backdrop and with Escape", async () => {
     const wrapper = await mount();
 
     await wrapper
@@ -150,7 +150,11 @@ describe("Hangar/Planner/ShipPanel", () => {
       .find('[data-test="hangar-plan-panel"]')
       .trigger("keydown", { key: "Escape" });
 
-    expect(wrapper.emitted("close")).toHaveLength(2);
+    await wrapper
+      .find('[data-test="hangar-plan-panel-backdrop"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("close")).toHaveLength(3);
   });
 
   it("asks before leaving a route with edits not saved", async () => {
