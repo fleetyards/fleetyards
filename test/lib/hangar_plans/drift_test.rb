@@ -90,4 +90,17 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_equal 500, @plan.acquisitions.find_by(start_kind: "store").price_override
     assert_not HangarPlans::Drift.new(@plan).drifted?
   end
+
+  test "a rebase drops the marks of ships that left the hangar" do
+    gone = create(:vehicle, user: @user, model: @carrack)
+    @plan.vehicle_marks.create!(vehicle: gone, mark: "keep")
+    gone.update!(hidden: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    @plan.reload
+    assert_not @plan.vehicle_marks.exists?(vehicle_id: gone.id)
+    assert @plan.vehicle_marks.exists?(vehicle_id: @kept.id)
+    assert_not HangarPlans::Drift.new(@plan).drifted?
+  end
 end
