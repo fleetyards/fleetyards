@@ -35,6 +35,8 @@ const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
+const router = useRouter();
+
 const isEdit = computed(() => !!props.flight);
 
 const initialValues = {
@@ -78,7 +80,7 @@ const onSubmit = handleSubmit(async (formValues) => {
       });
 
   await request
-    .then(() => {
+    .then((saved) => {
       displaySuccess({
         text: isEdit.value
           ? t("messages.fleet.squadrons.flights.update.success")
@@ -86,6 +88,17 @@ const onSubmit = handleSubmit(async (formValues) => {
       });
       comlink.emit("mission-children-changed");
       comlink.emit("close-modal", true);
+
+      if (!isEdit.value) {
+        void router.push({
+          name: "fleet-squadron-flight",
+          params: {
+            slug: props.fleetSlug,
+            squadron: props.squadronSlug,
+            flight: saved.id,
+          },
+        });
+      }
     })
     .catch((error) => {
       const { message, formErrors } = validationErrorFrom(error);

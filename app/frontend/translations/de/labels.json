@@ -1066,7 +1066,8 @@
             "ship": "Schiff",
             "anyShip": "Jedes passende Schiff",
             "teamSource": "Schwarm",
-            "teamSourceHint": "Übernimmt Schiffe und Slots des Schwarms in dieses Team und lädt die eingeteilten Mitglieder ein, sobald das Event offen ist."
+            "teamSourceHint": "Übernimmt Schiffe und Slots des Schwarms in dieses Team und lädt die eingeteilten Mitglieder ein, sobald das Event offen ist.",
+            "ofSquadron": "Schwarm von %{squadron}"
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

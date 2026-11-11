@@ -9,7 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import Loader from "@/shared/components/Loader/index.vue";
-import FlightCard from "@/frontend/components/Fleets/Squadrons/FlightCard/index.vue";
+import FlightSummary from "@/frontend/components/Fleets/Squadrons/FlightSummary/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -84,13 +84,18 @@ onUnmounted(() => {
     <Loader v-if="isLoading" :loading="true" inline />
 
     <div v-else-if="flights?.length" class="squadron-flights__list">
-      <FlightCard
+      <FlightSummary
         v-for="flight in flights"
         :key="flight.id"
-        :fleet="props.fleet"
-        :squadron="props.squadron"
         :flight="flight"
-        :editable="canManage"
+        :to="{
+          name: 'fleet-squadron-flight',
+          params: {
+            slug: props.fleet.slug,
+            squadron: props.squadron.slug,
+            flight: flight.id,
+          },
+        }"
       />
     </div>
 
@@ -121,8 +126,8 @@ onUnmounted(() => {
 }
 
 .squadron-flights__list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
 </style>

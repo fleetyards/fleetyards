@@ -1066,7 +1066,8 @@
             "ship": "Nave",
             "anyShip": "Cualquier nave adecuada",
             "teamSource": "Escuadrilla",
-            "teamSourceHint": "Copia las naves y los slots de la escuadrilla en este equipo e invita a los miembros asignados en cuanto el evento esté abierto."
+            "teamSourceHint": "Copia las naves y los slots de la escuadrilla en este equipo e invita a los miembros asignados en cuanto el evento esté abierto.",
+            "ofSquadron": "Escuadrilla de %{squadron}"
           },
           "askableShips": "Naves que solicitar",
           "shipRequestFrom": "%{username} te pide tu %{ship}",

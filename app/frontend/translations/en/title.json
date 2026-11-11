@@ -95,7 +95,8 @@
             "discord": "Squadron Discord - %{fleet}"
           },
           "flights": "%{fleet} Squadron Flights",
-          "myShips": "%{fleet} Squadron Ships"
+          "myShips": "%{fleet} Squadron Ships",
+          "flight": "%{fleet} Squadron Flight"
         },
         "stats": "%{fleet} Stats",
         "blueprints": "%{fleet} Blueprints",

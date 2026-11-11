@@ -1066,7 +1066,8 @@
             "ship": "Nave",
             "anyShip": "Qualsiasi nave adatta",
             "teamSource": "Pattuglia",
-            "teamSourceHint": "Copia navi e slot della pattuglia in questa squadra e invita i membri indicati non appena l’evento è aperto."
+            "teamSourceHint": "Copia navi e slot della pattuglia in questa squadra e invita i membri indicati non appena l’evento è aperto.",
+            "ofSquadron": "Pattuglia di %{squadron}"
           },
           "askableShips": "Navi da richiedere",
           "shipRequestFrom": "%{username} chiede la tua %{ship}",

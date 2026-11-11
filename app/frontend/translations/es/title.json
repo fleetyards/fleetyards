@@ -95,7 +95,8 @@
             "discord": "Discord del escuadrón - %{fleet}"
           },
           "flights": "Escuadrillas del escuadrón de %{fleet}",
-          "myShips": "Naves del escuadrón de %{fleet}"
+          "myShips": "Naves del escuadrón de %{fleet}",
+          "flight": "Escuadrilla del escuadrón de %{fleet}"
         },
         "stats": "Estadísticas de %{fleet}",
         "blueprints": "Planos de %{fleet}",

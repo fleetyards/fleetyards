@@ -95,7 +95,8 @@
             "discord": "Discord de l'escadron - %{fleet}"
           },
           "flights": "Patrouilles de l'escadron de %{fleet}",
-          "myShips": "Vaisseaux de l'escadron de %{fleet}"
+          "myShips": "Vaisseaux de l'escadron de %{fleet}",
+          "flight": "Patrouille de l'escadron de %{fleet}"
         },
         "stats": "Statistiques sur %{fleet}",
         "blueprints": "Plans de %{fleet}",

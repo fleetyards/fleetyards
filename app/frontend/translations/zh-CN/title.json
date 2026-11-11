@@ -95,7 +95,8 @@
             "discord": "中队 Discord - %{fleet}"
           },
           "flights": "%{fleet} 中队小队",
-          "myShips": "%{fleet} 中队舰船"
+          "myShips": "%{fleet} 中队舰船",
+          "flight": "%{fleet} 中队小队"
         },
         "stats": "%{fleet} 统计",
         "blueprints": "%{fleet} 的蓝图",

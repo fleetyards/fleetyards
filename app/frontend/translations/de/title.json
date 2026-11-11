@@ -95,7 +95,8 @@
             "discord": "Staffel-Discord – %{fleet}"
           },
           "flights": "%{fleet} Staffel-Schwärme",
-          "myShips": "%{fleet} Staffel-Schiffe"
+          "myShips": "%{fleet} Staffel-Schiffe",
+          "flight": "%{fleet} Staffel-Schwarm"
         },
         "stats": "%{fleet} Statistiken",
         "blueprints": "%{fleet} Baupläne",

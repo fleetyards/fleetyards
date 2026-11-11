@@ -122,6 +122,20 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: ":squadron/flights/:flight/",
+    name: "fleet-squadron-flight",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/flights/[flight].vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.squadrons.flight",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      fleetSetting: "squadronsEnabled",
+      customTitle: true,
+    },
+  },
+  {
     path: ":squadron/",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/squadrons/[squadron].vue"),

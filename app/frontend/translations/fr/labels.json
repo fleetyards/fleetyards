@@ -1066,7 +1066,8 @@
             "ship": "Vaisseau",
             "anyShip": "Tout vaisseau adapté",
             "teamSource": "Patrouille",
-            "teamSourceHint": "Copie les vaisseaux et les postes de la patrouille dans cette équipe et invite les membres prévus dès que l’événement est ouvert."
+            "teamSourceHint": "Copie les vaisseaux et les postes de la patrouille dans cette équipe et invite les membres prévus dès que l’événement est ouvert.",
+            "ofSquadron": "Patrouille de %{squadron}"
           },
           "askableShips": "Vaisseaux à demander",
           "shipRequestFrom": "%{username} demande votre %{ship}",

@@ -1066,7 +1066,8 @@
             "ship": "Ship",
             "anyShip": "Any fitting ship",
             "teamSource": "Flight",
-            "teamSourceHint": "Copies the flight's ships and slots into this team and invites the members it lists once the event is open."
+            "teamSourceHint": "Copies the flight's ships and slots into this team and invites the members it lists once the event is open.",
+            "ofSquadron": "Flight of %{squadron}"
           },
           "askableShips": "Ships to ask for",
           "shipRequestFrom": "%{username} asks for your %{ship}",
