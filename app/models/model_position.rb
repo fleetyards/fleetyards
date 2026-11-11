@@ -67,6 +67,23 @@ class ModelPosition < ApplicationRecord
       sort_order += 1
     end
 
+    # The command module's seats, under its name: the ship flies from it, and
+    # the hull may have a pilot seat of its own.
+    if model.command_module.present?
+      collect_seat_hardpoints(model.command_module).each do |hp|
+        next if hp.sc_name.include?("_bed_")
+
+        positions << {
+          name: "#{model.command_module.name} #{derive_name(hp)}",
+          position_type: infer_position_type(hp),
+          hardpoint_id: hp.id,
+          source: :sc_data,
+          position: sort_order
+        }
+        sort_order += 1
+      end
+    end
+
     # 2. Manned turrets without nested seat children
     manned_turret_hardpoints = collect_manned_turret_hardpoints(model)
     manned_turret_hardpoints.each do |hp|

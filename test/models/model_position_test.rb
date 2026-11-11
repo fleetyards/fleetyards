@@ -82,6 +82,20 @@ class ModelPositionTest < ActiveSupport::TestCase
       model.model_positions.reload.order(:position).pluck(:position_type, :name)
   end
 
+  test ".generate_for_model! adds the seats of the command module a ship docks" do
+    command_module = create(:model, name: "Command Module")
+    create(:hardpoint, parent: command_module, source: :game_files, component: seat, sc_name: "hardpoint_seat_pilot")
+    create(:hardpoint, parent: command_module, source: :game_files, component: seat, sc_name: "hardpoint_seat_copilot")
+    create(:hardpoint, parent: command_module, source: :game_files, component: seat, sc_name: "hardpoint_bed_upper_right")
+    model = create(:model, command_module:)
+    create(:hardpoint, parent: model, source: :game_files, component: seat, sc_name: "hardpoint_security_console")
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal [["operator", "Security Console"], ["pilot", "Command Module Pilot"], ["copilot", "Command Module Copilot"]],
+      model.model_positions.reload.order(:position).pluck(:position_type, :name)
+  end
+
   def two_environments
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0", ptu: "3.24.1-ptu.2"}, default: "live"})
     [ScData::Source.find(:live), ScData::Source.find(:ptu)]

@@ -81,10 +81,21 @@ module ScData
         # Every model whose file this build ships, asked of the tree rather than
         # of a stored flag: writing that flag is what made "is it in the game"
         # answerable only for whichever environment loaded last.
-        Model.find_each do |model|
-          next unless parsed?(model)
+        # Command modules first: a ship takes its module's seats as positions,
+        # and a seat not yet in this build reads as one the build dropped.
+        command_modules = Model.where(id: Model.select(:command_module_id))
+        [command_modules, Model.where.not(id: command_modules.select(:id))].each do |scope|
+          scope.find_each do |model|
+            next unless parsed?(model)
 
-          loaded << model.id if load_model(model)
+            loaded << model.id if load_model(model)
+          end
+        end
+
+        # A ship that only now found its module, on the load that first links
+        # them, gets its seats once the module is in.
+        Model.where(id: loaded).where.not(command_module_id: nil).find_each do |model|
+          ModelPosition.generate_for_model!(model)
         end
 
         # A model the export dropped loses its current build and keeps the row --
@@ -140,6 +151,8 @@ module ScData
         update_loadout(model, model_data)
 
         model.reload
+
+        assign_command_module(model, model_data)
 
         ModelPosition.generate_for_model!(model)
 
@@ -203,6 +216,13 @@ module ScData
         ModelBuildChange.record!(build)
 
         build
+      end
+
+      private def assign_command_module(model, model_data)
+        key = model_data["command_module"]
+        command_module = Model.find_by(sc_key: key.downcase) if key.present?
+
+        model.update_column(:command_module_id, command_module&.id) if model.command_module_id != command_module&.id
       end
 
       # Whether this build ships a file for the model, which is what a build row

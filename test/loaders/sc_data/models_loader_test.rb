@@ -418,6 +418,38 @@ module ScData
         assert_equal 4, model.reload.crew
       end
 
+      test "#load_model links the command module the ship docks, and unlinks one it no longer does" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        command_module = create(:model, name: "Command Module Test", sc_key: "test_command_module")
+        model = create(:model, name: "Docking Test")
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "command_module" => "TEST_Command_Module"})
+        loader.load_model(model)
+
+        assert_equal command_module, model.reload.command_module
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+        loader.load_model(model)
+
+        assert_nil model.reload.command_module
+      end
+
+      # The ship can load before its module on the run that first links them.
+      test "#all gives a ship its command module's seats whichever loads first" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        command_module = create(:model, :in_game, name: "Command Module Order Test")
+        create(:hardpoint, parent: command_module, source: :game_files, sc_name: "hardpoint_seat_pilot", component: create(:component, category: "seat"))
+        model = create(:model, :in_game, name: "Docking Order Test")
+        loader.stubs(:parsed?).returns(false)
+        loader.stubs(:parsed?).with(model).returns(true)
+        loader.stubs(:load_model).with(model).returns(model.build)
+        model.update_column(:command_module_id, command_module.id)
+
+        loader.all
+
+        assert_equal ["pilot"], model.model_positions.reload.pluck(:position_type)
+      end
+
       test "#load_model leaves the crew to the matrix when the export gives none" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "No Crew Test", crew: 6)
