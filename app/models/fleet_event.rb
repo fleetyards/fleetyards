@@ -514,15 +514,15 @@ class FleetEvent < ApplicationRecord
     errors.add(:base, :recurrence_count_xor_until)
   end
 
-  # `open_at` is written by aasm on every transition into `open`, so unlocking
-  # signups moves it. This one is set on the first publish and never again,
-  # which is what a lead time has to measure against. Taken from `open_at`
-  # rather than the clock, which may have ticked past a second since aasm set it.
   private def invite_slot_candidates
     @opening = false
     FleetEvents::SlotInvites.offer_all!(self)
   end
 
+  # `open_at` is written by aasm on every transition into `open`, so unlocking
+  # signups moves it. This one is set on the first publish and never again,
+  # which is what a lead time has to measure against. Taken from `open_at`
+  # rather than the clock, which may have ticked past a second since aasm set it.
   private def stamp_published_at
     return unless status == "open"
 
