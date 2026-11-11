@@ -3715,6 +3715,8 @@
           "placeholder": "選擇物品",
           "custom": "將「%{name}」新增為自訂物品",
           "search": "按名稱搜尋",
+          "moreFilters": "更多篩選",
+          "resetFilters": "重設篩選",
           "chooseCategory": "選擇一個類別以瀏覽其物品。",
           "results": {
             "one": "%{count} 件物品",

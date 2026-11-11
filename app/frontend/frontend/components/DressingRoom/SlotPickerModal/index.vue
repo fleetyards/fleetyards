@@ -125,6 +125,7 @@ const pick = (item: CatalogueItem) => {
       :is-selected="isSelected"
       :is-disabled="isDisabled"
       :badges-of="sizeBadgesOf"
+      filterable
       card-test-prefix="dressing-room-option"
       data-test="dressing-room-slot-picker"
       @toggle="pick"

@@ -3718,6 +3718,8 @@
           "placeholder": "Elegir un objeto",
           "custom": "Añadir «%{name}» como objeto personalizado",
           "search": "Buscar por nombre",
+          "moreFilters": "Más filtros",
+          "resetFilters": "Restablecer filtros",
           "chooseCategory": "Elige una categoría para explorar sus objetos.",
           "results": {
             "one": "%{count} objeto",

@@ -8,8 +8,12 @@ export default {
 import { keepPreviousData, useQuery } from "@tanstack/vue-query";
 import debounce from "lodash.debounce";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import PickerCard, {
   type PickerCardBadge,
 } from "@/shared/components/PickerCard/index.vue";
@@ -22,7 +26,10 @@ import {
   compareItemImageFit,
 } from "@/frontend/components/Compare/image";
 import { useComponentCategoryLabel } from "@/frontend/composables/useComponentCategoryLabel";
+import { useEquipmentPickerFilters } from "@/frontend/composables/useEquipmentPickerFilters";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import {
   componentCategoriesFilters,
   components as fetchComponents,
@@ -41,6 +48,9 @@ interface Props {
   // Narrows the catalogue for good, and takes the type filter's place.
   query?: ComponentQuery | EquipmentQuery;
   hideFilter?: boolean;
+  // Equipment only: manufacturer, sub type, grade, size and weapon class
+  // filters, offered within what `query` lets through.
+  filterable?: boolean;
   isSelected?: (item: CatalogueItem) => boolean;
   isDisabled?: (item: CatalogueItem) => boolean;
   badgesOf?: (item: CatalogueItem) => PickerCardBadge[];
@@ -50,6 +60,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   query: undefined,
   hideFilter: false,
+  filterable: false,
   isSelected: () => false,
   isDisabled: () => false,
   badgesOf: () => [],
@@ -80,6 +91,69 @@ const records = ref<CatalogueItem[]>([]);
 
 const filtered = computed(() => !props.query && !props.hideFilter);
 
+const mobile = useMobile();
+
+const { prefersReducedMotion } = useReducedMotion();
+
+const equipmentFilters = useEquipmentPickerFilters(
+  () => props.query as EquipmentQuery | undefined,
+  () => props.filterable && props.kind === "Equipment",
+);
+
+const pickerFilters = computed(() =>
+  props.filterable && props.kind === "Equipment"
+    ? equipmentFilters.filters.value
+    : [],
+);
+
+const primaryFilters = computed(() =>
+  pickerFilters.value.filter((filter) => filter.primary),
+);
+
+const secondaryFilters = computed(() =>
+  pickerFilters.value.filter((filter) => !filter.primary),
+);
+
+// On a phone every filter folds away behind the toggle, so the header leaves
+// room for the grid under it.
+const togglesFilters = computed(() =>
+  mobile.value ? !!pickerFilters.value.length : !!secondaryFilters.value.length,
+);
+
+const moreFiltersOpen = ref(false);
+
+// Per instance: the Teleport finds its target with a document-wide lookup, and
+// a closing picker can still be in the DOM while the next one mounts.
+const foldedFiltersId = `catalogue-picker-folded-${useId()}`;
+
+const folded = computed(() =>
+  mobile.value ? pickerFilters.value : secondaryFilters.value,
+);
+
+const moreFiltersCount = computed(
+  () =>
+    folded.value.filter((filter) => equipmentFilters.isPicked(filter.key))
+      .length,
+);
+
+const moreFiltersLabel = computed(() =>
+  mobile.value
+    ? t("labels.filter")
+    : t("labels.logistics.itemPicker.moreFilters"),
+);
+
+// The aria-label replaces the button's content as its name, badge included, so
+// the count has to be spoken from here.
+const moreFiltersAriaLabel = computed(() =>
+  moreFiltersCount.value
+    ? `${moreFiltersLabel.value} (${moreFiltersCount.value})`
+    : moreFiltersLabel.value,
+);
+
+const filtersActive = computed(
+  () => !!Object.keys(equipmentFilters.query.value).length,
+);
+
 const { data: typeOptions } = useQuery({
   queryKey: ["catalogue-picker-types", props.kind],
   queryFn: () =>
@@ -91,7 +165,7 @@ const { data: typeOptions } = useQuery({
 });
 
 const activeQuery = computed(() => {
-  if (props.query) return props.query;
+  if (props.query) return { ...props.query, ...equipmentFilters.query.value };
   if (!type.value) return {};
 
   return props.kind === "Component"
@@ -206,7 +280,7 @@ watch(search, (value) => {
   applySearch(value);
 });
 
-watch(type, () => {
+watch([type, equipmentFilters.query], () => {
   page.value = 1;
 });
 
@@ -269,8 +343,75 @@ const resultsLabel = computed(() =>
         :nullable="true"
       />
     </template>
-    <template v-if="slots.summary" #summary>
+    <template v-else-if="pickerFilters.length" #filters>
+      <Teleport :to="`#${foldedFiltersId}`" :disabled="!mobile" defer>
+        <BaseSelect
+          v-for="filter in primaryFilters"
+          :key="filter.key"
+          v-model="equipmentFilters.picks.value[filter.key]"
+          class="catalogue-picker__filter"
+          :name="`catalogue-picker-${filter.key}`"
+          :options="filter.options"
+          :label="filter.label"
+          no-label
+          multiple
+          searchable
+        />
+      </Teleport>
+
+      <Btn
+        v-if="togglesFilters"
+        class="catalogue-picker__more-filters"
+        :active="moreFiltersOpen"
+        :aria-expanded="moreFiltersOpen"
+        :aria-controls="`${foldedFiltersId}-panel`"
+        v-tooltip="moreFiltersLabel"
+        :aria-label="moreFiltersAriaLabel"
+        data-test="catalogue-picker-more-filters"
+        @click="moreFiltersOpen = !moreFiltersOpen"
+      >
+        <i v-if="moreFiltersCount" class="fa-solid fa-filter" />
+        <i v-else class="fa-regular fa-filter" />
+        <span v-if="moreFiltersCount" class="catalogue-picker__filter-count">
+          {{ moreFiltersCount }}
+        </span>
+      </Btn>
+    </template>
+    <template v-if="pickerFilters.length" #moreFilters>
+      <Collapsed
+        :id="`${foldedFiltersId}-panel`"
+        :visible="moreFiltersOpen"
+        :duration="prefersReducedMotion ? 1 : 200"
+      >
+        <div class="catalogue-picker__more-toolbar">
+          <div :id="foldedFiltersId" class="catalogue-picker__folded" />
+
+          <BaseSelect
+            v-for="filter in secondaryFilters"
+            :key="filter.key"
+            v-model="equipmentFilters.picks.value[filter.key]"
+            class="catalogue-picker__filter"
+            :name="`catalogue-picker-${filter.key}`"
+            :options="filter.options"
+            :label="filter.label"
+            no-label
+            multiple
+          />
+        </div>
+      </Collapsed>
+    </template>
+    <template v-if="slots.summary || filtersActive" #summary>
       <slot name="summary" />
+      <Btn
+        v-if="filtersActive"
+        class="catalogue-picker__reset"
+        :variant="BtnVariantsEnum.BARE"
+        :size="BtnSizesEnum.XS"
+        data-test="catalogue-picker-reset-filters"
+        @click="equipmentFilters.reset"
+      >
+        {{ t("labels.logistics.itemPicker.resetFilters") }}
+      </Btn>
     </template>
     <template v-if="slots.notice" #notice>
       <slot name="notice" />
@@ -325,5 +466,36 @@ const resultsLabel = computed(() =>
 .catalogue-picker__filter {
   flex: 1;
   min-width: 200px;
+}
+
+/* Matched to the fields it stands next to rather than sized by its own text, so
+   the toolbar reads as one row. */
+.catalogue-picker__more-filters {
+  align-self: stretch;
+}
+
+.catalogue-picker__filter-count {
+  color: var(--color-gold, #d4af37);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inside the element Collapsed animates, not on it: it holds the animated
+   element's padding at zero until the end, and the row would jump down. */
+.catalogue-picker__more-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-top: 12px;
+}
+
+/* Lets the moved fields wrap with the rest of the row they land in. */
+.catalogue-picker__folded {
+  display: contents;
+}
+
+.catalogue-picker__reset {
+  margin-left: auto;
 }
 </style>

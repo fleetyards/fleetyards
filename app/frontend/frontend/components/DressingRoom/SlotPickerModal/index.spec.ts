@@ -3,6 +3,16 @@ import { flushPromises } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { type SlotFit } from "@/frontend/utils/dressingRoomFit";
 
+// jsdom has no matchMedia; the picker asks it for reduced motion.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
+
 const fetchEquipment = vi.fn((_params: unknown) =>
   Promise.resolve({
     items: [{ id: "core", name: "ADP Core", slug: "adp-core", media: {} }],
