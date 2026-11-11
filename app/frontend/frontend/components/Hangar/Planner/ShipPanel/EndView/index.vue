@@ -41,6 +41,7 @@ import {
   HangarPlanSlotStateEnum,
   useHangarPlan,
   useHangarPlanResources,
+  useWishlistItems,
 } from "@/services/fyApi";
 
 type Props = {
@@ -76,6 +77,9 @@ const { data: plan } = useHangarPlan(() => props.planId);
 const { data: resources, isLoading } = useHangarPlanResources(
   () => props.planId,
 );
+
+const { data: wishlist } = useWishlistItems();
+const wished = computed(() => new Set(wishlist.value ?? []));
 
 const { pairing, pairEnd } = useHangarPlanPairing(() => props.planId, plan);
 
@@ -134,6 +138,11 @@ const sections = computed<ShipListSection[]>(() => [
     hint: t("hangarPlanner.panel.sections.planHint"),
   },
   {
+    key: "wishlist",
+    label: t("hangarPlanner.panel.sections.wishlist"),
+    hint: t("hangarPlanner.panel.sections.storeHint"),
+  },
+  {
     key: "store",
     label: t("hangarPlanner.panel.sections.store"),
     hint: t("hangarPlanner.panel.sections.storeHint"),
@@ -186,7 +195,7 @@ const items = computed<ShipListItem[]>(() => [
     }),
   ),
   ...catalogue.value.map((model) =>
-    shipItem(model, "store", {
+    shipItem(model, wished.value.has(model.slug) ? "wishlist" : "store", {
       id: `${MODEL}${model.id}`,
       meta: manufacturerText(model),
       tags: upgradeTag(model),

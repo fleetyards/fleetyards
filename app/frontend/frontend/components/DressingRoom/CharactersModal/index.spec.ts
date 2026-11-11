@@ -86,6 +86,14 @@ describe("DressingRoomCharactersModal", () => {
     destroy.mockClear();
   });
 
+  it("tells where the game saves exported characters", async () => {
+    const wrapper = await mount({});
+
+    expect(
+      wrapper.find('[data-test="dressing-room-chf-location"] code').text(),
+    ).toBe("StarCitizen\\LIVE\\user\\client\\0\\CustomCharacters");
+  });
+
   it("uploads a file for the body being dressed and puts it on", async () => {
     const wrapper = await mount({});
     const input = wrapper.find('[data-test="dressing-room-character-file"]');

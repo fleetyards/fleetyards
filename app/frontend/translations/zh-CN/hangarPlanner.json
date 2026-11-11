@@ -74,6 +74,7 @@
         "startingCredit": "商店积分",
         "startingCreditInfo": "你已有的商店余额（美元）。留空则使用机库同步从 RSI 读取的余额。",
         "startingCreditSynced": "你已有的商店余额（美元）。你上次机库同步从 RSI 读取到 %{credit}；留空即使用该余额。",
+        "useSyncedCredit": "使用机库中的 %{credit}",
         "source": "起点",
         "sourcePlan": "要复制的方案",
         "slotLabel": "角色",
@@ -468,6 +469,7 @@
           "keep": "保留",
           "plan": "本计划中",
           "planHint": "已有槽位的飞船",
+          "wishlist": "来自你的愿望清单",
           "store": "商店飞船",
           "storeHint": "选择后会获得自己的槽位"
         },
@@ -502,6 +504,7 @@
         },
         "onSale": "在售",
         "inHangar": "在我的机库",
+        "onWishlist": "在愿望清单中",
         "slotFilters": "槽位筛选",
         "crew": {
           "one": "船员 %{count}",

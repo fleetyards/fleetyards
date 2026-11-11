@@ -196,6 +196,22 @@ describe("Hangar/Planner/ShipPanel/SlotView", () => {
     });
   });
 
+  it("narrows the catalogue to the wishlist", async () => {
+    const wrapper = await mount();
+    const params = optionParams.mock.calls[0][0];
+
+    expect(toValue(params).q).not.toHaveProperty("onWishlist");
+
+    await wrapper
+      .find('[data-test="hangar-plan-slot-filter-wishlist"] button')
+      .trigger("click");
+
+    expect(toValue(params).q).toMatchObject({
+      onWishlist: true,
+      plannable: true,
+    });
+  });
+
   it("adds a ship from the catalogue to the shortlist, and takes one off", async () => {
     const wrapper = await mount();
 

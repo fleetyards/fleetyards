@@ -74,6 +74,7 @@
         "startingCredit": "商店點數",
         "startingCreditInfo": "你已有的商店餘額（美元）。留空則使用機庫同步從 RSI 讀取的餘額。",
         "startingCreditSynced": "你已有的商店餘額（美元）。你上次機庫同步從 RSI 讀取到 %{credit}；留空即使用該餘額。",
+        "useSyncedCredit": "使用機庫中的 %{credit}",
         "source": "起點",
         "sourcePlan": "要複製的方案",
         "slotLabel": "角色",
@@ -468,6 +469,7 @@
           "keep": "保留",
           "plan": "本計畫中",
           "planHint": "已有槽位的飛船",
+          "wishlist": "來自你的願望清單",
           "store": "商店飛船",
           "storeHint": "選擇後會獲得自己的槽位"
         },
@@ -502,6 +504,7 @@
         },
         "onSale": "在售",
         "inHangar": "在我的機庫",
+        "onWishlist": "在願望清單中",
         "slotFilters": "槽位篩選",
         "crew": {
           "one": "船員 %{count}",

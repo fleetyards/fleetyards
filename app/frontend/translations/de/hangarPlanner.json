@@ -74,6 +74,7 @@
         "startingCredit": "Store-Guthaben",
         "startingCreditInfo": "Store-Guthaben, das du schon hast, in USD. Lass das Feld leer, um das zu nutzen, was ein Hangar-Sync von RSI liest.",
         "startingCreditSynced": "Store-Guthaben, das du schon hast, in USD. Dein letzter Hangar-Sync hat %{credit} von RSI gelesen; lass das Feld leer, um das zu nutzen.",
+        "useSyncedCredit": "Die %{credit} aus dem Hangar nutzen",
         "source": "Start mit",
         "sourcePlan": "Zu kopierender Plan",
         "slotLabel": "Rolle",
@@ -468,6 +469,7 @@
           "keep": "Behalten",
           "plan": "In diesem Plan",
           "planHint": "Schiffe, die ein Slot schon hält",
+          "wishlist": "Von deiner Wunschliste",
           "store": "Schiffe im Store",
           "storeHint": "Bekommt einen eigenen Slot"
         },
@@ -502,6 +504,7 @@
         },
         "onSale": "Im Verkauf",
         "inHangar": "In meinem Hangar",
+        "onWishlist": "Auf der Wunschliste",
         "slotFilters": "Filter des Slots",
         "crew": {
           "one": "Crew %{count}",

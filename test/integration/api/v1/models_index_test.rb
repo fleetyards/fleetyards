@@ -152,6 +152,18 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters by the signed in user's wishlist" do
+    wished, owned, _untouched = create_list(:model, 3)
+    user = create(:user)
+    create(:vehicle, :wanted, user:, model: wished)
+    create(:vehicle, user:, model: owned)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {onWishlist: true}} do
+      assert_equal [wished.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 

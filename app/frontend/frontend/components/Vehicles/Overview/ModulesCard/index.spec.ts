@@ -96,17 +96,11 @@ describe("VehicleOverviewModulesCard", () => {
     expect(wrapper.find(card).exists()).toBe(false);
   });
 
-  it("shows a wishlist ship's modules without offering to edit them", async () => {
-    const wrapper = await mount({ wanted: true });
-
-    expect(wrapper.text()).toContain("Cargo Module");
-    expect(wrapper.find(editButton).exists()).toBe(false);
-  });
-
-  it("leaves a wishlist ship without modules alone", async () => {
+  it("offers to edit the modules a wishlist ship is wanted with", async () => {
     const wrapper = await mount({ wanted: true, modelModuleIds: [] });
 
-    expect(wrapper.find(card).exists()).toBe(false);
+    expect(wrapper.find(card).exists()).toBe(true);
+    expect(wrapper.find(editButton).exists()).toBe(true);
   });
 
   it("does not claim the ship has no modules when the request failed", async () => {

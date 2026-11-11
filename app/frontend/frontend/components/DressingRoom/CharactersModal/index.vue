@@ -50,6 +50,8 @@ const comlink = useComlink();
 
 const current = computed(() => props.token());
 
+const chfFolder = "StarCitizen\\LIVE\\user\\client\\0\\CustomCharacters";
+
 const { data: characters, isLoading } = useCharacterFaces({
   query: { retry: false },
 });
@@ -117,6 +119,12 @@ const remove = async (character: CharacterFace) => {
   <Modal :title="t('dressingRoom.characters.title')">
     <section class="characters" data-test="dressing-room-characters-modal">
       <p class="characters__hint">{{ t("dressingRoom.characters.hint") }}</p>
+      <div class="characters__location" data-test="dressing-room-chf-location">
+        <p class="characters__hint">
+          {{ t("dressingRoom.characters.location") }}
+        </p>
+        <code class="characters__path">{{ chfFolder }}</code>
+      </div>
       <div class="characters__actions">
         <Btn
           :size="BtnSizesEnum.SM"
@@ -206,6 +214,21 @@ const remove = async (character: CharacterFace) => {
 .characters__hint {
   margin: 0;
   color: $gray-lighter;
+}
+
+.characters__location {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.characters__path {
+  padding: 0.375rem 0.5rem;
+  border-radius: 4px;
+  background: $gray-black-hover;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  user-select: all;
 }
 
 .characters__warning {

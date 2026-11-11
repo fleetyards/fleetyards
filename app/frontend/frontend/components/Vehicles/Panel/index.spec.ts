@@ -342,6 +342,32 @@ describe("vehicle add-ons shortcut", () => {
     expect(openAddonsView).toHaveBeenLastCalledWith(ship);
   });
 
+  it("opens the modules a wishlist ship is wanted with", async () => {
+    const ship = vehicle({
+      wanted: true,
+      model: { ...vehicle().model, hasModules: true, hasUpgrades: true },
+    });
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+    expect(openEditModal).toHaveBeenLastCalledWith(ship, { tab: "modules" });
+  });
+
+  it("shows the upgrades on a wishlist ship without modules", async () => {
+    const ship = vehicle({
+      wanted: true,
+      modelUpgradeIds: ["u1"],
+      model: { ...vehicle().model, hasModules: false, hasUpgrades: true },
+    });
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+    expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
+    expect(openAddonsView).toHaveBeenLastCalledWith(ship);
+  });
+
   it("shows a visitor the add-ons rather than a loadout", async () => {
     const ship = vehicle({
       modelModuleIds: ["m1"],

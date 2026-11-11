@@ -107,6 +107,7 @@
         "default": "Spielstandard",
         "change": "Ändern",
         "hint": "Lade die .chf hoch, die der Charakter-Editor des Spiels exportiert, und die Figur trägt dein Gesicht, deine Haare und deine Haut.",
+        "location": "Das Spiel speichert exportierte Charaktere in diesem Ordner deiner Star-Citizen-Installation (PTU statt LIVE für den Testserver):",
         "signIn": "Melde dich an, um deinen eigenen Charakter hochzuladen.",
         "upload": ".chf hochladen",
         "none": "Noch keine Charaktere.",

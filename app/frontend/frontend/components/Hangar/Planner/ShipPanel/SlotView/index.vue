@@ -218,6 +218,7 @@ const search = ref("");
 const searchTerm = ref("");
 const onSale = ref(false);
 const inHangar = ref(false);
+const onWishlist = ref(false);
 const page = ref(1);
 const records = ref<ModelOption[]>([]);
 
@@ -227,7 +228,7 @@ const applySearch = debounce((value: string) => {
 
 watch(search, (value) => applySearch(value));
 
-watch([searchTerm, onSale, inHangar], () => {
+watch([searchTerm, onSale, inHangar, onWishlist], () => {
   page.value = 1;
 });
 
@@ -244,6 +245,7 @@ const queryParams = computed(() => {
   if (searchTerm.value) q.searchCont = searchTerm.value;
   if (onSale.value) q.onSaleEq = true;
   if (inHangar.value) q.inHangar = true;
+  if (onWishlist.value) q.onWishlist = true;
 
   return { page: String(page.value), perPage: PER_PAGE, q };
 });
@@ -454,6 +456,15 @@ const hasFilters = computed(() =>
           >
             {{ t("hangarPlanner.panel.inHangar") }}
           </Chip>
+          <Chip
+            :state="
+              onWishlist ? ChipStatesEnum.INCLUDED : ChipStatesEnum.NEUTRAL
+            "
+            data-test="hangar-plan-slot-filter-wishlist"
+            @toggle="onWishlist = !onWishlist"
+          >
+            {{ t("hangarPlanner.panel.onWishlist") }}
+          </Chip>
           <Btn
             :variant="BtnVariantsEnum.BARE"
             :size="BtnSizesEnum.XS"
@@ -501,6 +512,12 @@ const hasFilters = computed(() =>
                   :variant="PillVariantsEnum.NEUTRAL"
                 >
                   {{ t("hangarPlanner.panel.inHangar") }}
+                </Pill>
+                <Pill
+                  v-else-if="option.onWishlist"
+                  :variant="PillVariantsEnum.NEUTRAL"
+                >
+                  {{ t("hangarPlanner.panel.onWishlist") }}
                 </Pill>
               </span>
             </span>

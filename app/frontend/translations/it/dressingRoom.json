@@ -107,6 +107,7 @@
         "default": "Predefinito del gioco",
         "change": "Cambia",
         "hint": "Carica il .chf esportato dal creatore di personaggi del gioco e la figura avrà il tuo volto, i tuoi capelli e la tua pelle.",
+        "location": "Il gioco salva i personaggi esportati in questa cartella della tua installazione di Star Citizen (PTU invece di LIVE per il server di prova):",
         "signIn": "Accedi per caricare il tuo personaggio.",
         "upload": "Carica un .chf",
         "none": "Ancora nessun personaggio.",

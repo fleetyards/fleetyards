@@ -74,6 +74,7 @@
         "startingCredit": "Store credit",
         "startingCreditInfo": "Store credit you already have, in USD. Leave this empty to use what a hangar sync reads from RSI.",
         "startingCreditSynced": "Store credit you already have, in USD. Your last hangar sync read %{credit} from RSI; leave this empty to use that.",
+        "useSyncedCredit": "Use the hangar's %{credit}",
         "source": "Start from",
         "sourcePlan": "Plan to copy",
         "slotLabel": "Role",
@@ -468,6 +469,7 @@
           "keep": "Keep it",
           "plan": "In this plan",
           "planHint": "Ships a slot already holds",
+          "wishlist": "From your wishlist",
           "store": "Store ships",
           "storeHint": "Picking one gives it a slot of its own"
         },
@@ -502,6 +504,7 @@
         },
         "onSale": "On sale",
         "inHangar": "In my hangar",
+        "onWishlist": "On wishlist",
         "slotFilters": "Slot filters",
         "crew": {
           "one": "crew %{count}",

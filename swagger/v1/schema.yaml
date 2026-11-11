@@ -46170,6 +46170,8 @@ components:
           type: boolean
         inHangar:
           type: boolean
+        onWishlist:
+          type: boolean
         inGameEq:
           type: boolean
         s:
@@ -51532,6 +51534,11 @@ components:
         hangarUpdatedAt:
           type: string
           format: date-time
+        rsiStoreCredit:
+          type:
+          - number
+          - 'null'
+          description: The store credit the last hangar sync read from RSI
         resourceAccess:
           type: array
           items:

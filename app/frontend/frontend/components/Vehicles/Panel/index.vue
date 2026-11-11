@@ -211,17 +211,23 @@ const comlink = useComlink();
 
 const { openEditModal, openLoadoutView, openAddonsView } = useVehicleModals();
 
-// The owner edits what the ship carries; a visitor, or anyone looking at a
-// loaner or a wishlist ship, sees it read-only.
+// The owner edits what the ship carries, and the modules a wishlist ship is
+// wanted with; a visitor, or anyone looking at a loaner or a wishlist ship's
+// upgrades, sees it read-only.
+const addonsEditTab = computed(() => {
+  const vehicle = props.vehicle as Vehicle;
+  if (!props.editable || vehicle.loaner) {
+    return undefined;
+  }
+  if (model.value?.hasModules) {
+    return VehicleEditTabsEnum.MODULES;
+  }
+  return vehicle.wanted ? undefined : VehicleEditTabsEnum.UPGRADES;
+});
+
 const openAddonsModal = () =>
-  props.editable &&
-  !(props.vehicle as Vehicle).loaner &&
-  !(props.vehicle as Vehicle).wanted
-    ? openEditModal(props.vehicle as Vehicle, {
-        tab: model.value?.hasModules
-          ? VehicleEditTabsEnum.MODULES
-          : VehicleEditTabsEnum.UPGRADES,
-      })
+  addonsEditTab.value
+    ? openEditModal(props.vehicle as Vehicle, { tab: addonsEditTab.value })
     : openAddonsView(props.vehicle);
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);

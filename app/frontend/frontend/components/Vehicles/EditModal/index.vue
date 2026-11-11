@@ -121,21 +121,27 @@ const changedFields = (values: VehicleEditValues) => {
   return Object.keys(changes).length ? changes : undefined;
 };
 
-// A wishlist ship is only named and watched for sales; how it was bought, its
-// groups and its picture belong to a ship in the hangar.
-const WISHLIST_TABS = [
-  VehicleEditTabsEnum.NAMES,
-  VehicleEditTabsEnum.VISIBILITY,
-];
-
-const tabVisible = (tab: VehicleEditTabsEnum) =>
-  !props.wishlist || WISHLIST_TABS.includes(tab);
-
 // What a ship carries is the owner's record of it; a loaner carries what it was
 // lent with.
 const equipmentVisible = computed(
   () => !props.wishlist && !props.vehicle.loaner,
 );
+
+const modulesVisible = computed(
+  () => !props.vehicle.loaner && !!props.vehicle.model.hasModules,
+);
+
+// A wishlist ship is named, watched for sales and wanted with its modules; how
+// it was bought, its groups and its picture belong to a ship in the hangar.
+const WISHLIST_TABS = [
+  VehicleEditTabsEnum.NAMES,
+  VehicleEditTabsEnum.VISIBILITY,
+  VehicleEditTabsEnum.MODULES,
+];
+
+const tabVisible = (tab: VehicleEditTabsEnum) =>
+  (tab !== VehicleEditTabsEnum.MODULES || modulesVisible.value) &&
+  (!props.wishlist || WISHLIST_TABS.includes(tab));
 
 const activeTab = ref<string>(
   tabVisible(props.tab) ? props.tab : VehicleEditTabsEnum.NAMES,
@@ -345,12 +351,9 @@ const vehicleName = computed(
           :label="t('labels.vehicleLoadout.tabs.modules')"
           icon="fa-duotone fa-puzzle"
           :fields="['modelModuleIds']"
-          :hidden="!equipmentVisible || !vehicle.model.hasModules"
+          :hidden="!tabVisible(VehicleEditTabsEnum.MODULES)"
         >
-          <Modules
-            v-if="equipmentVisible && vehicle.model.hasModules"
-            :vehicle="vehicle"
-          />
+          <Modules v-if="modulesVisible" :vehicle="vehicle" />
         </FormTab>
         <FormTab
           :id="VehicleEditTabsEnum.UPGRADES"
