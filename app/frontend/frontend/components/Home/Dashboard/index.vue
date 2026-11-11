@@ -28,7 +28,27 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
+
+// The 'verse runs 930 years ahead of us.
+const IN_GAME_YEAR_OFFSET = 930;
+
+// Today in the reader's language, in the game's calendar.
+const today = computed(() =>
+  new Intl.DateTimeFormat(currentLocale(), {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+    .formatToParts(new Date())
+    .map((part) =>
+      part.type === "year"
+        ? String(Number(part.value) + IN_GAME_YEAR_OFFSET)
+        : part.value,
+    )
+    .join(""),
+);
 
 const { currentUser } = storeToRefs(useSessionStore());
 
@@ -43,6 +63,9 @@ const { isFeatureEnabled } = useFeatures();
   <div class="home-dashboard__head">
     <div class="home-dashboard__title">
       <HomeBuildPills />
+      <span class="home-dashboard__date" data-test="home-dashboard-date">
+        {{ today }}
+      </span>
       <Heading hero :size="HeadingSizeEnum.HERO_SM">
         {{
           currentUser
@@ -93,6 +116,14 @@ const { isFeatureEnabled } = useFeatures();
   flex-direction: column;
   align-items: flex-start;
   min-width: 0;
+}
+
+.home-dashboard__date {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .home-dashboard__tiles {
