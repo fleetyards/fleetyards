@@ -1087,7 +1087,9 @@
             "hangarGroup": "Hangar-Gruppe",
             "pickedShips": "Schiffe",
             "extraShips": "Zusätzlich diese Schiffe"
-          }
+          },
+          "flightsEnabled": "Schwärme",
+          "flightsEnabledHint": "Erlaubt der Staffelführung, Schwärme anzulegen: Aufstellungen aus Schiffen und Slots, die Event- und Vorlagen-Teams vorbefüllen und die eingeteilten Mitglieder einladen."
         },
         "roles": {
           "permanent": "Permanent",

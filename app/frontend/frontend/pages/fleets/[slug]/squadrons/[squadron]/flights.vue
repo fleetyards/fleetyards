@@ -29,6 +29,21 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
+const router = useRouter();
+
+// Reached by its address while the squadron has flights switched off.
+watch(
+  () => props.squadron.flightsEnabled,
+  (enabled) => {
+    if (enabled) return;
+
+    void router.replace({
+      name: "fleet-squadron",
+      params: { slug: props.fleet.slug, squadron: props.squadron.slug },
+    });
+  },
+  { immediate: true },
+);
 
 // Whoever arranges the roster arranges who flies together.
 const canManage = computed(
@@ -45,6 +60,7 @@ const {
 } = useFleetSquadronFlights(
   computed(() => props.fleet.slug),
   computed(() => props.squadron.slug),
+  { query: { enabled: computed(() => !!props.squadron.flightsEnabled) } },
 );
 
 const openCreateModal = () => {

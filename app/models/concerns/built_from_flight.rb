@@ -46,8 +46,9 @@ module BuiltFromFlight
     return errors.add(:source_flight, :not_in_fleet) if source_flight.blank?
 
     fleet_id = squadron_fleet_id
-    return if fleet_id.blank? || source_flight.fleet_squadron.fleet_id == fleet_id
+    return errors.add(:source_flight, :not_in_fleet) if fleet_id.present? && source_flight.fleet_squadron.fleet_id != fleet_id
+    return if source_flight.fleet_squadron.flights_enabled?
 
-    errors.add(:source_flight, :not_in_fleet)
+    errors.add(:source_flight, :flights_disabled)
   end
 end

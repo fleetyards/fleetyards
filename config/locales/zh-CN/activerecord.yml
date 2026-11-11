@@ -541,12 +541,14 @@ zh-CN:
               not_in_fleet: "必须是本舰队的中队或小队"
             source_flight:
               not_in_fleet: "必须是本舰队某个中队的小队"
+              flights_disabled: "所属中队已关闭小队功能"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "必须是本舰队的中队或小队"
             source_flight:
               not_in_fleet: "必须是本舰队某个中队的小队"
+              flights_disabled: "所属中队已关闭小队功能"
           one_owner: "必须属于模板或小队之一"
         fleet_inventory:
           attributes:

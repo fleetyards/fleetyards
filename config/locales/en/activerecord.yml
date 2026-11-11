@@ -573,12 +573,14 @@ en:
               not_in_fleet: "must be a squadron or team of this fleet"
             source_flight:
               not_in_fleet: "must be a flight of one of this fleet's squadrons"
+              flights_disabled: "belongs to a squadron that has switched its flights off"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "must be a squadron or team of this fleet"
             source_flight:
               not_in_fleet: "must be a flight of one of this fleet's squadrons"
+              flights_disabled: "belongs to a squadron that has switched its flights off"
           one_owner: "must belong to either a template or a flight"
         fleet_inventory:
           attributes:

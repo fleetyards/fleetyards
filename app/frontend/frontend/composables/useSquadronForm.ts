@@ -77,6 +77,7 @@ export const useSquadronForm = (
       description: squadron?.value?.description ?? "",
       color: squadron?.value?.color ?? NEUTRAL_COLOR,
       team: squadron?.value?.team ?? false,
+      flightsEnabled: squadron?.value?.flightsEnabled ?? false,
       discordChannelId: squadron?.value?.discordChannelId ?? null,
       icon: undefined as string | undefined,
     },
@@ -92,6 +93,7 @@ export const useSquadronForm = (
   const [description, descriptionProps] = defineField("description");
   const [color, colorProps] = defineField("color");
   const [team, teamProps] = defineField("team");
+  const [flightsEnabled, flightsEnabledProps] = defineField("flightsEnabled");
   const [discordChannelId, discordChannelIdProps] =
     defineField("discordChannelId");
   const [icon, iconProps] = defineField("icon");
@@ -102,6 +104,7 @@ export const useSquadronForm = (
     description,
     color,
     team,
+    flightsEnabled,
     discordChannelId,
     icon,
   });
@@ -112,6 +115,7 @@ export const useSquadronForm = (
     description: descriptionProps,
     color: colorProps,
     team: teamProps,
+    flightsEnabled: flightsEnabledProps,
     discordChannelId: discordChannelIdProps,
     icon: iconProps,
   });
@@ -128,6 +132,7 @@ export const useSquadronForm = (
       description: values.description || null,
       color: colorToSubmit(values.color, squadron?.value?.color),
       team: values.team,
+      flightsEnabled: values.flightsEnabled,
       discordChannelId: values.discordChannelId || null,
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.

@@ -67,6 +67,15 @@ const canManageMembers = computed(
     false,
 );
 
+// Flights are the squadron's own choice, so their tab is there only while it
+// has them switched on.
+const detailRoutes = computed(() =>
+  squadronDetailRoutes.filter(
+    (route) =>
+      route.name !== "fleet-squadron-flights" || squadron.value?.flightsEnabled,
+  ),
+);
+
 const tabLinks = computed<TabNavLink[]>(() => [
   {
     to: {
@@ -230,7 +239,7 @@ const crumbs = computed<Crumb[]>(() => [
     </Teleport>
 
     <TabNavView
-      :routes="squadronDetailRoutes"
+      :routes="detailRoutes"
       :links="tabLinks"
       :authenticated="sessionStore.isAuthenticated"
       :resource-access="props.membership?.fleetRole?.resourceAccess"

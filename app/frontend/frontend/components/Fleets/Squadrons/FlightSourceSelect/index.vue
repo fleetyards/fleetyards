@@ -50,11 +50,14 @@ const { data: squadrons } = useFleetSquadrons(
   { query: { enabled } },
 );
 
-const squadronSlug = computed(
-  () =>
-    squadrons.value?.items?.find((squadron) => squadron.id === props.squadronId)
-      ?.slug ?? "",
-);
+// Only a squadron that has its flights switched on offers them.
+const squadronSlug = computed(() => {
+  const squadron = squadrons.value?.items?.find(
+    (item) => item.id === props.squadronId,
+  );
+
+  return squadron?.flightsEnabled ? squadron.slug : "";
+});
 
 const { data: flights } = useFleetSquadronFlights(
   computed(() => props.fleet.slug),

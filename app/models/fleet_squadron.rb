@@ -106,6 +106,13 @@ class FleetSquadron < ApplicationRecord
   # The foreign key clears the teams built from this squadron inside the
   # database, where no touch reaches the event or template they belong to.
   before_destroy :touch_team_parents
+
+  # Switching flights back on picks up the invitations it held back. Flagged by
+  # the save that switches them, because a touch later commits with that save's
+  # changes still on record.
+  before_update -> { @enabling_flights = will_save_change_to_flights_enabled?(to: true) }
+  after_update_commit :offer_held_slots, if: -> { @enabling_flights }
+  after_rollback -> { @enabling_flights = false }
   after_destroy :release_restricted_records
 
   # The fleet's own order, which is the point of having one. Sorting by name is
@@ -166,6 +173,15 @@ class FleetSquadron < ApplicationRecord
   private def touch_team_parents
     FleetEvent.where(id: fleet_event_teams.select(:fleet_event_id)).touch_all
     Mission.where(id: mission_teams.select(:mission_id)).touch_all
+  end
+
+  private def offer_held_slots
+    @enabling_flights = false
+    FleetEventSlot
+      .where(id: FleetEventSlotCandidate.waiting
+        .where(fleet_squadron_membership_id: fleet_squadron_memberships.select(:id))
+        .select(:fleet_event_slot_id))
+      .find_each { |slot| FleetEvents::SlotInvites.new(slot).offer! }
   end
 
   private def release_restricted_records

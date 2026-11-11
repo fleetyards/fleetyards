@@ -17,6 +17,7 @@ module V1
               description: {type: [:string, :null]},
               color: {type: [:string, :null]},
               team: {type: :boolean},
+              flightsEnabled: {type: :boolean},
               discordChannelId: {type: [:string, :null]},
               memberCount: {type: :integer},
               # Only on a single squadron: the reader's own rank in it (absent

@@ -541,12 +541,14 @@ zh-TW:
               not_in_fleet: "必須是本艦隊的中隊或小隊"
             source_flight:
               not_in_fleet: "必須是本艦隊某個中隊的小隊"
+              flights_disabled: "所屬中隊已關閉小隊功能"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "必須是本艦隊的中隊或小隊"
             source_flight:
               not_in_fleet: "必須是本艦隊某個中隊的小隊"
+              flights_disabled: "所屬中隊已關閉小隊功能"
           one_owner: "必須屬於範本或小隊之一"
         fleet_inventory:
           attributes:

@@ -541,12 +541,14 @@ it:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
             source_flight:
               not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
+              flights_disabled: "appartiene a uno squadrone che ha disattivato le sue pattuglie"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
             source_flight:
               not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
+              flights_disabled: "appartiene a uno squadrone che ha disattivato le sue pattuglie"
           one_owner: "deve appartenere a un modello oppure a una pattuglia"
         fleet_inventory:
           attributes:

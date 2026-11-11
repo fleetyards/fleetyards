@@ -37201,6 +37201,8 @@ components:
           - 'null'
         team:
           type: boolean
+        flightsEnabled:
+          type: boolean
         discordChannelId:
           type:
           - string
@@ -37272,6 +37274,8 @@ components:
           - string
           - 'null'
         team:
+          type: boolean
+        flightsEnabled:
           type: boolean
         discordChannelId:
           type:
@@ -37818,6 +37822,8 @@ components:
           - string
           - 'null'
         team:
+          type: boolean
+        flightsEnabled:
           type: boolean
         discordChannelId:
           type:

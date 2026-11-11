@@ -54,6 +54,18 @@ const { t } = useI18n();
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <FormToggle
+        v-model="props.fields.flightsEnabled"
+        v-bind="props.fieldProps.flightsEnabled"
+        name="flightsEnabled"
+        :label="t('labels.fleet.squadrons.flightsEnabled')"
+        :info="t('labels.fleet.squadrons.flightsEnabledHint')"
+      />
+    </div>
+  </div>
+
   <hr />
 
   <div class="row">

@@ -8,7 +8,7 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
     @alternate = create(:user)
     @third = create(:user)
     @fleet = create(:fleet, :with_squadrons, members: [@primary, @alternate, @third])
-    @squadron = create(:fleet_squadron, fleet: @fleet)
+    @squadron = create(:fleet_squadron, fleet: @fleet, flights_enabled: true)
     @rows = [@primary, @alternate, @third].map do |user|
       create(:fleet_squadron_membership, fleet_squadron: @squadron,
         fleet_membership: @fleet.fleet_memberships.kept.find_by!(user:))
@@ -122,5 +122,16 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
     @event.update!(status: "open")
 
     assert_empty other_slot.fleet_event_signups
+  end
+  test "a squadron with flights off holds its invitations and sends them when it switches back on" do
+    @squadron.update!(flights_enabled: false)
+    @event.update!(status: "open")
+
+    assert_empty @slot.fleet_event_signups
+    assert @slot.fleet_event_slot_candidates.all? { |candidate| candidate.passed_at.nil? }
+
+    @squadron.update!(flights_enabled: true)
+
+    assert_equal membership(@primary), active_signup.fleet_membership
   end
 end

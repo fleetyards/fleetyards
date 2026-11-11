@@ -1087,7 +1087,9 @@
             "hangarGroup": "Grupo de hangar",
             "pickedShips": "Naves",
             "extraShips": "Además, estas naves"
-          }
+          },
+          "flightsEnabled": "Escuadrillas",
+          "flightsEnabledHint": "Permite a los líderes del escuadrón crear escuadrillas: formaciones de naves y slots que rellenan equipos de eventos y plantillas e invitan a los miembros asignados."
         },
         "roles": {
           "permanent": "Permanente",

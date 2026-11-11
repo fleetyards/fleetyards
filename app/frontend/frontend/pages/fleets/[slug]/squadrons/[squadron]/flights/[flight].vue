@@ -45,6 +45,20 @@ const flightId = computed(() => route.params.flight as string);
 
 const { data: squadron } = useFleetSquadron(fleetSlug, squadronSlug);
 
+// A squadron that switched its flights off has no flight pages to show.
+watch(
+  squadron,
+  (value) => {
+    if (value && !value.flightsEnabled) {
+      void router.replace({
+        name: "fleet-squadron",
+        params: { slug: fleetSlug.value, squadron: squadronSlug.value },
+      });
+    }
+  },
+  { immediate: true },
+);
+
 const {
   data: flight,
   isLoading,

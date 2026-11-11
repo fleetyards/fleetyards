@@ -139,7 +139,7 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
     @officer = create(:user)
     @member = create(:user)
     @fleet = create(:fleet, :with_squadrons, officers: [@officer], members: [@member])
-    @squadron = create(:fleet_squadron, fleet: @fleet)
+    @squadron = create(:fleet_squadron, fleet: @fleet, flights_enabled: true)
   end
 
   def collection_params
@@ -264,5 +264,23 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
     sign_in @member
 
     assert_api_response :put, 403, path_params: collection_params, body: {sorting: []}
+  end
+  test "GET is refused while the squadron has flights switched off" do
+    @squadron.update!(flights_enabled: false)
+    sign_in @member
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights", as: :json
+
+    assert_response :forbidden
+  end
+
+  test "a flight's lineup is refused while the squadron has flights switched off" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    @squadron.update!(flights_enabled: false)
+    sign_in @officer
+
+    post "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights/#{flight.id}/ships", params: {classification: "Combat"}, as: :json
+
+    assert_response :forbidden
   end
 end

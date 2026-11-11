@@ -59,8 +59,12 @@ module FleetEvents
       return if taken?
 
       slot.fleet_event_slot_candidates.waiting
-        .includes(:vehicle, fleet_squadron_membership: :fleet_membership)
+        .includes(:vehicle, fleet_squadron_membership: %i[fleet_membership fleet_squadron])
         .each do |candidate|
+          # A squadron that switched its flights off sends no invitations; its
+          # members stay listed for when it switches them back on.
+          next unless candidate.fleet_squadron_membership&.fleet_squadron&.flights_enabled?
+
           signup = invite(event, candidate)
           return signup if signup
 

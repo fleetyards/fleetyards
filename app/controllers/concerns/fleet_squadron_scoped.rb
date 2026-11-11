@@ -17,6 +17,13 @@ module FleetSquadronScoped
     @fleet_squadron = readable_fleet_squadrons.find_by!(slug: params[:slug] || params[:fleet_squadron_slug])
   end
 
+  # Whether this squadron's leadership switched its flights on.
+  private def check_squadron_flights_enabled
+    return if @fleet_squadron&.flights_enabled?
+
+    render json: {code: "forbidden", message: "Flights are not enabled for this squadron"}, status: :forbidden
+  end
+
   # Whether the fleet's admins switched squadrons on.
   private def check_fleet_squadrons_feature
     return if @fleet.squadrons_enabled?

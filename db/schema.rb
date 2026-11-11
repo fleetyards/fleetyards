@@ -1390,6 +1390,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.text "rank", null: false, collation: "C"
     t.boolean "team", default: false, null: false
     t.string "discord_channel_id"
+    t.boolean "flights_enabled", default: false, null: false
     t.index "fleet_id, lower((name)::text)", name: "index_fleet_squadrons_on_fleet_id_and_lower_name", unique: true
     t.index ["fleet_id", "rank"], name: "index_fleet_squadrons_on_fleet_id_and_rank", unique: true
     t.index ["fleet_id", "slug"], name: "index_fleet_squadrons_on_fleet_id_and_slug", unique: true

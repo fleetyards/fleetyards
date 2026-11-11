@@ -1087,7 +1087,9 @@
             "hangarGroup": "Groupe de hangar",
             "pickedShips": "Vaisseaux",
             "extraShips": "Ces vaisseaux en plus"
-          }
+          },
+          "flightsEnabled": "Patrouilles",
+          "flightsEnabledHint": "Permet aux responsables de l’escadron de créer des patrouilles : des formations de vaisseaux et de postes qui préremplissent les équipes d’événements et de modèles et invitent les membres prévus."
         },
         "roles": {
           "permanent": "Permanent",

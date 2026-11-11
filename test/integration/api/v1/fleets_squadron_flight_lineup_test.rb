@@ -223,7 +223,7 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
     @pilot = create(:user)
     @wingman = create(:user)
     @fleet = create(:fleet, :with_squadrons, officers: [@officer], members: [@pilot, @wingman])
-    @squadron = create(:fleet_squadron, fleet: @fleet)
+    @squadron = create(:fleet_squadron, fleet: @fleet, flights_enabled: true)
     @rows = [@pilot, @wingman].to_h do |user|
       [user, create(:fleet_squadron_membership, fleet_squadron: @squadron,
         fleet_membership: @fleet.fleet_memberships.kept.find_by!(user:))]

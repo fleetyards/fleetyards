@@ -9,7 +9,7 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     @pilot = create(:user)
     @wingman = create(:user)
     @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@pilot, @wingman])
-    @squadron = create(:fleet_squadron, fleet: @fleet)
+    @squadron = create(:fleet_squadron, fleet: @fleet, flights_enabled: true)
     rows = [@pilot, @wingman].map do |user|
       create(:fleet_squadron_membership, fleet_squadron: @squadron,
         fleet_membership: @fleet.fleet_memberships.kept.find_by!(user:))
@@ -81,5 +81,13 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
     assert_empty event.fleet_event_teams
+  end
+  test "refuses a flight whose squadron switched flights off" do
+    event = create(:fleet_event, fleet: @fleet, created_by: @admin)
+    @squadron.update!(flights_enabled: false)
+
+    post "/api/v1/fleets/#{@fleet.slug}/events/#{event.slug}/teams", params: {title: "Strike", sourceFlightId: @flight.id}, as: :json
+
+    assert_response :bad_request
   end
 end

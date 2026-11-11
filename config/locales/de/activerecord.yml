@@ -541,12 +541,14 @@ de:
               not_in_fleet: "muss eine Staffel oder ein Team dieser Flotte sein"
             source_flight:
               not_in_fleet: "muss ein Schwarm einer Staffel dieser Flotte sein"
+              flights_disabled: "gehört zu einer Staffel, die ihre Schwärme ausgeschaltet hat"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "muss eine Staffel oder ein Team dieser Flotte sein"
             source_flight:
               not_in_fleet: "muss ein Schwarm einer Staffel dieser Flotte sein"
+              flights_disabled: "gehört zu einer Staffel, die ihre Schwärme ausgeschaltet hat"
           one_owner: "muss entweder zu einer Vorlage oder zu einem Schwarm gehören"
         fleet_inventory:
           attributes:

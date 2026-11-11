@@ -11,7 +11,7 @@ class FleetEventSlotInvitesTest < ActionDispatch::IntegrationTest
     @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member, @alternate])
     @event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, signup_approval: "confirmation_required")
     @slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: @event))
-    squadron = create(:fleet_squadron, fleet: @fleet)
+    squadron = create(:fleet_squadron, fleet: @fleet, flights_enabled: true)
     [@member, @alternate].each_with_index do |user, index|
       row = create(:fleet_squadron_membership, fleet_squadron: squadron,
         fleet_membership: @fleet.fleet_memberships.kept.find_by!(user:))

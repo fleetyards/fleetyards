@@ -1087,7 +1087,9 @@
             "hangarGroup": "機庫分組",
             "pickedShips": "艦船",
             "extraShips": "另外提供這些艦船"
-          }
+          },
+          "flightsEnabled": "小隊",
+          "flightsEnabledHint": "允許中隊負責人建立小隊：由艦船和席位組成的編組，可預填活動和範本隊伍並邀請所列成員。"
         },
         "roles": {
           "permanent": "永久",
