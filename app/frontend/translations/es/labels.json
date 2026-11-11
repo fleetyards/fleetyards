@@ -3334,7 +3334,9 @@
         "viewImport": "Ver la importación de esta sincronización",
         "lastSynced": "Última sincronización",
         "syncShipComponents": "Sincronizar componentes de nave",
-        "syncShipComponentsHint": "Sustituye tus componentes de nave (refrigeradores, plantas de energía, armas, …) por los de tu hangar de RSI. Desactivado, los componentes guardados no cambian."
+        "syncShipComponentsHint": "Sustituye tus componentes de nave (refrigeradores, plantas de energía, armas, …) por los de tu hangar de RSI. Desactivado, los componentes guardados no cambian.",
+        "syncStoreCredit": "Sincronizar el crédito de la tienda",
+        "syncStoreCreditHint": "Lee el crédito de la tienda de tu cuenta de RSI, que los planes de hangar cuentan salvo que indiquen el suyo. Desactivado, se mantiene el crédito leído antes."
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",

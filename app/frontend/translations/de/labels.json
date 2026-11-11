@@ -3334,7 +3334,9 @@
         "viewImport": "Import dieses Syncs ansehen",
         "lastSynced": "Zuletzt synchronisiert",
         "syncShipComponents": "Schiffskomponenten synchronisieren",
-        "syncShipComponentsHint": "Ersetzt deine Schiffskomponenten (Kühler, Power Plants, Waffen, …) durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Schiffskomponenten unverändert."
+        "syncShipComponentsHint": "Ersetzt deine Schiffskomponenten (Kühler, Power Plants, Waffen, …) durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Schiffskomponenten unverändert.",
+        "syncStoreCredit": "Store-Guthaben synchronisieren",
+        "syncStoreCreditHint": "Liest das Store-Guthaben deines RSI-Kontos, mit dem Hangar-Pläne rechnen, solange einer kein eigenes angibt. Aus behält das zuvor gelesene Guthaben."
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

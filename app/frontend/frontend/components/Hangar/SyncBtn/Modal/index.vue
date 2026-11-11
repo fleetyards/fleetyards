@@ -113,6 +113,7 @@ const syncToggles = [
   { name: "syncEquipment", label: "syncEquipment" },
   { name: "syncCcus", label: "syncCcus" },
   { name: "syncShipComponents", label: "syncShipComponents" },
+  { name: "syncStoreCredit", label: "syncStoreCredit" },
 ] as const;
 
 const filesUnmatchedIntoGroup = computed(
@@ -289,6 +290,7 @@ const start = () => {
     syncEquipment: hangarStore.syncEquipment,
     syncCcus: hangarStore.syncCcus,
     syncShipComponents: hangarStore.syncShipComponents,
+    syncStoreCredit: hangarStore.syncStoreCredit,
     unmatchedVehiclesAction: hangarStore.syncUnmatchedVehiclesAction,
     unmatchedHangarGroupId: filesUnmatchedIntoGroup.value
       ? hangarStore.syncUnmatchedHangarGroupId

@@ -50,6 +50,12 @@ const rsiIdentity = vi.fn(
   }),
 );
 
+// The extension's answers to the health check and the store credit, where a
+// test gives some; the rest go out through `postMessage`.
+const extensionAnswer = vi.fn(
+  (_action: string): Promise<unknown> | undefined => undefined,
+);
+
 // Only the identify check: the pages come through the same composable, and
 // their requests have to reach `postMessage`.
 vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
@@ -67,10 +73,16 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
         request: (action: string, ...rest: unknown[]) =>
           action === "identify"
             ? rsiIdentity()
-            : (extension.request as (...args: unknown[]) => unknown)(
+            : (extensionAnswer(action) ??
+              (extension.request as (...args: unknown[]) => unknown)(
                 action,
                 ...rest,
-              ),
+              )),
+        supports: async (action: string) => {
+          const answer = (await extensionAnswer("health")) as
+            { payload?: { actions?: string[] } } | undefined;
+          return !!answer?.payload?.actions?.includes(action);
+        },
       };
     },
   };
@@ -764,6 +776,50 @@ describe("HangarSyncModal", () => {
         syncShipComponents: false,
       }),
     });
+  });
+
+  it("sends the store credit with the sync when asked to", async () => {
+    extensionAnswer.mockImplementation((action) => {
+      if (action === "health") {
+        return Promise.resolve({
+          code: 200,
+          payload: { actions: ["syncStoreCredit"] },
+        });
+      }
+      if (action === "syncStoreCredit") {
+        return Promise.resolve({ code: 200, payload: { credit: 1234.5 } });
+      }
+      return undefined;
+    });
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncStoreCredit = true;
+    await flushPromises();
+
+    await submitHangar(wrapper);
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({ storeCredit: 1234.5 }),
+    });
+    extensionAnswer.mockReset();
+  });
+
+  it("asks for no store credit unless the option is on", async () => {
+    extensionAnswer.mockClear();
+    const { wrapper, hangarStore } = await mountModal();
+
+    expect(hangarStore.syncStoreCredit).toBe(false);
+
+    await submitHangar(wrapper);
+    await flushPromises();
+
+    expect(extensionAnswer).not.toHaveBeenCalledWith("syncStoreCredit");
+    expect(extensionAnswer).not.toHaveBeenCalledWith("health");
+    const [{ data }] = mutateAsync.mock.calls.at(-1) as [
+      { data: Record<string, unknown> },
+    ];
+    expect(data).not.toHaveProperty("storeCredit");
   });
 
   it("submits each pledge with the hangar page it was read from", async () => {

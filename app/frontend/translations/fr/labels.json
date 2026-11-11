@@ -3334,7 +3334,9 @@
         "viewImport": "Voir l'import de cette synchronisation",
         "lastSynced": "Dernière synchronisation",
         "syncShipComponents": "Synchroniser les composants de vaisseau",
-        "syncShipComponentsHint": "Remplace vos composants de vaisseau (refroidisseurs, centrales, armes, …) par ceux de votre hangar RSI. Désactivé, les composants enregistrés restent inchangés."
+        "syncShipComponentsHint": "Remplace vos composants de vaisseau (refroidisseurs, centrales, armes, …) par ceux de votre hangar RSI. Désactivé, les composants enregistrés restent inchangés.",
+        "syncStoreCredit": "Synchroniser le crédit du store",
+        "syncStoreCreditHint": "Lit le crédit du store de votre compte RSI, que les plans de hangar comptent sauf s'ils indiquent le leur. Désactivé, le crédit lu auparavant reste inchangé."
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

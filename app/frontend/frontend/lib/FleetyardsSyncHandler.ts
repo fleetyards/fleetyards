@@ -9,6 +9,7 @@ export enum FleetyardsSyncAction {
   SYNC_BUYBACK = "syncBuyback",
   SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
   SYNC_BUYBACK_PRICING = "syncBuybackPricing",
+  SYNC_STORE_CREDIT = "syncStoreCredit",
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",
@@ -18,6 +19,11 @@ export enum FleetyardsSyncAction {
 
 export type FleetyardsSyncSessionPayload = {
   handle: string;
+};
+
+// The store credit RSI lists for the account, in USD.
+export type FleetyardsSyncStoreCreditPayload = {
+  credit: number;
 };
 
 export interface FleetyardsSyncVerifyPayload {
@@ -42,6 +48,7 @@ export type FleetyardsSyncMessage = {
     | string
     | FleetyardsSyncSessionPayload
     | FleetyardsSyncHealthPayload
+    | FleetyardsSyncStoreCreditPayload
     | FleetyardsSyncVerifyPayload;
 };
 

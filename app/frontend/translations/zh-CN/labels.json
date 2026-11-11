@@ -3331,7 +3331,9 @@
         "viewImport": "查看本次同步的导入",
         "lastSynced": "上次同步：",
         "syncShipComponents": "同步飞船部件",
-        "syncShipComponentsHint": "用你 RSI 机库中的飞船部件（冷却器、发电机、武器等）替换已保存的部件。关闭时保留已保存的飞船部件。"
+        "syncShipComponentsHint": "用你 RSI 机库中的飞船部件（冷却器、发电机、武器等）替换已保存的部件。关闭时保留已保存的飞船部件。",
+        "syncStoreCredit": "同步商店余额",
+        "syncStoreCreditHint": "读取你 RSI 账户的商店余额，机库计划在未自行设定时使用它。关闭时保留之前读取的余额。"
       },
       "cargoGridViewer": {
         "capacity": "容量",
