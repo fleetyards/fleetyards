@@ -33,6 +33,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 
 type Props = {
   slotData: FleetEventSlot;
@@ -66,6 +67,7 @@ const signupsAllowed = computed(() =>
 );
 
 const { t } = useI18n();
+const slotTitle = useSlotTitle();
 
 const toPositionTypeLabel = usePositionTypeLabel();
 const positionTypeLabel = computed(() =>
@@ -239,7 +241,14 @@ const submitSignup = async () => {
   >
     <header class="event-slot-row__head">
       <div class="event-slot-row__title">
-        <span class="event-slot-row__name">{{ slotData.title }}</span>
+        <span class="event-slot-row__name">
+          <i
+            v-if="slotData.lead"
+            class="fa-duotone fa-star event-slot-row__lead"
+            aria-hidden="true"
+          />
+          {{ slotTitle(slotData) }}
+        </span>
         <span v-if="positionTypeLabel" class="event-slot-row__type">
           {{ positionTypeLabel }}
         </span>
@@ -396,6 +405,11 @@ const submitSignup = async () => {
   padding: 9px 0 9px 12px;
   border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
   transition: background-color 150ms ease;
+}
+
+.event-slot-row__lead {
+  margin-right: 4px;
+  color: var(--color-gold);
 }
 
 .event-slot-row__invite {

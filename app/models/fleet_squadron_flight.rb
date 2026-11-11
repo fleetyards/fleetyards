@@ -35,7 +35,9 @@ class FleetSquadronFlight < ApplicationRecord
   end
 
   private def create_team!
-    create_mission_team!(title: name, position: 0)
+    create_mission_team!(title: name, position: 0).tap do |team|
+      team.mission_slots.create!(lead: true, title: MissionSlot::LEAD_TITLE, position: 0)
+    end
   end
 
   private def append_to_squadron

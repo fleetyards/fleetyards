@@ -34371,6 +34371,8 @@ components:
           type: string
         position:
           type: integer
+        lead:
+          type: boolean
         derived:
           type: boolean
         positionType:
@@ -45464,6 +45466,8 @@ components:
           type: string
         position:
           type: integer
+        lead:
+          type: boolean
         derived:
           type: boolean
         positionType:

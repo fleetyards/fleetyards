@@ -1073,7 +1073,8 @@
             "openSeat": "Freier Slot",
             "then": "Danach %{names}",
             "noAlternates": "Kein Ersatz",
-            "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt"
+            "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt",
+            "lead": "Schwarmführer"
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

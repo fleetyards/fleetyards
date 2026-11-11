@@ -1073,7 +1073,8 @@
             "openSeat": "Poste libre",
             "then": "Puis %{names}",
             "noAlternates": "Aucun remplaçant",
-            "shipsSummary": "%{ships} vaisseaux · %{filled} postes pourvus sur %{seats}"
+            "shipsSummary": "%{ships} vaisseaux · %{filled} postes pourvus sur %{seats}",
+            "lead": "Chef de patrouille"
           },
           "askableShips": "Vaisseaux à demander",
           "shipRequestFrom": "%{username} demande votre %{ship}",

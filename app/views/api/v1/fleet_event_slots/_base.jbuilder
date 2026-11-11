@@ -6,6 +6,7 @@ json.slottable_id fleet_event_slot.slottable_id
 json.title fleet_event_slot.title
 json.description fleet_event_slot.description
 json.position fleet_event_slot.position
+json.lead fleet_event_slot.lead?
 json.derived fleet_event_slot.derived?
 json.position_type fleet_event_slot.position_type
 json.model_position_id fleet_event_slot.model_position_id

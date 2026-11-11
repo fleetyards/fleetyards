@@ -21,6 +21,7 @@ import {
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
 import { type MissionSlot } from "@/services/fyApi";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 import Sortable from "sortablejs";
 
 type Props = {
@@ -36,6 +37,7 @@ const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
 const lineup = useLineupApi(() => props.scope);
+const slotTitle = useSlotTitle();
 
 const changed = () => comlink.emit("mission-children-changed");
 
@@ -87,9 +89,11 @@ const initSortable = () => {
   sortable = Sortable.create(list.value, {
     animation: 150,
     handle: ".wide-seats__grip",
+    filter: "[data-lead]",
     onEnd: () => {
+      // The lead heads the list whatever the order, so it is not sorted.
       const order = Array.from(
-        list.value?.querySelectorAll("[data-seat-id]") ?? [],
+        list.value?.querySelectorAll("[data-seat-id]:not([data-lead])") ?? [],
       )
         .map((el) => el.getAttribute("data-seat-id"))
         .filter(Boolean) as string[];
@@ -138,18 +142,27 @@ onUnmounted(() => sortable?.destroy());
           v-for="seat in seats"
           :key="seat.id"
           :data-seat-id="seat.id"
+          :data-lead="seat.lead || undefined"
           class="wide-seats__row"
           :data-test="`flight-wide-seat-${seat.id}`"
         >
           <span
-            v-if="editable"
+            v-if="editable && !seat.lead"
             v-tooltip="t('actions.reorder')"
             class="wide-seats__grip"
             :aria-label="t('actions.reorder')"
           >
             <i class="fa-light fa-grip-vertical" />
           </span>
-          <span class="wide-seats__title">{{ seat.title }}</span>
+          <span v-else-if="editable" class="wide-seats__grip-space" />
+          <span class="wide-seats__title">
+            <i
+              v-if="seat.lead"
+              class="fa-duotone fa-star wide-seats__lead-icon"
+              aria-hidden="true"
+            />
+            {{ slotTitle(seat) }}
+          </span>
           <ol class="wide-seats__queue">
             <template
               v-for="(candidate, index) in seat.candidates ?? []"
@@ -190,7 +203,7 @@ onUnmounted(() => sortable?.destroy());
             </li>
           </ol>
           <Btn
-            v-if="editable"
+            v-if="editable && !seat.lead"
             :size="BtnSizesEnum.SM"
             :variant="BtnVariantsEnum.BARE"
             :aria-label="t('actions.fleet.squadrons.flights.removeSeat')"
@@ -259,9 +272,20 @@ onUnmounted(() => sortable?.destroy());
   cursor: grab;
 }
 
+.wide-seats__grip-space {
+  width: 12px;
+}
+
 .wide-seats__title {
+  display: inline-flex;
   flex: 0 0 180px;
+  align-items: center;
+  gap: 8px;
   font-weight: 600;
+}
+
+.wide-seats__lead-icon {
+  color: var(--color-gold);
 }
 
 .wide-seats__queue {

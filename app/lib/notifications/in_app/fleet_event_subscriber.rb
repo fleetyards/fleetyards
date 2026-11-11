@@ -207,7 +207,7 @@ module Notifications
         target_event = signup.fleet_event
         return unless target_event && signup.user
 
-        slot_title = signup.fleet_event_slot&.title || target_event.title
+        slot_title = signup.fleet_event_slot&.display_title || target_event.title
         notify(signup.user, :fleet_event_signup_assigned, target_event) do
           {
             title: I18n.t("notifications.fleet_event_signup.assigned.title",
@@ -222,7 +222,7 @@ module Notifications
         target_event = signup.fleet_event
         return unless target_event && signup.user
 
-        slot_title = signup.fleet_event_slot&.title || target_event.title
+        slot_title = signup.fleet_event_slot&.display_title || target_event.title
         notify(signup.user, :fleet_event_signup_invited, target_event) do
           {
             title: I18n.t("notifications.fleet_event_signup.invited.title",

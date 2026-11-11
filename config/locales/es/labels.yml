@@ -1,6 +1,8 @@
 ---
 es:
   labels:
+    slots:
+      lead: "Líder de escuadrilla"
     actions: Acciones
     charts:
       component-pie:

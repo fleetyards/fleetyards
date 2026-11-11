@@ -16,6 +16,7 @@ module V1
               title: {type: :string},
               description: {type: :string},
               position: {type: :integer},
+              lead: {type: :boolean},
               derived: {type: :boolean},
               positionType: {type: :string},
               modelPositionId: {type: :string, format: :uuid},

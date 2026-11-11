@@ -18,6 +18,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { type LineupScope } from "@/frontend/components/Fleets/Missions/useLineupApi";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 import {
   type FleetSquadronSlotCandidate,
   type VehiclePublic,
@@ -30,6 +31,7 @@ type Props = {
   slot: {
     id: string;
     title: string;
+    lead?: boolean;
     candidates?: FleetSquadronSlotCandidate[];
   };
   scope: LineupScope;
@@ -38,6 +40,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const slotTitle = useSlotTitle();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -144,7 +147,7 @@ const onSubmit = async () => {
   <Modal
     :title="
       t('headlines.fleets.squadrons.flights.candidates', {
-        slot: props.slot.title,
+        slot: slotTitle(props.slot),
       })
     "
   >

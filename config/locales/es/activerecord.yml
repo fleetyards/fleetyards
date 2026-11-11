@@ -599,6 +599,8 @@ es:
               already_given: "ya es una de las naves del escuadrón"
             vehicle_id:
               already_requested: "ya se ha solicitado"
+        mission_slot:
+          lead_required: "Una escuadrilla siempre conserva su slot de líder."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

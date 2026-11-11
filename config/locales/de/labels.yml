@@ -1,6 +1,8 @@
 ---
 de:
   labels:
+    slots:
+      lead: "Schwarmführer"
     actions: Aktionen
     charts:
       component-pie:

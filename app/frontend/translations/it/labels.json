@@ -1073,7 +1073,8 @@
             "openSeat": "Slot libero",
             "then": "Poi %{names}",
             "noAlternates": "Nessuna riserva",
-            "shipsSummary": "%{ships} navi · %{filled} di %{seats} slot occupati"
+            "shipsSummary": "%{ships} navi · %{filled} di %{seats} slot occupati",
+            "lead": "Capo pattuglia"
           },
           "askableShips": "Navi da richiedere",
           "shipRequestFrom": "%{username} chiede la tua %{ship}",

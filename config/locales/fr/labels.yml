@@ -1,6 +1,8 @@
 ---
 fr:
   labels:
+    slots:
+      lead: "Chef de patrouille"
     actions: Actions
     charts:
       component-pie:

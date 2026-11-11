@@ -1,6 +1,8 @@
 ---
 it:
   labels:
+    slots:
+      lead: "Capo pattuglia"
     actions: Azioni
     charts:
       component-pie:

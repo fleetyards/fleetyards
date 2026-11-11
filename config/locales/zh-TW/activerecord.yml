@@ -599,6 +599,8 @@ zh-TW:
               already_given: "已在該中隊的艦船中"
             vehicle_id:
               already_requested: "已被請求過"
+        mission_slot:
+          lead_required: "小隊始終保留其小隊長席位。"
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

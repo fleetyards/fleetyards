@@ -1,6 +1,8 @@
 ---
 zh-TW:
   labels:
+    slots:
+      lead: "小隊長"
     actions: 操作
     charts:
       component-pie:

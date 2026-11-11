@@ -16,6 +16,7 @@ import {
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
 import SlotCandidates from "@/frontend/components/Fleets/Squadrons/SlotCandidates/index.vue";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 import Sortable from "sortablejs";
 
 type SlottableType = "MissionTeam" | "MissionShip";
@@ -41,6 +42,7 @@ const lineup = useLineupApi(
 const onFlight = computed(() => !!props.scope && isFlightScope(props.scope));
 
 const { t } = useI18n();
+const slotTitle = useSlotTitle();
 
 const positionTypeLabel = usePositionTypeLabel();
 const { displayAlert } = useAppNotifications();
@@ -209,9 +211,9 @@ onUnmounted(() => {
           type="button"
           class="slot-title"
           :disabled="!editable"
-          @click="editable && startEdit(slot)"
+          @click="editable && !slot.lead && startEdit(slot)"
         >
-          {{ slot.title }}
+          {{ slotTitle(slot) }}
         </button>
         <SlotCandidates
           v-if="onFlight || slot.candidates?.length"

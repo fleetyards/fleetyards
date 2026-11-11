@@ -297,7 +297,7 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, api_path: SLOTS_SORT, path_params: flight_params,
       body: {slottableType: "MissionTeam", slottableId: @team.id, sorting: [second.id, first.id]}
-    assert_equal [second.id, first.id], @team.mission_slots.reload.map(&:id)
+    assert_equal [second.id, first.id], @team.mission_slots.reload.reject(&:lead?).map(&:id)
   end
 
   test "PUT and DELETE a slot" do
@@ -360,5 +360,14 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
       body: {candidates: [{username: @pilot.username}, {username: @pilot.username.upcase}, {username: @wingman.username}]} do
       assert_equal [@pilot.username, @wingman.username], parsed_body["candidates"].map { |c| c["username"] }
     end
+  end
+  test "DELETE refuses the flight's lead seat" do
+    lead = @team.mission_slots.find_by!(lead: true)
+    sign_in @officer
+
+    delete "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights/#{@flight.id}/slots/#{lead.id}", as: :json
+
+    assert_response :bad_request
+    assert MissionSlot.exists?(lead.id)
   end
 end

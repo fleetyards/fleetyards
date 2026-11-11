@@ -24,6 +24,7 @@ import {
   type MissionShip,
   type MissionSlot,
 } from "@/services/fyApi";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 
 type Props = {
   fleet: Fleet;
@@ -39,6 +40,7 @@ const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
 const lineup = useLineupApi(() => props.scope);
+const slotTitle = useSlotTitle();
 
 const changed = () => comlink.emit("mission-children-changed");
 
@@ -244,7 +246,7 @@ const removeSeat = async (seat: MissionSlot) => {
           <i class="fa-light fa-plus" />
         </span>
         <div class="flight-ship__seat-text">
-          <span class="flight-ship__seat-title">{{ seat.title }}</span>
+          <span class="flight-ship__seat-title">{{ slotTitle(seat) }}</span>
           <span
             class="flight-ship__seat-who"
             :class="{ 'flight-ship__seat-who--open': !primary(seat) }"

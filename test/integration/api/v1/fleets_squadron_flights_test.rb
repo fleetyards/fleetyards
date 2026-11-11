@@ -179,12 +179,12 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
 
   test "GET lists the squadron's flights for a member" do
     flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
-    create(:mission_slot, slottable: flight.team, title: "Lead")
+    create(:mission_slot, slottable: flight.team, title: "Comms")
     sign_in @member
 
     assert_api_response :get, 200, path_params: collection_params do
       assert_equal [flight.id], parsed_body.map { |row| row["id"] }
-      assert_equal ["Lead"], parsed_body.first["slots"].map { |slot| slot["title"] }
+      assert_equal [["Flight lead", true], ["Comms", false]], parsed_body.first["slots"].map { |slot| [slot["title"], slot["lead"]] }
     end
   end
 

@@ -599,6 +599,8 @@ fr:
               already_given: "fait déjà partie des vaisseaux de l'escadron"
             vehicle_id:
               already_requested: "a déjà été demandé"
+        mission_slot:
+          lead_required: "Une patrouille garde toujours son poste de chef."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

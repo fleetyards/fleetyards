@@ -1,6 +1,8 @@
 ---
 en:
   labels:
+    slots:
+      lead: "Flight lead"
     actions: Actions
     charts:
       component-pie:

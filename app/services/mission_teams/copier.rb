@@ -29,7 +29,7 @@ module MissionTeams
       model_id title description classification foci min_size max_size min_crew min_cargo
     ].freeze
 
-    SLOT_ATTRIBUTES = %i[model_position_id title description].freeze
+    SLOT_ATTRIBUTES = %i[model_position_id title description lead].freeze
 
     SLOT_PRELOADS = [
       :model_position,
@@ -92,6 +92,8 @@ module MissionTeams
 
     private def copy_slot(slot, slottable, offset)
       attributes = slot.slice(*SLOT_ATTRIBUTES).merge(position: slot.position + offset)
+      # A team has one lead; one it already has keeps the role.
+      attributes[:lead] = false if attributes[:lead] && slottable.public_send(@config[:slots]).where(lead: true).exists?
       attributes[:source_slot_id] = slot.id if @config[:sources]
 
       copy = slottable.public_send(@config[:slots]).create!(attributes)

@@ -599,6 +599,8 @@ it:
               already_given: "è già tra le navi dello squadrone"
             vehicle_id:
               already_requested: "è già stata richiesta"
+        mission_slot:
+          lead_required: "Una pattuglia mantiene sempre il suo slot di capo."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

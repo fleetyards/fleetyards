@@ -599,6 +599,8 @@ de:
               already_given: "gehört bereits zu den Schiffen der Staffel"
             vehicle_id:
               already_requested: "wurde bereits angefragt"
+        mission_slot:
+          lead_required: "Ein Schwarm behält immer seinen Führungs-Slot."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

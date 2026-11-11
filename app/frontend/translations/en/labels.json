@@ -1073,7 +1073,8 @@
             "openSeat": "Open seat",
             "then": "Then %{names}",
             "noAlternates": "No alternates",
-            "shipsSummary": "%{ships} ships · %{filled} of %{seats} seats filled"
+            "shipsSummary": "%{ships} ships · %{filled} of %{seats} seats filled",
+            "lead": "Flight lead"
           },
           "askableShips": "Ships to ask for",
           "shipRequestFrom": "%{username} asks for your %{ship}",
