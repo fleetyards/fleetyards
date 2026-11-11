@@ -53,7 +53,7 @@ const changedModelIds = computed(
 const tagFor = (vehicle: Vehicle) =>
   patchChanges.value && changedModelIds.value.has(vehicle.model.id)
     ? t("home.dashboard.ships.changedIn", {
-        version: patchChanges.value.version,
+        version: patchChanges.value.version.split("-")[0],
       })
     : undefined;
 
