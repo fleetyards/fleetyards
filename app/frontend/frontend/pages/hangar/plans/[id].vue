@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import type { Component } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useElementBounding, useMediaQuery } from "@vueuse/core";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PageActions from "@/shared/components/PageActions/index.vue";
@@ -26,6 +27,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
 import HangarFlow from "@/frontend/components/Hangar/Planner/HangarFlow/index.vue";
+import ShipPanel from "@/frontend/components/Hangar/Planner/ShipPanel/index.vue";
 import ComparisonDetails from "@/frontend/components/Hangar/Planner/ComparisonDetails/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
 import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
@@ -35,10 +37,7 @@ import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import type {
-  HangarFlowEnd,
-  HangarFlowStart,
-} from "@/frontend/components/Hangar/Planner/HangarFlow/types";
+import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -46,8 +45,6 @@ import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
 import copyText from "@/shared/utils/CopyText";
 import {
-  type HangarPlanAcquisition,
-  type HangarPlanCandidate,
   type HangarPlanMelt,
   type HangarPlanSlot,
   HangarPlanSlotStateEnum,
@@ -151,46 +148,49 @@ const addSlot = (label?: string) =>
     { planId: planId.value, label },
   );
 
-const openRoute = (
-  candidate: HangarPlanCandidate,
-  acquisition: HangarPlanAcquisition,
-) =>
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
-    props: { planId: planId.value, candidate, acquisition },
-    wide: true,
-  });
+// The row the ship panel is open for, with every side of it the panel offers.
+const panel = ref<HangarFlowTarget>();
 
-const pickStart = (start: HangarFlowStart) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/StartPickerModal/index.vue"),
-    { planId: planId.value, ...start },
-  );
+const openPanel = (target: HangarFlowTarget) => {
+  panel.value = target;
+};
 
-const pickEnd = (end: HangarFlowEnd) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/EndPickerModal/index.vue"),
-    { planId: planId.value, ...end },
-  );
+const closePanel = () => {
+  panel.value = undefined;
+};
 
-const pickShips = (slot: HangarPlanSlot) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
-    { planId: planId.value, slot },
-    { wide: true },
-  );
+// Another page sends a slot here to be worked on, by its id in the query.
+watch(
+  [plan, () => route.query.slot],
+  ([current, slotId]) => {
+    if (!current || typeof slotId !== "string") return;
 
-const editSlot = (slot: HangarPlanSlot) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/SlotShipsModal/index.vue"),
-    { planId: planId.value, slot },
-  );
+    const slot = current.slots.find((entry) => entry.id === slotId);
+    if (slot) openPanel({ key: `slot:${slot.id}`, tab: "slot", slot });
 
+    void router.replace({ query: { ...route.query, slot: undefined } });
+  },
+  { immediate: true },
+);
+
+// Beside the open panel the flow keeps to the room left of it, so the row
+// being worked on stays in view.
+const sheet = useMediaQuery("(max-width: 991px)");
+const docked = computed(() => !!panel.value && !sheet.value);
+
+const PANEL_WIDTH = "min(860px, 58vw)";
+
+const layout = useTemplateRef<HTMLElement>("layout");
+const { left: layoutLeft } = useElementBounding(layout);
+
+const layoutStyle = computed(() =>
+  docked.value
+    ? {
+        "--ship-panel-width": PANEL_WIDTH,
+        maxWidth: `calc(100vw - ${PANEL_WIDTH} - ${Math.max(layoutLeft.value, 0)}px - 24px)`,
+      }
+    : { "--ship-panel-width": PANEL_WIDTH },
+);
 const editSlotDetails = (slot: HangarPlanSlot) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
@@ -434,7 +434,12 @@ const onDestroy = async () => {
     <CostTiles v-if="summary" :totals="summary.totals" />
     <Readiness :slots="plan.slots" :costs="summary?.slots" />
 
-    <div class="plan-layout">
+    <div
+      ref="layout"
+      class="plan-layout"
+      :class="{ 'plan-layout--docked': docked }"
+      :style="layoutStyle"
+    >
       <section class="plan-flow">
         <div
           v-if="tallies.length || pendingIds.length"
@@ -470,18 +475,15 @@ const onDestroy = async () => {
           :plan="plan"
           :comparison="comparison"
           :summary="summary"
+          :active-key="panel?.key"
           @decide="decide"
-          @route="openRoute"
-          @start="pickStart"
-          @end="pickEnd"
-          @pick="pickShips"
-          @edit="editSlot"
+          @open="openPanel"
           @edit-slot="editSlotDetails"
           @remove-slot="removeSlot"
         />
       </section>
 
-      <aside class="plan-side">
+      <aside v-show="!docked" class="plan-side">
         <SummaryPanel :summary="summary" :loading="summaryFetching" />
 
         <Panel :variant="PanelVariantsEnum.SLIM" data-test="hangar-plan-melts">
@@ -540,6 +542,13 @@ const onDestroy = async () => {
           </PanelBody>
         </Panel>
       </aside>
+
+      <ShipPanel
+        v-if="panel"
+        :plan-id="plan.id"
+        :target="panel"
+        @close="closePanel"
+      />
     </div>
 
     <ComparisonDetails v-if="comparison" :comparison="comparison" />
@@ -574,6 +583,10 @@ const onDestroy = async () => {
   @media (max-width: 991px) {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.plan-layout--docked {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .plan-tallies {

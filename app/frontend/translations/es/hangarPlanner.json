@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "¿Quitar este slot junto con sus naves y vías de obtención?",
       "openSlotHint": "Aún no has elegido ninguna nave. Añade una, o varias si estás indeciso.",
       "addShips": "Añadir naves",
-      "addCandidates": "Naves para %{slot}",
-      "addToSlot": "Añadir al slot",
-      "inSlot": "En este slot",
       "choose": "Elegir",
       "chooseHint": "Elige la nave para la que planifica este slot. Las demás naves salen del slot junto con sus vías de obtención.",
       "removeCandidate": "Quitar nave",
@@ -312,8 +309,7 @@
         },
         "rebased": "Plan actualizado desde tu hangar.",
         "sharingOn": "Compartir está activado. Cualquiera con el enlace puede ver este plan.",
-        "copyFailed": "No se pudo copiar el enlace. Cópialo desde el campo.",
-        "filtersSaved": "Filtros guardados para %{slot}"
+        "copyFailed": "No se pudo copiar el enlace. Cópialo desde el campo."
       },
       "filterChips": {
         "priceFrom": "desde %{price}",
@@ -384,7 +380,6 @@
           "owned_ccu": "Ninguna de las mejoras de tu hangar de RSI parte de la %{ship}.",
           "buyback": "Ninguna de tus mejoras de recompra parte de la %{ship}."
         },
-        "shipCard": "Nave",
         "useToken": "Usar ficha de recompra",
         "withToken": "pagada con ficha"
       },
@@ -409,7 +404,6 @@
         "melt": "Fundir",
         "change": "Marcar como debe cambiar",
         "pending": "Volver a por decidir",
-        "upgradeTo": "Mejorar %{name} a",
         "keepPending": "Conservar todas las pendientes"
       },
       "pick": {
@@ -417,20 +411,14 @@
         "pickEnd": "Elegir en qué termina",
         "startOf": "Elegir el inicio para %{ship}",
         "endOf": "Elegir en qué termina %{ship}",
-        "startTitle": "Inicio para %{ship}",
-        "startEyebrow": "Nave de inicio",
-        "endTitle": "En qué termina %{ship}",
-        "endEyebrow": "Nave final",
         "buyNew": "Comprar nueva en la tienda",
         "current": "Inicio actual",
-        "use": "Usar",
         "noShips": "Ninguna nave del hangar está libre para este hueco.",
         "removeStart": "Quitar del hueco",
         "same": "La misma nave, tal como está",
         "sameModel": "Mismo modelo",
         "noEnds": "Ninguna nave en la que pueda convertirse esta.",
         "removeEnd": "Sacar del plan",
-        "anyShip": "Cualquier nave",
         "buyChosen": "La nave que elijas a continuación",
         "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
         "onlyKeep": "No existen mejoras para ella y RSI no permite fundirla, solo se puede conservar",
@@ -438,20 +426,9 @@
         "excludes": "Descarta %{ships}",
         "ccuSalesOnly": "CCU solo en rebajas",
         "ccuUnknown": "Aún no se ha visto ningún CCU",
-        "sources": {
-          "hangar": "Tu hangar",
-          "buyback": "Buy-back",
-          "store": "Tienda"
-        },
         "filters": "Acotar los inicios",
-        "saveFilters": "Guardar filtros para este hueco",
         "chooseShip": "Elige una nave",
-        "earnInGame": "Ganar en el juego",
-        "newSlot": "Hueco nuevo",
-        "endSources": {
-          "plan": "Huecos del plan",
-          "catalogue": "Cualquier nave"
-        }
+        "earnInGame": "Ganar en el juego"
       },
       "slotNumber": "Hueco %{number}",
       "suggestions": {

@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "Retirer cet emplacement avec ses vaisseaux et ses voies d'obtention ?",
       "openSlotHint": "Aucun vaisseau choisi pour l'instant. Ajoutez-en un, ou plusieurs si vous hésitez.",
       "addShips": "Ajouter des vaisseaux",
-      "addCandidates": "Vaisseaux pour %{slot}",
-      "addToSlot": "Ajouter à l'emplacement",
-      "inSlot": "Dans cet emplacement",
       "choose": "Choisir",
       "chooseHint": "Choisissez le vaisseau que cet emplacement retient. Les autres vaisseaux quittent l'emplacement, avec leurs voies d'obtention.",
       "removeCandidate": "Retirer le vaisseau",
@@ -312,8 +309,7 @@
         },
         "rebased": "Plan mis à jour depuis votre hangar.",
         "sharingOn": "Le partage est activé. Toute personne disposant du lien peut voir ce plan.",
-        "copyFailed": "Le lien n'a pas pu être copié. Copiez-le depuis le champ.",
-        "filtersSaved": "Filtres enregistrés pour %{slot}"
+        "copyFailed": "Le lien n'a pas pu être copié. Copiez-le depuis le champ."
       },
       "filterChips": {
         "priceFrom": "à partir de %{price}",
@@ -384,7 +380,6 @@
           "owned_ccu": "Aucune des améliorations de votre hangar RSI ne part du %{ship}.",
           "buyback": "Aucune de vos améliorations à racheter ne part du %{ship}."
         },
-        "shipCard": "Vaisseau",
         "useToken": "Utiliser un jeton de rachat",
         "withToken": "payé avec un jeton"
       },
@@ -409,7 +404,6 @@
         "melt": "Fondre",
         "change": "Marquer comme doit changer",
         "pending": "Remettre à décider",
-        "upgradeTo": "Améliorer %{name} en",
         "keepPending": "Garder tous ceux à décider"
       },
       "pick": {
@@ -417,20 +411,14 @@
         "pickEnd": "Choisir l'arrivée",
         "startOf": "Choisir le départ pour %{ship}",
         "endOf": "Choisir ce que devient %{ship}",
-        "startTitle": "Départ pour %{ship}",
-        "startEyebrow": "Vaisseau de départ",
-        "endTitle": "Ce que devient %{ship}",
-        "endEyebrow": "Vaisseau d'arrivée",
         "buyNew": "Acheter neuf sur le store",
         "current": "Départ actuel",
-        "use": "Utiliser",
         "noShips": "Aucun vaisseau du hangar n'est libre pour cet emplacement.",
         "removeStart": "Retirer de l'emplacement",
         "same": "Le même vaisseau, gardé tel quel",
         "sameModel": "Même modèle",
         "noEnds": "Aucun vaisseau que celui-ci puisse devenir.",
         "removeEnd": "Retirer du plan",
-        "anyShip": "N'importe quel vaisseau",
         "buyChosen": "Le vaisseau que vous choisissez ensuite",
         "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
         "onlyKeep": "Aucun upgrade n'existe pour lui et RSI ne permet pas de le fondre, il ne peut qu'être gardé",
@@ -438,20 +426,9 @@
         "excludes": "Exclut %{ships}",
         "ccuSalesOnly": "CCU seulement pendant les ventes",
         "ccuUnknown": "Aucun CCU vu pour l'instant",
-        "sources": {
-          "hangar": "Votre hangar",
-          "buyback": "Buy-back",
-          "store": "Store"
-        },
         "filters": "Affiner les départs",
-        "saveFilters": "Enregistrer les filtres pour cet emplacement",
         "chooseShip": "Choisir un vaisseau",
-        "earnInGame": "Gagner en jeu",
-        "newSlot": "Nouvel emplacement",
-        "endSources": {
-          "plan": "Emplacements du plan",
-          "catalogue": "N'importe quel vaisseau"
-        }
+        "earnInGame": "Gagner en jeu"
       },
       "slotNumber": "Emplacement %{number}",
       "suggestions": {

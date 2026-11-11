@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import type { Component } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -92,17 +92,17 @@ const melt = (entry: HangarPlanFleetEntry) =>
     { vehicleId: entry.vehicleId },
   );
 
-const openSlot = (entry: HangarPlanFleetEntry) => {
-  const slot = plan.value?.slots.find(
-    (candidate) => candidate.id === entry.slotId,
-  );
-  if (!slot) return;
+const router = useRouter();
 
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/SlotShipsModal/index.vue"),
-    { slot },
-  );
+// The slot opens in the plan's ship panel, where its ships are chosen.
+const openSlot = (entry: HangarPlanFleetEntry) => {
+  if (!entry.slotId) return;
+
+  void router.push({
+    name: "hangar-plan",
+    params: { id: planId.value },
+    query: { slot: entry.slotId },
+  });
 };
 </script>
 

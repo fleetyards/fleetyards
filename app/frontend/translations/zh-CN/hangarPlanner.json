@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "移除此槽位及其中的飞船和获取途径？",
       "openSlotHint": "尚未选择飞船。可添加一艘，如果还没想好也可添加多艘。",
       "addShips": "添加飞船",
-      "addCandidates": "%{slot} 的飞船",
-      "addToSlot": "添加到槽位",
-      "inSlot": "在此槽位中",
       "choose": "选定",
       "chooseHint": "选定此槽位要规划的飞船。其他飞船及其获取途径将从该槽位移除。",
       "removeCandidate": "移除飞船",
@@ -312,8 +309,7 @@
         },
         "rebased": "方案已根据你的机库更新。",
         "sharingOn": "已开启分享。任何拥有链接的人都可以查看此计划。",
-        "copyFailed": "无法复制链接，请从输入框中复制。",
-        "filtersSaved": "已为 %{slot} 保存筛选"
+        "copyFailed": "无法复制链接，请从输入框中复制。"
       },
       "filterChips": {
         "priceFrom": "%{price} 起",
@@ -384,7 +380,6 @@
           "owned_ccu": "你 RSI 机库中的升级没有从 %{ship} 出发的。",
           "buyback": "你的回购升级中没有从 %{ship} 出发的。"
         },
-        "shipCard": "飞船",
         "useToken": "使用回购代币",
         "withToken": "已用代币支付"
       },
@@ -409,7 +404,6 @@
         "melt": "熔炼",
         "change": "标记为应更换",
         "pending": "改回待决定",
-        "upgradeTo": "将 %{name} 升级为",
         "keepPending": "保留所有待决定的"
       },
       "pick": {
@@ -417,20 +411,14 @@
         "pickEnd": "选择终点",
         "startOf": "为 %{ship} 选择起点",
         "endOf": "选择 %{ship} 的终点",
-        "startTitle": "%{ship} 的起点",
-        "startEyebrow": "起点舰船",
-        "endTitle": "%{ship} 的终点",
-        "endEyebrow": "终点舰船",
         "buyNew": "在商店购买新船",
         "current": "当前起点",
-        "use": "使用",
         "noShips": "机库中没有可用于此槽位的舰船。",
         "removeStart": "从槽位中移除",
         "same": "同一艘舰船，保持原样",
         "sameModel": "相同型号",
         "noEnds": "没有这艘舰船可以升级成的舰船。",
         "removeEnd": "从计划中移除",
-        "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
         "onlyKeep": "这艘舰船没有升级，RSI 也不允许熔炼，只能保留",
@@ -438,20 +426,9 @@
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
         "ccuUnknown": "尚未见过 CCU",
-        "sources": {
-          "hangar": "你的机库",
-          "buyback": "回购",
-          "store": "商店"
-        },
         "filters": "筛选起点",
-        "saveFilters": "为此槽位保存筛选",
         "chooseShip": "选择舰船",
-        "earnInGame": "在游戏中获得",
-        "newSlot": "新槽位",
-        "endSources": {
-          "plan": "计划中的槽位",
-          "catalogue": "任意舰船"
-        }
+        "earnInGame": "在游戏中获得"
       },
       "slotNumber": "槽位 %{number}",
       "suggestions": {

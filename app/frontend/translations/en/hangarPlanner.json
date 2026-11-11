@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "Remove this slot together with its ships and routes?",
       "openSlotHint": "No ship picked yet. Add one ship, or several if you are undecided.",
       "addShips": "Add ships",
-      "addCandidates": "Ships for %{slot}",
-      "addToSlot": "Add to slot",
-      "inSlot": "In this slot",
       "choose": "Choose",
       "chooseHint": "Pick the ship this slot plans for. The other ships leave the slot, together with any routes to them.",
       "removeCandidate": "Remove ship",
@@ -312,8 +309,7 @@
         },
         "rebased": "Plan updated from your hangar.",
         "sharingOn": "Sharing is on. Anyone with the link can view this plan.",
-        "copyFailed": "The link could not be copied. Copy it from the field instead.",
-        "filtersSaved": "Filters saved for %{slot}"
+        "copyFailed": "The link could not be copied. Copy it from the field instead."
       },
       "filterChips": {
         "priceFrom": "from %{price}",
@@ -384,7 +380,6 @@
           "owned_ccu": "None of the upgrades in your RSI hangar start from the %{ship}.",
           "buyback": "None of your buy-back upgrades start from the %{ship}."
         },
-        "shipCard": "Ship",
         "useToken": "Use buy-back token",
         "withToken": "paid with a token"
       },
@@ -409,7 +404,6 @@
         "melt": "Melt",
         "change": "Mark as should change",
         "pending": "Back to undecided",
-        "upgradeTo": "Upgrade %{name} to",
         "keepPending": "Keep all undecided"
       },
       "pick": {
@@ -417,20 +411,14 @@
         "pickEnd": "Pick where it ends up",
         "startOf": "Pick the start for %{ship}",
         "endOf": "Pick where %{ship} ends up",
-        "startTitle": "Start for %{ship}",
-        "startEyebrow": "Start ship",
-        "endTitle": "Where %{ship} ends up",
-        "endEyebrow": "End ship",
         "buyNew": "Buy new on the store",
         "current": "Current start",
-        "use": "Use",
         "noShips": "No hangar ship is free for this slot.",
         "removeStart": "Remove from the slot",
         "same": "Same ship, kept as it is",
         "sameModel": "Same model",
         "noEnds": "No ship this one can become.",
         "removeEnd": "Take out of the plan",
-        "anyShip": "Any ship",
         "buyChosen": "The ship you pick next",
         "onlyMelt": "No upgrades exist for it, so it can only be melted",
         "onlyKeep": "No upgrades exist for it and RSI does not let it melt, so it can only be kept",
@@ -438,20 +426,9 @@
         "excludes": "Rules out %{ships}",
         "ccuSalesOnly": "CCU only during sales",
         "ccuUnknown": "No CCU seen yet",
-        "sources": {
-          "hangar": "Your hangar",
-          "buyback": "Buy-back",
-          "store": "Store"
-        },
         "filters": "Narrow the starts",
-        "saveFilters": "Save filters for this slot",
         "chooseShip": "Choose a ship",
-        "earnInGame": "Earn in game",
-        "newSlot": "New slot",
-        "endSources": {
-          "plan": "Slots in the plan",
-          "catalogue": "Any ship"
-        }
+        "earnInGame": "Earn in game"
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {
