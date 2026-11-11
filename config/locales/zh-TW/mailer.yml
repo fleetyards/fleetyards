@@ -1,6 +1,10 @@
 ---
 zh-TW:
   mailer:
+    fleet_event:
+      signup_invited:
+        subject: "席位邀請：%{title}"
+        body: "你的中隊在 %{fleet} 的此活動中為你保留了一個席位。請在活動頁面確認或拒絕。"
     raffle:
       claim:
         subject: "你贏得了抽獎：%{raffle}"

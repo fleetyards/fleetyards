@@ -539,10 +539,15 @@ de:
           attributes:
             fleet_squadron:
               not_in_fleet: "muss eine Staffel oder ein Team dieser Flotte sein"
+            source_flight:
+              not_in_fleet: "muss ein Schwarm einer Staffel dieser Flotte sein"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "muss eine Staffel oder ein Team dieser Flotte sein"
+            source_flight:
+              not_in_fleet: "muss ein Schwarm einer Staffel dieser Flotte sein"
+          one_owner: "muss entweder zu einer Vorlage oder zu einem Schwarm gehören"
         fleet_inventory:
           attributes:
             managed_by:
@@ -594,6 +599,21 @@ de:
               already_given: "gehört bereits zu den Schiffen der Staffel"
             vehicle_id:
               already_requested: "wurde bereits angefragt"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "muss Mitglied der Staffel dieses Schwarms sein"
+              not_in_fleet: "muss Mitglied einer Staffel dieser Flotte sein"
+            vehicle:
+              not_owned: "muss ein eigenes Schiff des Mitglieds sein"
+              not_given: "muss eines der Schiffe sein, die das Mitglied dieser Staffel gibt"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "muss Mitglied der Staffel dieses Schwarms sein"
+              not_in_fleet: "muss Mitglied einer Staffel dieser Flotte sein"
+            vehicle:
+              not_owned: "muss ein eigenes Schiff des Mitglieds sein"
         fleet_squadron_role:
           attributes:
             default_rank:

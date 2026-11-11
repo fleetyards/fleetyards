@@ -121,6 +121,18 @@ zh-CN:
       create: "无法发送加入申请。"
       accept: "无法接受该申请。"
       destroy: "无法移除该申请。"
+    fleet_squadron_flights:
+      create: "无法创建小队。"
+      update: "无法更新小队。"
+      destroy: "无法删除小队。"
+    fleet_squadron_flight_slots:
+      candidates: "无法保存席位成员。"
+    fleet_squadron_ship_requests:
+      create: "无法发送舰船请求。"
+      accept: "无法接受舰船请求。"
+      destroy: "无法移除舰船请求。"
+    fleet_squadron_ship_selections:
+      update: "无法保存舰船选择。"
     fleet_squadron_roles:
       update: "无法重命名中队职级。"
     fleet_discord_role_mappings:

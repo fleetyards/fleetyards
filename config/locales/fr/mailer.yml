@@ -1,6 +1,10 @@
 ---
 fr:
   mailer:
+    fleet_event:
+      signup_invited:
+        subject: "Poste proposé : %{title}"
+        body: "Votre escadron vous propose un poste pour cet événement de %{fleet}. Confirmez-le ou refusez-le depuis l’événement."
     raffle:
       claim:
         subject: "Vous avez gagné le tirage au sort : %{raffle}"

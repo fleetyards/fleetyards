@@ -1,6 +1,10 @@
 ---
 it:
   mailer:
+    fleet_event:
+      signup_invited:
+        subject: "Slot offerto: %{title}"
+        body: "Il tuo squadrone ti offre uno slot in questo evento di %{fleet}. Confermalo o rifiutalo dall’evento."
     raffle:
       claim:
         subject: "Hai vinto l'estrazione: %{raffle}"

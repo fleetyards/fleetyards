@@ -571,10 +571,15 @@ en:
           attributes:
             fleet_squadron:
               not_in_fleet: "must be a squadron or team of this fleet"
+            source_flight:
+              not_in_fleet: "must be a flight of one of this fleet's squadrons"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "must be a squadron or team of this fleet"
+            source_flight:
+              not_in_fleet: "must be a flight of one of this fleet's squadrons"
+          one_owner: "must belong to either a template or a flight"
         fleet_inventory:
           attributes:
             managed_by:
@@ -626,6 +631,21 @@ en:
               already_given: "is already one the squadron gets"
             vehicle_id:
               already_requested: "has already been asked for"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "must be a member of this flight's squadron"
+              not_in_fleet: "must be a member of a squadron of this fleet"
+            vehicle:
+              not_owned: "must be one of the member's own ships"
+              not_given: "must be one of the ships the member gives this squadron"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "must be a member of this flight's squadron"
+              not_in_fleet: "must be a member of a squadron of this fleet"
+            vehicle:
+              not_owned: "must be one of the member's own ships"
         fleet_squadron_role:
           attributes:
             default_rank:

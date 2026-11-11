@@ -121,6 +121,18 @@ zh-TW:
       create: "無法送出加入申請。"
       accept: "無法接受該申請。"
       destroy: "無法移除該申請。"
+    fleet_squadron_flights:
+      create: "無法建立小隊。"
+      update: "無法更新小隊。"
+      destroy: "無法刪除小隊。"
+    fleet_squadron_flight_slots:
+      candidates: "無法儲存席位成員。"
+    fleet_squadron_ship_requests:
+      create: "無法傳送艦船請求。"
+      accept: "無法接受艦船請求。"
+      destroy: "無法移除艦船請求。"
+    fleet_squadron_ship_selections:
+      update: "無法儲存艦船選擇。"
     fleet_squadron_roles:
       update: "無法重新命名中隊職級。"
     fleet_discord_role_mappings:

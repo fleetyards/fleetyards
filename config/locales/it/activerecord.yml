@@ -539,10 +539,15 @@ it:
           attributes:
             fleet_squadron:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
+            source_flight:
+              not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
+            source_flight:
+              not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
+          one_owner: "deve appartenere a un modello oppure a una pattuglia"
         fleet_inventory:
           attributes:
             managed_by:
@@ -594,6 +599,21 @@ it:
               already_given: "è già tra le navi dello squadrone"
             vehicle_id:
               already_requested: "è già stata richiesta"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "deve essere membro dello squadrone di questa pattuglia"
+              not_in_fleet: "deve essere membro di uno squadrone di questa flotta"
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
+              not_given: "deve essere una delle navi che il membro dà a questo squadrone"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "deve essere membro dello squadrone di questa pattuglia"
+              not_in_fleet: "deve essere membro di uno squadrone di questa flotta"
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
         fleet_squadron_role:
           attributes:
             default_rank:

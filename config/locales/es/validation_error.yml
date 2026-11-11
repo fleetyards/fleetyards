@@ -125,6 +125,18 @@ es:
       create: "No se pudo enviar la solicitud de ingreso."
       accept: "No se pudo aceptar la solicitud."
       destroy: "No se pudo eliminar la solicitud."
+    fleet_squadron_flights:
+      create: "No se pudo crear la escuadrilla."
+      update: "No se pudo actualizar la escuadrilla."
+      destroy: "No se pudo eliminar la escuadrilla."
+    fleet_squadron_flight_slots:
+      candidates: "No se pudo guardar la asignación del slot."
+    fleet_squadron_ship_requests:
+      create: "No se pudo enviar la solicitud de nave."
+      accept: "No se pudo aceptar la solicitud de nave."
+      destroy: "No se pudo eliminar la solicitud de nave."
+    fleet_squadron_ship_selections:
+      update: "No se pudo guardar la selección de naves."
     fleet_squadron_roles:
       update: "No se pudo cambiar el nombre del rango de escuadrón."
     fleet_discord_role_mappings:

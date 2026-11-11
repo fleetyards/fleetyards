@@ -539,10 +539,15 @@ zh-TW:
           attributes:
             fleet_squadron:
               not_in_fleet: "必須是本艦隊的中隊或小隊"
+            source_flight:
+              not_in_fleet: "必須是本艦隊某個中隊的小隊"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "必須是本艦隊的中隊或小隊"
+            source_flight:
+              not_in_fleet: "必須是本艦隊某個中隊的小隊"
+          one_owner: "必須屬於範本或小隊之一"
         fleet_inventory:
           attributes:
             managed_by:
@@ -594,6 +599,21 @@ zh-TW:
               already_given: "已在該中隊的艦船中"
             vehicle_id:
               already_requested: "已被請求過"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必須是該小隊所屬中隊的成員"
+              not_in_fleet: "必須是本艦隊某個中隊的成員"
+            vehicle:
+              not_owned: "必須是該成員自己的艦船"
+              not_given: "必須是該成員提供給此中隊的艦船之一"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必須是該小隊所屬中隊的成員"
+              not_in_fleet: "必須是本艦隊某個中隊的成員"
+            vehicle:
+              not_owned: "必須是該成員自己的艦船"
         fleet_squadron_role:
           attributes:
             default_rank:

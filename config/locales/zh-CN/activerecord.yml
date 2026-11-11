@@ -539,10 +539,15 @@ zh-CN:
           attributes:
             fleet_squadron:
               not_in_fleet: "必须是本舰队的中队或小队"
+            source_flight:
+              not_in_fleet: "必须是本舰队某个中队的小队"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "必须是本舰队的中队或小队"
+            source_flight:
+              not_in_fleet: "必须是本舰队某个中队的小队"
+          one_owner: "必须属于模板或小队之一"
         fleet_inventory:
           attributes:
             managed_by:
@@ -594,6 +599,21 @@ zh-CN:
               already_given: "已在该中队的舰船中"
             vehicle_id:
               already_requested: "已被请求过"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必须是该小队所属中队的成员"
+              not_in_fleet: "必须是本舰队某个中队的成员"
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
+              not_given: "必须是该成员提供给此中队的舰船之一"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必须是该小队所属中队的成员"
+              not_in_fleet: "必须是本舰队某个中队的成员"
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
         fleet_squadron_role:
           attributes:
             default_rank:

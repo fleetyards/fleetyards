@@ -539,10 +539,15 @@ fr:
           attributes:
             fleet_squadron:
               not_in_fleet: "doit être un escadron ou une équipe de cette flotte"
+            source_flight:
+              not_in_fleet: "doit être une patrouille d’un escadron de cette flotte"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "doit être un escadron ou une équipe de cette flotte"
+            source_flight:
+              not_in_fleet: "doit être une patrouille d’un escadron de cette flotte"
+          one_owner: "doit appartenir soit à un modèle, soit à une patrouille"
         fleet_inventory:
           attributes:
             managed_by:
@@ -594,6 +599,21 @@ fr:
               already_given: "fait déjà partie des vaisseaux de l'escadron"
             vehicle_id:
               already_requested: "a déjà été demandé"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "doit être membre de l’escadron de cette patrouille"
+              not_in_fleet: "doit être membre d’un escadron de cette flotte"
+            vehicle:
+              not_owned: "doit être l'un des vaisseaux du membre"
+              not_given: "doit être l’un des vaisseaux que le membre confie à cet escadron"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "doit être membre de l’escadron de cette patrouille"
+              not_in_fleet: "doit être membre d’un escadron de cette flotte"
+            vehicle:
+              not_owned: "doit être l'un des vaisseaux du membre"
         fleet_squadron_role:
           attributes:
             default_rank:
