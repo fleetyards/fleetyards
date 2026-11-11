@@ -11,6 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
+import SquadronSourceSelect from "@/frontend/components/Fleets/Squadrons/SquadronSourceSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -18,6 +19,7 @@ import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
+  type FleetSquadron,
   type FleetEvent,
   type FleetEventTeam,
   useCreateFleetEventTeam,
@@ -46,6 +48,7 @@ const validationSchema = {
 const initialValues = {
   title: props.team?.title ?? "",
   description: props.team?.description ?? "",
+  fleetSquadronId: props.team?.fleetSquadron?.id ?? null,
 };
 
 const { defineField, handleSubmit, values } = useForm({
@@ -56,6 +59,31 @@ useModalDirty(useFormDirty(values, initialValues));
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
+const [fleetSquadronId] = defineField("fleetSquadronId");
+
+/*
+ * Picking a squadron names the team after it, but only over what the last
+ * pick filled in -- a title somebody typed is theirs and stays.
+ */
+const takenOver = ref({
+  title: props.team?.fleetSquadron?.name ?? "",
+  description: "",
+});
+
+const takeOverSquadron = (squadron: FleetSquadron) => {
+  if (!title.value || title.value === takenOver.value.title) {
+    title.value = squadron.name;
+  }
+
+  if (!description.value || description.value === takenOver.value.description) {
+    description.value = squadron.shortDescription ?? "";
+  }
+
+  takenOver.value = {
+    title: squadron.name,
+    description: squadron.shortDescription ?? "",
+  };
+};
 
 const createMutation = useCreateFleetEventTeam();
 const updateMutation = useUpdateFleetEventTeam();
@@ -65,6 +93,7 @@ const onSubmit = handleSubmit(async (values) => {
   const data = {
     title: values.title,
     description: values.description || null,
+    fleetSquadronId: values.fleetSquadronId || null,
   };
 
   const mutation = isEdit.value
@@ -112,6 +141,11 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="event-team-form" @submit.prevent="onSubmit">
+      <SquadronSourceSelect
+        v-model="fleetSquadronId"
+        :fleet="fleet"
+        @pick="takeOverSquadron"
+      />
       <FormInput
         v-model="title"
         v-bind="titleProps"

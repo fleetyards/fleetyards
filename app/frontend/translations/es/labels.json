@@ -1026,6 +1026,8 @@
           "team": "Equipo",
           "teamHint": "Un equipo está abierto a todos; de lo contrario, un miembro pertenece a un solo escuadrón",
           "restrictedToHint": "Solo estos escuadrones pueden verlo",
+          "teamSource": "Escuadrón o equipo",
+          "teamSourceHint": "Rellena el nombre y la descripción, que aún puedes cambiar",
           "discordChannel": "Canal de Discord",
           "discordChannelHint": "Los eventos restringidos a este escuadrón se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord. El bot necesita «Ver canal» y «Enviar mensajes» ahí.",
           "notAnnounced": "No se anuncia en Discord para %{names}: no hay un canal de Discord configurado.",

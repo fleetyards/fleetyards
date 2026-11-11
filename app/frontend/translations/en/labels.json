@@ -1026,6 +1026,8 @@
           "team": "Team",
           "teamHint": "A team is open to everyone — otherwise a member belongs to one squadron",
           "restrictedToHint": "Only these squadrons can see it",
+          "teamSource": "Squadron or team",
+          "teamSourceHint": "Fills in the name and description, which you can still change",
           "discordChannel": "Discord Channel",
           "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all. The bot needs View Channel and Send Messages there.",
           "notAnnounced": "Not announced on Discord for %{names}: no Discord channel is set up.",

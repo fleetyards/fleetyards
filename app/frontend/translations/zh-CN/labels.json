@@ -1026,6 +1026,8 @@
           "team": "小队",
           "teamHint": "小队对所有人开放；否则成员只能属于一个中队",
           "restrictedToHint": "只有这些中队可见",
+          "teamSource": "中队或小队",
+          "teamSourceHint": "填入名称和描述，之后仍可修改",
           "discordChannel": "Discord 频道",
           "discordChannelHint": "仅限此中队的活动会在这里公告，不会出现在 Discord 的其他地方。未设置频道时不会在 Discord 上公告。机器人需要在该频道拥有“查看频道”和“发送消息”权限。",
           "notAnnounced": "%{names} 未设置 Discord 频道，不会在 Discord 上公告。",

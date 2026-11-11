@@ -1026,6 +1026,8 @@
           "team": "Team",
           "teamHint": "Teams stehen allen offen – sonst gehört ein Mitglied nur einer Staffel an",
           "restrictedToHint": "Nur diese Staffeln sehen es",
+          "teamSource": "Staffel oder Team",
+          "teamSourceHint": "Übernimmt Name und Beschreibung, die du danach noch ändern kannst",
           "discordChannel": "Discord-Kanal",
           "discordChannelHint": "Events, die auf diese Staffel beschränkt sind, werden hier angekündigt und nirgends sonst auf Discord. Ohne Kanal werden sie auf Discord gar nicht angekündigt. Der Bot braucht dort „Kanal ansehen“ und „Nachrichten senden“.",
           "notAnnounced": "Für %{names} wird nicht auf Discord angekündigt: Es ist kein Discord-Kanal eingerichtet.",

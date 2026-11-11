@@ -1026,6 +1026,8 @@
           "team": "Équipe",
           "teamHint": "Une équipe est ouverte à tous — sinon un membre n'appartient qu'à un seul escadron",
           "restrictedToHint": "Seuls ces escadrons peuvent le voir",
+          "teamSource": "Escadron ou équipe",
+          "teamSourceHint": "Reprend le nom et la description, que vous pouvez encore modifier",
           "discordChannel": "Salon Discord",
           "discordChannelHint": "Les événements réservés à cet escadron sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord. Le bot y a besoin de « Voir le salon » et « Envoyer des messages ».",
           "notAnnounced": "Pas d'annonce sur Discord pour %{names} : aucun salon Discord n'est configuré.",
