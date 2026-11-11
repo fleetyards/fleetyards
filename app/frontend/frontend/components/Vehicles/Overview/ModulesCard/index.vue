@@ -26,7 +26,7 @@ const { t } = useI18n();
 const hasModules = computed(() => !!props.vehicle.model.hasModules);
 
 // The modal offers its modules tab under the same conditions.
-const editable = computed(() => !props.vehicle.loaner && !props.vehicle.wanted);
+const editable = computed(() => !props.vehicle.loaner);
 
 const visible = computed(
   () =>
