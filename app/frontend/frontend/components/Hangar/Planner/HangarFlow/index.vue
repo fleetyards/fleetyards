@@ -150,12 +150,11 @@ const decidedPill = computed(() => ({
 const routes = computed(() =>
   props.plan.slots.flatMap((slot) =>
     slot.state === HangarPlanSlotStateEnum.DECIDED
-      ? (slot.candidates[0]?.acquisitions ?? []).map((acquisition, index) => ({
+      ? (slot.candidates[0]?.acquisitions ?? []).map((acquisition) => ({
           slot,
           candidate: slot.candidates[0],
           model: slot.candidates[0].model,
           acquisition,
-          index,
         }))
       : [],
   ),
@@ -385,7 +384,7 @@ const routedShipRow = (
     group: rowGroup,
     order:
       rowGroup === "routed"
-        ? slotOrder(route.slot.id) + route.index
+        ? slotOrder(route.slot.id)
         : shipOrder(entry.vehicleId),
     testId: unrouted
       ? "hangar-plan-vehicle-unrouted"
@@ -602,7 +601,7 @@ const neededRows = computed<Row[]>(() => {
       return {
         key: acquisition.id,
         group: acquisition.routeComplete ? "routed" : "slots",
-        order: slotOrder(route.slot.id) + route.index,
+        order: slotOrder(route.slot.id),
         testId: acquisition.routeComplete
           ? "hangar-plan-flow-purchase"
           : "hangar-plan-flow-unrouted",

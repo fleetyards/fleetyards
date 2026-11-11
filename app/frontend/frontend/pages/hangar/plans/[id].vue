@@ -200,7 +200,10 @@ const editSlotDetails = (slot: HangarPlanSlot) =>
   );
 
 const copySlotMutation = useCopyHangarPlanSlot();
+// A double click would otherwise copy the slot twice.
 const copySlot = async (slot: HangarPlanSlot) => {
+  if (copySlotMutation.isPending.value) return;
+
   try {
     updatePlan(
       await copySlotMutation.mutateAsync({
