@@ -4500,18 +4500,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetEventTeam"
-        '400':
-          description: validation error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/sort":
     parameters:
     - name: fleetSlug
@@ -8285,18 +8281,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/MissionTeam"
-        '400':
-          description: validation error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/missions/{missionSlug}/teams/sort":
     parameters:
     - name: fleetSlug

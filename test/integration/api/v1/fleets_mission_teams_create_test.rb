@@ -29,10 +29,6 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Missions::MissionTeam
       end
 
-      response(400, "validation error") do
-        schema ::Shared::V1::Schemas::ValidationError
-      end
-
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -90,20 +86,22 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Plain posts rather than the DSL: declaring a 400 would replace the
+  # auto-injected SchemaValidationError response.
   test "POST /fleets/:slug/missions/:slug/teams refuses another fleet's squadron" do
     foreign = create(:fleet_squadron)
     sign_in @admin
 
-    assert_api_response :post, 400,
-      path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
-      body: {title: "Strike Team", fleetSquadronId: foreign.id}
+    post "/api/v1/fleets/#{@fleet.slug}/missions/#{@mission.slug}/teams", params: {title: "Strike Team", fleetSquadronId: foreign.id}, as: :json
+
+    assert_response :bad_request
   end
 
   test "refuses a squadron id that names no squadron" do
     sign_in @admin
 
-    assert_api_response :post, 400,
-      path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
-      body: {title: "Strike Team", fleetSquadronId: SecureRandom.uuid}
+    post "/api/v1/fleets/#{@fleet.slug}/missions/#{@mission.slug}/teams", params: {title: "Strike Team", fleetSquadronId: SecureRandom.uuid}, as: :json
+
+    assert_response :bad_request
   end
 end
