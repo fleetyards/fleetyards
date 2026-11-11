@@ -2,6 +2,7 @@ import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
 import { RsiPageCheckEnum } from "@/services/fyApi";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { rsiLastPage } from "@/frontend/lib/rsiPager";
+import { readInsurance } from "@/frontend/lib/rsiInsurance";
 
 // What a page could not read. The rest of it still counts: the sync goes on,
 // and the server leaves unmatched ships alone, since a ship among these would
@@ -132,6 +133,8 @@ type RSIPledgeInfo = Pick<
   | "pledgeItemCount"
   | "pledgeCreatedOn"
   | "meltable"
+  | "lifetimeInsurance"
+  | "insuranceMonths"
 >;
 
 export class RSIHangarParser {
@@ -201,6 +204,18 @@ export class RSIHangarParser {
         ),
         // RSI's "Exchange" button, the one that melts the pledge.
         meltable: !!entry.getElementsByClassName("js-reclaim")[0],
+        // Kept with the pledge, so a buy-back of it keeps the same.
+        ...readInsurance(
+          elements
+            .filter((item) => this.itemKind(item) === "Insurance")
+            .map(
+              (item) =>
+                item
+                  .querySelector(".title")
+                  ?.textContent?.trim()
+                  .replace(/\s+/g, " ") || "",
+            ),
+        ),
       };
 
       elements.forEach((item) => {
