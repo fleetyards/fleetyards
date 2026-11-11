@@ -73,7 +73,8 @@ const liveRoute = computed(() => {
     }
   }
 
-  return opened;
+  // Gone from the plan since, it has nothing left to edit.
+  return plan.value ? undefined : opened;
 });
 
 const slot = computed(() => slotFromEnd.value ?? props.target.slot);
