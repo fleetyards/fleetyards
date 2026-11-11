@@ -350,15 +350,31 @@ const meltedStarts = computed(() =>
     ),
 );
 
+// The ship and every other ship of its pledge, which melt and come back
+// together.
+const pledgeOf = (vehicle: HangarPlanVehicleResource) => [
+  vehicle.id,
+  ...vehicle.pledgeShips.map((ship) => ship.id),
+];
+
 // What buying a melted pledge back costs: what melting it credits.
-const meltValue = (vehicle: HangarPlanVehicleResource) =>
-  plan.value?.melts.find((melt) => melt.vehicleId === vehicle.id)?.value ??
-  vehicle.meltValue;
+const meltValue = (vehicle: HangarPlanVehicleResource) => {
+  const pledge = pledgeOf(vehicle);
+
+  return (
+    plan.value?.melts.find(
+      (melt) => melt.vehicleId && pledge.includes(melt.vehicleId),
+    )?.value ?? vehicle.meltValue
+  );
+};
 
 const meltedOptions = computed<StartOption[]>(() =>
   (resources.value?.vehicles ?? []).filter(isMelted).map((vehicle) => {
+    // A pledge comes back once, whichever of its ships names it.
     const reason = meltedStarts.value.some(
-      (start) => start.sourceVehicleId === vehicle.id,
+      (start) =>
+        !!start.sourceVehicleId &&
+        pledgeOf(vehicle).includes(start.sourceVehicleId),
     )
       ? t("hangarPlanner.panel.out.used")
       : fits(vehicle.model)

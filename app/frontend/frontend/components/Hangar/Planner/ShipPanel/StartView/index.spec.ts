@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   BuybackPledgeKindEnum,
+  type HangarPlan,
   type HangarPlanAcquisition,
   HangarPlanSlotStateEnum,
   HangarPlanVehicleStatusEnum,
@@ -114,13 +115,15 @@ const comparison = ref({
   ],
 } as unknown as HangarPlanComparison);
 
+const planData = ref<HangarPlan>();
+
 const pairStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 const holdStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 const pairEnd = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useHangarPlan: () => ({ data: ref(undefined) }),
+  useHangarPlan: () => ({ data: planData }),
   useHangarPlanComparison: () => ({ data: comparison }),
   useHangarPlanResources: () => ({ data: resources, isLoading: ref(false) }),
 }));
@@ -393,5 +396,57 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
     );
 
     resources.value = before;
+  });
+
+  it("rules out the other ships of a melted pledge once one is bought back", async () => {
+    const nomad = model("Nomad", 80);
+    const avenger = model("Avenger Titan", 50);
+    const melt = (id: string, ship: HangarPlanModel, sibling: string) => ({
+      ...vehicle(id, ship),
+      usedBy: NullableHangarPlanVehicleUseEnum.MELT,
+      meltValue: 75,
+      pledgeShips: [{ id: sibling, model: ship }],
+    });
+    const before = resources.value;
+    resources.value = {
+      ...before,
+      vehicles: [
+        ...before.vehicles,
+        melt("vehicle-nomad", nomad, "vehicle-avenger"),
+        melt("vehicle-avenger", avenger, "vehicle-nomad"),
+      ],
+    };
+    planData.value = {
+      melts: [],
+      slots: [
+        {
+          starts: [],
+          candidates: [
+            {
+              acquisitions: [
+                {
+                  id: "other",
+                  startKind: "melted",
+                  sourceVehicleId: "vehicle-nomad",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    } as unknown as HangarPlan;
+
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    const out = outRows(wrapper);
+    expect(out.find((row) => row.includes("Avenger Titan"))).toContain(
+      "Already starts another route",
+    );
+
+    resources.value = before;
+    planData.value = undefined;
   });
 });
