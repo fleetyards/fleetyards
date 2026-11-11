@@ -223,6 +223,27 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_empty HangarPlans::Comparison.new(@plan).fleet
   end
 
+  test "a bundled ship a slot still choosing its ship starts from stays in the hangar after the plan" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: slot_for(@carrack), start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @carrack)
+    choosing = slot_for(@cutlass)
+    create(:hangar_plan_candidate, slot: choosing.slot, model: @constellation)
+    @plan.acquisitions.create!(candidate: choosing, start_kind: "bundled", bundled_with: pledge_start, start_model: @cutlass)
+
+    assert_equal({"Carrack" => 1, "Cutlass Black" => 1},
+      HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.right_count] })
+  end
+
+  test "a bundled ship no slot starts from fills a slot of its model that has no route yet" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Cutlass Black"])
+    @plan.acquisitions.create!(candidate: slot_for(@carrack), start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    slot_for(@cutlass)
+
+    assert_equal({"Carrack" => 1, "Cutlass Black" => 1},
+      HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.right_count] })
+  end
+
   private def slot_for(model, quantity: 1)
     slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
     create(:hangar_plan_candidate, slot:, model:)

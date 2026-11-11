@@ -89,9 +89,10 @@ module HangarPlans
 
     # The hangar once the plan is carried out: the ships its decided slots hold,
     # every ship the plan neither uses nor melts, which stays, and the other
-    # ships of a pledge the plan buys back that no slot takes. A ship left
-    # out fills a unit of its own model that has no route yet, rather than being
-    # counted twice, and a ship meant to stay does so first.
+    # ships of a pledge the plan buys back that no decided slot takes. A ship
+    # left out, or brought along, fills a unit of its own model that has no
+    # route yet, rather than being counted twice, and a ship meant to stay does
+    # so first.
     def fleet
       @fleet ||= begin
         open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
@@ -100,15 +101,17 @@ module HangarPlans
           .partition { |entry| LEAVING_STATUSES.include?(entry.status) }
         left_out = (settled + leaving).map(&:vehicle)
 
-        staying = left_out.reject do |vehicle|
-          next false unless open_units[vehicle.model_id].positive?
+        fills_open_unit = lambda do |model_id|
+          next false unless open_units[model_id].positive?
 
-          open_units[vehicle.model_id] -= 1
+          open_units[model_id] -= 1
           true
         end
+        staying = left_out.reject { |vehicle| fills_open_unit.call(vehicle.model_id) }
+        brought = bundled_models.reject { |model| fills_open_unit.call(model.id) }
 
         slot_entries + staying.map { |vehicle| FleetEntry.new(model: vehicle.model, slot: nil, vehicle:) } +
-          bundled_entries
+          brought.map { |model| FleetEntry.new(model:, slot: nil, vehicle: nil) }
       end
     end
 
@@ -130,12 +133,15 @@ module HangarPlans
       end
     end
 
-    # Only a pledge a decided slot buys back brings its other ships along.
-    private def bundled_entries
+    # Only a pledge a decided slot buys back brings its other ships along. One
+    # that a decided slot starts from is that slot's ship already; one a slot
+    # still choosing its ship starts from stays as it comes.
+    private def bundled_models
       BundledShips.in_plan(plan).filter_map do |ship|
-        next if ship.taken_by || decided_candidate_ids.exclude?(ship.pledge_start.hangar_plan_candidate_id)
+        next if decided_candidate_ids.exclude?(ship.pledge_start.hangar_plan_candidate_id)
+        next if ship.taken_by && decided_candidate_ids.include?(ship.taken_by.hangar_plan_candidate_id)
 
-        FleetEntry.new(model: ship.model, slot: nil, vehicle: nil)
+        ship.model
       end
     end
 
