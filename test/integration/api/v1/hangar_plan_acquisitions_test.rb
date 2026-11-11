@@ -378,14 +378,18 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "a melted start loses its source when the melt is taken back" do
-    vehicle = create(:vehicle, user: @user, model: @constellation)
-    melt = create(:hangar_plan_melt, hangar_plan: @plan, vehicle:)
-    route = @plan.acquisitions.create!(candidate: @candidate, start_kind: "melted", source_vehicle: vehicle)
+  test "taking a melt back takes the routes that buy its pledge back with it" do
+    melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pledge-1")
+    sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pledge-1")
+    melt = create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
+    @slot.update!(quantity: 2)
+    route = @plan.acquisitions.create!(candidate: @candidate, start_kind: "melted", source_vehicle: sibling)
+    kept = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
 
     melt.destroy!
 
-    assert route.reload.source_missing?
+    assert_not HangarPlanAcquisition.exists?(route.id)
+    assert HangarPlanAcquisition.exists?(kept.id)
   end
 
   test "POST buys back an upgraded pledge as the ship it was first bought as" do
