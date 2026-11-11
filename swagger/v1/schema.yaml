@@ -30645,6 +30645,7 @@ components:
       - holo_ar
       - holo_phone
       - holo_textured
+      - homepage_dashboard
       - item_holo_textured
       - loadout_preview
       - oauth-applications
@@ -30668,6 +30669,7 @@ components:
       - HOLO_AR
       - HOLO_PHONE
       - HOLO_TEXTURED
+      - HOMEPAGE_DASHBOARD
       - ITEM_HOLO_TEXTURED
       - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS

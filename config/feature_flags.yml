@@ -46,8 +46,10 @@ fleet_subscriptions:
 fleet_tours:
   description: "Fleet tours — a fleet's own tour list and its payouts, with members asking to join"
 
-# Rollout of the new "/": a landing page for visitors and a dashboard for
-# signed-in pilots. The old homepage stays the fallback while this is off.
+# A personal dashboard at "/" for signed-in pilots. While this is off they get
+# the landing page visitors see.
+homepage_dashboard:
+  description: "Homepage dashboard — signed-in pilots see their ships, wishlist, fleet and events at /"
 
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
