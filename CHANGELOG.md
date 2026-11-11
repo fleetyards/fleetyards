@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.49.0](https://github.com/fleetyards/fleetyards/compare/v9.48.0...v9.49.0) (2026-11-11)
+
+
+### Features
+
+* **dressing-room:** tell where the game saves exported characters ([#6288](https://github.com/fleetyards/fleetyards/issues/6288)) ([e091b8e](https://github.com/fleetyards/fleetyards/commit/e091b8e99a35f7e832b145cde22c5d04abd32603))
+* **events:** build event and template teams from a squadron or team ([#6287](https://github.com/fleetyards/fleetyards/issues/6287)) ([6f5fa61](https://github.com/fleetyards/fleetyards/commit/6f5fa613babe8b7f3c2798dc467b62b5b816e808))
+* **hangar-planner:** show the synced store credit and reset a plan to it ([44257c6](https://github.com/fleetyards/fleetyards/commit/44257c685c64f6a554101575684f1e3ad5821976))
+* **hangar-planner:** wishlist ships as route ends, and clear gone marks on update ([#6286](https://github.com/fleetyards/fleetyards/issues/6286)) ([af0e588](https://github.com/fleetyards/fleetyards/commit/af0e588168c31681edb49b1b5000cdbfb7554b4e))
+* **users:** send the synced store credit with the current user ([a469c1e](https://github.com/fleetyards/fleetyards/commit/a469c1e2fdef279349b41767f489030ed396fa94))
+* **vehicles:** let the modules card edit a wishlist ship's modules ([b79f38e](https://github.com/fleetyards/fleetyards/commit/b79f38efe6eccffbdcc9da307b430e68cc5904b6))
+* **vehicles:** offer the modules tab when editing a wishlist ship ([4d312ed](https://github.com/fleetyards/fleetyards/commit/4d312ed3d5941ac23e19a1b6a8b60dd25bbb83f4))
+* **vehicles:** open a wishlist ship's modules from its panel ([77f731c](https://github.com/fleetyards/fleetyards/commit/77f731cccba61a7b854d354db60333d8409b9eb5))
+
+
+### Bug Fixes
+
+* **hangar-planner:** let plans saved with the old default credit follow the sync ([9a31a0d](https://github.com/fleetyards/fleetyards/commit/9a31a0dbf81b5603b45ecb75dc0107a9730c8017))
+
 ## [9.48.0](https://github.com/fleetyards/fleetyards/compare/v9.47.0...v9.48.0) (2026-11-11)
 
 
