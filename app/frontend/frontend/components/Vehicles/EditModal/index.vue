@@ -353,10 +353,7 @@ const vehicleName = computed(
           :fields="['modelModuleIds']"
           :hidden="!tabVisible(VehicleEditTabsEnum.MODULES)"
         >
-          <Modules
-            v-if="modulesVisible"
-            :vehicle="vehicle"
-          />
+          <Modules v-if="modulesVisible" :vehicle="vehicle" />
         </FormTab>
         <FormTab
           :id="VehicleEditTabsEnum.UPGRADES"
