@@ -563,6 +563,8 @@ it:
               conflicting_members: "non può essere disattivato finché %{members} fanno parte anche di un altro squadrone"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "deve essere uno dei gruppi hangar del membro"
             fleet_membership:
               not_a_member: "deve essere un membro accettato di questa flotta"
             fleet_squadron:
@@ -570,6 +572,10 @@ it:
             fleet_squadron_role:
               not_in_fleet: "deve essere uno dei gradi di squadrone di questa flotta"
               single_holder_taken: "è già assegnato a un altro membro di questo squadrone: c'è un solo %{role} per squadrone"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
         fleet_squadron_request:
           attributes:
             fleet_membership:

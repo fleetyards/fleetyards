@@ -563,6 +563,8 @@ de:
               conflicting_members: "kann nicht aufgehoben werden, solange %{members} zusätzlich in einer anderen Staffel sind"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "muss eine eigene Hangar-Gruppe des Mitglieds sein"
             fleet_membership:
               not_a_member: "muss ein bestätigtes Mitglied dieser Flotte sein"
             fleet_squadron:
@@ -570,6 +572,10 @@ de:
             fleet_squadron_role:
               not_in_fleet: "muss einer der Staffelränge dieser Flotte sein"
               single_holder_taken: "ist in dieser Staffel bereits vergeben – es gibt nur einen %{role} pro Staffel"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "muss ein eigenes Schiff des Mitglieds sein"
         fleet_squadron_request:
           attributes:
             fleet_membership:

@@ -143,11 +143,11 @@ module Api
       # list means the named squadrons hold nobody, which has to answer "no
       # ships" rather than widening back to the whole fleet.
       private def narrow_to_squadrons(scope)
-        user_ids = for_squadrons(@fleet)
+        vehicle_ids = for_squadron_vehicles(@fleet)
 
-        return scope if user_ids.nil?
+        return scope if vehicle_ids.nil?
 
-        scope.where(user_id: user_ids)
+        scope.where(id: vehicle_ids)
       end
 
       # The ships every action here starts from. A seam rather than

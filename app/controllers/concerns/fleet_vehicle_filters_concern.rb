@@ -30,31 +30,29 @@ module FleetVehicleFiltersConcern
     @for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
   end
 
-  # The owners whose ships a squadron filter admits. Taken off the fleet rather
-  # than the slugs alone, so one fleet's filter cannot reach another's squadron.
+  # The ships a squadron filter admits: what each member of the named
+  # squadrons gives them, as a subquery of vehicle ids. Taken off the fleet
+  # rather than the slugs alone, so one fleet's filter cannot reach another's
+  # squadron. Callers apply it to the fleet's own ships, so a squadron never
+  # sees a ship the fleet does not.
   #
-  # An empty array when the named squadrons hold nobody, which is what makes the
-  # filter answer "no ships" rather than silently widening to the whole fleet --
-  # the same reason `FleetSquadron#member_user_ids` returns one.
+  # A subquery matching nothing when the named squadrons hold nobody, which is
+  # what makes the filter answer "no ships" rather than silently widening to
+  # the whole fleet.
   #
   # The param is deleted so ransack never sees it, which is why the answer is
   # memoised -- `nil` included. Asked again, the params alone would say that no
   # squadron was named and the second caller would count the whole fleet.
-  private def for_squadrons(fleet)
-    return @for_squadrons if defined?(@for_squadrons)
+  private def for_squadron_vehicles(fleet)
+    return @for_squadron_vehicles if defined?(@for_squadron_vehicles)
 
     slugs = vehicle_query_params.delete("squadron_slug_in")
 
-    @for_squadrons = if slugs.present?
-      ::FleetMembership
-        .kept
-        .accepted
-        .where(fleet_id: fleet.id)
-        .joins(:fleet_squadrons)
-        .where(fleet_squadrons: {slug: slugs})
-        .distinct
-        .pluck(:user_id)
-        .compact
+    @for_squadron_vehicles = if slugs.present?
+      ::FleetSquadron.vehicle_ids_for(
+        fleet_id: fleet.id,
+        squadron_ids: fleet.fleet_squadrons.where(slug: slugs).select(:id)
+      )
     end
   end
 

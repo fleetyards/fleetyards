@@ -4,6 +4,18 @@ class FleetSquadronMembership < ApplicationRecord
   belongs_to :fleet_squadron, touch: true
   belongs_to :fleet_membership, touch: true
   belongs_to :fleet_squadron_role
+  belongs_to :hangar_group, optional: true
+
+  has_many :fleet_squadron_membership_vehicles, dependent: :destroy
+  has_many :picked_vehicles, through: :fleet_squadron_membership_vehicles, source: :vehicle
+
+  # Which of the member's ships the squadron gets. Every choice narrows what the
+  # member already shares with the fleet, never widens it: the squadron's ships
+  # are always read from the fleet's. "picked" with nothing picked is how a
+  # member gives a squadron none.
+  enum :ships_filter,
+    {all: 0, hangar_group: 1, picked: 2},
+    prefix: true
 
   validates :fleet_membership_id, uniqueness: {scope: :fleet_squadron_id}
 
@@ -11,6 +23,7 @@ class FleetSquadronMembership < ApplicationRecord
   validate :exclusive_squadron_is_the_only_one
   validate :role_belongs_to_same_fleet
   validate :single_holder_role_is_free, if: :fleet_squadron_role_id_changed?
+  validate :hangar_group_is_the_members, if: :ships_filter_hangar_group?
 
   before_validation :assign_default_role, on: :create
 
@@ -19,7 +32,7 @@ class FleetSquadronMembership < ApplicationRecord
   after_create :close_requests
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[fleet_squadron_id fleet_membership_id fleet_squadron_role_id created_at updated_at]
+    %w[fleet_squadron_id fleet_membership_id fleet_squadron_role_id ships_filter created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -55,6 +68,13 @@ class FleetSquadronMembership < ApplicationRecord
     return if held.blank?
 
     errors.add(:fleet_squadron, :exclusive_conflict, squadron: held.name)
+  end
+
+  private def hangar_group_is_the_members
+    return errors.add(:hangar_group, :blank) if hangar_group.blank?
+    return if hangar_group.user_id == fleet_membership&.user_id
+
+    errors.add(:hangar_group, :not_owned)
   end
 
   private def close_requests

@@ -563,6 +563,8 @@ zh-TW:
               conflicting_members: "無法關閉，因為 %{members} 同時還在另一個中隊中"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "必須是該成員自己的機庫分組"
             fleet_membership:
               not_a_member: "必須是該艦隊已接受的成員"
             fleet_squadron:
@@ -570,6 +572,10 @@ zh-TW:
             fleet_squadron_role:
               not_in_fleet: "必須是本艦隊的中隊職級之一"
               single_holder_taken: "已由本中隊的其他成員擔任——每個中隊只能有一名%{role}"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "必須是該成員自己的艦船"
         fleet_squadron_request:
           attributes:
             fleet_membership:

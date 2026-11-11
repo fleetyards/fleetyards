@@ -563,6 +563,8 @@ es:
               conflicting_members: "no se puede desactivar mientras %{members} también estén en otro escuadrón"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "debe ser uno de los grupos de hangar del propio miembro"
             fleet_membership:
               not_a_member: "debe ser un miembro aceptado de esta flota"
             fleet_squadron:
@@ -570,6 +572,10 @@ es:
             fleet_squadron_role:
               not_in_fleet: "debe ser uno de los rangos de escuadrón de esta flota"
               single_holder_taken: "ya lo tiene otro miembro de este escuadrón: hay un solo %{role} por escuadrón"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "debe ser una de las naves del propio miembro"
         fleet_squadron_request:
           attributes:
             fleet_membership:

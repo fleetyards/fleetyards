@@ -166,11 +166,11 @@ module Api
       # rather than reaching for `@fleet.vehicles` and `@fleet.fleet_memberships`
       # inline.
       def narrow_to_squadrons(scope)
-        user_ids = for_squadrons(@fleet)
+        vehicle_ids = for_squadron_vehicles(@fleet)
 
-        return scope if user_ids.nil?
+        return scope if vehicle_ids.nil?
 
-        scope.where(user_id: user_ids)
+        scope.where(id: vehicle_ids)
       end
 
       private def vehicle_scope

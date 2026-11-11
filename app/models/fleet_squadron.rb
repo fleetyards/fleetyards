@@ -196,8 +196,47 @@ class FleetSquadron < ApplicationRecord
     end
   end
 
-  # Whose ships count as this squadron's. Empty for an empty squadron, which is
-  # what keeps `where(user_id: [])` from widening to the whole fleet.
+  # The ships the named squadrons get from their members, as a subquery of
+  # vehicle ids for a caller that already starts from the fleet's own ships --
+  # which is what keeps every choice here a narrowing of what the fleet sees.
+  #
+  # A loaner follows its parent: picking a ship, or grouping it, brings the
+  # loaners that come with it.
+  def self.vehicle_ids_for(fleet_id:, squadron_ids:)
+    filters = FleetSquadronMembership.ships_filters
+
+    Vehicle
+      .joins(<<~SQL.squish)
+        INNER JOIN fleet_memberships squadron_owners
+          ON squadron_owners.user_id = vehicles.user_id
+          AND squadron_owners.fleet_id = #{connection.quote(fleet_id)}
+          AND squadron_owners.discarded_at IS NULL
+          AND squadron_owners.aasm_state = 'accepted'
+        INNER JOIN fleet_squadron_memberships squadron_rows
+          ON squadron_rows.fleet_membership_id = squadron_owners.id
+      SQL
+      .where("squadron_rows.fleet_squadron_id": squadron_ids)
+      .where(<<~SQL.squish, all: filters["all"], hangar_group: filters["hangar_group"])
+        squadron_rows.ships_filter = :all
+        OR (
+          squadron_rows.ships_filter = :hangar_group
+          AND EXISTS (
+            SELECT 1 FROM task_forces
+            WHERE task_forces.hangar_group_id = squadron_rows.hangar_group_id
+              AND (task_forces.vehicle_id = vehicles.id OR task_forces.vehicle_id = vehicles.vehicle_id)
+          )
+        )
+        OR EXISTS (
+          SELECT 1 FROM fleet_squadron_membership_vehicles picked
+          WHERE picked.fleet_squadron_membership_id = squadron_rows.id
+            AND (picked.vehicle_id = vehicles.id OR picked.vehicle_id = vehicles.vehicle_id)
+        )
+      SQL
+      .select(:id)
+  end
+
+  # The accepted members' users. Empty for an empty squadron, which is what
+  # keeps a `where(user_id: [])` from widening to the whole fleet.
   def member_user_ids
     accepted_fleet_memberships.pluck(:user_id).compact
   end

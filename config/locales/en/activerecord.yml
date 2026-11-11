@@ -595,6 +595,8 @@ en:
               conflicting_members: "cannot be turned off while %{members} are also in another squadron"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "must be one of the member's own hangar groups"
             fleet_membership:
               not_a_member: "must be an accepted member of this fleet"
             fleet_squadron:
@@ -602,6 +604,10 @@ en:
             fleet_squadron_role:
               not_in_fleet: "must be one of this fleet's squadron ranks"
               single_holder_taken: "is already held by another member of this squadron — there is one %{role} per squadron"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "must be one of the member's own ships"
         fleet_squadron_request:
           attributes:
             fleet_membership:

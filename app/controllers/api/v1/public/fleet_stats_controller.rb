@@ -177,11 +177,11 @@ module Api
         # The two populations the figures are drawn from, kept as seams rather
         # than reaching for `@fleet.vehicles` inline.
         def narrow_to_squadrons(scope)
-          user_ids = for_squadrons(@fleet)
+          vehicle_ids = for_squadron_vehicles(@fleet)
 
-          return scope if user_ids.nil?
+          return scope if vehicle_ids.nil?
 
-          scope.where(user_id: user_ids)
+          scope.where(id: vehicle_ids)
         end
 
         def vehicle_scope

@@ -1296,15 +1296,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.index ["fleet_squadron_id"], name: "index_fleet_squadron_assignments_on_fleet_squadron_id"
   end
 
+  create_table "fleet_squadron_membership_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_squadron_membership_id", null: false
+    t.uuid "vehicle_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_squadron_membership_id", "vehicle_id"], name: "index_squadron_membership_vehicles_on_membership_and_vehicle", unique: true
+    t.index ["vehicle_id"], name: "index_fleet_squadron_membership_vehicles_on_vehicle_id"
+  end
+
   create_table "fleet_squadron_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_squadron_id", null: false
     t.uuid "fleet_membership_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "fleet_squadron_role_id", null: false
+    t.integer "ships_filter", default: 0, null: false
+    t.uuid "hangar_group_id"
     t.index ["fleet_membership_id"], name: "index_fleet_squadron_memberships_on_fleet_membership_id"
     t.index ["fleet_squadron_id", "fleet_membership_id"], name: "index_fleet_squadron_memberships_on_squadron_and_membership", unique: true
     t.index ["fleet_squadron_role_id"], name: "index_fleet_squadron_memberships_on_fleet_squadron_role_id"
+    t.index ["hangar_group_id"], name: "index_fleet_squadron_memberships_on_hangar_group_id"
   end
 
   create_table "fleet_squadron_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3494,9 +3506,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
   add_foreign_key "fleet_shopping_list_items", "fleet_shopping_lists", on_delete: :cascade
   add_foreign_key "fleet_shopping_lists", "fleets", on_delete: :cascade
   add_foreign_key "fleet_squadron_assignments", "fleet_squadrons"
+  add_foreign_key "fleet_squadron_membership_vehicles", "fleet_squadron_memberships", on_delete: :cascade
+  add_foreign_key "fleet_squadron_membership_vehicles", "vehicles", on_delete: :cascade
   add_foreign_key "fleet_squadron_memberships", "fleet_memberships"
   add_foreign_key "fleet_squadron_memberships", "fleet_squadron_roles"
   add_foreign_key "fleet_squadron_memberships", "fleet_squadrons"
+  add_foreign_key "fleet_squadron_memberships", "hangar_groups", on_delete: :nullify
   add_foreign_key "fleet_squadron_requests", "fleet_memberships"
   add_foreign_key "fleet_squadron_requests", "fleet_squadrons"
   add_foreign_key "fleet_squadron_roles", "fleets"
