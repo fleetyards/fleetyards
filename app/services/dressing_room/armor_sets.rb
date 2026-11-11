@@ -26,6 +26,11 @@ module DressingRoom
 
     BODY_SLOTS = %w[helmet torso arms legs].freeze
 
+    # The model code after the line name ("-SL", "-CH-I") and the armour word,
+    # which a backpack names differently from the armour it is sold with.
+    MODEL_CODE = /\A([^[:space:]-]+)-[^[:space:]]+/
+    ARMOR_WORD = /[[:space:]]+Armor(?=[[:space:]]|\z)/
+
     PICTURE_ORDER = %w[torso helmet legs arms backpack].freeze
 
     # Stand-ins the game keeps under a sold piece's name, for the loadout
@@ -54,14 +59,23 @@ module DressingRoom
     # The game credits a piece of a set to another maker now and then -- most
     # Geist helmets are Gallenson's while the rest is Kilgore and Poole's -- so
     # a piece that forms no set of its own joins the one set of its name that
-    # lacks its slot.
+    # lacks its slot. A backpack's name strays further: "Geist Backpack Desert"
+    # goes with "Geist Armor Desert", "Arden-CL Backpack Rime" with "Arden-SL
+    # Rime".
     private def adopt(stray, sets)
       slot = stray[:piece].slot
-      homes = sets.select do |members|
-        members.first[:set_name] == stray[:set_name] && members.none? { |member| member[:piece].slot == slot }
+      open = sets.select { |members| members.none? { |member| member[:piece].slot == slot } }
+
+      homes = open.select { |members| members.first[:set_name] == stray[:set_name] }
+      if homes.empty? && slot == "backpack"
+        homes = open.select { |members| line_name(members.first[:set_name]) == line_name(stray[:set_name]) }
       end
 
       homes.first << stray if homes.one?
+    end
+
+    private def line_name(set_name)
+      set_name.sub(MODEL_CODE, '\\1').gsub(ARMOR_WORD, "").squish
     end
 
     private def build_set(members)

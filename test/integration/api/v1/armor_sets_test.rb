@@ -105,6 +105,24 @@ class Api::V1::ArmorSetsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /armor-sets gives a set the backpack its line sells with it under another model code" do
+    piece("Morozov-SH Core Thule", :torso)
+    piece("Morozov-SH Arms Thule", :arms)
+    piece("Morozov-SH Legs Thule", :legs)
+    piece("Geist Armor Core Desert", :torso)
+    piece("Geist Armor Arms Desert", :arms)
+    piece("Geist Armor Legs Desert", :legs)
+    piece("Morozov-CH Backpack Thule", :backpack, item_type: "heavy_backpack")
+    piece("Geist Backpack Desert", :backpack, item_type: "light_backpack")
+    piece("Geist Backpack Forest", :backpack, item_type: "light_backpack")
+
+    assert_api_response :get, 200 do
+      backpacks = parsed_body.to_h { |set| [set["name"], set["pieces"].find { |entry| entry["slot"] == "backpack" }&.dig("name")] }
+
+      assert_equal({"Geist Armor Desert" => "Geist Backpack Desert", "Morozov-SH Thule" => "Morozov-CH Backpack Thule"}, backpacks)
+    end
+  end
+
   test "GET /armor-sets is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 
