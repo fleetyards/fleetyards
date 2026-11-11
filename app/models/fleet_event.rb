@@ -92,6 +92,7 @@ class FleetEvent < ApplicationRecord
   # it, because a touch later commits with that save's changes still on record.
   before_save -> { @opening = will_save_change_to_status?(to: "open") }
   after_commit :invite_slot_candidates, on: %i[create update], if: -> { @opening }
+  after_rollback -> { @opening = false }
 
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
   scope :past, -> { where("starts_at < ?", Time.current).order(starts_at: :desc) }
