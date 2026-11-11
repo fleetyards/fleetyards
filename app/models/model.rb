@@ -43,6 +43,10 @@ class Model < ApplicationRecord
 
   belongs_to :manufacturer
 
+  # The detachable bridge a ship docks in its default loadout. Its seats crew
+  # the ship it is docked to, unlike a snub craft's.
+  belongs_to :command_module, class_name: "Model", optional: true
+
   # What each build of the game says about this model's mechanics.
   has_many :builds, class_name: "ModelBuild", dependent: :destroy
   # The build we are being served from, which is the configured one unless its

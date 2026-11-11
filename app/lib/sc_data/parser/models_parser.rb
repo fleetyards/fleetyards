@@ -1,6 +1,8 @@
 module ScData
   module Parser
     class ModelsParser < ::ScData::Parser::BaseParser
+      COMMAND_MODULE_PORT_TAG = "Dock_Command_Module"
+
       def all
         parse_ships
         parse_vehicles
@@ -8,7 +10,10 @@ module ScData
       end
 
       private def parse_ships
-        ships = load_data("entities/spaceships").filter_map do |item|
+        records = load_data("entities/spaceships")
+        keys_by_ref = records.to_h { |record| [record[:values]["__ref"], record[:key]] }
+
+        ships = records.filter_map do |item|
           key = item[:key]
           values = item[:values]
 
@@ -53,6 +58,7 @@ module ScData
               z: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "z").to_f
             },
             interior: ship_interiors.for(key).presence,
+            command_module: docked_command_module(loadout, keys_by_ref),
             loadout:
           }
         end
@@ -177,6 +183,16 @@ module ScData
         end
 
         save_items(powersuits, folder: "models")
+      end
+
+      # The vehicle a ship docks at its command module port. The tag is what
+      # tells it apart from a snub craft, which docks through the same
+      # vehicle attach port.
+      private def docked_command_module(loadout, keys_by_ref)
+        port = loadout.find { |entry| Array(entry[:port_tags]).include?(COMMAND_MODULE_PORT_TAG) }
+        ref = Array(port&.dig(:loadout)).find { |entry| entry[:name] == "itemport_vehicle_attach" }&.dig(:ref)
+
+        keys_by_ref[ref] if ref.present?
       end
 
       # A port declares what may sit in it -- the item types it accepts and the

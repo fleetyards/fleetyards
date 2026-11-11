@@ -67,6 +67,23 @@ class ModelPosition < ApplicationRecord
       sort_order += 1
     end
 
+    # The command module's seats, under its name: the ship flies from it, and
+    # the hull may have a pilot seat of its own.
+    if model.command_module.present?
+      collect_seat_hardpoints(model.command_module).each do |hp|
+        next if hp.sc_name.include?("_bed_")
+
+        positions << {
+          name: "#{model.command_module.name} #{derive_name(hp)}",
+          position_type: infer_position_type(hp),
+          hardpoint_id: hp.id,
+          source: :sc_data,
+          position: sort_order
+        }
+        sort_order += 1
+      end
+    end
+
     # 2. Manned turrets without nested seat children
     manned_turret_hardpoints = collect_manned_turret_hardpoints(model)
     manned_turret_hardpoints.each do |hp|
@@ -184,10 +201,22 @@ class ModelPosition < ApplicationRecord
     return :copilot if sc_name.include?("_copilot")
     return :engineer if sc_name.include?("engineer_console") || sc_name.start_with?("hardpoint_engineering")
     return :turret_gunner if sc_name.include?("turret_console")
-    return :operator if sc_name.include?("_seat_")
 
-    :operator
+    seat_role(hardpoint) || :operator
   end
+
+  # What the seat fitted to a port says it is for, where the port's own name
+  # does not: the Ironclad flies from a seat on a remote turret port.
+  def self.seat_role(hardpoint)
+    seat_key = hardpoint.component&.sc_key.to_s
+
+    if seat_key.match?(/_(co_?pilot|codriver)/)
+      :copilot
+    elsif seat_key.include?("_pilot")
+      :pilot
+    end
+  end
+  private_class_method :seat_role
 
   def self.derive_name(hardpoint)
     sc_name = hardpoint.sc_name.to_s
@@ -209,6 +238,13 @@ class ModelPosition < ApplicationRecord
       return sc_name.sub(/hardpoint_engineering(screen)?_?/, "")
           .tr("_", " ").strip.titleize.presence || "Engineer"
     end
+
+    case seat_role(hardpoint)
+    when :pilot then return "Pilot"
+    when :copilot then return "Copilot"
+    end
+
+    return "Operations" if hardpoint.component&.sc_key.to_s.end_with?("_operations")
 
     sc_name.sub(/^hardpoint_(seat_)?/, "").tr("_", " ").strip.titleize
   end

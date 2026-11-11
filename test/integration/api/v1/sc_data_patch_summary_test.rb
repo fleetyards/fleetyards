@@ -9,12 +9,16 @@ class Api::V1::ScDataPatchSummaryTest < ActionDispatch::IntegrationTest
 
   PREVIOUS = "1.0.0-live.1"
   CURRENT = "1.0.1-live.2"
+  PREVIEW = "1.0.2-ptu.3"
 
   api_path "/sc-data/patch-summary" do
     get("SC Data patch summary") do
       operationId "scDataPatchSummary"
       tags "Versions"
       produces "application/json"
+
+      parameter name: :environment, in: :query, schema: {type: :string, enum: %w[live ptu]}, required: false,
+        description: "Which environment's current patch to summarise. A preview is compared against the live build it replaces."
 
       response(200, "successful") do
         schema ::V1::Schemas::ScDataPatchSummary
@@ -30,8 +34,8 @@ class Api::V1::ScDataPatchSummaryTest < ActionDispatch::IntegrationTest
     Rails.cache.clear
   end
 
-  private def model_build(version, model:, **facts)
-    create(:model_build, model:, environment: "live", version:, **facts)
+  private def model_build(version, model:, environment: "live", **facts)
+    create(:model_build, model:, environment:, version:, **facts)
   end
 
   test "GET /sc-data/patch-summary names the new ships and what moved" do
@@ -58,5 +62,26 @@ class Api::V1::ScDataPatchSummaryTest < ActionDispatch::IntegrationTest
     model_build(CURRENT, model: create(:model))
 
     assert_api_response :get, 404, api_path: "/sc-data/patch-summary"
+  end
+
+  test "GET /sc-data/patch-summary?environment=ptu compares the preview against live" do
+    changed = create(:model, name: "Constellation")
+    model_build(PREVIOUS, model: changed, hull_health: 180_844)
+    model_build(CURRENT, model: changed, hull_health: 103_004)
+    model_build(PREVIEW, model: changed, environment: "ptu", hull_health: 120_000)
+
+    assert_api_response :get, 200, api_path: "/sc-data/patch-summary", params: {environment: "ptu"} do
+      assert_equal({"environment" => "live", "version" => CURRENT}, parsed_body["from"])
+      assert_equal({"environment" => "ptu", "version" => PREVIEW}, parsed_body["to"])
+      assert_equal [{"field" => "hull_health", "from" => 103_004.0, "to" => 120_000.0}], parsed_body["shipChanges"].sole["fields"]
+    end
+  end
+
+  test "GET /sc-data/patch-summary?environment=ptu answers not found once live has caught up" do
+    model = create(:model)
+    model_build("1.0.1-ptu.1", model:, environment: "ptu")
+    model_build(CURRENT, model:)
+
+    assert_api_response :get, 404, api_path: "/sc-data/patch-summary", params: {environment: "ptu"}
   end
 end

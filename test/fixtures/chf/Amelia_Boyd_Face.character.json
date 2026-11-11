@@ -413,8 +413,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.1605,
-        0.006
+        0.9951,
+        0.9942
        ]
       },
       "variation": {
@@ -469,8 +469,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.1605,
-        0.006
+        0.9951,
+        0.9942
        ]
       },
       "variation": {
@@ -536,8 +536,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4287,
-        0.094
+        0.8393,
+        0.7451
        ]
       },
       "variation": {
@@ -592,8 +592,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4518,
-        0.1088
+        0.809,
+        0.6895
        ]
       },
       "variation": {
@@ -659,8 +659,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.0452,
-        0.0
+        0.9902,
+        0.9897
        ]
       },
       "variation": {
@@ -770,8 +770,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.0452,
-        0.0
+        0.9902,
+        0.9897
        ]
       },
       "variation": {

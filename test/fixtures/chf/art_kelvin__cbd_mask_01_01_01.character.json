@@ -244,9 +244,9 @@
       "three": {
        "type": "MeshPhysicalMaterial",
        "color": [
-        0.00192,
-        0.00049,
-        0.01698
+        0.00181,
+        0.00034,
+        0.00271
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/brows_textures/brows_texture_01_opac_alpha.webp",
        "texCoord": 0,
@@ -259,8 +259,8 @@
        "metalness": 0.0,
        "specularIntensity": 0.5,
        "specularColor": [
-        0.113,
-        0.029,
+        0.9973,
+        0.9928,
         1.0
        ]
       },
@@ -300,9 +300,9 @@
       "three": {
        "type": "MeshPhysicalMaterial",
        "color": [
-        0.00192,
-        0.00049,
-        0.01698
+        0.00181,
+        0.00034,
+        0.00271
        ],
        "alphaMap": "characters/chf/textures/heads/shared/brows/male/npc/m_brows_002/textures/brows_002_opac_alpha.webp",
        "texCoord": 0,
@@ -315,8 +315,8 @@
        "metalness": 0.0,
        "specularIntensity": 0.5,
        "specularColor": [
-        0.113,
-        0.029,
+        0.9973,
+        0.9928,
         1.0
        ]
       },
@@ -383,8 +383,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4287,
-        0.094
+        0.8393,
+        0.7451
        ]
       },
       "variation": {
@@ -439,8 +439,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4518,
-        0.1088
+        0.809,
+        0.6895
        ]
       },
       "variation": {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_11_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_11_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2647,8 +2647,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_150000) do
     t.boolean "ccu_on_sale", default: false, null: false
     t.string "ccu_override"
     t.uuid "ccu_target_source_ids", array: true
+    t.uuid "command_module_id"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
+    t.index ["command_module_id"], name: "index_models_on_command_module_id"
     t.index ["foci"], name: "index_models_on_foci", using: :gin
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
     t.index ["manufacturer_id", "name"], name: "index_models_on_manufacturer_id_and_name", unique: true
@@ -3583,6 +3585,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_150000) do
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
   add_foreign_key "model_sales", "models", on_delete: :cascade
+  add_foreign_key "models", "models", column: "command_module_id", on_delete: :nullify
   add_foreign_key "notification_preferences", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

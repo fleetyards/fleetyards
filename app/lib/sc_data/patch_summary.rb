@@ -29,17 +29,33 @@ module ScData
     # link away.
     LIMIT = 8
 
+    LIVE = "live"
+
     attr_reader :from, :to
 
     def self.for(environment)
-      builds = ::ScData::Source.recorded.select { |source| source.environment == environment.to_s }
+      recorded = ::ScData::Source.recorded
+      builds = recorded.select { |source| source.environment == environment.to_s }
       to = builds.first
       return if to.blank?
 
-      from = builds.find { |source| release(source) != release(to) } || builds.second
+      from = if environment.to_s == LIVE
+        builds.find { |source| release(source) != release(to) } || builds.second
+      else
+        preview_baseline(recorded, to)
+      end
       return if from.blank?
 
       new(from:, to:)
+    end
+
+    # A preview is read against the live build it will replace, which is what
+    # a reader on live gets by switching -- not against the preview before it.
+    # Once live has caught up the preview describes an older build, so there
+    # is nothing ahead of live to summarise.
+    def self.preview_baseline(recorded, to)
+      live = recorded.find { |source| source.environment == LIVE }
+      live if live.present? && to.ahead_of?(live)
     end
 
     def self.release(source)
