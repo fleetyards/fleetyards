@@ -27,7 +27,7 @@ module HangarPlans
 
     def spend_max = slot_costs.sum(&:max_cost)
 
-    def starting_credit = plan.starting_credit
+    def starting_credit = plan.available_credit
 
     def credit_total = starting_credit + melt_credit
 

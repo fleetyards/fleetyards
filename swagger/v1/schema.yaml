@@ -38756,7 +38756,10 @@ components:
           type: string
           format: date-time
         startingCredit:
-          type: number
+          type:
+          - number
+          - 'null'
+          description: The plan's own store credit; null uses the synced one
         buybackTokens:
           type:
           - integer
@@ -38775,6 +38778,11 @@ components:
           - 'null'
           description: The buy-back tokens the user's last buy-back sync read from
             RSI
+        syncedStoreCredit:
+          type:
+          - number
+          - 'null'
+          description: The store credit the user's last hangar sync read from RSI
         shared:
           type: boolean
         shareToken:
@@ -38812,6 +38820,7 @@ components:
       - buybackTokens
       - vatRate
       - syncedBuybackTokens
+      - syncedStoreCredit
       - shared
       - slotsCount
       - slots
@@ -39232,8 +39241,11 @@ components:
           - string
           - 'null'
         startingCredit:
-          type: number
+          type:
+          - number
+          - 'null'
           minimum: 0
+          description: Null uses the store credit the hangar sync read
         vatRate:
           type:
           - number
@@ -40182,8 +40194,11 @@ components:
           - string
           - 'null'
         startingCredit:
-          type: number
+          type:
+          - number
+          - 'null'
           minimum: 0
+          description: Null uses the store credit the hangar sync read
         vatRate:
           type:
           - number
@@ -50891,6 +50906,11 @@ components:
         extensionVersion:
           type: string
           pattern: "^[0-9A-Za-z.+-]{1,32}$"
+        storeCredit:
+          type: number
+          minimum: 0
+          description: The store credit RSI lists for the account, read when the sync
+            asks for it
         unreadPages:
           type: array
           maxItems: 5

@@ -20,6 +20,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
+import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import {
   type HangarPlan,
   HangarPlanSourceEnum,
@@ -35,6 +36,13 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { money } = usePlanMoney();
+
+const syncedCredit = computed(() =>
+  typeof props.plan?.syncedStoreCredit === "number"
+    ? props.plan.syncedStoreCredit
+    : undefined,
+);
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const router = useRouter();
@@ -46,7 +54,7 @@ const submitting = ref(false);
 const initialValues = {
   name: props.plan?.name ?? "",
   description: props.plan?.description ?? "",
-  startingCredit: props.plan?.startingCredit ?? 0,
+  startingCredit: props.plan?.startingCredit ?? ("" as number | ""),
   buybackTokens: props.plan?.buybackTokens ?? ("" as number | ""),
   vatRate: props.plan?.vatRate ?? ("" as number | ""),
   source: HangarPlanSourceEnum.EMPTY as HangarPlanSourceEnum,
@@ -89,7 +97,11 @@ const onSubmit = handleSubmit(async (values) => {
   const data = {
     name: values.name,
     description: values.description || null,
-    startingCredit: Number(values.startingCredit) || 0,
+    // Empty uses the credit the hangar sync read.
+    startingCredit:
+      values.startingCredit === "" || values.startingCredit === null
+        ? null
+        : Math.max(0, Number(values.startingCredit) || 0),
     buybackTokens:
       values.buybackTokens === "" || values.buybackTokens === null
         ? null
@@ -158,8 +170,14 @@ const onSubmit = handleSubmit(async (values) => {
         :step="0.01"
         prefix="$"
         :label="t('hangarPlanner.fields.startingCredit')"
-        :info="t('hangarPlanner.fields.startingCreditInfo')"
-        no-placeholder
+        :info="
+          syncedCredit === undefined
+            ? t('hangarPlanner.fields.startingCreditInfo')
+            : t('hangarPlanner.fields.startingCreditSynced', {
+                credit: money(syncedCredit),
+              })
+        "
+        :placeholder="syncedCredit === undefined ? '0' : String(syncedCredit)"
       />
       <FormInput
         v-model="buybackTokens"

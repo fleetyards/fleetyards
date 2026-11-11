@@ -3334,7 +3334,9 @@
         "viewImport": "Vedi l'importazione di questa sincronizzazione",
         "lastSynced": "Ultima sincronizzazione",
         "syncShipComponents": "Sincronizza componenti di nave",
-        "syncShipComponentsHint": "Sostituisce i tuoi componenti di nave (raffreddatori, generatori, armi, …) con quelli del tuo hangar RSI. Disattivato, i componenti salvati restano invariati."
+        "syncShipComponentsHint": "Sostituisce i tuoi componenti di nave (raffreddatori, generatori, armi, …) con quelli del tuo hangar RSI. Disattivato, i componenti salvati restano invariati.",
+        "syncStoreCredit": "Sincronizza il credito dello store",
+        "syncStoreCreditHint": "Legge il credito dello store del tuo account RSI, che i piani dell'hangar contano a meno che non ne indichino uno proprio. Disattivato, resta il credito letto prima."
       },
       "cargoGridViewer": {
         "capacity": "Capacità",

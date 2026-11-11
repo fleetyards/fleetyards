@@ -3334,7 +3334,9 @@
         "viewImport": "View this sync's import",
         "lastSynced": "Last synced",
         "syncShipComponents": "Sync ship components",
-        "syncShipComponentsHint": "Replaces your ship components (coolers, power plants, weapons, …) with those in your RSI hangar. Off keeps stored ship components unchanged."
+        "syncShipComponentsHint": "Replaces your ship components (coolers, power plants, weapons, …) with those in your RSI hangar. Off keeps stored ship components unchanged.",
+        "syncStoreCredit": "Sync store credit",
+        "syncStoreCreditHint": "Reads the store credit on your RSI account, which hangar plans count unless one sets its own. Off keeps the credit read before."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

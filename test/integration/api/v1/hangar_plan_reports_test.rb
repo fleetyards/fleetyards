@@ -152,6 +152,22 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET summary counts the synced store credit unless the plan sets its own" do
+    @user.update!(rsi_store_credit: 450)
+    @plan.update!(starting_credit: nil)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/summary", path_params: {id: @plan.id} do
+      assert_in_delta 450.0, parsed_body.dig("totals", "startingCredit")
+    end
+
+    # A plan's own credit wins, nothing included.
+    @plan.update!(starting_credit: 0)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/summary", path_params: {id: @plan.id} do
+      assert_in_delta 0.0, parsed_body.dig("totals", "startingCredit")
+    end
+  end
+
   test "GET summary returns 404 for another user's plan" do
     sign_in create(:user)
 

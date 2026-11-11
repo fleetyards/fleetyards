@@ -4,7 +4,10 @@ import {
 } from "@/frontend/lib/RSIHangarParser";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
-import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import {
+  FleetyardsSyncAction,
+  type FleetyardsSyncStoreCreditPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   RsiPageReportOutcome,
@@ -33,8 +36,13 @@ import {
   type SyncRsiHangarInput,
 } from "@/services/fyApi";
 
-export type HangarSyncOptions = Omit<SyncRsiHangarInput, "items"> & {
+export type HangarSyncOptions = Omit<
+  SyncRsiHangarInput,
+  "items" | "storeCredit"
+> & {
   extensionVersion?: string;
+  // Asks the extension for the account's store credit and sends it along.
+  syncStoreCredit?: boolean;
 };
 
 // Half a second between pages, on top of the rate limit.
@@ -112,6 +120,7 @@ const polling = computed(() => awaitingResult.value && submitted.value);
 let input: Omit<SyncRsiHangarInput, "items"> = {};
 
 let extensionVersion: string | undefined;
+let syncStoreCredit = false;
 
 let seenPledgeIds = new Set<string>();
 
@@ -190,6 +199,25 @@ export const useHangarSync = () => {
     displayAlert({ text: t("messages.syncExtension.failure") });
   };
 
+  // The store credit, where the run asked for it and the extension can read
+  // it. Not having it never fails the sync: the plans keep the credit they had.
+  const readStoreCredit = async () => {
+    if (!syncStoreCredit) return undefined;
+    if (!(await extension.supports(FleetyardsSyncAction.SYNC_STORE_CREDIT))) {
+      return undefined;
+    }
+
+    const answer = await extension
+      .request(FleetyardsSyncAction.SYNC_STORE_CREDIT)
+      .catch(() => undefined);
+    const credit = (answer?.payload as FleetyardsSyncStoreCreditPayload)
+      ?.credit;
+
+    return answer?.code === 200 && typeof credit === "number" && credit >= 0
+      ? credit
+      : undefined;
+  };
+
   const submit = async () => {
     const id = runId;
 
@@ -200,12 +228,14 @@ export const useHangarSync = () => {
     importId.value = undefined;
 
     const version = reportExtensionVersion(extensionVersion);
+    const storeCredit = await readStoreCredit();
 
     try {
       const submittedImport = await syncRsiHangar({
         ...input,
         items: pledges.value,
         ...(version ? { extensionVersion: version } : {}),
+        ...(storeCredit === undefined ? {} : { storeCredit }),
         ...(unreadPages.length ? { unreadPages } : {}),
       });
 
@@ -340,6 +370,7 @@ export const useHangarSync = () => {
 
   const start = ({
     extensionVersion: version,
+    syncStoreCredit: withStoreCredit,
     ...syncInput
   }: HangarSyncOptions) => {
     if (running.value) return;
@@ -348,6 +379,7 @@ export const useHangarSync = () => {
     abort = new AbortController();
     input = syncInput;
     extensionVersion = version;
+    syncStoreCredit = !!withStoreCredit;
     started.value = true;
 
     const id = runId;

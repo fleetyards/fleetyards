@@ -4019,3 +4019,28 @@ PUT /hangar/plans/{id}/share added the new `melted` enum value to the `slots/ite
 PUT /hangar/plans/{id}/share added the new `melted` enum value to the `slots/items/starts/items/startKind` response property for the response status `200`
 GET /public/hangar-plans/{token} added the new `melted` enum value to the `slots/items/candidates/items/acquisitions/items/startKind` response property for the response status `200`
 GET /public/hangar-plans/{token} added the new `melted` enum value to the `slots/items/starts/items/startKind` response property for the response status `200`
+POST /hangar/plans the response property `startingCredit` became nullable for the status `201`
+POST /hangar/plans/{hangarPlanId}/acquisitions the response property `startingCredit` became nullable for the status `201`
+DELETE /hangar/plans/{hangarPlanId}/acquisitions/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/acquisitions/{id} the response property `startingCredit` became nullable for the status `200`
+POST /hangar/plans/{hangarPlanId}/candidates the response property `startingCredit` became nullable for the status `201`
+DELETE /hangar/plans/{hangarPlanId}/candidates/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/candidates/{id} the response property `startingCredit` became nullable for the status `200`
+POST /hangar/plans/{hangarPlanId}/keeps the response property `startingCredit` became nullable for the status `201`
+POST /hangar/plans/{hangarPlanId}/melts the response property `startingCredit` became nullable for the status `201`
+DELETE /hangar/plans/{hangarPlanId}/melts/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/melts/{id} the response property `startingCredit` became nullable for the status `200`
+POST /hangar/plans/{hangarPlanId}/slots the response property `startingCredit` became nullable for the status `201`
+PUT /hangar/plans/{hangarPlanId}/slots/sort the response property `startingCredit` became nullable for the status `200`
+DELETE /hangar/plans/{hangarPlanId}/slots/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/slots/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/slots/{id}/choose the response property `startingCredit` became nullable for the status `200`
+POST /hangar/plans/{hangarPlanId}/vehicle-marks the response property `startingCredit` became nullable for the status `201`
+DELETE /hangar/plans/{hangarPlanId}/vehicle-marks/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{hangarPlanId}/vehicle-marks/{id} the response property `startingCredit` became nullable for the status `200`
+GET /hangar/plans/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{id} the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{id}/rebase the response property `startingCredit` became nullable for the status `200`
+DELETE /hangar/plans/{id}/share the response property `startingCredit` became nullable for the status `200`
+PUT /hangar/plans/{id}/share the response property `startingCredit` became nullable for the status `200`
+GET /public/hangar-plans/{token} the response property `startingCredit` became nullable for the status `200`

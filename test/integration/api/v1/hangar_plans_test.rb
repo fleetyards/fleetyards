@@ -125,6 +125,16 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /hangar/plans leaves the credit to the hangar sync unless given" do
+    @user.update!(rsi_store_credit: 450)
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: "/hangar/plans", body: {name: "Synced credit"} do
+      assert_nil parsed_body["startingCredit"]
+      assert_in_delta 450.0, parsed_body["syncedStoreCredit"]
+    end
+  end
+
   test "POST /hangar/plans starts from the hangar" do
     vehicle = create(:vehicle, user: @user, model: @gladius)
     sign_in @user

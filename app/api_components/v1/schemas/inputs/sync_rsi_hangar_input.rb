@@ -23,6 +23,7 @@ module V1
             unmatchedVehiclesAction: ::V1::Schemas::Enums::HangarSyncUnmatchedActionEnum,
             unmatchedHangarGroupId: {type: :string, format: :uuid},
             extensionVersion: {type: :string, pattern: "^[0-9A-Za-z.+-]{1,32}$"},
+            storeCredit: {type: :number, minimum: 0, description: "The store credit RSI lists for the account, read when the sync asks for it"},
             # Pages the parser read only in part. Their ships may be among what
             # it could not read, so the run leaves unmatched ships alone.
             unreadPages: {

@@ -68,6 +68,7 @@ const plan: HangarPlan = {
   buybackTokens: 0,
   vatRate: null,
   syncedBuybackTokens: null,
+  syncedStoreCredit: null,
   shared: false,
   slotsCount: 3,
   createdAt: "2026-10-20T00:00:00Z",

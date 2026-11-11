@@ -29,10 +29,11 @@ json.id hangar_plan.id
 json.name hangar_plan.name
 json.description hangar_plan.description
 json.based_on_at hangar_plan.based_on_at.utc.iso8601
-json.starting_credit hangar_plan.starting_credit.to_f
+json.starting_credit hangar_plan.starting_credit&.to_f
 json.buyback_tokens hangar_plan.buyback_tokens
 json.vat_rate hangar_plan.vat_rate&.to_f
 json.synced_buyback_tokens local_assigns[:public_view] ? nil : hangar_plan.user.rsi_buyback_tokens
+json.synced_store_credit local_assigns[:public_view] ? nil : hangar_plan.user.rsi_store_credit&.to_f
 json.shared hangar_plan.shared?
 json.share_token hangar_plan.share_token unless local_assigns[:public_view]
 json.slots_count slots.size
