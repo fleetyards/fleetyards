@@ -105,9 +105,11 @@ vi.mock("@/frontend/composables/useHangarPlanCache", () => ({
   useHangarPlanCache: () => ({ updatePlan, refreshDerived: vi.fn() }),
 }));
 
+const displayAlert = vi.hoisted(() => vi.fn());
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
-    displayAlert: vi.fn(),
+    displayAlert,
     displayConfirm: ({ onConfirm }: { onConfirm: () => void }) => onConfirm(),
   }),
 }));
@@ -279,5 +281,34 @@ describe("Hangar/Planner/ShipPanel/SlotView", () => {
       .trigger("click");
 
     expect(wrapper.emitted("settings")?.[0]).toEqual([slot]);
+  });
+
+  it("says so when moving a held start fails", async () => {
+    const hullB = candidate("Hull B", 150);
+    const holding = {
+      ...slot,
+      candidates: [hullA],
+      starts: [{ id: "start", startModel: hullB.model }],
+    } as unknown as HangarPlanSlot;
+    planData.value = { ...plan, slots: [holding] };
+    createMutate.mockResolvedValueOnce({
+      ...plan,
+      slots: [{ ...holding, candidates: [hullA, hullB] }],
+    } as unknown as HangarPlan);
+    updateAcquisitionMutate.mockRejectedValueOnce(new Error("422"));
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: holding },
+      plugins: [router],
+    });
+
+    await catalogueRow(wrapper, "Hull B")
+      .find('[data-test="hangar-plan-slot-catalogue-toggle"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalled();
+    // The ship itself was added, so the plan shows it.
+    expect(updatePlan).toHaveBeenCalledTimes(1);
   });
 });

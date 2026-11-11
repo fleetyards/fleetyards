@@ -160,10 +160,12 @@ const removeSlot = async () => {
 };
 
 // The slot's first ship took the starts it held, before the ships added
-// after it existed; each now moves to the ship it comes closest to.
+// after it existed; each now moves to the ship it comes closest to. Answers
+// with the plan as the last move left it.
 const settleStarts = async (answer: HangarPlan) => {
   const candidates =
     answer.slots.find((slot) => slot.id === props.slot.id)?.candidates ?? [];
+  let latest = answer;
 
   for (const { id, startModel } of current.value.starts) {
     const holder = startModel && startHolder(candidates, startModel);
@@ -172,15 +174,15 @@ const settleStarts = async (answer: HangarPlan) => {
       !holder.acquisitions.some((acquisition) => acquisition.id === id);
 
     if (moved) {
-      updatePlan(
-        await updateAcquisition.mutateAsync({
-          hangarPlanId: props.planId,
-          id,
-          data: { candidateId: holder.id },
-        }),
-      );
+      latest = await updateAcquisition.mutateAsync({
+        hangarPlanId: props.planId,
+        id,
+        data: { candidateId: holder.id },
+      });
     }
   }
+
+  return latest;
 };
 
 const shortlistedIds = computed(
@@ -200,13 +202,16 @@ const toggle = async (option: ModelOption) => {
     return;
   }
 
-  const answer = await run(option.id, () =>
-    createCandidate.mutateAsync({
+  await run(option.id, async () => {
+    const created = await createCandidate.mutateAsync({
       hangarPlanId: props.planId,
       data: { slotId: props.slot.id, modelId: option.id },
-    }),
-  );
-  if (answer) await settleStarts(answer);
+    });
+    // The ship is added whatever happens to the starts after it.
+    updatePlan(created);
+
+    return settleStarts(created);
+  });
 };
 
 const search = ref("");
