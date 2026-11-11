@@ -77,6 +77,28 @@ const liveRoute = computed(() => {
   return plan.value ? undefined : opened;
 });
 
+// The start as the plan has it now: shortlisting ships on the slot tab turns a
+// slot that held its start into one that hands it to a ship.
+const liveStart = computed(() => {
+  const opened = props.target.start;
+  if (!opened || !plan.value) return opened;
+
+  const slot =
+    plan.value.slots.find((entry) => entry.id === opened.slot.id) ??
+    opened.slot;
+  const candidate = slot.candidates.find(
+    (entry) => entry.id === opened.candidate?.id,
+  );
+  const acquisition = opened.acquisition
+    ? [
+        ...slot.starts,
+        ...slot.candidates.flatMap((entry) => entry.acquisitions),
+      ].find((entry) => entry.id === opened.acquisition?.id)
+    : undefined;
+
+  return { slot, candidate, acquisition };
+});
+
 const slot = computed(() => slotFromEnd.value ?? props.target.slot);
 
 const tabs = computed(() => {
@@ -247,10 +269,10 @@ const onKeydown = (event: KeyboardEvent) => {
     </div>
 
     <StartView
-      v-if="tab === 'start' && target.start"
+      v-if="tab === 'start' && liveStart"
       :key="`start-${target.key}`"
       :plan-id="planId"
-      v-bind="target.start"
+      v-bind="liveStart"
       @done="emit('close')"
     />
     <EndView
