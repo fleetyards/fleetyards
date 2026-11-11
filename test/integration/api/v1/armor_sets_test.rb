@@ -92,6 +92,19 @@ class Api::V1::ArmorSetsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /armor-sets gives a set the piece of its name the game credits to another maker" do
+    piece("ORC-mkX Core Woodland", :torso)
+    piece("ORC-mkX Arms Woodland", :arms)
+    piece("ORC-mkX Legs Woodland", :legs)
+    piece("ORC-mkX Helmet Woodland", :helmet, manufacturer: create(:manufacturer, name: "Gallenson Tactical"))
+
+    assert_api_response :get, 200 do
+      assert_equal ["ORC-mkX Woodland"], parsed_body.pluck("name")
+      assert_equal "Clark Defense Systems", parsed_body.first["manufacturerName"]
+      assert_equal %w[helmet torso arms legs], parsed_body.first["pieces"].pluck("slot")
+    end
+  end
+
   test "GET /armor-sets is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 

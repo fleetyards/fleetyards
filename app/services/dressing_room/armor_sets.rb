@@ -34,7 +34,7 @@ module DressingRoom
 
     def self.cache_key
       [
-        "dressing-room/armor-sets/v2",
+        "dressing-room/armor-sets/v3",
         ::ScData::Source.current.served.cache_key,
         ::Equipment.maximum(:updated_at)&.utc&.to_fs(:usec),
         ::EquipmentBuild.maximum(:updated_at)&.utc&.to_fs(:usec)
@@ -42,16 +42,31 @@ module DressingRoom
     end
 
     def all
-      pieces.group_by { |piece| [piece[:manufacturer_id], piece[:set_name]] }
-        .filter_map { |_, members| build_set(members) }
+      groups = pieces.group_by { |piece| [piece[:manufacturer_id], piece[:set_name]] }.values
+      sets, strays = groups.partition { |members| (members.map { |member| member[:piece].slot }.uniq & BODY_SLOTS).size >= MIN_BODY_PIECES }
+
+      strays.flatten.sort_by { |stray| preference(stray[:piece]) }.each { |stray| adopt(stray, sets) }
+
+      sets.map { |members| build_set(members) }
         .sort_by { |set| [set.manufacturer&.name.to_s.downcase, set.name.downcase] }
+    end
+
+    # The game credits a piece of a set to another maker now and then -- most
+    # Geist helmets are Gallenson's while the rest is Kilgore and Poole's -- so
+    # a piece that forms no set of its own joins the one set of its name that
+    # lacks its slot.
+    private def adopt(stray, sets)
+      slot = stray[:piece].slot
+      homes = sets.select do |members|
+        members.first[:set_name] == stray[:set_name] && members.none? { |member| member[:piece].slot == slot }
+      end
+
+      homes.first << stray if homes.one?
     end
 
     private def build_set(members)
       by_slot = members.group_by { |member| member[:piece].slot }
         .transform_values { |candidates| candidates.min_by { |candidate| preference(candidate[:piece]) } }
-
-      return if (by_slot.keys & BODY_SLOTS).size < MIN_BODY_PIECES
 
       core = by_slot["torso"] || by_slot.values.first
 
