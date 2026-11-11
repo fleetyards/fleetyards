@@ -93,7 +93,9 @@
             "details": "Staffel bearbeiten – %{fleet}",
             "appearance": "Staffel-Erscheinungsbild – %{fleet}",
             "discord": "Staffel-Discord – %{fleet}"
-          }
+          },
+          "flights": "%{fleet} Staffel-Schwärme",
+          "myShips": "%{fleet} Staffel-Schiffe"
         },
         "stats": "%{fleet} Statistiken",
         "blueprints": "%{fleet} Baupläne",

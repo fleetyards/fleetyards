@@ -93,7 +93,9 @@
             "details": "Edit Squadron - %{fleet}",
             "appearance": "Squadron Appearance - %{fleet}",
             "discord": "Squadron Discord - %{fleet}"
-          }
+          },
+          "flights": "%{fleet} Squadron Flights",
+          "myShips": "%{fleet} Squadron Ships"
         },
         "stats": "%{fleet} Stats",
         "blueprints": "%{fleet} Blueprints",
