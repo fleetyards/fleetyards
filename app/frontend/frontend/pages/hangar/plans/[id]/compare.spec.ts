@@ -52,10 +52,9 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useCompareHangarPlans: () => ({ data: compare, isLoading: ref(false) }),
 }));
 
-vi.mock(
-  "@/frontend/components/Hangar/Planner/MetricsTable/index.vue",
-  () => ({ default: { render: () => null } }),
-);
+vi.mock("@/frontend/components/Hangar/Planner/MetricsTable/index.vue", () => ({
+  default: { render: () => null },
+}));
 
 const router = createRouter({
   history: createWebHashHistory(),
