@@ -517,7 +517,8 @@
         "stepCount": {
           "one": "%{count} étape",
           "other": "%{count} étapes"
-        }
+        },
+        "viaMelted": "Via %{ship} fondu"
       }
     }
   }

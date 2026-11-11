@@ -449,4 +449,33 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
     resources.value = before;
     planData.value = undefined;
   });
+
+  it("buys back an upgraded pledge as the ship it was first bought as", async () => {
+    const ironclad = model("Ironclad Assault", 650);
+    const starlancer = model("Starlancer MAX", 150);
+    const melted = {
+      ...vehicle("vehicle-ironclad", ironclad),
+      usedBy: NullableHangarPlanVehicleUseEnum.MELT,
+      meltValue: 465,
+      baseModel: starlancer,
+    };
+    const before = resources.value;
+    resources.value = { ...before, vehicles: [...before.vehicles, melted] };
+
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    // As an Ironclad it could never become a Prospector; as the Starlancer
+    // MAX its pledge comes back as, it can.
+    const row = wrapper
+      .find('[data-test="ship-list-group-buyback"]')
+      .findAll('[data-test="ship-list-row"]')
+      .find((entry) => entry.text().includes("Via melted Ironclad Assault"))!;
+    expect(row.find(".ship-list__title").text()).toBe("Starlancer MAX");
+    expect(row.find(".ship-list__price strong").text()).toBe("$155");
+
+    resources.value = before;
+  });
 });

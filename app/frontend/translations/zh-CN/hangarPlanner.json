@@ -517,7 +517,8 @@
         "stepCount": {
           "one": "%{count} 步",
           "other": "%{count} 步"
-        }
+        },
+        "viaMelted": "来自熔毁的 %{ship}"
       }
     }
   }

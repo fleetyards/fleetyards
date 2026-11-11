@@ -517,7 +517,8 @@
         "stepCount": {
           "one": "%{count} passaggio",
           "other": "%{count} passaggi"
-        }
+        },
+        "viaMelted": "Tramite %{ship} sciolta"
       }
     }
   }

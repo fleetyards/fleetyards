@@ -368,8 +368,11 @@ const meltValue = (vehicle: HangarPlanVehicleResource) => {
   );
 };
 
+// An upgraded pledge comes back as the ship it was first bought as, its
+// upgrades apart, and costs what that ship does on the store.
 const meltedOptions = computed<StartOption[]>(() =>
   (resources.value?.vehicles ?? []).filter(isMelted).map((vehicle) => {
+    const base = vehicle.baseModel ?? vehicle.model;
     // A pledge comes back once, whichever of its ships names it.
     const reason = meltedStarts.value.some(
       (start) =>
@@ -377,28 +380,30 @@ const meltedOptions = computed<StartOption[]>(() =>
         pledgeOf(vehicle).includes(start.sourceVehicleId),
     )
       ? t("hangarPlanner.panel.out.used")
-      : fits(vehicle.model)
+      : fits(base)
         ? undefined
-        : unreachable(vehicle.model);
-    const value = meltValue(vehicle);
-    const cost = plus(value, costToTarget(vehicle.model));
+        : unreachable(base);
+    const value = vehicle.baseModel
+      ? vehicle.baseModel.pledgePrice
+      : meltValue(vehicle);
+    const cost = plus(value, costToTarget(base));
 
     return {
       start: { kind: "melted", vehicleId: vehicle.id },
-      model: vehicle.model,
+      model: base,
       vehicle,
       item: {
         id: `melted:${vehicle.id}`,
         section: reason ? "out" : "buyback",
         reason,
-        ship: vehicle.model,
-        title: vehicle.name || vehicle.model.name,
-        meta: [
-          vehicle.name ? vehicle.model.name : undefined,
-          t("hangarPlanner.startKinds.melted"),
-        ]
-          .filter(Boolean)
-          .join(" · "),
+        ship: base,
+        // Named for what comes back, with the ship melted for it beside.
+        title: base.name,
+        meta: vehicle.baseModel
+          ? t("hangarPlanner.panel.viaMelted", {
+              ship: vehicle.name || vehicle.model.name,
+            })
+          : t("hangarPlanner.startKinds.melted"),
         price: money(cost),
         priceNote: t("hangarPlanner.panel.buybackPrice", {
           price: money(value),
@@ -406,8 +411,8 @@ const meltedOptions = computed<StartOption[]>(() =>
         sortPrice: cost,
         badge: isCurrentMelt(vehicle)
           ? t("hangarPlanner.pick.current")
-          : excludes(vehicle.model),
-        pinned: !!target.value && vehicle.model.id === target.value.id,
+          : excludes(base),
+        pinned: !!target.value && base.id === target.value.id,
       },
     };
   }),

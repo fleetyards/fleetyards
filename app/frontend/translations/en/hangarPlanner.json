@@ -517,7 +517,8 @@
         "stepCount": {
           "one": "%{count} step",
           "other": "%{count} steps"
-        }
+        },
+        "viaMelted": "Via melted %{ship}"
       }
     }
   }
