@@ -248,6 +248,7 @@ class FleetEvent < ApplicationRecord
       mission.mission_teams.includes(mission_ships: [:model, :mission_ship_models], mission_slots: :model_position).order(:position).each do |team|
         event_team = event.fleet_event_teams.create!(
           source_team_id: team.id,
+          fleet_squadron_id: team.fleet_squadron_id,
           title: team.title,
           description: team.description,
           position: team.position

@@ -10,7 +10,7 @@ class MissionTeamPolicy < FleetBasePolicy
   alias_rule :update?, :destroy?, :sort?, to: :create?
 
   params_filter do |params|
-    params.permit(:title, :description)
+    params.permit(:title, :description, :fleet_squadron_id)
   end
 
   private def can_update_mission?

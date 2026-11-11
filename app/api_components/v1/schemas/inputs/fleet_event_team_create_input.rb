@@ -10,7 +10,8 @@ module V1
           type: :object,
           properties: {
             title: {type: :string},
-            description: {type: [:string, :null]}
+            description: {type: [:string, :null]},
+            fleetSquadronId: {type: [:string, :null], format: :uuid}
           },
           required: %w[title],
           additionalProperties: false

@@ -84,6 +84,18 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/:slug/events with a missionSlug keeps each team's squadron" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin)
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:mission_team, mission: mission, title: "Escort", fleet_squadron: squadron)
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: valid_body.merge(missionSlug: mission.slug) do
+      event = FleetEvent.find(parsed_body["id"])
+      assert_equal [squadron.id], event.fleet_event_teams.map(&:fleet_squadron_id)
+    end
+  end
+
   test "POST /fleets/:slug/events with a missionSlug writes nothing for a member who may not create" do
     mission = create(:mission, fleet: @fleet, created_by: @admin)
     create(:mission_team, mission: mission)

@@ -565,6 +565,14 @@ en:
           attributes:
             to_participant_id:
               same_as_sender: cannot be the same as the sender
+        fleet_event_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "must be a squadron or team of this fleet"
+        mission_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "must be a squadron or team of this fleet"
         fleet_inventory:
           attributes:
             managed_by:

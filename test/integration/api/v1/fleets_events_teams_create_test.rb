@@ -29,6 +29,10 @@ class Api::V1::FleetsEventsTeamsCreateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Events::FleetEventTeam
       end
 
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -70,5 +74,39 @@ class Api::V1::FleetsEventsTeamsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 401,
       path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
       body: {title: "Strike Team", description: "Heavy fighters"}
+  end
+
+  test "POST /fleets/:slug/events/:slug/teams from a squadron takes its name and description" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Alpha Wing", short_description: "Interceptors")
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
+      body: {title: "", fleetSquadronId: squadron.id} do
+      assert_equal "Alpha Wing", parsed_body["title"]
+      assert_equal "Interceptors", parsed_body["description"]
+      assert_equal squadron.id, parsed_body.dig("fleetSquadron", "id")
+    end
+  end
+
+  test "POST /fleets/:slug/events/:slug/teams from a team keeps the title given" do
+    team = create(:fleet_squadron, fleet: @fleet, name: "Salvage Crew", team: true)
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
+      body: {title: "Salvage -- Wrecks", fleetSquadronId: team.id} do
+      assert_equal "Salvage -- Wrecks", parsed_body["title"]
+      assert parsed_body.dig("fleetSquadron", "team")
+    end
+  end
+
+  test "POST /fleets/:slug/events/:slug/teams refuses another fleet's squadron" do
+    foreign = create(:fleet_squadron)
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug, fleetEventSlug: @fleet_event.slug},
+      body: {title: "Strike Team", fleetSquadronId: foreign.id}
   end
 end

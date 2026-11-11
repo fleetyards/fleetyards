@@ -533,6 +533,14 @@ it:
               not_open: "non è più aperta"
             user:
               already_participating: "partecipa già a questa spedizione"
+        fleet_event_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
+        mission_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
         fleet_inventory:
           attributes:
             managed_by:

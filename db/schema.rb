@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_11_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1044,7 +1044,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "fleet_squadron_id"
     t.index ["fleet_event_id", "position"], name: "index_fleet_event_teams_on_fleet_event_id_and_position"
+    t.index ["fleet_squadron_id"], name: "index_fleet_event_teams_on_fleet_squadron_id"
   end
 
   create_table "fleet_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2290,6 +2292,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "fleet_squadron_id"
+    t.index ["fleet_squadron_id"], name: "index_mission_teams_on_fleet_squadron_id"
     t.index ["mission_id", "position"], name: "index_mission_teams_on_mission_id_and_position"
   end
 
@@ -3460,6 +3464,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
   add_foreign_key "fleet_event_slots", "mission_slots", column: "source_slot_id", on_delete: :nullify
   add_foreign_key "fleet_event_slots", "model_positions"
   add_foreign_key "fleet_event_teams", "fleet_events"
+  add_foreign_key "fleet_event_teams", "fleet_squadrons", on_delete: :nullify
   add_foreign_key "fleet_event_teams", "mission_teams", column: "source_team_id", on_delete: :nullify
   add_foreign_key "fleet_events", "fleet_events", column: "split_from_id", on_delete: :nullify
   add_foreign_key "fleet_events", "fleets"
@@ -3566,6 +3571,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
   add_foreign_key "mission_ships", "mission_teams"
   add_foreign_key "mission_ships", "models"
   add_foreign_key "mission_slots", "model_positions"
+  add_foreign_key "mission_teams", "fleet_squadrons", on_delete: :nullify
   add_foreign_key "mission_teams", "missions"
   add_foreign_key "missions", "fleets"
   add_foreign_key "missions", "users", column: "created_by_id"

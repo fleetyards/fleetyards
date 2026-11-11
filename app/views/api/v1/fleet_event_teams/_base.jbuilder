@@ -8,6 +8,14 @@ json.title fleet_event_team.title
 json.description fleet_event_team.description
 json.position fleet_event_team.position
 
+if fleet_event_team.fleet_squadron
+  json.fleet_squadron do
+    json.partial! "api/v1/fleet_squadrons/ref", fleet_squadron: fleet_event_team.fleet_squadron
+  end
+else
+  json.fleet_squadron nil
+end
+
 json.slots do
   json.array! fleet_event_team.fleet_event_slots,
     partial: "api/v1/fleet_event_slots/fleet_event_slot",

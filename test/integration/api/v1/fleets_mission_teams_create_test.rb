@@ -29,6 +29,10 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Missions::MissionTeam
       end
 
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -71,5 +75,27 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 401,
       path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
       body: {title: "Strike Team", description: "Main combat group"}
+  end
+
+  test "POST /fleets/:slug/missions/:slug/teams from a squadron takes its name and description" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Alpha Wing", short_description: "Interceptors")
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
+      body: {title: "", fleetSquadronId: squadron.id} do
+      assert_equal "Alpha Wing", parsed_body["title"]
+      assert_equal "Interceptors", parsed_body["description"]
+      assert_equal squadron.id, parsed_body.dig("fleetSquadron", "id")
+    end
+  end
+
+  test "POST /fleets/:slug/missions/:slug/teams refuses another fleet's squadron" do
+    foreign = create(:fleet_squadron)
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
+      body: {title: "Strike Team", fleetSquadronId: foreign.id}
   end
 end
