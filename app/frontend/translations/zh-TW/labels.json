@@ -1026,6 +1026,8 @@
           "team": "小隊",
           "teamHint": "小隊對所有人開放；否則成員只能屬於一個中隊",
           "restrictedToHint": "只有這些中隊可見",
+          "teamSource": "中隊或小隊",
+          "teamSourceHint": "填入名稱和描述，之後仍可修改",
           "discordChannel": "Discord 頻道",
           "discordChannelHint": "僅限此中隊的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定頻道時不會在 Discord 上公告。機器人需要在該頻道擁有「檢視頻道」和「傳送訊息」權限。",
           "notAnnounced": "%{names} 未設定 Discord 頻道，不會在 Discord 上公告。",

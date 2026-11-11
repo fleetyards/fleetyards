@@ -33349,6 +33349,10 @@ components:
           type: string
         position:
           type: integer
+        fleetSquadron:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetSquadronRef"
+          - type: 'null'
         slots:
           type: array
           items:
@@ -33375,6 +33379,11 @@ components:
           type:
           - string
           - 'null'
+        fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       required:
       - title
       additionalProperties: false
@@ -33388,6 +33397,11 @@ components:
           type:
           - string
           - 'null'
+        fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       additionalProperties: false
       title: FleetEventTeamUpdateInput
     FleetEventUpdateInput:
@@ -44125,6 +44139,10 @@ components:
           type: string
         position:
           type: integer
+        fleetSquadron:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetSquadronRef"
+          - type: 'null'
         slots:
           type: array
           items:
@@ -44151,6 +44169,11 @@ components:
           type:
           - string
           - 'null'
+        fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       required:
       - title
       additionalProperties: false
@@ -44164,6 +44187,11 @@ components:
           type:
           - string
           - 'null'
+        fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       additionalProperties: false
       title: MissionTeamUpdateInput
     MissionUpdateInput:

@@ -533,6 +533,14 @@ zh-TW:
               not_open: "已不再開放"
             user:
               already_participating: "已經參加了此行程"
+        fleet_event_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "必須是本艦隊的中隊或小隊"
+        mission_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "必須是本艦隊的中隊或小隊"
         fleet_inventory:
           attributes:
             managed_by:

@@ -533,6 +533,14 @@ zh-CN:
               not_open: "已不再开放"
             user:
               already_participating: "已经参加了此行程"
+        fleet_event_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "必须是本舰队的中队或小队"
+        mission_team:
+          attributes:
+            fleet_squadron:
+              not_in_fleet: "必须是本舰队的中队或小队"
         fleet_inventory:
           attributes:
             managed_by:

@@ -19,6 +19,8 @@ class FleetSquadron < ApplicationRecord
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadron_assignments, dependent: :destroy
   has_many :fleet_squadron_requests, dependent: :destroy
+  has_many :fleet_event_teams, dependent: nil
+  has_many :mission_teams, dependent: nil
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
@@ -99,6 +101,10 @@ class FleetSquadron < ApplicationRecord
   # question -- "is this record still restricted to anybody?" -- can only be
   # asked once this squadron has stopped being one of the answers.
   before_destroy :remember_restricted_records, prepend: true
+
+  # The foreign key clears the teams built from this squadron inside the
+  # database, where no touch reaches the event or template they belong to.
+  before_destroy :touch_team_parents
   after_destroy :release_restricted_records
 
   # The fleet's own order, which is the point of having one. Sorting by name is
@@ -154,6 +160,11 @@ class FleetSquadron < ApplicationRecord
 
   private def remember_restricted_records
     @restricted_records = fleet_squadron_assignments.map(&:assignable).compact
+  end
+
+  private def touch_team_parents
+    FleetEvent.where(id: fleet_event_teams.select(:fleet_event_id)).touch_all
+    Mission.where(id: mission_teams.select(:mission_id)).touch_all
   end
 
   private def release_restricted_records

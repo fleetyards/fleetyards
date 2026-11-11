@@ -15,6 +15,8 @@ module V1
               title: {type: :string},
               description: {type: :string},
               position: {type: :integer},
+              # The squadron or team this one was built from, if any.
+              fleetSquadron: {anyOf: [::V1::Schemas::Fleets::Squadrons::FleetSquadronRef, {type: :null}]},
               slots: {
                 type: :array,
                 items: ::V1::Schemas::Fleets::Events::FleetEventSlot

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Markdown from "@/shared/components/Markdown/index.vue";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -173,6 +174,12 @@ onUnmounted(() => {
           >
             <i class="fa-light fa-grip-vertical" />
           </span>
+          <SquadronEmblem
+            v-if="team.fleetSquadron"
+            v-tooltip="team.fleetSquadron.name"
+            :squadron="team.fleetSquadron"
+            :size="20"
+          />
           {{ team.title }}
         </span>
       </template>

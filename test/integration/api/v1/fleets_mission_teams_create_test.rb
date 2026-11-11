@@ -72,4 +72,36 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
       body: {title: "Strike Team", description: "Main combat group"}
   end
+
+  test "POST /fleets/:slug/missions/:slug/teams from a squadron takes its name and description" do
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Alpha Wing", short_description: "Interceptors")
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug},
+      body: {title: "", fleetSquadronId: squadron.id} do
+      assert_equal "Alpha Wing", parsed_body["title"]
+      assert_equal "Interceptors", parsed_body["description"]
+      assert_equal squadron.id, parsed_body.dig("fleetSquadron", "id")
+    end
+  end
+
+  # Plain posts rather than the DSL: declaring a 400 would replace the
+  # auto-injected SchemaValidationError response.
+  test "POST /fleets/:slug/missions/:slug/teams refuses another fleet's squadron" do
+    foreign = create(:fleet_squadron)
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/missions/#{@mission.slug}/teams", params: {title: "Strike Team", fleetSquadronId: foreign.id}, as: :json
+
+    assert_response :bad_request
+  end
+
+  test "refuses a squadron id that names no squadron" do
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/missions/#{@mission.slug}/teams", params: {title: "Strike Team", fleetSquadronId: SecureRandom.uuid}, as: :json
+
+    assert_response :bad_request
+  end
 end

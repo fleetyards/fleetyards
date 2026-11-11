@@ -11,6 +11,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
+import SquadronSourceSelect from "@/frontend/components/Fleets/Squadrons/SquadronSourceSelect/index.vue";
+import { useSquadronTakeover } from "@/frontend/components/Fleets/Squadrons/SquadronSourceSelect/useSquadronTakeover";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -46,6 +48,7 @@ const validationSchema = {
 const initialValues = {
   title: props.team?.title ?? "",
   description: props.team?.description ?? "",
+  fleetSquadronId: props.team?.fleetSquadron?.id ?? null,
 };
 
 const { defineField, handleSubmit, values } = useForm({
@@ -56,6 +59,9 @@ useModalDirty(useFormDirty(values, initialValues));
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
+const [fleetSquadronId] = defineField("fleetSquadronId");
+
+const takeOverSquadron = useSquadronTakeover(title, description);
 
 const createMutation = useCreateMissionTeam();
 const updateMutation = useUpdateMissionTeam();
@@ -65,6 +71,7 @@ const onSubmit = handleSubmit(async (values) => {
   const data = {
     title: values.title,
     description: values.description || null,
+    fleetSquadronId: values.fleetSquadronId || null,
   };
 
   const mutation = isEdit.value
@@ -112,6 +119,11 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="team-form" @submit.prevent="onSubmit">
+      <SquadronSourceSelect
+        v-model="fleetSquadronId"
+        :fleet="fleet"
+        @pick="takeOverSquadron"
+      />
       <FormInput
         v-model="title"
         v-bind="titleProps"

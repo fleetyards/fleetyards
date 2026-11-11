@@ -3,7 +3,7 @@
 json.partial! "api/v1/missions/base", mission: @mission
 
 json.teams do
-  json.array! @mission.mission_teams.includes(:mission_slots, mission_ships: [:model, :mission_slots]),
+  json.array! @mission.mission_teams.includes(:mission_slots, mission_ships: [:model, :mission_slots], fleet_squadron: {icon_attachment: :blob}),
     partial: "api/v1/mission_teams/mission_team",
     as: :mission_team
 end

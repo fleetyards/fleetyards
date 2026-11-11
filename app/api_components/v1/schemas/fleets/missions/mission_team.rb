@@ -15,6 +15,7 @@ module V1
               title: {type: :string},
               description: {type: :string},
               position: {type: :integer},
+              fleetSquadron: {anyOf: [::V1::Schemas::Fleets::Squadrons::FleetSquadronRef, {type: :null}]},
               slots: {
                 type: :array,
                 items: ::V1::Schemas::Fleets::Missions::MissionSlot
