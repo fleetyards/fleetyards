@@ -47,7 +47,7 @@ const { data: lastRead } = useSyncRsiHangarLastRead({
 const { data: patchChanges } = useMyPatchChanges({ query: liveQuery });
 
 const changedModelIds = computed(
-  () => new Set((patchChanges.value?.items || []).map((item) => item.model.id)),
+  () => new Set(patchChanges.value?.ownedModelIds || []),
 );
 
 const tagFor = (vehicle: Vehicle) =>

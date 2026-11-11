@@ -53,8 +53,9 @@ const isFetching = computed(
   () => onSale.isFetching.value || recent.isFetching.value,
 );
 
+// Either answer missing makes an empty list a guess, not an empty wishlist.
 const isLoadingError = computed(
-  () => onSale.isLoadingError.value && recent.isLoadingError.value,
+  () => onSale.isLoadingError.value || recent.isLoadingError.value,
 );
 
 const tagsFor = (vehicle: Vehicle): RowListItemTag[] =>

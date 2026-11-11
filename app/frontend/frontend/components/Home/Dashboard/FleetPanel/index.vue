@@ -9,7 +9,8 @@ import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import Avatar from "@/shared/components/Avatar/index.vue";
-import { useMyFleetSummaries } from "@/services/fyApi";
+import { type MyFleetSummary, useMyFleetSummaries } from "@/services/fyApi";
+import { primaryFleet } from "@/frontend/components/Home/Dashboard/primaryFleet";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, l } = useI18n();
@@ -22,33 +23,41 @@ const fleets = computed(() => data.value?.items || []);
 
 // Almost every pilot is in one fleet, so the panel is that fleet. The rare
 // second one is a link away rather than a list everybody else pays for.
-const fleet = computed(
-  () => fleets.value.find((item) => item.primary) || fleets.value[0],
-);
+const fleet = computed(() => primaryFleet(fleets.value));
 
 const others = computed(() =>
   fleets.value.filter((item) => item.id !== fleet.value?.id),
 );
 
 // Only what the reader's role can answer: the counts arrive only for such a
-// role.
-const pending = computed(() => {
-  if (!fleet.value) return [];
-
-  return [
+// role. Every fleet's, so a request waiting in a second fleet is not lost
+// behind its name link.
+const pendingFor = (item: MyFleetSummary) =>
+  [
     {
-      key: "requests",
+      key: `${item.id}-requests`,
       label: t("home.dashboard.fleet.requests"),
-      count: fleet.value.pendingJoinRequestsCount || 0,
-      to: { name: "fleet-members", params: { slug: fleet.value.slug } },
+      count: item.pendingJoinRequestsCount || 0,
+      to: { name: "fleet-members", params: { slug: item.slug } },
     },
     {
-      key: "transfers",
+      key: `${item.id}-transfers`,
       label: t("home.dashboard.fleet.transfers"),
-      count: fleet.value.pendingTransfersCount || 0,
-      to: { name: "fleet", params: { slug: fleet.value.slug } },
+      count: item.pendingTransfersCount || 0,
+      to: { name: "fleet-logistics-transfers", params: { slug: item.slug } },
     },
-  ].filter((item) => item.count);
+  ]
+    .filter((entry) => entry.count)
+    .map((entry) => ({
+      ...entry,
+      fleetName: item.id === fleet.value?.id ? undefined : item.name,
+    }));
+
+const pending = computed(() => {
+  const primary = fleet.value;
+  if (!primary) return [];
+
+  return [primary, ...others.value].flatMap(pendingFor);
 });
 </script>
 
@@ -112,7 +121,12 @@ const pending = computed(() => {
         :to="item.to"
         class="home-fleet__pending"
       >
-        <span>{{ item.label }}</span>
+        <span>
+          {{ item.label }}
+          <span v-if="item.fleetName" class="home-fleet__pending-fleet">
+            · {{ item.fleetName }}
+          </span>
+        </span>
         <span class="home-fleet__count">{{ item.count }}</span>
       </router-link>
 
@@ -213,6 +227,10 @@ const pending = computed(() => {
   &:hover {
     border-color: var(--color-edge, rgb(122 130 136 / 0.5));
   }
+}
+
+.home-fleet__pending-fleet {
+  color: var(--color-text-dim, #959595);
 }
 
 .home-fleet__count {

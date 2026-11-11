@@ -16,6 +16,7 @@ import {
   useWishlist,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { primaryFleet } from "@/frontend/components/Home/Dashboard/primaryFleet";
 
 const { t } = useI18n();
 
@@ -39,28 +40,30 @@ const onSaleCount = computed(
   () => onSale.value?.meta.pagination?.totalCount || 0,
 );
 
-const fleet = computed(() => {
-  const items = fleets.value?.items || [];
+const fleet = computed(() => primaryFleet(fleets.value?.items || []));
 
-  return items.find((item) => item.primary) || items[0];
+// Held back until the stats answer: a tile reading 0 ships while they load is a
+// wrong figure, not a placeholder.
+const leading = computed<Tile[]>(() => {
+  if (!stats.value) return [];
+
+  return [
+    {
+      key: "hangar",
+      icon: "fa-duotone fa-warehouse",
+      label: t("home.dashboard.tiles.hangar"),
+      value: stats.value.total,
+      to: { name: "hangar" },
+    },
+    {
+      key: "wishlist",
+      icon: "fa-duotone fa-star",
+      label: t("home.dashboard.tiles.wishlist"),
+      value: stats.value.wishlistTotal,
+      to: { name: "hangar-wishlist" },
+    },
+  ];
 });
-
-const leading = computed<Tile[]>(() => [
-  {
-    key: "hangar",
-    icon: "fa-duotone fa-warehouse",
-    label: t("home.dashboard.tiles.hangar"),
-    value: stats.value?.total,
-    to: { name: "hangar" },
-  },
-  {
-    key: "wishlist",
-    icon: "fa-duotone fa-star",
-    label: t("home.dashboard.tiles.wishlist"),
-    value: stats.value?.wishlistTotal,
-    to: { name: "hangar-wishlist" },
-  },
-]);
 
 // The last tile goes to whatever has something to say: a sale on the
 // wishlist first, else the fleet's online count, else no tile rather than a

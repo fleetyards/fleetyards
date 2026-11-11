@@ -17,6 +17,12 @@ export const usePatchLoadingScreens = (
 ) => {
   const { data: builds } = useScDataBuilds();
 
+  const live = computed(() =>
+    builds.value?.items.find(
+      (item) => item.environment.toLowerCase() === toValue(environment),
+    ),
+  );
+
   const screens = computed(
     () =>
       builds.value?.items.find(
@@ -39,5 +45,5 @@ export const usePatchLoadingScreens = (
     return screen?.largeUrl || screen?.url || fallback;
   };
 
-  return { screens, screenAt, pick };
+  return { live, screens, screenAt, pick };
 };

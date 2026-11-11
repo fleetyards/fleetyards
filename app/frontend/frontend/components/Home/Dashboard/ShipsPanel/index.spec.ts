@@ -88,17 +88,14 @@ describe("HomeDashboardShipsPanel", () => {
     changes = undefined;
   });
 
-  it("tags only the ships the live patch changed", async () => {
+  it("tags the owned ships the live patch changed, listed or not", async () => {
     changes = {
       environment: "live",
       version: "4.3.2",
-      totalCount: 1,
-      items: [
-        {
-          model: { id: "m-1", name: "Carrack", slug: "carrack" },
-          changeCount: 3,
-        },
-      ],
+      totalCount: 12,
+      ownedCount: 1,
+      ownedModelIds: ["m-1"],
+      items: [],
     } as unknown as MyPatchChanges;
 
     expect(await tags()).toEqual(["Changed in 4.3.2"]);

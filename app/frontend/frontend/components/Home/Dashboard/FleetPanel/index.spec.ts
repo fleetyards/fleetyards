@@ -33,6 +33,11 @@ const router = async () => {
       { path: "/fleets/directory", name: "fleet-directory", component: Stub },
       { path: "/fleets/:slug", name: "fleet", component: Stub },
       { path: "/fleets/:slug/members", name: "fleet-members", component: Stub },
+      {
+        path: "/fleets/:slug/logistics/transfers",
+        name: "fleet-logistics-transfers",
+        component: Stub,
+      },
     ],
   });
 
@@ -117,6 +122,36 @@ describe("HomeDashboardFleetPanel", () => {
       "Black Sun Logistics",
     );
     expect(subject.find(".home-fleet__others").text()).toContain("Outer Rim");
+  });
+
+  it("shows what waits in a second fleet, named", async () => {
+    items = [
+      summary(),
+      summary({
+        id: "f2",
+        name: "Outer Rim",
+        slug: "outer-rim",
+        primary: false,
+        pendingJoinRequestsCount: 5,
+      }),
+    ];
+
+    const subject = await mount();
+
+    const [row] = subject.findAll(".home-fleet__pending");
+    expect(row.text()).toContain("Join requests");
+    expect(row.text()).toContain("Outer Rim");
+    expect(row.attributes("href")).toContain("/fleets/outer-rim/members");
+  });
+
+  it("sends transfers to the transfers page", async () => {
+    items = [summary({ pendingTransfersCount: 2 })];
+
+    const subject = await mount();
+
+    expect(subject.find(".home-fleet__pending").attributes("href")).toContain(
+      "/fleets/black-sun/logistics/transfers",
+    );
   });
 
   it("points a pilot without a fleet to the directory", async () => {
