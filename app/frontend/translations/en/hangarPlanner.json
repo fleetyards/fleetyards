@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "Remove this slot together with its ships and routes?",
       "openSlotHint": "No ship picked yet. Add one ship, or several if you are undecided.",
       "addShips": "Add ships",
-      "addCandidates": "Ships for %{slot}",
-      "addToSlot": "Add to slot",
-      "inSlot": "In this slot",
       "choose": "Choose",
       "chooseHint": "Pick the ship this slot plans for. The other ships leave the slot, together with any routes to them.",
       "removeCandidate": "Remove ship",
@@ -120,7 +117,8 @@
         "owned": "Kept from hangar",
         "store": "Store purchase",
         "ingame": "Bought in game",
-        "buyback": "Buy-back"
+        "buyback": "Buy-back",
+        "melted": "Bought back after melting"
       },
       "upgradeSources": {
         "store": "Store",
@@ -313,8 +311,7 @@
         },
         "rebased": "Plan updated from your hangar.",
         "sharingOn": "Sharing is on. Anyone with the link can view this plan.",
-        "copyFailed": "The link could not be copied. Copy it from the field instead.",
-        "filtersSaved": "Filters saved for %{slot}"
+        "copyFailed": "The link could not be copied. Copy it from the field instead."
       },
       "filterChips": {
         "priceFrom": "from %{price}",
@@ -385,7 +382,6 @@
           "owned_ccu": "None of the upgrades in your RSI hangar start from the %{ship}.",
           "buyback": "None of your buy-back upgrades start from the %{ship}."
         },
-        "shipCard": "Ship",
         "useToken": "Use buy-back token",
         "withToken": "paid with a token"
       },
@@ -410,7 +406,6 @@
         "melt": "Melt",
         "change": "Mark as should change",
         "pending": "Back to undecided",
-        "upgradeTo": "Upgrade %{name} to",
         "keepPending": "Keep all undecided"
       },
       "pick": {
@@ -418,20 +413,14 @@
         "pickEnd": "Pick where it ends up",
         "startOf": "Pick the start for %{ship}",
         "endOf": "Pick where %{ship} ends up",
-        "startTitle": "Start for %{ship}",
-        "startEyebrow": "Start ship",
-        "endTitle": "Where %{ship} ends up",
-        "endEyebrow": "End ship",
         "buyNew": "Buy new on the store",
         "current": "Current start",
-        "use": "Use",
         "noShips": "No hangar ship is free for this slot.",
         "removeStart": "Remove from the slot",
         "same": "Same ship, kept as it is",
         "sameModel": "Same model",
         "noEnds": "No ship this one can become.",
         "removeEnd": "Take out of the plan",
-        "anyShip": "Any ship",
         "buyChosen": "The ship you pick next",
         "onlyMelt": "No upgrades exist for it, so it can only be melted",
         "onlyKeep": "No upgrades exist for it and RSI does not let it melt, so it can only be kept",
@@ -439,20 +428,9 @@
         "excludes": "Rules out %{ships}",
         "ccuSalesOnly": "CCU only during sales",
         "ccuUnknown": "No CCU seen yet",
-        "sources": {
-          "hangar": "Your hangar",
-          "buyback": "Buy-back",
-          "store": "Store"
-        },
         "filters": "Narrow the starts",
-        "saveFilters": "Save filters for this slot",
         "chooseShip": "Choose a ship",
-        "earnInGame": "Earn in game",
-        "newSlot": "New slot",
-        "endSources": {
-          "plan": "Slots in the plan",
-          "catalogue": "Any ship"
-        }
+        "earnInGame": "Earn in game"
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {
@@ -467,6 +445,86 @@
         },
         "inSlot": "Slot %{slot}",
         "inHangar": "Your hangar"
+      },
+      "panel": {
+        "tabs": {
+          "start": "Start",
+          "route": "Route",
+          "end": "End",
+          "slot": "Slot"
+        },
+        "sort": "Sort",
+        "youPay": "You pay",
+        "upgradeCost": "Upgrade cost",
+        "worth": "worth %{price}",
+        "buybackPrice": "buy-back %{price}",
+        "sections": {
+          "new": "New",
+          "hangar": "Your hangar",
+          "hangarHint": "Ships with no route yet",
+          "buybacks": "Buy-backs",
+          "out": "Can't take part",
+          "outOf": "Can't become a %{ship}",
+          "keep": "Keep it",
+          "plan": "In this plan",
+          "planHint": "Ships a slot already holds",
+          "store": "Store ships",
+          "storeHint": "Picking one gives it a slot of its own"
+        },
+        "out": {
+          "noneOfSlot": "Becomes none of the slot's ships",
+          "noLeave": "No upgrade leads out of it",
+          "noEnter": "No upgrade leads into the %{ship}",
+          "hull": "Only its own hull upgrades into the %{ship}",
+          "dearer": "%{price} is not below the %{ship}'s %{target}",
+          "used": "Already starts another route",
+          "kept": "Kept as it is"
+        },
+        "package": "Its package",
+        "useStart": "Start the route here",
+        "useEnd": "End the route here",
+        "upgrade": "The upgrade",
+        "upgradeLine": "%{from} to %{to}",
+        "ccuOnSale": "On sale in the store",
+        "endsHint": "Upgrades only lead to ships with a higher store price.",
+        "fillsSlot": "Fills the %{slot} slot.",
+        "newSlotHint": "Gets a slot of its own in the plan.",
+        "shortlist": "Shortlist",
+        "shortlistHint": "Shortlist the ships that could fill it, compare them, then choose one.",
+        "addToShortlist": "Add to the shortlist",
+        "withinFilters": {
+          "one": "%{count} ship within the slot's filters",
+          "other": "%{count} ships within the slot's filters"
+        },
+        "shipCount": {
+          "one": "%{count} ship",
+          "other": "%{count} ships"
+        },
+        "onSale": "On sale",
+        "inHangar": "In my hangar",
+        "slotFilters": "Slot filters",
+        "crew": {
+          "one": "crew %{count}",
+          "other": "crew %{count}"
+        },
+        "shortlisted": "Shortlisted",
+        "shortlistAdd": "Shortlist",
+        "more": "Show more",
+        "steps": "The steps",
+        "addStop": "Add a stop",
+        "stepPaidWith": "Step %{number} · paid with",
+        "routeEnd": "End of the route",
+        "saveRoute": "Save the route",
+        "stepCount": {
+          "one": "%{count} step",
+          "other": "%{count} steps"
+        },
+        "viaMelted": "Via melted %{ship}"
+      },
+      "unmelt": {
+        "confirm": "Take back the melt of the %{ship}? It stays in the hangar.",
+        "confirmRoutes": "Take back the melt of the %{ship}? It stays in the hangar, and the route that buys its pledge back loses its start.",
+        "action": "Take back the melt"
       }
     }
   }

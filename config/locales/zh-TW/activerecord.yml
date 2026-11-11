@@ -383,6 +383,7 @@ zh-TW:
               upgrade_taken: "某個升級的使用次數超過了你擁有的數量"
             source_vehicle_id:
               melted: "已在此計畫中熔煉"
+              not_melted: "未在此計畫中熔煉"
               pledge_melted: "屬於此計畫熔煉的禮包"
               taken: "已在此計畫中使用"
             buyback_pledge_id:

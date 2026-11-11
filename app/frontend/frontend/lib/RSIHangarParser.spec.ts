@@ -34,6 +34,34 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("keeps each pledge's insurance with its ships", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `${item("Ship", "Cutter")}${item("Insurance", "Lifetime Insurance")}`,
+        ) +
+          pledge(
+            "102",
+            `${item("Ship", "Aurora MR")}${item("Insurance", "6 Month Insurance")}${item("Insurance", "120 Month Insurance")}`,
+          ) +
+          pledge("103", item("Ship", "Mustang Alpha")),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      pledges: [
+        { name: "Cutter", lifetimeInsurance: true, insuranceMonths: undefined },
+        { name: "Aurora MR", lifetimeInsurance: false, insuranceMonths: 120 },
+        {
+          name: "Mustang Alpha",
+          lifetimeInsurance: false,
+          insuranceMonths: undefined,
+        },
+      ],
+    });
+  });
+
   it("reads RSI's empty list as the end", () => {
     expect(
       extract(

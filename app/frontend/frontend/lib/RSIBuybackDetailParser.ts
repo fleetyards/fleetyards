@@ -1,3 +1,5 @@
+import { readInsurance } from "@/frontend/lib/rsiInsurance";
+
 // `cents` is the page's price in `currency`, the account's currency with tax as
 // RSI applies it; see `toUsdCents` for RSI's own USD figure.
 export type RSIBuybackDetail = {
@@ -7,10 +9,6 @@ export type RSIBuybackDetail = {
   lifetimeInsurance: boolean;
   shipNames?: string[];
 };
-
-const MONTHS_INSURANCE = /^(\d+)\s+Months?\s+Insurance$/i;
-
-const LIFETIME_INSURANCE = /^Lifetime\s+Insurance$/i;
 
 // "ship: Shiv Manufacturer: Grey's Market Focus: Heavy Fighter"
 const SHIP_NAME = /^(?:ship:\s*)?(.+?)(?:\s*Manufacturer:.*)?$/i;
@@ -50,20 +48,11 @@ export const extractBuybackDetail = (
     })
     .filter((name) => name.length > 0);
 
-  const lifetimeInsurance = items.some((item) => LIFETIME_INSURANCE.test(item));
-
-  // A package of several ships lists one insurance per ship; the longest is
-  // the one worth naming.
-  const months = items
-    .map((item) => Number.parseInt(item.match(MONTHS_INSURANCE)?.[1] || "", 10))
-    .filter((value) => !Number.isNaN(value));
+  const { lifetimeInsurance, insuranceMonths } = readInsurance(items);
 
   return {
     ...(priced ? { cents, currency } : {}),
-    insuranceMonths:
-      lifetimeInsurance || months.length === 0
-        ? undefined
-        : Math.max(...months),
+    insuranceMonths,
     lifetimeInsurance,
     ...(shipListing ? { shipNames } : {}),
   };

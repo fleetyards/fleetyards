@@ -65,7 +65,7 @@ const resources = ref({
   storeModels: [aurora, scorpius, carrack, hammerhead, idris],
 } as HangarPlanResources);
 
-const pairEnd = vi.fn((..._args: unknown[]) => Promise.resolve(true));
+const pairEnd = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -77,25 +77,33 @@ vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
   useHangarPlanPairing: () => ({ pairing: ref(false), pairEnd }),
 }));
 
-vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
-}));
+type Wrapper = Awaited<ReturnType<typeof mountWithDefaults>>;
 
-const titles = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
+const rows = (wrapper: Wrapper) =>
+  wrapper.findAll('[data-test="ship-list-row"]');
+
+const titles = (wrapper: Wrapper) =>
+  rows(wrapper).map((row) => row.find(".ship-list__title").text());
+
+const sectionOf = (wrapper: Wrapper, key: string) =>
   wrapper
-    .findAll('[data-test="pick-list-row"]')
-    .map((row) => row.find(".pick-list__title").text());
+    .find(`[data-test="ship-list-group-${key}"]`)
+    .findAll('[data-test="ship-list-row"]')
+    .map((row) => row.find(".ship-list__title").text());
 
-describe("Hangar/Planner/EndPickerModal", () => {
-  it("offers the plan's slots and any ship the start can be upgraded into", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: {
-        planId: "plan",
-        startName: "Scorpius",
-        startModel: scorpius,
-        vehicleId: "vehicle-scorpius",
-      },
-    });
+const mount = () =>
+  mountWithDefaults(Component, {
+    props: {
+      planId: "plan",
+      startName: "Scorpius",
+      startModel: scorpius,
+      vehicleId: "vehicle-scorpius",
+    },
+  });
+
+describe("Hangar/Planner/ShipPanel/EndView", () => {
+  it("offers the plan's slots and any store ship the start upgrades into", async () => {
+    const wrapper = await mount();
 
     // Not the Aurora, which is cheaper, nor the Idris, which takes no
     // upgrades; the Carrack once, as the slot the plan already has.
@@ -104,15 +112,54 @@ describe("Hangar/Planner/EndPickerModal", () => {
       "Carrack",
       "Hammerhead",
     ]);
+    expect(sectionOf(wrapper, "keep")).toEqual(["Same ship, kept as it is"]);
+    expect(sectionOf(wrapper, "plan")).toEqual(["Carrack"]);
+    expect(sectionOf(wrapper, "store")).toEqual(["Hammerhead"]);
+  });
 
-    await wrapper
-      .findAll('[data-test="pick-list-row"]')
+  it("prices each end by the upgrade from the start", async () => {
+    const wrapper = await mount();
+
+    const carrackRow = rows(wrapper).find((row) =>
+      row.text().includes("Carrack"),
+    )!;
+    expect(carrackRow.find(".ship-list__price strong").text()).toBe("$360");
+  });
+
+  it("shows a ship's upgrade before ending the route on it", async () => {
+    const wrapper = await mount();
+
+    await rows(wrapper)
       .find((row) => row.text().includes("Hammerhead"))!
       .trigger("click");
+
+    expect(wrapper.find('[data-test="ship-panel-upgrade"]').text()).toContain(
+      "Scorpius to Hammerhead",
+    );
+
+    await wrapper.find('[data-test="ship-detail-commit"]').trigger("click");
     await flushPromises();
 
     expect(pairEnd).toHaveBeenLastCalledWith(
       { kind: "model", modelId: "Hammerhead", name: "Hammerhead" },
+      { vehicleId: "vehicle-scorpius", acquisition: undefined },
+    );
+    expect(wrapper.emitted("done")).toHaveLength(1);
+  });
+
+  it("ends the route on a slot of the plan with a double click", async () => {
+    const wrapper = await mount();
+
+    await rows(wrapper)
+      .find((row) => row.text().includes("Carrack"))!
+      .trigger("dblclick");
+    await flushPromises();
+
+    expect(pairEnd).toHaveBeenLastCalledWith(
+      {
+        kind: "candidate",
+        candidate: expect.objectContaining({ id: "candidate-Carrack" }),
+      },
       { vehicleId: "vehicle-scorpius", acquisition: undefined },
     );
   });

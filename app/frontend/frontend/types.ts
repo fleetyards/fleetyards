@@ -34,4 +34,7 @@ export type RSIHangarItem = {
   pledgeItemCount?: number;
   pledgeCreatedOn?: string;
   meltable?: boolean;
+  // The pledge's insurance, as its items list it.
+  lifetimeInsurance?: boolean;
+  insuranceMonths?: number;
 };

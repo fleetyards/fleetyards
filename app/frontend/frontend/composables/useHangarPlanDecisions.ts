@@ -7,6 +7,8 @@ import type { HangarFlowDecision } from "@/frontend/components/Hangar/Planner/Ha
 import {
   type HangarPlan,
   type HangarPlanComparison,
+  type HangarPlanMelt,
+  HangarPlanStartKindEnum,
   HangarPlanVehicleMarkEnum,
   HangarPlanVehicleStatusEnum,
   useCreateHangarPlanKeep,
@@ -85,7 +87,12 @@ export const useHangarPlanDecisions = (
     const acquisition = current?.slots
       .flatMap((slot) => slot.candidates)
       .flatMap((candidate) => candidate.acquisitions)
-      .find((entry) => entry.sourceVehicleId === vehicleId);
+      // A route that buys the ship's melted pledge back goes with the melt.
+      .find(
+        (entry) =>
+          entry.startKind === HangarPlanStartKindEnum.OWNED &&
+          entry.sourceVehicleId === vehicleId,
+      );
 
     if (
       melt &&
@@ -111,6 +118,34 @@ export const useHangarPlanDecisions = (
     await mark(vehicleId, HangarPlanVehicleMarkEnum.PENDING);
   };
 
+  // A melt taken back by accident takes the routes that buy its pledge back
+  // with it, so taking one back always asks first.
+  const confirmUnmelt = (melt: HangarPlanMelt, onConfirm: () => void) => {
+    const pledge = [melt.vehicleId, ...melt.pledgeShips.map((ship) => ship.id)];
+    const boughtBack = (toValue(plan)?.slots ?? [])
+      .flatMap((slot) => [
+        ...slot.starts,
+        ...slot.candidates.flatMap((candidate) => candidate.acquisitions),
+      ])
+      .some(
+        (start) =>
+          start.startKind === HangarPlanStartKindEnum.MELTED &&
+          pledge.includes(start.sourceVehicleId ?? undefined),
+      );
+
+    comlink.emit("show-confirm", {
+      text: t(
+        boughtBack
+          ? "hangarPlanner.unmelt.confirmRoutes"
+          : "hangarPlanner.unmelt.confirm",
+        { ship: melt.vehicleName || melt.model.name },
+      ),
+      confirmText: t("hangarPlanner.unmelt.action"),
+      tone: "warning",
+      onConfirm,
+    });
+  };
+
   const decide = (vehicleId: string, decision: HangarFlowDecision) => {
     if (deciding.value) return;
 
@@ -121,9 +156,17 @@ export const useHangarPlanDecisions = (
       case "change":
         void mark(vehicleId, HangarPlanVehicleMarkEnum.CHANGE);
         break;
-      case "pending":
-        void undecide(vehicleId);
+      case "pending": {
+        const melt = toValue(plan)?.melts.find(
+          (entry) => entry.vehicleId === vehicleId,
+        );
+        if (melt) {
+          confirmUnmelt(melt, () => void undecide(vehicleId));
+        } else {
+          void undecide(vehicleId);
+        }
         break;
+      }
       case "melt":
         comlink.emit("open-modal", {
           component: () =>
@@ -140,5 +183,5 @@ export const useHangarPlanDecisions = (
       .map((entry) => entry.vehicleId),
   );
 
-  return { deciding, decide, keep, pendingIds };
+  return { deciding, decide, keep, pendingIds, confirmUnmelt };
 };

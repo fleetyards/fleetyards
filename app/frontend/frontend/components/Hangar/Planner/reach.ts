@@ -30,6 +30,16 @@ export const reaches = (from: HangarPlanModel, to: HangarPlanModel) => {
   return from.pledgePrice < to.pledgePrice;
 };
 
+// What upgrading one ship into another costs on top of it: nothing for the
+// same ship, unknown where either price is.
+export const upgradeCost = (from: HangarPlanModel, to: HangarPlanModel) => {
+  if (from.id === to.id) return 0;
+  if (typeof from.pledgePrice !== "number") return undefined;
+  if (typeof to.pledgePrice !== "number") return undefined;
+
+  return Math.max(to.pledgePrice - from.pledgePrice, 0);
+};
+
 // A slot still choosing its ship keeps a start on the ship it comes closest to,
 // and moves it to whichever ship the slot settles on later. A start none of them
 // can be reached from stays on the cheapest, whose row then asks for another.

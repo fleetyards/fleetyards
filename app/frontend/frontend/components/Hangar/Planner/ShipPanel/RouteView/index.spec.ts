@@ -1,3 +1,4 @@
+import { flushPromises } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -28,20 +29,39 @@ const hammerhead = model("Hammerhead", 725);
 const freelancer = model("Freelancer MAX", 600);
 
 const loading = ref(false);
+const saveRoute = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 const resources = ref<HangarPlanResources>({
   vehicles: [
-    { id: "vehicle-cutlass", model: cutlass, pledgeShips: [], pledgeItems: [] },
-    { id: "vehicle-aurora", model: aurora, pledgeShips: [], pledgeItems: [] },
+    {
+      id: "vehicle-cutlass",
+      model: cutlass,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
+    {
+      id: "vehicle-aurora",
+      model: aurora,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
     {
       id: "vehicle-hammerhead",
       model: hammerhead,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },
     {
       id: "vehicle-freelancer",
       model: freelancer,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },
@@ -93,15 +113,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useHangarPlan: () => ({ data: ref({ vatRate: 19 }) }),
   useHangarPlanResources: () => ({ data: resources, isLoading: loading }),
-  useUpdateHangarPlanAcquisition: () => ({ mutateAsync: vi.fn() }),
+  useUpdateHangarPlanAcquisition: () => ({ mutateAsync: saveRoute }),
 }));
 
 vi.mock("@/frontend/composables/useHangarPlanCache", () => ({
   useHangarPlanCache: () => ({ updatePlan: vi.fn() }),
-}));
-
-vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
 }));
 
 const candidate: HangarPlanCandidate = {
@@ -139,7 +155,7 @@ const rows = (wrapper: Awaited<ReturnType<typeof mount>>, list: string) =>
     `[data-test="pick-list-${list}"] [data-test="pick-list-row"]`,
   );
 
-describe("Hangar/Planner/RouteModal", () => {
+describe("Hangar/Planner/ShipPanel/RouteView", () => {
   afterEach(() => {
     loading.value = false;
   });
@@ -245,5 +261,76 @@ describe("Hangar/Planner/RouteModal", () => {
     expect(payment.text()).toContain("New money$600");
     expect(payment.text()).toContain("VAT (19%)$114");
     expect(payment.text()).toContain("New money with VAT$714");
+  });
+
+  it("saves the route and is done", async () => {
+    const wrapper = await mount();
+
+    await rows(wrapper, "steps.0.upgrade")[0].trigger("click");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(saveRoute).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hangarPlanId: "plan",
+        id: "route",
+        data: expect.objectContaining({
+          steps: [
+            expect.objectContaining({
+              sourceKind: "owned_ccu",
+              toModelId: "Carrack",
+            }),
+          ],
+        }),
+      }),
+    );
+    expect(wrapper.emitted("done")).toHaveLength(1);
+  });
+
+  it("adds a store stop between two steps and keeps the steps after it", async () => {
+    const wrapper = await mount();
+
+    await wrapper
+      .find('[data-test="hangar-plan-route-step-source-store"]')
+      .trigger("click");
+    await rows(wrapper, "steps.0.toModelId")
+      .find((row) => row.text().includes("Constellation Taurus"))!
+      .trigger("click");
+    await flushPromises();
+
+    expect(
+      wrapper.findAll('[data-test="hangar-plan-route-step"]'),
+    ).toHaveLength(2);
+
+    await wrapper
+      .find('[data-test="hangar-plan-route-insert"]')
+      .trigger("click");
+
+    const steps = wrapper.findAll('[data-test="hangar-plan-route-step"]');
+    expect(steps).toHaveLength(3);
+    expect(
+      steps[1]
+        .find('[data-test="hangar-plan-route-step-source-store"]')
+        .classes(),
+    ).toContain("active");
+  });
+
+  it("pays for a melted pledge bought back like any buy-back", async () => {
+    const wrapper = await mount(
+      pairing({
+        startKind: HangarPlanStartKindEnum.MELTED,
+        sourceVehicleId: "vehicle-cutlass",
+        startModel: carrack,
+        price: 220,
+        usesBuybackToken: true,
+      }),
+    );
+
+    expect(
+      wrapper.find('[data-test="hangar-plan-route-start-token"]').exists(),
+    ).toBe(true);
+    const payment = wrapper.find('[data-test="hangar-plan-route-payment"]');
+    expect(payment.text()).toContain("Store credit$220");
+    expect(payment.text()).toContain("New money$0");
   });
 });

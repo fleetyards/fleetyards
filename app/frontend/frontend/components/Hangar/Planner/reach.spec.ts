@@ -4,7 +4,7 @@ import {
   HangarPlanCcuOutOfEnum,
   type HangarPlanModel,
 } from "@/services/fyApi";
-import { reaches } from "./reach";
+import { reaches, upgradeCost } from "./reach";
 
 const model = (
   name: string,
@@ -30,5 +30,16 @@ describe("Hangar/Planner/reach", () => {
     expect(reaches(kraken, privateer)).toBe(true);
     expect(reaches(hull, privateer)).toBe(false);
     expect(reaches(hull, model("Polaris", 975))).toBe(true);
+  });
+
+  it("costs an upgrade the difference in store price, and the same ship nothing", () => {
+    const cutlass = model("Cutlass Black", 110);
+    const taurus = model("Constellation Taurus", 175);
+    const unpriced = { ...model("Unpriced", 0), pledgePrice: null };
+
+    expect(upgradeCost(cutlass, taurus)).toBe(65);
+    expect(upgradeCost(taurus, cutlass)).toBe(0);
+    expect(upgradeCost(taurus, taurus)).toBe(0);
+    expect(upgradeCost(cutlass, unpriced)).toBeUndefined();
   });
 });

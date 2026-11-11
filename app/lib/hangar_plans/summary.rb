@@ -101,7 +101,7 @@ module HangarPlans
     private def buybacks
       @buybacks ||= slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
         routed(slot.candidates.first, slot).flat_map do |acquisition|
-          start = (acquisition.start_kind == "buyback") ? [acquisition] : []
+          start = HangarPlanAcquisition::BUYBACK_START_KINDS.include?(acquisition.start_kind) ? [acquisition] : []
           steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
           (start + steps).filter_map do |record|
             {price: record.price, token: record.uses_buyback_token} unless record.price.nil?

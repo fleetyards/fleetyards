@@ -3349,6 +3349,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_130000) do
     t.integer "rsi_pledge_item_count"
     t.string "plaque_locale"
     t.string "rsi_pledge_name"
+    t.boolean "rsi_pledge_lifetime_insurance"
+    t.integer "rsi_pledge_insurance_months"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"
