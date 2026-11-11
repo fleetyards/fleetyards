@@ -385,7 +385,17 @@
         "expenseNeedsReview": "An expense counts once whoever manages the ledger has approved it."
       },
       "fleet": {
-        "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used."
+        "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used.",
+        "squadrons": {
+          "flightsHint": "A flight is a lineup this squadron flies often: its ships, the slots on them and who usually fills each slot. Pick one when adding a team to an event or template.",
+          "flights": {
+            "candidatesHint": "The first member gets the slot. If they decline or cannot make it, the next one is asked."
+          },
+          "shipRequestHint": "The member decides: the ship joins the squadron only if they accept.",
+          "myShipsHint": "Choose which of the ships you share with the fleet this squadron can plan with.",
+          "myShipsNotMember": "Join this squadron to choose which of your ships it gets.",
+          "myShipsNoneShared": "You share no ships with the fleet yet."
+        }
       },
       "vehicleLog": {
         "visibility": "Public entries are shown with this ship in your public hangar.",

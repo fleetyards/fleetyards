@@ -87,7 +87,9 @@
             "details": "Detalles",
             "appearance": "Apariencia",
             "discord": "Discord"
-          }
+          },
+          "flights": "Escuadrillas",
+          "myShips": "Mis naves"
         },
         "stats": "Estadísticas",
         "logistics": {

@@ -306,7 +306,13 @@
           "acceptRequest": "接受",
           "declineRequest": "拒絕",
           "promote": "晉升",
-          "demote": "降級"
+          "demote": "降級",
+          "flights": {
+            "create": "新增小隊",
+            "editCandidates": "選擇擔任此席位的成員"
+          },
+          "askForShip": "請求艦船",
+          "withdrawShipRequest": "撤回"
         },
         "manageInvites": "邀請",
         "worldmap": "世界地圖",
@@ -497,7 +503,9 @@
           "manageEventTeam": "管理活動團隊",
           "grantRole": "授予角色",
           "revokeRole": "撤銷",
-          "addTeam": "新增隊伍"
+          "addTeam": "新增隊伍",
+          "acceptInvite": "接受",
+          "declineInvite": "拒絕"
         },
         "contracts": {
           "create": "建立合約",

@@ -1055,7 +1055,31 @@
             "requests": "Solicitudes"
           },
           "requestedAt": "Solicitado el",
-          "requests": "Solicitudes"
+          "requests": "Solicitudes",
+          "flights": {
+            "index": "Escuadrillas",
+            "name": "Nombre",
+            "description": "Descripción",
+            "noCandidates": "Nadie asignado",
+            "primary": "Titular",
+            "alternate": "Suplente %{count}",
+            "ship": "Nave",
+            "anyShip": "Cualquier nave adecuada",
+            "teamSource": "Escuadrilla",
+            "teamSourceHint": "Copia las naves y los slots de la escuadrilla en este equipo e invita a los miembros asignados en cuanto el evento esté abierto."
+          },
+          "askableShips": "Naves que solicitar",
+          "shipRequestFrom": "%{username} te pide tu %{ship}",
+          "shipRequestTo": "%{ship} de %{username}",
+          "shipsFilter": {
+            "label": "Este escuadrón recibe",
+            "all": "Todas las naves que comparto con la flota",
+            "hangar_group": "Un grupo de hangar",
+            "picked": "Naves que elijo",
+            "hangarGroup": "Grupo de hangar",
+            "pickedShips": "Naves",
+            "extraShips": "Además, estas naves"
+          }
         },
         "roles": {
           "permanent": "Permanente",
@@ -4147,7 +4171,8 @@
             "tentative": "Tentativa",
             "interested": "Interesado",
             "pending": "Pendiente de aprobación",
-            "withdrawn": "Retirada"
+            "withdrawn": "Retirada",
+            "invited": "Invitado"
           },
           "signupApprovals": {
             "direct": "Directa",
@@ -4219,7 +4244,8 @@
             "week": "Semana",
             "weekTitle": "Semana del %{date}"
           },
-          "repeats": "Se repite"
+          "repeats": "Se repite",
+          "invitedHint": "Tu escuadrón te ofrece este slot."
         },
         "contracts": {
           "tabs": {

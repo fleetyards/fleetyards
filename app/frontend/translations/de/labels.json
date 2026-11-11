@@ -1055,7 +1055,31 @@
             "requests": "Anfragen"
           },
           "requestedAt": "Angefragt am",
-          "requests": "Anfragen"
+          "requests": "Anfragen",
+          "flights": {
+            "index": "Schwärme",
+            "name": "Name",
+            "description": "Beschreibung",
+            "noCandidates": "Niemand eingeteilt",
+            "primary": "Erste Wahl",
+            "alternate": "Ersatz %{count}",
+            "ship": "Schiff",
+            "anyShip": "Jedes passende Schiff",
+            "teamSource": "Schwarm",
+            "teamSourceHint": "Übernimmt Schiffe und Slots des Schwarms in dieses Team und lädt die eingeteilten Mitglieder ein, sobald das Event offen ist."
+          },
+          "askableShips": "Anfragbare Schiffe",
+          "shipRequestFrom": "%{username} bittet um deine %{ship}",
+          "shipRequestTo": "%{ship} von %{username}",
+          "shipsFilter": {
+            "label": "Diese Staffel erhält",
+            "all": "Alle Schiffe, die ich mit der Flotte teile",
+            "hangar_group": "Eine Hangar-Gruppe",
+            "picked": "Ausgewählte Schiffe",
+            "hangarGroup": "Hangar-Gruppe",
+            "pickedShips": "Schiffe",
+            "extraShips": "Zusätzlich diese Schiffe"
+          }
         },
         "roles": {
           "permanent": "Permanent",
@@ -4147,7 +4171,8 @@
             "tentative": "Vorläufig",
             "interested": "Interessiert",
             "pending": "Bestätigung ausstehend",
-            "withdrawn": "Zurückgezogen"
+            "withdrawn": "Zurückgezogen",
+            "invited": "Eingeladen"
           },
           "signupApprovals": {
             "direct": "Direkt",
@@ -4219,7 +4244,8 @@
             "week": "Woche",
             "weekTitle": "Woche vom %{date}"
           },
-          "repeats": "Wiederholung"
+          "repeats": "Wiederholung",
+          "invitedHint": "Deine Staffel bietet dir diesen Slot an."
         },
         "contracts": {
           "tabs": {

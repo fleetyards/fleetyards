@@ -309,7 +309,16 @@
           "editRank": "Modifier le grade d'escadron",
           "teams": "Équipes",
           "addMembers": "Ajouter des membres",
-          "members": "Membres"
+          "members": "Membres",
+          "flights": {
+            "create": "Ajouter une patrouille",
+            "edit": "Modifier la patrouille",
+            "candidates": "Qui occupe %{slot}"
+          },
+          "shipRequest": "Demander un vaisseau à %{username}",
+          "shipRequestsForMe": "Demandes qui vous sont adressées",
+          "shipRequestsOpen": "Demandes de vaisseaux en cours",
+          "myShips": "Mes vaisseaux dans cet escadron"
         },
         "stats": "Statistiques",
         "preview": {

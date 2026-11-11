@@ -490,6 +490,45 @@
           "rank": {
             "success": "Grado modificato.",
             "failure": "Impossibile modificare il grado."
+          },
+          "flights": {
+            "create": {
+              "success": "Pattuglia aggiunta",
+              "failure": "Impossibile aggiungere la pattuglia"
+            },
+            "update": {
+              "success": "Pattuglia salvata",
+              "failure": "Impossibile salvare la pattuglia"
+            },
+            "destroy": {
+              "confirm": "Eliminare la pattuglia %{name}? Le squadre già create da essa mantengono la loro copia.",
+              "success": "Pattuglia eliminata",
+              "failure": "Impossibile eliminare la pattuglia"
+            },
+            "candidates": {
+              "success": "Assegnazione salvata",
+              "failure": "Impossibile salvare l’assegnazione"
+            }
+          },
+          "shipRequests": {
+            "create": {
+              "success": "Richiesta inviata a %{username}",
+              "failure": "Impossibile richiedere la nave"
+            },
+            "accept": {
+              "success": "Lo squadrone ora riceve questa nave",
+              "failure": "Impossibile accettare la richiesta"
+            },
+            "destroy": {
+              "success": "Richiesta chiusa",
+              "failure": "Impossibile chiudere la richiesta"
+            }
+          },
+          "shipSelection": {
+            "update": {
+              "success": "Scelta delle navi salvata",
+              "failure": "Impossibile salvare la scelta delle navi"
+            }
           }
         },
         "calendarSubscription": {
@@ -1062,6 +1101,11 @@
             "success": "Iscrizione rimossa.",
             "failure": "Non è stato possibile rimuovere l'iscrizione.",
             "confirm": "Vuoi rimuovere l'iscrizione di questo membro?"
+          },
+          "invite": {
+            "accepted": "Ci sei",
+            "declined": "Invito rifiutato",
+            "failure": "Impossibile rispondere all’invito"
           }
         },
         "eventAdmin": {

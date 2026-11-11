@@ -384,7 +384,17 @@
         "expenseNeedsReview": "Une dépense compte une fois approuvée par la personne qui gère le registre."
       },
       "fleet": {
-        "contractCovers": "L'image que le tableau affiche pour chaque type de contrat. Laissez-en une vide et l'image intégrée ci-dessous est utilisée."
+        "contractCovers": "L'image que le tableau affiche pour chaque type de contrat. Laissez-en une vide et l'image intégrée ci-dessous est utilisée.",
+        "squadrons": {
+          "flightsHint": "Une patrouille est une formation que cet escadron utilise souvent : ses vaisseaux, leurs postes et qui les occupe d’habitude. Choisissez-en une en ajoutant une équipe à un événement ou un modèle.",
+          "flights": {
+            "candidatesHint": "Le premier membre obtient le poste. S’il refuse ou ne peut pas venir, le suivant est sollicité."
+          },
+          "shipRequestHint": "Le membre décide : le vaisseau ne rejoint l’escadron que s’il accepte.",
+          "myShipsHint": "Choisissez avec lesquels des vaisseaux partagés avec la flotte cet escadron peut planifier.",
+          "myShipsNotMember": "Rejoignez cet escadron pour choisir quels vaisseaux il reçoit.",
+          "myShipsNoneShared": "Vous ne partagez encore aucun vaisseau avec la flotte."
+        }
       },
       "vehicleLog": {
         "visibility": "Les entrées publiques sont affichées avec ce vaisseau dans ton hangar public.",

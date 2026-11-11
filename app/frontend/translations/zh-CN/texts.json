@@ -384,7 +384,17 @@
         "expenseNeedsReview": "支出需经账本管理者批准后才会计入。"
       },
       "fleet": {
-        "contractCovers": "合约板为每种合约显示的图片。留空则使用下方的内置图片。"
+        "contractCovers": "合约板为每种合约显示的图片。留空则使用下方的内置图片。",
+        "squadrons": {
+          "flightsHint": "小队是本中队常用的编组：所用舰船、舰上席位以及通常由谁担任。为活动或模板添加队伍时可选择一个小队。",
+          "flights": {
+            "candidatesHint": "第一位成员获得该席位。若其拒绝或无法参加，将询问下一位。"
+          },
+          "shipRequestHint": "由成员决定：只有其同意后舰船才会加入中队。",
+          "myShipsHint": "选择你与舰队共享的哪些舰船可供此中队安排。",
+          "myShipsNotMember": "加入此中队后即可选择它可使用你的哪些舰船。",
+          "myShipsNoneShared": "你尚未与舰队共享任何舰船。"
+        }
       },
       "vehicleLog": {
         "visibility": "公开条目会随此舰船显示在你的公开机库中。",

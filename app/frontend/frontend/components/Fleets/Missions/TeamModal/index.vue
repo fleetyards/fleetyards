@@ -12,6 +12,7 @@ import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import SquadronSourceSelect from "@/frontend/components/Fleets/Squadrons/SquadronSourceSelect/index.vue";
+import FlightSourceSelect from "@/frontend/components/Fleets/Squadrons/FlightSourceSelect/index.vue";
 import { useSquadronTakeover } from "@/frontend/components/Fleets/Squadrons/SquadronSourceSelect/useSquadronTakeover";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -24,6 +25,8 @@ import {
   type MissionTeam,
   useCreateMissionTeam,
   useUpdateMissionTeam,
+  type FleetSquadron,
+  type FleetSquadronFlight,
 } from "@/services/fyApi";
 
 type Props = {
@@ -49,6 +52,7 @@ const initialValues = {
   title: props.team?.title ?? "",
   description: props.team?.description ?? "",
   fleetSquadronId: props.team?.fleetSquadron?.id ?? null,
+  sourceFlightId: null as string | null,
 };
 
 const { defineField, handleSubmit, values } = useForm({
@@ -60,8 +64,38 @@ useModalDirty(useFormDirty(values, initialValues));
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
 const [fleetSquadronId] = defineField("fleetSquadronId");
+const [sourceFlightId] = defineField("sourceFlightId");
 
 const takeOverSquadron = useSquadronTakeover(title, description);
+
+const pickedSquadron = ref<FleetSquadron>();
+
+const onPickSquadron = (squadron: FleetSquadron, previous?: FleetSquadron) => {
+  takeOverSquadron(squadron, previous);
+  pickedSquadron.value = squadron;
+};
+
+// A flight names the team over what is empty or still another pick's.
+const takeOverFlight = (
+  flight: FleetSquadronFlight,
+  previous?: FleetSquadronFlight,
+) => {
+  if (
+    !title.value ||
+    title.value === previous?.name ||
+    title.value === pickedSquadron.value?.name
+  ) {
+    title.value = flight.name;
+  }
+
+  if (
+    !description.value ||
+    description.value === (previous?.description ?? "") ||
+    description.value === (pickedSquadron.value?.shortDescription ?? "")
+  ) {
+    description.value = flight.description ?? "";
+  }
+};
 
 const createMutation = useCreateMissionTeam();
 const updateMutation = useUpdateMissionTeam();
@@ -84,7 +118,7 @@ const onSubmit = handleSubmit(async (values) => {
     : createMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
         missionSlug: props.mission.slug,
-        data,
+        data: { ...data, sourceFlightId: values.sourceFlightId || null },
       });
 
   await mutation
@@ -122,7 +156,14 @@ const onSubmit = handleSubmit(async (values) => {
       <SquadronSourceSelect
         v-model="fleetSquadronId"
         :fleet="fleet"
-        @pick="takeOverSquadron"
+        @pick="onPickSquadron"
+      />
+      <FlightSourceSelect
+        v-if="!isEdit"
+        v-model="sourceFlightId"
+        :fleet="fleet"
+        :squadron-id="fleetSquadronId"
+        @pick="takeOverFlight"
       />
       <FormInput
         v-model="title"

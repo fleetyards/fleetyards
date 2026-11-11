@@ -207,6 +207,18 @@ const openEditModal = (member: FleetMember) => {
   });
 };
 
+const openShipRequest = (member: FleetMember) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Squadrons/ShipRequestModal/index.vue"),
+    props: {
+      fleetSlug: props.fleet.slug,
+      squadronSlug: squadronSlug.value,
+      username: member.username,
+    },
+  });
+};
+
 // Out of the squadron, not out of the fleet -- which is the confusion worth
 // heading off, since this row looks like the roster's.
 const removeMember = (member: FleetMember) => {
@@ -327,6 +339,15 @@ onUnmounted(() => {
               @click="moveRank(member, 1)"
             >
               <i class="fa-light fa-chevron-down" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.fleet.squadrons.askForShip')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.fleet.squadrons.askForShip')"
+              :data-test="`squadron-member-ask-ship-${member.username}`"
+              @click="openShipRequest(member)"
+            >
+              <i class="fa-duotone fa-rocket-launch" />
             </Btn>
             <Btn
               v-if="canEdit(member)"

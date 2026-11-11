@@ -309,7 +309,16 @@
           "editRank": "编辑中队职级",
           "teams": "小队",
           "addMembers": "添加成员",
-          "members": "成员"
+          "members": "成员",
+          "flights": {
+            "create": "添加小队",
+            "edit": "编辑小队",
+            "candidates": "谁担任 %{slot}"
+          },
+          "shipRequest": "向 %{username} 请求舰船",
+          "shipRequestsForMe": "向你的请求",
+          "shipRequestsOpen": "待处理的舰船请求",
+          "myShips": "我在此中队的舰船"
         },
         "stats": "统计",
         "preview": {

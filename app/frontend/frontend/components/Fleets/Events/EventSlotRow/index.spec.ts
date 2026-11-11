@@ -13,7 +13,7 @@ const CURRENT_USER = "user-me";
 
 const signup = (
   userId: string,
-  status = FleetEventSignupStatusEnum.CONFIRMED,
+  status: FleetEventSignupStatusEnum = FleetEventSignupStatusEnum.CONFIRMED,
 ): FleetEventSignup => ({
   id: `signup-${userId}`,
   fleetEventId: "event-1",
@@ -91,5 +91,27 @@ describe("FleetEventsSlotRow", () => {
     const wrapper = await mount(slot());
 
     expect(wrapper.find("button.btn--xs").exists()).toBe(true);
+  });
+  it("lets an invited member accept or decline instead of signing up", async () => {
+    const wrapper = await mount(
+      slot({
+        signups: [signup(CURRENT_USER, FleetEventSignupStatusEnum.INVITED)],
+      }),
+    );
+
+    expect(wrapper.find('[data-test="slot-invite"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="slot-invite-accept"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find('[data-test="slot-invite-decline"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find(".chip").exists()).toBe(false);
+  });
+
+  it("shows a confirmed member their chip, not the invitation", async () => {
+    const wrapper = await mount(slot({ signups: [signup(CURRENT_USER)] }));
+
+    expect(wrapper.find('[data-test="slot-invite"]').exists()).toBe(false);
   });
 });

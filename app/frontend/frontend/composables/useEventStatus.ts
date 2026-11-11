@@ -55,6 +55,7 @@ const PILL_VARIANT_BY_SIGNUP_STATUS: Record<
   [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
   [FleetEventSignupStatusEnum.INTERESTED]: PillVariantsEnum.NEUTRAL,
   [FleetEventSignupStatusEnum.PENDING]: PillVariantsEnum.NEUTRAL,
+  [FleetEventSignupStatusEnum.INVITED]: PillVariantsEnum.NEUTRAL,
   [FleetEventSignupStatusEnum.WITHDRAWN]: PillVariantsEnum.NEUTRAL,
 };
 

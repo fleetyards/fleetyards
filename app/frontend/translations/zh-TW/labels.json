@@ -1055,7 +1055,31 @@
             "requests": "申請"
           },
           "requestedAt": "申請時間",
-          "requests": "申請"
+          "requests": "申請",
+          "flights": {
+            "index": "小隊",
+            "name": "名稱",
+            "description": "描述",
+            "noCandidates": "未指定成員",
+            "primary": "首選",
+            "alternate": "替補 %{count}",
+            "ship": "艦船",
+            "anyShip": "任意合適艦船",
+            "teamSource": "小隊",
+            "teamSourceHint": "將小隊的艦船和席位複製到此隊伍，並在活動開放後邀請所列成員。"
+          },
+          "askableShips": "可請求的艦船",
+          "shipRequestFrom": "%{username} 請求你的 %{ship}",
+          "shipRequestTo": "%{username} 的 %{ship}",
+          "shipsFilter": {
+            "label": "此中隊可使用",
+            "all": "我與艦隊共享的所有艦船",
+            "hangar_group": "一個機庫分組",
+            "picked": "我挑選的艦船",
+            "hangarGroup": "機庫分組",
+            "pickedShips": "艦船",
+            "extraShips": "另外提供這些艦船"
+          }
         },
         "roles": {
           "permanent": "永久",
@@ -4144,7 +4168,8 @@
             "tentative": "暫定",
             "interested": "有興趣",
             "pending": "等待審核",
-            "withdrawn": "已取消報名"
+            "withdrawn": "已取消報名",
+            "invited": "已邀請"
           },
           "signupApprovals": {
             "direct": "直接加入",
@@ -4216,7 +4241,8 @@
             "week": "週",
             "weekTitle": "%{date} 當週"
           },
-          "repeats": "重複"
+          "repeats": "重複",
+          "invitedHint": "你的中隊為你提供了這個席位。"
         },
         "contracts": {
           "tabs": {

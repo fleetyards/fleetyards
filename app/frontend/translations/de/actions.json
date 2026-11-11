@@ -306,7 +306,13 @@
           "acceptRequest": "Annehmen",
           "declineRequest": "Ablehnen",
           "promote": "Befördern",
-          "demote": "Degradieren"
+          "demote": "Degradieren",
+          "flights": {
+            "create": "Schwarm hinzufügen",
+            "editCandidates": "Festlegen, wer diesen Slot fliegt"
+          },
+          "askForShip": "Um ein Schiff bitten",
+          "withdrawShipRequest": "Zurückziehen"
         },
         "manageInvites": "Einladungen",
         "worldmap": "Weltkarte",
@@ -497,7 +503,9 @@
           "manageEventTeam": "Event-Team verwalten",
           "grantRole": "Rolle vergeben",
           "revokeRole": "Entziehen",
-          "addTeam": "Team hinzufügen"
+          "addTeam": "Team hinzufügen",
+          "acceptInvite": "Annehmen",
+          "declineInvite": "Ablehnen"
         },
         "contracts": {
           "create": "Auftrag erstellen",

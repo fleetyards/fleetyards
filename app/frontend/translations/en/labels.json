@@ -1055,7 +1055,31 @@
             "requests": "Requests"
           },
           "requestedAt": "Asked on",
-          "requests": "Requests"
+          "requests": "Requests",
+          "flights": {
+            "index": "Flights",
+            "name": "Name",
+            "description": "Description",
+            "noCandidates": "Nobody assigned",
+            "primary": "Primary",
+            "alternate": "Alternate %{count}",
+            "ship": "Ship",
+            "anyShip": "Any fitting ship",
+            "teamSource": "Flight",
+            "teamSourceHint": "Copies the flight's ships and slots into this team and invites the members it lists once the event is open."
+          },
+          "askableShips": "Ships to ask for",
+          "shipRequestFrom": "%{username} asks for your %{ship}",
+          "shipRequestTo": "%{ship} from %{username}",
+          "shipsFilter": {
+            "label": "This squadron gets",
+            "all": "All ships I share with the fleet",
+            "hangar_group": "One hangar group",
+            "picked": "Ships I pick",
+            "hangarGroup": "Hangar group",
+            "pickedShips": "Ships",
+            "extraShips": "Also give these ships"
+          }
         },
         "roles": {
           "permanent": "Permanent",
@@ -4161,7 +4185,8 @@
             "tentative": "Tentative",
             "interested": "Interested",
             "pending": "Pending approval",
-            "withdrawn": "Withdrawn"
+            "withdrawn": "Withdrawn",
+            "invited": "Invited"
           },
           "signupApprovals": {
             "direct": "Direct",
@@ -4233,7 +4258,8 @@
             "week": "Week",
             "weekTitle": "Week of %{date}"
           },
-          "repeats": "Repeats"
+          "repeats": "Repeats",
+          "invitedHint": "Your squadron offers you this slot."
         },
         "contracts": {
           "tabs": {

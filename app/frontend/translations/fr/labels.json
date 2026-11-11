@@ -1055,7 +1055,31 @@
             "requests": "Demandes"
           },
           "requestedAt": "Demandé le",
-          "requests": "Demandes"
+          "requests": "Demandes",
+          "flights": {
+            "index": "Patrouilles",
+            "name": "Nom",
+            "description": "Description",
+            "noCandidates": "Personne d’assigné",
+            "primary": "Titulaire",
+            "alternate": "Remplaçant %{count}",
+            "ship": "Vaisseau",
+            "anyShip": "Tout vaisseau adapté",
+            "teamSource": "Patrouille",
+            "teamSourceHint": "Copie les vaisseaux et les postes de la patrouille dans cette équipe et invite les membres prévus dès que l’événement est ouvert."
+          },
+          "askableShips": "Vaisseaux à demander",
+          "shipRequestFrom": "%{username} demande votre %{ship}",
+          "shipRequestTo": "%{ship} de %{username}",
+          "shipsFilter": {
+            "label": "Cet escadron reçoit",
+            "all": "Tous les vaisseaux que je partage avec la flotte",
+            "hangar_group": "Un groupe de hangar",
+            "picked": "Vaisseaux choisis",
+            "hangarGroup": "Groupe de hangar",
+            "pickedShips": "Vaisseaux",
+            "extraShips": "Ces vaisseaux en plus"
+          }
         },
         "roles": {
           "permanent": "Permanent",
@@ -4147,7 +4171,8 @@
             "tentative": "Provisoire",
             "interested": "Intéressé",
             "pending": "En attente de validation",
-            "withdrawn": "Retirée"
+            "withdrawn": "Retirée",
+            "invited": "Invité"
           },
           "signupApprovals": {
             "direct": "Directe",
@@ -4219,7 +4244,8 @@
             "week": "Semaine",
             "weekTitle": "Semaine du %{date}"
           },
-          "repeats": "Répétition"
+          "repeats": "Répétition",
+          "invitedHint": "Votre escadron vous propose ce poste."
         },
         "contracts": {
           "tabs": {

@@ -494,6 +494,45 @@
           "rank": {
             "success": "Rank changed.",
             "failure": "Rank could not be changed."
+          },
+          "flights": {
+            "create": {
+              "success": "Flight added",
+              "failure": "Could not add the flight"
+            },
+            "update": {
+              "success": "Flight saved",
+              "failure": "Could not save the flight"
+            },
+            "destroy": {
+              "confirm": "Delete the flight %{name}? Teams already built from it keep their copy.",
+              "success": "Flight deleted",
+              "failure": "Could not delete the flight"
+            },
+            "candidates": {
+              "success": "Slot members saved",
+              "failure": "Could not save the slot members"
+            }
+          },
+          "shipRequests": {
+            "create": {
+              "success": "%{username} has been asked",
+              "failure": "Could not ask for the ship"
+            },
+            "accept": {
+              "success": "The squadron now gets this ship",
+              "failure": "Could not accept the request"
+            },
+            "destroy": {
+              "success": "Request closed",
+              "failure": "Could not close the request"
+            }
+          },
+          "shipSelection": {
+            "update": {
+              "success": "Ship choice saved",
+              "failure": "Could not save the ship choice"
+            }
           }
         },
         "calendarSubscription": {
@@ -1066,6 +1105,11 @@
             "success": "Signup removed.",
             "failure": "Could not remove signup.",
             "confirm": "Remove this member's signup?"
+          },
+          "invite": {
+            "accepted": "You're in",
+            "declined": "Invitation declined",
+            "failure": "Could not answer the invitation"
           }
         },
         "eventAdmin": {

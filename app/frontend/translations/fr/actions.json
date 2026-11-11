@@ -306,7 +306,13 @@
           "acceptRequest": "Accepter",
           "declineRequest": "Refuser",
           "promote": "Promouvoir",
-          "demote": "Rétrograder"
+          "demote": "Rétrograder",
+          "flights": {
+            "create": "Ajouter une patrouille",
+            "editCandidates": "Choisir qui occupe ce poste"
+          },
+          "askForShip": "Demander un vaisseau",
+          "withdrawShipRequest": "Retirer"
         },
         "manageInvites": "Invitations",
         "worldmap": "Carte du monde",
@@ -497,7 +503,9 @@
           "manageEventTeam": "Gérer l'équipe de l'événement",
           "grantRole": "Attribuer un rôle",
           "revokeRole": "Révoquer",
-          "addTeam": "Ajouter une équipe"
+          "addTeam": "Ajouter une équipe",
+          "acceptInvite": "Accepter",
+          "declineInvite": "Refuser"
         },
         "contracts": {
           "create": "Créer un contrat",

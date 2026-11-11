@@ -309,7 +309,16 @@
           "editRank": "Editar rango de escuadrón",
           "teams": "Equipos",
           "addMembers": "Añadir miembros",
-          "members": "Miembros"
+          "members": "Miembros",
+          "flights": {
+            "create": "Añadir escuadrilla",
+            "edit": "Editar escuadrilla",
+            "candidates": "Quién ocupa %{slot}"
+          },
+          "shipRequest": "Pedir una nave a %{username}",
+          "shipRequestsForMe": "Solicitudes para ti",
+          "shipRequestsOpen": "Solicitudes de naves abiertas",
+          "myShips": "Mis naves en este escuadrón"
         },
         "stats": "Estadísticas",
         "preview": {

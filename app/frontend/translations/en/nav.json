@@ -87,7 +87,9 @@
             "details": "Details",
             "appearance": "Appearance",
             "discord": "Discord"
-          }
+          },
+          "flights": "Flights",
+          "myShips": "My Ships"
         },
         "stats": "Stats",
         "logistics": {

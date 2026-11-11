@@ -51,6 +51,30 @@ export const squadronDetailRoutes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "flights/",
+    name: "fleet-squadron-flights",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/flights.vue"),
+    meta: {
+      title: "fleets.squadrons.flights",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      customTitle: true,
+    },
+  },
+  {
+    path: "my-ships/",
+    name: "fleet-squadron-my-ships",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/my-ships.vue"),
+    meta: {
+      title: "fleets.squadrons.myShips",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      customTitle: true,
+    },
+  },
 ];
 
 export const routes: RouteRecordRaw[] = [

@@ -32,18 +32,35 @@ import {
   modelPositions as fetchModelPositions,
   useModelClassificationsFilters,
   useModelFocusFilters,
-  useCreateMissionShip,
-  useUpdateMissionShip,
 } from "@/services/fyApi";
+import {
+  type LineupScope,
+  useLineupApi,
+} from "@/frontend/components/Fleets/Missions/useLineupApi";
 
 type Props = {
   fleet: Fleet;
-  mission: Mission;
-  team: MissionTeam;
+  mission?: Mission;
+  team?: MissionTeam;
   ship?: MissionShip;
+  scope?: LineupScope;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  mission: undefined,
+  team: undefined,
+  ship: undefined,
+  scope: undefined,
+});
+
+const lineup = useLineupApi(
+  () =>
+    props.scope ?? {
+      fleetSlug: props.fleet.slug,
+      missionSlug: props.mission?.slug,
+      teamId: props.team?.id ?? props.ship?.missionTeamId ?? "",
+    },
+);
 
 const { t } = useI18n();
 const positionTypeLabel = usePositionTypeLabel();
@@ -223,9 +240,6 @@ const togglePosition = (id: string) => {
   selectedPositionIds.value = next;
 };
 
-const createMutation = useCreateMissionShip();
-const updateMutation = useUpdateMissionShip();
-
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -264,19 +278,8 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   const mutation = isEdit.value
-    ? updateMutation.mutateAsync({
-        fleetSlug: props.fleet.slug,
-        missionSlug: props.mission.slug,
-        missionTeamId: props.team.id,
-        id: props.ship!.id,
-        data: data as never,
-      })
-    : createMutation.mutateAsync({
-        fleetSlug: props.fleet.slug,
-        missionSlug: props.mission.slug,
-        missionTeamId: props.team.id,
-        data: data as never,
-      });
+    ? lineup.updateShip(props.ship!.id, data as never)
+    : lineup.createShip(data as never);
 
   await mutation
     .then(() => {

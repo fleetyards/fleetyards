@@ -1055,7 +1055,31 @@
             "requests": "Richieste"
           },
           "requestedAt": "Richiesto il",
-          "requests": "Richieste"
+          "requests": "Richieste",
+          "flights": {
+            "index": "Pattuglie",
+            "name": "Nome",
+            "description": "Descrizione",
+            "noCandidates": "Nessuno assegnato",
+            "primary": "Titolare",
+            "alternate": "Riserva %{count}",
+            "ship": "Nave",
+            "anyShip": "Qualsiasi nave adatta",
+            "teamSource": "Pattuglia",
+            "teamSourceHint": "Copia navi e slot della pattuglia in questa squadra e invita i membri indicati non appena l’evento è aperto."
+          },
+          "askableShips": "Navi da richiedere",
+          "shipRequestFrom": "%{username} chiede la tua %{ship}",
+          "shipRequestTo": "%{ship} di %{username}",
+          "shipsFilter": {
+            "label": "Questo squadrone riceve",
+            "all": "Tutte le navi che condivido con la flotta",
+            "hangar_group": "Un gruppo hangar",
+            "picked": "Navi scelte da me",
+            "hangarGroup": "Gruppo hangar",
+            "pickedShips": "Navi",
+            "extraShips": "Anche queste navi"
+          }
         },
         "roles": {
           "permanent": "Permanente",
@@ -4147,7 +4171,8 @@
             "tentative": "Non definitiva",
             "interested": "Interessato",
             "pending": "In attesa di approvazione",
-            "withdrawn": "Ritirata"
+            "withdrawn": "Ritirata",
+            "invited": "Invitato"
           },
           "signupApprovals": {
             "direct": "Diretta",
@@ -4219,7 +4244,8 @@
             "week": "Settimana",
             "weekTitle": "Settimana del %{date}"
           },
-          "repeats": "Ricorrente"
+          "repeats": "Ricorrente",
+          "invitedHint": "Il tuo squadrone ti offre questo slot."
         },
         "contracts": {
           "tabs": {

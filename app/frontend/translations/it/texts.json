@@ -384,7 +384,17 @@
         "expenseNeedsReview": "Una spesa conta dopo che chi gestisce il registro l'ha approvata."
       },
       "fleet": {
-        "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto."
+        "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto.",
+        "squadrons": {
+          "flightsHint": "Una pattuglia è una formazione che questo squadrone usa spesso: le sue navi, gli slot su di esse e chi di solito li occupa. Sceglila quando aggiungi una squadra a un evento o a un modello.",
+          "flights": {
+            "candidatesHint": "Il primo membro riceve lo slot. Se rifiuta o non può, viene chiesto al successivo."
+          },
+          "shipRequestHint": "Decide il membro: la nave entra nello squadrone solo se accetta.",
+          "myShipsHint": "Scegli con quali delle navi che condividi con la flotta questo squadrone può pianificare.",
+          "myShipsNotMember": "Unisciti a questo squadrone per scegliere quali tue navi riceve.",
+          "myShipsNoneShared": "Non condividi ancora navi con la flotta."
+        }
       },
       "vehicleLog": {
         "visibility": "Le voci pubbliche sono mostrate con questa nave nel tuo hangar pubblico.",

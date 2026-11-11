@@ -14,6 +14,7 @@ import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
+import SlotCandidates from "@/frontend/components/Fleets/Squadrons/SlotCandidates/index.vue";
 import {
   type Fleet,
   type FleetEvent,
@@ -23,6 +24,8 @@ import {
   type FleetEventSlot,
   FleetEventSignupStatusEnum,
   useSignupFleetEventSlot,
+  useUpdateFleetEventSignup,
+  useWithdrawFleetEventSignup,
 } from "@/services/fyApi";
 import { vehicleMatchesShip } from "@/frontend/composables/useShipMatch";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -164,6 +167,47 @@ const cancelSignup = () => {
   expanded.value = false;
 };
 
+// A squadron's flight offered this slot to the reader, who answers it here.
+const ownInvite = computed(() =>
+  ownSignupHere.value?.status === FleetEventSignupStatusEnum.INVITED
+    ? ownSignupHere.value
+    : null,
+);
+
+const acceptMutation = useUpdateFleetEventSignup();
+const declineMutation = useWithdrawFleetEventSignup();
+
+const acceptInvite = async () => {
+  await acceptMutation
+    .mutateAsync({
+      id: props.slotData.id,
+      data: { status: FleetEventSignupStatusEnum.CONFIRMED },
+    })
+    .then(() => {
+      displaySuccess({
+        text: t("messages.fleets.eventSignup.invite.accepted"),
+      });
+      comlink.emit("fleet-event-signup-changed");
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.fleets.eventSignup.invite.failure") });
+    });
+};
+
+const declineInvite = async () => {
+  await declineMutation
+    .mutateAsync({ id: props.slotData.id })
+    .then(() => {
+      displaySuccess({
+        text: t("messages.fleets.eventSignup.invite.declined"),
+      });
+      comlink.emit("fleet-event-signup-changed");
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.fleets.eventSignup.invite.failure") });
+    });
+};
+
 const submitSignup = async () => {
   try {
     await signupMutation.mutateAsync({
@@ -203,7 +247,27 @@ const submitSignup = async () => {
       <div class="event-slot-row__action">
         <!-- A chip, not a hand-rolled 999px pill: the state is carried by an
              icon as well as a tint, and its name reaches the a11y tree. -->
-        <Chip v-if="ownSignupHere" :state="ChipStatesEnum.INCLUDED" bare>
+        <template v-if="ownInvite">
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :loading="acceptMutation.isPending.value"
+            data-test="slot-invite-accept"
+            @click="acceptInvite"
+          >
+            <i class="fa-light fa-check" />
+            {{ t("actions.fleets.events.acceptInvite") }}
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
+            :loading="declineMutation.isPending.value"
+            data-test="slot-invite-decline"
+            @click="declineInvite"
+          >
+            {{ t("actions.fleets.events.declineInvite") }}
+          </Btn>
+        </template>
+        <Chip v-else-if="ownSignupHere" :state="ChipStatesEnum.INCLUDED" bare>
           {{ t("labels.fleets.events.youAreHere") }}
         </Chip>
         <Btn
@@ -224,6 +288,16 @@ const submitSignup = async () => {
       {{ slotData.description }}
     </p>
 
+    <p v-if="ownInvite" class="event-slot-row__invite" data-test="slot-invite">
+      <i class="fa-light fa-envelope-open-text" />
+      {{ t("labels.fleets.events.invitedHint") }}
+    </p>
+
+    <SlotCandidates
+      v-if="isManager && slotData.candidates?.length"
+      :slot="slotData"
+    />
+
     <ul v-if="visibleSignups.length" class="event-slot-row__signups">
       <li
         v-for="signup in visibleSignups"
@@ -236,7 +310,9 @@ const submitSignup = async () => {
             :class="
               signup.status === 'confirmed'
                 ? 'fa-circle-check'
-                : 'fa-circle-question'
+                : signup.status === 'invited'
+                  ? 'fa-envelope'
+                  : 'fa-circle-question'
             "
           />
           <span class="event-slot-row__signup-name">
@@ -320,6 +396,15 @@ const submitSignup = async () => {
   padding: 9px 0 9px 12px;
   border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
   transition: background-color 150ms ease;
+}
+
+.event-slot-row__invite {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-primary, #428bca);
 }
 
 .event-slot-row:last-child {
