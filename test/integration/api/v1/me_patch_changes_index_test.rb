@@ -59,6 +59,8 @@ class Api::V1::MePatchChangesIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_equal 3, parsed_body["totalCount"]
+      assert_equal 2, parsed_body["ownedCount"]
+      assert_equal [gladius.id, cutlass.id].sort, parsed_body["ownedModelIds"].sort
       assert_equal %w[Gladius Prospector], parsed_body["items"].first(2).map { |item| item.dig("model", "name") }
 
       gladius_item = parsed_body["items"].first
@@ -84,7 +86,24 @@ class Api::V1::MePatchChangesIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_equal 0, parsed_body["totalCount"]
+      assert_equal 0, parsed_body["ownedCount"]
       assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /me/patch-changes names every owned changed ship beyond the listed ones" do
+    models = create_list(:model, Api::V1::Me::PatchChangesController::LIMIT + 2)
+    models.each do |model|
+      create(:vehicle, user: @user, model:)
+      record(model, fields: %w[mass])
+    end
+
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal Api::V1::Me::PatchChangesController::LIMIT, parsed_body["items"].size
+      assert_equal models.size, parsed_body["ownedCount"]
+      assert_equal models.map(&:id).sort, parsed_body["ownedModelIds"].sort
     end
   end
 

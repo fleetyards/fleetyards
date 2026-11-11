@@ -46747,6 +46747,13 @@ components:
           type: string
         totalCount:
           type: integer
+        ownedCount:
+          type: integer
+        ownedModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         items:
           type: array
           items:
@@ -46756,6 +46763,8 @@ components:
       - environment
       - version
       - totalCount
+      - ownedCount
+      - ownedModelIds
       - items
       title: MyPatchChanges
     MyRaffleEntries:

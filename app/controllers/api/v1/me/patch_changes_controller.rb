@@ -43,6 +43,7 @@ module Api
 
           @from_version = items.first&.dig(:changes, 0)&.from_version
           @total_count = items.size
+          @owned_model_ids = items.filter_map { |item| item[:model].id if item[:owned_count].positive? }
           @items = items.sort_by { |item| [-item[:changes].size, item[:model].name] }.first(LIMIT)
         end
       end
