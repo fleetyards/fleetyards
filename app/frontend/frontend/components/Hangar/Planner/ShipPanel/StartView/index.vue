@@ -413,6 +413,16 @@ const meltedOptions = computed<StartOption[]>(() =>
               ship: vehicle.name || vehicle.model.name,
             })
           : t("hangarPlanner.startKinds.melted"),
+        // Bought back, the pledge keeps the insurance it was melted with.
+        tags: [
+          {
+            label: insuranceLabel(vehicle),
+            variant: vehicle.lifetimeInsurance
+              ? PillVariantsEnum.DEFAULT
+              : PillVariantsEnum.NEUTRAL,
+          },
+        ],
+        preferred: vehicle.lifetimeInsurance,
         price: money(cost),
         priceNote: t("hangarPlanner.panel.buybackPrice", {
           price: money(value),

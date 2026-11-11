@@ -30,6 +30,8 @@ const resources = ref<HangarPlanResources>({
       meltValue: 700,
       pledgeItemCount: 5,
       pledgeName: "Package - Explorer Pack",
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [{ id: "vehicle-carrack", model: carrack }],
       pledgeItems: [
         {
@@ -47,6 +49,8 @@ const resources = ref<HangarPlanResources>({
       meltValue: 30,
       pledgeItemCount: 1,
       pledgeName: "Standalone Ship - Aurora MR",
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },
@@ -54,6 +58,8 @@ const resources = ref<HangarPlanResources>({
       id: "vehicle-gift",
       model: model("Gifted Ship", 50),
       meltable: false,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },

@@ -63,6 +63,8 @@ const vehicle = (
   model: shipModel,
   pledgeShips: [],
   pledgeItems: [],
+  lifetimeInsurance: false,
+  insuranceKnown: false,
 });
 
 const resources = ref<HangarPlanResources>({
@@ -458,6 +460,8 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
       usedBy: NullableHangarPlanVehicleUseEnum.MELT,
       meltValue: 465,
       baseModel: starlancer,
+      lifetimeInsurance: true,
+      insuranceKnown: true,
     };
     const before = resources.value;
     resources.value = { ...before, vehicles: [...before.vehicles, melted] };
@@ -474,6 +478,8 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
       .findAll('[data-test="ship-list-row"]')
       .find((entry) => entry.text().includes("Via melted Ironclad Assault"))!;
     expect(row.find(".ship-list__title").text()).toBe("Starlancer MAX");
+    // It keeps the lifetime insurance it was melted with.
+    expect(row.find('[data-test="ship-list-tag"]').text()).toBe("LTI");
     expect(row.find(".ship-list__price strong").text()).toBe("$155");
 
     resources.value = before;

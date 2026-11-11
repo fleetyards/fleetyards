@@ -33,17 +33,35 @@ const saveRoute = vi.hoisted(() => vi.fn(() => Promise.resolve({})));
 
 const resources = ref<HangarPlanResources>({
   vehicles: [
-    { id: "vehicle-cutlass", model: cutlass, pledgeShips: [], pledgeItems: [] },
-    { id: "vehicle-aurora", model: aurora, pledgeShips: [], pledgeItems: [] },
+    {
+      id: "vehicle-cutlass",
+      model: cutlass,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
+    {
+      id: "vehicle-aurora",
+      model: aurora,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
     {
       id: "vehicle-hammerhead",
       model: hammerhead,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },
     {
       id: "vehicle-freelancer",
       model: freelancer,
+      lifetimeInsurance: false,
+      insuranceKnown: false,
       pledgeShips: [],
       pledgeItems: [],
     },
