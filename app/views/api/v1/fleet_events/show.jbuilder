@@ -43,8 +43,8 @@ end
 
 json.teams do
   teams = @fleet_event.fleet_event_teams
-    .includes(fleet_event_ships: [:model, fleet_event_slots: [:model_position]])
-    .includes(fleet_event_slots: [:model_position])
+    .includes(fleet_event_ships: [:model, fleet_event_slots: [:model_position, {fleet_event_slot_candidates: SlotCandidate::RENDER_PRELOADS}]])
+    .includes(fleet_event_slots: [:model_position, {fleet_event_slot_candidates: SlotCandidate::RENDER_PRELOADS}])
     .includes(fleet_squadron: {icon_attachment: :blob})
   json.array! teams,
     partial: "api/v1/fleet_event_teams/fleet_event_team",
