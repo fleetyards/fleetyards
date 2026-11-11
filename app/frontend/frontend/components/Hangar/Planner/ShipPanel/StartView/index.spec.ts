@@ -6,6 +6,7 @@ import {
   type HangarPlanAcquisition,
   HangarPlanSlotStateEnum,
   HangarPlanVehicleStatusEnum,
+  NullableHangarPlanVehicleUseEnum,
   type HangarPlanBuybackResource,
   type HangarPlanCandidate,
   type HangarPlanComparison,
@@ -357,5 +358,40 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
     await flushPromises();
 
     expect(pairStart).not.toHaveBeenCalled();
+  });
+
+  it("offers the pledge of a ship the plan melts as a buy-back", async () => {
+    const nomad = model("Nomad", 80);
+    const melted = {
+      ...vehicle("vehicle-nomad", nomad),
+      usedBy: NullableHangarPlanVehicleUseEnum.MELT,
+      meltValue: 75,
+    };
+    const before = resources.value;
+    resources.value = { ...before, vehicles: [...before.vehicles, melted] };
+
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    const row = wrapper
+      .find('[data-test="ship-list-group-buyback"]')
+      .findAll('[data-test="ship-list-row"]')
+      .find((entry) => entry.text().includes("Nomad"))!;
+    expect(row.text()).toContain("Bought back after melting");
+    // Buying it back for what melting it credits, then upgrading to the
+    // Prospector.
+    expect(row.find(".ship-list__price strong").text()).toBe("$150");
+
+    await use(wrapper, "Nomad");
+
+    expect(pairStart).toHaveBeenLastCalledWith(
+      mining,
+      { kind: "melted", vehicleId: "vehicle-nomad" },
+      undefined,
+    );
+
+    resources.value = before;
   });
 });

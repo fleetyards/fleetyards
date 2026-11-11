@@ -116,7 +116,8 @@
         "owned": "Kept from hangar",
         "store": "Store purchase",
         "ingame": "Bought in game",
-        "buyback": "Buy-back"
+        "buyback": "Buy-back",
+        "melted": "Bought back after melting"
       },
       "upgradeSources": {
         "store": "Store",
@@ -475,7 +476,6 @@
           "noEnter": "No upgrade leads into the %{ship}",
           "hull": "Only its own hull upgrades into the %{ship}",
           "dearer": "%{price} is not below the %{ship}'s %{target}",
-          "melted": "Melted in this plan",
           "used": "Already starts another route",
           "kept": "Kept as it is"
         },

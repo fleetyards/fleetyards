@@ -118,6 +118,13 @@ const target = computed(() => props.candidate.model);
 let stepKey = 0;
 
 const startKind = computed(() => props.acquisition.startKind);
+
+// A melted pledge bought back is paid like any other buy-back.
+const boughtBack = computed(
+  () =>
+    startKind.value === HangarPlanStartKindEnum.BUYBACK ||
+    startKind.value === HangarPlanStartKindEnum.MELTED,
+);
 const startModelId = computed(() => props.acquisition.startModel.id);
 const priceOverride = ref<string>(
   props.acquisition.priceOverride?.toString() ?? "",
@@ -580,6 +587,8 @@ const startPrice = computed(() => {
         )?.price ??
         null
       );
+    case HangarPlanStartKindEnum.MELTED:
+      return override ?? props.acquisition.price ?? null;
     default:
       return (
         override ??
@@ -631,7 +640,7 @@ const payment = computed(() => {
 
   if (startKind.value === HangarPlanStartKindEnum.STORE) {
     credit.push(startPrice.value);
-  } else if (startKind.value === HangarPlanStartKindEnum.BUYBACK) {
+  } else if (boughtBack.value) {
     (startUsesToken.value ? credit : cash).push(startPrice.value);
   }
 
@@ -688,8 +697,7 @@ const stepInputs = () =>
       !!step.usesBuybackToken,
   }));
 
-const startTokenInput = () =>
-  startKind.value === HangarPlanStartKindEnum.BUYBACK && startUsesToken.value;
+const startTokenInput = () => boughtBack.value && startUsesToken.value;
 
 const updateMutation = useUpdateHangarPlanAcquisition();
 
@@ -764,8 +772,7 @@ const onSubmit = async () => {
                 </span>
                 <div
                   v-if="
-                    startKind === HangarPlanStartKindEnum.STORE ||
-                    startKind === HangarPlanStartKindEnum.BUYBACK
+                    startKind === HangarPlanStartKindEnum.STORE || boughtBack
                   "
                   class="route-view__options"
                 >
@@ -783,7 +790,7 @@ const onSubmit = async () => {
                     standalone
                   />
                   <FormCheckbox
-                    v-if="startKind === HangarPlanStartKindEnum.BUYBACK"
+                    v-if="boughtBack"
                     v-model="startUsesToken"
                     name="usesBuybackToken"
                     :label="t('hangarPlanner.route.useToken')"

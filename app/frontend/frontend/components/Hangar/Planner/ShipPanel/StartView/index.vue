@@ -47,6 +47,7 @@ import {
   type HangarPlanSlotStart,
   type HangarPlanVehicleResource,
   BuybackPledgeKindEnum,
+  HangarPlanStartKindEnum,
   HangarPlanVehicleStatusEnum,
   NullableHangarPlanVehicleUseEnum,
   useHangarPlan,
@@ -168,15 +169,22 @@ const sections = computed<ShipListSection[]>(() => [
   },
 ]);
 
+const startsMelted = computed(
+  () => props.acquisition?.startKind === HangarPlanStartKindEnum.MELTED,
+);
+
 const isCurrentVehicle = (vehicle: HangarPlanVehicleResource) =>
-  vehicle.id === props.acquisition?.sourceVehicleId;
+  !startsMelted.value && vehicle.id === props.acquisition?.sourceVehicleId;
+
+const isCurrentMelt = (vehicle: HangarPlanVehicleResource) =>
+  startsMelted.value && vehicle.id === props.acquisition?.sourceVehicleId;
+
+const isMelted = (vehicle: HangarPlanVehicleResource) =>
+  vehicle.usedBy === NullableHangarPlanVehicleUseEnum.MELT;
 
 // Why a hangar ship is not free to start this route, if it is not.
 const takenReason = (vehicle: HangarPlanVehicleResource) => {
   if (isCurrentVehicle(vehicle)) return undefined;
-  if (vehicle.usedBy === NullableHangarPlanVehicleUseEnum.MELT) {
-    return t("hangarPlanner.panel.out.melted");
-  }
   if (vehicle.usedBy) return t("hangarPlanner.panel.out.used");
   if (statusOf(vehicle.id) === HangarPlanVehicleStatusEnum.KEPT) {
     return t("hangarPlanner.panel.out.kept");
@@ -185,54 +193,57 @@ const takenReason = (vehicle: HangarPlanVehicleResource) => {
   return undefined;
 };
 
+// A ship the plan melts is offered as a buy-back of its pledge instead.
 const vehicleOptions = computed<StartOption[]>(() =>
-  (resources.value?.vehicles ?? []).map((vehicle) => {
-    const status = statusOf(vehicle.id);
-    const reason =
-      takenReason(vehicle) ??
-      (fits(vehicle.model) ? undefined : unreachable(vehicle.model));
-    const cost = costToTarget(vehicle.model);
+  (resources.value?.vehicles ?? [])
+    .filter((vehicle) => !isMelted(vehicle))
+    .map((vehicle) => {
+      const status = statusOf(vehicle.id);
+      const reason =
+        takenReason(vehicle) ??
+        (fits(vehicle.model) ? undefined : unreachable(vehicle.model));
+      const cost = costToTarget(vehicle.model);
 
-    return {
-      start: { kind: "owned", vehicleId: vehicle.id },
-      model: vehicle.model,
-      vehicle,
-      item: {
-        id: `vehicle:${vehicle.id}`,
-        section: reason ? "out" : "hangar",
-        reason,
-        ship: vehicle.model,
-        title: vehicle.name || vehicle.model.name,
-        meta: [
-          vehicle.name ? vehicle.model.name : manufacturerText(vehicle.model),
-          pledgeNote(vehicle),
-        ]
-          .filter(Boolean)
-          .join(" · "),
-        tags:
-          status && status !== HangarPlanVehicleStatusEnum.KEPT
-            ? [
-                {
-                  label: t(`hangarPlanner.vehicleStatuses.${status}`),
-                  variant:
-                    status === HangarPlanVehicleStatusEnum.CHANGE
-                      ? PillVariantsEnum.WARNING
-                      : PillVariantsEnum.NEUTRAL,
-                },
-              ]
-            : [],
-        price: money(cost),
-        priceNote: t("hangarPlanner.panel.worth", {
-          price: money(vehicle.model.pledgePrice),
-        }),
-        sortPrice: cost,
-        badge: isCurrentVehicle(vehicle)
-          ? t("hangarPlanner.pick.current")
-          : excludes(vehicle.model),
-        pinned: !!target.value && vehicle.model.id === target.value.id,
-      },
-    };
-  }),
+      return {
+        start: { kind: "owned", vehicleId: vehicle.id },
+        model: vehicle.model,
+        vehicle,
+        item: {
+          id: `vehicle:${vehicle.id}`,
+          section: reason ? "out" : "hangar",
+          reason,
+          ship: vehicle.model,
+          title: vehicle.name || vehicle.model.name,
+          meta: [
+            vehicle.name ? vehicle.model.name : manufacturerText(vehicle.model),
+            pledgeNote(vehicle),
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          tags:
+            status && status !== HangarPlanVehicleStatusEnum.KEPT
+              ? [
+                  {
+                    label: t(`hangarPlanner.vehicleStatuses.${status}`),
+                    variant:
+                      status === HangarPlanVehicleStatusEnum.CHANGE
+                        ? PillVariantsEnum.WARNING
+                        : PillVariantsEnum.NEUTRAL,
+                  },
+                ]
+              : [],
+          price: money(cost),
+          priceNote: t("hangarPlanner.panel.worth", {
+            price: money(vehicle.model.pledgePrice),
+          }),
+          sortPrice: cost,
+          badge: isCurrentVehicle(vehicle)
+            ? t("hangarPlanner.pick.current")
+            : excludes(vehicle.model),
+          pinned: !!target.value && vehicle.model.id === target.value.id,
+        },
+      };
+    }),
 );
 
 // A pledge to buy back starts as the ship it holds that comes closest: the
@@ -324,10 +335,73 @@ const newOptions = computed<StartOption[]>(() => [
   },
 ]);
 
+// Every start the plan holds, to tell which melted pledges are bought back
+// already.
+const meltedStarts = computed(() =>
+  (plan.value?.slots ?? [])
+    .flatMap((slot) => [
+      ...slot.starts,
+      ...slot.candidates.flatMap((candidate) => candidate.acquisitions),
+    ])
+    .filter(
+      (start) =>
+        start.startKind === HangarPlanStartKindEnum.MELTED &&
+        start.id !== props.acquisition?.id,
+    ),
+);
+
+// What buying a melted pledge back costs: what melting it credits.
+const meltValue = (vehicle: HangarPlanVehicleResource) =>
+  plan.value?.melts.find((melt) => melt.vehicleId === vehicle.id)?.value ??
+  vehicle.meltValue;
+
+const meltedOptions = computed<StartOption[]>(() =>
+  (resources.value?.vehicles ?? []).filter(isMelted).map((vehicle) => {
+    const reason = meltedStarts.value.some(
+      (start) => start.sourceVehicleId === vehicle.id,
+    )
+      ? t("hangarPlanner.panel.out.used")
+      : fits(vehicle.model)
+        ? undefined
+        : unreachable(vehicle.model);
+    const value = meltValue(vehicle);
+    const cost = plus(value, costToTarget(vehicle.model));
+
+    return {
+      start: { kind: "melted", vehicleId: vehicle.id },
+      model: vehicle.model,
+      vehicle,
+      item: {
+        id: `melted:${vehicle.id}`,
+        section: reason ? "out" : "buyback",
+        reason,
+        ship: vehicle.model,
+        title: vehicle.name || vehicle.model.name,
+        meta: [
+          vehicle.name ? vehicle.model.name : undefined,
+          t("hangarPlanner.startKinds.melted"),
+        ]
+          .filter(Boolean)
+          .join(" · "),
+        price: money(cost),
+        priceNote: t("hangarPlanner.panel.buybackPrice", {
+          price: money(value),
+        }),
+        sortPrice: cost,
+        badge: isCurrentMelt(vehicle)
+          ? t("hangarPlanner.pick.current")
+          : excludes(vehicle.model),
+        pinned: !!target.value && vehicle.model.id === target.value.id,
+      },
+    };
+  }),
+);
+
 const options = computed(() => [
   ...newOptions.value,
   ...vehicleOptions.value,
   ...buybackOptions.value,
+  ...meltedOptions.value,
 ]);
 
 const items = computed(() => options.value.map((option) => option.item));
@@ -336,6 +410,9 @@ const optionOf = (item: ShipListItem) =>
   options.value.find((option) => option.item.id === item.id);
 
 const currentId = computed(() => {
+  if (startsMelted.value && props.acquisition?.sourceVehicleId) {
+    return `melted:${props.acquisition.sourceVehicleId}`;
+  }
   if (props.acquisition?.sourceVehicleId) {
     return `vehicle:${props.acquisition.sourceVehicleId}`;
   }

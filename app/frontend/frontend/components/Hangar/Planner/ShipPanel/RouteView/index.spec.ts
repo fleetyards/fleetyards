@@ -296,4 +296,23 @@ describe("Hangar/Planner/ShipPanel/RouteView", () => {
         .classes(),
     ).toContain("active");
   });
+
+  it("pays for a melted pledge bought back like any buy-back", async () => {
+    const wrapper = await mount(
+      pairing({
+        startKind: HangarPlanStartKindEnum.MELTED,
+        sourceVehicleId: "vehicle-cutlass",
+        startModel: carrack,
+        price: 220,
+        usesBuybackToken: true,
+      }),
+    );
+
+    expect(
+      wrapper.find('[data-test="hangar-plan-route-start-token"]').exists(),
+    ).toBe(true);
+    const payment = wrapper.find('[data-test="hangar-plan-route-payment"]');
+    expect(payment.text()).toContain("Store credit$220");
+    expect(payment.text()).toContain("New money$0");
+  });
 });

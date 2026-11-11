@@ -116,7 +116,8 @@
         "owned": "Aus Hangar behalten",
         "store": "Store-Kauf",
         "ingame": "Im Spiel gekauft",
-        "buyback": "Buy-Back"
+        "buyback": "Buy-Back",
+        "melted": "Nach dem Melten zurückgekauft"
       },
       "upgradeSources": {
         "store": "Store",
@@ -475,7 +476,6 @@
           "noEnter": "Kein Upgrade führt zur %{ship}",
           "hull": "Nur Varianten des eigenen Rumpfs werden zur %{ship}",
           "dearer": "%{price} liegt nicht unter den %{target} der %{ship}",
-          "melted": "Wird in diesem Plan geschmolzen",
           "used": "Startet schon einen anderen Weg",
           "kept": "Bleibt, wie es ist"
         },

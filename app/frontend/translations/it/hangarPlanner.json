@@ -116,7 +116,8 @@
         "owned": "Tenuta dall'hangar",
         "store": "Acquisto nello store",
         "ingame": "Comprata in gioco",
-        "buyback": "Buy-back"
+        "buyback": "Buy-back",
+        "melted": "Ricomprata dopo averla sciolta"
       },
       "upgradeSources": {
         "store": "Store",
@@ -475,7 +476,6 @@
           "noEnter": "Nessun upgrade porta alla %{ship}",
           "hull": "Solo le varianti del suo scafo portano alla %{ship}",
           "dearer": "%{price} non è sotto i %{target} della %{ship}",
-          "melted": "Fusa in questo piano",
           "used": "Avvia già un altro percorso",
           "kept": "Tenuta così com'è"
         },

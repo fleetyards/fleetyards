@@ -116,7 +116,8 @@
         "owned": "保留机库中的",
         "store": "商店购买",
         "ingame": "游戏内购买",
-        "buyback": "回购"
+        "buyback": "回购",
+        "melted": "熔毁后回购"
       },
       "upgradeSources": {
         "store": "商店",
@@ -475,7 +476,6 @@
           "noEnter": "没有通往 %{ship} 的升级",
           "hull": "只有同船体的型号可升级为 %{ship}",
           "dearer": "%{price} 不低于 %{ship} 的 %{target}",
-          "melted": "在本计划中熔掉",
           "used": "已作为另一条途径的起点",
           "kept": "保持原样"
         },

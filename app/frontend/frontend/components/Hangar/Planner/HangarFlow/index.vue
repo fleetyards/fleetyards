@@ -347,7 +347,8 @@ const unroutedAction = (route: PlannedRoute) =>
 const middle = (route: PlannedRoute) => {
   if (route.acquisition.startModel.id === route.model.id) {
     // A buy-back has its token to settle, even with no upgrade to plan.
-    return route.acquisition.startKind === HangarPlanStartKindEnum.BUYBACK
+    return route.acquisition.startKind === HangarPlanStartKindEnum.BUYBACK ||
+      route.acquisition.startKind === HangarPlanStartKindEnum.MELTED
       ? { route: routeTarget(route) }
       : {};
   }

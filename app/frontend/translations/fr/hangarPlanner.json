@@ -116,7 +116,8 @@
         "owned": "Gardé du hangar",
         "store": "Achat en boutique",
         "ingame": "Acheté en jeu",
-        "buyback": "Buy-back"
+        "buyback": "Buy-back",
+        "melted": "Racheté après le melt"
       },
       "upgradeSources": {
         "store": "Boutique",
@@ -475,7 +476,6 @@
           "noEnter": "Aucun upgrade ne mène au %{ship}",
           "hull": "Seules les variantes de sa coque mènent au %{ship}",
           "dearer": "%{price} n'est pas sous les %{target} du %{ship}",
-          "melted": "Fondu dans ce plan",
           "used": "Démarre déjà une autre voie",
           "kept": "Gardé tel quel"
         },
