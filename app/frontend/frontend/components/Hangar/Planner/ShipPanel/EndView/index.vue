@@ -23,7 +23,11 @@ import {
   manufacturerText,
   usePlanMoney,
 } from "@/frontend/components/Hangar/Planner/format";
-import { ccuNote, reaches } from "@/frontend/components/Hangar/Planner/reach";
+import {
+  ccuNote,
+  reaches,
+  upgradeCost,
+} from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type HangarPlanEnd,
@@ -119,15 +123,8 @@ const upgradeTag = (model: HangarPlanModel): ShipListTag[] => {
     : [];
 };
 
-const upgradeCost = (model: HangarPlanModel) => {
-  const from = props.startModel?.pledgePrice;
-  if (model.id === props.startModel?.id) return 0;
-  if (typeof from !== "number" || typeof model.pledgePrice !== "number") {
-    return undefined;
-  }
-
-  return Math.max(model.pledgePrice - from, 0);
-};
+const costFromStart = (model: HangarPlanModel) =>
+  props.startModel ? upgradeCost(props.startModel, model) : undefined;
 
 const sections = computed<ShipListSection[]>(() => [
   { key: "keep", label: t("hangarPlanner.panel.sections.keep") },
@@ -148,7 +145,7 @@ const shipItem = (
   section: string,
   extra: Partial<ShipListItem>,
 ): ShipListItem => {
-  const cost = upgradeCost(model);
+  const cost = costFromStart(model);
 
   return {
     id: model.id,

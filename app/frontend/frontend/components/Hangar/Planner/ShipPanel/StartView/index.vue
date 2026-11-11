@@ -30,6 +30,7 @@ import {
   entersFrom,
   reaches,
   startHolder,
+  upgradeCost,
 } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
@@ -136,15 +137,8 @@ const statusOf = (vehicleId: string) =>
     ?.status;
 
 // What upgrading a start into the planned ship costs on top of it.
-const upgradeCost = (from?: HangarPlanModel) => {
-  const to = target.value;
-  if (!from || !to) return 0;
-  if (from.id === to.id) return 0;
-  if (typeof from.pledgePrice !== "number") return undefined;
-  if (typeof to.pledgePrice !== "number") return undefined;
-
-  return Math.max(to.pledgePrice - from.pledgePrice, 0);
-};
+const costToTarget = (from?: HangarPlanModel) =>
+  from && target.value ? upgradeCost(from, target.value) : 0;
 
 const plus = (...values: (number | null | undefined)[]) =>
   values.some((value) => typeof value !== "number")
@@ -197,7 +191,7 @@ const vehicleOptions = computed<StartOption[]>(() =>
     const reason =
       takenReason(vehicle) ??
       (fits(vehicle.model) ? undefined : unreachable(vehicle.model));
-    const cost = upgradeCost(vehicle.model);
+    const cost = costToTarget(vehicle.model);
 
     return {
       start: { kind: "owned", vehicleId: vehicle.id },
@@ -269,7 +263,7 @@ const buybackOptions = computed<StartOption[]>(() =>
         : model
           ? undefined
           : unreachable(shown);
-    const cost = plus(pledge.price, upgradeCost(model));
+    const cost = plus(pledge.price, costToTarget(model));
 
     return [
       {

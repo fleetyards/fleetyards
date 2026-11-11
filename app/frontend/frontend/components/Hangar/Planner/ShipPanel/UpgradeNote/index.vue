@@ -6,7 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { ccuNote } from "@/frontend/components/Hangar/Planner/reach";
+import {
+  ccuNote,
+  upgradeCost,
+} from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { HangarPlanModel } from "@/services/fyApi";
 
@@ -20,12 +23,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { money } = usePlanMoney();
 
-const cost = computed(() =>
-  typeof props.from.pledgePrice === "number" &&
-  typeof props.to.pledgePrice === "number"
-    ? Math.max(props.to.pledgePrice - props.from.pledgePrice, 0)
-    : undefined,
-);
+const cost = computed(() => upgradeCost(props.from, props.to));
 
 const note = computed(() => ccuNote(props.to));
 </script>
