@@ -38,11 +38,13 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
   >
     <Panel
       :variant="PanelVariantsEnum.SLIM"
-      :bg-image="background"
       :outer-spacing="false"
       class="home-patch-tile__panel"
     >
-      <div class="home-patch-tile__body">
+      <div
+        class="home-patch-tile__body"
+        :style="{ '--patch-art': `url(${background})` }"
+      >
         <span class="home-patch-tile__label">
           {{ t("home.dashboard.tiles.patch") }}
         </span>
@@ -61,8 +63,6 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
 
 <style lang="scss" scoped>
 .home-patch-tile {
-  --panel-image-height: 0px;
-
   display: block;
   min-width: 0;
   color: inherit;
@@ -73,8 +73,9 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
   height: 100%;
 }
 
-// Over the loading screen: a scrim from the left keeps the text readable on
-// whichever screen the patch drew.
+// The loading screen sits inside the frame, cut to the frame's inner radius,
+// under a scrim from the left that keeps the text readable on whichever screen
+// the patch drew.
 .home-patch-tile__body {
   position: relative;
   z-index: 1;
@@ -86,13 +87,15 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
   min-height: 96px;
   padding: 14px 18px;
   box-sizing: border-box;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    rgb(0 0 0 / 0.75) 0%,
-    rgb(0 0 0 / 0.35) 70%,
-    rgb(0 0 0 / 0.15) 100%
-  );
+  border-radius: calc(var(--radius-surface-slim, 12px) - 1px);
+  background:
+    linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.75) 0%,
+      rgb(0 0 0 / 0.35) 70%,
+      rgb(0 0 0 / 0.15) 100%
+    ),
+    var(--patch-art) center / cover no-repeat;
 }
 
 .home-patch-tile__label {
