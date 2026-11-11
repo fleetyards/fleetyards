@@ -60,7 +60,7 @@ module Chf
 
     def digest
       @digest ||= Digest::MD5.hexdigest(
-        [Resolver::VERSION, @asset.etag, @bodies.map { |body| [body.key, body.face_index.checksum, body.skin_tone] }.sort].to_json
+        [Resolver::VERSION, Resolver::REVISION, @asset.etag, @bodies.map { |body| [body.key, body.face_index.checksum, body.skin_tone] }.sort].to_json
       )
     end
 
