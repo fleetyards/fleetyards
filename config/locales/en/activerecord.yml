@@ -320,6 +320,7 @@ en:
           attributes:
             base:
               plan_limit_reached: "can hold at most %{count} plans"
+              wishlist_too_large: "Your wishlist has %{ships} ships, but a plan holds at most %{count}. Remove some from the wishlist, or start the plan empty."
         character_face:
           attributes:
             base:

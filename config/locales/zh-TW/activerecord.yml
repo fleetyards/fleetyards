@@ -318,6 +318,7 @@ zh-TW:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
+              wishlist_too_large: "你的願望清單有 %{ships} 艘艦船，但一個計畫最多只能容納 %{count} 艘。請從願望清單中移除一些，或從空計畫開始。"
         character_face:
           attributes:
             base:

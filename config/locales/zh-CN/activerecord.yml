@@ -318,6 +318,7 @@ zh-CN:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 个计划"
+              wishlist_too_large: "你的愿望单有 %{ships} 艘舰船，但一个计划最多只能容纳 %{count} 艘。请从愿望单中移除一些，或从空计划开始。"
         character_face:
           attributes:
             base:

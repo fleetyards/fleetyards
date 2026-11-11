@@ -318,6 +318,7 @@ it:
           attributes:
             base:
               plan_limit_reached: "può contenere al massimo %{count} piani"
+              wishlist_too_large: "La tua lista dei desideri ha %{ships} navi, ma un piano ne contiene al massimo %{count}. Rimuovine alcune dalla lista o inizia il piano vuoto."
         character_face:
           attributes:
             base:

@@ -318,6 +318,7 @@ fr:
           attributes:
             base:
               plan_limit_reached: "peut contenir au plus %{count} plans"
+              wishlist_too_large: "Ta liste de souhaits compte %{ships} vaisseaux, mais un plan en contient au plus %{count}. Retires-en quelques-uns ou commence le plan vide."
         character_face:
           attributes:
             base:

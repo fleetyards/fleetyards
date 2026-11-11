@@ -77,7 +77,8 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
 
     stub_const(HangarPlanSlot, :MAX_PER_PLAN, 2) do
       assert_no_difference -> { HangarPlan.count } do
-        assert_raises(ActiveRecord::RecordInvalid) { build_plan("wishlist") }
+        error = assert_raises(ActiveRecord::RecordInvalid) { build_plan("wishlist") }
+        assert error.record.errors.of_kind?(:base, :wishlist_too_large)
       end
     end
   end

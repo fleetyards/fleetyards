@@ -56,14 +56,12 @@ module HangarPlans
       plan.touch
     end
 
-    # Bulk inserts skip the slot's own check, so a wishlist too big for one
-    # plan fails the way adding one slot too many does.
+    # Bulk inserts skip the slot's own check.
     private def check_slot_limit(count)
       return if plan.slots.count + count <= HangarPlanSlot::MAX_PER_PLAN
 
-      slot = plan.slots.build
-      slot.errors.add(:base, :slot_limit_reached, count: HangarPlanSlot::MAX_PER_PLAN)
-      raise ActiveRecord::RecordInvalid, slot
+      plan.errors.add(:base, :wishlist_too_large, ships: count, count: HangarPlanSlot::MAX_PER_PLAN)
+      raise ActiveRecord::RecordInvalid, plan
     end
 
     # Routes and melts reference the user's own ships and pledges, so a copy
