@@ -387,4 +387,21 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
     assert route.reload.source_missing?
   end
+
+  test "POST buys back an upgraded pledge as the ship it was first bought as" do
+    starlancer = create(:model, name: "Starlancer MAX", pledge_price: 250)
+    ironclad = create(:model, name: "Ironclad Assault", pledge_price: 650)
+    @candidate.update!(model: starlancer)
+    vehicle = create(:vehicle, user: @user, model: ironclad, rsi_pledge_id: "pledge-1", rsi_pledge_melt_value: 465,
+      rsi_pledge_name: "Standalone Ships - Starlancer MAX plus Pacific Paints - CitizenCon 2954")
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle:)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: vehicle.id} do
+      route = parsed_body.dig("slots", 0, "candidates", 0, "acquisitions", 0)
+      assert_equal "Starlancer MAX", route.dig("startModel", "name")
+      assert_in_delta 250.0, route["price"]
+      assert route["routeComplete"]
+    end
+  end
 end

@@ -77,8 +77,7 @@ class HangarPlanAcquisition < ApplicationRecord
     when "owned", "ingame" then 0
     when "store" then start_model&.pledge_price
     when "buyback" then buyback_pledge&.price
-    # RSI buys a pledge back for what melting it credited.
-    when "melted" then source_melt&.value
+    when "melted" then melted_price
     end
   end
 
@@ -119,13 +118,33 @@ class HangarPlanAcquisition < ApplicationRecord
     source_vehicle if hangar_plan.pledged_vehicle_ids.include?(source_vehicle.id)
   end
 
+  # The ship a start from the live hangar begins as: the ship itself, or for a
+  # melted pledge the ship it comes back as.
+  def vehicle_start_model
+    return if source_vehicle.blank?
+    return source_vehicle.model unless start_kind == "melted"
+
+    HangarPlans::MeltedPledge.base_model(source_vehicle)
+  end
+
+  # RSI buys a pledge back for what melting it credited. An upgraded pledge
+  # comes back as first bought, its upgrades apart, so its price is that of the
+  # ship it comes back as, until the user enters what they paid.
+  private def melted_price
+    melt = source_melt
+    return if melt.nil?
+    return melt.value if start_model.nil? || start_model.id == source_vehicle.model_id
+
+    start_model.pledge_price
+  end
+
   private def start_changed?
     new_record? || will_save_change_to_start_kind? || will_save_change_to_source_vehicle_id? ||
       will_save_change_to_buyback_pledge_id? || will_save_change_to_start_model_id?
   end
 
   private def assign_start_model
-    self.start_model_id = source_vehicle.model_id if VEHICLE_KINDS.include?(start_kind) && source_vehicle.present?
+    self.start_model = vehicle_start_model if VEHICLE_KINDS.include?(start_kind) && source_vehicle.present?
     self.start_model ||= candidate&.model if SHIPLESS_KINDS.include?(start_kind)
   end
 

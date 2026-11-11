@@ -280,6 +280,21 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET resources names the ship a melted upgraded pledge comes back as" do
+    cutlass = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "500",
+      rsi_pledge_name: "Standalone Ship - Cutlass Black plus Ghoul Paint")
+    kept = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "501",
+      rsi_pledge_name: "Standalone Ship - Cutlass Black")
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle: cutlass)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      vehicles = parsed_body["vehicles"].index_by { |entry| entry["id"] }
+      assert_equal "Cutlass Black", vehicles.dig(cutlass.id, "baseModel", "name")
+      # Only a melted pledge comes back.
+      assert_nil vehicles.dig(kept.id, "baseModel")
+    end
+  end
+
   test "GET resources lists the store's priced ships, cheapest first" do
     create(:model, name: "Unpriced", pledge_price: nil)
     create(:model, name: "Hidden", pledge_price: 50, hidden: true)

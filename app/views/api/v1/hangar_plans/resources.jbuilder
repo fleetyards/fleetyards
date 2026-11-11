@@ -12,6 +12,11 @@ json.vehicles @resources.vehicles do |entry|
   json.pledge_item_count entry.vehicle.rsi_pledge_item_count
   json.pledge_name entry.pledge_name
   json.standalone entry.standalone
+  if entry.base_model && entry.base_model.id != entry.vehicle.model_id
+    json.base_model do
+      json.partial! "api/v1/hangar_plans/model", model: entry.base_model
+    end
+  end
   json.partial! "api/v1/hangar_plans/pledge_contents", ships: entry.pledge_ships, items: entry.pledge_items
 end
 

@@ -7,7 +7,7 @@ module HangarPlans
   class Resources
     USES = %w[acquisition melt].freeze
 
-    VehicleResource = Data.define(:vehicle, :used_by, :pledge_name, :pledge_ships, :pledge_items, :standalone)
+    VehicleResource = Data.define(:vehicle, :used_by, :pledge_name, :pledge_ships, :pledge_items, :standalone, :base_model)
     UpgradeResource = Data.define(:item, :from_model, :to_model, :used_count)
     BuybackResource = Data.define(:pledge, :models, :used)
 
@@ -29,6 +29,7 @@ module HangarPlans
 
       vehicles = plan.live_vehicles.includes(model: MODEL_PRELOAD).order(:created_at).to_a
       pledges = PledgeContents.new(plan, vehicles)
+      bases = MeltedPledge.base_models(vehicles.select { |vehicle| melts.include?(vehicle.id) }, preload: MODEL_PRELOAD)
 
       vehicles.map do |vehicle|
         used_by = if routes.include?(vehicle.id)
@@ -39,7 +40,7 @@ module HangarPlans
         contents = pledges.for(vehicle)
 
         VehicleResource.new(vehicle:, used_by:, pledge_name: contents.name, pledge_ships: contents.ships, pledge_items: contents.items,
-          standalone: contents.standalone)
+          standalone: contents.standalone, base_model: bases[vehicle.id])
       end
     end
 

@@ -40372,6 +40372,8 @@ components:
           - 'null'
           description: Whether the pledge holds the ship alone rather than a package;
             null where the hangar sync never saw it
+        baseModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
         pledgeShips:
           type: array
           description: The other ships of the same pledge, which melt with it
