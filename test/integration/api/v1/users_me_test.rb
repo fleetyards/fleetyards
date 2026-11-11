@@ -162,6 +162,23 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /users/me shows the store credit a later hangar sync read" do
+    user = create(:user)
+    sign_in user
+
+    with_fragment_caching do
+      assert_api_response :get, 200 do
+        assert_nil parsed_body["rsiStoreCredit"]
+      end
+
+      user.update_column(:rsi_store_credit, 849.56)
+
+      assert_api_response :get, 200 do
+        assert_in_delta 849.56, parsed_body["rsiStoreCredit"]
+      end
+    end
+  end
+
   test "GET /users/me returns 401 when not signed in" do
     assert_api_response :get, 401
   end

@@ -51504,6 +51504,11 @@ components:
         hangarUpdatedAt:
           type: string
           format: date-time
+        rsiStoreCredit:
+          type:
+          - number
+          - 'null'
+          description: The store credit the last hangar sync read from RSI
         resourceAccess:
           type: array
           items:

@@ -52,6 +52,7 @@ module V1
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
+          rsiStoreCredit: {type: [:number, :null], description: "The store credit the last hangar sync read from RSI"},
           resourceAccess: {type: :array, items: ::V1::Schemas::Enums::UserResourceAccessEnum},
           authConnections: {type: :array, items: {"$ref": "#/components/schemas/OmniauthProviderEnum"}},
           passwordSetManually: {type: :boolean},
