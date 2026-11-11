@@ -466,6 +466,81 @@
         },
         "inSlot": "Slot %{slot}",
         "inHangar": "Your hangar"
+      },
+      "panel": {
+        "tabs": {
+          "start": "Start",
+          "route": "Route",
+          "end": "End",
+          "slot": "Slot"
+        },
+        "sort": "Sort",
+        "youPay": "You pay",
+        "upgradeCost": "Upgrade cost",
+        "worth": "worth %{price}",
+        "buybackPrice": "buy-back %{price}",
+        "sections": {
+          "new": "New",
+          "hangar": "Your hangar",
+          "hangarHint": "Ships with no route yet",
+          "buybacks": "Buy-backs",
+          "out": "Can't take part",
+          "outOf": "Can't become a %{ship}",
+          "keep": "Keep it",
+          "plan": "In this plan",
+          "planHint": "Ships a slot already holds",
+          "store": "Store ships",
+          "storeHint": "Picking one gives it a slot of its own"
+        },
+        "out": {
+          "noneOfSlot": "Becomes none of the slot's ships",
+          "noLeave": "No upgrade leads out of it",
+          "noEnter": "No upgrade leads into the %{ship}",
+          "hull": "Only its own hull upgrades into the %{ship}",
+          "dearer": "%{price} is not below the %{ship}'s %{target}",
+          "melted": "Melted in this plan",
+          "used": "Already starts another route",
+          "kept": "Kept as it is"
+        },
+        "package": "Its package",
+        "useStart": "Start the route here",
+        "useEnd": "End the route here",
+        "upgrade": "The upgrade",
+        "upgradeLine": "%{from} to %{to}",
+        "ccuOnSale": "On sale in the store",
+        "endsHint": "Upgrades only lead to ships with a higher store price.",
+        "fillsSlot": "Fills the %{slot} slot.",
+        "newSlotHint": "Gets a slot of its own in the plan.",
+        "shortlist": "Shortlist",
+        "shortlistHint": "Shortlist the ships that could fill it, compare them, then choose one.",
+        "addToShortlist": "Add to the shortlist",
+        "withinFilters": {
+          "one": "%{count} ship within the slot's filters",
+          "other": "%{count} ships within the slot's filters"
+        },
+        "shipCount": {
+          "one": "%{count} ship",
+          "other": "%{count} ships"
+        },
+        "onSale": "On sale",
+        "inHangar": "In my hangar",
+        "slotFilters": "Slot filters",
+        "crew": {
+          "one": "crew %{count}",
+          "other": "crew %{count}"
+        },
+        "shortlisted": "Shortlisted",
+        "shortlistAdd": "Shortlist",
+        "more": "Show more",
+        "steps": "The steps",
+        "addStop": "Add a stop",
+        "stepPaidWith": "Step %{number} · paid with",
+        "routeEnd": "End of the route",
+        "saveRoute": "Save the route",
+        "stepCount": {
+          "one": "%{count} step",
+          "other": "%{count} steps"
+        }
       }
     }
   }

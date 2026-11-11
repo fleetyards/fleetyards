@@ -466,6 +466,81 @@
         },
         "inSlot": "Platz %{slot}",
         "inHangar": "Dein Hangar"
+      },
+      "panel": {
+        "tabs": {
+          "start": "Start",
+          "route": "Weg",
+          "end": "Ziel",
+          "slot": "Slot"
+        },
+        "sort": "Sortieren",
+        "youPay": "Du zahlst",
+        "upgradeCost": "Upgrade-Kosten",
+        "worth": "Wert %{price}",
+        "buybackPrice": "Buy-back %{price}",
+        "sections": {
+          "new": "Neu",
+          "hangar": "Dein Hangar",
+          "hangarHint": "Schiffe ohne Weg",
+          "buybacks": "Buy-backs",
+          "out": "Kommt nicht infrage",
+          "outOf": "Kann keine %{ship} werden",
+          "keep": "Behalten",
+          "plan": "In diesem Plan",
+          "planHint": "Schiffe, die ein Slot schon hält",
+          "store": "Schiffe im Store",
+          "storeHint": "Bekommt einen eigenen Slot"
+        },
+        "out": {
+          "noneOfSlot": "Wird keines der Schiffe des Slots",
+          "noLeave": "Kein Upgrade führt von ihm weg",
+          "noEnter": "Kein Upgrade führt zur %{ship}",
+          "hull": "Nur Varianten des eigenen Rumpfs werden zur %{ship}",
+          "dearer": "%{price} liegt nicht unter den %{target} der %{ship}",
+          "melted": "Wird in diesem Plan geschmolzen",
+          "used": "Startet schon einen anderen Weg",
+          "kept": "Bleibt, wie es ist"
+        },
+        "package": "Sein Paket",
+        "useStart": "Weg hier starten",
+        "useEnd": "Weg hier enden lassen",
+        "upgrade": "Das Upgrade",
+        "upgradeLine": "%{from} zu %{to}",
+        "ccuOnSale": "Im Store erhältlich",
+        "endsHint": "Upgrades führen nur zu Schiffen mit höherem Store-Preis.",
+        "fillsSlot": "Füllt den Slot %{slot}.",
+        "newSlotHint": "Bekommt einen eigenen Slot im Plan.",
+        "shortlist": "Auswahl",
+        "shortlistHint": "Nimm die Schiffe in die Auswahl, die ihn füllen könnten, vergleiche sie und wähle eins.",
+        "addToShortlist": "Zur Auswahl hinzufügen",
+        "withinFilters": {
+          "one": "%{count} Schiff in den Filtern des Slots",
+          "other": "%{count} Schiffe in den Filtern des Slots"
+        },
+        "shipCount": {
+          "one": "%{count} Schiff",
+          "other": "%{count} Schiffe"
+        },
+        "onSale": "Im Verkauf",
+        "inHangar": "In meinem Hangar",
+        "slotFilters": "Filter des Slots",
+        "crew": {
+          "one": "Crew %{count}",
+          "other": "Crew %{count}"
+        },
+        "shortlisted": "In der Auswahl",
+        "shortlistAdd": "Auswählen",
+        "more": "Mehr zeigen",
+        "steps": "Die Schritte",
+        "addStop": "Zwischenstopp",
+        "stepPaidWith": "Schritt %{number} · bezahlt mit",
+        "routeEnd": "Ziel des Wegs",
+        "saveRoute": "Weg speichern",
+        "stepCount": {
+          "one": "%{count} Schritt",
+          "other": "%{count} Schritte"
+        }
       }
     }
   }

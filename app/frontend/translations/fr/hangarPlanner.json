@@ -466,6 +466,81 @@
         },
         "inSlot": "Emplacement %{slot}",
         "inHangar": "Votre hangar"
+      },
+      "panel": {
+        "tabs": {
+          "start": "Départ",
+          "route": "Voie",
+          "end": "Arrivée",
+          "slot": "Emplacement"
+        },
+        "sort": "Trier",
+        "youPay": "Vous payez",
+        "upgradeCost": "Coût de l'upgrade",
+        "worth": "vaut %{price}",
+        "buybackPrice": "buy-back %{price}",
+        "sections": {
+          "new": "Neuf",
+          "hangar": "Votre hangar",
+          "hangarHint": "Vaisseaux sans voie",
+          "buybacks": "Buy-backs",
+          "out": "Hors jeu",
+          "outOf": "Ne peut pas devenir un %{ship}",
+          "keep": "Le garder",
+          "plan": "Dans ce plan",
+          "planHint": "Vaisseaux qu'un emplacement contient déjà",
+          "store": "Vaisseaux du store",
+          "storeHint": "En choisir un lui donne son propre emplacement"
+        },
+        "out": {
+          "noneOfSlot": "Ne devient aucun des vaisseaux de l'emplacement",
+          "noLeave": "Aucun upgrade n'en part",
+          "noEnter": "Aucun upgrade ne mène au %{ship}",
+          "hull": "Seules les variantes de sa coque mènent au %{ship}",
+          "dearer": "%{price} n'est pas sous les %{target} du %{ship}",
+          "melted": "Fondu dans ce plan",
+          "used": "Démarre déjà une autre voie",
+          "kept": "Gardé tel quel"
+        },
+        "package": "Son pack",
+        "useStart": "Partir d'ici",
+        "useEnd": "Finir la voie ici",
+        "upgrade": "L'upgrade",
+        "upgradeLine": "%{from} vers %{to}",
+        "ccuOnSale": "En vente sur le store",
+        "endsHint": "Un upgrade ne mène qu'à un vaisseau au prix plus élevé sur le store.",
+        "fillsSlot": "Remplit l'emplacement %{slot}.",
+        "newSlotHint": "Reçoit son propre emplacement dans le plan.",
+        "shortlist": "Sélection",
+        "shortlistHint": "Sélectionnez les vaisseaux qui pourraient le remplir, comparez-les, puis choisissez-en un.",
+        "addToShortlist": "Ajouter à la sélection",
+        "withinFilters": {
+          "one": "%{count} vaisseau dans les filtres de l'emplacement",
+          "other": "%{count} vaisseaux dans les filtres de l'emplacement"
+        },
+        "shipCount": {
+          "one": "%{count} vaisseau",
+          "other": "%{count} vaisseaux"
+        },
+        "onSale": "En vente",
+        "inHangar": "Dans mon hangar",
+        "slotFilters": "Filtres de l'emplacement",
+        "crew": {
+          "one": "équipage %{count}",
+          "other": "équipage %{count}"
+        },
+        "shortlisted": "Sélectionné",
+        "shortlistAdd": "Sélectionner",
+        "more": "Afficher plus",
+        "steps": "Les étapes",
+        "addStop": "Ajouter une étape",
+        "stepPaidWith": "Étape %{number} · payée avec",
+        "routeEnd": "Fin de la voie",
+        "saveRoute": "Enregistrer la voie",
+        "stepCount": {
+          "one": "%{count} étape",
+          "other": "%{count} étapes"
+        }
       }
     }
   }

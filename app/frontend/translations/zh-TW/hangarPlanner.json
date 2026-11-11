@@ -466,6 +466,81 @@
         },
         "inSlot": "欄位 %{slot}",
         "inHangar": "你的機庫"
+      },
+      "panel": {
+        "tabs": {
+          "start": "起點",
+          "route": "途徑",
+          "end": "終點",
+          "slot": "槽位"
+        },
+        "sort": "排序",
+        "youPay": "你支付",
+        "upgradeCost": "升級費用",
+        "worth": "價值 %{price}",
+        "buybackPrice": "回購 %{price}",
+        "sections": {
+          "new": "新購",
+          "hangar": "你的機庫",
+          "hangarHint": "尚無途徑的飛船",
+          "buybacks": "回購",
+          "out": "無法使用",
+          "outOf": "無法成為 %{ship}",
+          "keep": "保留",
+          "plan": "本計畫中",
+          "planHint": "已有槽位的飛船",
+          "store": "商店飛船",
+          "storeHint": "選擇後會獲得自己的槽位"
+        },
+        "out": {
+          "noneOfSlot": "無法成為該槽位的任何飛船",
+          "noLeave": "沒有從它出發的升級",
+          "noEnter": "沒有通往 %{ship} 的升級",
+          "hull": "只有同船體的型號可升級為 %{ship}",
+          "dearer": "%{price} 不低於 %{ship} 的 %{target}",
+          "melted": "在本計畫中熔掉",
+          "used": "已作為另一條途徑的起點",
+          "kept": "保持原樣"
+        },
+        "package": "所屬禮包",
+        "useStart": "從這裡開始",
+        "useEnd": "在這裡結束途徑",
+        "upgrade": "升級",
+        "upgradeLine": "%{from} 升級到 %{to}",
+        "ccuOnSale": "商店有售",
+        "endsHint": "升級只能通往商店價格更高的飛船。",
+        "fillsSlot": "填入槽位 %{slot}。",
+        "newSlotHint": "在計畫中獲得自己的槽位。",
+        "shortlist": "候選",
+        "shortlistHint": "把可能填入的飛船加入候選，比較後選出一艘。",
+        "addToShortlist": "加入候選",
+        "withinFilters": {
+          "one": "槽位篩選內有 %{count} 艘飛船",
+          "other": "槽位篩選內有 %{count} 艘飛船"
+        },
+        "shipCount": {
+          "one": "%{count} 艘飛船",
+          "other": "%{count} 艘飛船"
+        },
+        "onSale": "在售",
+        "inHangar": "在我的機庫",
+        "slotFilters": "槽位篩選",
+        "crew": {
+          "one": "船員 %{count}",
+          "other": "船員 %{count}"
+        },
+        "shortlisted": "已在候選",
+        "shortlistAdd": "加入候選",
+        "more": "顯示更多",
+        "steps": "步驟",
+        "addStop": "新增中轉",
+        "stepPaidWith": "第 %{number} 步 · 支付方式",
+        "routeEnd": "途徑終點",
+        "saveRoute": "儲存途徑",
+        "stepCount": {
+          "one": "%{count} 步",
+          "other": "%{count} 步"
+        }
       }
     }
   }

@@ -466,6 +466,81 @@
         },
         "inSlot": "Slot %{slot}",
         "inHangar": "Il tuo hangar"
+      },
+      "panel": {
+        "tabs": {
+          "start": "Partenza",
+          "route": "Percorso",
+          "end": "Arrivo",
+          "slot": "Slot"
+        },
+        "sort": "Ordina",
+        "youPay": "Paghi",
+        "upgradeCost": "Costo dell'upgrade",
+        "worth": "vale %{price}",
+        "buybackPrice": "buy-back %{price}",
+        "sections": {
+          "new": "Nuova",
+          "hangar": "Il tuo hangar",
+          "hangarHint": "Navi senza percorso",
+          "buybacks": "Buy-back",
+          "out": "Escluse",
+          "outOf": "Non possono diventare una %{ship}",
+          "keep": "Tenerla",
+          "plan": "In questo piano",
+          "planHint": "Navi che uno slot ha già",
+          "store": "Navi dello store",
+          "storeHint": "Sceglierne una le dà uno slot tutto suo"
+        },
+        "out": {
+          "noneOfSlot": "Non diventa nessuna nave dello slot",
+          "noLeave": "Nessun upgrade parte da lei",
+          "noEnter": "Nessun upgrade porta alla %{ship}",
+          "hull": "Solo le varianti del suo scafo portano alla %{ship}",
+          "dearer": "%{price} non è sotto i %{target} della %{ship}",
+          "melted": "Fusa in questo piano",
+          "used": "Avvia già un altro percorso",
+          "kept": "Tenuta così com'è"
+        },
+        "package": "Il suo pacchetto",
+        "useStart": "Parti da qui",
+        "useEnd": "Termina il percorso qui",
+        "upgrade": "L'upgrade",
+        "upgradeLine": "%{from} a %{to}",
+        "ccuOnSale": "In vendita nello store",
+        "endsHint": "Gli upgrade portano solo a navi con un prezzo più alto nello store.",
+        "fillsSlot": "Occupa lo slot %{slot}.",
+        "newSlotHint": "Riceve uno slot tutto suo nel piano.",
+        "shortlist": "Rosa",
+        "shortlistHint": "Metti in rosa le navi che potrebbero occuparlo, confrontale e scegline una.",
+        "addToShortlist": "Aggiungi alla rosa",
+        "withinFilters": {
+          "one": "%{count} nave nei filtri dello slot",
+          "other": "%{count} navi nei filtri dello slot"
+        },
+        "shipCount": {
+          "one": "%{count} nave",
+          "other": "%{count} navi"
+        },
+        "onSale": "In vendita",
+        "inHangar": "Nel mio hangar",
+        "slotFilters": "Filtri dello slot",
+        "crew": {
+          "one": "equipaggio %{count}",
+          "other": "equipaggio %{count}"
+        },
+        "shortlisted": "In rosa",
+        "shortlistAdd": "Metti in rosa",
+        "more": "Mostra altre",
+        "steps": "I passaggi",
+        "addStop": "Aggiungi una tappa",
+        "stepPaidWith": "Passaggio %{number} · pagato con",
+        "routeEnd": "Fine del percorso",
+        "saveRoute": "Salva il percorso",
+        "stepCount": {
+          "one": "%{count} passaggio",
+          "other": "%{count} passaggi"
+        }
       }
     }
   }
