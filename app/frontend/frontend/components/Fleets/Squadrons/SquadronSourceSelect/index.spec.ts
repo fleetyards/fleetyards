@@ -72,6 +72,20 @@ describe("FleetSquadronSourceSelect", () => {
     });
   });
 
+  it("hands over the squadron it replaces", async () => {
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "maru", squadronsEnabled: true } as Fleet,
+        modelValue: "a",
+      },
+    });
+
+    select(wrapper).vm.$emit("update:modelValue", "c");
+    await nextTick();
+
+    expect(wrapper.emitted("pick")?.[0]?.[1]).toMatchObject({ name: "Alpha" });
+  });
+
   it("is not offered while squadrons are off", async () => {
     const subject = await mount(false);
 

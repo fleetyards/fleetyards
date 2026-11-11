@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   "update:modelValue": [value: string | null];
-  pick: [squadron: FleetSquadron];
+  pick: [squadron: FleetSquadron, previous: FleetSquadron | undefined];
 }>();
 
 const { t } = useI18n();
@@ -61,10 +61,12 @@ const options = computed<FilterOption[]>(() =>
 const selected = computed({
   get: () => props.modelValue,
   set: (value: string | null) => {
+    const previous = items.value.find((item) => item.id === props.modelValue);
+
     emit("update:modelValue", value ?? null);
 
     const squadron = items.value.find((item) => item.id === value);
-    if (squadron) emit("pick", squadron);
+    if (squadron) emit("pick", squadron, previous);
   },
 });
 </script>
