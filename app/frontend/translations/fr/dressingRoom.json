@@ -107,6 +107,7 @@
         "default": "Par défaut du jeu",
         "change": "Changer",
         "hint": "Importez le .chf exporté par le créateur de personnage du jeu, et la figurine portera votre visage, vos cheveux et votre peau.",
+        "location": "Le jeu enregistre les personnages exportés dans ce dossier de votre installation de Star Citizen (PTU au lieu de LIVE pour le serveur de test) :",
         "signIn": "Connectez-vous pour importer votre propre personnage.",
         "upload": "Importer un .chf",
         "none": "Aucun personnage pour l'instant.",

@@ -107,6 +107,7 @@
         "default": "Game default",
         "change": "Change",
         "hint": "Upload the .chf the game's character creator exports, and the figure wears your face, hair and skin.",
+        "location": "The game saves exported characters in this folder of your Star Citizen install (PTU instead of LIVE for the test server):",
         "signIn": "Sign in to upload your own character.",
         "upload": "Upload a .chf",
         "none": "No characters yet.",
