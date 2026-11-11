@@ -468,6 +468,7 @@
           "keep": "Tenerla",
           "plan": "In questo piano",
           "planHint": "Navi che uno slot ha già",
+          "wishlist": "Dalla tua lista dei desideri",
           "store": "Navi dello store",
           "storeHint": "Sceglierne una le dà uno slot tutto suo"
         },
@@ -502,6 +503,7 @@
         },
         "onSale": "In vendita",
         "inHangar": "Nel mio hangar",
+        "onWishlist": "Nella lista dei desideri",
         "slotFilters": "Filtri dello slot",
         "crew": {
           "one": "equipaggio %{count}",

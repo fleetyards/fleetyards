@@ -468,6 +468,7 @@
           "keep": "Keep it",
           "plan": "In this plan",
           "planHint": "Ships a slot already holds",
+          "wishlist": "From your wishlist",
           "store": "Store ships",
           "storeHint": "Picking one gives it a slot of its own"
         },
@@ -502,6 +503,7 @@
         },
         "onSale": "On sale",
         "inHangar": "In my hangar",
+        "onWishlist": "On wishlist",
         "slotFilters": "Slot filters",
         "crew": {
           "one": "crew %{count}",
