@@ -197,6 +197,19 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /filters/models/options lists only the signed in user's wishlist with onWishlist" do
+    owned, wished, untouched = create_list(:model, 3, :with_store_image)
+    user = create(:user)
+    create(:vehicle, user:, model: owned)
+    create(:vehicle, :wanted, user:, model: wished)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"onWishlist" => true}} do
+      assert_equal [wished.id], parsed_body["items"].map { |item| item["id"] }
+      refute_includes [owned.id, untouched.id], parsed_body["items"].first["id"]
+    end
+  end
+
   test "GET /filters/models/options does not mark models the signed in user only has as loaners" do
     lent, lent_for_wish = create_list(:model, 2, :with_store_image)
     user = create(:user)

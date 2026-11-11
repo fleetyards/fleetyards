@@ -53,6 +53,7 @@ module V1
             withCargoGrids: {type: :boolean},
             withTexturedHolo: {type: :boolean},
             inHangar: {type: :boolean},
+            onWishlist: {type: :boolean},
             inGameEq: {type: :boolean},
             s: {anyOf: [{
               type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum

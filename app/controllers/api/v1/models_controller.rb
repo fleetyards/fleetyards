@@ -431,6 +431,7 @@ module Api
         scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.with_textured_holo if ActiveModel::Type::Boolean.new.cast(model_query_params.delete("with_textured_holo"))
         scope = scope.where(id: current_resource_owner.vehicles.purchased.where(loaner: false).select(:model_id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
+        scope = scope.where(id: current_resource_owner.vehicles.wanted.where(loaner: false).select(:model_id)) if model_query_params.delete("on_wishlist") && current_resource_owner.present?
         scope = scope.where(id: Model.plannable_for(current_resource_owner).select(:id)) if model_query_params.delete("plannable")
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
@@ -531,7 +532,7 @@ module Api
             :ingame_only_eq, :player_ownable_eq, :ccu_target, :has_fleetchart_views, :sold_at_shop,
             :s, :sorts, :length_gteq, :length_lteq, :cargo_gteq, :cargo_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gt, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
-            :with_dock, :with_cargo, :with_cargo_grids, :with_textured_holo, :in_hangar, :plannable, :in_game_eq,
+            :with_dock, :with_cargo, :with_cargo_grids, :with_textured_holo, :in_hangar, :on_wishlist, :plannable, :in_game_eq,
             # A slug, not a list -- permitted as an array it was dropped outright,
             # so this filter never ran even when a request got past validation.
             :will_it_fit, :stealth_eq,
