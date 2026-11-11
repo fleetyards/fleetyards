@@ -352,4 +352,13 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 403, api_path: CANDIDATES, path_params: flight_params(id: slot.id), body: {candidates: [{username: @pilot.username}]}
   end
+  test "PUT candidates lists a member named twice once" do
+    slot = create(:mission_slot, slottable: @team)
+    sign_in @officer
+
+    assert_api_response :put, 200, api_path: CANDIDATES, path_params: flight_params(id: slot.id),
+      body: {candidates: [{username: @pilot.username}, {username: @pilot.username.upcase}, {username: @wingman.username}]} do
+      assert_equal [@pilot.username, @wingman.username], parsed_body["candidates"].map { |c| c["username"] }
+    end
+  end
 end

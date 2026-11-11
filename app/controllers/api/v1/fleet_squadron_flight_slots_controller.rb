@@ -22,7 +22,10 @@ module Api
         @slot = flight_slots.find(params[:id])
         authorize_flight!
 
-        entries = Array(params[:candidates]).map { |entry| entry.permit(:username, :vehicle_id, :vehicleId) }
+        # A member is listed once, at their first place.
+        entries = Array(params[:candidates])
+          .map { |entry| entry.permit(:username, :vehicle_id, :vehicleId) }
+          .uniq { |entry| entry[:username].to_s.downcase }
         rows = squadron_rows_by_username(entries.map { |entry| entry[:username] })
 
         MissionSlotCandidate.transaction do
