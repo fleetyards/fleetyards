@@ -35,6 +35,12 @@ class FleetSquadronMembership < ApplicationRecord
   # they hold an ordinary squadron, every other one they asked is moot too.
   after_create :close_requests
 
+  # An invitation a flight sent stands for this squadron. Somebody who leaves
+  # it stops holding the slot, and the next member listed is asked; a member
+  # who already accepted keeps their seat.
+  before_destroy :remember_open_invitations, prepend: true
+  after_destroy_commit :withdraw_open_invitations
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[fleet_squadron_id fleet_membership_id fleet_squadron_role_id ships_filter created_at updated_at]
   end
@@ -79,6 +85,17 @@ class FleetSquadronMembership < ApplicationRecord
     return if hangar_group.user_id == fleet_membership&.user_id
 
     errors.add(:hangar_group, :not_owned)
+  end
+
+  private def remember_open_invitations
+    @open_invitations = FleetEventSignup
+      .where(status: "invited", fleet_membership_id:)
+      .where(fleet_event_slot_id: fleet_event_slot_candidates.select(:fleet_event_slot_id))
+      .to_a
+  end
+
+  private def withdraw_open_invitations
+    @open_invitations.to_a.each { |signup| signup.withdraw!(validate: false) }
   end
 
   private def close_requests

@@ -96,6 +96,14 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
       @event.update!(status: "open")
     end
   end
+  test "leaving the squadron hands an invitation on" do
+    @event.update!(status: "open")
+
+    @rows.first.destroy!
+
+    assert_equal membership(@alternate), active_signup.fleet_membership
+  end
+
   test "a member already confirmed in the event pool keeps the commitment in the slot" do
     pooled = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil,
       fleet_membership: membership(@primary), status: "confirmed")
