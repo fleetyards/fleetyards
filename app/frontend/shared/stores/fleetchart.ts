@@ -55,6 +55,7 @@ export enum FleetchartGroups {
   STATUS = "status",
   SQUADRON = "squadron",
   CAPTAIN = "captain",
+  HANGAR_GROUP = "hangarGroup",
 }
 
 // Only a fleet's own ships know who flies them and in which squadron.
@@ -62,6 +63,9 @@ export const FLEET_SHIP_GROUPS = [
   FleetchartGroups.SQUADRON,
   FleetchartGroups.CAPTAIN,
 ];
+
+// Only a hangar's own ships carry the groups their owner sorted them into.
+export const HANGAR_SHIP_GROUPS = [FleetchartGroups.HANGAR_GROUP];
 
 export enum FleetchartHeadingSizes {
   FLEET = "fleet",

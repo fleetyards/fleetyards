@@ -538,7 +538,8 @@
           "classification": "Classification",
           "status": "Statut de production",
           "squadron": "Escadron",
-          "captain": "Capitaine"
+          "captain": "Capitaine",
+          "hangarGroup": "Groupe"
         },
         "background": "Arrière-plan",
         "backgroundOptions": {
@@ -585,6 +586,7 @@
         "groupBy": "Groupe : %{group}",
         "noSquadron": "Sans escadron",
         "unknownCaptain": "Capitaine non affiché",
+        "noHangarGroup": "Sans groupe",
         "loadingPictures": "Chargement des images %{loaded} / %{total}",
         "exportPictures": "Chargement des images en taille réelle %{loaded} / %{total}",
         "exportDrawing": "Dessin du graphique…",

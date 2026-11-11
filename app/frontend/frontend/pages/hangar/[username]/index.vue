@@ -22,6 +22,7 @@ import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { HANGAR_GROUPS } from "@/frontend/components/Fleetchart/options";
 import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
@@ -406,6 +407,7 @@ useSubscription({
 
       <FleetchartApp
         :items="vehicles?.items || []"
+        :groups="HANGAR_GROUPS"
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"

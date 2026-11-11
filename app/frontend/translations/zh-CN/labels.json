@@ -538,7 +538,8 @@
           "classification": "分类",
           "status": "生产状态",
           "squadron": "中队",
-          "captain": "舰长"
+          "captain": "舰长",
+          "hangarGroup": "群组"
         },
         "background": "背景",
         "backgroundOptions": {
@@ -585,6 +586,7 @@
         "groupBy": "分组:%{group}",
         "noSquadron": "无中队",
         "unknownCaptain": "舰长未公开",
+        "noHangarGroup": "无群组",
         "loadingPictures": "正在加载图片 %{loaded} / %{total}",
         "exportPictures": "正在加载原尺寸图片 %{loaded} / %{total}",
         "exportDrawing": "正在绘制图表…",

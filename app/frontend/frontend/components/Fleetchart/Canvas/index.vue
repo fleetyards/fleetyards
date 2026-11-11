@@ -356,6 +356,8 @@ const emptyGroupTitle = (option: FleetchartGroups) => {
       return t("labels.fleetchartApp.noSquadron");
     case FleetchartGroups.CAPTAIN:
       return t("labels.fleetchartApp.unknownCaptain");
+    case FleetchartGroups.HANGAR_GROUP:
+      return t("labels.fleetchartApp.noHangarGroup");
     default:
       return t("labels.fleetchartApp.groupOptions.none");
   }

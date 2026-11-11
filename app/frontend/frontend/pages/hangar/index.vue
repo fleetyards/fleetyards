@@ -33,6 +33,7 @@ import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { HANGAR_GROUPS } from "@/frontend/components/Fleetchart/options";
 import { useFleetchartCatalogueShips } from "@/frontend/composables/useFleetchartCatalogueShips";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
@@ -757,6 +758,7 @@ const { activeFilters } = useShipFilterSummary(() =>
 
       <FleetchartApp
         :items="vehicles?.items || []"
+        :groups="HANGAR_GROUPS"
         :arrange-items="arrangeItems"
         :arrange-loaded="wholeHangarLoaded"
         namespace="hangar"

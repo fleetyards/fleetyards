@@ -187,3 +187,50 @@ describe("grouping a fleet's ships", () => {
     ).toEqual(["b", "a", "c"]);
   });
 });
+
+describe("grouping a hangar's ships", () => {
+  const t = (key: string) => key;
+
+  const hangarShip = (
+    name: string,
+    groups: { name: string; sort?: number }[] = [],
+  ) =>
+    ({
+      id: name,
+      name,
+      hangarGroups: groups.map((group) => ({ id: group.name, ...group })),
+      model: {
+        name,
+        manufacturer: { code: "X", name: "RSI" },
+        metrics: { fleetchartOffsetLength: 10 },
+      },
+    }) as unknown as FleetchartEntry;
+
+  it("titles a ship in several groups with the first of them", () => {
+    expect(
+      groupTitleOf(
+        hangarShip("a", [
+          { name: "Cargo", sort: 2 },
+          { name: "Combat", sort: 1 },
+        ]),
+        FleetchartGroups.HANGAR_GROUP,
+        t,
+      ),
+    ).toBe("Combat");
+  });
+
+  it("orders groups as their owner sorted them, ungrouped ships last", () => {
+    const ships = [
+      hangarShip("a"),
+      hangarShip("b", [{ name: "Alpha", sort: 2 }]),
+      hangarShip("c", [{ name: "Zulu", sort: 1 }]),
+      hangarShip("d", [{ name: "Alpha", sort: 2 }]),
+    ];
+
+    expect(
+      names(
+        sortEntries(ships, FleetchartSorts.LIST, FleetchartGroups.HANGAR_GROUP),
+      ),
+    ).toEqual(["c", "b", "d", "a"]);
+  });
+});

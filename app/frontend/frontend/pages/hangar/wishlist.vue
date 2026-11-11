@@ -25,6 +25,7 @@ import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { HANGAR_GROUPS } from "@/frontend/components/Fleetchart/options";
 import { format } from "date-fns";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
@@ -419,6 +420,7 @@ const { activeFilters } = useShipFilterSummary(() =>
 
       <FleetchartApp
         :items="vehicles?.items || []"
+        :groups="HANGAR_GROUPS"
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"
