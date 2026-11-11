@@ -198,7 +198,7 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /filters/models/options lists only the signed in user's wishlist with onWishlist" do
-    owned, wished, untouched = create_list(:model, 3, :with_store_image)
+    owned, wished, _untouched = create_list(:model, 3, :with_store_image)
     user = create(:user)
     create(:vehicle, user:, model: owned)
     create(:vehicle, :wanted, user:, model: wished)
@@ -206,7 +206,26 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {"onWishlist" => true}} do
       assert_equal [wished.id], parsed_body["items"].map { |item| item["id"] }
-      refute_includes [owned.id, untouched.id], parsed_body["items"].first["id"]
+    end
+  end
+
+  test "GET /filters/models/options leaves hidden wishlist ships out of onWishlist" do
+    hidden = create(:model, :with_store_image)
+    user = create(:user)
+    create(:vehicle, :wanted, user:, model: hidden, hidden: true)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"onWishlist" => true}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /filters/models/options ignores onWishlist set to false" do
+    create(:model, :with_store_image)
+    sign_in create(:user)
+
+    assert_api_response :get, 200, params: {q: {"onWishlist" => false}} do
+      assert_not_empty parsed_body["items"]
     end
   end
 

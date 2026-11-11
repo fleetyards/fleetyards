@@ -431,7 +431,7 @@ module Api
         scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.with_textured_holo if ActiveModel::Type::Boolean.new.cast(model_query_params.delete("with_textured_holo"))
         scope = scope.where(id: current_resource_owner.vehicles.purchased.where(loaner: false).select(:model_id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
-        scope = scope.where(id: current_resource_owner.vehicles.wanted.where(loaner: false).select(:model_id)) if model_query_params.delete("on_wishlist") && current_resource_owner.present?
+        scope = scope.where(id: current_resource_owner.vehicles.visible.wanted.where(loaner: false).select(:model_id)) if ActiveModel::Type::Boolean.new.cast(model_query_params.delete("on_wishlist")) && current_resource_owner.present?
         scope = scope.where(id: Model.plannable_for(current_resource_owner).select(:id)) if model_query_params.delete("plannable")
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
