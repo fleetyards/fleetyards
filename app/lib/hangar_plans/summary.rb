@@ -156,42 +156,37 @@ module HangarPlans
       unresolved = 1 - acquisitions.size
 
       SlotCost.new(slot_id: slot.id, state: "decided", min_cost: total, max_cost: total,
-        store_cost_min: cheapest_start(slot, candidate), store_cost: store_cost(slot, candidate),
-        uncounted_max: uncounted_max(slot, candidate), unresolved_count: unresolved, complete: unresolved.zero? && costs.none?(&:nil?))
+        store_cost_min: cheapest_start(candidate), store_cost: store_cost(slot, candidate),
+        uncounted_max: uncounted_max(candidate), unresolved_count: unresolved, complete: unresolved.zero? && costs.none?(&:nil?))
     end
 
     # Nil when the ship or anything fitted to it has no price. A start without
     # its route is left out: it has a ship to start from, so buying the slot's
     # ship is no longer what it would cost.
     private def store_cost(slot, candidate)
-      missing = units_without_start(candidate)
-      return 0 if missing.zero?
+      return 0 if candidate.acquisitions.any?
 
       unit = unit_price(candidate)
       issue("missing_price", candidate.model.name, slot.id) if unit.nil?
-      unit && missing * unit
+      unit
     end
 
-    # A start on another ship can only lower what the store asks for the unit.
-    private def uncounted_max(slot, candidate)
-      (unit_price(candidate) || 0) * (1 - routed(candidate).size)
+    # A start on another ship can only lower what the store asks for the ship.
+    private def uncounted_max(candidate)
+      routed(candidate).any? ? 0 : unit_price(candidate) || 0
     end
 
-    # The least those units could come to from the ships still free: one of the
-    # same model costs nothing, and otherwise the dearest one upgrades can lead
-    # from saves its price. Each free ship serves one unit, here as in the plan.
-    private def cheapest_start(slot, candidate)
-      missing = units_without_start(candidate)
-      return 0 if missing.zero?
+    # The least the slot's ship could come to from the ships still free: one of
+    # the same model costs nothing, and otherwise the dearest one upgrades can
+    # lead from saves its price. Each free ship serves one slot, here as in the
+    # plan.
+    private def cheapest_start(candidate)
+      return 0 if candidate.acquisitions.any?
 
       unit = unit_price(candidate)
       return if unit.nil?
 
-      Array.new(missing) { cost_from_free_ship(candidate.model, unit) }.sum
-    end
-
-    private def units_without_start(candidate)
-      [1 - candidate.acquisitions.size, 0].max
+      cost_from_free_ship(candidate.model, unit)
     end
 
     private def cost_from_free_ship(model, unit)
