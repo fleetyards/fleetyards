@@ -336,6 +336,14 @@ const reachBadge = (model?: HangarPlanModel) =>
 // What a step can spend of what the user holds: owned upgrades or bought-back
 // ones, each as often as it is still free, leading nowhere dearer than the
 // target.
+// A held upgrade reads as the pair it joins, "MOLE → Merchantman", the way
+// RSI names it; its RSI title stands in where either ship is not matched.
+const upgradeTitle = (
+  name: string,
+  from?: HangarPlanModel | null,
+  to?: HangarPlanModel | null,
+) => (from && to ? `${from.name} → ${to.name}` : (to?.name ?? name));
+
 const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
   if (step.sourceKind === HangarPlanUpgradeSourceEnum.OWNED_CCU) {
     return (resources.value?.upgrades ?? []).flatMap((item) => {
@@ -349,7 +357,7 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
       return [
         {
           id: item.id,
-          title: item.toModel?.name ?? item.name,
+          title: upgradeTitle(item.name, item.fromModel, item.toModel),
           ship: item.toModel ?? undefined,
           // The RSI title only says more than the ship when we could not
           // match the ship it names.
@@ -385,7 +393,11 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
       return [
         {
           id: pledge.id,
-          title: pledge.upgradeToModel?.name ?? pledge.name,
+          title: upgradeTitle(
+            pledge.name,
+            pledge.upgradeFromModel,
+            pledge.upgradeToModel,
+          ),
           ship: pledge.upgradeToModel ?? undefined,
           meta: pledge.upgradeToModel ? undefined : pledge.name,
           keywords: pledge.name,
