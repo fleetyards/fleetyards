@@ -267,6 +267,31 @@ describe("VehicleEditModal", () => {
     expect(wrapper.find('input[name="flagship"]').exists()).toBe(false);
   });
 
+  it("records a module a wishlist ship is wanted with", async () => {
+    const v = vehicle(false);
+    v.model.hasModules = true;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: v, wishlist: true, tab: VehicleEditTabsEnum.MODULES },
+    });
+    await flushPromises();
+
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .filter((tab) => !tab.props("hidden"))
+        .map((tab) => tab.props("id")),
+    ).toEqual(["visibility", "names", "modules"]);
+
+    await wrapper.get("[data-test='vehicle-addon-toggle']").trigger("click");
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { modelModuleIds: ["m1"] },
+      }),
+    );
+  });
+
   it("opens a wishlist ship on its names when asked for a hangar tab", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
