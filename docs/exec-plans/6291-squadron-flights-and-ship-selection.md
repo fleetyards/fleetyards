@@ -79,13 +79,15 @@ Members choose which of their ships a squadron gets (officers can ask for specif
 
 ## Discovery Log
 
+- **2026-11-11** A flight owns a template team (`mission_teams.mission_id` nullable, one-owner check constraint), so ships, slots, their validations, the copier and the editor components are shared rather than duplicated. Flight ship/slot controllers subclass the template ones through `authorize_ship!`/`authorize_slot!` seams.
+- **2026-11-11** `json.loads` + `json.dumps` on the translation files collapses duplicate keys (headlines.json has one); translations are inserted at the text level.
 - **2026-11-11** Initial research and plan creation. Fleet visibility is materialised as `FleetVehicle` rows; squadron narrowing is by owner only. No endpoint lets an admin create a signup for someone else, so invites need a new creation path.
 
 ## Progress
 
-- [ ] Phase 1 — Per-squadron ship selection
-- [ ] Phase 2 — Officer ship requests
-- [ ] Phase 3 — One team-tree copier
-- [ ] Phase 4 — Flights
-- [ ] Phase 5 — Apply a Flight
-- [ ] Phase 6 — Invites and alternates
+- [x] Phase 1 — Per-squadron ship selection
+- [x] Phase 2 — Officer ship requests
+- [x] Phase 3 — One team-tree copier
+- [x] Phase 4 — Flights
+- [x] Phase 5 — Apply a Flight
+- [x] Phase 6 — Invites and alternates
