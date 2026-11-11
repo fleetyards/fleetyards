@@ -44,34 +44,34 @@ test.describe("Hangar Planner", () => {
       .getByTestId("hangar-plan-gap")
       .getByTestId("hangar-plan-flow-pick-start")
       .click();
-    await page.getByTestId("modal").waitFor({ state: "visible" });
+    const panel = page.getByTestId("hangar-plan-panel");
+    await panel.waitFor({ state: "visible" });
 
     const paired = page.waitForResponse(
       (response) =>
         response.url().includes("/acquisitions") &&
         response.request().method() === "POST",
     );
-    await page
-      .getByTestId("modal")
-      .getByTestId("pick-list-row")
+    await panel
+      .getByTestId("ship-list-row")
       .filter({ hasText: "Cutlass Black" })
       .click();
+    await panel.getByTestId("ship-detail-commit").click();
     await paired;
-    await page.getByTestId("modal").waitFor({ state: "hidden" });
+    await panel.waitFor({ state: "hidden" });
 
     await page
       .getByTestId("hangar-plan-vehicle-unrouted")
       .filter({ hasText: "Cutlass Black" })
       .getByTestId("hangar-plan-flow-route")
       .click();
-    await page.getByTestId("modal").waitFor({ state: "visible" });
+    await panel.waitFor({ state: "visible" });
 
-    const modal = page.getByTestId("modal");
-    await modal
+    await panel
       .getByTestId("pick-list-steps.0.upgrade")
       .getByRole("button", { name: /Carrack/ })
       .click();
-    await expect(modal.getByTestId("hangar-plan-route-preview")).toContainText(
+    await expect(panel.getByTestId("hangar-plan-route-preview")).toContainText(
       "The route ends on the Carrack.",
     );
 
@@ -80,9 +80,9 @@ test.describe("Hangar Planner", () => {
         response.url().includes("/acquisitions") &&
         response.request().method() === "PUT",
     );
-    await page.getByTestId("hangar-plan-route-save").click();
+    await panel.getByTestId("hangar-plan-route-save").click();
     await routeSaved;
-    await page.getByTestId("modal").waitFor({ state: "hidden" });
+    await panel.waitFor({ state: "hidden" });
 
     const statuses = page.getByTestId("hangar-plan-vehicle-status");
     await expect(statuses.filter({ hasText: "Cutlass Black" })).toContainText(

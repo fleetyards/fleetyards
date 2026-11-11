@@ -16,6 +16,9 @@ class HangarPlanMelt < ApplicationRecord
 
   before_validation -> { self.model_id ||= vehicle&.model_id }
   before_create -> { self.value_snapshot ||= list_value }
+  # A pledge not melted is not bought back: the routes that start from it lose
+  # their start with it.
+  before_destroy :release_bought_back_starts
 
   def list_value
     vehicle&.rsi_pledge_melt_value || model&.pledge_price
@@ -41,6 +44,19 @@ class HangarPlanMelt < ApplicationRecord
     !vehicle_missing? && vehicle.model_id != model_id
   end
 
+  # The routes that start by buying this melt's pledge back, by any ship of it.
+  def bought_back_starts
+    starts = hangar_plan.acquisitions.where(start_kind: "melted")
+    return starts.where(source_vehicle_id: vehicle_id) if vehicle.nil? || vehicle.rsi_pledge_id.blank?
+
+    starts.joins(:source_vehicle).where(source_vehicle_id: vehicle_id)
+      .or(starts.joins(:source_vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}))
+  end
+
+  private def release_bought_back_starts
+    bought_back_starts.destroy_all
+  end
+
   # Only as it is planned: a melt from before RSI stopped allowing it stays, for
   # the user to take back.
   private def vehicle_meltable
@@ -52,13 +68,14 @@ class HangarPlanMelt < ApplicationRecord
 
     if vehicle.blank? || hangar_plan.live_vehicles.where(id: vehicle.id).none?
       errors.add(:vehicle_id, :invalid)
-    elsif hangar_plan.acquisitions.where(source_vehicle_id: vehicle_id).exists?
+    elsif hangar_plan.acquisitions.where(start_kind: "owned", source_vehicle_id: vehicle_id).exists?
       errors.add(:vehicle_id, :taken)
     elsif hangar_plan.melted_vehicle_ids.include?(vehicle_id)
       errors.add(:vehicle_id, :pledge_melted)
     # Melting the ship melts its whole pledge, so no ship of it can be kept.
     elsif vehicle.rsi_pledge_id.present? &&
-        hangar_plan.acquisitions.joins(:source_vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
+        hangar_plan.acquisitions.where(start_kind: "owned").joins(:source_vehicle)
+            .where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
       errors.add(:vehicle_id, :pledge_kept)
     elsif kept_in_pledge?
       errors.add(:vehicle_id, :pledge_kept)

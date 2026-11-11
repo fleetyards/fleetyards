@@ -1,11 +1,10 @@
 <script lang="ts">
 export default {
-  name: "HangarPlannerRouteModal",
+  name: "HangarPlannerRouteView",
 };
 </script>
 
 <script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
@@ -22,8 +21,6 @@ import ModelSelect from "@/frontend/components/Hangar/Planner/ModelSelect/index.
 import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
-import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
-import type { RouteChainNode } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 import {
   manufacturerText,
   usePlanMoney,
@@ -38,8 +35,6 @@ import {
 import { useElementSize } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useComlink } from "@/shared/composables/useComlink";
-import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import {
   type HangarPlanAcquisition,
@@ -94,6 +89,10 @@ type UpgradeOption = PickListItem & {
 
 const props = defineProps<Props>();
 
+const emit = defineEmits<{
+  done: [];
+}>();
+
 const { t, toDollar } = useI18n();
 const { money } = usePlanMoney();
 // A share of the bill reads as an amount even when it is nothing, which
@@ -104,7 +103,6 @@ const payable = (value: number | null) => {
   return value === 0 ? "$0" : toDollar(value);
 };
 const { displayAlert } = useAppNotifications();
-const comlink = useComlink();
 const { updatePlan } = useHangarPlanCache();
 
 const { data: resources, isLoading: resourcesLoading } = useHangarPlanResources(
@@ -120,6 +118,13 @@ const target = computed(() => props.candidate.model);
 let stepKey = 0;
 
 const startKind = computed(() => props.acquisition.startKind);
+
+// A melted pledge bought back is paid like any other buy-back.
+const boughtBack = computed(
+  () =>
+    startKind.value === HangarPlanStartKindEnum.BUYBACK ||
+    startKind.value === HangarPlanStartKindEnum.MELTED,
+);
 const startModelId = computed(() => props.acquisition.startModel.id);
 const priceOverride = ref<string>(
   props.acquisition.priceOverride?.toString() ?? "",
@@ -141,6 +146,9 @@ const steps = ref<StepDraft[]>(
 );
 
 const touched = ref(false);
+
+defineExpose({ dirty: touched });
+
 watch(
   [priceOverride, steps, startUsesToken],
   () => {
@@ -148,7 +156,6 @@ watch(
   },
   { deep: true },
 );
-useModalDirty(touched);
 
 // Every ship the dialog can name, so the route reads in names however each
 // stop was picked.
@@ -304,6 +311,13 @@ const compactSource = computed(
   () => mainWidth.value > 0 && mainWidth.value < 480,
 );
 
+// Too narrow for the totals beside the steps, they move under them.
+const layout = useTemplateRef<HTMLElement>("layout");
+const { width: layoutWidth } = useElementSize(layout);
+const stacked = computed(
+  () => layoutWidth.value > 0 && layoutWidth.value < 620,
+);
+
 const stepFromId = (index: number) =>
   index === 0 ? startModel.value : steps.value[index - 1].toModelId;
 
@@ -322,6 +336,14 @@ const reachBadge = (model?: HangarPlanModel) =>
 // What a step can spend of what the user holds: owned upgrades or bought-back
 // ones, each as often as it is still free, leading nowhere dearer than the
 // target.
+// A held upgrade reads as the pair it joins, "MOLE → Merchantman", the way
+// RSI names it; its RSI title stands in where either ship is not matched.
+const upgradeTitle = (
+  name: string,
+  from?: HangarPlanModel | null,
+  to?: HangarPlanModel | null,
+) => (from && to ? `${from.name} → ${to.name}` : (to?.name ?? name));
+
 const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
   if (step.sourceKind === HangarPlanUpgradeSourceEnum.OWNED_CCU) {
     return (resources.value?.upgrades ?? []).flatMap((item) => {
@@ -335,7 +357,7 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
       return [
         {
           id: item.id,
-          title: item.toModel?.name ?? item.name,
+          title: upgradeTitle(item.name, item.fromModel, item.toModel),
           ship: item.toModel ?? undefined,
           // The RSI title only says more than the ship when we could not
           // match the ship it names.
@@ -371,7 +393,11 @@ const heldUpgrades = (step: StepDraft): UpgradeOption[] => {
       return [
         {
           id: pledge.id,
-          title: pledge.upgradeToModel?.name ?? pledge.name,
+          title: upgradeTitle(
+            pledge.name,
+            pledge.upgradeFromModel,
+            pledge.upgradeToModel,
+          ),
           ship: pledge.upgradeToModel ?? undefined,
           meta: pledge.upgradeToModel ? undefined : pledge.name,
           keywords: pledge.name,
@@ -514,6 +540,25 @@ const storeStepItems = (index: number) => {
     );
 };
 
+// A stop between two steps is a store upgrade, the one source that leads
+// anywhere. The steps after it now start from wherever it ends, so an upgrade
+// held for their old start is asked for again.
+const insertStep = (index: number) => {
+  const later = steps.value
+    .slice(index)
+    .map((step) =>
+      step.sourceKind === HangarPlanUpgradeSourceEnum.STORE
+        ? step
+        : { ...draft(step.sourceKind), key: step.key },
+    );
+
+  steps.value = [
+    ...steps.value.slice(0, index),
+    draft(HangarPlanUpgradeSourceEnum.STORE),
+    ...later,
+  ];
+};
+
 // The last upgrade is what reaches the target, so it can be changed but not
 // dropped, unless the route starts on the target already.
 const removable = (index: number) =>
@@ -554,6 +599,8 @@ const startPrice = computed(() => {
         )?.price ??
         null
       );
+    case HangarPlanStartKindEnum.MELTED:
+      return override ?? props.acquisition.price ?? null;
     default:
       return (
         override ??
@@ -605,7 +652,7 @@ const payment = computed(() => {
 
   if (startKind.value === HangarPlanStartKindEnum.STORE) {
     credit.push(startPrice.value);
-  } else if (startKind.value === HangarPlanStartKindEnum.BUYBACK) {
+  } else if (boughtBack.value) {
     (startUsesToken.value ? credit : cash).push(startPrice.value);
   }
 
@@ -630,26 +677,6 @@ const payment = computed(() => {
     cashWithVat: vat === null ? cashTotal : sum([cashTotal, vat]),
   };
 });
-
-const nodes = computed<RouteChainNode[]>(() => [
-  {
-    key: "start",
-    kind: t(`hangarPlanner.startKinds.${startKind.value}`),
-    ship: startName.value,
-    model: props.acquisition.startModel,
-    price: money(startPrice.value),
-  },
-  ...steps.value.map((step, index) => ({
-    key: String(step.key),
-    kind: t("hangarPlanner.stepNumber", { number: index + 1 }),
-    ship: nameOf(step.toModelId) ?? "…",
-    model: step.toModelId ? models.value.get(step.toModelId) : undefined,
-    link: {
-      source: t(`hangarPlanner.upgradeSources.${step.sourceKind}`),
-      price: money(stepPrices.value[index]),
-    },
-  })),
-]);
 
 const stepInfo = (step: StepDraft, index: number) => {
   switch (step.sourceKind) {
@@ -682,8 +709,7 @@ const stepInputs = () =>
       !!step.usesBuybackToken,
   }));
 
-const startTokenInput = () =>
-  startKind.value === HangarPlanStartKindEnum.BUYBACK && startUsesToken.value;
+const startTokenInput = () => boughtBack.value && startUsesToken.value;
 
 const updateMutation = useUpdateHangarPlanAcquisition();
 
@@ -705,7 +731,8 @@ const onSubmit = async () => {
     });
 
     updatePlan(plan);
-    comlink.emit("close-modal", true);
+    touched.value = false;
+    emit("done");
   } catch (error) {
     const response = (
       error as {
@@ -726,143 +753,151 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Modal
-    :loading="resourcesLoading || submitting"
-    :title="t('hangarPlanner.editRoute', { ship: target.name })"
-  >
+  <div class="panel-view" data-test="hangar-plan-route">
     <form
       id="hangar-plan-route-form"
-      class="route-layout"
+      class="panel-view__body"
       @submit.prevent="onSubmit"
     >
-      <div ref="main" class="route-main">
-        <div class="route-flow">
-          <section class="route-card" data-test="hangar-plan-route-ship-card">
-            <div class="route-step__head">
-              <span class="route-step__number">
-                {{ t("hangarPlanner.route.shipCard") }}
-              </span>
-            </div>
-            <p class="route-start">
-              <strong>{{ startName }}</strong>
-              <span class="route-muted">
-                {{ t(`hangarPlanner.startKinds.${startKind}`) }}
-              </span>
-            </p>
-            <div
-              v-if="
-                startKind === HangarPlanStartKindEnum.STORE ||
-                startKind === HangarPlanStartKindEnum.BUYBACK
-              "
-              class="route-step__options"
-            >
-              <FormInput
-                v-model="priceOverride"
-                name="priceOverride"
-                :type="InputTypesEnum.NUMBER"
-                :min="0"
-                :step="0.01"
-                prefix="$"
-                :label="t('hangarPlanner.fields.priceOverride')"
-                :placeholder="t('hangarPlanner.fields.priceOverride')"
-                class="route-step__price"
-                no-label
-                standalone
-              />
-              <FormCheckbox
-                v-if="startKind === HangarPlanStartKindEnum.BUYBACK"
-                class="route-step__token"
-                v-model="startUsesToken"
-                name="usesBuybackToken"
-                :label="t('hangarPlanner.route.useToken')"
-                data-test="hangar-plan-route-start-token"
-              />
-            </div>
-          </section>
-
-          <section v-if="upgradable" class="route-flow__steps">
-            <ol v-if="steps.length" class="route-steps">
+      <!-- Nothing changes under a save on its way, which would be lost when it lands. -->
+      <fieldset :disabled="submitting" class="route-view__fieldset">
+        <div
+          ref="layout"
+          class="route-view"
+          :class="{ 'route-view--stacked': stacked }"
+        >
+          <div ref="main" class="route-view__steps">
+            <h3 class="panel-view__label">
+              {{ t("hangarPlanner.panel.steps") }}
+            </h3>
+            <ol class="route-view__chain">
               <li
-                v-for="(step, index) in steps"
-                :key="step.key"
-                class="route-step"
-                data-test="hangar-plan-route-step"
+                class="route-view__stop"
+                data-test="hangar-plan-route-ship-card"
               >
-                <div class="route-step__head">
-                  <span class="route-step__number">
-                    {{ t("hangarPlanner.stepNumber", { number: index + 1 }) }}
+                <span class="route-view__stop-name">
+                  <strong>{{ startName }}</strong>
+                  <span class="panel-view__muted">
+                    {{ t(`hangarPlanner.startKinds.${startKind}`) }} ·
+                    {{ money(startPrice) }}
                   </span>
-                  <BtnGroup
-                    segmented
-                    :size="BtnSizesEnum.SM"
-                    :aria-label="t('hangarPlanner.fields.upgradeSource')"
-                  >
-                    <Btn
-                      v-for="kind in stepSources"
-                      :key="kind"
-                      v-tooltip="
-                        compactSource
-                          ? t(`hangarPlanner.upgradeSources.${kind}`)
-                          : undefined
-                      "
-                      :active="step.sourceKind === kind"
-                      :data-test="`hangar-plan-route-step-source-${kind}`"
-                      @click="setSource(index, kind)"
-                    >
-                      <i :class="sourceIcons[kind]" />
-                      <span :class="{ 'sr-only': compactSource }">
-                        {{ t(`hangarPlanner.upgradeSources.${kind}`) }}
-                      </span>
-                    </Btn>
-                  </BtnGroup>
-                  <Btn
-                    :size="BtnSizesEnum.XS"
-                    :variant="BtnVariantsEnum.BARE"
-                    :tone="BtnTonesEnum.DANGER"
-                    :aria-label="t('hangarPlanner.removeStep')"
-                    class="route-step__remove"
-                    :class="{ invisible: !removable(index) }"
-                    :disabled="!removable(index)"
-                    @click="removeStep(step.key)"
-                  >
-                    <i class="fa-light fa-trash" />
-                  </Btn>
-                </div>
-
-                <div class="route-step__line">
-                  <p class="route-step__fixed-line">
-                    <span class="route-muted">
-                      {{ t("hangarPlanner.route.from") }}
-                    </span>
-                    <strong class="route-step__name">
-                      {{ nameOf(stepFromId(index)) ?? "…" }}
-                    </strong>
-                  </p>
-                  <i
-                    class="fa-light fa-arrow-right route-step__arrow"
-                    aria-hidden="true"
+                </span>
+                <div
+                  v-if="
+                    startKind === HangarPlanStartKindEnum.STORE || boughtBack
+                  "
+                  class="route-view__options"
+                >
+                  <FormInput
+                    v-model="priceOverride"
+                    name="priceOverride"
+                    :type="InputTypesEnum.NUMBER"
+                    :min="0"
+                    :step="0.01"
+                    prefix="$"
+                    :label="t('hangarPlanner.fields.priceOverride')"
+                    :placeholder="t('hangarPlanner.fields.priceOverride')"
+                    class="route-view__price"
+                    no-label
+                    standalone
                   />
-                  <div class="route-step__picker">
-                    <template
+                  <FormCheckbox
+                    v-if="boughtBack"
+                    v-model="startUsesToken"
+                    name="usesBuybackToken"
+                    :label="t('hangarPlanner.route.useToken')"
+                    data-test="hangar-plan-route-start-token"
+                  />
+                </div>
+              </li>
+
+              <template v-if="upgradable">
+                <template v-for="(step, index) in steps" :key="step.key">
+                  <li class="route-view__link">
+                    <Btn
+                      v-if="index > 0"
+                      :size="BtnSizesEnum.XS"
+                      :variant="BtnVariantsEnum.BARE"
+                      data-test="hangar-plan-route-insert"
+                      @click="insertStep(index)"
+                    >
+                      <i class="fa-light fa-plus" />
+                      {{ t("hangarPlanner.panel.addStop") }}
+                    </Btn>
+                  </li>
+                  <li
+                    class="route-view__step"
+                    data-test="hangar-plan-route-step"
+                  >
+                    <div class="route-view__step-head">
+                      <span class="panel-view__label">
+                        {{
+                          t("hangarPlanner.panel.stepPaidWith", {
+                            number: index + 1,
+                          })
+                        }}
+                      </span>
+                      <Btn
+                        :size="BtnSizesEnum.XS"
+                        :variant="BtnVariantsEnum.BARE"
+                        :tone="BtnTonesEnum.DANGER"
+                        :aria-label="t('hangarPlanner.removeStep')"
+                        :class="{ invisible: !removable(index) }"
+                        :disabled="!removable(index)"
+                        @click="removeStep(step.key)"
+                      >
+                        <i class="fa-light fa-trash" />
+                      </Btn>
+                    </div>
+                    <BtnGroup
+                      class="route-view__sources"
+                      segmented
+                      :size="BtnSizesEnum.SM"
+                      :aria-label="t('hangarPlanner.fields.upgradeSource')"
+                    >
+                      <Btn
+                        v-for="kind in stepSources"
+                        :key="kind"
+                        v-tooltip="
+                          compactSource
+                            ? t(`hangarPlanner.upgradeSources.${kind}`)
+                            : undefined
+                        "
+                        :active="step.sourceKind === kind"
+                        :data-test="`hangar-plan-route-step-source-${kind}`"
+                        @click="setSource(index, kind)"
+                      >
+                        <i :class="sourceIcons[kind]" />
+                        <span :class="{ 'sr-only': compactSource }">
+                          {{ t(`hangarPlanner.upgradeSources.${kind}`) }}
+                        </span>
+                      </Btn>
+                    </BtnGroup>
+
+                    <p class="route-view__from">
+                      <span class="panel-view__muted">
+                        {{ t("hangarPlanner.route.from") }}
+                      </span>
+                      <strong>{{ nameOf(stepFromId(index)) ?? "…" }}</strong>
+                      <i class="fa-light fa-arrow-right" aria-hidden="true" />
+                    </p>
+                    <PickList
                       v-if="
                         step.sourceKind === HangarPlanUpgradeSourceEnum.STORE
                       "
-                    >
-                      <PickList
-                        :name="`steps.${index}.toModelId`"
-                        compact
-                        :loading="resourcesLoading"
-                        :model-value="step.toModelId"
-                        :items="storeStepItems(index)"
-                        :empty="t('hangarPlanner.route.noStoreShip')"
-                        @pick="
-                          (item) => {
-                            step.toModelId = item.id;
-                            pickStoreTarget(index);
-                          }
-                        "
-                      />
-                    </template>
+                      :name="`steps.${index}.toModelId`"
+                      compact
+                      :loading="resourcesLoading"
+                      :model-value="step.toModelId"
+                      :items="storeStepItems(index)"
+                      :empty="t('hangarPlanner.route.noStoreShip')"
+                      @pick="
+                        (item) => {
+                          step.toModelId = item.id;
+                          pickStoreTarget(index);
+                        }
+                      "
+                    />
                     <template v-else>
                       <PickList
                         :name="`steps.${index}.upgrade`"
@@ -904,322 +939,256 @@ const onSubmit = async () => {
                         v-model="step.toModelId"
                         :name="`steps.${index}.toModelId`"
                         no-label
-                        class="route-step__select"
                         :label="t('hangarPlanner.route.unknownTarget')"
                         @pick="(name) => pickStoreTarget(index, name)"
                       />
                     </template>
-                  </div>
-                </div>
-                <div class="route-step__options">
-                  <FormInput
-                    v-if="
-                      step.sourceKind !== HangarPlanUpgradeSourceEnum.OWNED_CCU
-                    "
-                    v-model="step.priceOverride"
-                    :name="`steps.${index}.priceOverride`"
-                    :type="InputTypesEnum.NUMBER"
-                    :min="0"
-                    :step="0.01"
-                    prefix="$"
-                    :label="t('hangarPlanner.fields.priceOverride')"
-                    :placeholder="t('hangarPlanner.fields.priceOverride')"
-                    class="route-step__price"
-                    no-label
-                    standalone
-                  />
-                  <FormCheckbox
-                    class="route-step__token"
-                    v-if="
-                      step.sourceKind === HangarPlanUpgradeSourceEnum.BUYBACK
-                    "
-                    v-model="step.usesBuybackToken"
-                    :name="`steps.${index}.usesBuybackToken`"
-                    :label="t('hangarPlanner.route.useToken')"
-                    :data-test="`hangar-plan-route-steps-token`"
-                  />
-                  <span
-                    v-if="
-                      step.sourceKind === HangarPlanUpgradeSourceEnum.STORE &&
-                      stepInfo(step, index)
-                    "
-                    class="route-muted"
-                  >
-                    {{ stepInfo(step, index) }}
+
+                    <div class="route-view__options">
+                      <FormInput
+                        v-if="
+                          step.sourceKind !==
+                          HangarPlanUpgradeSourceEnum.OWNED_CCU
+                        "
+                        v-model="step.priceOverride"
+                        :name="`steps.${index}.priceOverride`"
+                        :type="InputTypesEnum.NUMBER"
+                        :min="0"
+                        :step="0.01"
+                        prefix="$"
+                        :label="t('hangarPlanner.fields.priceOverride')"
+                        :placeholder="t('hangarPlanner.fields.priceOverride')"
+                        class="route-view__price"
+                        no-label
+                        standalone
+                      />
+                      <FormCheckbox
+                        v-if="
+                          step.sourceKind ===
+                          HangarPlanUpgradeSourceEnum.BUYBACK
+                        "
+                        v-model="step.usesBuybackToken"
+                        :name="`steps.${index}.usesBuybackToken`"
+                        :label="t('hangarPlanner.route.useToken')"
+                        data-test="hangar-plan-route-steps-token"
+                      />
+                      <span
+                        v-if="stepInfo(step, index)"
+                        class="panel-view__muted"
+                      >
+                        {{ stepInfo(step, index) }}
+                      </span>
+                    </div>
+                  </li>
+                </template>
+              </template>
+
+              <li class="route-view__link" />
+              <li
+                class="route-view__stop"
+                :class="{ 'route-view__stop--done': endsOnCandidate }"
+              >
+                <span class="route-view__stop-name">
+                  <strong>{{ target.name }}</strong>
+                  <span class="panel-view__muted">
+                    {{ t("hangarPlanner.panel.routeEnd") }}
                   </span>
-                </div>
+                </span>
+                <i
+                  v-if="endsOnCandidate"
+                  class="fa-light fa-circle-check route-view__check"
+                  :aria-label="
+                    t('hangarPlanner.route.done', { ship: target.name })
+                  "
+                />
               </li>
             </ol>
-          </section>
+
+            <Alert v-if="!endsOnCandidate && steps.length" variant="warning">
+              {{ t("hangarPlanner.routeMustEnd", { ship: target.name }) }}
+            </Alert>
+            <Alert v-if="errorMessages.length" variant="danger">
+              <ul class="route-view__errors">
+                <li v-for="message in errorMessages" :key="message">
+                  {{ message }}
+                </li>
+              </ul>
+            </Alert>
+          </div>
+
+          <aside class="route-view__side" data-test="hangar-plan-route-preview">
+            <section class="panel-view__block">
+              <h3 class="panel-view__label">
+                {{ t("hangarPlanner.route.yourRoute") }}
+              </h3>
+              <dl class="route-view__totals">
+                <dt>{{ t("hangarPlanner.route.startCost") }}</dt>
+                <dd>{{ money(totals.start) }}</dd>
+                <dt>{{ t("hangarPlanner.upgradeSteps") }}</dt>
+                <dd>{{ money(totals.upgrades) }}</dd>
+                <dt class="route-view__sum">
+                  {{ t("hangarPlanner.summary.spend") }}
+                </dt>
+                <dd class="route-view__sum">{{ money(totals.spend) }}</dd>
+              </dl>
+            </section>
+            <section
+              class="panel-view__block"
+              data-test="hangar-plan-route-payment"
+            >
+              <dl class="route-view__totals">
+                <dt>{{ t("hangarPlanner.route.paidWithCredit") }}</dt>
+                <dd>{{ payable(payment.credit) }}</dd>
+                <dt>{{ t("hangarPlanner.route.paidWithCash") }}</dt>
+                <dd>{{ payable(payment.cash) }}</dd>
+                <template v-if="payment.rate">
+                  <dt>
+                    {{ t("hangarPlanner.route.vat", { rate: payment.rate }) }}
+                  </dt>
+                  <dd>{{ payable(payment.vat) }}</dd>
+                  <dt class="route-view__sum">
+                    {{ t("hangarPlanner.route.cashWithVat") }}
+                  </dt>
+                  <dd class="route-view__sum">
+                    {{ payable(payment.cashWithVat) }}
+                  </dd>
+                </template>
+              </dl>
+              <p class="panel-view__muted">
+                {{ t("hangarPlanner.route.paymentHint") }}
+              </p>
+            </section>
+            <p v-if="canSave" class="route-view__done">
+              <i class="fa-light fa-circle-check" />
+              {{ t("hangarPlanner.route.done", { ship: target.name }) }}
+            </p>
+            <Btn
+              :type="BtnTypesEnum.SUBMIT"
+              :size="BtnSizesEnum.MD"
+              :loading="submitting"
+              :disabled="!canSave"
+              block
+              data-test="hangar-plan-route-save"
+            >
+              <i class="fa-light fa-check" />
+              {{ t("hangarPlanner.panel.saveRoute") }}
+            </Btn>
+          </aside>
         </div>
-
-        <Alert v-if="!endsOnCandidate && steps.length" variant="warning">
-          {{ t("hangarPlanner.routeMustEnd", { ship: target.name }) }}
-        </Alert>
-        <Alert v-if="errorMessages.length" variant="danger">
-          <ul class="route-errors">
-            <li v-for="message in errorMessages" :key="message">
-              {{ message }}
-            </li>
-          </ul>
-        </Alert>
-      </div>
-
-      <aside class="route-side" data-test="hangar-plan-route-preview">
-        <h3 class="route-side__title">
-          {{ t("hangarPlanner.route.yourRoute") }}
-        </h3>
-        <RouteChain
-          :nodes="nodes"
-          :pending="endsOnCandidate ? undefined : target.name"
-          vertical
-        />
-        <dl class="route-totals">
-          <dt>{{ t("hangarPlanner.route.startCost") }}</dt>
-          <dd>{{ money(totals.start) }}</dd>
-          <dt>{{ t("hangarPlanner.upgradeSteps") }}</dt>
-          <dd>{{ money(totals.upgrades) }}</dd>
-          <dt class="route-totals__sum">
-            {{ t("hangarPlanner.summary.spend") }}
-          </dt>
-          <dd class="route-totals__sum">{{ money(totals.spend) }}</dd>
-        </dl>
-        <dl class="route-totals" data-test="hangar-plan-route-payment">
-          <dt>{{ t("hangarPlanner.route.paidWithCredit") }}</dt>
-          <dd>{{ payable(payment.credit) }}</dd>
-          <dt>{{ t("hangarPlanner.route.paidWithCash") }}</dt>
-          <dd>{{ payable(payment.cash) }}</dd>
-          <template v-if="payment.rate">
-            <dt>{{ t("hangarPlanner.route.vat", { rate: payment.rate }) }}</dt>
-            <dd>{{ payable(payment.vat) }}</dd>
-            <dt class="route-totals__sum">
-              {{ t("hangarPlanner.route.cashWithVat") }}
-            </dt>
-            <dd class="route-totals__sum">
-              {{ payable(payment.cashWithVat) }}
-            </dd>
-          </template>
-        </dl>
-        <p class="route-muted route-totals__hint">
-          {{ t("hangarPlanner.route.paymentHint") }}
-        </p>
-        <p v-if="canSave" class="route-done">
-          <i class="fa-light fa-circle-check" />
-          {{ t("hangarPlanner.route.done", { ship: target.name }) }}
-        </p>
-      </aside>
+      </fieldset>
     </form>
-
-    <template #footer>
-      <Btn
-        :type="BtnTypesEnum.SUBMIT"
-        form="hangar-plan-route-form"
-        :loading="submitting"
-        :disabled="!canSave"
-        data-test="hangar-plan-route-save"
-      >
-        {{ t("actions.save") }}
-      </Btn>
-    </template>
-  </Modal>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-.route-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 24px;
-  align-items: start;
+<style lang="scss" scoped src="../view.scss"></style>
 
-  @media (max-width: 991px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+<style lang="scss" scoped>
+.route-view__fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-// Spaced by a gap rather than margins, so nothing trails the last card and the
-// dialog scrolls only when the content needs it.
-.route-main {
+.route-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 22px;
+  align-items: start;
+}
+
+.route-view--stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.route-view__steps {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   min-width: 0;
 }
 
-// The route stays in view while the form beside it scrolls; on a narrow
-// screen it leads, since it is what the form is building.
-.route-side {
-  position: sticky;
-  top: 0;
+.route-view__chain {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  border: 1px solid var(--color-edge-faint);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.route-view__stop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid var(--color-edge-soft);
   border-radius: 12px;
-  background: var(--color-gray-black);
-
-  @media (max-width: 991px) {
-    position: static;
-    order: -1;
-  }
+  background: var(--color-control);
 }
 
-.route-side__title {
-  margin: 0;
-  font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 0.625rem;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-dim);
+.route-view__stop--done {
+  border-color: var(--color-primary);
 }
 
-.route-totals {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 6px 10px;
-  margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-edge-soft);
-  font-size: 0.85rem;
-
-  dt {
-    color: var(--color-text-dim);
-  }
-
-  dd {
-    margin: 0;
-    font-weight: 600;
-    text-align: right;
-    color: var(--color-lifted);
-  }
-}
-
-.route-totals__sum {
-  font-size: 1.1rem;
-}
-
-.route-totals__hint {
-  margin: 0;
-  font-size: 0.8rem;
-}
-
-dt.route-totals__sum {
-  color: var(--color-lifted);
-}
-
-.route-start {
+.route-view__stop-name {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin: 0;
+  min-width: 0;
 
   strong {
     color: var(--color-lifted);
   }
 }
 
-.route-muted {
-  margin: 0;
-  color: var(--color-text-dim);
-}
-
-.route-done {
-  margin: 0;
+.route-view__check {
   color: var(--color-success);
 }
 
-.route-subtitle {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: var(--color-text-dim);
-}
-
-.route-flow {
+// The line a route runs along between its stops, with room for adding one.
+.route-view__link {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  align-items: center;
+  min-height: 26px;
+  padding-left: 32px;
+
+  &::before {
+    content: "";
+    align-self: stretch;
+    width: 1px;
+    background: var(--color-edge);
+  }
 }
 
-.route-flow__steps {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-// The ship and its upgrades are one chain, so every card hangs from the one
-// above it.
-.route-card,
-.route-steps > li {
-  position: relative;
-}
-
-.route-card {
+.route-view__step {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid var(--color-edge-soft);
   border-radius: 12px;
-  background: var(--color-control);
+  background: rgb(39 43 48 / 0.5);
 }
 
-.route-flow__steps > :first-child::before,
-.route-steps > li + li::before {
-  content: "";
-  position: absolute;
-  top: -21px;
-  left: 28px;
-  height: 20px;
-  border-left: 1px solid var(--color-edge);
-}
-
-.route-flow__steps > :first-child {
-  position: relative;
-}
-
-.route-section__head {
+.route-view__step-head {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
   justify-content: space-between;
 }
 
-.route-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+// A line of its own, so each source keeps its whole label.
+.route-view__sources {
+  width: 100%;
 }
 
-.route-step {
+.route-view__from {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid var(--color-edge-soft);
-  border-radius: 12px;
-  background: var(--color-control);
-}
-
-.route-step__head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  align-items: center;
-}
-
-.route-step__remove {
-  margin-left: auto;
-}
-
-.route-step__fixed-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   align-items: baseline;
   margin: 0;
 
@@ -1228,131 +1197,63 @@ dt.route-totals__sum {
   }
 
   i {
-    font-size: 0.75rem;
     color: var(--color-muted);
   }
 }
 
-// The ship a step starts from, or ends on, takes a fixed column, so every
-// card's picker is as wide as the next.
-.route-step__line {
-  display: grid;
-  grid-template-columns: minmax(0, 200px) auto minmax(0, 1fr);
-  gap: 8px 12px;
-  align-items: center;
-
-  .route-step__fixed-line {
-    flex-direction: column;
-    gap: 0;
-    align-items: flex-start;
-    min-width: 0;
-
-    .route-muted {
-      font-size: 0.75rem;
-    }
-  }
-
-  .route-step__name {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 575px) {
-    grid-template-columns: minmax(0, 1fr);
-
-    .route-step__arrow {
-      display: none;
-    }
-  }
-}
-
-.route-step__arrow {
-  font-size: 0.75rem;
-  color: var(--color-muted);
-}
-
-.route-step__picker {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-// The select keeps a field's bottom margin, which would double the card's gap.
-.route-step__picker .route-step__select {
-  margin-bottom: 0;
-}
-
-.route-step__options {
+.route-view__options {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 8px 12px;
   align-items: center;
 }
 
-.route-step__price {
-  flex: 0 1 200px;
+.route-view__price {
+  width: 160px;
   margin: 0;
 }
 
-// A form checkbox keeps a field's bottom margin, which in this row would lift
-// it off the price input's centre line.
-.route-step__options .route-step__token {
-  margin-bottom: 0;
+.route-view__errors {
+  margin: 0;
+  padding-left: 18px;
 }
 
-.route-step__done {
-  margin-left: auto;
-}
-
-.route-step__number {
-  font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-dim);
-}
-
-.route-step__summary {
+.route-view__side {
   display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.route-step__summary-text {
-  display: flex;
-  flex: 1;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  gap: 12px;
+}
 
-  strong {
+.route-view__totals {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  margin: 0;
+
+  dt {
+    font-size: 0.84375rem;
+    color: var(--color-text-dim);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.84375rem;
+    font-weight: 600;
+    text-align: right;
     color: var(--color-lifted);
   }
 }
 
-.route-step__fixed {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 43px;
-  padding: 0 14px;
-  border: 1px solid var(--color-edge);
-  border-radius: 8px;
-  background: var(--color-field);
-  color: var(--color-lifted);
-
-  i {
-    font-size: 0.75rem;
-    color: var(--color-muted);
-  }
+.route-view__sum {
+  padding-top: 6px;
+  border-top: 1px solid var(--color-edge-faint);
 }
 
-.route-errors {
+.route-view__done {
+  display: flex;
+  gap: 6px;
+  align-items: center;
   margin: 0;
-  padding-left: 16px;
+  color: var(--color-success);
 }
 </style>

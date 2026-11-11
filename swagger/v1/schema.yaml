@@ -40050,11 +40050,13 @@ components:
       - store
       - ingame
       - buyback
+      - melted
       x-enumNames:
       - OWNED
       - STORE
       - INGAME
       - BUYBACK
+      - MELTED
       title: HangarPlanStartKindEnum
     HangarPlanSuggestions:
       type: object
@@ -40407,6 +40409,21 @@ components:
           - 'null'
           description: Whether the pledge holds the ship alone rather than a package;
             null where the hangar sync never saw it
+        lifetimeInsurance:
+          type: boolean
+          description: Whether the pledge comes with lifetime insurance, which buying
+            it back keeps
+        insuranceMonths:
+          type:
+          - integer
+          - 'null'
+          description: The pledge's months of insurance, when not lifetime
+        insuranceKnown:
+          type: boolean
+          description: False until a hangar sync reads the pledge's insurance, so
+            none listed is not yet none
+        baseModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
         pledgeShips:
           type: array
           description: The other ships of the same pledge, which melt with it
@@ -40424,6 +40441,8 @@ components:
       - model
       - pledgeShips
       - pledgeItems
+      - lifetimeInsurance
+      - insuranceKnown
       title: HangarPlanVehicleResource
     HangarPlanVehicleStatus:
       type: object
@@ -49400,6 +49419,14 @@ components:
         meltable:
           type: boolean
           description: Whether RSI offers to melt the pledge
+        lifetimeInsurance:
+          type: boolean
+          description: Whether the pledge comes with lifetime insurance
+        insuranceMonths:
+          type: integer
+          minimum: 0
+          description: How many months of insurance the pledge comes with, when not
+            lifetime
         page:
           type: integer
           description: The page of the RSI hangar the pledge was read from

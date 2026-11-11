@@ -26,6 +26,8 @@ import {
   type HangarFlowDecision,
   type HangarFlowEnd,
   type HangarFlowStart,
+  type HangarFlowTab,
+  type HangarFlowTarget,
   hangarFlowDecisionIcons,
 } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -50,19 +52,18 @@ type Props = {
   plan: HangarPlan;
   comparison: HangarPlanComparison;
   summary?: HangarPlanSummary;
+  // The row the ship panel is open for, lit so it stays findable beside it.
+  activeKey?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   summary: undefined,
+  activeKey: undefined,
 });
 
 const emit = defineEmits<{
   decide: [vehicleId: string, decision: HangarFlowDecision];
-  route: [candidate: HangarPlanCandidate, acquisition: HangarPlanAcquisition];
-  start: [start: HangarFlowStart];
-  end: [end: HangarFlowEnd];
-  pick: [slot: HangarPlanSlot];
-  edit: [slot: HangarPlanSlot];
+  open: [target: HangarFlowTarget];
   editSlot: [slot: HangarPlanSlot];
   removeSlot: [slot: HangarPlanSlot];
 }>();
@@ -346,7 +347,8 @@ const unroutedAction = (route: PlannedRoute) =>
 const middle = (route: PlannedRoute) => {
   if (route.acquisition.startModel.id === route.model.id) {
     // A buy-back has its token to settle, even with no upgrade to plan.
-    return route.acquisition.startKind === HangarPlanStartKindEnum.BUYBACK
+    return route.acquisition.startKind === HangarPlanStartKindEnum.BUYBACK ||
+      route.acquisition.startKind === HangarPlanStartKindEnum.MELTED
       ? { route: routeTarget(route) }
       : {};
   }
@@ -790,27 +792,35 @@ const decide = (row: Row, decision: HangarFlowDecision) => {
   if (row.vehicleId) emit("decide", row.vehicleId, decision);
 };
 
+// Everything the row can open, so the panel offers its other sides as tabs.
+const target = (row: Row, tab: HangarFlowTab): HangarFlowTarget => ({
+  key: row.key,
+  tab,
+  start: row.start,
+  end: row.end,
+  route: row.route,
+  slot: row.pickSlot ?? row.slot ?? row.chooseIn,
+});
+
 const pickStart = (row: Row) => {
-  if (row.start) emit("start", row.start);
+  if (row.start) emit("open", target(row, "start"));
 };
 
 const pickEnd = (row: Row) => {
   if (row.end) {
-    emit("end", row.end);
-  } else if (row.pickSlot) {
-    emit("pick", row.pickSlot);
-  } else if (row.slot) {
-    emit("edit", row.slot);
+    emit("open", target(row, "end"));
+  } else if (row.pickSlot || row.slot) {
+    emit("open", target(row, "slot"));
   }
 };
 
 const openMiddle = (row: Row) => {
   if (row.route) {
-    emit("route", row.route.candidate, row.route.acquisition);
+    emit("open", target(row, "route"));
   } else if (row.restart) {
     pickStart(row);
   } else if (row.chooseIn) {
-    emit("edit", row.chooseIn);
+    emit("open", target(row, "slot"));
   }
 };
 
@@ -840,12 +850,27 @@ const rightLabel = (row: Row) =>
 // The slot a row belongs to, whichever of its ends led there.
 const slotOf = (row: Row) => row.start?.slot ?? row.slot;
 
+const flow = useTemplateRef<HTMLElement>("flow");
+
+// The row the panel opened for stays where the eye can find it.
+watch(
+  () => props.activeKey,
+  (key) => {
+    if (!key) return;
+    void nextTick(() => {
+      flow.value
+        ?.querySelector(".hangar-flow__row--active")
+        ?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
+    });
+  },
+);
+
 const imageOf = (model?: HangarPlanModel) =>
   model?.image?.smallUrl || fallbackImage;
 </script>
 
 <template>
-  <div class="hangar-flow" role="table">
+  <div ref="flow" class="hangar-flow" role="table">
     <div class="hangar-flow__row hangar-flow__row--head" role="row">
       <span role="columnheader">
         {{ t("hangarPlanner.comparison.yourShips") }}
@@ -887,8 +912,12 @@ const imageOf = (model?: HangarPlanModel) =>
         v-for="row in shown(group) ? group.rows : []"
         :key="row.key"
         class="hangar-flow__row"
-        :class="`hangar-flow__row--${row.action.kind}`"
+        :class="[
+          `hangar-flow__row--${row.action.kind}`,
+          { 'hangar-flow__row--active': row.key === activeKey },
+        ]"
         role="row"
+        :aria-current="row.key === activeKey ? 'true' : undefined"
         :data-test="row.testId"
       >
         <div
@@ -1119,6 +1148,15 @@ const imageOf = (model?: HangarPlanModel) =>
   grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr);
   gap: 0 16px;
   align-items: center;
+}
+
+.hangar-flow__row--active {
+  margin: 0 -8px;
+  padding: 8px;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  background: var(--color-control);
+  scroll-margin: 96px;
 }
 
 .hangar-flow__row--head {

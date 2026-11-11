@@ -383,6 +383,7 @@ es:
               upgrade_taken: "se usa una mejora más veces de las que tienes"
             source_vehicle_id:
               melted: "se funde en este plan"
+              not_melted: "no se funde en este plan"
               pledge_melted: "viene en un pledge que este plan funde"
               taken: "ya se usa en este plan"
             buyback_pledge_id:

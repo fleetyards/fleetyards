@@ -11,6 +11,10 @@ import {
   type HangarPlanSlot,
   type HangarPlanSummary,
 } from "@/services/fyApi";
+import type {
+  HangarFlowTab,
+  HangarFlowTarget,
+} from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import Component from "./index.vue";
 
 const model = (name: string): HangarPlanModel => ({
@@ -158,6 +162,31 @@ const rowTests = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
     .findAll(".hangar-flow__row:not(.hangar-flow__row--head)")
     .map((row) => row.attributes("data-test"));
 
+// What the flow asked the ship panel to open, by tab, in the shape each side
+// carries.
+const opened = (
+  wrapper: Awaited<ReturnType<typeof mountWithDefaults>>,
+  tab: HangarFlowTab,
+): unknown => {
+  const targets = ((wrapper.emitted("open") ?? []) as [HangarFlowTarget][])
+    .map(([target]) => target)
+    .filter((target) => target.tab === tab);
+  if (!targets.length) return undefined;
+
+  return targets.map((target) => {
+    switch (tab) {
+      case "start":
+        return [target.start];
+      case "end":
+        return [target.end];
+      case "route":
+        return [target.route?.candidate, target.route?.acquisition];
+      default:
+        return [target.slot];
+    }
+  });
+};
+
 describe("Hangar/Planner/HangarFlow", () => {
   it("lists the slots first and folds the ships kept or left out", async () => {
     const wrapper = await mountWithDefaults(Component, {
@@ -257,7 +286,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-pick-start"]')
       .trigger("click");
 
-    expect(wrapper.emitted("start")).toEqual([[{ slot: empty }]]);
+    expect(opened(wrapper, "start")).toEqual([[{ slot: empty }]]);
   });
 
   it("lists ships needing a decision before ships that should change", async () => {
@@ -321,7 +350,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       ["vehicle-gladius", "change"],
       ["vehicle-cutlass", "pending"],
     ]);
-    expect(wrapper.emitted("end")).toEqual([
+    expect(opened(wrapper, "end")).toEqual([
       [
         {
           startName: "Gladius",
@@ -360,7 +389,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-route"]')
       .trigger("click");
 
-    expect(wrapper.emitted("route")).toHaveLength(1);
+    expect(opened(wrapper, "route")).toHaveLength(1);
   });
 
   it("picks a route's start on the left and its end on the right", async () => {
@@ -376,7 +405,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-pick-end"]')
       .trigger("click");
 
-    const [[start]] = wrapper.emitted("start") as [
+    const [[start]] = opened(wrapper, "start") as [
       [
         {
           slot: { id: string };
@@ -391,7 +420,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       "bought",
     ]);
 
-    const [[end]] = wrapper.emitted("end") as [
+    const [[end]] = opened(wrapper, "end") as [
       [{ acquisition: { id: string }; slot: HangarPlanSlot }],
     ];
     expect([end.acquisition.id, end.slot.id]).toEqual(["bought", "Explorer"]);
@@ -449,7 +478,7 @@ describe("Hangar/Planner/HangarFlow", () => {
 
     await row.find('[data-test="hangar-plan-flow-route"]').trigger("click");
 
-    const [[candidate, acquisition]] = wrapper.emitted("route") as [
+    const [[candidate, acquisition]] = opened(wrapper, "route") as [
       [{ id: string }, { id: string }],
     ];
     expect([candidate.id, acquisition.id]).toEqual(["vulture", "kept"]);
@@ -489,7 +518,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-slot-edit"]')
       .trigger("click");
 
-    const [[start]] = wrapper.emitted("start") as [
+    const [[start]] = opened(wrapper, "start") as [
       [
         {
           slot: { id: string };
@@ -505,11 +534,10 @@ describe("Hangar/Planner/HangarFlow", () => {
     ]);
     // A unit without a start has no route to plan yet: its middle asks for
     // the start as well.
-    expect(wrapper.emitted("route")).toBeUndefined();
-    expect(wrapper.emitted("start")).toHaveLength(2);
-    expect(wrapper.emitted("edit")).toEqual([[short]]);
+    expect(opened(wrapper, "route")).toBeUndefined();
+    expect(opened(wrapper, "start")).toHaveLength(2);
+    expect(opened(wrapper, "slot")).toEqual([[short], [empty]]);
     expect(wrapper.emitted("editSlot")).toEqual([[empty]]);
-    expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
 
   it("prices a slot's units without a start, outside the total", async () => {
@@ -572,8 +600,8 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-route"]')
       .trigger("click");
 
-    expect(wrapper.emitted("start")).toEqual([[{ slot: plan.slots[2] }]]);
-    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]], [plan.slots[2]]]);
+    expect(opened(wrapper, "start")).toEqual([[{ slot: plan.slots[2] }]]);
+    expect(opened(wrapper, "slot")).toEqual([[plan.slots[2]], [plan.slots[2]]]);
   });
 
   it("asks for another start where no upgrade leads to the slot's ship", async () => {
@@ -616,9 +644,9 @@ describe("Hangar/Planner/HangarFlow", () => {
 
     await row.find('[data-test="hangar-plan-flow-route"]').trigger("click");
 
-    expect(wrapper.emitted("route")).toBeUndefined();
+    expect(opened(wrapper, "route")).toBeUndefined();
     expect(
-      (wrapper.emitted("start") as [[{ acquisition: { id: string } }]])[0][0]
+      (opened(wrapper, "start") as [[{ acquisition: { id: string } }]])[0][0]
         .acquisition.id,
     ).toEqual("bought");
   });
@@ -726,8 +754,8 @@ describe("Hangar/Planner/HangarFlow", () => {
       .find('[data-test="hangar-plan-flow-pick-start"]')
       .trigger("click");
 
-    expect(wrapper.emitted("edit")).toEqual([[undecided]]);
-    const [[start]] = wrapper.emitted("start") as [
+    expect(opened(wrapper, "slot")).toEqual([[undecided]]);
+    const [[start]] = opened(wrapper, "start") as [
       [{ acquisition: { id: string } }],
     ];
     expect(start.acquisition.id).toBe("waiting");
@@ -779,10 +807,10 @@ describe("Hangar/Planner/HangarFlow", () => {
         .trigger("click");
       await row.find('[data-test="hangar-plan-flow-pick"]').trigger("click");
 
-      expect(wrapper.emitted("start")).toEqual([
+      expect(opened(wrapper, "start")).toEqual([
         [{ slot, acquisition: start }],
       ]);
-      expect(wrapper.emitted("pick")).toEqual([[slot]]);
+      expect(opened(wrapper, "slot")).toEqual([[slot]]);
     });
 
     it("names a ship to buy by how it is got, and keeps a row for the unit left", async () => {
@@ -1031,5 +1059,29 @@ describe("Hangar/Planner/HangarFlow", () => {
       expect(wrapper.text()).toContain("it can only be kept");
       expect(wrapper.find(melts).attributes("disabled")).toBeDefined();
     });
+  });
+
+  it("opens the panel with every side the row has, and lights the row", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { plan, comparison },
+    });
+
+    await wrapper
+      .find('[data-test="hangar-plan-flow-purchase"]')
+      .find('[data-test="hangar-plan-flow-pick-start"]')
+      .trigger("click");
+
+    const [[target]] = wrapper.emitted("open") as [[HangarFlowTarget]];
+    expect(target.tab).toBe("start");
+    expect(target.start).toBeDefined();
+    expect(target.end).toBeDefined();
+
+    await wrapper.setProps({ activeKey: target.key });
+
+    expect(
+      wrapper
+        .findAll(".hangar-flow__row--active")
+        .map((row) => row.attributes("aria-current")),
+    ).toEqual(["true"]);
   });
 });

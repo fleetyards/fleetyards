@@ -32,3 +32,21 @@ export type HangarFlowStart = {
   candidate?: HangarPlanCandidate;
   acquisition?: HangarPlanAcquisition | HangarPlanSlotStart;
 };
+
+// Which side of a row the ship panel shows: a slot still choosing its ship
+// opens its own view where a route would have an end.
+export type HangarFlowTab = "start" | "route" | "end" | "slot";
+
+// A row as the ship panel opens it: the side asked for, and every other side
+// the row has, offered as tabs.
+export type HangarFlowTarget = {
+  key: string;
+  tab: HangarFlowTab;
+  start?: HangarFlowStart;
+  end?: HangarFlowEnd;
+  route?: {
+    candidate: HangarPlanCandidate;
+    acquisition: HangarPlanAcquisition;
+  };
+  slot?: HangarPlanSlot;
+};

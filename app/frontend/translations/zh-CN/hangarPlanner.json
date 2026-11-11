@@ -40,9 +40,6 @@
       "confirmRemoveSlot": "移除此槽位及其中的飞船和获取途径？",
       "openSlotHint": "尚未选择飞船。可添加一艘，如果还没想好也可添加多艘。",
       "addShips": "添加飞船",
-      "addCandidates": "%{slot} 的飞船",
-      "addToSlot": "添加到槽位",
-      "inSlot": "在此槽位中",
       "choose": "选定",
       "chooseHint": "选定此槽位要规划的飞船。其他飞船及其获取途径将从该槽位移除。",
       "removeCandidate": "移除飞船",
@@ -119,7 +116,8 @@
         "owned": "保留机库中的",
         "store": "商店购买",
         "ingame": "游戏内购买",
-        "buyback": "回购"
+        "buyback": "回购",
+        "melted": "熔毁后回购"
       },
       "upgradeSources": {
         "store": "商店",
@@ -312,8 +310,7 @@
         },
         "rebased": "方案已根据你的机库更新。",
         "sharingOn": "已开启分享。任何拥有链接的人都可以查看此计划。",
-        "copyFailed": "无法复制链接，请从输入框中复制。",
-        "filtersSaved": "已为 %{slot} 保存筛选"
+        "copyFailed": "无法复制链接，请从输入框中复制。"
       },
       "filterChips": {
         "priceFrom": "%{price} 起",
@@ -384,7 +381,6 @@
           "owned_ccu": "你 RSI 机库中的升级没有从 %{ship} 出发的。",
           "buyback": "你的回购升级中没有从 %{ship} 出发的。"
         },
-        "shipCard": "飞船",
         "useToken": "使用回购代币",
         "withToken": "已用代币支付"
       },
@@ -409,7 +405,6 @@
         "melt": "熔炼",
         "change": "标记为应更换",
         "pending": "改回待决定",
-        "upgradeTo": "将 %{name} 升级为",
         "keepPending": "保留所有待决定的"
       },
       "pick": {
@@ -417,20 +412,14 @@
         "pickEnd": "选择终点",
         "startOf": "为 %{ship} 选择起点",
         "endOf": "选择 %{ship} 的终点",
-        "startTitle": "%{ship} 的起点",
-        "startEyebrow": "起点舰船",
-        "endTitle": "%{ship} 的终点",
-        "endEyebrow": "终点舰船",
         "buyNew": "在商店购买新船",
         "current": "当前起点",
-        "use": "使用",
         "noShips": "机库中没有可用于此槽位的舰船。",
         "removeStart": "从槽位中移除",
         "same": "同一艘舰船，保持原样",
         "sameModel": "相同型号",
         "noEnds": "没有这艘舰船可以升级成的舰船。",
         "removeEnd": "从计划中移除",
-        "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
         "onlyKeep": "这艘舰船没有升级，RSI 也不允许熔炼，只能保留",
@@ -438,20 +427,9 @@
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
         "ccuUnknown": "尚未见过 CCU",
-        "sources": {
-          "hangar": "你的机库",
-          "buyback": "回购",
-          "store": "商店"
-        },
         "filters": "筛选起点",
-        "saveFilters": "为此槽位保存筛选",
         "chooseShip": "选择舰船",
-        "earnInGame": "在游戏中获得",
-        "newSlot": "新槽位",
-        "endSources": {
-          "plan": "计划中的槽位",
-          "catalogue": "任意舰船"
-        }
+        "earnInGame": "在游戏中获得"
       },
       "slotNumber": "槽位 %{number}",
       "suggestions": {
@@ -466,6 +444,86 @@
         },
         "inSlot": "槽位 %{slot}",
         "inHangar": "你的机库"
+      },
+      "panel": {
+        "tabs": {
+          "start": "起点",
+          "route": "途径",
+          "end": "终点",
+          "slot": "槽位"
+        },
+        "sort": "排序",
+        "youPay": "你支付",
+        "upgradeCost": "升级费用",
+        "worth": "价值 %{price}",
+        "buybackPrice": "回购 %{price}",
+        "sections": {
+          "new": "新购",
+          "hangar": "你的机库",
+          "hangarHint": "尚无途径的飞船",
+          "buybacks": "回购",
+          "out": "无法使用",
+          "outOf": "无法成为 %{ship}",
+          "keep": "保留",
+          "plan": "本计划中",
+          "planHint": "已有槽位的飞船",
+          "store": "商店飞船",
+          "storeHint": "选择后会获得自己的槽位"
+        },
+        "out": {
+          "noneOfSlot": "无法成为该槽位的任何飞船",
+          "noLeave": "没有从它出发的升级",
+          "noEnter": "没有通往 %{ship} 的升级",
+          "hull": "只有同船体的型号可升级为 %{ship}",
+          "dearer": "%{price} 不低于 %{ship} 的 %{target}",
+          "used": "已作为另一条途径的起点",
+          "kept": "保持原样"
+        },
+        "package": "所属礼包",
+        "useStart": "从这里开始",
+        "useEnd": "在这里结束途径",
+        "upgrade": "升级",
+        "upgradeLine": "%{from} 升级到 %{to}",
+        "ccuOnSale": "商店有售",
+        "endsHint": "升级只能通往商店价格更高的飞船。",
+        "fillsSlot": "填入槽位 %{slot}。",
+        "newSlotHint": "在计划中获得自己的槽位。",
+        "shortlist": "候选",
+        "shortlistHint": "把可能填入的飞船加入候选，比较后选出一艘。",
+        "addToShortlist": "加入候选",
+        "withinFilters": {
+          "one": "槽位筛选内有 %{count} 艘飞船",
+          "other": "槽位筛选内有 %{count} 艘飞船"
+        },
+        "shipCount": {
+          "one": "%{count} 艘飞船",
+          "other": "%{count} 艘飞船"
+        },
+        "onSale": "在售",
+        "inHangar": "在我的机库",
+        "slotFilters": "槽位筛选",
+        "crew": {
+          "one": "船员 %{count}",
+          "other": "船员 %{count}"
+        },
+        "shortlisted": "已在候选",
+        "shortlistAdd": "加入候选",
+        "more": "显示更多",
+        "steps": "步骤",
+        "addStop": "添加中转",
+        "stepPaidWith": "第 %{number} 步 · 支付方式",
+        "routeEnd": "途径终点",
+        "saveRoute": "保存途径",
+        "stepCount": {
+          "one": "%{count} 步",
+          "other": "%{count} 步"
+        },
+        "viaMelted": "来自熔毁的 %{ship}"
+      },
+      "unmelt": {
+        "confirm": "撤销熔毁 %{ship}？它会留在机库中。",
+        "confirmRoutes": "撤销熔毁 %{ship}？它会留在机库中，回购其礼包的途径将失去起点。",
+        "action": "撤销熔毁"
       }
     }
   }

@@ -1,3 +1,4 @@
+import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -113,21 +114,28 @@ describe("pages/hangar/plans/[id]/suggestions", () => {
     expect(role.text()).toContain("Slot Hauler");
   });
 
-  it("melts a hangar ship and opens a slot from its ship", async () => {
+  it("melts a hangar ship and opens a slot in the plan's ship panel", async () => {
+    await router.push("/hangar/plans/plan/");
     const wrapper = await mount();
 
     await wrapper
       .find('[data-test="hangar-plan-redundant-melt"]')
       .trigger("click");
-    await wrapper
-      .find('[data-test="hangar-plan-redundant-slot"]')
-      .trigger("click");
 
-    const [[, melt], [, slot]] = emit.mock.calls as [
-      [string, { props: Record<string, unknown> }],
+    const [[, melt]] = emit.mock.calls as [
       [string, { props: Record<string, unknown> }],
     ];
     expect(melt.props).toMatchObject({ vehicleId: "vehicle-red-five" });
-    expect(slot.props).toMatchObject({ slot: hauler });
+
+    await wrapper
+      .find('[data-test="hangar-plan-redundant-slot"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value).toMatchObject({
+      name: "hangar-plan",
+      params: { id: "plan" },
+      query: { slot: "hauler" },
+    });
   });
 });

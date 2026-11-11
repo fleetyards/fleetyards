@@ -26,6 +26,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
 import HangarFlow from "@/frontend/components/Hangar/Planner/HangarFlow/index.vue";
+import ShipPanel from "@/frontend/components/Hangar/Planner/ShipPanel/index.vue";
 import ComparisonDetails from "@/frontend/components/Hangar/Planner/ComparisonDetails/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
 import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
@@ -35,10 +36,7 @@ import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import type {
-  HangarFlowEnd,
-  HangarFlowStart,
-} from "@/frontend/components/Hangar/Planner/HangarFlow/types";
+import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -46,8 +44,6 @@ import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
 import copyText from "@/shared/utils/CopyText";
 import {
-  type HangarPlanAcquisition,
-  type HangarPlanCandidate,
   type HangarPlanMelt,
   type HangarPlanSlot,
   HangarPlanSlotStateEnum,
@@ -127,11 +123,8 @@ const tallies = computed(() =>
     .filter((tally) => tally.value > 0),
 );
 
-const { deciding, decide, keep, pendingIds } = useHangarPlanDecisions(
-  planId,
-  plan,
-  comparison,
-);
+const { deciding, decide, keep, pendingIds, confirmUnmelt } =
+  useHangarPlanDecisions(planId, plan, comparison);
 
 const openModal = (
   component: () => Promise<Component>,
@@ -151,45 +144,53 @@ const addSlot = (label?: string) =>
     { planId: planId.value, label },
   );
 
-const openRoute = (
-  candidate: HangarPlanCandidate,
-  acquisition: HangarPlanAcquisition,
-) =>
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
-    props: { planId: planId.value, candidate, acquisition },
-    wide: true,
-  });
+// The row the ship panel is open for, with every side of it the panel offers.
+const panel = ref<HangarFlowTarget>();
+const shipPanel = useTemplateRef<{ guard: (leave: () => void) => void }>(
+  "shipPanel",
+);
 
-const pickStart = (start: HangarFlowStart) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/StartPickerModal/index.vue"),
-    { planId: planId.value, ...start },
-  );
+// Another row asked for while a route has edits not saved asks first, as
+// closing the panel does.
+const openPanel = (target: HangarFlowTarget) => {
+  const open = () => {
+    panel.value = target;
+  };
 
-const pickEnd = (end: HangarFlowEnd) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/EndPickerModal/index.vue"),
-    { planId: planId.value, ...end },
-  );
+  if (shipPanel.value) {
+    shipPanel.value.guard(open);
+  } else {
+    open();
+  }
+};
 
-const pickShips = (slot: HangarPlanSlot) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
-    { planId: planId.value, slot },
-    { wide: true },
-  );
+const closePanel = () => {
+  panel.value = undefined;
+};
 
-const editSlot = (slot: HangarPlanSlot) =>
-  openModal(
-    () =>
-      import("@/frontend/components/Hangar/Planner/SlotShipsModal/index.vue"),
-    { planId: planId.value, slot },
-  );
+// Another page sends a slot here to be worked on, by its id in the query.
+watch(
+  [plan, () => route.query.slot],
+  ([current, slotId]) => {
+    if (!current || typeof slotId !== "string") return;
+
+    const slot = current.slots.find((entry) => entry.id === slotId);
+    if (slot) openPanel({ key: `slot:${slot.id}`, tab: "slot", slot });
+
+    void router.replace({ query: { ...route.query, slot: undefined } });
+  },
+  { immediate: true },
+);
+
+// A slot removed while the panel works on it takes the panel with it.
+watch(plan, (current) => {
+  const target = panel.value;
+  const slotId =
+    target?.slot?.id ?? target?.start?.slot.id ?? target?.end?.slot?.id;
+  if (!current || !slotId) return;
+
+  if (!current.slots.some((slot) => slot.id === slotId)) closePanel();
+});
 
 const editSlotDetails = (slot: HangarPlanSlot) =>
   openModal(
@@ -218,7 +219,7 @@ const openMelt = (melt: HangarPlanMelt) =>
   );
 
 const destroyMelt = useDestroyHangarPlanMelt();
-const removeMelt = async (melt: HangarPlanMelt) => {
+const unmelt = async (melt: HangarPlanMelt) => {
   try {
     updatePlan(
       await destroyMelt.mutateAsync({
@@ -230,6 +231,9 @@ const removeMelt = async (melt: HangarPlanMelt) => {
     displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
   }
 };
+
+const removeMelt = (melt: HangarPlanMelt) =>
+  confirmUnmelt(melt, () => void unmelt(melt));
 
 const shareUrl = computed(() => {
   if (!plan.value?.shareToken) return undefined;
@@ -470,12 +474,9 @@ const onDestroy = async () => {
           :plan="plan"
           :comparison="comparison"
           :summary="summary"
+          :active-key="panel?.key"
           @decide="decide"
-          @route="openRoute"
-          @start="pickStart"
-          @end="pickEnd"
-          @pick="pickShips"
-          @edit="editSlot"
+          @open="openPanel"
           @edit-slot="editSlotDetails"
           @remove-slot="removeSlot"
         />
@@ -543,6 +544,14 @@ const onDestroy = async () => {
     </div>
 
     <ComparisonDetails v-if="comparison" :comparison="comparison" />
+
+    <ShipPanel
+      v-if="panel"
+      ref="shipPanel"
+      :plan-id="plan.id"
+      :target="panel"
+      @close="closePanel"
+    />
   </template>
 </template>
 

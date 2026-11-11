@@ -383,6 +383,7 @@ it:
               upgrade_taken: "un upgrade viene usato più volte di quante ne possiedi"
             source_vehicle_id:
               melted: "viene fuso in questo piano"
+              not_melted: "non viene fuso in questo piano"
               pledge_melted: "fa parte di un pledge che questo piano fonde"
               taken: "è già usato in questo piano"
             buyback_pledge_id:

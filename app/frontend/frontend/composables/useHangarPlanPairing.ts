@@ -20,6 +20,8 @@ import {
 
 export type HangarPlanStart =
   | { kind: "owned"; vehicleId: string }
+  // The pledge of a ship the plan melts, bought back.
+  | { kind: "melted"; vehicleId: string }
   | { kind: "buyback"; pledgeId: string; modelId: string }
   | { kind: "ingame" }
   | { kind: "store" };
@@ -79,6 +81,13 @@ export const useHangarPlanPairing = (
       case "owned":
         return {
           startKind: HangarPlanStartKindEnum.OWNED,
+          sourceVehicleId: start.vehicleId,
+          buybackPledgeId: null,
+          startModelId: null,
+        };
+      case "melted":
+        return {
+          startKind: HangarPlanStartKindEnum.MELTED,
           sourceVehicleId: start.vehicleId,
           buybackPledgeId: null,
           startModelId: null,
