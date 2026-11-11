@@ -355,8 +355,9 @@
             "action": "寻找舰队"
           }
         },
-        "fleets": {
-          "title": "我的舰队",
+        "fleet": {
+          "title": "你的舰队",
+          "open": "舰队页面",
           "online": {
             "one": "%{total} 人中 %{count} 人在线",
             "other": "%{total} 人中 %{count} 人在线"
@@ -367,38 +368,72 @@
           },
           "requests": "入队申请",
           "transfers": "转移",
+          "announcement": "公告",
+          "others": "同时也是以下舰队的成员",
           "empty": {
             "title": "还没有舰队",
             "hint": "加入一个组织来规划活动和共享库存。",
             "action": "浏览舰队"
           }
         },
-        "changes": {
-          "title": "你在 %{version} 中的舰船",
-          "titleWithoutVersion": "你在本补丁中的舰船",
-          "owned": {
-            "one": "在你的机库中",
-            "other": "机库中有 %{count} 艘"
+        "ships": {
+          "title": "你的舰船",
+          "open": "打开机库",
+          "synced": "已从 RSI 同步 %{time}",
+          "more": {
+            "one": "机库中还有 %{count} 艘",
+            "other": "机库中还有 %{count} 艘"
           },
-          "wanted": "在你的愿望单中",
-          "changes": "改动",
-          "hangar": "机库",
-          "empty": {
-            "title": "你的舰船都没有改动",
-            "hint": "当某个版本改动了你机库或愿望单中的舰船时，它们会显示在这里。"
-          }
-        },
-        "hangar": {
-          "title": "机库",
-          "open": "打开",
-          "ships": "舰船",
-          "wishlist": "愿望单",
-          "synced": "已从 RSI 同步",
+          "changedIn": "%{version} 中有改动",
           "empty": {
             "title": "你的机库是空的",
             "hint": "手动添加舰船，或从 RSI 同步。",
             "action": "设置机库"
           }
+        },
+        "wishlist": {
+          "title": "心愿单",
+          "all": "完整心愿单",
+          "onSale": "在售",
+          "price": "现价",
+          "empty": {
+            "title": "你的心愿单是空的",
+            "hint": "添加舰船，开售时会在这里显示。",
+            "action": "浏览舰船"
+          }
+        },
+        "plan": {
+          "title": "机库计划",
+          "all": "全部计划",
+          "steps": {
+            "one": "%{count} 步",
+            "other": "%{count} 步"
+          },
+          "updated": "更新于 %{date}",
+          "more": {
+            "one": "另有 %{count} 个计划",
+            "other": "另有 %{count} 个计划"
+          },
+          "empty": {
+            "hint": "选择你的目标舰船，规划器会从你的机库出发列出所需的升级和熔炼。",
+            "action": "开始计划"
+          }
+        },
+        "newShips": {
+          "title": "数据库新增",
+          "all": "全部舰船"
+        },
+        "tiles": {
+          "hangar": "机库中的舰船",
+          "wishlist": "心愿单中",
+          "onSale": "在售的心愿舰船",
+          "fleetOnline": "%{fleet} 在线",
+          "patch": "正式服补丁",
+          "patchChanged": {
+            "one": "你的 %{count} 艘舰船有改动",
+            "other": "你的 %{count} 艘舰船有改动"
+          },
+          "patchWhatChanged": "查看改动"
         },
         "notifications": {
           "title": "通知",

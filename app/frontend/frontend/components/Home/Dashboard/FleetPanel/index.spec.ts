@@ -32,6 +32,7 @@ const router = async () => {
       { path: "/fleets", name: "fleets", component: Stub },
       { path: "/fleets/directory", name: "fleet-directory", component: Stub },
       { path: "/fleets/:slug", name: "fleet", component: Stub },
+      { path: "/fleets/:slug/members", name: "fleet-members", component: Stub },
     ],
   });
 
@@ -55,12 +56,12 @@ const mount = async () =>
     plugins: [await router()],
   });
 
-describe("HomeDashboardMyFleetsPanel", () => {
+describe("HomeDashboardFleetPanel", () => {
   beforeEach(() => {
     items = [];
   });
 
-  it("shows what is waiting on the reader as badges", async () => {
+  it("shows what is waiting on the reader", async () => {
     items = [
       summary({ pendingJoinRequestsCount: 2, pendingTransfersCount: 1 }),
     ];
@@ -71,7 +72,7 @@ describe("HomeDashboardMyFleetsPanel", () => {
     expect(subject.text()).toContain("Transfers");
   });
 
-  it("shows no badges for counts the reader's role was not given", async () => {
+  it("leaves out counts the reader's role was not given", async () => {
     items = [summary()];
 
     const subject = await mount();
@@ -81,7 +82,7 @@ describe("HomeDashboardMyFleetsPanel", () => {
     expect(subject.text()).toContain("84 members");
   });
 
-  it("shows the latest announcement under the fleet", async () => {
+  it("shows the latest announcement", async () => {
     items = [
       summary({
         latestAnnouncement: {
@@ -94,8 +95,33 @@ describe("HomeDashboardMyFleetsPanel", () => {
 
     const subject = await mount();
 
-    expect(subject.find(".home-my-fleets__announcement").text()).toContain(
-      "Hauling rates change on Friday.",
+    expect(
+      subject.find('[data-test="home-fleet-announcement"]').text(),
+    ).toContain("Hauling rates change on Friday.");
+  });
+
+  it("shows the primary fleet and links the others", async () => {
+    items = [
+      summary({
+        id: "f2",
+        name: "Outer Rim",
+        slug: "outer-rim",
+        primary: false,
+      }),
+      summary(),
+    ];
+
+    const subject = await mount();
+
+    expect(subject.find(".home-fleet__name").text()).toBe(
+      "Black Sun Logistics",
     );
+    expect(subject.find(".home-fleet__others").text()).toContain("Outer Rim");
+  });
+
+  it("points a pilot without a fleet to the directory", async () => {
+    const subject = await mount();
+
+    expect(subject.find('[data-test="dashboard-empty"]').exists()).toBe(true);
   });
 });

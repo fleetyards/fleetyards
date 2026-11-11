@@ -1,0 +1,121 @@
+<script lang="ts">
+export default {
+  name: "HomeDashboardPatchTile",
+};
+</script>
+
+<script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
+import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
+import { useMyPatchChanges, useScDataBuilds } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import patchArt from "@/images/bg-3.webp";
+
+const { t } = useI18n();
+
+const { data: builds } = useScDataBuilds();
+
+const live = computed(() =>
+  builds.value?.items.find((item) => item.environment.toLowerCase() === "live"),
+);
+
+// `4.3.2-live.12913470` names its environment already; the tile shows the
+// release.
+const release = computed(() => live.value?.version.split("-")[0]);
+
+const { pick } = usePatchLoadingScreens();
+
+const background = computed(() => pick(0, patchArt));
+
+const { data: changes } = useMyPatchChanges({ query: liveQuery });
+
+const changedCount = computed(() => changes.value?.items.length || 0);
+</script>
+
+<template>
+  <router-link
+    :to="{ name: 'stats' }"
+    class="home-patch-tile"
+    data-test="home-tile-patch"
+  >
+    <Panel
+      :variant="PanelVariantsEnum.SLIM"
+      :bg-image="background"
+      :outer-spacing="false"
+      class="home-patch-tile__panel"
+    >
+      <div class="home-patch-tile__body">
+        <span class="home-patch-tile__label">
+          {{ t("home.dashboard.tiles.patch") }}
+        </span>
+        <span class="home-patch-tile__value">{{ release || "–" }}</span>
+        <span class="home-patch-tile__hint">
+          {{
+            changedCount
+              ? t("home.dashboard.tiles.patchChanged", { count: changedCount })
+              : t("home.dashboard.tiles.patchWhatChanged")
+          }}
+        </span>
+      </div>
+    </Panel>
+  </router-link>
+</template>
+
+<style lang="scss" scoped>
+.home-patch-tile {
+  --panel-image-height: 0px;
+
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-patch-tile__panel {
+  height: 100%;
+}
+
+// Over the loading screen: a scrim from the left keeps the text readable on
+// whichever screen the patch drew.
+.home-patch-tile__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  height: 100%;
+  min-height: 96px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.75) 0%,
+    rgb(0 0 0 / 0.35) 70%,
+    rgb(0 0 0 / 0.15) 100%
+  );
+}
+
+.home-patch-tile__label {
+  color: var(--color-text, #c8c8c8);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-patch-tile__value {
+  color: var(--color-lifted, #eee);
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.home-patch-tile__hint {
+  color: var(--color-text, #c8c8c8);
+  font-size: 0.75rem;
+}
+</style>

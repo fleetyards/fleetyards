@@ -355,8 +355,9 @@
             "action": "Trova una flotta"
           }
         },
-        "fleets": {
-          "title": "Le mie flotte",
+        "fleet": {
+          "title": "La tua flotta",
+          "open": "Pagina della flotta",
           "online": {
             "one": "%{count} di %{total} online",
             "other": "%{count} di %{total} online"
@@ -367,38 +368,72 @@
           },
           "requests": "Richieste di adesione",
           "transfers": "Trasferimenti",
+          "announcement": "Annuncio",
+          "others": "Membro anche di",
           "empty": {
             "title": "Ancora nessuna flotta",
             "hint": "Unisciti a una org per pianificare eventi e condividere l'inventario.",
             "action": "Sfoglia le flotte"
           }
         },
-        "changes": {
-          "title": "Le tue navi in %{version}",
-          "titleWithoutVersion": "Le tue navi in questa patch",
-          "owned": {
-            "one": "Nel tuo hangar",
-            "other": "%{count} nel tuo hangar"
+        "ships": {
+          "title": "Le tue navi",
+          "open": "Apri hangar",
+          "synced": "Sincronizzato da RSI %{time}",
+          "more": {
+            "one": "Altre %{count} nell'hangar",
+            "other": "Altre %{count} nell'hangar"
           },
-          "wanted": "Nella tua lista dei desideri",
-          "changes": "Modifiche",
-          "hangar": "Hangar",
-          "empty": {
-            "title": "Nessuna delle tue navi è cambiata",
-            "hint": "Le navi del tuo hangar o della tua lista dei desideri compaiono qui quando una build le cambia."
-          }
-        },
-        "hangar": {
-          "title": "Hangar",
-          "open": "Apri",
-          "ships": "Navi",
-          "wishlist": "Lista dei desideri",
-          "synced": "Sincronizzato da RSI",
+          "changedIn": "Cambiata in %{version}",
           "empty": {
             "title": "Il tuo hangar è vuoto",
             "hint": "Aggiungi navi a mano o sincronizzale da RSI.",
             "action": "Configura il tuo hangar"
           }
+        },
+        "wishlist": {
+          "title": "Lista desideri",
+          "all": "Lista completa",
+          "onSale": "In vendita",
+          "price": "Ora",
+          "empty": {
+            "title": "La tua lista desideri è vuota",
+            "hint": "Aggiungi una nave per vedere qui quando è in vendita.",
+            "action": "Sfoglia le navi"
+          }
+        },
+        "plan": {
+          "title": "Piano hangar",
+          "all": "Tutti i piani",
+          "steps": {
+            "one": "%{count} passo",
+            "other": "%{count} passi"
+          },
+          "updated": "Aggiornato %{date}",
+          "more": {
+            "one": "Un altro piano",
+            "other": "Altri %{count} piani"
+          },
+          "empty": {
+            "hint": "Scegli la nave a cui punti. Il pianificatore traccia upgrade e melt dal tuo hangar fino a lì.",
+            "action": "Inizia un piano"
+          }
+        },
+        "newShips": {
+          "title": "Nuove nel database",
+          "all": "Tutte le navi"
+        },
+        "tiles": {
+          "hangar": "Navi nell'hangar",
+          "wishlist": "Nella lista desideri",
+          "onSale": "Navi desiderate in vendita",
+          "fleetOnline": "Online in %{fleet}",
+          "patch": "Patch live",
+          "patchChanged": {
+            "one": "%{count} delle tue navi è cambiata",
+            "other": "%{count} delle tue navi sono cambiate"
+          },
+          "patchWhatChanged": "Guarda cosa è cambiato"
         },
         "notifications": {
           "title": "Notifiche",

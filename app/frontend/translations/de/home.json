@@ -355,8 +355,9 @@
             "action": "Flotte finden"
           }
         },
-        "fleets": {
-          "title": "Meine Flotten",
+        "fleet": {
+          "title": "Deine Flotte",
+          "open": "Flottenseite",
           "online": {
             "one": "%{count} von %{total} online",
             "other": "%{count} von %{total} online"
@@ -367,38 +368,72 @@
           },
           "requests": "Beitrittsanfragen",
           "transfers": "Transfers",
+          "announcement": "Ankündigung",
+          "others": "Außerdem Mitglied in",
           "empty": {
             "title": "Noch keine Flotte",
             "hint": "Tritt einer Org bei, um Events zu planen und ein Inventar zu teilen.",
             "action": "Flotten durchsuchen"
           }
         },
-        "changes": {
-          "title": "Deine Schiffe in %{version}",
-          "titleWithoutVersion": "Deine Schiffe in diesem Patch",
-          "owned": {
-            "one": "In deinem Hangar",
-            "other": "%{count} in deinem Hangar"
+        "ships": {
+          "title": "Deine Schiffe",
+          "open": "Hangar öffnen",
+          "synced": "Von RSI synchronisiert %{time}",
+          "more": {
+            "one": "%{count} weiteres im Hangar",
+            "other": "%{count} weitere im Hangar"
           },
-          "wanted": "Auf deiner Wunschliste",
-          "changes": "Änderungen",
-          "hangar": "Hangar",
-          "empty": {
-            "title": "Keines deiner Schiffe wurde geändert",
-            "hint": "Schiffe in deinem Hangar oder auf deiner Wunschliste erscheinen hier, wenn ein Build sie ändert."
-          }
-        },
-        "hangar": {
-          "title": "Hangar",
-          "open": "Öffnen",
-          "ships": "Schiffe",
-          "wishlist": "Wunschliste",
-          "synced": "Von RSI synchronisiert",
+          "changedIn": "Geändert in %{version}",
           "empty": {
             "title": "Dein Hangar ist leer",
             "hint": "Füge Schiffe von Hand hinzu oder synchronisiere sie von RSI.",
             "action": "Hangar einrichten"
           }
+        },
+        "wishlist": {
+          "title": "Wunschliste",
+          "all": "Ganze Wunschliste",
+          "onSale": "Im Angebot",
+          "price": "Jetzt",
+          "empty": {
+            "title": "Deine Wunschliste ist leer",
+            "hint": "Wünsch dir ein Schiff, dann siehst du hier, wenn es im Angebot ist.",
+            "action": "Schiffe ansehen"
+          }
+        },
+        "plan": {
+          "title": "Hangarplan",
+          "all": "Alle Pläne",
+          "steps": {
+            "one": "%{count} Schritt",
+            "other": "%{count} Schritte"
+          },
+          "updated": "Geändert %{date}",
+          "more": {
+            "one": "%{count} weiterer Plan",
+            "other": "%{count} weitere Pläne"
+          },
+          "empty": {
+            "hint": "Wähle das Schiff, auf das du hinarbeitest. Der Planer legt die Upgrades und Melts aus deinem Hangar dorthin fest.",
+            "action": "Plan beginnen"
+          }
+        },
+        "newShips": {
+          "title": "Neu in der Datenbank",
+          "all": "Alle Schiffe"
+        },
+        "tiles": {
+          "hangar": "Schiffe im Hangar",
+          "wishlist": "Auf der Wunschliste",
+          "onSale": "Wunschschiffe im Angebot",
+          "fleetOnline": "Online in %{fleet}",
+          "patch": "Live-Patch",
+          "patchChanged": {
+            "one": "%{count} deiner Schiffe geändert",
+            "other": "%{count} deiner Schiffe geändert"
+          },
+          "patchWhatChanged": "Was sich geändert hat"
         },
         "notifications": {
           "title": "Benachrichtigungen",

@@ -355,8 +355,9 @@
             "action": "Trouver une flotte"
           }
         },
-        "fleets": {
-          "title": "Mes flottes",
+        "fleet": {
+          "title": "Ta flotte",
+          "open": "Page de la flotte",
           "online": {
             "one": "%{count} sur %{total} en ligne",
             "other": "%{count} sur %{total} en ligne"
@@ -367,38 +368,72 @@
           },
           "requests": "Demandes d'adhésion",
           "transfers": "Transferts",
+          "announcement": "Annonce",
+          "others": "Aussi membre de",
           "empty": {
             "title": "Pas encore de flotte",
             "hint": "Rejoignez une org pour planifier des événements et partager un inventaire.",
             "action": "Parcourir les flottes"
           }
         },
-        "changes": {
-          "title": "Vos vaisseaux en %{version}",
-          "titleWithoutVersion": "Vos vaisseaux ce patch",
-          "owned": {
-            "one": "Dans votre hangar",
-            "other": "%{count} dans votre hangar"
+        "ships": {
+          "title": "Tes vaisseaux",
+          "open": "Ouvrir le hangar",
+          "synced": "Synchronisé depuis RSI %{time}",
+          "more": {
+            "one": "%{count} de plus dans ton hangar",
+            "other": "%{count} de plus dans ton hangar"
           },
-          "wanted": "Sur votre liste de souhaits",
-          "changes": "Changements",
-          "hangar": "Hangar",
-          "empty": {
-            "title": "Aucun de vos vaisseaux n'a changé",
-            "hint": "Les vaisseaux de votre hangar ou de votre liste de souhaits apparaissent ici quand une build les modifie."
-          }
-        },
-        "hangar": {
-          "title": "Hangar",
-          "open": "Ouvrir",
-          "ships": "Vaisseaux",
-          "wishlist": "Liste de souhaits",
-          "synced": "Synchronisé depuis RSI",
+          "changedIn": "Modifié en %{version}",
           "empty": {
             "title": "Votre hangar est vide",
             "hint": "Ajoutez des vaisseaux à la main ou synchronisez-les depuis RSI.",
             "action": "Configurer votre hangar"
           }
+        },
+        "wishlist": {
+          "title": "Liste de souhaits",
+          "all": "Toute la liste",
+          "onSale": "En vente",
+          "price": "Maintenant",
+          "empty": {
+            "title": "Ta liste de souhaits est vide",
+            "hint": "Ajoute un vaisseau pour voir ici quand il est en vente.",
+            "action": "Parcourir les vaisseaux"
+          }
+        },
+        "plan": {
+          "title": "Plan de hangar",
+          "all": "Tous les plans",
+          "steps": {
+            "one": "%{count} étape",
+            "other": "%{count} étapes"
+          },
+          "updated": "Mis à jour %{date}",
+          "more": {
+            "one": "%{count} autre plan",
+            "other": "%{count} autres plans"
+          },
+          "empty": {
+            "hint": "Choisis le vaisseau que tu vises. Le planificateur trace les améliorations et les melts depuis ton hangar pour y arriver.",
+            "action": "Commencer un plan"
+          }
+        },
+        "newShips": {
+          "title": "Nouveau dans la base",
+          "all": "Tous les vaisseaux"
+        },
+        "tiles": {
+          "hangar": "Vaisseaux dans ton hangar",
+          "wishlist": "Sur ta liste de souhaits",
+          "onSale": "Vaisseaux souhaités en vente",
+          "fleetOnline": "En ligne dans %{fleet}",
+          "patch": "Patch live",
+          "patchChanged": {
+            "one": "%{count} de tes vaisseaux modifié",
+            "other": "%{count} de tes vaisseaux modifiés"
+          },
+          "patchWhatChanged": "Voir ce qui a changé"
         },
         "notifications": {
           "title": "Notifications",
