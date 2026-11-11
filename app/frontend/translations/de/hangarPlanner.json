@@ -519,6 +519,11 @@
           "other": "%{count} Schritte"
         },
         "viaMelted": "Über gemeltete %{ship}"
+      },
+      "unmelt": {
+        "confirm": "Melt der %{ship} zurücknehmen? Sie bleibt im Hangar.",
+        "confirmRoutes": "Melt der %{ship} zurücknehmen? Sie bleibt im Hangar, und der Weg, der ihr Pledge zurückkauft, verliert seinen Start.",
+        "action": "Melt zurücknehmen"
       }
     }
   }

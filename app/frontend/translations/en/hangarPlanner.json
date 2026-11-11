@@ -519,6 +519,11 @@
           "other": "%{count} steps"
         },
         "viaMelted": "Via melted %{ship}"
+      },
+      "unmelt": {
+        "confirm": "Take back the melt of the %{ship}? It stays in the hangar.",
+        "confirmRoutes": "Take back the melt of the %{ship}? It stays in the hangar, and the route that buys its pledge back loses its start.",
+        "action": "Take back the melt"
       }
     }
   }

@@ -519,6 +519,11 @@
           "other": "%{count} pasos"
         },
         "viaMelted": "Vía %{ship} fundida"
+      },
+      "unmelt": {
+        "confirm": "¿Deshacer la fundición de la %{ship}? Se queda en el hangar.",
+        "confirmRoutes": "¿Deshacer la fundición de la %{ship}? Se queda en el hangar, y la vía que recompra su pledge pierde su inicio.",
+        "action": "Deshacer la fundición"
       }
     }
   }

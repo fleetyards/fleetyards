@@ -123,11 +123,8 @@ const tallies = computed(() =>
     .filter((tally) => tally.value > 0),
 );
 
-const { deciding, decide, keep, pendingIds } = useHangarPlanDecisions(
-  planId,
-  plan,
-  comparison,
-);
+const { deciding, decide, keep, pendingIds, confirmUnmelt } =
+  useHangarPlanDecisions(planId, plan, comparison);
 
 const openModal = (
   component: () => Promise<Component>,
@@ -222,7 +219,7 @@ const openMelt = (melt: HangarPlanMelt) =>
   );
 
 const destroyMelt = useDestroyHangarPlanMelt();
-const removeMelt = async (melt: HangarPlanMelt) => {
+const unmelt = async (melt: HangarPlanMelt) => {
   try {
     updatePlan(
       await destroyMelt.mutateAsync({
@@ -234,6 +231,9 @@ const removeMelt = async (melt: HangarPlanMelt) => {
     displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
   }
 };
+
+const removeMelt = (melt: HangarPlanMelt) =>
+  confirmUnmelt(melt, () => void unmelt(melt));
 
 const shareUrl = computed(() => {
   if (!plan.value?.shareToken) return undefined;

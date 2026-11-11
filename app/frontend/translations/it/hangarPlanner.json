@@ -519,6 +519,11 @@
           "other": "%{count} passaggi"
         },
         "viaMelted": "Tramite %{ship} sciolta"
+      },
+      "unmelt": {
+        "confirm": "Annullare la fusione della %{ship}? Resta nell'hangar.",
+        "confirmRoutes": "Annullare la fusione della %{ship}? Resta nell'hangar, e il percorso che ricompra il suo pledge perde la partenza.",
+        "action": "Annulla la fusione"
       }
     }
   }

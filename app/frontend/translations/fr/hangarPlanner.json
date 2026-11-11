@@ -519,6 +519,11 @@
           "other": "%{count} étapes"
         },
         "viaMelted": "Via %{ship} fondu"
+      },
+      "unmelt": {
+        "confirm": "Annuler le melt du %{ship} ? Il reste dans le hangar.",
+        "confirmRoutes": "Annuler le melt du %{ship} ? Il reste dans le hangar, et la voie qui rachète son pledge perd son départ.",
+        "action": "Annuler le melt"
       }
     }
   }
