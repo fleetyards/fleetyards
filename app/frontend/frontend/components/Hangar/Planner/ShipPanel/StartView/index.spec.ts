@@ -77,6 +77,7 @@ const resources = ref<HangarPlanResources>({
   ],
   upgrades: [],
   storeModels: [],
+  bundled: [],
   buybacks: [
     buyback("buyback-aurora"),
     buyback("buyback-used", { name: "Used - Aurora MR", used: true }),
@@ -227,6 +228,46 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
     expect(out.find((row) => row.includes("Used - Aurora MR"))).toContain(
       "Already starts another route",
     );
+  });
+
+  it("starts from another ship of a pledge the plan buys back, for free", async () => {
+    resources.value = {
+      ...resources.value,
+      bundled: [
+        {
+          pledgeStartId: "pledge-start",
+          pledgeName: "Package - Mining Duo",
+          model: prospector,
+          takenById: null,
+        },
+        {
+          pledgeStartId: "pledge-start",
+          pledgeName: "Package - Mining Duo",
+          model: prospector,
+          takenById: "other-start",
+        },
+      ],
+    };
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    const bundled = wrapper.find('[data-test="ship-list-section-bundled"]');
+    expect(bundled.exists()).toBe(true);
+    expect(
+      outRows(wrapper).find((row) => row.includes("Prospector")),
+    ).toContain("Already starts another route");
+
+    await use(wrapper, "Comes with Package - Mining Duo");
+
+    expect(pairStart).toHaveBeenLastCalledWith(
+      mining,
+      { kind: "bundled", pledgeStartId: "pledge-start", modelId: "Prospector" },
+      undefined,
+    );
+
+    resources.value = { ...resources.value, bundled: [] };
   });
 
   it("starts from a buy-back, narrowed to the buy-backs", async () => {

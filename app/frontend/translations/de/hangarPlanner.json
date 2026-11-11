@@ -119,7 +119,8 @@
         "store": "Store-Kauf",
         "ingame": "Im Spiel gekauft",
         "buyback": "Buy-Back",
-        "melted": "Nach dem Melten zurückgekauft"
+        "melted": "Nach dem Melten zurückgekauft",
+        "bundled": "Kommt mit einem Buy-Back"
       },
       "upgradeSources": {
         "store": "Store",
@@ -464,6 +465,8 @@
           "hangar": "Dein Hangar",
           "hangarHint": "Schiffe ohne Weg",
           "buybacks": "Buy-backs",
+          "bundled": "Kommt mit deinen Buy-Backs",
+          "bundledHint": "Gratis mit einem Pledge, das dieser Plan zurückkauft",
           "out": "Kommt nicht infrage",
           "outOf": "Kann keine %{ship} werden",
           "keep": "Behalten",
@@ -522,7 +525,8 @@
           "one": "%{count} Schritt",
           "other": "%{count} Schritte"
         },
-        "viaMelted": "Über gemeltete %{ship}"
+        "viaMelted": "Über gemeltete %{ship}",
+        "bundledWith": "Kommt mit %{pledge}"
       },
       "unmelt": {
         "confirm": "Melt der %{ship} zurücknehmen? Sie bleibt im Hangar.",

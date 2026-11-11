@@ -66,6 +66,7 @@ const resources = ref<HangarPlanResources>({
   ],
   upgrades: [],
   storeModels: [],
+  bundled: [],
   buybacks: [],
 });
 

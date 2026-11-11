@@ -162,6 +162,11 @@ const sections = computed<ShipListSection[]>(() => [
   },
   { key: "buyback", label: t("hangarPlanner.panel.sections.buybacks") },
   {
+    key: "bundled",
+    label: t("hangarPlanner.panel.sections.bundled"),
+    hint: t("hangarPlanner.panel.sections.bundledHint"),
+  },
+  {
     key: "out",
     label: target.value
       ? t("hangarPlanner.panel.sections.outOf", { ship: target.value.name })
@@ -437,11 +442,60 @@ const meltedOptions = computed<StartOption[]>(() =>
   }),
 );
 
+const bundledId = (pledgeStartId: string, index: number) =>
+  `bundled:${pledgeStartId}:${index}`;
+
+// The other ships of a pledge the plan buys back come along for free. The
+// start that buys the pledge back cannot start as one of them itself.
+const bundledOptions = computed<StartOption[]>(() =>
+  (resources.value?.bundled ?? []).flatMap((ship, index): StartOption[] => {
+    if (ship.pledgeStartId === props.acquisition?.id) return [];
+
+    const current =
+      !!props.acquisition && ship.takenById === props.acquisition.id;
+    const reason =
+      ship.takenById && !current
+        ? t("hangarPlanner.panel.out.used")
+        : fits(ship.model)
+          ? undefined
+          : unreachable(ship.model);
+    const cost = costToTarget(ship.model);
+
+    return [
+      {
+        start: {
+          kind: "bundled",
+          pledgeStartId: ship.pledgeStartId,
+          modelId: ship.model.id,
+        },
+        model: ship.model,
+        item: {
+          id: bundledId(ship.pledgeStartId, index),
+          section: reason ? "out" : "bundled",
+          reason,
+          ship: ship.model,
+          title: ship.model.name,
+          meta: t("hangarPlanner.panel.bundledWith", {
+            pledge: ship.pledgeName ?? t("hangarPlanner.startKinds.buyback"),
+          }),
+          price: money(cost),
+          sortPrice: cost,
+          badge: current
+            ? t("hangarPlanner.pick.current")
+            : excludes(ship.model),
+          pinned: !!target.value && ship.model.id === target.value.id,
+        },
+      },
+    ];
+  }),
+);
+
 const options = computed(() => [
   ...newOptions.value,
   ...vehicleOptions.value,
   ...buybackOptions.value,
   ...meltedOptions.value,
+  ...bundledOptions.value,
 ]);
 
 const items = computed(() => options.value.map((option) => option.item));
@@ -450,6 +504,13 @@ const optionOf = (item: ShipListItem) =>
   options.value.find((option) => option.item.id === item.id);
 
 const currentId = computed(() => {
+  if (props.acquisition?.startKind === HangarPlanStartKindEnum.BUNDLED) {
+    const index = (resources.value?.bundled ?? []).findIndex(
+      (ship) => ship.takenById === props.acquisition?.id,
+    );
+    const ship = resources.value?.bundled[index];
+    return ship ? bundledId(ship.pledgeStartId, index) : undefined;
+  }
   if (startsMelted.value && props.acquisition?.sourceVehicleId) {
     return `melted:${props.acquisition.sourceVehicleId}`;
   }

@@ -63,6 +63,7 @@ const resources = ref({
   upgrades: [],
   buybacks: [],
   storeModels: [aurora, scorpius, carrack, hammerhead, idris],
+  bundled: [],
 } as HangarPlanResources);
 
 const wishlist = ref<string[]>([]);
