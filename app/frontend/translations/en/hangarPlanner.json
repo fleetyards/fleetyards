@@ -432,7 +432,11 @@
         "ccuUnknown": "No CCU seen yet",
         "filters": "Narrow the starts",
         "chooseShip": "Choose a ship",
-        "earnInGame": "Earn in game"
+        "earnInGame": "Earn in game",
+        "confirmBundled": {
+          "one": "Changing this start also removes the route of the ship that comes with its pledge.",
+          "other": "Changing this start also removes the routes of the %{count} ships that come with its pledge."
+        }
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {

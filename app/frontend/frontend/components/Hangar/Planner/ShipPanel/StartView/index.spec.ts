@@ -6,6 +6,7 @@ import {
   type HangarPlan,
   type HangarPlanAcquisition,
   HangarPlanSlotStateEnum,
+  HangarPlanStartKindEnum,
   HangarPlanVehicleStatusEnum,
   NullableHangarPlanVehicleUseEnum,
   type HangarPlanBuybackResource,
@@ -123,6 +124,11 @@ const planData = ref<HangarPlan>();
 const pairStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 const holdStart = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 const pairEnd = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
+const comlinkEmit = vi.hoisted(() => vi.fn());
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
+}));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -267,6 +273,51 @@ describe("Hangar/Planner/ShipPanel/StartView", () => {
       undefined,
     );
 
+    resources.value = { ...resources.value, bundled: [] };
+  });
+
+  it("asks before a new start drops the routes its pledge's other ships start", async () => {
+    resources.value = {
+      ...resources.value,
+      bundled: [
+        {
+          pledgeStartId: "pledge-start",
+          pledgeName: "Package - Mining Duo",
+          model: mole,
+          takenById: "mole-start",
+        },
+      ],
+    };
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        planId: "plan",
+        slot: slot([mining]),
+        candidate: mining,
+        acquisition: {
+          id: "pledge-start",
+          startKind: HangarPlanStartKindEnum.BUYBACK,
+          buybackPledgeId: "buyback-aurora",
+          startModel: aurora,
+          steps: [],
+        } as unknown as HangarPlanAcquisition,
+      },
+    });
+    pairStart.mockClear();
+
+    await use(wrapper, "Cutlass Black");
+
+    expect(pairStart).not.toHaveBeenCalled();
+    const [[event, options]] = comlinkEmit.mock.calls as [
+      [string, { text: string; onConfirm: () => void }],
+    ];
+    expect(event).toBe("show-confirm");
+    expect(options.text).toContain("ship that comes with its pledge");
+
+    options.onConfirm();
+    await flushPromises();
+
+    expect(pairStart).toHaveBeenCalledTimes(1);
     resources.value = { ...resources.value, bundled: [] };
   });
 

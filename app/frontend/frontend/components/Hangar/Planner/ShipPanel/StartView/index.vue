@@ -33,6 +33,7 @@ import {
   upgradeCost,
 } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
 import {
   type HangarPlanStart,
@@ -73,6 +74,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const comlink = useComlink();
 const { money } = usePlanMoney();
 const pledgeNote = usePledgeNote();
 const insuranceLabel = useBuybackInsurance();
@@ -504,12 +506,25 @@ const optionOf = (item: ShipListItem) =>
   options.value.find((option) => option.item.id === item.id);
 
 const currentId = computed(() => {
-  if (props.acquisition?.startKind === HangarPlanStartKindEnum.BUNDLED) {
-    const index = (resources.value?.bundled ?? []).findIndex(
-      (ship) => ship.takenById === props.acquisition?.id,
+  const acquisition = props.acquisition;
+  if (acquisition?.startKind === HangarPlanStartKindEnum.BUNDLED) {
+    const bundled = resources.value?.bundled ?? [];
+    // Resources reload after the plan does, so until they have, the start is
+    // found by the pledge and ship it names.
+    const taken = bundled.findIndex(
+      (ship) => ship.takenById === acquisition.id,
     );
-    const ship = resources.value?.bundled[index];
-    return ship ? bundledId(ship.pledgeStartId, index) : undefined;
+    const index =
+      taken >= 0
+        ? taken
+        : bundled.findIndex(
+            (ship) =>
+              ship.pledgeStartId === acquisition.bundledWithId &&
+              ship.model.id === acquisition.startModel?.id,
+          );
+    return index >= 0
+      ? bundledId(bundled[index].pledgeStartId, index)
+      : undefined;
   }
   if (startsMelted.value && props.acquisition?.sourceVehicleId) {
     return `melted:${props.acquisition.sourceVehicleId}`;
@@ -525,9 +540,38 @@ const currentId = computed(() => {
 
 const selected = ref<string | undefined>(currentId.value);
 
-const choose = async (item: ShipListItem) => {
+// Routes in other slots that start from ships this start's pledge brings
+// along, which go when it changes.
+const bundledRoutes = computed(
+  () =>
+    (resources.value?.bundled ?? []).filter(
+      (ship) =>
+        !!ship.takenById && ship.pledgeStartId === props.acquisition?.id,
+    ).length,
+);
+
+const confirmed = (proceed: () => Promise<void>, changes = true) => {
+  if (!changes || !bundledRoutes.value) return proceed();
+
+  comlink.emit("show-confirm", {
+    text: t("hangarPlanner.pick.confirmBundled", {
+      count: bundledRoutes.value,
+    }),
+    tone: "warning",
+    onConfirm: () => void proceed(),
+  });
+  return Promise.resolve();
+};
+
+const choose = (item: ShipListItem) => {
   const option = optionOf(item);
-  if (!option?.start) return;
+  if (!option?.start) return Promise.resolve();
+
+  return confirmed(() => save(option), item.id !== currentId.value);
+};
+
+const save = async (option: StartOption) => {
+  if (!option.start) return;
 
   if (!props.candidate && !props.slot.candidates.length) {
     if (await holdStart(props.slot, option.start, props.acquisition)) {
@@ -545,11 +589,12 @@ const choose = async (item: ShipListItem) => {
   }
 };
 
-const remove = async () => {
-  if (await pairEnd({ kind: "remove" }, { acquisition: props.acquisition })) {
-    emit("done");
-  }
-};
+const remove = () =>
+  confirmed(async () => {
+    if (await pairEnd({ kind: "remove" }, { acquisition: props.acquisition })) {
+      emit("done");
+    }
+  });
 </script>
 
 <template>

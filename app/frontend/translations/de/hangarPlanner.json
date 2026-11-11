@@ -432,7 +432,11 @@
         "ccuUnknown": "Noch kein CCU gesehen",
         "filters": "Starts eingrenzen",
         "chooseShip": "Schiff wählen",
-        "earnInGame": "Im Spiel verdienen"
+        "earnInGame": "Im Spiel verdienen",
+        "confirmBundled": {
+          "one": "Wenn du diesen Start änderst, fällt auch der Weg des Schiffs weg, das mit seinem Pledge kommt.",
+          "other": "Wenn du diesen Start änderst, fallen auch die Wege der %{count} Schiffe weg, die mit seinem Pledge kommen."
+        }
       },
       "slotNumber": "Platz %{number}",
       "suggestions": {

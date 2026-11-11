@@ -432,7 +432,11 @@
         "ccuUnknown": "Aún no se ha visto ningún CCU",
         "filters": "Acotar los inicios",
         "chooseShip": "Elige una nave",
-        "earnInGame": "Ganar en el juego"
+        "earnInGame": "Ganar en el juego",
+        "confirmBundled": {
+          "one": "Cambiar este inicio también elimina la vía de la nave que viene con su pledge.",
+          "other": "Cambiar este inicio también elimina las vías de las %{count} naves que vienen con su pledge."
+        }
       },
       "slotNumber": "Hueco %{number}",
       "suggestions": {

@@ -432,7 +432,11 @@
         "ccuUnknown": "Nessun CCU visto finora",
         "filters": "Restringi le partenze",
         "chooseShip": "Scegli una nave",
-        "earnInGame": "Guadagna in gioco"
+        "earnInGame": "Guadagna in gioco",
+        "confirmBundled": {
+          "one": "Cambiare questa partenza rimuove anche il percorso della nave che arriva con il suo pledge.",
+          "other": "Cambiare questa partenza rimuove anche i percorsi delle %{count} navi che arrivano con il suo pledge."
+        }
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {

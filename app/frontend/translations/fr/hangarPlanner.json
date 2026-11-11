@@ -432,7 +432,11 @@
         "ccuUnknown": "Aucun CCU vu pour l'instant",
         "filters": "Affiner les départs",
         "chooseShip": "Choisir un vaisseau",
-        "earnInGame": "Gagner en jeu"
+        "earnInGame": "Gagner en jeu",
+        "confirmBundled": {
+          "one": "Changer ce départ supprime aussi la voie du vaisseau qui vient avec son pledge.",
+          "other": "Changer ce départ supprime aussi les voies des %{count} vaisseaux qui viennent avec son pledge."
+        }
       },
       "slotNumber": "Emplacement %{number}",
       "suggestions": {

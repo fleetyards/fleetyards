@@ -432,7 +432,11 @@
         "ccuUnknown": "尚未見過 CCU",
         "filters": "篩選起點",
         "chooseShip": "選擇艦船",
-        "earnInGame": "在遊戲中取得"
+        "earnInGame": "在遊戲中取得",
+        "confirmBundled": {
+          "one": "更改此起點也會移除隨其 pledge 附帶的飛船的途徑。",
+          "other": "更改此起點也會移除隨其 pledge 附帶的 %{count} 艘飛船的途徑。"
+        }
       },
       "slotNumber": "欄位 %{number}",
       "suggestions": {
