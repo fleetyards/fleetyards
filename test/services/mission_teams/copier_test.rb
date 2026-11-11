@@ -39,4 +39,21 @@ class MissionTeams::CopierTest < ActiveSupport::TestCase
     assert_equal %w[Typed Lead], target.mission_slots.reload.map(&:title)
     assert_equal [0, 1], target.mission_ships.reload.map(&:position)
   end
+  test "drops a listed ship that changed hands instead of failing the copy" do
+    member = create(:user)
+    fleet = @mission.fleet
+    create(:fleet_membership, :accepted, fleet:, user: member)
+    row = create(:fleet_squadron_membership, fleet_squadron: create(:fleet_squadron, fleet:),
+      fleet_membership: fleet.fleet_memberships.find_by!(user: member))
+    vehicle = create(:vehicle, user: member)
+    candidate = @source.mission_slots.first.mission_slot_candidates.create!(fleet_squadron_membership: row, vehicle:)
+    vehicle.update_columns(user_id: create(:user).id)
+    event_team = create(:fleet_event_team, fleet_event: create(:fleet_event, fleet:))
+
+    MissionTeams::Copier.new(MissionTeams::Copier.preload(MissionTeam.where(id: @source.id)).first, event_team).copy!
+
+    copied = event_team.fleet_event_slots.first.fleet_event_slot_candidates.sole
+    assert_equal candidate.fleet_squadron_membership_id, copied.fleet_squadron_membership_id
+    assert_nil copied.vehicle_id
+  end
 end

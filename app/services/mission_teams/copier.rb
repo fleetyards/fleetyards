@@ -33,7 +33,7 @@ module MissionTeams
 
     SLOT_PRELOADS = [
       :model_position,
-      {mission_slot_candidates: [{fleet_squadron_membership: {fleet_membership: :user}}, {vehicle: :model}]}
+      {mission_slot_candidates: SlotCandidate::RENDER_PRELOADS}
     ].freeze
 
     TEAM_PRELOADS = [
@@ -97,9 +97,7 @@ module MissionTeams
       copy = slottable.public_send(@config[:slots]).create!(attributes)
 
       slot.mission_slot_candidates.sort_by(&:position).each do |candidate|
-        copy.public_send(@config[:candidates]).create!(
-          candidate.slice(:fleet_squadron_membership_id, :vehicle_id, :position)
-        )
+        copy_candidate(candidate, copy)
       end
 
       copied_slots << copy
@@ -109,6 +107,18 @@ module MissionTeams
     # listed on them.
     def copied_slots
       @copied_slots ||= []
+    end
+
+    # A list kept on a flight or template can go stale -- a ship changes hands,
+    # a member's squadron row moves -- and one such entry must not stop the
+    # whole team from being built. A ship that no longer fits is dropped; a
+    # member who no longer fits is left off.
+    private def copy_candidate(candidate, slot)
+      copy = slot.public_send(@config[:candidates]).new(
+        candidate.slice(:fleet_squadron_membership_id, :vehicle_id, :position)
+      )
+      copy.vehicle_id = nil if !copy.valid? && copy.errors.include?(:vehicle)
+      copy.save if copy.valid?
     end
 
     private def next_position(relation)
