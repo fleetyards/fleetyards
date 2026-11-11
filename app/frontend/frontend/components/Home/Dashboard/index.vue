@@ -12,6 +12,7 @@ import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HomeSearch from "@/frontend/components/Home/Search/index.vue";
+import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
 import DashboardTiles from "@/frontend/components/Home/Dashboard/Tiles/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
@@ -40,13 +41,16 @@ const { isFeatureEnabled } = useFeatures();
   </Teleport>
 
   <div class="home-dashboard__head">
-    <Heading hero :size="HeadingSizeEnum.HERO_SM">
-      {{
-        currentUser
-          ? t("home.dashboard.welcome", { name: currentUser.username })
-          : t("home.dashboard.welcomeAnonymous")
-      }}
-    </Heading>
+    <div class="home-dashboard__title">
+      <HomeBuildPills />
+      <Heading hero :size="HeadingSizeEnum.HERO_SM">
+        {{
+          currentUser
+            ? t("home.dashboard.welcome", { name: currentUser.username })
+            : t("home.dashboard.welcomeAnonymous")
+        }}
+      </Heading>
+    </div>
     <HomeSearch class="home-dashboard__search" />
   </div>
 
@@ -82,6 +86,13 @@ const { isFeatureEnabled } = useFeatures();
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
+}
+
+.home-dashboard__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
 }
 
 .home-dashboard__tiles {
