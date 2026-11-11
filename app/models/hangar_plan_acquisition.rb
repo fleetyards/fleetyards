@@ -62,9 +62,11 @@ class HangarPlanAcquisition < ApplicationRecord
   # is what the new start costs today.
   before_update -> { self.price_snapshot = list_price }, if: :start_changed?
   # Another pledge, or another of its ships to start as, brings other ships along.
+  # A melted start's ship follows its source vehicle, and is looked up again on
+  # every save, so only a buy-back's ship counts as picked.
   after_update -> { bundled_starts.destroy_all }, if: -> {
     saved_change_to_start_kind? || saved_change_to_buyback_pledge_id? || saved_change_to_source_vehicle_id? ||
-      saved_change_to_start_model_id?
+      (start_kind == "buyback" && saved_change_to_start_model_id?)
   }
 
   def final_model
@@ -104,7 +106,9 @@ class HangarPlanAcquisition < ApplicationRecord
     when "owned" then live_source_vehicle.nil?
     when "buyback" then buyback_pledge.nil? || buyback_pledge.user_id != hangar_plan.user_id
     when "melted" then source_melt.nil?
-    when "bundled" then bundled_with.nil? || bundled_with.source_missing?
+    when "bundled"
+      bundled_with.nil? || bundled_with.source_missing? ||
+        HangarPlans::BundledShips.for(bundled_with).none? { |model| model.id == start_model_id }
     else false
     end
   end
@@ -213,7 +217,8 @@ class HangarPlanAcquisition < ApplicationRecord
   # One of the other ships of a pledge another start of the plan buys back, and
   # one no other start takes yet.
   private def bundled_source
-    if bundled_with.blank? || bundled_with.hangar_plan_id != hangar_plan_id || BUYBACK_START_KINDS.exclude?(bundled_with.start_kind)
+    if bundled_with.blank? || bundled_with_id == id || bundled_with.hangar_plan_id != hangar_plan_id ||
+        BUYBACK_START_KINDS.exclude?(bundled_with.start_kind)
       return errors.add(:bundled_with_id, :invalid)
     end
 

@@ -264,6 +264,32 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     assert_not HangarPlanAcquisition.exists?(bundled.id)
   end
 
+  test "PUT rejects a buy-back start bundled with itself" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo",
+      ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+
+    assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: pledge_start.id},
+      body: {startKind: "bundled", buybackPledgeId: nil, bundledWithId: pledge_start.id, startModelId: @cutlass.id}
+
+    assert HangarPlanAcquisition.exists?(pledge_start.id)
+  end
+
+  test "a bundled start whose ship the pledge no longer holds is missing its source" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo",
+      ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    cutlass = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @cutlass)
+    bundled = @plan.acquisitions.create!(candidate: cutlass, start_kind: "bundled", bundled_with: pledge_start, start_model: @cutlass)
+
+    assert_not bundled.source_missing?
+
+    pledge.update!(ship_names: ["Carrack"])
+
+    assert bundled.reload.source_missing?
+  end
+
   test "PUT replaces the chain and sets a price override" do
     acquisition = @plan.acquisitions.new(candidate: @candidate, start_kind: "store", start_model: @cutlass)
     acquisition.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)
