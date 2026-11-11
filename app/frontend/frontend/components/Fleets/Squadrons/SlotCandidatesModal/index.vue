@@ -47,17 +47,7 @@ const squadronSlug = computed(() => props.scope.squadronSlug ?? "");
 const { data: members, isLoading: membersLoading } = useFleetSquadronMembers(
   fleetSlug,
   squadronSlug,
-  computed(() => ({ perPage: "100" })),
-);
-
-// The ships each member gives this squadron -- the only ones a flight may
-// name for them.
-const { data: vehicles } = useFleetVehicles(
-  fleetSlug,
-  computed(() => ({
-    perPage: "240",
-    q: { squadronSlugIn: [squadronSlug.value] },
-  })),
+  computed(() => ({ perPage: "all" })),
 );
 
 interface Entry {
@@ -70,6 +60,21 @@ const entries = ref<Entry[]>(
     username: candidate.username ?? "",
     vehicleId: candidate.vehicle?.id ?? null,
   })),
+);
+
+// The ships the listed members give this squadron -- the only ones a flight
+// may name for them. Asked for the listed members alone, so a large squadron
+// does not run past a page.
+const { data: vehicles } = useFleetVehicles(
+  fleetSlug,
+  computed(() => ({
+    perPage: "240",
+    q: {
+      squadronSlugIn: [squadronSlug.value],
+      memberIn: entries.value.map((entry) => entry.username),
+    },
+  })),
+  { query: { enabled: computed(() => entries.value.length > 0) } },
 );
 
 const initial = JSON.stringify(entries.value);
