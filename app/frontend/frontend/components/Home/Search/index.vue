@@ -815,6 +815,10 @@ const popoverStyle = computed(() => {
 // Register cards on the overlay's edge. The chosen one takes the overlay's own
 // material and overlaps its frame, so the two read as one sheet.
 .home-search__popover--tabbed {
+  // A search against the right edge of the page has no room beside the
+  // overlay for its tabs, so its page gives the overlay this much less width.
+  right: var(--home-search-tabs-room, 0);
+
   --scope-tab-height: 64px;
   --scope-tab-gap: 4px;
   --scope-tabs-top: 12px;

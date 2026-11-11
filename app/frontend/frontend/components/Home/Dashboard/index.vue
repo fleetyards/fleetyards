@@ -89,7 +89,9 @@ const { isFeatureEnabled } = useFeatures();
 }
 
 .home-dashboard__search {
-  flex: 0 1 380px;
+  --home-search-tabs-room: 42px;
+
+  flex: 0 1 600px;
   min-width: 0;
   margin-bottom: 15px;
 }
