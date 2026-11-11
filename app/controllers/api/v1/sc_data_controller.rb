@@ -57,11 +57,15 @@ module Api
         end
       end
 
-      # What the current live patch brought, for the landing page. Cached on the
-      # two builds and when the newer one was last written, so a re-load of the
-      # same version is picked up and every visitor in between reads one answer.
+      # What the current patch of an environment brought, for the landing page.
+      # Cached on the two builds and when the newer one was last written, so a
+      # re-load of the same version is picked up and every visitor in between
+      # reads one answer.
+      #
+      # Its own parameter rather than `scDataSource`: the section switches
+      # between the two on its own, whichever build the rest of the site reads.
       def patch_summary
-        summary = ::ScData::PatchSummary.for("live")
+        summary = ::ScData::PatchSummary.for(params.fetch(:environment, ::ScData::PatchSummary::LIVE).to_s)
         return not_found if summary.blank?
 
         written = ::ScData::PatchSummary::CATALOGUES.values.map { |build_class|

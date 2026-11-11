@@ -22072,6 +22072,17 @@ paths:
       tags:
       - Versions
       operationId: scDataPatchSummary
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+          enum:
+          - live
+          - ptu
+        required: false
+        description: Which environment's current patch to summarise. A preview is
+          compared against the live build it replaces.
       responses:
         '200':
           description: successful
@@ -22085,6 +22096,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/sources":

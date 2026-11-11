@@ -38,6 +38,34 @@ module ScData
       assert_equal CURRENT, ::ScData::PatchSummary.for("live").from
     end
 
+    test ".for reads a preview against the newest live build" do
+      model = create(:model)
+      preview = ::ScData::Source.new(environment: "ptu", version: "1.0.2-ptu.4")
+      model_build(PREVIOUS, model:)
+      model_build(HOTFIX, model:)
+      model_build(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2"), model:)
+      model_build(preview, model:)
+
+      summary = ::ScData::PatchSummary.for("ptu")
+
+      assert_equal HOTFIX, summary.from
+      assert_equal preview, summary.to
+    end
+
+    test ".for has no preview to summarise once live has passed it" do
+      model = create(:model)
+      model_build(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2"), model:)
+      model_build(HOTFIX, model:)
+
+      assert_nil ::ScData::PatchSummary.for("ptu")
+    end
+
+    test ".for has no preview to summarise without a live build" do
+      model_build(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2"), model: create(:model))
+
+      assert_nil ::ScData::PatchSummary.for("ptu")
+    end
+
     test ".for has nothing to summarise with a single build" do
       model_build(CURRENT, model: create(:model))
 
