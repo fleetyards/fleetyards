@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.48.0](https://github.com/fleetyards/fleetyards/compare/v9.47.0...v9.48.0) (2026-11-11)
+
+
+### Features
+
+* **dressing-room:** filter the item picker like the ship picker ([#6282](https://github.com/fleetyards/fleetyards/issues/6282)) ([93713c5](https://github.com/fleetyards/fleetyards/commit/93713c51fc0f2f45aa43861e2f59f3d2980628ef))
+* **fleetchart:** group hangar ships by their hangar group ([3eccd7c](https://github.com/fleetyards/fleetyards/commit/3eccd7ced4751d6d2768c901e8ead203d4115774))
+* **hangar-planner:** one off-canvas panel for ship selection and routes ([#6283](https://github.com/fleetyards/fleetyards/issues/6283)) ([6f5d1c2](https://github.com/fleetyards/fleetyards/commit/6f5d1c2f5b5bbd2af47e7b03684fb51c05cbe13d))
+* **hangar-sync:** read each pledge's insurance from the RSI hangar ([6a2f19e](https://github.com/fleetyards/fleetyards/commit/6a2f19e1d6bac960070749c7fab7645425065cd0))
+* **hangar-sync:** sync the RSI store credit and use it in plans ([#6285](https://github.com/fleetyards/fleetyards/issues/6285)) ([4bff1ec](https://github.com/fleetyards/fleetyards/commit/4bff1ec1684779cc3e317aca44d6f567396064ef))
+
+
+### Bug Fixes
+
+* **stage-layout:** centre the control bar on the stage without a start column ([fdf4455](https://github.com/fleetyards/fleetyards/commit/fdf4455a683a9a7728ec5e5868f2c3225e3a0e78))
+* **wishlist:** use the sliders icon for the display options button ([60e8466](https://github.com/fleetyards/fleetyards/commit/60e84667a42cde0b4cc45b5c8bd75ca5eadbcf96))
+
+
+### Chores
+
+* **deps-dev:** bump concurrently from 10.0.6 to 10.0.7 ([#6278](https://github.com/fleetyards/fleetyards/issues/6278)) ([0d02ffd](https://github.com/fleetyards/fleetyards/commit/0d02ffdff0b0c584e25ab284abfc0084269665a6))
+* **deps-dev:** bump knip from 6.44.1 to 6.44.2 ([#6279](https://github.com/fleetyards/fleetyards/issues/6279)) ([5002280](https://github.com/fleetyards/fleetyards/commit/5002280397eb2028aa4eb2234f125c0bd1c21448))
+* **deps-dev:** bump orval from 8.46.0 to 8.47.0 ([#6280](https://github.com/fleetyards/fleetyards/issues/6280)) ([5080bd2](https://github.com/fleetyards/fleetyards/commit/5080bd225b9dfb583eccfd47f89f5073ef495da1))
+* **deps:** bump irb from 1.18.0 to 1.19.0 ([#6277](https://github.com/fleetyards/fleetyards/issues/6277)) ([f758704](https://github.com/fleetyards/fleetyards/commit/f75870493cd16cd41b75a9a47bba758b5fb3009a))
+* **sc_data:** bump ptu to 4.10.3-ptu.13160301 ([6ae7b32](https://github.com/fleetyards/fleetyards/commit/6ae7b3262fc9504efbc6bdcf6db1d52740c45cf1))
+
 ## [9.47.0](https://github.com/fleetyards/fleetyards/compare/v9.46.0...v9.47.0) (2026-11-10)
 
 
