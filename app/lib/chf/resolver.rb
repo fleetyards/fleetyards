@@ -12,6 +12,9 @@ module Chf
   # itself without asking again.
   class Resolver
     VERSION = 3
+    # Changes whenever the same version resolves to other values, so stored
+    # resolutions are made afresh.
+    REVISION = 2
 
     MALE = "f6676cdd"
     FEMALE = "54ebf49e"
@@ -37,6 +40,7 @@ module Chf
     ABSORPTION_SCALE = 0.3
     REC709 = [0.2126, 0.7152, 0.0722].freeze
     DYE_LIFT_LUMINANCE = 0.1
+    SPECULAR_TINT_LUMINANCE = 0.1
     BETA = 0.3
     ABSORPTION_DEPTH = 5.969 - (0.215 * BETA) + (2.532 * (BETA**2)) - (10.73 * (BETA**3)) + (5.574 * (BETA**4)) + (0.245 * (BETA**5))
 
@@ -233,14 +237,16 @@ module Chf
         else
           # Without an anisotropic hair lobe the raw 1 - Smoothness reads as a
           # white sheen; the specular takes the hair's own hue at half strength.
+          # The hue of near-black hair is noise, so its sheen fades to white.
           brightest = [color.max, 1e-6].max
+          tint = [1.0, luminance(color) / SPECULAR_TINT_LUMINANCE].min
           out["three"] = three(
             "type" => "MeshPhysicalMaterial",
             "color" => color.map { |c| c.round(5) }, "alphaMap" => textures["alpha"], "texCoord" => 0,
             "alphaTest" => (mode == "hair_cards") ? 0.33 : 0.15, "alphaToCoverage" => true,
             "alphaMipScale" => opacity_mip_scale(scalp_of || template, mode).round(4), "transparent" => false,
             "side" => "DoubleSide", "roughness" => (1 - (0.6 * params.fetch("Smoothness", 0.6))).clamp(0.55, 0.85).round(4),
-            "metalness" => 0.0, "specularIntensity" => 0.5, "specularColor" => color.map { |c| (c / brightest).round(4) }
+            "metalness" => 0.0, "specularIntensity" => 0.5, "specularColor" => color.map { |c| (1 - tint + (tint * c / brightest)).round(4) }
           )
           if textures["id"]
             out["variation"] = {"map" => textures["id"], "texCoord" => 0, "amount" => params.fetch("BaseMelaninVariation", 0.0).to_f, "rule" => VARIATION_RULE}
@@ -292,9 +298,10 @@ module Chf
       tint = params.fetch("BaseTintColor", [1, 1, 1])
 
       # A dye lighter than the hair lifts it only as far as its own luminance
-      # allows: a dark dye cannot cover darker hair.
+      # allows, squared: a dark dye cannot cover darker hair, and a trace of it
+      # leaves black brows black.
       dye_luminance = luminance(dye)
-      amount *= [1.0, dye_luminance / DYE_LIFT_LUMINANCE].min if dye_luminance > luminance(base)
+      amount *= [1.0, dye_luminance / DYE_LIFT_LUMINANCE].min**2 if dye_luminance > luminance(base)
 
       3.times.map do |c|
         mixed = (self.class.linear_srgb(base[c]) * (1 - amount)) + (self.class.linear_srgb(dye[c]) * amount)

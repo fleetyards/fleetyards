@@ -339,8 +339,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.1605,
-        0.006
+        0.9951,
+        0.9942
        ]
       },
       "variation": {
@@ -395,8 +395,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.1605,
-        0.006
+        0.9951,
+        0.9942
        ]
       },
       "variation": {
@@ -462,8 +462,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4287,
-        0.094
+        0.8393,
+        0.7451
        ]
       },
       "variation": {
@@ -518,8 +518,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.4518,
-        0.1088
+        0.809,
+        0.6895
        ]
       },
       "variation": {
@@ -569,9 +569,9 @@
       "three": {
        "type": "MeshPhysicalMaterial",
        "color": [
-        0.13604,
-        0.0234,
-        0.01208
+        0.10624,
+        0.02759,
+        0.0103
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/textures/2_pixels/hair_texture_03_opac_alpha.webp",
        "texCoord": 0,
@@ -585,8 +585,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.172,
-        0.0888
+        0.6812,
+        0.6111
        ]
       },
       "variation": {
@@ -625,9 +625,9 @@
       "three": {
        "type": "MeshStandardMaterial",
        "color": [
-        0.10884,
-        0.01872,
-        0.00966
+        0.08499,
+        0.02207,
+        0.00824
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_49_scalp_cap.webp",
        "texCoord": 0,
@@ -763,9 +763,9 @@
       "three": {
        "type": "MeshPhysicalMaterial",
        "color": [
-        0.13604,
-        0.0234,
-        0.01208
+        0.10624,
+        0.02759,
+        0.0103
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/hair_02_shaved_opac_alpha.webp",
        "texCoord": 0,
@@ -779,8 +779,8 @@
        "specularIntensity": 0.5,
        "specularColor": [
         1.0,
-        0.172,
-        0.0888
+        0.6812,
+        0.6111
        ]
       },
       "variation": {
@@ -819,9 +819,9 @@
       "three": {
        "type": "MeshStandardMaterial",
        "color": [
-        0.10884,
-        0.01872,
-        0.00966
+        0.08499,
+        0.02207,
+        0.00824
        ],
        "alphaMap": "characters/chf/textures/heads/shared/hair_v2/sc/male/textures/m_hair_49_scalp_cap.webp",
        "texCoord": 0,
