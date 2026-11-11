@@ -72,6 +72,25 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     assert_equal copy.acquisitions.find_by!(start_kind: "buyback"), bundled.bundled_with
   end
 
+  test "a plan from a wishlist bigger than the slot limit is not built" do
+    create_list(:vehicle, 3, user: @user, model: @gladius, wanted: true)
+
+    stub_const(HangarPlanSlot, :MAX_PER_PLAN, 2) do
+      assert_no_difference -> { HangarPlan.count } do
+        assert_raises(ActiveRecord::RecordInvalid) { build_plan("wishlist") }
+      end
+    end
+  end
+
+  test "a duplicate of a plan already over the slot limit copies every slot" do
+    source = build_plan("empty")
+    3.times { |index| source.slots.create!(label: "Fighter #{index}") }
+
+    stub_const(HangarPlanSlot, :MAX_PER_PLAN, 2) do
+      assert_equal 3, build_plan("plan", source_plan: source).slots.count
+    end
+  end
+
   private def build_plan(source, source_plan: nil)
     plan = @user.hangar_plans.new(name: "Plan #{SecureRandom.hex(3)}")
     HangarPlans::Builder.new(plan, source:, source_plan:).run

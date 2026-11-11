@@ -37,13 +37,30 @@ module HangarPlans
           vehicle.vehicle_modules.map(&:model_module_id).sort, vehicle.vehicle_upgrades.map(&:model_upgrade_id).sort]
       end
 
-      groups.each do |(model_id, paint_id, module_ids, upgrade_ids), group|
-        group.each do |vehicle|
-          slot = plan.slots.create!(label: vehicle.model.name)
-          slot.candidates.create!(model_id:, model_paint_id: paint_id,
-            model_module_ids: module_ids, model_upgrade_ids: upgrade_ids)
+      ships = groups.flat_map { |fitting, group| group.map { |vehicle| [fitting, vehicle.model.name] } }
+      return if ships.empty?
+
+      check_slot_limit(ships.size)
+      slot_ids = ships.map { SecureRandom.uuid }
+      HangarPlanSlot.insert_all!(
+        ships.each_with_index.map { |(_, label), position| {id: slot_ids[position], hangar_plan_id: plan.id, label:, position:} }
+      )
+      HangarPlanCandidate.insert_all!(
+        ships.zip(slot_ids).map do |((model_id, model_paint_id, model_module_ids, model_upgrade_ids), _), slot_id|
+          {hangar_plan_slot_id: slot_id, model_id:, model_paint_id:, model_module_ids:, model_upgrade_ids:}
         end
-      end
+      )
+      plan.touch
+    end
+
+    # Bulk inserts skip the slot's own check, so a wishlist too big for one
+    # plan fails the way adding one slot too many does.
+    private def check_slot_limit(count)
+      return if plan.slots.count + count <= HangarPlanSlot::MAX_PER_PLAN
+
+      slot = plan.slots.build
+      slot.errors.add(:base, :slot_limit_reached, count: HangarPlanSlot::MAX_PER_PLAN)
+      raise ActiveRecord::RecordInvalid, slot
     end
 
     # Routes and melts reference the user's own ships and pledges, so a copy
@@ -52,7 +69,10 @@ module HangarPlans
       plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at, :based_on_vehicle_ids))
 
       source_plan.slots.includes(:starts, candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
-        slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :position))
+        # A plan split from slots that held several ships can be over the slot
+        # limit already, and its copy is no bigger.
+        slot = plan.slots.new(source_slot.slice(:label, :description, :filters, :position))
+        slot.save!(validate: false)
         source_slot.starts.each { |start| copy_acquisition(start, slot:) }
         source_slot.candidates.each do |source_candidate|
           candidate = slot.candidates.create!(
