@@ -1523,6 +1523,31 @@ paths:
           "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/filters/equipment/manufacturers":
+    get:
+      summary: Equipment Manufacturer Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentManufacturersFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/equipment/sizes":
     get:
       summary: Equipment Size Filters
@@ -29642,6 +29667,18 @@ components:
       type: object
       properties:
         equipmentTypeIn:
+          type: array
+          items:
+            type: string
+        subTypeIn:
+          type: array
+          items:
+            type: string
+        slotIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentSlotEnum"
+        sizeIn:
           type: array
           items:
             type: string

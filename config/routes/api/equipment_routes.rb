@@ -18,5 +18,6 @@ namespace :filters do
     get :slots, on: :collection
     get :sizes, on: :collection
     get :grades, on: :collection
+    get :manufacturers, on: :collection
   end
 end

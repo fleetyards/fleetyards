@@ -9,7 +9,10 @@ module V1
         schema({
           type: :object,
           properties: {
-            equipmentTypeIn: {type: :array, items: {type: :string}}
+            equipmentTypeIn: {type: :array, items: {type: :string}},
+            subTypeIn: {type: :array, items: {type: :string}},
+            slotIn: {type: :array, items: ::V1::Schemas::Enums::EquipmentSlotEnum},
+            sizeIn: {type: :array, items: {type: :string}}
           },
           additionalProperties: false,
           example: {}
