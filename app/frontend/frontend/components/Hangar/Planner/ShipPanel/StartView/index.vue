@@ -519,6 +519,7 @@ const currentId = computed(() => {
         ? taken
         : bundled.findIndex(
             (ship) =>
+              !ship.takenById &&
               ship.pledgeStartId === acquisition.bundledWithId &&
               ship.model.id === acquisition.startModel?.id,
           );
