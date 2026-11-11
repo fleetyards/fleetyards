@@ -318,16 +318,6 @@
         },
         "openHangar": "開啟你的機庫"
       },
-      "patch": {
-        "title": "Alpha %{version}",
-        "shipsChanged": "改動的艦船",
-        "inYourHangar": "你機庫中的",
-        "whatChanged": "查看改動",
-        "yoursChanged": {
-          "one": "此版本改動了你的 %{count} 艘艦船。",
-          "other": "此版本改動了你的 %{count} 艘艦船。"
-        }
-      },
       "dashboard": {
         "welcome": "歡迎回來，%{name}",
         "welcomeAnonymous": "歡迎回來",

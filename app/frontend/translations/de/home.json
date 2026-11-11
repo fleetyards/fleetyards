@@ -318,16 +318,6 @@
         },
         "openHangar": "Deinen Hangar öffnen"
       },
-      "patch": {
-        "title": "Alpha %{version}",
-        "shipsChanged": "Geänderte Schiffe",
-        "inYourHangar": "In deinem Hangar",
-        "whatChanged": "Was sich geändert hat",
-        "yoursChanged": {
-          "one": "%{count} deiner Schiffe wurde in diesem Build geändert.",
-          "other": "%{count} deiner Schiffe wurden in diesem Build geändert."
-        }
-      },
       "dashboard": {
         "welcome": "Willkommen zurück, %{name}",
         "welcomeAnonymous": "Willkommen zurück",
