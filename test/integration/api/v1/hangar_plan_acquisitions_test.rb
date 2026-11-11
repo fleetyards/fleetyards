@@ -329,4 +329,62 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body.dig("slots", 0, "candidates", 0, "acquisitions")
     end
   end
+
+  test "POST buys back the pledge of a ship the plan melts, at what melting it credits" do
+    vehicle = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pledge-1", rsi_pledge_melt_value: 220)
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle:)
+    body = {
+      candidateId: @candidate.id, startKind: "melted", sourceVehicleId: vehicle.id,
+      steps: [{sourceKind: "store", toModelId: @carrack.id}]
+    }
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: do
+      route = parsed_body.dig("slots", 0, "candidates", 0, "acquisitions", 0)
+      assert_equal "melted", route["startKind"]
+      assert_equal "Constellation", route.dig("startModel", "name")
+      assert_in_delta 220.0, route["price"]
+      assert route["usesBuybackToken"]
+      assert route["routeComplete"]
+      assert_equal false, route["sourceMissing"]
+    end
+  end
+
+  test "POST buys back a pledge by any ship of it the plan melts, once" do
+    melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pledge-1", rsi_pledge_melt_value: 300)
+    sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pledge-1")
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
+    @slot.update!(quantity: 2)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: sibling.id} do
+      assert_in_delta 300.0, parsed_body.dig("slots", 0, "candidates", 0, "acquisitions", 0, "price")
+    end
+
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: melted.id} do
+      messages = parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") }
+      assert_includes messages, "Source vehicle is already used in this plan"
+    end
+  end
+
+  test "POST rejects buying back a ship the plan does not melt" do
+    vehicle = create(:vehicle, user: @user, model: @constellation)
+
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: vehicle.id} do
+      messages = parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") }
+      assert_includes messages, "Source vehicle is not melted in this plan"
+    end
+  end
+
+  test "a melted start loses its source when the melt is taken back" do
+    vehicle = create(:vehicle, user: @user, model: @constellation)
+    melt = create(:hangar_plan_melt, hangar_plan: @plan, vehicle:)
+    route = @plan.acquisitions.create!(candidate: @candidate, start_kind: "melted", source_vehicle: vehicle)
+
+    melt.destroy!
+
+    assert route.reload.source_missing?
+  end
 end

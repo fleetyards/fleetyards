@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 # How one ship of a slot is obtained: kept from the hangar, bought on the
-# store or in game, or bought back, then optionally upgraded step by step until
+# store or in game, or bought back (a pledge already in the buy-back list, or
+# the pledge of a ship the plan melts), then optionally upgraded step by step until
 # it is the planned ship. The start and every step are resources the user owns
 # at most once, so nothing here may be spent twice within a plan. A start with
 # no upgrades that is not the planned ship holds both ends while its route has
 # yet to be planned. A slot with no ship yet holds its starts itself, and hands
 # them to the first ship it gets.
 class HangarPlanAcquisition < ApplicationRecord
-  START_KINDS = %w[owned store ingame buyback].freeze
+  START_KINDS = %w[owned store ingame buyback melted].freeze
+  # Bought back, so paid like one: with store credit and a token, or new money.
+  BUYBACK_START_KINDS = %w[buyback melted].freeze
+  # Named by a ship of the live hangar: kept as it is, or melted and bought back.
+  VEHICLE_KINDS = %w[owned melted].freeze
   BUYBACK_SHIP_KINDS = %w[ship package other].freeze
   # Bought or earned as the planned ship, so with none planned there is no ship
   # to name yet.
@@ -41,7 +46,7 @@ class HangarPlanAcquisition < ApplicationRecord
   # Only a buy-back can spend a buy-back token, and one spends it unless the
   # user says otherwise, so a start changed to a buy-back starts out marked too.
   before_validation -> {
-    if start_kind != "buyback"
+    if BUYBACK_START_KINDS.exclude?(start_kind)
       self.uses_buyback_token = false
     elsif start_kind_changed? && !uses_buyback_token_came_from_user?
       self.uses_buyback_token = true
@@ -72,6 +77,8 @@ class HangarPlanAcquisition < ApplicationRecord
     when "owned", "ingame" then 0
     when "store" then start_model&.pledge_price
     when "buyback" then buyback_pledge&.price
+    # RSI buys a pledge back for what melting it credited.
+    when "melted" then source_melt&.value
     end
   end
 
@@ -87,8 +94,19 @@ class HangarPlanAcquisition < ApplicationRecord
     case start_kind
     when "owned" then live_source_vehicle.nil?
     when "buyback" then buyback_pledge.nil? || buyback_pledge.user_id != hangar_plan.user_id
+    when "melted" then source_melt.nil?
     else false
     end
+  end
+
+  # The plan's melt a melted start buys the pledge back from: the ship's own,
+  # or that of another ship of its pledge, since melting one melts them all.
+  def source_melt
+    return if source_vehicle.blank?
+
+    melts = hangar_plan.melts.includes(:vehicle).to_a
+    melts.find { |melt| melt.vehicle_id == source_vehicle_id } ||
+      melts.find { |melt| source_vehicle.rsi_pledge_id.present? && melt.vehicle&.rsi_pledge_id == source_vehicle.rsi_pledge_id }
   end
 
   def source_changed?
@@ -107,7 +125,7 @@ class HangarPlanAcquisition < ApplicationRecord
   end
 
   private def assign_start_model
-    self.start_model_id = source_vehicle.model_id if start_kind == "owned" && source_vehicle.present?
+    self.start_model_id = source_vehicle.model_id if VEHICLE_KINDS.include?(start_kind) && source_vehicle.present?
     self.start_model ||= candidate&.model if SHIPLESS_KINDS.include?(start_kind)
   end
 
@@ -140,6 +158,12 @@ class HangarPlanAcquisition < ApplicationRecord
       elsif hangar_plan.acquisitions.where(source_vehicle_id:).where.not(id:).exists?
         errors.add(:source_vehicle_id, :taken)
       end
+    when "melted"
+      if source_vehicle.blank? || hangar_plan.melted_vehicle_ids.exclude?(source_vehicle.id)
+        errors.add(:source_vehicle_id, :not_melted)
+      elsif melted_pledge_taken?
+        errors.add(:source_vehicle_id, :taken)
+      end
     when "buyback"
       if buyback_pledge.blank? || buyback_pledge.user_id != hangar_plan.user_id || BUYBACK_SHIP_KINDS.exclude?(buyback_pledge.kind)
         errors.add(:buyback_pledge_id, :invalid)
@@ -148,8 +172,17 @@ class HangarPlanAcquisition < ApplicationRecord
       end
     end
 
-    errors.add(:source_vehicle_id, :invalid) if start_kind != "owned" && source_vehicle_id.present?
+    errors.add(:source_vehicle_id, :invalid) if VEHICLE_KINDS.exclude?(start_kind) && source_vehicle_id.present?
     errors.add(:buyback_pledge_id, :invalid) if start_kind != "buyback" && buyback_pledge_id.present?
+  end
+
+  # A pledge goes back to the hangar once, whichever of its ships names it.
+  private def melted_pledge_taken?
+    others = hangar_plan.acquisitions.where(start_kind: "melted").where.not(id:)
+    return true if others.where(source_vehicle_id:).exists?
+    return false if source_vehicle.rsi_pledge_id.blank?
+
+    others.joins(:source_vehicle).where(vehicles: {rsi_pledge_id: source_vehicle.rsi_pledge_id}).exists?
   end
 
   private def buyback_pledge_taken?

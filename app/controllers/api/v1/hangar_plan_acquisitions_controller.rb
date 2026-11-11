@@ -85,7 +85,7 @@ module Api
       private def build_steps(acquisition, steps)
         # A hangar ship's model is the start, whatever start_model_id still says
         # from before the source changed.
-        previous_model_id = if acquisition.start_kind == "owned" && acquisition.source_vehicle
+        previous_model_id = if HangarPlanAcquisition::VEHICLE_KINDS.include?(acquisition.start_kind) && acquisition.source_vehicle
           acquisition.source_vehicle.model_id
         else
           acquisition.start_model_id

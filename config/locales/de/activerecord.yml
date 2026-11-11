@@ -383,6 +383,7 @@ de:
               upgrade_taken: "ein Upgrade wird öfter verwendet, als du es besitzt"
             source_vehicle_id:
               melted: "wird in diesem Plan gemeltet"
+              not_melted: "wird in diesem Plan nicht gemeltet"
               pledge_melted: "gehört zu einem Pledge, das dieser Plan meltet"
               taken: "wird in diesem Plan bereits verwendet"
             buyback_pledge_id:

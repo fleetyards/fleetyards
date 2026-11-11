@@ -23,7 +23,8 @@ module HangarPlans
     end
 
     def vehicles
-      routes = plan.acquisitions.where.not(source_vehicle_id: nil).pluck(:source_vehicle_id).to_set
+      # A ship melted and bought back stays the plan's melt.
+      routes = plan.acquisitions.where(start_kind: "owned").where.not(source_vehicle_id: nil).pluck(:source_vehicle_id).to_set
       melts = plan.melted_vehicle_ids.to_set
 
       vehicles = plan.live_vehicles.includes(model: MODEL_PRELOAD).order(:created_at).to_a

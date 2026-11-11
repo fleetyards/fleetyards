@@ -40013,11 +40013,13 @@ components:
       - store
       - ingame
       - buyback
+      - melted
       x-enumNames:
       - OWNED
       - STORE
       - INGAME
       - BUYBACK
+      - MELTED
       title: HangarPlanStartKindEnum
     HangarPlanSuggestions:
       type: object
