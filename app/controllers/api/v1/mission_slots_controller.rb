@@ -12,13 +12,13 @@ module Api
       before_action :set_slottable, only: %i[create]
       before_action :set_slot, only: %i[update destroy]
       before_action :check_fleet_mission_builder_feature
-      before_action -> { require_fleet_subscription(:events) }
+      before_action :require_events_subscription
 
       def create
         @slot = @slottable.mission_slots.new(slot_attrs)
         @slot.position = next_position
 
-        authorize! @slot, with: MissionSlotPolicy, context: {mission: @slottable.mission}
+        authorize_slot!(@slot, @slottable)
 
         if @slot.save
           render :show, status: :created
@@ -28,7 +28,7 @@ module Api
       end
 
       def update
-        authorize! @slot, with: MissionSlotPolicy, context: {mission: @slot.mission}
+        authorize_slot!(@slot, @slot.slottable)
 
         if @slot.update(slot_attrs)
           render :show
@@ -38,7 +38,7 @@ module Api
       end
 
       def destroy
-        authorize! @slot, with: MissionSlotPolicy, context: {mission: @slot.mission}
+        authorize_slot!(@slot, @slot.slottable)
 
         unless @slot.destroy
           render json: ValidationError.new("mission_slots.destroy", errors: @slot.errors), status: :bad_request
@@ -49,7 +49,7 @@ module Api
         slottable = find_slottable(params[:slottable_type], params[:slottable_id])
         return render json: {code: "not_found"}, status: :not_found unless slottable
 
-        authorize! slottable, with: MissionSlotPolicy, to: :sort?, context: {mission: slottable.mission}
+        authorize_slot!(slottable, slottable, to: :sort?)
 
         sorting = params.permit(sorting: [])[:sorting] || []
 
@@ -65,6 +65,16 @@ module Api
       private def slot_attrs
         authorized(params, with: MissionSlotPolicy)
           .except(:slottable_type, :slottable_id)
+      end
+
+      # The seams a flight's slots override, like the ones on the ship
+      # controller.
+      private def authorize_slot!(record, slottable, to: nil)
+        authorize!(record, with: MissionSlotPolicy, context: {mission: slottable.mission}, **(to ? {to:} : {}))
+      end
+
+      private def require_events_subscription
+        require_fleet_subscription(:events)
       end
 
       private def set_slottable

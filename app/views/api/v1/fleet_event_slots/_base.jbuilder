@@ -23,3 +23,9 @@ json.signups do
     partial: "api/v1/fleet_event_signups/fleet_event_signup",
     as: :fleet_event_signup
 end
+
+json.candidates do
+  json.array! fleet_event_slot.fleet_event_slot_candidates,
+    partial: "api/v1/slot_candidates/slot_candidate",
+    as: :slot_candidate
+end

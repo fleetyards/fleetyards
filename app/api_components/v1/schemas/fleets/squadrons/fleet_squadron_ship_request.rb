@@ -13,7 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               member: ::V1::Schemas::Fleets::FleetMember,
               requestedByUsername: {type: [:string, :null]},
-              vehicle: ::V1::Schemas::Fleets::Squadrons::FleetSquadronShipRequestVehicle,
+              vehicle: ::V1::Schemas::Fleets::Squadrons::FleetSquadronVehicle,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },

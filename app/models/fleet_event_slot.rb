@@ -5,6 +5,7 @@ class FleetEventSlot < ApplicationRecord
   belongs_to :model_position, optional: true
   belongs_to :source_slot, class_name: "MissionSlot", optional: true
   has_many :fleet_event_signups, dependent: :destroy
+  has_many :fleet_event_slot_candidates, dependent: :destroy
 
   validates :title, presence: true
   validates :slottable_type, inclusion: {in: %w[FleetEventTeam FleetEventShip]}

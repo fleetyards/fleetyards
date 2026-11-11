@@ -198,5 +198,7 @@ fr:
         title: "Votre inscription à %{title} a été approuvée"
       assigned:
         title: "Vous avez été affecté à %{slot} pour %{title}"
+      invited:
+        title: "Vous êtes invité au poste %{slot} pour %{title}"
       kicked:
         title: "Vous avez été retiré de %{title}"

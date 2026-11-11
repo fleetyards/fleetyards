@@ -8,3 +8,9 @@ json.description mission_slot.description
 json.position mission_slot.position
 json.derived mission_slot.derived?
 json.position_type mission_slot.position_type
+
+json.candidates do
+  json.array! mission_slot.mission_slot_candidates,
+    partial: "api/v1/slot_candidates/slot_candidate",
+    as: :slot_candidate
+end

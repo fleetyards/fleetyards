@@ -198,5 +198,7 @@ it:
         title: "La tua iscrizione a %{title} è stata approvata"
       assigned:
         title: "Sei stato assegnato a %{slot} per %{title}"
+      invited:
+        title: "Sei invitato a %{slot} per %{title}"
       kicked:
         title: "Sei stato rimosso da %{title}"

@@ -9799,6 +9799,758 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Fleet Squadron Flights
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronFlights
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronFlightsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: createFleetSquadronFlight
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronFlightInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronFlight"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - only whoever manages the roster arranges flights
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Sort Fleet Squadron Flights
+      tags:
+      - FleetSquadrons
+      operationId: sortFleetSquadronFlights
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SortInput"
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/ships":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Add a ship to a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: createFleetSquadronFlightShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionShipCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden - only whoever manages the roster arranges flights
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/ships/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Sort the ships of a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: sortFleetSquadronFlightShips
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/ships/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Ship id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Update a ship of a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronFlightShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionShipUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Remove a ship from a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: destroyFleetSquadronFlightShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/ships/{id}/duplicate":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Ship id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Duplicate a ship of a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: duplicateFleetSquadronFlightShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/slots":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Add a slot to a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: createFleetSquadronFlightSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionSlot"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - a ship or team from elsewhere
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/slots/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Sort the slots of a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: sortFleetSquadronFlightSlots
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotSortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/slots/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Slot id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Update a slot of a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronFlightSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionSlot"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Remove a slot from a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: destroyFleetSquadronFlightSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found - a slot of another flight
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/slots/{id}/candidates":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: fleetSquadronFlightId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Slot id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Set who a Fleet Squadron Flight slot is meant for
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronFlightSlotCandidates
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronSlotCandidatesInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionSlot"
+        '400':
+          description: bad request - a ship the member does not give the squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - somebody outside the squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Flight id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronFlight
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronFlight"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronFlight
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronFlightInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronFlight"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy a Fleet Squadron Flight
+      tags:
+      - FleetSquadrons
+      operationId: destroyFleetSquadronFlight
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/members":
     parameters:
     - name: fleetSlug
@@ -10018,6 +10770,99 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/my-ships":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Which of my ships a Fleet Squadron gets
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronShipSelection
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronShipSelection"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - the reader is not in this squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Choose which of my ships a Fleet Squadron gets
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronShipSelection
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronShipSelectionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronShipSelection"
+        '400':
+          description: bad request - a hangar group or ship that is not the member's
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - the reader is not in this squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/requests":
     parameters:
     - name: fleetSlug
@@ -10219,6 +11064,223 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/ship-requests":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Fleet Squadron Ship Requests
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronShipRequests
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful - every open request for the roster's managers,
+            a member's own otherwise
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronShipRequestsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - neither in the squadron nor managing it
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Ask a member of a Fleet Squadron for a ship
+      tags:
+      - FleetSquadrons
+      operationId: createFleetSquadronShipRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronShipRequestCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronShipRequest"
+        '400':
+          description: bad request - the ship is not the member's, not in the fleet
+            or already given
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - only whoever manages the roster asks for ships
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - the member is not in this squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/ship-requests/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Request id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    delete:
+      summary: Decline or withdraw a Fleet Squadron Ship Request
+      tags:
+      - FleetSquadrons
+      operationId: destroyFleetSquadronShipRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/ship-requests/{id}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Request id
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    put:
+      summary: Accept a Fleet Squadron Ship Request
+      tags:
+      - FleetSquadrons
+      operationId: acceptFleetSquadronShipRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - only the member whose ship it is answers
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{slug}":
     parameters:
     - name: fleetSlug
@@ -33222,12 +34284,14 @@ components:
       - tentative
       - interested
       - pending
+      - invited
       - withdrawn
       x-enumNames:
       - CONFIRMED
       - TENTATIVE
       - INTERESTED
       - PENDING
+      - INVITED
       - WITHDRAWN
       title: FleetEventSignupStatusEnum
     FleetEventSignupUpdateInput:
@@ -33320,6 +34384,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetEventSignup"
+        candidates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronSlotCandidate"
       required:
       - id
       - slottableType
@@ -33456,6 +34524,11 @@ components:
           - string
           - 'null'
         fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sourceFlightId:
           type:
           - string
           - 'null'
@@ -36208,6 +37281,65 @@ components:
       - name
       additionalProperties: false
       title: FleetSquadronCreateInput
+    FleetSquadronFlight:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        position:
+          type: integer
+        teamId:
+          type: string
+          format: uuid
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MissionSlot"
+        ships:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MissionShip"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - description
+      - position
+      - teamId
+      - slots
+      - ships
+      - createdAt
+      - updatedAt
+      title: FleetSquadronFlight
+    FleetSquadronFlightInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: FleetSquadronFlightInput
+    FleetSquadronFlightsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetSquadronFlight"
+      title: FleetSquadronFlightsList
     FleetSquadronMemberCreateInput:
       type: object
       properties:
@@ -36499,6 +37631,156 @@ components:
       items:
         "$ref": "#/components/schemas/FleetSquadronRole"
       title: FleetSquadronRolesList
+    FleetSquadronShipRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        member:
+          "$ref": "#/components/schemas/FleetMember"
+        requestedByUsername:
+          type:
+          - string
+          - 'null'
+        vehicle:
+          "$ref": "#/components/schemas/FleetSquadronVehicle"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - member
+      - requestedByUsername
+      - vehicle
+      - createdAt
+      - updatedAt
+      title: FleetSquadronShipRequest
+    FleetSquadronShipRequestCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        vehicleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - username
+      - vehicleId
+      title: FleetSquadronShipRequestCreateInput
+    FleetSquadronShipRequestsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetSquadronShipRequest"
+      title: FleetSquadronShipRequestsList
+    FleetSquadronShipSelection:
+      type: object
+      properties:
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetSquadronShipsFilterEnum"
+        hangarGroupId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        vehicleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - shipsFilter
+      - hangarGroupId
+      - vehicleIds
+      title: FleetSquadronShipSelection
+    FleetSquadronShipSelectionInput:
+      type: object
+      properties:
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetSquadronShipsFilterEnum"
+        hangarGroupId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        vehicleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      title: FleetSquadronShipSelectionInput
+    FleetSquadronShipsFilterEnum:
+      type: string
+      enum:
+      - all
+      - hangar_group
+      - picked
+      x-enumNames:
+      - ALL
+      - HANGAR_GROUP
+      - PICKED
+      title: FleetSquadronShipsFilterEnum
+    FleetSquadronSlotCandidate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        position:
+          type: integer
+        username:
+          type:
+          - string
+          - 'null'
+        passedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        vehicle:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetSquadronVehicle"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - id
+      - position
+      - username
+      - passedAt
+      - vehicle
+      title: FleetSquadronSlotCandidate
+    FleetSquadronSlotCandidateInput:
+      type: object
+      properties:
+        username:
+          type: string
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      required:
+      - username
+      title: FleetSquadronSlotCandidateInput
+    FleetSquadronSlotCandidatesInput:
+      type: object
+      properties:
+        candidates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronSlotCandidateInput"
+      additionalProperties: false
+      required:
+      - candidates
+      title: FleetSquadronSlotCandidatesInput
     FleetSquadronSortEnum:
       type: string
       enum:
@@ -36541,6 +37823,24 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetSquadronUpdateInput
+    FleetSquadronVehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/FleetEventSignupVehicleModel"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - model
+      title: FleetSquadronVehicle
     FleetSquadronsList:
       type: object
       properties:
@@ -44164,6 +45464,10 @@ components:
           type: boolean
         positionType:
           type: string
+        candidates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronSlotCandidate"
       required:
       - id
       - slottableType
@@ -44304,6 +45608,11 @@ components:
           - string
           - 'null'
         fleetSquadronId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sourceFlightId:
           type:
           - string
           - 'null'
@@ -47110,6 +48419,7 @@ components:
       - fleet_event_signup_withdrawn
       - fleet_event_signup_confirmed
       - fleet_event_signup_assigned
+      - fleet_event_signup_invited
       - fleet_event_signup_kicked
       - inventory_transfer_received
       - inventory_transfer_resolved
@@ -47121,6 +48431,8 @@ components:
       - tour_join_request_accepted
       - fleet_squadron_request_received
       - fleet_squadron_request_accepted
+      - fleet_squadron_ship_request_received
+      - fleet_squadron_ship_request_accepted
       - fleet_contract_published
       - fleet_contract_claimed
       - fleet_contract_crew_requested
@@ -47167,6 +48479,7 @@ components:
       - FLEET_EVENT_SIGNUP_WITHDRAWN
       - FLEET_EVENT_SIGNUP_CONFIRMED
       - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_INVITED
       - FLEET_EVENT_SIGNUP_KICKED
       - INVENTORY_TRANSFER_RECEIVED
       - INVENTORY_TRANSFER_RESOLVED
@@ -47178,6 +48491,8 @@ components:
       - TOUR_JOIN_REQUEST_ACCEPTED
       - FLEET_SQUADRON_REQUEST_RECEIVED
       - FLEET_SQUADRON_REQUEST_ACCEPTED
+      - FLEET_SQUADRON_SHIP_REQUEST_RECEIVED
+      - FLEET_SQUADRON_SHIP_REQUEST_ACCEPTED
       - FLEET_CONTRACT_PUBLISHED
       - FLEET_CONTRACT_CLAIMED
       - FLEET_CONTRACT_CREW_REQUESTED

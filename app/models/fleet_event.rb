@@ -87,6 +87,12 @@ class FleetEvent < ApplicationRecord
   after_save { @recurrence_weekdays_assigned = false }
   before_save :stamp_published_at, if: :will_save_change_to_status?
 
+  # Slots a squadron's flight listed members for wait until the event is open:
+  # an invitation to a draft would announce it. Flagged by the save that opens
+  # it, because a touch later commits with that save's changes still on record.
+  before_save -> { @opening = will_save_change_to_status?(to: "open") }
+  after_commit :invite_slot_candidates, on: %i[create update], if: -> { @opening }
+
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
   scope :past, -> { where("starts_at < ?", Time.current).order(starts_at: :desc) }
   scope :active_status, -> { where(archived_at: nil) }
@@ -512,6 +518,11 @@ class FleetEvent < ApplicationRecord
   # signups moves it. This one is set on the first publish and never again,
   # which is what a lead time has to measure against. Taken from `open_at`
   # rather than the clock, which may have ticked past a second since aasm set it.
+  private def invite_slot_candidates
+    @opening = false
+    FleetEvents::SlotInvites.offer_all!(self)
+  end
+
   private def stamp_published_at
     return unless status == "open"
 

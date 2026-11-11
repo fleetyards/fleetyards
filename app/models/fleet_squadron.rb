@@ -21,6 +21,7 @@ class FleetSquadron < ApplicationRecord
   has_many :fleet_squadron_requests, dependent: :destroy
   has_many :fleet_event_teams, dependent: nil
   has_many :mission_teams, dependent: nil
+  has_many :fleet_squadron_flights, dependent: :destroy
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 

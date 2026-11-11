@@ -198,5 +198,7 @@ de:
         title: "Deine Anmeldung für %{title} wurde bestätigt"
       assigned:
         title: "Du wurdest für %{title} als %{slot} eingeteilt"
+      invited:
+        title: "Du bist für %{slot} bei %{title} eingeladen"
       kicked:
         title: "Du wurdest aus %{title} entfernt"

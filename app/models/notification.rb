@@ -25,6 +25,7 @@ class Notification < ApplicationRecord
     fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn",
     fleet_event_signup_confirmed: "fleet_event_signup_confirmed",
     fleet_event_signup_assigned: "fleet_event_signup_assigned",
+    fleet_event_signup_invited: "fleet_event_signup_invited",
     fleet_event_signup_kicked: "fleet_event_signup_kicked",
     inventory_transfer_received: "inventory_transfer_received",
     inventory_transfer_resolved: "inventory_transfer_resolved",
@@ -194,6 +195,12 @@ class Notification < ApplicationRecord
       retention: 14.days,
       channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_assigned(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_invited: {
+      retention: 14.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { FleetEventMailer.signup_invited(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_kicked: {

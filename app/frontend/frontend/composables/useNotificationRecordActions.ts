@@ -43,6 +43,7 @@ const LOOKUPS = {
   fleet_event_starting_soon: "event",
   fleet_event_signup_confirmed: "event",
   fleet_event_signup_assigned: "event",
+  fleet_event_signup_invited: "event",
   hangar_sync_finished: "sync",
   hangar_sync_failed: "sync",
   model_on_sale: "vehicle",

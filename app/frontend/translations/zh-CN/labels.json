@@ -3979,6 +3979,7 @@
         "fleet_event_signup_withdrawn": "报名已取消",
         "fleet_event_signup_confirmed": "报名已确认",
         "fleet_event_signup_assigned": "已分配席位",
+        "fleet_event_signup_invited": "受邀担任席位",
         "fleet_event_signup_kicked": "已被移出席位",
         "allInGroup": "此分组中的全部",
         "inventory_transfer_received": "收到转移",

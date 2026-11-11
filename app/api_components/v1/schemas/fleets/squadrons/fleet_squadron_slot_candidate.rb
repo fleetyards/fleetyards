@@ -4,18 +4,20 @@ module V1
   module Schemas
     module Fleets
       module Squadrons
-        class FleetSquadronShipRequestVehicle
+        class FleetSquadronSlotCandidate
           include OpenapiRuby::Components::Base
 
           schema({
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              name: {type: [:string, :null]},
-              model: ::V1::Schemas::Fleets::Events::FleetEventSignupVehicleModel
+              position: {type: :integer},
+              username: {type: [:string, :null]},
+              passedAt: {type: [:string, :null], format: "date-time"},
+              vehicle: {anyOf: [::V1::Schemas::Fleets::Squadrons::FleetSquadronVehicle, {type: :null}]}
             },
             additionalProperties: false,
-            required: %w[id name model]
+            required: %w[id position username passedAt vehicle]
           })
         end
       end

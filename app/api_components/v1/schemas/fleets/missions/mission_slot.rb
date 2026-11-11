@@ -17,7 +17,8 @@ module V1
               description: {type: :string},
               position: {type: :integer},
               derived: {type: :boolean},
-              positionType: {type: :string}
+              positionType: {type: :string},
+              candidates: {type: :array, items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronSlotCandidate}
             },
             required: %w[id slottableType slottableId title position derived],
             additionalProperties: false

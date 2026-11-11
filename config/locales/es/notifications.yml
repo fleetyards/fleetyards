@@ -198,5 +198,7 @@ es:
         title: "Tu inscripción en %{title} fue aprobada"
       assigned:
         title: "Te asignaron a %{slot} en %{title}"
+      invited:
+        title: "Te invitan a %{slot} en %{title}"
       kicked:
         title: "Te han retirado de %{title}"

@@ -24,7 +24,8 @@ module V1
               signups: {
                 type: :array,
                 items: ::V1::Schemas::Fleets::Events::FleetEventSignup
-              }
+              },
+              candidates: {type: :array, items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronSlotCandidate}
             },
             required: %w[id slottableType slottableId title position derived effectiveSignupApproval signups],
             additionalProperties: false

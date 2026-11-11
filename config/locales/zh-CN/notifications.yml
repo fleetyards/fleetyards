@@ -198,5 +198,7 @@ zh-CN:
         title: "你对 %{title} 的报名已获批准"
       assigned:
         title: "你已被分配到 %{title} 的 %{slot}"
+      invited:
+        title: "你被邀请担任 %{title} 的 %{slot}"
       kicked:
         title: "你已被移出 %{title}"

@@ -57,6 +57,20 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     resources :fleet_squadron_ship_requests, path: "ship-requests", only: %i[index create destroy] do
       put :accept, on: :member
     end
+
+    resources :fleet_squadron_flights, path: "flights", only: %i[index show create update destroy] do
+      put :sort, on: :collection
+
+      resources :fleet_squadron_flight_ships, path: "ships", only: %i[create update destroy] do
+        put :sort, on: :collection
+        post :duplicate, on: :member
+      end
+
+      resources :fleet_squadron_flight_slots, path: "slots", only: %i[create update destroy] do
+        put :sort, on: :collection
+        put :candidates, on: :member
+      end
+    end
   end
 
   resources :fleet_squadron_roles, path: "squadron-roles", only: %i[index update]

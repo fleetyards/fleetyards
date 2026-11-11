@@ -43,6 +43,7 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_event_signup_withdrawn: "openRoster",
   fleet_event_signup_confirmed: "openEvent",
   fleet_event_signup_assigned: "openEvent",
+  fleet_event_signup_invited: "openEvent",
   inventory_transfer_received: "openTransfers",
   inventory_transfer_resolved: "openTransfers",
   fleet_event_signup_kicked: "openEvent",

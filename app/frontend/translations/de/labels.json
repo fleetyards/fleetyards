@@ -3982,6 +3982,7 @@
         "fleet_event_signup_withdrawn": "Anmeldung zurückgezogen",
         "fleet_event_signup_confirmed": "Anmeldung bestätigt",
         "fleet_event_signup_assigned": "Einem Slot zugewiesen",
+        "fleet_event_signup_invited": "Zu einem Slot eingeladen",
         "fleet_event_signup_kicked": "Aus einem Slot entfernt",
         "allInGroup": "Alles in dieser Gruppe",
         "inventory_transfer_received": "Transfer erhalten",

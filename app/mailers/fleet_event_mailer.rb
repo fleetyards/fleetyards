@@ -21,6 +21,8 @@ class FleetEventMailer < ApplicationMailer
 
   def signup_assigned(notification) = deliver_event(notification, :signup_assigned)
 
+  def signup_invited(notification) = deliver_event(notification, :signup_invited)
+
   def signup_kicked(notification) = deliver_event(notification, :signup_kicked)
 
   private
