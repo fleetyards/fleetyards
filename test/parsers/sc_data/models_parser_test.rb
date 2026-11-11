@@ -161,17 +161,58 @@ module ScData
         assert_nil ship["hull_health"]
       end
 
+      # A snub craft docks through the same vehicle attach port; only the
+      # command module's port is tagged as one.
+      test "carries the command module a ship docks" do
+        write_docking_ship(port_tag: "Dock_Command_Module")
+
+        assert_equal "TEST_Command_Module", parsed_ship["command_module"]
+      end
+
+      test "carries no command module for a docked snub craft" do
+        write_docking_ship(port_tag: "Dock_Merlin")
+
+        assert_nil parsed_ship["command_module"]
+      end
+
+      private def write_docking_ship(port_tag:)
+        File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships/test_command_module.xml", <<~XML)
+          <EntityClassDefinition.TEST_Command_Module __ref="00000000-0000-0000-0000-0000000c0de0">
+            <Components>
+              <VehicleComponentParams vehicleName="@vehicle_NameTEST_Command_Module" />
+            </Components>
+          </EntityClassDefinition.TEST_Command_Module>
+        XML
+
+        write_ship(
+          ports: <<~XML,
+            <SItemPortDef Name="hardpoint_docking_module" MinSize="1" MaxSize="1" PortTags="#{port_tag}" Flags="uneditable" />
+          XML
+          entries: <<~XML
+            <SItemPortLoadoutEntryParams itemPortName="hardpoint_docking_module" entityClassReference="00000000-0000-0000-0000-00000000d0c0">
+              <loadout>
+                <SItemPortLoadoutManualParams>
+                  <entries>
+                    <SItemPortLoadoutEntryParams itemPortName="itemport_vehicle_attach" entityClassReference="00000000-0000-0000-0000-0000000c0de0" />
+                  </entries>
+                </SItemPortLoadoutManualParams>
+              </loadout>
+            </SItemPortLoadoutEntryParams>
+          XML
+        )
+      end
+
       private def parsed_ship
         @parser.all
 
         JSON.parse(File.read("#{@base_folder}/parsed/test/models/test_bomber.json"))
       end
 
-      private def write_ship(name: "@vehicle_NameTEST_Bomber")
+      private def write_ship(name: "@vehicle_NameTEST_Bomber", ports: "", entries: "")
         FileUtils.mkdir_p("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships")
 
         File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships/test_bomber.xml", <<~XML)
-          <EntityClassDefinition.TEST_Bomber>
+          <EntityClassDefinition.TEST_Bomber __ref="00000000-0000-0000-0000-00000000b0b0">
             <Components>
               <VehicleComponentParams vehicleName="#{name}" vehicleDescription="@vehicle_DescTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
               <SAttachableComponentParams>
@@ -198,6 +239,7 @@ module ScData
                       <SItemPortDefTypes Type="Module" />
                     </Types>
                   </SItemPortDef>
+                  #{ports}
                 </Ports>
               </SItemPortContainerComponentParams>
               <SEntityComponentDefaultLoadoutParams>
@@ -207,6 +249,7 @@ module ScData
                       <SItemPortLoadoutEntryParams itemPortName="hardpoint_torpedorack" entityClassName="TEST_Torpedo_Rack" />
                       <SItemPortLoadoutEntryParams itemPortName="hardpoint_relay" entityClassName="TEST_Relay" />
                       <SItemPortLoadoutEntryParams itemPortName="hardpoint_weapon" entityClassName="TEST_Gun" />
+                      #{entries}
                     </entries>
                   </SItemPortLoadoutManualParams>
                 </loadout>
