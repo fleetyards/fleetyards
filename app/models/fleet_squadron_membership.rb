@@ -18,7 +18,8 @@ class FleetSquadronMembership < ApplicationRecord
   # member gives a squadron none.
   enum :ships_filter,
     {all: 0, hangar_group: 1, picked: 2},
-    prefix: true
+    prefix: true,
+    validate: true
 
   validates :fleet_membership_id, uniqueness: {scope: :fleet_squadron_id}
 
