@@ -469,6 +469,7 @@
           "keep": "Le garder",
           "plan": "Dans ce plan",
           "planHint": "Vaisseaux qu'un emplacement contient déjà",
+          "wishlist": "De votre liste de souhaits",
           "store": "Vaisseaux du store",
           "storeHint": "En choisir un lui donne son propre emplacement"
         },
@@ -503,6 +504,7 @@
         },
         "onSale": "En vente",
         "inHangar": "Dans mon hangar",
+        "onWishlist": "Dans la liste de souhaits",
         "slotFilters": "Filtres de l'emplacement",
         "crew": {
           "one": "équipage %{count}",

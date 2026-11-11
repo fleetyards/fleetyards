@@ -469,6 +469,7 @@
           "keep": "Behalten",
           "plan": "In diesem Plan",
           "planHint": "Schiffe, die ein Slot schon hält",
+          "wishlist": "Von deiner Wunschliste",
           "store": "Schiffe im Store",
           "storeHint": "Bekommt einen eigenen Slot"
         },
@@ -503,6 +504,7 @@
         },
         "onSale": "Im Verkauf",
         "inHangar": "In meinem Hangar",
+        "onWishlist": "Auf der Wunschliste",
         "slotFilters": "Filter des Slots",
         "crew": {
           "one": "Crew %{count}",

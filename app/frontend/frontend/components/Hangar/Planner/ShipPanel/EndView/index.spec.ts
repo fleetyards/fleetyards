@@ -65,12 +65,15 @@ const resources = ref({
   storeModels: [aurora, scorpius, carrack, hammerhead, idris],
 } as HangarPlanResources);
 
+const wishlist = ref<string[]>([]);
+
 const pairEnd = vi.hoisted(() => vi.fn(() => Promise.resolve(true)));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useHangarPlan: () => ({ data: plan }),
   useHangarPlanResources: () => ({ data: resources, isLoading: ref(false) }),
+  useWishlistItems: () => ({ data: wishlist }),
 }));
 
 vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
@@ -115,6 +118,18 @@ describe("Hangar/Planner/ShipPanel/EndView", () => {
     expect(sectionOf(wrapper, "keep")).toEqual(["Same ship, kept as it is"]);
     expect(sectionOf(wrapper, "plan")).toEqual(["Carrack"]);
     expect(sectionOf(wrapper, "store")).toEqual(["Hammerhead"]);
+  });
+
+  it("lists the wishlist's ships the start upgrades into on their own", async () => {
+    wishlist.value = ["hammerhead", "aurora mr"];
+    const wrapper = await mount();
+    wishlist.value = [];
+
+    // The Aurora is wished for too, but the Scorpius cannot become it.
+    expect(sectionOf(wrapper, "wishlist")).toEqual(["Hammerhead"]);
+    expect(wrapper.find('[data-test="ship-list-group-store"]').exists()).toBe(
+      false,
+    );
   });
 
   it("prices each end by the upgrade from the start", async () => {

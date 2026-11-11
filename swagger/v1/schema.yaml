@@ -46142,6 +46142,8 @@ components:
           type: boolean
         inHangar:
           type: boolean
+        onWishlist:
+          type: boolean
         inGameEq:
           type: boolean
         s:

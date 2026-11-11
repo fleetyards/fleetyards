@@ -469,6 +469,7 @@
           "keep": "保留",
           "plan": "本计划中",
           "planHint": "已有槽位的飞船",
+          "wishlist": "来自你的愿望清单",
           "store": "商店飞船",
           "storeHint": "选择后会获得自己的槽位"
         },
@@ -503,6 +504,7 @@
         },
         "onSale": "在售",
         "inHangar": "在我的机库",
+        "onWishlist": "在愿望清单中",
         "slotFilters": "槽位筛选",
         "crew": {
           "one": "船员 %{count}",
