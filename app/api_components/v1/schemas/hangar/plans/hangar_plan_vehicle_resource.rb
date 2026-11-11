@@ -19,6 +19,9 @@ module V1
               pledgeItemCount: {type: [:integer, :null], description: "How many items the pledge holds; melting the ship melts them all"},
               pledgeName: {type: [:string, :null], description: "The name of the pledge the ship came in, as RSI lists it"},
               standalone: {type: [:boolean, :null], description: "Whether the pledge holds the ship alone rather than a package; null where the hangar sync never saw it"},
+              lifetimeInsurance: {type: :boolean, description: "Whether the pledge comes with lifetime insurance, which buying it back keeps"},
+              insuranceMonths: {type: [:integer, :null], description: "The pledge's months of insurance, when not lifetime"},
+              insuranceKnown: {type: :boolean, description: "False until a hangar sync reads the pledge's insurance, so none listed is not yet none"},
               # For a ship the plan melts whose pledge was upgraded: the ship the
               # pledge comes back as when bought back.
               baseModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
@@ -34,7 +37,7 @@ module V1
               }
             },
             additionalProperties: false,
-            required: %w[id model pledgeShips pledgeItems]
+            required: %w[id model pledgeShips pledgeItems lifetimeInsurance insuranceKnown]
           })
         end
       end

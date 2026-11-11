@@ -27,6 +27,19 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
     assert_equal "Package - Mercenary Pack", @user.vehicles.find_by!(rsi_pledge_id: "5").rsi_pledge_name
   end
 
+  test "a synced ship keeps its pledge's insurance, unknown until read" do
+    sync([
+      {id: "6", name: "Cutlass Black", type: "ship", lifetime_insurance: true},
+      {id: "7", name: "Cutlass Black", type: "ship", lifetime_insurance: false, insurance_months: 120},
+      {id: "8", name: "Cutlass Black", type: "ship"}
+    ])
+
+    lifetime, months, unread = %w[6 7 8].map { |id| @user.vehicles.find_by!(rsi_pledge_id: id) }
+    assert lifetime.rsi_pledge_lifetime_insurance
+    assert_equal [false, 120], [months.rsi_pledge_lifetime_insurance, months.rsi_pledge_insurance_months]
+    assert_nil unread.rsi_pledge_lifetime_insurance
+  end
+
   test "a sync that sends no meltable flag leaves it unknown" do
     sync([{id: "2", name: "Cutlass Black", type: "ship"}])
 
@@ -45,7 +58,7 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
 
   test "a ship moved to the wishlist drops its pledge's details" do
     vehicle = create(:vehicle, user: @user, model: @model, rsi_pledge_id: "4", rsi_pledge_name: "Package", rsi_pledge_melt_value: 110,
-      rsi_pledge_meltable: true, rsi_pledge_item_count: 2)
+      rsi_pledge_meltable: true, rsi_pledge_item_count: 2, rsi_pledge_lifetime_insurance: true)
 
     vehicle.update!(wanted: true)
 
@@ -53,6 +66,7 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
     assert_nil vehicle.rsi_pledge_melt_value
     assert_nil vehicle.rsi_pledge_meltable
     assert_nil vehicle.rsi_pledge_item_count
+    assert_nil vehicle.rsi_pledge_lifetime_insurance
   end
 
   private def sync(items)

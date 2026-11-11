@@ -283,6 +283,7 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
   test "GET resources names the ship a melted upgraded pledge comes back as" do
     cutlass = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "500",
       rsi_pledge_name: "Standalone Ship - Cutlass Black plus Ghoul Paint")
+    lifetime = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "502", rsi_pledge_lifetime_insurance: true)
     kept = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "501",
       rsi_pledge_name: "Standalone Ship - Cutlass Black")
     create(:hangar_plan_melt, hangar_plan: @plan, vehicle: cutlass)
@@ -290,8 +291,10 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
       vehicles = parsed_body["vehicles"].index_by { |entry| entry["id"] }
       assert_equal "Cutlass Black", vehicles.dig(cutlass.id, "baseModel", "name")
+      assert_equal [false, false], vehicles[cutlass.id].values_at("lifetimeInsurance", "insuranceKnown")
       # Only a melted pledge comes back.
       assert_nil vehicles.dig(kept.id, "baseModel")
+      assert_equal [true, true], vehicles[lifetime.id].values_at("lifetimeInsurance", "insuranceKnown")
     end
   end
 

@@ -12,6 +12,9 @@ json.vehicles @resources.vehicles do |entry|
   json.pledge_item_count entry.vehicle.rsi_pledge_item_count
   json.pledge_name entry.pledge_name
   json.standalone entry.standalone
+  json.lifetime_insurance entry.vehicle.rsi_pledge_lifetime_insurance || false
+  json.insurance_months entry.vehicle.rsi_pledge_insurance_months
+  json.insurance_known !entry.vehicle.rsi_pledge_lifetime_insurance.nil?
   if entry.base_model && entry.base_model.id != entry.vehicle.model_id
     json.base_model do
       json.partial! "api/v1/hangar_plans/model", model: entry.base_model
