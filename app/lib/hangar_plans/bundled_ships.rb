@@ -7,9 +7,9 @@ module HangarPlans
   module BundledShips
     BundledShip = Data.define(:pledge_start, :model, :taken_by)
 
-    def self.for(pledge_start)
+    def self.for(pledge_start, models: nil)
       case pledge_start.start_kind
-      when "buyback" then buyback_ships(pledge_start)
+      when "buyback" then buyback_ships(pledge_start, models)
       when "melted" then melted_ships(pledge_start)
       else []
       end
@@ -19,12 +19,14 @@ module HangarPlans
     # uses it, if one does.
     def self.in_plan(plan)
       starts = plan.acquisitions.where(start_kind: HangarPlanAcquisition::BUYBACK_START_KINDS)
-        .includes(:start_model, :buyback_pledge, :source_vehicle, :bundled_starts).order(:created_at).to_a
+        .includes(:hangar_plan, :start_model, :buyback_pledge, :source_vehicle, :bundled_starts).order(:created_at).to_a
+      names = starts.filter_map(&:buyback_pledge).flat_map(&:returned_ship_names)
+      models = names.any? ? Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD) : {}
 
       starts.flat_map do |pledge_start|
         unclaimed = pledge_start.bundled_starts.sort_by(&:created_at)
 
-        self.for(pledge_start).map do |model|
+        self.for(pledge_start, models:).map do |model|
           taken_by = unclaimed.find { |start| start.start_model_id == model.id }
           unclaimed.delete(taken_by)
           BundledShip.new(pledge_start:, model:, taken_by:)
@@ -33,12 +35,12 @@ module HangarPlans
     end
 
     # A pledge's ships by name, without the one the route starts as.
-    private_class_method def self.buyback_ships(pledge_start)
+    private_class_method def self.buyback_ships(pledge_start, models)
       pledge = pledge_start.buyback_pledge
       return [] if pledge.nil?
 
       names = pledge.returned_ship_names
-      models = Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD)
+      models ||= Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD)
       ships = names.filter_map { |name| models[name] }
 
       index = ships.index { |model| model.id == pledge_start.start_model_id }
