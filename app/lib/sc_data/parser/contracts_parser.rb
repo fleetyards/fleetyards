@@ -25,7 +25,6 @@ module ScData
       include ScData::Parser::ReputationLadders
 
       POOLS_PATH = "crafting/blueprintrewards"
-      GENERATORS_PATH = "contracts/contractgenerator"
       # Two record sets, because the two chains arrive at an org differently. A
       # contract generator names the `FactionReputation` directly; the scenario
       # names a `Faction`, whose own name is `@LOC_UNINITIALIZED` and which
@@ -231,9 +230,9 @@ module ScData
 
       # Every contract in the generator tree, with its handler's org already
       # resolved. Memoised because both catalogues read it and the traversal --
-      # 107 files, one `Hash.from_xml` each -- is what either of them costs.
+      # one `Hash.from_xml` per file -- is what either of them costs.
       private def contract_entries
-        @contract_entries ||= load_data(GENERATORS_PATH).flat_map do |item|
+        @contract_entries ||= load_contract_generators.flat_map do |item|
           fallback = generator_org(item[:values])
 
           handlers(item[:values]).flat_map do |handler|

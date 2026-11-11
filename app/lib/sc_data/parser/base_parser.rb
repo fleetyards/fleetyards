@@ -125,9 +125,17 @@ module ScData
         FileUtils.mkdir_p(export_path) unless File.directory?(export_path)
       end
 
-      private def load_data(path)
+      # A slot's `otherLocationFilter` inlines a whole copy of each sibling slot
+      # it excludes, and those copies inline theirs. Each slot is also listed in
+      # its own right, so the copies say nothing new, but they took one 5.0.0
+      # generator to 4.9 GB and would count an award once per copy.
+      private def load_contract_generators
+        load_data("contracts/contractgenerator", without: %w[otherLocationFilter])
+      end
+
+      private def load_data(path, without: nil)
         Dir.glob("#{import_path}/#{path}/**/*.xml").map do |file|
-          data = Hash.from_xml(File.read(file))
+          data = Hash.from_xml(without ? ScData::Parser::PrunedXml.read(file, without:) : File.read(file))
           key = data.keys.first.split(".").last
           values = data.values.first
 
