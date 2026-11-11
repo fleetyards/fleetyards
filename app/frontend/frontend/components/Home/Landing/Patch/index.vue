@@ -6,15 +6,21 @@ export default {
 
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
+  ScDataPatchSummaryEnvironment,
   useScDataPatchSummary,
+  useScDataSources,
   type ScDataPatchSummaryNewShipsItem,
 } from "@/services/fyApi";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useImageViewer } from "@/shared/composables/useImageViewer";
 import fallbackArt from "@/images/bg-3.webp";
@@ -29,11 +35,44 @@ import {
 
 const { t, tExists, toNumber } = useI18n();
 
-const { data: summary, isLoading } = useScDataPatchSummary();
+// The sources list only offers a preview while it is ahead of live, so the
+// switch goes away on its own once live catches up.
+const { data: sources } = useScDataSources();
+
+const preview = computed(() =>
+  sources.value?.items.find(
+    (source) => source.environment === ScDataPatchSummaryEnvironment.ptu,
+  ),
+);
+
+const live = computed(() =>
+  sources.value?.items.find(
+    (source) => source.environment === ScDataPatchSummaryEnvironment.live,
+  ),
+);
+
+// Opens on the build the reader has chosen for the rest of the site.
+const environment = ref<ScDataPatchSummaryEnvironment>(
+  useScDataSourceStore().environment === ScDataPatchSummaryEnvironment.ptu
+    ? ScDataPatchSummaryEnvironment.ptu
+    : ScDataPatchSummaryEnvironment.live,
+);
+
+const shownEnvironment = computed(() =>
+  preview.value ? environment.value : ScDataPatchSummaryEnvironment.live,
+);
+
+const onPreview = computed(
+  () => shownEnvironment.value === ScDataPatchSummaryEnvironment.ptu,
+);
+
+const { data: summary, isLoading } = useScDataPatchSummary(() => ({
+  environment: shownEnvironment.value,
+}));
 
 const release = (version?: string) => (version || "").split("-")[0];
 
-const { pick, screenAt } = usePatchLoadingScreens();
+const { pick, screenAt } = usePatchLoadingScreens(shownEnvironment);
 
 const { openImage } = useImageViewer();
 
@@ -289,9 +328,31 @@ const diffColumns = computed(() => {
     <Heading :level="HeadingLevelEnum.H2" hero>
       {{ t("home.landing.patch.title") }}
     </Heading>
-    <p class="home-landing-patch__subline">
-      {{ t("home.landing.patch.subline") }}
-    </p>
+    <div class="home-landing-patch__head">
+      <p class="home-landing-patch__subline">
+        {{ t("home.landing.patch.subline") }}
+      </p>
+      <BtnGroup
+        v-if="preview && live"
+        segmented
+        :aria-label="t('nav.scDataSource')"
+        data-test="home-landing-patch-environment"
+      >
+        <Btn
+          :active="!onPreview"
+          @click="environment = ScDataPatchSummaryEnvironment.live"
+        >
+          LIVE {{ release(live.version) }}
+        </Btn>
+        <Btn
+          :active="onPreview"
+          :tone="BtnTonesEnum.WARNING"
+          @click="environment = ScDataPatchSummaryEnvironment.ptu"
+        >
+          PTU {{ release(preview.version) }}
+        </Btn>
+      </BtnGroup>
+    </div>
     <div class="relative">
       <Transition name="fade-quick" appear>
         <div v-if="summary" class="home-landing-patch">
@@ -326,7 +387,14 @@ const diffColumns = computed(() => {
                       })
                     }}
                   </span>
-                  <Pill :variant="PillVariantsEnum.SUCCESS" uppercase>
+                  <Pill
+                    :variant="
+                      onPreview
+                        ? PillVariantsEnum.WARNING
+                        : PillVariantsEnum.SUCCESS
+                    "
+                    uppercase
+                  >
                     {{ summary.to.environment }}
                   </Pill>
                 </div>
@@ -571,8 +639,17 @@ const diffColumns = computed(() => {
   gap: 14px;
 }
 
+.home-landing-patch__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
 .home-landing-patch__subline {
-  margin: 0 0 12px;
+  margin: 0;
   color: var(--color-text-dim);
 }
 

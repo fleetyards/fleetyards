@@ -3,7 +3,8 @@
 module V1
   module Schemas
     # What the current patch brought: the newest live build against the last
-    # build of the patch before it, with both values of every fact that moved.
+    # build of the patch before it -- or a preview against live -- with both
+    # values of every fact that moved.
     #
     # Facts we derive ourselves are left out, because a change to our formula
     # changes every record at once and says nothing about the patch.

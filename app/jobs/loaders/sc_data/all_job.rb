@@ -63,6 +63,9 @@ module Loaders
         # answered from the one before it, and so would the stats be.
         ::LoadoutStatsJob.perform_async("environment" => source.environment)
         ::Overlay::ExportJob.perform_async(source.environment)
+        # The nightly run alone left a build loaded during the day without its
+        # screens until the next evening -- a ptu cycle can ship two by then.
+        ::ScData::LoadingScreensImportJob.perform_async
       rescue => e
         # Before the transition: `fail!` sends the admin notification, and it
         # reads the reason from `info`.
