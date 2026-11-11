@@ -267,6 +267,17 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET resources lists the other ships of a pledge the plan buys back, and which start takes each" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: @carrack_candidate, start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @carrack)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      assert_equal [[pledge_start.id, "Package - Duo", "Cutlass Black", nil]],
+        parsed_body["bundled"].map { |entry| [*entry.values_at("pledgeStartId", "pledgeName"), entry.dig("model", "name"), entry["takenById"]] }
+    end
+  end
+
   test "GET resources lists what else melts with a ship's pledge" do
     @owned.update_columns(rsi_pledge_id: "500", rsi_pledge_item_count: 4)
     carrack = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "500")

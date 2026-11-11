@@ -88,7 +88,8 @@ module HangarPlans
     end
 
     # The hangar once the plan is carried out: the ships its decided slots hold,
-    # and every ship the plan neither uses nor melts, which stays. A ship left
+    # every ship the plan neither uses nor melts, which stays, and the other
+    # ships of a pledge the plan buys back that no slot takes. A ship left
     # out fills a unit of its own model that has no route yet, rather than being
     # counted twice, and a ship meant to stay does so first.
     def fleet
@@ -106,7 +107,8 @@ module HangarPlans
           true
         end
 
-        slot_entries + staying.map { |vehicle| FleetEntry.new(model: vehicle.model, slot: nil, vehicle:) }
+        slot_entries + staying.map { |vehicle| FleetEntry.new(model: vehicle.model, slot: nil, vehicle:) } +
+          bundled_entries
       end
     end
 
@@ -125,6 +127,15 @@ module HangarPlans
 
         routed = by_candidate.fetch(candidate.id, []).filter_map { |route| vehicles_by_id[route.source_vehicle_id] }
         Array.new(slot.quantity) { |index| FleetEntry.new(model: candidate.model, slot:, vehicle: routed[index]) }
+      end
+    end
+
+    # Only a pledge a decided slot buys back brings its other ships along.
+    private def bundled_entries
+      BundledShips.in_plan(plan).filter_map do |ship|
+        next if ship.taken_by || decided_candidate_ids.exclude?(ship.pledge_start.hangar_plan_candidate_id)
+
+        FleetEntry.new(model: ship.model, slot: nil, vehicle: nil)
       end
     end
 

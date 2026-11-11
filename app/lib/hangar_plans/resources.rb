@@ -79,6 +79,10 @@ module HangarPlans
       end
     end
 
+    def bundled
+      BundledShips.in_plan(plan)
+    end
+
     private def upgrade_names(name) = Rsi::UpgradeTitles.ship_names(name)
 
     private def models_by_name(names) = Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD)

@@ -80,3 +80,13 @@ json.buybacks @resources.buybacks do |entry|
     end
   end
 end
+
+json.bundled @resources.bundled do |ship|
+  pledge_start = ship.pledge_start
+  json.pledge_start_id pledge_start.id
+  json.pledge_name pledge_start.buyback_pledge&.name || pledge_start.source_vehicle&.rsi_pledge_name
+  json.model do
+    json.partial! "api/v1/hangar_plans/model", model: ship.model
+  end
+  json.taken_by_id ship.taken_by&.id
+end

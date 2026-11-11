@@ -61,7 +61,8 @@ module Api
       end
 
       private def acquisition_params
-        params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :uses_buyback_token)
+        params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :bundled_with_id, :start_model_id, :price_override,
+          :uses_buyback_token)
       end
 
       # The old chain goes before the new one is checked: a step that spends an

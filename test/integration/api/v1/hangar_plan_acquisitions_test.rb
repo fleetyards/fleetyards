@@ -222,6 +222,48 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
       body: {candidateId: @candidate.id, startKind: "buyback", buybackPledgeId: pledge.id, startModelId: @carrack.id}
   end
 
+  test "POST starts a slot with another ship of a pledge the plan buys back, for free and once" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo",
+      ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    cutlass_slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
+    cutlass = create(:hangar_plan_candidate, slot: cutlass_slot, model: @cutlass)
+    body = {candidateId: cutlass.id, startKind: "bundled", bundledWithId: pledge_start.id, startModelId: @cutlass.id}
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: do
+      start = parsed_body["slots"].flat_map { |slot| slot["candidates"] }.find { |entry| entry["id"] == cutlass.id }
+        .dig("acquisitions", 0)
+
+      assert_equal ["bundled", pledge_start.id, 0.0], start.values_at("startKind", "bundledWithId", "price")
+      assert start["routeComplete"]
+    end
+
+    # The pledge holds one Cutlass, and no Constellation at all.
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: do
+      assert_includes parsed_body["errors"].flat_map { |error| error["messages"] }.pluck("code"), "taken"
+    end
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: body.merge(startModelId: @constellation.id) do
+      assert_includes parsed_body["errors"].flat_map { |error| error["messages"] }.pluck("code"), "not_bundled"
+    end
+  end
+
+  test "PUT to another pledge lets go of the ships the old one brought along" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo",
+      ship_names: ["Carrack", "Cutlass Black"])
+    pledge_start = @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    cutlass = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @cutlass)
+    bundled = @plan.acquisitions.create!(candidate: cutlass, start_kind: "bundled", bundled_with: pledge_start, start_model: @cutlass)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: pledge_start.id},
+      body: {startKind: "store", buybackPledgeId: nil, startModelId: @carrack.id}
+
+    assert_not HangarPlanAcquisition.exists?(bundled.id)
+  end
+
   test "PUT replaces the chain and sets a price override" do
     acquisition = @plan.acquisitions.new(candidate: @candidate, start_kind: "store", start_model: @cutlass)
     acquisition.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)

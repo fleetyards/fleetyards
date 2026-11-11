@@ -5,6 +5,7 @@ json.start_kind acquisition.start_kind
 unless local_assigns[:public_view]
   json.source_vehicle_id acquisition.source_vehicle_id
   json.buyback_pledge_id acquisition.buyback_pledge_id
+  json.bundled_with_id acquisition.bundled_with_id
 end
 json.start_model do
   json.partial! "api/v1/hangar_plans/model", model: acquisition.start_model

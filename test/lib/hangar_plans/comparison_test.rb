@@ -202,6 +202,27 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_empty comparison.gaps
   end
 
+  test "a pledge bought back brings its other ships into the hangar after the plan" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Trio",
+      ship_names: ["Carrack", "Cutlass Black", "Constellation Andromeda"])
+    pledge_start = @plan.acquisitions.create!(candidate: slot_for(@carrack), start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @carrack)
+    @plan.acquisitions.create!(candidate: slot_for(@cutlass), start_kind: "bundled", bundled_with: pledge_start,
+      start_model: @cutlass)
+
+    # The Cutlass fills its slot; the Constellation no slot takes comes along.
+    assert_equal({"Carrack" => 1, "Constellation Andromeda" => 1, "Cutlass Black" => 1},
+      HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.right_count] })
+  end
+
+  test "a pledge a slot still choosing its ship buys back brings nothing along yet" do
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Cutlass Black"])
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    @plan.acquisitions.create!(slot:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+
+    assert_empty HangarPlans::Comparison.new(@plan).fleet
+  end
+
   private def slot_for(model, quantity: 1)
     slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
     create(:hangar_plan_candidate, slot:, model:)

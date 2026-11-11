@@ -59,6 +59,7 @@ module HangarPlans
           source_candidate.acquisitions.each { |acquisition| copy_acquisition(acquisition, candidate:) }
         end
       end
+      link_bundled_starts
 
       source_plan.melts.each do |melt|
         plan.melts.insert_all!([melt.slice(:vehicle_id, :model_id, :value_override, :value_snapshot)
@@ -74,12 +75,13 @@ module HangarPlans
     # Copied as they stand, validations included: a source ship the hangar no
     # longer has would otherwise fail a copy the user only asked to duplicate.
     private def copy_acquisition(source, holder)
-      acquisition = plan.acquisitions.new(
+      copies[source.id] = acquisition = plan.acquisitions.new(
         source.slice(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :price_snapshot,
           :uses_buyback_token)
           .merge(holder)
       )
       acquisition.save!(validate: false)
+      bundled_sources[acquisition] = source.bundled_with_id if source.bundled_with_id
 
       source.upgrade_steps.each do |step|
         acquisition.upgrade_steps.new(
@@ -88,5 +90,17 @@ module HangarPlans
         ).save!(validate: false)
       end
     end
+
+    # A bundled start goes with the copy of the start whose pledge it comes in,
+    # which may be copied after it.
+    private def link_bundled_starts
+      bundled_sources.each do |acquisition, source_id|
+        acquisition.update_columns(bundled_with_id: copies[source_id]&.id)
+      end
+    end
+
+    private def copies = @copies ||= {}
+
+    private def bundled_sources = @bundled_sources ||= {}
   end
 end

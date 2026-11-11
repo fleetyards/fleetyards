@@ -388,6 +388,9 @@ fr:
               taken: "est déjà utilisé dans ce plan"
             buyback_pledge_id:
               taken: "est déjà utilisé dans ce plan"
+            start_model:
+              not_bundled: "n'est pas un autre vaisseau de ce pledge"
+              taken: "est déjà utilisé dans ce plan"
         hangar_plan_upgrade_step:
           attributes:
             from_model_id:

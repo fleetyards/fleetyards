@@ -15,6 +15,7 @@ module V1
               startKind: ::V1::Schemas::Enums::HangarPlanStartKindEnum,
               sourceVehicleId: {type: [:string, :null], format: :uuid},
               buybackPledgeId: {type: [:string, :null], format: :uuid},
+              bundledWithId: {type: [:string, :null], format: :uuid, description: "For a bundled start: the start whose bought-back pledge brings the ship along"},
               startModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
               priceOverride: {type: [:number, :null]},
               price: {type: [:number, :null], description: "What starting this way costs in USD; null when unknown"},

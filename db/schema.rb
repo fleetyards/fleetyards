@@ -1690,6 +1690,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_160000) do
     t.datetime "updated_at", null: false
     t.boolean "uses_buyback_token", default: true, null: false
     t.uuid "hangar_plan_slot_id"
+    t.uuid "bundled_with_id"
+    t.index ["bundled_with_id"], name: "index_hangar_plan_acquisitions_on_bundled_with_id"
     t.index ["hangar_plan_candidate_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_candidate_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_acquisitions_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
     t.index ["hangar_plan_id", "source_vehicle_id"], name: "index_hangar_plan_acquisitions_on_plan_and_vehicle", unique: true, where: "(source_vehicle_id IS NOT NULL)"
@@ -3512,6 +3514,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_160000) do
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_prerequisites", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
+  add_foreign_key "hangar_plan_acquisitions", "hangar_plan_acquisitions", column: "bundled_with_id", on_delete: :cascade
   add_foreign_key "hangar_plan_acquisitions", "hangar_plan_candidates", on_delete: :cascade
   add_foreign_key "hangar_plan_acquisitions", "hangar_plan_slots", on_delete: :cascade
   add_foreign_key "hangar_plan_acquisitions", "hangar_plans", on_delete: :cascade

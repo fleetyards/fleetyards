@@ -38876,6 +38876,13 @@ components:
           - string
           - 'null'
           format: uuid
+        bundledWithId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'For a bundled start: the start whose bought-back pledge brings
+            the ship along'
         startModel:
           "$ref": "#/components/schemas/HangarPlanModel"
         priceOverride:
@@ -38935,6 +38942,13 @@ components:
           - string
           - 'null'
           format: uuid
+        bundledWithId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'For a bundled start: the start whose bought-back pledge brings
+            the ship along'
         startModelId:
           type:
           - string
@@ -38974,6 +38988,13 @@ components:
           - string
           - 'null'
           format: uuid
+        bundledWithId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'For a bundled start: the start whose bought-back pledge brings
+            the ship along'
         startModelId:
           type:
           - string
@@ -38992,6 +39013,34 @@ components:
             "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
       additionalProperties: false
       title: HangarPlanAcquisitionUpdateInput
+    HangarPlanBundledResource:
+      type: object
+      description: A ship a pledge the plan buys back brings along besides the one
+        its route starts as
+      properties:
+        pledgeStartId:
+          type: string
+          format: uuid
+          description: The start that buys the pledge back
+        pledgeName:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        takenById:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The bundled start that uses the ship; null while none does
+      additionalProperties: false
+      required:
+      - pledgeStartId
+      - pledgeName
+      - model
+      - takenById
+      title: HangarPlanBundledResource
     HangarPlanBuybackResource:
       type: object
       properties:
@@ -39806,6 +39855,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanBuybackResource"
+        bundled:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanBundledResource"
+          description: The other ships of every pledge the plan buys back, each free
+            to start a route with
         storeModels:
           type: array
           items:
@@ -39816,6 +39871,7 @@ components:
       - vehicles
       - upgrades
       - buybacks
+      - bundled
       - storeModels
       title: HangarPlanResources
     HangarPlanSlot:
@@ -39996,6 +40052,13 @@ components:
           - string
           - 'null'
           format: uuid
+        bundledWithId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'For a bundled start: the start whose bought-back pledge brings
+            the ship along'
         startModel:
           anyOf:
           - "$ref": "#/components/schemas/HangarPlanModel"
@@ -40090,12 +40153,14 @@ components:
       - ingame
       - buyback
       - melted
+      - bundled
       x-enumNames:
       - OWNED
       - STORE
       - INGAME
       - BUYBACK
       - MELTED
+      - BUNDLED
       title: HangarPlanStartKindEnum
     HangarPlanSuggestions:
       type: object

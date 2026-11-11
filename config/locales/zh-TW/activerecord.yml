@@ -388,6 +388,9 @@ zh-TW:
               taken: "已在此計畫中使用"
             buyback_pledge_id:
               taken: "已在此計畫中使用"
+            start_model:
+              not_bundled: "不是該 pledge 中的另一艘艦船"
+              taken: "已在此計畫中使用"
         hangar_plan_upgrade_step:
           attributes:
             from_model_id:

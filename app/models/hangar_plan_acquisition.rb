@@ -7,9 +7,10 @@
 # at most once, so nothing here may be spent twice within a plan. A start with
 # no upgrades that is not the planned ship holds both ends while its route has
 # yet to be planned. A slot with no ship yet holds its starts itself, and hands
-# them to the first ship it gets.
+# them to the first ship it gets. A pledge bought back returns all of its ships,
+# so each of the others can be a bundled start, free, that goes with it.
 class HangarPlanAcquisition < ApplicationRecord
-  START_KINDS = %w[owned store ingame buyback melted].freeze
+  START_KINDS = %w[owned store ingame buyback melted bundled].freeze
   # Bought back, so paid like one: with store credit and a token, or new money.
   BUYBACK_START_KINDS = %w[buyback melted].freeze
   # Named by a ship of the live hangar: kept as it is, or melted and bought back.
@@ -27,6 +28,10 @@ class HangarPlanAcquisition < ApplicationRecord
   belongs_to :start_model, class_name: "Model", optional: true
   belongs_to :source_vehicle, class_name: "Vehicle", optional: true
   belongs_to :buyback_pledge, optional: true
+  belongs_to :bundled_with, class_name: "HangarPlanAcquisition", optional: true, inverse_of: :bundled_starts
+
+  has_many :bundled_starts, class_name: "HangarPlanAcquisition", foreign_key: :bundled_with_id,
+    inverse_of: :bundled_with, dependent: :destroy
 
   has_many :upgrade_steps, -> { order(:position) },
     class_name: "HangarPlanUpgradeStep", inverse_of: :acquisition, dependent: :destroy
@@ -56,6 +61,11 @@ class HangarPlanAcquisition < ApplicationRecord
   # A route that starts somewhere else was planned anew, so its price as planned
   # is what the new start costs today.
   before_update -> { self.price_snapshot = list_price }, if: :start_changed?
+  # Another pledge, or another of its ships to start as, brings other ships along.
+  after_update -> { bundled_starts.destroy_all }, if: -> {
+    saved_change_to_start_kind? || saved_change_to_buyback_pledge_id? || saved_change_to_source_vehicle_id? ||
+      saved_change_to_start_model_id?
+  }
 
   def final_model
     ordered_steps.last&.target_model || start_model
@@ -74,7 +84,7 @@ class HangarPlanAcquisition < ApplicationRecord
   # nothing more, an in-game purchase costs no USD.
   def list_price
     case start_kind
-    when "owned", "ingame" then 0
+    when "owned", "ingame", "bundled" then 0
     when "store" then start_model&.pledge_price
     when "buyback" then buyback_pledge&.price
     when "melted" then melted_price
@@ -94,6 +104,7 @@ class HangarPlanAcquisition < ApplicationRecord
     when "owned" then live_source_vehicle.nil?
     when "buyback" then buyback_pledge.nil? || buyback_pledge.user_id != hangar_plan.user_id
     when "melted" then source_melt.nil?
+    when "bundled" then bundled_with.nil? || bundled_with.source_missing?
     else false
     end
   end
@@ -140,7 +151,8 @@ class HangarPlanAcquisition < ApplicationRecord
 
   private def start_changed?
     new_record? || will_save_change_to_start_kind? || will_save_change_to_source_vehicle_id? ||
-      will_save_change_to_buyback_pledge_id? || will_save_change_to_start_model_id?
+      will_save_change_to_buyback_pledge_id? || will_save_change_to_start_model_id? ||
+      will_save_change_to_bundled_with_id?
   end
 
   private def assign_start_model
@@ -189,10 +201,26 @@ class HangarPlanAcquisition < ApplicationRecord
       elsif buyback_pledge_taken?
         errors.add(:buyback_pledge_id, :taken)
       end
+    when "bundled"
+      bundled_source
     end
 
+    errors.add(:bundled_with_id, :invalid) if start_kind != "bundled" && bundled_with_id.present?
     errors.add(:source_vehicle_id, :invalid) if VEHICLE_KINDS.exclude?(start_kind) && source_vehicle_id.present?
     errors.add(:buyback_pledge_id, :invalid) if start_kind != "buyback" && buyback_pledge_id.present?
+  end
+
+  # One of the other ships of a pledge another start of the plan buys back, and
+  # one no other start takes yet.
+  private def bundled_source
+    if bundled_with.blank? || bundled_with.hangar_plan_id != hangar_plan_id || BUYBACK_START_KINDS.exclude?(bundled_with.start_kind)
+      return errors.add(:bundled_with_id, :invalid)
+    end
+
+    held = HangarPlans::BundledShips.for(bundled_with).count { |model| model.id == start_model_id }
+    taken = bundled_with.bundled_starts.where(start_model_id:).where.not(id:).count
+    errors.add(:start_model, :not_bundled) if held.zero?
+    errors.add(:start_model, :taken) if held.positive? && taken >= held
   end
 
   # A pledge goes back to the hangar once, whichever of its ships names it.
