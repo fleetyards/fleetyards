@@ -13,6 +13,11 @@ import Component from "./index.vue";
 const comlinkEmit = vi.hoisted(() => vi.fn());
 const routeDirty = vi.hoisted(() => ({ value: false }));
 
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  useHangarPlan: () => ({ data: ref(undefined) }),
+}));
+
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));

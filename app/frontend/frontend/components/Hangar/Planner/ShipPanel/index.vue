@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useMediaQuery } from "@vueuse/core";
 import CloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import StartView from "@/frontend/components/Hangar/Planner/ShipPanel/StartView/index.vue";
 import EndView from "@/frontend/components/Hangar/Planner/ShipPanel/EndView/index.vue";
@@ -17,7 +16,8 @@ import type {
 } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import type { HangarPlanSlot } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import { type HangarPlanSlot, useHangarPlan } from "@/services/fyApi";
 
 type Props = {
   planId: string;
@@ -35,24 +35,52 @@ const comlink = useComlink();
 
 // Under the desktop layout the panel is a sheet over the page rather than a
 // column beside it.
-const sheet = useMediaQuery("(max-width: 991px)");
+const sheet = useMobile();
+
+const { data: plan } = useHangarPlan(() => props.planId);
 
 const tab = ref<HangarFlowTab>(props.target.tab);
 // A slot opened from a route's end, which the row itself does not offer.
 const slotFromEnd = ref<HangarPlanSlot>();
 
+const root = useTemplateRef<HTMLElement>("root");
+
+const focus = () => root.value?.focus({ preventScroll: true });
+
+// Opened for another row, it takes the keyboard again, so Escape still
+// reaches it after the click on the flow.
 watch(
   () => props.target,
   (target) => {
     tab.value = target.tab;
     slotFromEnd.value = undefined;
+    void nextTick(focus);
   },
 );
+
+// The route as the plan has it now, rather than as the row was when clicked:
+// a save elsewhere in the panel can have changed it since.
+const liveRoute = computed(() => {
+  const opened = props.target.route;
+  if (!opened) return undefined;
+
+  for (const slot of plan.value?.slots ?? []) {
+    for (const candidate of slot.candidates) {
+      const acquisition = candidate.acquisitions.find(
+        (entry) => entry.id === opened.acquisition.id,
+      );
+      if (acquisition) return { candidate, acquisition };
+    }
+  }
+
+  return opened;
+});
 
 const slot = computed(() => slotFromEnd.value ?? props.target.slot);
 
 const tabs = computed(() => {
-  const { start, end, route } = props.target;
+  const { start, end } = props.target;
+  const route = liveRoute.value;
 
   return [
     start && {
@@ -84,7 +112,8 @@ const tabs = computed(() => {
 });
 
 const title = computed(() => {
-  const { start, end, route } = props.target;
+  const { start, end } = props.target;
+  const route = liveRoute.value;
 
   switch (tab.value) {
     case "start":
@@ -127,6 +156,8 @@ const guard = (leave: () => void) => {
 
 const close = () => guard(() => emit("close"));
 
+defineExpose({ guard });
+
 const switchTo = (key: HangarFlowTab) => {
   if (key === tab.value) return;
   guard(() => {
@@ -151,9 +182,7 @@ const openSettings = (from: HangarPlanSlot) => {
   });
 };
 
-const root = useTemplateRef<HTMLElement>("root");
-
-onMounted(() => root.value?.focus({ preventScroll: true }));
+onMounted(focus);
 
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key !== "Escape" || event.defaultPrevented) return;
@@ -220,12 +249,12 @@ const onKeydown = (event: KeyboardEvent) => {
       @edit-slot="editSlot"
     />
     <RouteView
-      v-else-if="tab === 'route' && target.route"
+      v-else-if="tab === 'route' && liveRoute"
       ref="routeView"
       :key="`route-${target.key}`"
       :plan-id="planId"
-      :candidate="target.route.candidate"
-      :acquisition="target.route.acquisition"
+      :candidate="liveRoute.candidate"
+      :acquisition="liveRoute.acquisition"
       @done="emit('close')"
     />
     <SlotView

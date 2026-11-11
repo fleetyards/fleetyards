@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import type { Component } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useElementBounding, useMediaQuery } from "@vueuse/core";
+import { useElementBounding } from "@vueuse/core";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PageActions from "@/shared/components/PageActions/index.vue";
@@ -40,6 +40,7 @@ import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
@@ -150,9 +151,22 @@ const addSlot = (label?: string) =>
 
 // The row the ship panel is open for, with every side of it the panel offers.
 const panel = ref<HangarFlowTarget>();
+const shipPanel = useTemplateRef<{ guard: (leave: () => void) => void }>(
+  "shipPanel",
+);
 
+// Another row asked for while a route has edits not saved asks first, as
+// closing the panel does.
 const openPanel = (target: HangarFlowTarget) => {
-  panel.value = target;
+  const open = () => {
+    panel.value = target;
+  };
+
+  if (shipPanel.value) {
+    shipPanel.value.guard(open);
+  } else {
+    open();
+  }
 };
 
 const closePanel = () => {
@@ -173,21 +187,31 @@ watch(
   { immediate: true },
 );
 
-// Beside the open panel the flow keeps to the room left of it, so the row
-// being worked on stays in view.
-const sheet = useMediaQuery("(max-width: 991px)");
-const docked = computed(() => !!panel.value && !sheet.value);
+// A slot removed while the panel works on it takes the panel with it.
+watch(plan, (current) => {
+  const target = panel.value;
+  const slotId =
+    target?.slot?.id ?? target?.start?.slot.id ?? target?.end?.slot?.id;
+  if (!current || !slotId) return;
+
+  if (!current.slots.some((slot) => slot.id === slotId)) closePanel();
+});
+
+// Beside the open panel the page keeps to the room left of it, so the row
+// being worked on stays in view and nothing hides under the panel.
+const mobile = useMobile();
+const docked = computed(() => !!panel.value && !mobile.value);
 
 const PANEL_WIDTH = "min(860px, 58vw)";
 
-const layout = useTemplateRef<HTMLElement>("layout");
-const { left: layoutLeft } = useElementBounding(layout);
+const page = useTemplateRef<HTMLElement>("page");
+const { left: pageLeft } = useElementBounding(page);
 
-const layoutStyle = computed(() =>
+const pageStyle = computed(() =>
   docked.value
     ? {
         "--ship-panel-width": PANEL_WIDTH,
-        maxWidth: `calc(100vw - ${PANEL_WIDTH} - ${Math.max(layoutLeft.value, 0)}px - 24px)`,
+        maxWidth: `calc(100vw - ${PANEL_WIDTH} - ${Math.max(pageLeft.value, 0)}px - 24px)`,
       }
     : { "--ship-panel-width": PANEL_WIDTH },
 );
@@ -308,7 +332,7 @@ const onDestroy = async () => {
   />
   <Loader :loading="isLoading" />
 
-  <template v-if="plan">
+  <div v-if="plan" ref="page" class="plan-page" :style="pageStyle">
     <Heading size="hero" hero>{{ plan.name }}</Heading>
     <p v-if="plan.description" class="plan-description">
       {{ plan.description }}
@@ -434,12 +458,7 @@ const onDestroy = async () => {
     <CostTiles v-if="summary" :totals="summary.totals" />
     <Readiness :slots="plan.slots" :costs="summary?.slots" />
 
-    <div
-      ref="layout"
-      class="plan-layout"
-      :class="{ 'plan-layout--docked': docked }"
-      :style="layoutStyle"
-    >
+    <div class="plan-layout" :class="{ 'plan-layout--docked': docked }">
       <section class="plan-flow">
         <div
           v-if="tallies.length || pendingIds.length"
@@ -542,17 +561,18 @@ const onDestroy = async () => {
           </PanelBody>
         </Panel>
       </aside>
-
-      <ShipPanel
-        v-if="panel"
-        :plan-id="plan.id"
-        :target="panel"
-        @close="closePanel"
-      />
     </div>
 
     <ComparisonDetails v-if="comparison" :comparison="comparison" />
-  </template>
+
+    <ShipPanel
+      v-if="panel"
+      ref="shipPanel"
+      :plan-id="plan.id"
+      :target="panel"
+      @close="closePanel"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
