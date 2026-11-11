@@ -7,16 +7,22 @@ export default {
 <script lang="ts" setup>
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
-import { useModelsLatest } from "@/services/fyApi";
+import { ModelSortEnum, useModels } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
 
 const SHOWN = 3;
 
-const { data, isLoading, isFetching, isLoadingError } = useModelsLatest();
+// By when the ship joined the database. `/models/latest` sorts by the store
+// page's last update, which brings back long-known ships whenever RSI edits
+// their page.
+const { data, isLoading, isFetching, isLoadingError } = useModels({
+  perPage: String(SHOWN),
+  q: { sorts: ModelSortEnum.CREATED_AT_DESC },
+});
 
-const models = computed(() => (data.value || []).slice(0, SHOWN));
+const models = computed(() => data.value?.items || []);
 </script>
 
 <template>
