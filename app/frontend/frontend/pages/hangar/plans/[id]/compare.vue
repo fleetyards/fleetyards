@@ -123,8 +123,10 @@ const changed = computed(() =>
             <Pill variant="neutral">
               {{ t(`hangarPlanner.changes.${diff.change}`) }}
             </Pill>
-            <ShipName :ship="diff.model" />
-            <span class="plan-compare__muted">
+            <span class="plan-compare__change-name">
+              <ShipName :ship="diff.model" />
+            </span>
+            <span class="plan-compare__change-count">
               {{ diff.leftCount }} → {{ diff.rightCount }}
             </span>
           </li>
@@ -176,13 +178,34 @@ const changed = computed(() =>
 }
 
 .plan-compare__changes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
-    padding: 2px 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
+}
+
+.plan-compare__change-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-lifted);
+}
+
+.plan-compare__change-count {
+  flex: none;
+  white-space: nowrap;
+  color: var(--color-text-dim);
+  font-variant-numeric: tabular-nums;
 }
 
 .plan-compare__muted {

@@ -10,17 +10,6 @@ module HangarPlans
       new(models).to_h
     end
 
-    def self.plan_models(plan)
-      plan.slots.includes(candidates: {model: MODEL_PRELOAD}).flat_map do |slot|
-        candidate = slot.decided_candidate
-        candidate ? Array.new(slot.quantity, candidate.model) : []
-      end
-    end
-
-    def self.live_models(plan)
-      plan.live_vehicles.includes(model: :manufacturer).map(&:model)
-    end
-
     attr_reader :models
 
     def initialize(models)
