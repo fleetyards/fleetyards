@@ -9,20 +9,26 @@ import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
 import { ModelSortEnum, useModels } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 
 const { t } = useI18n();
 
-const SHOWN = 3;
+// One full row at the widest the panel gets.
+const FETCHED = 5;
 
 // By when the ship joined the database. `/models/latest` sorts by the store
 // page's last update, which brings back long-known ships whenever RSI edits
 // their page.
 const { data, isLoading, isFetching, isLoadingError } = useModels({
-  perPage: String(SHOWN),
+  perPage: String(FETCHED),
   q: { sorts: ModelSortEnum.CREATED_AT_DESC },
 });
 
 const models = computed(() => data.value?.items || []);
+
+const grid = useTemplateRef<HTMLElement>("grid");
+
+const shown = useFullRows(grid, models, 1);
 </script>
 
 <template>
@@ -36,9 +42,9 @@ const models = computed(() => data.value?.items || []);
     :more-label="t('home.dashboard.newShips.all')"
     data-test="home-new-ships"
   >
-    <div class="home-new-ships">
+    <div ref="grid" class="home-new-ships">
       <ShipTile
-        v-for="model in models"
+        v-for="model in shown"
         :key="model.id"
         :name="model.name"
         :sub="model.manufacturer?.name"

@@ -19,23 +19,31 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 
 const { t, l } = useI18n();
 
 const toVehicle = useVehicleRoute();
 
-// Two rows of three on a desktop, three of two on a phone.
-const SHOWN = 6;
+// Enough for two full rows at the widest the panel gets.
+const FETCHED = 10;
 
 const { data, isLoading, isFetching, isLoadingError } = useHangar(
-  { perPage: String(SHOWN), q: { sorts: VehicleSortEnum.CREATED_AT_DESC } },
+  { perPage: String(FETCHED), q: { sorts: VehicleSortEnum.CREATED_AT_DESC } },
   { query: liveQuery },
 );
 
 const vehicles = computed(() => data.value?.items || []);
 
+const grid = useTemplateRef<HTMLElement>("grid");
+
+const shown = useFullRows(grid, vehicles, 2);
+
 const remaining = computed(() =>
-  Math.max((data.value?.meta.pagination?.totalCount || 0) - SHOWN, 0),
+  Math.max(
+    (data.value?.meta.pagination?.totalCount || 0) - shown.value.length,
+    0,
+  ),
 );
 
 const { data: lastRead } = useSyncRsiHangarLastRead({
@@ -85,9 +93,9 @@ const subFor = (vehicle: Vehicle) =>
         })
       }}
     </p>
-    <div class="home-ships__grid">
+    <div ref="grid" class="home-ships__grid">
       <ShipTile
-        v-for="vehicle in vehicles"
+        v-for="vehicle in shown"
         :key="vehicle.id"
         :name="vehicle.name || vehicle.model.name"
         :sub="subFor(vehicle)"
