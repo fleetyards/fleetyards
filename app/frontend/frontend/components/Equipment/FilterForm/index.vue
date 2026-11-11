@@ -10,13 +10,13 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
 import {
   type EquipmentQuery,
   type FilterOption,
   useEquipmentGradesFilters,
   useEquipmentItemTypesFilters,
+  useEquipmentManufacturersFilters,
   useEquipmentSizesFilters,
   useEquipmentSlotsFilters,
   useEquipmentSubTypesFilters,
@@ -85,6 +85,8 @@ const { data: subTypes } = useEquipmentSubTypesFilters(equipmentTypeParams);
 const { data: weaponClasses } =
   useEquipmentWeaponClassesFilters(equipmentTypeParams);
 const { data: slots } = useEquipmentSlotsFilters(equipmentTypeParams);
+const { data: manufacturers } =
+  useEquipmentManufacturersFilters(equipmentTypeParams);
 
 // A value the control cannot show is one the reader cannot remove, so a type
 // dropped from the selection takes the values only it offered with it.
@@ -94,6 +96,7 @@ const { data: slots } = useEquipmentSlotsFilters(equipmentTypeParams);
 // answer already in the cache is never a change.
 const pruneToOptions = (
   key:
+    | "manufacturerSlugIn"
     | "itemTypeIn"
     | "sizeIn"
     | "gradeIn"
@@ -109,6 +112,11 @@ const pruneToOptions = (
   }
 };
 
+watch(
+  manufacturers,
+  (options) => pruneToOptions("manufacturerSlugIn", options),
+  { immediate: true },
+);
 watch(itemTypes, (options) => pruneToOptions("itemTypeIn", options), {
   immediate: true,
 });
@@ -139,7 +147,15 @@ watch(slots, (options) => pruneToOptions("slotIn", options), {
       :clearable="true"
     />
 
-    <ManufacturerSelect v-model="form.manufacturerSlugIn" name="manufacturer" />
+    <BaseSelect
+      v-model="form.manufacturerSlugIn"
+      name="manufacturer"
+      :options="manufacturers ?? []"
+      :label="t('labels.filters.manufacturer')"
+      :no-label="true"
+      multiple
+      searchable
+    />
 
     <BaseSelect
       v-model="form.equipmentTypeIn"

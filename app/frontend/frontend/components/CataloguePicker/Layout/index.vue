@@ -30,6 +30,7 @@ const search = defineModel<string>("search", { default: "" });
 const slots = defineSlots<{
   default?: () => unknown;
   filters?: () => unknown;
+  moreFilters?: () => unknown;
   summary?: () => unknown;
   notice?: () => unknown;
   more?: () => unknown;
@@ -66,6 +67,7 @@ const mobile = useMobile();
         />
         <slot name="filters" />
       </div>
+      <slot name="moreFilters" />
 
       <div class="catalogue-picker__summary">
         <span v-if="!loading" class="catalogue-picker__count">

@@ -3718,6 +3718,8 @@
           "placeholder": "Gegenstand wählen",
           "custom": "„%{name}“ als eigenen Gegenstand hinzufügen",
           "search": "Nach Namen suchen",
+          "moreFilters": "Weitere Filter",
+          "resetFilters": "Filter zurücksetzen",
           "chooseCategory": "Wähle eine Kategorie, um ihre Gegenstände zu durchsuchen.",
           "results": {
             "one": "%{count} Gegenstand",

@@ -45,4 +45,13 @@ class Api::V1::FiltersEquipmentSizesTest < ActionDispatch::IntegrationTest
       assert_equal %w[1], parsed_body.map { |filter| filter["value"] }
     end
   end
+
+  test "GET /filters/equipment/sizes narrows to the sub types and sizes asked for" do
+    create(:equipment, sub_type: "Small", size: "1")
+    create(:equipment, sub_type: "Large", size: "4")
+
+    assert_api_response :get, 200, params: {q: {subTypeIn: ["Medium", "Large"], sizeIn: ["3", "4"]}} do
+      assert_equal %w[3 4], parsed_body.map { |filter| filter["value"] }
+    end
+  end
 end

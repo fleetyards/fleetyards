@@ -2,6 +2,16 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 
+// jsdom has no matchMedia; the picker asks it for reduced motion.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
+
 const ITEMS = [
   {
     id: "pen",

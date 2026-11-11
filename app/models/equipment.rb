@@ -340,12 +340,12 @@ class Equipment < ApplicationRecord
   # Read off the table rather than from WEAPON_CLASSES for the same reason the
   # column is a free string: a class a patch introduces has to reach the picker
   # without waiting on the constant being updated.
-  def self.weapon_classes(equipment_types = nil)
-    build_facet(:weapon_class) { |scope| of_equipment_types(scope, equipment_types) }
+  def self.weapon_classes(narrowing = {})
+    build_facet(:weapon_class) { |scope| narrowed(scope, narrowing) }
   end
 
-  def self.weapon_class_filters(equipment_types = nil)
-    weapon_classes(equipment_types).map do |item|
+  def self.weapon_class_filters(narrowing = {})
+    weapon_classes(narrowing).map do |item|
       Filter.new(
         category: "weapon_class",
         label: fact_label(:weapon_class, item),
@@ -365,8 +365,8 @@ class Equipment < ApplicationRecord
     I18n.t("activerecord.attributes.equipment.#{fact.to_s.pluralize}.#{value.underscore}", default: value.underscore.titleize)
   end
 
-  def self.sub_type_filters(equipment_types = nil)
-    build_facet(:sub_type) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
+  def self.sub_type_filters(narrowing = {})
+    build_facet(:sub_type) { |scope| narrowed(scope, narrowing) }.map do |item|
       Filter.new(
         category: "sub_type",
         label: fact_label(:sub_type, item),
@@ -378,9 +378,9 @@ class Equipment < ApplicationRecord
   # Every slot the enum knows when no type is asked for, which is what the admin
   # form edits against; only the slots those types fill when one is, so a picker
   # browsing armour offers no shirt and one browsing clothing no torso plate.
-  def self.slot_filters(equipment_types = nil)
-    values = if equipment_types.present?
-      build_facet(:slot) { |scope| of_equipment_types(scope, equipment_types) }
+  def self.slot_filters(narrowing = {})
+    values = if narrowing.compact_blank.present?
+      build_facet(:slot) { |scope| narrowed(scope, narrowing) }
     else
       slots.keys
     end
@@ -398,8 +398,8 @@ class Equipment < ApplicationRecord
   # size 5, armour stops at 3 -- so an unnarrowed list offers sizes that match
   # nothing once a type is picked. Ordered as strings, which is numeric order
   # while every size and grade is a single digit.
-  def self.size_filters(equipment_types = nil)
-    build_facet(:size) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
+  def self.size_filters(narrowing = {})
+    build_facet(:size) { |scope| narrowed(scope, narrowing) }.map do |item|
       Filter.new(
         category: "size",
         label: I18n.t("filter.equipment.size.label", value: item),
@@ -408,8 +408,8 @@ class Equipment < ApplicationRecord
     end
   end
 
-  def self.grade_filters(equipment_types = nil)
-    build_facet(:grade) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
+  def self.grade_filters(narrowing = {})
+    build_facet(:grade) { |scope| narrowed(scope, narrowing) }.map do |item|
       Filter.new(
         category: "grade",
         label: I18n.t("filter.equipment.grade.label", value: item),
@@ -421,16 +421,27 @@ class Equipment < ApplicationRecord
   # A picker that only offers weapons has no use for the ninety-odd types the
   # armour and clothing rows contribute, so the caller can narrow by the game's
   # own split before the types are collected.
-  def self.item_types(equipment_types = nil)
-    build_facet(:item_type) { |scope| of_equipment_types(scope, equipment_types) }
+  def self.item_types(narrowing = {})
+    build_facet(:item_type) { |scope| narrowed(scope, narrowing) }
   end
 
-  private_class_method def self.of_equipment_types(scope, equipment_types)
-    equipment_types.present? ? scope.where(equipment_type: equipment_types) : scope
+  # The facts a picker is pinned to -- equipment type, sub type, slot, size --
+  # so each facet offers only what the items it can show actually have.
+  private_class_method def self.narrowed(scope, narrowing)
+    narrowing.compact_blank.reduce(scope) { |narrowed, (fact, values)| narrowed.where(fact => values) }
   end
 
-  def self.item_type_filters(equipment_types = nil)
-    item_types(equipment_types).map do |item|
+  def self.manufacturer_filters(narrowing = {})
+    builds = narrowed(EquipmentBuild.current(served_source(::ScData::Source.current)).where(hidden: false), narrowing)
+
+    Manufacturer.with_name
+      .where(id: where(id: builds.select(:equipment_id)).select(:manufacturer_id))
+      .order(name: :asc)
+      .map(&:to_filter)
+  end
+
+  def self.item_type_filters(narrowing = {})
+    item_types(narrowing).map do |item|
       Filter.new(
         category: "item_type",
         label: fact_label(:item_type, item),

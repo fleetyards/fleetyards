@@ -3732,6 +3732,8 @@
           "placeholder": "Choose an item",
           "custom": "Add “%{name}” as a custom item",
           "search": "Search by name",
+          "moreFilters": "More Filters",
+          "resetFilters": "Reset Filters",
           "chooseCategory": "Choose a category to browse its items.",
           "results": {
             "one": "%{count} Item",
