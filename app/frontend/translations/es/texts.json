@@ -388,7 +388,8 @@
         "squadrons": {
           "flightsHint": "Una escuadrilla es una formación que este escuadrón usa a menudo: sus naves, los slots de cada una y quién suele ocuparlos. Elige una al añadir un equipo a un evento o plantilla.",
           "flights": {
-            "candidatesHint": "El primer miembro recibe el slot. Si lo rechaza o no puede, se pregunta al siguiente."
+            "candidatesHint": "El primer miembro recibe el slot. Si lo rechaza o no puede, se pregunta al siguiente.",
+            "wideSeatsHint": "Funciones para toda la escuadrilla, no ligadas a una nave."
           },
           "shipRequestHint": "Decide el miembro: la nave solo se une al escuadrón si acepta.",
           "myShipsHint": "Elige con cuáles de las naves que compartes con la flota puede planificar este escuadrón.",

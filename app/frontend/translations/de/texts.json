@@ -389,7 +389,8 @@
         "squadrons": {
           "flightsHint": "Ein Schwarm ist eine Aufstellung, die diese Staffel oft fliegt: ihre Schiffe, die Slots darauf und wer sie meistens besetzt. Wähle einen aus, wenn du einem Event oder einer Vorlage ein Team hinzufügst.",
           "flights": {
-            "candidatesHint": "Das erste Mitglied erhält den Slot. Lehnt es ab oder kann nicht, wird das nächste gefragt."
+            "candidatesHint": "Das erste Mitglied erhält den Slot. Lehnt es ab oder kann nicht, wird das nächste gefragt.",
+            "wideSeatsHint": "Rollen für den ganzen Schwarm, an kein Schiff gebunden."
           },
           "shipRequestHint": "Das Mitglied entscheidet: Das Schiff kommt nur zur Staffel, wenn es zustimmt.",
           "myShipsHint": "Wähle, mit welchen deiner mit der Flotte geteilten Schiffe diese Staffel planen kann.",

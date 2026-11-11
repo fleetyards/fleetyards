@@ -1067,7 +1067,13 @@
             "anyShip": "Any fitting ship",
             "teamSource": "Flight",
             "teamSourceHint": "Copies the flight's ships and slots into this team and invites the members it lists once the event is open.",
-            "ofSquadron": "Flight of %{squadron}"
+            "ofSquadron": "Flight of %{squadron}",
+            "nobodyListed": "Nobody listed yet",
+            "exactModel": "Exact model",
+            "openSeat": "Open seat",
+            "then": "Then %{names}",
+            "noAlternates": "No alternates",
+            "shipsSummary": "%{ships} ships · %{filled} of %{seats} seats filled"
           },
           "askableShips": "Ships to ask for",
           "shipRequestFrom": "%{username} asks for your %{ship}",

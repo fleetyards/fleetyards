@@ -13,6 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               position: {type: :integer},
               username: {type: [:string, :null]},
+              avatar: ::Shared::V1::Schemas::MediaFile,
               passedAt: {type: [:string, :null], format: "date-time"},
               vehicle: {anyOf: [::V1::Schemas::Fleets::Squadrons::FleetSquadronVehicle, {type: :null}]}
             },

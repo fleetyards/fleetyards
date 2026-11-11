@@ -313,7 +313,8 @@
           "flights": {
             "create": "Ajouter une patrouille",
             "edit": "Modifier la patrouille",
-            "candidates": "Qui occupe %{slot}"
+            "candidates": "Qui occupe %{slot}",
+            "wideSeats": "Postes de toute la patrouille"
           },
           "shipRequest": "Demander un vaisseau à %{username}",
           "shipRequestsForMe": "Demandes qui vous sont adressées",

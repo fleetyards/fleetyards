@@ -7,7 +7,10 @@ module SlotCandidate
   extend ActiveSupport::Concern
 
   # What a rendered candidate reads: the member's name and the ship's model.
-  RENDER_PRELOADS = [{fleet_squadron_membership: {fleet_membership: :user}}, {vehicle: :model}].freeze
+  RENDER_PRELOADS = [
+    {fleet_squadron_membership: {fleet_membership: {user: {avatar_attachment: :blob}}}},
+    {vehicle: :model}
+  ].freeze
 
   included do
     belongs_to :fleet_squadron_membership

@@ -309,7 +309,10 @@
           "demote": "Retrocedi",
           "flights": {
             "create": "Aggiungi pattuglia",
-            "editCandidates": "Scegli chi occupa questo slot"
+            "editCandidates": "Scegli chi occupa questo slot",
+            "addAlternate": "+ Riserva",
+            "assignMember": "+ Assegna membro",
+            "removeSeat": "Rimuovi slot"
           },
           "askForShip": "Chiedi una nave",
           "withdrawShipRequest": "Ritira"

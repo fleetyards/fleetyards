@@ -309,7 +309,10 @@
           "demote": "降級",
           "flights": {
             "create": "新增小隊",
-            "editCandidates": "選擇擔任此席位的成員"
+            "editCandidates": "選擇擔任此席位的成員",
+            "addAlternate": "+ 替補",
+            "assignMember": "+ 指定成員",
+            "removeSeat": "移除席位"
           },
           "askForShip": "請求艦船",
           "withdrawShipRequest": "撤回"

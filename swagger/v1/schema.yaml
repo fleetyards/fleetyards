@@ -37739,6 +37739,8 @@ components:
           type:
           - string
           - 'null'
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
         passedAt:
           type:
           - string
@@ -51885,6 +51887,8 @@ components:
           - integer
           - 'null'
         image:
+          "$ref": "#/components/schemas/MediaFile"
+        angledView:
           "$ref": "#/components/schemas/MediaFile"
       required:
       - id

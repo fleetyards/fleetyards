@@ -388,7 +388,8 @@
         "squadrons": {
           "flightsHint": "Una pattuglia è una formazione che questo squadrone usa spesso: le sue navi, gli slot su di esse e chi di solito li occupa. Sceglila quando aggiungi una squadra a un evento o a un modello.",
           "flights": {
-            "candidatesHint": "Il primo membro riceve lo slot. Se rifiuta o non può, viene chiesto al successivo."
+            "candidatesHint": "Il primo membro riceve lo slot. Se rifiuta o non può, viene chiesto al successivo.",
+            "wideSeatsHint": "Ruoli per l’intera pattuglia, non legati a una nave."
           },
           "shipRequestHint": "Decide il membro: la nave entra nello squadrone solo se accetta.",
           "myShipsHint": "Scegli con quali delle navi che condividi con la flotta questo squadrone può pianificare.",

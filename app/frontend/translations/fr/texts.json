@@ -388,7 +388,8 @@
         "squadrons": {
           "flightsHint": "Une patrouille est une formation que cet escadron utilise souvent : ses vaisseaux, leurs postes et qui les occupe d’habitude. Choisissez-en une en ajoutant une équipe à un événement ou un modèle.",
           "flights": {
-            "candidatesHint": "Le premier membre obtient le poste. S’il refuse ou ne peut pas venir, le suivant est sollicité."
+            "candidatesHint": "Le premier membre obtient le poste. S’il refuse ou ne peut pas venir, le suivant est sollicité.",
+            "wideSeatsHint": "Rôles pour toute la patrouille, liés à aucun vaisseau."
           },
           "shipRequestHint": "Le membre décide : le vaisseau ne rejoint l’escadron que s’il accepte.",
           "myShipsHint": "Choisissez avec lesquels des vaisseaux partagés avec la flotte cet escadron peut planifier.",

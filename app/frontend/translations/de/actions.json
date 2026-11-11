@@ -309,7 +309,10 @@
           "demote": "Degradieren",
           "flights": {
             "create": "Schwarm hinzufügen",
-            "editCandidates": "Festlegen, wer diesen Slot fliegt"
+            "editCandidates": "Festlegen, wer diesen Slot fliegt",
+            "addAlternate": "+ Ersatz",
+            "assignMember": "+ Mitglied einteilen",
+            "removeSeat": "Slot entfernen"
           },
           "askForShip": "Um ein Schiff bitten",
           "withdrawShipRequest": "Zurückziehen"

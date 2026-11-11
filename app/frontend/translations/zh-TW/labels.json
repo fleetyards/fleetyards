@@ -1067,7 +1067,13 @@
             "anyShip": "任意合適艦船",
             "teamSource": "小隊",
             "teamSourceHint": "將小隊的艦船和席位複製到此隊伍，並在活動開放後邀請所列成員。",
-            "ofSquadron": "%{squadron} 的小隊"
+            "ofSquadron": "%{squadron} 的小隊",
+            "nobodyListed": "尚未指定成員",
+            "exactModel": "指定型號",
+            "openSeat": "空缺席位",
+            "then": "其次：%{names}",
+            "noAlternates": "無替補",
+            "shipsSummary": "%{ships} 艘艦船 · 已安排 %{filled}/%{seats} 個席位"
           },
           "askableShips": "可請求的艦船",
           "shipRequestFrom": "%{username} 請求你的 %{ship}",

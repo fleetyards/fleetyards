@@ -313,7 +313,8 @@
           "flights": {
             "create": "Schwarm hinzufügen",
             "edit": "Schwarm bearbeiten",
-            "candidates": "Wer fliegt %{slot}"
+            "candidates": "Wer fliegt %{slot}",
+            "wideSeats": "Schwarmweite Slots"
           },
           "shipRequest": "%{username} um ein Schiff bitten",
           "shipRequestsForMe": "Anfragen an dich",

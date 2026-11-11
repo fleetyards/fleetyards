@@ -313,7 +313,8 @@
           "flights": {
             "create": "Aggiungi pattuglia",
             "edit": "Modifica pattuglia",
-            "candidates": "Chi occupa %{slot}"
+            "candidates": "Chi occupa %{slot}",
+            "wideSeats": "Slot dell’intera pattuglia"
           },
           "shipRequest": "Chiedi una nave a %{username}",
           "shipRequestsForMe": "Richieste per te",

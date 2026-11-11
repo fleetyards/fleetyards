@@ -1067,7 +1067,13 @@
             "anyShip": "Jedes passende Schiff",
             "teamSource": "Schwarm",
             "teamSourceHint": "Übernimmt Schiffe und Slots des Schwarms in dieses Team und lädt die eingeteilten Mitglieder ein, sobald das Event offen ist.",
-            "ofSquadron": "Schwarm von %{squadron}"
+            "ofSquadron": "Schwarm von %{squadron}",
+            "nobodyListed": "Noch niemand eingeteilt",
+            "exactModel": "Genaues Modell",
+            "openSeat": "Freier Slot",
+            "then": "Danach %{names}",
+            "noAlternates": "Kein Ersatz",
+            "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt"
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

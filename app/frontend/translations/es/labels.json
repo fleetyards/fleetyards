@@ -1067,7 +1067,13 @@
             "anyShip": "Cualquier nave adecuada",
             "teamSource": "Escuadrilla",
             "teamSourceHint": "Copia las naves y los slots de la escuadrilla en este equipo e invita a los miembros asignados en cuanto el evento esté abierto.",
-            "ofSquadron": "Escuadrilla de %{squadron}"
+            "ofSquadron": "Escuadrilla de %{squadron}",
+            "nobodyListed": "Aún no hay nadie asignado",
+            "exactModel": "Modelo exacto",
+            "openSeat": "Slot libre",
+            "then": "Después %{names}",
+            "noAlternates": "Sin suplentes",
+            "shipsSummary": "%{ships} naves · %{filled} de %{seats} slots ocupados"
           },
           "askableShips": "Naves que solicitar",
           "shipRequestFrom": "%{username} te pide tu %{ship}",

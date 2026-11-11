@@ -309,7 +309,10 @@
           "demote": "Demote",
           "flights": {
             "create": "Add flight",
-            "editCandidates": "Choose who flies this slot"
+            "editCandidates": "Choose who flies this slot",
+            "addAlternate": "+ Alternate",
+            "assignMember": "+ Assign member",
+            "removeSeat": "Remove seat"
           },
           "askForShip": "Ask for a ship",
           "withdrawShipRequest": "Withdraw"

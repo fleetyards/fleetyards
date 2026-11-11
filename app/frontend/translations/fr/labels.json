@@ -1067,7 +1067,13 @@
             "anyShip": "Tout vaisseau adapté",
             "teamSource": "Patrouille",
             "teamSourceHint": "Copie les vaisseaux et les postes de la patrouille dans cette équipe et invite les membres prévus dès que l’événement est ouvert.",
-            "ofSquadron": "Patrouille de %{squadron}"
+            "ofSquadron": "Patrouille de %{squadron}",
+            "nobodyListed": "Personne pour l’instant",
+            "exactModel": "Modèle exact",
+            "openSeat": "Poste libre",
+            "then": "Puis %{names}",
+            "noAlternates": "Aucun remplaçant",
+            "shipsSummary": "%{ships} vaisseaux · %{filled} postes pourvus sur %{seats}"
           },
           "askableShips": "Vaisseaux à demander",
           "shipRequestFrom": "%{username} demande votre %{ship}",

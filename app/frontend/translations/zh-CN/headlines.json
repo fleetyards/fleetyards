@@ -313,7 +313,8 @@
           "flights": {
             "create": "添加小队",
             "edit": "编辑小队",
-            "candidates": "谁担任 %{slot}"
+            "candidates": "谁担任 %{slot}",
+            "wideSeats": "小队通用席位"
           },
           "shipRequest": "向 %{username} 请求舰船",
           "shipRequestsForMe": "向你的请求",

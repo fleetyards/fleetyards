@@ -1067,7 +1067,13 @@
             "anyShip": "Qualsiasi nave adatta",
             "teamSource": "Pattuglia",
             "teamSourceHint": "Copia navi e slot della pattuglia in questa squadra e invita i membri indicati non appena l’evento è aperto.",
-            "ofSquadron": "Pattuglia di %{squadron}"
+            "ofSquadron": "Pattuglia di %{squadron}",
+            "nobodyListed": "Ancora nessuno assegnato",
+            "exactModel": "Modello esatto",
+            "openSeat": "Slot libero",
+            "then": "Poi %{names}",
+            "noAlternates": "Nessuna riserva",
+            "shipsSummary": "%{ships} navi · %{filled} di %{seats} slot occupati"
           },
           "askableShips": "Navi da richiedere",
           "shipRequestFrom": "%{username} chiede la tua %{ship}",

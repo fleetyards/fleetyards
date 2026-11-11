@@ -309,7 +309,10 @@
           "demote": "Degradar",
           "flights": {
             "create": "Añadir escuadrilla",
-            "editCandidates": "Elegir quién ocupa este slot"
+            "editCandidates": "Elegir quién ocupa este slot",
+            "addAlternate": "+ Suplente",
+            "assignMember": "+ Asignar miembro",
+            "removeSeat": "Quitar slot"
           },
           "askForShip": "Pedir una nave",
           "withdrawShipRequest": "Retirar"
