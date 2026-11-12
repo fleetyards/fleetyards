@@ -64,9 +64,7 @@ class HangarSearch
   private def vehicle_source(type, scope)
     ScopedSearch::Source.new(
       type:,
-      scope: scope.includes(:model).references(:model)
-        .preload(Vehicle::PICTURE_PRELOADS, image_attachment: :blob)
-        .order("models.name", :name),
+      scope: scope.includes(:model).references(:model).order("models.name", :name),
       filter: :search_cont,
       item: lambda { |vehicle|
         ScopedSearch.result(
@@ -79,7 +77,7 @@ class HangarSearch
       images: lambda { |vehicles|
         renders = ::Catalogue::Search.new.images_for("ship", vehicles.map { |vehicle| vehicle.model.slug })
 
-        vehicles.to_h { |vehicle| [vehicle, vehicle.display_image || renders[vehicle.model.slug]] }
+        vehicles.to_h { |vehicle| [vehicle, renders[vehicle.model.slug]] }
       }
     )
   end
