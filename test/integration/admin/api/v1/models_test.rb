@@ -467,6 +467,15 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     assert_equal({key => "Vehicle bay"}, model.reload.servicing_area_names)
   end
 
+  test "PUT /models/:id keeps the name of an area the form did not list, and drops a blanked one" do
+    model = create(:model, servicing_area_names: {"ptu#bay" => "PTU bay", "live#deck" => "Deck"})
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {servicingAreaNames: [{key: "live#deck", name: ""}]}
+
+    assert_equal({"ptu#bay" => "PTU bay"}, model.reload.servicing_area_names)
+  end
+
   test "PUT /models/:id overrides what the stores and hangars said about its CCUs" do
     model = create(:model, ccu_target_seen_at: 1.day.ago)
     sign_in @user

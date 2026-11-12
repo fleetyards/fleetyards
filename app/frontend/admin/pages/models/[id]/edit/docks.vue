@@ -28,14 +28,26 @@ const { t, toNumber } = useI18n();
 // shows for it here. The game's own shape name stands in as the placeholder.
 const servicingAreas = computed(() => props.model.servicingAreas ?? []);
 
-const { handleSubmit, meta } = useForm<ModelUpdateInput>({
-  initialValues: {
-    servicingAreaNames: servicingAreas.value.map((area) => ({
-      key: area.key,
-      name: area.name ?? "",
-    })),
-  },
+const areaNames = () => ({
+  servicingAreaNames: servicingAreas.value.map((area) => ({
+    key: area.key,
+    name: area.name ?? "",
+  })),
 });
+
+const { handleSubmit, meta, resetForm } = useForm<ModelUpdateInput>({
+  initialValues: areaNames(),
+});
+
+// The inputs bind by position, so a reload that adds or reorders areas has to
+// rebuild the values they bind to, or a name lands on another area's key.
+watch(
+  () =>
+    servicingAreas.value
+      .map((area) => `${area.key}=${area.name ?? ""}`)
+      .join("|"),
+  () => resetForm({ values: areaNames() }),
+);
 
 const placeholder = (key: string) => key.split("#").pop();
 </script>
