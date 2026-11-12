@@ -80,12 +80,11 @@ const { isFeatureEnabled } = useFeatures();
     <HomeSearch class="home-dashboard__search" />
   </div>
 
-  <DashboardTiles class="home-dashboard__tiles" />
-
   <!-- Two columns from 992px. Below that both collapse into one, in the order
        a pilot acts on them: what needs an answer first. -->
   <div class="home-dashboard" data-test="home-dashboard">
     <div class="home-dashboard__main">
+      <DashboardTiles class="home-dashboard__tiles" />
       <InvitesAlert class="home-dashboard__invites" />
       <ComingUpPanel class="home-dashboard__coming-up" />
       <ContractsPanel class="home-dashboard__contracts" />
@@ -133,7 +132,8 @@ const { isFeatureEnabled } = useFeatures();
 }
 
 .home-dashboard__tiles {
-  margin-bottom: 20px;
+  order: -1;
+  margin-bottom: 16px;
 }
 
 .home-dashboard__search {
