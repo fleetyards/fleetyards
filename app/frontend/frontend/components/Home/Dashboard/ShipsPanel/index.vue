@@ -98,7 +98,7 @@ const tagFor = (vehicle: Vehicle) =>
 const tagsFor = (vehicle: Vehicle) => {
   const tag = tagFor(vehicle);
 
-  return tag ? [tag] : [];
+  return tag ? [{ label: tag }] : [];
 };
 
 // A ship the pilot named shows its model; otherwise its maker.

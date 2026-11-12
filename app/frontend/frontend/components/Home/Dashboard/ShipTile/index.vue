@@ -11,12 +11,17 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { type MediaFile } from "@/services/fyApi";
 
+export interface ShipTileTag {
+  label: string;
+  tooltip?: string;
+}
+
 interface Props {
   name: string;
   to: RouteLocationRaw;
   image?: MediaFile;
   sub?: string;
-  tags?: string[];
+  tags?: ShipTileTag[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,11 +46,20 @@ const imageUrl = computed(
     <span v-if="tags.length" class="home-ship-tile__tags">
       <span
         v-for="item in tags"
-        :key="item"
+        :key="item.label"
+        v-tooltip="
+          item.tooltip
+            ? {
+                content: item.tooltip,
+                multiline: true,
+                preserveLineBreaks: true,
+              }
+            : undefined
+        "
         class="home-ship-tile__tag"
         data-test="home-ship-tile-tag"
       >
-        {{ item }}
+        {{ item.label }}
       </span>
     </span>
     <span class="home-ship-tile__body">

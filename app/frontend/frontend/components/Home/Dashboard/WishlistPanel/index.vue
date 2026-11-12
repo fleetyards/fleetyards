@@ -8,10 +8,17 @@ export default {
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
-import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
+import ShipTile, {
+  type ShipTileTag,
+} from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
 import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { type Vehicle, VehicleSortEnum, useWishlist } from "@/services/fyApi";
+import {
+  type ItemPrice,
+  type Vehicle,
+  VehicleSortEnum,
+  useWishlist,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   WISHLIST_SHOWN as SHOWN,
@@ -54,19 +61,34 @@ const isLoadingError = computed(
   () => onSale.isLoadingError.value || recent.isLoadingError.value,
 );
 
+// UEX names a terminal "shop - spaceport - city": the shop first, then where to
+// fly for it.
+const shopLine = (price: ItemPrice) => {
+  const [shop, ...place] = price.location.split(" - ");
+
+  return place.length ? `${shop} · ${place.join(" · ")}` : shop;
+};
+
 // The store price only says something while the ship can be bought at it; the
 // in-game price only where the game sells it.
 const tagsFor = (vehicle: Vehicle) => {
-  const { onSale, pledgePrice, price } = vehicle.model;
-  const tags: string[] = [];
+  const { onSale, pledgePrice, price, availability } = vehicle.model;
+  const tags: ShipTileTag[] = [];
 
   if (onSale) {
     const label = t("home.dashboard.wishlist.onSale");
-    tags.push(pledgePrice ? `${label} · ${toDollar(pledgePrice)}` : label);
+    tags.push({
+      label: pledgePrice ? `${label} · ${toDollar(pledgePrice)}` : label,
+    });
   }
 
   if (price) {
-    tags.push(`${toNumber(price)} ${t("number.units.uec")}`);
+    const shops = availability.soldAt.map(shopLine);
+
+    tags.push({
+      label: `${toNumber(price)} ${t("number.units.uec")}`,
+      tooltip: shops.length ? [...new Set(shops)].join("\n") : undefined,
+    });
   }
 
   return tags;
