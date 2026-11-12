@@ -19,31 +19,57 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
-import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 
 const { t, l } = useI18n();
 
 const toVehicle = useVehicleRoute();
 
-// Enough for two full rows at the widest the panel gets.
-const FETCHED = 10;
+// One hero and a grid of six, which divides into three columns and two alike.
+const GRID = 6;
 
+// The flagship leads, or the newest ship when none is flagged; the rest
+// follow newest first.
 const { data, isLoading, isFetching, isLoadingError } = useHangar(
-  { perPage: String(FETCHED), q: { sorts: VehicleSortEnum.CREATED_AT_DESC } },
+  {
+    perPage: String(GRID + 1),
+    q: {
+      sorts: [VehicleSortEnum.FLAGSHIP_DESC, VehicleSortEnum.CREATED_AT_DESC],
+    },
+  },
   { query: liveQuery },
 );
 
 const vehicles = computed(() => data.value?.items || []);
 
-const grid = useTemplateRef<HTMLElement>("grid");
+const hero = computed(() => vehicles.value[0]);
 
-const shown = useFullRows(grid, vehicles, 2);
+const rest = computed(() => vehicles.value.slice(1));
 
 const remaining = computed(() =>
   Math.max(
-    (data.value?.meta.pagination?.totalCount || 0) - shown.value.length,
+    (data.value?.meta.pagination?.totalCount || 0) - vehicles.value.length,
     0,
   ),
+);
+
+const { supported: webpSupported } = useWebpCheck();
+
+// The angled render shows the ship itself rather than a scene around it.
+const heroImage = computed(() => {
+  const media = hero.value?.model.media;
+
+  return (
+    media?.angledView?.largeUrl ||
+    media?.storeImage?.largeUrl ||
+    (webpSupported.value ? fallbackImage : fallbackImageJpg)
+  );
+});
+
+const heroIsRender = computed(
+  () => !!hero.value?.model.media.angledView?.largeUrl,
 );
 
 const { data: lastRead } = useSyncRsiHangarLastRead({
@@ -93,16 +119,43 @@ const subFor = (vehicle: Vehicle) =>
         })
       }}
     </p>
-    <div ref="grid" class="home-ships__grid">
-      <ShipTile
-        v-for="vehicle in shown"
-        :key="vehicle.id"
-        :name="vehicle.name || vehicle.model.name"
-        :sub="subFor(vehicle)"
-        :image="vehicle.model.media.storeImage"
-        :tag="tagFor(vehicle)"
-        :to="toVehicle('hangar-vehicle', vehicle)"
-      />
+    <div v-if="hero" class="home-ships">
+      <router-link
+        :to="toVehicle('hangar-vehicle', hero)"
+        class="home-ships__hero"
+        data-test="home-ships-hero"
+      >
+        <span
+          class="home-ships__hero-image"
+          :class="{ 'home-ships__hero-image--render': heroIsRender }"
+        >
+          <img :src="heroImage" alt="" />
+        </span>
+        <span
+          v-if="tagFor(hero)"
+          class="home-ships__hero-tag"
+          data-test="home-ship-tile-tag"
+        >
+          {{ tagFor(hero) }}
+        </span>
+        <span class="home-ships__hero-body">
+          <span class="home-ships__hero-name">
+            {{ hero.name || hero.model.name }}
+          </span>
+          <span class="home-ships__hero-sub">{{ subFor(hero) }}</span>
+        </span>
+      </router-link>
+      <div class="home-ships__grid">
+        <ShipTile
+          v-for="vehicle in rest"
+          :key="vehicle.id"
+          :name="vehicle.name || vehicle.model.name"
+          :sub="subFor(vehicle)"
+          :image="vehicle.model.media.storeImage"
+          :tag="tagFor(vehicle)"
+          :to="toVehicle('hangar-vehicle', vehicle)"
+        />
+      </div>
     </div>
     <p v-if="remaining" class="home-ships__more">
       {{ t("home.dashboard.ships.more", { count: remaining }) }}
@@ -122,10 +175,103 @@ const subFor = (vehicle: Vehicle) =>
 </template>
 
 <style lang="scss" scoped>
+.home-ships {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home-ships__hero {
+  position: relative;
+  display: flex;
+  flex: 1 1 280px;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  border-radius: 10px;
+  background: var(--color-gray-black, #1a1d21);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+
+  &:hover {
+    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  }
+}
+
+.home-ships__hero-image {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // A render on a transparent ground: shown whole, with room around it.
+  &--render img {
+    max-height: 260px;
+    padding: 16px;
+    box-sizing: border-box;
+    object-fit: contain;
+  }
+}
+
+.home-ships__hero-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2px 8px;
+  border: 1px solid rgb(66 139 202 / 0.6);
+  border-radius: 11px;
+  background: rgb(26 29 33 / 0.9);
+  color: #8dbbe3;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.home-ships__hero-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+}
+
+.home-ships__hero-name {
+  overflow: hidden;
+  color: var(--color-lifted, #eee);
+  font-family: Orbitron, sans-serif;
+  font-size: 1.125rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-ships__hero-sub {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.75rem;
+}
+
 .home-ships__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  flex: 999 1 420px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  min-width: 0;
+}
+
+@media (max-width: 575px) {
+  .home-ships__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .home-ships__synced,
