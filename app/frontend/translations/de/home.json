@@ -409,6 +409,10 @@
             "action": "Plan beginnen"
           }
         },
+        "inventory": {
+          "title": "Zuletzt eingelagert",
+          "all": "Alle Inventare"
+        },
         "newShips": {
           "title": "Neu in diesem Patch",
           "all": "Was sich geändert hat"

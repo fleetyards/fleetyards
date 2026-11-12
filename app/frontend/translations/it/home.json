@@ -409,6 +409,10 @@
             "action": "Inizia un piano"
           }
         },
+        "inventory": {
+          "title": "Depositato di recente",
+          "all": "Tutti gli inventari"
+        },
         "newShips": {
           "title": "Novità di questa patch",
           "all": "Cosa è cambiato"

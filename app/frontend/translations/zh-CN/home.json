@@ -409,6 +409,10 @@
             "action": "开始计划"
           }
         },
+        "inventory": {
+          "title": "最近入库",
+          "all": "所有库存"
+        },
         "newShips": {
           "title": "本补丁新增",
           "all": "查看改动"

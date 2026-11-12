@@ -409,6 +409,10 @@
             "action": "Empezar un plan"
           }
         },
+        "inventory": {
+          "title": "Guardado recientemente",
+          "all": "Todos los inventarios"
+        },
         "newShips": {
           "title": "Nuevo en este parche",
           "all": "Qué cambió"

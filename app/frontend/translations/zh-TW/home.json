@@ -409,6 +409,10 @@
             "action": "開始計畫"
           }
         },
+        "inventory": {
+          "title": "最近入庫",
+          "all": "所有庫存"
+        },
         "newShips": {
           "title": "本補丁新增",
           "all": "查看變動"
