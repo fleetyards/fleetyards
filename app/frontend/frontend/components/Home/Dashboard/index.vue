@@ -9,7 +9,7 @@ import RaffleDashboardPanel from "@/frontend/components/Raffles/DashboardPanel/i
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import DashboardHero from "@/frontend/components/Home/Dashboard/Hero/index.vue";
-import DashboardTiles from "@/frontend/components/Home/Dashboard/Tiles/index.vue";
+import PatchTile from "@/frontend/components/Home/Dashboard/PatchTile/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
 import ContractsPanel from "@/frontend/components/Home/Dashboard/ContractsPanel/index.vue";
@@ -38,7 +38,6 @@ const { isFeatureEnabled } = useFeatures();
        a pilot acts on them: what needs an answer first. -->
   <div class="home-dashboard" data-test="home-dashboard">
     <div class="home-dashboard__main">
-      <DashboardTiles class="home-dashboard__tiles" />
       <InvitesAlert class="home-dashboard__invites" />
       <ComingUpPanel class="home-dashboard__coming-up" />
       <ContractsPanel class="home-dashboard__contracts" />
@@ -47,6 +46,7 @@ const { isFeatureEnabled } = useFeatures();
       <NewShipsPanel class="home-dashboard__new-ships" />
     </div>
     <aside class="home-dashboard__side">
+      <PatchTile class="home-dashboard__patch" />
       <FleetPanel class="home-dashboard__fleet" />
       <RaffleDashboardPanel class="home-dashboard__raffle" />
       <PlanPanel
@@ -61,8 +61,7 @@ const { isFeatureEnabled } = useFeatures();
 </template>
 
 <style lang="scss" scoped>
-.home-dashboard__tiles {
-  order: -1;
+.home-dashboard__patch {
   margin-bottom: 16px;
 }
 
@@ -97,6 +96,7 @@ const { isFeatureEnabled } = useFeatures();
   order: 4;
 }
 
+.home-dashboard__patch,
 .home-dashboard__fleet {
   order: 6;
 }

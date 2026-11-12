@@ -417,10 +417,13 @@
           "title": "New this patch",
           "all": "What changed"
         },
+        "stats": {
+          "ships": "Ships",
+          "wishlist": "Wishlist",
+          "onSale": "On sale",
+          "online": "Online"
+        },
         "tiles": {
-          "hangar": "Ships in your hangar",
-          "wishlist": "On your wishlist",
-          "onSale": "Wishlist ships on sale",
           "fleetOnline": "Online in %{fleet}",
           "patch": "Live patch",
           "patchPreview": "PTU patch",

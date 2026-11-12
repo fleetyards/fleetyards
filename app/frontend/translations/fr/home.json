@@ -417,10 +417,13 @@
           "title": "Nouveau dans ce patch",
           "all": "Ce qui a changé"
         },
+        "stats": {
+          "ships": "Vaisseaux",
+          "wishlist": "Liste de souhaits",
+          "onSale": "En promo",
+          "online": "En ligne"
+        },
         "tiles": {
-          "hangar": "Vaisseaux dans ton hangar",
-          "wishlist": "Sur ta liste de souhaits",
-          "onSale": "Vaisseaux souhaités en vente",
           "fleetOnline": "En ligne dans %{fleet}",
           "patch": "Patch live",
           "patchPreview": "Patch PTU",

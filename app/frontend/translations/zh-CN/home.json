@@ -417,10 +417,13 @@
           "title": "本补丁新增",
           "all": "查看改动"
         },
+        "stats": {
+          "ships": "舰船",
+          "wishlist": "愿望单",
+          "onSale": "促销中",
+          "online": "在线"
+        },
         "tiles": {
-          "hangar": "机库中的舰船",
-          "wishlist": "心愿单中",
-          "onSale": "在售的心愿舰船",
           "fleetOnline": "%{fleet} 在线",
           "patch": "正式服补丁",
           "patchPreview": "测试服补丁",

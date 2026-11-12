@@ -417,10 +417,13 @@
           "title": "Novità di questa patch",
           "all": "Cosa è cambiato"
         },
+        "stats": {
+          "ships": "Navi",
+          "wishlist": "Lista dei desideri",
+          "onSale": "In offerta",
+          "online": "Online"
+        },
         "tiles": {
-          "hangar": "Navi nell'hangar",
-          "wishlist": "Nella lista desideri",
-          "onSale": "Navi desiderate in vendita",
           "fleetOnline": "Online in %{fleet}",
           "patch": "Patch live",
           "patchPreview": "Patch PTU",

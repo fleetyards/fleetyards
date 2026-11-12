@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
+import DashboardStats from "@/frontend/components/Home/Dashboard/Stats/index.vue";
 import { useHangar } from "@/services/fyApi";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -98,6 +99,7 @@ const flagshipTag = computed(() =>
               : t("home.dashboard.welcomeAnonymous")
           }}
         </Heading>
+        <DashboardStats class="home-hero__stats" />
         <HomeSearch class="home-hero__search" />
       </div>
 
@@ -131,9 +133,10 @@ const flagshipTag = computed(() =>
 </template>
 
 <style lang="scss" scoped>
+// Above the panels below it, so the search's results open over them.
 .home-hero {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -159,6 +162,10 @@ const flagshipTag = computed(() =>
   object-fit: contain;
   object-position: right bottom;
   filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.6));
+}
+
+.home-hero__stats {
+  margin-bottom: 8px;
 }
 
 .home-hero__search {

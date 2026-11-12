@@ -417,10 +417,13 @@
           "title": "本補丁新增",
           "all": "查看變動"
         },
+        "stats": {
+          "ships": "艦船",
+          "wishlist": "願望清單",
+          "onSale": "特價中",
+          "online": "線上"
+        },
         "tiles": {
-          "hangar": "機庫中的艦船",
-          "wishlist": "願望清單中",
-          "onSale": "販售中的願望艦船",
           "fleetOnline": "%{fleet} 線上",
           "patch": "正式服補丁",
           "patchPreview": "測試服補丁",
