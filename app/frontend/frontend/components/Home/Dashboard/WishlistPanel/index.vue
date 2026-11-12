@@ -8,12 +8,8 @@ export default {
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
-import RowListItem from "@/shared/components/RowListItem/index.vue";
-import {
-  type RowListItemBadge,
-  type RowListItemTag,
-  RowListItemTonesEnum,
-} from "@/shared/components/RowListItem/types";
+import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
+import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type Vehicle, VehicleSortEnum, useWishlist } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -58,28 +54,20 @@ const isLoadingError = computed(
   () => onSale.isLoadingError.value || recent.isLoadingError.value,
 );
 
-const tagsFor = (vehicle: Vehicle): RowListItemTag[] =>
-  vehicle.model.onSale
-    ? [
-        {
-          key: "on-sale",
-          label: t("home.dashboard.wishlist.onSale"),
-          tone: RowListItemTonesEnum.PRIMARY,
-        },
-      ]
-    : [];
-
 // The price only says something while the ship can be bought at it.
-const badgesFor = (vehicle: Vehicle): RowListItemBadge[] =>
-  vehicle.model.onSale && vehicle.model.pledgePrice
-    ? [
-        {
-          key: "price",
-          label: t("home.dashboard.wishlist.price"),
-          value: toDollar(vehicle.model.pledgePrice),
-        },
-      ]
-    : [];
+const tagFor = (vehicle: Vehicle) => {
+  if (!vehicle.model.onSale) return undefined;
+
+  const label = t("home.dashboard.wishlist.onSale");
+
+  return vehicle.model.pledgePrice
+    ? `${label} · ${toDollar(vehicle.model.pledgePrice)}`
+    : label;
+};
+
+const grid = useTemplateRef<HTMLElement>("grid");
+
+const shown = useFullRows(grid, vehicles, 2);
 </script>
 
 <template>
@@ -93,29 +81,17 @@ const badgesFor = (vehicle: Vehicle): RowListItemBadge[] =>
     :more-label="t('home.dashboard.wishlist.all')"
     data-test="home-wishlist"
   >
-    <div class="home-wishlist">
-      <RowListItem
-        v-for="vehicle in vehicles"
+    <div ref="grid" class="home-wishlist">
+      <ShipTile
+        v-for="vehicle in shown"
         :key="vehicle.id"
+        :name="vehicle.name || vehicle.model.name"
+        :sub="vehicle.model.manufacturer?.name"
+        :image="vehicle.model.media.storeImage"
+        :tag="tagFor(vehicle)"
         :to="{ name: 'ship', params: { slug: vehicle.model.slug } }"
-        :tags="tagsFor(vehicle)"
-        :badges="badgesFor(vehicle)"
         data-test="home-wishlist-item"
-      >
-        <template #leading>
-          <img
-            v-if="vehicle.model.media.storeImage?.smallUrl"
-            :src="vehicle.model.media.storeImage.smallUrl"
-            alt=""
-            class="home-wishlist__image"
-            loading="lazy"
-          />
-        </template>
-        <template #name>{{ vehicle.name || vehicle.model.name }}</template>
-        <template #sub>
-          <span>{{ vehicle.model.manufacturer?.name }}</span>
-        </template>
-      </RowListItem>
+      />
     </div>
     <template #empty>
       <DashboardEmpty
@@ -132,17 +108,9 @@ const badgesFor = (vehicle: Vehicle): RowListItemBadge[] =>
 </template>
 
 <style lang="scss" scoped>
-// Six, so the grid fills whether it settles on two columns or three.
 .home-wishlist {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 8px;
-}
-
-.home-wishlist__image {
-  width: 72px;
-  height: 44px;
-  border-radius: 8px;
-  object-fit: cover;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
 }
 </style>
