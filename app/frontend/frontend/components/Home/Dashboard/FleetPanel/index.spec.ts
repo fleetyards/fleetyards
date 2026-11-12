@@ -53,6 +53,7 @@ const summary = (overrides: Partial<MyFleetSummary> = {}): MyFleetSummary => ({
   slug: "black-sun",
   primary: true,
   memberCount: 84,
+  contractsEnabled: false,
   ...overrides,
 });
 
