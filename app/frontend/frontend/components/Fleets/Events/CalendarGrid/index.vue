@@ -212,6 +212,9 @@ const renderEventChip = (info: {
     if (spansDays(info.event.start, info.event.end)) {
       chip.classList.add("fy-event-chip--span");
     }
+    // Something happening in the 'verse rather than something a fleet does:
+    // drawn as an outline, so it stays apart from every category's fill.
+    if (gameEvent) chip.classList.add("fy-event-chip--game");
     const { icon, color } = styleFor(
       (event?.category || gameEvent?.category) as string | undefined,
     );
@@ -604,44 +607,95 @@ onUnmounted(() => {
     transition: background-color 150ms ease-in-out;
   }
 
-  // Month view: a day's own event is a light row -- icon, time, title -- and
-  // only turns into a block on hover, so a day with three events reads as three
-  // rows rather than three filled blocks.
+  // Month view: every entry a pill tinted in its category's colour, so a day
+  // scans as its events. Hover deepens the tint.
   :deep(.fy-event-chip--compact) {
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--chip-color, var(--color-primary, #428bca)) 30%,
+        transparent
+      );
+    border-radius: 11px;
     background-image: none !important;
-  }
-
-  :deep(.fy-event-chip--compact.fy-event-chip--hover) {
-    background-color: rgb(122 130 136 / 0.16);
-    color: var(--color-lifted, #eee);
-  }
-
-  // An event over several days is a bar in its category's colour across them.
-  // A week row cuts it into pieces: only its real ends are rounded, and only
-  // the first piece names the time it starts.
-  :deep(.fy-event-chip--span) {
     background-color: color-mix(
       in srgb,
-      var(--chip-color, var(--color-primary, #428bca)) 22%,
+      var(--chip-color, var(--color-primary, #428bca)) 14%,
       transparent
     );
     color: var(--color-lifted, #eee);
+    transition:
+      background-color 120ms ease-in-out,
+      border-color 120ms ease-in-out;
+  }
+
+  :deep(.fy-event-chip--compact.fy-event-chip--hover) {
+    border-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 60%,
+      transparent
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 30%,
+      transparent
+    );
+  }
+
+  // An event over several days is one pill across them, a shade stronger. A
+  // week row cuts it into pieces: only its real ends are rounded, and only the
+  // first piece names the time it starts.
+  :deep(.fy-event-chip--span) {
+    border-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 60%,
+      transparent
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 30%,
+      transparent
+    );
   }
 
   :deep(.fy-event-chip--span.fy-event-chip--hover) {
     background-color: color-mix(
       in srgb,
-      var(--chip-color, var(--color-primary, #428bca)) 38%,
+      var(--chip-color, var(--color-primary, #428bca)) 46%,
       transparent
     );
   }
 
-  :deep(.ec-start-clipped .fy-event-chip--span) {
+  // A game event: a gold outline with no fill, whatever its category.
+  :deep(.fy-event-chip--compact.fy-event-chip--game) {
+    --chip-color: var(--color-gold, #d4af37);
+
+    border-color: color-mix(
+      in srgb,
+      var(--color-gold, #d4af37) 65%,
+      transparent
+    );
+    background-color: transparent;
+    color: color-mix(in srgb, var(--color-gold, #d4af37) 45%, #fff);
+  }
+
+  :deep(.fy-event-chip--compact.fy-event-chip--game.fy-event-chip--hover) {
+    border-color: var(--color-gold, #d4af37);
+    background-color: color-mix(
+      in srgb,
+      var(--color-gold, #d4af37) 16%,
+      transparent
+    );
+  }
+
+  :deep(.ec-start-clipped .fy-event-chip--compact) {
+    border-inline-start: none;
     border-start-start-radius: 0;
     border-end-start-radius: 0;
   }
 
-  :deep(.ec-end-clipped .fy-event-chip--span) {
+  :deep(.ec-end-clipped .fy-event-chip--compact) {
+    border-inline-end: none;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
