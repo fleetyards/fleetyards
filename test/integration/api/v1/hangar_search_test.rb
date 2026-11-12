@@ -63,6 +63,27 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search finds a ship however the reader spaced its name" do
+    create(:vehicle, user: @user, model: create(:model, name: "North Star"))
+    create(:vehicle, user: @other, model: create(:model, name: "North Star Pro"))
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "northstar"} do
+      assert_equal({"HangarVehicle" => ["North Star"]}, groups)
+      assert_equal false, parsed_body["groups"].first["hasMore"]
+    end
+  end
+
+  test "GET /hangar/search finds a name a letter off once nothing matches as typed" do
+    create(:vehicle, user: @user, model: create(:model, name: "Carrack"))
+    create(:hangar_pledge_item, user: @user, kind: "paint", name: "Polar Paint")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "carack"} do
+      assert_equal({"HangarVehicle" => ["Carrack"]}, groups)
+    end
+  end
+
   test "GET /hangar/search never returns another user's things" do
     create(:vehicle, user: @other, model: create(:model, name: "Omni Hauler"))
     create(:vehicle, :wanted, user: @other, model: create(:model, name: "Omni Scout"))
