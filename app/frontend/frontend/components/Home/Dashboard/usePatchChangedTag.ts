@@ -1,13 +1,23 @@
 import { type Vehicle, useMyPatchChanges } from "@/services/fyApi";
 import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 
 // Most builds leave a pilot's ships alone, so the patch has no panel of its
 // own: a ship it did change carries a tag, and otherwise nothing says so.
 export const usePatchChangedTag = () => {
   const { t } = useI18n();
 
-  const { data } = useMyPatchChanges(undefined, { query: liveQuery });
+  const sourceStore = useScDataSourceStore();
+
+  // Named outright rather than left to the default, so this shares its answer
+  // with the patch card of the same environment instead of asking twice.
+  const { data } = useMyPatchChanges(
+    () => ({
+      environment: sourceStore.selected?.environment.toLowerCase() || "live",
+    }),
+    { query: liveQuery },
+  );
 
   const changedModelIds = computed(
     () => new Set(data.value?.ownedModelIds || []),
