@@ -158,8 +158,32 @@ const creates = computed(() => !props.compact && !props.readOnly);
 
 type ChipProps = { fleetEvent?: FleetEvent; gameEvent?: GameEvent };
 
+// Whether the event runs past the day it starts on, which a month draws as a
+// bar across the days rather than as a row in one.
+const spansDays = (start?: Date | string, end?: Date | string) => {
+  if (!start || !end) return false;
+
+  const last = new Date(new Date(end).getTime() - 1);
+
+  return new Date(start).toDateString() !== last.toDateString();
+};
+
+// A long event is drawn as one piece per week row; hovering any of them lights
+// up all of them, so it reads as the one event it is.
+const highlightEvent = (id: string, on: boolean) => {
+  calendarEl.value
+    ?.querySelectorAll(`[data-event-id="${CSS.escape(id)}"]`)
+    .forEach((chip) => chip.classList.toggle("fy-event-chip--hover", on));
+};
+
 const renderEventChip = (info: {
-  event: { extendedProps?: ChipProps; title: string };
+  event: {
+    id: string;
+    extendedProps?: ChipProps;
+    title: string;
+    start?: Date;
+    end?: Date;
+  };
   timeText: string;
   view: { type: string };
 }) => {
@@ -172,19 +196,22 @@ const renderEventChip = (info: {
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
+  chip.dataset.eventId = info.event.id;
 
   if (isMonth) {
     /*
      * Built to Chip's own metrics rather than out of Chip itself: the library
      * hands us a DOM node, and Chip's styles are scoped, so its class names
      * would carry nothing here. Mounting a Vue component per event to get them
-     * is not worth it for a dot, a time and a label.
+     * is not worth it for an icon, a time and a label.
      *
-     * The icon stays, where a chip would show only a colour dot. The label is
-     * the event's title, so nothing else names the category - and colour on its
-     * own would be the only thing saying which one it is.
+     * The icon carries the category, so colour is never the only thing saying
+     * which one it is.
      */
     chip.classList.add("fy-event-chip--compact");
+    if (spansDays(info.event.start, info.event.end)) {
+      chip.classList.add("fy-event-chip--span");
+    }
     const { icon, color } = styleFor(
       (event?.category || gameEvent?.category) as string | undefined,
     );
@@ -330,6 +357,10 @@ onMounted(() => {
       syncDateToUrl();
     },
     eventContent: renderEventChip,
+    eventMouseEnter: (info: { event: { id: string } }) =>
+      highlightEvent(info.event.id, true),
+    eventMouseLeave: (info: { event: { id: string } }) =>
+      highlightEvent(info.event.id, false),
   });
 
   updateTitle();
@@ -545,11 +576,13 @@ onUnmounted(() => {
     font-variant-numeric: tabular-nums;
   }
 
-  // The library's .ec-event carries its own padding and fill; zeroed so the
-  // chip fills the event box and paints its own.
+  // The library's .ec-event carries its own padding, fill and corners; zeroed
+  // so the chip fills the event box and paints its own, a bar's squared-off
+  // ends included.
   :deep(.ec-event) {
     padding: 0;
     overflow: hidden;
+    border-radius: 0;
   }
 
   :deep(.fy-event-chip) {
@@ -571,19 +604,50 @@ onUnmounted(() => {
     transition: background-color 150ms ease-in-out;
   }
 
-  // Month view: Chip's own metrics - the leading marker, the 7px gap, the bare
-  // radius - with a category rail in place of the tint, so a day with three
-  // events reads as three rows rather than three filled blocks.
+  // Month view: a day's own event is a light row -- icon, time, title -- and
+  // only turns into a block on hover, so a day with three events reads as three
+  // rows rather than three filled blocks.
   :deep(.fy-event-chip--compact) {
     background-image: none !important;
-    padding-inline-start: 7px;
-    border-inline-start: 3px solid
-      var(--chip-color, var(--color-primary, #428bca));
   }
 
-  :deep(.fy-event-chip--compact:hover) {
+  :deep(.fy-event-chip--compact.fy-event-chip--hover) {
     background-color: rgb(122 130 136 / 0.16);
     color: var(--color-lifted, #eee);
+  }
+
+  // An event over several days is a bar in its category's colour across them.
+  // A week row cuts it into pieces: only its real ends are rounded, and only
+  // the first piece names the time it starts.
+  :deep(.fy-event-chip--span) {
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 22%,
+      transparent
+    );
+    color: var(--color-lifted, #eee);
+  }
+
+  :deep(.fy-event-chip--span.fy-event-chip--hover) {
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 38%,
+      transparent
+    );
+  }
+
+  :deep(.ec-start-clipped .fy-event-chip--span) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  :deep(.ec-end-clipped .fy-event-chip--span) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  :deep(.ec-start-clipped .fy-event-chip--span .fy-event-chip__time) {
+    display: none;
   }
 
   :deep(.fy-event-chip__icon) {
