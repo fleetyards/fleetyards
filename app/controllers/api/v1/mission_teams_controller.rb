@@ -88,8 +88,8 @@ module Api
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
 
-      # Building a team from a flight is part of the flights rollout; a team
-      # built by hand is not.
+      # Only a team built from a flight needs flights; one built by hand does
+      # not.
       private def check_flight_source_feature
         return if params[:source_flight_id].blank?
         return if feature_enabled?("fleet_squadron_flights", @fleet)
