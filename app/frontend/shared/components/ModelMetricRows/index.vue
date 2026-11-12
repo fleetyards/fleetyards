@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import type { MetricRowGroup } from "@/shared/composables/useModelMetricRows";
+import LandingServiceIcons from "@/shared/components/LandingServiceIcons/index.vue";
 
 type Props = {
   groups: MetricRowGroup[];
@@ -41,9 +42,12 @@ const visibleGroups = computed(() =>
     >
       <div v-for="row in group.rows" :key="row.label" class="metrics-card__row">
         <span class="metrics-card__row__label">{{ row.label }}</span>
+        <span v-if="row.icons?.length" class="metrics-card__row__value">
+          <LandingServiceIcons :services="row.icons" />
+        </span>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <span
-          v-if="row.html"
+          v-else-if="row.html"
           v-tooltip="group.split ? undefined : row.value"
           class="metrics-card__row__value"
           v-html="row.value"
