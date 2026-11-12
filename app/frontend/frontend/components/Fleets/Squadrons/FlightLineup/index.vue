@@ -10,13 +10,19 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import FlightWideSeats from "@/frontend/components/Fleets/Squadrons/FlightWideSeats/index.vue";
 import FlightShipCard from "@/frontend/components/Fleets/Squadrons/FlightShipCard/index.vue";
-import { type LineupScope } from "@/frontend/components/Fleets/Missions/useLineupApi";
+import {
+  type LineupScope,
+  useLineupApi,
+} from "@/frontend/components/Fleets/Missions/useLineupApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import Sortable from "sortablejs";
 import {
   type Fleet,
   type FleetSquadron,
   type FleetSquadronFlight,
+  type MissionShip,
 } from "@/services/fyApi";
 
 type Props = {
@@ -30,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), { editable: false });
 
 const { t } = useI18n();
 const comlink = useComlink();
+const { displayAlert } = useAppNotifications();
 
 const scope = computed<LineupScope>(() => ({
   fleetSlug: props.fleet.slug,
@@ -37,6 +44,66 @@ const scope = computed<LineupScope>(() => ({
   flightId: props.flight.id,
   teamId: props.flight.teamId,
 }));
+
+const lineup = useLineupApi(() => scope.value);
+
+const ships = ref<MissionShip[]>([...props.flight.ships]);
+
+watch(
+  () => props.flight.ships,
+  (value) => {
+    ships.value = [...value];
+  },
+);
+
+const shipsContainer = ref<HTMLElement | null>(null);
+let shipsSortable: Sortable | null = null;
+
+const initShipsSortable = () => {
+  shipsSortable?.destroy();
+  shipsSortable = null;
+  if (!shipsContainer.value || !props.editable) return;
+
+  shipsSortable = Sortable.create(shipsContainer.value, {
+    animation: 150,
+    handle: ".flight-ship__grip",
+    draggable: "[data-ship-id]",
+    onEnd: ({ item, from, oldIndex, newIndex }) => {
+      if (oldIndex === undefined || newIndex === undefined) return;
+      if (oldIndex === newIndex) return;
+
+      // Vue owns these nodes: the move is put back and replayed on the data,
+      // or the next render patches against a DOM it no longer matches.
+      from.insertBefore(
+        item,
+        from.children[oldIndex + (newIndex < oldIndex ? 1 : 0)] ?? null,
+      );
+
+      const reordered = [...ships.value];
+      const [moved] = reordered.splice(oldIndex, 1);
+      reordered.splice(newIndex, 0, moved);
+      ships.value = reordered;
+
+      void lineup
+        .sortShips(reordered.map((ship) => ship.id))
+        .then(() => comlink.emit("mission-children-changed"))
+        .catch(() => {
+          ships.value = [...props.flight.ships];
+          displayAlert({
+            text: t("messages.fleets.missionShip.update.failure"),
+          });
+        });
+    },
+  });
+};
+
+watch(
+  () => [ships.value.length > 0, props.editable],
+  () => void nextTick(initShipsSortable),
+);
+
+onMounted(() => void nextTick(initShipsSortable));
+onUnmounted(() => shipsSortable?.destroy());
 
 const shipSeats = computed(() =>
   props.flight.ships.flatMap((ship) => ship.slots ?? []),
@@ -85,9 +152,13 @@ const openAddShipModal = () => {
         </Btn>
       </header>
 
-      <div v-if="flight.ships.length" class="flight-lineup__ships">
+      <div
+        v-if="ships.length"
+        ref="shipsContainer"
+        class="flight-lineup__ships"
+      >
         <FlightShipCard
-          v-for="ship in flight.ships"
+          v-for="ship in ships"
           :key="ship.id"
           :fleet="fleet"
           :scope="scope"
