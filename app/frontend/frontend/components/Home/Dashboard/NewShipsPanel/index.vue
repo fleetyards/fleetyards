@@ -13,8 +13,8 @@ import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 
 const { t } = useI18n();
 
-// The ships the current live patch added to the game, the same list the
-// landing page's patch section names.
+// The ships the patch of the source being read added to the game, the same
+// list the landing page's patch section names.
 const { data, isLoading, isFetching, isLoadingError } = useScDataPatchSummary();
 
 const ships = computed(() => data.value?.newShips || []);
@@ -27,7 +27,7 @@ const shown = useFullRows(grid, ships, 1);
 <template>
   <!-- A patch that added no ships has nothing to say here. -->
   <DashboardPanel
-    v-if="isLoading || ships.length"
+    v-if="isLoading || isLoadingError || ships.length"
     :title="t('home.dashboard.newShips.title')"
     :pending="isLoading"
     :fetching="isFetching"

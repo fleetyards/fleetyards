@@ -51,7 +51,7 @@ const linkFor = (entry: HangarInventoryItem) =>
 <template>
   <!-- Most pilots keep no inventory, and an empty one has nothing to say. -->
   <DashboardPanel
-    v-if="isLoading || entries.length"
+    v-if="isLoading || isLoadingError || entries.length"
     :title="t('home.dashboard.inventory.title')"
     :pending="isLoading"
     :fetching="isFetching"
