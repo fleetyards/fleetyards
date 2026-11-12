@@ -258,5 +258,34 @@ describe("FleetEventPage own seats", () => {
 
     const panel = childAttrs(wrapper, "slot-title");
     expect(panel["slot-title"]).toBe("Pilot");
+    expect(team["team-seat-leavable"]).toBe(true);
+  });
+
+  it("leads with the pool signup over a team seat", async () => {
+    const seated = seatedEvent() as unknown as {
+      teams: { ships: unknown[] }[];
+      unassignedSignups: unknown[];
+    };
+    seated.teams[0].ships = [];
+    seated.unassignedSignups = [{ ...mine, status: "interested" }];
+    current.value = seated as unknown as FleetEventExtended;
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "maru", name: "Maru" } as Fleet,
+        membership: {} as FleetMember,
+        resourceAccess: ["fleet:events:read"],
+      },
+      plugins: [await routerWithRoutes()],
+    });
+    useSessionStore().currentUser = { id: "me" } as User;
+    await nextTick();
+
+    const panel = childAttrs(wrapper, "slot-title");
+    expect((panel.signup as { status: string }).status).toBe("interested");
+
+    const team = childAttrs(wrapper, "own-active-slot-id");
+    expect(team["own-active-slot-id"]).toBeNull();
+    expect(team["own-team-seat-slot-id"]).toBe("lead");
+    expect(team["team-seat-leavable"]).toBe(true);
   });
 });

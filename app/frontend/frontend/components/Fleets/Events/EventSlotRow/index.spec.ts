@@ -114,4 +114,14 @@ describe("FleetEventsSlotRow", () => {
 
     expect(wrapper.find('[data-test="slot-invite"]').exists()).toBe(false);
   });
+
+  it("offers leaving a seat held beside another only when asked to", async () => {
+    const record = slot({ signups: [signup(CURRENT_USER)] });
+
+    const plain = await mount(record);
+    expect(plain.find('[data-test="slot-leave"]').exists()).toBe(false);
+
+    const leavable = await mount(record, { leavable: true });
+    expect(leavable.find('[data-test="slot-leave"]').exists()).toBe(true);
+  });
 });
