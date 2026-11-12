@@ -71,6 +71,8 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
       assert_equal 2, parsed_body["shipCount"]
       assert_equal 1, parsed_body["flightCount"]
     end
+  ensure
+    Sidekiq::Testing.fake!
   end
 
   test "GET /fleets/:slug/squadrons/:slug leaves the flights out while they are not rolled out" do
