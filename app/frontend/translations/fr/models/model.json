@@ -12,7 +12,7 @@
         },
         "focus": "Spécialisation",
         "landingServices": "Services d'atterrissage",
-        "landingServicesWhere": "Hangar et plateformes",
+        "servicingArea": "Zone de service %{index}",
         "landingService": {
           "refuel": "Ravitailler",
           "hydrogenRefuel": "Ravitailler en hydrogène",

@@ -12,7 +12,7 @@
         },
         "focus": "定位",
         "landingServices": "著陸服務",
-        "landingServicesWhere": "機庫與停機坪",
+        "servicingArea": "服務區域 %{index}",
         "landingService": {
           "refuel": "加注燃料",
           "hydrogenRefuel": "加注氫燃料",

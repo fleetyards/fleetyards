@@ -12,7 +12,7 @@
         },
         "focus": "Focus",
         "landingServices": "Landing Services",
-        "landingServicesWhere": "Hangar & pads",
+        "servicingArea": "Service area %{index}",
         "landingService": {
           "refuel": "Refuel",
           "hydrogenRefuel": "Hydrogen refuel",

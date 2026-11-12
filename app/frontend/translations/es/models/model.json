@@ -12,7 +12,7 @@
         },
         "focus": "Enfoque",
         "landingServices": "Servicios de aterrizaje",
-        "landingServicesWhere": "Hangar y plataformas",
+        "servicingArea": "Zona de servicio %{index}",
         "landingService": {
           "refuel": "Repostar",
           "hydrogenRefuel": "Repostar hidrógeno",

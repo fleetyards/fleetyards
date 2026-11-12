@@ -12,7 +12,7 @@
         },
         "focus": "Specializzazione",
         "landingServices": "Servizi di atterraggio",
-        "landingServicesWhere": "Hangar e piattaforme",
+        "servicingArea": "Area di servizio %{index}",
         "landingService": {
           "refuel": "Rifornire",
           "hydrogenRefuel": "Rifornire idrogeno",
