@@ -1551,6 +1551,7 @@
             "maxSpeed": "最大速度",
             "groundMaxSpeed": "地面速度",
             "focus": "定位",
+            "landingServices": "著陸服務",
             "productionStatus": "生產狀態",
             "price": "價格",
             "pledgePrice": "質押價格"
@@ -2863,6 +2864,7 @@
           "priceGt": "價格 >=",
           "willItFit": "Will it Fit?",
           "withCargo": "有貨物?",
+          "withLandingServices": "為降落艦船提供服務",
           "scKeyBlank": "沒有 SC Key?",
           "positionsNeedCuration": "職位需要人工校訂?",
           "fleetchartImageBlank": "沒有艦隊圖表圖片?",
@@ -3714,6 +3716,7 @@
           "modelMaxSpeed": "最大速度",
           "modelGroundMaxSpeed": "地面速度",
           "modelFocus": "定位",
+          "modelLandingServices": "著陸服務",
           "modelProductionStatus": "生產狀態",
           "modelPrice": "價格",
           "modelPledgePrice": "質押價格"
@@ -3736,6 +3739,7 @@
           "modelScmSpeed": "SCM Speed",
           "modelMaxSpeed": "最大速度",
           "modelGroundMaxSpeed": "地面速度",
+          "modelLandingServices": "著陸服務",
           "modelProductionStatus": "生產狀態",
           "modelPrice": "價格",
           "modelPledgePrice": "質押價格",
