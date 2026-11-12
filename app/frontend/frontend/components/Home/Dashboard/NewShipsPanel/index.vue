@@ -7,7 +7,11 @@ export default {
 <script lang="ts" setup>
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
-import { useScDataPatchSummary } from "@/services/fyApi";
+import {
+  ScDataPatchSummaryEnvironment,
+  useScDataPatchSummary,
+} from "@/services/fyApi";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 
@@ -15,7 +19,17 @@ const { t } = useI18n();
 
 // The ships the patch of the source being read added to the game, the same
 // list the landing page's patch section names.
-const { data, isLoading, isFetching, isLoadingError } = useScDataPatchSummary();
+const sourceStore = useScDataSourceStore();
+
+const { data, isLoading, isFetching, isLoadingError } = useScDataPatchSummary(
+  () => ({
+    environment:
+      sourceStore.selected?.environment.toLowerCase() ===
+      ScDataPatchSummaryEnvironment.ptu
+        ? ScDataPatchSummaryEnvironment.ptu
+        : ScDataPatchSummaryEnvironment.live,
+  }),
+);
 
 const ships = computed(() => data.value?.newShips || []);
 
