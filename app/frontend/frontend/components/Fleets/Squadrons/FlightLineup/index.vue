@@ -88,7 +88,7 @@ const initShipsSortable = () => {
         .sortShips(reordered.map((ship) => ship.id))
         .then(() => comlink.emit("mission-children-changed"))
         .catch(() => {
-          ships.value = [...props.flight.ships];
+          comlink.emit("mission-children-changed");
           displayAlert({
             text: t("messages.fleets.missionShip.update.failure"),
           });
@@ -97,10 +97,9 @@ const initShipsSortable = () => {
   });
 };
 
-watch(
-  () => [ships.value.length > 0, props.editable],
-  () => void nextTick(initShipsSortable),
-);
+const hasShips = computed(() => ships.value.length > 0);
+
+watch([hasShips, () => props.editable], () => void nextTick(initShipsSortable));
 
 onMounted(() => void nextTick(initShipsSortable));
 onUnmounted(() => shipsSortable?.destroy());
