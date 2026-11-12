@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.51.0](https://github.com/fleetyards/fleetyards/compare/v9.50.0...v9.51.0) (2026-11-12)
+
+
+### Features
+
+* **models:** store and show which ships service ships landed on them ([#6301](https://github.com/fleetyards/fleetyards/issues/6301)) ([42701d3](https://github.com/fleetyards/fleetyards/commit/42701d36f23732ac17081082cc6b4c322eade2ee))
+
+
+### Chores
+
+* **sc_data:** bump live to 4.10.3-live.13165946 ([#6304](https://github.com/fleetyards/fleetyards/issues/6304)) ([5f97d8d](https://github.com/fleetyards/fleetyards/commit/5f97d8d8aa4c4cd768b9a9d7dcc3722f3d2b0d07))
+
 ## [9.50.0](https://github.com/fleetyards/fleetyards/compare/v9.49.0...v9.50.0) (2026-11-12)
 
 
