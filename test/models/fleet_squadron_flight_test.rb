@@ -89,6 +89,14 @@ class FleetSquadronFlightTest < ActiveSupport::TestCase
     assert ship.errors.added?(:vehicle_id, :present)
   end
 
+  test "renaming a flight renames its team" do
+    flight = create(:fleet_squadron_flight, name: "Alpha")
+
+    flight.update!(name: "Bravo")
+
+    assert_equal "Bravo", flight.team.reload.title
+  end
+
   test "a flight's ship has to name a member's ship" do
     ship = build(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
     ship.vehicle = nil

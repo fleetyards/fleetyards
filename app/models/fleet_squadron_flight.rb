@@ -27,6 +27,7 @@ class FleetSquadronFlight < ApplicationRecord
 
   before_create :append_to_squadron
   after_create :create_team!
+  after_update :rename_team, if: :saved_change_to_name?
 
   delegate :fleet, to: :fleet_squadron
 
@@ -38,6 +39,10 @@ class FleetSquadronFlight < ApplicationRecord
     create_mission_team!(title: name, position: 0).tap do |team|
       team.mission_slots.create!(lead: true, title: MissionSlot::LEAD_TITLE, position: 0)
     end
+  end
+
+  private def rename_team
+    mission_team&.update!(title: name)
   end
 
   private def append_to_squadron
