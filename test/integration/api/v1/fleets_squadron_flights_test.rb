@@ -222,6 +222,52 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT sets the short description and the cover image" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    sign_in @officer
+
+    assert_api_response :put, 200, path_params: flight_params(flight),
+      body: {shortDescription: "Escorts the haulers", coverImage: uploaded("cover.png", "test.png", "image/png").signed_id} do
+      assert_equal "Escorts the haulers", parsed_body["shortDescription"]
+      assert_equal "cover.png", parsed_body.dig("coverImage", "name")
+    end
+  end
+
+  test "PUT with a null cover image removes it" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    flight.update!(cover_image: uploaded("cover.png", "test.png", "image/png").signed_id)
+    sign_in @officer
+
+    assert_api_response :put, 200, path_params: flight_params(flight), body: {coverImage: nil} do
+      assert_nil parsed_body["coverImage"]
+    end
+    assert_not flight.reload.cover_image.attached?
+  end
+
+  test "PUT without a cover image keeps the one attached" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    flight.update!(cover_image: uploaded("cover.png", "test.png", "image/png").signed_id)
+    sign_in @officer
+
+    assert_api_response :put, 200, path_params: flight_params(flight), body: {name: "Escort"}
+    assert flight.reload.cover_image.attached?
+  end
+
+  test "PUT refuses a vector cover image" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    sign_in @officer
+
+    assert_api_response :put, 400, path_params: flight_params(flight),
+      body: {coverImage: uploaded("cover.svg", "vector.svg", "image/svg+xml").signed_id}
+  end
+
+  test "PUT refuses a short description over 255 characters" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    sign_in @officer
+
+    assert_api_response :put, 400, path_params: flight_params(flight), body: {shortDescription: "x" * 256}
+  end
+
   test "PUT refuses a blank name" do
     flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
     sign_in @officer
@@ -302,5 +348,13 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
     post "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights/#{flight.id}/ships", params: {classification: "Combat"}, as: :json
 
     assert_response :forbidden
+  end
+
+  private def uploaded(filename, fixture, content_type)
+    ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("test/fixtures/files", fixture)),
+      filename:,
+      content_type:
+    )
   end
 end

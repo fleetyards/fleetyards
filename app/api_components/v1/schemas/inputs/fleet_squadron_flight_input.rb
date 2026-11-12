@@ -10,7 +10,9 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            description: {type: [:string, :null]}
+            shortDescription: {type: [:string, :null]},
+            description: {type: [:string, :null]},
+            coverImage: {type: [:string, :null]}
           },
           additionalProperties: false
         })

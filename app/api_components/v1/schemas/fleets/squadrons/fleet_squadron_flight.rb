@@ -12,16 +12,18 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
+              shortDescription: {type: [:string, :null]},
               description: {type: [:string, :null]},
               position: {type: :integer},
               teamId: {type: :string, format: :uuid},
+              coverImage: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
               slots: {type: :array, items: ::V1::Schemas::Fleets::Missions::MissionSlot},
               ships: {type: :array, items: ::V1::Schemas::Fleets::Missions::MissionShip},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name description position teamId slots ships createdAt updatedAt]
+            required: %w[id name shortDescription description position teamId coverImage slots ships createdAt updatedAt]
           })
         end
       end

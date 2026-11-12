@@ -37269,6 +37269,10 @@ components:
           format: uuid
         name:
           type: string
+        shortDescription:
+          type:
+          - string
+          - 'null'
         description:
           type:
           - string
@@ -37278,6 +37282,10 @@ components:
         teamId:
           type: string
           format: uuid
+        coverImage:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
         slots:
           type: array
           items:
@@ -37296,9 +37304,11 @@ components:
       required:
       - id
       - name
+      - shortDescription
       - description
       - position
       - teamId
+      - coverImage
       - slots
       - ships
       - createdAt
@@ -37309,7 +37319,15 @@ components:
       properties:
         name:
           type: string
+        shortDescription:
+          type:
+          - string
+          - 'null'
         description:
+          type:
+          - string
+          - 'null'
+        coverImage:
           type:
           - string
           - 'null'

@@ -11,6 +11,8 @@ class FleetSquadronFlight < ApplicationRecord
 
   has_one :mission_team, dependent: :destroy, inverse_of: :fleet_squadron_flight
 
+  has_one_attached :cover_image
+
   has_many :sourced_fleet_event_teams, class_name: "FleetEventTeam", foreign_key: :source_flight_id,
     inverse_of: :source_flight, dependent: nil
   has_many :sourced_mission_teams, class_name: "MissionTeam", foreign_key: :source_flight_id,
@@ -21,7 +23,9 @@ class FleetSquadronFlight < ApplicationRecord
     length: {maximum: 255},
     uniqueness: {case_sensitive: false, scope: :fleet_squadron_id}
 
+  validates :short_description, length: {maximum: 255}, allow_blank: true
   validates :description, length: {maximum: 5000}, allow_blank: true
+  validates :cover_image, no_vector_image: true
 
   default_scope -> { order(position: :asc, created_at: :asc) }
 
