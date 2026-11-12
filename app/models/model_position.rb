@@ -124,17 +124,30 @@ class ModelPosition < ApplicationRecord
       sort_order += 1
     end
 
+    # Every ship is flown or driven by someone, even where the game files
+    # name no seat for it.
+    if positions.empty? && !model.model_positions.curated.exists?
+      positions << {
+        name: model.ground? ? "Driver" : "Pilot",
+        position_type: :pilot,
+        hardpoint_id: nil,
+        source: :sc_data,
+        position: sort_order
+      }
+    end
+
     # Updated in place rather than recreated: slots reference these ids, and a
     # seat an admin already curated is theirs.
     curated_hardpoint_ids = model.model_positions.curated.where.not(hardpoint_id: nil).pluck(:hardpoint_id)
 
-    # A seat deleted outright nullifies its position's port, and only the
-    # loadmaster is meant to have none.
+    # A seat deleted outright nullifies its position's port; only the
+    # loadmaster and the fallback pilot are meant to have none, and the stale
+    # check drops such a position when this build does not want one.
     existing = {}
     model.model_positions.sc_data.order(:created_at).each do |position|
       key = generated_key(position)
 
-      if existing.key?(key) || (position.hardpoint_id.nil? && !position.loadmaster?)
+      if existing.key?(key) || (position.hardpoint_id.nil? && !position.loadmaster? && !position.pilot?)
         position.destroy!
       else
         existing[key] = position

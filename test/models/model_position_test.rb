@@ -24,7 +24,44 @@ class ModelPositionTest < ActiveSupport::TestCase
 
     ModelPosition.generate_for_model!(model)
 
-    assert_empty model.model_positions.reload
+    assert_equal [["pilot", "Pilot", nil]], model.model_positions.reload.pluck(:position_type, :name, :hardpoint_id)
+  end
+
+  test ".generate_for_model! gives a ground vehicle without seats a driver" do
+    model = create(:model, ground: true)
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal [["pilot", "Driver"]], model.model_positions.reload.pluck(:position_type, :name)
+  end
+
+  test ".generate_for_model! keeps the fallback pilot's id across loads" do
+    model = create(:model)
+    ModelPosition.generate_for_model!(model)
+    pilot = model.model_positions.sole
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal [pilot.id], model.model_positions.reload.pluck(:id)
+  end
+
+  test ".generate_for_model! drops the fallback pilot once the ship has seats" do
+    model = create(:model)
+    ModelPosition.generate_for_model!(model)
+    create(:hardpoint, parent: model, source: :game_files, component: seat, sc_name: "hardpoint_seat_gunner")
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal ["Gunner"], model.model_positions.reload.pluck(:name)
+  end
+
+  test ".generate_for_model! adds no fallback pilot next to curated positions" do
+    model = create(:model)
+    curated = create(:model_position, model:, hardpoint: nil, source: :curated, name: "Gunner", position_type: :gunner)
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal [curated.id], model.model_positions.reload.pluck(:id)
   end
 
   test ".ordered puts the captain, pilots and copilots first, then the rest by name" do
@@ -59,13 +96,14 @@ class ModelPositionTest < ActiveSupport::TestCase
     model = create(:model)
     gunner = create(:hardpoint, parent: model, source: :game_files, component: seat, sc_name: "hardpoint_seat_gunner")
     ModelPosition.generate_for_model!(model)
-    slot = create(:fleet_event_slot, model_position: model.model_positions.sole)
+    lost = model.model_positions.sole
+    slot = create(:fleet_event_slot, model_position: lost)
     HardpointBuild.where(hardpoint: gunner).delete_all
     create(:hardpoint_build, hardpoint: create(:hardpoint, :without_build, parent: model, source: :game_files))
 
     ModelPosition.generate_for_model!(model)
 
-    assert_empty model.model_positions.reload
+    assert_not ModelPosition.exists?(lost.id)
     assert_nil slot.reload.model_position_id
   end
 
