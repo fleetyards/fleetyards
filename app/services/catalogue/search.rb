@@ -51,21 +51,30 @@ module Catalogue
       query = query.to_s.strip
       return [] if query.length < MIN_LENGTH || query.length > TokenResolver::MAX_NAME_LENGTH
 
-      escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
-      compact = compact(query)
-
       # A catalogue whose best match is strong comes first, so "port" opens on
       # Port Tressler rather than on equipment that merely contains the word.
       # Ties keep the order of TYPES.
-      TYPES.map { |prefix| group(prefix, escaped, compact) }
+      found = TYPES.map { |prefix| group(prefix, query) }
         .compact
         .each_with_index
         .sort_by { |group, index| [rank(group.items.first.name, query), index] }
         .map(&:first)
+
+      found.presence || near_misses(query)
     end
 
-    private def group(prefix, escaped, compact)
-      found, matched = matches(prefix, escaped, compact)
+    # Only once nothing matches as typed: then the reader most likely mistyped,
+    # where otherwise every catalogue would offer what is merely close. In the
+    # order of TYPES: scores this close apart say little about which catalogue
+    # was meant -- "mustnag" scores a mission's "Must Be" above the Mustang.
+    private def near_misses(query)
+      return [] unless SearchMatch.fuzzy?(query)
+
+      TYPES.filter_map { |prefix| group(prefix, query, fuzzy: true) }
+    end
+
+    private def group(prefix, query, fuzzy: false)
+      found, matched = fuzzy ? near(prefix, query) : matches(prefix, query)
       return if found.empty?
 
       items = found.first(PER_TYPE)
@@ -78,8 +87,9 @@ module Catalogue
         type: items.first.type,
         items: items.map { |item| item.with(image: images[item.slug], appearance: appearances[item.slug]) },
         # Variants of one mission collapse into one row here, so more rows than
-        # are offered also means there is more to see on the list.
-        has_more: found.size > PER_TYPE || (prefix == "mission" && matched > found.size)
+        # are offered also means there is more to see on the list. The list
+        # filters by the text as typed, so it holds no near miss.
+        has_more: !fuzzy && (found.size > PER_TYPE || (prefix == "mission" && matched > found.size))
       )
     end
 
@@ -148,14 +158,6 @@ module Catalogue
       BLUEPRINT_IMAGES.select { |attachment| klass.method_defined?(attachment) }
     end
 
-    # Letters and digits only: "northstar" is North Star, "f7cm" the F7C-M. A
-    # name is written however its maker spaced it, and a reader rarely knows.
-    COMPACT_SQL = "regexp_replace(lower(%s), '[^a-z0-9]+', '', 'g')"
-
-    private def compact(text)
-      text.to_s.downcase.gsub(/[^a-z0-9]+/, "")
-    end
-
     # Nil, which matches nothing, for a query of punctuation alone: an empty
     # pattern would match every name.
     private def compact_pattern(compact, prefix: "", suffix: "")
@@ -166,18 +168,19 @@ module Catalogue
     # then those with a word that does -- "port" means Port Tressler before
     # Support -- then the shortest, the closest match, then alphabetically so
     # equal names keep a stable order.
-    private def matches(prefix, escaped, compact)
+    private def matches(prefix, query)
       klass = TokenResolver::CATALOGUES.fetch(prefix)
       name = TokenResolver.name_sql(prefix)
-      compact_name = format(COMPACT_SQL, name)
+      escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
+      compact = SearchMatch.compact(query)
       rank = ActiveRecord::Base.sanitize_sql_array([
-        "CASE WHEN lower(#{name}) LIKE ? OR #{compact_name} LIKE ? THEN 0 " \
+        "CASE WHEN lower(#{name}) LIKE ? OR #{SearchMatch.compact_sql(name)} LIKE ? THEN 0 " \
         "WHEN lower(#{name}) LIKE ? THEN 1 WHEN lower(#{name}) LIKE ? THEN 2 ELSE 3 END",
         "#{escaped}%", compact_pattern(compact, suffix: "%"), "% #{escaped}%", "%#{escaped}%"
       ])
 
       searched = [name, *also_searched(prefix, klass)].flat_map do |column|
-        ["lower(#{column}) LIKE :pattern", "#{format(COMPACT_SQL, column)} LIKE :compact"]
+        ["lower(#{column}) LIKE :pattern", "#{SearchMatch.compact_sql(column)} LIKE :compact"]
       end.join(" OR ")
 
       rows = TokenResolver.listed(prefix)
@@ -186,6 +189,27 @@ module Catalogue
         .limit(CANDIDATES)
         .pluck(Arel.sql(name), Arel.sql("#{klass.table_name}.slug"), *detail_columns(prefix, klass))
 
+      results_for(prefix, klass, rows)
+    end
+
+    # Names a letter or two off, the closest first.
+    private def near(prefix, query)
+      klass = TokenResolver::CATALOGUES.fetch(prefix)
+      name = TokenResolver.name_sql(prefix)
+      binds = SearchMatch.fuzzy_binds(query)
+      match = ActiveRecord::Base.sanitize_sql_array([SearchMatch.fuzzy_match_sql(name), binds])
+      score = ActiveRecord::Base.sanitize_sql_array([SearchMatch.fuzzy_rank_sql(name), binds])
+
+      rows = TokenResolver.listed(prefix)
+        .where("#{match} >= ?", SearchMatch::FUZZY_THRESHOLD)
+        .order(Arel.sql("#{score} DESC"), Arel.sql("length(#{name})"), Arel.sql("#{klass.table_name}.slug"))
+        .limit(CANDIDATES)
+        .pluck(Arel.sql(name), Arel.sql("#{klass.table_name}.slug"), *detail_columns(prefix, klass))
+
+      results_for(prefix, klass, rows)
+    end
+
+    private def results_for(prefix, klass, rows)
       details = details_for(prefix, rows.map { |row| row.drop(2) })
 
       results = rows.each_with_index
@@ -206,7 +230,8 @@ module Catalogue
       name = name.downcase
       query = query.downcase
 
-      return 0 if name.start_with?(query) || (compact_pattern(compact(query)) && compact(name).start_with?(compact(query)))
+      compact = SearchMatch.compact(query)
+      return 0 if name.start_with?(query) || (compact_pattern(compact) && SearchMatch.compact(name).start_with?(compact))
       return 1 if name.include?(" #{query}")
 
       2
