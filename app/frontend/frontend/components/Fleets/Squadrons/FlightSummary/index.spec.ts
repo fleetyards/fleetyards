@@ -78,6 +78,20 @@ describe("FleetSquadronFlightSummary", () => {
     expect(cover(wrapper).classes()).toContain("flight-summary__cover--render");
   });
 
+  it("skips an upload that is not an image and a ship without a picture", async () => {
+    const wrapper = await mount(
+      flight({
+        coverImage: { url: "/notes.pdf" } as MediaFile,
+        ships: [
+          { ...shipWithRender("ship-1", ""), model: undefined } as MissionShip,
+          shipWithRender("ship-2", "/second.png"),
+        ],
+      }),
+    );
+
+    expect(cover(wrapper).find("img").attributes("src")).toBe("/second.png");
+  });
+
   it("shows no image without a cover or a ship", async () => {
     const wrapper = await mount(flight());
 

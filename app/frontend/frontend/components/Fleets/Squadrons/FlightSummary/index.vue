@@ -33,15 +33,18 @@ const slotCount = computed(
 );
 
 // An uploaded cover fills the frame; a ship render is cut out on transparency,
-// so it is fitted inside the frame instead.
+// so it is fitted inside the frame instead. Only an upload the server could
+// represent has a largeUrl, so anything that is not an image falls through.
 const cover = computed(() => {
-  const upload =
-    props.flight.coverImage?.largeUrl || props.flight.coverImage?.url;
+  const upload = props.flight.coverImage?.largeUrl;
   if (upload) return { url: upload, render: false };
 
-  const ship = props.flight.ships[0];
-  const model = ship?.model ?? ship?.allowedModels?.[0];
-  const render = model?.angledView?.mediumUrl || model?.image?.mediumUrl;
+  const render = props.flight.ships
+    .map((ship) => {
+      const model = ship.model ?? ship.allowedModels?.[0];
+      return model?.angledView?.mediumUrl || model?.image?.mediumUrl;
+    })
+    .find(Boolean);
 
   return render ? { url: render, render: true } : undefined;
 });
