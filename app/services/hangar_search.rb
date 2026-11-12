@@ -35,6 +35,7 @@ class HangarSearch
         type: "Friend",
         scope: @friends.with_attached_avatar.order(:username),
         filter: :username_or_display_name_cont,
+        columns: %w[users.username users.display_name],
         item: lambda { |friend|
           ScopedSearch.result(
             type: "User",
@@ -51,6 +52,7 @@ class HangarSearch
         type: "InventoryItem",
         scope: @inventory_items.includes(:inventory).preload(:item).order(:name),
         filter: :name_cont,
+        columns: %w[inventory_items.name],
         item: lambda { |item|
           ScopedSearch.result(type: "InventoryItem", name: item.name, slug: item.id, detail: item.inventory.name)
         },
@@ -66,6 +68,7 @@ class HangarSearch
       type:,
       scope: scope.includes(:model).references(:model).order("models.name", :name),
       filter: :search_cont,
+      columns: %w[vehicles.name models.name],
       item: lambda { |vehicle|
         ScopedSearch.result(
           type: "Vehicle",
@@ -87,6 +90,7 @@ class HangarSearch
       type:,
       scope: scope.order(:name),
       filter: :name_cont,
+      columns: ["#{scope.klass.table_name}.name"],
       item: ->(record) { ScopedSearch.result(type:, name: record.name, slug: record.id, image_url: record.image_url.presence) }
     )
   end

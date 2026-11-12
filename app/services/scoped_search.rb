@@ -8,21 +8,14 @@ class ScopedSearch
   MIN_LENGTH = ::Catalogue::Search::MIN_LENGTH
   MAX_LENGTH = ::Catalogue::TokenResolver::MAX_NAME_LENGTH
 
-  # How many of a list are looked through for a name spaced differently or a
-  # letter off: a hangar's own lists are a few hundred at most, and the names
-  # are compared here rather than in a query each source would need its own of.
-  FALLBACK_CANDIDATES = 500
-
-  # The kinds whose filter also looks at what the row shows as its detail: a
-  # ship's model, a friend's display name.
-  DETAIL_SEARCHED = %w[Vehicle User].freeze
-
   # `filter` is the ransack predicate the matching list page filters by, so what
-  # "show more" opens on holds what this counted. `item` turns a record into
-  # a `Catalogue::Search::Result`.
+  # "show more" opens on holds what this counted. `columns` are the SQL
+  # expressions that filter looks at, for matching a name spaced differently or
+  # a letter off, which ransack cannot express. `item` turns a record into a
+  # `Catalogue::Search::Result`.
   # `images`, where given, answers for the kept records at once, record to
   # attachment, so a page of rows takes one query per catalogue.
-  Source = Data.define(:type, :scope, :filter, :item, :images) do
+  Source = Data.define(:type, :scope, :filter, :columns, :item, :images) do
     def initialize(images: nil, **)
       super
     end
@@ -37,6 +30,7 @@ class ScopedSearch
       type:,
       scope: scope.order(Arel.sql(::Catalogue::TokenResolver.name_sql("blueprint"))),
       filter: :name_cont,
+      columns: [::Catalogue::TokenResolver.name_sql("blueprint")],
       item: ->(blueprint) { result(type: "Blueprint", name: blueprint.name, slug: blueprint.slug) },
       images: lambda { |blueprints|
         images = ::Catalogue::Search.new.images_for("blueprint", blueprints.map(&:slug))
@@ -60,8 +54,6 @@ class ScopedSearch
     query = query.to_s.strip
     return [] if query.length < MIN_LENGTH || query.length > MAX_LENGTH
 
-    @candidates = {}
-
     found = @sources.filter_map { |source| group(source, query) }
       .each_with_index
       .sort_by { |group, index| [rank(group.items.first.name, query), index] }
@@ -80,10 +72,9 @@ class ScopedSearch
     compact = SearchMatch.compact(query)
     return if compact.length < MIN_LENGTH
 
-    spaced = candidates(source).select do |_, result|
-      texts(result).any? { |text| SearchMatch.compact(text).include?(compact) }
-    end
-    build(source, spaced.first(PER_TYPE).map(&:first), has_more: false) if spaced.any?
+    spaced = source.columns.map { |column| "#{SearchMatch.compact_sql(column)} LIKE :compact" }.join(" OR ")
+    records = source.scope.where(spaced, compact: "%#{compact}%").limit(PER_TYPE).to_a
+    build(source, records, has_more: false) if records.any?
   end
 
   # Only once nothing matches as typed: names a letter or two off, the closest
@@ -91,31 +82,23 @@ class ScopedSearch
   private def near_misses(query)
     return [] unless SearchMatch.fuzzy?(query)
 
+    binds = SearchMatch.fuzzy_binds(query)
+
     @sources.filter_map do |source|
-      pairs = candidates(source)
-      next if pairs.empty?
+      match = greatest(source.columns.map { |column| SearchMatch.fuzzy_match_sql(column) }, binds)
+      score = greatest(source.columns.map { |column| SearchMatch.fuzzy_rank_sql(column) }, binds)
 
-      spans = pairs.map { |_, result| texts(result) }
-      scores = SearchMatch.fuzzy_scores(query, spans.flatten).each
-      best = spans.map { |texts| texts.map { scores.next }.max_by(&:last) }
-
-      close = pairs.zip(best)
-        .select { |_, (match, _)| match >= SearchMatch::FUZZY_THRESHOLD }
-        .sort_by { |_, (_, rank)| -rank }
-      build(source, close.first(PER_TYPE).map { |(record, _), _| record }, has_more: false) if close.any?
+      records = source.scope
+        .where("#{match} >= ?", SearchMatch::FUZZY_THRESHOLD)
+        .reorder(Arel.sql("#{score} DESC"))
+        .limit(PER_TYPE).to_a
+      build(source, records, has_more: false) if records.any?
     end
   end
 
-  private def candidates(source)
-    @candidates[source.type] ||= source.scope.limit(FALLBACK_CANDIDATES).to_a
-      .map { |record| [record, source.item.call(record)] }
-  end
-
-  private def texts(result)
-    texts = [result.name]
-    texts << result.detail if DETAIL_SEARCHED.include?(result.type)
-
-    texts.compact.map(&:to_s)
+  # The best of a record's columns; a column it leaves empty counts for nothing.
+  private def greatest(expressions, binds)
+    ActiveRecord::Base.sanitize_sql_array(["GREATEST(#{expressions.join(", ")})", binds])
   end
 
   private def build(source, records, has_more:)

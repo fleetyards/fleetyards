@@ -66,6 +66,17 @@ class Api::V1::FleetSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/search finds a member by a nickname spaced differently or a letter off" do
+    @fleet.fleet_memberships.find_by(user: @member).update!(nickname: "North Star")
+    sign_in @officer
+
+    %w[northstar nortstar].each do |query|
+      assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {q: query} do
+        assert_equal [@member.username], groups["FleetMembership"], query
+      end
+    end
+  end
+
   test "GET /fleets/:slug/search lists only accepted members" do
     %i[invited requested declined].each do |state|
       create(:fleet_membership, fleet: @fleet, user: create(:user, username: "omni#{state}"), aasm_state: state)
