@@ -178,7 +178,7 @@ onUnmounted(() => sortable?.destroy());
                 :class="{ 'wide-seats__chip--primary': index === 0 }"
               >
                 <span class="wide-seats__rank">{{ index + 1 }}</span>
-                <Avatar :avatar="candidate.avatar?.smallUrl" size="small" />
+                <Avatar :avatar="candidate.avatar?.smallUrl" size="xsmall" />
                 <span>{{ candidate.username }}</span>
               </li>
               <li
