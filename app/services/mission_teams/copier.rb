@@ -29,7 +29,7 @@ module MissionTeams
       model_id title description classification foci min_size max_size min_crew min_cargo
     ].freeze
 
-    SLOT_ATTRIBUTES = %i[model_position_id title description lead].freeze
+    SLOT_ATTRIBUTES = %i[model_position_id title description lead role].freeze
 
     SLOT_PRELOADS = [
       :model_position,

@@ -16,7 +16,7 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     end
     @flight = create(:fleet_squadron_flight, fleet_squadron: @squadron, name: "Strike", description: "Two bombers")
     ship = create(:mission_ship, mission_team: @flight.team, title: "Bomber")
-    slot = create(:mission_slot, slottable: ship, title: "Pilot")
+    slot = ship.mission_slots.reload.find_by!(role: "pilot")
     rows.each_with_index { |row, index| slot.mission_slot_candidates.create!(fleet_squadron_membership: row, position: index) }
     sign_in @admin
   end
@@ -31,7 +31,7 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     assert_equal "Strike", team.title
     assert_equal @squadron.id, team.fleet_squadron_id
     assert_equal @flight.id, team.source_flight_id
-    slot = team.fleet_event_ships.sole.fleet_event_slots.sole
+    slot = team.fleet_event_ships.sole.fleet_event_slots.find_by!(role: "pilot")
     assert_equal [@pilot, @wingman], slot.fleet_event_slot_candidates.map { |c| c.fleet_membership.user }
     assert_equal @pilot, slot.fleet_event_signups.sole.fleet_membership.user
     assert slot.fleet_event_signups.sole.invited?
@@ -56,7 +56,7 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     post "/api/v1/fleets/#{@fleet.slug}/missions/#{mission.slug}/teams", params: {title: "Strike", sourceFlightId: @flight.id}, as: :json
 
     assert_response :created
-    template_slot = mission.mission_teams.sole.mission_ships.sole.mission_slots.sole
+    template_slot = mission.mission_teams.sole.mission_ships.sole.mission_slots.find_by!(role: "pilot")
     assert_equal 2, template_slot.mission_slot_candidates.count
 
     event = FleetEvent.from_mission!(mission, created_by: @admin, starts_at: 2.days.from_now, status: "open")

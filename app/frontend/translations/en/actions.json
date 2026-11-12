@@ -315,7 +315,8 @@
             "removeSeat": "Remove seat",
             "manageSeats": "Seats",
             "fillSeat": "Fill",
-            "changeMembers": "Change"
+            "changeMembers": "Change",
+            "moreSeats": "+%{count} more"
           },
           "askForShip": "Ask for a ship",
           "withdrawShipRequest": "Withdraw"

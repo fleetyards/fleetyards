@@ -315,7 +315,8 @@
             "removeSeat": "移除席位",
             "manageSeats": "席位",
             "fillSeat": "安排",
-            "changeMembers": "更改"
+            "changeMembers": "更改",
+            "moreSeats": "另外 %{count} 个"
           },
           "askForShip": "请求舰船",
           "withdrawShipRequest": "撤回"

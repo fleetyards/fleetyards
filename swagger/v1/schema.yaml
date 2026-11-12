@@ -34373,6 +34373,8 @@ components:
           type: integer
         lead:
           type: boolean
+        role:
+          "$ref": "#/components/schemas/NullableSlotRoleEnum"
         derived:
           type: boolean
         positionType:
@@ -45474,6 +45476,8 @@ components:
           type: integer
         lead:
           type: boolean
+        role:
+          "$ref": "#/components/schemas/NullableSlotRoleEnum"
         derived:
           type: boolean
         positionType:
@@ -45505,6 +45509,8 @@ components:
           type:
           - string
           - 'null'
+        role:
+          "$ref": "#/components/schemas/NullableSlotRoleEnum"
       required:
       - slottableType
       - slottableId
@@ -49238,6 +49244,19 @@ components:
       - RSI_PROFILE
       - 'NULL'
       title: NullableRsiHandleVerifiedViaEnum
+    NullableSlotRoleEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - captain
+      - pilot
+      -
+      x-enumNames:
+      - CAPTAIN
+      - PILOT
+      - 'NULL'
+      title: NullableSlotRoleEnum
     NullableTradeRouteLoadLimitEnum:
       type:
       - string

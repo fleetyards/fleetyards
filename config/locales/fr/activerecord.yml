@@ -603,6 +603,7 @@ fr:
               already_requested: "a déjà été demandé"
         mission_slot:
           lead_required: "Une patrouille garde toujours son poste de chef."
+          pilot_required: "Un vaisseau de patrouille garde toujours un poste de pilote."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

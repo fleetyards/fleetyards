@@ -1075,7 +1075,13 @@
             "noAlternates": "Sin suplentes",
             "shipsSummary": "%{ships} naves · %{filled} de %{seats} slots ocupados",
             "lead": "Líder de escuadrilla",
-            "openSeats": "%{count} libres"
+            "openSeats": "%{count} libres",
+            "role": "Función",
+            "roles": {
+              "crew": "Tripulación",
+              "captain": "Capitán",
+              "pilot": "Piloto"
+            }
           },
           "askableShips": "Naves que solicitar",
           "shipRequestFrom": "%{username} te pide tu %{ship}",

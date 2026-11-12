@@ -603,6 +603,7 @@ zh-TW:
               already_requested: "已被請求過"
         mission_slot:
           lead_required: "小隊始終保留其小隊長席位。"
+          pilot_required: "小隊中的艦船始終保留一個駕駛員席位。"
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

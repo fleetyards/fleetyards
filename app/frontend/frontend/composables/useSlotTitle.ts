@@ -16,13 +16,21 @@ export const useSlotTitle = () => {
 
 interface FillableSlot {
   lead?: boolean;
+  role?: string | null;
   candidates?: unknown[];
 }
 
-// The lead first, then the seats someone is listed for, then the open ones --
-// each group keeping the order it came in.
+const ROLE_RANK: Record<string, number> = { captain: 1, pilot: 2 };
+
+// The lead first, then the captain and the pilot, then the seats someone is
+// listed for, then the open ones -- each group keeping the order it came in.
 export const sortByFilled = <T extends FillableSlot>(slots: T[]): T[] => {
-  const rank = (slot: T) => (slot.lead ? 0 : slot.candidates?.length ? 1 : 2);
+  const rank = (slot: T) => {
+    if (slot.lead) return 0;
+    if (slot.role && ROLE_RANK[slot.role]) return ROLE_RANK[slot.role];
+
+    return slot.candidates?.length ? 3 : 4;
+  };
 
   return [...slots].sort((a, b) => rank(a) - rank(b));
 };

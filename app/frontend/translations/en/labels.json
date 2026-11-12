@@ -1075,7 +1075,13 @@
             "noAlternates": "No alternates",
             "shipsSummary": "%{ships} ships · %{filled} of %{seats} seats filled",
             "lead": "Flight lead",
-            "openSeats": "%{count} open"
+            "openSeats": "%{count} open",
+            "role": "Role",
+            "roles": {
+              "crew": "Crew",
+              "captain": "Captain",
+              "pilot": "Pilot"
+            }
           },
           "askableShips": "Ships to ask for",
           "shipRequestFrom": "%{username} asks for your %{ship}",

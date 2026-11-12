@@ -42,4 +42,36 @@ class FleetSquadronFlightTest < ActiveSupport::TestCase
 
     assert team.fleet_event_slots.sole.lead?
   end
+  test "a flight's ship always has a pilot seat" do
+    team = create(:fleet_squadron_flight).team
+
+    ship = create(:mission_ship, mission_team: team)
+
+    assert_equal ["pilot"], ship.mission_slots.reload.map(&:role)
+  end
+
+  test "a ship's last pilot seat cannot be removed on its own" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+    pilot = ship.mission_slots.sole
+
+    assert_not pilot.destroy
+    assert_includes pilot.errors.details[:base], {error: :pilot_required}
+
+    ship.mission_slots.create!(role: "pilot", title: "Second pilot")
+    assert pilot.reload.destroy
+  end
+
+  test "captain and pilot seats head a ship's seats" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+    create(:mission_slot, slottable: ship, title: "Gunner", position: -10)
+    create(:mission_slot, slottable: ship, title: "Captain", role: "captain", position: 9)
+
+    assert_equal %w[captain pilot] + [nil], ship.mission_slots.reload.map(&:role)
+  end
+
+  test "a template's ship gets no pilot seat it was not given" do
+    ship = create(:mission_ship)
+
+    assert_empty ship.mission_slots.reload
+  end
 end

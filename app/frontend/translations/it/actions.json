@@ -315,7 +315,8 @@
             "removeSeat": "Rimuovi slot",
             "manageSeats": "Slot",
             "fillSeat": "Assegna",
-            "changeMembers": "Modifica"
+            "changeMembers": "Modifica",
+            "moreSeats": "+%{count} altri"
           },
           "askForShip": "Chiedi una nave",
           "withdrawShipRequest": "Ritira"

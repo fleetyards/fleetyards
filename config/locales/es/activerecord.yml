@@ -603,6 +603,7 @@ es:
               already_requested: "ya se ha solicitado"
         mission_slot:
           lead_required: "Una escuadrilla siempre conserva su slot de líder."
+          pilot_required: "Una nave de una escuadrilla siempre conserva un slot de piloto."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

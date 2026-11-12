@@ -603,6 +603,7 @@ zh-CN:
               already_requested: "已被请求过"
         mission_slot:
           lead_required: "小队始终保留其小队长席位。"
+          pilot_required: "小队中的舰船始终保留一个驾驶员席位。"
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

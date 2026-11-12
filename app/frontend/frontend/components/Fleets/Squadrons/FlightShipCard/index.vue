@@ -24,7 +24,10 @@ import {
   type MissionShip,
   type MissionSlot,
 } from "@/services/fyApi";
-import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
+import {
+  sortByFilled,
+  useSlotTitle,
+} from "@/frontend/composables/useSlotTitle";
 
 type Props = {
   fleet: Fleet;
@@ -49,8 +52,20 @@ const seats = computed(() => props.ship.slots ?? []);
 // The card shows who flies; seats nobody is listed for are filled in the
 // seats modal.
 const filledSeats = computed(() =>
-  seats.value.filter((seat) => seat.candidates?.length),
+  sortByFilled(seats.value.filter((seat) => seat.candidates?.length)),
 );
+
+// Enough to read the crew at a glance; the rest are a click away.
+const VISIBLE_SEATS = 5;
+
+const visibleSeats = computed(() => filledSeats.value.slice(0, VISIBLE_SEATS));
+
+const hiddenCount = computed(() =>
+  Math.max(0, filledSeats.value.length - VISIBLE_SEATS),
+);
+
+const roleLabel = (seat: MissionSlot) =>
+  seat.role ? t(`labels.fleet.squadrons.flights.roles.${seat.role}`) : null;
 
 const openCount = computed(() => seats.value.length - filledSeats.value.length);
 
@@ -118,7 +133,16 @@ const openSeats = () => {
       scope: props.scope,
       shipId: props.ship.id,
       shipTitle: title.value,
+      editable: props.editable,
     },
+  });
+};
+
+const openCandidates = (seat: MissionSlot) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Squadrons/SlotCandidatesModal/index.vue"),
+    props: { slot: seat, scope: props.scope },
   });
 };
 
@@ -153,6 +177,39 @@ const removeShip = async () => {
 
 <template>
   <section class="flight-ship" :data-test="`flight-ship-${ship.id}`">
+    <div v-if="editable" class="flight-ship__actions">
+      <Btn
+        v-tooltip="t('actions.edit')"
+        :size="BtnSizesEnum.XS"
+        :variant="BtnVariantsEnum.BARE"
+        :aria-label="t('actions.edit')"
+        data-test="flight-ship-edit"
+        @click="openEditShip"
+      >
+        <i class="fa-light fa-pen" />
+      </Btn>
+      <Btn
+        v-tooltip="t('actions.duplicate')"
+        :size="BtnSizesEnum.XS"
+        :variant="BtnVariantsEnum.BARE"
+        :aria-label="t('actions.duplicate')"
+        :loading="lineup.isPending.value"
+        @click="duplicateShip"
+      >
+        <i class="fa-light fa-copy" />
+      </Btn>
+      <Btn
+        v-tooltip="t('actions.delete')"
+        :size="BtnSizesEnum.XS"
+        :variant="BtnVariantsEnum.BARE"
+        tone="danger"
+        :aria-label="t('actions.delete')"
+        @click="removeShip"
+      >
+        <i class="fa-light fa-trash" />
+      </Btn>
+    </div>
+
     <div class="flight-ship__render">
       <img
         v-if="imageUrl"
@@ -172,55 +229,52 @@ const removeShip = async () => {
       <span class="flight-ship__filled">
         {{ filledSeats.length }} / {{ seats.length }}
       </span>
-      <div v-if="editable" class="flight-ship__actions">
-        <Btn
-          v-tooltip="t('actions.edit')"
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.BARE"
-          :aria-label="t('actions.edit')"
-          data-test="flight-ship-edit"
-          @click="openEditShip"
-        >
-          <i class="fa-light fa-pen" />
-        </Btn>
-        <Btn
-          v-tooltip="t('actions.duplicate')"
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.BARE"
-          :aria-label="t('actions.duplicate')"
-          :loading="lineup.isPending.value"
-          @click="duplicateShip"
-        >
-          <i class="fa-light fa-copy" />
-        </Btn>
-        <Btn
-          v-tooltip="t('actions.delete')"
-          :size="BtnSizesEnum.XS"
-          :variant="BtnVariantsEnum.BARE"
-          tone="danger"
-          :aria-label="t('actions.delete')"
-          @click="removeShip"
-        >
-          <i class="fa-light fa-trash" />
-        </Btn>
-      </div>
     </header>
 
     <ul v-if="filledSeats.length" class="flight-ship__seats">
       <li
-        v-for="seat in filledSeats"
+        v-for="seat in visibleSeats"
         :key="seat.id"
         class="flight-ship__seat"
         :data-test="`flight-ship-seat-${seat.id}`"
       >
         <Avatar :avatar="primary(seat)?.avatar?.smallUrl" size="small" />
         <div class="flight-ship__seat-text">
-          <span class="flight-ship__seat-title">{{ slotTitle(seat) }}</span>
+          <span class="flight-ship__seat-title">
+            {{ slotTitle(seat) }}
+            <span v-if="roleLabel(seat)" class="flight-ship__role">
+              {{ roleLabel(seat) }}
+            </span>
+          </span>
           <span class="flight-ship__seat-who">{{ primaryLine(seat) }}</span>
           <span class="flight-ship__seat-then">{{ alternatesLine(seat) }}</span>
         </div>
+        <Btn
+          v-if="editable"
+          v-tooltip="t('actions.fleet.squadrons.flights.editCandidates')"
+          :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.fleet.squadrons.flights.editCandidates')"
+          class="flight-ship__seat-edit"
+          :data-test="`flight-ship-seat-members-${seat.id}`"
+          @click="openCandidates(seat)"
+        >
+          <i class="fa-light fa-user-pen" />
+        </Btn>
       </li>
     </ul>
+
+    <button
+      v-if="hiddenCount"
+      type="button"
+      class="flight-ship__more"
+      data-test="flight-ship-more-seats"
+      @click="openSeats"
+    >
+      {{
+        t("actions.fleet.squadrons.flights.moreSeats", { count: hiddenCount })
+      }}
+    </button>
 
     <footer class="flight-ship__footer">
       <span v-if="openCount" class="flight-ship__open-count">
@@ -244,6 +298,7 @@ const removeShip = async () => {
 
 <style lang="scss" scoped>
 .flight-ship {
+  position: relative;
   overflow: hidden;
   border: 1px solid var(--color-edge-soft);
   border-radius: var(--radius-surface-slim);
@@ -304,8 +359,71 @@ const removeShip = async () => {
   white-space: nowrap;
 }
 
+/* Over the render's corner, out of the way until the card is pointed at or
+   one of its buttons has focus; a touch screen has no hover, so it keeps them. */
 .flight-ship__actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
   display: flex;
+  border-radius: var(--radius-control);
+  background: var(--color-control);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.flight-ship:hover .flight-ship__actions,
+.flight-ship__actions:focus-within {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .flight-ship__actions {
+    opacity: 1;
+  }
+}
+
+.flight-ship__seat-edit {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.flight-ship__seat:hover .flight-ship__seat-edit,
+.flight-ship__seat-edit:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .flight-ship__seat-edit {
+    opacity: 1;
+  }
+}
+
+.flight-ship__role {
+  margin-left: 6px;
+  padding: 0 5px;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 4px;
+}
+
+.flight-ship__more {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--color-edge-faint);
+  background: transparent;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-control-hover);
+  }
 }
 
 .flight-ship__seats {

@@ -1047,6 +1047,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.datetime "updated_at", null: false
     t.string "signup_approval"
     t.boolean "lead", default: false, null: false
+    t.string "role"
     t.index ["model_position_id"], name: "index_fleet_event_slots_on_model_position_id"
     t.index ["slottable_type", "slottable_id", "position"], name: "index_fleet_event_slots_on_slottable_and_position"
     t.index ["slottable_type", "slottable_id"], name: "index_fleet_event_slots_one_lead_per_slottable", unique: true, where: "lead"
@@ -2347,6 +2348,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.datetime "updated_at", null: false
     t.uuid "model_position_id"
     t.boolean "lead", default: false, null: false
+    t.string "role"
     t.index ["model_position_id"], name: "index_mission_slots_on_model_position_id"
     t.index ["slottable_type", "slottable_id", "position"], name: "index_mission_slots_on_slottable_and_position"
     t.index ["slottable_type", "slottable_id"], name: "index_mission_slots_one_lead_per_slottable", unique: true, where: "lead"

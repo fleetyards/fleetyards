@@ -635,6 +635,7 @@ en:
               already_requested: "has already been asked for"
         mission_slot:
           lead_required: "A flight always keeps its lead seat."
+          pilot_required: "A flight's ship always keeps a pilot seat."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

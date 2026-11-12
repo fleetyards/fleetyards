@@ -7,6 +7,7 @@ json.title mission_slot.title
 json.description mission_slot.description
 json.position mission_slot.position
 json.lead mission_slot.lead?
+json.role mission_slot.role
 json.derived mission_slot.derived?
 json.position_type mission_slot.position_type
 

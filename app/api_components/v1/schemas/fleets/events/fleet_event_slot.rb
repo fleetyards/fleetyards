@@ -17,6 +17,7 @@ module V1
               description: {type: :string},
               position: {type: :integer},
               lead: {type: :boolean},
+              role: ::V1::Schemas::Enums::NullableSlotRoleEnum,
               derived: {type: :boolean},
               positionType: {type: :string},
               modelPositionId: {type: :string, format: :uuid},

@@ -603,6 +603,7 @@ de:
               already_requested: "wurde bereits angefragt"
         mission_slot:
           lead_required: "Ein Schwarm behält immer seinen Führungs-Slot."
+          pilot_required: "Ein Schiff eines Schwarms behält immer einen Piloten-Slot."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

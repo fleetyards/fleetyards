@@ -31,9 +31,10 @@ type Props = {
   scope: LineupScope;
   shipId: string;
   shipTitle: string;
+  editable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { editable: true });
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -77,7 +78,16 @@ const summary = (seat: MissionSlot) => {
   })}`;
 };
 
+// The ship's last pilot seat stays: a ship always has someone to fly it.
+const lastPilot = (seat: MissionSlot) =>
+  seat.role === "pilot" &&
+  seats.value.filter((other) => other.role === "pilot").length === 1;
+
+const roleLabel = (seat: MissionSlot) =>
+  seat.role ? t(`labels.fleet.squadrons.flights.roles.${seat.role}`) : null;
+
 const newSeat = ref("");
+const newRole = ref<"captain" | "pilot" | null>(null);
 
 const addSeat = async () => {
   const title = newSeat.value.trim();
@@ -88,9 +98,11 @@ const addSeat = async () => {
       slottableType: "MissionShip",
       slottableId: props.shipId,
       title,
+      role: newRole.value,
     })
     .then(() => {
       newSeat.value = "";
+      newRole.value = null;
       changed();
     })
     .catch(() =>
@@ -147,7 +159,12 @@ const removeSeat = async (seat: MissionSlot) => {
             <i class="fa-light fa-plus" />
           </span>
           <div class="ship-seats__text">
-            <span class="ship-seats__title">{{ slotTitle(seat) }}</span>
+            <span class="ship-seats__title">
+              {{ slotTitle(seat) }}
+              <span v-if="roleLabel(seat)" class="ship-seats__role">
+                {{ roleLabel(seat) }}
+              </span>
+            </span>
             <span
               class="ship-seats__who"
               :class="{ 'ship-seats__who--open': !seat.candidates?.length }"
@@ -156,6 +173,7 @@ const removeSeat = async (seat: MissionSlot) => {
             </span>
           </div>
           <Btn
+            v-if="props.editable"
             :size="BtnSizesEnum.SM"
             :data-test="`ship-seat-fill-${seat.id}`"
             @click="editingId = seat.id"
@@ -167,6 +185,7 @@ const removeSeat = async (seat: MissionSlot) => {
             }}
           </Btn>
           <Btn
+            v-if="props.editable && !lastPilot(seat)"
             :size="BtnSizesEnum.SM"
             :variant="BtnVariantsEnum.BARE"
             :aria-label="t('actions.fleet.squadrons.flights.removeSeat')"
@@ -181,7 +200,11 @@ const removeSeat = async (seat: MissionSlot) => {
         {{ t("labels.fleets.missions.noSlots") }}
       </p>
 
-      <form class="ship-seats__new" @submit.prevent="addSeat">
+      <form
+        v-if="props.editable"
+        class="ship-seats__new"
+        @submit.prevent="addSeat"
+      >
         <input
           v-model="newSeat"
           type="text"
@@ -190,6 +213,22 @@ const removeSeat = async (seat: MissionSlot) => {
           :placeholder="t('actions.fleets.missions.addSlot')"
           data-test="ship-seat-new"
         />
+        <select
+          v-model="newRole"
+          class="ship-seats__new-role"
+          :aria-label="t('labels.fleet.squadrons.flights.role')"
+          data-test="ship-seat-new-role"
+        >
+          <option :value="null">
+            {{ t("labels.fleet.squadrons.flights.roles.crew") }}
+          </option>
+          <option value="captain">
+            {{ t("labels.fleet.squadrons.flights.roles.captain") }}
+          </option>
+          <option value="pilot">
+            {{ t("labels.fleet.squadrons.flights.roles.pilot") }}
+          </option>
+        </select>
       </form>
     </template>
 
@@ -256,7 +295,37 @@ const removeSeat = async (seat: MissionSlot) => {
 }
 
 .ship-seats__title {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   font-weight: 600;
+}
+
+.ship-seats__role {
+  padding: 1px 6px;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 4px;
+  color: var(--color-text-dim);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ship-seats__new {
+  display: flex;
+  gap: 8px;
+}
+
+.ship-seats__new-role {
+  padding: 4px 6px;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: var(--radius-control-bare);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
 }
 
 .ship-seats__who {
@@ -274,7 +343,8 @@ const removeSeat = async (seat: MissionSlot) => {
 }
 
 .ship-seats__new-input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 6px 8px;
   border: 1px dashed var(--color-edge-soft);
   border-radius: var(--radius-control-bare);

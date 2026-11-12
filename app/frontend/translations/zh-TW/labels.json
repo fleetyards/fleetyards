@@ -1075,7 +1075,13 @@
             "noAlternates": "無替補",
             "shipsSummary": "%{ships} 艘艦船 · 已安排 %{filled}/%{seats} 個席位",
             "lead": "小隊長",
-            "openSeats": "%{count} 個空缺"
+            "openSeats": "%{count} 個空缺",
+            "role": "職責",
+            "roles": {
+              "crew": "船員",
+              "captain": "艦長",
+              "pilot": "駕駛員"
+            }
           },
           "askableShips": "可請求的艦船",
           "shipRequestFrom": "%{username} 請求你的 %{ship}",

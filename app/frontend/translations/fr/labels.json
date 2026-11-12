@@ -1075,7 +1075,13 @@
             "noAlternates": "Aucun remplaçant",
             "shipsSummary": "%{ships} vaisseaux · %{filled} postes pourvus sur %{seats}",
             "lead": "Chef de patrouille",
-            "openSeats": "%{count} libres"
+            "openSeats": "%{count} libres",
+            "role": "Rôle",
+            "roles": {
+              "crew": "Équipage",
+              "captain": "Capitaine",
+              "pilot": "Pilote"
+            }
           },
           "askableShips": "Vaisseaux à demander",
           "shipRequestFrom": "%{username} demande votre %{ship}",

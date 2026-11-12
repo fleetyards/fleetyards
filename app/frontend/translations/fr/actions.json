@@ -315,7 +315,8 @@
             "removeSeat": "Retirer le poste",
             "manageSeats": "Postes",
             "fillSeat": "Pourvoir",
-            "changeMembers": "Modifier"
+            "changeMembers": "Modifier",
+            "moreSeats": "+%{count} de plus"
           },
           "askForShip": "Demander un vaisseau",
           "withdrawShipRequest": "Retirer"

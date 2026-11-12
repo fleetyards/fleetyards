@@ -9,6 +9,18 @@ class MissionShip < ApplicationRecord
 
   delegate :mission, to: :mission_team
 
+  PILOT_TITLE = "Pilot"
+
+  # A flight's ship always has someone to fly it. Committed rather than created,
+  # so the seats taken from the model's positions are there to be asked first.
+  after_create_commit :ensure_pilot_seat, if: -> { mission_team&.flight.present? }
+
+  def ensure_pilot_seat
+    return if mission_slots.where(role: "pilot").exists?
+
+    mission_slots.create!(role: "pilot", title: PILOT_TITLE, position: -1)
+  end
+
   default_scope -> { order(position: :asc) }
 
   FILTER_ATTRIBUTES = %i[classification foci min_size max_size min_crew min_cargo].freeze

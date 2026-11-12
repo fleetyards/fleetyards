@@ -1075,7 +1075,13 @@
             "noAlternates": "Kein Ersatz",
             "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt",
             "lead": "Schwarmführer",
-            "openSeats": "%{count} frei"
+            "openSeats": "%{count} frei",
+            "role": "Rolle",
+            "roles": {
+              "crew": "Crew",
+              "captain": "Kapitän",
+              "pilot": "Pilot"
+            }
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

@@ -603,6 +603,7 @@ it:
               already_requested: "è già stata richiesta"
         mission_slot:
           lead_required: "Una pattuglia mantiene sempre il suo slot di capo."
+          pilot_required: "Una nave di una pattuglia mantiene sempre uno slot da pilota."
         mission_slot_candidate:
           attributes:
             fleet_squadron_membership:

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FleetEventSlot < ApplicationRecord
+  include SlotRole
+
   belongs_to :slottable, polymorphic: true, touch: true
   belongs_to :model_position, optional: true
   belongs_to :source_slot, class_name: "MissionSlot", optional: true
@@ -14,9 +16,6 @@ class FleetEventSlot < ApplicationRecord
   validates :signup_approval,
     inclusion: {in: FleetEvent::SIGNUP_APPROVALS},
     allow_nil: true
-
-  # A team's lead seat heads its list wherever the rest are sorted.
-  default_scope -> { order(lead: :desc, position: :asc) }
 
   def fleet_event
     case slottable
