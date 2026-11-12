@@ -29,12 +29,14 @@ import {
   type FilterOption,
   type Model,
   models as fetchModels,
+  fleetVehicles as fetchFleetVehicles,
   modelPositions as fetchModelPositions,
   useModelClassificationsFilters,
   useModelFocusFilters,
 } from "@/services/fyApi";
 import {
   type LineupScope,
+  isFlightScope,
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
 
@@ -150,6 +152,27 @@ const fetchModelOptions = (params: BaseSelectParams<FilterOption>) => {
   if (params.search) q.nameCont = params.search;
   if (params.missing) q.idIn = [params.missing as string];
   return fetchModels({
+    page: String(params.page || 1),
+    q: q as never,
+  });
+};
+
+// A flight is flown with the squadron's own ships, so a flight's spot that
+// names one ship picks from the models its members give the squadron.
+const squadronShipsOnly = computed(
+  () => !!props.scope && isFlightScope(props.scope),
+);
+
+const fetchSquadronModelOptions = (params: BaseSelectParams<FilterOption>) => {
+  // The ship already chosen is named from the catalogue, whoever holds it now.
+  if (params.missing) return fetchModelOptions(params);
+
+  const q: Record<string, unknown> = {
+    squadronSlugIn: [props.scope?.squadronSlug],
+  };
+  if (params.search) q.modelNameCont = params.search;
+  return fetchFleetVehicles(props.fleet.slug, {
+    grouped: true,
     page: String(params.page || 1),
     q: q as never,
   });
@@ -350,13 +373,18 @@ const onSubmit = handleSubmit(async (values) => {
       <template v-else-if="mode === 'specific'">
         <BaseSelect
           v-model="selectedModelId"
-          :query-fn="fetchModelOptions"
+          :query-fn="
+            squadronShipsOnly ? fetchSquadronModelOptions : fetchModelOptions
+          "
           :query-response-formatter="formatModels"
           :label="t('labels.fleets.missions.ship')"
           name="modelId"
           :searchable="true"
           :paginated="true"
         />
+        <p v-if="squadronShipsOnly" class="text-muted small">
+          {{ t("labels.fleet.squadrons.flights.squadronShipsHint") }}
+        </p>
 
         <div v-if="!isEdit && positions.length" class="seat-checklist">
           <strong class="seat-checklist-label">

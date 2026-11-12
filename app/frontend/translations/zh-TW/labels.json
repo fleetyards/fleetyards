@@ -1081,7 +1081,8 @@
               "crew": "船員",
               "captain": "艦長",
               "pilot": "駕駛員"
-            }
+            },
+            "squadronShipsHint": "僅列出成員提供給本中隊的艦船。"
           },
           "askableShips": "可請求的艦船",
           "shipRequestFrom": "%{username} 請求你的 %{ship}",

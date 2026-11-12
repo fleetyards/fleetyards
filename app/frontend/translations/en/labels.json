@@ -1081,7 +1081,8 @@
               "crew": "Crew",
               "captain": "Captain",
               "pilot": "Pilot"
-            }
+            },
+            "squadronShipsHint": "Only ships the squadron's members give it are listed."
           },
           "askableShips": "Ships to ask for",
           "shipRequestFrom": "%{username} asks for your %{ship}",

@@ -1081,7 +1081,8 @@
               "crew": "Tripulación",
               "captain": "Capitán",
               "pilot": "Piloto"
-            }
+            },
+            "squadronShipsHint": "Solo se muestran las naves que los miembros ceden al escuadrón."
           },
           "askableShips": "Naves que solicitar",
           "shipRequestFrom": "%{username} te pide tu %{ship}",
