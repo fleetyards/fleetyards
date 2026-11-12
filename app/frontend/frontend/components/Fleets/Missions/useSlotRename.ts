@@ -12,7 +12,7 @@ export const useSlotRename = (
 
   const renamingId = ref<string | null>(null);
   const renameValue = ref("");
-  let saving = false;
+  const saving = new Set<string>();
   let input: HTMLInputElement | null = null;
 
   // A function ref, as a string ref inside a v-for collects an array. Only a
@@ -40,7 +40,7 @@ export const useSlotRename = (
   // again. The input stays open until the request settles, keeping what was
   // typed when it fails.
   const saveRename = async (slot: MissionSlot) => {
-    if (renamingId.value !== slot.id || saving) return;
+    if (renamingId.value !== slot.id || saving.has(slot.id)) return;
 
     const title = renameValue.value.trim();
     if (!title || title === slot.title) {
@@ -48,15 +48,15 @@ export const useSlotRename = (
       return;
     }
 
-    saving = true;
+    saving.add(slot.id);
     try {
       await lineup.updateSlot(slot.id, { title });
-      cancelRename();
+      if (renamingId.value === slot.id) cancelRename();
       onRenamed();
     } catch {
       displayAlert({ text: t("messages.fleets.missionSlot.update.failure") });
     } finally {
-      saving = false;
+      saving.delete(slot.id);
     }
   };
 

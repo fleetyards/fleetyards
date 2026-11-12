@@ -150,6 +150,39 @@ describe("FleetSquadronFlightWideSeats", () => {
       expect(input.exists()).toBe(true);
     });
 
+    it("leaves the next rename open when an earlier save returns", async () => {
+      let finish = () => {};
+      api.updateFleetSquadronFlightSlot.mockReturnValue(
+        new Promise<void>((resolve) => (finish = resolve)),
+      );
+      const wrapper = await mount([
+        seat({ id: "comms" }),
+        seat({ id: "medic", title: "Medic" }),
+      ]);
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-comms"]')
+        .trigger("click");
+      const comms = wrapper.find('[data-test="flight-wide-seat-edit-comms"]');
+      await comms.setValue("Scout");
+      await comms.trigger("keydown", { key: "Enter" });
+      await comms.trigger("blur");
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-medic"]')
+        .trigger("click");
+      await wrapper
+        .find('[data-test="flight-wide-seat-edit-medic"]')
+        .setValue("Doc");
+
+      finish();
+      await flushPromises();
+
+      const medic = wrapper.find('[data-test="flight-wide-seat-edit-medic"]');
+      expect(medic.exists()).toBe(true);
+      expect((medic.element as HTMLInputElement).value).toBe("Doc");
+    });
+
     it("does not offer to rename the lead seat", async () => {
       const wrapper = await mount([
         seat({ id: "lead", title: "Flight lead", lead: true }),
