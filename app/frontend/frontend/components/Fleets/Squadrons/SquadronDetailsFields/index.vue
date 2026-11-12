@@ -43,7 +43,10 @@ const { t } = useI18n();
         :label="t('labels.fleet.squadrons.name')"
       />
     </div>
-    <div class="col-12 col-md-6">
+    <div
+      class="col-12"
+      :class="props.flightsAvailable ? 'col-md-3' : 'col-md-6'"
+    >
       <FormToggle
         v-model="props.fields.team"
         v-bind="props.fieldProps.team"
@@ -53,16 +56,14 @@ const { t } = useI18n();
         align-with-fields
       />
     </div>
-  </div>
-
-  <div v-if="props.flightsAvailable" class="row">
-    <div class="col-12 col-md-6">
+    <div v-if="props.flightsAvailable" class="col-12 col-md-3">
       <FormToggle
         v-model="props.fields.flightsEnabled"
         v-bind="props.fieldProps.flightsEnabled"
         name="flightsEnabled"
         :label="t('labels.fleet.squadrons.flightsEnabled')"
         :info="t('labels.fleet.squadrons.flightsEnabledHint')"
+        align-with-fields
       />
     </div>
   </div>
