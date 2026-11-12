@@ -7,49 +7,44 @@ export default {
 <script lang="ts" setup>
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import ShipTile from "@/frontend/components/Home/Dashboard/ShipTile/index.vue";
-import { ModelSortEnum, useModels } from "@/services/fyApi";
+import { useScDataPatchSummary } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFullRows } from "@/frontend/components/Home/Dashboard/useFullRows";
 
 const { t } = useI18n();
 
-// One full row at the widest the panel gets.
-const FETCHED = 5;
+// The ships the current live patch added to the game, the same list the
+// landing page's patch section names.
+const { data, isLoading, isFetching, isLoadingError } = useScDataPatchSummary();
 
-// By when the ship joined the database. `/models/latest` sorts by the store
-// page's last update, which brings back long-known ships whenever RSI edits
-// their page.
-const { data, isLoading, isFetching, isLoadingError } = useModels({
-  perPage: String(FETCHED),
-  q: { sorts: ModelSortEnum.CREATED_AT_DESC },
-});
-
-const models = computed(() => data.value?.items || []);
+const ships = computed(() => data.value?.newShips || []);
 
 const grid = useTemplateRef<HTMLElement>("grid");
 
-const shown = useFullRows(grid, models, 1);
+const shown = useFullRows(grid, ships, 1);
 </script>
 
 <template>
+  <!-- A patch that added no ships has nothing to say here. -->
   <DashboardPanel
+    v-if="isLoading || ships.length"
     :title="t('home.dashboard.newShips.title')"
     :pending="isLoading"
     :fetching="isFetching"
     :failed="isLoadingError"
-    :empty="!models.length"
-    :more="{ name: 'ships' }"
+    :empty="!ships.length"
+    :more="{ name: 'stats' }"
     :more-label="t('home.dashboard.newShips.all')"
     data-test="home-new-ships"
   >
     <div ref="grid" class="home-new-ships">
       <ShipTile
-        v-for="model in shown"
-        :key="model.id"
-        :name="model.name"
-        :sub="model.manufacturer?.name"
-        :image="model.media.storeImage"
-        :to="{ name: 'ship', params: { slug: model.slug } }"
+        v-for="ship in shown"
+        :key="ship.id"
+        :name="ship.name"
+        :sub="ship.manufacturerName"
+        :image="ship.storeImage"
+        :to="{ name: 'ship', params: { slug: ship.slug } }"
       />
     </div>
   </DashboardPanel>

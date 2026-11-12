@@ -410,8 +410,8 @@
           }
         },
         "newShips": {
-          "title": "Neu in der Datenbank",
-          "all": "Alle Schiffe"
+          "title": "Neu in diesem Patch",
+          "all": "Was sich geändert hat"
         },
         "tiles": {
           "hangar": "Schiffe im Hangar",

@@ -410,8 +410,8 @@
           }
         },
         "newShips": {
-          "title": "Nuove nel database",
-          "all": "Tutte le navi"
+          "title": "Novità di questa patch",
+          "all": "Cosa è cambiato"
         },
         "tiles": {
           "hangar": "Navi nell'hangar",

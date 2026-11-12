@@ -410,8 +410,8 @@
           }
         },
         "newShips": {
-          "title": "Nouveau dans la base",
-          "all": "Tous les vaisseaux"
+          "title": "Nouveau dans ce patch",
+          "all": "Ce qui a changé"
         },
         "tiles": {
           "hangar": "Vaisseaux dans ton hangar",

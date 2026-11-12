@@ -410,8 +410,8 @@
           }
         },
         "newShips": {
-          "title": "Nuevo en la base de datos",
-          "all": "Todas las naves"
+          "title": "Nuevo en este parche",
+          "all": "Qué cambió"
         },
         "tiles": {
           "hangar": "Naves en tu hangar",
