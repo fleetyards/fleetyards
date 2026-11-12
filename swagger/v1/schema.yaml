@@ -31663,6 +31663,7 @@ components:
       - fleet_contracts
       - fleet_logistics
       - fleet_mission_builder
+      - fleet_squadron_flights
       - fleet_subscriptions
       - fleet_tours
       - fleetchart_layouts
@@ -31687,6 +31688,7 @@ components:
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
+      - FLEET_SQUADRON_FLIGHTS
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
       - FLEETCHART_LAYOUTS

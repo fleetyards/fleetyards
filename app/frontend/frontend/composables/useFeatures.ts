@@ -50,11 +50,20 @@ export const useFeatures = () => {
     fleet: Pick<Fleet, "squadronsEnabled"> | undefined | null,
   ) => !!fleet?.squadronsEnabled;
 
+  // Whether the fleet's squadrons can have flights at all; each squadron then
+  // switches them on for itself.
+  const isFleetSquadronFlightsEnabled = (
+    fleet: Pick<Fleet, "features" | "squadronsEnabled"> | undefined | null,
+  ) =>
+    isFleetSquadronsEnabled(fleet) &&
+    isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_SQUADRON_FLIGHTS);
+
   return {
     features,
     isFetched,
     isFeatureEnabled,
     isFleetFeatureEnabled,
     isFleetSquadronsEnabled,
+    isFleetSquadronFlightsEnabled,
   };
 };

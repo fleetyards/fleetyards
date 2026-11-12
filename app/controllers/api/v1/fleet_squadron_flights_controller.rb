@@ -15,6 +15,7 @@ module Api
 
       before_action :set_fleet
       before_action :check_fleet_squadrons_feature
+      before_action :check_fleet_squadron_flights_feature
       before_action :set_fleet_squadron
       before_action :check_squadron_flights_enabled
       before_action :set_flight, only: %i[show update destroy]

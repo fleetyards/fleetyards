@@ -39,9 +39,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const { isFleetSquadronsEnabled } = useFeatures();
+const { isFleetSquadronFlightsEnabled } = useFeatures();
 
-const enabled = computed(() => isFleetSquadronsEnabled(props.fleet));
+const enabled = computed(() => isFleetSquadronFlightsEnabled(props.fleet));
 
 // The same list the squadron picker beside this one loads, so it is cached.
 const { data: squadrons } = useFleetSquadrons(
@@ -65,7 +65,9 @@ const { data: flights } = useFleetSquadronFlights(
   { query: { enabled: computed(() => enabled.value && !!squadronSlug.value) } },
 );
 
-const items = computed(() => (squadronSlug.value ? (flights.value ?? []) : []));
+const items = computed(() =>
+  enabled.value && squadronSlug.value ? (flights.value ?? []) : [],
+);
 
 const options = computed<FilterOption[]>(() =>
   items.value.map((flight) => ({ value: flight.id, label: flight.name })),

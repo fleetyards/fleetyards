@@ -25,6 +25,16 @@ module FleetSquadronScoped
   end
 
   # Whether the fleet's admins switched squadrons on.
+  private def fleet_squadron_flights_feature?
+    feature_enabled?("fleet_squadron_flights", @fleet)
+  end
+
+  private def check_fleet_squadron_flights_feature
+    return if fleet_squadron_flights_feature?
+
+    render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
+  end
+
   private def check_fleet_squadrons_feature
     return if @fleet.squadrons_enabled?
 

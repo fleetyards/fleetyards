@@ -13,6 +13,10 @@ vi.mock("@/services/fyApi", () => ({
   useUpdateFleetSquadron: () => ({ mutateAsync: vi.fn() }),
 }));
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFleetSquadronFlightsEnabled: () => false }),
+}));
+
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key, tExists: () => false }),
 }));

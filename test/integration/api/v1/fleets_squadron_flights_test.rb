@@ -136,6 +136,7 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
+    Flipper.enable("fleet_squadron_flights")
     @officer = create(:user)
     @member = create(:user)
     @fleet = create(:fleet, :with_squadrons, officers: [@officer], members: [@member])
@@ -270,6 +271,25 @@ class Api::V1::FleetsSquadronFlightsTest < ActionDispatch::IntegrationTest
     sign_in @member
 
     get "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights", as: :json
+
+    assert_response :forbidden
+  end
+
+  test "GET is refused while flights are not rolled out to the fleet" do
+    Flipper.disable("fleet_squadron_flights")
+    sign_in @member
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights", as: :json
+
+    assert_response :forbidden
+  end
+
+  test "a flight's lineup is refused while flights are not rolled out to the fleet" do
+    flight = create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    Flipper.disable("fleet_squadron_flights")
+    sign_in @officer
+
+    put "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/flights/#{flight.id}/ships/sort", params: {sorting: []}, as: :json
 
     assert_response :forbidden
   end

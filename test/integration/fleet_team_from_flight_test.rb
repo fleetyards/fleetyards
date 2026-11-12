@@ -5,6 +5,7 @@ require "test_helper"
 class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_mission_builder")
+    Flipper.enable("fleet_squadron_flights")
     @admin = create(:user)
     @pilot = create(:user)
     @wingman = create(:user)
@@ -84,6 +85,25 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
     assert_empty event.fleet_event_teams
   end
+  test "refuses a flight while flights are not rolled out to the fleet" do
+    event = create(:fleet_event, fleet: @fleet, created_by: @admin)
+    Flipper.disable("fleet_squadron_flights")
+
+    post "/api/v1/fleets/#{@fleet.slug}/events/#{event.slug}/teams", params: {title: "Strike", sourceFlightId: @flight.id}, as: :json
+
+    assert_response :forbidden
+    assert_empty event.fleet_event_teams
+  end
+
+  test "builds a team by hand while flights are not rolled out to the fleet" do
+    event = create(:fleet_event, fleet: @fleet, created_by: @admin)
+    Flipper.disable("fleet_squadron_flights")
+
+    post "/api/v1/fleets/#{@fleet.slug}/events/#{event.slug}/teams", params: {title: "Strike"}, as: :json
+
+    assert_response :created
+  end
+
   test "refuses a flight whose squadron switched flights off" do
     event = create(:fleet_event, fleet: @fleet, created_by: @admin)
     @squadron.update!(flights_enabled: false)

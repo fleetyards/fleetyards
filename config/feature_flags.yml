@@ -34,6 +34,12 @@ fleet_mission_builder:
 #
 # Off everywhere until the transition is announced, so the whole entitlement
 # half can land in production without anybody meeting it early.
+# A squadron's flights -- fixed lineups of members and their ships that fill
+# event and template teams and invite whoever is listed. A squadron still
+# switches them on for itself; this decides whether the switch is there.
+fleet_squadron_flights:
+  description: "Squadron flights — fixed lineups that prefill event and template teams and invite their members"
+
 fleet_subscriptions:
   description: "Fleet subscriptions — the supporter-facing surfaces of the premium rollout"
 

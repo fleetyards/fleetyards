@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
 
 const SQUADRON_READ_ACCESS = [
@@ -60,6 +61,8 @@ export const squadronDetailRoutes: RouteRecordRaw[] = [
       title: "fleets.squadrons.flights",
       needsAuthentication: true,
       access: SQUADRON_READ_ACCESS,
+      feature: FeatureFlagName.FLEET_SQUADRON_FLIGHTS,
+      featureScope: "fleet",
       customTitle: true,
     },
   },
@@ -131,6 +134,8 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.flight",
       needsAuthentication: true,
       access: SQUADRON_READ_ACCESS,
+      feature: FeatureFlagName.FLEET_SQUADRON_FLIGHTS,
+      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },

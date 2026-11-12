@@ -59,6 +59,7 @@ const {
           :field-props="fieldProps"
           :validation-schema="validationSchema"
           :squadron="props.squadron"
+          :fleet="props.fleet"
         />
 
         <FormActions

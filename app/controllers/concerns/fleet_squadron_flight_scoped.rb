@@ -16,6 +16,7 @@ module FleetSquadronFlightScoped
   private def load_flight!
     @fleet ||= authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
     authorize! @fleet, to: :show?
+    return check_fleet_squadron_flights_feature unless fleet_squadron_flights_feature?
 
     @fleet_squadron = readable_fleet_squadrons.find_by!(slug: params[:fleet_squadron_slug])
     return check_squadron_flights_enabled unless @fleet_squadron.flights_enabled?

@@ -21,9 +21,10 @@ type Props = {
   fields: SquadronFormFields;
   fieldProps: SquadronFormFieldProps;
   validationSchema: Record<string, string>;
+  flightsAvailable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { flightsAvailable: false });
 
 const { t } = useI18n();
 </script>
@@ -54,7 +55,7 @@ const { t } = useI18n();
     </div>
   </div>
 
-  <div class="row">
+  <div v-if="props.flightsAvailable" class="row">
     <div class="col-12 col-md-6">
       <FormToggle
         v-model="props.fields.flightsEnabled"

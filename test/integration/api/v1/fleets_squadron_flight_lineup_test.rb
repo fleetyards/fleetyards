@@ -202,6 +202,7 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
   end
 
   setup do
+    Flipper.enable("fleet_squadron_flights")
     @officer = create(:user)
     @pilot = create(:user)
     @wingman = create(:user)
