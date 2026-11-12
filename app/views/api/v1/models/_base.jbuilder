@@ -249,6 +249,13 @@ json.storage_containers model.storage_containers || []
 json.weapon_racks model.weapon_racks || []
 json.refuel_boom model.refuel_boom
 json.landing_services model.landing_services || []
+json.servicing_areas(model.servicing_areas || []) do |area|
+  json.key area["key"]
+  json.name model.servicing_area_names[area["key"]].presence
+  json.width area["width"].to_f
+  json.length area["length"].to_f
+  json.height area["height"].to_f
+end
 
 json.on_sale model.on_sale
 json.player_ownable model.player_ownable

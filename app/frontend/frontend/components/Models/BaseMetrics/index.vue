@@ -9,7 +9,8 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { type Model, StorageContainerKindEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { landingServicesText } from "@/shared/utils/LandingServices";
+import LandingServiceIcons from "@/shared/components/LandingServiceIcons/index.vue";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 import {
   ModelStateEnum,
   modelStateMetrics,
@@ -66,7 +67,13 @@ const additionalStorage = computed(() =>
     .filter((storage) => storage.capacity > 0),
 );
 
-const landingServices = computed(() => landingServicesText(props.model, t));
+const { iconsFor } = useLandingServiceIcons();
+
+const landingServices = computed(() => iconsFor(props.model.landingServices));
+
+// Where on the ship the services apply. A ship landed anywhere else on it gets
+// none of them.
+const servicingAreas = computed(() => props.model.servicingAreas ?? []);
 
 const hasPrice = computed(
   () => !!props.model.price || !!props.model.pledgePrice,
@@ -196,16 +203,30 @@ const openAvailability = () => {
       </div>
     </div>
 
-    <template v-if="landingServices">
+    <template v-if="landingServices.length">
       <div class="metrics-card__section-label">
         {{ t("model.landingServices") }}
       </div>
-      <div class="metrics-card__rows" data-test="model-landing-services">
-        <div class="metrics-card__row">
+      <div class="base-panel__services" data-test="model-landing-services">
+        <LandingServiceIcons :services="landingServices" with-labels />
+      </div>
+      <div
+        v-if="servicingAreas.length"
+        class="metrics-card__rows"
+        data-test="model-servicing-areas"
+      >
+        <div
+          v-for="(area, index) in servicingAreas"
+          :key="area.key"
+          class="metrics-card__row"
+        >
           <span class="metrics-card__row__label">
-            {{ t("model.landingServicesWhere") }}
+            {{ area.name || t("model.servicingArea", { index: index + 1 }) }}
           </span>
-          <span class="metrics-card__row__value">{{ landingServices }}</span>
+          <span class="metrics-card__row__value">
+            {{ toNumber(area.length) }} × {{ toNumber(area.width) }} ×
+            {{ toNumber(area.height) }} m
+          </span>
         </div>
       </div>
     </template>
@@ -263,6 +284,11 @@ const openAvailability = () => {
 @import "@/shared/components/metricsCard";
 
 .base-panel {
+  &__services {
+    margin-bottom: 12px;
+    --landing-service-icon-size: 24px;
+  }
+
   // Three dimensions, then mass and crew, then cargo and the ship's own
   // inventory: six tracks so the first row splits in three and the others in
   // two. Inventory is the one tile a ship may lack, and cargo then takes its row.

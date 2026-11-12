@@ -12,7 +12,7 @@
         },
         "focus": "Fokus",
         "landingServices": "Landedienste",
-        "landingServicesWhere": "Hangar & Landeplätze",
+        "servicingArea": "Servicebereich %{index}",
         "landingService": {
           "refuel": "Betanken",
           "hydrogenRefuel": "Wasserstoff tanken",

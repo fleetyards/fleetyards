@@ -20,14 +20,12 @@ import FleetMemberSelect from "@/frontend/components/base/FleetMemberSelect/inde
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 
 const { t } = useI18n();
-const {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-  landingServiceOptions,
-} = useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const { options: landingServiceOptions } = useLandingServiceIcons();
 
 const route = useRoute();
 
@@ -161,6 +159,7 @@ const hasGroupFilters = (keys: string[]) =>
       <BaseSelect
         v-model="form.withLandingServices"
         :options="landingServiceOptions"
+        unsorted
         :label="t('labels.filters.models.withLandingServices')"
         name="landing-services"
         :multiple="true"

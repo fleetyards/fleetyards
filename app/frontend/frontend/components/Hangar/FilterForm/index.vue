@@ -22,6 +22,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { type HangarQuery } from "@/services/fyApi";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
@@ -104,12 +105,9 @@ watch(
   { deep: true },
 );
 
-const {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-  landingServiceOptions,
-} = useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const { options: landingServiceOptions } = useLandingServiceIcons();
 const hasGroupFilters = (keys: string[]) =>
   hasActiveFilters(filters.value, keys);
 </script>
@@ -165,6 +163,7 @@ const hasGroupFilters = (keys: string[]) =>
       <BaseSelect
         v-model="form.withLandingServices"
         :options="landingServiceOptions"
+        unsorted
         :label="t('labels.filters.models.withLandingServices')"
         name="landing-services"
         :multiple="true"

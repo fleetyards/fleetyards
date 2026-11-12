@@ -395,6 +395,41 @@ module ScData
         assert_nil model.reload.read_attribute(:landing_services)
       end
 
+      test "#load_model keeps each servicing area's size, keyed by its container and name" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Liberator Test")
+        area = {
+          "name" => "GenericShape_vehicle_bay",
+          "container" => "objectcontainers/ships/anvl/liberator/interior.socpak",
+          "shapes" => [{"type" => "Box", "boxMin" => [-7.5, -22.5, -3.0], "boxMax" => [7.5, 22.5, 3.0]}]
+        }
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "servicing_areas" => [area]})
+
+        build = loader.load_model(model)
+
+        expected = [{
+          "key" => "objectcontainers/ships/anvl/liberator/interior.socpak#GenericShape_vehicle_bay",
+          "name" => "GenericShape_vehicle_bay", "width" => 15.0, "length" => 45.0, "height" => 6.0
+        }]
+        assert_equal expected, build.servicing_areas
+        assert_equal expected, model.reload.servicing_areas
+      end
+
+      test "#load_landing_services attaches each service's icon once, and skips a service it does not know" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        icon = Rails.root.join("test/fixtures/files/vector.svg").to_s
+        loader.stubs(:load_item).with("landing_services").returns({"rearm" => "ui/rearm.svg", "teleport" => "ui/teleport.svg"})
+        loader.stubs(:parsed_icon).returns(icon)
+
+        2.times { loader.send(:load_landing_services) }
+
+        assert_equal ["rearm"], LandingService.pluck(:key)
+        assert LandingService.sole.icon.attached?
+        assert_equal 1, ActiveStorage::Blob.where(filename: "vector.svg").count
+      end
+
       test "storage container kinds are the ones a build knows" do
         assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end

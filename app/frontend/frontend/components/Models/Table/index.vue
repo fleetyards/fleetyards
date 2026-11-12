@@ -12,7 +12,8 @@ import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
-import { landingServicesText } from "@/shared/utils/LandingServices";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
+import LandingServiceIcons from "@/shared/components/LandingServiceIcons/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
@@ -39,6 +40,8 @@ type Props = {
 defineProps<Props>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const { iconsFor } = useLandingServiceIcons();
 
 const { firepower, sustainedRange } = useVehicleFirepower();
 
@@ -233,7 +236,7 @@ const angledImage = (record: Model) => {
         {{ fociText(record, t("labels.model.stealth")) }}
       </template>
       <template #col-landingServices="{ record }">
-        {{ landingServicesText(record, t) }}
+        <LandingServiceIcons :services="iconsFor(record.landingServices)" />
       </template>
       <template #col-productionStatus="{ record }">
         {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}

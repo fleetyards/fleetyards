@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2140,6 +2140,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_140000) do
     t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
+  create_table "landing_services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_landing_services_on_key", unique: true
+  end
+
   create_table "loading_screens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "environment", null: false
     t.string "version", null: false
@@ -2452,6 +2459,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_140000) do
     t.integer "lockers"
     t.jsonb "weapon_regen_modifier"
     t.jsonb "landing_services"
+    t.jsonb "servicing_areas"
     t.index ["environment", "version"], name: "index_model_builds_on_environment_and_version"
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
   end
@@ -2726,6 +2734,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_140000) do
     t.uuid "ccu_target_source_ids", array: true
     t.uuid "command_module_id"
     t.jsonb "landing_services"
+    t.jsonb "servicing_areas"
+    t.jsonb "servicing_area_names", default: {}, null: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["command_module_id"], name: "index_models_on_command_module_id"

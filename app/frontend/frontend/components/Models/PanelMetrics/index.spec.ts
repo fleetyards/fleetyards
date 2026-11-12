@@ -9,6 +9,17 @@ vi.mock("@/shared/composables/useI18n", () => ({
   }),
 }));
 
+vi.mock("@/frontend/composables/useLandingServiceIcons", () => ({
+  useLandingServiceIcons: () => ({
+    iconsFor: (services?: string[] | null) =>
+      (services ?? []).map((key) => ({
+        key,
+        label: `label.${key}`,
+        url: `/icons/${key}.svg`,
+      })),
+  }),
+}));
+
 import PanelMetrics from "./index.vue";
 
 /*
@@ -130,23 +141,20 @@ describe("PanelMetrics", () => {
     );
   });
 
-  it("names the services the ship gives a ship landed on it", () => {
+  it("shows the services a ship gives a ship landed on it as their icons", () => {
     const wrapper = mount(PanelMetrics, {
       props: {
-        model: model({
-          landingServices: [
-            "repair",
-            "rearm",
-            "quantum_refuel",
-            "hydrogen_refuel",
-          ],
-        }),
+        model: model({ landingServices: ["repair", "rearm"] }),
       },
+      global: { directives: { Tooltip: {} } },
     });
 
-    expect(valueFor(wrapper, "model.landingServices")).toBe(
-      "model.landingService.refuel, model.landingService.rearm, model.landingService.repair",
-    );
+    const icons = wrapper.findAll(".landing-service-icons__icon");
+    expect(icons.map((icon) => icon.attributes("alt"))).toEqual([
+      "label.repair",
+      "label.rearm",
+    ]);
+    expect(labels(wrapper)).toContain("model.landingServices");
   });
 
   it("leaves out the services row for a ship that services none", () => {

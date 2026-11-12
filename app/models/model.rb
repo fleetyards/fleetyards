@@ -30,7 +30,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom storage_containers sales_page_url
-    beds weapon_racks lockers landing_services
+    beds weapon_racks lockers landing_services servicing_areas servicing_area_names
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -361,6 +361,17 @@ class Model < ApplicationRecord
   # live build without services must not show the ones a PTU load wrote there.
   def landing_services
     facts ? facts.landing_services : super
+  end
+
+  # An admin's name for an area a blank field leaves out, so the page falls
+  # back to the area's size rather than showing an empty label.
+  before_validation do
+    self.servicing_area_names = (servicing_area_names || {}).transform_values { |name| name.to_s.strip }.compact_blank
+  end
+
+  # Where on the ship those services apply, final the same way.
+  def servicing_areas
+    facts ? facts.servicing_areas : super
   end
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true

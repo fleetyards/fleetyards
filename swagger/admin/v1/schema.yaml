@@ -20017,6 +20017,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LandingServiceEnum"
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingArea"
         onSale:
           type: boolean
         playerOwnable:
@@ -20409,6 +20413,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LandingServiceEnum"
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingArea"
         onSale:
           type: boolean
         playerOwnable:
@@ -22332,6 +22340,10 @@ components:
           type:
           - string
           - 'null'
+        servicingAreaNames:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingAreaNameInput"
         storeImage:
           type:
           - string
@@ -23685,6 +23697,41 @@ components:
       - meta
       - items
       title: ScDataUnlistedModels
+    ServicingArea:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        width:
+          type: number
+        length:
+          type: number
+        height:
+          type: number
+      additionalProperties: false
+      required:
+      - key
+      - width
+      - length
+      - height
+      title: ServicingArea
+    ServicingAreaNameInput:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - key
+      title: ServicingAreaNameInput
     SessionInput:
       type: object
       properties:

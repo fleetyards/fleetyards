@@ -1,5 +1,33 @@
 import type { LandingServiceEnum } from "@/services/fyApi";
 
+// Both fuels, rearm and repair, in the order the services read: fuel first.
+export const LANDING_SERVICE_ORDER: LandingServiceEnum[] = [
+  "hydrogen_refuel",
+  "quantum_refuel",
+  "rearm",
+  "repair",
+];
+
+const LABEL_KEYS: Record<LandingServiceEnum, string> = {
+  hydrogen_refuel: "model.landingService.hydrogenRefuel",
+  quantum_refuel: "model.landingService.quantumRefuel",
+  rearm: "model.landingService.rearm",
+  repair: "model.landingService.repair",
+};
+
+export const landingServiceLabel = (
+  service: LandingServiceEnum,
+  t: (key: string) => string,
+) => t(LABEL_KEYS[service]);
+
+// A service as an icon shows it: what it is called, and the game's icon for it
+// when there is one.
+export interface LandingServiceIcon {
+  key: LandingServiceEnum;
+  label: string;
+  url?: string;
+}
+
 type LandingServicesSource = {
   landingServices?: LandingServiceEnum[] | null;
 };

@@ -12,6 +12,7 @@ import {
   type MetricRow,
 } from "@/shared/composables/useModelMetricRows";
 import type { Model } from "@/services/fyApi";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 
 type Props = {
   model: Model;
@@ -28,6 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t, toNumber, toUEC } = useI18n();
 
+const { iconsFor } = useLandingServiceIcons();
+
 const { groups: modelGroups } = useModelMetricRows(
   () => props.model,
   {
@@ -36,6 +39,7 @@ const { groups: modelGroups } = useModelMetricRows(
     toUEC,
   },
   () => props.cargoLabel,
+  (model) => iconsFor(model.landingServices),
 );
 
 const groups = computed(() => [{ rows: props.leadRows }, ...modelGroups.value]);

@@ -174,6 +174,19 @@ class ModelTest < ActiveSupport::TestCase
     assert_nil model.reload.landing_services
   end
 
+  test "a model whose build has no servicing areas shows none from the column" do
+    model = create(:model, servicing_areas: [{"key" => "a#b", "width" => 1, "length" => 2, "height" => 3}])
+    create(:model_build, model:)
+
+    assert_nil model.reload.servicing_areas
+  end
+
+  test "a blank name for a servicing area is left out" do
+    model = create(:model, servicing_area_names: {"a#b" => "  Vehicle bay ", "a#c" => " "})
+
+    assert_equal({"a#b" => "Vehicle bay"}, model.servicing_area_names)
+  end
+
   # A hangar entry pointing at a ship the export dropped still has to resolve, so
   # the last build of this environment answers rather than nothing.
   test "a model the current build dropped reads the last build that described it" do

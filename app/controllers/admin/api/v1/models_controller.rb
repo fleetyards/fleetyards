@@ -219,8 +219,17 @@ module Admin
             :stealth,
             *Model::DETAIL_ATTACHMENT_NAMES, *Model::LITE_HOLO_ATTACHMENT_NAMES,
             *Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES,
-            foci: []
-          )
+            foci: [],
+            servicing_area_names: [:key, :name]
+          ).tap do |permitted|
+            # Merged by key rather than replaced: the form lists the build it
+            # was opened on, and a name for an area only another build has
+            # must survive it. A blank name removes the area's.
+            if permitted.key?(:servicing_area_names)
+              submitted = Array(permitted[:servicing_area_names]).to_h { |area| [area[:key].to_s, area[:name].to_s] }
+              permitted[:servicing_area_names] = (@model&.servicing_area_names || {}).merge(submitted)
+            end
+          end
         end
       end
     end

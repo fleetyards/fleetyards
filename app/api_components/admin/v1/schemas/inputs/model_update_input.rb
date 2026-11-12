@@ -77,6 +77,7 @@ module Admin
               quantumFuelTanks: {type: [:string, :null]},
               externalFuelTanks: {type: [:string, :null]},
               refuelBoom: {type: [:string, :null]},
+              servicingAreaNames: {type: :array, items: ::Admin::V1::Schemas::Inputs::ServicingAreaNameInput},
               storeImage: {type: [:string, :null]},
               fleetchartImage: {type: [:string, :null]},
               extendedHolo: {type: [:string, :null]},

@@ -18,6 +18,7 @@ import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 import { FleetVehicleQuery } from "@/services/fyApi";
 import { useFilters } from "@/shared/composables/useFilters";
 
@@ -66,12 +67,9 @@ watch(
   { deep: true },
 );
 
-const {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-  landingServiceOptions,
-} = useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const { options: landingServiceOptions } = useLandingServiceIcons();
 const hasGroupFilters = (keys: string[]) =>
   hasActiveFilters(filters.value, keys);
 </script>
@@ -136,6 +134,7 @@ const hasGroupFilters = (keys: string[]) =>
       <BaseSelect
         v-model="form.withLandingServices"
         :options="landingServiceOptions"
+        unsorted
         :label="t('labels.filters.models.withLandingServices')"
         name="landing-services"
         :multiple="true"

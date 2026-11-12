@@ -1,7 +1,10 @@
 import type { Model } from "@/services/fyApi";
 import type { i18nHelpers } from "@/shared/utils/I18nHelpers";
 import { fociText } from "@/shared/utils/Foci";
-import { landingServicesText } from "@/shared/utils/LandingServices";
+import {
+  type LandingServiceIcon,
+  landingServicesText,
+} from "@/shared/utils/LandingServices";
 
 export type MetricRow = {
   label: string;
@@ -9,6 +12,9 @@ export type MetricRow = {
   value: string | number;
   // Pre-formatted markup (the UEC price), rendered with v-html and tooltipped.
   html?: boolean;
+  // Shown as icons in place of the value, which stays as the text a surface
+  // without the icons reads.
+  icons?: LandingServiceIcon[];
 };
 
 export type MetricRowGroup = {
@@ -39,6 +45,9 @@ export const useModelMetricRows = (
   { t, toNumber, toUEC }: I18nHelpers,
   // A vehicle's own cargo, fitted, in place of the most the ship can carry.
   cargoLabel: () => string | undefined = () => undefined,
+  // The game's icons for the landing services. The embed has none to fetch, so
+  // without them the services read as text.
+  landingServiceIcons?: (model: Model) => LandingServiceIcon[],
 ) => {
   // Ship-matrix speeds are not meaningful, so they are only shown for models
   // whose figures come from the game files. isGroundVehicle rather than a
@@ -84,7 +93,11 @@ export const useModelMetricRows = (
 
     const services = landingServicesText(model(), t);
     if (services) {
-      rows.push({ label: t("model.landingServices"), value: services });
+      rows.push({
+        label: t("model.landingServices"),
+        value: services,
+        icons: landingServiceIcons?.(model()),
+      });
     }
 
     return [...rows, ...speeds.value];
