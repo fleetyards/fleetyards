@@ -44,6 +44,13 @@ const { t } = useI18n();
 const railStyle = computed(() => ({
   backgroundColor: props.squadron.color || "var(--color-muted)",
 }));
+
+// The header takes a wash of the same colour; a squadron without one has none.
+const headingStyle = computed(() =>
+  props.squadron.color
+    ? { "--squadron-panel-wash": props.squadron.color }
+    : undefined,
+);
 </script>
 
 <template>
@@ -55,7 +62,14 @@ const railStyle = computed(() => ({
   >
     <span class="squadron-panel-rail" :style="railStyle" />
 
-    <PanelHeading compact divider :level="HeadingLevelEnum.H3">
+    <PanelHeading
+      compact
+      divider
+      :level="HeadingLevelEnum.H3"
+      class="squadron-panel-heading"
+      :class="{ 'squadron-panel-heading--washed': !!squadron.color }"
+      :style="headingStyle"
+    >
       <template #leading>
         <SquadronEmblem :squadron="squadron" :size="56" />
       </template>
@@ -171,12 +185,27 @@ const railStyle = computed(() => ({
     width: 8px;
   }
 
+  // Clear of the rail, which would otherwise crowd the emblem.
+  .squadron-panel-heading {
+    padding-left: 24px;
+  }
+
+  // Over the heading's own tint rather than in place of it, so the band reads
+  // as the heading still; background-image, which the tint leaves alone.
+  .squadron-panel-heading--washed {
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--squadron-panel-wash) 24%, transparent),
+      color-mix(in srgb, var(--squadron-panel-wash) 8%, transparent)
+    );
+  }
+
   .squadron-panel-body {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 14px 16px;
+    padding: 14px 16px 14px 24px;
   }
 
   // Three lines, always: room kept for a description that is not there, and a
