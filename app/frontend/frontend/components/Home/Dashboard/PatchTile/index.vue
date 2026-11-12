@@ -25,10 +25,6 @@ const { t } = useI18n();
 
 const { build, pick } = usePatchLoadingScreens(() => props.environment);
 
-// `4.3.2-live.12913470` names its environment already; the tile shows the
-// release.
-const release = computed(() => build.value?.version.split("-")[0]);
-
 const label = computed(() =>
   props.environment.toLowerCase() === "live"
     ? t("home.dashboard.tiles.patch")
@@ -67,6 +63,13 @@ const openSource = () => {
 // Owned ships only: a wishlist ship the patch changed is not "yours", and
 // `items` stops at the most changed few.
 const changedCount = computed(() => changes.value?.ownedCount || 0);
+
+// The build the count is for, which is the build served: a newer one whose load
+// is still running has rows but no changes yet. `4.3.2-live.12913470` names
+// its environment already; the tile shows the release.
+const version = computed(() => changes.value?.version || build.value?.version);
+
+const release = computed(() => version.value?.split("-")[0]);
 </script>
 
 <template>
@@ -89,7 +92,7 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
         <span class="home-patch-tile__label">
           {{ label }}
         </span>
-        <span v-tooltip="build?.version" class="home-patch-tile__value">
+        <span v-tooltip="version" class="home-patch-tile__value">
           {{ release || "–" }}
         </span>
         <span class="home-patch-tile__hint">

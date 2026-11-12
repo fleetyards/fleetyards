@@ -11,12 +11,13 @@ export const usePatchChangedTag = () => {
   const sourceStore = useScDataSourceStore();
 
   // Named outright rather than left to the default, so this shares its answer
-  // with the patch card of the same environment instead of asking twice.
+  // with the patch card of the same environment instead of asking twice -- and
+  // with its options, not retrying a build the server stopped offering.
   const { data } = useMyPatchChanges(
     () => ({
       environment: sourceStore.selected?.environment.toLowerCase() || "live",
     }),
-    { query: liveQuery },
+    { query: { ...liveQuery, retry: false } },
   );
 
   const changedModelIds = computed(
