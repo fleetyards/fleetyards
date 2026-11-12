@@ -130,6 +130,33 @@ describe("PanelMetrics", () => {
     );
   });
 
+  it("names the services the ship gives a ship landed on it", () => {
+    const wrapper = mount(PanelMetrics, {
+      props: {
+        model: model({
+          landingServices: [
+            "repair",
+            "rearm",
+            "quantum_refuel",
+            "hydrogen_refuel",
+          ],
+        }),
+      },
+    });
+
+    expect(valueFor(wrapper, "model.landingServices")).toBe(
+      "model.landingService.refuel, model.landingService.rearm, model.landingService.repair",
+    );
+  });
+
+  it("leaves out the services row for a ship that services none", () => {
+    const wrapper = mount(PanelMetrics, {
+      props: { model: model({ landingServices: [] }) },
+    });
+
+    expect(labels(wrapper)).not.toContain("model.landingServices");
+  });
+
   it("renders no empty group for a model carrying no figures", () => {
     // The e2e fixtures are exactly this: a name and a manufacturer. With speed
     // gated on inGame the summary has nothing left to show, and an empty rows

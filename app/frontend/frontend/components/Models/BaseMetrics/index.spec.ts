@@ -177,3 +177,38 @@ describe("the cargo tile", () => {
     expect(storageTile({ storageContainers: [] }).exists()).toBe(false);
   });
 });
+
+describe("the services a ship gives a ship landed on it", () => {
+  it("lists them under their own heading", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      {
+        landingServices: [
+          "repair",
+          "rearm",
+          "quantum_refuel",
+          "hydrogen_refuel",
+        ],
+      },
+    );
+
+    expect(
+      wrapper.get('[data-test="model-landing-services"]').text(),
+    ).toContain(
+      "model.landingService.refuel, model.landingService.rearm, model.landingService.repair",
+    );
+  });
+
+  it("leaves the section out for a ship that services none", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      { landingServices: [] },
+    );
+
+    expect(wrapper.find('[data-test="model-landing-services"]').exists()).toBe(
+      false,
+    );
+  });
+});

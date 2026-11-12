@@ -1,6 +1,7 @@
 import type { Model } from "@/services/fyApi";
 import type { i18nHelpers } from "@/shared/utils/I18nHelpers";
 import { fociText } from "@/shared/utils/Foci";
+import { landingServicesText } from "@/shared/utils/LandingServices";
 
 export type MetricRow = {
   label: string;
@@ -79,6 +80,11 @@ export const useModelMetricRows = (
     const crew = model().crew.value;
     if (crew && crew > 0) {
       rows.push({ label: t("model.crew"), value: toNumber(crew, "people") });
+    }
+
+    const services = landingServicesText(model(), t);
+    if (services) {
+      rows.push({ label: t("model.landingServices"), value: services });
     }
 
     return [...rows, ...speeds.value];

@@ -9,6 +9,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { type Model, StorageContainerKindEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { landingServicesText } from "@/shared/utils/LandingServices";
 import {
   ModelStateEnum,
   modelStateMetrics,
@@ -64,6 +65,8 @@ const additionalStorage = computed(() =>
     }))
     .filter((storage) => storage.capacity > 0),
 );
+
+const landingServices = computed(() => landingServicesText(props.model, t));
 
 const hasPrice = computed(
   () => !!props.model.price || !!props.model.pledgePrice,
@@ -192,6 +195,20 @@ const openAvailability = () => {
         </div>
       </div>
     </div>
+
+    <template v-if="landingServices">
+      <div class="metrics-card__section-label">
+        {{ t("model.landingServices") }}
+      </div>
+      <div class="metrics-card__rows" data-test="model-landing-services">
+        <div class="metrics-card__row">
+          <span class="metrics-card__row__label">
+            {{ t("model.landingServicesWhere") }}
+          </span>
+          <span class="metrics-card__row__value">{{ landingServices }}</span>
+        </div>
+      </div>
+    </template>
 
     <template v-if="hasPrice">
       <div class="metrics-card__section-label">
