@@ -61,6 +61,7 @@ module V1
             refuelBoom: ::Shared::V1::Schemas::RefuelBoom,
             # What the ship does for another ship landed in its hangar or on its pads.
             landingServices: {type: :array, items: ::Shared::V1::Schemas::Enums::LandingServiceEnum},
+            servicingAreas: {type: :array, items: ::Shared::V1::Schemas::ServicingArea},
 
             onSale: {type: :boolean},
             playerOwnable: {type: :boolean},

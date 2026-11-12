@@ -455,6 +455,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /models/:id names its servicing areas" do
+    key = "interior.socpak#GenericShape_vehicle_bay"
+    model = create(:model, servicing_areas: [{"key" => key, "name" => "GenericShape_vehicle_bay", "width" => 15.0, "length" => 45.0, "height" => 6.0}])
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {servicingAreaNames: [{key:, name: "Vehicle bay"}]} do
+      assert_equal "Vehicle bay", parsed_body["servicingAreas"].sole["name"]
+    end
+
+    assert_equal({key => "Vehicle bay"}, model.reload.servicing_area_names)
+  end
+
   test "PUT /models/:id overrides what the stores and hangars said about its CCUs" do
     model = create(:model, ccu_target_seen_at: 1.day.ago)
     sign_in @user

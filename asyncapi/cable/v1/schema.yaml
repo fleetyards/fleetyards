@@ -3669,6 +3669,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LandingServiceEnum"
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingArea"
         onSale:
           type: boolean
         playerOwnable:
@@ -5422,6 +5426,27 @@ components:
       x-enumNames:
       - CITIZENID
       - RSI_PROFILE
+    ServicingArea:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        width:
+          type: number
+        length:
+          type: number
+        height:
+          type: number
+      additionalProperties: false
+      required:
+      - key
+      - width
+      - length
+      - height
     ShopLink:
       type: object
       properties:

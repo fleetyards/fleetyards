@@ -219,8 +219,13 @@ module Admin
             :stealth,
             *Model::DETAIL_ATTACHMENT_NAMES, *Model::LITE_HOLO_ATTACHMENT_NAMES,
             *Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES,
-            foci: []
-          )
+            foci: [],
+            servicing_area_names: [:key, :name]
+          ).tap do |permitted|
+            if permitted.key?(:servicing_area_names)
+              permitted[:servicing_area_names] = Array(permitted[:servicing_area_names]).to_h { |area| [area[:key].to_s, area[:name].to_s] }
+            end
+          end
         end
       end
     end

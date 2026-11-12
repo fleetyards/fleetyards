@@ -17329,6 +17329,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/landing-services":
+    get:
+      summary: Landing services
+      tags:
+      - Models
+      operationId: landingServices
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LandingServicesList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations":
     get:
       summary: Locations list
@@ -44135,6 +44150,17 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    LandingService:
+      type: object
+      properties:
+        key:
+          "$ref": "#/components/schemas/LandingServiceEnum"
+        icon:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - key
+      title: LandingService
     LandingServiceEnum:
       type: string
       enum:
@@ -44148,6 +44174,11 @@ components:
       - QUANTUM_REFUEL
       - HYDROGEN_REFUEL
       title: LandingServiceEnum
+    LandingServicesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LandingService"
+      title: LandingServicesList
     LoadoutComponentRef:
       type: object
       properties:
@@ -45806,6 +45837,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LandingServiceEnum"
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingArea"
         onSale:
           type: boolean
         playerOwnable:
@@ -46151,6 +46186,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LandingServiceEnum"
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ServicingArea"
         onSale:
           type: boolean
         playerOwnable:
@@ -51839,6 +51878,28 @@ components:
       required:
       - name
       title: SearchSquadron
+    ServicingArea:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        width:
+          type: number
+        length:
+          type: number
+        height:
+          type: number
+      additionalProperties: false
+      required:
+      - key
+      - width
+      - length
+      - height
+      title: ServicingArea
     SessionInput:
       type: object
       properties:

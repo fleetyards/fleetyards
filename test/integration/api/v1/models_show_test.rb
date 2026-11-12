@@ -298,6 +298,19 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug serves where the services apply, by the name an admin gave each area" do
+    bay = {"key" => "interior.socpak#GenericShape_vehicle_bay", "name" => "GenericShape_vehicle_bay", "width" => 15.0, "length" => 45.0, "height" => 6.0}
+    deck = {"key" => "interior.socpak#GenericShape", "name" => "GenericShape", "width" => 9.0, "length" => 14.0, "height" => 5.0}
+    model = create(:model, servicing_areas: [bay, deck], servicing_area_names: {bay["key"] => "Vehicle bay"})
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal [
+        {"key" => bay["key"], "name" => "Vehicle bay", "width" => 15.0, "length" => 45.0, "height" => 6.0},
+        {"key" => deck["key"], "width" => 9.0, "length" => 14.0, "height" => 5.0}
+      ], parsed_body["servicingAreas"]
+    end
+  end
+
   test "GET /models/:slug serves no services for a ship that provides none" do
     model = create(:model)
 
