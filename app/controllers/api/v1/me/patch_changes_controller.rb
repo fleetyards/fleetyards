@@ -20,8 +20,12 @@ module Api
           source = requested_source
           return not_found if params[:environment].present? && source.blank?
 
-          @environment = source&.environment || ::ScData::Source.environment
-          @version = source&.version || ::ScData::Source.version
+          # The build actually served either way: a configured build whose load
+          # has not finished has no changes recorded yet.
+          source ||= ::ScData::Source.current.served
+
+          @environment = source.environment
+          @version = source.version
 
           vehicles = current_resource_owner.vehicles.where(loaner: false)
           owned_counts = vehicles.where(wanted: false).group(:model_id).count
