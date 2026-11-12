@@ -202,7 +202,7 @@ class FleetEvent < ApplicationRecord
   end
 
   def signups_count
-    fleet_event_signups.where.not(status: "withdrawn").count
+    fleet_event_signups.where.not(status: "withdrawn").attendee_count
   end
 
   def past?

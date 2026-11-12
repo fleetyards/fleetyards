@@ -208,11 +208,11 @@ module Discord
     end
 
     private def confirmed_count
-      event.fleet_event_signups.where(status: "confirmed").count
+      event.fleet_event_signups.where(status: "confirmed").attendee_count
     end
 
     private def interested_count
-      event.fleet_event_signups.where(status: "interested").count
+      event.fleet_event_signups.where(status: "interested").attendee_count
     end
 
     # Public on the model so the frontend's "Sync to Discord" button can

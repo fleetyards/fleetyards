@@ -45,7 +45,7 @@ module Discord
     end
 
     private def signups
-      count = signups_scope.count
+      count = signups_scope.attendee_count
       return nil if count.zero?
 
       I18n.t("discord.event_availability.signups", count: count)
