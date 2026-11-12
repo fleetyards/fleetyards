@@ -21,6 +21,7 @@ import {
   type LineupScope,
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
+import { useSlotRename } from "@/frontend/components/Fleets/Missions/useSlotRename";
 import {
   sortByFilled,
   useSlotTitle,
@@ -67,6 +68,15 @@ const editor = ref<InstanceType<typeof SlotCandidatesEditor>>();
 useModalDirty(() => !!editor.value?.dirty);
 
 const changed = () => comlink.emit("mission-children-changed");
+
+const {
+  renamingId,
+  renameValue,
+  setRenameInput,
+  startRename,
+  cancelRename,
+  saveRename,
+} = useSlotRename(lineup, changed);
 
 const summary = (seat: MissionSlot) => {
   const [primary, ...alternates] = seat.candidates ?? [];
@@ -160,7 +170,29 @@ const removeSeat = async (seat: MissionSlot) => {
           </span>
           <div class="ship-seats__text">
             <span class="ship-seats__title">
-              {{ slotTitle(seat) }}
+              <input
+                v-if="renamingId === seat.id"
+                :ref="setRenameInput"
+                v-model="renameValue"
+                type="text"
+                class="ship-seats__title-input"
+                :aria-label="t('actions.fleet.squadrons.flights.renameSeat')"
+                :data-test="`ship-seat-edit-${seat.id}`"
+                @keydown.enter.prevent="saveRename(seat)"
+                @keydown.esc="cancelRename"
+                @blur="saveRename(seat)"
+              />
+              <button
+                v-else-if="props.editable"
+                v-tooltip="t('actions.fleet.squadrons.flights.renameSeat')"
+                type="button"
+                class="ship-seats__title-btn"
+                :data-test="`ship-seat-title-${seat.id}`"
+                @click="startRename(seat)"
+              >
+                {{ slotTitle(seat) }}
+              </button>
+              <template v-else>{{ slotTitle(seat) }}</template>
               <span v-if="roleLabel(seat)" class="ship-seats__role">
                 {{ roleLabel(seat) }}
               </span>
@@ -300,6 +332,34 @@ const removeSeat = async (seat: MissionSlot) => {
   align-items: center;
   gap: 6px;
   font-weight: 600;
+}
+
+.ship-seats__title-btn {
+  margin: -2px -6px;
+  padding: 2px 6px;
+  border: none;
+  border-radius: var(--radius-control-bare);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: text;
+
+  &:hover {
+    background: var(--color-control-press);
+  }
+}
+
+.ship-seats__title-input {
+  min-width: 0;
+  margin: -3px -7px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control-bare);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  outline: none;
 }
 
 .ship-seats__role {
