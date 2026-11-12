@@ -119,7 +119,8 @@
         "store": "Compra en la tienda",
         "ingame": "Comprada en el juego",
         "buyback": "Buy-back",
-        "melted": "Recomprada tras fundirla"
+        "melted": "Recomprada tras fundirla",
+        "bundled": "Viene con un buy-back"
       },
       "upgradeSources": {
         "store": "Tienda",
@@ -436,7 +437,11 @@
         "ccuUnknown": "Aún no se ha visto ningún CCU",
         "filters": "Acotar los inicios",
         "chooseShip": "Elige una nave",
-        "earnInGame": "Ganar en el juego"
+        "earnInGame": "Ganar en el juego",
+        "confirmBundled": {
+          "one": "Cambiar este inicio también elimina la vía de la nave que viene con su pledge.",
+          "other": "Cambiar este inicio también elimina las vías de las %{count} naves que vienen con su pledge."
+        }
       },
       "slotNumber": "Hueco %{number}",
       "suggestions": {
@@ -469,6 +474,8 @@
           "hangar": "Tu hangar",
           "hangarHint": "Naves sin vía",
           "buybacks": "Buy-backs",
+          "bundled": "Vienen con tus buy-backs",
+          "bundledHint": "Gratis con un pledge que este plan recompra",
           "out": "No sirven",
           "outOf": "No pueden ser una %{ship}",
           "keep": "Conservarla",
@@ -527,7 +534,8 @@
           "one": "%{count} paso",
           "other": "%{count} pasos"
         },
-        "viaMelted": "Vía %{ship} fundida"
+        "viaMelted": "Vía %{ship} fundida",
+        "bundledWith": "Viene con %{pledge}"
       },
       "unmelt": {
         "confirm": "¿Deshacer la fundición de la %{ship}? Se queda en el hangar.",

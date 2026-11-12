@@ -388,6 +388,9 @@ es:
               taken: "ya se usa en este plan"
             buyback_pledge_id:
               taken: "ya se usa en este plan"
+            start_model:
+              not_bundled: "no es otra nave de ese pledge"
+              taken: "ya se usa en este plan"
         hangar_plan_upgrade_step:
           attributes:
             from_model_id:

@@ -590,6 +590,7 @@ const startPrice = computed(() => {
   switch (startKind.value) {
     case HangarPlanStartKindEnum.OWNED:
     case HangarPlanStartKindEnum.INGAME:
+    case HangarPlanStartKindEnum.BUNDLED:
       return 0;
     case HangarPlanStartKindEnum.BUYBACK:
       return (

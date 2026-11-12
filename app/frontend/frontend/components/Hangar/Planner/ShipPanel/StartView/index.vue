@@ -33,6 +33,7 @@ import {
   upgradeCost,
 } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
 import {
   type HangarPlanStart,
@@ -73,6 +74,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const comlink = useComlink();
 const { money } = usePlanMoney();
 const pledgeNote = usePledgeNote();
 const insuranceLabel = useBuybackInsurance();
@@ -161,6 +163,11 @@ const sections = computed<ShipListSection[]>(() => [
     hint: t("hangarPlanner.panel.sections.hangarHint"),
   },
   { key: "buyback", label: t("hangarPlanner.panel.sections.buybacks") },
+  {
+    key: "bundled",
+    label: t("hangarPlanner.panel.sections.bundled"),
+    hint: t("hangarPlanner.panel.sections.bundledHint"),
+  },
   {
     key: "out",
     label: target.value
@@ -437,11 +444,60 @@ const meltedOptions = computed<StartOption[]>(() =>
   }),
 );
 
+const bundledId = (pledgeStartId: string, index: number) =>
+  `bundled:${pledgeStartId}:${index}`;
+
+// The other ships of a pledge the plan buys back come along for free. The
+// start that buys the pledge back cannot start as one of them itself.
+const bundledOptions = computed<StartOption[]>(() =>
+  (resources.value?.bundled ?? []).flatMap((ship, index): StartOption[] => {
+    if (ship.pledgeStartId === props.acquisition?.id) return [];
+
+    const current =
+      !!props.acquisition && ship.takenById === props.acquisition.id;
+    const reason =
+      ship.takenById && !current
+        ? t("hangarPlanner.panel.out.used")
+        : fits(ship.model)
+          ? undefined
+          : unreachable(ship.model);
+    const cost = costToTarget(ship.model);
+
+    return [
+      {
+        start: {
+          kind: "bundled",
+          pledgeStartId: ship.pledgeStartId,
+          modelId: ship.model.id,
+        },
+        model: ship.model,
+        item: {
+          id: bundledId(ship.pledgeStartId, index),
+          section: reason ? "out" : "bundled",
+          reason,
+          ship: ship.model,
+          title: ship.model.name,
+          meta: t("hangarPlanner.panel.bundledWith", {
+            pledge: ship.pledgeName ?? t("hangarPlanner.startKinds.buyback"),
+          }),
+          price: money(cost),
+          sortPrice: cost,
+          badge: current
+            ? t("hangarPlanner.pick.current")
+            : excludes(ship.model),
+          pinned: !!target.value && ship.model.id === target.value.id,
+        },
+      },
+    ];
+  }),
+);
+
 const options = computed(() => [
   ...newOptions.value,
   ...vehicleOptions.value,
   ...buybackOptions.value,
   ...meltedOptions.value,
+  ...bundledOptions.value,
 ]);
 
 const items = computed(() => options.value.map((option) => option.item));
@@ -450,6 +506,27 @@ const optionOf = (item: ShipListItem) =>
   options.value.find((option) => option.item.id === item.id);
 
 const currentId = computed(() => {
+  const acquisition = props.acquisition;
+  if (acquisition?.startKind === HangarPlanStartKindEnum.BUNDLED) {
+    const bundled = resources.value?.bundled ?? [];
+    // Resources reload after the plan does, so until they have, the start is
+    // found by the pledge and ship it names.
+    const taken = bundled.findIndex(
+      (ship) => ship.takenById === acquisition.id,
+    );
+    const index =
+      taken >= 0
+        ? taken
+        : bundled.findIndex(
+            (ship) =>
+              !ship.takenById &&
+              ship.pledgeStartId === acquisition.bundledWithId &&
+              ship.model.id === acquisition.startModel?.id,
+          );
+    return index >= 0
+      ? bundledId(bundled[index].pledgeStartId, index)
+      : undefined;
+  }
   if (startsMelted.value && props.acquisition?.sourceVehicleId) {
     return `melted:${props.acquisition.sourceVehicleId}`;
   }
@@ -464,9 +541,38 @@ const currentId = computed(() => {
 
 const selected = ref<string | undefined>(currentId.value);
 
-const choose = async (item: ShipListItem) => {
+// Routes in other slots that start from ships this start's pledge brings
+// along, which go when it changes.
+const bundledRoutes = computed(
+  () =>
+    (resources.value?.bundled ?? []).filter(
+      (ship) =>
+        !!ship.takenById && ship.pledgeStartId === props.acquisition?.id,
+    ).length,
+);
+
+const confirmed = (proceed: () => Promise<void>, changes = true) => {
+  if (!changes || !bundledRoutes.value) return proceed();
+
+  comlink.emit("show-confirm", {
+    text: t("hangarPlanner.pick.confirmBundled", {
+      count: bundledRoutes.value,
+    }),
+    tone: "warning",
+    onConfirm: () => void proceed(),
+  });
+  return Promise.resolve();
+};
+
+const choose = (item: ShipListItem) => {
   const option = optionOf(item);
-  if (!option?.start) return;
+  if (!option?.start) return Promise.resolve();
+
+  return confirmed(() => save(option), item.id !== currentId.value);
+};
+
+const save = async (option: StartOption) => {
+  if (!option.start) return;
 
   if (!props.candidate && !props.slot.candidates.length) {
     if (await holdStart(props.slot, option.start, props.acquisition)) {
@@ -484,11 +590,12 @@ const choose = async (item: ShipListItem) => {
   }
 };
 
-const remove = async () => {
-  if (await pairEnd({ kind: "remove" }, { acquisition: props.acquisition })) {
-    emit("done");
-  }
-};
+const remove = () =>
+  confirmed(async () => {
+    if (await pairEnd({ kind: "remove" }, { acquisition: props.acquisition })) {
+      emit("done");
+    }
+  });
 </script>
 
 <template>

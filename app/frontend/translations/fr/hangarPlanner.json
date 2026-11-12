@@ -119,7 +119,8 @@
         "store": "Achat en boutique",
         "ingame": "Acheté en jeu",
         "buyback": "Buy-back",
-        "melted": "Racheté après le melt"
+        "melted": "Racheté après le melt",
+        "bundled": "Vient avec un buy-back"
       },
       "upgradeSources": {
         "store": "Boutique",
@@ -436,7 +437,11 @@
         "ccuUnknown": "Aucun CCU vu pour l'instant",
         "filters": "Affiner les départs",
         "chooseShip": "Choisir un vaisseau",
-        "earnInGame": "Gagner en jeu"
+        "earnInGame": "Gagner en jeu",
+        "confirmBundled": {
+          "one": "Changer ce départ supprime aussi la voie du vaisseau qui vient avec son pledge.",
+          "other": "Changer ce départ supprime aussi les voies des %{count} vaisseaux qui viennent avec son pledge."
+        }
       },
       "slotNumber": "Emplacement %{number}",
       "suggestions": {
@@ -469,6 +474,8 @@
           "hangar": "Votre hangar",
           "hangarHint": "Vaisseaux sans voie",
           "buybacks": "Buy-backs",
+          "bundled": "Viennent avec vos buy-backs",
+          "bundledHint": "Gratuit avec un pledge que ce plan rachète",
           "out": "Hors jeu",
           "outOf": "Ne peut pas devenir un %{ship}",
           "keep": "Le garder",
@@ -527,7 +534,8 @@
           "one": "%{count} étape",
           "other": "%{count} étapes"
         },
-        "viaMelted": "Via %{ship} fondu"
+        "viaMelted": "Via %{ship} fondu",
+        "bundledWith": "Vient avec %{pledge}"
       },
       "unmelt": {
         "confirm": "Annuler le melt du %{ship} ? Il reste dans le hangar.",

@@ -24,7 +24,9 @@ export type HangarPlanStart =
   | { kind: "melted"; vehicleId: string }
   | { kind: "buyback"; pledgeId: string; modelId: string }
   | { kind: "ingame" }
-  | { kind: "store" };
+  | { kind: "store" }
+  // Another ship of a pledge a start of the plan buys back.
+  | { kind: "bundled"; pledgeStartId: string; modelId: string };
 
 type SavedStart = { id: string };
 
@@ -83,6 +85,7 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.OWNED,
           sourceVehicleId: start.vehicleId,
           buybackPledgeId: null,
+          bundledWithId: null,
           startModelId: null,
         };
       case "melted":
@@ -90,6 +93,7 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.MELTED,
           sourceVehicleId: start.vehicleId,
           buybackPledgeId: null,
+          bundledWithId: null,
           startModelId: null,
         };
       case "buyback":
@@ -97,6 +101,15 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.BUYBACK,
           sourceVehicleId: null,
           buybackPledgeId: start.pledgeId,
+          bundledWithId: null,
+          startModelId: start.modelId,
+        };
+      case "bundled":
+        return {
+          startKind: HangarPlanStartKindEnum.BUNDLED,
+          sourceVehicleId: null,
+          buybackPledgeId: null,
+          bundledWithId: start.pledgeStartId,
           startModelId: start.modelId,
         };
       case "ingame":
@@ -104,6 +117,7 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.INGAME,
           sourceVehicleId: null,
           buybackPledgeId: null,
+          bundledWithId: null,
           startModelId: candidate?.model.id ?? null,
         };
       default:
@@ -111,6 +125,7 @@ export const useHangarPlanPairing = (
           startKind: HangarPlanStartKindEnum.STORE,
           sourceVehicleId: null,
           buybackPledgeId: null,
+          bundledWithId: null,
           startModelId: candidate?.model.id ?? null,
         };
     }

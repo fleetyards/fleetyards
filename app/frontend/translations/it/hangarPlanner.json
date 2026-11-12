@@ -119,7 +119,8 @@
         "store": "Acquisto nello store",
         "ingame": "Comprata in gioco",
         "buyback": "Buy-back",
-        "melted": "Ricomprata dopo averla sciolta"
+        "melted": "Ricomprata dopo averla sciolta",
+        "bundled": "Arriva con un buy-back"
       },
       "upgradeSources": {
         "store": "Store",
@@ -436,7 +437,11 @@
         "ccuUnknown": "Nessun CCU visto finora",
         "filters": "Restringi le partenze",
         "chooseShip": "Scegli una nave",
-        "earnInGame": "Guadagna in gioco"
+        "earnInGame": "Guadagna in gioco",
+        "confirmBundled": {
+          "one": "Cambiare questa partenza rimuove anche il percorso della nave che arriva con il suo pledge.",
+          "other": "Cambiare questa partenza rimuove anche i percorsi delle %{count} navi che arrivano con il suo pledge."
+        }
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {
@@ -469,6 +474,8 @@
           "hangar": "Il tuo hangar",
           "hangarHint": "Navi senza percorso",
           "buybacks": "Buy-back",
+          "bundled": "Arrivano con i tuoi buy-back",
+          "bundledHint": "Gratis con un pledge che questo piano ricompra",
           "out": "Escluse",
           "outOf": "Non possono diventare una %{ship}",
           "keep": "Tenerla",
@@ -527,7 +534,8 @@
           "one": "%{count} passaggio",
           "other": "%{count} passaggi"
         },
-        "viaMelted": "Tramite %{ship} sciolta"
+        "viaMelted": "Tramite %{ship} sciolta",
+        "bundledWith": "Arriva con %{pledge}"
       },
       "unmelt": {
         "confirm": "Annullare la fusione della %{ship}? Resta nell'hangar.",

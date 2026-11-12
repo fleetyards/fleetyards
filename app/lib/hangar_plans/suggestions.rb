@@ -56,9 +56,13 @@ module HangarPlans
       key if key.all?(&:present?)
     end
 
+    # A ship a bought-back pledge brings along has neither a slot nor a hangar
+    # ship to act on.
     private def fleet
       @fleet ||= comparison.fleet.reject do |entry|
-        entry.slot.nil? && Comparison::LEAVING_STATUSES.include?(status_of(entry.vehicle))
+        next false unless entry.slot.nil?
+
+        entry.vehicle.nil? || Comparison::LEAVING_STATUSES.include?(status_of(entry.vehicle))
       end
     end
 

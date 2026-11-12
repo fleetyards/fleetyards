@@ -13,10 +13,15 @@ module V1
               vehicles: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanVehicleResource},
               upgrades: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanUpgradeResource},
               buybacks: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanBuybackResource},
+              bundled: {
+                type: :array,
+                items: ::V1::Schemas::Hangar::Plans::HangarPlanBundledResource,
+                description: "The other ships of every pledge the plan buys back, each free to start a route with"
+              },
               storeModels: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanModel, description: "Every ship the pledge store prices, cheapest first"}
             },
             additionalProperties: false,
-            required: %w[vehicles upgrades buybacks storeModels]
+            required: %w[vehicles upgrades buybacks bundled storeModels]
           })
         end
       end

@@ -85,6 +85,7 @@ const resources = ref<HangarPlanResources>({
     },
   ],
   storeModels: [aurora, cutlass, taurus, carrack, freelancer, hammerhead],
+  bundled: [],
   buybacks: [
     {
       id: "pledge-pack",

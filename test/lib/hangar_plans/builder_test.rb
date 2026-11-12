@@ -57,6 +57,20 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     assert_equal source.vehicle_marks.pluck(:vehicle_id, :mark).sort, copy.vehicle_marks.pluck(:vehicle_id, :mark).sort
   end
 
+  test "a duplicate keeps a bundled start with the copy of its pledge's start" do
+    source = build_plan("empty")
+    pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Gladius"])
+    gladius = source.slots.create!(label: "Fighter").candidates.create!(model: @gladius)
+    carrack = source.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    pledge_start = source.acquisitions.create!(candidate: carrack, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+    source.acquisitions.create!(candidate: gladius, start_kind: "bundled", bundled_with: pledge_start, start_model: @gladius)
+
+    copy = build_plan("plan", source_plan: source)
+
+    bundled = copy.acquisitions.find_by!(start_kind: "bundled")
+    assert_equal copy.acquisitions.find_by!(start_kind: "buyback"), bundled.bundled_with
+  end
+
   private def build_plan(source, source_plan: nil)
     plan = @user.hangar_plans.new(name: "Plan #{SecureRandom.hex(3)}")
     HangarPlans::Builder.new(plan, source:, source_plan:).run

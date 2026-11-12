@@ -53,6 +53,7 @@ json.slots slots do |slot|
     unless local_assigns[:public_view]
       json.source_vehicle_id start.source_vehicle_id
       json.buyback_pledge_id start.buyback_pledge_id
+      json.bundled_with_id start.bundled_with_id
     end
     if start.start_model
       json.start_model do

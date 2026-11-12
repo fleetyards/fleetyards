@@ -119,7 +119,8 @@
         "store": "Store purchase",
         "ingame": "Bought in game",
         "buyback": "Buy-back",
-        "melted": "Bought back after melting"
+        "melted": "Bought back after melting",
+        "bundled": "Comes with a buy-back"
       },
       "upgradeSources": {
         "store": "Store",
@@ -436,7 +437,11 @@
         "ccuUnknown": "No CCU seen yet",
         "filters": "Narrow the starts",
         "chooseShip": "Choose a ship",
-        "earnInGame": "Earn in game"
+        "earnInGame": "Earn in game",
+        "confirmBundled": {
+          "one": "Changing this start also removes the route of the ship that comes with its pledge.",
+          "other": "Changing this start also removes the routes of the %{count} ships that come with its pledge."
+        }
       },
       "slotNumber": "Slot %{number}",
       "suggestions": {
@@ -469,6 +474,8 @@
           "hangar": "Your hangar",
           "hangarHint": "Ships with no route yet",
           "buybacks": "Buy-backs",
+          "bundled": "Comes with your buy-backs",
+          "bundledHint": "Free with a pledge this plan buys back",
           "out": "Can't take part",
           "outOf": "Can't become a %{ship}",
           "keep": "Keep it",
@@ -527,7 +534,8 @@
           "one": "%{count} step",
           "other": "%{count} steps"
         },
-        "viaMelted": "Via melted %{ship}"
+        "viaMelted": "Via melted %{ship}",
+        "bundledWith": "Comes with %{pledge}"
       },
       "unmelt": {
         "confirm": "Take back the melt of the %{ship}? It stays in the hangar.",

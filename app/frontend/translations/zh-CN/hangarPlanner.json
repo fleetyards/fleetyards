@@ -119,7 +119,8 @@
         "store": "商店购买",
         "ingame": "游戏内购买",
         "buyback": "回购",
-        "melted": "熔毁后回购"
+        "melted": "熔毁后回购",
+        "bundled": "随回购附带"
       },
       "upgradeSources": {
         "store": "商店",
@@ -436,7 +437,11 @@
         "ccuUnknown": "尚未见过 CCU",
         "filters": "筛选起点",
         "chooseShip": "选择舰船",
-        "earnInGame": "在游戏中获得"
+        "earnInGame": "在游戏中获得",
+        "confirmBundled": {
+          "one": "更改此起点也会移除随其 pledge 附带的飞船的途径。",
+          "other": "更改此起点也会移除随其 pledge 附带的 %{count} 艘飞船的途径。"
+        }
       },
       "slotNumber": "槽位 %{number}",
       "suggestions": {
@@ -469,6 +474,8 @@
           "hangar": "你的机库",
           "hangarHint": "尚无途径的飞船",
           "buybacks": "回购",
+          "bundled": "随你的回购附带",
+          "bundledHint": "随本计划回购的 pledge 免费附带",
           "out": "无法使用",
           "outOf": "无法成为 %{ship}",
           "keep": "保留",
@@ -527,7 +534,8 @@
           "one": "%{count} 步",
           "other": "%{count} 步"
         },
-        "viaMelted": "来自熔毁的 %{ship}"
+        "viaMelted": "来自熔毁的 %{ship}",
+        "bundledWith": "随 %{pledge} 附带"
       },
       "unmelt": {
         "confirm": "撤销熔毁 %{ship}？它会留在机库中。",
