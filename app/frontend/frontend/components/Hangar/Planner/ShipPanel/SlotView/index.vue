@@ -300,6 +300,9 @@ const facts = (option: ModelOption) => {
     .join(" · ");
 };
 
+const angledImage = (option: ModelOption) =>
+  option.media.angledViewColored?.smallUrl || option.media.angledView?.smallUrl;
+
 const hasFilters = computed(() =>
   Object.values(current.value.filters ?? {}).some((value) =>
     Array.isArray(value)
@@ -352,9 +355,16 @@ const hasFilters = computed(() =>
             data-test="hangar-plan-slot-ship"
           >
             <img
-              :src="candidate.model.image?.smallUrl || fallbackImage"
+              :src="
+                candidate.model.angledImage?.smallUrl ||
+                candidate.model.image?.smallUrl ||
+                fallbackImage
+              "
               alt=""
               class="slot-view__image"
+              :class="{
+                'slot-view__image--angled': candidate.model.angledImage,
+              }"
               loading="lazy"
             />
             <div class="slot-view__title">
@@ -495,9 +505,14 @@ const hasFilters = computed(() =>
             data-test="hangar-plan-slot-catalogue-row"
           >
             <img
-              :src="option.media.storeImage?.smallUrl || fallbackImage"
+              :src="
+                angledImage(option) ||
+                option.media.storeImage?.smallUrl ||
+                fallbackImage
+              "
               alt=""
               class="slot-view__thumb"
+              :class="{ 'slot-view__thumb--angled': angledImage(option) }"
               loading="lazy"
             />
             <span class="slot-view__text">
@@ -635,6 +650,10 @@ const hasFilters = computed(() =>
   border-radius: 8px;
 }
 
+.slot-view__image--angled {
+  object-fit: contain;
+}
+
 .slot-view__title {
   display: flex;
   gap: 6px;
@@ -735,6 +754,10 @@ const hasFilters = computed(() =>
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
+}
+
+.slot-view__thumb--angled {
+  object-fit: contain;
 }
 
 .slot-view__text {

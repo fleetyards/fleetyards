@@ -18,7 +18,7 @@ module V1
               classificationLabel: {type: [:string, :null]},
               inHangar: {type: :boolean},
               onWishlist: {type: :boolean},
-              media: Shared::V1::Schemas::StoreImageMedia
+              media: ModelOptionMedia
             },
             additionalProperties: false,
             required: %w[id name slug manufacturer classification classificationLabel inHangar onWishlist media]

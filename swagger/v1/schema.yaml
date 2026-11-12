@@ -39704,6 +39704,8 @@ components:
           - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
+        angledImage:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - id
@@ -45670,7 +45672,7 @@ components:
         onWishlist:
           type: boolean
         media:
-          "$ref": "#/components/schemas/StoreImageMedia"
+          "$ref": "#/components/schemas/ModelOptionMedia"
       additionalProperties: false
       required:
       - id
@@ -45704,6 +45706,17 @@ components:
       - slug
       - code
       title: ModelOptionManufacturer
+    ModelOptionMedia:
+      type: object
+      properties:
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: ModelOptionMedia
     ModelOptions:
       type: object
       properties:
