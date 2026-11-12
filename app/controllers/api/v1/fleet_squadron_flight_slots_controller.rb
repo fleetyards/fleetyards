@@ -91,6 +91,12 @@ module Api
       private def authorize_slot!(_record, _slottable, to: nil)
         authorize_flight!
       end
+
+      # A flight belongs to a squadron rather than a template, and squadrons
+      # are not part of a subscription, so there is nothing to look up.
+      private def subscription_fleet
+        @fleet
+      end
     end
   end
 end
