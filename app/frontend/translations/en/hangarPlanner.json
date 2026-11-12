@@ -270,6 +270,11 @@
           "one": "%{count} model stays as it is.",
           "other": "%{count} models stay as they are."
         },
+        "showMore": {
+          "one": "Show %{count} more change",
+          "other": "Show %{count} more changes"
+        },
+        "showFewer": "Show fewer",
         "after": "After the plan"
       },
       "metrics": {

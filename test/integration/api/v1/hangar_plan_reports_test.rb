@@ -200,12 +200,14 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET compare sets two plans side by side" do
+  test "GET compare sets the hangar after each plan side by side" do
     other = create(:hangar_plan, user: @user, name: "Lean")
 
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/compare/{otherId}", path_params: {id: @plan.id, otherId: other.id} do
       assert_equal "Lean", parsed_body["otherPlanName"]
-      assert_equal %w[removed removed], parsed_body["models"].pluck("change")
+      assert_equal({"Carrack" => ["removed", 2, 0], "Cutlass Black" => ["unchanged", 1, 1]},
+        parsed_body["models"].to_h { |diff| [diff.dig("model", "name"), diff.values_at("change", "leftCount", "rightCount")] })
+      assert_equal [3, 1], [parsed_body.dig("metrics", "left", "total"), parsed_body.dig("metrics", "right", "total")]
       assert_in_delta 600.0, parsed_body.dig("totals", "left", "spendMin")
     end
   end

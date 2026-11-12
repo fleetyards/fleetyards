@@ -270,6 +270,11 @@
           "one": "%{count} 个型号保持不变。",
           "other": "%{count} 个型号保持不变。"
         },
+        "showMore": {
+          "one": "再显示 %{count} 项变化",
+          "other": "再显示 %{count} 项变化"
+        },
+        "showFewer": "收起",
         "after": "方案完成后"
       },
       "metrics": {

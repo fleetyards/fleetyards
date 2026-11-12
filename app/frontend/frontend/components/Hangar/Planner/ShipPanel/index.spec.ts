@@ -12,10 +12,11 @@ import Component from "./index.vue";
 
 const comlinkEmit = vi.hoisted(() => vi.fn());
 const routeDirty = vi.hoisted(() => ({ value: false }));
+const livePlan = vi.hoisted(() => ({ value: undefined as unknown }));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useHangarPlan: () => ({ data: ref(undefined) }),
+  useHangarPlan: () => ({ data: ref(livePlan.value) }),
 }));
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -103,6 +104,7 @@ const mount = (attrs: Partial<HangarFlowTarget> = {}) =>
 
 describe("Hangar/Planner/ShipPanel", () => {
   beforeEach(() => {
+    livePlan.value = undefined;
     routeDirty.value = false;
     comlinkEmit.mockClear();
   });
@@ -182,6 +184,25 @@ describe("Hangar/Planner/ShipPanel", () => {
     await flushPromises();
 
     expect(wrapper.emitted("close")).toHaveLength(1);
+  });
+
+  it("picks a start for the slot as the plan has it now", async () => {
+    const shortlisted = {
+      ...slot,
+      candidates: [{ ...candidate, acquisitions: [] }],
+    } as HangarPlanSlot;
+    livePlan.value = { slots: [shortlisted] };
+
+    const wrapper = await mount({
+      tab: "start",
+      start: { slot },
+      route: undefined,
+      end: undefined,
+    });
+
+    expect(
+      wrapper.findComponent({ name: "start" }).vm.$attrs.slot,
+    ).toStrictEqual(shortlisted);
   });
 
   it("edits the slot of a route's end in the same panel", async () => {

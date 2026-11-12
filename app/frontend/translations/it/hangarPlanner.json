@@ -270,6 +270,11 @@
           "one": "%{count} modello resta com'è.",
           "other": "%{count} modelli restano come sono."
         },
+        "showMore": {
+          "one": "Mostra %{count} altra modifica",
+          "other": "Mostra altre %{count} modifiche"
+        },
+        "showFewer": "Mostra meno",
         "after": "Dopo il piano"
       },
       "metrics": {
