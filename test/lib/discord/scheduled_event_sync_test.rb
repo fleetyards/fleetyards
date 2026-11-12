@@ -136,6 +136,17 @@ module Discord
         assert_includes @captured[:description], "👥 2 (+3)"
       end
 
+      test "counts a member with a confirmed team seat and a pool signup as confirmed only" do
+        membership = create(:fleet_membership, fleet: @fleet)
+        team = create(:fleet_event_team, fleet_event: @event)
+        create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: create(:fleet_event_slot, slottable: team),
+          fleet_membership: membership, status: "confirmed")
+        create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: membership, status: "interested")
+
+        ::Discord::ScheduledEventSync.new(@event).upsert!
+        assert_includes @captured[:description], "👥 1 (+0)"
+      end
+
       test "uses Discord's `<t:UNIX:R>` tag for the relative-time chip" do
         ::Discord::ScheduledEventSync.new(@event).upsert!
         assert_includes @captured[:description], "⏳ <t:#{@starts_at.to_i}:R>"
