@@ -9,7 +9,7 @@ import RaffleDashboardPanel from "@/frontend/components/Raffles/DashboardPanel/i
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import DashboardHero from "@/frontend/components/Home/Dashboard/Hero/index.vue";
-import PatchTile from "@/frontend/components/Home/Dashboard/PatchTile/index.vue";
+import PatchTiles from "@/frontend/components/Home/Dashboard/PatchTiles/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
 import ContractsPanel from "@/frontend/components/Home/Dashboard/ContractsPanel/index.vue";
@@ -46,7 +46,7 @@ const { isFeatureEnabled } = useFeatures();
       <NewShipsPanel class="home-dashboard__new-ships" />
     </div>
     <aside class="home-dashboard__side">
-      <PatchTile class="home-dashboard__patch" />
+      <PatchTiles class="home-dashboard__patch" />
       <FleetPanel class="home-dashboard__fleet" />
       <RaffleDashboardPanel class="home-dashboard__raffle" />
       <PlanPanel

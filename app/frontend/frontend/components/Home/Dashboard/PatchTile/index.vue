@@ -11,28 +11,34 @@ import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import { useMyPatchChanges } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import patchArt from "@/images/bg-3.webp";
+
+type Props = {
+  environment: string;
+};
+
+const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { build, pick } = usePatchLoadingScreens();
+const { build, pick } = usePatchLoadingScreens(() => props.environment);
 
 // `4.3.2-live.12913470` names its environment already; the tile shows the
 // release.
 const release = computed(() => build.value?.version.split("-")[0]);
 
-const sourceStore = useScDataSourceStore();
-
 const label = computed(() =>
-  sourceStore.selected && !sourceStore.selected.default
-    ? t("home.dashboard.tiles.patchPreview")
-    : t("home.dashboard.tiles.patch"),
+  props.environment.toLowerCase() === "live"
+    ? t("home.dashboard.tiles.patch")
+    : t("home.dashboard.tiles.patchPreview"),
 );
 
 const background = computed(() => pick(0, patchArt));
 
-const { data: changes } = useMyPatchChanges({ query: liveQuery });
+const { data: changes } = useMyPatchChanges(
+  () => ({ environment: props.environment }),
+  { query: liveQuery },
+);
 
 // Owned ships only: a wishlist ship the patch changed is not "yours", and
 // `items` stops at the most changed few.
@@ -43,7 +49,7 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
   <router-link
     :to="{ name: 'stats' }"
     class="home-patch-tile"
-    data-test="home-tile-patch"
+    :data-test="`home-tile-patch-${environment}`"
   >
     <Panel
       :variant="PanelVariantsEnum.SLIM"

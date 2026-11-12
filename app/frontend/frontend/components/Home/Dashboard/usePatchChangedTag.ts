@@ -7,7 +7,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 export const usePatchChangedTag = () => {
   const { t } = useI18n();
 
-  const { data } = useMyPatchChanges({ query: liveQuery });
+  const { data } = useMyPatchChanges(undefined, { query: liveQuery });
 
   const changedModelIds = computed(
     () => new Set(data.value?.ownedModelIds || []),

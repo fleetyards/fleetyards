@@ -89,7 +89,10 @@ const flagshipTag = computed(() =>
 
     <div class="home-hero__bottom">
       <div class="home-hero__title">
-        <span class="home-hero__eyebrow" data-test="home-dashboard-date">
+        <span
+          class="home-hero__eyebrow home-hero__eyebrow--dim"
+          data-test="home-dashboard-date"
+        >
           {{ today }}
         </span>
         <Heading hero :size="HeadingSizeEnum.HERO_SM">
@@ -196,6 +199,10 @@ const flagshipTag = computed(() =>
   letter-spacing: 0.08em;
   text-shadow: 0 1px 2px rgb(0 0 0 / 0.9);
   text-transform: uppercase;
+}
+
+.home-hero__eyebrow--dim {
+  color: var(--color-text-dim, #959595);
 }
 
 .home-hero__flagship {

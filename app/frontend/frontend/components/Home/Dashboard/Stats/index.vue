@@ -124,7 +124,7 @@ const stats = computed<Stat[]>(() => {
 }
 
 .home-stats__label {
-  color: var(--color-text, #c8c8c8);
+  color: var(--color-text-dim, #959595);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
