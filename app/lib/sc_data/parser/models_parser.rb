@@ -37,6 +37,7 @@ module ScData
           end
 
           loadout = merge_port_defs(values, loadout)
+          areas = servicing_areas.for(values)
 
           {
             key:,
@@ -66,8 +67,8 @@ module ScData
               z: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "z").to_f
             },
             interior: ship_interiors.for(key).presence,
-            landing_services: extract_landing_services(values),
-            servicing_areas: servicing_areas.for(values).presence,
+            landing_services: extract_landing_services(values, areas),
+            servicing_areas: areas.presence,
             command_module: docked_command_module(loadout, keys_by_ref),
             loadout:
           }
@@ -91,7 +92,8 @@ module ScData
           .transform_values { |icon| asset_path(icon).downcase }
         return if icons.blank?
 
-        icons.each_value { |icon| save_icon(icon) }
+        # Not cleared: another catalogue's artwork may share the folder.
+        icons.each_value { |icon| save_icon(icon, clear: false) }
 
         File.write("#{export_path}/landing_services.json", JSON.pretty_generate(icons))
       end
@@ -594,14 +596,14 @@ module ScData
       # The ship names an AreaServices record by GUID and that record lists the
       # services, so a ship without the component, or one pointing at a record
       # that lists none we know, provides nothing.
-      private def extract_landing_services(values)
+      private def extract_landing_services(values, areas)
         provider = values.dig("Components", "ShipServicesProviderParams")
         return [] unless provider.is_a?(Hash)
 
         # Zone servicing with no zone to service in services nothing: the 600i
         # Touring carries the component its Explorer sibling does, without the
         # area the Explorer's middle section places.
-        return [] if provider["useZoneServicing"] == "1" && servicing_areas.known? && servicing_areas.for(values).empty?
+        return [] if provider["useZoneServicing"] == "1" && servicing_areas.known? && areas.empty?
 
         services = area_services.dig(value_or_nil(provider["servicesClass"]), :services) || []
         services -= ["repair"] if provider["repairAvailable"] == "0"
