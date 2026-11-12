@@ -4,9 +4,10 @@
 # not -- "northstar" is North Star, "f7cm" the F7C-M -- and, where nothing
 # matches as typed, one a letter or two off -- "nortstar", "carack".
 module SearchMatch
-  # Letters and digits only, after lowercasing: what is left of a name once
-  # however its maker spaced and punctuated it is set aside.
-  COMPACT_SQL = "regexp_replace(lower(%s), '[^a-z0-9]+', '', 'g')"
+  # Letters and digits only, in any script, after lowercasing: what is left of
+  # a name once however its maker spaced and punctuated it is set aside. "Über"
+  # stays "über" rather than turning into "ber".
+  COMPACT_SQL = "regexp_replace(lower(%s), '[\\W_]+', '', 'g')"
 
   # Below this a query has too few trigrams for a near miss to mean anything:
   # "ore" is a letter off from half the catalogue.
@@ -20,7 +21,7 @@ module SearchMatch
   module_function
 
   def compact(text)
-    text.to_s.downcase.gsub(/[^a-z0-9]+/, "")
+    text.to_s.downcase.gsub(/[^[:alnum:]]+/, "")
   end
 
   def compact_sql(column)
@@ -47,19 +48,5 @@ module SearchMatch
 
   def fuzzy_binds(query)
     {fuzzy: query.to_s.downcase, fuzzy_compact: compact(query)}
-  end
-
-  # Each of `texts` as [match, rank] against the query, in their order, from
-  # the same functions the catalogue search uses.
-  def fuzzy_scores(query, texts)
-    return [] if texts.empty?
-
-    sql = ActiveRecord::Base.sanitize_sql_array([
-      "SELECT #{fuzzy_match_sql("t.text")}, #{fuzzy_rank_sql("t.text")} " \
-      "FROM unnest(ARRAY[:texts]::text[]) WITH ORDINALITY AS t(text, position) ORDER BY t.position",
-      {texts: texts.map(&:to_s), **fuzzy_binds(query)}
-    ])
-
-    ActiveRecord::Base.connection.select_rows(sql).map { |match, rank| [match.to_f, rank.to_f] }
   end
 end
