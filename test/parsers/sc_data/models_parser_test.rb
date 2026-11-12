@@ -195,7 +195,7 @@ module ScData
       # Idris keeps its hangar's.
       test "carries the areas its containers mark for servicing a landed ship" do
         write_area_services
-        write_containers(
+        write_containers({
           "objectcontainers/ships/test/bomber/body.socpak" => {"children" => ["objectcontainers/ships/test/bomber/bay.socpak"]},
           "objectcontainers/ships/test/bomber/bay.socpak" => {
             "servicingAreas" => [{
@@ -205,7 +205,7 @@ module ScData
               "shapes" => [{"type" => "Box", "boxMin" => [-7.5, -22.5, -3.0], "boxMax" => [7.5, 22.5, 3.0]}]
             }]
           }
-        )
+        }, derivation: true)
         write_ship(components: services_provider, object_containers: <<~'XML')
           <SVehicleObjectContainerParams fileName="ObjectContainers\Ships\TEST\bomber\body.socpak" boneName="animated_body">
             <Offset>
@@ -230,16 +230,35 @@ module ScData
         )
       end
 
+      test "provides no services where zone servicing has no area to service in" do
+        write_area_services
+        write_containers({"objectcontainers/ships/test/bomber/body.socpak" => {}}, derivation: true)
+        write_ship(components: services_provider, object_containers: '<SVehicleObjectContainerParams fileName="objectcontainers/ships/test/bomber/body.socpak" />')
+
+        assert_equal [], parsed_ship["landing_services"]
+      end
+
+      test "keeps the services of an export that does not collect servicing areas" do
+        write_area_services
+        write_containers({"objectcontainers/ships/test/bomber/body.socpak" => {}})
+        write_ship(components: services_provider, object_containers: '<SVehicleObjectContainerParams fileName="objectcontainers/ships/test/bomber/body.socpak" />')
+
+        assert_equal %w[repair rearm quantum_refuel hydrogen_refuel], parsed_ship["landing_services"]
+      end
+
       test "carries no servicing areas for a ship whose containers mark none" do
-        write_containers("objectcontainers/ships/test/bomber/body.socpak" => {})
+        write_containers({"objectcontainers/ships/test/bomber/body.socpak" => {}})
         write_ship(object_containers: '<SVehicleObjectContainerParams fileName="objectcontainers/ships/test/bomber/body.socpak" />')
 
         assert_nil parsed_ship["servicing_areas"]
       end
 
-      private def write_containers(containers)
+      private def write_containers(containers, derivation: false)
+        file = {containers:}
+        file[:derivation] = {servicingAreas: "areas tagged ShipServicingArea"} if derivation
+
         FileUtils.mkdir_p("#{@raw_path}/derived")
-        File.write("#{@raw_path}/#{::ScData::Parser::ServicingAreas::CONTAINERS_FILE}", JSON.generate({containers:}))
+        File.write("#{@raw_path}/#{::ScData::Parser::ServicingAreas::CONTAINERS_FILE}", JSON.generate(file))
       end
 
       private def services_provider(repair_available: "1")

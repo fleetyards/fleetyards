@@ -598,6 +598,11 @@ module ScData
         provider = values.dig("Components", "ShipServicesProviderParams")
         return [] unless provider.is_a?(Hash)
 
+        # Zone servicing with no zone to service in services nothing: the 600i
+        # Touring carries the component its Explorer sibling does, without the
+        # area the Explorer's middle section places.
+        return [] if provider["useZoneServicing"] == "1" && servicing_areas.known? && servicing_areas.for(values).empty?
+
         services = area_services.dig(value_or_nil(provider["servicesClass"]), :services) || []
         services -= ["repair"] if provider["repairAvailable"] == "0"
 

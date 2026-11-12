@@ -17,6 +17,12 @@ module ScData
         @base_path = base_path
       end
 
+      # Exports from before the exporter collected the areas say nothing about
+      # them, which is not the same as a ship having none.
+      def known?
+        containers_file.dig("derivation", "servicingAreas").present?
+      end
+
       def for(values)
         roots = Array.wrap(values.dig("Components", "VehicleComponentParams", "objectContainers", "SVehicleObjectContainerParams"))
 
@@ -64,9 +70,13 @@ module ScData
       end
 
       private def containers
-        @containers ||= begin
+        @containers ||= containers_file["containers"] || {}
+      end
+
+      private def containers_file
+        @containers_file ||= begin
           file = "#{@base_path}/#{CONTAINERS_FILE}"
-          File.exist?(file) ? JSON.parse(File.read(file))["containers"] || {} : {}
+          File.exist?(file) ? JSON.parse(File.read(file)) : {}
         end
       end
     end
