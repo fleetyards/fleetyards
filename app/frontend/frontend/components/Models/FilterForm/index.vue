@@ -49,6 +49,7 @@ const prefillFormValues = () => {
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
     stealthEq: filters.value.stealthEq,
+    withLandingServices: filters.value.withLandingServices,
     productionStatusIn: filters.value.productionStatusIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -95,6 +96,7 @@ const hasGroupFilters = (keys: string[]) =>
           'classificationIn',
           'focusIn',
           'stealthEq',
+          'withLandingServices',
           'sizeIn',
           'ingameOnlyEq',
         ])
@@ -129,6 +131,12 @@ const hasGroupFilters = (keys: string[]) =>
         :reset-label="t('labels.all')"
         :options="booleanOptions"
         name="stealth"
+      />
+
+      <FormToggle
+        v-model="form.withLandingServices"
+        :label="t('labels.filters.models.withLandingServices')"
+        name="withLandingServices"
       />
 
       <SizeSelect v-model="form.sizeIn" name="size" />
