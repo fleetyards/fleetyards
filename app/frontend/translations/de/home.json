@@ -419,6 +419,7 @@
           "onSale": "Wunschschiffe im Angebot",
           "fleetOnline": "Online in %{fleet}",
           "patch": "Live-Patch",
+          "patchPreview": "PTU-Patch",
           "patchChanged": {
             "one": "%{count} deiner Schiffe geändert",
             "other": "%{count} deiner Schiffe geändert"

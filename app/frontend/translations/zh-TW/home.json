@@ -419,6 +419,7 @@
           "onSale": "販售中的願望艦船",
           "fleetOnline": "%{fleet} 線上",
           "patch": "正式服補丁",
+          "patchPreview": "測試服補丁",
           "patchChanged": {
             "one": "你的 %{count} 艘艦船有變動",
             "other": "你的 %{count} 艘艦船有變動"

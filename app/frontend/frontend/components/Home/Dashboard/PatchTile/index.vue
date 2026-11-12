@@ -11,15 +11,24 @@ import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import { useMyPatchChanges } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import patchArt from "@/images/bg-3.webp";
 
 const { t } = useI18n();
 
-const { live, pick } = usePatchLoadingScreens();
+const { build, pick } = usePatchLoadingScreens();
 
 // `4.3.2-live.12913470` names its environment already; the tile shows the
 // release.
-const release = computed(() => live.value?.version.split("-")[0]);
+const release = computed(() => build.value?.version.split("-")[0]);
+
+const sourceStore = useScDataSourceStore();
+
+const label = computed(() =>
+  sourceStore.selected && !sourceStore.selected.default
+    ? t("home.dashboard.tiles.patchPreview")
+    : t("home.dashboard.tiles.patch"),
+);
 
 const background = computed(() => pick(0, patchArt));
 
@@ -46,7 +55,7 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
         :style="{ '--patch-art': `url(${background})` }"
       >
         <span class="home-patch-tile__label">
-          {{ t("home.dashboard.tiles.patch") }}
+          {{ label }}
         </span>
         <span class="home-patch-tile__value">{{ release || "–" }}</span>
         <span class="home-patch-tile__hint">

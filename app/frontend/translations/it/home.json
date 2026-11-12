@@ -419,6 +419,7 @@
           "onSale": "Navi desiderate in vendita",
           "fleetOnline": "Online in %{fleet}",
           "patch": "Patch live",
+          "patchPreview": "Patch PTU",
           "patchChanged": {
             "one": "%{count} delle tue navi è cambiata",
             "other": "%{count} delle tue navi sono cambiate"

@@ -419,6 +419,7 @@
           "onSale": "在售的心愿舰船",
           "fleetOnline": "%{fleet} 在线",
           "patch": "正式服补丁",
+          "patchPreview": "测试服补丁",
           "patchChanged": {
             "one": "你的 %{count} 艘舰船有改动",
             "other": "你的 %{count} 艘舰船有改动"

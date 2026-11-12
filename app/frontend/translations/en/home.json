@@ -419,6 +419,7 @@
           "onSale": "Wishlist ships on sale",
           "fleetOnline": "Online in %{fleet}",
           "patch": "Live patch",
+          "patchPreview": "PTU patch",
           "patchChanged": {
             "one": "%{count} of your ships changed",
             "other": "%{count} of your ships changed"
