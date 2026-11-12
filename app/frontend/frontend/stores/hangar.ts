@@ -30,6 +30,7 @@ export enum HangarTableViewColsEnum {
   MAX_SPEED = "modelMaxSpeed",
   GROUND_MAX_SPEED = "modelGroundMaxSpeed",
   FOCUS = "modelFocus",
+  LANDING_SERVICES = "modelLandingServices",
   PRODUCTION_STATUS = "modelProductionStatus",
   PRICE = "modelPrice",
   PLEDGE_PRICE = "modelPledgePrice",

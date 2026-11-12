@@ -17,6 +17,7 @@ import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
+import { landingServicesText } from "@/shared/utils/LandingServices";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { type Vehicle } from "@/services/fyApi";
@@ -448,6 +449,9 @@ const resetSelected = () => {
       </template>
       <template #col-modelFocus="{ record }">
         {{ fociText(record.model, t("labels.model.stealth")) }}
+      </template>
+      <template #col-modelLandingServices="{ record }">
+        {{ landingServicesText(record.model, t) }}
       </template>
       <template #col-modelPrice="{ record }">
         <!-- eslint-disable vue/no-v-html -->

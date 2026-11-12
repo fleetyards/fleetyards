@@ -21,6 +21,7 @@ export enum FleetTableViewColsEnum {
   SCM_SPEED = "modelScmSpeed",
   MAX_SPEED = "modelMaxSpeed",
   GROUND_MAX_SPEED = "modelGroundMaxSpeed",
+  LANDING_SERVICES = "modelLandingServices",
   PRODUCTION_STATUS = "modelProductionStatus",
   PRICE = "modelPrice",
   PLEDGE_PRICE = "modelPledgePrice",
