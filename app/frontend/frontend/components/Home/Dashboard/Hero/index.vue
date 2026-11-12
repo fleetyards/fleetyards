@@ -11,7 +11,6 @@ import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
 import { useHangar } from "@/services/fyApi";
-import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -20,7 +19,6 @@ import {
   dashboardHangarParams,
 } from "@/frontend/components/Home/Dashboard/hangarParams";
 import { usePatchChangedTag } from "@/frontend/components/Home/Dashboard/usePatchChangedTag";
-import patchArt from "@/images/bg-3.webp";
 
 const { t, currentLocale } = useI18n();
 
@@ -46,10 +44,6 @@ const today = computed(() =>
 
 const { currentUser } = storeToRefs(useSessionStore());
 
-const { pick } = usePatchLoadingScreens();
-
-const backdrop = computed(() => pick(0, patchArt));
-
 const toVehicle = useVehicleRoute();
 
 const { data } = useHangar(dashboardHangarParams, dashboardHangarOptions);
@@ -61,8 +55,8 @@ const flagship = computed(() => {
   return first?.flagship ? first : undefined;
 });
 
-// Only a render: a store picture brings a scene of its own, and the backdrop
-// is the scene here.
+// Only a render: it stands on the page itself, and a store picture would bring
+// a scene and need a frame.
 const flagshipImage = computed(() => {
   const media = flagship.value?.model.media;
 
@@ -77,21 +71,18 @@ const flagshipTag = computed(() =>
 </script>
 
 <template>
-  <section class="home-hero" data-test="home-hero">
-    <!-- The picture is clipped on a layer of its own, so the search's results
-         can still open past the banner's edge. -->
-    <div
-      class="home-hero__backdrop"
-      :style="{ '--home-hero-art': `url(${backdrop})` }"
+  <section
+    class="home-hero"
+    :class="{ 'home-hero--ship': flagshipImage }"
+    data-test="home-hero"
+  >
+    <img
+      v-if="flagshipImage"
+      :src="flagshipImage"
+      alt=""
+      class="home-hero__ship"
       aria-hidden="true"
-    >
-      <img
-        v-if="flagshipImage"
-        :src="flagshipImage"
-        alt=""
-        class="home-hero__ship"
-      />
-    </div>
+    />
 
     <div class="home-hero__top">
       <HomeBuildPills />
@@ -149,33 +140,20 @@ const flagshipTag = computed(() =>
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
-  min-height: 360px;
   margin-bottom: 20px;
-  padding: 20px 24px 24px;
+  padding: 0 0 8px;
   box-sizing: border-box;
+
+  // Room for the ship to stand in; without one the header is only its text.
+  &--ship {
+    min-height: 360px;
+  }
 }
 
-// Darker at the foot, where the greeting and the ship's name stand on it.
-.home-hero__backdrop {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-  border-radius: var(--radius-surface, 12px);
-  background:
-    linear-gradient(
-      180deg,
-      rgb(0 0 0 / 0.3) 0%,
-      rgb(0 0 0 / 0.15) 45%,
-      rgb(0 0 0 / 0.85) 100%
-    ),
-    var(--home-hero-art) center 60% / cover no-repeat;
-}
-
-// Behind the search, standing on the banner's right.
+// Behind the search, standing on the header's right.
 .home-hero__ship {
   position: absolute;
+  z-index: -1;
   right: 2%;
   bottom: 12%;
   width: min(62%, 760px);
@@ -274,9 +252,8 @@ const flagshipTag = computed(() =>
 
 // On a phone the ship fades back so the greeting stays readable over it.
 @media (max-width: 767px) {
-  .home-hero {
+  .home-hero--ship {
     min-height: 300px;
-    padding: 16px;
   }
 
   .home-hero__search {
