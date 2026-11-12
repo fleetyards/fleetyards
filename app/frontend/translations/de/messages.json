@@ -490,6 +490,45 @@
           "rank": {
             "success": "Rang geändert.",
             "failure": "Rang konnte nicht geändert werden."
+          },
+          "flights": {
+            "create": {
+              "success": "Schwarm hinzugefügt",
+              "failure": "Der Schwarm konnte nicht hinzugefügt werden"
+            },
+            "update": {
+              "success": "Schwarm gespeichert",
+              "failure": "Der Schwarm konnte nicht gespeichert werden"
+            },
+            "destroy": {
+              "confirm": "Schwarm %{name} löschen? Bereits daraus erstellte Teams behalten ihre Kopie.",
+              "success": "Schwarm gelöscht",
+              "failure": "Der Schwarm konnte nicht gelöscht werden"
+            },
+            "candidates": {
+              "success": "Einteilung gespeichert",
+              "failure": "Die Einteilung konnte nicht gespeichert werden"
+            }
+          },
+          "shipRequests": {
+            "create": {
+              "success": "%{username} wurde gefragt",
+              "failure": "Die Anfrage konnte nicht gesendet werden"
+            },
+            "accept": {
+              "success": "Die Staffel erhält jetzt dieses Schiff",
+              "failure": "Die Anfrage konnte nicht angenommen werden"
+            },
+            "destroy": {
+              "success": "Anfrage geschlossen",
+              "failure": "Die Anfrage konnte nicht geschlossen werden"
+            }
+          },
+          "shipSelection": {
+            "update": {
+              "success": "Schiffsauswahl gespeichert",
+              "failure": "Die Schiffsauswahl konnte nicht gespeichert werden"
+            }
           }
         },
         "calendarSubscription": {
@@ -1062,6 +1101,11 @@
             "success": "Anmeldung entfernt.",
             "failure": "Anmeldung konnte nicht entfernt werden.",
             "confirm": "Anmeldung dieses Mitglieds entfernen?"
+          },
+          "invite": {
+            "accepted": "Du bist dabei",
+            "declined": "Einladung abgelehnt",
+            "failure": "Die Einladung konnte nicht beantwortet werden"
           }
         },
         "eventAdmin": {

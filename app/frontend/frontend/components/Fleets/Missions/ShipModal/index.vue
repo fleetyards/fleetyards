@@ -28,22 +28,42 @@ import {
   type MissionTeam,
   type FilterOption,
   type Model,
+  type VehiclePublic,
   models as fetchModels,
+  fleetVehicles as fetchFleetVehicles,
   modelPositions as fetchModelPositions,
   useModelClassificationsFilters,
   useModelFocusFilters,
-  useCreateMissionShip,
-  useUpdateMissionShip,
 } from "@/services/fyApi";
+import {
+  type LineupScope,
+  isFlightScope,
+  useLineupApi,
+} from "@/frontend/components/Fleets/Missions/useLineupApi";
 
 type Props = {
   fleet: Fleet;
-  mission: Mission;
-  team: MissionTeam;
+  mission?: Mission;
+  team?: MissionTeam;
   ship?: MissionShip;
+  scope?: LineupScope;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  mission: undefined,
+  team: undefined,
+  ship: undefined,
+  scope: undefined,
+});
+
+const lineup = useLineupApi(
+  () =>
+    props.scope ?? {
+      fleetSlug: props.fleet.slug,
+      missionSlug: props.mission?.slug,
+      teamId: props.team?.id ?? props.ship?.missionTeamId ?? "",
+    },
+);
 
 const { t } = useI18n();
 const positionTypeLabel = usePositionTypeLabel();
@@ -55,16 +75,22 @@ const submitting = ref(false);
 
 type ShipMode = "specific" | "list" | "filter";
 
+// A flight is the same members in the same ships each time, so its ship is one
+// of the squadron's own rather than a kind of ship.
+const flightShip = !!props.scope && isFlightScope(props.scope);
+
 // A new spot opens on the list. Naming the handful of ships that fit is the
 // answer most spots want; one exact ship and a range of criteria are the
 // narrower and the broader exception either side of it.
-const initialMode: ShipMode = !props.ship
-  ? "list"
-  : props.ship.strict
-    ? "specific"
-    : props.ship.allowedModels?.length
-      ? "list"
-      : "filter";
+const initialMode: ShipMode = flightShip
+  ? "specific"
+  : !props.ship
+    ? "list"
+    : props.ship.strict
+      ? "specific"
+      : props.ship.allowedModels?.length
+        ? "list"
+        : "filter";
 const mode = ref<ShipMode>(initialMode);
 
 // The models a listed spot will take, in the order they were picked.
@@ -138,6 +164,60 @@ const fetchModelOptions = (params: BaseSelectParams<FilterOption>) => {
   });
 };
 
+const selectedVehicleId = ref<string | undefined>(
+  props.ship?.vehicle?.id ?? undefined,
+);
+
+// Only what the picker was handed carries the model, so the seats can be read
+// off the ship that was picked.
+const vehicleModels = new Map<string, Model>();
+
+const fetchSquadronVehicleOptions = async (
+  params: BaseSelectParams<FilterOption>,
+) => {
+  // The ship already chosen keeps its name, whoever holds it now.
+  if (params.missing && props.ship?.vehicle) {
+    return {
+      items: [
+        {
+          ...props.ship.vehicle,
+          model: props.ship.model,
+        } as unknown as VehiclePublic,
+      ],
+    };
+  }
+
+  const q: Record<string, unknown> = {
+    squadronSlugIn: [props.scope?.squadronSlug],
+  };
+  if (params.search) q.modelNameCont = params.search;
+  return fetchFleetVehicles(props.fleet.slug, {
+    page: String(params.page || 1),
+    q: q as never,
+  });
+};
+
+const formatVehicles = (response: { items: unknown[] }) =>
+  ((response.items || []) as VehiclePublic[]).map((vehicle) => {
+    if (vehicle.model) vehicleModels.set(vehicle.id, vehicle.model);
+
+    const ship = [vehicle.name, vehicle.model?.name]
+      .filter(Boolean)
+      .join(" · ");
+
+    return {
+      label: vehicle.username ? `${ship} (${vehicle.username})` : ship,
+      value: vehicle.id,
+      object: vehicle,
+    };
+  });
+
+watch(selectedVehicleId, (id) => {
+  const model = id ? vehicleModels.get(id) : undefined;
+  selectedModelId.value = model?.id;
+  selectedModelSlug.value = model?.slug;
+});
+
 const formatModels = (response: { items: Model[] }) => {
   return (response.items || []).map((m) => ({
     label: m.name,
@@ -196,6 +276,7 @@ watch(selectedModelSlug, async (slug) => {
 // positions all start picked, so the ones left out are what was edited.
 const shipChoice = computed(() => ({
   mode: mode.value,
+  selectedVehicleId: selectedVehicleId.value,
   selectedModelIds: selectedModelIds.value,
   selectedModelId: selectedModelId.value,
   skippedPositionIds: positions.value
@@ -206,6 +287,7 @@ const shipChoice = computed(() => ({
 const formDirty = useFormDirty(values, initialValues);
 const choiceDirty = useFormDirty(shipChoice, {
   mode: initialMode,
+  selectedVehicleId: selectedVehicleId.value,
   selectedModelIds: [...selectedModelIds.value],
   selectedModelId: selectedModelId.value,
   skippedPositionIds: [] as string[],
@@ -223,9 +305,6 @@ const togglePosition = (id: string) => {
   selectedPositionIds.value = next;
 };
 
-const createMutation = useCreateMissionShip();
-const updateMutation = useUpdateMissionShip();
-
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -234,7 +313,19 @@ const onSubmit = handleSubmit(async (values) => {
     description: values.description || null,
   };
 
-  if (mode.value === "specific") {
+  if (flightShip) {
+    data.vehicleId = selectedVehicleId.value || null;
+    data.allowedModelIds = [];
+    data.classification = null;
+    data.foci = [];
+    data.minSize = null;
+    data.maxSize = null;
+    data.minCargo = null;
+    if (!isEdit.value) {
+      data.positionIds = Array.from(selectedPositionIds.value);
+    }
+    data.minCrew = values.minCrew == null ? null : Number(values.minCrew);
+  } else if (mode.value === "specific") {
     data.modelId = selectedModelId.value || null;
     data.allowedModelIds = [];
     if (!isEdit.value) {
@@ -264,19 +355,8 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   const mutation = isEdit.value
-    ? updateMutation.mutateAsync({
-        fleetSlug: props.fleet.slug,
-        missionSlug: props.mission.slug,
-        missionTeamId: props.team.id,
-        id: props.ship!.id,
-        data: data as never,
-      })
-    : createMutation.mutateAsync({
-        fleetSlug: props.fleet.slug,
-        missionSlug: props.mission.slug,
-        missionTeamId: props.team.id,
-        data: data as never,
-      });
+    ? lineup.updateShip(props.ship!.id, data as never)
+    : lineup.createShip(data as never);
 
   await mutation
     .then(() => {
@@ -312,7 +392,7 @@ const onSubmit = handleSubmit(async (values) => {
     <form id="ship-form" @submit.prevent="onSubmit">
       <!-- The switch is a section break, so it keeps the 1rem the fields below
            it carry between them. -->
-      <div class="mb-4 flex">
+      <div v-if="!flightShip" class="mb-4 flex">
         <BtnGroup segmented>
           <Btn :active="mode === 'list'" @click="mode = 'list'">
             {{ t("labels.fleets.missions.modelList") }}
@@ -345,7 +425,22 @@ const onSubmit = handleSubmit(async (values) => {
       </template>
 
       <template v-else-if="mode === 'specific'">
+        <template v-if="flightShip">
+          <BaseSelect
+            v-model="selectedVehicleId"
+            :query-fn="fetchSquadronVehicleOptions"
+            :query-response-formatter="formatVehicles"
+            :label="t('labels.fleets.missions.ship')"
+            name="vehicleId"
+            :searchable="true"
+            :paginated="true"
+          />
+          <p class="text-muted small">
+            {{ t("labels.fleet.squadrons.flights.squadronShipsHint") }}
+          </p>
+        </template>
         <BaseSelect
+          v-else
           v-model="selectedModelId"
           :query-fn="fetchModelOptions"
           :query-response-formatter="formatModels"

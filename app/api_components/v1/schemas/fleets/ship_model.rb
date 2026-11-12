@@ -16,7 +16,8 @@ module V1
             name: {type: :string},
             slug: {type: :string},
             crew: {type: [:integer, :null]},
-            image: ::Shared::V1::Schemas::MediaFile
+            image: ::Shared::V1::Schemas::MediaFile,
+            angledView: ::Shared::V1::Schemas::MediaFile
           },
           required: %w[id name slug]
         })

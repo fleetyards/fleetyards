@@ -15,6 +15,7 @@ module Notifications
         fleet_event_signup.withdrawn
         fleet_event_signup.status_changed
         fleet_event_signup.assigned
+        fleet_event_signup.invited
       ].freeze
 
       def self.register!
@@ -45,6 +46,7 @@ module Notifications
         when "fleet_event_signup.withdrawn" then handle_signup_withdrawn
         when "fleet_event_signup.status_changed" then handle_signup_status_changed
         when "fleet_event_signup.assigned" then handle_signup_assigned
+        when "fleet_event_signup.invited" then handle_signup_invited
         end
       end
 
@@ -205,10 +207,25 @@ module Notifications
         target_event = signup.fleet_event
         return unless target_event && signup.user
 
-        slot_title = signup.fleet_event_slot&.title || target_event.title
+        slot_title = signup.fleet_event_slot&.display_title || target_event.title
         notify(signup.user, :fleet_event_signup_assigned, target_event) do
           {
             title: I18n.t("notifications.fleet_event_signup.assigned.title",
+              slot: slot_title,
+              title: target_event.title)
+          }
+        end
+      end
+
+      def handle_signup_invited
+        return unless signup
+        target_event = signup.fleet_event
+        return unless target_event && signup.user
+
+        slot_title = signup.fleet_event_slot&.display_title || target_event.title
+        notify(signup.user, :fleet_event_signup_invited, target_event) do
+          {
+            title: I18n.t("notifications.fleet_event_signup.invited.title",
               slot: slot_title,
               title: target_event.title)
           }

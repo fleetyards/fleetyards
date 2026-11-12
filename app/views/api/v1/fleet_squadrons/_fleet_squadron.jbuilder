@@ -10,3 +10,10 @@ end
 # per squadron costs one indexed count; serving a roster that has changed does
 # not cost anything until somebody notices.
 json.member_count fleet_squadron.member_count
+
+# Only while the squadron has flights, from the count its list took for the
+# whole page.
+flight_counts = local_assigns[:flight_counts]
+if flight_counts && fleet_squadron.flights_enabled?
+  json.flight_count flight_counts.fetch(fleet_squadron.id, 0)
+end

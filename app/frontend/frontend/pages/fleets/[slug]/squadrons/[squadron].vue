@@ -21,6 +21,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   type Fleet,
   type FleetMember,
@@ -65,6 +66,19 @@ const canManageMembers = computed(
     squadron.value?.capabilities?.manageMembers ??
     props.membership?.capabilities?.manageSquadronMembers ??
     false,
+);
+
+const { isFleetSquadronFlightsEnabled } = useFeatures();
+
+// Flights are the squadron's own choice, so their tab is there only while it
+// has them switched on.
+const detailRoutes = computed(() =>
+  squadronDetailRoutes.filter(
+    (route) =>
+      route.name !== "fleet-squadron-flights" ||
+      (isFleetSquadronFlightsEnabled(props.fleet) &&
+        squadron.value?.flightsEnabled),
+  ),
 );
 
 const tabLinks = computed<TabNavLink[]>(() => [
@@ -230,7 +244,7 @@ const crumbs = computed<Crumb[]>(() => [
     </Teleport>
 
     <TabNavView
-      :routes="squadronDetailRoutes"
+      :routes="detailRoutes"
       :links="tabLinks"
       :authenticated="sessionStore.isAuthenticated"
       :resource-access="props.membership?.fleetRole?.resourceAccess"

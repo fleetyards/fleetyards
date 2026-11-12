@@ -1,6 +1,11 @@
 ---
 zh-CN:
   labels:
+    slots:
+      roles:
+        captain: "舰长"
+        pilot: "驾驶员"
+      lead: "小队长"
     actions: 操作
     charts:
       component-pie:

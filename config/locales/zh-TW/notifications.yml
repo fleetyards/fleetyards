@@ -141,6 +141,10 @@ zh-TW:
       title: "%{username} 申請加入 %{squadron}"
     fleet_squadron_request_accepted:
       title: "你已加入 %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} 請求將你的 %{ship} 編入 %{squadron}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} 已將其 %{ship} 編入 %{squadron}"
     payout_ledger_settled:
       title: "%{subject} 的分帳已結算"
     payout_entry_pending_review:
@@ -194,5 +198,7 @@ zh-TW:
         title: "你對 %{title} 的報名已獲批准"
       assigned:
         title: "你已被分配到 %{title} 的 %{slot}"
+      invited:
+        title: "你被邀請擔任 %{title} 的 %{slot}"
       kicked:
         title: "你已被移出 %{title}"

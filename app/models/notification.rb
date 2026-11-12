@@ -25,6 +25,7 @@ class Notification < ApplicationRecord
     fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn",
     fleet_event_signup_confirmed: "fleet_event_signup_confirmed",
     fleet_event_signup_assigned: "fleet_event_signup_assigned",
+    fleet_event_signup_invited: "fleet_event_signup_invited",
     fleet_event_signup_kicked: "fleet_event_signup_kicked",
     inventory_transfer_received: "inventory_transfer_received",
     inventory_transfer_resolved: "inventory_transfer_resolved",
@@ -36,6 +37,8 @@ class Notification < ApplicationRecord
     tour_join_request_accepted: "tour_join_request_accepted",
     fleet_squadron_request_received: "fleet_squadron_request_received",
     fleet_squadron_request_accepted: "fleet_squadron_request_accepted",
+    fleet_squadron_ship_request_received: "fleet_squadron_ship_request_received",
+    fleet_squadron_ship_request_accepted: "fleet_squadron_ship_request_accepted",
     fleet_contract_published: "fleet_contract_published",
     fleet_contract_claimed: "fleet_contract_claimed",
     fleet_contract_crew_requested: "fleet_contract_crew_requested",
@@ -194,6 +197,12 @@ class Notification < ApplicationRecord
       mailer: ->(notification) { FleetEventMailer.signup_assigned(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
+    fleet_event_signup_invited: {
+      retention: 14.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { FleetEventMailer.signup_invited(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false}
+    },
     fleet_event_signup_kicked: {
       retention: 14.days,
       channels: %i[app mail push discord],
@@ -261,6 +270,17 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_squadron_request_accepted: {
+      retention: 30.days,
+      channels: %i[app push discord],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_squadron_ship_request_received: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_squadron_ship_request_accepted: {
       retention: 30.days,
       channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}

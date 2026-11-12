@@ -527,6 +527,9 @@ en:
               must_be_in_game: is not in the game yet
             allowed_model_ids:
               must_be_in_game: name a ship that is not in the game yet
+            vehicle_id:
+              not_in_squadron: "is not one of the ships the squadron's members give it"
+              taken: "is already in this flight"
         fleet_event_ship:
           attributes:
             base:
@@ -571,10 +574,17 @@ en:
           attributes:
             fleet_squadron:
               not_in_fleet: "must be a squadron or team of this fleet"
+            source_flight:
+              not_in_fleet: "must be a flight of one of this fleet's squadrons"
+              flights_disabled: "belongs to a squadron that has switched its flights off"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "must be a squadron or team of this fleet"
+            source_flight:
+              not_in_fleet: "must be a flight of one of this fleet's squadrons"
+              flights_disabled: "belongs to a squadron that has switched its flights off"
+          one_owner: "must belong to either a template or a flight"
         fleet_inventory:
           attributes:
             managed_by:
@@ -595,6 +605,8 @@ en:
               conflicting_members: "cannot be turned off while %{members} are also in another squadron"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "must be one of the member's own hangar groups"
             fleet_membership:
               not_a_member: "must be an accepted member of this fleet"
             fleet_squadron:
@@ -602,6 +614,10 @@ en:
             fleet_squadron_role:
               not_in_fleet: "must be one of this fleet's squadron ranks"
               single_holder_taken: "is already held by another member of this squadron — there is one %{role} per squadron"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "must be one of the member's own ships"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -612,6 +628,32 @@ en:
               already_a_member: "already includes you"
               exclusive_conflict: "conflicts with %{squadron} — a member belongs to one squadron unless it is a team"
               request_pending: "cannot be asked while your request to join %{squadron} is waiting — withdraw that one first"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "must be one of the member's own ships"
+              not_in_fleet: "must be shared with the fleet"
+              already_given: "is already one the squadron gets"
+            vehicle_id:
+              already_requested: "has already been asked for"
+        mission_slot:
+          lead_required: "A flight always keeps its lead seat."
+          pilot_required: "A flight's ship always keeps a pilot seat."
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "must be a member of this flight's squadron"
+              not_in_fleet: "must be a member of a squadron of this fleet"
+            vehicle:
+              not_owned: "must be one of the member's own ships"
+              not_given: "must be one of the ships the member gives this squadron"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "must be a member of this flight's squadron"
+              not_in_fleet: "must be a member of a squadron of this fleet"
+            vehicle:
+              not_owned: "must be one of the member's own ships"
         fleet_squadron_role:
           attributes:
             default_rank:

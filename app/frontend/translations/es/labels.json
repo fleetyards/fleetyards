@@ -1055,7 +1055,55 @@
             "requests": "Solicitudes"
           },
           "requestedAt": "Solicitado el",
-          "requests": "Solicitudes"
+          "requests": "Solicitudes",
+          "flights": {
+            "index": "Escuadrillas",
+            "name": "Nombre",
+            "description": "Descripción",
+            "noCandidates": "Nadie asignado",
+            "primary": "Titular",
+            "alternate": "Suplente %{count}",
+            "ship": "Nave",
+            "anyShip": "Cualquier nave adecuada",
+            "teamSource": "Escuadrilla",
+            "teamSourceHint": "Copia las naves y los slots de la escuadrilla en este equipo e invita a los miembros asignados en cuanto el evento esté abierto.",
+            "ofSquadron": "Escuadrilla de %{squadron}",
+            "nobodyListed": "Aún no hay nadie asignado",
+            "exactModel": "Modelo exacto",
+            "openSeat": "Slot libre",
+            "then": "Después %{names}",
+            "noAlternates": "Sin suplentes",
+            "shipsSummary": "%{ships} naves · %{filled} de %{seats} slots ocupados",
+            "lead": "Líder de escuadrilla",
+            "openSeats": "%{count} libres",
+            "role": "Función",
+            "roles": {
+              "crew": "Tripulación",
+              "captain": "Capitán",
+              "pilot": "Piloto"
+            },
+            "squadronShipsHint": "Solo se muestran las naves que los miembros ceden al escuadrón.",
+            "shipOf": "nave de %{username}"
+          },
+          "askableShips": "Naves que solicitar",
+          "shipRequestFrom": "%{username} te pide tu %{ship}",
+          "shipRequestTo": "%{ship} de %{username}",
+          "shipsFilter": {
+            "label": "Este escuadrón recibe",
+            "all": "Todas las naves que comparto con la flota",
+            "hangar_group": "Un grupo de hangar",
+            "picked": "Naves que elijo",
+            "hangarGroup": "Grupo de hangar",
+            "pickedShips": "Naves",
+            "extraShips": "Además, estas naves"
+          },
+          "flightsEnabled": "Escuadrillas",
+          "flightsEnabledHint": "Permite a los líderes del escuadrón crear escuadrillas: formaciones de naves y slots que rellenan equipos de eventos y plantillas e invitan a los miembros asignados.",
+          "figures": {
+            "members": "Miembros",
+            "ships": "Naves",
+            "flights": "Escuadrillas"
+          }
         },
         "roles": {
           "permanent": "Permanente",
@@ -3982,6 +4030,7 @@
         "fleet_event_signup_withdrawn": "Inscripción retirada",
         "fleet_event_signup_confirmed": "Inscripción confirmada",
         "fleet_event_signup_assigned": "Asignado a un slot",
+        "fleet_event_signup_invited": "Invitado a un slot",
         "fleet_event_signup_kicked": "Eliminado de un slot",
         "allInGroup": "Todo en este grupo",
         "inventory_transfer_received": "Transferencia recibida",
@@ -3994,6 +4043,8 @@
         "tour_join_request_accepted": "Solicitud de participación aceptada",
         "fleet_squadron_request_received": "Solicitud para unirse al escuadrón",
         "fleet_squadron_request_accepted": "Solicitud de escuadrón aceptada",
+        "fleet_squadron_ship_request_received": "Nave solicitada para un escuadrón",
+        "fleet_squadron_ship_request_accepted": "Solicitud de nave aceptada",
         "fleet_contract_published": "Contrato publicado",
         "fleet_announcement_posted": "Anuncio publicado",
         "fleet_contract_claimed": "Contrato aceptado",
@@ -4144,7 +4195,8 @@
             "tentative": "Tentativa",
             "interested": "Interesado",
             "pending": "Pendiente de aprobación",
-            "withdrawn": "Retirada"
+            "withdrawn": "Retirada",
+            "invited": "Invitado"
           },
           "signupApprovals": {
             "direct": "Directa",
@@ -4216,7 +4268,8 @@
             "week": "Semana",
             "weekTitle": "Semana del %{date}"
           },
-          "repeats": "Se repite"
+          "repeats": "Se repite",
+          "invitedHint": "Tu escuadrón te ofrece este slot."
         },
         "contracts": {
           "tabs": {

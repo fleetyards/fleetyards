@@ -87,7 +87,9 @@
             "details": "詳細資訊",
             "appearance": "外觀",
             "discord": "Discord"
-          }
+          },
+          "flights": "小隊",
+          "myShips": "我的艦船"
         },
         "stats": "統計",
         "logistics": {

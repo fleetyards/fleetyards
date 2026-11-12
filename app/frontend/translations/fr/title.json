@@ -93,7 +93,10 @@
             "details": "Modifier l'escadron - %{fleet}",
             "appearance": "Apparence de l'escadron - %{fleet}",
             "discord": "Discord de l'escadron - %{fleet}"
-          }
+          },
+          "flights": "Patrouilles de l'escadron de %{fleet}",
+          "myShips": "Vaisseaux de l'escadron de %{fleet}",
+          "flight": "Patrouille de l'escadron de %{fleet}"
         },
         "stats": "Statistiques sur %{fleet}",
         "blueprints": "Plans de %{fleet}",

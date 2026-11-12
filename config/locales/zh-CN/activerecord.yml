@@ -539,10 +539,17 @@ zh-CN:
           attributes:
             fleet_squadron:
               not_in_fleet: "必须是本舰队的中队或小队"
+            source_flight:
+              not_in_fleet: "必须是本舰队某个中队的小队"
+              flights_disabled: "所属中队已关闭小队功能"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "必须是本舰队的中队或小队"
+            source_flight:
+              not_in_fleet: "必须是本舰队某个中队的小队"
+              flights_disabled: "所属中队已关闭小队功能"
+          one_owner: "必须属于模板或小队之一"
         fleet_inventory:
           attributes:
             managed_by:
@@ -563,6 +570,8 @@ zh-CN:
               conflicting_members: "无法关闭，因为 %{members} 同时还在另一个中队中"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "必须是该成员自己的机库分组"
             fleet_membership:
               not_a_member: "必须是该舰队已接受的成员"
             fleet_squadron:
@@ -570,6 +579,10 @@ zh-CN:
             fleet_squadron_role:
               not_in_fleet: "必须是本舰队的中队职级之一"
               single_holder_taken: "已由本中队的其他成员担任——每个中队只能有一名%{role}"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -580,6 +593,37 @@ zh-CN:
               already_a_member: "已包含你"
               exclusive_conflict: "与 %{squadron} 冲突——除团队外，成员只能属于一个中队"
               request_pending: "无法申请：你加入 %{squadron} 的申请仍在等待中——请先撤回"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
+              not_in_fleet: "必须已与舰队共享"
+              already_given: "已在该中队的舰船中"
+            vehicle_id:
+              already_requested: "已被请求过"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "不是成员提供给本中队的舰船"
+              taken: "已在此小队中"
+        mission_slot:
+          lead_required: "小队始终保留其小队长席位。"
+          pilot_required: "小队中的舰船始终保留一个驾驶员席位。"
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必须是该小队所属中队的成员"
+              not_in_fleet: "必须是本舰队某个中队的成员"
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
+              not_given: "必须是该成员提供给此中队的舰船之一"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "必须是该小队所属中队的成员"
+              not_in_fleet: "必须是本舰队某个中队的成员"
+            vehicle:
+              not_owned: "必须是该成员自己的舰船"
         fleet_squadron_role:
           attributes:
             default_rank:

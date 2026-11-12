@@ -11,7 +11,8 @@ module V1
           properties: {
             title: {type: :string},
             description: {type: [:string, :null]},
-            fleetSquadronId: {type: [:string, :null], format: :uuid}
+            fleetSquadronId: {type: [:string, :null], format: :uuid},
+            sourceFlightId: {type: [:string, :null], format: :uuid}
           },
           required: %w[title],
           additionalProperties: false

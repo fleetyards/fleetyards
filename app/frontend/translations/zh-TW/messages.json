@@ -484,6 +484,45 @@
           "rank": {
             "success": "職級已變更。",
             "failure": "無法變更職級。"
+          },
+          "flights": {
+            "create": {
+              "success": "小隊已新增",
+              "failure": "無法新增小隊"
+            },
+            "update": {
+              "success": "小隊已儲存",
+              "failure": "無法儲存小隊"
+            },
+            "destroy": {
+              "confirm": "刪除小隊 %{name}？已據此建立的隊伍會保留各自的副本。",
+              "success": "小隊已刪除",
+              "failure": "無法刪除小隊"
+            },
+            "candidates": {
+              "success": "席位成員已儲存",
+              "failure": "無法儲存席位成員"
+            }
+          },
+          "shipRequests": {
+            "create": {
+              "success": "已向 %{username} 發出請求",
+              "failure": "無法請求該艦船"
+            },
+            "accept": {
+              "success": "該中隊現在可以使用這艘艦船",
+              "failure": "無法接受該請求"
+            },
+            "destroy": {
+              "success": "請求已關閉",
+              "failure": "無法關閉該請求"
+            }
+          },
+          "shipSelection": {
+            "update": {
+              "success": "艦船選擇已儲存",
+              "failure": "無法儲存艦船選擇"
+            }
           }
         },
         "calendarSubscription": {
@@ -1056,6 +1095,11 @@
             "success": "報名已移除。",
             "failure": "無法移除報名。",
             "confirm": "要移除這位成員的報名嗎？"
+          },
+          "invite": {
+            "accepted": "你已加入",
+            "declined": "已拒絕邀請",
+            "failure": "無法回覆邀請"
           }
         },
         "eventAdmin": {

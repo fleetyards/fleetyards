@@ -67,7 +67,7 @@ module Api
             )
             .where(
               fleet_event_signups: {
-                status: %w[confirmed pending tentative interested]
+                status: %w[confirmed pending invited tentative interested]
               }
             )
             .where(archived_at: nil)

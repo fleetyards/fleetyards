@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class FleetEventSignup < ApplicationRecord
-  STATUSES = %w[confirmed tentative interested pending withdrawn].freeze
+  STATUSES = %w[confirmed tentative interested pending invited withdrawn].freeze
   MEMBER_REQUESTABLE_STATUSES = %w[confirmed tentative interested].freeze
   # Slot-bound signups must commit to the slot — only fully confirmed
-  # signups (or those still awaiting admin approval) are allowed there.
-  SLOT_BOUND_STATUSES = %w[confirmed pending withdrawn].freeze
+  # signups, those still awaiting admin approval, or a member a squadron's
+  # flight invited and who has yet to answer are allowed there.
+  SLOT_BOUND_STATUSES = %w[confirmed pending invited withdrawn].freeze
 
   belongs_to :fleet_event, touch: true
   belongs_to :fleet_event_slot, touch: true, optional: true
@@ -23,6 +24,11 @@ class FleetEventSignup < ApplicationRecord
 
   before_validation :assign_event_from_slot
   before_save :stamp_status_timestamps
+
+  # A member leaving a slot that was offered down a list hands it to the next
+  # one on it.
+  after_update_commit :hand_slot_on, if: :left_slot?
+  after_destroy_commit -> { hand_slot_on(fleet_event_slot_id) }, if: -> { fleet_event_slot_id.present? && !withdrawn? }
 
   delegate :user, to: :fleet_membership
 
@@ -44,6 +50,10 @@ class FleetEventSignup < ApplicationRecord
 
   def pending?
     status == "pending"
+  end
+
+  def invited?
+    status == "invited"
   end
 
   CONFLICT_INDEX_ERRORS = {
@@ -216,6 +226,21 @@ class FleetEventSignup < ApplicationRecord
     return false unless will_save_change_to_status? || will_save_change_to_fleet_event_slot_id?
 
     !occurrence_started?
+  end
+
+  private def left_slot?
+    previous_slot_id.present? &&
+      (saved_change_to_fleet_event_slot_id? || (saved_change_to_status? && withdrawn?))
+  end
+
+  private def previous_slot_id
+    saved_change_to_fleet_event_slot_id? ? fleet_event_slot_id_before_last_save : fleet_event_slot_id
+  end
+
+  private def hand_slot_on(slot_id = previous_slot_id)
+    return unless FleetEventSlotCandidate.exists?(fleet_event_slot_id: slot_id)
+
+    FleetEvents::SlotInvites.pass_on!(slot_id, fleet_membership_id)
   end
 
   private def stamp_status_timestamps

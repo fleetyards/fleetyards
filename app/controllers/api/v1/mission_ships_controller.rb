@@ -11,7 +11,7 @@ module Api
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
-      before_action -> { require_fleet_subscription(:events) }
+      before_action :require_events_subscription
       before_action :set_mission
       before_action :set_team
       before_action :set_ship, only: %i[update destroy duplicate]
@@ -24,7 +24,7 @@ module Api
         # have to exist in memory by then.
         build_allowed_models(@ship, allowed_model_ids_param)
 
-        authorize! @ship, with: MissionShipPolicy, context: {mission: @mission}
+        authorize_ship!(@ship)
 
         ActiveRecord::Base.transaction do
           @ship.save!
@@ -41,7 +41,7 @@ module Api
       end
 
       def update
-        authorize! @ship, with: MissionShipPolicy, context: {mission: @mission}
+        authorize_ship!(@ship)
 
         ActiveRecord::Base.transaction do
           sync_allowed_models!(@ship, allowed_model_ids_param)
@@ -54,7 +54,7 @@ module Api
       end
 
       def destroy
-        authorize! @ship, with: MissionShipPolicy, context: {mission: @mission}
+        authorize_ship!(@ship)
 
         unless @ship.destroy
           render json: ValidationError.new("mission_ships.destroy", errors: @ship.errors), status: :bad_request
@@ -62,7 +62,7 @@ module Api
       end
 
       def sort
-        authorize! @mission, with: MissionShipPolicy, to: :sort?, context: {mission: @mission}
+        authorize_ship!(@mission, to: :sort?)
 
         sorting = params.permit(sorting: [])[:sorting] || []
 
@@ -80,7 +80,7 @@ module Api
       # rebuilding them from the model would quietly discard that work — the
       # rows are copied as they stand.
       def duplicate
-        authorize! @ship, with: MissionShipPolicy, to: :duplicate?, context: {mission: @mission}
+        authorize_ship!(@ship, to: :duplicate?)
 
         ActiveRecord::Base.transaction do
           @copy = @team.mission_ships.new(
@@ -166,6 +166,16 @@ module Api
             position: next_slot_position
           )
         end
+      end
+
+      # The seams a flight's ships override: they belong to a squadron rather
+      # than a template, and its leadership edits them.
+      private def authorize_ship!(record, to: nil)
+        authorize!(record, with: MissionShipPolicy, context: {mission: @mission}, **(to ? {to:} : {}))
+      end
+
+      private def require_events_subscription
+        require_fleet_subscription(:events)
       end
 
       private def set_fleet

@@ -1055,7 +1055,55 @@
             "requests": "Anfragen"
           },
           "requestedAt": "Angefragt am",
-          "requests": "Anfragen"
+          "requests": "Anfragen",
+          "flights": {
+            "index": "Schwärme",
+            "name": "Name",
+            "description": "Beschreibung",
+            "noCandidates": "Niemand eingeteilt",
+            "primary": "Erste Wahl",
+            "alternate": "Ersatz %{count}",
+            "ship": "Schiff",
+            "anyShip": "Jedes passende Schiff",
+            "teamSource": "Schwarm",
+            "teamSourceHint": "Übernimmt Schiffe und Slots des Schwarms in dieses Team und lädt die eingeteilten Mitglieder ein, sobald das Event offen ist.",
+            "ofSquadron": "Schwarm von %{squadron}",
+            "nobodyListed": "Noch niemand eingeteilt",
+            "exactModel": "Genaues Modell",
+            "openSeat": "Freier Slot",
+            "then": "Danach %{names}",
+            "noAlternates": "Kein Ersatz",
+            "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt",
+            "lead": "Schwarmführer",
+            "openSeats": "%{count} frei",
+            "role": "Rolle",
+            "roles": {
+              "crew": "Crew",
+              "captain": "Kapitän",
+              "pilot": "Pilot"
+            },
+            "squadronShipsHint": "Es werden nur Schiffe angezeigt, die die Mitglieder der Staffel geben.",
+            "shipOf": "Schiff von %{username}"
+          },
+          "askableShips": "Anfragbare Schiffe",
+          "shipRequestFrom": "%{username} bittet um deine %{ship}",
+          "shipRequestTo": "%{ship} von %{username}",
+          "shipsFilter": {
+            "label": "Diese Staffel erhält",
+            "all": "Alle Schiffe, die ich mit der Flotte teile",
+            "hangar_group": "Eine Hangar-Gruppe",
+            "picked": "Ausgewählte Schiffe",
+            "hangarGroup": "Hangar-Gruppe",
+            "pickedShips": "Schiffe",
+            "extraShips": "Zusätzlich diese Schiffe"
+          },
+          "flightsEnabled": "Schwärme",
+          "flightsEnabledHint": "Erlaubt der Staffelführung, Schwärme anzulegen: Aufstellungen aus Schiffen und Slots, die Event- und Vorlagen-Teams vorbefüllen und die eingeteilten Mitglieder einladen.",
+          "figures": {
+            "members": "Mitglieder",
+            "ships": "Schiffe",
+            "flights": "Schwärme"
+          }
         },
         "roles": {
           "permanent": "Permanent",
@@ -3982,6 +4030,7 @@
         "fleet_event_signup_withdrawn": "Anmeldung zurückgezogen",
         "fleet_event_signup_confirmed": "Anmeldung bestätigt",
         "fleet_event_signup_assigned": "Einem Slot zugewiesen",
+        "fleet_event_signup_invited": "Zu einem Slot eingeladen",
         "fleet_event_signup_kicked": "Aus einem Slot entfernt",
         "allInGroup": "Alles in dieser Gruppe",
         "inventory_transfer_received": "Transfer erhalten",
@@ -3994,6 +4043,8 @@
         "tour_join_request_accepted": "Teilnahme-Anfrage angenommen",
         "fleet_squadron_request_received": "Staffel-Beitrittsanfrage",
         "fleet_squadron_request_accepted": "Staffel-Anfrage angenommen",
+        "fleet_squadron_ship_request_received": "Schiff für eine Staffel angefragt",
+        "fleet_squadron_ship_request_accepted": "Schiffsanfrage angenommen",
         "fleet_contract_published": "Auftrag veröffentlicht",
         "fleet_announcement_posted": "Ankündigung veröffentlicht",
         "fleet_contract_claimed": "Auftrag übernommen",
@@ -4144,7 +4195,8 @@
             "tentative": "Vorläufig",
             "interested": "Interessiert",
             "pending": "Bestätigung ausstehend",
-            "withdrawn": "Zurückgezogen"
+            "withdrawn": "Zurückgezogen",
+            "invited": "Eingeladen"
           },
           "signupApprovals": {
             "direct": "Direkt",
@@ -4216,7 +4268,8 @@
             "week": "Woche",
             "weekTitle": "Woche vom %{date}"
           },
-          "repeats": "Wiederholung"
+          "repeats": "Wiederholung",
+          "invitedHint": "Deine Staffel bietet dir diesen Slot an."
         },
         "contracts": {
           "tabs": {

@@ -43,6 +43,7 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_event_signup_withdrawn: "openRoster",
   fleet_event_signup_confirmed: "openEvent",
   fleet_event_signup_assigned: "openEvent",
+  fleet_event_signup_invited: "openEvent",
   inventory_transfer_received: "openTransfers",
   inventory_transfer_resolved: "openTransfers",
   fleet_event_signup_kicked: "openEvent",
@@ -60,6 +61,9 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   // The request leads to the squadron's requests tab, where it is answered.
   fleet_squadron_request_received: "reviewRequest",
   fleet_squadron_request_accepted: "openSquadron",
+  // Answered on the member's own ship choice for that squadron.
+  fleet_squadron_ship_request_received: "reviewRequest",
+  fleet_squadron_ship_request_accepted: "openSquadron",
   fleet_contract_published: "openContract",
   fleet_contract_claimed: "openContract",
   fleet_contract_crew_requested: "openContract",

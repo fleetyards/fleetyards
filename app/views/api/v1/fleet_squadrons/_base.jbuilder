@@ -6,6 +6,7 @@ json.slug fleet_squadron.slug
 json.short_description fleet_squadron.short_description
 json.color fleet_squadron.color
 json.team fleet_squadron.team
+json.flights_enabled fleet_squadron.flights_enabled
 json.discord_channel_id fleet_squadron.discord_channel_id
 
 if fleet_squadron.icon.attached?

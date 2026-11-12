@@ -1055,7 +1055,55 @@
             "requests": "申請"
           },
           "requestedAt": "申請時間",
-          "requests": "申請"
+          "requests": "申請",
+          "flights": {
+            "index": "小隊",
+            "name": "名稱",
+            "description": "描述",
+            "noCandidates": "未指定成員",
+            "primary": "首選",
+            "alternate": "替補 %{count}",
+            "ship": "艦船",
+            "anyShip": "任意合適艦船",
+            "teamSource": "小隊",
+            "teamSourceHint": "將小隊的艦船和席位複製到此隊伍，並在活動開放後邀請所列成員。",
+            "ofSquadron": "%{squadron} 的小隊",
+            "nobodyListed": "尚未指定成員",
+            "exactModel": "指定型號",
+            "openSeat": "空缺席位",
+            "then": "其次：%{names}",
+            "noAlternates": "無替補",
+            "shipsSummary": "%{ships} 艘艦船 · 已安排 %{filled}/%{seats} 個席位",
+            "lead": "小隊長",
+            "openSeats": "%{count} 個空缺",
+            "role": "職責",
+            "roles": {
+              "crew": "船員",
+              "captain": "艦長",
+              "pilot": "駕駛員"
+            },
+            "squadronShipsHint": "僅列出成員提供給本中隊的艦船。",
+            "shipOf": "%{username} 的艦船"
+          },
+          "askableShips": "可請求的艦船",
+          "shipRequestFrom": "%{username} 請求你的 %{ship}",
+          "shipRequestTo": "%{username} 的 %{ship}",
+          "shipsFilter": {
+            "label": "此中隊可使用",
+            "all": "我與艦隊共享的所有艦船",
+            "hangar_group": "一個機庫分組",
+            "picked": "我挑選的艦船",
+            "hangarGroup": "機庫分組",
+            "pickedShips": "艦船",
+            "extraShips": "另外提供這些艦船"
+          },
+          "flightsEnabled": "小隊",
+          "flightsEnabledHint": "允許中隊負責人建立小隊：由艦船和席位組成的編組，可預填活動和範本隊伍並邀請所列成員。",
+          "figures": {
+            "members": "成員",
+            "ships": "艦船",
+            "flights": "小隊"
+          }
         },
         "roles": {
           "permanent": "永久",
@@ -3979,6 +4027,7 @@
         "fleet_event_signup_withdrawn": "報名已取消",
         "fleet_event_signup_confirmed": "報名已確認",
         "fleet_event_signup_assigned": "已指派席位",
+        "fleet_event_signup_invited": "受邀擔任席位",
         "fleet_event_signup_kicked": "已從席位移除",
         "allInGroup": "這個群組的全部項目",
         "inventory_transfer_received": "收到轉移",
@@ -3991,6 +4040,8 @@
         "tour_join_request_accepted": "參加申請已通過",
         "fleet_squadron_request_received": "中隊加入申請",
         "fleet_squadron_request_accepted": "中隊申請已通過",
+        "fleet_squadron_ship_request_received": "中隊請求艦船",
+        "fleet_squadron_ship_request_accepted": "艦船請求已通過",
         "fleet_contract_published": "合約已發布",
         "fleet_announcement_posted": "公告已發布",
         "fleet_contract_claimed": "合約已接取",
@@ -4141,7 +4192,8 @@
             "tentative": "暫定",
             "interested": "有興趣",
             "pending": "等待審核",
-            "withdrawn": "已取消報名"
+            "withdrawn": "已取消報名",
+            "invited": "已邀請"
           },
           "signupApprovals": {
             "direct": "直接加入",
@@ -4213,7 +4265,8 @@
             "week": "週",
             "weekTitle": "%{date} 當週"
           },
-          "repeats": "重複"
+          "repeats": "重複",
+          "invitedHint": "你的中隊為你提供了這個席位。"
         },
         "contracts": {
           "tabs": {

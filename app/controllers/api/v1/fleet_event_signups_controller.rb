@@ -24,7 +24,8 @@ module Api
           return
         end
 
-        target_status = requested_status_for(@slot.fleet_event, @slot, params[:status])
+        own_invite = @slot.fleet_event_signups.find_by(fleet_membership_id: @membership.id, status: "invited")
+        target_status = requested_status_for(@slot.fleet_event, @slot, params[:status], current: own_invite&.status)
 
         occurrence_date = parsed_occurrence_date(params[:occurrence_date])
         if @slot.fleet_event.recurring? && occurrence_date.blank?
@@ -228,7 +229,7 @@ module Api
       private def self_signup_attrs
         attrs = params.permit(:status, :vehicle_id, :notes).to_h.symbolize_keys
         if attrs[:status].present?
-          attrs[:status] = requested_status_for(@signup.fleet_event, @signup.fleet_event_slot, attrs[:status])
+          attrs[:status] = requested_status_for(@signup.fleet_event, @signup.fleet_event_slot, attrs[:status], current: @signup.status)
         end
         attrs
       end
@@ -247,7 +248,7 @@ module Api
         attrs
       end
 
-      private def requested_status_for(event, slot, requested)
+      private def requested_status_for(event, slot, requested, current: nil)
         requested = requested.presence || "confirmed"
         unless FleetEventSignup::MEMBER_REQUESTABLE_STATUSES.include?(requested)
           requested = "confirmed"
@@ -256,6 +257,10 @@ module Api
         # Tentative/interested are event-level only — picking a slot is a
         # commitment, so coerce to confirmed.
         requested = "confirmed" if slot.present? && requested != "confirmed"
+
+        # Whoever built the flight already chose this member for the slot, so
+        # accepting the invitation needs nobody's approval.
+        return "confirmed" if current == "invited" && slot.present?
 
         approval = slot&.signup_approval.presence || event&.signup_approval || "direct"
         if approval == "confirmation_required" && requested == "confirmed"

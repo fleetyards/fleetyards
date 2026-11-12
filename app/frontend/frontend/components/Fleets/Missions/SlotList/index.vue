@@ -9,13 +9,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { type MissionSlot } from "@/services/fyApi";
 import {
-  type MissionSlot,
-  useCreateMissionSlot,
-  useUpdateMissionSlot,
-  useDestroyMissionSlot,
-  useSortMissionSlots,
-} from "@/services/fyApi";
+  type LineupScope,
+  isFlightScope,
+  useLineupApi,
+} from "@/frontend/components/Fleets/Missions/useLineupApi";
+import SlotCandidates from "@/frontend/components/Fleets/Squadrons/SlotCandidates/index.vue";
+import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 import Sortable from "sortablejs";
 
 type SlottableType = "MissionTeam" | "MissionShip";
@@ -24,12 +25,24 @@ type Props = {
   slottableType: SlottableType;
   slottableId: string;
   slots: MissionSlot[];
+  scope?: LineupScope;
   editable?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), { editable: false });
+const props = withDefaults(defineProps<Props>(), {
+  scope: undefined,
+  editable: false,
+});
+
+// Slots are addressed by id on a template, so only a flight needs a scope.
+const lineup = useLineupApi(
+  () => props.scope ?? { fleetSlug: "", teamId: props.slottableId },
+);
+
+const onFlight = computed(() => !!props.scope && isFlightScope(props.scope));
 
 const { t } = useI18n();
+const slotTitle = useSlotTitle();
 
 const positionTypeLabel = usePositionTypeLabel();
 const { displayAlert } = useAppNotifications();
@@ -47,11 +60,6 @@ watch(
   },
   { immediate: true },
 );
-
-const createMutation = useCreateMissionSlot();
-const updateMutation = useUpdateMissionSlot();
-const destroyMutation = useDestroyMissionSlot();
-const sortMutation = useSortMissionSlots();
 
 const startEdit = (slot: MissionSlot) => {
   editingId.value = slot.id;
@@ -77,11 +85,8 @@ const saveEdit = async (slot: MissionSlot) => {
     return;
   }
 
-  await updateMutation
-    .mutateAsync({
-      id: slot.id,
-      data: { title: next },
-    })
+  await lineup
+    .updateSlot(slot.id, { title: next })
     .then(() => {
       comlink.emit("mission-children-changed");
     })
@@ -96,13 +101,11 @@ const submitNew = async () => {
   const title = newSlotValue.value.trim();
   if (!title) return;
 
-  await createMutation
-    .mutateAsync({
-      data: {
-        slottableType: props.slottableType,
-        slottableId: props.slottableId,
-        title,
-      },
+  await lineup
+    .createSlot({
+      slottableType: props.slottableType,
+      slottableId: props.slottableId,
+      title,
     })
     .then(() => {
       newSlotValue.value = "";
@@ -114,8 +117,8 @@ const submitNew = async () => {
 };
 
 const removeSlot = async (slot: MissionSlot) => {
-  await destroyMutation
-    .mutateAsync({ id: slot.id })
+  await lineup
+    .destroySlot(slot.id)
     .then(() => {
       comlink.emit("mission-children-changed");
     })
@@ -144,13 +147,11 @@ const initSortable = () => {
         .map((id) => localSlots.value.find((s) => s.id === id))
         .filter(Boolean) as MissionSlot[];
 
-      void sortMutation
-        .mutateAsync({
-          data: {
-            slottableType: props.slottableType,
-            slottableId: props.slottableId,
-            sorting: order,
-          },
+      void lineup
+        .sortSlots({
+          slottableType: props.slottableType,
+          slottableId: props.slottableId,
+          sorting: order,
         })
         .catch(() =>
           displayAlert({
@@ -210,10 +211,16 @@ onUnmounted(() => {
           type="button"
           class="slot-title"
           :disabled="!editable"
-          @click="editable && startEdit(slot)"
+          @click="editable && !slot.lead && startEdit(slot)"
         >
-          {{ slot.title }}
+          {{ slotTitle(slot) }}
         </button>
+        <SlotCandidates
+          v-if="onFlight || slot.candidates?.length"
+          :slot="slot"
+          :scope="onFlight ? props.scope : undefined"
+          :editable="editable && onFlight"
+        />
         <button
           v-if="editable && editingId !== slot.id"
           type="button"
@@ -257,6 +264,7 @@ onUnmounted(() => {
 }
 .slot-item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   padding: 2px 4px;

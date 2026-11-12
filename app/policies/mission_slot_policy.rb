@@ -10,7 +10,7 @@ class MissionSlotPolicy < FleetBasePolicy
   alias_rule :update?, :destroy?, :sort?, to: :create?
 
   params_filter do |params|
-    params.permit(:title, :description, :slottable_type, :slottable_id)
+    params.permit(:title, :description, :role, :slottable_type, :slottable_id)
   end
 
   private def can_update_mission?

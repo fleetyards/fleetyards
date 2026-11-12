@@ -384,7 +384,18 @@
         "expenseNeedsReview": "Un gasto cuenta cuando quien gestiona el libro lo aprueba."
       },
       "fleet": {
-        "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo."
+        "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo.",
+        "squadrons": {
+          "flightsHint": "Una escuadrilla es una formación que este escuadrón usa a menudo: sus naves, los slots de cada una y quién suele ocuparlos. Elige una al añadir un equipo a un evento o plantilla.",
+          "flights": {
+            "candidatesHint": "El primer miembro recibe el slot. Si lo rechaza o no puede, se pregunta al siguiente.",
+            "wideSeatsHint": "Funciones para toda la escuadrilla, no ligadas a una nave."
+          },
+          "shipRequestHint": "Decide el miembro: la nave solo se une al escuadrón si acepta.",
+          "myShipsHint": "Elige con cuáles de las naves que compartes con la flota puede planificar este escuadrón.",
+          "myShipsNotMember": "Únete a este escuadrón para elegir qué naves tuyas recibe.",
+          "myShipsNoneShared": "Aún no compartes naves con la flota."
+        }
       },
       "vehicleLog": {
         "visibility": "Las entradas públicas se muestran junto a esta nave en tu hangar público.",

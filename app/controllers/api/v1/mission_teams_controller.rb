@@ -13,6 +13,7 @@ module Api
       before_action :check_fleet_mission_builder_feature
       before_action -> { require_fleet_subscription(:events) }
       before_action :set_mission
+      before_action :check_flight_source_feature, only: %i[create]
       before_action :set_team, only: %i[update destroy]
 
       def create
@@ -83,6 +84,15 @@ module Api
 
       private def check_fleet_mission_builder_feature
         return if feature_enabled?("fleet_mission_builder", @fleet)
+
+        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
+      end
+
+      # Only a team built from a flight needs flights; one built by hand does
+      # not.
+      private def check_flight_source_feature
+        return if params[:source_flight_id].blank?
+        return if feature_enabled?("fleet_squadron_flights", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

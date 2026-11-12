@@ -488,6 +488,45 @@
           "rank": {
             "success": "Grade modifié.",
             "failure": "Le grade n'a pas pu être modifié."
+          },
+          "flights": {
+            "create": {
+              "success": "Patrouille ajoutée",
+              "failure": "Impossible d’ajouter la patrouille"
+            },
+            "update": {
+              "success": "Patrouille enregistrée",
+              "failure": "Impossible d’enregistrer la patrouille"
+            },
+            "destroy": {
+              "confirm": "Supprimer la patrouille %{name} ? Les équipes déjà créées à partir d’elle gardent leur copie.",
+              "success": "Patrouille supprimée",
+              "failure": "Impossible de supprimer la patrouille"
+            },
+            "candidates": {
+              "success": "Affectation enregistrée",
+              "failure": "Impossible d’enregistrer l’affectation"
+            }
+          },
+          "shipRequests": {
+            "create": {
+              "success": "La demande a été envoyée à %{username}",
+              "failure": "Impossible de demander le vaisseau"
+            },
+            "accept": {
+              "success": "L’escadron reçoit désormais ce vaisseau",
+              "failure": "Impossible d’accepter la demande"
+            },
+            "destroy": {
+              "success": "Demande clôturée",
+              "failure": "Impossible de clôturer la demande"
+            }
+          },
+          "shipSelection": {
+            "update": {
+              "success": "Choix des vaisseaux enregistré",
+              "failure": "Impossible d’enregistrer le choix des vaisseaux"
+            }
           }
         },
         "calendarSubscription": {
@@ -1060,6 +1099,11 @@
             "success": "Inscription retirée.",
             "failure": "Impossible de retirer l'inscription.",
             "confirm": "Retirer l'inscription de ce membre ?"
+          },
+          "invite": {
+            "accepted": "Vous en êtes",
+            "declined": "Invitation refusée",
+            "failure": "Impossible de répondre à l’invitation"
           }
         },
         "eventAdmin": {

@@ -309,7 +309,18 @@
           "editRank": "Modifica grado di squadrone",
           "teams": "Squadre",
           "addMembers": "Aggiungi membri",
-          "members": "Membri"
+          "members": "Membri",
+          "flights": {
+            "create": "Aggiungi pattuglia",
+            "edit": "Modifica pattuglia",
+            "candidates": "Chi occupa %{slot}",
+            "wideSeats": "Slot dell’intera pattuglia",
+            "seats": "Slot su %{ship}"
+          },
+          "shipRequest": "Chiedi una nave a %{username}",
+          "shipRequestsForMe": "Richieste per te",
+          "shipRequestsOpen": "Richieste di navi aperte",
+          "myShips": "Le mie navi in questo squadrone"
         },
         "stats": "Statistiche",
         "preview": {

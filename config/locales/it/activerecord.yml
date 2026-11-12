@@ -539,10 +539,17 @@ it:
           attributes:
             fleet_squadron:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
+            source_flight:
+              not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
+              flights_disabled: "appartiene a uno squadrone che ha disattivato le sue pattuglie"
         mission_team:
           attributes:
             fleet_squadron:
               not_in_fleet: "deve essere uno squadrone o un team di questa flotta"
+            source_flight:
+              not_in_fleet: "deve essere una pattuglia di uno squadrone di questa flotta"
+              flights_disabled: "appartiene a uno squadrone che ha disattivato le sue pattuglie"
+          one_owner: "deve appartenere a un modello oppure a una pattuglia"
         fleet_inventory:
           attributes:
             managed_by:
@@ -563,6 +570,8 @@ it:
               conflicting_members: "non può essere disattivato finché %{members} fanno parte anche di un altro squadrone"
         fleet_squadron_membership:
           attributes:
+            hangar_group:
+              not_owned: "deve essere uno dei gruppi hangar del membro"
             fleet_membership:
               not_a_member: "deve essere un membro accettato di questa flotta"
             fleet_squadron:
@@ -570,6 +579,10 @@ it:
             fleet_squadron_role:
               not_in_fleet: "deve essere uno dei gradi di squadrone di questa flotta"
               single_holder_taken: "è già assegnato a un altro membro di questo squadrone: c'è un solo %{role} per squadrone"
+        fleet_squadron_membership_vehicle:
+          attributes:
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -580,6 +593,37 @@ it:
               already_a_member: "ti include già"
               exclusive_conflict: "è in conflitto con %{squadron} — un membro appartiene a un solo squadrone, a meno che non sia un team"
               request_pending: "non può essere richiesto finché la tua richiesta di unirti a %{squadron} è in attesa — ritirala prima"
+        fleet_squadron_ship_request:
+          attributes:
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
+              not_in_fleet: "deve essere condivisa con la flotta"
+              already_given: "è già tra le navi dello squadrone"
+            vehicle_id:
+              already_requested: "è già stata richiesta"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "non è tra le navi che i membri danno allo squadrone"
+              taken: "è già in questa pattuglia"
+        mission_slot:
+          lead_required: "Una pattuglia mantiene sempre il suo slot di capo."
+          pilot_required: "Una nave di una pattuglia mantiene sempre uno slot da pilota."
+        mission_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "deve essere membro dello squadrone di questa pattuglia"
+              not_in_fleet: "deve essere membro di uno squadrone di questa flotta"
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
+              not_given: "deve essere una delle navi che il membro dà a questo squadrone"
+        fleet_event_slot_candidate:
+          attributes:
+            fleet_squadron_membership:
+              not_in_squadron: "deve essere membro dello squadrone di questa pattuglia"
+              not_in_fleet: "deve essere membro di uno squadrone di questa flotta"
+            vehicle:
+              not_owned: "deve essere una delle navi del membro"
         fleet_squadron_role:
           attributes:
             default_rank:

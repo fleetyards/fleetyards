@@ -306,7 +306,20 @@
           "acceptRequest": "Accept",
           "declineRequest": "Decline",
           "promote": "Promote",
-          "demote": "Demote"
+          "demote": "Demote",
+          "flights": {
+            "create": "Add flight",
+            "editCandidates": "Choose who flies this slot",
+            "addAlternate": "+ Alternate",
+            "assignMember": "+ Assign member",
+            "removeSeat": "Remove seat",
+            "manageSeats": "Seats",
+            "fillSeat": "Fill",
+            "changeMembers": "Change",
+            "moreSeats": "+%{count} more"
+          },
+          "askForShip": "Ask for a ship",
+          "withdrawShipRequest": "Withdraw"
         },
         "manageInvites": "Invites",
         "worldmap": "Worldmap",
@@ -497,7 +510,9 @@
           "manageEventTeam": "Manage event team",
           "grantRole": "Grant role",
           "revokeRole": "Revoke",
-          "addTeam": "Add team"
+          "addTeam": "Add team",
+          "acceptInvite": "Accept",
+          "declineInvite": "Decline"
         },
         "contracts": {
           "create": "Create Contract",

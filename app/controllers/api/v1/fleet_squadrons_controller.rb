@@ -31,12 +31,18 @@ module Api
         @q = scope.ransack(query_params)
 
         @fleet_squadrons = result_with_pagination(@q.result(distinct: true), per_page(FleetSquadron))
+
+        # One grouped count for the page rather than one per card.
+        @flight_counts = if fleet_squadron_flights_feature?
+          FleetSquadronFlight.reorder(nil).where(fleet_squadron_id: @fleet_squadrons.map(&:id)).group(:fleet_squadron_id).count
+        end
       end
 
       def show
         authorize! @fleet_squadron
 
         set_viewer_rights
+        set_figures
       end
 
       def create
@@ -46,6 +52,7 @@ module Api
 
         if @fleet_squadron.save
           set_viewer_rights
+          set_figures
           render :show, status: :created
         else
           render json: ValidationError.new("fleet_squadrons.create", errors: @fleet_squadron.errors), status: :bad_request
@@ -57,6 +64,7 @@ module Api
 
         if @fleet_squadron.update(fleet_squadron_params)
           set_viewer_rights
+          set_figures
           render :show
         else
           render json: ValidationError.new("fleet_squadrons.update", errors: @fleet_squadron.errors), status: :bad_request
@@ -117,6 +125,19 @@ module Api
       # What the reader may do to this squadron's roster. A squadron rank grants
       # rights of its own, so the fleet-wide capabilities on the membership
       # cannot answer it.
+      # What the squadron's page sums up: the ships its members give it,
+      # counted as its ships list opens (no loaners), and its flights where it
+      # has them.
+      private def set_figures
+        @ship_count = @fleet.vehicles.where(loaner: false)
+          .where(id: FleetSquadron.vehicle_ids_for(fleet_id: @fleet.id, squadron_ids: [@fleet_squadron.id]))
+          .count
+
+        @flight_count = if @fleet_squadron.flights_enabled? && fleet_squadron_flights_feature?
+          @fleet_squadron.fleet_squadron_flights.count
+        end
+      end
+
       private def set_viewer_rights
         policy = policy_for(
           record: FleetSquadronMembership.new(fleet_squadron: @fleet_squadron),

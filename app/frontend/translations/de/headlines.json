@@ -309,7 +309,18 @@
           "editRank": "Staffelrang bearbeiten",
           "teams": "Teams",
           "addMembers": "Mitglieder hinzufügen",
-          "members": "Mitglieder"
+          "members": "Mitglieder",
+          "flights": {
+            "create": "Schwarm hinzufügen",
+            "edit": "Schwarm bearbeiten",
+            "candidates": "Wer fliegt %{slot}",
+            "wideSeats": "Schwarmweite Slots",
+            "seats": "Slots auf %{ship}"
+          },
+          "shipRequest": "%{username} um ein Schiff bitten",
+          "shipRequestsForMe": "Anfragen an dich",
+          "shipRequestsOpen": "Offene Schiffsanfragen",
+          "myShips": "Meine Schiffe in dieser Staffel"
         },
         "stats": "Statistiken",
         "preview": {

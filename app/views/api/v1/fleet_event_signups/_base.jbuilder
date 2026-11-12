@@ -33,6 +33,9 @@ if fleet_event_signup.vehicle.present?
         json.crew fleet_event_signup.vehicle.model.crew
         json.cargo fleet_event_signup.vehicle.model.cargo
         json.partial! "api/v1/shared/ship_model_image", model: fleet_event_signup.vehicle.model
+        json.angled_view do
+          json.partial! "api/v1/shared/file", record: fleet_event_signup.vehicle.model, attr: :angled_view_colored
+        end
         # Resolved once per render: answering which build is served takes
         # several queries, and this partial renders once per signup.
         @positions_build ||= ScData::Source.current.served_for(HardpointBuild)

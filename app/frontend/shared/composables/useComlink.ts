@@ -36,6 +36,7 @@ type Events = {
   "fleet-squadron-created": () => void | Promise<unknown>;
   "fleet-squadron-updated": () => void | Promise<unknown>;
   "fleet-squadron-members-updated": () => void | Promise<unknown>;
+  "fleet-squadron-ship-requests-updated": () => void | Promise<unknown>;
   "fleet-inventory-item-created": () => void | Promise<unknown>;
   "fleet-inventory-created": () => void | Promise<unknown>;
   "fleet-inventory-updated": () => void | Promise<unknown>;

@@ -311,7 +311,18 @@
           "editRank": "Edit Squadron Rank",
           "teams": "Teams",
           "addMembers": "Add Members",
-          "members": "Members"
+          "members": "Members",
+          "flights": {
+            "create": "Add flight",
+            "edit": "Edit flight",
+            "candidates": "Who flies %{slot}",
+            "wideSeats": "Flight-wide seats",
+            "seats": "Seats on %{ship}"
+          },
+          "shipRequest": "Ask %{username} for a ship",
+          "shipRequestsForMe": "Asked of you",
+          "shipRequestsOpen": "Open ship requests",
+          "myShips": "My ships in this squadron"
         },
         "stats": "Stats",
         "preview": {

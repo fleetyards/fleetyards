@@ -141,6 +141,10 @@ fr:
       title: "%{username} souhaite rejoindre %{squadron}"
     fleet_squadron_request_accepted:
       title: "Vous avez rejoint %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} demande votre %{ship} pour %{squadron}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} a confié son %{ship} à %{squadron}"
     payout_ledger_settled:
       title: "Les paiements de %{subject} sont arrêtés"
     payout_entry_pending_review:
@@ -194,5 +198,7 @@ fr:
         title: "Votre inscription à %{title} a été approuvée"
       assigned:
         title: "Vous avez été affecté à %{slot} pour %{title}"
+      invited:
+        title: "Vous êtes invité au poste %{slot} pour %{title}"
       kicked:
         title: "Vous avez été retiré de %{title}"

@@ -87,7 +87,9 @@
             "details": "Dettagli",
             "appearance": "Aspetto",
             "discord": "Discord"
-          }
+          },
+          "flights": "Pattuglie",
+          "myShips": "Le mie navi"
         },
         "stats": "Statistiche",
         "logistics": {

@@ -1055,7 +1055,55 @@
             "requests": "Demandes"
           },
           "requestedAt": "Demandé le",
-          "requests": "Demandes"
+          "requests": "Demandes",
+          "flights": {
+            "index": "Patrouilles",
+            "name": "Nom",
+            "description": "Description",
+            "noCandidates": "Personne d’assigné",
+            "primary": "Titulaire",
+            "alternate": "Remplaçant %{count}",
+            "ship": "Vaisseau",
+            "anyShip": "Tout vaisseau adapté",
+            "teamSource": "Patrouille",
+            "teamSourceHint": "Copie les vaisseaux et les postes de la patrouille dans cette équipe et invite les membres prévus dès que l’événement est ouvert.",
+            "ofSquadron": "Patrouille de %{squadron}",
+            "nobodyListed": "Personne pour l’instant",
+            "exactModel": "Modèle exact",
+            "openSeat": "Poste libre",
+            "then": "Puis %{names}",
+            "noAlternates": "Aucun remplaçant",
+            "shipsSummary": "%{ships} vaisseaux · %{filled} postes pourvus sur %{seats}",
+            "lead": "Chef de patrouille",
+            "openSeats": "%{count} libres",
+            "role": "Rôle",
+            "roles": {
+              "crew": "Équipage",
+              "captain": "Capitaine",
+              "pilot": "Pilote"
+            },
+            "squadronShipsHint": "Seuls les vaisseaux que les membres confient à l’escadron sont proposés.",
+            "shipOf": "vaisseau de %{username}"
+          },
+          "askableShips": "Vaisseaux à demander",
+          "shipRequestFrom": "%{username} demande votre %{ship}",
+          "shipRequestTo": "%{ship} de %{username}",
+          "shipsFilter": {
+            "label": "Cet escadron reçoit",
+            "all": "Tous les vaisseaux que je partage avec la flotte",
+            "hangar_group": "Un groupe de hangar",
+            "picked": "Vaisseaux choisis",
+            "hangarGroup": "Groupe de hangar",
+            "pickedShips": "Vaisseaux",
+            "extraShips": "Ces vaisseaux en plus"
+          },
+          "flightsEnabled": "Patrouilles",
+          "flightsEnabledHint": "Permet aux responsables de l’escadron de créer des patrouilles : des formations de vaisseaux et de postes qui préremplissent les équipes d’événements et de modèles et invitent les membres prévus.",
+          "figures": {
+            "members": "Membres",
+            "ships": "Vaisseaux",
+            "flights": "Patrouilles"
+          }
         },
         "roles": {
           "permanent": "Permanent",
@@ -3982,6 +4030,7 @@
         "fleet_event_signup_withdrawn": "Inscription retirée",
         "fleet_event_signup_confirmed": "Inscription confirmée",
         "fleet_event_signup_assigned": "Assigné à un poste",
+        "fleet_event_signup_invited": "Invité à un poste",
         "fleet_event_signup_kicked": "Retiré d'un poste",
         "allInGroup": "Tout dans ce groupe",
         "inventory_transfer_received": "Transfert reçu",
@@ -3994,6 +4043,8 @@
         "tour_join_request_accepted": "Demande de participation acceptée",
         "fleet_squadron_request_received": "Demande pour rejoindre l'escadron",
         "fleet_squadron_request_accepted": "Demande d'escadron acceptée",
+        "fleet_squadron_ship_request_received": "Vaisseau demandé pour un escadron",
+        "fleet_squadron_ship_request_accepted": "Demande de vaisseau acceptée",
         "fleet_contract_published": "Contrat publié",
         "fleet_announcement_posted": "Annonce publiée",
         "fleet_contract_claimed": "Contrat pris en charge",
@@ -4144,7 +4195,8 @@
             "tentative": "Provisoire",
             "interested": "Intéressé",
             "pending": "En attente de validation",
-            "withdrawn": "Retirée"
+            "withdrawn": "Retirée",
+            "invited": "Invité"
           },
           "signupApprovals": {
             "direct": "Directe",
@@ -4216,7 +4268,8 @@
             "week": "Semaine",
             "weekTitle": "Semaine du %{date}"
           },
-          "repeats": "Répétition"
+          "repeats": "Répétition",
+          "invitedHint": "Votre escadron vous propose ce poste."
         },
         "contracts": {
           "tabs": {

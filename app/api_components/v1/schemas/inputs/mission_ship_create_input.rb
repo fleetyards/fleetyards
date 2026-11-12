@@ -12,6 +12,11 @@ module V1
             title: {type: [:string, :null]},
             description: {type: [:string, :null]},
             modelId: {type: [:string, :null], format: :uuid},
+            vehicleId: {
+              type: [:string, :null],
+              format: :uuid,
+              description: "A member's own ship, which a flight's ship has to name; its model is taken from it"
+            },
             classification: {type: [:string, :null]},
             foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
             minSize: {type: [:string, :null]},

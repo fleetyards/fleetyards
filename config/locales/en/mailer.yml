@@ -105,6 +105,9 @@ en:
       signup_assigned:
         subject: "Slot assigned: %{title}"
         body: You have been assigned a slot for this event in %{fleet}.
+      signup_invited:
+        subject: "Slot offered: %{title}"
+        body: "Your squadron offers you a slot in this event in %{fleet}. Confirm or decline it on the event."
       signup_kicked:
         subject: "Removed from %{title}"
         body: You have been removed from this event in %{fleet}.

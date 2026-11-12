@@ -306,7 +306,20 @@
           "acceptRequest": "接受",
           "declineRequest": "拒绝",
           "promote": "晋升",
-          "demote": "降级"
+          "demote": "降级",
+          "flights": {
+            "create": "添加小队",
+            "editCandidates": "选择担任此席位的成员",
+            "addAlternate": "+ 替补",
+            "assignMember": "+ 指定成员",
+            "removeSeat": "移除席位",
+            "manageSeats": "席位",
+            "fillSeat": "安排",
+            "changeMembers": "更改",
+            "moreSeats": "另外 %{count} 个"
+          },
+          "askForShip": "请求舰船",
+          "withdrawShipRequest": "撤回"
         },
         "manageInvites": "邀请",
         "worldmap": "世界地图",
@@ -497,7 +510,9 @@
           "manageEventTeam": "管理活动团队",
           "grantRole": "授予角色",
           "revokeRole": "撤销",
-          "addTeam": "添加小队"
+          "addTeam": "添加小队",
+          "acceptInvite": "接受",
+          "declineInvite": "拒绝"
         },
         "contracts": {
           "create": "创建合约",

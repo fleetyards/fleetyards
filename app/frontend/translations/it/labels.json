@@ -1055,7 +1055,55 @@
             "requests": "Richieste"
           },
           "requestedAt": "Richiesto il",
-          "requests": "Richieste"
+          "requests": "Richieste",
+          "flights": {
+            "index": "Pattuglie",
+            "name": "Nome",
+            "description": "Descrizione",
+            "noCandidates": "Nessuno assegnato",
+            "primary": "Titolare",
+            "alternate": "Riserva %{count}",
+            "ship": "Nave",
+            "anyShip": "Qualsiasi nave adatta",
+            "teamSource": "Pattuglia",
+            "teamSourceHint": "Copia navi e slot della pattuglia in questa squadra e invita i membri indicati non appena l’evento è aperto.",
+            "ofSquadron": "Pattuglia di %{squadron}",
+            "nobodyListed": "Ancora nessuno assegnato",
+            "exactModel": "Modello esatto",
+            "openSeat": "Slot libero",
+            "then": "Poi %{names}",
+            "noAlternates": "Nessuna riserva",
+            "shipsSummary": "%{ships} navi · %{filled} di %{seats} slot occupati",
+            "lead": "Capo pattuglia",
+            "openSeats": "%{count} liberi",
+            "role": "Ruolo",
+            "roles": {
+              "crew": "Equipaggio",
+              "captain": "Capitano",
+              "pilot": "Pilota"
+            },
+            "squadronShipsHint": "Sono elencate solo le navi che i membri danno allo squadrone.",
+            "shipOf": "nave di %{username}"
+          },
+          "askableShips": "Navi da richiedere",
+          "shipRequestFrom": "%{username} chiede la tua %{ship}",
+          "shipRequestTo": "%{ship} di %{username}",
+          "shipsFilter": {
+            "label": "Questo squadrone riceve",
+            "all": "Tutte le navi che condivido con la flotta",
+            "hangar_group": "Un gruppo hangar",
+            "picked": "Navi scelte da me",
+            "hangarGroup": "Gruppo hangar",
+            "pickedShips": "Navi",
+            "extraShips": "Anche queste navi"
+          },
+          "flightsEnabled": "Pattuglie",
+          "flightsEnabledHint": "Consente ai responsabili dello squadrone di creare pattuglie: formazioni di navi e slot che precompilano le squadre di eventi e modelli e invitano i membri indicati.",
+          "figures": {
+            "members": "Membri",
+            "ships": "Navi",
+            "flights": "Pattuglie"
+          }
         },
         "roles": {
           "permanent": "Permanente",
@@ -3982,6 +4030,7 @@
         "fleet_event_signup_withdrawn": "Iscrizione ritirata",
         "fleet_event_signup_confirmed": "Iscrizione confermata",
         "fleet_event_signup_assigned": "Assegnato a uno slot",
+        "fleet_event_signup_invited": "Invitato a uno slot",
         "fleet_event_signup_kicked": "Rimosso da uno slot",
         "allInGroup": "Tutto in questo gruppo",
         "inventory_transfer_received": "Trasferimento ricevuto",
@@ -3994,6 +4043,8 @@
         "tour_join_request_accepted": "Richiesta di partecipazione accettata",
         "fleet_squadron_request_received": "Richiesta di adesione allo squadrone",
         "fleet_squadron_request_accepted": "Richiesta di squadrone accettata",
+        "fleet_squadron_ship_request_received": "Nave richiesta per uno squadrone",
+        "fleet_squadron_ship_request_accepted": "Richiesta di nave accettata",
         "fleet_contract_published": "Contratto pubblicato",
         "fleet_announcement_posted": "Annuncio pubblicato",
         "fleet_contract_claimed": "Contratto preso in carico",
@@ -4144,7 +4195,8 @@
             "tentative": "Non definitiva",
             "interested": "Interessato",
             "pending": "In attesa di approvazione",
-            "withdrawn": "Ritirata"
+            "withdrawn": "Ritirata",
+            "invited": "Invitato"
           },
           "signupApprovals": {
             "direct": "Diretta",
@@ -4216,7 +4268,8 @@
             "week": "Settimana",
             "weekTitle": "Settimana del %{date}"
           },
-          "repeats": "Ricorrente"
+          "repeats": "Ricorrente",
+          "invitedHint": "Il tuo squadrone ti offre questo slot."
         },
         "contracts": {
           "tabs": {

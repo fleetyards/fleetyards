@@ -152,7 +152,17 @@ const openBroughtLoadout = async () => {
 
 const coverModel = computed(() => props.ship.model ?? broughtModel.value);
 
+// The three-quarter render where the model has one, shown whole in the cover
+// strip; a spot listing several models shows the first. Without a render the
+// card falls back to the store image as its cover.
+const angledImage = computed<string | undefined>(() => {
+  const model = coverModel.value ?? props.ship.allowedModels?.[0];
+  return model?.angledView?.mediumUrl || model?.angledView?.smallUrl;
+});
+
 const shipImage = computed<string | undefined>(() => {
+  if (angledImage.value) return undefined;
+
   const img = coverModel.value?.image as
     { mediumUrl?: string; smallUrl?: string } | undefined;
   return img?.mediumUrl || img?.smallUrl;
@@ -248,7 +258,23 @@ const subtitle = computed(() => {
     :bg-rounded="PanelRoundedEnum.TOP"
   >
     <template #default>
-      <div v-if="!hasShipImage" class="ship-placeholder" aria-hidden="true">
+      <div
+        v-if="angledImage"
+        class="ship-placeholder ship-render"
+        data-test="event-ship-render"
+      >
+        <img
+          :src="angledImage"
+          alt=""
+          class="ship-render-image"
+          loading="lazy"
+        />
+      </div>
+      <div
+        v-else-if="!hasShipImage"
+        class="ship-placeholder"
+        aria-hidden="true"
+      >
         <DuotoneGlyph :glyph="SHIP_GLYPH" class="ship-placeholder-ship" />
         <i class="fa-solid fa-question ship-placeholder-question" />
       </div>
@@ -428,6 +454,25 @@ const subtitle = computed(() => {
   border-top-right-radius: var(--radius-surface-inner, 14px);
   pointer-events: none;
   z-index: 0;
+}
+
+/* The render is cut out, so it sits whole on the strip rather than being
+   cropped to fill it the way a store image is. */
+.ship-render {
+  align-items: flex-end;
+  padding: 0 24px 6px;
+  background: radial-gradient(
+    ellipse at 50% 75%,
+    rgb(66 139 202 / 0.14),
+    transparent 70%
+  );
+}
+
+.ship-render-image {
+  max-width: 100%;
+  max-height: 112px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.7));
 }
 
 .ship-placeholder-ship {

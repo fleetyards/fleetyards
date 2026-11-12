@@ -122,6 +122,18 @@ it:
       create: "Impossibile inviare la richiesta di adesione."
       accept: "Impossibile accettare la richiesta."
       destroy: "Impossibile rimuovere la richiesta."
+    fleet_squadron_flights:
+      create: "Impossibile creare la pattuglia."
+      update: "Impossibile aggiornare la pattuglia."
+      destroy: "Impossibile eliminare la pattuglia."
+    fleet_squadron_flight_slots:
+      candidates: "Impossibile salvare l’assegnazione dello slot."
+    fleet_squadron_ship_requests:
+      create: "Impossibile inviare la richiesta di nave."
+      accept: "Impossibile accettare la richiesta di nave."
+      destroy: "Impossibile rimuovere la richiesta di nave."
+    fleet_squadron_ship_selections:
+      update: "Impossibile salvare la scelta delle navi."
     fleet_squadron_roles:
       update: "Non è stato possibile rinominare il grado di squadrone."
     fleet_discord_role_mappings:

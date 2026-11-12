@@ -90,6 +90,29 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
   end
 
   # The detail page's text, kept off a list that never renders it.
+  test "GET /fleets/:slug/squadrons counts the flights of squadrons that have them" do
+    Flipper.enable("fleet_squadron_flights")
+    flying = create(:fleet_squadron, fleet: @fleet, name: "Flying")
+    create_list(:fleet_squadron_flight, 2, fleet_squadron: flying)
+    create(:fleet_squadron, fleet: @fleet, name: "Grounded", flights_enabled: false)
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons", as: :json
+
+    counts = parsed_body["items"].to_h { |item| [item["name"], item["flightCount"]] }
+    assert_equal 2, counts["Flying"]
+    assert_nil counts["Grounded"]
+  end
+
+  test "GET /fleets/:slug/squadrons leaves flights out while they are not rolled out" do
+    create(:fleet_squadron, fleet: @fleet)
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons", as: :json
+
+    assert(parsed_body["items"].none? { |item| item.key?("flightCount") })
+  end
+
   test "GET /fleets/:slug/squadrons leaves the full description out" do
     create(:fleet_squadron, fleet: @fleet, description: "Paragraphs and paragraphs.")
     sign_in @admin

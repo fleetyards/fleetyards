@@ -1055,7 +1055,55 @@
             "requests": "申请"
           },
           "requestedAt": "申请时间",
-          "requests": "申请"
+          "requests": "申请",
+          "flights": {
+            "index": "小队",
+            "name": "名称",
+            "description": "描述",
+            "noCandidates": "未指定成员",
+            "primary": "首选",
+            "alternate": "替补 %{count}",
+            "ship": "舰船",
+            "anyShip": "任意合适舰船",
+            "teamSource": "小队",
+            "teamSourceHint": "将小队的舰船和席位复制到此队伍，并在活动开放后邀请所列成员。",
+            "ofSquadron": "%{squadron} 的小队",
+            "nobodyListed": "尚未指定成员",
+            "exactModel": "指定型号",
+            "openSeat": "空缺席位",
+            "then": "其次：%{names}",
+            "noAlternates": "无替补",
+            "shipsSummary": "%{ships} 艘舰船 · 已安排 %{filled}/%{seats} 个席位",
+            "lead": "小队长",
+            "openSeats": "%{count} 个空缺",
+            "role": "职责",
+            "roles": {
+              "crew": "船员",
+              "captain": "舰长",
+              "pilot": "驾驶员"
+            },
+            "squadronShipsHint": "仅列出成员提供给本中队的舰船。",
+            "shipOf": "%{username} 的舰船"
+          },
+          "askableShips": "可请求的舰船",
+          "shipRequestFrom": "%{username} 请求你的 %{ship}",
+          "shipRequestTo": "%{username} 的 %{ship}",
+          "shipsFilter": {
+            "label": "此中队可使用",
+            "all": "我与舰队共享的所有舰船",
+            "hangar_group": "一个机库分组",
+            "picked": "我挑选的舰船",
+            "hangarGroup": "机库分组",
+            "pickedShips": "舰船",
+            "extraShips": "另外提供这些舰船"
+          },
+          "flightsEnabled": "小队",
+          "flightsEnabledHint": "允许中队负责人创建小队：由舰船和席位组成的编组，可预填活动和模板队伍并邀请所列成员。",
+          "figures": {
+            "members": "成员",
+            "ships": "舰船",
+            "flights": "小队"
+          }
         },
         "roles": {
           "permanent": "永久",
@@ -3979,6 +4027,7 @@
         "fleet_event_signup_withdrawn": "报名已取消",
         "fleet_event_signup_confirmed": "报名已确认",
         "fleet_event_signup_assigned": "已分配席位",
+        "fleet_event_signup_invited": "受邀担任席位",
         "fleet_event_signup_kicked": "已被移出席位",
         "allInGroup": "此分组中的全部",
         "inventory_transfer_received": "收到转移",
@@ -3991,6 +4040,8 @@
         "tour_join_request_accepted": "参加申请已通过",
         "fleet_squadron_request_received": "中队加入申请",
         "fleet_squadron_request_accepted": "中队申请已通过",
+        "fleet_squadron_ship_request_received": "中队请求舰船",
+        "fleet_squadron_ship_request_accepted": "舰船请求已通过",
         "fleet_contract_published": "合约已发布",
         "fleet_announcement_posted": "公告已发布",
         "fleet_contract_claimed": "合约已接取",
@@ -4141,7 +4192,8 @@
             "tentative": "待定",
             "interested": "感兴趣",
             "pending": "待审批",
-            "withdrawn": "已取消"
+            "withdrawn": "已取消",
+            "invited": "已邀请"
           },
           "signupApprovals": {
             "direct": "直接通过",
@@ -4213,7 +4265,8 @@
             "week": "周",
             "weekTitle": "%{date} 所在周"
           },
-          "repeats": "重复"
+          "repeats": "重复",
+          "invitedHint": "你的中队为你提供了这个席位。"
         },
         "contracts": {
           "tabs": {

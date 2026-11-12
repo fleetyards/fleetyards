@@ -90,11 +90,11 @@ module Api
             authorize! @fleet, to: :show_members?, with: ::Public::FleetPolicy
           end
 
-          user_ids = for_squadrons(@fleet)
+          vehicle_ids = for_squadron_vehicles(@fleet)
 
-          return scope if user_ids.nil?
+          return scope if vehicle_ids.nil?
 
-          scope.where(user_id: user_ids)
+          scope.where(id: vehicle_ids)
         end
 
         # The ships the list starts from. `embed` is the fleet's own surface and

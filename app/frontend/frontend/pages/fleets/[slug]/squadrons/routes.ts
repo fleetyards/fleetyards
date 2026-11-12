@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
 
 const SQUADRON_READ_ACCESS = [
@@ -51,6 +52,32 @@ export const squadronDetailRoutes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "flights/",
+    name: "fleet-squadron-flights",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/flights.vue"),
+    meta: {
+      title: "fleets.squadrons.flights",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      feature: FeatureFlagName.FLEET_SQUADRON_FLIGHTS,
+      featureScope: "fleet",
+      customTitle: true,
+    },
+  },
+  {
+    path: "my-ships/",
+    name: "fleet-squadron-my-ships",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/my-ships.vue"),
+    meta: {
+      title: "fleets.squadrons.myShips",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      customTitle: true,
+    },
+  },
 ];
 
 export const routes: RouteRecordRaw[] = [
@@ -93,6 +120,22 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.edit",
       needsAuthentication: true,
       access: SQUADRON_UPDATE_ACCESS,
+      fleetSetting: "squadronsEnabled",
+      customTitle: true,
+    },
+  },
+  {
+    path: ":squadron/flights/:flight/",
+    name: "fleet-squadron-flight",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/flights/[flight].vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.squadrons.flight",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      feature: FeatureFlagName.FLEET_SQUADRON_FLIGHTS,
+      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },

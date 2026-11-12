@@ -44,6 +44,13 @@ const { t } = useI18n();
 const railStyle = computed(() => ({
   backgroundColor: props.squadron.color || "var(--color-muted)",
 }));
+
+// The header takes a wash of the same colour; a squadron without one has none.
+const headingStyle = computed(() =>
+  props.squadron.color
+    ? { "--squadron-panel-wash": props.squadron.color }
+    : undefined,
+);
 </script>
 
 <template>
@@ -55,7 +62,14 @@ const railStyle = computed(() => ({
   >
     <span class="squadron-panel-rail" :style="railStyle" />
 
-    <PanelHeading compact divider :level="HeadingLevelEnum.H3">
+    <PanelHeading
+      compact
+      divider
+      :level="HeadingLevelEnum.H3"
+      class="squadron-panel-heading"
+      :class="{ 'squadron-panel-heading--washed': !!squadron.color }"
+      :style="headingStyle"
+    >
       <template #leading>
         <SquadronEmblem :squadron="squadron" :size="56" />
       </template>
@@ -63,11 +77,6 @@ const railStyle = computed(() => ({
         <router-link :to="to">
           {{ squadron.name }}
         </router-link>
-      </template>
-      <template v-if="squadron.shortDescription" #subtitle>
-        <span class="squadron-panel-subtitle">
-          {{ squadron.shortDescription }}
-        </span>
       </template>
       <template
         v-if="sortable || membersManageable || editable || destroyable"
@@ -118,13 +127,37 @@ const railStyle = computed(() => ({
       </template>
     </PanelHeading>
     <PanelBody class="squadron-panel-body" rounded="bottom">
-      <div class="squadron-panel-count">
-        <span class="squadron-panel-count-number">
-          {{ squadron.memberCount }}
-        </span>
-        <span class="squadron-panel-count-label">
-          {{ t("labels.fleet.squadrons.members") }}
-        </span>
+      <!-- Kept when empty, so every card is the same shape. -->
+      <p
+        class="squadron-panel-description"
+        :class="{
+          'squadron-panel-description--empty': !squadron.shortDescription,
+        }"
+        data-test="squadron-panel-description"
+      >
+        {{ squadron.shortDescription }}
+      </p>
+      <div class="squadron-panel-counts">
+        <div class="squadron-panel-count">
+          <span class="squadron-panel-count-number">
+            {{ squadron.memberCount }}
+          </span>
+          <span class="squadron-panel-count-label">
+            {{ t("labels.fleet.squadrons.members") }}
+          </span>
+        </div>
+        <div
+          v-if="squadron.flightCount"
+          class="squadron-panel-count"
+          data-test="squadron-panel-flights"
+        >
+          <span class="squadron-panel-count-number">
+            {{ squadron.flightCount }}
+          </span>
+          <span class="squadron-panel-count-label">
+            {{ t("labels.fleet.squadrons.figures.flights") }}
+          </span>
+        </div>
       </div>
     </PanelBody>
   </Panel>
@@ -148,15 +181,54 @@ const railStyle = computed(() => ({
     left: 0;
     top: 0;
     bottom: 0;
-    width: 4px;
+    z-index: 1;
+    width: 8px;
+  }
+
+  // Clear of the rail, which would otherwise crowd the emblem.
+  .squadron-panel-heading {
+    padding-left: 24px;
+  }
+
+  // Over the heading's own tint rather than in place of it, so the band reads
+  // as the heading still; background-image, which the tint leaves alone.
+  .squadron-panel-heading--washed {
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--squadron-panel-wash) 24%, transparent),
+      color-mix(in srgb, var(--squadron-panel-wash) 8%, transparent)
+    );
   }
 
   .squadron-panel-body {
     flex: 1;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
-    padding: 14px 16px;
+    padding: 14px 16px 14px 24px;
+  }
+
+  // Three lines, always: room kept for a description that is not there, and a
+  // long one cut, so the cards in a row line up.
+  .squadron-panel-description {
+    --squadron-panel-description-line: 1.5;
+
+    display: -webkit-box;
+    overflow: hidden;
+    min-height: calc(3em * var(--squadron-panel-description-line));
+    margin: 0;
+    color: var(--color-text-dim);
+    line-height: var(--squadron-panel-description-line);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .squadron-panel-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    margin-top: auto;
   }
 
   // The one control that is not a button: it does nothing on click, and what it
@@ -178,11 +250,6 @@ const railStyle = computed(() => ({
     > :first-child {
       font-size: 1.125rem;
     }
-  }
-
-  // Written in a textarea, so the lines somebody typed are the lines drawn.
-  &-subtitle {
-    white-space: pre-line;
   }
 
   &-count {

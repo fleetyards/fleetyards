@@ -136,6 +136,10 @@ en:
       title: "%{username} wants to join %{squadron}"
     fleet_squadron_request_accepted:
       title: "You joined %{squadron}"
+    fleet_squadron_ship_request_received:
+      title: "%{username} asks for your %{ship} in %{squadron}"
+    fleet_squadron_ship_request_accepted:
+      title: "%{username} gave %{squadron} their %{ship}"
     payout_ledger_settled:
       title: "The payouts for %{subject} are settled"
     payout_entry_pending_review:
@@ -194,5 +198,7 @@ en:
         title: "Your sign-up for %{title} was approved"
       assigned:
         title: "You were assigned to %{slot} for %{title}"
+      invited:
+        title: "You are invited to %{slot} for %{title}"
       kicked:
         title: "You were removed from %{title}"

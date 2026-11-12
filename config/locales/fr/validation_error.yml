@@ -122,6 +122,18 @@ fr:
       create: "La demande d'adhésion n'a pas pu être envoyée."
       accept: "La demande n'a pas pu être acceptée."
       destroy: "La demande n'a pas pu être supprimée."
+    fleet_squadron_flights:
+      create: "La patrouille n’a pas pu être créée."
+      update: "La patrouille n’a pas pu être mise à jour."
+      destroy: "La patrouille n’a pas pu être supprimée."
+    fleet_squadron_flight_slots:
+      candidates: "L’affectation du poste n’a pas pu être enregistrée."
+    fleet_squadron_ship_requests:
+      create: "La demande de vaisseau n’a pas pu être envoyée."
+      accept: "La demande de vaisseau n’a pas pu être acceptée."
+      destroy: "La demande de vaisseau n’a pas pu être supprimée."
+    fleet_squadron_ship_selections:
+      update: "Le choix des vaisseaux n’a pas pu être enregistré."
     fleet_squadron_roles:
       update: "Le grade d'escadron n'a pas pu être renommé."
     fleet_discord_role_mappings:

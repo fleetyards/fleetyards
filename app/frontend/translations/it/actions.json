@@ -306,7 +306,20 @@
           "acceptRequest": "Accetta",
           "declineRequest": "Rifiuta",
           "promote": "Promuovi",
-          "demote": "Retrocedi"
+          "demote": "Retrocedi",
+          "flights": {
+            "create": "Aggiungi pattuglia",
+            "editCandidates": "Scegli chi occupa questo slot",
+            "addAlternate": "+ Riserva",
+            "assignMember": "+ Assegna membro",
+            "removeSeat": "Rimuovi slot",
+            "manageSeats": "Slot",
+            "fillSeat": "Assegna",
+            "changeMembers": "Modifica",
+            "moreSeats": "+%{count} altri"
+          },
+          "askForShip": "Chiedi una nave",
+          "withdrawShipRequest": "Ritira"
         },
         "manageInvites": "Inviti",
         "worldmap": "Mappa mondiale",
@@ -497,7 +510,9 @@
           "manageEventTeam": "Gestisci il team dell'evento",
           "grantRole": "Assegna ruolo",
           "revokeRole": "Revoca",
-          "addTeam": "Aggiungi team"
+          "addTeam": "Aggiungi team",
+          "acceptInvite": "Accetta",
+          "declineInvite": "Rifiuta"
         },
         "contracts": {
           "create": "Crea contratto",

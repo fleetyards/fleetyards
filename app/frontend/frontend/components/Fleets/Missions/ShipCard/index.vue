@@ -22,12 +22,14 @@ import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SlotList from "@/frontend/components/Fleets/Missions/SlotList/index.vue";
 import {
+  type LineupScope,
+  useLineupApi,
+} from "@/frontend/components/Fleets/Missions/useLineupApi";
+import {
   type Fleet,
   type Mission,
   type MissionShip,
   type MissionTeam,
-  useDestroyMissionShip,
-  useDuplicateMissionShip,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -35,13 +37,30 @@ import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   fleet: Fleet;
-  mission: Mission;
-  team: MissionTeam;
+  mission?: Mission;
+  team?: MissionTeam;
   ship: MissionShip;
+  scope?: LineupScope;
   editable?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), { editable: false });
+const props = withDefaults(defineProps<Props>(), {
+  mission: undefined,
+  team: undefined,
+  scope: undefined,
+  editable: false,
+});
+
+const lineupScope = computed<LineupScope>(
+  () =>
+    props.scope ?? {
+      fleetSlug: props.fleet.slug,
+      missionSlug: props.mission?.slug,
+      teamId: props.team?.id ?? props.ship.missionTeamId,
+    },
+);
+
+const lineup = useLineupApi(lineupScope);
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -56,21 +75,14 @@ const openEditShipModal = () => {
       mission: props.mission,
       team: props.team,
       ship: props.ship,
+      scope: lineupScope.value,
     },
   });
 };
 
-const destroyMutation = useDestroyMissionShip();
-const duplicateMutation = useDuplicateMissionShip();
-
 const duplicateShip = async () => {
-  await duplicateMutation
-    .mutateAsync({
-      fleetSlug: props.fleet.slug,
-      missionSlug: props.mission.slug,
-      missionTeamId: props.team.id,
-      id: props.ship.id,
-    })
+  await lineup
+    .duplicateShip(props.ship.id)
     .then(() => {
       displaySuccess({
         text: t("messages.fleets.missionShip.duplicate.success"),
@@ -85,13 +97,8 @@ const duplicateShip = async () => {
 };
 
 const removeShip = async () => {
-  await destroyMutation
-    .mutateAsync({
-      fleetSlug: props.fleet.slug,
-      missionSlug: props.mission.slug,
-      missionTeamId: props.team.id,
-      id: props.ship.id,
-    })
+  await lineup
+    .destroyShip(props.ship.id)
     .then(() => {
       displaySuccess({
         text: t("messages.fleets.missionShip.destroy.success"),
@@ -238,7 +245,7 @@ const subtitle = computed(() => {
             </Btn>
             <Btn
               :size="BtnSizesEnum.SM"
-              :loading="duplicateMutation.isPending.value"
+              :loading="lineup.isPending.value"
               @click="duplicateShip"
             >
               <i class="fa-light fa-copy" />
@@ -298,6 +305,7 @@ const subtitle = computed(() => {
             slottable-type="MissionShip"
             :slottable-id="ship.id"
             :slots="ship.slots"
+            :scope="lineupScope"
             :editable="editable"
           />
         </div>

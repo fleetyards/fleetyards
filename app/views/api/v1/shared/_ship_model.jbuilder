@@ -10,3 +10,8 @@ json.slug model.slug
 json.crew model.crew
 
 json.partial! "api/v1/shared/ship_model_image", model: model
+
+# The coloured three-quarter render, which a lineup shows a ship by.
+json.angled_view do
+  json.partial! "api/v1/shared/file", record: model, attr: :angled_view_colored
+end

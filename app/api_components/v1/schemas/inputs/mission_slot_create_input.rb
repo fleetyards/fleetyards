@@ -12,7 +12,8 @@ module V1
             slottableType: ::V1::Schemas::Enums::MissionSlottableTypeEnum,
             slottableId: {type: :string, format: :uuid},
             title: {type: :string},
-            description: {type: [:string, :null]}
+            description: {type: [:string, :null]},
+            role: ::V1::Schemas::Enums::NullableSlotRoleEnum
           },
           required: %w[slottableType slottableId title],
           additionalProperties: false

@@ -129,6 +129,18 @@ de:
       create: "Beitrittsanfrage konnte nicht gesendet werden."
       accept: "Anfrage konnte nicht angenommen werden."
       destroy: "Anfrage konnte nicht entfernt werden."
+    fleet_squadron_flights:
+      create: "Schwarm konnte nicht erstellt werden."
+      update: "Schwarm konnte nicht aktualisiert werden."
+      destroy: "Schwarm konnte nicht gelöscht werden."
+    fleet_squadron_flight_slots:
+      candidates: "Einteilung konnte nicht gespeichert werden."
+    fleet_squadron_ship_requests:
+      create: "Schiffsanfrage konnte nicht gesendet werden."
+      accept: "Schiffsanfrage konnte nicht angenommen werden."
+      destroy: "Schiffsanfrage konnte nicht entfernt werden."
+    fleet_squadron_ship_selections:
+      update: "Schiffsauswahl konnte nicht gespeichert werden."
     fleet_squadron_roles:
       update: "Der Staffelrang konnte nicht umbenannt werden."
     fleet_discord_role_mappings:

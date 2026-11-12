@@ -16,6 +16,8 @@ module V1
               title: {type: :string},
               description: {type: :string},
               position: {type: :integer},
+              lead: {type: :boolean},
+              role: ::V1::Schemas::Enums::NullableSlotRoleEnum,
               derived: {type: :boolean},
               positionType: {type: :string},
               modelPositionId: {type: :string, format: :uuid},
@@ -24,7 +26,8 @@ module V1
               signups: {
                 type: :array,
                 items: ::V1::Schemas::Fleets::Events::FleetEventSignup
-              }
+              },
+              candidates: {type: :array, items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronSlotCandidate}
             },
             required: %w[id slottableType slottableId title position derived effectiveSignupApproval signups],
             additionalProperties: false

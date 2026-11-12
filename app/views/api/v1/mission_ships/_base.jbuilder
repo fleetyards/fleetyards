@@ -16,6 +16,16 @@ else
   json.model nil
 end
 
+if mission_ship.vehicle.present?
+  json.vehicle do
+    json.id mission_ship.vehicle.id
+    json.name(mission_ship.vehicle.name_visible? ? mission_ship.vehicle.name : nil)
+    json.username(mission_ship.vehicle.user.hide_owner? ? nil : mission_ship.vehicle.user.username)
+  end
+else
+  json.vehicle nil
+end
+
 # The models this spot will take when it names several rather than one. Empty for
 # the other two kinds of spot, so the client can tell them apart by shape.
 json.allowed_models do

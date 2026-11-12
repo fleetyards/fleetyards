@@ -1,6 +1,11 @@
 ---
 es:
   labels:
+    slots:
+      roles:
+        captain: "Capitán"
+        pilot: "Piloto"
+      lead: "Líder de escuadrilla"
     actions: Acciones
     charts:
       component-pie:

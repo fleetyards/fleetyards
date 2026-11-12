@@ -16,8 +16,11 @@ module V1
               title: {type: :string},
               description: {type: :string},
               position: {type: :integer},
+              lead: {type: :boolean},
+              role: ::V1::Schemas::Enums::NullableSlotRoleEnum,
               derived: {type: :boolean},
-              positionType: {type: :string}
+              positionType: {type: :string},
+              candidates: {type: :array, items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronSlotCandidate}
             },
             required: %w[id slottableType slottableId title position derived],
             additionalProperties: false

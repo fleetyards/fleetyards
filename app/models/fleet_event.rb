@@ -87,6 +87,13 @@ class FleetEvent < ApplicationRecord
   after_save { @recurrence_weekdays_assigned = false }
   before_save :stamp_published_at, if: :will_save_change_to_status?
 
+  # Slots a squadron's flight listed members for wait until the event is open:
+  # an invitation to a draft would announce it. Flagged by the save that opens
+  # it, because a touch later commits with that save's changes still on record.
+  before_save -> { @opening = will_save_change_to_status?(to: "open") }
+  after_commit :invite_slot_candidates, on: %i[create update], if: -> { @opening }
+  after_rollback -> { @opening = false }
+
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
   scope :past, -> { where("starts_at < ?", Time.current).order(starts_at: :desc) }
   scope :active_status, -> { where(archived_at: nil) }
@@ -245,7 +252,7 @@ class FleetEvent < ApplicationRecord
       event.title = default_title(mission, event.starts_at&.in_time_zone(event.recurrence_time_zone)) if event.title.blank?
       event.save!
 
-      mission.mission_teams.includes(:fleet_squadron, mission_ships: [:model, :mission_ship_models], mission_slots: :model_position).order(:position).each do |team|
+      MissionTeams::Copier.preload(mission.mission_teams).order(:position).each do |team|
         event_team = event.fleet_event_teams.create!(
           source_team_id: team.id,
           fleet_squadron_id: team.fleet_squadron_id,
@@ -254,55 +261,7 @@ class FleetEvent < ApplicationRecord
           position: team.position
         )
 
-        team.mission_slots.order(:position).each do |slot|
-          FleetEventSlot.create!(
-            slottable: event_team,
-            source_slot_id: slot.id,
-            model_position_id: slot.model_position_id,
-            title: slot.title,
-            description: slot.description,
-            position: slot.position
-          )
-        end
-
-        team.mission_ships.order(:position).each do |ship|
-          event_ship = event_team.fleet_event_ships.new(
-            source_ship_id: ship.id,
-            model_id: ship.model_id,
-            title: ship.title,
-            description: ship.description,
-            classification: ship.classification,
-            foci: ship.foci,
-            min_size: ship.min_size,
-            max_size: ship.max_size,
-            min_crew: ship.min_crew,
-            min_cargo: ship.min_cargo,
-            position: ship.position
-          )
-
-          # Before the save, and not only so the event arrives with the list: a
-          # spot whose whole spec is a list has nothing in its columns, so saving
-          # first left model_or_filter_required with nothing to accept.
-          ship.mission_ship_models.order(:position).each_with_index do |allowed, index|
-            event_ship.fleet_event_ship_models.build(
-              model_id: allowed.model_id,
-              position: index
-            )
-          end
-
-          event_ship.save!
-
-          ship.mission_slots.order(:position).each do |slot|
-            FleetEventSlot.create!(
-              slottable: event_ship,
-              source_slot_id: slot.id,
-              model_position_id: slot.model_position_id,
-              title: slot.title,
-              description: slot.description,
-              position: slot.position
-            )
-          end
-        end
+        MissionTeams::Copier.new(team, event_team).copy!
       end
 
       event
@@ -554,6 +513,11 @@ class FleetEvent < ApplicationRecord
   private def recurrence_count_or_until
     return unless recurrence_count.present? && recurrence_until.present?
     errors.add(:base, :recurrence_count_xor_until)
+  end
+
+  private def invite_slot_candidates
+    @opening = false
+    FleetEvents::SlotInvites.offer_all!(self)
   end
 
   # `open_at` is written by aasm on every transition into `open`, so unlocking

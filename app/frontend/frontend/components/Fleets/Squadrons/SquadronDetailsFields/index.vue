@@ -21,9 +21,10 @@ type Props = {
   fields: SquadronFormFields;
   fieldProps: SquadronFormFieldProps;
   validationSchema: Record<string, string>;
+  flightsAvailable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { flightsAvailable: false });
 
 const { t } = useI18n();
 </script>
@@ -42,13 +43,26 @@ const { t } = useI18n();
         :label="t('labels.fleet.squadrons.name')"
       />
     </div>
-    <div class="col-12 col-md-6">
+    <div
+      class="col-12"
+      :class="props.flightsAvailable ? 'col-md-3' : 'col-md-6'"
+    >
       <FormToggle
         v-model="props.fields.team"
         v-bind="props.fieldProps.team"
         name="team"
         :label="t('labels.fleet.squadrons.team')"
         :info="t('labels.fleet.squadrons.teamHint')"
+        align-with-fields
+      />
+    </div>
+    <div v-if="props.flightsAvailable" class="col-12 col-md-3">
+      <FormToggle
+        v-model="props.fields.flightsEnabled"
+        v-bind="props.fieldProps.flightsEnabled"
+        name="flightsEnabled"
+        :label="t('labels.fleet.squadrons.flightsEnabled')"
+        :info="t('labels.fleet.squadrons.flightsEnabledHint')"
         align-with-fields
       />
     </div>

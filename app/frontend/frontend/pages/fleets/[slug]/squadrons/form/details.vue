@@ -8,6 +8,8 @@ export default {
 import Heading from "@/shared/components/base/Heading/index.vue";
 import SquadronDetailsFields from "@/frontend/components/Fleets/Squadrons/SquadronDetailsFields/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { type Fleet } from "@/services/fyApi";
 import {
   type SquadronFormFieldProps,
   type SquadronFormFields,
@@ -17,11 +19,13 @@ type Props = {
   fields: SquadronFormFields;
   fieldProps: SquadronFormFieldProps;
   validationSchema: Record<string, string>;
+  fleet: Fleet;
 };
 
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { isFleetSquadronFlightsEnabled } = useFeatures();
 </script>
 
 <template>
@@ -31,5 +35,6 @@ const { t } = useI18n();
     :fields="props.fields"
     :field-props="props.fieldProps"
     :validation-schema="props.validationSchema"
+    :flights-available="isFleetSquadronFlightsEnabled(props.fleet)"
   />
 </template>

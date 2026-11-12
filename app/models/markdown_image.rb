@@ -19,6 +19,7 @@ class MarkdownImage < ApplicationRecord
     "FleetEventShip" => %i[description],
     "FleetEventTeam" => %i[description],
     "FleetSquadron" => %i[description],
+    "FleetSquadronFlight" => %i[description],
     "Mission" => %i[description],
     "MissionShip" => %i[description],
     "MissionTeam" => %i[description]

@@ -21,6 +21,7 @@ class FleetSquadron < ApplicationRecord
   has_many :fleet_squadron_requests, dependent: :destroy
   has_many :fleet_event_teams, dependent: nil
   has_many :mission_teams, dependent: nil
+  has_many :fleet_squadron_flights, dependent: :destroy
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
@@ -105,6 +106,23 @@ class FleetSquadron < ApplicationRecord
   # The foreign key clears the teams built from this squadron inside the
   # database, where no touch reaches the event or template they belong to.
   before_destroy :touch_team_parents
+
+  # A squadron flies together, so it starts with flights; a team is a side
+  # group members join on top of their squadron and starts without them.
+  # Whatever the creator chose stands.
+  before_validation :default_flights_enabled, on: :create
+
+  def flights_enabled=(value)
+    @flights_enabled_chosen = true
+    super
+  end
+
+  # Switching flights back on picks up the invitations it held back. Flagged by
+  # the save that switches them, because a touch later commits with that save's
+  # changes still on record.
+  before_update -> { @enabling_flights = will_save_change_to_flights_enabled?(to: true) }
+  after_update_commit :offer_held_slots, if: -> { @enabling_flights }
+  after_rollback -> { @enabling_flights = false }
   after_destroy :release_restricted_records
 
   # The fleet's own order, which is the point of having one. Sorting by name is
@@ -167,6 +185,20 @@ class FleetSquadron < ApplicationRecord
     Mission.where(id: mission_teams.select(:mission_id)).touch_all
   end
 
+  private def default_flights_enabled
+    self.flights_enabled = !team? unless @flights_enabled_chosen
+  end
+
+  private def offer_held_slots
+    @enabling_flights = false
+    FleetEventSlot
+      .where(id: FleetEventSlotCandidate.waiting
+        .where(fleet_squadron_membership_id: fleet_squadron_memberships.select(:id))
+        .select(:fleet_event_slot_id))
+      .unscope(:order)
+      .find_each { |slot| FleetEvents::SlotInvites.new(slot).offer! }
+  end
+
   private def release_restricted_records
     @restricted_records.to_a.each(&:release_squadron_restriction!)
   end
@@ -196,8 +228,47 @@ class FleetSquadron < ApplicationRecord
     end
   end
 
-  # Whose ships count as this squadron's. Empty for an empty squadron, which is
-  # what keeps `where(user_id: [])` from widening to the whole fleet.
+  # The ships the named squadrons get from their members, as a subquery of
+  # vehicle ids for a caller that already starts from the fleet's own ships --
+  # which is what keeps every choice here a narrowing of what the fleet sees.
+  #
+  # A loaner follows its parent: picking a ship, or grouping it, brings the
+  # loaners that come with it.
+  def self.vehicle_ids_for(fleet_id:, squadron_ids:)
+    filters = FleetSquadronMembership.ships_filters
+
+    Vehicle
+      .joins(<<~SQL.squish)
+        INNER JOIN fleet_memberships squadron_owners
+          ON squadron_owners.user_id = vehicles.user_id
+          AND squadron_owners.fleet_id = #{connection.quote(fleet_id)}
+          AND squadron_owners.discarded_at IS NULL
+          AND squadron_owners.aasm_state = 'accepted'
+        INNER JOIN fleet_squadron_memberships squadron_rows
+          ON squadron_rows.fleet_membership_id = squadron_owners.id
+      SQL
+      .where("squadron_rows.fleet_squadron_id": squadron_ids)
+      .where(<<~SQL.squish, all: filters["all"], hangar_group: filters["hangar_group"])
+        squadron_rows.ships_filter = :all
+        OR (
+          squadron_rows.ships_filter = :hangar_group
+          AND EXISTS (
+            SELECT 1 FROM task_forces
+            WHERE task_forces.hangar_group_id = squadron_rows.hangar_group_id
+              AND (task_forces.vehicle_id = vehicles.id OR task_forces.vehicle_id = vehicles.vehicle_id)
+          )
+        )
+        OR EXISTS (
+          SELECT 1 FROM fleet_squadron_membership_vehicles picked
+          WHERE picked.fleet_squadron_membership_id = squadron_rows.id
+            AND (picked.vehicle_id = vehicles.id OR picked.vehicle_id = vehicles.vehicle_id)
+        )
+      SQL
+      .select(:id)
+  end
+
+  # The accepted members' users. Empty for an empty squadron, which is what
+  # keeps a `where(user_id: [])` from widening to the whole fleet.
   def member_user_ids
     accepted_fleet_memberships.pluck(:user_id).compact
   end

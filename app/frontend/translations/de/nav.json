@@ -87,7 +87,9 @@
             "details": "Details",
             "appearance": "Erscheinungsbild",
             "discord": "Discord"
-          }
+          },
+          "flights": "Schwärme",
+          "myShips": "Meine Schiffe"
         },
         "stats": "Statistiken",
         "logistics": {
