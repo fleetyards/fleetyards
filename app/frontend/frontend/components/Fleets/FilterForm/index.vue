@@ -159,6 +159,7 @@ const hasGroupFilters = (keys: string[]) =>
       <BaseSelect
         v-model="form.withLandingServices"
         :options="landingServiceOptions"
+        unsorted
         :label="t('labels.filters.models.withLandingServices')"
         name="landing-services"
         :multiple="true"

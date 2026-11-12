@@ -22,11 +22,11 @@ export const landingServiceLabel = (
 
 // A service as an icon shows it: what it is called, and the game's icon for it
 // when there is one.
-export type LandingServiceIcon = {
+export interface LandingServiceIcon {
   key: LandingServiceEnum;
   label: string;
   url?: string;
-};
+}
 
 type LandingServicesSource = {
   landingServices?: LandingServiceEnum[] | null;
