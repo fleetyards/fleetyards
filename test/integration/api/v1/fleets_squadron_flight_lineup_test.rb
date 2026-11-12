@@ -13,7 +13,6 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
   SHIPS = "#{FLIGHT}/ships"
   SHIPS_SORT = "#{FLIGHT}/ships/sort"
   SHIP = "#{FLIGHT}/ships/{id}"
-  SHIP_DUPLICATE = "#{FLIGHT}/ships/{id}/duplicate"
   SLOTS = "#{FLIGHT}/slots"
   SLOTS_SORT = "#{FLIGHT}/slots/sort"
   SLOT = "#{FLIGHT}/slots/{id}"
@@ -93,22 +92,6 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
       security SECURITY_WRITE
 
       response(204, "successful")
-    end
-  end
-
-  api_path SHIP_DUPLICATE do
-    instance_exec(&FLIGHT_PARAMS)
-    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Ship id"
-
-    post("Duplicate a ship of a Fleet Squadron Flight") do
-      operationId "duplicateFleetSquadronFlightShip"
-      tags "FleetSquadrons"
-      produces "application/json"
-      security SECURITY_WRITE
-
-      response(201, "created") do
-        schema ::V1::Schemas::Fleets::Missions::MissionShip
-      end
     end
   end
 
@@ -236,24 +219,49 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
     {fleetSlug: @fleet.slug, fleetSquadronSlug: @squadron.slug, fleetSquadronFlightId: @flight.id, **extra}
   end
 
-  test "POST ships adds a ship to the flight's lineup" do
+  test "POST ships adds a member's ship to the flight, flown by its owner" do
+    vehicle = create(:vehicle, user: @pilot, model: create(:model, :in_game))
     sign_in @officer
 
-    assert_api_response :post, 201, api_path: SHIPS, path_params: flight_params, body: {classification: "Combat"} do
-      assert_equal @team.id, MissionShip.find(parsed_body["id"]).mission_team_id
+    assert_api_response :post, 201, api_path: SHIPS, path_params: flight_params, body: {vehicleId: vehicle.id} do
+      ship = MissionShip.find(parsed_body["id"])
+      assert_equal @team.id, ship.mission_team_id
+      assert_equal vehicle.model_id, ship.model_id
+      assert_equal vehicle.id, parsed_body.dig("vehicle", "id")
+      assert_equal @pilot.username, parsed_body.dig("vehicle", "username")
     end
+
+    pilot = MissionShip.find(parsed_body["id"]).mission_slots.find_by!(role: "pilot")
+    assert_equal [@rows[@pilot].id], pilot.mission_slot_candidates.map(&:fleet_squadron_membership_id)
+    assert_equal [vehicle.id], pilot.mission_slot_candidates.map(&:vehicle_id)
   end
 
   test "POST ships is refused to a plain member" do
     sign_in @pilot
 
-    assert_api_response :post, 403, api_path: SHIPS, path_params: flight_params, body: {classification: "Combat"}
+    assert_api_response :post, 403, api_path: SHIPS, path_params: flight_params,
+      body: {vehicleId: create(:vehicle, user: @pilot).id}
   end
 
-  test "POST ships refuses a spot with nothing to match" do
+  test "POST ships refuses a ship that names no member's ship" do
     sign_in @officer
 
-    assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params, body: {}
+    assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params, body: {classification: "Combat"}
+  end
+
+  test "POST ships refuses a ship its owner does not give the squadron" do
+    @rows[@pilot].update!(ships_filter: "picked")
+    sign_in @officer
+
+    assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params,
+      body: {vehicleId: create(:vehicle, user: @pilot, model: create(:model, :in_game)).id}
+  end
+
+  test "POST ships refuses a ship the flight already has" do
+    ship = create(:mission_ship, mission_team: @team)
+    sign_in @officer
+
+    assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params, body: {vehicleId: ship.vehicle_id}
   end
 
   test "PUT ships/sort orders the lineup" do
@@ -265,13 +273,13 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
     assert_equal [second.id, first.id], @team.mission_ships.reload.map(&:id)
   end
 
-  test "PUT ships updates and DELETE removes a ship, POST duplicate copies it" do
+  test "PUT ships updates and DELETE removes a ship" do
     ship = create(:mission_ship, mission_team: @team)
+    other = create(:mission_ship, mission_team: @team)
     sign_in @officer
 
     assert_api_response :put, 200, api_path: SHIP, path_params: flight_params(id: ship.id), body: {title: "Lead bomber"}
-    assert_api_response :post, 201, api_path: SHIP_DUPLICATE, path_params: flight_params(id: ship.id)
-    assert_api_response :delete, 204, api_path: SHIP, path_params: flight_params(id: ship.id)
+    assert_api_response :delete, 204, api_path: SHIP, path_params: flight_params(id: other.id)
     assert_equal ["Lead bomber"], @team.mission_ships.reload.map(&:title)
   end
 

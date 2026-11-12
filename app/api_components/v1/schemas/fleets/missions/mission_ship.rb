@@ -18,6 +18,17 @@ module V1
               position: {type: :integer},
               strict: {type: :boolean},
               model: ::V1::Schemas::Fleets::ShipModel,
+              # The member's own ship a flight's ship is; templates name none.
+              vehicle: {
+                type: [:object, :null],
+                properties: {
+                  id: {type: :string, format: :uuid},
+                  name: {type: [:string, :null]},
+                  username: {type: [:string, :null]}
+                },
+                required: %w[id name username],
+                additionalProperties: false
+              },
               # The models a spot will take when it names several rather than
               # one; empty for the other two kinds of spot.
               allowedModels: {

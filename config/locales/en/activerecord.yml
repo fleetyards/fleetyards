@@ -527,6 +527,9 @@ en:
               must_be_in_game: is not in the game yet
             allowed_model_ids:
               must_be_in_game: name a ship that is not in the game yet
+            vehicle_id:
+              not_in_squadron: "is not one of the ships the squadron's members give it"
+              taken: "is already in this flight"
         fleet_event_ship:
           attributes:
             base:

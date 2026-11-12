@@ -601,6 +601,11 @@ es:
               already_given: "ya es una de las naves del escuadrón"
             vehicle_id:
               already_requested: "ya se ha solicitado"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "no es una de las naves que los miembros ceden al escuadrón"
+              taken: "ya está en esta escuadrilla"
         mission_slot:
           lead_required: "Una escuadrilla siempre conserva su slot de líder."
           pilot_required: "Una nave de una escuadrilla siempre conserva un slot de piloto."

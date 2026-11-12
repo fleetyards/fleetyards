@@ -2322,8 +2322,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.datetime "updated_at", null: false
     t.uuid "mission_team_id", null: false
     t.string "foci", default: [], null: false, array: true
+    t.uuid "vehicle_id"
     t.index ["mission_team_id", "position"], name: "index_mission_ships_on_mission_team_id_and_position"
     t.index ["model_id"], name: "index_mission_ships_on_model_id"
+    t.index ["vehicle_id"], name: "index_mission_ships_on_vehicle_id"
   end
 
   create_table "mission_slot_candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3658,6 +3660,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"
   add_foreign_key "mission_ships", "models"
+  add_foreign_key "mission_ships", "vehicles", on_delete: :nullify
   add_foreign_key "mission_slot_candidates", "fleet_squadron_memberships", on_delete: :cascade
   add_foreign_key "mission_slot_candidates", "mission_slots", on_delete: :cascade
   add_foreign_key "mission_slot_candidates", "vehicles", on_delete: :nullify

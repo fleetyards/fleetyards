@@ -38,7 +38,7 @@ module MissionTeams
 
     TEAM_PRELOADS = [
       {mission_slots: SLOT_PRELOADS},
-      {mission_ships: [:model, :mission_ship_models, {mission_slots: SLOT_PRELOADS}]}
+      {mission_ships: [:model, :vehicle, :mission_ship_models, {mission_slots: SLOT_PRELOADS}]}
     ].freeze
 
     def self.preload(teams)
@@ -86,11 +86,11 @@ module MissionTeams
       copy.save!
 
       ship.mission_slots.sort_by(&:position).each do |slot|
-        copy_slot(slot, copy, 0)
+        copy_slot(slot, copy, 0, vehicle: ship.vehicle)
       end
     end
 
-    private def copy_slot(slot, slottable, offset)
+    private def copy_slot(slot, slottable, offset, vehicle: nil)
       attributes = slot.slice(*SLOT_ATTRIBUTES).merge(position: slot.position + offset)
       # A team has one lead; one it already has keeps the role.
       attributes[:lead] = false if attributes[:lead] && slottable.public_send(@config[:slots]).where(lead: true).exists?
@@ -99,7 +99,7 @@ module MissionTeams
       copy = slottable.public_send(@config[:slots]).create!(attributes)
 
       slot.mission_slot_candidates.sort_by(&:position).each do |candidate|
-        copy_candidate(candidate, copy)
+        copy_candidate(candidate, copy, vehicle)
       end
 
       copied_slots << copy
@@ -115,10 +115,17 @@ module MissionTeams
     # a member's squadron row moves -- and one such entry must not stop the
     # whole team from being built. A ship that no longer fits is dropped; a
     # member who no longer fits is left off.
-    private def copy_candidate(candidate, slot)
+    #
+    # A flight's ship is a member's own, and its owner brings it: whichever
+    # seat they are listed for, the copy names that ship for them.
+    private def copy_candidate(candidate, slot, ship_vehicle = nil)
       copy = slot.public_send(@config[:candidates]).new(
         candidate.slice(:fleet_squadron_membership_id, :vehicle_id, :position)
       )
+      if copy.vehicle_id.blank? && ship_vehicle.present? &&
+          ship_vehicle.user_id == candidate.fleet_squadron_membership&.fleet_membership&.user_id
+        copy.vehicle_id = ship_vehicle.id
+      end
       copy.vehicle_id = nil if !copy.valid? && copy.errors.include?(:vehicle)
       copy.save if copy.valid?
     end

@@ -31,6 +31,15 @@ FactoryBot.define do
     sequence(:position) { |n| n }
     classification { "Combat" }
 
+    # A flight's ship is a member's own, so one is found for it in the squadron.
+    after(:build) do |ship|
+      flight = ship.mission_team&.flight
+      next if flight.blank? || ship.vehicle.present?
+
+      row = create(:fleet_squadron_membership, fleet_squadron: flight.fleet_squadron)
+      ship.vehicle = create(:vehicle, user: row.fleet_membership.user, model: create(:model, :in_game))
+    end
+
     trait :strict do
       classification { nil }
       association :model, factory: %i[model in_game]

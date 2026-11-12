@@ -601,6 +601,11 @@ fr:
               already_given: "fait déjà partie des vaisseaux de l'escadron"
             vehicle_id:
               already_requested: "a déjà été demandé"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "ne fait pas partie des vaisseaux que les membres confient à l’escadron"
+              taken: "est déjà dans cette patrouille"
         mission_slot:
           lead_required: "Une patrouille garde toujours son poste de chef."
           pilot_required: "Un vaisseau de patrouille garde toujours un poste de pilote."

@@ -601,6 +601,11 @@ de:
               already_given: "gehört bereits zu den Schiffen der Staffel"
             vehicle_id:
               already_requested: "wurde bereits angefragt"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "gehört nicht zu den Schiffen, die die Mitglieder der Staffel geben"
+              taken: "ist bereits in diesem Schwarm"
         mission_slot:
           lead_required: "Ein Schwarm behält immer seinen Führungs-Slot."
           pilot_required: "Ein Schiff eines Schwarms behält immer einen Piloten-Slot."

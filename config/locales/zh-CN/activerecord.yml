@@ -601,6 +601,11 @@ zh-CN:
               already_given: "已在该中队的舰船中"
             vehicle_id:
               already_requested: "已被请求过"
+        mission_ship:
+          attributes:
+            vehicle_id:
+              not_in_squadron: "不是成员提供给本中队的舰船"
+              taken: "已在此小队中"
         mission_slot:
           lead_required: "小队始终保留其小队长席位。"
           pilot_required: "小队中的舰船始终保留一个驾驶员席位。"

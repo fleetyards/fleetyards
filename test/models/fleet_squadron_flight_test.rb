@@ -50,6 +50,23 @@ class FleetSquadronFlightTest < ActiveSupport::TestCase
     assert_equal ["pilot"], ship.mission_slots.reload.map(&:role)
   end
 
+  test "a flight's ship is flown by its owner and is their ship's model" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+
+    assert_equal ship.vehicle.model_id, ship.model_id
+    pilot = ship.mission_slots.reload.sole.mission_slot_candidates.sole
+    assert_equal ship.vehicle.user_id, pilot.fleet_squadron_membership.fleet_membership.user_id
+    assert_equal ship.vehicle_id, pilot.vehicle_id
+  end
+
+  test "a flight's ship has to name a member's ship" do
+    ship = build(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+    ship.vehicle = nil
+
+    assert_not ship.valid?
+    assert ship.errors.added?(:vehicle_id, :blank)
+  end
+
   test "a ship's last pilot seat cannot be removed on its own" do
     ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
     pilot = ship.mission_slots.sole

@@ -10122,57 +10122,6 @@ paths:
           description: successful
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/ships/{id}/duplicate":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    - name: fleetSquadronSlug
-      in: path
-      schema:
-        type: string
-      description: Squadron slug
-      required: true
-    - name: fleetSquadronFlightId
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Flight id
-      required: true
-    - name: id
-      in: path
-      schema:
-        type: string
-        format: uuid
-      description: Ship id
-      required: true
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
-    post:
-      summary: Duplicate a ship of a Fleet Squadron Flight
-      tags:
-      - FleetSquadrons
-      operationId: duplicateFleetSquadronFlightShip
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      responses:
-        '201':
-          description: created
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/MissionShip"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/flights/{fleetSquadronFlightId}/slots":
     parameters:
     - name: fleetSlug
@@ -45333,6 +45282,27 @@ components:
           type: boolean
         model:
           "$ref": "#/components/schemas/ShipModel"
+        vehicle:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type:
+              - string
+              - 'null'
+            username:
+              type:
+              - string
+              - 'null'
+          required:
+          - id
+          - name
+          - username
+          additionalProperties: false
         allowedModels:
           type: array
           items:
@@ -45368,6 +45338,13 @@ components:
           - string
           - 'null'
           format: uuid
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: A member's own ship, which a flight's ship has to name; its
+            model is taken from it
         classification:
           type:
           - string
@@ -45424,6 +45401,13 @@ components:
           - string
           - 'null'
           format: uuid
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: A member's own ship, which a flight's ship has to name; its
+            model is taken from it
         classification:
           type:
           - string

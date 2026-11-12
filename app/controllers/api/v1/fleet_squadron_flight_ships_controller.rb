@@ -14,7 +14,7 @@ module Api
       before_action :load_flight!
       before_action :check_flight_squadrons_feature
       before_action :set_team
-      before_action :set_ship, only: %i[update destroy duplicate]
+      before_action :set_ship, only: %i[update destroy]
 
       private def set_team
         @team = @flight.team

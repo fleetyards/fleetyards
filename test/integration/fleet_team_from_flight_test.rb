@@ -15,9 +15,10 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
         fleet_membership: @fleet.fleet_memberships.kept.find_by!(user:))
     end
     @flight = create(:fleet_squadron_flight, fleet_squadron: @squadron, name: "Strike", description: "Two bombers")
-    ship = create(:mission_ship, mission_team: @flight.team, title: "Bomber")
+    @vehicle = create(:vehicle, user: @pilot, model: create(:model, :in_game))
+    ship = create(:mission_ship, mission_team: @flight.team, title: "Bomber", vehicle: @vehicle)
     slot = ship.mission_slots.reload.find_by!(role: "pilot")
-    rows.each_with_index { |row, index| slot.mission_slot_candidates.create!(fleet_squadron_membership: row, position: index) }
+    slot.mission_slot_candidates.create!(fleet_squadron_membership: rows.last, position: 1)
     sign_in @admin
   end
 
@@ -35,6 +36,7 @@ class FleetTeamFromFlightTest < ActionDispatch::IntegrationTest
     assert_equal [@pilot, @wingman], slot.fleet_event_slot_candidates.map { |c| c.fleet_membership.user }
     assert_equal @pilot, slot.fleet_event_signups.sole.fleet_membership.user
     assert slot.fleet_event_signups.sole.invited?
+    assert_equal @vehicle, slot.fleet_event_signups.sole.vehicle
   end
 
   test "a draft event keeps the invitation until it is published" do
