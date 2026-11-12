@@ -132,7 +132,7 @@ gem "openapi-ruby", "~> 5.0"
 gem "asyncapi_cable", "~> 0.2"
 
 group :development do
-  gem "i18n-tasks", "~> 1.0"
+  gem "i18n-tasks", "~> 1.2"
   gem "listen"
 
   gem "standard"
