@@ -28,7 +28,22 @@ module SlotRole
     role == "pilot"
   end
 
+  # The names a role goes by in every language the app speaks, so a seat
+  # somebody typed as "Captain" or "Kapitän" is one.
+  def self.role_for_title(title)
+    name = title.to_s.strip.downcase
+    return if name.blank?
+
+    ROLES.find do |role|
+      I18n.available_locales.any? { |locale| I18n.t("labels.slots.roles.#{role}", locale:).downcase == name }
+    end
+  end
+
+  # A model's pilot position is the pilot; its captain is listed by name, as an
+  # operator's position.
   private def take_role_from_position
     self.role ||= "pilot" if model_position&.position_type == "pilot"
+    self.role ||= SlotRole.role_for_title(model_position&.name)
+    self.role ||= SlotRole.role_for_title(title)
   end
 end

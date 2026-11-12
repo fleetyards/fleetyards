@@ -74,4 +74,18 @@ class FleetSquadronFlightTest < ActiveSupport::TestCase
 
     assert_empty ship.mission_slots.reload
   end
+  test "a seat named after a role in any language takes it" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+
+    assert_equal "captain", ship.mission_slots.create!(title: "Kapitän").role
+    assert_equal "pilot", ship.mission_slots.create!(title: " pilot ").role
+    assert_nil ship.mission_slots.create!(title: "Co-Pilot").role
+  end
+
+  test "a model's captain position is the captain" do
+    position = create(:model_position, name: "Captain", position_type: :operator)
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+
+    assert_equal "captain", ship.mission_slots.create!(title: "Bridge", model_position: position).role
+  end
 end

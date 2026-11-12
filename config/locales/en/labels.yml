@@ -2,6 +2,9 @@
 en:
   labels:
     slots:
+      roles:
+        captain: "Captain"
+        pilot: "Pilot"
       lead: "Flight lead"
     actions: Actions
     charts:

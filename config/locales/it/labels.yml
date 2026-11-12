@@ -2,6 +2,9 @@
 it:
   labels:
     slots:
+      roles:
+        captain: "Capitano"
+        pilot: "Pilota"
       lead: "Capo pattuglia"
     actions: Azioni
     charts:

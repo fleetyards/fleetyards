@@ -2,6 +2,9 @@
 de:
   labels:
     slots:
+      roles:
+        captain: "Kapitän"
+        pilot: "Pilot"
       lead: "Schwarmführer"
     actions: Aktionen
     charts:

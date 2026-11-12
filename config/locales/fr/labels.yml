@@ -2,6 +2,9 @@
 fr:
   labels:
     slots:
+      roles:
+        captain: "Capitaine"
+        pilot: "Pilote"
       lead: "Chef de patrouille"
     actions: Actions
     charts:
