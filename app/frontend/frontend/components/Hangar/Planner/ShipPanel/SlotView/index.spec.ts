@@ -140,6 +140,10 @@ const catalogueRow = (
 describe("Hangar/Planner/ShipPanel/SlotView", () => {
   beforeEach(() => {
     planData.value = plan;
+    options.value = {
+      ...options.value,
+      items: [option("Hull A"), option("Hull B")],
+    };
     vi.clearAllMocks();
   });
 
@@ -154,6 +158,68 @@ describe("Hangar/Planner/ShipPanel/SlotView", () => {
     expect(
       wrapper.findAll('[data-test="hangar-plan-slot-ship-choose"]'),
     ).toHaveLength(2);
+  });
+
+  it("pictures a ship to pick by its coloured angled view", async () => {
+    const image = (smallUrl: string) =>
+      ({ smallUrl }) as NonNullable<ModelOption["media"]["storeImage"]>;
+    options.value = {
+      ...options.value,
+      items: [
+        {
+          ...option("Hull A"),
+          media: {
+            storeImage: image("store.jpg"),
+            angledView: image("angled.png"),
+            angledViewColored: image("colored.png"),
+          },
+        },
+        {
+          ...option("Hull B"),
+          media: { storeImage: image("store-b.jpg") },
+        },
+      ],
+    };
+    const wrapper = await mount();
+
+    expect(catalogueRow(wrapper, "Hull A").find("img").attributes("src")).toBe(
+      "colored.png",
+    );
+    expect(catalogueRow(wrapper, "Hull B").find("img").attributes("src")).toBe(
+      "store-b.jpg",
+    );
+  });
+
+  it("pictures a shortlisted ship by its angled view", async () => {
+    const image = (smallUrl: string) =>
+      ({ smallUrl }) as NonNullable<HangarPlanCandidate["model"]["image"]>;
+    const pictured = {
+      ...slot,
+      candidates: [
+        {
+          ...hullA,
+          model: {
+            ...hullA.model,
+            image: image("store.jpg"),
+            angledImage: image("colored.png"),
+          },
+        },
+        {
+          ...caterpillar,
+          model: { ...caterpillar.model, image: image("store-c.jpg") },
+        },
+      ],
+    };
+    planData.value = { ...plan, slots: [pictured] };
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: pictured },
+      plugins: [router],
+    });
+
+    const images = wrapper
+      .findAll('[data-test="hangar-plan-slot-ship"] img')
+      .map((img) => img.attributes("src"));
+    expect(images).toEqual(["colored.png", "store-c.jpg"]);
   });
 
   it("links to the compare page with the slot's ships", async () => {
