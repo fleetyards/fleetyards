@@ -127,7 +127,7 @@ class FleetEventSignup < ApplicationRecord
 
   # A member holding a team seat and a ship seat is one person at the event.
   def self.attendee_count
-    distinct.pluck(:fleet_membership_id, :occurrence_date).size
+    count(Arel.sql("DISTINCT (fleet_event_signups.fleet_membership_id, fleet_event_signups.occurrence_date)"))
   end
 
   # The signups that compete with one in this kind of slot; a pool signup
