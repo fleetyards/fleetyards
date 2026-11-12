@@ -20,20 +20,26 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
-import { type Fleet, type FleetEvent } from "@/services/fyApi";
+import { type Fleet, type FleetEvent, type GameEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
 import { format, parseISO } from "date-fns";
 import { browserTimezone } from "@/shared/utils/Timezones";
-import { buildCalendarEvent } from "./calendarEvent";
+import { buildCalendarEvent, buildGameCalendarEvent } from "./calendarEvent";
 
 type CalendarViewKind = "month" | "week";
 
 type Props = {
-  fleet: Fleet;
+  // The fleet every event belongs to. A calendar of several fleets leaves it
+  // out and names each event's fleet through `fleetSlugFor`.
+  fleet?: Fleet;
+  fleetSlugFor?: (event: FleetEvent) => string | undefined;
   events: FleetEvent[];
+  gameEvents?: GameEvent[];
+  // Nothing to create: a click on a day does nothing and selects nothing.
+  readOnly?: boolean;
   view?: CalendarViewKind;
   // A single row of this week, for a page that shows the calendar beside other
   // things: the reader's place in the URL, the view switch and creating an
@@ -43,6 +49,10 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  fleet: undefined,
+  fleetSlugFor: undefined,
+  gameEvents: () => [],
+  readOnly: false,
   view: "month",
   compact: false,
   loading: false,
@@ -139,14 +149,22 @@ const styleFor = (category?: string | null): CategoryStyle =>
   (category && categoryStyles[category]) ||
   categoryStyles[MissionCategoryEnum.OTHER];
 
-const calendarEvents = computed(() => props.events.map(buildCalendarEvent));
+const calendarEvents = computed(() => [
+  ...props.events.map(buildCalendarEvent),
+  ...props.gameEvents.map(buildGameCalendarEvent),
+]);
+
+const creates = computed(() => !props.compact && !props.readOnly);
+
+type ChipProps = { fleetEvent?: FleetEvent; gameEvent?: GameEvent };
 
 const renderEventChip = (info: {
-  event: { extendedProps?: { fleetEvent?: FleetEvent }; title: string };
+  event: { extendedProps?: ChipProps; title: string };
   timeText: string;
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
+  const gameEvent = info.event.extendedProps?.gameEvent;
   // The compact week has a whole column per day and one row of them, room
   // enough for the cover; a month's cells are not.
   const isCard = info.view.type === "dayGridWeek";
@@ -167,14 +185,18 @@ const renderEventChip = (info: {
      * own would be the only thing saying which one it is.
      */
     chip.classList.add("fy-event-chip--compact");
-    const { icon, color } = styleFor(event?.category as string | undefined);
+    const { icon, color } = styleFor(
+      (event?.category || gameEvent?.category) as string | undefined,
+    );
     chip.style.setProperty("--chip-color", color);
 
     const iconEl = document.createElement("i");
     iconEl.className = `fa-light ${icon} fy-event-chip__icon`;
     chip.appendChild(iconEl);
   } else {
-    const cover = event ? resolveCover(event) : null;
+    const cover = event
+      ? resolveCover(event)
+      : gameEvent?.coverImage?.largeUrl || null;
     if (cover) {
       chip.style.backgroundImage = `url(${cover})`;
       chip.classList.add("fy-event-chip--with-cover");
@@ -261,17 +283,24 @@ onMounted(() => {
     height: "auto",
     dayMaxEvents: true,
     nowIndicator: true,
-    selectable: !props.compact,
-    selectMirror: !props.compact,
+    selectable: creates.value,
+    selectMirror: creates.value,
     slotDuration: "01:00:00",
     slotHeight: 56,
     slotMinTime: "08:00:00",
     slotMaxTime: "24:00:00",
-    eventClick: (info: {
-      event: { extendedProps?: { fleetEvent?: FleetEvent } };
-    }) => {
+    eventClick: (info: { event: { extendedProps?: ChipProps } }) => {
+      const gameEvent = info.event.extendedProps?.gameEvent;
+      if (gameEvent?.url) {
+        window.open(gameEvent.url, "_blank", "noopener");
+        return;
+      }
+
       const event = info.event.extendedProps?.fleetEvent;
-      if (event?.slug) {
+      const fleetSlug = event
+        ? props.fleetSlugFor?.(event) || props.fleet?.slug
+        : undefined;
+      if (event?.slug && fleetSlug) {
         const occurrence = (event as { occurrenceDate?: string | null })
           .occurrenceDate;
         const parentSlug = (event as { parentEventSlug?: string | null })
@@ -279,7 +308,7 @@ onMounted(() => {
         void router.push({
           name: "fleet-event",
           params: {
-            slug: props.fleet.slug,
+            slug: fleetSlug,
             event: parentSlug || event.slug,
           },
           query: occurrence ? { occurrence } : undefined,
@@ -287,11 +316,11 @@ onMounted(() => {
       }
     },
     dateClick: (info: { date: Date }) => {
-      if (props.compact) return;
+      if (!creates.value) return;
       emit("create-event", info.date);
     },
     select: (info: { start: Date }) => {
-      if (props.compact) return;
+      if (!creates.value) return;
       emit("create-event", info.start);
     },
     datesSet: (info: { start: Date; end: Date }) => {
