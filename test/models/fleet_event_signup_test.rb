@@ -59,6 +59,14 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       assert_equal [:already_signed_up], loser.errors.where(:fleet_membership_id).map(&:type)
     end
 
+    test "answers a second team seat for the member with the signed-up error" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership)
+      loser = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: create(:fleet_event_slot, slottable: @team), fleet_membership: @fleet_membership))
+
+      assert_not loser.save_without_conflict
+      assert_equal [:already_signed_up], loser.errors.where(:fleet_membership_id).map(&:type)
+    end
+
     test "answers a slot deleted mid-save with the required error" do
       signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested")
       other_slot = create(:fleet_event_slot, slottable: @team)
@@ -161,6 +169,37 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       other_slot = create(:fleet_event_slot, slottable: @team)
       duplicate = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: other_slot, fleet_membership: @fleet_membership, status: "confirmed")
       refute duplicate.valid?
+    end
+
+    test "allows a ship seat beside a team seat" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership)
+      ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @team))
+
+      assert create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: ship_slot, fleet_membership: @fleet_membership).persisted?
+    end
+
+    test "allows waiting in the pool beside a team seat" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership)
+
+      assert create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested").persisted?
+    end
+
+    test "rejects a second ship seat" do
+      ship = create(:fleet_event_ship, fleet_event_team: @team)
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: create(:fleet_event_slot, slottable: ship), fleet_membership: @fleet_membership)
+
+      duplicate = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: create(:fleet_event_slot, slottable: ship), fleet_membership: @fleet_membership)
+      refute duplicate.valid?
+      assert_includes duplicate.errors.details[:fleet_membership_id], {error: :already_signed_up}
+    end
+
+    test "rejects moving a ship seat into a team seat while the member holds one" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership)
+      ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @team))
+      signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: ship_slot, fleet_membership: @fleet_membership)
+
+      refute signup.update(fleet_event_slot: create(:fleet_event_slot, slottable: @team))
+      assert_includes signup.errors.details[:fleet_membership_id], {error: :already_signed_up}
     end
 
     test "allows another signup once the first is withdrawn" do

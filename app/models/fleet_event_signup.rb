@@ -16,13 +16,15 @@ class FleetEventSignup < ApplicationRecord
   validates :status, inclusion: {in: STATUSES}
   validate :slot_exists, if: :fleet_event_slot_changing?
   validate :vehicle_owned_by_member, if: :vehicle_changing?
-  validate :unique_active_signup_per_member, on: :create
+  validate :unique_active_signup_per_member, if: -> { new_record? || will_save_change_to_team_seat? }
   validate :slot_not_already_taken, if: :entering_slot?
   validate :membership_still_kept, if: :claims_seat?
   validate :slot_belongs_to_event
   validate :slot_bound_status_allowed
 
   before_validation :assign_event_from_slot
+  before_validation :mark_team_seat
+  before_save :mark_team_seat
   before_save :stamp_status_timestamps
 
   # A member leaving a slot that was offered down a list hands it to the next
@@ -58,7 +60,8 @@ class FleetEventSignup < ApplicationRecord
 
   CONFLICT_INDEX_ERRORS = {
     "index_fleet_event_signups_unique_active_per_slot" => [:fleet_event_slot_id, :already_taken],
-    "index_fleet_event_signups_unique_active_per_event" => [:fleet_membership_id, :already_signed_up]
+    "index_fleet_event_signups_unique_active_per_event" => [:fleet_membership_id, :already_signed_up],
+    "index_fleet_event_signups_unique_active_team_seat_per_event" => [:fleet_membership_id, :already_signed_up]
   }.freeze
   CONFLICT_FOREIGN_KEYS = %w[fleet_event_slot_id vehicle_id].freeze
 
@@ -113,6 +116,28 @@ class FleetEventSignup < ApplicationRecord
     fleet_event_slot&.signup_approval.presence ||
       fleet_event&.signup_approval ||
       "direct"
+  end
+
+  # A seat on the team rather than on one of its ships, like the lead's, is a
+  # role on top of whatever the member flies: it is a signup of its own and
+  # leaves the member free to take a ship seat or wait in the pool too.
+  def self.team_seat_slot?(slot)
+    slot&.slottable_type == "FleetEventTeam"
+  end
+
+  # A member holding a team seat and a ship seat is one person at the event.
+  def self.attendee_count
+    distinct.pluck(:fleet_membership_id, :occurrence_date).size
+  end
+
+  # The signups that compete with one in this kind of slot; a pool signup
+  # competes with a ship seat, never with a team seat.
+  def self.same_kind_as(slot)
+    where(team_seat: team_seat_slot?(slot))
+  end
+
+  private def mark_team_seat
+    self.team_seat = self.class.team_seat_slot?(fleet_event_slot)
   end
 
   private def assign_event_from_slot
@@ -180,7 +205,8 @@ class FleetEventSignup < ApplicationRecord
     existing = FleetEventSignup.where(
       fleet_event_id: fleet_event_id,
       fleet_membership_id: fleet_membership_id,
-      occurrence_date: occurrence_date
+      occurrence_date: occurrence_date,
+      team_seat: team_seat
     ).where.not(status: "withdrawn").where.not(id: id)
 
     if existing.exists?

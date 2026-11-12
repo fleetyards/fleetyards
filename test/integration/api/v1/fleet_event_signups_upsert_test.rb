@@ -54,13 +54,47 @@ class Api::V1::FleetEventSignupsUpsertTest < ActionDispatch::IntegrationTest
     assert_equal 1, @event.fleet_event_signups.where(fleet_membership: membership).where.not(status: "withdrawn").count
   end
 
-  test "POST /fleets/:fleet/events/:slug/signup returns 409 when the member is already in a slot" do
+  test "POST /fleets/:fleet/events/:slug/signup returns 409 when the member is already on a ship" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @team))
+    create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: ship_slot, fleet_membership: membership, status: "confirmed")
+
+    post "/api/v1/fleets/#{@fleet.slug}/events/#{@event.slug}/signup", params: {status: "interested"}, as: :json
+
+    assert_equal 409, response.status
+  end
+
+  test "POST /fleets/:fleet/events/:slug/signup joins the pool beside a team seat" do
     membership = @fleet.fleet_memberships.find_by(user: @member)
     create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: membership, status: "confirmed")
 
     post "/api/v1/fleets/#{@fleet.slug}/events/#{@event.slug}/signup", params: {status: "interested"}, as: :json
 
-    assert_equal 409, response.status
+    assert_equal 201, response.status
+    assert_nil JSON.parse(response.body)["fleetEventSlotId"]
+  end
+
+  test "POST /fleet-event-slots/:id/signup takes a ship seat beside a team seat" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: membership, status: "confirmed")
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @team))
+
+    post "/api/v1/fleet-event-slots/#{ship_slot.id}/signup", params: {status: "confirmed"}, as: :json
+
+    assert_equal 201, response.status
+    assert_equal ship_slot.id, JSON.parse(response.body)["fleetEventSlotId"]
+    assert_equal @slot.id, @slot.active_signups.sole.fleet_event_slot_id
+  end
+
+  test "POST /fleet-event-slots/:id/signup takes a team seat beside a ship seat" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @team))
+    create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: ship_slot, fleet_membership: membership, status: "confirmed")
+
+    post "/api/v1/fleet-event-slots/#{@slot.id}/signup", params: {status: "confirmed"}, as: :json
+
+    assert_equal 201, response.status
+    assert_equal 1, ship_slot.active_signups.count
   end
 
   test "POST /fleet-event-slots/:id/signup promotes an existing event-level signup onto the slot" do

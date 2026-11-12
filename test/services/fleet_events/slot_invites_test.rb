@@ -57,6 +57,30 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
     assert_equal membership(@alternate), active_signup.fleet_membership
   end
 
+  test "a primary in a team seat is still invited to a ship seat" do
+    create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: membership(@primary))
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @slot.slottable))
+    ship_slot.fleet_event_slot_candidates.create!(fleet_squadron_membership: @rows.first, position: 0)
+
+    @event.update!(status: "open")
+
+    signup = ship_slot.fleet_event_signups.sole
+    assert_equal membership(@primary), signup.fleet_membership
+    assert signup.invited?
+    assert_equal membership(@primary), active_signup.fleet_membership
+  end
+
+  test "a primary on a ship is still invited to a team seat" do
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @slot.slottable))
+    create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: ship_slot, fleet_membership: membership(@primary))
+
+    @event.update!(status: "open")
+
+    assert_equal membership(@primary), active_signup.fleet_membership
+    assert active_signup.invited?
+    assert ship_slot.fleet_event_signups.sole.confirmed?
+  end
+
   test "a primary who left the fleet is skipped" do
     membership(@primary).discard!
 

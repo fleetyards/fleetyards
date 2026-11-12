@@ -37,10 +37,13 @@ module Api
         # If the member already has an unassigned (interested/tentative) signup
         # for this event/occurrence, promote it onto this slot rather than
         # creating a new one (which would fail unique-active-signup validation).
-        existing = @slot.fleet_event.fleet_event_signups
+        # Only a seat of the same kind stands in the way: a team seat is held
+        # on top of a ship seat.
+        active = @slot.fleet_event.fleet_event_signups
           .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
           .where.not(status: "withdrawn")
-          .first
+        existing = active.same_kind_as(@slot).where.not(fleet_event_slot_id: nil).first ||
+          active.find_by(fleet_event_slot_id: nil)
 
         if existing && existing.fleet_event_slot_id.present? && existing.fleet_event_slot_id != @slot.id
           authorize! existing, with: FleetEventSignupPolicy, context: {fleet_event: @slot.fleet_event}, to: :create?
@@ -111,7 +114,7 @@ module Api
         end
 
         existing = @event.fleet_event_signups
-          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
+          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date, team_seat: false)
           .where.not(status: "withdrawn")
           .first
 
