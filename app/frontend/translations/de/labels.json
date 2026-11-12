@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "Schwärme",
             "name": "Name",
+            "shortDescription": "Kurzbeschreibung",
+            "shortDescriptionHint": "Ein, zwei Zeilen auf der Karte des Schwarms",
+            "coverImage": "Titelbild",
+            "coverImageHint": "Erscheint auf der Karte des Schwarms. Ohne Bild zeigt die Karte das erste Schiff der Aufstellung.",
             "description": "Beschreibung",
             "noCandidates": "Niemand eingeteilt",
             "primary": "Erste Wahl",

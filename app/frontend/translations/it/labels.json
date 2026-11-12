@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "Pattuglie",
             "name": "Nome",
+            "shortDescription": "Descrizione breve",
+            "shortDescriptionHint": "Una o due righe, sulla scheda della pattuglia",
+            "coverImage": "Immagine di copertina",
+            "coverImageHint": "Mostrata sulla scheda della pattuglia. Senza, la scheda mostra la prima nave della formazione.",
             "description": "Descrizione",
             "noCandidates": "Nessuno assegnato",
             "primary": "Titolare",

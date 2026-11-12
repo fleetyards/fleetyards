@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "小队",
             "name": "名称",
+            "shortDescription": "简短描述",
+            "shortDescriptionHint": "一两行，显示在小队卡片上",
+            "coverImage": "封面图片",
+            "coverImageHint": "显示在小队卡片上。未设置时，卡片显示阵容中的第一艘舰船。",
             "description": "描述",
             "noCandidates": "未指定成员",
             "primary": "首选",
