@@ -165,6 +165,15 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 111.0, model.scm_speed
   end
 
+  # The column holds whatever environment loaded last; a build without services
+  # has none, whatever another environment wrote there.
+  test "a model whose build provides no landing services shows none from the column" do
+    model = create(:model, landing_services: %w[repair rearm])
+    create(:model_build, model:)
+
+    assert_nil model.reload.landing_services
+  end
+
   # A hangar entry pointing at a ship the export dropped still has to resolve, so
   # the last build of this environment answers rather than nothing.
   test "a model the current build dropped reads the last build that described it" do

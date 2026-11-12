@@ -357,6 +357,12 @@ class Model < ApplicationRecord
     define_method(fact) { facts ? facts.public_send(fact) : super() }
   end
 
+  # Final for the same reason: every environment's load writes the column, so a
+  # live build without services must not show the ones a PTU load wrote there.
+  def landing_services
+    facts ? facts.landing_services : super
+  end
+
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :loadout_stats, as: :fitting, dependent: :delete_all
   has_many :components, through: :hardpoints
@@ -1013,12 +1019,28 @@ class Model < ApplicationRecord
     end
   end
 
-  # Ships that refuel, rearm or repair a ship landed in their hangar or on their
-  # pads, by the served build like every other fact filter.
-  # Ransack never calls a scope for `false`, so there is no inverse.
-  scope :with_landing_services, ->(_value = true) {
-    where("jsonb_array_length(COALESCE(#{fact_sql(:landing_services)}, '[]'::jsonb)) > 0")
+  # Ships that give a ship landed in their hangar or on their pads every one of
+  # the services asked for, by the served build like every other fact filter.
+  scope :with_landing_services, ->(*services) {
+    services = services.flatten.map(&:to_s) & ModelBuild::LANDING_SERVICES
+
+    where("#{landing_services_sql} @> ?::jsonb", services.to_json)
   }
+
+  # The served build's services, none where it has none: the column answers only
+  # for a model no served build describes, as the reader above does.
+  def self.landing_services_sql(source = ::ScData::Source.current.served)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      COALESCE(
+        (SELECT COALESCE(model_facts.landing_services, '[]'::jsonb) FROM model_builds model_facts
+          WHERE model_facts.model_id = models.id
+            AND model_facts.environment = ?
+            AND model_facts.version = ?),
+        models.landing_services,
+        '[]'::jsonb
+      )
+    SQL
+  end
 
   def self.ransackable_scopes(auth_object = nil)
     ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in",

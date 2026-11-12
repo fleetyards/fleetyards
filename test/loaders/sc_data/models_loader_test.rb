@@ -382,16 +382,17 @@ module ScData
         assert_equal services, model.reload.landing_services
       end
 
-      test "#load_model clears services a build no longer provides" do
+      test "#load_model clears services a build no longer provides, and writes none for a ship without" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "Former Carrier", landing_services: %w[repair])
 
         loader.stubs(:update_loadout)
         loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "landing_services" => []})
 
-        loader.load_model(model)
+        build = loader.load_model(model)
 
-        assert_equal [], model.reload.landing_services
+        assert_nil build.landing_services
+        assert_nil model.reload.read_attribute(:landing_services)
       end
 
       test "storage container kinds are the ones a build knows" do
