@@ -49,9 +49,10 @@ const router = async () => {
   return instance;
 };
 
-const vehicle = (id: string, name: string): Vehicle =>
+const vehicle = (id: string, name: string, flagship = false): Vehicle =>
   ({
     id,
+    flagship,
     hangarGroups: [],
     model: {
       id: `m-${id}`,
@@ -62,15 +63,18 @@ const vehicle = (id: string, name: string): Vehicle =>
     },
   }) as unknown as Vehicle;
 
-const tags = async () => {
-  const subject = await mountWithDefaults(Component, {
-    plugins: [await router()],
-  });
+const mount = async () =>
+  mountWithDefaults(Component, { plugins: [await router()] });
 
-  return subject
+const tags = async () =>
+  (await mount())
     .findAll('[data-test="home-ship-tile-tag"]')
     .map((tag) => tag.text());
-};
+
+const listed = async () =>
+  (await mount())
+    .findAll('[data-test="home-ships-item"]')
+    .map((item) => item.attributes("title"));
 
 describe("HomeDashboardShipsPanel", () => {
   beforeEach(() => {
@@ -103,5 +107,15 @@ describe("HomeDashboardShipsPanel", () => {
 
   it("shows no tag when the patch left the hangar alone", async () => {
     expect(await tags()).toEqual([]);
+  });
+
+  it("leaves a flagship to the header", async () => {
+    vehicles = [vehicle("1", "Carrack", true), vehicle("2", "Cutlass")];
+
+    expect(await listed()).toEqual(["Cutlass"]);
+  });
+
+  it("lists the newest ship when none is marked as flagship", async () => {
+    expect(await listed()).toEqual(["Carrack", "Cutlass"]);
   });
 });

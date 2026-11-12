@@ -13,6 +13,7 @@ import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
+import HomeFlagship from "@/frontend/components/Home/Dashboard/Flagship/index.vue";
 import DashboardTiles from "@/frontend/components/Home/Dashboard/Tiles/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
@@ -73,8 +74,9 @@ const { isFeatureEnabled } = useFeatures();
             : t("home.dashboard.welcomeAnonymous")
         }}
       </Heading>
+      <HomeSearch class="home-dashboard__search" />
     </div>
-    <HomeSearch class="home-dashboard__search" />
+    <HomeFlagship class="home-dashboard__flagship" />
   </div>
 
   <DashboardTiles class="home-dashboard__tiles" />
@@ -113,9 +115,16 @@ const { isFeatureEnabled } = useFeatures();
 
 .home-dashboard__title {
   display: flex;
+  flex: 1 1 520px;
   flex-direction: column;
   align-items: flex-start;
+  max-width: 640px;
   min-width: 0;
+}
+
+.home-dashboard__flagship {
+  flex: 0 1 600px;
+  margin-bottom: 15px;
 }
 
 .home-dashboard__date {
@@ -133,7 +142,7 @@ const { isFeatureEnabled } = useFeatures();
 .home-dashboard__search {
   --home-search-tabs-room: 42px;
 
-  flex: 0 1 600px;
+  align-self: stretch;
   min-width: 0;
   margin-bottom: 15px;
 }
@@ -207,7 +216,7 @@ const { isFeatureEnabled } = useFeatures();
 }
 
 @media (max-width: 991px) {
-  .home-dashboard__search {
+  .home-dashboard__flagship {
     flex-basis: 100%;
   }
 }
