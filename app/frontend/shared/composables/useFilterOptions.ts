@@ -14,6 +14,16 @@ export const useFilterOptions = () => {
     },
   ];
 
+  const landingServiceOptions = [
+    {
+      value: "hydrogen_refuel",
+      label: t("model.landingService.hydrogenRefuel"),
+    },
+    { value: "quantum_refuel", label: t("model.landingService.quantumRefuel") },
+    { value: "rearm", label: t("model.landingService.rearm") },
+    { value: "repair", label: t("model.landingService.repair") },
+  ];
+
   const priceOptions = [
     {
       value: "-200000",
@@ -104,5 +114,6 @@ export const useFilterOptions = () => {
     booleanOptions,
     priceOptions,
     pledgePriceOptions,
+    landingServiceOptions,
   };
 };

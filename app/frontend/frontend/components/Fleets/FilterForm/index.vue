@@ -10,7 +10,6 @@ import { hasActiveFilters } from "@/shared/utils/Filters";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
@@ -23,7 +22,12 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
-const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+  landingServiceOptions,
+} = useFilterOptions();
 
 const route = useRoute();
 
@@ -44,7 +48,7 @@ type FleetsFilterForm = {
   classificationIn?: string[];
   focusIn?: string[];
   stealthEq?: string;
-  withLandingServices?: boolean;
+  withLandingServices?: string[];
   sizeIn?: string[];
   priceIn?: string[];
   pledgePriceIn?: string[];
@@ -70,7 +74,7 @@ const prefillFormValues = () => {
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
     stealthEq: filters.value.stealthEq,
-    withLandingServices: filters.value.withLandingServices,
+    withLandingServices: filters.value.withLandingServices || [],
     sizeIn: filters.value.sizeIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -154,10 +158,13 @@ const hasGroupFilters = (keys: string[]) =>
         name="stealth"
       />
 
-      <FormToggle
+      <BaseSelect
         v-model="form.withLandingServices"
+        :options="landingServiceOptions"
         :label="t('labels.filters.models.withLandingServices')"
-        name="withLandingServices"
+        name="landing-services"
+        :multiple="true"
+        :no-label="true"
       />
 
       <SizeSelect v-model="form.sizeIn" name="size" />

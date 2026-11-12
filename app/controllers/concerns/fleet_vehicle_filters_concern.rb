@@ -5,8 +5,8 @@ module FleetVehicleFiltersConcern
     @vehicle_query_params ||= params.permit(q: [
       :model_name_cont, :model_name_or_model_description_cont, :on_sale_eq,
       :beam_gteq, :beam_lteq, :height_gteq, :height_lteq, :length_gteq, :length_lteq, :cargo_gteq, :cargo_lteq,
-      :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq, :stealth_eq, :with_landing_services, :s, :sorts,
-      model_slug_in: [], manufacturer_in: [], classification_in: [], classification_not_in: [], focus_in: [],
+      :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq, :stealth_eq, :s, :sorts,
+      model_slug_in: [], manufacturer_in: [], classification_in: [], classification_not_in: [], focus_in: [], with_landing_services: [],
       size_in: [], price_in: [], pledge_price_in: [],
       production_status_in: [], sorts: [], member_in: [], squadron_slug_in: []
     ]).fetch(:q, {}).then { |query| Vehicle.fitted_filters(query, public_only: true) }

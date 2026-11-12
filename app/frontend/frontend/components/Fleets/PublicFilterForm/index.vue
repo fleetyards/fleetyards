@@ -10,7 +10,6 @@ import { hasActiveFilters } from "@/shared/utils/Filters";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
@@ -45,7 +44,7 @@ function prefillFormValues(): FleetVehicleQuery {
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
     stealthEq: filters.value.stealthEq,
-    withLandingServices: filters.value.withLandingServices,
+    withLandingServices: filters.value.withLandingServices || [],
     sizeIn: filters.value.sizeIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -67,7 +66,12 @@ watch(
   { deep: true },
 );
 
-const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+  landingServiceOptions,
+} = useFilterOptions();
 const hasGroupFilters = (keys: string[]) =>
   hasActiveFilters(filters.value, keys);
 </script>
@@ -129,10 +133,13 @@ const hasGroupFilters = (keys: string[]) =>
         name="stealth"
       />
 
-      <FormToggle
+      <BaseSelect
         v-model="form.withLandingServices"
+        :options="landingServiceOptions"
         :label="t('labels.filters.models.withLandingServices')"
-        name="withLandingServices"
+        name="landing-services"
+        :multiple="true"
+        :no-label="true"
       />
 
       <SizeSelect v-model="form.sizeIn" name="size" />
