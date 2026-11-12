@@ -32,6 +32,9 @@ module Api
           @latest_announcements = latest_announcements(fleet_ids)
           @join_request_fleet_ids = answerable(:join_requests).map(&:fleet_id).to_set
           @transfer_fleet_ids = answerable(:transfers).map(&:fleet_id).to_set
+          @contracts_fleet_ids = @memberships
+            .select { |membership| feature_enabled?("fleet_contracts", membership.fleet) }
+            .map(&:fleet_id).to_set
 
           @requested_counts = FleetMembership.kept.requested
             .where(fleet_id: @join_request_fleet_ids.to_a).group(:fleet_id).count

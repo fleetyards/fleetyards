@@ -17,13 +17,14 @@ module V1
           roleName: {type: :string},
           primary: {type: :boolean},
           memberCount: {type: :integer},
+          contractsEnabled: {type: :boolean},
           onlineCount: {type: :integer},
           latestAnnouncement: ::V1::Schemas::MyFleetAnnouncementExcerpt,
           pendingJoinRequestsCount: {type: :integer},
           pendingTransfersCount: {type: :integer}
         },
         additionalProperties: false,
-        required: %w[id name slug primary memberCount]
+        required: %w[id name slug primary memberCount contractsEnabled]
       })
     end
   end

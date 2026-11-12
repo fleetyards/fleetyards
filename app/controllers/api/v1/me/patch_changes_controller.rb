@@ -17,8 +17,15 @@ module Api
         LIMIT = 10
 
         def index
-          @environment = ::ScData::Source.environment
-          @version = ::ScData::Source.version
+          source = requested_source
+          return not_found if params[:environment].present? && source.blank?
+
+          # The build actually served either way: a configured build whose load
+          # has not finished has no changes recorded yet.
+          source ||= ::ScData::Source.current.served
+
+          @environment = source.environment
+          @version = source.version
 
           vehicles = current_resource_owner.vehicles.where(loaner: false)
           owned_counts = vehicles.where(wanted: false).group(:model_id).count
@@ -43,7 +50,17 @@ module Api
 
           @from_version = items.first&.dig(:changes, 0)&.from_version
           @total_count = items.size
+          @owned_model_ids = items.filter_map { |item| item[:model].id if item[:owned_count].positive? }
           @items = items.sort_by { |item| [-item[:changes].size, item[:model].name] }.first(LIMIT)
+        end
+
+        # A build named outright, for a page that shows live and ptu side by
+        # side whichever one the reader has switched to. Only one a reader could
+        # switch to: an environment nothing has loaded has no patch to speak of.
+        private def requested_source
+          return if params[:environment].blank?
+
+          ::ScData::Source.available.find { |source| source.environment == params[:environment].to_s }
         end
       end
     end

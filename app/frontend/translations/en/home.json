@@ -318,16 +318,6 @@
         },
         "openHangar": "Open your hangar"
       },
-      "patch": {
-        "title": "Alpha %{version}",
-        "shipsChanged": "Ships changed",
-        "inYourHangar": "In your hangar",
-        "whatChanged": "What changed",
-        "yoursChanged": {
-          "one": "%{count} of your ships changed in this build.",
-          "other": "%{count} of your ships changed in this build."
-        }
-      },
       "dashboard": {
         "welcome": "Welcome back, %{name}",
         "welcomeAnonymous": "Welcome back",
@@ -355,8 +345,9 @@
             "action": "Find a fleet"
           }
         },
-        "fleets": {
-          "title": "My fleets",
+        "fleet": {
+          "title": "Your fleet",
+          "open": "Fleet page",
           "online": {
             "one": "%{count} of %{total} online",
             "other": "%{count} of %{total} online"
@@ -367,38 +358,80 @@
           },
           "requests": "Join requests",
           "transfers": "Transfers",
+          "announcement": "Announcement",
+          "others": "Also a member of",
           "empty": {
             "title": "No fleet yet",
             "hint": "Join an org to plan events and share inventory.",
             "action": "Browse fleets"
           }
         },
-        "changes": {
-          "title": "Your ships in %{version}",
-          "titleWithoutVersion": "Your ships this patch",
-          "owned": {
-            "one": "In your hangar",
-            "other": "%{count} in your hangar"
+        "ships": {
+          "title": "Your ships",
+          "open": "Open hangar",
+          "synced": "Synced from RSI %{time}",
+          "more": {
+            "one": "%{count} more in your hangar",
+            "other": "%{count} more in your hangar"
           },
-          "wanted": "On your wishlist",
-          "changes": "Changes",
-          "hangar": "Hangar",
-          "empty": {
-            "title": "None of your ships changed",
-            "hint": "Ships in your hangar or on your wishlist show up here when a build changes them."
-          }
-        },
-        "hangar": {
-          "title": "Hangar",
-          "open": "Open",
-          "ships": "Ships",
-          "wishlist": "Wishlist",
-          "synced": "Synced from RSI",
+          "changedIn": "Changed in %{version}",
           "empty": {
             "title": "Your hangar is empty",
             "hint": "Add ships by hand or sync them from RSI.",
             "action": "Set up your hangar"
           }
+        },
+        "wishlist": {
+          "title": "Wishlist",
+          "all": "Full wishlist",
+          "onSale": "On sale",
+          "price": "Now",
+          "empty": {
+            "title": "Your wishlist is empty",
+            "hint": "Wish for a ship to see here when it goes on sale.",
+            "action": "Browse ships"
+          }
+        },
+        "plan": {
+          "title": "Hangar plan",
+          "all": "All plans",
+          "steps": {
+            "one": "%{count} step",
+            "other": "%{count} steps"
+          },
+          "updated": "Updated %{date}",
+          "more": {
+            "one": "%{count} more plan",
+            "other": "%{count} more plans"
+          },
+          "empty": {
+            "hint": "Pick the ship you are working towards. The planner lays out the upgrades and melts from your hangar to get there.",
+            "action": "Start a plan"
+          }
+        },
+        "inventory": {
+          "title": "Recently stored",
+          "all": "All inventories"
+        },
+        "newShips": {
+          "title": "New this patch",
+          "all": "What changed"
+        },
+        "stats": {
+          "ships": "Ships",
+          "wishlist": "Wishlist",
+          "onSale": "On sale",
+          "online": "Online"
+        },
+        "tiles": {
+          "fleetOnline": "Online in %{fleet}",
+          "patch": "Live patch",
+          "patchPreview": "PTU patch",
+          "patchChanged": {
+            "one": "%{count} of your ships changed",
+            "other": "%{count} of your ships changed"
+          },
+          "patchWhatChanged": "See what changed"
         },
         "notifications": {
           "title": "Notifications",

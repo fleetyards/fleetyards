@@ -18,6 +18,7 @@ json.items do
     json.role_name membership.fleet_role.name if membership.fleet_role.present?
     json.primary membership.primary
     json.member_count @member_counts.fetch(fleet.id, 0)
+    json.contracts_enabled @contracts_fleet_ids.include?(fleet.id)
 
     # Absent rather than zero for a reader who may not see the roster: an
     # omission and a claim that nobody is online differ.

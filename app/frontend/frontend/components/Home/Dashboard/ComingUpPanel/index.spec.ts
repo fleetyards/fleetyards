@@ -34,8 +34,8 @@ const router = async () => {
       { path: "/", name: "home", component: Stub },
       { path: "/fleets", name: "fleets", component: Stub },
       {
-        path: "/settings/calendar",
-        name: "settings-calendar",
+        path: "/calendar",
+        name: "calendar",
         component: Stub,
       },
       {

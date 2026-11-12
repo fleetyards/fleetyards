@@ -1,3 +1,4 @@
+import { FeatureFlagName } from "@/services/fyApi";
 import type { RouteRecordRaw } from "vue-router";
 import { routes as compareRoutes } from "@/frontend/pages/compare/routes";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
@@ -165,6 +166,17 @@ export const routes: RouteRecordRaw[] = [
     children: fleetsRoutes,
     meta: {
       nav: "main",
+    },
+  },
+  {
+    path: "/calendar/",
+    name: "calendar",
+    component: () => import("@/frontend/pages/calendar.vue"),
+    meta: {
+      title: "calendar",
+      needsAuthentication: true,
+      mobileBack: true,
+      feature: FeatureFlagName.HOMEPAGE_DASHBOARD,
     },
   },
   {

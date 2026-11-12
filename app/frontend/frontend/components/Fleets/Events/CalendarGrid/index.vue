@@ -20,20 +20,26 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
-import { type Fleet, type FleetEvent } from "@/services/fyApi";
+import { type Fleet, type FleetEvent, type GameEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
 import { format, parseISO } from "date-fns";
 import { browserTimezone } from "@/shared/utils/Timezones";
-import { buildCalendarEvent } from "./calendarEvent";
+import { buildCalendarEvent, buildGameCalendarEvent } from "./calendarEvent";
 
 type CalendarViewKind = "month" | "week";
 
 type Props = {
-  fleet: Fleet;
+  // The fleet every event belongs to. A calendar of several fleets leaves it
+  // out and names each event's fleet through `fleetSlugFor`.
+  fleet?: Fleet;
+  fleetSlugFor?: (event: FleetEvent) => string | undefined;
   events: FleetEvent[];
+  gameEvents?: GameEvent[];
+  // Nothing to create: a click on a day does nothing and selects nothing.
+  readOnly?: boolean;
   view?: CalendarViewKind;
   // A single row of this week, for a page that shows the calendar beside other
   // things: the reader's place in the URL, the view switch and creating an
@@ -43,6 +49,10 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  fleet: undefined,
+  fleetSlugFor: undefined,
+  gameEvents: () => [],
+  readOnly: false,
   view: "month",
   compact: false,
   loading: false,
@@ -139,14 +149,46 @@ const styleFor = (category?: string | null): CategoryStyle =>
   (category && categoryStyles[category]) ||
   categoryStyles[MissionCategoryEnum.OTHER];
 
-const calendarEvents = computed(() => props.events.map(buildCalendarEvent));
+const calendarEvents = computed(() => [
+  ...props.events.map(buildCalendarEvent),
+  ...props.gameEvents.map(buildGameCalendarEvent),
+]);
+
+const creates = computed(() => !props.compact && !props.readOnly);
+
+type ChipProps = { fleetEvent?: FleetEvent; gameEvent?: GameEvent };
+
+// Whether the event runs past the day it starts on, which a month draws as a
+// bar across the days rather than as a row in one.
+const spansDays = (start?: Date | string, end?: Date | string) => {
+  if (!start || !end) return false;
+
+  const last = new Date(new Date(end).getTime() - 1);
+
+  return new Date(start).toDateString() !== last.toDateString();
+};
+
+// A long event is drawn as one piece per week row; hovering any of them lights
+// up all of them, so it reads as the one event it is.
+const highlightEvent = (id: string, on: boolean) => {
+  calendarEl.value
+    ?.querySelectorAll(`[data-event-id="${CSS.escape(id)}"]`)
+    .forEach((chip) => chip.classList.toggle("fy-event-chip--hover", on));
+};
 
 const renderEventChip = (info: {
-  event: { extendedProps?: { fleetEvent?: FleetEvent }; title: string };
+  event: {
+    id: string;
+    extendedProps?: ChipProps;
+    title: string;
+    start?: Date;
+    end?: Date;
+  };
   timeText: string;
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
+  const gameEvent = info.event.extendedProps?.gameEvent;
   // The compact week has a whole column per day and one row of them, room
   // enough for the cover; a month's cells are not.
   const isCard = info.view.type === "dayGridWeek";
@@ -154,27 +196,37 @@ const renderEventChip = (info: {
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
+  chip.dataset.eventId = info.event.id;
 
   if (isMonth) {
     /*
      * Built to Chip's own metrics rather than out of Chip itself: the library
      * hands us a DOM node, and Chip's styles are scoped, so its class names
      * would carry nothing here. Mounting a Vue component per event to get them
-     * is not worth it for a dot, a time and a label.
+     * is not worth it for an icon, a time and a label.
      *
-     * The icon stays, where a chip would show only a colour dot. The label is
-     * the event's title, so nothing else names the category - and colour on its
-     * own would be the only thing saying which one it is.
+     * The icon carries the category, so colour is never the only thing saying
+     * which one it is.
      */
     chip.classList.add("fy-event-chip--compact");
-    const { icon, color } = styleFor(event?.category as string | undefined);
+    if (spansDays(info.event.start, info.event.end)) {
+      chip.classList.add("fy-event-chip--span");
+    }
+    // Something happening in the 'verse rather than something a fleet does:
+    // drawn as an outline, so it stays apart from every category's fill.
+    if (gameEvent) chip.classList.add("fy-event-chip--game");
+    const { icon, color } = styleFor(
+      (event?.category || gameEvent?.category) as string | undefined,
+    );
     chip.style.setProperty("--chip-color", color);
 
     const iconEl = document.createElement("i");
     iconEl.className = `fa-light ${icon} fy-event-chip__icon`;
     chip.appendChild(iconEl);
   } else {
-    const cover = event ? resolveCover(event) : null;
+    const cover = event
+      ? resolveCover(event)
+      : gameEvent?.coverImage?.largeUrl || null;
     if (cover) {
       chip.style.backgroundImage = `url(${cover})`;
       chip.classList.add("fy-event-chip--with-cover");
@@ -261,17 +313,24 @@ onMounted(() => {
     height: "auto",
     dayMaxEvents: true,
     nowIndicator: true,
-    selectable: !props.compact,
-    selectMirror: !props.compact,
+    selectable: creates.value,
+    selectMirror: creates.value,
     slotDuration: "01:00:00",
     slotHeight: 56,
     slotMinTime: "08:00:00",
     slotMaxTime: "24:00:00",
-    eventClick: (info: {
-      event: { extendedProps?: { fleetEvent?: FleetEvent } };
-    }) => {
+    eventClick: (info: { event: { extendedProps?: ChipProps } }) => {
+      const gameEvent = info.event.extendedProps?.gameEvent;
+      if (gameEvent?.url) {
+        window.open(gameEvent.url, "_blank", "noopener");
+        return;
+      }
+
       const event = info.event.extendedProps?.fleetEvent;
-      if (event?.slug) {
+      const fleetSlug = event
+        ? props.fleetSlugFor?.(event) || props.fleet?.slug
+        : undefined;
+      if (event?.slug && fleetSlug) {
         const occurrence = (event as { occurrenceDate?: string | null })
           .occurrenceDate;
         const parentSlug = (event as { parentEventSlug?: string | null })
@@ -279,7 +338,7 @@ onMounted(() => {
         void router.push({
           name: "fleet-event",
           params: {
-            slug: props.fleet.slug,
+            slug: fleetSlug,
             event: parentSlug || event.slug,
           },
           query: occurrence ? { occurrence } : undefined,
@@ -287,11 +346,11 @@ onMounted(() => {
       }
     },
     dateClick: (info: { date: Date }) => {
-      if (props.compact) return;
+      if (!creates.value) return;
       emit("create-event", info.date);
     },
     select: (info: { start: Date }) => {
-      if (props.compact) return;
+      if (!creates.value) return;
       emit("create-event", info.start);
     },
     datesSet: (info: { start: Date; end: Date }) => {
@@ -301,6 +360,10 @@ onMounted(() => {
       syncDateToUrl();
     },
     eventContent: renderEventChip,
+    eventMouseEnter: (info: { event: { id: string } }) =>
+      highlightEvent(info.event.id, true),
+    eventMouseLeave: (info: { event: { id: string } }) =>
+      highlightEvent(info.event.id, false),
   });
 
   updateTitle();
@@ -516,11 +579,13 @@ onUnmounted(() => {
     font-variant-numeric: tabular-nums;
   }
 
-  // The library's .ec-event carries its own padding and fill; zeroed so the
-  // chip fills the event box and paints its own.
+  // The library's .ec-event carries its own padding, fill and corners; zeroed
+  // so the chip fills the event box and paints its own, a bar's squared-off
+  // ends included.
   :deep(.ec-event) {
     padding: 0;
     overflow: hidden;
+    border-radius: 0;
   }
 
   :deep(.fy-event-chip) {
@@ -542,19 +607,101 @@ onUnmounted(() => {
     transition: background-color 150ms ease-in-out;
   }
 
-  // Month view: Chip's own metrics - the leading marker, the 7px gap, the bare
-  // radius - with a category rail in place of the tint, so a day with three
-  // events reads as three rows rather than three filled blocks.
+  // Month view: every entry a pill tinted in its category's colour, so a day
+  // scans as its events. Hover deepens the tint.
   :deep(.fy-event-chip--compact) {
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--chip-color, var(--color-primary, #428bca)) 30%,
+        transparent
+      );
+    border-radius: 11px;
     background-image: none !important;
-    padding-inline-start: 7px;
-    border-inline-start: 3px solid
-      var(--chip-color, var(--color-primary, #428bca));
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 14%,
+      transparent
+    );
+    color: var(--color-lifted, #eee);
+    transition:
+      background-color 120ms ease-in-out,
+      border-color 120ms ease-in-out;
   }
 
-  :deep(.fy-event-chip--compact:hover) {
-    background-color: rgb(122 130 136 / 0.16);
-    color: var(--color-lifted, #eee);
+  :deep(.fy-event-chip--compact.fy-event-chip--hover) {
+    border-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 60%,
+      transparent
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 30%,
+      transparent
+    );
+  }
+
+  // An event over several days is one pill across them, a shade stronger. A
+  // week row cuts it into pieces: only its real ends are rounded, and only the
+  // first piece names the time it starts.
+  :deep(.fy-event-chip--span) {
+    border-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 60%,
+      transparent
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 30%,
+      transparent
+    );
+  }
+
+  :deep(.fy-event-chip--span.fy-event-chip--hover) {
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, var(--color-primary, #428bca)) 46%,
+      transparent
+    );
+  }
+
+  // A game event: a gold outline with no fill, whatever its category.
+  :deep(.fy-event-chip--compact.fy-event-chip--game) {
+    --chip-color: var(--color-gold, #d4af37);
+
+    border-color: color-mix(
+      in srgb,
+      var(--color-gold, #d4af37) 65%,
+      transparent
+    );
+    background-color: transparent;
+    color: color-mix(in srgb, var(--color-gold, #d4af37) 45%, #fff);
+  }
+
+  :deep(.fy-event-chip--compact.fy-event-chip--game.fy-event-chip--hover) {
+    border-color: var(--color-gold, #d4af37);
+    background-color: color-mix(
+      in srgb,
+      var(--color-gold, #d4af37) 16%,
+      transparent
+    );
+  }
+
+  :deep(.ec-start-clipped .fy-event-chip--compact) {
+    border-inline-start: none;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  :deep(.ec-end-clipped .fy-event-chip--compact) {
+    border-inline-end: none;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  :deep(.ec-start-clipped .fy-event-chip--span .fy-event-chip__time) {
+    display: none;
   }
 
   :deep(.fy-event-chip__icon) {

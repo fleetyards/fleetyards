@@ -318,16 +318,6 @@
         },
         "openHangar": "開啟你的機庫"
       },
-      "patch": {
-        "title": "Alpha %{version}",
-        "shipsChanged": "改動的艦船",
-        "inYourHangar": "你機庫中的",
-        "whatChanged": "查看改動",
-        "yoursChanged": {
-          "one": "此版本改動了你的 %{count} 艘艦船。",
-          "other": "此版本改動了你的 %{count} 艘艦船。"
-        }
-      },
       "dashboard": {
         "welcome": "歡迎回來，%{name}",
         "welcomeAnonymous": "歡迎回來",
@@ -355,8 +345,9 @@
             "action": "尋找艦隊"
           }
         },
-        "fleets": {
-          "title": "我的艦隊",
+        "fleet": {
+          "title": "你的艦隊",
+          "open": "艦隊頁面",
           "online": {
             "one": "%{total} 人中 %{count} 人在線",
             "other": "%{total} 人中 %{count} 人在線"
@@ -367,38 +358,80 @@
           },
           "requests": "入隊申請",
           "transfers": "轉移",
+          "announcement": "公告",
+          "others": "同時也是以下艦隊的成員",
           "empty": {
             "title": "還沒有艦隊",
             "hint": "加入一個組織來規劃活動和共享庫存。",
             "action": "瀏覽艦隊"
           }
         },
-        "changes": {
-          "title": "你在 %{version} 中的艦船",
-          "titleWithoutVersion": "你在本補丁中的艦船",
-          "owned": {
-            "one": "在你的機庫中",
-            "other": "機庫中有 %{count} 艘"
+        "ships": {
+          "title": "你的艦船",
+          "open": "開啟機庫",
+          "synced": "已從 RSI 同步 %{time}",
+          "more": {
+            "one": "機庫中還有 %{count} 艘",
+            "other": "機庫中還有 %{count} 艘"
           },
-          "wanted": "在你的願望清單中",
-          "changes": "改動",
-          "hangar": "機庫",
-          "empty": {
-            "title": "你的艦船都沒有改動",
-            "hint": "當某個版本改動了你機庫或願望清單中的艦船時，它們會顯示在這裡。"
-          }
-        },
-        "hangar": {
-          "title": "機庫",
-          "open": "開啟",
-          "ships": "艦船",
-          "wishlist": "願望清單",
-          "synced": "已從 RSI 同步",
+          "changedIn": "%{version} 中有變動",
           "empty": {
             "title": "你的機庫是空的",
             "hint": "手動加入艦船，或從 RSI 同步。",
             "action": "設定機庫"
           }
+        },
+        "wishlist": {
+          "title": "願望清單",
+          "all": "完整願望清單",
+          "onSale": "販售中",
+          "price": "現價",
+          "empty": {
+            "title": "你的願望清單是空的",
+            "hint": "加入艦船，開賣時會在這裡顯示。",
+            "action": "瀏覽艦船"
+          }
+        },
+        "plan": {
+          "title": "機庫計畫",
+          "all": "所有計畫",
+          "steps": {
+            "one": "%{count} 步",
+            "other": "%{count} 步"
+          },
+          "updated": "更新於 %{date}",
+          "more": {
+            "one": "另有 %{count} 個計畫",
+            "other": "另有 %{count} 個計畫"
+          },
+          "empty": {
+            "hint": "選擇你的目標艦船，規劃器會從你的機庫出發列出所需的升級與熔煉。",
+            "action": "開始計畫"
+          }
+        },
+        "inventory": {
+          "title": "最近入庫",
+          "all": "所有庫存"
+        },
+        "newShips": {
+          "title": "本補丁新增",
+          "all": "查看變動"
+        },
+        "stats": {
+          "ships": "艦船",
+          "wishlist": "願望清單",
+          "onSale": "特價中",
+          "online": "線上"
+        },
+        "tiles": {
+          "fleetOnline": "%{fleet} 線上",
+          "patch": "正式服補丁",
+          "patchPreview": "測試服補丁",
+          "patchChanged": {
+            "one": "你的 %{count} 艘艦船有變動",
+            "other": "你的 %{count} 艘艦船有變動"
+          },
+          "patchWhatChanged": "查看變動"
         },
         "notifications": {
           "title": "通知",

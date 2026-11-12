@@ -16942,6 +16942,12 @@ paths:
       tags:
       - Me
       operationId: myPatchChanges
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -16963,6 +16969,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/rsi-verification":
@@ -30645,6 +30659,7 @@ components:
       - holo_ar
       - holo_phone
       - holo_textured
+      - homepage_dashboard
       - item_holo_textured
       - loadout_preview
       - oauth-applications
@@ -30668,6 +30683,7 @@ components:
       - HOLO_AR
       - HOLO_PHONE
       - HOLO_TEXTURED
+      - HOMEPAGE_DASHBOARD
       - ITEM_HOLO_TEXTURED
       - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
@@ -46678,6 +46694,8 @@ components:
           type: boolean
         memberCount:
           type: integer
+        contractsEnabled:
+          type: boolean
         onlineCount:
           type: integer
         latestAnnouncement:
@@ -46693,6 +46711,7 @@ components:
       - slug
       - primary
       - memberCount
+      - contractsEnabled
       title: MyFleetSummary
     MyPatchChange:
       type: object
@@ -46745,6 +46764,13 @@ components:
           type: string
         totalCount:
           type: integer
+        ownedCount:
+          type: integer
+        ownedModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         items:
           type: array
           items:
@@ -46754,6 +46780,8 @@ components:
       - environment
       - version
       - totalCount
+      - ownedCount
+      - ownedModelIds
       - items
       title: MyPatchChanges
     MyRaffleEntries:

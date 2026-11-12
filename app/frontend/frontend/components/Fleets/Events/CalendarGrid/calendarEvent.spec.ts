@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildCalendarEvent } from "./calendarEvent";
+import { buildCalendarEvent, buildGameCalendarEvent } from "./calendarEvent";
 import {
   type FleetEvent,
+  type GameEvent,
   MissionCategoryEnum,
   FleetEventSignupApprovalEnum,
   FleetEventStatusEnum,
@@ -52,5 +53,32 @@ describe("buildCalendarEvent", () => {
     const result = buildCalendarEvent(event({ endsAt: undefined }));
 
     expect(result.end.toISOString()).toBe("2026-11-04T21:00:00.000Z");
+  });
+});
+
+describe("buildGameCalendarEvent", () => {
+  const gameEvent: GameEvent = {
+    id: "xeno",
+    title: "XenoThreat",
+    category: MissionCategoryEnum.SHIP_COMBAT,
+    startsAt: "2026-11-15T00:00:00Z",
+    createdAt: NOW,
+    updatedAt: NOW,
+  };
+
+  it("keeps game events apart from fleet events of the same id", () => {
+    expect(buildGameCalendarEvent(gameEvent).id).toBe("game-xeno");
+  });
+
+  it("carries the game event for the chip and the click", () => {
+    expect(buildGameCalendarEvent(gameEvent).extendedProps.gameEvent).toBe(
+      gameEvent,
+    );
+  });
+
+  it("gives an event without an end an hour", () => {
+    expect(buildGameCalendarEvent(gameEvent).end.toISOString()).toBe(
+      "2026-11-15T01:00:00.000Z",
+    );
   });
 });

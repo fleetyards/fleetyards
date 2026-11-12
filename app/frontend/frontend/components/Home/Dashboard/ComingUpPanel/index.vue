@@ -121,7 +121,7 @@ const answer = async (entry: MyEvent, status: FleetEventSignupStatusEnum) => {
     :fetching="isFetching"
     :failed="isLoadingError"
     :empty="!entries.length"
-    :more="{ name: 'settings-calendar' }"
+    :more="{ name: 'calendar' }"
     :more-label="t('home.dashboard.comingUp.calendar')"
     data-test="home-coming-up"
   >

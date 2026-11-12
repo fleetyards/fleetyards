@@ -39,6 +39,7 @@ module Api
             .preload(user: {avatar_attachment: :blob}, fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}})
             .order("users.username"),
           filter: :user_username_or_user_display_name_or_nickname_cont,
+          columns: %w[users.username users.display_name fleet_memberships.nickname],
           item: lambda { |member|
             ScopedSearch.result(
               type: "FleetMembership",
@@ -70,6 +71,7 @@ module Api
           type: "FleetShip",
           scope: Model.where(id: @fleet.vehicles.where(loaner: false).select(:model_id)).includes(:manufacturer).order(:name),
           filter: :name_cont,
+          columns: %w[models.name],
           item: ->(model) { ScopedSearch.result(type: "FleetShip", name: model.name, slug: model.slug, detail: model.manufacturer&.name) },
           images: lambda { |models|
             renders = ::Catalogue::Search.new.images_for("ship", models.map(&:slug))
@@ -95,6 +97,7 @@ module Api
           type: "FleetEvent",
           scope: reachable_fleet_events(@fleet.fleet_events.where(archived_at: nil)).order(:title),
           filter: :title_cont,
+          columns: %w[fleet_events.title],
           item: ->(event) { ScopedSearch.result(type: "FleetEvent", name: event.title, slug: event.slug) }
         )
       end
@@ -106,6 +109,7 @@ module Api
           type: "FleetContract",
           scope: FleetContract.where(id: visible_fleet_contracts.select(:id)).order(:title),
           filter: :title_cont,
+          columns: %w[fleet_contracts.title],
           item: ->(contract) { ScopedSearch.result(type: "FleetContract", name: contract.title, slug: contract.slug) }
         )
       end
@@ -118,6 +122,7 @@ module Api
           scope: FleetInventoryItem.where(fleet_inventory_id: visible_fleet_inventories.select(:id))
             .includes(:fleet_inventory).preload(:item).order(:name),
           filter: :name_cont,
+          columns: ["#{FleetInventoryItem.table_name}.name"],
           item: lambda { |item|
             ScopedSearch.result(
               type: "FleetInventoryItem", name: item.name, slug: item.id, detail: item.fleet_inventory.name

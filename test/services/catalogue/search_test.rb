@@ -68,6 +68,39 @@ module Catalogue
       assert_equal ["Port Crate", "Old Port Crate", "Support Crate"], search("port").map(&:second)
     end
 
+    test "finds a name however the reader spaced it" do
+      create(:model, name: "North Star")
+      create(:component, name: "F7C-M Super Hornet Mount")
+
+      assert_equal ["North Star"], search("northstar").map(&:second)
+      assert_equal ["North Star"], search("north-star").map(&:second)
+      assert_equal ["F7C-M Super Hornet Mount"], search("f7cm").map(&:second)
+      assert_empty search("--")
+    end
+
+    test "finds a name a letter or two off once nothing matches as typed" do
+      create(:model, name: "North Star")
+      create(:model, name: "Carrack")
+      create(:commodity, name: "Northern Lights")
+
+      assert_equal [["Model", "North Star"]], search("nortstar").map { |row| row.first(2) }
+      assert_equal ["Carrack"], search("carack").map(&:second)
+      assert_not Search.new.call("nortstar").first.has_more
+    end
+
+    test "offers no near miss while something matches as typed" do
+      create(:model, name: "Starfarer")
+      create(:commodity, name: "Stor-All Crate")
+
+      assert_equal ["Starfarer"], search("starf").map(&:second)
+    end
+
+    test "leaves a short query to match as typed" do
+      create(:commodity, name: "Ore")
+
+      assert_empty search("orx")
+    end
+
     test "opens on the catalogue with the strongest match" do
       create(:commodity, name: "Support Crate")
       create(:location, name: "Port Tressler")

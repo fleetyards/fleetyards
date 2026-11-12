@@ -4,6 +4,8 @@ json.environment @environment
 json.version @version
 json.from_version @from_version if @from_version.present?
 json.total_count @total_count
+json.owned_count @owned_model_ids.size
+json.owned_model_ids @owned_model_ids
 
 json.items do
   json.array! @items do |item|
