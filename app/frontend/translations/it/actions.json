@@ -312,7 +312,10 @@
             "editCandidates": "Scegli chi occupa questo slot",
             "addAlternate": "+ Riserva",
             "assignMember": "+ Assegna membro",
-            "removeSeat": "Rimuovi slot"
+            "removeSeat": "Rimuovi slot",
+            "manageSeats": "Slot",
+            "fillSeat": "Assegna",
+            "changeMembers": "Modifica"
           },
           "askForShip": "Chiedi una nave",
           "withdrawShipRequest": "Ritira"

@@ -312,7 +312,10 @@
             "editCandidates": "Choisir qui occupe ce poste",
             "addAlternate": "+ Remplaçant",
             "assignMember": "+ Assigner un membre",
-            "removeSeat": "Retirer le poste"
+            "removeSeat": "Retirer le poste",
+            "manageSeats": "Postes",
+            "fillSeat": "Pourvoir",
+            "changeMembers": "Modifier"
           },
           "askForShip": "Demander un vaisseau",
           "withdrawShipRequest": "Retirer"

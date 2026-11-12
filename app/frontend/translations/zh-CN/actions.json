@@ -312,7 +312,10 @@
             "editCandidates": "选择担任此席位的成员",
             "addAlternate": "+ 替补",
             "assignMember": "+ 指定成员",
-            "removeSeat": "移除席位"
+            "removeSeat": "移除席位",
+            "manageSeats": "席位",
+            "fillSeat": "安排",
+            "changeMembers": "更改"
           },
           "askForShip": "请求舰船",
           "withdrawShipRequest": "撤回"

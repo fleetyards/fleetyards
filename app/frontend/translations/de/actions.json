@@ -312,7 +312,10 @@
             "editCandidates": "Festlegen, wer diesen Slot fliegt",
             "addAlternate": "+ Ersatz",
             "assignMember": "+ Mitglied einteilen",
-            "removeSeat": "Slot entfernen"
+            "removeSeat": "Slot entfernen",
+            "manageSeats": "Slots",
+            "fillSeat": "Besetzen",
+            "changeMembers": "Ändern"
           },
           "askForShip": "Um ein Schiff bitten",
           "withdrawShipRequest": "Zurückziehen"

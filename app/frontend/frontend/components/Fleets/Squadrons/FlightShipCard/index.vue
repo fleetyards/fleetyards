@@ -46,9 +46,13 @@ const changed = () => comlink.emit("mission-children-changed");
 
 const seats = computed(() => props.ship.slots ?? []);
 
-const filledCount = computed(
-  () => seats.value.filter((seat) => seat.candidates?.length).length,
+// The card shows who flies; seats nobody is listed for are filled in the
+// seats modal.
+const filledSeats = computed(() =>
+  seats.value.filter((seat) => seat.candidates?.length),
 );
+
+const openCount = computed(() => seats.value.length - filledSeats.value.length);
 
 // A spot naming one model shows it; one listing several shows the first, and a
 // spot that only sets criteria has no ship to show.
@@ -87,7 +91,7 @@ const primary = (seat: MissionSlot): FleetSquadronSlotCandidate | undefined =>
 
 const primaryLine = (seat: MissionSlot) => {
   const candidate = primary(seat);
-  if (!candidate) return t("labels.fleet.squadrons.flights.openSeat");
+  if (!candidate) return "";
 
   const ship = candidate.vehicle?.name || candidate.vehicle?.model?.name;
 
@@ -103,16 +107,18 @@ const alternatesLine = (seat: MissionSlot) => {
     });
   }
 
-  return primary(seat)
-    ? t("labels.fleet.squadrons.flights.noAlternates")
-    : t("labels.fleet.squadrons.flights.nobodyListed");
+  return t("labels.fleet.squadrons.flights.noAlternates");
 };
 
-const openCandidates = (seat: MissionSlot) => {
+const openSeats = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SlotCandidatesModal/index.vue"),
-    props: { slot: seat, scope: props.scope },
+      import("@/frontend/components/Fleets/Squadrons/ShipSeatsModal/index.vue"),
+    props: {
+      scope: props.scope,
+      shipId: props.ship.id,
+      shipTitle: title.value,
+    },
   });
 };
 
@@ -143,36 +149,6 @@ const removeShip = async () => {
       displayAlert({ text: t("messages.fleets.missionShip.destroy.failure") }),
     );
 };
-
-const newSeat = ref("");
-
-const addSeat = async () => {
-  const seatTitle = newSeat.value.trim();
-  if (!seatTitle) return;
-
-  await lineup
-    .createSlot({
-      slottableType: "MissionShip",
-      slottableId: props.ship.id,
-      title: seatTitle,
-    })
-    .then(() => {
-      newSeat.value = "";
-      changed();
-    })
-    .catch(() =>
-      displayAlert({ text: t("messages.fleets.missionSlot.create.failure") }),
-    );
-};
-
-const removeSeat = async (seat: MissionSlot) => {
-  await lineup
-    .destroySlot(seat.id)
-    .then(changed)
-    .catch(() =>
-      displayAlert({ text: t("messages.fleets.missionSlot.destroy.failure") }),
-    );
-};
 </script>
 
 <template>
@@ -194,7 +170,7 @@ const removeSeat = async (seat: MissionSlot) => {
         <span v-if="spec" class="flight-ship__spec">{{ spec }}</span>
       </div>
       <span class="flight-ship__filled">
-        {{ filledCount }} / {{ seats.length }}
+        {{ filledSeats.length }} / {{ seats.length }}
       </span>
       <div v-if="editable" class="flight-ship__actions">
         <Btn
@@ -230,63 +206,39 @@ const removeSeat = async (seat: MissionSlot) => {
       </div>
     </header>
 
-    <ul class="flight-ship__seats">
+    <ul v-if="filledSeats.length" class="flight-ship__seats">
       <li
-        v-for="seat in seats"
+        v-for="seat in filledSeats"
         :key="seat.id"
         class="flight-ship__seat"
         :data-test="`flight-ship-seat-${seat.id}`"
       >
-        <Avatar
-          v-if="primary(seat)"
-          :avatar="primary(seat)?.avatar?.smallUrl"
-          size="small"
-        />
-        <span v-else class="flight-ship__open" aria-hidden="true">
-          <i class="fa-light fa-plus" />
-        </span>
+        <Avatar :avatar="primary(seat)?.avatar?.smallUrl" size="small" />
         <div class="flight-ship__seat-text">
           <span class="flight-ship__seat-title">{{ slotTitle(seat) }}</span>
-          <span
-            class="flight-ship__seat-who"
-            :class="{ 'flight-ship__seat-who--open': !primary(seat) }"
-          >
-            {{ primaryLine(seat) }}
-          </span>
+          <span class="flight-ship__seat-who">{{ primaryLine(seat) }}</span>
           <span class="flight-ship__seat-then">{{ alternatesLine(seat) }}</span>
         </div>
-        <template v-if="editable">
-          <Btn
-            v-tooltip="t('actions.fleet.squadrons.flights.editCandidates')"
-            :size="BtnSizesEnum.SM"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('actions.fleet.squadrons.flights.editCandidates')"
-            :data-test="`flight-ship-seat-members-${seat.id}`"
-            @click="openCandidates(seat)"
-          >
-            <i class="fa-light fa-user-gear" />
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('actions.fleet.squadrons.flights.removeSeat')"
-            @click="removeSeat(seat)"
-          >
-            <i class="fa-light fa-xmark" />
-          </Btn>
-        </template>
       </li>
     </ul>
 
-    <form v-if="editable" class="flight-ship__new" @submit.prevent="addSeat">
-      <input
-        v-model="newSeat"
-        type="text"
-        class="flight-ship__new-input"
-        :aria-label="t('actions.fleets.missions.addSlot')"
-        :placeholder="t('actions.fleets.missions.addSlot')"
-      />
-    </form>
+    <footer class="flight-ship__footer">
+      <span v-if="openCount" class="flight-ship__open-count">
+        {{
+          t("labels.fleet.squadrons.flights.openSeats", { count: openCount })
+        }}
+      </span>
+      <Btn
+        v-if="editable"
+        :size="BtnSizesEnum.SM"
+        class="flight-ship__seats-btn"
+        data-test="flight-ship-seats"
+        @click="openSeats"
+      >
+        <i class="fa-light fa-user-gear" />
+        {{ t("actions.fleet.squadrons.flights.manageSeats") }}
+      </Btn>
+    </footer>
   </section>
 </template>
 
@@ -370,18 +322,6 @@ const removeSeat = async (seat: MissionSlot) => {
   border-bottom: 1px solid var(--color-edge-faint);
 }
 
-.flight-ship__open {
-  display: grid;
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  border: 1px dashed var(--color-edge-strong);
-  border-radius: 50%;
-  color: var(--color-muted);
-  font-size: 0.75rem;
-  place-items: center;
-}
-
 .flight-ship__seat-text {
   display: flex;
   flex: 1;
@@ -402,33 +342,25 @@ const removeSeat = async (seat: MissionSlot) => {
   font-weight: 600;
 }
 
-.flight-ship__seat-who--open {
-  color: var(--color-muted);
-}
-
 .flight-ship__seat-then {
   color: var(--color-muted);
   font-size: 0.75rem;
 }
 
-.flight-ship__new {
-  padding: 8px 14px 12px;
+.flight-ship__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px 12px;
 }
 
-.flight-ship__new-input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px dashed var(--color-edge-soft);
-  border-radius: var(--radius-control-bare);
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-size: 0.8125rem;
+.flight-ship__open-count {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
 
-  &:focus {
-    border-style: solid;
-    border-color: var(--color-primary);
-    outline: none;
-  }
+.flight-ship__seats-btn {
+  margin-left: auto;
 }
 </style>

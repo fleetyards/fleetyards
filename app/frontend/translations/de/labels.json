@@ -1074,7 +1074,8 @@
             "then": "Danach %{names}",
             "noAlternates": "Kein Ersatz",
             "shipsSummary": "%{ships} Schiffe · %{filled} von %{seats} Slots besetzt",
-            "lead": "Schwarmführer"
+            "lead": "Schwarmführer",
+            "openSeats": "%{count} frei"
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

@@ -1074,7 +1074,8 @@
             "then": "Después %{names}",
             "noAlternates": "Sin suplentes",
             "shipsSummary": "%{ships} naves · %{filled} de %{seats} slots ocupados",
-            "lead": "Líder de escuadrilla"
+            "lead": "Líder de escuadrilla",
+            "openSeats": "%{count} libres"
           },
           "askableShips": "Naves que solicitar",
           "shipRequestFrom": "%{username} te pide tu %{ship}",

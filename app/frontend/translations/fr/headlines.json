@@ -314,7 +314,8 @@
             "create": "Ajouter une patrouille",
             "edit": "Modifier la patrouille",
             "candidates": "Qui occupe %{slot}",
-            "wideSeats": "Postes de toute la patrouille"
+            "wideSeats": "Postes de toute la patrouille",
+            "seats": "Postes à bord de %{ship}"
           },
           "shipRequest": "Demander un vaisseau à %{username}",
           "shipRequestsForMe": "Demandes qui vous sont adressées",

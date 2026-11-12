@@ -21,7 +21,10 @@ import {
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
 import { type MissionSlot } from "@/services/fyApi";
-import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
+import {
+  sortByFilled,
+  useSlotTitle,
+} from "@/frontend/composables/useSlotTitle";
 import Sortable from "sortablejs";
 
 type Props = {
@@ -38,6 +41,8 @@ const { displayAlert } = useAppNotifications();
 
 const lineup = useLineupApi(() => props.scope);
 const slotTitle = useSlotTitle();
+
+const sortedSeats = computed(() => sortByFilled(props.seats));
 
 const changed = () => comlink.emit("mission-children-changed");
 
@@ -139,7 +144,7 @@ onUnmounted(() => sortable?.destroy());
     <div class="wide-seats__panel">
       <ul ref="list" class="wide-seats__list">
         <li
-          v-for="seat in seats"
+          v-for="seat in sortedSeats"
           :key="seat.id"
           :data-seat-id="seat.id"
           :data-lead="seat.lead || undefined"

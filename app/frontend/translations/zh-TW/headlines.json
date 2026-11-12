@@ -314,7 +314,8 @@
             "create": "新增小隊",
             "edit": "編輯小隊",
             "candidates": "誰擔任 %{slot}",
-            "wideSeats": "小隊通用席位"
+            "wideSeats": "小隊通用席位",
+            "seats": "%{ship} 的席位"
           },
           "shipRequest": "向 %{username} 請求艦船",
           "shipRequestsForMe": "向你的請求",

@@ -314,7 +314,8 @@
             "create": "Aggiungi pattuglia",
             "edit": "Modifica pattuglia",
             "candidates": "Chi occupa %{slot}",
-            "wideSeats": "Slot dell’intera pattuglia"
+            "wideSeats": "Slot dell’intera pattuglia",
+            "seats": "Slot su %{ship}"
           },
           "shipRequest": "Chiedi una nave a %{username}",
           "shipRequestsForMe": "Richieste per te",

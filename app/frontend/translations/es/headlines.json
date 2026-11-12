@@ -314,7 +314,8 @@
             "create": "Añadir escuadrilla",
             "edit": "Editar escuadrilla",
             "candidates": "Quién ocupa %{slot}",
-            "wideSeats": "Slots de toda la escuadrilla"
+            "wideSeats": "Slots de toda la escuadrilla",
+            "seats": "Slots de %{ship}"
           },
           "shipRequest": "Pedir una nave a %{username}",
           "shipRequestsForMe": "Solicitudes para ti",

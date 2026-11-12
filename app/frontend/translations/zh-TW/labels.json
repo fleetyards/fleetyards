@@ -1074,7 +1074,8 @@
             "then": "其次：%{names}",
             "noAlternates": "無替補",
             "shipsSummary": "%{ships} 艘艦船 · 已安排 %{filled}/%{seats} 個席位",
-            "lead": "小隊長"
+            "lead": "小隊長",
+            "openSeats": "%{count} 個空缺"
           },
           "askableShips": "可請求的艦船",
           "shipRequestFrom": "%{username} 請求你的 %{ship}",

@@ -316,7 +316,8 @@
             "create": "Add flight",
             "edit": "Edit flight",
             "candidates": "Who flies %{slot}",
-            "wideSeats": "Flight-wide seats"
+            "wideSeats": "Flight-wide seats",
+            "seats": "Seats on %{ship}"
           },
           "shipRequest": "Ask %{username} for a ship",
           "shipRequestsForMe": "Asked of you",
