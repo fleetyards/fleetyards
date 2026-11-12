@@ -222,6 +222,7 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
 
   test "POST ships adds a member's ship to the flight, flown by its owner" do
     vehicle = create(:vehicle, user: @pilot, model: create(:model, :in_game))
+    FleetVehicle.create!(fleet: @fleet, vehicle:)
     sign_in @officer
 
     assert_api_response :post, 201, api_path: SHIPS, path_params: flight_params, body: {vehicleId: vehicle.id} do
@@ -252,6 +253,14 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
 
   test "POST ships refuses a ship its owner does not give the squadron" do
     @rows[@pilot].update!(ships_filter: "picked")
+    vehicle = create(:vehicle, user: @pilot, model: create(:model, :in_game))
+    FleetVehicle.create!(fleet: @fleet, vehicle:)
+    sign_in @officer
+
+    assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params, body: {vehicleId: vehicle.id}
+  end
+
+  test "POST ships refuses a ship the fleet does not list" do
     sign_in @officer
 
     assert_api_response :post, 400, api_path: SHIPS, path_params: flight_params,

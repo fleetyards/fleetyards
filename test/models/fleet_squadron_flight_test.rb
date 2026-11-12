@@ -59,6 +59,36 @@ class FleetSquadronFlightTest < ActiveSupport::TestCase
     assert_equal ship.vehicle_id, pilot.vehicle_id
   end
 
+  test "a flight's ship hands its pilot seat to the new owner when it changes hands" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+    squadron = ship.flight.fleet_squadron
+    row = create(:fleet_squadron_membership, fleet_squadron: squadron)
+    other = create(:vehicle, user: row.fleet_membership.user, model: create(:model, :in_game))
+    FleetVehicle.create!(fleet_id: squadron.fleet_id, vehicle_id: other.id)
+
+    ship.update!(vehicle: other)
+
+    pilot = ship.mission_slots.find_by!(role: "pilot").mission_slot_candidates.sole
+    assert_equal row.id, pilot.fleet_squadron_membership_id
+    assert_equal other.id, pilot.vehicle_id
+  end
+
+  test "a flight's ship has to be one the fleet lists" do
+    ship = create(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
+
+    ship.vehicle = create(:vehicle, user: ship.vehicle.user, model: create(:model, :in_game))
+
+    assert_not ship.valid?
+    assert ship.errors.added?(:vehicle_id, :not_in_squadron)
+  end
+
+  test "a template's ship cannot name a member's ship" do
+    ship = build(:mission_ship, vehicle: create(:vehicle))
+
+    assert_not ship.valid?
+    assert ship.errors.added?(:vehicle_id, :present)
+  end
+
   test "a flight's ship has to name a member's ship" do
     ship = build(:mission_ship, mission_team: create(:fleet_squadron_flight).team)
     ship.vehicle = nil

@@ -46,6 +46,7 @@ class MissionShip < ApplicationRecord
 
   validate :model_or_filter_required
   validate :flight_ship_names_a_vehicle, if: -> { flight.present? && (new_record? || will_save_change_to_vehicle_id?) }
+  validate :only_a_flight_ship_names_a_vehicle, if: -> { flight.blank? && will_save_change_to_vehicle_id? }
   validate :model_must_be_in_game
   validate :allowed_models_must_be_in_game
 
@@ -76,15 +77,25 @@ class MissionShip < ApplicationRecord
     return errors.add(:vehicle_id, :blank) if vehicle.blank?
 
     squadron = flight.fleet_squadron
-    available = FleetSquadron.vehicle_ids_for(fleet_id: squadron.fleet_id, squadron_ids: [squadron.id])
-    return errors.add(:vehicle_id, :not_in_squadron) unless !vehicle.wanted? && available.exists?(id: vehicle.id)
+    available = FleetVehicle.where(fleet_id: squadron.fleet_id)
+      .where(vehicle_id: FleetSquadron.vehicle_ids_for(fleet_id: squadron.fleet_id, squadron_ids: [squadron.id]))
+    return errors.add(:vehicle_id, :not_in_squadron) unless !vehicle.wanted? && available.exists?(vehicle_id: vehicle.id)
 
     taken = mission_team.mission_ships.where(vehicle_id:).where.not(id:).exists?
     errors.add(:vehicle_id, :taken) if taken
   end
 
+  # A template's spot stays a kind of ship; only a flight is flown in somebody's.
+  private def only_a_flight_ship_names_a_vehicle
+    errors.add(:vehicle_id, :present) if vehicle_id.present?
+  end
+
   # The ship's owner flies it unless somebody is already listed for the seat.
+  # Whoever was listed for bringing the ship it replaced brings it no longer.
   private def seat_owner(pilot)
+    previous = vehicle_id_previously_was if vehicle_id_previously_changed?
+    pilot.mission_slot_candidates.where(vehicle_id: previous).destroy_all if previous.present?
+
     return if vehicle.blank? || pilot.mission_slot_candidates.exists?
 
     row = flight.fleet_squadron.fleet_squadron_memberships

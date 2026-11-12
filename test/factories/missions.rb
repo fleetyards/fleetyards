@@ -32,12 +32,17 @@ FactoryBot.define do
     classification { "Combat" }
 
     # A flight's ship is a member's own, so one is found for it in the squadron.
+    # Listed for the fleet as well, which a job does outside tests.
     after(:build) do |ship|
       flight = ship.mission_team&.flight
-      next if flight.blank? || ship.vehicle.present?
+      next if flight.blank?
 
-      row = create(:fleet_squadron_membership, fleet_squadron: flight.fleet_squadron)
-      ship.vehicle = create(:vehicle, user: row.fleet_membership.user, model: create(:model, :in_game))
+      if ship.vehicle.blank?
+        row = create(:fleet_squadron_membership, fleet_squadron: flight.fleet_squadron)
+        ship.vehicle = create(:vehicle, user: row.fleet_membership.user, model: create(:model, :in_game))
+      end
+
+      FleetVehicle.find_or_create_by!(fleet_id: flight.fleet_squadron.fleet_id, vehicle_id: ship.vehicle.id)
     end
 
     trait :strict do
