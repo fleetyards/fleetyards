@@ -74,9 +74,8 @@ const { isFeatureEnabled } = useFeatures();
             : t("home.dashboard.welcomeAnonymous")
         }}
       </Heading>
-      <HomeSearch class="home-dashboard__search" />
     </div>
-    <HomeFlagship class="home-dashboard__flagship" />
+    <HomeSearch class="home-dashboard__search" />
   </div>
 
   <DashboardTiles class="home-dashboard__tiles" />
@@ -92,6 +91,7 @@ const { isFeatureEnabled } = useFeatures();
       <NewShipsPanel class="home-dashboard__new-ships" />
     </div>
     <aside class="home-dashboard__side">
+      <HomeFlagship class="home-dashboard__flagship" />
       <FleetPanel class="home-dashboard__fleet" />
       <RaffleDashboardPanel class="home-dashboard__raffle" />
       <PlanPanel
@@ -115,16 +115,9 @@ const { isFeatureEnabled } = useFeatures();
 
 .home-dashboard__title {
   display: flex;
-  flex: 1 1 520px;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 640px;
   min-width: 0;
-}
-
-.home-dashboard__flagship {
-  flex: 0 1 600px;
-  margin-bottom: 15px;
 }
 
 .home-dashboard__date {
@@ -142,7 +135,7 @@ const { isFeatureEnabled } = useFeatures();
 .home-dashboard__search {
   --home-search-tabs-room: 42px;
 
-  align-self: stretch;
+  flex: 0 1 600px;
   min-width: 0;
   margin-bottom: 15px;
 }
@@ -174,28 +167,33 @@ const { isFeatureEnabled } = useFeatures();
   order: 3;
 }
 
-.home-dashboard__fleet {
+.home-dashboard__flagship {
   order: 4;
+  margin-bottom: 16px;
 }
 
-.home-dashboard__raffle {
+.home-dashboard__fleet {
   order: 5;
 }
 
-.home-dashboard__plan {
+.home-dashboard__raffle {
   order: 6;
 }
 
-.home-dashboard__notifications {
+.home-dashboard__plan {
   order: 7;
 }
 
-.home-dashboard__friends {
+.home-dashboard__notifications {
   order: 8;
 }
 
-.home-dashboard__new-ships {
+.home-dashboard__friends {
   order: 9;
+}
+
+.home-dashboard__new-ships {
+  order: 10;
 }
 
 @media (min-width: 992px) {
@@ -216,7 +214,7 @@ const { isFeatureEnabled } = useFeatures();
 }
 
 @media (max-width: 991px) {
-  .home-dashboard__flagship {
+  .home-dashboard__search {
     flex-basis: 100%;
   }
 }
