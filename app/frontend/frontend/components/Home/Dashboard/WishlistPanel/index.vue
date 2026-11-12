@@ -18,7 +18,7 @@ import {
   onSaleWishlistParams,
 } from "@/frontend/components/Home/Dashboard/wishlistParams";
 
-const { t, toDollar } = useI18n();
+const { t, toDollar, toUEC } = useI18n();
 
 // A ship on sale is the one thing on a wishlist worth acting on today, so those
 // come first, and the rest of the space goes to what was wished for last.
@@ -65,6 +65,15 @@ const tagFor = (vehicle: Vehicle) => {
     : label;
 };
 
+// What it costs in the game, where it can be bought there at all.
+const subFor = (vehicle: Vehicle) =>
+  [
+    vehicle.model.manufacturer?.name,
+    vehicle.model.price ? toUEC(vehicle.model.price) : undefined,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
 const grid = useTemplateRef<HTMLElement>("grid");
 
 const shown = useFullRows(grid, vehicles, 2);
@@ -86,7 +95,7 @@ const shown = useFullRows(grid, vehicles, 2);
         v-for="vehicle in shown"
         :key="vehicle.id"
         :name="vehicle.name || vehicle.model.name"
-        :sub="vehicle.model.manufacturer?.name"
+        :sub="subFor(vehicle)"
         :image="vehicle.model.media.storeImage"
         :tag="tagFor(vehicle)"
         :to="{ name: 'ship', params: { slug: vehicle.model.slug } }"
