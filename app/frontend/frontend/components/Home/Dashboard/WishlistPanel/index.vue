@@ -132,9 +132,10 @@ const badgesFor = (vehicle: Vehicle): RowListItemBadge[] =>
 </template>
 
 <style lang="scss" scoped>
+// Six, so the grid fills whether it settles on two columns or three.
 .home-wishlist {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 8px;
 }
 
