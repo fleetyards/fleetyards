@@ -21,6 +21,17 @@ vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit: vi.fn() }),
 }));
 
+vi.mock("@/frontend/composables/useLandingServiceIcons", () => ({
+  useLandingServiceIcons: () => ({
+    iconsFor: (services?: string[] | null) =>
+      (services ?? []).map((key) => ({
+        key,
+        label: `label.${key}`,
+        url: `/icons/${key}.svg`,
+      })),
+  }),
+}));
+
 import BaseMetrics from "./index.vue";
 
 function model(
@@ -179,25 +190,50 @@ describe("the cargo tile", () => {
 });
 
 describe("the services a ship gives a ship landed on it", () => {
-  it("lists them under their own heading", () => {
+  it("lists each with its icon and name", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      { landingServices: ["repair", "hydrogen_refuel"] },
+    );
+
+    const services = wrapper.get('[data-test="model-landing-services"]');
+    expect(services.findAll("img").map((img) => img.attributes("src"))).toEqual(
+      ["/icons/repair.svg", "/icons/hydrogen_refuel.svg"],
+    );
+    expect(services.text()).toContain("label.repair");
+  });
+
+  it("lists the areas they apply in, by the name an admin gave, or numbered", () => {
     const wrapper = mountCard(
       ModelStateEnum.FLIGHT,
       {},
       {
-        landingServices: [
-          "repair",
-          "rearm",
-          "quantum_refuel",
-          "hydrogen_refuel",
+        landingServices: ["repair"],
+        servicingAreas: [
+          {
+            key: "a#bay",
+            name: "Vehicle bay",
+            width: 15,
+            length: 45,
+            height: 6,
+          },
+          { key: "a#deck", width: 9, length: 14, height: 5 },
         ],
       },
     );
 
-    expect(
-      wrapper.get('[data-test="model-landing-services"]').text(),
-    ).toContain(
-      "model.landingService.refuel, model.landingService.rearm, model.landingService.repair",
-    );
+    const rows = wrapper
+      .get('[data-test="model-servicing-areas"]')
+      .findAll(".metrics-card__row")
+      .map((row) => [
+        row.get(".metrics-card__row__label").text(),
+        row.get(".metrics-card__row__value").text().replace(/\s+/g, " "),
+      ]);
+    expect(rows).toEqual([
+      ["Vehicle bay", "45 × 15 × 6 m"],
+      ["model.servicingArea", "14 × 9 × 5 m"],
+    ]);
   });
 
   it("leaves the section out for a ship that services none", () => {
