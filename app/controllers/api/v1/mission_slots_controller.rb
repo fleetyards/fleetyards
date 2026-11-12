@@ -30,7 +30,8 @@ module Api
       def update
         authorize_slot!(@slot, @slot.slottable)
 
-        if @slot.update(slot_attrs)
+        # A seat's role is set when it is added and stays.
+        if @slot.update(slot_attrs.except(:role))
           render :show
         else
           render json: ValidationError.new("mission_slots.update", errors: @slot.errors), status: :bad_request
