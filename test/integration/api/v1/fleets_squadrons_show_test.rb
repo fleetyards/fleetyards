@@ -57,6 +57,30 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/squadrons/:slug counts the ships and flights it has" do
+    Flipper.enable("fleet_squadron_flights")
+    Sidekiq::Testing.inline!
+    create(:fleet_squadron_membership, fleet_squadron: @squadron,
+      fleet_membership: @fleet.fleet_memberships.kept.find_by!(user: @member))
+    create_list(:vehicle, 2, user: @member)
+    create(:vehicle, user: @member, loaner: true)
+    create(:fleet_squadron_flight, fleet_squadron: @squadron)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal 2, parsed_body["shipCount"]
+      assert_equal 1, parsed_body["flightCount"]
+    end
+  end
+
+  test "GET /fleets/:slug/squadrons/:slug leaves the flights out while they are not rolled out" do
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}", as: :json
+
+    assert_not parsed_body.key?("flightCount")
+  end
+
   test "GET /fleets/:slug/squadrons/:slug is readable by a plain member" do
     sign_in @member
 

@@ -1098,7 +1098,12 @@
             "extraShips": "Anche queste navi"
           },
           "flightsEnabled": "Pattuglie",
-          "flightsEnabledHint": "Consente ai responsabili dello squadrone di creare pattuglie: formazioni di navi e slot che precompilano le squadre di eventi e modelli e invitano i membri indicati."
+          "flightsEnabledHint": "Consente ai responsabili dello squadrone di creare pattuglie: formazioni di navi e slot che precompilano le squadre di eventi e modelli e invitano i membri indicati.",
+          "figures": {
+            "members": "Membri",
+            "ships": "Navi",
+            "flights": "Pattuglie"
+          }
         },
         "roles": {
           "permanent": "Permanente",

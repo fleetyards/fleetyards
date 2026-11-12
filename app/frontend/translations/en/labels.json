@@ -1098,7 +1098,12 @@
             "extraShips": "Also give these ships"
           },
           "flightsEnabled": "Flights",
-          "flightsEnabledHint": "Lets this squadron's leadership set up flights: lineups of ships and seats that prefill event and template teams and invite the members they list."
+          "flightsEnabledHint": "Lets this squadron's leadership set up flights: lineups of ships and seats that prefill event and template teams and invite the members they list.",
+          "figures": {
+            "members": "Members",
+            "ships": "Ships",
+            "flights": "Flights"
+          }
         },
         "roles": {
           "permanent": "Permanent",

@@ -1098,7 +1098,12 @@
             "extraShips": "Además, estas naves"
           },
           "flightsEnabled": "Escuadrillas",
-          "flightsEnabledHint": "Permite a los líderes del escuadrón crear escuadrillas: formaciones de naves y slots que rellenan equipos de eventos y plantillas e invitan a los miembros asignados."
+          "flightsEnabledHint": "Permite a los líderes del escuadrón crear escuadrillas: formaciones de naves y slots que rellenan equipos de eventos y plantillas e invitan a los miembros asignados.",
+          "figures": {
+            "members": "Miembros",
+            "ships": "Naves",
+            "flights": "Escuadrillas"
+          }
         },
         "roles": {
           "permanent": "Permanente",

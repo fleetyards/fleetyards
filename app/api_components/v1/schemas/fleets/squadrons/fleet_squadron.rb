@@ -32,6 +32,10 @@ module V1
               viewerIsMember: {type: :boolean},
               viewerRequestedAt: {type: [:string, :null], format: "date-time"},
               pendingRequestCount: {type: :integer},
+              # Only on a single squadron: the ships its members give it.
+              shipCount: {type: :integer},
+              # Only while the squadron has flights.
+              flightCount: {type: :integer},
               # Only on an ordinary squadron the reader is neither in nor has
               # asked: the squadron they already hold, or the one whose answer
               # they are waiting for -- either rules out asking for this one.

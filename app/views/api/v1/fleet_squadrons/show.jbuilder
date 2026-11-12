@@ -20,6 +20,8 @@ end
 json.viewer_is_member @viewer_is_member
 json.viewer_requested_at @viewer_request&.created_at&.utc&.iso8601
 json.pending_request_count @pending_request_count unless @pending_request_count.nil?
+json.ship_count @ship_count
+json.flight_count @flight_count unless @flight_count.nil?
 
 {viewer_exclusive_squadron: @viewer_exclusive_squadron, viewer_requested_squadron: @viewer_requested_squadron}.each do |key, squadron|
   next if squadron.blank?

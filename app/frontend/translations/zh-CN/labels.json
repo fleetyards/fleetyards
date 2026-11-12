@@ -1098,7 +1098,12 @@
             "extraShips": "另外提供这些舰船"
           },
           "flightsEnabled": "小队",
-          "flightsEnabledHint": "允许中队负责人创建小队：由舰船和席位组成的编组，可预填活动和模板队伍并邀请所列成员。"
+          "flightsEnabledHint": "允许中队负责人创建小队：由舰船和席位组成的编组，可预填活动和模板队伍并邀请所列成员。",
+          "figures": {
+            "members": "成员",
+            "ships": "舰船",
+            "flights": "小队"
+          }
         },
         "roles": {
           "permanent": "永久",

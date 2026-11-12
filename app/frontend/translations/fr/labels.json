@@ -1098,7 +1098,12 @@
             "extraShips": "Ces vaisseaux en plus"
           },
           "flightsEnabled": "Patrouilles",
-          "flightsEnabledHint": "Permet aux responsables de l’escadron de créer des patrouilles : des formations de vaisseaux et de postes qui préremplissent les équipes d’événements et de modèles et invitent les membres prévus."
+          "flightsEnabledHint": "Permet aux responsables de l’escadron de créer des patrouilles : des formations de vaisseaux et de postes qui préremplissent les équipes d’événements et de modèles et invitent les membres prévus.",
+          "figures": {
+            "members": "Membres",
+            "ships": "Vaisseaux",
+            "flights": "Patrouilles"
+          }
         },
         "roles": {
           "permanent": "Permanent",

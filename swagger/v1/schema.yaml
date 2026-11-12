@@ -37175,6 +37175,10 @@ components:
           format: date-time
         pendingRequestCount:
           type: integer
+        shipCount:
+          type: integer
+        flightCount:
+          type: integer
         viewerExclusiveSquadron:
           "$ref": "#/components/schemas/FleetSquadronRef"
         viewerRequestedSquadron:

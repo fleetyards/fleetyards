@@ -1098,7 +1098,12 @@
             "extraShips": "另外提供這些艦船"
           },
           "flightsEnabled": "小隊",
-          "flightsEnabledHint": "允許中隊負責人建立小隊：由艦船和席位組成的編組，可預填活動和範本隊伍並邀請所列成員。"
+          "flightsEnabledHint": "允許中隊負責人建立小隊：由艦船和席位組成的編組，可預填活動和範本隊伍並邀請所列成員。",
+          "figures": {
+            "members": "成員",
+            "ships": "艦船",
+            "flights": "小隊"
+          }
         },
         "roles": {
           "permanent": "永久",

@@ -1098,7 +1098,12 @@
             "extraShips": "Zusätzlich diese Schiffe"
           },
           "flightsEnabled": "Schwärme",
-          "flightsEnabledHint": "Erlaubt der Staffelführung, Schwärme anzulegen: Aufstellungen aus Schiffen und Slots, die Event- und Vorlagen-Teams vorbefüllen und die eingeteilten Mitglieder einladen."
+          "flightsEnabledHint": "Erlaubt der Staffelführung, Schwärme anzulegen: Aufstellungen aus Schiffen und Slots, die Event- und Vorlagen-Teams vorbefüllen und die eingeteilten Mitglieder einladen.",
+          "figures": {
+            "members": "Mitglieder",
+            "ships": "Schiffe",
+            "flights": "Schwärme"
+          }
         },
         "roles": {
           "permanent": "Permanent",
