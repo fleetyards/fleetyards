@@ -313,6 +313,7 @@
             "addAlternate": "+ Riserva",
             "assignMember": "+ Assegna membro",
             "removeSeat": "Rimuovi slot",
+            "renameSeat": "Rinomina slot",
             "manageSeats": "Slot",
             "fillSeat": "Assegna",
             "changeMembers": "Modifica",

@@ -313,6 +313,7 @@
             "addAlternate": "+ Remplaçant",
             "assignMember": "+ Assigner un membre",
             "removeSeat": "Retirer le poste",
+            "renameSeat": "Renommer le poste",
             "manageSeats": "Postes",
             "fillSeat": "Pourvoir",
             "changeMembers": "Modifier",

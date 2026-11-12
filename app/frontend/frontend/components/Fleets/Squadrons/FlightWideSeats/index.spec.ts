@@ -1,7 +1,17 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { flushPromises } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import { type MissionSlot, MissionSlottableTypeEnum } from "@/services/fyApi";
+
+const api = vi.hoisted(() => ({
+  updateFleetSquadronFlightSlot: vi.fn(),
+}));
+
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/services/fyApi")>()),
+  updateFleetSquadronFlightSlot: api.updateFleetSquadronFlightSlot,
+}));
 
 const seat = (overrides: Partial<MissionSlot> = {}): MissionSlot => ({
   id: "seat-1",
@@ -44,5 +54,61 @@ describe("FleetSquadronFlightWideSeats", () => {
     expect(lead.findAll("button.btn")).toHaveLength(0);
     expect(comms.find(".wide-seats__grip").exists()).toBe(true);
     expect(comms.findAll("button.btn")).toHaveLength(1);
+  });
+
+  describe("renaming", () => {
+    beforeEach(() => {
+      api.updateFleetSquadronFlightSlot.mockReset().mockResolvedValue({});
+    });
+
+    it("saves the new title on enter", async () => {
+      const wrapper = await mount([seat({ id: "comms" })]);
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-comms"]')
+        .trigger("click");
+      const input = wrapper.find('[data-test="flight-wide-seat-edit-comms"]');
+      await input.setValue("  Medic  ");
+      await input.trigger("keydown", { key: "Enter" });
+      await flushPromises();
+
+      expect(api.updateFleetSquadronFlightSlot).toHaveBeenCalledOnce();
+      expect(api.updateFleetSquadronFlightSlot).toHaveBeenCalledWith(
+        "fleet",
+        "alpha",
+        "flight-1",
+        "comms",
+        { title: "Medic" },
+      );
+      expect(
+        wrapper.find('[data-test="flight-wide-seat-edit-comms"]').exists(),
+      ).toBe(false);
+    });
+
+    it("leaves the title alone on escape or when unchanged", async () => {
+      const wrapper = await mount([seat({ id: "comms" })]);
+      const title = '[data-test="flight-wide-seat-title-comms"]';
+      const edit = '[data-test="flight-wide-seat-edit-comms"]';
+
+      await wrapper.find(title).trigger("click");
+      await wrapper.find(edit).setValue("Medic");
+      await wrapper.find(edit).trigger("keydown", { key: "Escape" });
+
+      await wrapper.find(title).trigger("click");
+      await wrapper.find(edit).trigger("blur");
+      await flushPromises();
+
+      expect(api.updateFleetSquadronFlightSlot).not.toHaveBeenCalled();
+    });
+
+    it("does not offer to rename the lead seat", async () => {
+      const wrapper = await mount([
+        seat({ id: "lead", title: "Flight lead", lead: true }),
+      ]);
+
+      expect(
+        wrapper.find('[data-test="flight-wide-seat-title-lead"]').exists(),
+      ).toBe(false);
+    });
   });
 });
