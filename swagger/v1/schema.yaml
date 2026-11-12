@@ -16942,6 +16942,12 @@ paths:
       tags:
       - Me
       operationId: myPatchChanges
+      parameters:
+      - name: environment
+        in: query
+        schema:
+          type: string
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -16963,6 +16969,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/me/rsi-verification":

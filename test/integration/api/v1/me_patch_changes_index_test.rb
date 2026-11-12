@@ -13,6 +13,8 @@ class Api::V1::MePatchChangesIndexTest < ActionDispatch::IntegrationTest
       tags "Me"
       produces "application/json"
 
+      parameter name: "environment", in: :query, schema: {type: :string}, required: false
+
       security [
         {SessionCookie: []},
         {Oauth2: ["hangar", "hangar:read"]},
@@ -24,6 +26,10 @@ class Api::V1::MePatchChangesIndexTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
     end
@@ -105,6 +111,27 @@ class Api::V1::MePatchChangesIndexTest < ActionDispatch::IntegrationTest
       assert_equal models.size, parsed_body["ownedCount"]
       assert_equal models.map(&:id).sort, parsed_body["ownedModelIds"].sort
     end
+  end
+
+  test "GET /me/patch-changes answers for the environment it is asked about" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0-live.1", ptu: "1.1.0-ptu.2"}, default: "live"})
+    create(:model_build, environment: "live", version: "1.0.0-live.1")
+    create(:model_build, environment: "ptu", version: "1.1.0-ptu.2")
+    Imports::ScData::AllImport.stubs(:finished).returns(stub(exists?: true))
+
+    sign_in @user
+
+    get "/api/v1/me/patch-changes", params: {environment: "ptu"}
+
+    assert_response :ok
+    assert_equal "ptu", response.parsed_body["environment"]
+    assert_equal "1.1.0-ptu.2", response.parsed_body["version"]
+  end
+
+  test "GET /me/patch-changes answers not found for an environment nothing loaded" do
+    sign_in @user
+
+    assert_api_response :get, 404, params: {"environment" => "eptu"}
   end
 
   private def record(model, fields:, to_version: ScData::Source.version)
