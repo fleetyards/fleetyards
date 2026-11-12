@@ -286,11 +286,14 @@ module ScData
       end
 
       # Each area keyed by its container and name, which is what an admin's name
-      # for it hangs off, with the extent of its boxes: x across the ship, y
-      # along it, z up, as the container lays them out.
+      # for it hangs off, with the extent of its boxes along their own axes. An
+      # area's rotation is not applied, so this is its size, not its footprint
+      # on the ship: the Tyilui's are tilted, and none is turned on its side.
       private def servicing_areas(model_data)
         Array.wrap(model_data["servicing_areas"]).filter_map do |area|
-          boxes = Array.wrap(area["shapes"]).select { |shape| shape["type"] == "Box" }
+          boxes = Array.wrap(area["shapes"]).select do |shape|
+            shape["type"] == "Box" && [shape["boxMin"], shape["boxMax"]].all? { |corner| corner.is_a?(Array) && corner.size == 3 }
+          end
           next if boxes.empty?
 
           min = (0..2).map { |axis| boxes.map { |box| box["boxMin"][axis].to_f }.min }
