@@ -290,6 +290,22 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug serves the services the ship provides to a ship landed on it" do
+    model = create(:model, landing_services: %w[repair rearm quantum_refuel hydrogen_refuel])
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal %w[repair rearm quantum_refuel hydrogen_refuel], parsed_body["landingServices"]
+    end
+  end
+
+  test "GET /models/:slug serves no services for a ship that provides none" do
+    model = create(:model)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal [], parsed_body["landingServices"]
+    end
+  end
+
   test "GET /models/:slug returns the model" do
     model = create(:model, :with_description, :with_store_image, :with_fleetchart_image)
 

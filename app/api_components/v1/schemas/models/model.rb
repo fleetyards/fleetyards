@@ -59,6 +59,8 @@ module V1
             storageContainers: {type: :array, items: ::Shared::V1::Schemas::StorageContainer},
             weaponRacks: {type: :array, items: ::Shared::V1::Schemas::WeaponRack},
             refuelBoom: ::Shared::V1::Schemas::RefuelBoom,
+            # What the ship does for another ship landed in its hangar or on its pads.
+            landingServices: {type: :array, items: ::Shared::V1::Schemas::Enums::LandingServiceEnum},
 
             onSale: {type: :boolean},
             playerOwnable: {type: :boolean},

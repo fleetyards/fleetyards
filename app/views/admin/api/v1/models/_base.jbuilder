@@ -237,6 +237,7 @@ json.storage_containers model.storage_containers || []
 json.weapon_racks model.weapon_racks || []
 json.lockers model.lockers
 json.refuel_boom model.refuel_boom
+json.landing_services model.landing_services || []
 
 json.on_sale model.on_sale
 json.player_ownable model.player_ownable
