@@ -22,3 +22,10 @@ if image_attr
     json.partial! "api/v1/shared/file", record: model, attr: image_attr
   end
 end
+
+angled_attr = %i[angled_view_colored angled_view].find { |attr| model.public_send(attr).attached? }
+if angled_attr
+  json.angled_image do
+    json.partial! "api/v1/shared/file", record: model, attr: angled_attr
+  end
+end

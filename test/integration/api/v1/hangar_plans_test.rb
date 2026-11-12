@@ -195,6 +195,18 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/plans/:id pictures a ship by its coloured angled view" do
+    image = -> { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/ship.jpg"), "image/jpeg") }
+    @gladius.update!(angled_view: image.call, angled_view_colored: image.call)
+    @plan.slots.create!(label: "Fighter").candidates.create!(model: @gladius)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: @plan.id} do
+      model = parsed_body.dig("slots", 0, "candidates", 0, "model")
+      assert_equal @gladius.angled_view_colored.filename.to_s, model.dig("angledImage", "name")
+    end
+  end
+
   test "GET /hangar/plans/:id returns 404 for another user's plan" do
     sign_in create(:user)
 

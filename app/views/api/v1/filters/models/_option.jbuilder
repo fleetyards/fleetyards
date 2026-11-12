@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ["v3/filters/models/option", model] do
+json.cache! ["v4/filters/models/option", model] do
   json.id model.id
   json.name model.name
   json.slug model.slug
@@ -17,6 +17,12 @@ json.cache! ["v3/filters/models/option", model] do
   json.media do
     json.store_image do
       json.partial! "api/v1/shared/file", record: model, attr: model.display_image_attr || :store_image
+    end
+    json.angled_view do
+      json.partial! "api/v1/shared/file", record: model, attr: :angled_view
+    end
+    json.angled_view_colored do
+      json.partial! "api/v1/shared/file", record: model, attr: :angled_view_colored
     end
   end
 end

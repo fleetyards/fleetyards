@@ -30,7 +30,8 @@ module V1
               },
               crew: {type: [:integer, :null]},
               cargo: {type: [:number, :null]},
-              image: ::Shared::V1::Schemas::MediaFile
+              image: ::Shared::V1::Schemas::MediaFile,
+              angledImage: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
             required: %w[id name slug onSale ccuInto ccuOutOf]
