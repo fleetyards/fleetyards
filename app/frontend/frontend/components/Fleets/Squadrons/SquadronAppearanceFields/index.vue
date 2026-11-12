@@ -99,19 +99,12 @@ watch(
         data-test="color-suggestions"
       >
         <span>{{ t("labels.fleet.squadrons.colorSuggestions") }}</span>
-        <button
-          v-for="suggestion in suggestions"
-          :key="suggestion"
-          type="button"
-          class="squadron-color-suggestion"
-          :class="{
-            'squadron-color-suggestion--active':
-              props.fields.color?.toLowerCase() === suggestion,
-          }"
-          :style="{ backgroundColor: suggestion }"
-          :aria-label="suggestion"
-          :title="suggestion"
-          @click="props.fields.color = suggestion"
+        <!-- The picker's own swatches, so a suggestion looks and picks like
+             any other colour. -->
+        <VSwatches
+          v-model="props.fields.color"
+          :swatches="suggestions"
+          :inline="true"
         />
       </div>
       <VSwatches v-model="props.fields.color" :inline="true" />
@@ -127,20 +120,5 @@ watch(
   gap: 8px;
   margin-bottom: 12px;
   color: var(--color-text-dim);
-}
-
-.squadron-color-suggestion {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.25);
-  cursor: pointer;
-
-  &--active,
-  &:focus-visible {
-    border-color: var(--color-text, #fff);
-  }
 }
 </style>
