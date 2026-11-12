@@ -6,14 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import RaffleDashboardPanel from "@/frontend/components/Raffles/DashboardPanel/index.vue";
-import { storeToRefs } from "pinia";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import HomeSearch from "@/frontend/components/Home/Search/index.vue";
-import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
-import HomeFlagship from "@/frontend/components/Home/Dashboard/Flagship/index.vue";
+import DashboardHero from "@/frontend/components/Home/Dashboard/Hero/index.vue";
 import DashboardTiles from "@/frontend/components/Home/Dashboard/Tiles/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
@@ -28,32 +23,6 @@ import NotificationsPanel from "@/frontend/components/Home/Dashboard/Notificatio
 import FriendsPanel from "@/frontend/components/Home/Dashboard/FriendsPanel/index.vue";
 import { FeatureFlagName } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { useSessionStore } from "@/frontend/stores/session";
-import { useI18n } from "@/shared/composables/useI18n";
-
-const { t, currentLocale } = useI18n();
-
-// The 'verse runs 930 years ahead of us.
-const IN_GAME_YEAR_OFFSET = 930;
-
-// Today in the reader's language, in the game's calendar.
-const today = computed(() =>
-  new Intl.DateTimeFormat(currentLocale(), {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-    .formatToParts(new Date())
-    .map((part) =>
-      part.type === "year"
-        ? String(Number(part.value) + IN_GAME_YEAR_OFFSET)
-        : part.value,
-    )
-    .join(""),
-);
-
-const { currentUser } = storeToRefs(useSessionStore());
 
 const { isFeatureEnabled } = useFeatures();
 </script>
@@ -63,22 +32,7 @@ const { isFeatureEnabled } = useFeatures();
     <SupportBtn :size="BtnSizesEnum.MD" />
   </Teleport>
 
-  <div class="home-dashboard__head">
-    <div class="home-dashboard__title">
-      <HomeBuildPills />
-      <span class="home-dashboard__date" data-test="home-dashboard-date">
-        {{ today }}
-      </span>
-      <Heading hero :size="HeadingSizeEnum.HERO_SM">
-        {{
-          currentUser
-            ? t("home.dashboard.welcome", { name: currentUser.username })
-            : t("home.dashboard.welcomeAnonymous")
-        }}
-      </Heading>
-    </div>
-    <HomeSearch class="home-dashboard__search" />
-  </div>
+  <DashboardHero />
 
   <!-- Two columns from 992px. Below that both collapse into one, in the order
        a pilot acts on them: what needs an answer first. -->
@@ -93,7 +47,6 @@ const { isFeatureEnabled } = useFeatures();
       <NewShipsPanel class="home-dashboard__new-ships" />
     </div>
     <aside class="home-dashboard__side">
-      <HomeFlagship class="home-dashboard__flagship" />
       <FleetPanel class="home-dashboard__fleet" />
       <RaffleDashboardPanel class="home-dashboard__raffle" />
       <PlanPanel
@@ -108,40 +61,9 @@ const { isFeatureEnabled } = useFeatures();
 </template>
 
 <style lang="scss" scoped>
-.home-dashboard__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.home-dashboard__title {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 0;
-}
-
-.home-dashboard__date {
-  color: var(--color-text-dim, #959595);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .home-dashboard__tiles {
   order: -1;
   margin-bottom: 16px;
-}
-
-.home-dashboard__search {
-  --home-search-tabs-room: 42px;
-
-  flex: 0 1 600px;
-  min-width: 0;
-  margin-bottom: 15px;
 }
 
 .home-dashboard {
@@ -173,11 +95,6 @@ const { isFeatureEnabled } = useFeatures();
 
 .home-dashboard__wishlist {
   order: 4;
-}
-
-.home-dashboard__flagship {
-  order: 5;
-  margin-bottom: 16px;
 }
 
 .home-dashboard__fleet {
@@ -222,12 +139,6 @@ const { isFeatureEnabled } = useFeatures();
     flex-direction: column;
     gap: 4px;
     min-width: 0;
-  }
-}
-
-@media (max-width: 991px) {
-  .home-dashboard__search {
-    flex-basis: 100%;
   }
 }
 </style>

@@ -30,7 +30,8 @@ const label = computed(() =>
     : t("home.dashboard.tiles.patch"),
 );
 
-const background = computed(() => pick(0, patchArt));
+// The next screen along: the banner above shows this visit's first.
+const background = computed(() => pick(1, patchArt));
 
 const { data: changes } = useMyPatchChanges({ query: liveQuery });
 

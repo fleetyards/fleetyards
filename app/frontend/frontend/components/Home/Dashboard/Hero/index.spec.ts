@@ -28,8 +28,17 @@ vi.mock("@/services/fyApi", async () => {
       })),
     useMyPatchChanges: () => answer(() => changes),
     useSyncRsiHangarLastRead: () => answer(() => undefined),
+    useScDataBuilds: () => answer(() => ({ items: [] })),
   };
 });
+
+vi.mock("@/frontend/components/Home/Search/index.vue", () => ({
+  default: { render: () => null },
+}));
+
+vi.mock("@/frontend/components/Home/BuildPills/index.vue", () => ({
+  default: { render: () => null },
+}));
 
 const Stub = defineComponent({ render: () => h("div") });
 
@@ -66,7 +75,7 @@ const vehicle = (id: string, name: string, flagship = false): Vehicle =>
 const mount = async () =>
   mountWithDefaults(Component, { plugins: [await router()] });
 
-describe("HomeDashboardFlagship", () => {
+describe("HomeDashboardHero", () => {
   beforeEach(() => {
     changes = undefined;
   });
@@ -81,7 +90,7 @@ describe("HomeDashboardFlagship", () => {
     );
   });
 
-  it("shows nothing when no ship is marked as flagship", async () => {
+  it("leaves the ship out when none is marked as flagship", async () => {
     vehicles = [vehicle("1", "Carrack"), vehicle("2", "Cutlass")];
 
     const subject = await mount();
