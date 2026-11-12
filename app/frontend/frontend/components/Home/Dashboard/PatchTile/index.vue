@@ -11,6 +11,8 @@ import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import { useMyPatchChanges } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useQueryClient } from "@tanstack/vue-query";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import patchArt from "@/images/bg-3.webp";
 
 type Props = {
@@ -35,10 +37,32 @@ const label = computed(() =>
 
 const background = computed(() => pick(0, patchArt));
 
-const { data: changes } = useMyPatchChanges(
+// Not retried: a build the server stopped offering answers
+// not found, and this card then has nothing true left to say.
+const { data: changes, isError } = useMyPatchChanges(
   () => ({ environment: props.environment }),
-  { query: liveQuery },
+  { query: { ...liveQuery, retry: false } },
 );
+
+const sourceStore = useScDataSourceStore();
+
+const queryClient = useQueryClient();
+
+// The stats page reads the source the reader is on, so the card of the other
+// build switches to it first, the way the navigation's switch does.
+const openSource = () => {
+  const current = sourceStore.selected?.environment.toLowerCase() || "live";
+  if (current === props.environment.toLowerCase()) return;
+
+  sourceStore.select(
+    sourceStore.defaultSource?.environment.toLowerCase() ===
+      props.environment.toLowerCase()
+      ? undefined
+      : props.environment,
+  );
+
+  void queryClient.invalidateQueries();
+};
 
 // Owned ships only: a wishlist ship the patch changed is not "yours", and
 // `items` stops at the most changed few.
@@ -47,8 +71,10 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
 
 <template>
   <router-link
+    v-if="!isError"
     :to="{ name: 'stats' }"
     class="home-patch-tile"
+    @click="openSource"
     :data-test="`home-tile-patch-${environment}`"
   >
     <Panel

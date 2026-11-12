@@ -22,11 +22,7 @@ const environments = computed(() => {
 </script>
 
 <template>
-  <div
-    class="home-patch-tiles"
-    :class="{ 'home-patch-tiles--pair': environments.length > 1 }"
-    data-test="home-patch-tiles"
-  >
+  <div class="home-patch-tiles" data-test="home-patch-tiles">
     <PatchTile
       v-for="environment in environments"
       :key="environment"
@@ -36,12 +32,12 @@ const environments = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+// As many equal columns as there are cards, so a card that drops out leaves
+// no hole beside the other.
 .home-patch-tiles {
   display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
   gap: 12px;
-
-  &--pair {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 </style>
