@@ -9,11 +9,11 @@ module Admin
         def index
           authorize! with: ::Admin::ModelPositionPolicy
 
-          model_position_query_params["sorts"] = "position asc"
+          model_position_query_params.delete("sorts")
 
           @q = authorized_scope(ModelPosition.all).ransack(model_position_query_params)
 
-          @model_positions = @q.result
+          @model_positions = @q.result.ordered
             .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
@@ -53,7 +53,7 @@ module Admin
           model = Model.find(params[:model_id])
           ModelPosition.generate_for_model!(model)
 
-          @model_positions = model.model_positions.order(position: :asc)
+          @model_positions = model.model_positions.ordered
             .page(page_params)
             .per(params.fetch(:per_page, nil))
 

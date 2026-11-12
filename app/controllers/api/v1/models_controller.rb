@@ -186,7 +186,7 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        @positions = model.model_positions.in_build.order(position: :asc)
+        @positions = model.model_positions.in_build.ordered
       end
 
       def images

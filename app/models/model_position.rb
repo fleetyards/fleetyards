@@ -21,6 +21,19 @@ class ModelPosition < ApplicationRecord
   validates :source, presence: true
   validates :hardpoint_id, uniqueness: {scope: :model_id}, allow_nil: true
 
+  # The ship's command seats first, then the rest by name.
+  scope :ordered, -> {
+    order(
+      Arel.sql(sanitize_sql_array([
+        "CASE WHEN lower(model_positions.name) = 'captain' THEN 0 " \
+        "WHEN model_positions.position_type = ? THEN 1 " \
+        "WHEN model_positions.position_type = ? THEN 2 ELSE 3 END",
+        position_types[:pilot], position_types[:copilot]
+      ])),
+      :name, :position
+    )
+  }
+
   def self.ransackable_attributes(auth_object = nil)
     %w[id model_id name position_type source position created_at updated_at]
   end

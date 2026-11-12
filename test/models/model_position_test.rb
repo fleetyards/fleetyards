@@ -27,6 +27,19 @@ class ModelPositionTest < ActiveSupport::TestCase
     assert_empty model.model_positions.reload
   end
 
+  test ".ordered puts the captain, pilots and copilots first, then the rest by name" do
+    model = create(:model)
+    [
+      ["Turret Left", :turret_gunner], ["Copilot", :copilot], ["Bridge Right", :operator],
+      ["Captains Quarters", :operator], ["Pilot", :pilot], ["Captain", :operator], ["Bridge Left", :operator]
+    ].each_with_index do |(name, position_type), position|
+      create(:model_position, model:, hardpoint: nil, source: :curated, name:, position_type:, position:)
+    end
+
+    assert_equal ["Captain", "Pilot", "Copilot", "Bridge Left", "Bridge Right", "Captains Quarters", "Turret Left"],
+      model.model_positions.ordered.pluck(:name)
+  end
+
   # Mission and fleet-event slots point at these rows, so a reload must not
   # hand them new ids.
   test ".generate_for_model! keeps the ids of seats the build still has" do

@@ -77,7 +77,7 @@ module Api
           positions = positions.where(id: requested)
         end
 
-        positions = positions.order(:position)
+        positions = positions.ordered
 
         if positions.empty?
           render json: {code: "no_new_positions", message: "No additional positions to add"}, status: :unprocessable_entity
@@ -158,7 +158,7 @@ module Api
         return if position_ids.blank?
         return if ship.model_id.blank?
 
-        positions = ship.model.model_positions.in_build.where(id: position_ids).order(:position)
+        positions = ship.model.model_positions.in_build.where(id: position_ids).ordered
         next_slot_position = -1
         positions.each do |mp|
           next_slot_position += 1
