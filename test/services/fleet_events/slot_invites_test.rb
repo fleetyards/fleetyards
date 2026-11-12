@@ -59,8 +59,7 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
 
   test "a primary in a team seat is still invited to a ship seat" do
     create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: membership(@primary))
-    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @slot.slottable))
-    ship_slot.fleet_event_slot_candidates.create!(fleet_squadron_membership: @rows.first, position: 0)
+    ship_slot = ship_slot_for_primary
 
     @event.update!(status: "open")
 
@@ -97,14 +96,36 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
     assert_equal membership(@alternate), active_signup.fleet_membership
   end
 
-  test "a member waiting in the event pool is moved into the slot" do
+  def ship_slot_for_primary
+    create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @slot.slottable)).tap do |slot|
+      slot.fleet_event_slot_candidates.create!(fleet_squadron_membership: @rows.first, position: 0)
+    end
+  end
+
+  test "a member waiting in the event pool is moved into a ship seat" do
+    ship_slot = ship_slot_for_primary
     pooled = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil,
       fleet_membership: membership(@primary), status: "interested")
 
     @event.update!(status: "open")
 
-    assert_equal pooled.id, active_signup.id
+    assert_equal pooled.id, ship_slot.fleet_event_signups.sole.id
+    assert pooled.reload.invited?
+  end
+
+  test "a team seat invitation leaves the member's pool signup alone" do
+    pooled = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil,
+      fleet_membership: membership(@primary), status: "interested")
+
+    @event.update!(status: "open")
+
+    assert_not_equal pooled.id, active_signup.id
     assert active_signup.invited?
+
+    active_signup.withdraw!
+
+    assert pooled.reload.interested?
+    assert_nil pooled.fleet_event_slot_id
   end
 
   test "a recurring event invites nobody" do
@@ -128,14 +149,15 @@ class FleetEvents::SlotInvitesTest < ActiveSupport::TestCase
     assert_equal membership(@alternate), active_signup.fleet_membership
   end
 
-  test "a member already confirmed in the event pool keeps the commitment in the slot" do
+  test "a member already confirmed in the event pool keeps the commitment in a ship seat" do
+    ship_slot = ship_slot_for_primary
     pooled = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil,
       fleet_membership: membership(@primary), status: "confirmed")
 
     @event.update!(status: "open")
 
-    assert_equal pooled.id, active_signup.id
-    assert active_signup.confirmed?
+    assert_equal pooled.id, ship_slot.fleet_event_signups.sole.id
+    assert pooled.reload.confirmed?
   end
 
   test "another event's open slots are left alone" do
