@@ -1013,8 +1013,16 @@ class Model < ApplicationRecord
     end
   end
 
+  # Ships that refuel, rearm or repair a ship landed in their hangar or on their
+  # pads, by the served build like every other fact filter.
+  # Ransack never calls a scope for `false`, so there is no inverse.
+  scope :with_landing_services, ->(_value = true) {
+    where("jsonb_array_length(COALESCE(#{fact_sql(:landing_services)}, '[]'::jsonb)) > 0")
+  }
+
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in",
+      "with_landing_services"]
   end
 
   def self.ransackable_scopes_skip_sanitize_args

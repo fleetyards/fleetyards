@@ -535,7 +535,7 @@ module Api
             :with_dock, :with_cargo, :with_cargo_grids, :with_textured_holo, :in_hangar, :on_wishlist, :plannable, :in_game_eq,
             # A slug, not a list -- permitted as an array it was dropped outright,
             # so this filter never ran even when a request got past validation.
-            :will_it_fit, :stealth_eq,
+            :will_it_fit, :stealth_eq, :with_landing_services,
             name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
             focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
             sorts: [], id_not_in: [], id_in: []

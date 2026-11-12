@@ -17,6 +17,7 @@ module V1
             descriptionCont: {type: :string},
             focusIn: {type: :array, items: {type: :string}},
             stealthEq: {type: :boolean},
+            withLandingServices: {type: :boolean, description: "Ships that refuel, rearm or repair a ship landed on them"},
             heightGteq: {type: :number},
             heightLteq: {type: :number},
             idIn: {type: :array, items: {type: :string}},

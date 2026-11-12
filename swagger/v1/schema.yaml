@@ -38015,6 +38015,9 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: boolean
+          description: Ships that refuel, rearm or repair a ship landed on them
         heightGteq:
           type: number
         heightLteq:
@@ -42178,6 +42181,9 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: boolean
+          description: Ships that refuel, rearm or repair a ship landed on them
         heightGteq:
           type: number
         heightLteq:
@@ -47563,6 +47569,9 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: boolean
+          description: Ships that refuel, rearm or repair a ship landed on them
         heightGteq:
           type: number
         heightLteq:

@@ -100,7 +100,7 @@ module Api
         private def model_query_params
           @model_query_params ||= params.permit(
             q: [
-              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :on_wishlist, :with_cargo_grids, :with_textured_holo, :stealth_eq, :s, :sorts,
+              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :on_wishlist, :with_cargo_grids, :with_textured_holo, :stealth_eq, :with_landing_services, :s, :sorts,
               :on_sale_eq, :cargo_gteq, :pledge_price_gt, :pledge_price_gteq, :pledge_price_lteq,
               :player_ownable_eq, :ingame_only_eq, :ccu_target, :plannable,
               name_in: [], slug_in: [], id_in: [], id_not_in: [],
