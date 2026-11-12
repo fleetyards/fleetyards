@@ -4620,6 +4620,7 @@ components:
       - fleet_event_signup_withdrawn
       - fleet_event_signup_confirmed
       - fleet_event_signup_assigned
+      - fleet_event_signup_invited
       - fleet_event_signup_kicked
       - inventory_transfer_received
       - inventory_transfer_resolved
@@ -4631,6 +4632,8 @@ components:
       - tour_join_request_accepted
       - fleet_squadron_request_received
       - fleet_squadron_request_accepted
+      - fleet_squadron_ship_request_received
+      - fleet_squadron_ship_request_accepted
       - fleet_contract_published
       - fleet_contract_claimed
       - fleet_contract_crew_requested
@@ -4677,6 +4680,7 @@ components:
       - FLEET_EVENT_SIGNUP_WITHDRAWN
       - FLEET_EVENT_SIGNUP_CONFIRMED
       - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_INVITED
       - FLEET_EVENT_SIGNUP_KICKED
       - INVENTORY_TRANSFER_RECEIVED
       - INVENTORY_TRANSFER_RESOLVED
@@ -4688,6 +4692,8 @@ components:
       - TOUR_JOIN_REQUEST_ACCEPTED
       - FLEET_SQUADRON_REQUEST_RECEIVED
       - FLEET_SQUADRON_REQUEST_ACCEPTED
+      - FLEET_SQUADRON_SHIP_REQUEST_RECEIVED
+      - FLEET_SQUADRON_SHIP_REQUEST_ACCEPTED
       - FLEET_CONTRACT_PUBLISHED
       - FLEET_CONTRACT_CLAIMED
       - FLEET_CONTRACT_CREW_REQUESTED
