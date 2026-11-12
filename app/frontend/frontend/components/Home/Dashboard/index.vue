@@ -17,6 +17,8 @@ import HomeFlagship from "@/frontend/components/Home/Dashboard/Flagship/index.vu
 import DashboardTiles from "@/frontend/components/Home/Dashboard/Tiles/index.vue";
 import InvitesAlert from "@/frontend/components/Home/Dashboard/InvitesAlert/index.vue";
 import ComingUpPanel from "@/frontend/components/Home/Dashboard/ComingUpPanel/index.vue";
+import ContractsPanel from "@/frontend/components/Home/Dashboard/ContractsPanel/index.vue";
+import InventoryPanel from "@/frontend/components/Home/Dashboard/InventoryPanel/index.vue";
 import ShipsPanel from "@/frontend/components/Home/Dashboard/ShipsPanel/index.vue";
 import WishlistPanel from "@/frontend/components/Home/Dashboard/WishlistPanel/index.vue";
 import NewShipsPanel from "@/frontend/components/Home/Dashboard/NewShipsPanel/index.vue";
@@ -86,6 +88,7 @@ const { isFeatureEnabled } = useFeatures();
     <div class="home-dashboard__main">
       <InvitesAlert class="home-dashboard__invites" />
       <ComingUpPanel class="home-dashboard__coming-up" />
+      <ContractsPanel class="home-dashboard__contracts" />
       <ShipsPanel class="home-dashboard__ships" />
       <WishlistPanel class="home-dashboard__wishlist" />
       <NewShipsPanel class="home-dashboard__new-ships" />
@@ -98,6 +101,7 @@ const { isFeatureEnabled } = useFeatures();
         v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
         class="home-dashboard__plan"
       />
+      <InventoryPanel class="home-dashboard__inventory" />
       <NotificationsPanel class="home-dashboard__notifications" />
       <FriendsPanel class="home-dashboard__friends" />
     </aside>
@@ -159,41 +163,49 @@ const { isFeatureEnabled } = useFeatures();
   order: 1;
 }
 
-.home-dashboard__ships {
+.home-dashboard__contracts {
   order: 2;
 }
 
-.home-dashboard__wishlist {
+.home-dashboard__ships {
   order: 3;
 }
 
-.home-dashboard__flagship {
+.home-dashboard__wishlist {
   order: 4;
+}
+
+.home-dashboard__flagship {
+  order: 5;
   margin-bottom: 16px;
 }
 
 .home-dashboard__fleet {
-  order: 5;
-}
-
-.home-dashboard__raffle {
   order: 6;
 }
 
-.home-dashboard__plan {
+.home-dashboard__raffle {
   order: 7;
 }
 
-.home-dashboard__notifications {
+.home-dashboard__plan {
   order: 8;
 }
 
-.home-dashboard__friends {
+.home-dashboard__inventory {
   order: 9;
 }
 
-.home-dashboard__new-ships {
+.home-dashboard__notifications {
   order: 10;
+}
+
+.home-dashboard__friends {
+  order: 11;
+}
+
+.home-dashboard__new-ships {
+  order: 12;
 }
 
 @media (min-width: 992px) {
