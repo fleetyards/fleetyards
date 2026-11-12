@@ -128,6 +128,19 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles filters by withLandingServices" do
+    owner = create(:user)
+    fleet = create(:fleet, admins: [owner])
+    sign_in owner
+    carrier = create(:model, landing_services: %w[repair rearm quantum_refuel hydrogen_refuel])
+    create(:vehicle, user: owner, model: carrier)
+    create(:vehicle, user: owner, model: create(:model, landing_services: %w[repair]))
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {withLandingServices: %w[rearm repair]}} do
+      assert_equal [carrier.id], parsed_body["items"].map { |item| item.dig("model", "id") }
+    end
+  end
+
   test "GET /fleets/:slug/vehicles honours perPage" do
     sign_in @admin
 

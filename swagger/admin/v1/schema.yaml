@@ -19318,6 +19318,19 @@ components:
       - meta
       - items
       title: ItemPrices
+    LandingServiceEnum:
+      type: string
+      enum:
+      - repair
+      - rearm
+      - quantum_refuel
+      - hydrogen_refuel
+      x-enumNames:
+      - REPAIR
+      - REARM
+      - QUANTUM_REFUEL
+      - HYDROGEN_REFUEL
+      title: LandingServiceEnum
     LoanerFilterEnum:
       type: string
       enum:
@@ -20000,6 +20013,10 @@ components:
             "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
+        landingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
         onSale:
           type: boolean
         playerOwnable:
@@ -20388,6 +20405,10 @@ components:
             "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
+        landingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
         onSale:
           type: boolean
         playerOwnable:

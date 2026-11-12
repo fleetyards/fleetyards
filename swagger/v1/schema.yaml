@@ -38015,6 +38015,11 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
+          description: Ships that give a ship landed on them every one of these services
         heightGteq:
           type: number
         heightLteq:
@@ -42178,6 +42183,11 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
+          description: Ships that give a ship landed on them every one of these services
         heightGteq:
           type: number
         heightLteq:
@@ -44125,6 +44135,19 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    LandingServiceEnum:
+      type: string
+      enum:
+      - repair
+      - rearm
+      - quantum_refuel
+      - hydrogen_refuel
+      x-enumNames:
+      - REPAIR
+      - REARM
+      - QUANTUM_REFUEL
+      - HYDROGEN_REFUEL
+      title: LandingServiceEnum
     LoadoutComponentRef:
       type: object
       properties:
@@ -45779,6 +45802,10 @@ components:
             "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
+        landingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
         onSale:
           type: boolean
         playerOwnable:
@@ -46120,6 +46147,10 @@ components:
             "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
+        landingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
         onSale:
           type: boolean
         playerOwnable:
@@ -47542,6 +47573,11 @@ components:
             type: string
         stealthEq:
           type: boolean
+        withLandingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
+          description: Ships that give a ship landed on them every one of these services
         heightGteq:
           type: number
         heightLteq:

@@ -537,7 +537,7 @@ module Api
             # so this filter never ran even when a request got past validation.
             :will_it_fit, :stealth_eq,
             name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
-            focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
+            focus_in: [], with_landing_services: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
             sorts: [], id_not_in: [], id_in: []
           ]
         )[:q].presence || {}

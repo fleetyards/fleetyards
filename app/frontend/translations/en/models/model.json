@@ -11,6 +11,15 @@
           "speed": "Speed"
         },
         "focus": "Focus",
+        "landingServices": "Landing Services",
+        "landingServicesWhere": "Hangar & pads",
+        "landingService": {
+          "refuel": "Refuel",
+          "hydrogenRefuel": "Hydrogen refuel",
+          "quantumRefuel": "Quantum refuel",
+          "rearm": "Rearm",
+          "repair": "Repair"
+        },
         "classification": "Classification",
         "size": "Size",
         "beam": "Beam",

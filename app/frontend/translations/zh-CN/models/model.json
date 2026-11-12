@@ -11,6 +11,15 @@
           "speed": "速度"
         },
         "focus": "定位",
+        "landingServices": "着陆服务",
+        "landingServicesWhere": "机库与停机坪",
+        "landingService": {
+          "refuel": "加注燃料",
+          "hydrogenRefuel": "加注氢燃料",
+          "quantumRefuel": "加注量子燃料",
+          "rearm": "补充弹药",
+          "repair": "维修"
+        },
         "classification": "分类",
         "size": "尺寸",
         "beam": "宽度",

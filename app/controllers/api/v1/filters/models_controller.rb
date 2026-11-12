@@ -104,7 +104,7 @@ module Api
               :on_sale_eq, :cargo_gteq, :pledge_price_gt, :pledge_price_gteq, :pledge_price_lteq,
               :player_ownable_eq, :ingame_only_eq, :ccu_target, :plannable,
               name_in: [], slug_in: [], id_in: [], id_not_in: [],
-              manufacturer_in: [], classification_in: [], focus_in: [],
+              manufacturer_in: [], classification_in: [], focus_in: [], with_landing_services: [],
               size_in: [], production_status_in: []
             ]
           )[:q].presence || {}

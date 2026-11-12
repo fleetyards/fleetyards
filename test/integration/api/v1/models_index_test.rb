@@ -224,6 +224,28 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by withLandingServices, every one of them" do
+    carrier = create(:model, landing_services: %w[repair rearm quantum_refuel hydrogen_refuel])
+    create(:model, landing_services: %w[repair])
+    create(:model, landing_services: [])
+
+    assert_api_response :get, 200, params: {q: {"withLandingServices" => %w[rearm repair]}} do
+      assert_equal [carrier.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # The column holds whatever environment loaded last; a served build without
+  # services has none, whatever another environment wrote there.
+  test "GET /models filters withLandingServices by the served build, not the column" do
+    source = ::ScData::Source.current.served
+    former = create(:model, landing_services: %w[repair rearm quantum_refuel hydrogen_refuel])
+    create(:model_build, model: former, environment: source.environment, version: source.version)
+
+    assert_api_response :get, 200, params: {q: {"withLandingServices" => %w[repair]}} do
+      assert_not_includes parsed_body["items"].map { |item| item["name"] }, former.name
+    end
+  end
+
   test "GET /models filters by ingameOnlyEq" do
     ingame_only = create(:model, ingame_only: true)
     pledge = create(:model)

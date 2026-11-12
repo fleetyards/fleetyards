@@ -11,6 +11,15 @@
           "speed": "Geschwindigkeit"
         },
         "focus": "Fokus",
+        "landingServices": "Landedienste",
+        "landingServicesWhere": "Hangar & Landeplätze",
+        "landingService": {
+          "refuel": "Betanken",
+          "hydrogenRefuel": "Wasserstoff tanken",
+          "quantumRefuel": "Quantumtreibstoff tanken",
+          "rearm": "Aufmunitionieren",
+          "repair": "Reparieren"
+        },
         "classification": "Klassifizierung",
         "size": "Größe",
         "beam": "Breite",

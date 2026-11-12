@@ -1551,6 +1551,7 @@
             "maxSpeed": "最大速度",
             "groundMaxSpeed": "地面速度",
             "focus": "定位",
+            "landingServices": "着陆服务",
             "productionStatus": "生产状态",
             "price": "价格",
             "pledgePrice": "质押价格"
@@ -2863,6 +2864,7 @@
           "priceGt": "价格 >=",
           "willItFit": "Will it Fit?",
           "withCargo": "有货物?",
+          "withLandingServices": "着陆服务",
           "scKeyBlank": "没有 SC Key?",
           "positionsNeedCuration": "岗位需人工校订?",
           "fleetchartImageBlank": "没有舰队图表图片?",
@@ -3714,6 +3716,7 @@
           "modelMaxSpeed": "最大速度",
           "modelGroundMaxSpeed": "地面速度",
           "modelFocus": "定位",
+          "modelLandingServices": "着陆服务",
           "modelProductionStatus": "生产状态",
           "modelPrice": "价格",
           "modelPledgePrice": "质押价格"
@@ -3736,6 +3739,7 @@
           "modelScmSpeed": "SCM Speed",
           "modelMaxSpeed": "最大速度",
           "modelGroundMaxSpeed": "地面速度",
+          "modelLandingServices": "着陆服务",
           "modelProductionStatus": "生产状态",
           "modelPrice": "价格",
           "modelPledgePrice": "质押价格",

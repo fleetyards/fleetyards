@@ -22,7 +22,12 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { t } = useI18n();
-const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+  landingServiceOptions,
+} = useFilterOptions();
 
 const route = useRoute();
 
@@ -43,6 +48,7 @@ type FleetsFilterForm = {
   classificationIn?: string[];
   focusIn?: string[];
   stealthEq?: string;
+  withLandingServices?: string[];
   sizeIn?: string[];
   priceIn?: string[];
   pledgePriceIn?: string[];
@@ -68,6 +74,7 @@ const prefillFormValues = () => {
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
     stealthEq: filters.value.stealthEq,
+    withLandingServices: filters.value.withLandingServices || [],
     sizeIn: filters.value.sizeIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -114,6 +121,7 @@ const hasGroupFilters = (keys: string[]) =>
           'classificationIn',
           'focusIn',
           'stealthEq',
+          'withLandingServices',
           'sizeIn',
         ])
       "
@@ -148,6 +156,15 @@ const hasGroupFilters = (keys: string[]) =>
         :reset-label="t('labels.all')"
         :options="booleanOptions"
         name="stealth"
+      />
+
+      <BaseSelect
+        v-model="form.withLandingServices"
+        :options="landingServiceOptions"
+        :label="t('labels.filters.models.withLandingServices')"
+        name="landing-services"
+        :multiple="true"
+        :no-label="true"
       />
 
       <SizeSelect v-model="form.sizeIn" name="size" />

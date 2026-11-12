@@ -495,8 +495,12 @@ class Vehicle < ApplicationRecord
   scope :price_in, ->(*ranges) { where(model_id: Model.price_in(*ranges).select(:id)) }
   scope :pledge_price_in, ->(*ranges) { where(model_id: Model.pledge_price_in(*ranges).select(:id)) }
 
+  scope :with_landing_services, ->(*services) {
+    where(model_id: Model.with_landing_services(*services).select(:id))
+  }
+
   def self.ransackable_scopes(_auth_object = nil)
-    %i[image_source_eq focus_in price_in pledge_price_in]
+    %i[image_source_eq focus_in price_in pledge_price_in with_landing_services]
   end
 
   def self.ransackable_scopes_skip_sanitize_args

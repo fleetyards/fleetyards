@@ -3420,6 +3420,18 @@ components:
       - BUY
       - SELL
       - RENTAL
+    LandingServiceEnum:
+      type: string
+      enum:
+      - repair
+      - rearm
+      - quantum_refuel
+      - hydrogen_refuel
+      x-enumNames:
+      - REPAIR
+      - REARM
+      - QUANTUM_REFUEL
+      - HYDROGEN_REFUEL
     LocationKindEnum:
       type: string
       enum:
@@ -3653,6 +3665,10 @@ components:
             "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
+        landingServices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LandingServiceEnum"
         onSale:
           type: boolean
         playerOwnable:

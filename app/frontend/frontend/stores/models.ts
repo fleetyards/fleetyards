@@ -28,6 +28,7 @@ export enum ModelTableViewColsEnum {
   MAX_SPEED = "maxSpeed",
   GROUND_MAX_SPEED = "groundMaxSpeed",
   FOCUS = "focus",
+  LANDING_SERVICES = "landingServices",
   PRODUCTION_STATUS = "productionStatus",
   PRICE = "price",
   PLEDGE_PRICE = "pledgePrice",

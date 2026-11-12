@@ -1551,6 +1551,7 @@
             "maxSpeed": "Max. Geschwindigkeit",
             "groundMaxSpeed": "Bodengeschwindigkeit",
             "focus": "Fokus",
+            "landingServices": "Landedienste",
             "productionStatus": "Produktionsstatus",
             "price": "Preis",
             "pledgePrice": "Pledge-Preis"
@@ -2863,6 +2864,7 @@
           "priceGt": "Preis >=",
           "willItFit": "Will it Fit?",
           "withCargo": "Mit Fracht?",
+          "withLandingServices": "Landedienste",
           "scKeyBlank": "Ohne SC-Key?",
           "positionsNeedCuration": "Positionen kuratierungsbedürftig?",
           "fleetchartImageBlank": "Ohne Flottenübersicht-Bild?",
@@ -3717,6 +3719,7 @@
           "modelMaxSpeed": "Max. Geschwindigkeit",
           "modelGroundMaxSpeed": "Bodengeschwindigkeit",
           "modelFocus": "Fokus",
+          "modelLandingServices": "Landedienste",
           "modelProductionStatus": "Produktionsstatus",
           "modelPrice": "Preis",
           "modelPledgePrice": "Pledge-Preis"
@@ -3739,6 +3742,7 @@
           "modelScmSpeed": "SCM Geschwindigkeit",
           "modelMaxSpeed": "Max Geschwindigkeit",
           "modelGroundMaxSpeed": "Bodengeschwindigkeit",
+          "modelLandingServices": "Landedienste",
           "modelProductionStatus": "Produktionsstatus",
           "modelPrice": "Preis",
           "modelPledgePrice": "Pledge Preis",

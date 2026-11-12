@@ -17,6 +17,7 @@ module V1
             descriptionCont: {type: :string},
             focusIn: {type: :array, items: {type: :string}},
             stealthEq: {type: :boolean},
+            withLandingServices: {type: :array, items: ::Shared::V1::Schemas::Enums::LandingServiceEnum, description: "Ships that give a ship landed on them every one of these services"},
             heightGteq: {type: :number},
             heightLteq: {type: :number},
             idIn: {type: :array, items: {type: :string}},

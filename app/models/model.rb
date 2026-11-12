@@ -30,7 +30,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom storage_containers sales_page_url
-    beds weapon_racks lockers
+    beds weapon_racks lockers landing_services
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -355,6 +355,12 @@ class Model < ApplicationRecord
   # must not show through.
   ModelBuild::INTERIOR_FACTS.each do |fact|
     define_method(fact) { facts ? facts.public_send(fact) : super() }
+  end
+
+  # Final for the same reason: every environment's load writes the column, so a
+  # live build without services must not show the ones a PTU load wrote there.
+  def landing_services
+    facts ? facts.landing_services : super
   end
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
@@ -1013,8 +1019,32 @@ class Model < ApplicationRecord
     end
   end
 
+  # Ships that give a ship landed in their hangar or on their pads every one of
+  # the services asked for, by the served build like every other fact filter.
+  scope :with_landing_services, ->(*services) {
+    services = services.flatten.map(&:to_s) & ModelBuild::LANDING_SERVICES
+
+    where("#{landing_services_sql} @> ?::jsonb", services.to_json)
+  }
+
+  # The served build's services, none where it has none: the column answers only
+  # for a model no served build describes, as the reader above does.
+  def self.landing_services_sql(source = ::ScData::Source.current.served)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      COALESCE(
+        (SELECT COALESCE(model_facts.landing_services, '[]'::jsonb) FROM model_builds model_facts
+          WHERE model_facts.model_id = models.id
+            AND model_facts.environment = ?
+            AND model_facts.version = ?),
+        models.landing_services,
+        '[]'::jsonb
+      )
+    SQL
+  end
+
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views", "price_in", "pledge_price_in",
+      "with_landing_services"]
   end
 
   def self.ransackable_scopes_skip_sanitize_args

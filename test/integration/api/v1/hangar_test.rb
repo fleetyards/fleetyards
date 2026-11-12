@@ -280,6 +280,17 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar filters by withLandingServices through each vehicle's model" do
+    user = create(:user)
+    carrier = create(:vehicle, user:, model: create(:model, landing_services: %w[repair rearm quantum_refuel hydrogen_refuel]))
+    create(:vehicle, user:, model: create(:model, landing_services: %w[repair]))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {withLandingServices: %w[rearm repair]}} do
+      assert_equal [carrier.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /hangar leaves out the ships its owner hid, and lists them on request" do
     user = create(:user)
     shown = create(:vehicle, user:, wanted: false)

@@ -11,6 +11,15 @@
           "speed": "Velocidad"
         },
         "focus": "Enfoque",
+        "landingServices": "Servicios de aterrizaje",
+        "landingServicesWhere": "Hangar y plataformas",
+        "landingService": {
+          "refuel": "Repostar",
+          "hydrogenRefuel": "Repostar hidrógeno",
+          "quantumRefuel": "Repostar combustible cuántico",
+          "rearm": "Rearmar",
+          "repair": "Reparar"
+        },
         "classification": "Clasificación",
         "size": "Tamaño",
         "beam": "Manga",

@@ -49,6 +49,7 @@ const prefillFormValues = () => {
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
     stealthEq: filters.value.stealthEq,
+    withLandingServices: filters.value.withLandingServices || [],
     productionStatusIn: filters.value.productionStatusIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -78,7 +79,12 @@ watch(
   { deep: true },
 );
 
-const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const {
+  booleanOptions,
+  priceOptions,
+  pledgePriceOptions,
+  landingServiceOptions,
+} = useFilterOptions();
 const hasGroupFilters = (keys: string[]) =>
   hasActiveFilters(filters.value, keys);
 </script>
@@ -95,6 +101,7 @@ const hasGroupFilters = (keys: string[]) =>
           'classificationIn',
           'focusIn',
           'stealthEq',
+          'withLandingServices',
           'sizeIn',
           'ingameOnlyEq',
         ])
@@ -129,6 +136,15 @@ const hasGroupFilters = (keys: string[]) =>
         :reset-label="t('labels.all')"
         :options="booleanOptions"
         name="stealth"
+      />
+
+      <BaseSelect
+        v-model="form.withLandingServices"
+        :options="landingServiceOptions"
+        :label="t('labels.filters.models.withLandingServices')"
+        name="landing-services"
+        :multiple="true"
+        :no-label="true"
       />
 
       <SizeSelect v-model="form.sizeIn" name="size" />

@@ -12,6 +12,7 @@ import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
+import { landingServicesText } from "@/shared/utils/LandingServices";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
@@ -230,6 +231,9 @@ const angledImage = (record: Model) => {
       </template>
       <template #col-focus="{ record }">
         {{ fociText(record, t("labels.model.stealth")) }}
+      </template>
+      <template #col-landingServices="{ record }">
+        {{ landingServicesText(record, t) }}
       </template>
       <template #col-productionStatus="{ record }">
         {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
