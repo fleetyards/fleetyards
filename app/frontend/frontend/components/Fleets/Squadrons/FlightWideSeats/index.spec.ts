@@ -101,6 +101,55 @@ describe("FleetSquadronFlightWideSeats", () => {
       expect(api.updateFleetSquadronFlightSlot).not.toHaveBeenCalled();
     });
 
+    it("sends one request when the enter is followed by a blur", async () => {
+      const wrapper = await mount([seat({ id: "comms" })]);
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-comms"]')
+        .trigger("click");
+      const input = wrapper.find('[data-test="flight-wide-seat-edit-comms"]');
+      await input.setValue("Medic");
+      await input.trigger("keydown", { key: "Enter" });
+      await input.trigger("blur");
+      await flushPromises();
+
+      expect(api.updateFleetSquadronFlightSlot).toHaveBeenCalledOnce();
+    });
+
+    it("keeps the typed title open when the save fails", async () => {
+      api.updateFleetSquadronFlightSlot.mockRejectedValue(new Error("nope"));
+      const wrapper = await mount([seat({ id: "comms" })]);
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-comms"]')
+        .trigger("click");
+      const input = wrapper.find('[data-test="flight-wide-seat-edit-comms"]');
+      await input.setValue("Medic");
+      await input.trigger("keydown", { key: "Enter" });
+      await flushPromises();
+
+      const stillOpen = wrapper.find(
+        '[data-test="flight-wide-seat-edit-comms"]',
+      );
+      expect(stillOpen.exists()).toBe(true);
+      expect((stillOpen.element as HTMLInputElement).value).toBe("Medic");
+    });
+
+    it("does not save on the enter that picks an IME candidate", async () => {
+      const wrapper = await mount([seat({ id: "comms" })]);
+
+      await wrapper
+        .find('[data-test="flight-wide-seat-title-comms"]')
+        .trigger("click");
+      const input = wrapper.find('[data-test="flight-wide-seat-edit-comms"]');
+      await input.setValue("Medic");
+      await input.trigger("keydown", { key: "Enter", isComposing: true });
+      await flushPromises();
+
+      expect(api.updateFleetSquadronFlightSlot).not.toHaveBeenCalled();
+      expect(input.exists()).toBe(true);
+    });
+
     it("does not offer to rename the lead seat", async () => {
       const wrapper = await mount([
         seat({ id: "lead", title: "Flight lead", lead: true }),

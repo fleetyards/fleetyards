@@ -83,6 +83,7 @@ const {
   startRename,
   cancelRename,
   saveRename,
+  submitRename,
 } = useSlotRename(lineup, changed);
 
 const removeSeat = async (seat: MissionSlot) => {
@@ -171,14 +172,14 @@ onUnmounted(() => sortable?.destroy());
           </span>
           <span v-else-if="editable" class="wide-seats__grip-space" />
           <input
-            v-if="renamingId === seat.id"
+            v-if="editable && renamingId === seat.id"
             :ref="setRenameInput"
             v-model="renameValue"
             type="text"
             class="wide-seats__title wide-seats__title-input"
             :aria-label="t('actions.fleet.squadrons.flights.renameSeat')"
             :data-test="`flight-wide-seat-edit-${seat.id}`"
-            @keydown.enter.prevent="saveRename(seat)"
+            @keydown.enter="submitRename($event, seat)"
             @keydown.esc="cancelRename"
             @blur="saveRename(seat)"
           />

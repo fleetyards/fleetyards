@@ -12,11 +12,14 @@ export const useSlotRename = (
 
   const renamingId = ref<string | null>(null);
   const renameValue = ref("");
+  let saving = false;
   let input: HTMLInputElement | null = null;
 
-  // A function ref, as a string ref inside a v-for collects an array.
+  // A function ref, as a string ref inside a v-for collects an array. Only a
+  // mounted input is kept: the previous row's input can unmount after the
+  // next one mounts and would otherwise clear it.
   const setRenameInput = (el: unknown) => {
-    input = el as HTMLInputElement | null;
+    if (el) input = el as HTMLInputElement;
   };
 
   const startRename = (slot: MissionSlot) => {
@@ -33,23 +36,36 @@ export const useSlotRename = (
     renameValue.value = "";
   };
 
-  // Enter closes the input, which fires a blur after it; the id guard keeps
-  // that second call from saving again.
+  // Enter is followed by a blur, so a save already on its way is not sent
+  // again. The input stays open until the request settles, keeping what was
+  // typed when it fails.
   const saveRename = async (slot: MissionSlot) => {
-    if (renamingId.value !== slot.id) return;
+    if (renamingId.value !== slot.id || saving) return;
 
     const title = renameValue.value.trim();
-    cancelRename();
-    if (!title || title === slot.title) return;
+    if (!title || title === slot.title) {
+      cancelRename();
+      return;
+    }
 
-    await lineup
-      .updateSlot(slot.id, { title })
-      .then(onRenamed)
-      .catch(() =>
-        displayAlert({
-          text: t("messages.fleets.missionSlot.update.failure"),
-        }),
-      );
+    saving = true;
+    try {
+      await lineup.updateSlot(slot.id, { title });
+      cancelRename();
+      onRenamed();
+    } catch {
+      displayAlert({ text: t("messages.fleets.missionSlot.update.failure") });
+    } finally {
+      saving = false;
+    }
+  };
+
+  // Enter also picks an IME candidate, which must not save a half-typed name.
+  const submitRename = (event: KeyboardEvent, slot: MissionSlot) => {
+    if (event.isComposing) return;
+
+    event.preventDefault();
+    void saveRename(slot);
   };
 
   return {
@@ -59,5 +75,6 @@ export const useSlotRename = (
     startRename,
     cancelRename,
     saveRename,
+    submitRename,
   };
 };

@@ -76,6 +76,7 @@ const {
   startRename,
   cancelRename,
   saveRename,
+  submitRename,
 } = useSlotRename(lineup, changed);
 
 const summary = (seat: MissionSlot) => {
@@ -171,14 +172,14 @@ const removeSeat = async (seat: MissionSlot) => {
           <div class="ship-seats__text">
             <span class="ship-seats__title">
               <input
-                v-if="renamingId === seat.id"
+                v-if="props.editable && renamingId === seat.id"
                 :ref="setRenameInput"
                 v-model="renameValue"
                 type="text"
                 class="ship-seats__title-input"
                 :aria-label="t('actions.fleet.squadrons.flights.renameSeat')"
                 :data-test="`ship-seat-edit-${seat.id}`"
-                @keydown.enter.prevent="saveRename(seat)"
+                @keydown.enter="submitRename($event, seat)"
                 @keydown.esc="cancelRename"
                 @blur="saveRename(seat)"
               />
