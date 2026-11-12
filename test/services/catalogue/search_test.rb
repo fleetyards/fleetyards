@@ -68,6 +68,16 @@ module Catalogue
       assert_equal ["Port Crate", "Old Port Crate", "Support Crate"], search("port").map(&:second)
     end
 
+    test "finds a name however the reader spaced it" do
+      create(:model, name: "North Star")
+      create(:component, name: "F7C-M Super Hornet Mount")
+
+      assert_equal ["North Star"], search("northstar").map(&:second)
+      assert_equal ["North Star"], search("north-star").map(&:second)
+      assert_equal ["F7C-M Super Hornet Mount"], search("f7cm").map(&:second)
+      assert_empty search("--")
+    end
+
     test "opens on the catalogue with the strongest match" do
       create(:commodity, name: "Support Crate")
       create(:location, name: "Port Tressler")

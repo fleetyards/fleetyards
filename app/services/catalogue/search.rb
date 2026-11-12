@@ -52,19 +52,20 @@ module Catalogue
       return [] if query.length < MIN_LENGTH || query.length > TokenResolver::MAX_NAME_LENGTH
 
       escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
+      compact = compact(query)
 
       # A catalogue whose best match is strong comes first, so "port" opens on
       # Port Tressler rather than on equipment that merely contains the word.
       # Ties keep the order of TYPES.
-      TYPES.map { |prefix| group(prefix, escaped) }
+      TYPES.map { |prefix| group(prefix, escaped, compact) }
         .compact
         .each_with_index
         .sort_by { |group, index| [rank(group.items.first.name, query), index] }
         .map(&:first)
     end
 
-    private def group(prefix, escaped)
-      found, matched = matches(prefix, escaped)
+    private def group(prefix, escaped, compact)
+      found, matched = matches(prefix, escaped, compact)
       return if found.empty?
 
       items = found.first(PER_TYPE)
@@ -147,21 +148,40 @@ module Catalogue
       BLUEPRINT_IMAGES.select { |attachment| klass.method_defined?(attachment) }
     end
 
-    # Names that start with the query first, then those with a word that does
-    # -- "port" means Port Tressler before Support -- then the shortest, the
-    # closest match, then alphabetically so equal names keep a stable order.
-    private def matches(prefix, escaped)
+    # Letters and digits only: "northstar" is North Star, "f7cm" the F7C-M. A
+    # name is written however its maker spaced it, and a reader rarely knows.
+    COMPACT_SQL = "regexp_replace(lower(%s), '[^a-z0-9]+', '', 'g')"
+
+    private def compact(text)
+      text.to_s.downcase.gsub(/[^a-z0-9]+/, "")
+    end
+
+    # Nil, which matches nothing, for a query of punctuation alone: an empty
+    # pattern would match every name.
+    private def compact_pattern(compact, prefix: "", suffix: "")
+      "#{prefix}#{compact}#{suffix}" if compact.length >= MIN_LENGTH
+    end
+
+    # Names that start with the query first -- spaced as the name is or not --
+    # then those with a word that does -- "port" means Port Tressler before
+    # Support -- then the shortest, the closest match, then alphabetically so
+    # equal names keep a stable order.
+    private def matches(prefix, escaped, compact)
       klass = TokenResolver::CATALOGUES.fetch(prefix)
       name = TokenResolver.name_sql(prefix)
+      compact_name = format(COMPACT_SQL, name)
       rank = ActiveRecord::Base.sanitize_sql_array([
-        "CASE WHEN lower(#{name}) LIKE ? THEN 0 WHEN lower(#{name}) LIKE ? THEN 1 WHEN lower(#{name}) LIKE ? THEN 2 ELSE 3 END",
-        "#{escaped}%", "% #{escaped}%", "%#{escaped}%"
+        "CASE WHEN lower(#{name}) LIKE ? OR #{compact_name} LIKE ? THEN 0 " \
+        "WHEN lower(#{name}) LIKE ? THEN 1 WHEN lower(#{name}) LIKE ? THEN 2 ELSE 3 END",
+        "#{escaped}%", compact_pattern(compact, suffix: "%"), "% #{escaped}%", "%#{escaped}%"
       ])
 
-      searched = [name, *also_searched(prefix, klass)].map { |column| "lower(#{column}) LIKE :pattern" }.join(" OR ")
+      searched = [name, *also_searched(prefix, klass)].flat_map do |column|
+        ["lower(#{column}) LIKE :pattern", "#{format(COMPACT_SQL, column)} LIKE :compact"]
+      end.join(" OR ")
 
       rows = TokenResolver.listed(prefix)
-        .where(searched, pattern: "%#{escaped}%")
+        .where(searched, pattern: "%#{escaped}%", compact: compact_pattern(compact, prefix: "%", suffix: "%"))
         .order(Arel.sql(rank), Arel.sql("length(#{name})"), Arel.sql("lower(#{name})"), Arel.sql("#{klass.table_name}.slug"))
         .limit(CANDIDATES)
         .pluck(Arel.sql(name), Arel.sql("#{klass.table_name}.slug"), *detail_columns(prefix, klass))
@@ -186,7 +206,7 @@ module Catalogue
       name = name.downcase
       query = query.downcase
 
-      return 0 if name.start_with?(query)
+      return 0 if name.start_with?(query) || (compact_pattern(compact(query)) && compact(name).start_with?(compact(query)))
       return 1 if name.include?(" #{query}")
 
       2
