@@ -44,12 +44,13 @@ const { data, isFetching } = useMyEvents(params);
 const entries = computed(() => data.value?.items || []);
 
 // Each fleet event remembers its fleet, so a click opens it in the right one.
+// By id: the calendar hands back its own copy of the event, not this object.
 const fleetSlugs = computed(() => {
-  const map = new Map<FleetEvent, string>();
+  const map = new Map<string, string>();
 
   entries.value.forEach((entry) => {
     if (entry.fleetEvent && entry.fleet) {
-      map.set(entry.fleetEvent, entry.fleet.slug);
+      map.set(entry.fleetEvent.id, entry.fleet.slug);
     }
   });
 
@@ -66,7 +67,7 @@ const gameEvents = computed(() =>
   entries.value.flatMap((entry) => (entry.gameEvent ? [entry.gameEvent] : [])),
 );
 
-const fleetSlugFor = (event: FleetEvent) => fleetSlugs.value.get(event);
+const fleetSlugFor = (event: FleetEvent) => fleetSlugs.value.get(event.id);
 </script>
 
 <template>
