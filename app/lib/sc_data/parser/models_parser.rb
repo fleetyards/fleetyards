@@ -67,12 +67,33 @@ module ScData
             },
             interior: ship_interiors.for(key).presence,
             landing_services: extract_landing_services(values),
+            servicing_areas: servicing_areas.for(values).presence,
             command_module: docked_command_module(loadout, keys_by_ref),
             loadout:
           }
         end
 
         save_items(ships, folder: "models")
+        save_landing_service_icons
+      end
+
+      private def servicing_areas
+        @servicing_areas ||= ::ScData::Parser::ServicingAreas.new(base_path:)
+      end
+
+      # One icon per service, the same on every ship, so they are written once
+      # beside the models rather than repeated in each. Lowercased like every
+      # other icon folder in the tree: the records spell this one `UI/Textures`,
+      # which a case-insensitive disk merges into `ui/textures` while S3 keeps
+      # both.
+      private def save_landing_service_icons
+        icons = area_services.values.flat_map { |record| record[:icons].to_a }.uniq(&:first).to_h
+          .transform_values { |icon| asset_path(icon).downcase }
+        return if icons.blank?
+
+        icons.each_value { |icon| save_icon(icon) }
+
+        File.write("#{export_path}/landing_services.json", JSON.pretty_generate(icons))
       end
 
       private def ship_interiors
@@ -577,7 +598,7 @@ module ScData
         provider = values.dig("Components", "ShipServicesProviderParams")
         return [] unless provider.is_a?(Hash)
 
-        services = area_services[value_or_nil(provider["servicesClass"])] || []
+        services = area_services.dig(value_or_nil(provider["servicesClass"]), :services) || []
         services -= ["repair"] if provider["repairAvailable"] == "0"
 
         services
@@ -589,9 +610,12 @@ module ScData
           definitions = item[:values]["service"]
           next if ref.blank? || !definitions.is_a?(Hash)
 
-          index[ref] = definitions.keys.filter_map do |definition|
-            LANDING_SERVICES.find { |pattern, _service| definition.match?(pattern) }&.last
-          end.uniq
+          known = definitions.filter_map do |definition, attributes|
+            service = LANDING_SERVICES.find { |pattern, _service| definition.match?(pattern) }&.last
+            [service, value_or_nil(Array.wrap(attributes).first&.dig("icon"))] if service
+          end.uniq(&:first)
+
+          index[ref] = {services: known.map(&:first), icons: known.select(&:last).to_h}
         end
       end
 

@@ -170,6 +170,78 @@ module ScData
         assert_equal [], parsed_ship["landing_services"]
       end
 
+      test "writes each service's icon once, beside the models" do
+        write_area_services
+        write_ship(components: services_provider)
+        icons = "#{@raw_path}/Data/UI/Textures/Vector/General/CommonIcons"
+        FileUtils.mkdir_p(icons)
+        File.write("#{icons}/icon_services_general.svg", "<svg/>")
+        File.write("#{icons}/icon_services_rearm.svg", "<svg/>")
+
+        parsed_ship
+
+        assert_equal(
+          {
+            "repair" => "ui/textures/vector/general/commonicons/icon_services_general.svg",
+            "rearm" => "ui/textures/vector/general/commonicons/icon_services_rearm.svg"
+          },
+          JSON.parse(File.read("#{@base_folder}/parsed/test/landing_services.json"))
+        )
+        assert_includes Dir.glob("#{@base_folder}/parsed/test/icons/**/*.svg"),
+          "#{@base_folder}/parsed/test/icons/ui/textures/vector/general/commonicons/icon_services_rearm.svg"
+      end
+
+      # The areas sit in a container the listed one nests, which is where the
+      # Idris keeps its hangar's.
+      test "carries the areas its containers mark for servicing a landed ship" do
+        write_area_services
+        write_containers(
+          "objectcontainers/ships/test/bomber/body.socpak" => {"children" => ["objectcontainers/ships/test/bomber/bay.socpak"]},
+          "objectcontainers/ships/test/bomber/bay.socpak" => {
+            "servicingAreas" => [{
+              "name" => "GenericShape-ServicesArea",
+              "position" => [0.0, -6.5, -0.75],
+              "rotation" => [1.0, 0.0, 0.0, 0.0],
+              "shapes" => [{"type" => "Box", "boxMin" => [-7.5, -22.5, -3.0], "boxMax" => [7.5, 22.5, 3.0]}]
+            }]
+          }
+        )
+        write_ship(components: services_provider, object_containers: <<~'XML')
+          <SVehicleObjectContainerParams fileName="ObjectContainers\Ships\TEST\bomber\body.socpak" boneName="animated_body">
+            <Offset>
+              <Rotation x="0" y="0" z="90" />
+              <Position x="1" y="2" z="3" />
+            </Offset>
+          </SVehicleObjectContainerParams>
+        XML
+
+        assert_equal(
+          [{
+            "name" => "GenericShape-ServicesArea",
+            "container" => "objectcontainers/ships/test/bomber/bay.socpak",
+            "root_container" => "objectcontainers/ships/test/bomber/body.socpak",
+            "bone" => "animated_body",
+            "offset" => {"position" => [1.0, 2.0, 3.0], "rotation" => [0.0, 0.0, 90.0]},
+            "position" => [0.0, -6.5, -0.75],
+            "rotation" => [1.0, 0.0, 0.0, 0.0],
+            "shapes" => [{"type" => "Box", "boxMin" => [-7.5, -22.5, -3.0], "boxMax" => [7.5, 22.5, 3.0]}]
+          }],
+          parsed_ship["servicing_areas"]
+        )
+      end
+
+      test "carries no servicing areas for a ship whose containers mark none" do
+        write_containers("objectcontainers/ships/test/bomber/body.socpak" => {})
+        write_ship(object_containers: '<SVehicleObjectContainerParams fileName="objectcontainers/ships/test/bomber/body.socpak" />')
+
+        assert_nil parsed_ship["servicing_areas"]
+      end
+
+      private def write_containers(containers)
+        FileUtils.mkdir_p("#{@raw_path}/derived")
+        File.write("#{@raw_path}/#{::ScData::Parser::ServicingAreas::CONTAINERS_FILE}", JSON.generate({containers:}))
+      end
+
       private def services_provider(repair_available: "1")
         <<~XML
           <ShipServicesProviderParams repairAvailable="#{repair_available}" useZoneServicing="1" allowHostile="0" usingRequireBeingLanded="1" servicesClass="00000000-0000-0000-0000-0000000a5e00" />
@@ -182,8 +254,8 @@ module ScData
         File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/areaservices/test_vehicleservices.xml", <<~XML)
           <AreaServices.TEST_VehicleServices __ref="00000000-0000-0000-0000-0000000a5e00">
             <service>
-              <RepairShipServiceDef repairCommodity="00000000-0000-0000-0000-000000000001" />
-              <RestockShipServiceDef AmmoCommodity="00000000-0000-0000-0000-000000000002" />
+              <RepairShipServiceDef icon="UI/Textures/Vector/General/CommonIcons/icon_services_general.svg" repairCommodity="00000000-0000-0000-0000-000000000001" />
+              <RestockShipServiceDef icon="UI/Textures/Vector/General/CommonIcons/icon_services_rearm.svg" AmmoCommodity="00000000-0000-0000-0000-000000000002" />
               <RefuelShipServiceDefQuantum fuelCommodity="00000000-0000-0000-0000-000000000003" />
               <RefuelShipServiceDefHydrogen fuelCommodity="00000000-0000-0000-0000-000000000004" />
             </service>
@@ -249,13 +321,15 @@ module ScData
         JSON.parse(File.read("#{@base_folder}/parsed/test/models/test_bomber.json"))
       end
 
-      private def write_ship(name: "@vehicle_NameTEST_Bomber", ports: "", entries: "", components: "")
+      private def write_ship(name: "@vehicle_NameTEST_Bomber", ports: "", entries: "", components: "", object_containers: "")
         FileUtils.mkdir_p("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships")
 
         File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships/test_bomber.xml", <<~XML)
           <EntityClassDefinition.TEST_Bomber __ref="00000000-0000-0000-0000-00000000b0b0">
             <Components>
-              <VehicleComponentParams vehicleName="#{name}" vehicleDescription="@vehicle_DescTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
+              <VehicleComponentParams vehicleName="#{name}" vehicleDescription="@vehicle_DescTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}">
+                <objectContainers>#{object_containers}</objectContainers>
+              </VehicleComponentParams>
               <SAttachableComponentParams>
                 <AttachDef Type="NOITEM_Vehicle" SubType="Vehicle_Spaceship" Size="5" />
               </SAttachableComponentParams>
