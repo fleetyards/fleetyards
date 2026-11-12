@@ -145,21 +145,23 @@ const subFor = (vehicle: Vehicle) =>
           <span class="home-ships__hero-sub">{{ subFor(hero) }}</span>
         </span>
       </router-link>
-      <div class="home-ships__grid">
-        <ShipTile
-          v-for="vehicle in rest"
-          :key="vehicle.id"
-          :name="vehicle.name || vehicle.model.name"
-          :sub="subFor(vehicle)"
-          :image="vehicle.model.media.storeImage"
-          :tag="tagFor(vehicle)"
-          :to="toVehicle('hangar-vehicle', vehicle)"
-        />
+      <div class="home-ships__side">
+        <div class="home-ships__grid">
+          <ShipTile
+            v-for="vehicle in rest"
+            :key="vehicle.id"
+            :name="vehicle.name || vehicle.model.name"
+            :sub="subFor(vehicle)"
+            :image="vehicle.model.media.storeImage"
+            :tag="tagFor(vehicle)"
+            :to="toVehicle('hangar-vehicle', vehicle)"
+          />
+        </div>
+        <p v-if="remaining" class="home-ships__more">
+          {{ t("home.dashboard.ships.more", { count: remaining }) }}
+        </p>
       </div>
     </div>
-    <p v-if="remaining" class="home-ships__more">
-      {{ t("home.dashboard.ships.more", { count: remaining }) }}
-    </p>
     <template #empty>
       <DashboardEmpty
         icon="fa-warehouse"
@@ -256,12 +258,19 @@ const subFor = (vehicle: Vehicle) =>
   font-size: 0.75rem;
 }
 
+.home-ships__side {
+  display: flex;
+  flex: 1 1 360px;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .home-ships__grid {
   display: grid;
-  flex: 1 1 360px;
+  flex: 1 1 auto;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 12px;
-  min-width: 0;
 }
 
 .home-ships__synced,
@@ -273,5 +282,6 @@ const subFor = (vehicle: Vehicle) =>
 
 .home-ships__more {
   margin: 12px 0 0;
+  text-align: right;
 }
 </style>

@@ -67,10 +67,13 @@ const imageUrl = computed(
   }
 }
 
+// Takes whatever height the card is given beyond its text, so a card stretched
+// by its row shows more picture rather than empty space.
 .home-ship-tile__image {
   display: block;
+  flex: 1 1 100px;
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   object-fit: cover;
   background: var(--color-gray-darker, #272b30);
 }
