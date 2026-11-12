@@ -105,6 +105,8 @@ module ScData
         # rows for a ship it dropped in the first place.
         retire_absent_models(loaded)
 
+        load_landing_services
+
         prune_builds(ModelBuild)
 
         # Hardpoint builds are pruned here rather than in each loader that
@@ -283,6 +285,31 @@ module ScData
         load_item("models/#{sc_data_identifier}")
       end
 
+      # Each area keyed by its container and name, which is what an admin's name
+      # for it hangs off, with the extent of its boxes: x across the ship, y
+      # along it, z up, as the container lays them out.
+      private def servicing_areas(model_data)
+        Array.wrap(model_data["servicing_areas"]).filter_map do |area|
+          boxes = Array.wrap(area["shapes"]).select { |shape| shape["type"] == "Box" }
+          next if boxes.empty?
+
+          min = (0..2).map { |axis| boxes.map { |box| box["boxMin"][axis].to_f }.min }
+          max = (0..2).map { |axis| boxes.map { |box| box["boxMax"][axis].to_f }.max }
+          width, length, height = min.zip(max).map { |low, high| (high - low).round(2) }
+
+          {key: "#{area["container"]}##{area["name"]}", name: area["name"], width:, length:, height:}
+        end.presence
+      end
+
+      # The icon the game shows for each service, the same on every ship.
+      private def load_landing_services
+        Hash(load_item("landing_services")).each do |key, icon|
+          next unless ModelBuild::LANDING_SERVICES.include?(key)
+
+          attach_icon(LandingService.find_or_create_by!(key:), :icon, icon)
+        end
+      end
+
       private def update_metrics(model, model_data, update_params)
         update_params[:mass] = model_data.dig("mass")&.to_f
         update_params[:hull_health] = model_data.dig("hull_health")&.to_f
@@ -291,6 +318,7 @@ module ScData
         update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
         update_params[:weapon_regen_modifier] = model_data.dig("weapon_regen_modifier")
         update_params[:landing_services] = model_data["landing_services"].presence
+        update_params[:servicing_areas] = servicing_areas(model_data)
         update_params[:signature_cross_section] = model_data.dig("signature_cross_section")
         update_params.merge!(dimensions(model, model_data))
         update_params[:ground] = model_data.dig("ground") || false
