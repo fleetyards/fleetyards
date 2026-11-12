@@ -7,7 +7,6 @@ import {
   destroyFleetSquadronFlightSlot,
   destroyMissionShip,
   destroyMissionSlot,
-  duplicateFleetSquadronFlightShip,
   duplicateMissionShip,
   sortFleetSquadronFlightShips,
   sortFleetSquadronFlightSlots,
@@ -91,14 +90,10 @@ export const useLineupApi = (scope: MaybeRefOrGetter<LineupScope>) => {
     );
   };
 
-  const duplicateShip = (id: string) => {
-    const target = flight();
-    return track(
-      target
-        ? duplicateFleetSquadronFlightShip(...target, id)
-        : duplicateMissionShip(...template(), id),
-    );
-  };
+  // A flight's ship is one member's own and is in the flight once, so only a
+  // template's spot is copied.
+  const duplicateShip = (id: string) =>
+    track(duplicateMissionShip(...template(), id));
 
   const sortShips = (sorting: string[]) => {
     const target = flight();

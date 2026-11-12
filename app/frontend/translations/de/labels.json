@@ -1082,7 +1082,8 @@
               "captain": "Kapitän",
               "pilot": "Pilot"
             },
-            "squadronShipsHint": "Es werden nur Schiffe angezeigt, die die Mitglieder der Staffel geben."
+            "squadronShipsHint": "Es werden nur Schiffe angezeigt, die die Mitglieder der Staffel geben.",
+            "shipOf": "Schiff von %{username}"
           },
           "askableShips": "Anfragbare Schiffe",
           "shipRequestFrom": "%{username} bittet um deine %{ship}",

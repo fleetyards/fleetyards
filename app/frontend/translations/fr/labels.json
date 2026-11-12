@@ -1082,7 +1082,8 @@
               "captain": "Capitaine",
               "pilot": "Pilote"
             },
-            "squadronShipsHint": "Seuls les vaisseaux que les membres confient à l’escadron sont proposés."
+            "squadronShipsHint": "Seuls les vaisseaux que les membres confient à l’escadron sont proposés.",
+            "shipOf": "vaisseau de %{username}"
           },
           "askableShips": "Vaisseaux à demander",
           "shipRequestFrom": "%{username} demande votre %{ship}",

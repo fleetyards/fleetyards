@@ -80,6 +80,28 @@ describe("FleetSquadronFlightShipCard", () => {
     );
   });
 
+  it("names the member whose ship it is", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "fleet" } as Fleet,
+        scope: {
+          fleetSlug: "fleet",
+          squadronSlug: "alpha",
+          flightId: "flight-1",
+          teamId: "team-1",
+        },
+        ship: {
+          ...ship([]),
+          title: "",
+          displayTitle: "Bertha",
+          vehicle: { id: "v-1", name: "Bertha", username: "mortik" },
+        } as MissionShip,
+      },
+    });
+
+    expect(wrapper.find(".flight-ship__spec").text()).toContain("mortik");
+  });
+
   it("offers editing only to whoever may edit", async () => {
     const reader = await mount([seat("a", true)]);
     expect(reader.find(".flight-ship__actions").exists()).toBe(false);

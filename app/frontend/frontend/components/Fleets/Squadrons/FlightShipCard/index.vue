@@ -82,6 +82,20 @@ const title = computed(
 );
 
 const spec = computed(() => {
+  const vehicle = props.ship.vehicle;
+  if (vehicle) {
+    const name = [vehicle.name, props.ship.model?.name]
+      .filter((part) => part && part !== title.value)
+      .join(" · ");
+    const owner = vehicle.username
+      ? t("labels.fleet.squadrons.flights.shipOf", {
+          username: vehicle.username,
+        })
+      : null;
+
+    return [name, owner].filter(Boolean).join(" · ");
+  }
+
   if (props.ship.model) {
     return props.ship.model.name !== title.value
       ? props.ship.model.name
@@ -154,17 +168,6 @@ const openEditShip = () => {
   });
 };
 
-const duplicateShip = async () => {
-  await lineup
-    .duplicateShip(props.ship.id)
-    .then(changed)
-    .catch(() =>
-      displayAlert({
-        text: t("messages.fleets.missionShip.duplicate.failure"),
-      }),
-    );
-};
-
 const removeShip = async () => {
   await lineup
     .destroyShip(props.ship.id)
@@ -187,16 +190,6 @@ const removeShip = async () => {
         @click="openEditShip"
       >
         <i class="fa-light fa-pen" />
-      </Btn>
-      <Btn
-        v-tooltip="t('actions.duplicate')"
-        :size="BtnSizesEnum.XS"
-        :variant="BtnVariantsEnum.BARE"
-        :aria-label="t('actions.duplicate')"
-        :loading="lineup.isPending.value"
-        @click="duplicateShip"
-      >
-        <i class="fa-light fa-copy" />
       </Btn>
       <Btn
         v-tooltip="t('actions.delete')"

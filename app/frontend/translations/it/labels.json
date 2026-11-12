@@ -1082,7 +1082,8 @@
               "captain": "Capitano",
               "pilot": "Pilota"
             },
-            "squadronShipsHint": "Sono elencate solo le navi che i membri danno allo squadrone."
+            "squadronShipsHint": "Sono elencate solo le navi che i membri danno allo squadrone.",
+            "shipOf": "nave di %{username}"
           },
           "askableShips": "Navi da richiedere",
           "shipRequestFrom": "%{username} chiede la tua %{ship}",
