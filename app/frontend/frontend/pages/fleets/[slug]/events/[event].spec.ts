@@ -3,7 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
 import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
-import type { Fleet, FleetEventExtended, FleetMember } from "@/services/fyApi";
+import type {
+  Fleet,
+  FleetEventExtended,
+  FleetMember,
+  User,
+} from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 import Component from "./[event].vue";
 
 const Stub = defineComponent({ name: "PageStub", render: () => h("div") });
@@ -200,5 +206,57 @@ describe("FleetEventPage occurrences", () => {
       .trigger("click");
 
     expect(displayConfirm).not.toHaveBeenCalled();
+  });
+});
+
+describe("FleetEventPage own seats", () => {
+  const mine = { user: { id: "me" }, status: "confirmed" };
+
+  const seatedEvent = (): FleetEventExtended =>
+    ({
+      ...recurringEvent([], true),
+      recurring: false,
+      upcomingOccurrences: [],
+      teams: [
+        {
+          id: "team",
+          title: "Alpha",
+          slots: [{ id: "lead", title: "Lead", signups: [mine] }],
+          ships: [
+            {
+              id: "ship",
+              title: "Gladius",
+              slots: [{ id: "pilot", title: "Pilot", signups: [mine] }],
+            },
+          ],
+        },
+      ],
+    }) as unknown as FleetEventExtended;
+
+  const childAttrs = (subject: VueWrapper, key: string) =>
+    subject
+      .findAllComponents(ChildStub)
+      .map((child) => child.vm.$attrs)
+      .find((attrs) => key in attrs) as Record<string, unknown>;
+
+  it("keeps a team seat from blocking a ship seat, and the other way round", async () => {
+    current.value = seatedEvent();
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "maru", name: "Maru" } as Fleet,
+        membership: {} as FleetMember,
+        resourceAccess: ["fleet:events:read"],
+      },
+      plugins: [await routerWithRoutes()],
+    });
+    useSessionStore().currentUser = { id: "me" } as User;
+    await nextTick();
+
+    const team = childAttrs(wrapper, "own-active-slot-id");
+    expect(team["own-active-slot-id"]).toBe("pilot");
+    expect(team["own-team-seat-slot-id"]).toBe("lead");
+
+    const panel = childAttrs(wrapper, "slot-title");
+    expect(panel["slot-title"]).toBe("Pilot");
   });
 });

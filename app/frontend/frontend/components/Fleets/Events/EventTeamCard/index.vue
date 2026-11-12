@@ -44,6 +44,7 @@ type Props = {
   signupsLocked?: boolean;
   signupsOpen?: boolean;
   ownActiveSlotId?: string | null;
+  ownTeamSeatSlotId?: string | null;
   isManager?: boolean;
 };
 
@@ -53,6 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   signupsLocked: false,
   signupsOpen: undefined,
   ownActiveSlotId: null,
+  ownTeamSeatSlotId: null,
   isManager: false,
 });
 
@@ -257,7 +259,7 @@ onUnmounted(() => {
             :current-user-id="currentUserId"
             :signups-locked="signupsLocked"
             :signups-open="signupsOpen"
-            :own-active-slot-id="ownActiveSlotId"
+            :own-active-slot-id="ownTeamSeatSlotId"
             :is-manager="isManager"
           />
         </div>
