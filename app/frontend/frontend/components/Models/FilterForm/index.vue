@@ -20,6 +20,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 import { type ModelQuery } from "@/services/fyApi";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
@@ -79,12 +80,9 @@ watch(
   { deep: true },
 );
 
-const {
-  booleanOptions,
-  priceOptions,
-  pledgePriceOptions,
-  landingServiceOptions,
-} = useFilterOptions();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const { options: landingServiceOptions } = useLandingServiceIcons();
 const hasGroupFilters = (keys: string[]) =>
   hasActiveFilters(filters.value, keys);
 </script>
