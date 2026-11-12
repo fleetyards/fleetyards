@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.50.0](https://github.com/fleetyards/fleetyards/compare/v9.49.0...v9.50.0) (2026-11-12)
+
+
+### Features
+
+* **dressing-room:** filter armour sets by size ([b61064b](https://github.com/fleetyards/fleetyards/commit/b61064bc43b172c358dc9ff73ed17d0fed29548a))
+* **dressing-room:** pair armour sets with backpacks named under another model code ([cb43deb](https://github.com/fleetyards/fleetyards/commit/cb43deb4a3a229b31f67d6bad339073c2256b708))
+* **hangar-planner:** copy a slot instead of setting its ship count ([#6294](https://github.com/fleetyards/fleetyards/issues/6294)) ([5555d3f](https://github.com/fleetyards/fleetyards/commit/5555d3ff2d2d18ee77988d8a6c0036971052815d))
+* **hangar-planner:** show ships by their coloured angled view in the slot panel ([#6298](https://github.com/fleetyards/fleetyards/issues/6298)) ([2398be7](https://github.com/fleetyards/fleetyards/commit/2398be73a96baac5355d813f529b873174b74d1e))
+* **hangar-planner:** the other ships of a bought-back pledge come along ([#6293](https://github.com/fleetyards/fleetyards/issues/6293)) ([aa48b2e](https://github.com/fleetyards/fleetyards/commit/aa48b2e6111f5e300da6761a75945dff138ba468))
+* **home:** dashboard for signed-in pilots ([#6297](https://github.com/fleetyards/fleetyards/issues/6297)) ([8c8141d](https://github.com/fleetyards/fleetyards/commit/8c8141d6c337d1e42186abfe70ee2bf6054bb4ec))
+* **home:** show the ptu patch on the start page and save its loading screens ([#6296](https://github.com/fleetyards/fleetyards/issues/6296)) ([aa742a9](https://github.com/fleetyards/fleetyards/commit/aa742a9fe2421f67b752c26e0d7bbf0cc162120d))
+* **sc-data:** crew a ship from the seats of its command module ([ee2762e](https://github.com/fleetyards/fleetyards/commit/ee2762ea682ed2773eb5c8d74729cbe173c29884))
+* **sc-data:** record the command module a ship docks ([9f7bf94](https://github.com/fleetyards/fleetyards/commit/9f7bf94b33cf212ec79383d005064fbac134bbe7))
+* **squadrons:** flights, squadron ship choice and slot invitations ([#6295](https://github.com/fleetyards/fleetyards/issues/6295)) ([43b0b5a](https://github.com/fleetyards/fleetyards/commit/43b0b5a4d98900a934e851c22551a9e3b33f079f))
+
+
+### Bug Fixes
+
+* **dressing-room:** fade dark hair's sheen to white and square the dye lift ([c980072](https://github.com/fleetyards/fleetyards/commit/c98007262f7f0de96687b4001c7b8a4c5da75a7c))
+* **dressing-room:** give armour sets the pieces the game credits to another maker ([373ede8](https://github.com/fleetyards/fleetyards/commit/373ede8196b95e433ce06d1c8e8542a2059d40e5))
+* **dressing-room:** resolve stored characters afresh after the hair colour change ([8ba0db0](https://github.com/fleetyards/fleetyards/commit/8ba0db0deb35dfec07319e92db8fcb645524d0c5))
+* **hangar-planner:** full-hangar plan comparison and start picks after shortlisting ([#6292](https://github.com/fleetyards/fleetyards/issues/6292)) ([199b336](https://github.com/fleetyards/fleetyards/commit/199b336de39b5e78b669fa113156c45fa4a9aa12))
+* **models:** give a ship without seats a pilot or driver position ([5664aeb](https://github.com/fleetyards/fleetyards/commit/5664aeba8a9e4a00f32a14b18d699760ab6269e8))
+* **models:** list a ship's seats captain, pilot and copilot first, then by name ([bf4bd54](https://github.com/fleetyards/fleetyards/commit/bf4bd54e5f30b8d25ea18d1b0b9e991d544bc87c))
+* **models:** scale the Endeavor so its hangar module holds an Apollo ([cff3132](https://github.com/fleetyards/fleetyards/commit/cff313292d30fd4d06d5808bd43912d29fc8d47c))
+* **sc-data:** take a crew position's role from the seat its port holds ([6dc4a36](https://github.com/fleetyards/fleetyards/commit/6dc4a36833425511e78ecf015505d6228121a4e4))
+* **search:** show hangar ships by their angled render ([543c391](https://github.com/fleetyards/fleetyards/commit/543c391c6678d1efd1807e43ec5d0201f251d469))
+
+
+### Chores
+
+* **deps-dev:** bump i18n-tasks from 1.1.2 to 1.2.0 ([#6299](https://github.com/fleetyards/fleetyards/issues/6299)) ([dc74388](https://github.com/fleetyards/fleetyards/commit/dc743885e92eb516f880f853ca64b9e87183b701))
+
 ## [9.49.0](https://github.com/fleetyards/fleetyards/compare/v9.48.0...v9.49.0) (2026-11-11)
 
 
