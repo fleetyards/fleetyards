@@ -20,6 +20,7 @@ import {
   type LineupScope,
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
+import { useSlotRename } from "@/frontend/components/Fleets/Missions/useSlotRename";
 import { type MissionSlot } from "@/services/fyApi";
 import {
   sortByFilled,
@@ -74,6 +75,16 @@ const addSeat = async () => {
       displayAlert({ text: t("messages.fleets.missionSlot.create.failure") }),
     );
 };
+
+const {
+  renamingId,
+  renameValue,
+  setRenameInput,
+  startRename,
+  cancelRename,
+  saveRename,
+  submitRename,
+} = useSlotRename(lineup, changed);
 
 const removeSeat = async (seat: MissionSlot) => {
   await lineup
@@ -160,7 +171,29 @@ onUnmounted(() => sortable?.destroy());
             <i class="fa-light fa-grip-vertical" />
           </span>
           <span v-else-if="editable" class="wide-seats__grip-space" />
-          <span class="wide-seats__title">
+          <input
+            v-if="editable && renamingId === seat.id"
+            :ref="setRenameInput"
+            v-model="renameValue"
+            type="text"
+            class="wide-seats__title wide-seats__title-input"
+            :aria-label="t('actions.fleet.squadrons.flights.renameSeat')"
+            :data-test="`flight-wide-seat-edit-${seat.id}`"
+            @keydown.enter="submitRename($event, seat)"
+            @keydown.esc="cancelRename"
+            @blur="saveRename(seat)"
+          />
+          <button
+            v-else-if="editable && !seat.lead"
+            v-tooltip="t('actions.fleet.squadrons.flights.renameSeat')"
+            type="button"
+            class="wide-seats__title wide-seats__title--editable"
+            :data-test="`flight-wide-seat-title-${seat.id}`"
+            @click="startRename(seat)"
+          >
+            {{ slotTitle(seat) }}
+          </button>
+          <span v-else class="wide-seats__title">
             <i
               v-if="seat.lead"
               class="fa-duotone fa-star wide-seats__lead-icon"
@@ -287,6 +320,36 @@ onUnmounted(() => sortable?.destroy());
   align-items: center;
   gap: 8px;
   font-weight: 600;
+}
+
+.wide-seats__title--editable {
+  margin: -2px -6px;
+  padding: 2px 6px;
+  border: none;
+  border-radius: var(--radius-control-bare);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: text;
+
+  &:hover {
+    background: var(--color-control-press);
+  }
+}
+
+.wide-seats__title-input {
+  min-width: 0;
+  margin: -3px -7px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control-bare);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  outline: none;
 }
 
 .wide-seats__lead-icon {

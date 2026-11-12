@@ -313,6 +313,7 @@
             "addAlternate": "+ Alternate",
             "assignMember": "+ Assign member",
             "removeSeat": "Remove seat",
+            "renameSeat": "Rename seat",
             "manageSeats": "Seats",
             "fillSeat": "Fill",
             "changeMembers": "Change",

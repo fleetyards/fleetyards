@@ -15,6 +15,7 @@ import {
   isFlightScope,
   useLineupApi,
 } from "@/frontend/components/Fleets/Missions/useLineupApi";
+import { useSlotRename } from "@/frontend/components/Fleets/Missions/useSlotRename";
 import SlotCandidates from "@/frontend/components/Fleets/Squadrons/SlotCandidates/index.vue";
 import { useSlotTitle } from "@/frontend/composables/useSlotTitle";
 import Sortable from "sortablejs";
@@ -49,8 +50,6 @@ const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
 const localSlots = ref<MissionSlot[]>([]);
-const editingId = ref<string | null>(null);
-const editValue = ref("");
 const newSlotValue = ref("");
 
 watch(
@@ -61,41 +60,15 @@ watch(
   { immediate: true },
 );
 
-const startEdit = (slot: MissionSlot) => {
-  editingId.value = slot.id;
-  editValue.value = slot.title;
-  void nextTick(() => {
-    const input = document.querySelector<HTMLInputElement>(
-      `[data-slot-edit="${slot.id}"]`,
-    );
-    input?.focus();
-    input?.select();
-  });
-};
-
-const cancelEdit = () => {
-  editingId.value = null;
-  editValue.value = "";
-};
-
-const saveEdit = async (slot: MissionSlot) => {
-  const next = editValue.value.trim();
-  if (!next || next === slot.title) {
-    cancelEdit();
-    return;
-  }
-
-  await lineup
-    .updateSlot(slot.id, { title: next })
-    .then(() => {
-      comlink.emit("mission-children-changed");
-    })
-    .catch(() =>
-      displayAlert({ text: t("messages.fleets.missionSlot.update.failure") }),
-    );
-
-  cancelEdit();
-};
+const {
+  renamingId,
+  renameValue,
+  setRenameInput,
+  startRename,
+  cancelRename,
+  saveRename,
+  submitRename,
+} = useSlotRename(lineup, () => comlink.emit("mission-children-changed"));
 
 const submitNew = async () => {
   const title = newSlotValue.value.trim();
@@ -197,21 +170,21 @@ onUnmounted(() => {
           {{ positionTypeLabel(slot.positionType) }}
         </span>
         <input
-          v-if="editable && editingId === slot.id"
-          v-model="editValue"
-          :data-slot-edit="slot.id"
+          v-if="editable && renamingId === slot.id"
+          :ref="setRenameInput"
+          v-model="renameValue"
           class="slot-edit-input"
           type="text"
-          @keyup.enter="saveEdit(slot)"
-          @keyup.esc="cancelEdit"
-          @blur="saveEdit(slot)"
+          @keydown.enter="submitRename($event, slot)"
+          @keydown.esc="cancelRename"
+          @blur="saveRename(slot)"
         />
         <button
           v-else
           type="button"
           class="slot-title"
           :disabled="!editable"
-          @click="editable && !slot.lead && startEdit(slot)"
+          @click="editable && !slot.lead && startRename(slot)"
         >
           {{ slotTitle(slot) }}
         </button>
@@ -222,7 +195,7 @@ onUnmounted(() => {
           :editable="editable && onFlight"
         />
         <button
-          v-if="editable && editingId !== slot.id"
+          v-if="editable && renamingId !== slot.id"
           type="button"
           class="slot-remove"
           :title="t('actions.delete')"

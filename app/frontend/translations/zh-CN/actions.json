@@ -313,6 +313,7 @@
             "addAlternate": "+ 替补",
             "assignMember": "+ 指定成员",
             "removeSeat": "移除席位",
+            "renameSeat": "重命名席位",
             "manageSeats": "席位",
             "fillSeat": "安排",
             "changeMembers": "更改",

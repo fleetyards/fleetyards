@@ -313,6 +313,7 @@
             "addAlternate": "+ Suplente",
             "assignMember": "+ Asignar miembro",
             "removeSeat": "Quitar slot",
+            "renameSeat": "Renombrar slot",
             "manageSeats": "Slots",
             "fillSeat": "Ocupar",
             "changeMembers": "Cambiar",
