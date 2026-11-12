@@ -9,7 +9,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { VSwatches } from "vue3-swatches";
-import { keyColorsFromFile } from "@/shared/utils/KeyColors";
+import { keyColorsFromFile, keyColorsFromUrl } from "@/shared/utils/KeyColors";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -33,14 +33,33 @@ const { t } = useI18n();
 
 const suggestions = ref<string[]>([]);
 
-const suggestColors = async (file: File) => {
+const suggestFrom = async (read: () => Promise<string[]>) => {
   try {
-    suggestions.value = await keyColorsFromFile(file);
+    suggestions.value = await read();
   } catch {
     // A format the browser cannot decode still uploads; it just suggests nothing.
     suggestions.value = [];
   }
 };
+
+const suggestColors = (file: File) =>
+  suggestFrom(() => keyColorsFromFile(file));
+
+// The icon already attached suggests its colours as well, until it is replaced
+// or removed. `undefined` is the field saying nothing was changed.
+const attachedIconUrl = computed(() =>
+  props.fields.icon === undefined
+    ? props.squadron?.icon?.smallUrl || props.squadron?.icon?.url
+    : undefined,
+);
+
+watch(
+  attachedIconUrl,
+  (url) => {
+    if (url) void suggestFrom(() => keyColorsFromUrl(url));
+  },
+  { immediate: true },
+);
 
 watch(
   () => props.fields.icon,

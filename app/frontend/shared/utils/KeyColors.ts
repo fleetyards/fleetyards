@@ -96,7 +96,7 @@ export const keyColors = (
 };
 
 export const keyColorsFromFile = async (
-  file: File,
+  file: Blob,
   options?: Parameters<typeof keyColors>[1],
 ): Promise<string[]> => {
   const bitmap = await createImageBitmap(file);
@@ -119,4 +119,16 @@ export const keyColorsFromFile = async (
   bitmap.close();
 
   return keyColors(context.getImageData(0, 0, width, height).data, options);
+};
+
+// For an image that is already uploaded. Throws where the host does not let
+// the page read it, as a file the browser cannot decode does.
+export const keyColorsFromUrl = async (
+  url: string,
+  options?: Parameters<typeof keyColors>[1],
+): Promise<string[]> => {
+  const response = await fetch(url, { credentials: "omit" });
+  if (!response.ok) throw new Error(`Could not load ${url}`);
+
+  return keyColorsFromFile(await response.blob(), options);
 };
