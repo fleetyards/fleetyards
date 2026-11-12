@@ -3,6 +3,14 @@ module ScData
     class ModelsParser < ::ScData::Parser::BaseParser
       COMMAND_MODULE_PORT_TAG = "Dock_Command_Module"
 
+      # An AreaServices record names each service by its definition's class.
+      LANDING_SERVICES = {
+        /\ARepair/ => "repair",
+        /\ARestock/ => "rearm",
+        /Quantum/ => "quantum_refuel",
+        /Hydrogen/ => "hydrogen_refuel"
+      }.freeze
+
       def all
         parse_ships
         parse_vehicles
@@ -58,6 +66,7 @@ module ScData
               z: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "z").to_f
             },
             interior: ship_interiors.for(key).presence,
+            landing_services: extract_landing_services(values),
             command_module: docked_command_module(loadout, keys_by_ref),
             loadout:
           }
@@ -558,6 +567,32 @@ module ScData
           .find { |entity_class| engineering_buffs.key?(entity_class) }
 
         engineering_buffs[ref] if ref
+      end
+
+      # What a ship does for another ship landed in its hangar or on its pads.
+      # The ship names an AreaServices record by GUID and that record lists the
+      # services, so a ship without the component, or one pointing at a record
+      # that lists none we know, provides nothing.
+      private def extract_landing_services(values)
+        provider = values.dig("Components", "ShipServicesProviderParams")
+        return [] unless provider.is_a?(Hash)
+
+        services = area_services[value_or_nil(provider["servicesClass"])] || []
+        services -= ["repair"] if provider["repairAvailable"] == "0"
+
+        services
+      end
+
+      private def area_services
+        @area_services ||= load_data("areaservices").each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+          definitions = item[:values]["service"]
+          next if ref.blank? || !definitions.is_a?(Hash)
+
+          index[ref] = definitions.keys.filter_map do |definition|
+            LANDING_SERVICES.find { |pattern, _service| definition.match?(pattern) }&.last
+          end.uniq
+        end
       end
 
       private def engineering_buffs

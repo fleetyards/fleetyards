@@ -150,6 +150,47 @@ module ScData
         assert_nil parsed_ship["interior"]
       end
 
+      test "carries the services the ship provides to a ship landed on it" do
+        write_area_services
+        write_ship(components: services_provider)
+
+        assert_equal %w[repair rearm quantum_refuel hydrogen_refuel], parsed_ship["landing_services"]
+      end
+
+      test "leaves out repair where the ship turns it off" do
+        write_area_services
+        write_ship(components: services_provider(repair_available: "0"))
+
+        assert_equal %w[rearm quantum_refuel hydrogen_refuel], parsed_ship["landing_services"]
+      end
+
+      test "carries no services for a ship that provides none" do
+        write_area_services
+
+        assert_equal [], parsed_ship["landing_services"]
+      end
+
+      private def services_provider(repair_available: "1")
+        <<~XML
+          <ShipServicesProviderParams repairAvailable="#{repair_available}" useZoneServicing="1" allowHostile="0" usingRequireBeingLanded="1" servicesClass="00000000-0000-0000-0000-0000000a5e00" />
+        XML
+      end
+
+      private def write_area_services
+        FileUtils.mkdir_p("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/areaservices")
+
+        File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/areaservices/test_vehicleservices.xml", <<~XML)
+          <AreaServices.TEST_VehicleServices __ref="00000000-0000-0000-0000-0000000a5e00">
+            <service>
+              <RepairShipServiceDef repairCommodity="00000000-0000-0000-0000-000000000001" />
+              <RestockShipServiceDef AmmoCommodity="00000000-0000-0000-0000-000000000002" />
+              <RefuelShipServiceDefQuantum fuelCommodity="00000000-0000-0000-0000-000000000003" />
+              <RefuelShipServiceDefHydrogen fuelCommodity="00000000-0000-0000-0000-000000000004" />
+            </service>
+          </AreaServices.TEST_VehicleServices>
+        XML
+      end
+
       # An AI-only Vanduul hull in 4.10.3 names an implementation file the
       # export does not ship.
       test "still parses a ship whose implementation file is missing" do
@@ -208,7 +249,7 @@ module ScData
         JSON.parse(File.read("#{@base_folder}/parsed/test/models/test_bomber.json"))
       end
 
-      private def write_ship(name: "@vehicle_NameTEST_Bomber", ports: "", entries: "")
+      private def write_ship(name: "@vehicle_NameTEST_Bomber", ports: "", entries: "", components: "")
         FileUtils.mkdir_p("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships")
 
         File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships/test_bomber.xml", <<~XML)
@@ -218,6 +259,7 @@ module ScData
               <SAttachableComponentParams>
                 <AttachDef Type="NOITEM_Vehicle" SubType="Vehicle_Spaceship" Size="5" />
               </SAttachableComponentParams>
+              #{components}
               <SItemPortContainerComponentParams>
                 <Ports>
                   <SItemPortDef Name="hardpoint_relay" MinSize="0" MaxSize="1" PortTags="Relay_Bay" RequiredPortTags="$Relay_Bay" Flags="$uneditable">
