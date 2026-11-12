@@ -240,9 +240,12 @@ const subFor = (vehicle: Vehicle) =>
   white-space: nowrap;
 }
 
+// Right-aligned, to the panel's edge the flagship stands against.
 .home-ships__hero-body {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
   gap: 2px;
   padding: 8px 0 0;
 }
