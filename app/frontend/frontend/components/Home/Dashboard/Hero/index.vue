@@ -84,10 +84,7 @@ const flagshipTag = computed(() =>
       aria-hidden="true"
     />
 
-    <div class="home-hero__top">
-      <HomeBuildPills />
-      <HomeSearch class="home-hero__search" />
-    </div>
+    <HomeBuildPills />
 
     <div class="home-hero__bottom">
       <div class="home-hero__title">
@@ -101,6 +98,7 @@ const flagshipTag = computed(() =>
               : t("home.dashboard.welcomeAnonymous")
           }}
         </Heading>
+        <HomeSearch class="home-hero__search" />
       </div>
 
       <router-link
@@ -150,7 +148,7 @@ const flagshipTag = computed(() =>
   }
 }
 
-// Behind the search, standing on the header's right.
+// Standing on the header's right, behind its text.
 .home-hero__ship {
   position: absolute;
   z-index: -1;
@@ -163,19 +161,9 @@ const flagshipTag = computed(() =>
   filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.6));
 }
 
-.home-hero__top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .home-hero__search {
-  --home-search-tabs-room: 42px;
-
-  flex: 0 1 480px;
-  min-width: 0;
+  width: 100%;
+  margin-top: 8px;
 }
 
 .home-hero__bottom {
@@ -188,7 +176,9 @@ const flagshipTag = computed(() =>
 
 .home-hero__title {
   display: flex;
+  flex: 0 1 560px;
   flex-direction: column;
+  align-items: flex-start;
   min-width: 0;
 }
 
@@ -254,10 +244,6 @@ const flagshipTag = computed(() =>
 @media (max-width: 767px) {
   .home-hero--ship {
     min-height: 300px;
-  }
-
-  .home-hero__search {
-    flex-basis: 100%;
   }
 
   .home-hero__ship {
