@@ -27,8 +27,8 @@ const { t, l } = useI18n();
 
 const toVehicle = useVehicleRoute();
 
-// One hero and a grid of six, which divides into three columns and two alike.
-const GRID = 6;
+// The flagship large, and four more in a square beside it.
+const GRID = 4;
 
 // The flagship leads, or the newest ship when none is flagged; the rest
 // follow newest first.
@@ -57,20 +57,24 @@ const remaining = computed(() =>
 
 const { supported: webpSupported } = useWebpCheck();
 
-// The angled render shows the ship itself rather than a scene around it.
+// The coloured angled render shows the ship itself rather than a scene around
+// it, standing on the panel without a card.
 const heroImage = computed(() => {
   const media = hero.value?.model.media;
 
   return (
+    media?.angledViewColored?.largeUrl ||
     media?.angledView?.largeUrl ||
     media?.storeImage?.largeUrl ||
     (webpSupported.value ? fallbackImage : fallbackImageJpg)
   );
 });
 
-const heroIsRender = computed(
-  () => !!hero.value?.model.media.angledView?.largeUrl,
-);
+const heroIsRender = computed(() => {
+  const media = hero.value?.model.media;
+
+  return !!(media?.angledViewColored?.largeUrl || media?.angledView?.largeUrl);
+});
 
 const { data: lastRead } = useSyncRsiHangarLastRead({
   query: { retry: false },
@@ -91,13 +95,9 @@ const tagFor = (vehicle: Vehicle) =>
       })
     : undefined;
 
+// A ship the pilot named shows its model; otherwise its maker.
 const subFor = (vehicle: Vehicle) =>
-  [
-    vehicle.name ? vehicle.model.name : vehicle.model.manufacturer?.name,
-    vehicle.hangarGroups[0]?.name,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  vehicle.name ? vehicle.model.name : vehicle.model.manufacturer?.name;
 </script>
 
 <template>
@@ -184,19 +184,14 @@ const subFor = (vehicle: Vehicle) =>
 .home-ships__hero {
   position: relative;
   display: flex;
-  flex: 1 1 280px;
+  flex: 1 1 360px;
   flex-direction: column;
   min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-  border-radius: 10px;
-  background: var(--color-gray-black, #1a1d21);
   color: inherit;
   text-decoration: none;
-  transition: border-color 150ms ease;
 
-  &:hover {
-    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  &:hover .home-ships__hero-name {
+    color: var(--color-primary, #428bca);
   }
 }
 
@@ -205,20 +200,21 @@ const subFor = (vehicle: Vehicle) =>
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  min-height: 240px;
 
+  // A store picture, when the ship has no render, is rounded like the cards.
   img {
     display: block;
     width: 100%;
     height: 100%;
+    border-radius: 10px;
     object-fit: cover;
   }
 
-  // A render on a transparent ground: shown whole, with room around it.
+  // A render on a transparent ground: shown whole, straight on the panel.
   &--render img {
-    max-height: 260px;
-    padding: 16px;
-    box-sizing: border-box;
+    max-height: 320px;
+    border-radius: 0;
     object-fit: contain;
   }
 }
@@ -243,14 +239,14 @@ const subFor = (vehicle: Vehicle) =>
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 12px 14px;
+  padding: 8px 0 0;
 }
 
 .home-ships__hero-name {
   overflow: hidden;
   color: var(--color-lifted, #eee);
   font-family: Orbitron, sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -262,16 +258,10 @@ const subFor = (vehicle: Vehicle) =>
 
 .home-ships__grid {
   display: grid;
-  flex: 999 1 420px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  flex: 1 1 360px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   min-width: 0;
-}
-
-@media (max-width: 575px) {
-  .home-ships__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 .home-ships__synced,
