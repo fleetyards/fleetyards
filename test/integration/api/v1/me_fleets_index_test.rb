@@ -64,6 +64,22 @@ class Api::V1::MeFleetsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /me/fleets says whether the fleet uses contracts" do
+    sign_in @member
+
+    assert_api_response :get, 200 do
+      assert_equal false, parsed_body["items"].sole["contractsEnabled"]
+    end
+
+    Flipper.enable_actor("fleet_contracts", @fleet)
+
+    assert_api_response :get, 200 do
+      assert_equal true, parsed_body["items"].sole["contractsEnabled"]
+    end
+  ensure
+    Flipper.disable("fleet_contracts")
+  end
+
   test "GET /me/fleets answers the counts only to a role that can act on them" do
     create(:fleet_membership, :requested, fleet: @fleet, user: create(:user))
 
