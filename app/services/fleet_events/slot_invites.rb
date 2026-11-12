@@ -78,8 +78,10 @@ module FleetEvents
       slot.fleet_event_signups.where(occurrence_date: nil).where.not(status: "withdrawn").exists?
     end
 
-    # A member already waiting in the event's pool is moved into the slot
-    # rather than signed up twice; one already in another slot has a seat.
+    # A member already waiting in the event's pool is moved into a ship seat
+    # rather than signed up twice; one already in another slot of the same
+    # kind has a seat. A team seat sits on top of a ship seat or the pool, so
+    # it is a signup of its own and declining it leaves the rest untouched.
     # Somebody who already committed to the event keeps that commitment in the
     # slot: turning it into an invitation would let a decline drop them from
     # the event they said yes to.
@@ -87,11 +89,13 @@ module FleetEvents
       membership = candidate.fleet_membership
       return unless membership&.kept? && membership.accepted?
 
-      existing = event.fleet_event_signups
+      active = event.fleet_event_signups
         .where(fleet_membership: membership, occurrence_date: nil)
         .where.not(status: "withdrawn")
-        .first
-      return if existing&.fleet_event_slot_id.present?
+        .same_kind_as(slot)
+      return if active.where.not(fleet_event_slot_id: nil).exists?
+
+      existing = active.find_by(fleet_event_slot_id: nil)
 
       signup = existing || event.fleet_event_signups.new(fleet_membership: membership)
       committed = existing.present? && COMMITTED_STATUSES.include?(existing.status)

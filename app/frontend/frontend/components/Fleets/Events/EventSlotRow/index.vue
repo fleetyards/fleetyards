@@ -46,6 +46,9 @@ type Props = {
   signupsOpen?: boolean;
   // Slot id where the current user is already signed up (anywhere in the event)
   ownActiveSlotId?: string | null;
+  // A seat held beside another one, which the reader's signup panel does not
+  // show, so it is left from the row itself.
+  leavable?: boolean;
   // Manager-only: needed to open the slot picker modal.
   isManager?: boolean;
   fleet?: Fleet;
@@ -57,6 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
   currentUserId: undefined,
   signupsOpen: undefined,
   ownActiveSlotId: null,
+  leavable: false,
   isManager: false,
   fleet: undefined,
   event: undefined,
@@ -73,7 +77,7 @@ const toPositionTypeLabel = usePositionTypeLabel();
 const positionTypeLabel = computed(() =>
   toPositionTypeLabel(props.slotData.positionType),
 );
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const comlink = useComlink();
 const installPrompt = useInstallPrompt();
 
@@ -210,6 +214,28 @@ const declineInvite = async () => {
     });
 };
 
+const leaveSeat = () => {
+  displayConfirm({
+    text: t("messages.fleets.eventSignup.withdraw.confirm"),
+    confirmText: t("actions.fleets.events.withdraw"),
+    onConfirm: async () => {
+      await declineMutation
+        .mutateAsync({ id: props.slotData.id })
+        .then(() => {
+          displaySuccess({
+            text: t("messages.fleets.eventSignup.withdraw.success"),
+          });
+          comlink.emit("fleet-event-signup-changed");
+        })
+        .catch(() => {
+          displayAlert({
+            text: t("messages.fleets.eventSignup.withdraw.failure"),
+          });
+        });
+    },
+  });
+};
+
 const submitSignup = async () => {
   try {
     await signupMutation.mutateAsync({
@@ -276,9 +302,21 @@ const submitSignup = async () => {
             {{ t("actions.fleets.events.declineInvite") }}
           </Btn>
         </template>
-        <Chip v-else-if="ownSignupHere" :state="ChipStatesEnum.INCLUDED" bare>
-          {{ t("labels.fleets.events.youAreHere") }}
-        </Chip>
+        <template v-else-if="ownSignupHere">
+          <Chip :state="ChipStatesEnum.INCLUDED" bare>
+            {{ t("labels.fleets.events.youAreHere") }}
+          </Chip>
+          <Btn
+            v-if="leavable"
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
+            :loading="declineMutation.isPending.value"
+            data-test="slot-leave"
+            @click="leaveSeat"
+          >
+            {{ t("actions.fleets.events.withdraw") }}
+          </Btn>
+        </template>
         <Btn
           v-else-if="!expanded"
           :size="BtnSizesEnum.XS"

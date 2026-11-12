@@ -6,6 +6,8 @@ module Calendars
   # has inside it. Shared by the fleet calendar and the personal agenda, so the
   # two can never disagree about which events a member is shown.
   class FleetEntries
+    PLAN_ORDER = %w[confirmed pending invited tentative interested].freeze
+
     def initialize(fleet:, membership:, from:, to:, manager:, published_only: false)
       @fleet = fleet
       @membership = membership
@@ -32,7 +34,9 @@ module Calendars
     end
 
     # Keyed the way a signup names its occurrence: the event, and the day for
-    # a recurring one. A withdrawn signup is no longer the reader's plan.
+    # a recurring one. A withdrawn signup is no longer the reader's plan. A
+    # team seat can sit beside a ship seat or the pool, and the firmest of the
+    # two is the plan.
     def viewer_signups
       @viewer_signups ||= begin
         events = entries.map(&:first).uniq
@@ -43,7 +47,8 @@ module Calendars
           FleetEventSignup
             .where(fleet_membership: @membership, fleet_event_id: events.map(&:id))
             .where.not(status: "withdrawn")
-            .index_by { |signup| [signup.fleet_event_id, signup.occurrence_date] }
+            .group_by { |signup| [signup.fleet_event_id, signup.occurrence_date] }
+            .transform_values { |signups| signups.min_by { |signup| PLAN_ORDER.index(signup.status) } }
         end
       end
     end

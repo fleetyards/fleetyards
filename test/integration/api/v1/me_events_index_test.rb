@@ -66,6 +66,20 @@ class Api::V1::MeEventsIndexTest < ActionDispatch::IntegrationTest
 
   # A summary is for everybody in the fleet: what the officers are still
   # drafting, or kept to themselves, belongs on the fleet's own calendar.
+  test "GET /me/events carries the firmer of a team seat and a pool signup" do
+    event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, starts_at: 1.day.from_now)
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    create(:fleet_event_signup, fleet_event: event, fleet_event_slot: nil, fleet_membership: membership, status: "interested")
+    create(:fleet_event_signup, fleet_event: event, fleet_membership: membership, status: "confirmed",
+      fleet_event_slot: create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event)))
+
+    sign_in @member
+
+    assert_api_response :get, 200 do
+      assert_equal "confirmed", parsed_body["items"].first.dig("fleetEvent", "viewerSignup", "status")
+    end
+  end
+
   test "GET /me/events leaves drafts and officers-only events to those who run events" do
     create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Announced", starts_at: 1.day.from_now)
     create(:fleet_event, fleet: @fleet, created_by: @admin, title: "Draft", starts_at: 2.days.from_now)

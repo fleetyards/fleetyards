@@ -181,22 +181,44 @@ const allSlotsWithContext = computed<SlotContext[]>(() => {
   return out;
 });
 
+type OwnSeat = { signup: FleetEventSignup; context: SlotContext };
+
+const ownSeats = computed<OwnSeat[]>(() => {
+  const userId = currentUserId.value;
+  if (!userId) return [];
+
+  return allSlotsWithContext.value
+    .map((ctx) => ({
+      signup: (ctx.slot.signups ?? []).find((s) => s.user?.id === userId),
+      context: ctx,
+    }))
+    .filter((entry): entry is OwnSeat => !!entry.signup);
+});
+
+const ownShipSeat = computed(
+  () => ownSeats.value.find((entry) => entry.context.ship) ?? null,
+);
+
+const ownTeamSeat = computed(
+  () => ownSeats.value.find((entry) => !entry.context.ship) ?? null,
+);
+
+// A team seat is held on top of a ship seat or a place in the pool, so
+// either of those leads.
 const ownSignupContext = computed<{
   signup: FleetEventSignup;
   context: SlotContext | null;
 } | null>(() => {
+  if (ownShipSeat.value) return ownShipSeat.value;
+
   const userId = currentUserId.value;
-  if (!userId) return null;
-  for (const ctx of allSlotsWithContext.value) {
-    const signup = (ctx.slot.signups ?? []).find((s) => s.user?.id === userId);
-    if (signup) return { signup, context: ctx };
-  }
   const eventLevel = (
     (event.value as { unassignedSignups?: FleetEventSignup[] } | undefined)
       ?.unassignedSignups ?? []
-  ).find((s) => s.user?.id === userId);
+  ).find((s) => !!userId && s.user?.id === userId);
   if (eventLevel) return { signup: eventLevel, context: null };
-  return null;
+
+  return ownTeamSeat.value;
 });
 
 const canSignupToEvent = computed(
@@ -211,7 +233,18 @@ const canSignupToEvent = computed(
 );
 
 const ownActiveSlotId = computed(
-  () => ownSignupContext.value?.context?.slot.id ?? null,
+  () => ownShipSeat.value?.context.slot.id ?? null,
+);
+
+const ownTeamSeatSlotId = computed(
+  () => ownTeamSeat.value?.context.slot.id ?? null,
+);
+
+// The signup panel shows one seat; a team seat beside it is left from its row.
+const teamSeatLeavable = computed(
+  () =>
+    !!ownTeamSeatSlotId.value &&
+    ownSignupContext.value?.context?.slot.id !== ownTeamSeatSlotId.value,
 );
 
 const yourSignupSlotTitle = computed(() => {
@@ -802,6 +835,8 @@ const crumbs = computed<Crumb[]>(() => [
         :signups-locked="signupsLocked"
         :signups-open="signupsOpenForEvent"
         :own-active-slot-id="ownActiveSlotId"
+        :own-team-seat-slot-id="ownTeamSeatSlotId"
+        :team-seat-leavable="teamSeatLeavable"
         :is-manager="canManageSignups"
       />
     </section>

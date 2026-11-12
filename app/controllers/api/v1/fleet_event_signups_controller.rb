@@ -37,9 +37,13 @@ module Api
         # If the member already has an unassigned (interested/tentative) signup
         # for this event/occurrence, promote it onto this slot rather than
         # creating a new one (which would fail unique-active-signup validation).
+        # A team seat is held on top of a ship seat or a place in the pool, so
+        # only another team seat stands in its way and the pool is left alone.
         existing = @slot.fleet_event.fleet_event_signups
           .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
           .where.not(status: "withdrawn")
+          .same_kind_as(@slot)
+          .order(Arel.sql("fleet_event_slot_id IS NULL"))
           .first
 
         if existing && existing.fleet_event_slot_id.present? && existing.fleet_event_slot_id != @slot.id
@@ -111,7 +115,7 @@ module Api
         end
 
         existing = @event.fleet_event_signups
-          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
+          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date, team_seat: false)
           .where.not(status: "withdrawn")
           .first
 
