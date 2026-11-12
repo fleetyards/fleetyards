@@ -167,7 +167,7 @@ const railStyle = computed(() => ({
     left: 0;
     top: 0;
     bottom: 0;
-    width: 4px;
+    width: 8px;
   }
 
   .squadron-panel-body {
