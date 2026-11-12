@@ -17,7 +17,8 @@ import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
-import { landingServicesText } from "@/shared/utils/LandingServices";
+import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
+import LandingServiceIcons from "@/shared/components/LandingServiceIcons/index.vue";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { type Vehicle } from "@/services/fyApi";
@@ -69,6 +70,8 @@ const emit = defineEmits<{
 }>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const { iconsFor } = useLandingServiceIcons();
 
 const { cargoLabel } = useVehicleCargo();
 
@@ -451,7 +454,9 @@ const resetSelected = () => {
         {{ fociText(record.model, t("labels.model.stealth")) }}
       </template>
       <template #col-modelLandingServices="{ record }">
-        {{ landingServicesText(record.model, t) }}
+        <LandingServiceIcons
+          :services="iconsFor(record.model.landingServices)"
+        />
       </template>
       <template #col-modelPrice="{ record }">
         <!-- eslint-disable vue/no-v-html -->
