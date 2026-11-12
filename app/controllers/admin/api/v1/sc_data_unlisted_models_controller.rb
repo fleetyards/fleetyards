@@ -59,7 +59,8 @@ module Admin
         end
 
         def create_model
-          @sc_data_unlisted_model.create_model!
+          created = @sc_data_unlisted_model.create_model!
+          Loaders::ScData::ModelJob.perform_async(created.id)
         rescue ArgumentError => e
           # Put on the record rather than raised as a bare hash: `ValidationError`
           # reads `errors` off whatever it is given, so the two failure paths

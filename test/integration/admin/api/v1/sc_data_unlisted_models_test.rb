@@ -190,8 +190,10 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
   end
 
   # The export gives a name, the identifier gives a manufacturer, and nothing
-  # else is guessed -- the next load fills in the mechanics.
+  # else is guessed -- the load enqueued alongside fills in the mechanics, since
+  # the next full load only comes with the next build.
   test "POST create-model creates the ship and links it" do
+    Sidekiq::Job.clear_all
     sign_in @user
     create(:manufacturer, code: "KRIG", name: "Kruger Intergalactic")
 
@@ -206,6 +208,7 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     assert_equal "krig_s65_stingray", model.sc_key
     assert_equal "KRIG", model.manufacturer.code
     assert_predicate model, :hidden?, "a new ship stays out of the catalogue until an admin fills it in"
+    assert_equal [model.id], Loaders::ScData::ModelJob.jobs.map { |job| job["args"].first }
   end
 
   # The export writes "Kruger S-65 Stingray" where the catalogue says
