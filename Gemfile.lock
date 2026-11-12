@@ -313,14 +313,14 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (1.1.2)
+    i18n-tasks (1.2.0)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
       highline (>= 3.0.0)
       i18n
       parser (>= 3.2.2.1)
-      prism
+      prism (>= 0.28)
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
@@ -550,7 +550,7 @@ GEM
       activerecord (>= 7.1)
       request_store (~> 1.4)
     parallel (2.3.0)
-    parser (3.3.12.0)
+    parser (3.3.13.0)
       ast (~> 2.4.1)
       racc
     pg (1.7.0-arm64-darwin)
@@ -906,7 +906,7 @@ DEPENDENCIES
   griddler-postmark!
   groupdate
   i18n
-  i18n-tasks (~> 1.0)
+  i18n-tasks (~> 1.2)
   image_processing (~> 2.2)
   irb
   jbuilder
@@ -1109,7 +1109,7 @@ CHECKSUMS
   http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   httparty (0.24.3) sha256=5c95cf29ca70d5bfd834e56140ddfca6e94166c3b870cde9c25d157cdb5a00d2
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
-  i18n-tasks (1.1.2) sha256=4dcfba49e52a623f30661cb316cb80d84fbba5cb8c6d88ef5e02545fffa3637a
+  i18n-tasks (1.2.0) sha256=71203cd2fe69ef66f08fd6a8620dff46f53d6f40b78dbacf0ab37eec917810a5
   image_processing (2.2.0) sha256=e0cb9892a4395ac2b7bb2fac5c6f5bc63361f2f18ed08773e21fce5b111c6974
   io-console (0.9.5) sha256=83dd9bbf4c4680416629245b39cd4212eb5f4d9a4ea91804870c1f6b846414d5
   irb (1.19.0) sha256=55ee56acbdd6c9fe06a2e6909f46a24e5c41f45f16906bab04e8049cf46f1d27
@@ -1187,7 +1187,7 @@ CHECKSUMS
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   paper_trail (17.0.0) sha256=1c2842061d3874ca7015908e821e2aa14f9b982af2acb2a7974713bf79021c85
   parallel (2.3.0) sha256=f75a3e904101ce6a1ccb6b8dc800cbafd42166d83330192438dcf29395167a6f
-  parser (3.3.12.0) sha256=21a6d7f755d5a24dfbdc6e6b772e4e879a52e7631a88bc5a3a134606052c9828
+  parser (3.3.13.0) sha256=e02f9b63c2fe05b0c68f692ba4df89b3cb113b663964f75d988fbebfd6c3deca
   pg (1.7.0-arm64-darwin) sha256=9fa895bbe28bdd579b83ccc80464c01d1015ea7549a7919134c9f8f10c060e4b
   pg (1.7.0-x86_64-linux) sha256=d0a24f448b3c874c8b2658d4efbbbefce7315c228ede84f6f6f42089d1d704b6
   pg_query (6.2.5) sha256=2117d4228c3c1359afca62fddba6ce5d8c56bf5e0eff148e2f2bf5292bcd676d
