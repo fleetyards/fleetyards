@@ -18,7 +18,7 @@ class ModelBuild < ApplicationRecord
     mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground crew
     personal_inventory fuel_consumption main_acceleration retro_acceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom storage_containers
-    beds weapon_racks lockers weapon_regen_modifier
+    beds weapon_racks lockers weapon_regen_modifier landing_services
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
     ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
@@ -44,7 +44,7 @@ class ModelBuild < ApplicationRecord
   STRUCTURED_FACTS = %i[
     hull_parts hull_doors signature_cross_section
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom storage_containers
-    weapon_racks weapon_regen_modifier
+    weapon_racks weapon_regen_modifier landing_services
   ].freeze
 
   # What a patch diff compares. Derived rather than listed, so a numeric fact
@@ -62,6 +62,10 @@ class ModelBuild < ApplicationRecord
   # What a ship's rooms hold. An interior from before its ship's rework places
   # none of it, so a build's nil here says "none", not "not recorded".
   INTERIOR_FACTS = %i[beds weapon_racks lockers].freeze
+
+  # What a ship does for another ship landed in its hangar or on its pads, by
+  # the name ModelsParser gives each service.
+  LANDING_SERVICES = %w[repair rearm quantum_refuel hydrogen_refuel].freeze
 
   # What a storage container holds: ore from a mining pod, or salvage.
   STORAGE_KINDS = %w[ore salvage].freeze

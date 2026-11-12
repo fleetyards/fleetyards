@@ -290,6 +290,7 @@ module ScData
         update_params[:hull_doors] = extract_hull_doors(model_data)
         update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
         update_params[:weapon_regen_modifier] = model_data.dig("weapon_regen_modifier")
+        update_params[:landing_services] = model_data["landing_services"]
         update_params[:signature_cross_section] = model_data.dig("signature_cross_section")
         update_params.merge!(dimensions(model, model_data))
         update_params[:ground] = model_data.dig("ground") || false

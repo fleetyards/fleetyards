@@ -30,7 +30,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom storage_containers sales_page_url
-    beds weapon_racks lockers
+    beds weapon_racks lockers landing_services
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,

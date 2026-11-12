@@ -368,6 +368,32 @@ module ScData
         assert_not never.builds.sole.attribute_present?(:beds)
       end
 
+      test "#load_model takes the services the ship provides to a ship landed on it" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Carrier")
+        services = %w[repair rearm quantum_refuel hydrogen_refuel]
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "landing_services" => services})
+
+        build = loader.load_model(model)
+
+        assert_equal services, build.landing_services
+        assert_equal services, model.reload.landing_services
+      end
+
+      test "#load_model clears services a build no longer provides" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Former Carrier", landing_services: %w[repair])
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "landing_services" => []})
+
+        loader.load_model(model)
+
+        assert_equal [], model.reload.landing_services
+      end
+
       test "storage container kinds are the ones a build knows" do
         assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end
