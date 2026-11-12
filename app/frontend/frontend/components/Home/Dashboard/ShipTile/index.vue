@@ -49,15 +49,19 @@ const imageUrl = computed(
 </template>
 
 <style lang="scss" scoped>
+// The picture is the card: it fills the frame, and the name sits on its lower
+// edge over a shade that keeps it readable on any picture.
 .home-ship-tile {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   min-width: 0;
+  min-height: 140px;
   overflow: hidden;
   border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
   border-radius: 10px;
-  background: var(--color-gray-black, #1a1d21);
+  background: var(--color-gray-darker, #272b30);
   color: inherit;
   text-decoration: none;
   transition: border-color 150ms ease;
@@ -67,15 +71,12 @@ const imageUrl = computed(
   }
 }
 
-// Takes whatever height the card is given beyond its text, so a card stretched
-// by its row shows more picture rather than empty space.
 .home-ship-tile__image {
-  display: block;
-  flex: 1 1 100px;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  min-height: 100px;
+  height: 100%;
   object-fit: cover;
-  background: var(--color-gray-darker, #272b30);
 }
 
 .home-ship-tile__tag {
@@ -98,11 +99,18 @@ const imageUrl = computed(
 }
 
 .home-ship-tile__body {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
-  padding: 10px 12px;
+  padding: 28px 12px 10px;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0) 0%,
+    rgb(0 0 0 / 0.75) 60%,
+    rgb(0 0 0 / 0.85) 100%
+  );
 }
 
 .home-ship-tile__name,
@@ -118,7 +126,7 @@ const imageUrl = computed(
 }
 
 .home-ship-tile__sub {
-  color: var(--color-text-dim, #959595);
+  color: var(--color-text, #c8c8c8);
   font-size: 0.75rem;
 }
 </style>
