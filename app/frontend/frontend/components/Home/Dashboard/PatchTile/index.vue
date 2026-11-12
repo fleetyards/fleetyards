@@ -63,7 +63,9 @@ const changedCount = computed(() => changes.value?.ownedCount || 0);
         <span class="home-patch-tile__label">
           {{ label }}
         </span>
-        <span class="home-patch-tile__value">{{ release || "–" }}</span>
+        <span v-tooltip="build?.version" class="home-patch-tile__value">
+          {{ release || "–" }}
+        </span>
         <span class="home-patch-tile__hint">
           {{
             changedCount

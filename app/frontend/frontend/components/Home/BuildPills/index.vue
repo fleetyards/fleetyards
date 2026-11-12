@@ -24,7 +24,7 @@ const builds = computed(() =>
 );
 
 // `4.10.2-live.12913470` already names its environment; the pill says that
-// part itself, so it shows the release and leaves the build id to the title.
+// part itself, so it shows the release and leaves the build id to the tooltip.
 const release = (version: string) => version.split("-")[0];
 </script>
 
@@ -39,7 +39,7 @@ const release = (version: string) => version.split("-")[0];
             ? PillVariantsEnum.SUCCESS
             : PillVariantsEnum.WARNING
         "
-        :title="build.version"
+        v-tooltip="build.version"
         uppercase
       >
         {{ build.environment }} {{ release(build.version) }}
