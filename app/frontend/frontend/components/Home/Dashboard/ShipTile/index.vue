@@ -16,13 +16,13 @@ interface Props {
   to: RouteLocationRaw;
   image?: MediaFile;
   sub?: string;
-  tag?: string;
+  tags?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   sub: undefined,
-  tag: undefined,
+  tags: () => [],
 });
 
 const { supported: webpSupported } = useWebpCheck();
@@ -38,8 +38,15 @@ const imageUrl = computed(
 <template>
   <router-link :to="to" class="home-ship-tile" :title="name">
     <img :src="imageUrl" alt="" class="home-ship-tile__image" loading="lazy" />
-    <span v-if="tag" class="home-ship-tile__tag" data-test="home-ship-tile-tag">
-      {{ tag }}
+    <span v-if="tags.length" class="home-ship-tile__tags">
+      <span
+        v-for="item in tags"
+        :key="item"
+        class="home-ship-tile__tag"
+        data-test="home-ship-tile-tag"
+      >
+        {{ item }}
+      </span>
     </span>
     <span class="home-ship-tile__body">
       <span class="home-ship-tile__name">{{ name }}</span>
@@ -79,11 +86,19 @@ const imageUrl = computed(
   object-fit: cover;
 }
 
-.home-ship-tile__tag {
+.home-ship-tile__tags {
   position: absolute;
   top: 8px;
   right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
   max-width: calc(100% - 16px);
+}
+
+.home-ship-tile__tag {
+  max-width: 100%;
   overflow: hidden;
   padding: 2px 8px;
   border: 1px solid rgb(66 139 202 / 0.6);

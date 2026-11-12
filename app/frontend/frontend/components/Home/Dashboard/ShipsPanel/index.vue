@@ -95,6 +95,12 @@ const tagFor = (vehicle: Vehicle) =>
       })
     : undefined;
 
+const tagsFor = (vehicle: Vehicle) => {
+  const tag = tagFor(vehicle);
+
+  return tag ? [tag] : [];
+};
+
 // A ship the pilot named shows its model; otherwise its maker.
 const subFor = (vehicle: Vehicle) =>
   vehicle.name ? vehicle.model.name : vehicle.model.manufacturer?.name;
@@ -153,7 +159,7 @@ const subFor = (vehicle: Vehicle) =>
             :name="vehicle.name || vehicle.model.name"
             :sub="subFor(vehicle)"
             :image="vehicle.model.media.storeImage"
-            :tag="tagFor(vehicle)"
+            :tags="tagsFor(vehicle)"
             :to="toVehicle('hangar-vehicle', vehicle)"
           />
         </div>

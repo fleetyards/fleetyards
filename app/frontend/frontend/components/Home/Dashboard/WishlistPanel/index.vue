@@ -18,7 +18,7 @@ import {
   onSaleWishlistParams,
 } from "@/frontend/components/Home/Dashboard/wishlistParams";
 
-const { t, toDollar, toUEC } = useI18n();
+const { t, toDollar, toNumber } = useI18n();
 
 // A ship on sale is the one thing on a wishlist worth acting on today, so those
 // come first, and the rest of the space goes to what was wished for last.
@@ -54,25 +54,23 @@ const isLoadingError = computed(
   () => onSale.isLoadingError.value || recent.isLoadingError.value,
 );
 
-// The price only says something while the ship can be bought at it.
-const tagFor = (vehicle: Vehicle) => {
-  if (!vehicle.model.onSale) return undefined;
+// The store price only says something while the ship can be bought at it; the
+// in-game price only where the game sells it.
+const tagsFor = (vehicle: Vehicle) => {
+  const { onSale, pledgePrice, price } = vehicle.model;
+  const tags: string[] = [];
 
-  const label = t("home.dashboard.wishlist.onSale");
+  if (onSale) {
+    const label = t("home.dashboard.wishlist.onSale");
+    tags.push(pledgePrice ? `${label} · ${toDollar(pledgePrice)}` : label);
+  }
 
-  return vehicle.model.pledgePrice
-    ? `${label} · ${toDollar(vehicle.model.pledgePrice)}`
-    : label;
+  if (price) {
+    tags.push(`${toNumber(price)} ${t("number.units.uec")}`);
+  }
+
+  return tags;
 };
-
-// What it costs in the game, where it can be bought there at all.
-const subFor = (vehicle: Vehicle) =>
-  [
-    vehicle.model.manufacturer?.name,
-    vehicle.model.price ? toUEC(vehicle.model.price) : undefined,
-  ]
-    .filter(Boolean)
-    .join(" · ");
 
 const grid = useTemplateRef<HTMLElement>("grid");
 
@@ -95,9 +93,9 @@ const shown = useFullRows(grid, vehicles, 2);
         v-for="vehicle in shown"
         :key="vehicle.id"
         :name="vehicle.name || vehicle.model.name"
-        :sub="subFor(vehicle)"
+        :sub="vehicle.model.manufacturer?.name"
         :image="vehicle.model.media.storeImage"
-        :tag="tagFor(vehicle)"
+        :tags="tagsFor(vehicle)"
         :to="{ name: 'ship', params: { slug: vehicle.model.slug } }"
         data-test="home-wishlist-item"
       />
