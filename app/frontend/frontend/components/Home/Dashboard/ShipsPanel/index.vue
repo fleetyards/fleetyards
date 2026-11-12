@@ -177,8 +177,11 @@ const subFor = (vehicle: Vehicle) =>
 </template>
 
 <style lang="scss" scoped>
+// The flagship comes first in the markup, so it leads on a phone where the two
+// stack, and stands to the right of the cards where they sit side by side.
 .home-ships {
   display: flex;
+  flex-direction: row-reverse;
   flex-wrap: wrap;
   gap: 12px;
 }
