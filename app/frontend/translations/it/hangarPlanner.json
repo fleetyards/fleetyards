@@ -36,6 +36,7 @@
       "editSlot": "Modifica slot",
       "editSlotOf": "Modifica %{slot}",
       "slotSettings": "Nome e filtri",
+      "copySlot": "Copia slot",
       "removeSlot": "Rimuovi slot",
       "confirmRemoveSlot": "Rimuovere questo slot insieme alle sue navi e ai suoi percorsi?",
       "openSlotHint": "Nessuna nave scelta. Aggiungine una, o più di una se sei indeciso.",
@@ -79,7 +80,6 @@
         "sourcePlan": "Piano da copiare",
         "slotLabel": "Ruolo",
         "slotLabelPlaceholder": "es. Cargo principale",
-        "quantity": "Navi",
         "startKind": "Parte come",
         "ownedShip": "Nave del tuo hangar",
         "buyback": "Pledge buy-back",
@@ -240,7 +240,6 @@
             "one": "%{count} upgrade · %{price}",
             "other": "%{count} upgrade · %{price}"
           },
-          "shipOf": "nave %{number} di %{count}",
           "noRoute": "Ancora nessun percorso",
           "planRoute": "Pianifica percorso",
           "noUpgrade": "Nessun upgrade possibile",

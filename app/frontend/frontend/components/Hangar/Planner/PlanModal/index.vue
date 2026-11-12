@@ -23,6 +23,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import {
@@ -149,8 +150,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     displaySuccess({ text: t("hangarPlanner.messages.saved") });
     comlink.emit("close-modal", true);
-  } catch {
-    displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
+  } catch (error) {
+    displayAlert({
+      text:
+        firstErrorMessageFrom(error) ?? t("hangarPlanner.messages.saveFailed"),
+    });
   } finally {
     submitting.value = false;
   }

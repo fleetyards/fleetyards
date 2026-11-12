@@ -318,6 +318,7 @@ es:
           attributes:
             base:
               plan_limit_reached: "puede tener como máximo %{count} planes"
+              wishlist_too_large: "Tu lista de deseos tiene %{ships} naves, pero un plan admite como máximo %{count}. Quita algunas de la lista de deseos o empieza el plan vacío."
         character_face:
           attributes:
             base:
@@ -369,14 +370,12 @@ es:
               not_offered: "no es un precio al que se venda este artículo"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "tiene vías para %{count} naves; elimina antes alguna vía"
             base:
               slot_limit_reached: "puede tener como máximo %{count} huecos"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "este hueco ya tiene una ruta para cada una de sus naves"
+              slot_filled: "este hueco ya tiene una ruta"
               holder_invalid: "un inicio pertenece a una nave del hueco o a un hueco que aún no tiene naves"
               chain_mismatch: "la ruta tiene que terminar en la nave del hueco"
               chain_broken: "cada mejora tiene que empezar en la nave en la que terminó el paso anterior"

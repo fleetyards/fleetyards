@@ -73,7 +73,6 @@ const ship = {
 const slot = {
   id: "explorer",
   label: "Explorer",
-  quantity: 1,
   position: 0,
   state: HangarPlanSlotStateEnum.DECIDED,
   filters: {},

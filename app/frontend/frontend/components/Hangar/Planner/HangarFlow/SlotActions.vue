@@ -15,6 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 const emit = defineEmits<{
   edit: [];
+  copy: [];
   remove: [];
 }>();
 
@@ -32,6 +33,16 @@ const { t } = useI18n();
       @click="emit('edit')"
     >
       <i class="fa-light fa-pen" aria-hidden="true" />
+    </Btn>
+    <Btn
+      :size="BtnSizesEnum.XS"
+      :variant="BtnVariantsEnum.BARE"
+      :aria-label="t('hangarPlanner.copySlot')"
+      :title="t('hangarPlanner.copySlot')"
+      data-test="hangar-plan-flow-slot-copy"
+      @click="emit('copy')"
+    >
+      <i class="fa-light fa-copy" aria-hidden="true" />
     </Btn>
     <Btn
       :size="BtnSizesEnum.XS"

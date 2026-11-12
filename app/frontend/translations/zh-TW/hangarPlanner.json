@@ -36,6 +36,7 @@
       "editSlot": "編輯槽位",
       "editSlotOf": "編輯 %{slot}",
       "slotSettings": "名稱和篩選條件",
+      "copySlot": "複製槽位",
       "removeSlot": "移除槽位",
       "confirmRemoveSlot": "移除此槽位及其中的飛船和取得途徑？",
       "openSlotHint": "尚未選擇飛船。可新增一艘，如果還沒想好也可新增多艘。",
@@ -79,7 +80,6 @@
         "sourcePlan": "要複製的方案",
         "slotLabel": "角色",
         "slotLabelPlaceholder": "例如：主力貨運船",
-        "quantity": "飛船數量",
         "startKind": "起始狀態",
         "ownedShip": "你機庫中的飛船",
         "buyback": "回購 pledge",
@@ -240,7 +240,6 @@
             "one": "%{count} 次升級 · %{price}",
             "other": "%{count} 次升級 · %{price}"
           },
-          "shipOf": "第 %{number} 艘，共 %{count} 艘",
           "noRoute": "尚無途徑",
           "planRoute": "規劃路線",
           "noUpgrade": "無法升級",

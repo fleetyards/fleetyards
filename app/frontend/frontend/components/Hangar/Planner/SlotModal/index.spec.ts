@@ -13,7 +13,6 @@ import Component from "./index.vue";
 const slot = (id: string): HangarPlanSlot => ({
   id,
   label: id,
-  quantity: 2,
   position: 0,
   state: HangarPlanSlotStateEnum.OPEN,
   filters: { sizeIn: ["small"] },
@@ -48,12 +47,11 @@ describe("Hangar/Planner/SlotModal", () => {
     defineRule("required", required);
   });
 
-  it("adds a slot with its count and filters, numbered when left blank", async () => {
+  it("adds a slot with its filters, numbered when left blank", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan" },
     });
 
-    expect(wrapper.find('[name="quantity"]').exists()).toBe(true);
     expect(wrapper.find(".slot-filters").exists()).toBe(true);
 
     await wrapper.find("form").trigger("submit");
@@ -61,16 +59,15 @@ describe("Hangar/Planner/SlotModal", () => {
 
     expect(createMutate).toHaveBeenLastCalledWith({
       hangarPlanId: "plan",
-      data: { label: "Slot 4", description: null, quantity: 1, filters: {} },
+      data: { label: "Slot 4", description: null, filters: {} },
     });
   });
 
-  it("edits a slot's count and filters", async () => {
+  it("edits a slot's filters", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan", slot: plan.value.slots[0] },
     });
 
-    expect(wrapper.find('[name="quantity"]').exists()).toBe(true);
     expect(wrapper.find(".slot-filters").exists()).toBe(true);
   });
 });

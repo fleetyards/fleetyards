@@ -51,6 +51,7 @@ import {
   useAddHangarPlanToWishlist,
   useDestroyHangarPlan,
   useDestroyHangarPlanMelt,
+  useCopyHangarPlanSlot,
   useDestroyHangarPlanSlot,
   useHangarPlan,
   useHangarPlanComparison,
@@ -197,6 +198,23 @@ const editSlotDetails = (slot: HangarPlanSlot) =>
     () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
     { planId: planId.value, slot },
   );
+
+const copySlotMutation = useCopyHangarPlanSlot();
+// A double click would otherwise copy the slot twice.
+const copySlot = async (slot: HangarPlanSlot) => {
+  if (copySlotMutation.isPending.value) return;
+
+  try {
+    updatePlan(
+      await copySlotMutation.mutateAsync({
+        hangarPlanId: planId.value,
+        id: slot.id,
+      }),
+    );
+  } catch {
+    displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
+  }
+};
 
 const destroySlot = useDestroyHangarPlanSlot();
 const removeSlot = async (slot: HangarPlanSlot) => {
@@ -478,6 +496,7 @@ const onDestroy = async () => {
           @decide="decide"
           @open="openPanel"
           @edit-slot="editSlotDetails"
+          @copy-slot="copySlot"
           @remove-slot="removeSlot"
         />
       </section>

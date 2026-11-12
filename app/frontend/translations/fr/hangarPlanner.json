@@ -36,6 +36,7 @@
       "editSlot": "Modifier l'emplacement",
       "editSlotOf": "Modifier %{slot}",
       "slotSettings": "Nom et filtres",
+      "copySlot": "Copier l'emplacement",
       "removeSlot": "Retirer l'emplacement",
       "confirmRemoveSlot": "Retirer cet emplacement avec ses vaisseaux et ses voies d'obtention ?",
       "openSlotHint": "Aucun vaisseau choisi pour l'instant. Ajoutez-en un, ou plusieurs si vous hésitez.",
@@ -79,7 +80,6 @@
         "sourcePlan": "Plan à copier",
         "slotLabel": "Rôle",
         "slotLabelPlaceholder": "p. ex. Cargo principal",
-        "quantity": "Vaisseaux",
         "startKind": "Commence comme",
         "ownedShip": "Vaisseau de votre hangar",
         "buyback": "Pledge de buy-back",
@@ -240,7 +240,6 @@
             "one": "%{count} amélioration · %{price}",
             "other": "%{count} améliorations · %{price}"
           },
-          "shipOf": "vaisseau %{number} sur %{count}",
           "noRoute": "Pas encore de voie",
           "planRoute": "Planifier le parcours",
           "noUpgrade": "Aucun upgrade possible",

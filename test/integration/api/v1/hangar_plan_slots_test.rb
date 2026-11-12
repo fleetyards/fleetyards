@@ -95,6 +95,22 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/hangar/plans/{hangarPlanId}/slots/{id}/copy" do
+    parameter name: "hangarPlanId", in: :path, schema: {type: :string, format: :uuid}, required: true
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, required: true
+
+    post("Copy Hangar Plan Slot") do
+      operationId "copyHangarPlanSlot"
+      tags "HangarPlans"
+      produces "application/json"
+      security SECURITY
+
+      response(201, "successful") { schema PLAN }
+      response(400, "validation error") { schema ::Shared::V1::Schemas::ValidationError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   setup do
     Flipper.enable(:hangar_planner)
     @user = create(:user)
@@ -105,9 +121,9 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
 
   test "POST creates an open slot" do
     assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/slots",
-      path_params: {hangarPlanId: @plan.id}, body: {label: "Escort", quantity: 3} do
+      path_params: {hangarPlanId: @plan.id}, body: {label: "Escort"} do
       slot = parsed_body["slots"].find { |entry| entry["label"] == "Escort" }
-      assert_equal [3, "open"], [slot["quantity"], slot["state"]]
+      assert_equal "open", slot["state"]
     end
   end
 
@@ -139,8 +155,8 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
 
   test "PUT updates a slot" do
     assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}",
-      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {quantity: 2} do
-      assert_equal 2, parsed_body.dig("slots", 0, "quantity")
+      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {label: "Freighter"} do
+      assert_equal "Freighter", parsed_body.dig("slots", 0, "label")
     end
   end
 
@@ -162,18 +178,61 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT rejects a quantity below the slot's routes" do
-    candidate = create(:hangar_plan_candidate, slot: @slot)
-    @slot.update!(quantity: 2)
-    2.times { @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: candidate.model) }
+  test "POST copy adds the slot's shortlist right after it, without its routes" do
+    gladius = create(:model, name: "Gladius")
+    arrow = create(:model, name: "Arrow")
+    paint = create(:model_paint, model: gladius)
+    mod = create(:model_module)
+    create(:module_hardpoint, model: gladius, model_module: mod)
+    @slot.update!(description: "Fast escort", filters: {size_in: ["small"]})
+    routed = create(:hangar_plan_candidate, slot: @slot, model: gladius, model_paint: paint, model_module_ids: [mod.id])
+    create(:hangar_plan_candidate, slot: @slot, model: arrow)
+    @plan.acquisitions.create!(candidate: routed, start_kind: "store", start_model: gladius)
+    create(:hangar_plan_slot, hangar_plan: @plan, label: "Miner")
 
-    assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}",
-      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {quantity: 1}
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}/copy",
+      path_params: {hangarPlanId: @plan.id, id: @slot.id} do
+      assert_equal ["Hauler", "Hauler", "Miner"], parsed_body["slots"].pluck("label")
+
+      original, copy = parsed_body["slots"].first(2)
+      assert_not_equal original["id"], copy["id"]
+      assert_equal "Fast escort", copy["description"]
+      assert_equal({"sizeIn" => ["small"]}, copy["filters"])
+      assert_equal [gladius.id, arrow.id], copy["candidates"].map { |candidate| candidate.dig("model", "id") }
+      assert_equal paint.id, copy.dig("candidates", 0, "modelPaintId")
+      assert_equal [mod.id], copy.dig("candidates", 0, "modelModuleIds")
+      assert_empty copy["starts"]
+    end
+
+    copy = @plan.slots.where.not(id: @slot.id).find_by(label: "Hauler")
+    assert_empty HangarPlanAcquisition.where(candidate: copy.candidates)
+    assert_equal 1, @slot.candidates.first.acquisitions.count
   end
 
-  test "PUT rejects a quantity of zero" do
-    assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}",
-      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {quantity: 0}
+  test "POST copy leaves a slot's own starts behind" do
+    vehicle = create(:vehicle, user: @user)
+    @plan.acquisitions.create!(slot: @slot, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}/copy",
+      path_params: {hangarPlanId: @plan.id, id: @slot.id} do
+      assert_equal [1, 0], parsed_body["slots"].map { |slot| slot["starts"].size }
+    end
+  end
+
+  test "POST copy rejects a plan at its slot limit" do
+    stub_const(HangarPlanSlot, :MAX_PER_PLAN, 1) do
+      assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}/copy",
+        path_params: {hangarPlanId: @plan.id, id: @slot.id}
+    end
+
+    assert_equal 1, @plan.slots.count
+  end
+
+  test "POST copy returns 404 for another user's plan" do
+    other = create(:hangar_plan_slot)
+
+    assert_api_response :post, 404, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}/copy",
+      path_params: {hangarPlanId: other.hangar_plan_id, id: other.id}
   end
 
   test "DELETE removes a slot" do

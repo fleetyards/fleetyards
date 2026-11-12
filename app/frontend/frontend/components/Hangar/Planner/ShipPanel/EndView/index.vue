@@ -83,7 +83,7 @@ const wished = computed(() => new Set(wishlist.value ?? []));
 
 const { pairing, pairEnd } = useHangarPlanPairing(() => props.planId, plan);
 
-// A ship of a decided slot with a unit left, which a route can end on.
+// The ship of a decided slot with no route yet, which a route can end on.
 const ends = computed(() =>
   (plan.value?.slots ?? []).flatMap((slot) => {
     const candidate = slot.candidates[0];
@@ -98,7 +98,7 @@ const ends = computed(() =>
       (entry) => entry.id !== props.acquisition?.id,
     ).length;
 
-    return taken < slot.quantity ? [{ slot, candidate }] : [];
+    return taken === 0 ? [{ slot, candidate }] : [];
   }),
 );
 

@@ -174,10 +174,10 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
   test "POST says which upgrade another route already uses" do
     ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Constellation To Carrack")
-    @slot.update!(quantity: 2)
+    candidates = [@candidate, candidate_on_new_slot]
     steps = [{sourceKind: "owned_ccu", hangarPledgeItemId: ccu.id, toModelId: @carrack.id}]
     2.times do |index|
-      body = {candidateId: @candidate.id, startKind: "owned", sourceVehicleId: create(:vehicle, user: @user, model: @constellation).id, steps:}
+      body = {candidateId: candidates[index].id, startKind: "owned", sourceVehicleId: create(:vehicle, user: @user, model: @constellation).id, steps:}
       status = index.zero? ? 201 : 400
 
       assert_api_response :post, status, api_path: "/hangar/plans/{hangarPlanId}/acquisitions", path_params: {hangarPlanId: @plan.id}, body: do
@@ -214,20 +214,19 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
   test "POST rejects a buy-back already spent" do
     pledge = create(:buyback_pledge, user: @user)
-    @slot.update!(quantity: 2)
     @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
 
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
       path_params: {hangarPlanId: @plan.id},
-      body: {candidateId: @candidate.id, startKind: "buyback", buybackPledgeId: pledge.id, startModelId: @carrack.id}
+      body: {candidateId: candidate_on_new_slot.id, startKind: "buyback", buybackPledgeId: pledge.id, startModelId: @carrack.id}
   end
 
   test "POST starts a slot with another ship of a pledge the plan buys back, for free and once" do
     pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo",
       ship_names: ["Carrack", "Cutlass Black"])
     pledge_start = @plan.acquisitions.create!(candidate: @candidate, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
-    cutlass_slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
-    cutlass = create(:hangar_plan_candidate, slot: cutlass_slot, model: @cutlass)
+    cutlass = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @cutlass)
+    second_cutlass = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @cutlass)
     body = {candidateId: cutlass.id, startKind: "bundled", bundledWithId: pledge_start.id, startModelId: @cutlass.id}
 
     assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
@@ -241,11 +240,11 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
     # The pledge holds one Cutlass, and no Constellation at all.
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
-      path_params: {hangarPlanId: @plan.id}, body: do
+      path_params: {hangarPlanId: @plan.id}, body: body.merge(candidateId: second_cutlass.id) do
       assert_includes parsed_body["errors"].flat_map { |error| error["messages"] }.pluck("code"), "taken"
     end
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
-      path_params: {hangarPlanId: @plan.id}, body: body.merge(startModelId: @constellation.id) do
+      path_params: {hangarPlanId: @plan.id}, body: body.merge(candidateId: second_cutlass.id, startModelId: @constellation.id) do
       assert_includes parsed_body["errors"].flat_map { |error| error["messages"] }.pluck("code"), "not_bundled"
     end
   end
@@ -337,8 +336,7 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
   test "PUT refuses a start another route already uses" do
     owned = create(:vehicle, user: @user, model: @carrack)
-    @slot.update!(quantity: 2)
-    @plan.acquisitions.create!(candidate: @candidate, start_kind: "owned", source_vehicle: owned)
+    @plan.acquisitions.create!(candidate: candidate_on_new_slot, start_kind: "owned", source_vehicle: owned)
     acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
 
     assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
@@ -422,7 +420,6 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pledge-1", rsi_pledge_melt_value: 300)
     sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pledge-1")
     create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
-    @slot.update!(quantity: 2)
 
     assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
       path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: sibling.id} do
@@ -430,7 +427,7 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
 
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
-      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "melted", sourceVehicleId: melted.id} do
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: candidate_on_new_slot.id, startKind: "melted", sourceVehicleId: melted.id} do
       messages = parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") }
       assert_includes messages, "Source vehicle is already used in this plan"
     end
@@ -450,9 +447,8 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pledge-1")
     sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pledge-1")
     melt = create(:hangar_plan_melt, hangar_plan: @plan, vehicle: melted)
-    @slot.update!(quantity: 2)
     route = @plan.acquisitions.create!(candidate: @candidate, start_kind: "melted", source_vehicle: sibling)
-    kept = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
+    kept = @plan.acquisitions.create!(candidate: candidate_on_new_slot, start_kind: "store", start_model: @carrack)
 
     melt.destroy!
 
@@ -475,5 +471,9 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
       assert_in_delta 250.0, route["price"]
       assert route["routeComplete"]
     end
+  end
+
+  private def candidate_on_new_slot
+    create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @carrack)
   end
 end

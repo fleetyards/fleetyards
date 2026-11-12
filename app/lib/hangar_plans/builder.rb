@@ -2,8 +2,8 @@
 
 module HangarPlans
   # Creates a plan, empty or filled from the hangar, the wishlist or another
-  # plan. Ships that share a model and fitting become one slot with a quantity,
-  # so a hangar of 30 Gladii does not need 30 slots.
+  # plan. Every ship takes a slot of its own, and ships that share a model and
+  # fitting sit next to each other.
   class Builder
     SOURCES = %w[empty hangar wishlist plan].freeze
 
@@ -37,11 +37,31 @@ module HangarPlans
           vehicle.vehicle_modules.map(&:model_module_id).sort, vehicle.vehicle_upgrades.map(&:model_upgrade_id).sort]
       end
 
-      groups.each do |(model_id, paint_id, module_ids, upgrade_ids), group|
-        slot = plan.slots.create!(label: group.first.model.name, quantity: group.size)
-        slot.candidates.create!(model_id:, model_paint_id: paint_id,
-          model_module_ids: module_ids, model_upgrade_ids: upgrade_ids)
-      end
+      ships = groups.flat_map { |fitting, group| group.map { |vehicle| [fitting, vehicle.model.name] } }
+      return if ships.empty?
+
+      check_slot_limit(ships.size)
+      slot_ids = ships.map { SecureRandom.uuid }
+      first = (plan.slots.maximum(:position) || -1) + 1
+      HangarPlanSlot.insert_all!(
+        ships.each_with_index.map do |(_, label), index|
+          {id: slot_ids[index], hangar_plan_id: plan.id, label:, position: first + index}
+        end
+      )
+      HangarPlanCandidate.insert_all!(
+        ships.zip(slot_ids).map do |((model_id, model_paint_id, model_module_ids, model_upgrade_ids), _), slot_id|
+          {hangar_plan_slot_id: slot_id, model_id:, model_paint_id:, model_module_ids:, model_upgrade_ids:}
+        end
+      )
+      plan.touch
+    end
+
+    # Bulk inserts skip the slot's own check.
+    private def check_slot_limit(count)
+      return if plan.slots.count + count <= HangarPlanSlot::MAX_PER_PLAN
+
+      plan.errors.add(:base, :wishlist_too_large, ships: count, count: HangarPlanSlot::MAX_PER_PLAN)
+      raise ActiveRecord::RecordInvalid, plan
     end
 
     # Routes and melts reference the user's own ships and pledges, so a copy
@@ -50,7 +70,10 @@ module HangarPlans
       plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at, :based_on_vehicle_ids))
 
       source_plan.slots.includes(:starts, candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
-        slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :quantity, :position))
+        # A plan split from slots that held several ships can be over the slot
+        # limit already, and its copy is no bigger.
+        slot = plan.slots.new(source_slot.slice(:label, :description, :filters, :position))
+        slot.save!(validate: false)
         source_slot.starts.each { |start| copy_acquisition(start, slot:) }
         source_slot.candidates.each do |source_candidate|
           candidate = slot.candidates.create!(

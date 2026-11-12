@@ -318,6 +318,7 @@ it:
           attributes:
             base:
               plan_limit_reached: "può contenere al massimo %{count} piani"
+              wishlist_too_large: "La tua lista dei desideri ha %{ships} navi, ma un piano ne contiene al massimo %{count}. Rimuovine alcune dalla lista o inizia il piano vuoto."
         character_face:
           attributes:
             base:
@@ -369,14 +370,12 @@ it:
               not_offered: "non è un prezzo a cui viene venduto questo articolo"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "ha percorsi per %{count} navi; rimuovi prima dei percorsi"
             base:
               slot_limit_reached: "può contenere al massimo %{count} slot"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "questo slot ha già un percorso per ciascuna delle sue navi"
+              slot_filled: "questo slot ha già un percorso"
               holder_invalid: "una partenza appartiene a una nave dello slot o a uno slot ancora senza navi"
               chain_mismatch: "il percorso deve terminare sulla nave dello slot"
               chain_broken: "ogni upgrade deve partire dalla nave su cui è terminato il passo precedente"

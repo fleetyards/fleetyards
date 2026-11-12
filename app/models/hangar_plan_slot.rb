@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
-# Something the user wants their hangar to cover, such as "main hauler" or
-# "3 escort fighters". With no candidate it is a gap, with one it is decided,
-# and with several the user has not picked yet.
+# One ship the user wants their hangar to cover, such as "main hauler" or
+# "escort fighter". With no candidate it is a gap, with one it is decided, and
+# with several the user has not picked yet.
 class HangarPlanSlot < ApplicationRecord
-  # A plan built from the hangar takes a slot per model and fitting, so these
-  # fit the largest real hangars: some hold over 200 models, a few a model more
-  # than 99 times.
   MAX_PER_PLAN = 500
-  MAX_QUANTITY = 999
   STATES = %w[open decided undecided].freeze
 
   # What the ships for this slot have to be, in the catalogue's own filter
@@ -28,9 +24,7 @@ class HangarPlanSlot < ApplicationRecord
   validates :label, presence: true, length: {maximum: 100}
   validates :description, length: {maximum: 2000}
   validate :filters_known
-  validates :quantity, numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_QUANTITY}
   validate :slot_limit, on: :create
-  validate :quantity_covers_routes, on: :update
 
   before_validation :normalize_filters
   before_create :append_position
@@ -66,15 +60,35 @@ class HangarPlanSlot < ApplicationRecord
     end
   end
 
-  # The first ship a slot gets takes the starts picked while it had none. They
-  # were valid when picked and the slot's count still bounds them, so a hangar
-  # ship lost since then stays flagged on its route rather than blocking the ship.
+  # The first ship a slot gets takes the start picked while it had none. It was
+  # valid when picked, so a hangar ship lost since then stays flagged on its
+  # route rather than blocking the ship.
   def hand_starts_to(candidate)
     starts.to_a.each do |start|
       start.assign_attributes(slot: nil, candidate:, start_model: start.start_model || candidate.model)
       start.save!(validate: false)
     end
     starts.reset
+  end
+
+  # Another ship of the same kind: the copy takes the shortlist as it stands,
+  # but none of the starts or routes, since those spend the user's ships and
+  # pledges, which a plan uses once. It lands right after this slot.
+  def copy!
+    transaction do
+      hangar_plan.lock!
+      renumber_plan_slots
+      reload
+      hangar_plan.slots.where("position > ?", position).update_all("position = position + 1")
+
+      copy = hangar_plan.slots.create!(slice(:label, :description, :filters).merge(position: position + 1))
+      rows = candidates.map do |candidate|
+        candidate.slice(:model_id, :model_paint_id, :model_module_ids, :model_upgrade_ids, :position)
+          .merge(hangar_plan_slot_id: copy.id)
+      end
+      HangarPlanCandidate.insert_all!(rows) if rows.any?
+      copy
+    end
   end
 
   # Whether a ship meets every filter the slot sets. A ship can be planned
@@ -120,21 +134,11 @@ class HangarPlanSlot < ApplicationRecord
     end
   end
 
-  # Routes beyond the quantity would still hold on to the ships and upgrades
-  # they spend, so they have to go first.
-  private def quantity_covers_routes
-    return unless quantity_changed?
-
-    routes = HangarPlanAcquisition.where(hangar_plan_candidate_id: candidates.select(:id))
-      .group(:hangar_plan_candidate_id).count.values.max || starts.count
-    errors.add(:quantity, :below_routes, count: routes) if quantity.to_i < routes
-  end
-
   # Upgrades that led to the ship leaving go with it; the start stays and waits
-  # for its route to the ship that takes it. Starts beyond the slot's count go
-  # with the ship that held them.
+  # for its route to the ship that takes it. A start the heir has no room for
+  # goes with the ship that held it.
   private def hand_over_starts(leaving, heir)
-    room = quantity - heir.acquisitions.count
+    room = 1 - heir.acquisitions.count
     HangarPlanAcquisition.where(candidate: leaving).includes(:upgrade_steps).order(:created_at).each do |acquisition|
       break if room <= 0
 
@@ -164,6 +168,20 @@ class HangarPlanSlot < ApplicationRecord
     end
     candidate.acquisitions.reset
     starts.reset
+  end
+
+  # Positions can tie, which the plan breaks by creation time; inserting after
+  # a slot needs them to be distinct first.
+  private def renumber_plan_slots
+    sql = <<~SQL.squish
+      UPDATE hangar_plan_slots SET position = ordered.index
+      FROM (
+        SELECT id, row_number() OVER (ORDER BY position, created_at, id) - 1 AS index
+        FROM hangar_plan_slots WHERE hangar_plan_id = ?
+      ) ordered
+      WHERE hangar_plan_slots.id = ordered.id
+    SQL
+    self.class.connection.exec_update(self.class.sanitize_sql_array([sql, hangar_plan_id]))
   end
 
   private def slot_limit

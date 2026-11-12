@@ -318,6 +318,7 @@ zh-CN:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 个计划"
+              wishlist_too_large: "你的愿望单有 %{ships} 艘舰船，但一个计划最多只能容纳 %{count} 艘。请从愿望单中移除一些，或从空计划开始。"
         character_face:
           attributes:
             base:
@@ -369,14 +370,12 @@ zh-CN:
               not_offered: "不是该物品的售价"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "已有 %{count} 艘舰船的获取途径，请先删除途径"
             base:
               slot_limit_reached: "最多只能有 %{count} 个槽位"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "此槽位的每艘舰船都已有获取路线"
+              slot_filled: "此槽位已有获取路线"
               holder_invalid: "起点属于此槽位的某艘舰船，或属于尚无舰船的槽位"
               chain_mismatch: "获取路线必须以该槽位的舰船结束"
               chain_broken: "每次升级都必须从上一步结束的舰船开始"

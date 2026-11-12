@@ -165,6 +165,7 @@ it:
     hangar_plan_slots:
       create: "Impossibile aggiungere lo slot."
       update: "Impossibile aggiornare lo slot."
+      copy: "Impossibile copiare lo slot."
     hangar_plan_candidates:
       create: "Impossibile aggiungere la nave allo slot."
       update: "Impossibile aggiornare la nave."

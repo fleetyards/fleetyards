@@ -159,7 +159,6 @@ const candidate = (shipModel: HangarPlanModel): HangarPlanCandidate => ({
 const slot = (candidates: HangarPlanCandidate[]): HangarPlanSlot => ({
   id: "mining",
   label: "Solo Miner",
-  quantity: 1,
   position: 0,
   state:
     candidates.length > 1

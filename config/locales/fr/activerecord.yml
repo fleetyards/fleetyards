@@ -318,6 +318,7 @@ fr:
           attributes:
             base:
               plan_limit_reached: "peut contenir au plus %{count} plans"
+              wishlist_too_large: "Ta liste de souhaits compte %{ships} vaisseaux, mais un plan en contient au plus %{count}. Retires-en quelques-uns ou commence le plan vide."
         character_face:
           attributes:
             base:
@@ -369,14 +370,12 @@ fr:
               not_offered: "n'est pas un prix auquel cet article est vendu"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "a des voies pour %{count} vaisseaux ; supprimez d'abord des voies"
             base:
               slot_limit_reached: "peut contenir au plus %{count} emplacements"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "cet emplacement a déjà un parcours pour chacun de ses vaisseaux"
+              slot_filled: "cet emplacement a déjà un parcours"
               holder_invalid: "un départ appartient à un vaisseau de l'emplacement, ou à un emplacement encore sans vaisseau"
               chain_mismatch: "le parcours doit se terminer sur le vaisseau de l'emplacement"
               chain_broken: "chaque amélioration doit partir du vaisseau où s'est terminée l'étape précédente"

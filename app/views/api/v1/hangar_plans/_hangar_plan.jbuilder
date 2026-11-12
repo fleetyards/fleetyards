@@ -43,7 +43,6 @@ json.slots slots do |slot|
   json.label slot.label
   json.description slot.description
   json.filters slot.filters.slice(*HangarPlanSlot::FILTERS).transform_keys { |key| key.camelize(:lower) }
-  json.quantity slot.quantity
   json.position slot.position
   json.state slot.state
 

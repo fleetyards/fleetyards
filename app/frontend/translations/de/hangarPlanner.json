@@ -36,6 +36,7 @@
       "editSlot": "Slot bearbeiten",
       "editSlotOf": "%{slot} bearbeiten",
       "slotSettings": "Name und Filter",
+      "copySlot": "Slot kopieren",
       "removeSlot": "Slot entfernen",
       "confirmRemoveSlot": "Diesen Slot samt Schiffen und Wegen entfernen?",
       "openSlotHint": "Noch kein Schiff gewählt. Füge ein Schiff hinzu – oder mehrere, wenn du dich noch nicht entschieden hast.",
@@ -79,7 +80,6 @@
         "sourcePlan": "Zu kopierender Plan",
         "slotLabel": "Rolle",
         "slotLabelPlaceholder": "z. B. Haupt-Frachter",
-        "quantity": "Schiffe",
         "startKind": "Beginnt als",
         "ownedShip": "Schiff aus deinem Hangar",
         "buyback": "Buy-Back-Pledge",
@@ -240,7 +240,6 @@
             "one": "%{count} Upgrade · %{price}",
             "other": "%{count} Upgrades · %{price}"
           },
-          "shipOf": "Schiff %{number} von %{count}",
           "noRoute": "Noch kein Weg",
           "planRoute": "Weg planen",
           "noUpgrade": "Kein Upgrade möglich",

@@ -36,6 +36,7 @@
       "editSlot": "Edit slot",
       "editSlotOf": "Edit %{slot}",
       "slotSettings": "Name and filters",
+      "copySlot": "Copy slot",
       "removeSlot": "Remove slot",
       "confirmRemoveSlot": "Remove this slot together with its ships and routes?",
       "openSlotHint": "No ship picked yet. Add one ship, or several if you are undecided.",
@@ -79,7 +80,6 @@
         "sourcePlan": "Plan to copy",
         "slotLabel": "Role",
         "slotLabelPlaceholder": "e.g. Main hauler",
-        "quantity": "Ships",
         "startKind": "Starts as",
         "ownedShip": "Ship from your hangar",
         "buyback": "Buy-back pledge",
@@ -240,7 +240,6 @@
             "one": "%{count} upgrade · %{price}",
             "other": "%{count} upgrades · %{price}"
           },
-          "shipOf": "ship %{number} of %{count}",
           "noRoute": "No route yet",
           "planRoute": "Plan route",
           "noUpgrade": "No upgrade possible",

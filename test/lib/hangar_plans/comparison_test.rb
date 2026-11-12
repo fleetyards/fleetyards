@@ -61,7 +61,7 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     create(:vehicle, user: @user, model: @cutlass)
     create(:vehicle, user: @user, model: @constellation)
     slot_for(@carrack)
-    slot_for(@cutlass, quantity: 2)
+    2.times { slot_for(@cutlass) }
     undecided = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot: undecided, model: @constellation)
     create(:hangar_plan_candidate, slot: undecided, model: @carrack)
@@ -69,7 +69,7 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     changes = HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.change] }
 
     # The Constellation is in no slot and not melted, so it stays; the Cutlass
-    # left out fills one of the two Cutlass units, which still have no route.
+    # left out fills one of the two Cutlass slots, which still have no route.
     assert_equal({"Carrack" => "added", "Constellation Andromeda" => "unchanged", "Cutlass Black" => "more"}, changes)
   end
 
@@ -118,12 +118,12 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal({melted.id => "melted", sibling.id => "melted"}, statuses)
   end
 
-  test "units of a decided slot without a route are gaps" do
-    slot_for(@carrack, quantity: 2)
+  test "decided slots without a route are gaps" do
+    2.times { slot_for(@carrack) }
 
-    gap = HangarPlans::Comparison.new(@plan).gaps.first
+    gaps = HangarPlans::Comparison.new(@plan).gaps
 
-    assert_equal [@carrack, 2], [gap.model, gap.count]
+    assert_equal [[@carrack, 1], [@carrack, 1]], gaps.map { |gap| [gap.model, gap.count] }
   end
 
   test "upgrade names from the RSI hangar resolve to ships" do
@@ -244,8 +244,8 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
       HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.right_count] })
   end
 
-  private def slot_for(model, quantity: 1)
-    slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity:)
+  private def slot_for(model)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot:, model:)
   end
 end

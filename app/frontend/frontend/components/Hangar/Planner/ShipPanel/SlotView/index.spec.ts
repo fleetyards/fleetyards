@@ -41,7 +41,6 @@ const caterpillar = candidate("Caterpillar", 330, { matchesFilters: false });
 const slot: HangarPlanSlot = {
   id: "slot",
   label: "Main hauler",
-  quantity: 1,
   position: 0,
   state: HangarPlanSlotStateEnum.UNDECIDED,
   filters: { cargoGteq: 50 },
@@ -74,6 +73,7 @@ const chooseMutate = vi.fn((_input: unknown) => Promise.resolve(plan));
 const createMutate = vi.fn((_input: unknown) => Promise.resolve(plan));
 const removeCandidateMutate = vi.fn((_input: unknown) => Promise.resolve(plan));
 const removeSlotMutate = vi.fn((_input: unknown) => Promise.resolve(plan));
+const copySlotMutate = vi.fn((_input: unknown) => Promise.resolve(plan));
 const updateAcquisitionMutate = vi.fn((_input: unknown) =>
   Promise.resolve(plan),
 );
@@ -98,6 +98,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useCreateHangarPlanCandidate: () => mutation(createMutate),
   useDestroyHangarPlanCandidate: () => mutation(removeCandidateMutate),
   useDestroyHangarPlanSlot: () => mutation(removeSlotMutate),
+  useCopyHangarPlanSlot: () => mutation(copySlotMutate),
   useUpdateHangarPlanAcquisition: () => mutation(updateAcquisitionMutate),
 }));
 
@@ -353,6 +354,35 @@ describe("Hangar/Planner/ShipPanel/SlotView", () => {
       id: "slot",
     });
     expect(wrapper.emitted("done")).toHaveLength(1);
+  });
+
+  it("copies the slot and keeps it open", async () => {
+    const copied = { ...plan, slots: [slot, { ...slot, id: "copy" }] };
+    copySlotMutate.mockResolvedValueOnce(copied);
+    const wrapper = await mount();
+
+    await wrapper.find('[data-test="hangar-plan-slot-copy"]').trigger("click");
+    await flushPromises();
+
+    expect(copySlotMutate).toHaveBeenCalledWith({
+      hangarPlanId: "plan",
+      id: "slot",
+    });
+    expect(updatePlan).toHaveBeenCalledWith(copied);
+    expect(wrapper.emitted("done")).toBeUndefined();
+  });
+
+  it("says so when copying the slot fails", async () => {
+    copySlotMutate.mockRejectedValueOnce(new Error("400"));
+    const wrapper = await mount();
+
+    await wrapper.find('[data-test="hangar-plan-slot-copy"]').trigger("click");
+    await flushPromises();
+
+    expect(updatePlan).not.toHaveBeenCalled();
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "That did not work. Please check your input.",
+    });
   });
 
   it("opens the slot's settings", async () => {

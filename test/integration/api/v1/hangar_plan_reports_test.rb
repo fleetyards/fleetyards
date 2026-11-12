@@ -138,9 +138,10 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     HangarPlans::Builder.new(@plan, source: "hangar").run
     candidate = @plan.slots.create!(label: "Cutlass Black").candidates.create!(model: @cutlass)
     @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: @owned)
-    @carrack_slot = @plan.slots.create!(label: "Explorer", quantity: 2)
+    @carrack_slot = @plan.slots.create!(label: "Explorer")
     @carrack_candidate = @carrack_slot.candidates.create!(model: @carrack)
     @plan.acquisitions.create!(candidate: @carrack_candidate, start_kind: "store", start_model: @carrack)
+    @free_carrack_candidate = @carrack_slot.copy!.candidates.first
     sign_in @user
   end
 
@@ -232,7 +233,7 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
       bought = create(:vehicle, user: @user, model: @carrack)
 
       assert_api_response :put, 200, api_path: "/hangar/plans/{id}/rebase", path_params: {id: @plan.id} do
-        assert_equal 2, parsed_body["slots"].size
+        assert_equal 3, parsed_body["slots"].size
         assert_includes parsed_body["vehicleMarks"].map { |mark| mark.values_at("vehicleId", "mark") }, [bought.id, "pending"]
       end
     end
@@ -271,7 +272,7 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
 
   test "GET resources lists the other ships of a pledge the plan buys back, and which start takes each" do
     pledge = create(:buyback_pledge, user: @user, kind: "package", name: "Package - Duo", ship_names: ["Carrack", "Cutlass Black"])
-    pledge_start = @plan.acquisitions.create!(candidate: @carrack_candidate, start_kind: "buyback", buyback_pledge: pledge,
+    pledge_start = @plan.acquisitions.create!(candidate: @free_carrack_candidate, start_kind: "buyback", buyback_pledge: pledge,
       start_model: @carrack)
 
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do

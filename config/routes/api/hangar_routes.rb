@@ -68,6 +68,7 @@ resource :hangar, only: %i[show destroy] do
     resources :hangar_plan_slots, path: "slots", only: %i[create update destroy] do
       put :sort, on: :collection
       put :choose, on: :member
+      post :copy, on: :member
     end
     resources :hangar_plan_candidates, path: "candidates", only: %i[create update destroy]
     resources :hangar_plan_acquisitions, path: "acquisitions", only: %i[create update destroy]

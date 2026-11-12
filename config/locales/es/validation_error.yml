@@ -168,6 +168,7 @@ es:
     hangar_plan_slots:
       create: "No se pudo añadir el hueco."
       update: "No se pudo actualizar el hueco."
+      copy: "No se pudo copiar el hueco."
     hangar_plan_candidates:
       create: "No se pudo añadir la nave al hueco."
       update: "No se pudo actualizar la nave."

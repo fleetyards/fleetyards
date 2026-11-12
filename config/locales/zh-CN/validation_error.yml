@@ -164,6 +164,7 @@ zh-CN:
     hangar_plan_slots:
       create: "无法添加槽位。"
       update: "无法更新槽位。"
+      copy: "无法复制槽位。"
     hangar_plan_candidates:
       create: "无法将舰船添加到槽位。"
       update: "无法更新舰船。"

@@ -4094,3 +4094,30 @@ PUT /hangar/plans/{id}/share added the new `bundled` enum value to the `slots/it
 PUT /hangar/plans/{id}/share added the new `bundled` enum value to the `slots/items/starts/items/startKind` response property for the response status `200`
 GET /public/hangar-plans/{token} added the new `bundled` enum value to the `slots/items/candidates/items/acquisitions/items/startKind` response property for the response status `200`
 GET /public/hangar-plans/{token} added the new `bundled` enum value to the `slots/items/starts/items/startKind` response property for the response status `200`
+DELETE /hangar/plans/{hangarPlanId}/acquisitions/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+DELETE /hangar/plans/{hangarPlanId}/candidates/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+DELETE /hangar/plans/{hangarPlanId}/melts/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+DELETE /hangar/plans/{hangarPlanId}/slots/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+DELETE /hangar/plans/{hangarPlanId}/vehicle-marks/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+DELETE /hangar/plans/{id}/share removed the required property `slots/items/quantity` from the response with the `200` status
+GET /hangar/plans/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+GET /public/hangar-plans/{token} removed the required property `slots/items/quantity` from the response with the `200` status
+POST /hangar/plans removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/acquisitions removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/candidates removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/keeps removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/melts removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/slots removed the request property `quantity`
+POST /hangar/plans/{hangarPlanId}/slots removed the required property `slots/items/quantity` from the response with the `201` status
+POST /hangar/plans/{hangarPlanId}/vehicle-marks removed the required property `slots/items/quantity` from the response with the `201` status
+PUT /hangar/plans/{hangarPlanId}/acquisitions/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/candidates/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/melts/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/slots/{id} removed the request property `quantity`
+PUT /hangar/plans/{hangarPlanId}/slots/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/slots/{id}/choose removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/slots/sort removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{hangarPlanId}/vehicle-marks/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{id} removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{id}/rebase removed the required property `slots/items/quantity` from the response with the `200` status
+PUT /hangar/plans/{id}/share removed the required property `slots/items/quantity` from the response with the `200` status

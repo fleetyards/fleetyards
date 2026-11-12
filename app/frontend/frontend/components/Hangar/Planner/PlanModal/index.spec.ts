@@ -11,13 +11,21 @@ const me = ref<Partial<User> | undefined>();
 const update = vi.fn((_variables: unknown) =>
   Promise.resolve({} as HangarPlan),
 );
+const create = vi.fn((_variables: unknown) =>
+  Promise.resolve({ id: "plan-2" } as HangarPlan),
+);
+const displayAlert = vi.fn();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useMe: () => ({ data: me }),
   useHangarPlans: () => ({ data: ref([]) }),
-  useCreateHangarPlan: () => ({ mutateAsync: vi.fn() }),
+  useCreateHangarPlan: () => ({ mutateAsync: create }),
   useUpdateHangarPlan: () => ({ mutateAsync: update }),
+}));
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displaySuccess: vi.fn(), displayAlert }),
 }));
 
 vi.mock("vue-router", async (importOriginal) => ({
@@ -48,6 +56,8 @@ describe("HangarPlannerPlanModal", () => {
   beforeEach(() => {
     me.value = { rsiStoreCredit: 849.56 };
     update.mockClear();
+    create.mockClear();
+    displayAlert.mockClear();
   });
 
   it("shows the synced credit on a new plan", async () => {
@@ -92,5 +102,36 @@ describe("HangarPlannerPlanModal", () => {
       id: "plan-1",
       data: expect.objectContaining({ startingCredit: null }),
     });
+  });
+
+  it("says why a plan could not be built", async () => {
+    const reason =
+      "Your wishlist has 501 ships, but a plan holds at most 500. Remove some from the wishlist, or start the plan empty.";
+    create.mockRejectedValueOnce({
+      isAxiosError: true,
+      response: {
+        data: {
+          code: "validation_error.hangar_plans.create",
+          errors: [
+            {
+              attribute: "base",
+              messages: [{ code: "wishlist_too_large", message: reason }],
+            },
+          ],
+        },
+      },
+    });
+    const wrapper = await mountWithDefaults(Component);
+
+    await wrapper
+      .findAllComponents({ name: "FormInput" })
+      .find((input) => input.props("name") === "name")!
+      .find("input")
+      .setValue("From the wishlist");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(create).toHaveBeenCalled();
+    expect(displayAlert).toHaveBeenCalledWith({ text: reason });
   });
 });

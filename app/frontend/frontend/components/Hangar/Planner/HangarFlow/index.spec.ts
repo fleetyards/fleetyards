@@ -48,7 +48,6 @@ const slot = (
 ): HangarPlanSlot => ({
   id,
   label: id,
-  quantity: 1,
   position: 0,
   state,
   filters: {},
@@ -128,6 +127,14 @@ const plan: HangarPlan = {
     slot("Mining", HangarPlanSlotStateEnum.UNDECIDED),
   ],
 };
+
+const withoutRoute = (decided: HangarPlanSlot): HangarPlanSlot => ({
+  ...decided,
+  candidates: decided.candidates.map((candidate) => ({
+    ...candidate,
+    acquisitions: [],
+  })),
+});
 
 const comparison: HangarPlanComparison = {
   vehicles: [
@@ -485,10 +492,10 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect([candidate.id, acquisition.id]).toEqual(["vulture", "kept"]);
   });
 
-  it("offers a start for a slot's units without one, and ships for an empty slot", async () => {
+  it("offers a start for a slot without one, and ships for an empty slot", async () => {
     const empty = slot("Hauler", HangarPlanSlotStateEnum.OPEN);
     const [explorer, ...rest] = plan.slots;
-    const short = { ...explorer, quantity: 2 };
+    const short = withoutRoute(explorer);
     const wrapper = await mountWithDefaults(Component, {
       props: {
         plan: { ...plan, slots: [short, ...rest, empty] },
@@ -533,7 +540,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       "carrack",
       undefined,
     ]);
-    // A unit without a start has no route to plan yet: its middle asks for
+    // A slot without a start has no route to plan yet: its middle asks for
     // the start as well.
     expect(opened(wrapper, "route")).toBeUndefined();
     expect(opened(wrapper, "start")).toHaveLength(2);
@@ -541,10 +548,10 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect(wrapper.emitted("editSlot")).toEqual([[empty]]);
   });
 
-  it("prices a slot's units without a start, outside the total", async () => {
+  it("prices a slot without a start, outside the total", async () => {
     const [explorer, ...rest] = plan.slots;
     const props = {
-      plan: { ...plan, slots: [{ ...explorer, quantity: 2 }, ...rest] },
+      plan: { ...plan, slots: [withoutRoute(explorer), ...rest] },
       comparison: {
         ...comparison,
         gaps: [
@@ -765,7 +772,6 @@ describe("Hangar/Planner/HangarFlow", () => {
     const openSlot = (attrs: Partial<HangarPlanSlot> = {}): HangarPlanSlot => ({
       id: "open",
       label: "Fighter",
-      quantity: 1,
       position: 0,
       state: HangarPlanSlotStateEnum.OPEN,
       filters: {},
@@ -814,9 +820,8 @@ describe("Hangar/Planner/HangarFlow", () => {
       expect(opened(wrapper, "slot")).toEqual([[slot]]);
     });
 
-    it("names a ship to buy by how it is got, and keeps a row for the unit left", async () => {
+    it("names a ship to buy by how it is got, in place of the open row", async () => {
       const slot = openSlot({
-        quantity: 2,
         starts: [
           {
             id: "start",
@@ -832,7 +837,7 @@ describe("Hangar/Planner/HangarFlow", () => {
         wrapper.find('[data-test="hangar-plan-flow-held"]').text(),
       ).toContain("Store purchase");
       expect(wrapper.find('[data-test="hangar-plan-flow-open"]').exists()).toBe(
-        true,
+        false,
       );
     });
 
@@ -877,6 +882,18 @@ describe("Hangar/Planner/HangarFlow", () => {
       expect(
         row.find('[data-test="hangar-plan-flow-slot-remove"]').exists(),
       ).toBe(true);
+    });
+
+    it("copies the slot from its row", async () => {
+      const slot = openSlot();
+      const wrapper = await mountOpen(slot);
+
+      await wrapper
+        .find('[data-test="hangar-plan-flow-open"]')
+        .find('[data-test="hangar-plan-flow-slot-copy"]')
+        .trigger("click");
+
+      expect(wrapper.emitted("copySlot")).toEqual([[slot]]);
     });
   });
 

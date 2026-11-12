@@ -320,6 +320,7 @@ en:
           attributes:
             base:
               plan_limit_reached: "can hold at most %{count} plans"
+              wishlist_too_large: "Your wishlist has %{ships} ships, but a plan holds at most %{count}. Remove some from the wishlist, or start the plan empty."
         character_face:
           attributes:
             base:
@@ -371,14 +372,12 @@ en:
               not_offered: "is not a price this item is sold at"
         hangar_plan_slot:
           attributes:
-            quantity:
-              below_routes: "has routes for %{count} ships; remove routes first"
             base:
               slot_limit_reached: "can hold at most %{count} slots"
         hangar_plan_acquisition:
           attributes:
             base:
-              slot_filled: "this slot already has a route for each of its ships"
+              slot_filled: "this slot already has a route"
               holder_invalid: "a start belongs to a ship of the slot, or to a slot with no ships yet"
               chain_mismatch: "the route has to end on the slot's ship"
               chain_broken: "each upgrade has to start on the ship the step before ended on"
