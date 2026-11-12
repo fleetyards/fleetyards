@@ -195,6 +195,7 @@ class FleetSquadron < ApplicationRecord
       .where(id: FleetEventSlotCandidate.waiting
         .where(fleet_squadron_membership_id: fleet_squadron_memberships.select(:id))
         .select(:fleet_event_slot_id))
+      .unscope(:order)
       .find_each { |slot| FleetEvents::SlotInvites.new(slot).offer! }
   end
 
