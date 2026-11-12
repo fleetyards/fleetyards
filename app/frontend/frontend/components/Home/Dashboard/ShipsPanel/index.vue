@@ -35,18 +35,13 @@ const { data, isLoading, isFetching, isLoadingError } = useHangar(
 
 const vehicles = computed(() => data.value?.items || []);
 
+const hasFlagship = computed(() => !!vehicles.value[0]?.flagship);
+
 // A flagship stands in the header already.
 const listed = computed(() =>
-  vehicles.value[0]?.flagship
+  hasFlagship.value
     ? vehicles.value.slice(1)
     : vehicles.value.slice(0, SHIPS_LISTED),
-);
-
-const remaining = computed(() =>
-  Math.max(
-    (data.value?.meta.pagination?.totalCount || 0) - vehicles.value.length,
-    0,
-  ),
 );
 
 const { data: lastRead } = useSyncRsiHangarLastRead({
@@ -68,10 +63,22 @@ const subFor = (vehicle: Vehicle) =>
 const grid = useTemplateRef<HTMLElement>("grid");
 
 const shown = useFullRows(grid, listed, 2);
+
+// Everything neither here nor in the header, rows cut to fit included.
+const remaining = computed(() =>
+  Math.max(
+    (data.value?.meta.pagination?.totalCount || 0) -
+      shown.value.length -
+      (hasFlagship.value ? 1 : 0),
+    0,
+  ),
+);
 </script>
 
 <template>
+  <!-- A hangar of only the flagship has said everything in the header. -->
   <DashboardPanel
+    v-if="isLoading || isLoadingError || listed.length || !vehicles.length"
     :title="t('home.dashboard.ships.title')"
     :pending="isLoading"
     :fetching="isFetching"
