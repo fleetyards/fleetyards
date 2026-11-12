@@ -3,6 +3,7 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   type Fleet,
   type FleetSquadron,
@@ -61,6 +62,8 @@ export const useSquadronForm = (
 
   const isEdit = computed(() => !!squadron?.value);
 
+  const { isFleetSquadronFlightsEnabled } = useFeatures();
+
   const submitting = ref(false);
 
   const validationSchema = {
@@ -77,7 +80,9 @@ export const useSquadronForm = (
       description: squadron?.value?.description ?? "",
       color: squadron?.value?.color ?? NEUTRAL_COLOR,
       team: squadron?.value?.team ?? false,
-      flightsEnabled: squadron?.value?.flightsEnabled ?? false,
+      // A squadron starts with flights and a team without them.
+      flightsEnabled:
+        squadron?.value?.flightsEnabled ?? !(squadron?.value?.team ?? false),
       discordChannelId: squadron?.value?.discordChannelId ?? null,
       icon: undefined as string | undefined,
     },
@@ -94,6 +99,15 @@ export const useSquadronForm = (
   const [color, colorProps] = defineField("color");
   const [team, teamProps] = defineField("team");
   const [flightsEnabled, flightsEnabledProps] = defineField("flightsEnabled");
+
+  // A new squadron's flights follow its kind until somebody sets them.
+  let flightsChosen = false;
+  watch(flightsEnabled, (value) => {
+    if (value !== !team.value) flightsChosen = true;
+  });
+  watch(team, (value) => {
+    if (!isEdit.value && !flightsChosen) flightsEnabled.value = !value;
+  });
   const [discordChannelId, discordChannelIdProps] =
     defineField("discordChannelId");
   const [icon, iconProps] = defineField("icon");
@@ -132,7 +146,11 @@ export const useSquadronForm = (
       description: values.description || null,
       color: colorToSubmit(values.color, squadron?.value?.color),
       team: values.team,
-      flightsEnabled: values.flightsEnabled,
+      // Left out while the fleet has no flights, so the squadron's own default
+      // or its earlier choice stands.
+      ...(isFleetSquadronFlightsEnabled(fleet.value)
+        ? { flightsEnabled: values.flightsEnabled }
+        : {}),
       discordChannelId: values.discordChannelId || null,
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.

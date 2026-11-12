@@ -258,4 +258,18 @@ class FleetSquadronTest < ActiveSupport::TestCase
       assert_nil mission_team.reload.fleet_squadron_id
     end
   end
+
+  test "a squadron starts with flights and a team without them" do
+    fleet = create(:fleet)
+
+    assert create(:fleet_squadron, fleet:).flights_enabled?
+    assert_not create(:fleet_squadron, fleet:, team: true).flights_enabled?
+  end
+
+  test "a creator's choice of flights stands" do
+    fleet = create(:fleet)
+
+    assert_not create(:fleet_squadron, fleet:, flights_enabled: false).flights_enabled?
+    assert create(:fleet_squadron, fleet:, team: true, flights_enabled: true).flights_enabled?
+  end
 end

@@ -107,6 +107,16 @@ class FleetSquadron < ApplicationRecord
   # database, where no touch reaches the event or template they belong to.
   before_destroy :touch_team_parents
 
+  # A squadron flies together, so it starts with flights; a team is a side
+  # group members join on top of their squadron and starts without them.
+  # Whatever the creator chose stands.
+  before_validation :default_flights_enabled, on: :create
+
+  def flights_enabled=(value)
+    @flights_enabled_chosen = true
+    super
+  end
+
   # Switching flights back on picks up the invitations it held back. Flagged by
   # the save that switches them, because a touch later commits with that save's
   # changes still on record.
@@ -173,6 +183,10 @@ class FleetSquadron < ApplicationRecord
   private def touch_team_parents
     FleetEvent.where(id: fleet_event_teams.select(:fleet_event_id)).touch_all
     Mission.where(id: mission_teams.select(:mission_id)).touch_all
+  end
+
+  private def default_flights_enabled
+    self.flights_enabled = !team? unless @flights_enabled_chosen
   end
 
   private def offer_held_slots
