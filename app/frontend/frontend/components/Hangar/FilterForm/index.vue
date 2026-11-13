@@ -41,8 +41,7 @@ const weaponSize = (value: unknown) => Number(value) || undefined;
 
 const prefillFormValues = () => {
   return {
-    searchCont: filters.value.searchCont,
-    nameCont: filters.value.nameCont,
+    searchCont: filters.value.searchCont || filters.value.nameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
     bundledEq: filters.value.bundledEq,
@@ -118,7 +117,7 @@ const hasGroupFilters = (keys: string[]) =>
       :label="t('filteredList.groups.ship')"
       :active="
         hasGroupFilters([
-          'nameCont',
+          'searchCont',
           'manufacturerIn',
           'productionStatusIn',
           'classificationIn',
@@ -131,7 +130,7 @@ const hasGroupFilters = (keys: string[]) =>
       default-open
     >
       <FormInput
-        v-model="form.nameCont"
+        v-model="form.searchCont"
         name="vehicle-name"
         translation-key="filters.vehicles.name"
         :no-label="true"
