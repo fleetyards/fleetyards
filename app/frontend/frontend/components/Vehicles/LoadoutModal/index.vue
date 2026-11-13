@@ -43,6 +43,7 @@ import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import LoadoutServicingAreas from "@/frontend/components/Loadout/ServicingAreas/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { previewSlotsFromFitting } from "@/frontend/utils/loadoutPreview";
 import { useHoloShareInsets } from "@/frontend/composables/useHoloShareInsets";
@@ -85,6 +86,7 @@ import {
   useModelModules as useModelModulesQuery,
   useVehicleLoadoutSlots,
   useVehicleLoadouts,
+  type ModelLoadoutPreviewServicingArea,
 } from "@/services/fyApi";
 
 type Props = {
@@ -373,6 +375,17 @@ const seeThrough = computed(
     previewShown.value &&
     !modulesAsyncStatus.isError.value &&
     !hullSlotsAsyncStatus.isError.value,
+);
+
+// Where the ship services the ships landed in it, drawn on the holo on demand.
+const servicingAreas = ref<ModelLoadoutPreviewServicingArea[]>([]);
+const servicingAreasShown = ref(false);
+const pointedArea = ref<string>();
+
+const servicingAreasToggleLabel = computed(() =>
+  servicingAreasShown.value
+    ? t("actions.vehicleLoadout.hideServicingAreas")
+    : t("actions.vehicleLoadout.showServicingAreas"),
 );
 
 const figuresToggleLabel = computed(() =>
@@ -1545,6 +1558,9 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @absent="previewAbsent = $event"
             @select="onPreviewSelect"
             @point="onPreviewPoint"
+            :servicing-areas="servicingAreasShown"
+            :highlighted-area="pointedArea"
+            @servicing-areas="servicingAreas = $event"
           />
         </div>
       </div>
@@ -1560,6 +1576,18 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             <span v-html="vehicle.model.manufacturer?.name" />
             <strong>{{ vehicle.model.name }}</strong>
           </p>
+          <Btn
+            v-if="previewShown && servicingAreas.length"
+            variant="bare"
+            :aria-label="servicingAreasToggleLabel"
+            v-tooltip="servicingAreasToggleLabel"
+            :aria-pressed="servicingAreasShown"
+            :active="servicingAreasShown"
+            data-test="vehicle-loadout-servicing-areas-toggle"
+            @click="servicingAreasShown = !servicingAreasShown"
+          >
+            <i class="fa-solid fa-screwdriver-wrench" />
+          </Btn>
           <Btn
             variant="bare"
             :aria-label="figuresToggleLabel"
@@ -1589,6 +1617,14 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 class="vehicle-loadout__card"
               />
             </Transition>
+
+            <LoadoutServicingAreas
+              v-if="previewShown && servicingAreasShown"
+              :title="t('labels.vehicleLoadout.servicingAreas')"
+              :areas="servicingAreas"
+              test-id="vehicle-loadout-servicing-areas"
+              @point="pointedArea = $event"
+            />
 
             <LoadoutChanges
               v-if="changedFigures.length"
