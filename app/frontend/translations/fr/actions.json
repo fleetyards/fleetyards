@@ -653,8 +653,10 @@
         "linkInstead": "Lier un build à la place",
         "createOnFleetyards": "Créer un loadout sur Fleetyards",
         "viewLoadout": "Voir l’équipement",
+        "hideServicingAreas": "Masquer les zones de service",
         "hideFigures": "Masquer les valeurs",
-        "showFigures": "Afficher les valeurs"
+        "showFigures": "Afficher les valeurs",
+        "showServicingAreas": "Afficher les zones de service"
       },
       "hangarPledgeItems": {
         "addToInventory": "Ajouter à l'inventaire",

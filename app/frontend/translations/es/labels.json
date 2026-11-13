@@ -5177,6 +5177,7 @@
           }
         },
         "againstStock": "Cambios respecto a la nave de serie",
+        "servicingAreas": "Zonas de servicio",
         "crafted": "Fabricado",
         "craftedPart": "%{name} (fabricado)",
         "fitted": "Equipado",

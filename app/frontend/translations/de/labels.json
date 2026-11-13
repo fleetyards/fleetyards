@@ -5177,6 +5177,7 @@
           }
         },
         "againstStock": "Änderungen gegenüber dem Serienschiff",
+        "servicingAreas": "Servicebereiche",
         "crafted": "Hergestellt",
         "craftedPart": "%{name} (hergestellt)",
         "fitted": "Verbaut",
