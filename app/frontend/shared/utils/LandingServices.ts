@@ -1,4 +1,5 @@
 import type { LandingServiceEnum } from "@/services/fyApi";
+import type { i18nHelpers } from "@/shared/utils/I18nHelpers";
 
 // Both fuels, rearm and repair, in the order the services read: fuel first.
 export const LANDING_SERVICE_ORDER: LandingServiceEnum[] = [
@@ -54,3 +55,28 @@ export const landingServicesText = (
 
   return parts.length ? parts.join(", ") : undefined;
 };
+
+type ServicingAreaSource = {
+  name?: string | null;
+  width: number;
+  length: number;
+  height: number;
+};
+
+type ServicingAreaHelpers = Pick<ReturnType<typeof i18nHelpers>, "toNumber"> & {
+  t: (scope: string, options?: Record<string, unknown>) => string;
+};
+
+// What an area is called, with its 1-based number on the ship's page when no
+// admin named it, and its size as length, width and height.
+export const servicingAreaLabel = (
+  area: ServicingAreaSource,
+  index: number,
+  { t }: Pick<ServicingAreaHelpers, "t">,
+) => area.name || t("model.servicingArea", { index });
+
+export const servicingAreaSize = (
+  area: ServicingAreaSource,
+  { toNumber }: Pick<ServicingAreaHelpers, "toNumber">,
+) =>
+  `${toNumber(area.length)} × ${toNumber(area.width)} × ${toNumber(area.height)} m`;

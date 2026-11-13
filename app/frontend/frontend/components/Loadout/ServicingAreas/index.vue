@@ -7,6 +7,10 @@ export default {
 <script lang="ts" setup>
 import type { ModelLoadoutPreviewServicingArea } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  servicingAreaLabel,
+  servicingAreaSize,
+} from "@/shared/utils/LandingServices";
 
 type Props = {
   title?: string;
@@ -24,14 +28,6 @@ const emit = defineEmits<{
 }>();
 
 const { t, toNumber } = useI18n();
-
-// The export's size runs across, up and along the box; the ship's page reads
-// length, width and height.
-const dimensions = (area: ModelLoadoutPreviewServicingArea) => {
-  const [width, height, length] = area.size;
-
-  return `${toNumber(length)} × ${toNumber(width)} × ${toNumber(height)} m`;
-};
 </script>
 
 <template>
@@ -43,13 +39,14 @@ const dimensions = (area: ModelLoadoutPreviewServicingArea) => {
         :key="area.key"
         class="loadout-servicing-areas__area"
         :data-test="`${testId}-${area.index}`"
+        tabindex="0"
         @mouseenter="emit('point', area.key)"
         @mouseleave="emit('point', undefined)"
+        @focus="emit('point', area.key)"
+        @blur="emit('point', undefined)"
       >
-        <dt>
-          {{ area.name || t("model.servicingArea", { index: area.index }) }}
-        </dt>
-        <dd>{{ dimensions(area) }}</dd>
+        <dt>{{ servicingAreaLabel(area, area.index, { t }) }}</dt>
+        <dd>{{ servicingAreaSize(area, { toNumber }) }}</dd>
       </div>
     </dl>
   </section>
@@ -103,7 +100,8 @@ const dimensions = (area: ModelLoadoutPreviewServicingArea) => {
     font-variant-numeric: tabular-nums;
   }
 
-  &:hover dt {
+  &:hover dt,
+  &:focus-visible dt {
     color: var(--color-lifted);
   }
 }
