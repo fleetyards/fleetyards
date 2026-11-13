@@ -21,8 +21,10 @@ module HangarModuleMapping
     "apollo tier 3 module left" => {model_names: ["Apollo Medivac", "Apollo Triage"], module_name: "Tier 3 Module Left"},
 
     # Galaxy
-    "galaxy - cargo module" => {model_names: ["Galaxy"], module_name: "Cargo Module"},
-    "galaxy - med bay module" => {model_names: ["Galaxy"], module_name: "Med Bay Module"},
+    "galaxy - cargo module" => {model_names: ["Galaxy"], module_name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo"},
+    "galaxy - med bay module" => {model_names: ["Galaxy"], module_name: "Med Bay Module", sc_key: "RSI_Galaxy_Module_Medical"},
+    # The game files carry an unnamed refinery shell with no equipment: linking
+    # it would mark the module flight-ready before it is.
     "galaxy - refinery module" => {model_names: ["Galaxy"], module_name: "Refinery Module"},
 
     # Retaliator
