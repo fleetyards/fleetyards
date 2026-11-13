@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.52.1](https://github.com/fleetyards/fleetyards/compare/v9.52.0...v9.52.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* **models:** file the landing service labels where the frontend looks them up ([313018f](https://github.com/fleetyards/fleetyards/commit/313018f9c9e10293f2ac6f9d39685e1e4c43f139))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/parser from 8.72.1 to 8.72.2 ([#6316](https://github.com/fleetyards/fleetyards/issues/6316)) ([6ee44f4](https://github.com/fleetyards/fleetyards/commit/6ee44f47471d937a23a2b1e3c8a90661c87cd2d7))
+* **deps-dev:** bump eslint-plugin-vue from 10.12.0 to 10.12.1 ([#6315](https://github.com/fleetyards/fleetyards/issues/6315)) ([1b6c96c](https://github.com/fleetyards/fleetyards/commit/1b6c96cefcd11c554cbf948a551b92db4ee8df49))
+* **deps-dev:** bump vite from 8.3.6 to 8.3.7 ([#6313](https://github.com/fleetyards/fleetyards/issues/6313)) ([003a3a3](https://github.com/fleetyards/fleetyards/commit/003a3a32dcb7d224b4bfbce4f7262c9a1d3b6096))
+* **deps:** bump aws-sdk-s3 from 1.239.0 to 1.240.0 ([#6314](https://github.com/fleetyards/fleetyards/issues/6314)) ([4131aaf](https://github.com/fleetyards/fleetyards/commit/4131aaf1f8abc60eb79e5b8d5e6799fa870bf298))
+* **deps:** bump axios from 1.21.0 to 1.21.1 ([#6317](https://github.com/fleetyards/fleetyards/issues/6317)) ([c2cbd33](https://github.com/fleetyards/fleetyards/commit/c2cbd33d1da080e8947acd392043a5e06b44cf44))
+
 ## [9.52.0](https://github.com/fleetyards/fleetyards/compare/v9.51.0...v9.52.0) (2026-11-13)
 
 
