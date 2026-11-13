@@ -248,7 +248,7 @@ class Vehicle < ApplicationRecord
     "alpha asc", "alpha desc", "burstDps asc", "burstDps desc", "sustainedDpsMax asc", "sustainedDpsMax desc"
   ]
 
-  ransack_alias :search, :name_or_model_name_or_model_slug
+  ransack_alias :search, :name_or_model_name_or_model_slug_or_serial
   ransack_alias :on_sale, :model_on_sale
   ransack_alias :length, :model_length
   ransack_alias :beam, :model_beam
@@ -266,6 +266,11 @@ class Vehicle < ApplicationRecord
   # on the hidden one would give it away through which ships come back.
   ransacker :visible_name do
     Arel.sql("CASE WHEN vehicles.name_visible THEN vehicles.name END")
+  end
+
+  # The serial is shown with the name, and hidden with it.
+  ransacker :visible_serial do
+    Arel.sql("CASE WHEN vehicles.name_visible THEN vehicles.serial END")
   end
 
   ransacker :bought_via, formatter: proc { |v| Vehicle.bought_via[v] } do |parent|
@@ -409,7 +414,7 @@ class Vehicle < ApplicationRecord
     "name_cont" => "visible_name_cont",
     "name_in" => "visible_name_in",
     "name_or_description_cont" => "visible_name_cont",
-    "search_cont" => "visible_name_or_model_name_or_model_slug_cont",
+    "search_cont" => "visible_name_or_model_name_or_model_slug_or_visible_serial_cont",
     "hangar_groups_in" => "public_hangar_groups_slug_in",
     "hangar_groups_not_in" => "public_hangar_groups_slug_not_in"
   }.freeze
@@ -473,7 +478,7 @@ class Vehicle < ApplicationRecord
       "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
-      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at", "visible_name",
+      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at", "visible_name", "visible_serial",
       "user_id", "vehicle_id", "wanted"
     ]
   end

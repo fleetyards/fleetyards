@@ -326,6 +326,20 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar searches a ship by its own name, its model or its serial" do
+    user = create(:user)
+    vulture = create(:vehicle, user:, model: create(:model, name: "Vulture"))
+    named = create(:vehicle, user:, name: "Night Owl", model: create(:model, name: "Cutlass Black"))
+    serialed = create(:vehicle, user:, serial: "AB-1234-CD", model: create(:model, name: "Prospector"))
+    sign_in user
+
+    {"vul" => vulture, "night" => named, "1234-c" => serialed}.each do |query, vehicle|
+      assert_api_response :get, 200, params: {q: {searchCont: query}} do
+        assert_equal [vehicle.id], parsed_body["items"].pluck("id"), query
+      end
+    end
+  end
+
   test "GET /hangar filters by query" do
     user = create(:user, vehicle_count: 3)
     sign_in user

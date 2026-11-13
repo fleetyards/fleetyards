@@ -69,7 +69,7 @@ class HangarSearch
       lead:,
       scope: scope.includes(:model).references(:model).order("models.name", :name),
       filter: :search_cont,
-      columns: %w[vehicles.name models.name],
+      columns: %w[vehicles.name models.name vehicles.serial],
       item: lambda { |vehicle|
         ScopedSearch.result(
           type: "Vehicle",

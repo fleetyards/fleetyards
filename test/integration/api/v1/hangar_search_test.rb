@@ -73,6 +73,15 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search finds a ship by its serial" do
+    create(:vehicle, user: @user, serial: "AB-1234-CD", model: create(:model, name: "Prospector"))
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "ab-1234"} do
+      assert_equal({"HangarVehicle" => ["Prospector"]}, groups)
+    end
+  end
+
   test "GET /hangar/search finds a ship however the reader spaced its name" do
     create(:vehicle, user: @user, model: create(:model, name: "North Star"))
     create(:vehicle, user: @other, model: create(:model, name: "North Star Pro"))

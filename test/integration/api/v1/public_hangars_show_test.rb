@@ -107,6 +107,16 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username searches a serial only where the owner shows it" do
+    user = create(:user, :public_hangar)
+    shown = create(:vehicle, :public, user:, serial: "AB-1234-CD", name_visible: true)
+    create(:vehicle, :public, user:, serial: "AB-1234-EF", name_visible: false)
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {q: {searchCont: "ab-1234"}} do
+      assert_equal [shown.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /public/hangars/:username filters by query" do
     user = create(:user, :public_hangar)
     vehicles = [create(:vehicle, :public, user: user), create(:vehicle, :public, user: user)]
