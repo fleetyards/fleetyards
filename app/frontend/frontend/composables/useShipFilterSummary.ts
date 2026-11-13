@@ -139,6 +139,7 @@ export const useShipFilterSummary = (
       searchCont: "labels.filters.models.name",
       nameCont: "labels.filters.models.name",
       modelNameCont: "labels.filters.models.name",
+      modelOrSerialCont: "labels.filters.models.name",
       modelNameOrModelDescriptionCont: "labels.filters.models.name",
       nameOrDescriptionCont: "labels.filters.models.name",
       loanerEq: "labels.filters.vehicles.loaner",

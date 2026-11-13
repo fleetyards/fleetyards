@@ -29,7 +29,8 @@ const { filter, resetFilter, isFilterSelected, filters } =
 
 function prefillFormValues(): FleetVehicleQuery {
   return {
-    searchCont: filters.value.searchCont,
+    modelOrSerialCont:
+      filters.value.modelOrSerialCont || filters.value.searchCont,
     modelNameCont: filters.value.modelNameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
@@ -77,8 +78,8 @@ const hasGroupFilters = (keys: string[]) =>
 <template>
   <form @submit.prevent="filter(form)">
     <FormInput
-      name="searchCont"
-      v-model="form.searchCont"
+      name="modelOrSerialCont"
+      v-model="form.modelOrSerialCont"
       translation-key="filters.models.name"
       :no-label="true"
       :clearable="true"

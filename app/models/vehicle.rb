@@ -249,6 +249,7 @@ class Vehicle < ApplicationRecord
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug_or_serial
+  ransack_alias :model_or_serial, :model_name_or_visible_serial
   ransack_alias :on_sale, :model_on_sale
   ransack_alias :length, :model_length
   ransack_alias :beam, :model_beam
@@ -476,7 +477,7 @@ class Vehicle < ApplicationRecord
     [
       "alternative_names", "beam", "bought_via", "cargo", "public_cargo", *FITTED_STATS.keys.flat_map { |stat| [stat, "public_#{stat}"] }, "bundled", "classification", "created_at", "flagship",
       "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
-      "manufacturer", "model_id", "module_package_id", "name", "name_visible",
+      "manufacturer", "model_id", "model_or_serial", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at", "visible_name", "visible_serial",
       "user_id", "vehicle_id", "wanted"

@@ -32,6 +32,7 @@ const route = useRoute();
 type FleetsFilterForm = {
   searchCont?: string;
   modelNameCont?: string;
+  modelOrSerialCont?: string;
   onSaleEq?: string;
   loanerEq?: string;
   priceLteq?: string;
@@ -57,7 +58,8 @@ type FleetsFilterForm = {
 const prefillFormValues = () => {
   return {
     searchCont: filters.value.searchCont,
-    modelNameCont: filters.value.modelNameCont,
+    modelOrSerialCont:
+      filters.value.modelOrSerialCont || filters.value.modelNameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
     priceLteq: filters.value.priceLteq,
@@ -113,7 +115,7 @@ const hasGroupFilters = (keys: string[]) =>
       :label="t('filteredList.groups.ship')"
       :active="
         hasGroupFilters([
-          'modelNameCont',
+          'modelOrSerialCont',
           'manufacturerIn',
           'productionStatusIn',
           'classificationIn',
@@ -128,7 +130,7 @@ const hasGroupFilters = (keys: string[]) =>
       <FormInput
         id="model-name"
         name="model-name"
-        v-model="form.modelNameCont"
+        v-model="form.modelOrSerialCont"
         translation-key="filters.models.name"
         :no-label="true"
         :clearable="true"

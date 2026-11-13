@@ -35,6 +35,7 @@ module V1
             sizeIn: {type: :array, items: {type: :string}},
             modelSlugIn: {type: :array, items: {type: :string}},
             modelNameCont: {type: :string},
+            modelOrSerialCont: {type: :string, description: "A ship's model name, or its serial where the owner shows it"},
             modelNameOrModelDescriptionCont: {type: :string},
             loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
             memberIn: {type: :array, items: {type: :string}},

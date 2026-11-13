@@ -76,7 +76,7 @@ export const SEARCH_GROUPS: Record<string, SearchGroupConfig> = {
     "fleet-members",
     "searchCont",
   ),
-  FleetShip: group("nav.fleets.ships", "fleet-ships", "modelNameCont"),
+  FleetShip: group("nav.fleets.ships", "fleet-ships", "modelOrSerialCont"),
   FleetBlueprint: group(
     "nav.fleets.blueprints",
     "fleet-blueprints",

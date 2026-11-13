@@ -128,6 +128,20 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles searches a model, or a serial only where its owner shows it" do
+    shown = create(:vehicle, user: @member, serial: "AB-1234-CD", name_visible: true)
+    create(:vehicle, user: @member, serial: "AB-1234-EF", name_visible: false)
+    create(:vehicle, user: @member, name: "Ab-1234 Wing", name_visible: true)
+    vulture = create(:vehicle, user: @member, model: create(:model, name: "Vulture"))
+    sign_in @admin
+
+    {"ab-1234" => shown, "vult" => vulture}.each do |query, vehicle|
+      assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {q: {modelOrSerialCont: query}} do
+        assert_equal [vehicle.id], parsed_body["items"].pluck("id"), query
+      end
+    end
+  end
+
   test "GET /fleets/:slug/vehicles filters by withLandingServices" do
     owner = create(:user)
     fleet = create(:fleet, admins: [owner])

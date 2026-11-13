@@ -38099,6 +38099,9 @@ components:
             type: string
         modelNameCont:
           type: string
+        modelOrSerialCont:
+          type: string
+          description: A ship's model name, or its serial where the owner shows it
         modelNameOrModelDescriptionCont:
           type: string
         loanerEq:
