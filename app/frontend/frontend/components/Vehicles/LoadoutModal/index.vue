@@ -382,6 +382,11 @@ const servicingAreas = ref<ModelLoadoutPreviewServicingArea[]>([]);
 const servicingAreasShown = ref(false);
 const pointedArea = ref<string>();
 
+// A row taken away under the pointer never says it was left.
+watch([servicingAreas, servicingAreasShown, previewShown], () => {
+  pointedArea.value = undefined;
+});
+
 const servicingAreasToggleLabel = computed(() =>
   servicingAreasShown.value
     ? t("actions.vehicleLoadout.hideServicingAreas")

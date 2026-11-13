@@ -2620,6 +2620,9 @@ describe("VehicleLoadoutModal component tabs", () => {
         position: [0, 0.8, 28.2],
         rotation: [0, 0, 0, 1],
         size: [12, 12, 14],
+        width: 12,
+        length: 14,
+        height: 12,
       },
     ]);
     await flushPromises();
@@ -2642,6 +2645,16 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
 
     await row.trigger("mouseleave");
+
+    expect(preview.props("highlightedArea")).toBeUndefined();
+
+    await row.trigger("focus");
+
+    expect(preview.props("highlightedArea")).toBe(
+      "int_body_rear.socpak#RepairZone",
+    );
+
+    await wrapper.get(toggle).trigger("click");
 
     expect(preview.props("highlightedArea")).toBeUndefined();
   });
