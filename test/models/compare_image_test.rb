@@ -59,6 +59,20 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "angled_view", CompareImage.image_of(component).name
   end
 
+  test "pictures a ship without store art by its coloured angled render" do
+    model = create(:model)
+    model.angled_view_colored.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_equal "angled_view_colored", CompareImage.image_of(model).name
+  end
+
+  test "pictures a ship by its store art before its angled render" do
+    model = create(:model, :with_store_image)
+    model.angled_view_colored.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_equal "store_image", CompareImage.image_of(model).name
+  end
+
   test "has no picture for a component with neither image" do
     assert_nil CompareImage.image_of(create(:component))
   end

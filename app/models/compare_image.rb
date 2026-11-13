@@ -22,11 +22,18 @@ class CompareImage < ApplicationRecord
   MAX_SHARE_MODELS = 8
   SHARE_KEY_SEPARATOR = ","
 
-  # What a record is pictured by: a ship's store art, and for components and
-  # equipment the angled render the compare page itself shows, falling back to
-  # the store image -- most components have only the render.
+  # What a record is pictured by: a ship's display image -- its store art, or the
+  # coloured angled render when it has none -- and for components and equipment
+  # the angled render the compare page itself shows, falling back to the store
+  # image -- most components have only the render.
   def self.image_of(record)
-    attr = record.respond_to?(:angled_image_attr) ? record.angled_image_attr : :store_image
+    attr = if record.respond_to?(:angled_image_attr)
+      record.angled_image_attr
+    elsif record.respond_to?(:display_image_attr)
+      record.display_image_attr
+    else
+      :store_image
+    end
     attachment = attr && record.public_send(attr)
     attachment if attachment&.attached?
   end
