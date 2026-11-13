@@ -108,6 +108,23 @@ const {
   query: { enabled },
 });
 
+// Apart from the boxes, so pointing at an area leaves the parts as they are.
+const mounts = computed(() =>
+  preview.value ? loadoutMounts(preview.value, props.slots) : [],
+);
+
+const boxes = computed(() =>
+  props.servicingAreas
+    ? (preview.value?.servicingAreas ?? []).map((area) => ({
+        id: area.key,
+        position: area.position as [number, number, number],
+        rotation: area.rotation as [number, number, number, number],
+        size: area.size as [number, number, number],
+        highlighted: area.key === props.highlightedArea,
+      }))
+    : undefined,
+);
+
 const holoModel = computed(() => {
   const hull = preview.value?.holoHull;
 
@@ -116,22 +133,14 @@ const holoModel = computed(() => {
   return {
     path: hull.url,
     size: hull.size ?? undefined,
-    mounts: loadoutMounts(preview.value, props.slots),
-    boxes: props.servicingAreas
-      ? preview.value.servicingAreas.map((area) => ({
-          id: area.key,
-          position: area.position as [number, number, number],
-          rotation: area.rotation as [number, number, number, number],
-          size: area.size as [number, number, number],
-          highlighted: area.key === props.highlightedArea,
-        }))
-      : undefined,
+    mounts: mounts.value,
+    boxes: boxes.value,
   };
 });
 
 watch(
-  () => preview.value?.servicingAreas ?? [],
-  (areas) => emit("servicingAreas", enabled.value ? areas : []),
+  () => (enabled.value ? (preview.value?.servicingAreas ?? []) : []),
+  (areas) => emit("servicingAreas", areas),
   { immediate: true },
 );
 
