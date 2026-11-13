@@ -561,6 +561,9 @@ const starsReach = computed(
 
 const CAMERA_FOV = 35;
 
+// Room left around an uncontained model at its tightest fit.
+const UNCONTAINED_MARGIN = 1.1;
+
 // The canvas's, which Tres keeps the camera's own aspect in step with.
 const cameraAspect = computed(() => innerWidth.value / innerHeight.value);
 
@@ -783,8 +786,23 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     return;
   }
 
-  const distance =
-    dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect));
+  // The approximation above runs the model off the sides of a frame near
+  // square, so it is held back to where the box, seen from the azimuth, fits
+  // both fields of view.
+  const tanVertical = Math.tan(fovRadians / 2);
+  const across =
+    Math.abs(Math.cos(azimuth)) * size.x + Math.abs(Math.sin(azimuth)) * size.z;
+  const depth =
+    Math.abs(Math.sin(azimuth)) * size.x + Math.abs(Math.cos(azimuth)) * size.z;
+  const boxFit =
+    (depth / 2 +
+      Math.max(across / 2 / (tanVertical * aspect), size.y / 2 / tanVertical)) *
+    UNCONTAINED_MARGIN;
+
+  const distance = Math.max(
+    boxFit,
+    dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect)),
+  );
 
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
