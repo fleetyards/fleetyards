@@ -60,6 +60,7 @@ import {
   buildBackdrop,
   disposeBackdrop,
 } from "@/shared/components/HoloViewer/backdrop";
+import type { HoloBox } from "@/shared/components/HoloViewer/boxes";
 
 export type HoloModel = {
   path: string;
@@ -76,6 +77,8 @@ export type HoloModel = {
   paintStencil?: string;
   // Parts drawn on the holo's ports, in its own frame.
   mounts?: HoloMount[];
+  // Boxes drawn through the holo, in its own frame.
+  boxes?: HoloBox[];
   // Framed and centred with its parts rather than on its own: a figure whose
   // pieces all share one frame.
   frameMounts?: boolean;
