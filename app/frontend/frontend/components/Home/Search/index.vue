@@ -19,6 +19,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
+import { vehicleRoute } from "@/frontend/utils/vehicleSegment";
+import { useSessionStore } from "@/frontend/stores/session";
 import { SEARCH_GROUPS } from "@/frontend/components/Home/Search/groups";
 import { useSearchResultAdd } from "@/frontend/components/Home/Search/useSearchResultAdd";
 import {
@@ -53,6 +55,7 @@ withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
+const sessionStore = useSessionStore();
 
 const {
   scopes,
@@ -190,7 +193,8 @@ const listRoute = (group: SearchGroup, text?: string) => {
   };
 };
 
-// What has no page of its own opens on its list, narrowed to it.
+// What has no page of its own opens on its list, narrowed to it. A hangar
+// ship's page is its owner's, so its address needs the signed-in user.
 const targetOf = (step: Step) => {
   if ("items" in step) return listRoute(step, searchedFor.value);
 
@@ -201,6 +205,11 @@ const targetOf = (step: Step) => {
   if (page) return page;
 
   const group = groups.value.find(({ items }) => items.includes(step));
+
+  const username = sessionStore.currentUser?.username;
+  if (group?.type === "HangarVehicle" && step.slug && username) {
+    return vehicleRoute("hangar-vehicle", { id: step.slug }, username);
+  }
 
   return group && listRoute(group, step.name);
 };

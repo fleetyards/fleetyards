@@ -21,7 +21,13 @@ const router = async () => {
       { path: "/ships", name: "ships", component: blank },
       { path: "/components", name: "components", component: blank },
       { path: "/places", name: "locations-places", component: blank },
+      { path: "/hangar", name: "hangar", component: blank },
       { path: "/hangar/paints", name: "hangar-paints", component: blank },
+      {
+        path: "/hangar/:username/:segment",
+        name: "hangar-vehicle",
+        component: blank,
+      },
       { path: "/components/:slug", name: "component", component: blank },
       { path: "/locations/:slug", name: "location", component: blank },
     ],
@@ -171,6 +177,34 @@ describe("HomeSearch", () => {
 
     expect(instance.currentRoute.value.name).toBe("hangar-paints");
     expect(instance.currentRoute.value.query).toEqual({ nameCont: "Akuma" });
+  });
+
+  it("opens a hangar ship on its own page", async () => {
+    const id = "4f0c9a3e-2b7d-4c1e-9f6a-8d2e1b3c5a7f";
+    groups = [
+      {
+        type: "HangarVehicle",
+        hasMore: false,
+        items: [{ type: "Vehicle", name: "Tanngnjostr", slug: id }],
+      },
+    ];
+    const instance = await router();
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [instance],
+      initialState: {
+        session: { currentUser: { id: "user-1", username: "torlek" } },
+      },
+    });
+
+    await typeInto(wrapper, "tann");
+    await wrapper.find("[data-test='home-search-result']").trigger("mousedown");
+    await flushPromises();
+
+    expect(instance.currentRoute.value.name).toBe("hangar-vehicle");
+    expect(instance.currentRoute.value.params).toEqual({
+      username: "torlek",
+      segment: id,
+    });
   });
 
   it("says when the search failed rather than that nothing matched", async () => {
