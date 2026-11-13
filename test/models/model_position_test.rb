@@ -130,7 +130,7 @@ class ModelPositionTest < ActiveSupport::TestCase
     ModelPosition.generate_for_model!(model)
 
     assert_equal [["pilot", "Pilot"], ["copilot", "Copilot"], ["operator", "Operations"]],
-      model.model_positions.reload.order(:position).pluck(:position_type, :name)
+      model.model_positions.reload.ordered.pluck(:position_type, :name)
   end
 
   test ".generate_for_model! adds the seats of the command module a ship docks" do
