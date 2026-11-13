@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.52.0](https://github.com/fleetyards/fleetyards/compare/v9.51.0...v9.52.0) (2026-11-13)
+
+
+### Features
+
+* **fleets:** filter fleet ships by model or serial ([472b308](https://github.com/fleetyards/fleetyards/commit/472b308ef7a06b582da9d021ec938dd20a70b53d))
+* **hangar:** search ships by serial in the hangar filter and the my stuff search ([bc62e2e](https://github.com/fleetyards/fleetyards/commit/bc62e2e0cb278f5a6a548350e8280c614fe9264c))
+* **loadouts:** draw a ship's servicing areas in the loadout editor holo ([#6312](https://github.com/fleetyards/fleetyards/issues/6312)) ([add23d4](https://github.com/fleetyards/fleetyards/commit/add23d43dd3b561bb3abc7e495847868e4c12948))
+* **models:** show the game's icons for landing services, and where they apply ([#6305](https://github.com/fleetyards/fleetyards/issues/6305)) ([93cf72c](https://github.com/fleetyards/fleetyards/commit/93cf72c4e7015c2a8dbb636c02f4b6fa802eb9d5))
+* **modules:** link the Galaxy cargo and med bay modules to game data ([d10af83](https://github.com/fleetyards/fleetyards/commit/d10af833a5826860b9e6f3aab28f0c197e4a7169))
+* **paints:** create the liveries RSI has not listed from the game files ([db95a1d](https://github.com/fleetyards/fleetyards/commit/db95a1dbb87c3bcb2907e5d2cbbbcaafd93bb7a0))
+* **squadrons:** flight cards with short description, cover image and sortable ships ([#6310](https://github.com/fleetyards/fleetyards/issues/6310)) ([41e3097](https://github.com/fleetyards/fleetyards/commit/41e30972bfb6f434078c8dbd4ecf2fd7501d4a70))
+
+
+### Bug Fixes
+
+* **events:** let a team seat sit beside a ship seat ([#6307](https://github.com/fleetyards/fleetyards/issues/6307)) ([c06c389](https://github.com/fleetyards/fleetyards/commit/c06c38924a22518b9c73f980d6001f44446a2a81))
+* **hangar:** match the name filter on the ship's model, not only its own name ([dab8bc8](https://github.com/fleetyards/fleetyards/commit/dab8bc81979db871dfe06f0b9a17186d9335cd65))
+* **sc-data:** load the game data of a ship created from the unlisted list ([82b4025](https://github.com/fleetyards/fleetyards/commit/82b4025c4d4f43049bc2d46fb0eb807f744f6970))
+* **search:** put the hangar's ships first in the my stuff search ([c06862b](https://github.com/fleetyards/fleetyards/commit/c06862bce1d3105656cb4fda4d688eb4090195c4))
+* **squadrons:** rename flight-wide and ship seats in place ([#6308](https://github.com/fleetyards/fleetyards/issues/6308)) ([9bdddba](https://github.com/fleetyards/fleetyards/commit/9bdddba36149d822a731fce2da58823c7cd25997))
+
+
+### Refactorings
+
+* **modules:** key module game data by hangar component ([be287bb](https://github.com/fleetyards/fleetyards/commit/be287bb7c437ee60546b0b6fe2eb0adea06c82c2))
+
+
+### Chores
+
+* **data:** set the game-data key on the existing Galaxy modules ([e993003](https://github.com/fleetyards/fleetyards/commit/e9930037f3bef7aae207cb19200c76068c9d8210))
+
 ## [9.51.0](https://github.com/fleetyards/fleetyards/compare/v9.50.0...v9.51.0) (2026-11-12)
 
 
