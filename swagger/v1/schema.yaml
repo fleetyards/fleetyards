@@ -46494,10 +46494,15 @@ components:
             "$ref": "#/components/schemas/ModelLoadoutPreviewItem"
           description: The holos of the parts the hull leaves out that its ports mount
             by default
+        servicingAreas:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewServicingArea"
       additionalProperties: false
       required:
       - ports
       - items
+      - servicingAreas
       title: ModelLoadoutPreview
     ModelLoadoutPreviewItem:
       type: object
@@ -46587,6 +46592,47 @@ components:
       - type
       - subTypes
       title: ModelLoadoutPreviewPortType
+    ModelLoadoutPreviewServicingArea:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        index:
+          type: integer
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: The box's centre
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+        size:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Along the box's own x, up and depth axes
+      additionalProperties: false
+      required:
+      - key
+      - name
+      - index
+      - position
+      - rotation
+      - size
+      title: ModelLoadoutPreviewServicingArea
     ModelLoaner:
       type: object
       properties:
