@@ -18,14 +18,12 @@ import BaseSelect, {
 
 type Props = {
   name: string;
-  modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
   inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: undefined,
   multiple: false,
   noLabel: true,
   inline: false,
@@ -33,27 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const internalValue = ref<string | string[] | undefined>(props.modelValue);
-
-onMounted(() => {
-  internalValue.value = props.modelValue;
-});
-
-watch(
-  () => props.modelValue,
-  () => {
-    internalValue.value = props.modelValue;
-  },
-);
-
-const emit = defineEmits(["update:modelValue"]);
-
-watch(
-  () => internalValue.value,
-  () => {
-    emit("update:modelValue", internalValue.value);
-  },
-);
+const internalValue = defineModel<string | string[] | undefined>();
 
 // The option row is a single label, so the SID and roster size travel in it.
 // Fleet names are not unique; the SID is what tells them apart.

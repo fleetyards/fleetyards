@@ -16,14 +16,12 @@ import {
 
 type Props = {
   name: string;
-  modelValue?: string | string[];
   searchable?: boolean;
   multiple?: boolean;
   noLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: undefined,
   searchable: true,
   multiple: true,
   noLabel: true,
@@ -31,27 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const internalValue = ref<string | string[] | undefined>(props.modelValue);
-
-onMounted(() => {
-  internalValue.value = props.modelValue;
-});
-
-watch(
-  () => props.modelValue,
-  () => {
-    internalValue.value = props.modelValue;
-  },
-);
-
-const emit = defineEmits(["update:modelValue"]);
-
-watch(
-  () => internalValue.value,
-  () => {
-    emit("update:modelValue", internalValue.value);
-  },
-);
+const internalValue = defineModel<string | string[] | undefined>();
 
 const fetch = async (params: BaseSelectParams<FilterOption>) => {
   const response = await fetchModelClassifications();
