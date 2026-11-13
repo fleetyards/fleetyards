@@ -157,7 +157,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_images", model: @model.name)
         @description = I18n.t("meta.ship_images.description", model: @model.name)
         @og_type = "article"
-        use_og_image(@model.random_image&.file, alt: @model.name)
+        use_og_image(@model.random_image&.file || @model.display_image, alt: @model.name)
       end
 
       render_frontend
@@ -171,7 +171,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_videos", model: @model.name)
         @description = I18n.t("meta.ship_videos.description", model: @model.name)
         @og_type = "article"
-        use_og_image(@model.random_image&.file, alt: @model.name)
+        use_og_image(@model.random_image&.file || @model.display_image, alt: @model.name)
       end
 
       render_frontend
