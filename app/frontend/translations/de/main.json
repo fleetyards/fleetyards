@@ -5,6 +5,15 @@
     },
     "model": {
       "focus": "Fokus",
+      "landingServices": "Landedienste",
+      "servicingArea": "Servicebereich %{index}",
+      "landingService": {
+        "refuel": "Betanken",
+        "hydrogenRefuel": "Wasserstoff tanken",
+        "quantumRefuel": "Quantumtreibstoff tanken",
+        "rearm": "Aufmunitionieren",
+        "repair": "Reparieren"
+      },
       "classification": "Klassifizierung",
       "size": "Größe",
       "beam": "Breite",

@@ -5,6 +5,15 @@
     },
     "model": {
       "focus": "Focus",
+      "landingServices": "Landing Services",
+      "servicingArea": "Service area %{index}",
+      "landingService": {
+        "refuel": "Refuel",
+        "hydrogenRefuel": "Hydrogen refuel",
+        "quantumRefuel": "Quantum refuel",
+        "rearm": "Rearm",
+        "repair": "Repair"
+      },
       "classification": "Classification",
       "size": "Size",
       "beam": "Beam",

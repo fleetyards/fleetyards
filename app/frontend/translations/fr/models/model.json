@@ -11,15 +11,6 @@
           "speed": "Vitesse"
         },
         "focus": "Spécialisation",
-        "landingServices": "Services d'atterrissage",
-        "servicingArea": "Zone de service %{index}",
-        "landingService": {
-          "refuel": "Ravitailler",
-          "hydrogenRefuel": "Ravitailler en hydrogène",
-          "quantumRefuel": "Ravitailler en carburant quantique",
-          "rearm": "Réarmer",
-          "repair": "Réparer"
-        },
         "classification": "Classification",
         "size": "Taille",
         "beam": "Largeur",

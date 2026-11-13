@@ -11,15 +11,6 @@
           "speed": "Velocità"
         },
         "focus": "Specializzazione",
-        "landingServices": "Servizi di atterraggio",
-        "servicingArea": "Area di servizio %{index}",
-        "landingService": {
-          "refuel": "Rifornire",
-          "hydrogenRefuel": "Rifornire idrogeno",
-          "quantumRefuel": "Rifornire carburante quantico",
-          "rearm": "Riarmare",
-          "repair": "Riparare"
-        },
         "classification": "Classificazione",
         "size": "Dimensione",
         "beam": "Larghezza",
