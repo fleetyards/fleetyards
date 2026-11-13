@@ -5,12 +5,17 @@
 # has none. This writes down which component each paint is, then carries the
 # artwork across.
 #
+# A livery that matches no paint at all is one RSI has not listed, and becomes
+# a paint of its own, after the linking so a paint RSI does list is never
+# created twice.
+#
 # Re-runnable: matching is name-based and improves as names are corrected, so
 # a paint that found nothing last time may find something now, and a paint
 # whose artwork arrived after its link still gets it copied.
 class PaintComponentLinker
   def run
     link
+    PaintsFromGameFiles.new.run
     copy_store_images
   end
 
