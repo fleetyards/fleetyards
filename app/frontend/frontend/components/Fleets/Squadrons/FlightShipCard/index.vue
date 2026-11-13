@@ -179,8 +179,20 @@ const removeShip = async () => {
 </script>
 
 <template>
-  <section class="flight-ship" :data-test="`flight-ship-${ship.id}`">
+  <section
+    class="flight-ship"
+    :data-ship-id="ship.id"
+    :data-test="`flight-ship-${ship.id}`"
+  >
     <div v-if="editable" class="flight-ship__actions">
+      <span
+        v-tooltip="t('actions.reorder')"
+        class="flight-ship__grip"
+        :aria-label="t('actions.reorder')"
+        data-test="flight-ship-grip"
+      >
+        <i class="fa-light fa-grip-vertical" />
+      </span>
       <Btn
         v-tooltip="t('actions.edit')"
         :size="BtnSizesEnum.XS"
@@ -364,6 +376,14 @@ const removeShip = async () => {
   background: var(--color-control);
   opacity: 0;
   transition: opacity 150ms ease;
+}
+
+.flight-ship__grip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  color: var(--color-muted);
+  cursor: grab;
 }
 
 .flight-ship:hover .flight-ship__actions,

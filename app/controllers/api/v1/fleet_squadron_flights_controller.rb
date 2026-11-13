@@ -23,7 +23,9 @@ module Api
       def index
         authorize! with: FleetSquadronFlightPolicy, context: {fleet: @fleet, fleet_squadron: @fleet_squadron}
 
-        @flights = @fleet_squadron.fleet_squadron_flights.includes(mission_team: MissionTeams::Copier::TEAM_PRELOADS)
+        @flights = @fleet_squadron.fleet_squadron_flights
+          .with_attached_cover_image
+          .includes(mission_team: MissionTeams::Copier::TEAM_PRELOADS)
       end
 
       def show
@@ -75,7 +77,7 @@ module Api
       end
 
       private def flight_params
-        params.transform_keys(&:underscore).permit(:name, :description)
+        params.transform_keys(&:underscore).permit(:name, :short_description, :description, :cover_image)
       end
 
       private def set_flight

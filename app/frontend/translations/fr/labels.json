@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "Patrouilles",
             "name": "Nom",
+            "shortDescription": "Description courte",
+            "shortDescriptionHint": "Une ou deux lignes, sur la carte de la patrouille",
+            "coverImage": "Image de couverture",
+            "coverImageHint": "Affichée sur la carte de la patrouille. Sans image, la carte montre le premier vaisseau de la formation.",
             "description": "Description",
             "noCandidates": "Personne d’assigné",
             "primary": "Titulaire",

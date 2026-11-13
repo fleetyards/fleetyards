@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "Flights",
             "name": "Name",
+            "shortDescription": "Short description",
+            "shortDescriptionHint": "A line or two, shown on the flight's card",
+            "coverImage": "Cover image",
+            "coverImageHint": "Shown on the flight's card. Without one, the card shows the first ship in the lineup.",
             "description": "Description",
             "noCandidates": "Nobody assigned",
             "primary": "Primary",

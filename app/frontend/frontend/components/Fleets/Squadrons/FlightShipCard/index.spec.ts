@@ -106,9 +106,11 @@ describe("FleetSquadronFlightShipCard", () => {
     const reader = await mount([seat("a", true)]);
     expect(reader.find(".flight-ship__actions").exists()).toBe(false);
     expect(reader.find(".flight-ship__seat-edit").exists()).toBe(false);
+    expect(reader.find('[data-test="flight-ship-grip"]').exists()).toBe(false);
 
     const editor = await mount([seat("a", true)], true);
     expect(editor.find(".flight-ship__actions").exists()).toBe(true);
     expect(editor.find(".flight-ship__seat-edit").exists()).toBe(true);
+    expect(editor.find('[data-test="flight-ship-grip"]').exists()).toBe(true);
   });
 });

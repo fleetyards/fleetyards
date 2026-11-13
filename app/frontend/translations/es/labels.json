@@ -1059,6 +1059,10 @@
           "flights": {
             "index": "Escuadrillas",
             "name": "Nombre",
+            "shortDescription": "Descripción breve",
+            "shortDescriptionHint": "Una o dos líneas, en la tarjeta de la escuadrilla",
+            "coverImage": "Imagen de portada",
+            "coverImageHint": "Se muestra en la tarjeta de la escuadrilla. Sin ella, la tarjeta muestra la primera nave de la formación.",
             "description": "Descripción",
             "noCandidates": "Nadie asignado",
             "primary": "Titular",
