@@ -171,6 +171,8 @@ const emit = defineEmits<{
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  // A box under the pointer, where no part is: by its id.
+  boxPoint: [id: string | undefined];
   unplaced: [paths: string[]];
   fellBack: [paths: string[]];
 }>();
@@ -1113,6 +1115,7 @@ defineExpose({
           @progress="handleModelProgress"
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
+          @box-point="emit('boxPoint', $event)"
           @unplaced="emit('unplaced', $event)"
           @fell-back="emit('fellBack', $event)"
           @busy="busy = $event"
@@ -1122,6 +1125,8 @@ defineExpose({
         </template>
       </Suspense>
     </TresCanvas>
+    <!-- Laid over the canvas, and full screen with it. -->
+    <slot />
   </div>
 </template>
 

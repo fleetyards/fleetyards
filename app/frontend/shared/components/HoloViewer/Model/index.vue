@@ -22,6 +22,8 @@ import {
   Group,
   type AnimationClip,
   Mesh,
+  type BoxGeometry,
+  type Camera,
   MeshBasicMaterial,
   Color,
   type BufferGeometry,
@@ -633,6 +635,7 @@ const emit = defineEmits<{
   progress: [loaded: number, total: number];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  boxPoint: [id: string | undefined];
   // The rig pieces and attachments left off the figure, by path: their mount
   // is not in the rig of the piece they hang from.
   unplaced: [paths: string[]];
@@ -1091,16 +1094,19 @@ const attachRigNow = async (scene: Group) => {
 const raycaster = new Raycaster();
 const pointer = new Vector2();
 
-const mountAt = (event: PointerEvent | MouseEvent) => {
-  const canvas = renderer.domElement;
-  if (!mountRoot || !camera.value) return undefined;
-
-  const rect = canvas.getBoundingClientRect();
+const castFrom = (event: PointerEvent | MouseEvent, from: Camera) => {
+  const rect = renderer.domElement.getBoundingClientRect();
   pointer.set(
     ((event.clientX - rect.left) / rect.width) * 2 - 1,
     -((event.clientY - rect.top) / rect.height) * 2 + 1,
   );
-  raycaster.setFromCamera(pointer, camera.value);
+  raycaster.setFromCamera(pointer, from);
+};
+
+const mountAt = (event: PointerEvent | MouseEvent) => {
+  if (!mountRoot || !camera.value) return undefined;
+
+  castFrom(event, camera.value);
 
   const hit = raycaster
     .intersectObject(mountRoot, true)
@@ -1118,12 +1124,42 @@ const mountAt = (event: PointerEvent | MouseEvent) => {
   return undefined;
 };
 
+// The boxes are drawn through the hull, so one answers wherever it shows; the
+// smallest under the pointer wins, as the one nested in a larger area.
+const boxAt = (event: PointerEvent | MouseEvent) => {
+  if (!boxRoot || !camera.value) return undefined;
+
+  castFrom(event, camera.value);
+
+  const hits = raycaster
+    .intersectObjects(boxRoot.children, false)
+    .map(({ object }) => object as Mesh<BoxGeometry>);
+
+  hits.sort((a, b) => boxVolume(a) - boxVolume(b));
+
+  return hits[0]?.userData.boxId as string | undefined;
+};
+
+const boxVolume = (mesh: Mesh<BoxGeometry>) => {
+  const { width, height, depth } = mesh.geometry.parameters;
+
+  return width * height * depth;
+};
+
 let pointed: string | undefined;
+let pointedBox: string | undefined;
 
 const onPointerMove = (event: PointerEvent) => {
   const id = event.buttons ? undefined : mountAt(event);
+  const boxId = event.buttons || id ? undefined : boxAt(event);
 
   renderer.domElement.style.cursor = id ? "pointer" : "";
+
+  if (boxId !== pointedBox) {
+    pointedBox = boxId;
+    emit("boxPoint", boxId);
+  }
+
   if (id === pointed) return;
 
   pointed = id;
@@ -1132,6 +1168,12 @@ const onPointerMove = (event: PointerEvent) => {
 
 const onPointerLeave = () => {
   renderer.domElement.style.cursor = "";
+
+  if (pointedBox) {
+    pointedBox = undefined;
+    emit("boxPoint", undefined);
+  }
+
   if (!pointed) return;
 
   pointed = undefined;
