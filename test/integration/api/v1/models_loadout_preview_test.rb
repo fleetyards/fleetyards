@@ -93,7 +93,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
         {"name" => "Unlisted", "container" => hold, "bone" => "animated_body",
          "position" => [1.0, 2.0, 3.0], "rotation" => [0, 0, 0, 1], "size" => [2.0, 2.0, 2.0]},
         {"name" => "RepairZone", "container" => hold, "bone" => "animated_body",
-         "position" => [0.0, 0.84585, 28.20389], "rotation" => [0, 0, 0, 1], "size" => [12.0, 12.0, 14.0]}
+         "position" => [0.0, 0.84585, 28.20389], "rotation" => [0, 0, 0, 1], "size" => [12.04, 11.97, 14.1]}
       ]})
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
@@ -103,9 +103,11 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_equal "Rear hangar", repair["name"]
       assert_equal 2, repair["index"]
       assert_equal [0.0, 0.84585, 28.20389], repair["position"]
-      assert_equal [12.0, 12.0, 14.0], repair["size"]
+      assert_equal [12.04, 11.97, 14.1], repair["size"]
+      assert_equal [12.0, 14.0, 12.0], repair.values_at("width", "length", "height")
       assert_nil unlisted["name"]
       assert_equal 3, unlisted["index"]
+      assert_equal [2.0, 2.0, 2.0], unlisted.values_at("width", "length", "height")
     end
   end
 

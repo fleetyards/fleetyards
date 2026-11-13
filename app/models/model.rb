@@ -651,18 +651,26 @@ class Model < ApplicationRecord
   # numbers them; an area the build does not list comes after those.
   def holo_servicing_areas
     placed = hardpoint_transforms&.fetch("servicing_areas", nil) || []
-    keys = (servicing_areas || []).pluck("key")
+    listed_areas = servicing_areas || []
+    keys = listed_areas.pluck("key")
     unlisted = keys.size
 
     placed
       .map do |area|
         key = "#{area["container"]}##{area["name"]}"
         listed = keys.index(key)
+        # The build's own size where it lists the area, so the editor and the
+        # ship's page show the same one.
+        width, height, length = area["size"]
+        dimensions = listed ? listed_areas[listed] : {"width" => width, "length" => length, "height" => height}
 
         area.merge(
           "key" => key,
           "index" => listed ? listed + 1 : (unlisted += 1),
-          "label" => servicing_area_names[key].presence
+          "label" => servicing_area_names[key].presence,
+          "width" => dimensions["width"].to_f,
+          "length" => dimensions["length"].to_f,
+          "height" => dimensions["height"].to_f
         )
       end
       .sort_by { |area| area["index"] }

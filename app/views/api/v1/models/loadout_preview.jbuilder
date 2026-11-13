@@ -36,4 +36,7 @@ json.servicing_areas(@servicing_areas) do |area|
   json.position area["position"]
   json.rotation area["rotation"]
   json.size area["size"]
+  json.width area["width"]
+  json.length area["length"]
+  json.height area["height"]
 end

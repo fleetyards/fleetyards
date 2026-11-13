@@ -46624,6 +46624,12 @@ components:
           minItems: 3
           maxItems: 3
           description: Along the box's own x, up and depth axes
+        width:
+          type: number
+        length:
+          type: number
+        height:
+          type: number
       additionalProperties: false
       required:
       - key
@@ -46632,6 +46638,9 @@ components:
       - position
       - rotation
       - size
+      - width
+      - length
+      - height
       title: ModelLoadoutPreviewServicingArea
     ModelLoaner:
       type: object

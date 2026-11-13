@@ -18,10 +18,13 @@ module V1
               index: {type: :integer},
               position: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "The box's centre"},
               rotation: {type: :array, items: {type: :number}, minItems: 4, maxItems: 4, description: "Quaternion x, y, z, w"},
-              size: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "Along the box's own x, up and depth axes"}
+              size: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "Along the box's own x, up and depth axes"},
+              width: {type: :number},
+              length: {type: :number},
+              height: {type: :number}
             },
             additionalProperties: false,
-            required: %w[key name index position rotation size]
+            required: %w[key name index position rotation size width length height]
           })
         end
       end
