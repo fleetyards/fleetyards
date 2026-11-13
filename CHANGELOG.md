@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.53.0](https://github.com/fleetyards/fleetyards/compare/v9.52.1...v9.53.0) (2026-11-13)
+
+
+### Features
+
+* **models:** loadout holo with hover info on the ship and vehicle pages ([#6321](https://github.com/fleetyards/fleetyards/issues/6321)) ([584b29b](https://github.com/fleetyards/fleetyards/commit/584b29b4903197fd8467ed97d00090bf14561bdb))
+
+
+### Bug Fixes
+
+* **admin:** draw textured holo uploads with their own materials ([a1ac30d](https://github.com/fleetyards/fleetyards/commit/a1ac30dafb613f54414b77240354c6c184612ecb))
+* **admin:** stop the model focus select looping when picking a focus ([5ebc464](https://github.com/fleetyards/fleetyards/commit/5ebc464d21b472262b10bcff79cd4c8b20b297bf))
+* **compare:** picture ships without store art by their angled render ([df5c334](https://github.com/fleetyards/fleetyards/commit/df5c33445e5eef2a6c5925c021c36c6e466af3d7))
+* **hangar:** lift the vehicle hero's title by the specs strip's real height ([#6319](https://github.com/fleetyards/fleetyards/issues/6319)) ([7096eef](https://github.com/fleetyards/fleetyards/commit/7096eefacf38509965845f2ae71d3eb9276caa60))
+* **holo-viewer:** keep an uncontained model inside a near-square frame ([48693ed](https://github.com/fleetyards/fleetyards/commit/48693ed5aa8e53c129973dee0666ccb3a2216868))
+* **models:** fall back to the ship's display image in gallery link previews ([7d749f3](https://github.com/fleetyards/fleetyards/commit/7d749f309b95fac9542aa1d3f6940b7256637ace))
+* **sc_data:** retry failed objects in later rounds after a pause ([4c934bd](https://github.com/fleetyards/fleetyards/commit/4c934bdc50f56b79304f251fc35ad609262bda7e))
+* **search:** open hangar ships on their own page ([da6b1d9](https://github.com/fleetyards/fleetyards/commit/da6b1d9143df045999fa023606b172966beac259))
+
+
+### Refactorings
+
+* **selects:** bind the base selects through defineModel ([8a5452a](https://github.com/fleetyards/fleetyards/commit/8a5452aa81d9c14728be2346e76da94b05bf20b5))
+
 ## [9.52.1](https://github.com/fleetyards/fleetyards/compare/v9.52.0...v9.52.1) (2026-11-13)
 
 
