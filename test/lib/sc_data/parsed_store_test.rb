@@ -220,11 +220,29 @@ module ScData
       assert_equal 1, result[:downloaded]
     end
 
-    test "#pull gives up after the attempt limit and says which object and why" do
+    # Hetzner answers 504 for minutes at a time, longer than the per-object
+    # retries last, so an object still failing at the end gets later rounds.
+    test "#pull fetches an object that outlasted its retries in a later round" do
+      stub_listing("models/aurora.json" => "fetched")
+      failures = Array.new(::ScData::ObjectStore::ATTEMPTS) { Timeout::Error.new("no answer") }
+      @client.stub_responses(:get_object, [*failures, {body: "fetched"}])
+      subject = store
+      subject.stubs(:sleep)
+      subject.expects(:sleep).with(::ScData::ObjectStore::RECOVERY_WAITS.first).once
+
+      result = subject.pull
+
+      assert_equal "fetched", File.read(File.join(@root, "models/aurora.json"))
+      assert_equal 1, result[:downloaded]
+    end
+
+    test "#pull gives up after the last round and says which object and why" do
       stub_listing("models/aurora.json" => "fetched")
       @client.stub_responses(:get_object, Timeout::Error.new("no answer"))
+      subject = store
+      subject.stubs(:sleep)
 
-      error = assert_raises(::ScData::ParsedStore::TransferFailed) { store.pull }
+      error = assert_raises(::ScData::ParsedStore::TransferFailed) { subject.pull }
 
       assert_match "models/aurora.json", error.message
       assert_match "Timeout::Error", error.message, "the class has to survive, not just the message"

@@ -38,6 +38,14 @@ module ScData
     ATTEMPTS = 3
     RETRY_BACKOFF = 0.5
 
+    # The retries above ride out one slow object, not a degraded endpoint.
+    # Hetzner's object storage goes through spells of answering 504 for
+    # minutes at a time, and a load that hit one failed after an hour of work.
+    # So whatever is still failing once the rest of the transfer is done gets
+    # another round after each of these pauses -- a few minutes of patience at
+    # the end of a run that costs nothing when every object went through.
+    RECOVERY_WAITS = [30, 60, 120].freeze
+
     # One object as a listing describes it.
     #
     # `etag` is the content MD5 only for a single-part upload. A multipart one is
@@ -125,9 +133,36 @@ module ScData
       client.get_object(bucket:, key: key_for(path), response_target: target)
     end
 
-    private def each_in_parallel(paths)
+    private def each_in_parallel(paths, &)
       return 0 if paths.empty?
 
+      failures = transfer_round(paths, &)
+
+      RECOVERY_WAITS.each do |wait|
+        break if failures.empty?
+
+        Rails.logger.warn(
+          "[#{self.class.name}] #{failures.size} object(s) failed, retrying in #{wait}s: #{failures.keys.first(5).join(", ")}"
+        )
+        sleep(wait)
+
+        failures = transfer_round(failures.keys, &)
+      end
+
+      unless failures.empty?
+        path, error = failures.first
+
+        # The class is carried into the message as well as being the cause: this
+        # surfaces in a CI log and on a loaders container, where "which error"
+        # is the whole question.
+        raise TransferFailed, "#{path}: #{error.class}: #{error.message}"
+      end
+
+      paths.size
+    end
+
+    # Path => error for everything that did not go through.
+    private def transfer_round(paths)
       queue = Queue.new
       paths.each { |path| queue << path }
       queue.close # so a drained `pop` returns nil instead of blocking forever
@@ -146,16 +181,7 @@ module ScData
         end
       end.each(&:join)
 
-      unless errors.empty?
-        path, error = errors.pop
-
-        # The class is carried into the message as well as being the cause: this
-        # surfaces in a CI log and on a loaders container, where "which error"
-        # is the whole question.
-        raise TransferFailed, "#{path}: #{error.class}: #{error.message}"
-      end
-
-      paths.size
+      Array.new(errors.size) { errors.pop }.to_h
     end
 
     # Retried for anything, deliberately. Telling a transient failure from a
