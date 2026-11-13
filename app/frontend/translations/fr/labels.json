@@ -475,6 +475,8 @@
       "3dMap": "Map",
       "texturedHolo": "Texturé",
       "texturedHoloOwnPaint": "Peinture standard",
+      "loadoutHolo": "Équipement",
+      "loadoutHoloServicingArea": "Zone de service",
       "holoViewer": {
         "background": {
           "dark": "Sombre",

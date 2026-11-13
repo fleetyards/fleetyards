@@ -475,6 +475,8 @@
       "3dMap": "Map",
       "texturedHolo": "材質",
       "texturedHoloOwnPaint": "標準塗裝",
+      "loadoutHolo": "配置",
+      "loadoutHoloServicingArea": "服務區域",
       "holoViewer": {
         "background": {
           "dark": "深色",

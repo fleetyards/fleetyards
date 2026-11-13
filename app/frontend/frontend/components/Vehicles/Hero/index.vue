@@ -11,23 +11,22 @@ import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import ModelLoadoutHolo from "@/frontend/components/Models/LoadoutHolo/index.vue";
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
-import {
-  ModelStateEnum,
-  modelStateHolo,
-  modelStateMetrics,
-} from "@/frontend/composables/useModelStates";
+import { ModelStateEnum } from "@/frontend/composables/useModelStates";
+import { useModelHolo } from "@/frontend/composables/useModelHolo";
+import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
-import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
-import type { Vehicle } from "@/services/fyApi";
+import { type Vehicle, useVehicleLoadoutSlots } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -84,24 +83,16 @@ const pictureUrl = computed(
 
 const title = computed(() => props.vehicle.name || props.vehicle.model.name);
 
-// Decided once, as on the ship page: a resize should not swap the file.
-const preferLiteHolo = isLowPowerDevice();
-
 // The ship in flight, the way the ship page opens it.
-const holoModel = computed(() => {
-  const holo = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT, {
-    lite: preferLiteHolo,
-  });
-  const path = holo?.url;
-  const length = modelStateMetrics(
-    props.vehicle.model,
-    ModelStateEnum.FLIGHT,
-  ).fleetchartLength;
-
-  if (!path || !length) return undefined;
-
-  return { path, length, size: holo?.size };
-});
+const {
+  texturedHolo,
+  texturedHoloAvailable,
+  toggleTexturedHolo,
+  holoPaints,
+  holoPaintId,
+  holoPaint,
+  holoModel,
+} = useModelHolo(() => props.vehicle.model, ModelStateEnum.FLIGHT);
 
 const { cargoLabel } = useVehicleCargo();
 
@@ -115,15 +106,33 @@ const holoVisible = computed(
     !props.compact,
 );
 
+const {
+  loadoutHolo,
+  loadoutHoloAvailable,
+  loadoutHoloShown,
+  toggleLoadoutHolo,
+} = useLoadoutHolo(() => props.vehicle.model.slug, holoVisible, texturedHolo);
+
+const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
+
 // Over this page rather than on the ship's viewer page, so closing it lands
 // back on the vehicle.
 const openFullscreenHolo = () => {
+  if (loadoutHoloShown.value) {
+    loadoutHoloViewer.value?.enableFullscreen();
+    return;
+  }
+
   if (!holoModel.value) return;
 
   comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Models/HoloModal/index.vue"),
     fullscreen: true,
-    props: { model: props.vehicle.model },
+    props: {
+      model: props.vehicle.model,
+      textured: !!holoModel.value.textured,
+      paintId: holoPaintId.value,
+    },
   });
 };
 
@@ -156,6 +165,26 @@ const heroStyle = computed(() =>
     : undefined,
 );
 
+// The ship as it is fitted: its active loadout, unless that is a linked build
+// whose parts live on another site, and its stock loadout otherwise.
+const fittedLoadoutId = computed(() =>
+  activeLoadout.value && !activeLoadout.value.url
+    ? activeLoadout.value.id
+    : undefined,
+);
+
+const { data: fittedSlots } = useVehicleLoadoutSlots(
+  () => props.vehicle.id,
+  () => fittedLoadoutId.value ?? "",
+  {
+    query: { enabled: () => loadoutHoloShown.value && !!fittedLoadoutId.value },
+  },
+);
+
+const loadoutHoloSlots = computed(() =>
+  fittedLoadoutId.value ? fittedSlots.value : undefined,
+);
+
 const openImageModal = () =>
   openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
 </script>
@@ -169,8 +198,17 @@ const openImageModal = () =>
     data-test="vehicle-hero"
   >
     <div class="vehicle-hero__stage">
+      <ModelLoadoutHolo
+        v-if="loadoutHoloShown && (!fittedLoadoutId || loadoutHoloSlots)"
+        ref="loadoutHoloViewer"
+        :model-slug="vehicle.model.slug"
+        :slots="loadoutHoloSlots"
+        class="vehicle-hero__holo"
+        test-id="vehicle-hero-loadout-holo"
+        @unavailable="loadoutHolo = false"
+      />
       <HoloViewer
-        v-if="holoVisible && holoModel"
+        v-else-if="holoVisible && holoModel && !loadoutHoloShown"
         :key="holoModel.path"
         :models="[holoModel]"
         class="vehicle-hero__holo"
@@ -334,6 +372,56 @@ const openImageModal = () =>
             >
               <i class="fa-duotone fa-cube" />
               {{ t("labels.3dView") }}
+            </Btn>
+            <Btn
+              v-if="holoVisible && texturedHoloAvailable"
+              :active="texturedHolo"
+              v-tooltip="t('labels.texturedHolo')"
+              :aria-label="t('labels.texturedHolo')"
+              :aria-pressed="texturedHolo"
+              data-test="vehicle-hero-holo-textured"
+              @click="toggleTexturedHolo"
+            >
+              <i class="fa-duotone fa-palette" />
+            </Btn>
+            <BtnDropdown
+              v-if="
+                holoVisible &&
+                texturedHoloAvailable &&
+                texturedHolo &&
+                holoPaints.length
+              "
+              expand-top
+              data-test="vehicle-hero-holo-paint"
+            >
+              <template #label>
+                <span>{{
+                  holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
+                }}</span>
+                <i class="fa-light fa-chevron-up" />
+              </template>
+              <Btn :active="!holoPaint" @click="holoPaintId = undefined">
+                {{ t("labels.texturedHoloOwnPaint") }}
+              </Btn>
+              <Btn
+                v-for="paint in holoPaints"
+                :key="paint.id"
+                :active="holoPaint?.id === paint.id"
+                @click="holoPaintId = paint.id"
+              >
+                {{ paint.name }}
+              </Btn>
+            </BtnDropdown>
+            <Btn
+              v-if="holoVisible && loadoutHoloAvailable"
+              :active="loadoutHoloShown"
+              v-tooltip="t('labels.loadoutHolo')"
+              :aria-label="t('labels.loadoutHolo')"
+              :aria-pressed="loadoutHoloShown"
+              data-test="vehicle-hero-holo-loadout"
+              @click="toggleLoadoutHolo"
+            >
+              <i class="fa-duotone fa-crosshairs" />
             </Btn>
           </BtnGroup>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">

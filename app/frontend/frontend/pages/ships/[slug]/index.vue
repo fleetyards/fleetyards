@@ -40,6 +40,8 @@ import { useScrollToHash } from "@/shared/composables/useScrollToHash";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
+import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
+import ModelLoadoutHolo from "@/frontend/components/Models/LoadoutHolo/index.vue";
 import {
   ModelStateEnum,
   useModelStates,
@@ -321,6 +323,15 @@ const {
     typeof route.query.paint === "string" ? route.query.paint : undefined,
 });
 
+const {
+  loadoutHolo,
+  loadoutHoloAvailable,
+  loadoutHoloShown,
+  toggleLoadoutHolo,
+} = useLoadoutHolo(() => props.model.slug, holoOpen, texturedHolo);
+
+const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
+
 // The side preview cannot ask before loading a holo too large for the device,
 // so on such a device it stays the store image; the main 3D view still asks.
 const inlinePreview = computed(
@@ -376,7 +387,15 @@ const adiMap = computed(() => {
             >
               <BtnGroup>
                 <Btn
-                  v-if="holoOpen"
+                  v-if="holoOpen && loadoutHoloShown"
+                  v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+                  :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+                  @click="loadoutHoloViewer?.enableFullscreen()"
+                >
+                  <i class="fa-light fa-expand" />
+                </Btn>
+                <Btn
+                  v-else-if="holoOpen"
                   :to="{
                     name: 'ship-viewer',
                     params: {
@@ -409,6 +428,18 @@ const adiMap = computed(() => {
                   @click="toggleTexturedHolo"
                 >
                   <i class="fa-duotone fa-palette" />
+                </Btn>
+
+                <Btn
+                  v-if="holoOpen && loadoutHoloAvailable"
+                  :active="loadoutHoloShown"
+                  v-tooltip="t('labels.loadoutHolo')"
+                  :aria-label="t('labels.loadoutHolo')"
+                  :aria-pressed="loadoutHoloShown"
+                  data-test="model-holo-loadout"
+                  @click="toggleLoadoutHolo"
+                >
+                  <i class="fa-duotone fa-crosshairs" />
                 </Btn>
 
                 <BtnDropdown
@@ -498,7 +529,16 @@ const adiMap = computed(() => {
               </BtnGroup>
             </div>
 
-            <HoloViewer v-if="holoOpen && holoModel" :models="[holoModel]" />
+            <ModelLoadoutHolo
+              v-if="holoOpen && loadoutHoloShown"
+              ref="loadoutHoloViewer"
+              :model-slug="model.slug"
+              @unavailable="loadoutHolo = false"
+            />
+            <HoloViewer
+              v-else-if="holoOpen && holoModel"
+              :models="[holoModel]"
+            />
             <LazyImage v-else :src="storeImage" class="image" />
           </div>
           <div class="row production-status">

@@ -20,12 +20,13 @@ export type HoloBox = {
   highlighted?: boolean;
 };
 
-// Apart from the hull's blue and the colours of the editor's tabs.
-const COLOR = "#4fd1a5";
+// Opposite the hull's blue, and brighter than any of the editor's tab colours:
+// the areas sit behind the hull's surface and still have to read through it.
+export const BOX_COLOR = "#ff5fd2";
 
-const FILL_OPACITY = 0.12;
-const HIGHLIGHT_FILL_OPACITY = 0.3;
-const EDGE_OPACITY = 0.6;
+const FILL_OPACITY = 0.2;
+const HIGHLIGHT_FILL_OPACITY = 0.42;
+const EDGE_OPACITY = 0.9;
 const HIGHLIGHT_EDGE_OPACITY = 1;
 
 // Above every layer of the holo, and drawn through the hull: the areas sit
@@ -52,7 +53,7 @@ export const buildBoxes = (boxes: HoloBox[]) => {
     const fill = new Mesh(
       geometry,
       new MeshBasicMaterial({
-        color: COLOR,
+        color: BOX_COLOR,
         transparent: true,
         depthTest: false,
         depthWrite: false,
@@ -63,7 +64,7 @@ export const buildBoxes = (boxes: HoloBox[]) => {
     const edges = new LineSegments(
       new EdgesGeometry(geometry),
       new LineBasicMaterial({
-        color: COLOR,
+        color: BOX_COLOR,
         transparent: true,
         depthTest: false,
         depthWrite: false,
