@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
-# Shared mapping from RSI hangar component names to {model_name, module_name} pairs.
+# Shared mapping from RSI hangar component names to {model_names, module_name}
+# pairs, plus the game-data key a new module is loaded from. The key sits on the
+# component rather than the module name because names repeat across ships: the
+# Aurora Mk II and the Galaxy both have a "Cargo Module".
 # Used by both ModulesImporter and HangarSync.
 # Keys are downcased for case-insensitive lookup.
 module HangarModuleMapping
   COMPONENT_MAPPING = {
     # Aurora Mk II
-    "aurora mk ii combat module" => {model_names: ["Aurora Mk II"], module_name: "Combat Module"},
-    "aurora mk ii cargo module" => {model_names: ["Aurora Mk II"], module_name: "Cargo Module"},
+    "aurora mk ii combat module" => {model_names: ["Aurora Mk II"], module_name: "Combat Module", sc_key: "RSI_Aurora_Mk2_Module_Missile"},
+    "aurora mk ii cargo module" => {model_names: ["Aurora Mk II"], module_name: "Cargo Module", sc_key: "RSI_Aurora_Mk2_Module_Cargo"},
 
     # Apollo (shared between Medivac and Triage)
     "apollo tier 1 module right" => {model_names: ["Apollo Medivac", "Apollo Triage"], module_name: "Tier 1 Module Right"},
@@ -23,16 +26,16 @@ module HangarModuleMapping
     "galaxy - refinery module" => {model_names: ["Galaxy"], module_name: "Refinery Module"},
 
     # Retaliator
-    "retaliator front living module" => {model_names: ["Retaliator"], module_name: "Front Living Module"},
-    "retaliator rear living module" => {model_names: ["Retaliator"], module_name: "Rear Living Module"},
-    "retaliator front drop ship module" => {model_names: ["Retaliator"], module_name: "Front Dropship Module"},
-    "retaliator drop ship module - bow" => {model_names: ["Retaliator"], module_name: "Front Dropship Module"},
-    "retaliator torpedo module - bow" => {model_names: ["Retaliator"], module_name: "Front Torpedo Bay"},
-    "retaliator torpedo module - stern" => {model_names: ["Retaliator"], module_name: "Rear Torpedo Bay"},
-    "retaliator cargo module - bow" => {model_names: ["Retaliator"], module_name: "Front Cargo Module"},
-    "retaliator cargo module - stern" => {model_names: ["Retaliator"], module_name: "Rear Cargo Module"},
-    "retaliator personnel module - bow" => {model_names: ["Retaliator"], module_name: "Front Living Module"},
-    "retaliator personnel module - stern" => {model_names: ["Retaliator"], module_name: "Rear Living Module"}
+    "retaliator front living module" => {model_names: ["Retaliator"], module_name: "Front Living Module", sc_key: "AEGS_Retaliator_Module_Front_Base"},
+    "retaliator rear living module" => {model_names: ["Retaliator"], module_name: "Rear Living Module", sc_key: "AEGS_Retaliator_Module_Rear_Base"},
+    "retaliator front drop ship module" => {model_names: ["Retaliator"], module_name: "Front Dropship Module", sc_key: "AEGS_Retaliator_Module_Front"},
+    "retaliator drop ship module - bow" => {model_names: ["Retaliator"], module_name: "Front Dropship Module", sc_key: "AEGS_Retaliator_Module_Front"},
+    "retaliator torpedo module - bow" => {model_names: ["Retaliator"], module_name: "Front Torpedo Bay", sc_key: "AEGS_Retaliator_Module_Front_Bomber"},
+    "retaliator torpedo module - stern" => {model_names: ["Retaliator"], module_name: "Rear Torpedo Bay", sc_key: "AEGS_Retaliator_Module_Rear_Bomber"},
+    "retaliator cargo module - bow" => {model_names: ["Retaliator"], module_name: "Front Cargo Module", sc_key: "AEGS_Retaliator_Module_Front_Cargo"},
+    "retaliator cargo module - stern" => {model_names: ["Retaliator"], module_name: "Rear Cargo Module", sc_key: "AEGS_Retaliator_Module_Rear_Cargo"},
+    "retaliator personnel module - bow" => {model_names: ["Retaliator"], module_name: "Front Living Module", sc_key: "AEGS_Retaliator_Module_Front_Base"},
+    "retaliator personnel module - stern" => {model_names: ["Retaliator"], module_name: "Rear Living Module", sc_key: "AEGS_Retaliator_Module_Rear_Base"}
   }.freeze
 
   def component_mapping(name)

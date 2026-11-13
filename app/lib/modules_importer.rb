@@ -115,6 +115,7 @@ class ModulesImporter
       {
         name: mapped[:module_name],
         model_names: mapped[:model_names],
+        sc_key: mapped[:sc_key],
         image: item["image"]
       }
     end
@@ -193,7 +194,7 @@ class ModulesImporter
         error: false
       }
     end.tap do
-      enrich_from_sc_data(model_module) if model_module.present?
+      enrich_from_sc_data(model_module, mod[:sc_key]) if model_module.present?
     end
   rescue => e
     Appsignal.report_error(e)
@@ -219,30 +220,10 @@ class ModulesImporter
     Rails.logger.error "Store image could not be attached for module: #{model_module.name}"
   end
 
-  private def enrich_from_sc_data(model_module)
-    sc_key = find_sc_key(model_module.name)
+  private def enrich_from_sc_data(model_module, sc_key)
     return if sc_key.blank?
 
     model_module.update!(sc_key: sc_key)
     ::ScData::Loader::ModelModulesLoader.new.one(model_module)
-  end
-
-  private def find_sc_key(name)
-    sc_key_mapping[name.downcase]
-  end
-
-  private def sc_key_mapping
-    {
-      "front torpedo bay" => "AEGS_Retaliator_Module_Front_Bomber",
-      "rear torpedo bay" => "AEGS_Retaliator_Module_Rear_Bomber",
-      "front cargo module" => "AEGS_Retaliator_Module_Front_Cargo",
-      "rear cargo module" => "AEGS_Retaliator_Module_Rear_Cargo",
-      "front living module" => "AEGS_Retaliator_Module_Front_Base",
-      "rear living module" => "AEGS_Retaliator_Module_Rear_Base",
-      "front dropship module" => "AEGS_Retaliator_Module_Front",
-      "rear dropship module" => "AEGS_Retaliator_Module_Rear",
-      "cargo module" => "RSI_Aurora_Mk2_Module_Cargo",
-      "combat module" => "RSI_Aurora_Mk2_Module_Missile"
-    }
   end
 end
