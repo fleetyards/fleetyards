@@ -80,12 +80,44 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-preview returns the servicing areas numbered as the ship's page does" do
+    hold = "objectcontainers/ships/rsi/galaxy/int_body_rear.socpak"
+    deck = "objectcontainers/ships/rsi/galaxy/int_body_front.socpak"
+    model = create(:model,
+      servicing_areas: [
+        {"key" => "#{deck}#Deck", "name" => "Deck", "width" => 8.0, "length" => 10.0, "height" => 4.0},
+        {"key" => "#{hold}#RepairZone", "name" => "RepairZone", "width" => 12.0, "length" => 14.0, "height" => 12.0}
+      ],
+      servicing_area_names: {"#{hold}#RepairZone" => "Rear hangar"},
+      hardpoint_transforms: {"ports" => [], "servicing_areas" => [
+        {"name" => "Unlisted", "container" => hold, "bone" => "animated_body",
+         "position" => [1.0, 2.0, 3.0], "rotation" => [0, 0, 0, 1], "size" => [2.0, 2.0, 2.0]},
+        {"name" => "RepairZone", "container" => hold, "bone" => "animated_body",
+         "position" => [0.0, 0.84585, 28.20389], "rotation" => [0, 0, 0, 1], "size" => [12.04, 11.97, 14.1]}
+      ]})
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      repair, unlisted = parsed_body["servicingAreas"]
+
+      assert_equal "#{hold}#RepairZone", repair["key"]
+      assert_equal "Rear hangar", repair["name"]
+      assert_equal 2, repair["index"]
+      assert_equal [0.0, 0.84585, 28.20389], repair["position"]
+      assert_equal [12.04, 11.97, 14.1], repair["size"]
+      assert_equal [12.0, 14.0, 12.0], repair.values_at("width", "length", "height")
+      assert_nil unlisted["name"]
+      assert_equal 3, unlisted["index"]
+      assert_equal [2.0, 2.0, 2.0], unlisted.values_at("width", "length", "height")
+    end
+  end
+
   test "GET /models/:slug/loadout-preview lists no ports for a ship without an export" do
     model = create(:model)
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
       assert_empty parsed_body["ports"]
       assert_empty parsed_body["items"]
+      assert_empty parsed_body["servicingAreas"]
       assert_not parsed_body.key?("holoHull")
     end
   end
@@ -96,6 +128,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
       assert_empty parsed_body["ports"]
       assert_empty parsed_body["items"]
+      assert_empty parsed_body["servicingAreas"]
       assert_not parsed_body.key?("holoHull")
     end
   end

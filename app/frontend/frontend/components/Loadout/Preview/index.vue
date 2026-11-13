@@ -5,7 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type ModelLoadoutPreviewServicingArea,
+  useModelLoadoutPreview,
+} from "@/services/fyApi";
 import {
   loadoutMounts,
   type PreviewSlot,
@@ -32,6 +36,10 @@ type Props = {
   // How far the controls laid over a backdrop reach into it: the ship is
   // fitted into the rest.
   insets?: HoloFrameInsets;
+  // Draw the areas where the ship services the ships landed in it.
+  servicingAreas?: boolean;
+  // The area to pick out, by key.
+  highlightedArea?: string;
   testId?: string;
 };
 
@@ -42,6 +50,8 @@ const props = withDefaults(defineProps<Props>(), {
   zoomable: false,
   pickable: false,
   insets: undefined,
+  servicingAreas: false,
+  highlightedArea: undefined,
   testId: "loadout-preview",
 });
 
@@ -51,6 +61,8 @@ const emit = defineEmits<{
   absent: [absent: boolean];
   select: [path: string];
   point: [path: string | undefined];
+  // The servicing areas placed on the holo, for a caller to list.
+  servicingAreas: [areas: ModelLoadoutPreviewServicingArea[]];
 }>();
 
 // The pose of a ship's angled render: from ahead on its port side and well
@@ -96,6 +108,23 @@ const {
   query: { enabled },
 });
 
+// Apart from the boxes, so pointing at an area leaves the parts as they are.
+const mounts = computed(() =>
+  preview.value ? loadoutMounts(preview.value, props.slots) : [],
+);
+
+const boxes = computed(() =>
+  props.servicingAreas
+    ? (preview.value?.servicingAreas ?? []).map((area) => ({
+        id: area.key,
+        position: area.position as [number, number, number],
+        rotation: area.rotation as [number, number, number, number],
+        size: area.size as [number, number, number],
+        highlighted: area.key === props.highlightedArea,
+      }))
+    : undefined,
+);
+
 const holoModel = computed(() => {
   const hull = preview.value?.holoHull;
 
@@ -104,9 +133,16 @@ const holoModel = computed(() => {
   return {
     path: hull.url,
     size: hull.size ?? undefined,
-    mounts: loadoutMounts(preview.value, props.slots),
+    mounts: mounts.value,
+    boxes: boxes.value,
   };
 });
+
+watch(
+  () => (enabled.value ? (preview.value?.servicingAreas ?? []) : []),
+  (areas) => emit("servicingAreas", areas),
+  { immediate: true },
+);
 
 // Without WebGL or a hull that loads there is nothing to show.
 const unavailable = ref(false);

@@ -5174,6 +5174,7 @@
           }
         },
         "againstStock": "相對原廠飛船的變化",
+        "servicingAreas": "服務區域",
         "crafted": "已製作",
         "craftedPart": "%{name}（已製作）",
         "fitted": "已裝配",

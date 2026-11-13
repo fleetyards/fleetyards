@@ -100,6 +100,7 @@ const preview: ModelLoadoutPreview = {
     "mrck_s03_behr_dual_s02",
     "misl_s02_ir_fski_ignite",
   ].map((scKey) => ({ scKey, holoUrl: holo(scKey) })),
+  servicingAreas: [],
 };
 
 describe("portTree", () => {
@@ -269,6 +270,7 @@ describe("loadoutMounts", () => {
           geometry: false,
         }),
       ],
+      servicingAreas: [],
       items: [
         {
           scKey: "shld_godi_s01_securehyde_scitem",
@@ -292,6 +294,7 @@ describe("loadoutMounts", () => {
         }),
       ],
       items: preview.items,
+      servicingAreas: [],
     });
 
     expect(mounts).toEqual([]);

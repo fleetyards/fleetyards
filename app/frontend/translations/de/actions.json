@@ -653,8 +653,10 @@
         "linkInstead": "Stattdessen einen Build verlinken",
         "createOnFleetyards": "Loadout auf Fleetyards erstellen",
         "viewLoadout": "Loadout ansehen",
+        "hideServicingAreas": "Servicebereiche ausblenden",
         "hideFigures": "Werte ausblenden",
-        "showFigures": "Werte einblenden"
+        "showFigures": "Werte einblenden",
+        "showServicingAreas": "Servicebereiche einblenden"
       },
       "hangarPledgeItems": {
         "addToInventory": "Zum Inventar hinzufügen",

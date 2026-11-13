@@ -80,6 +80,13 @@ import {
   releaseMountCache,
   retainMountCache,
 } from "../mounts";
+import {
+  applyBoxHighlights,
+  boxesHighlightKey,
+  boxesLayoutKey,
+  buildBoxes,
+  disposeBoxes,
+} from "../boxes";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -610,6 +617,7 @@ onUnmounted(() => {
   paintRequest += 1;
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
+  if (boxRoot) disposeBoxes(boxRoot);
   if (pedestal) disposePedestal(pedestal);
   // The body model is cached for the next viewer: it gets its own head back.
   undressNeck?.();
@@ -712,6 +720,23 @@ const placeRigLights = (scene: Group) => {
 
   rigLights = buildRigLights(lights);
   scene.add(rigLights);
+  invalidate();
+};
+
+// Boxes marking places on the ship, in the export's frame: added after the
+// hull is centred, so the camera frames the ship alone.
+let boxRoot: Group | undefined;
+
+const placeBoxes = (scene: Group) => {
+  if (boxRoot) {
+    scene.remove(boxRoot);
+    disposeBoxes(boxRoot);
+  }
+
+  const boxes = props.model.boxes ?? [];
+  boxRoot = boxes.length ? buildBoxes(boxes) : undefined;
+  if (boxRoot) scene.add(boxRoot);
+
   invalidate();
 };
 
@@ -1309,6 +1334,7 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   emit("loaded", size, scene);
 
   if (!props.model.frameMounts) void attachMounts(scene);
+  placeBoxes(scene);
 };
 
 watch(
@@ -1325,6 +1351,23 @@ watch(
   () => mountsLayoutKey(props.model.mounts),
   () => {
     if (state.value) void attachMounts(state.value.scene);
+  },
+);
+
+watch(
+  () => boxesLayoutKey(props.model.boxes),
+  () => {
+    if (state.value) placeBoxes(state.value.scene);
+  },
+);
+
+watch(
+  () => boxesHighlightKey(props.model.boxes),
+  () => {
+    if (!boxRoot) return;
+
+    applyBoxHighlights(boxRoot, props.model.boxes ?? []);
+    invalidate();
   },
 );
 

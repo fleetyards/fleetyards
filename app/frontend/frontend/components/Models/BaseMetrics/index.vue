@@ -12,6 +12,10 @@ import { useComlink } from "@/shared/composables/useComlink";
 import LandingServiceIcons from "@/shared/components/LandingServiceIcons/index.vue";
 import { useLandingServiceIcons } from "@/frontend/composables/useLandingServiceIcons";
 import {
+  servicingAreaLabel,
+  servicingAreaSize,
+} from "@/shared/utils/LandingServices";
+import {
   ModelStateEnum,
   modelStateMetrics,
 } from "@/frontend/composables/useModelStates";
@@ -221,11 +225,10 @@ const openAvailability = () => {
           class="metrics-card__row"
         >
           <span class="metrics-card__row__label">
-            {{ area.name || t("model.servicingArea", { index: index + 1 }) }}
+            {{ servicingAreaLabel(area, index + 1, { t }) }}
           </span>
           <span class="metrics-card__row__value">
-            {{ toNumber(area.length) }} × {{ toNumber(area.width) }} ×
-            {{ toNumber(area.height) }} m
+            {{ servicingAreaSize(area, { toNumber }) }}
           </span>
         </div>
       </div>

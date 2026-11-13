@@ -82,6 +82,7 @@ const resolved = () => ({
   isFetching: ref(false),
   isLoading: ref(false),
   isRefetching: ref(false),
+  isError: ref(false),
   error: ref(undefined),
 });
 
@@ -2597,5 +2598,64 @@ describe("VehicleLoadoutModal component tabs", () => {
         .find((tab) => tab.props("id") === "shields")
         ?.props("disabled"),
     ).toBe(true);
+  });
+
+  it("draws the ship's servicing areas on the holo on demand, and picks out the one under the pointer", async () => {
+    const wrapper = await mountClosed(vehicle());
+    await flushPromises();
+
+    const preview = wrapper.findComponent({ name: "LoadoutPreview" });
+    const toggle = "[data-test='vehicle-loadout-servicing-areas-toggle']";
+
+    preview.vm.$emit("available", true);
+    await flushPromises();
+
+    expect(wrapper.find(toggle).exists()).toBe(false);
+
+    preview.vm.$emit("servicingAreas", [
+      {
+        key: "int_body_rear.socpak#RepairZone",
+        name: null,
+        index: 1,
+        position: [0, 0.8, 28.2],
+        rotation: [0, 0, 0, 1],
+        size: [12, 12, 14],
+        width: 12,
+        length: 14,
+        height: 12,
+      },
+    ]);
+    await flushPromises();
+
+    expect(preview.props("servicingAreas")).toBe(false);
+
+    await wrapper.get(toggle).trigger("click");
+
+    expect(preview.props("servicingAreas")).toBe(true);
+
+    const row = wrapper.get("[data-test='vehicle-loadout-servicing-areas-1']");
+
+    expect(row.text()).toContain("model.servicingArea");
+    expect(row.text()).toContain("14 × 12 × 12 m");
+
+    await row.trigger("mouseenter");
+
+    expect(preview.props("highlightedArea")).toBe(
+      "int_body_rear.socpak#RepairZone",
+    );
+
+    await row.trigger("mouseleave");
+
+    expect(preview.props("highlightedArea")).toBeUndefined();
+
+    await row.trigger("focus");
+
+    expect(preview.props("highlightedArea")).toBe(
+      "int_body_rear.socpak#RepairZone",
+    );
+
+    await wrapper.get(toggle).trigger("click");
+
+    expect(preview.props("highlightedArea")).toBeUndefined();
   });
 });

@@ -647,6 +647,35 @@ class Model < ApplicationRecord
     (hardpoint_transforms_record || build_hardpoint_transforms_record).data = data
   end
 
+  # The servicing areas placed on the flight holo, numbered as the ship's page
+  # numbers them; an area the build does not list comes after those.
+  def holo_servicing_areas
+    placed = hardpoint_transforms&.fetch("servicing_areas", nil) || []
+    listed_areas = servicing_areas || []
+    keys = listed_areas.pluck("key")
+    unlisted = keys.size
+
+    placed
+      .map do |area|
+        key = "#{area["container"]}##{area["name"]}"
+        listed = keys.index(key)
+        # The build's own size where it lists the area, so the editor and the
+        # ship's page show the same one.
+        width, height, length = area["size"]
+        dimensions = listed ? listed_areas[listed] : {"width" => width, "length" => length, "height" => height}
+
+        area.merge(
+          "key" => key,
+          "index" => listed ? listed + 1 : (unlisted += 1),
+          "label" => servicing_area_names[key].presence,
+          "width" => dimensions["width"].to_f,
+          "length" => dimensions["length"].to_f,
+          "height" => dimensions["height"].to_f
+        )
+      end
+      .sort_by { |area| area["index"] }
+  end
+
   # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
   # so transparent padding around the hull reads as part of the ship. The store
   # images are left alone: they are framed artwork, not measured against

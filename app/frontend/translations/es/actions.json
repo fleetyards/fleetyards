@@ -653,8 +653,10 @@
         "linkInstead": "Enlazar una configuración",
         "createOnFleetyards": "Crear un loadout en Fleetyards",
         "viewLoadout": "Ver equipamiento",
+        "hideServicingAreas": "Ocultar zonas de servicio",
         "hideFigures": "Ocultar cifras",
-        "showFigures": "Mostrar cifras"
+        "showFigures": "Mostrar cifras",
+        "showServicingAreas": "Mostrar zonas de servicio"
       },
       "hangarPledgeItems": {
         "addToInventory": "Añadir al inventario",

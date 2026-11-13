@@ -5177,6 +5177,7 @@
           }
         },
         "againstStock": "Modifiche rispetto alla nave di serie",
+        "servicingAreas": "Aree di servizio",
         "crafted": "Fabbricato",
         "craftedPart": "%{name} (fabbricato)",
         "fitted": "Montato",

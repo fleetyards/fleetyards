@@ -28,3 +28,15 @@ json.items(@item_holos) do |component|
   json.sc_key component.sc_key
   json.holo_url rails_blob_url(component.holo)
 end
+
+json.servicing_areas(@servicing_areas) do |area|
+  json.key area["key"]
+  json.name area["label"]
+  json.index area["index"]
+  json.position area["position"]
+  json.rotation area["rotation"]
+  json.size area["size"]
+  json.width area["width"]
+  json.length area["length"]
+  json.height area["height"]
+end
