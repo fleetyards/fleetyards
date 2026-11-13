@@ -14,7 +14,7 @@ vi.mock("@/shared/composables/useMobile", () => ({
 // The holo branch pulls in three.js, which will not resolve under vitest -- and
 // none of this is about holos.
 vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
-  default: { name: "HoloViewer", template: "<div />" },
+  default: { name: "HoloViewer", props: ["models"], template: "<div />" },
 }));
 
 // The control draws its picture through LazyImage, and jsdom has no
@@ -289,6 +289,21 @@ describe("FormFileInput holos", () => {
     });
 
     expect(subject.findComponent({ name: "HoloViewer" }).exists()).toBe(true);
+  });
+
+  it("draws a textured holo with its own materials", async () => {
+    const subject = await mount({
+      name: "holoTextured",
+      file: holoFile("model/gltf-binary", "holo_textured.glb"),
+      allowedTypes: "holo",
+      texturedHolo: true,
+    });
+
+    expect(
+      subject.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([
+      { path: "https://example.test/holo_textured.glb", textured: true },
+    ]);
   });
 
   it("does not hand an attached USDZ to the 3D view, which cannot read it", async () => {

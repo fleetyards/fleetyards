@@ -61,6 +61,7 @@ const VIEW_FIELDS = [
         translation-key="model.holoTextured"
         name="holoTextured"
         :allowed-types="AllowedFileTypes.HOLO"
+        textured-holo
         clearable
       />
     </div>

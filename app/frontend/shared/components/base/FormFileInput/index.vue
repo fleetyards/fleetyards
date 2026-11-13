@@ -69,6 +69,8 @@ type Props = {
    * the blob that replacement purges -- so it is not drawn until it lands.
    */
   processing?: boolean;
+  /** A textured export: drawn with its own materials, not the blue holo's. */
+  texturedHolo?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -402,6 +404,7 @@ const previewHoloModel = computed(() => {
 
   return {
     path: props.previewSrc,
+    textured: props.texturedHolo,
   };
 });
 
@@ -409,6 +412,7 @@ const holoModel = computed(() => {
   if (props.file?.url && isHolo.value) {
     return {
       path: props.file.url,
+      textured: props.texturedHolo,
     };
   }
 
