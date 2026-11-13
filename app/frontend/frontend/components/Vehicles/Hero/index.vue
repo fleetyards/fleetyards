@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useElementSize } from "@vueuse/core";
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -142,6 +143,19 @@ const activeLoadoutPage = computed(() =>
     : undefined,
 );
 
+// A long figure wraps its cell, so the title block is lifted by the strip's
+// real height rather than a single line's.
+const specsRef = useTemplateRef<InstanceType<typeof Specs>>("specs");
+const { height: specsHeight } = useElementSize(specsRef, undefined, {
+  box: "border-box",
+});
+
+const heroStyle = computed(() =>
+  specsHeight.value
+    ? { "--vehicle-hero-specs-measured": `${specsHeight.value}px` }
+    : undefined,
+);
+
 const openImageModal = () =>
   openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
 </script>
@@ -150,6 +164,7 @@ const openImageModal = () =>
   <section
     class="vehicle-hero"
     :class="{ 'vehicle-hero--compact': compact }"
+    :style="heroStyle"
     :aria-label="title"
     data-test="vehicle-hero"
   >
@@ -328,6 +343,7 @@ const openImageModal = () =>
       </div>
     </div>
     <Specs
+      ref="specs"
       :model="vehicle.model"
       :cargo-label="String(cargoLabel(vehicle))"
       overlay
@@ -339,7 +355,7 @@ const openImageModal = () =>
 <style lang="scss" scoped>
 .vehicle-hero {
   // The strip's height on the picture, which the title block sits above.
-  --vehicle-hero-specs-h: 68px;
+  --vehicle-hero-specs-h: var(--vehicle-hero-specs-measured, 68px);
 
   position: relative;
   overflow: hidden;
