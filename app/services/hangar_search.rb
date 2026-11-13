@@ -29,7 +29,7 @@ class HangarSearch
 
   private def sources
     [
-      vehicle_source("HangarVehicle", @vehicles),
+      vehicle_source("HangarVehicle", @vehicles, lead: true),
       vehicle_source("WishlistVehicle", @wishlist),
       ScopedSearch::Source.new(
         type: "Friend",
@@ -63,9 +63,10 @@ class HangarSearch
     ]
   end
 
-  private def vehicle_source(type, scope)
+  private def vehicle_source(type, scope, lead: false)
     ScopedSearch::Source.new(
       type:,
+      lead:,
       scope: scope.includes(:model).references(:model).order("models.name", :name),
       filter: :search_cont,
       columns: %w[vehicles.name models.name],

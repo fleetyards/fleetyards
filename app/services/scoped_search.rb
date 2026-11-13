@@ -15,8 +15,10 @@ class ScopedSearch
   # `Catalogue::Search::Result`.
   # `images`, where given, answers for the kept records at once, record to
   # attachment, so a page of rows takes one query per catalogue.
-  Source = Data.define(:type, :scope, :filter, :columns, :item, :images) do
-    def initialize(images: nil, **)
+  # A `lead` source heads the answer whenever it matches, however well the
+  # others do.
+  Source = Data.define(:type, :scope, :filter, :columns, :item, :images, :lead) do
+    def initialize(images: nil, lead: false, **)
       super
     end
   end
@@ -54,9 +56,9 @@ class ScopedSearch
     query = query.to_s.strip
     return [] if query.length < MIN_LENGTH || query.length > MAX_LENGTH
 
-    found = @sources.filter_map { |source| group(source, query) }
-      .each_with_index
-      .sort_by { |group, index| [rank(group.items.first.name, query), index] }
+    found = @sources.each_with_index
+      .filter_map { |source, index| group(source, query)&.then { |match| [match, source, index] } }
+      .sort_by { |match, source, index| [source.lead ? 0 : 1, rank(match.items.first.name, query), index] }
       .map(&:first)
 
     found.presence || near_misses(query)

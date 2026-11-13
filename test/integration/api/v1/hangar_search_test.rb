@@ -63,6 +63,16 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search puts the hangar's ships first, even below a closer match" do
+    create(:vehicle, user: @user, model: create(:model, name: "Nomad"))
+    create(:hangar_pledge_item, user: @user, kind: "paint", name: "Om Paint")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "om"} do
+      assert_equal ["HangarVehicle", "Paint"], parsed_body["groups"].pluck("type")
+    end
+  end
+
   test "GET /hangar/search finds a ship however the reader spaced its name" do
     create(:vehicle, user: @user, model: create(:model, name: "North Star"))
     create(:vehicle, user: @other, model: create(:model, name: "North Star Pro"))
