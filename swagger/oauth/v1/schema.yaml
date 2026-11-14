@@ -57,7 +57,9 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/OauthPreAuthorization"
+                oneOf:
+                - "$ref": "#/components/schemas/OauthPreAuthorization"
+                - "$ref": "#/components/schemas/OauthAuthorizationRedirect"
         '401':
           description: unauthorized
           content:

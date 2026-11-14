@@ -28,6 +28,8 @@ const loading = ref(true);
 const submitting = ref(false);
 
 onMounted(async () => {
+  let redirecting = false;
+
   try {
     const data = await oauthPreAuthorize({
       client_id: (route.query.client_id as string) || "",
@@ -38,6 +40,13 @@ onMounted(async () => {
       code_challenge: route.query.code_challenge as string,
       code_challenge_method: route.query.code_challenge_method as string,
     });
+
+    if ("redirect_uri" in data) {
+      redirecting = true;
+      window.location.href = data.redirect_uri;
+      return;
+    }
+
     preAuth.value = data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -46,7 +55,7 @@ onMounted(async () => {
       error.value = t("messages.oauthAuthorize.loadError");
     }
   } finally {
-    loading.value = false;
+    loading.value = redirecting;
   }
 });
 

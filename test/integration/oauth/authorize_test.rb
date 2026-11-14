@@ -23,8 +23,13 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
 
       security [{SessionCookie: []}]
 
+      # A confidential client the user already granted these scopes skips the
+      # consent screen and answers with where to send the user instead.
       response(200, "successful") do
-        schema ::Oauth::V1::Schemas::OauthPreAuthorization
+        schema oneOf: [
+          ::Oauth::V1::Schemas::OauthPreAuthorization,
+          ::Oauth::V1::Schemas::OauthAuthorizationRedirect
+        ]
       end
 
       response(401, "unauthorized") do
@@ -115,6 +120,17 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
       assert_kind_of Array, parsed_body["scopes"]
       assert_includes parsed_body["scopes"].first.keys, "name"
       assert_includes parsed_body["scopes"].first.keys, "description"
+    end
+  end
+
+  test "GET /authorize sends a returning user of a confidential client straight back" do
+    @oauth_application.update!(confidential: true)
+    create(:oauth_access_token, application: @oauth_application, resource_owner_id: @user.id, scopes: "public profile:read")
+    sign_in @user
+
+    assert_api_response :get, 200, params: auth_query do
+      assert_equal "redirect", parsed_body["status"]
+      assert_match %r{\Ahttp://localhost:3000/oauth2-redirect\.html\?code=}, parsed_body["redirect_uri"]
     end
   end
 
