@@ -88,6 +88,13 @@ module Catalogue
       assert_not Search.new.call("nortstar").first.has_more
     end
 
+    test "takes a question mark in a near miss as text" do
+      create(:model, name: "Carrack")
+
+      assert_equal ["Carrack"], search("carack?").map(&:second)
+      assert_empty search("como quitar el hecho de estar a la venta?")
+    end
+
     test "offers no near miss while something matches as typed" do
       create(:model, name: "Starfarer")
       create(:commodity, name: "Stor-All Crate")

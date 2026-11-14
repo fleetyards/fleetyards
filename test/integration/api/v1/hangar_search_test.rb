@@ -103,6 +103,15 @@ class Api::V1::HangarSearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/search takes a question mark in a near miss as text" do
+    create(:vehicle, user: @user, model: create(:model, name: "Carrack"))
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: "carack?"} do
+      assert_equal({"HangarVehicle" => ["Carrack"]}, groups)
+    end
+  end
+
   test "GET /hangar/search never returns another user's things" do
     create(:vehicle, user: @other, model: create(:model, name: "Omni Hauler"))
     create(:vehicle, :wanted, user: @other, model: create(:model, name: "Omni Scout"))
