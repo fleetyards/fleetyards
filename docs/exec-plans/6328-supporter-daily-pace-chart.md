@@ -30,5 +30,5 @@ The admin supporter contributions page shows a cumulative per-day line chart for
 - **2026-11-14** Initial research and plan creation
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
