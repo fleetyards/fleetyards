@@ -45,7 +45,7 @@ module Api
 
         authorize! @fleet
 
-        if @fleet.save
+        if save_new_fleet
           render :create, status: :created
         else
           render json: ValidationError.new("fleet.create", errors: @fleet.errors), status: :bad_request
@@ -86,6 +86,18 @@ module Api
         @visitor = !@my_fleet
 
         render "show"
+      end
+
+      # A double-submitted form sends two creates for one FID: both pass the
+      # uniqueness check, and only the unique index stops the second.
+      private def save_new_fleet
+        @fleet.save
+      rescue ActiveRecord::RecordNotUnique => e
+        constraint = e.cause.try(:result)&.error_field(PG::Result::PG_DIAG_CONSTRAINT_NAME)
+        raise unless constraint == "index_fleets_on_fid"
+
+        @fleet.errors.add(:fid, :taken)
+        false
       end
 
       private def set_fleet
