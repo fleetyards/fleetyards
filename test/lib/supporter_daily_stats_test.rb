@@ -51,6 +51,22 @@ class SupporterDailyStatsTest < ActiveSupport::TestCase
     assert(months[Date.new(2026, 8, 1)].days.all?(&:zero?))
   end
 
+  test "lands a recurring contribution on the day it ended when that comes before its anniversary" do
+    create(:supporter_contribution, :recurring, amount_cents: 500, started_at: Date.new(2026, 1, 20), ended_at: Date.new(2026, 8, 10))
+
+    days = by_month[Date.new(2026, 8, 1)].days
+
+    assert_equal 0, days[8]
+    assert_equal 500, days[9]
+    assert_equal 500, days[19]
+  end
+
+  test "falls back to the standing goal's currency without contributions" do
+    create(:funding_goal, amount_cents: 9_000, currency: "USD", effective_from: Date.new(2026, 1, 1))
+
+    assert_equal "USD", build.currency
+  end
+
   test "a finished month ends at the monthly chart's total" do
     create(:supporter_contribution, amount_cents: 100, started_at: Date.new(2026, 6, 10))
     create(:supporter_contribution, :recurring, amount_cents: 200, started_at: Date.new(2025, 12, 28))

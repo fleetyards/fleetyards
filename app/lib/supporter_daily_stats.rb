@@ -7,7 +7,8 @@
 #
 # A month counts the same contributions the monthly chart does, so a finished
 # month's last value equals that month's column. A recurring contribution lands
-# on its anniversary day, clamped to the month's length.
+# on its anniversary day, clamped to the month's length, or on the day it ended
+# if that came first, so no money shows up after a cancellation.
 class SupporterDailyStats
   DEFAULT_MONTHS = 4
   DEFAULT_CURRENCY = "EUR"
@@ -40,7 +41,9 @@ class SupporterDailyStats
   end
 
   def currency
-    contributions.filter_map(&:currency).max || DEFAULT_CURRENCY
+    contributions.filter_map(&:currency).max ||
+      FundingGoal.active_on(until_date).maximum(:currency) ||
+      DEFAULT_CURRENCY
   end
 
   private def running_totals(month_start)
@@ -50,11 +53,17 @@ class SupporterDailyStats
     contributions.each do |contribution|
       next unless contribution.active_in?(month_start, month_end)
 
-      per_day[[contribution.started_at.day, month_end.day].min - 1] += contribution.amount_cents
+      per_day[landing_day(contribution, month_start, month_end) - 1] += contribution.amount_cents
     end
 
     total = 0
     per_day.map { |amount| total += amount }
+  end
+
+  private def landing_day(contribution, month_start, month_end)
+    days = [contribution.started_at.day, month_end.day]
+    days << contribution.ended_at.day if contribution.ended_at&.between?(month_start, month_end)
+    days.min
   end
 
   private def month_starts
