@@ -18,6 +18,14 @@ describe("useDocumentLang", () => {
     expect(document.documentElement.lang).toBe("fr");
   });
 
+  it("names English for a browser language without translations", () => {
+    useI18nStore().locale = "ja";
+
+    useDocumentLang();
+
+    expect(document.documentElement.lang).toBe("en");
+  });
+
   it("follows a change of language", async () => {
     const store = useI18nStore();
     store.locale = "de";
