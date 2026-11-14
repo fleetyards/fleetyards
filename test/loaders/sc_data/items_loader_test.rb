@@ -58,6 +58,15 @@ module ScData
         assert_equal ["ore_pods", true], [template.category, template.hidden]
       end
 
+      test "#all names an item the game left without a localised name" do
+        items_loader.all
+
+        pod = Component.find_by!(sc_key: "cargo_shipmining_pod_hyun")
+
+        assert_equal ["Gatac Hyun Ore Pod", "ore_pods", false], [pod.name, pod.category, pod.hidden]
+        assert pod.slug.present?
+      end
+
       # A stowed pod is not an ore pod a ship carries, and Hardpoint files its
       # slot by the component's category.
       test "#all leaves the folded copy of an ore pod a hidden utility part" do

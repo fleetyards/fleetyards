@@ -12,6 +12,15 @@ module ScData
       # one stays a utility part, so the slot it sits in is not counted as an
       # ore pod.
       ORE_POD_VARIANT = /mining_pod.*_(template|collapsed)\z/
+
+      # Items whose name key the game references but never localises. Without a
+      # name a component has no slug and stays out of the catalogue. A name the
+      # export does carry always wins, so an entry here retires itself once the
+      # game ships its own.
+      MISSING_NAMES = {
+        "cargo_shipmining_pod_hyun" => "Gatac Hyun Ore Pod"
+      }.freeze
+
       def all
         exported = load_items("items")
         items = exported.reject { |item| item["category"] == "inventory" }
@@ -27,7 +36,7 @@ module ScData
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
           normalized_key = item["key"].downcase
-          name = item["name"]
+          name = item["name"].presence || MISSING_NAMES[normalized_key]
           component = find_or_create_component(normalized_key, item["key"], item["ref"], name)
 
           update_params = {
