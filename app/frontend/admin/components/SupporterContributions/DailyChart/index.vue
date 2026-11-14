@@ -85,6 +85,7 @@ const seriesColor = (index: number, current: boolean) => {
 const chartOptions = computed((): Highcharts.Options => {
   const themeYAxis = theme.value.yAxis as Highcharts.YAxisOptions;
   const goal = toMajor(goalAmountCents.value);
+  const mutedColor = themeYAxis.title?.style?.color as string | undefined;
 
   return {
     ...theme.value,
@@ -114,14 +115,14 @@ const chartOptions = computed((): Highcharts.Options => {
         ? [
             {
               value: goal,
-              color: "#A0A0A3",
+              color: mutedColor,
               dashStyle: "Dash",
               width: 1,
               zIndex: 3,
               label: {
                 text: t("labels.supporterContribution.chart.goal"),
                 align: "right",
-                style: { color: "#A0A0A3" },
+                style: { color: mutedColor },
               },
             },
           ]
@@ -164,17 +165,13 @@ onBeforeUnmount(() => {
   instance.value = undefined;
 });
 
-watch(
-  () => chartOptions.value,
-  (options) => {
-    if (instance.value) {
-      instance.value.update(options, true, true);
-    } else {
-      render();
-    }
-  },
-  { deep: true },
-);
+watch(chartOptions, (options) => {
+  if (instance.value) {
+    instance.value.update(options, true, true);
+  } else {
+    render();
+  }
+});
 </script>
 
 <template>
