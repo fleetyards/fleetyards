@@ -56,6 +56,9 @@ class Admin::Api::V1::SupporterContributionsPerDayTest < ActionDispatch::Integra
         assert_equal 0, current_month["days"][3]
         assert_equal 500, current_month["days"][4]
         assert_equal 1_400, current_month["days"].last
+        assert_equal 12, current_month["projection"].size
+        assert_equal 1_400, current_month["projection"].first
+        assert_empty parsed_body["items"].first["projection"]
         assert_equal 31, parsed_body["items"].third["days"].size
       end
     end

@@ -81,6 +81,35 @@ class SupporterDailyStatsTest < ActiveSupport::TestCase
     assert_equal 800, by_month[Date.new(2026, 8, 1)].days.last, "the recurring 200 lands on the 28th, after until_date"
   end
 
+  test "projects only the current month" do
+    entries = build.entries
+
+    assert(entries[...-1].all? { |month| month.projection.empty? })
+    assert_equal 12, entries.last.projection.size, "from the 20th to the 31st"
+  end
+
+  test "projects from today's total and adds recurring pledges on the days they are still due" do
+    create(:supporter_contribution, amount_cents: 300, started_at: Date.new(2026, 8, 5))
+    create(:supporter_contribution, :recurring, amount_cents: 500, started_at: Date.new(2026, 2, 25))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 300, projection.first
+    assert_equal 300, projection[4], "the 24th"
+    assert_equal 800, projection[5], "the 25th"
+    assert_equal 800, projection.last
+  end
+
+  test "adds one-time contributions at the daily rate of the earlier months" do
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 0, projection.first
+    assert_equal 100, projection[1], "9,200 over the 92 days of May to July"
+    assert_equal 1_100, projection.last
+  end
+
   test "reads the goal standing on until_date" do
     create(:funding_goal, amount_cents: 9_000, effective_from: Date.new(2026, 1, 1))
     create(:funding_goal, amount_cents: 5_000, effective_from: Date.new(2025, 1, 1), ended_at: Date.new(2025, 12, 31))

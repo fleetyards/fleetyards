@@ -9,11 +9,16 @@
 # month's last value equals that month's column. A recurring contribution lands
 # on its anniversary day, clamped to the month's length, or on the day it ended
 # if that came first, so no money shows up after a cancellation.
+#
+# The current month also gets a projection from today to its last day: the
+# recurring pledges still due this month on their anniversary days, which are
+# already known, plus one-time contributions at the daily rate they averaged
+# over the earlier months.
 class SupporterDailyStats
   DEFAULT_MONTHS = 4
   DEFAULT_CURRENCY = "EUR"
 
-  Month = Struct.new(:starts_on, :current, :days)
+  Month = Struct.new(:starts_on, :current, :days, :projection)
 
   def initialize(scope: SupporterContribution.all, months: DEFAULT_MONTHS, until_date: Date.current)
     @scope = scope
@@ -26,13 +31,13 @@ class SupporterDailyStats
   def entries
     @entries ||= month_starts.map do |month_start|
       current = month_start == until_date.beginning_of_month
-      last_day = current ? until_date.day : month_start.end_of_month.day
+      totals = running_totals(month_start)
 
-      Month.new(
-        starts_on: month_start,
-        current:,
-        days: running_totals(month_start).first(last_day)
-      )
+      if current
+        Month.new(starts_on: month_start, current:, days: totals.first(until_date.day), projection: projection(totals))
+      else
+        Month.new(starts_on: month_start, current:, days: totals, projection: [])
+      end
     end
   end
 
@@ -58,6 +63,24 @@ class SupporterDailyStats
 
     total = 0
     per_day.map { |amount| total += amount }
+  end
+
+  # Starts on today with the actual total, so the projected line joins the
+  # current month's line instead of floating beside it.
+  private def projection(totals)
+    totals.drop(until_date.day - 1).each_with_index.map do |scheduled, days_ahead|
+      scheduled + (one_time_daily_rate * days_ahead).round
+    end
+  end
+
+  private def one_time_daily_rate
+    earlier = month_starts[...-1]
+    return 0 if earlier.empty?
+
+    window = earlier.first..(until_date.beginning_of_month - 1.day)
+    amount = contributions.reject(&:recurring?).select { |contribution| window.cover?(contribution.started_at) }.sum(&:amount_cents)
+
+    amount.to_f / window.count
   end
 
   private def landing_day(contribution, month_start, month_end)

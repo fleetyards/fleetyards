@@ -7,4 +7,5 @@ json.items @daily_stats.entries do |month|
   json.label I18n.l(month.starts_on, format: :month_year)
   json.current month.current
   json.days month.days
+  json.projection month.projection
 end
