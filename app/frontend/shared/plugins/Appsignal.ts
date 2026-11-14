@@ -20,6 +20,16 @@ function shouldIgnore(error: unknown): boolean {
   return false;
 }
 
+// Chrome's translator marks the root, Edge's every node it rewrote. A
+// translated page has its text swapped under Vue, whose next patch then fails
+// on nodes that are gone.
+const pageTranslated = () =>
+  /\btranslated-(ltr|rtl)\b/.test(document.documentElement.className) ||
+  !!document.querySelector("[_msttexthash]");
+
+const routeName = (app: App<Element>) =>
+  String(app.config.globalProperties.$router?.currentRoute.value.name ?? "");
+
 export function setupAppsignal(app: App<Element>) {
   if (window.APPSIGNAL_KEY) {
     appsignal = new Appsignal({
@@ -27,6 +37,13 @@ export function setupAppsignal(app: App<Element>) {
       revision: window.GIT_REVISION,
       ignoreErrors: IGNORED_MESSAGES,
     });
+
+    appsignal.addDecorator((span) =>
+      span.setTags({
+        route: routeName(app),
+        page_translated: String(pageTranslated()),
+      }),
+    );
 
     const defaultHandler = errorHandler(appsignal, app);
 

@@ -25,6 +25,7 @@ import PullToRefresh from "@/shared/components/PullToRefresh/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useDocumentLang } from "@/shared/composables/useDocumentLang";
 import { useSessionStore } from "@/admin/stores/session";
 import { useNavStore } from "@/shared/stores/nav";
 import { useOverlayStore } from "@/shared/stores/overlay";
@@ -70,6 +71,8 @@ const navigationVisible = computed(
 const comlink = useComlink();
 
 const i18nStore = useI18nStore();
+
+useDocumentLang();
 
 const { locale } = storeToRefs(i18nStore);
 
