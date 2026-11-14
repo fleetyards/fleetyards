@@ -8928,6 +8928,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/per-day":
+    get:
+      summary: Supporter Contributions Per Day
+      tags:
+      - SupporterContributions
+      operationId: supporterContributionsPerDay
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/SupporterContributionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributionDailyStats"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/supporter-contributions/per-month":
     get:
       summary: Supporter Contributions Per Month
@@ -23941,6 +23976,42 @@ components:
       required:
       - count
       title: SupporterContributionBulkResult
+    SupporterContributionDailyStats:
+      type: object
+      properties:
+        currency:
+          type: string
+        goalAmountCents:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SupporterContributionDailyStatsItem"
+      additionalProperties: false
+      required:
+      - currency
+      - goalAmountCents
+      - items
+      title: SupporterContributionDailyStats
+    SupporterContributionDailyStatsItem:
+      type: object
+      properties:
+        label:
+          type: string
+        current:
+          type: boolean
+        days:
+          type: array
+          items:
+            type: integer
+          description: Running total in cents at the end of each day of the month,
+            from the 1st. The current month stops at today.
+      additionalProperties: false
+      required:
+      - label
+      - current
+      - days
+      title: SupporterContributionDailyStatsItem
     SupporterContributionDestroyBulkInput:
       type: object
       properties:

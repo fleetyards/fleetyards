@@ -125,6 +125,7 @@
           "index": "Supporter Contributions",
           "new": "New Supporter Contribution",
           "edit": "Edit Supporter Contribution",
+          "perDay": "Contributions per Day this Month vs. the last three",
           "perMonth": "Contributions per Month"
         },
         "fundingGoals": {

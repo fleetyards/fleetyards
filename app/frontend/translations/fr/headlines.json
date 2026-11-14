@@ -123,6 +123,7 @@
           "index": "Contributions des soutiens",
           "new": "Nouvelle contribution de soutien",
           "edit": "Modifier la contribution de soutien",
+          "perDay": "Contributions par jour : ce mois-ci face aux trois précédents",
           "perMonth": "Contributions par mois"
         },
         "fundingGoals": {

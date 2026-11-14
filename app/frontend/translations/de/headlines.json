@@ -123,6 +123,7 @@
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",
           "edit": "Beitrag bearbeiten",
+          "perDay": "Beiträge pro Tag: dieser Monat im Vergleich zu den letzten drei",
           "perMonth": "Beiträge pro Monat"
         },
         "fundingGoals": {
