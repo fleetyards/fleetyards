@@ -38,6 +38,8 @@
           "other": "%{label}:<br><b>%{count}</b> Visites"
         },
         "supporterContribution": {
+          "day": "Jour %{day}",
+          "month": "%{label}: <b>%{amount}</b>",
           "amount": "Contributions : <b>%{amount}</b>",
           "goal": "Objectif : <b>%{amount}</b>",
           "count": {

@@ -104,6 +104,43 @@ test.describe("Admin Supporter Contributions", () => {
     ).toBeVisible();
     await expect(chart.getByText("Goal", { exact: true })).toBeVisible();
   });
+
+  test("Renders the daily pace of this month against the three before", async ({
+    page,
+  }) => {
+    const payloadPromise = page.waitForResponse(
+      (response) =>
+        response.url().includes("/supporter-contributions/per-day") &&
+        response.status() === 200,
+    );
+
+    await page.goto("/admin/supporter-contributions/");
+
+    const payload = await (await payloadPromise).json();
+
+    expect(payload.goalAmountCents).toBe(9000);
+    expect(payload.items).toHaveLength(4);
+    expect(
+      payload.items.map((item: { current: boolean }) => item.current),
+    ).toEqual([false, false, false, true]);
+
+    // The recurring patron's anniversary and today's one-off have both landed
+    // by today, and the current month's line stops there.
+    const current = payload.items.at(-1);
+
+    expect(current.days.at(-1)).toBe(7500);
+    // Three months back the churned patron was still paying.
+    expect(payload.items.at(0).days.at(-1)).toBe(3500);
+
+    const chart = page.getByTestId("supporter-contributions-daily-chart");
+
+    await expect(chart).toBeVisible({ timeout: 60_000 });
+    await expect(
+      chart.locator(".highcharts-line-series path.highcharts-graph"),
+    ).toHaveCount(4);
+    await expect(chart.locator(".highcharts-plot-line")).toBeAttached();
+    await expect(chart.getByText("Goal", { exact: true })).toBeVisible();
+  });
 });
 
 test.describe("Admin Supporter Contribution links", () => {

@@ -123,6 +123,7 @@
           "index": "Contribuciones de patrocinadores",
           "new": "Nueva contribución de patrocinador",
           "edit": "Editar contribución de patrocinador",
+          "perDay": "Contribuciones por día: este mes frente a los tres anteriores",
           "perMonth": "Contribuciones por mes"
         },
         "fundingGoals": {

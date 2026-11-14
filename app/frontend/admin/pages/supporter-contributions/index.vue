@@ -20,6 +20,7 @@ import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
 import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
 import SourcePill from "@/admin/components/SupporterContributions/SourcePill/index.vue";
 import MonthlyChart from "@/admin/components/SupporterContributions/MonthlyChart/index.vue";
+import DailyChart from "@/admin/components/SupporterContributions/DailyChart/index.vue";
 import {
   useSupporterContributions,
   useSupporterContributionsStats,
@@ -290,6 +291,14 @@ const syncFromPatreon = () => {
         </PanelHeading>
         <PanelBody>
           <MonthlyChart :params="statsQueryParams" />
+        </PanelBody>
+      </Panel>
+      <Panel>
+        <PanelHeading>
+          {{ t("headlines.admin.supporterContributions.perDay") }}
+        </PanelHeading>
+        <PanelBody>
+          <DailyChart :params="statsQueryParams" />
         </PanelBody>
       </Panel>
     </template>

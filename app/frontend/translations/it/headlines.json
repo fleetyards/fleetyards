@@ -123,6 +123,7 @@
           "index": "Contributi dei sostenitori",
           "new": "Nuovo contributo",
           "edit": "Modifica contributo",
+          "perDay": "Contributi al giorno: questo mese rispetto ai tre precedenti",
           "perMonth": "Contributi al mese"
         },
         "fundingGoals": {
