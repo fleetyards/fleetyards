@@ -87,11 +87,13 @@ class ScopedSearch
     binds = SearchMatch.fuzzy_binds(query)
 
     @sources.filter_map do |source|
-      match = greatest(source.columns.map { |column| SearchMatch.fuzzy_match_sql(column) }, binds)
+      match = "GREATEST(#{source.columns.map { |column| SearchMatch.fuzzy_match_sql(column) }.join(", ")})"
       score = greatest(source.columns.map { |column| SearchMatch.fuzzy_rank_sql(column) }, binds)
 
+      # One pass over every bind: a query already filled into the SQL would
+      # have its own "?" read as a placeholder.
       records = source.scope
-        .where("#{match} >= ?", SearchMatch::FUZZY_THRESHOLD)
+        .where("#{match} >= :threshold", **binds, threshold: SearchMatch::FUZZY_THRESHOLD)
         .reorder(Arel.sql("#{score} DESC"))
         .limit(PER_TYPE).to_a
       build(source, records, has_more: false) if records.any?
