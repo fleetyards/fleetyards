@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.53.1](https://github.com/fleetyards/fleetyards/compare/v9.53.0...v9.53.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **fleets:** answer a double-submitted create with a taken FID ([#6326](https://github.com/fleetyards/fleetyards/issues/6326)) ([d02bc03](https://github.com/fleetyards/fleetyards/commit/d02bc03a0dad3851cb3ccecafc5e91594ff8333c))
+* **i18n:** name the reader's language on the document ([#6327](https://github.com/fleetyards/fleetyards/issues/6327)) ([fbf6cc0](https://github.com/fleetyards/fleetyards/commit/fbf6cc0071e14a59576fae669f2b8282ae1ecda6))
+* **images:** detect webp support without createImageBitmap ([#6325](https://github.com/fleetyards/fleetyards/issues/6325)) ([347d9d4](https://github.com/fleetyards/fleetyards/commit/347d9d4361c376378f9f31f2692a06507645547f))
+* **oauth:** send a returning user straight back to the client ([#6324](https://github.com/fleetyards/fleetyards/issues/6324)) ([4a327e3](https://github.com/fleetyards/fleetyards/commit/4a327e377681097c3927a4a833db2548e613c196))
+* **sc_data:** name the Hyun ore pod the game leaves unlocalised ([492e553](https://github.com/fleetyards/fleetyards/commit/492e5532c9c099fd09f1296b23598d775fdc825e))
+* **search:** take a question mark in a near-miss query as text ([#6323](https://github.com/fleetyards/fleetyards/issues/6323)) ([c1bfc95](https://github.com/fleetyards/fleetyards/commit/c1bfc95a740ddb170b2c8f3532e1019e3c5521f4))
+
 ## [9.53.0](https://github.com/fleetyards/fleetyards/compare/v9.52.1...v9.53.0) (2026-11-13)
 
 
