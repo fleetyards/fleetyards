@@ -285,22 +285,28 @@ const syncFromPatreon = () => {
     </template>
     <template #header>
       <Stats :params="statsQueryParams" />
-      <Panel>
-        <PanelHeading>
-          {{ t("headlines.admin.supporterContributions.perMonth") }}
-        </PanelHeading>
-        <PanelBody>
-          <MonthlyChart :params="statsQueryParams" />
-        </PanelBody>
-      </Panel>
-      <Panel>
-        <PanelHeading>
-          {{ t("headlines.admin.supporterContributions.perDay") }}
-        </PanelHeading>
-        <PanelBody>
-          <DailyChart :params="statsQueryParams" />
-        </PanelBody>
-      </Panel>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <Panel fill-height>
+            <PanelHeading>
+              {{ t("headlines.admin.supporterContributions.perMonth") }}
+            </PanelHeading>
+            <PanelBody>
+              <MonthlyChart :params="statsQueryParams" />
+            </PanelBody>
+          </Panel>
+        </div>
+        <div class="col-12 col-lg-6">
+          <Panel fill-height>
+            <PanelHeading>
+              {{ t("headlines.admin.supporterContributions.perDay") }}
+            </PanelHeading>
+            <PanelBody>
+              <DailyChart :params="statsQueryParams" />
+            </PanelBody>
+          </Panel>
+        </div>
+      </div>
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
