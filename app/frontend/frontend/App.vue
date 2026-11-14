@@ -45,6 +45,7 @@ import { useAppUpdateNotice } from "@/shared/composables/useAppUpdateNotice";
 import { useChunkFailureNotice } from "@/shared/composables/useChunkFailureNotice";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import { useDocumentLang } from "@/shared/composables/useDocumentLang";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
@@ -55,6 +56,8 @@ import {
 } from "@/frontend/composables/useModalQuery";
 
 useWebpCheck(true);
+
+useDocumentLang();
 
 // Outside the router-view, which remounts its page on every navigation: the
 // fleet's setup tour walks across those pages. Loaded once a tour is asked for.
