@@ -22,10 +22,15 @@ const payload: SupporterContributionDailyStats = {
   currency: "EUR",
   goalAmountCents: 9000,
   items: [
-    { label: "May 2026", current: false, days: days(31, 100) },
-    { label: "June 2026", current: false, days: days(30, 100) },
-    { label: "July 2026", current: false, days: days(31, 100) },
-    { label: "August 2026", current: true, days: days(20, 200) },
+    { label: "May 2026", current: false, days: days(31, 100), projection: [] },
+    { label: "June 2026", current: false, days: days(30, 100), projection: [] },
+    { label: "July 2026", current: false, days: days(31, 100), projection: [] },
+    {
+      label: "August 2026",
+      current: true,
+      days: days(20, 200),
+      projection: days(12, 100).map((amount) => amount + 3900),
+    },
   ],
 };
 
@@ -46,24 +51,42 @@ describe("SupporterContributionsDailyChart", () => {
     const options = await renderedOptions();
     const series = options.series as Highcharts.SeriesLineOptions[];
 
-    expect(series.map((entry) => entry.name)).toEqual([
+    const months = series.slice(0, 4);
+
+    expect(months.map((entry) => entry.name)).toEqual([
       "May 2026",
       "June 2026",
       "July 2026",
       "August 2026",
     ]);
-    expect(series.every((entry) => entry.pointStart === 1)).toBe(true);
-    expect(series.at(-1)!.data!.at(-1)).toBe(40);
+    expect(months.every((entry) => entry.pointStart === 1)).toBe(true);
+    expect(months.at(-1)!.data!.at(-1)).toBe(40);
   });
 
   it("sets the current month apart from the months it is measured against", async () => {
     const series = (await renderedOptions())
       .series as Highcharts.SeriesLineOptions[];
-    const current = series.at(-1)!;
-    const past = series.slice(0, -1);
+    const current = series[3];
+    const past = series.slice(0, 3);
 
     expect(current.lineWidth).toBeGreaterThan(past[0].lineWidth!);
-    expect(new Set(series.map((entry) => entry.color)).size).toBe(4);
+    expect(new Set(series.slice(0, 4).map((entry) => entry.color)).size).toBe(
+      4,
+    );
+  });
+
+  it("continues the current month as a dashed projection from today", async () => {
+    const series = (await renderedOptions())
+      .series as Highcharts.SeriesLineOptions[];
+    const projection = series.at(-1)!;
+
+    expect(series).toHaveLength(5);
+    expect(projection.name).toBe("Projection");
+    expect(projection.dashStyle).toBe("ShortDash");
+    expect(projection.color).toBe(series[3].color);
+    expect(projection.pointStart).toBe(20);
+    expect(projection.data!.at(0)).toBe(40);
+    expect(projection.data!.at(-1)).toBe(51);
   });
 
   it("marks the funding goal as a reference line", async () => {
@@ -84,5 +107,6 @@ describe("SupporterContributionsDailyChart", () => {
     expect(text).toContain("July 2026");
     expect(text).not.toContain("June 2026");
     expect(text).not.toContain("August 2026");
+    expect(text).toContain("Projection");
   });
 });

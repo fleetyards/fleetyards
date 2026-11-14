@@ -129,6 +129,7 @@ test.describe("Admin Supporter Contributions", () => {
     const current = payload.items.at(-1);
 
     expect(current.days.at(-1)).toBe(7500);
+    expect(current.projection.at(0)).toBe(7500);
     // Three months back the churned patron was still paying.
     expect(payload.items.at(0).days.at(-1)).toBe(3500);
 
@@ -141,7 +142,7 @@ test.describe("Admin Supporter Contributions", () => {
       chart.locator(
         ".highcharts-series-group .highcharts-line-series path.highcharts-graph",
       ),
-    ).toHaveCount(4);
+    ).toHaveCount(5);
     await expect(chart.locator(".highcharts-plot-line")).toBeAttached();
     await expect(chart.getByText("Goal", { exact: true })).toBeVisible();
   });

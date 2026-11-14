@@ -1979,7 +1979,8 @@
         },
         "chart": {
           "contributions": "Contributions",
-          "goal": "Goal"
+          "goal": "Goal",
+          "projection": "Projection"
         }
       },
       "itemPrice": {

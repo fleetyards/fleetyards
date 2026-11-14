@@ -56,14 +56,25 @@ const tooltipFormatter = function (this: Highcharts.Point) {
   const lines = items.value.flatMap((item) => {
     const amountCents = item.days[day - 1];
 
-    if (amountCents === undefined) {
+    if (amountCents !== undefined) {
+      return [
+        t("chart.labels.supporterContribution.month", {
+          label: item.label,
+          amount: formatCents(amountCents, currency.value),
+        }),
+      ];
+    }
+
+    const projectedCents = item.projection[day - item.days.length];
+
+    if (projectedCents === undefined) {
       return [];
     }
 
     return [
       t("chart.labels.supporterContribution.month", {
-        label: item.label,
-        amount: formatCents(amountCents, currency.value),
+        label: t("labels.supporterContribution.chart.projection"),
+        amount: formatCents(projectedCents, currency.value),
       }),
     ];
   });
@@ -81,6 +92,29 @@ const seriesColor = (index: number, current: boolean) => {
 
   return current ? colors[0] : colors[(index % (colors.length - 1)) + 1];
 };
+
+// Picks up where the current month's line ends, so it starts on today.
+const projectionSeries = computed((): Highcharts.SeriesLineOptions[] => {
+  const current = items.value.find((item) => item.current);
+
+  if (!current?.projection.length) {
+    return [];
+  }
+
+  return [
+    {
+      type: "line",
+      name: t("labels.supporterContribution.chart.projection"),
+      data: current.projection.map(toMajor),
+      pointStart: current.days.length,
+      color: seriesColor(0, true),
+      dashStyle: "ShortDash",
+      lineWidth: 2,
+      zIndex: 2,
+      marker: { enabled: false },
+    },
+  ];
+});
 
 const chartOptions = computed((): Highcharts.Options => {
   const themeYAxis = theme.value.yAxis as Highcharts.YAxisOptions;
@@ -137,16 +171,19 @@ const chartOptions = computed((): Highcharts.Options => {
       shared: true,
       formatter: tooltipFormatter,
     },
-    series: items.value.map((item, index) => ({
-      type: "line",
-      name: item.label,
-      data: item.days.map(toMajor),
-      pointStart: 1,
-      color: seriesColor(index, item.current),
-      lineWidth: item.current ? 3 : 1.5,
-      zIndex: item.current ? 2 : 1,
-      marker: { enabled: false },
-    })),
+    series: [
+      ...items.value.map((item, index): Highcharts.SeriesLineOptions => ({
+        type: "line",
+        name: item.label,
+        data: item.days.map(toMajor),
+        pointStart: 1,
+        color: seriesColor(index, item.current),
+        lineWidth: item.current ? 3 : 1.5,
+        zIndex: item.current ? 2 : 1,
+        marker: { enabled: false },
+      })),
+      ...projectionSeries.value,
+    ],
   };
 });
 
