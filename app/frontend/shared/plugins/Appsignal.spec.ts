@@ -72,6 +72,42 @@ describe("setupAppsignal", () => {
 
     expect(push).toHaveBeenCalledOnce();
   });
+
+  it("tags the route and whether the page was translated", async () => {
+    const { app, push } = setup();
+    app.config.globalProperties.$router = {
+      currentRoute: { value: { name: "hangar" } },
+    } as never;
+    document.documentElement.className = "translated-ltr";
+
+    app.config.errorHandler?.(new Error("boom"), null, "render function");
+    await flushPromises();
+
+    document.documentElement.className = "";
+
+    const span = push.mock.calls[0][0] as {
+      serialize: () => { tags: Record<string, string> };
+    };
+    expect(span.serialize().tags).toMatchObject({
+      route: "hangar",
+      page_translated: "true",
+    });
+  });
+
+  it("tags an untranslated page as such", async () => {
+    const { app, push } = setup();
+
+    app.config.errorHandler?.(new Error("boom"), null, "render function");
+    await flushPromises();
+
+    const span = push.mock.calls[0][0] as {
+      serialize: () => { tags: Record<string, string> };
+    };
+    expect(span.serialize().tags).toMatchObject({
+      route: "",
+      page_translated: "false",
+    });
+  });
 });
 
 const flushPromises = () => new Promise((resolve) => setTimeout(resolve));
