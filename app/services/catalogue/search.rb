@@ -197,11 +197,12 @@ module Catalogue
       klass = TokenResolver::CATALOGUES.fetch(prefix)
       name = TokenResolver.name_sql(prefix)
       binds = SearchMatch.fuzzy_binds(query)
-      match = ActiveRecord::Base.sanitize_sql_array([SearchMatch.fuzzy_match_sql(name), binds])
       score = ActiveRecord::Base.sanitize_sql_array([SearchMatch.fuzzy_rank_sql(name), binds])
 
+      # One pass over every bind: a query already filled into the SQL would
+      # have its own "?" read as a placeholder.
       rows = TokenResolver.listed(prefix)
-        .where("#{match} >= ?", SearchMatch::FUZZY_THRESHOLD)
+        .where("#{SearchMatch.fuzzy_match_sql(name)} >= :threshold", **binds, threshold: SearchMatch::FUZZY_THRESHOLD)
         .order(Arel.sql("#{score} DESC"), Arel.sql("length(#{name})"), Arel.sql("#{klass.table_name}.slug"))
         .limit(CANDIDATES)
         .pluck(Arel.sql(name), Arel.sql("#{klass.table_name}.slug"), *detail_columns(prefix, klass))
