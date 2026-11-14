@@ -136,7 +136,11 @@ test.describe("Admin Supporter Contributions", () => {
 
     await expect(chart).toBeVisible({ timeout: 60_000 });
     await expect(
-      chart.locator(".highcharts-line-series path.highcharts-graph"),
+      // Scoped to the series group: the legend's line symbols carry the same
+      // classes.
+      chart.locator(
+        ".highcharts-series-group .highcharts-line-series path.highcharts-graph",
+      ),
     ).toHaveCount(4);
     await expect(chart.locator(".highcharts-plot-line")).toBeAttached();
     await expect(chart.getByText("Goal", { exact: true })).toBeVisible();
