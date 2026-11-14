@@ -38,6 +38,8 @@
           "other": "%{label}:<br><b>%{count}</b> 訪問"
         },
         "supporterContribution": {
+          "day": "第 %{day} 天",
+          "month": "%{label}: <b>%{amount}</b>",
           "amount": "捐助：<b>%{amount}</b>",
           "goal": "目標：<b>%{amount}</b>",
           "count": {

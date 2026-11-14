@@ -57,6 +57,13 @@ module Admin
           @monthly_stats = SupporterMonthlyStats.new(scope: q.result(distinct: true))
         end
 
+        def per_day
+          authorize! with: ::Admin::SupporterContributionPolicy
+
+          q = SupporterContribution.ransack(supporter_contribution_query_params.except("sorts"))
+          @daily_stats = SupporterDailyStats.new(scope: q.result(distinct: true))
+        end
+
         def sync_patreon
           authorize! with: ::Admin::SupporterContributionPolicy
 

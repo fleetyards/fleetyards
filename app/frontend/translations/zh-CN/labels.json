@@ -1979,7 +1979,8 @@
         },
         "chart": {
           "contributions": "捐助",
-          "goal": "目标"
+          "goal": "目标",
+          "projection": "预测"
         }
       },
       "itemPrice": {
