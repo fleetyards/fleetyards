@@ -12,8 +12,10 @@
 #
 # The current month also gets a projection from today to its last day: the
 # recurring pledges still due this month on their anniversary days, which are
-# already known, plus one-time contributions at the daily rate they averaged
-# over the earlier months.
+# already known, plus one-time contributions at a daily rate: the average over
+# the earlier months, blended half and half with the same month a year before
+# to carry its season. That month only counts once the records reach back to
+# its first day; before then it would read as a month nobody gave anything.
 class SupporterDailyStats
   DEFAULT_MONTHS = 4
   DEFAULT_CURRENCY = "EUR"
@@ -74,13 +76,37 @@ class SupporterDailyStats
   end
 
   private def one_time_daily_rate
+    @one_time_daily_rate ||= begin
+      rates = [recent_one_time_daily_rate, last_year_one_time_daily_rate].compact
+      rates.empty? ? 0 : rates.sum / rates.size
+    end
+  end
+
+  private def recent_one_time_daily_rate
     earlier = month_starts[...-1]
-    return 0 if earlier.empty?
+    return if earlier.empty?
 
     window = earlier.first..(until_date.beginning_of_month - 1.day)
     amount = contributions.reject(&:recurring?).select { |contribution| window.cover?(contribution.started_at) }.sum(&:amount_cents)
 
     amount.to_f / window.count
+  end
+
+  private def last_year_one_time_daily_rate
+    month = until_date.prev_year.all_month
+    return unless records_reach?(month.first)
+
+    amount = scope.where(recurring: false, started_at: month)
+      .pick(Arel.sql("COALESCE(SUM(supporter_contributions.amount_cents), 0)"))
+
+    amount.to_f / month.count
+  end
+
+  # Asks the whole table rather than the filtered scope: with history that far
+  # back, a filter matching nothing in that month is a real zero.
+  private def records_reach?(date)
+    first = SupporterContribution.minimum(:started_at)
+    first.present? && first <= date
   end
 
   private def landing_day(contribution, month_start, month_end)
