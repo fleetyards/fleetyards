@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   HardpointCategoryEnum,
+  HullItemKindEnum,
   type LoadoutSlot,
   type ModelLoadoutPreview,
   type ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
 import {
+  builtInHighlights,
   categoryColor,
+  loadoutCargoGrids,
   loadoutMounts,
   portTree,
   previewSlotsFromLoadout,
@@ -29,6 +32,8 @@ const port = (
   geometry: true,
   stripped: false,
   inParentHolo: false,
+  hullNode: null,
+  itemKind: null,
   ...overrides,
 });
 
@@ -101,6 +106,8 @@ const preview: ModelLoadoutPreview = {
     "misl_s02_ir_fski_ignite",
   ].map((scKey) => ({ scKey, holoUrl: holo(scKey) })),
   servicingAreas: [],
+  cargoGrids: [],
+  doors: [],
 };
 
 describe("portTree", () => {
@@ -271,6 +278,8 @@ describe("loadoutMounts", () => {
         }),
       ],
       servicingAreas: [],
+      cargoGrids: [],
+      doors: [],
       items: [
         {
           scKey: "shld_godi_s01_securehyde_scitem",
@@ -295,8 +304,108 @@ describe("loadoutMounts", () => {
       ],
       items: preview.items,
       servicingAreas: [],
+      cargoGrids: [],
+      doors: [],
     });
 
     expect(mounts).toEqual([]);
+  });
+});
+
+describe("loadoutCargoGrids", () => {
+  const grid = (
+    name: string,
+    port: string | null,
+    parentPort: string | null,
+  ) => ({
+    name,
+    port,
+    parentPort,
+    position: [0, 1, 2],
+    rotation: [0, 0, 0, 1],
+    size: [5, 5, 7.5],
+    scu: 96,
+    stripped: false,
+  });
+
+  const withGrids = {
+    ...preview,
+    cargoGrids: [
+      grid("hardpoint_cargogrid_main", null, null),
+      grid(
+        "hardpoint_cargogrid_module_04",
+        "hardpoint_cargogrid_module_04",
+        "hardpoint_module_04",
+      ),
+    ],
+  };
+
+  it("draws every grid of the stock ship", () => {
+    expect(loadoutCargoGrids(withGrids).map((each) => each.id)).toEqual([
+      "hardpoint_cargogrid_main",
+      "hardpoint_cargogrid_module_04",
+    ]);
+  });
+
+  it("drops a grid whose module was taken out or swapped", () => {
+    const emptied = { name: "hardpoint_module_04", part: null, slots: [] };
+    const refitted = {
+      name: "Hardpoint_Module_04",
+      part: { holoUrl: holo("other_module") },
+      refitted: true,
+      slots: [],
+    };
+
+    expect(
+      loadoutCargoGrids(withGrids, [emptied]).map((each) => each.id),
+    ).toEqual(["hardpoint_cargogrid_main"]);
+    expect(
+      loadoutCargoGrids(withGrids, [refitted]).map((each) => each.id),
+    ).toEqual(["hardpoint_cargogrid_main"]);
+  });
+});
+
+describe("builtInHighlights", () => {
+  it("picks out fixed weapons and tractor beams only", () => {
+    const ports = [
+      port("hardpoint_mining_laser", {
+        editable: false,
+        hullNode: "hardpoint_mining_laser",
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+      port("hardpoint_tractor_beam", {
+        editable: false,
+        hullNode: "hardpoint_tractor_beam",
+        itemKind: HullItemKindEnum.UTILITY,
+        types: [{ type: "TractorBeam", subTypes: "" }],
+      }),
+      port("hardpoint_tractor_rear", {
+        editable: false,
+        hullNode: "hardpoint_tractor_rear",
+        itemKind: HullItemKindEnum.UTILITY,
+        defaultItem: "grin_tractorbeam_s1",
+      }),
+      port("hardpoint_turret_manned_rear", {
+        editable: false,
+        hullNode: "hardpoint_turret_manned_rear",
+        itemKind: HullItemKindEnum.TURRET,
+      }),
+      port("hardpoint_thruster_main", {
+        editable: false,
+        hullNode: "hardpoint_thruster_main",
+        itemKind: HullItemKindEnum.THRUSTER,
+      }),
+      port("hardpoint_gun_nose", { itemKind: HullItemKindEnum.WEAPON }),
+      port("hardpoint_gun_hidden", {
+        editable: false,
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([
+      { id: "hardpoint_mining_laser", node: "hardpoint_mining_laser" },
+      { id: "hardpoint_tractor_beam", node: "hardpoint_tractor_beam" },
+      { id: "hardpoint_tractor_rear", node: "hardpoint_tractor_rear" },
+    ]);
   });
 });

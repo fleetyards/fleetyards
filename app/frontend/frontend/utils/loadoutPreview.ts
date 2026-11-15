@@ -11,6 +11,9 @@ import {
   fittedCategory,
 } from "@/frontend/composables/useComponentFitting";
 import type { HoloMount } from "@/shared/components/HoloViewer/mounts";
+import type { HoloBuiltIn } from "@/shared/components/HoloViewer/builtIns";
+import type { HoloCargoGrid } from "@/shared/components/HoloViewer/cargo";
+import { HullItemKindEnum } from "@/services/fyApi";
 
 // A slot as the preview reads it: the part in it -- null for none -- and the
 // slots that part brings.
@@ -183,3 +186,56 @@ export const loadoutMounts = (
 
   return build(portTree(preview.ports), slots);
 };
+
+/**
+ * The cargo grids to draw for a fitting. A grid on a module or container
+ * belongs to its stock part: emptied or swapped for another, the grid goes
+ * with it.
+ */
+export const loadoutCargoGrids = (
+  preview: ModelLoadoutPreview,
+  slots?: PreviewSlot[],
+): HoloCargoGrid[] => {
+  const changed = new Set<string>();
+
+  const walk = (level: PreviewSlot[]) => {
+    for (const slot of level) {
+      if (!slot.part || slot.refitted) changed.add(slot.name.toLowerCase());
+      walk(slot.slots);
+    }
+  };
+  walk(slots ?? []);
+
+  return preview.cargoGrids
+    .filter(
+      (grid) =>
+        ![grid.port, grid.parentPort].some(
+          (name) => name && changed.has(name.toLowerCase()),
+        ),
+    )
+    .map((grid) => ({
+      id: grid.name,
+      position: grid.position,
+      rotation: grid.rotation,
+      size: grid.size,
+    }));
+};
+
+const TRACTOR_BEAM = /tractor[-_ ]?beam/i;
+
+// The built-in items worth pointing out on a ship's page: its fixed weapons and
+// tractor beams. Turrets, thrusters and the rest of the structure are never
+// editable either, and marking them would only bury those few.
+export const builtInHighlights = (
+  ports: ModelLoadoutPreviewPort[],
+): HoloBuiltIn[] =>
+  ports
+    .filter(
+      (port) =>
+        !port.editable &&
+        !!port.hullNode &&
+        (port.itemKind === HullItemKindEnum.WEAPON ||
+          port.types.some((type) => type.type === "TractorBeam") ||
+          TRACTOR_BEAM.test(port.defaultItem ?? "")),
+    )
+    .map((port) => ({ id: port.name, node: port.hullNode }));
