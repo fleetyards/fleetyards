@@ -14,8 +14,9 @@
 # recurring pledges still due this month on their anniversary days, which are
 # already known, plus one-time contributions at a daily rate: the average over
 # the earlier months, blended half and half with the same month a year before
-# to carry its season. That month only counts once the records reach back to
-# its first day; before then it would read as a month nobody gave anything.
+# to carry its season. That month only counts once the one-time records in view
+# reach back to its first day; before then it would read as a month nobody gave
+# anything.
 class SupporterDailyStats
   DEFAULT_MONTHS = 4
   DEFAULT_CURRENCY = "EUR"
@@ -92,21 +93,21 @@ class SupporterDailyStats
     amount.to_f / window.count
   end
 
+  # Coverage is read from the one-time rows of the filtered scope: a pledge
+  # running since long before says nothing about whether one-time payments
+  # were recorded back then, and a start-date filter cuts the month off too.
   private def last_year_one_time_daily_rate
     month = until_date.prev_year.all_month
-    return unless records_reach?(month.first)
-
-    amount = scope.where(recurring: false, started_at: month)
-      .pick(Arel.sql("COALESCE(SUM(supporter_contributions.amount_cents), 0)"))
+    first_on, amount = scope.where(recurring: false).pick(
+      Arel.sql("MIN(supporter_contributions.started_at)"),
+      Arel.sql(SupporterContribution.sanitize_sql_array([
+        "COALESCE(SUM(supporter_contributions.amount_cents) FILTER (WHERE supporter_contributions.started_at BETWEEN ? AND ?), 0)",
+        month.first, month.last
+      ]))
+    )
+    return if first_on.nil? || first_on > month.first
 
     amount.to_f / month.count
-  end
-
-  # Asks the whole table rather than the filtered scope: with history that far
-  # back, a filter matching nothing in that month is a real zero.
-  private def records_reach?(date)
-    first = SupporterContribution.minimum(:started_at)
-    first.present? && first <= date
   end
 
   private def landing_day(contribution, month_start, month_end)
