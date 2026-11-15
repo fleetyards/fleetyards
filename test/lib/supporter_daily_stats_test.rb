@@ -110,6 +110,56 @@ class SupporterDailyStatsTest < ActiveSupport::TestCase
     assert_equal 1_100, projection.last
   end
 
+  test "blends in the same month a year before once the records reach back to it" do
+    create(:supporter_contribution, amount_cents: 100, started_at: Date.new(2025, 7, 1))
+    create(:supporter_contribution, amount_cents: 6_200, started_at: Date.new(2025, 8, 12))
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 150, projection[1], "half of 100 a day recently, half of 6,200 over August 2025's 31 days"
+    assert_equal 1_650, projection.last
+  end
+
+  test "leaves out a year-old month the records do not fully cover" do
+    create(:supporter_contribution, amount_cents: 6_200, started_at: Date.new(2025, 8, 12))
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 100, projection[1], "the recent rate alone"
+  end
+
+  test "does not take a long-running pledge as one-time history" do
+    create(:supporter_contribution, :recurring, amount_cents: 500, started_at: Date.new(2024, 3, 1))
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 500, projection.first, "the pledge landed on the 1st"
+    assert_equal 100, projection[1] - projection.first, "the recent rate alone, not halved by an empty August 2025"
+  end
+
+  test "leaves out a year-old month a start-date filter cuts off" do
+    create(:supporter_contribution, amount_cents: 100, started_at: Date.new(2025, 7, 1))
+    create(:supporter_contribution, amount_cents: 6_200, started_at: Date.new(2025, 8, 12))
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = build(scope: SupporterContribution.where(started_at: Date.new(2026, 1, 1)..)).entries.last.projection
+
+    assert_equal 100, projection[1]
+  end
+
+  test "counts a year-old month without one-time contributions as a real zero" do
+    create(:supporter_contribution, amount_cents: 100, started_at: Date.new(2025, 7, 1))
+    create(:supporter_contribution, amount_cents: 9_200, started_at: Date.new(2026, 6, 10))
+
+    projection = by_month[Date.new(2026, 8, 1)].projection
+
+    assert_equal 50, projection[1]
+    assert_equal 550, projection.last
+  end
+
   test "reads the goal standing on until_date" do
     create(:funding_goal, amount_cents: 9_000, effective_from: Date.new(2026, 1, 1))
     create(:funding_goal, amount_cents: 5_000, effective_from: Date.new(2025, 1, 1), ended_at: Date.new(2025, 12, 31))
