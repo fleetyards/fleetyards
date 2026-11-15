@@ -290,15 +290,50 @@ class LoadoutSlots
   end
 
   def fittable_hull
-    @fittable_hull ||= hull.select do |slot|
-      next false unless HULL_CATEGORIES.include?(slot.facts.category)
-      next true unless slot.facts.category == "controller"
+    @fittable_hull ||= begin
+      fitted, rest = hull.partition { |slot| fitted_hull_slot?(slot) }
+      (fitted + carriers(rest)).tap { |slots| prefetch_below(slots) }
+    end
+  end
 
-      # Shield, missile and weapon controllers are ship internals; the flight
-      # blade is the one controller a player swaps, as in the catalogue.
-      Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
-        Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
-    end.tap { |slots| prefetch_below(slots) }
+  # How deep a part a loadout fits may sit inside a locked hull part: the
+  # Prospector's mining head is in a gimbal on its arm.
+  CARRIER_DEPTH = 2
+
+  private def fitted_hull_slot?(slot)
+    return false unless HULL_CATEGORIES.include?(slot.facts.category)
+    return true unless slot.facts.category == "controller"
+
+    # Shield, missile and weapon controllers are ship internals; the flight
+    # blade is the one controller a player swaps, as in the catalogue.
+    Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
+      Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
+  end
+
+  # The other hull slots that hold such a part: a mining arm is the
+  # shipwright's, the head in it the player's.
+  private def carriers(slots)
+    level = slots.select(&:stock).map { |slot| [slot, slot] }
+    found = []
+
+    CARRIER_DEPTH.times do
+      break if level.empty?
+
+      prefetch_ports(level.flat_map { |(_root, slot)| [slot.stock, slot.instance] }.compact)
+      # Judged by the stock part, so a loadout swapping it does not unmake the
+      # slot it is fitted to.
+      level = level.flat_map { |(root, slot)| below_stock(slot).values.map { |child| [root, child] } }
+      found |= level.filter_map { |(root, child)| root if fitted_part_slot?(child) }
+      level = level.reject { |(root, child)| found.include?(root) || child.stock.nil? }
+    end
+
+    found
+  end
+
+  # A port inside a part is filed as nothing; what it takes says what it is.
+  private def fitted_part_slot?(slot)
+    HULL_CATEGORIES.include?(slot.facts.category) ||
+      Array(slot.facts.types).any? { |type| HULL_CATEGORIES.include?(::Hardpoint::TYPE_CATEGORIES[type].to_s) }
   end
 
   # Whether anything but the part the slot came with fits it, so a slot with

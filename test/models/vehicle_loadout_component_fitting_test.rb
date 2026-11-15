@@ -287,6 +287,41 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert fleetyards_loadout(fit(["hardpoint_mining_pod_1", enhanced_pod])).save
   end
 
+  test "fits another mining head into the gimbal on a locked mining arm" do
+    arm = create(:component, component_type: "ToolArm", category: "utility", size: "1")
+    gimbal = create(:component, component_type: "UtilityTurret", category: "weapon_mounts", size: "1")
+    head = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    other_head = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    port(arm, "hardpoint_mining_laser", types: ["UtilityTurret"], min_size: 1, max_size: 1)
+    port(gimbal, "hardpoint_mining_laser", types: ["WeaponMining"], min_size: 1, max_size: 1, flags: ["editable"])
+
+    arm_port = port(@model, "hardpoint_mining_arm", category: "utility", types: ["ToolArm"], min_size: 1, max_size: 1,
+      component: arm, flags: ["uneditable"])
+    gimbal_copy = port(arm_port, "hardpoint_mining_laser", component: gimbal)
+    port(gimbal_copy, "hardpoint_mining_laser", component: head)
+
+    slots = LoadoutSlots.new(@model)
+    path = "hardpoint_mining_arm/hardpoint_mining_laser/hardpoint_mining_laser"
+
+    assert_includes slots.fittable_hull.map(&:name), "hardpoint_mining_arm"
+    assert slots.fittable?(path)
+    assert fleetyards_loadout(fit([path, other_head])).save
+    other_arm = create(:component, component_type: "ToolArm", category: "utility", size: "1")
+    assert_refused fleetyards_loadout(fit(["hardpoint_mining_arm", other_arm])), :slot_not_editable
+  end
+
+  test "serves no locked hull part that holds nothing a loadout fits" do
+    seat = create(:component, component_type: "Seat", category: "seat", size: "1")
+    screen = create(:component, component_type: "Display", category: "unknown", size: "1")
+    port(seat, "screen", types: ["Display"])
+    port(seat, "cupholder", types: ["Misc"])
+    seat_port = port(@model, "hardpoint_seat_pilot", category: "seat", types: ["Seat"], component: seat, flags: ["uneditable"])
+    port(seat_port, "screen", component: screen)
+    port(seat_port, "cupholder")
+
+    assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_seat_pilot"
+  end
+
   test "takes a slot's stock part out, leaving nothing below it" do
     empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
     loadout = fleetyards_loadout([empty])
