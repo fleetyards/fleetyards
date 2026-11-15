@@ -79,6 +79,55 @@ describe("doors", () => {
     expect(bindDoors(scene, [hatch])[0].parts[0].node).toBe(part);
   });
 
+  it("finds a part by its game-file name as the loader sanitises it", () => {
+    const { scene, part } = hull();
+    part.userData = {};
+    part.name = "AuxBayDropUnitBottomDoor001";
+
+    const [bound] = bindDoors(scene, [
+      {
+        ...hatch,
+        parts: [{ ...hatch.parts[0], object: "AuxBayDropUnitBottomDoor.001" }],
+      },
+    ]);
+
+    expect(bound.parts[0].node).toBe(part);
+  });
+
+  it("closes to where the holo had it, bound again while open", () => {
+    const { scene, part } = hull();
+    const closed = part.position.clone();
+
+    poseDoor(bindDoors(scene, [hatch])[0], 1);
+    const rebound = bindDoors(scene, [hatch])[0];
+    poseDoor(rebound, 0);
+
+    expect(part.position.distanceTo(closed)).toBeLessThan(1e-6);
+  });
+
+  it("shuts a door whose first keyframe is not where the holo has it", () => {
+    const { scene, part } = hull();
+    const closed = part.position.clone();
+    const offset: HoloDoor = {
+      ...hatch,
+      parts: [
+        {
+          ...hatch.parts[0],
+          keyframes: [
+            { t: 0.2, translation: [0, 0.1, 0], rotation: [0, 0, 0, 1] },
+            ...hatch.parts[0].keyframes.slice(1),
+          ],
+        },
+      ],
+    };
+
+    const [bound] = bindDoors(scene, [offset]);
+    poseDoor(bound, 0.6);
+    poseDoor(bound, 0);
+
+    expect(part.position.distanceTo(closed)).toBeLessThan(1e-6);
+  });
+
   it("leaves out a door none of whose parts are in the holo", () => {
     const { scene } = hull();
 

@@ -5,6 +5,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   type Object3D,
+  PropertyBinding,
   Quaternion,
   Vector3,
 } from "three";
@@ -40,6 +41,10 @@ export type BoundDoor = {
 
 export const DOOR_COLOR = "#9cf0b0";
 
+// Where each part sits closed, as the holo was loaded: a part bound again
+// after it moved still closes to the same place.
+const closedPoses = new WeakMap<Object3D, Matrix4>();
+
 const TARGET_OPACITY = 0.28;
 const RENDER_ORDER = 12;
 
@@ -70,19 +75,25 @@ export const bindDoors = (scene: Object3D, doors: HoloDoor[]): BoundDoor[] => {
     .map((door) => ({
       door,
       parts: door.parts.flatMap((part) => {
+        // The loader strips the characters a node name may not carry.
         const node =
           byExtras.get(`${door.id}#${part.part}`) ??
-          scene.getObjectByName(part.object);
+          scene.getObjectByName(PropertyBinding.sanitizeNodeName(part.object));
 
         if (!node?.parent || !part.keyframes.length) return [];
 
-        node.updateMatrix();
+        let closed = closedPoses.get(node);
+        if (!closed) {
+          node.updateMatrix();
+          closed = node.matrix.clone();
+          closedPoses.set(node, closed);
+        }
         const parent = sceneInverse.clone().multiply(node.parent.matrixWorld);
 
         return [
           {
             node,
-            closed: node.matrix.clone(),
+            closed,
             parent,
             parentInverse: parent.clone().invert(),
             keyframes: [...part.keyframes].sort((a, b) => a.t - b.t),
@@ -123,6 +134,16 @@ const sample = (keyframes: HoloDoorKeyframe[], amount: number) => {
 
 export const poseDoor = (bound: BoundDoor, amount: number) => {
   for (const part of bound.parts) {
+    // Shut is where the holo has it, whatever the first keyframe says.
+    if (amount <= 0) {
+      part.closed.decompose(
+        part.node.position,
+        part.node.quaternion,
+        part.node.scale,
+      );
+      continue;
+    }
+
     local
       .copy(part.parentInverse)
       .multiply(sample(part.keyframes, amount))
