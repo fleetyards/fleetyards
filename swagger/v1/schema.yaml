@@ -31684,7 +31684,11 @@ components:
       - fleetchart_layouts
       - hangar_planner
       - holo_ar
+      - holo_cargo_grids
+      - holo_door_animation
+      - holo_door_highlight
       - holo_phone
+      - holo_servicing_areas
       - holo_textured
       - homepage_dashboard
       - item_holo_textured
@@ -31709,7 +31713,11 @@ components:
       - FLEETCHART_LAYOUTS
       - HANGAR_PLANNER
       - HOLO_AR
+      - HOLO_CARGO_GRIDS
+      - HOLO_DOOR_ANIMATION
+      - HOLO_DOOR_HIGHLIGHT
       - HOLO_PHONE
+      - HOLO_SERVICING_AREAS
       - HOLO_TEXTURED
       - HOMEPAGE_DASHBOARD
       - ITEM_HOLO_TEXTURED
