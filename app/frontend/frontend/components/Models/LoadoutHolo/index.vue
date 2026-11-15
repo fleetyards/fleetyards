@@ -136,6 +136,7 @@ const previewSlots = (slots: LoadoutSlot[], prefix = ""): PreviewSlot[] =>
       name: slot.name,
       path,
       part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
+      docked: !!slot.docked,
       active: path === pointedPath.value,
       refitted: !!slot.fitted && slot.fitted.id !== slot.stock?.id,
       category: filedCategory(slot),

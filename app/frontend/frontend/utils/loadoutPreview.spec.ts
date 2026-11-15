@@ -314,6 +314,50 @@ describe("loadoutMounts", () => {
   });
 });
 
+describe("loadoutMounts on a docked vehicle", () => {
+  it("matches the vehicle's parts to the docking port's slots", () => {
+    const mounts = loadoutMounts(
+      {
+        ...preview,
+        ports: [
+          port("hardpoint_docking_module", { helper: true }),
+          port("itemport_vehicle_attach", {
+            parent: "hardpoint_docking_module",
+            types: [{ type: "NOITEM_Vehicle", subTypes: "" }],
+          }),
+          port("hardpoint_power_plant", {
+            parent: "itemport_vehicle_attach",
+            defaultItem: "mount_gimbal_s3",
+            stripped: true,
+          }),
+        ],
+      },
+      [
+        {
+          name: "hardpoint_docking_module",
+          path: "hardpoint_docking_module",
+          part: null,
+          docked: true,
+          slots: [
+            {
+              name: "hardpoint_power_plant",
+              path: "hardpoint_docking_module/hardpoint_power_plant",
+              part: { holoUrl: holo("bridge_plant") },
+              active: true,
+              slots: [],
+            },
+          ],
+        },
+      ],
+    );
+
+    const plant = mounts[0]?.mounts?.[0]?.mounts?.[0];
+    expect(plant?.path).toBe(holo("bridge_plant"));
+    expect(plant?.id).toBe("hardpoint_docking_module/hardpoint_power_plant");
+    expect(plant?.highlighted).toBe(true);
+  });
+});
+
 describe("loadoutCargoGrids", () => {
   const grid = (
     name: string,

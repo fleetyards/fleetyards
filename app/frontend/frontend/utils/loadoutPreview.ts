@@ -29,6 +29,8 @@ export type PreviewSlot = {
   refitted?: boolean;
   // What the slot is filed under, which picks the colour of its part.
   category?: string;
+  // A docking port with a vehicle on it: holding no part, it is not empty.
+  docked?: boolean;
   slots: PreviewSlot[];
 };
 
@@ -58,6 +60,7 @@ export const previewSlotsFromLoadout = (slots: LoadoutSlot[]): PreviewSlot[] =>
   slots.map((slot) => ({
     name: slot.name,
     part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
+    docked: !!slot.docked,
     refitted: !!slot.fitted && slot.fitted.id !== slot.stock?.id,
     category: filedCategory(slot),
     slots: previewSlotsFromLoadout(slot.slots),
@@ -73,6 +76,7 @@ export const previewSlotsFromFitting = (
     name: entry.slot.name,
     path: entry.path,
     part: entry.content ?? null,
+    docked: !!entry.slot.docked,
     active: activePaths.includes(entry.path),
     refitted: !!entry.content && entry.content.id !== entry.slot.stock?.id,
     category: fittedCategory(entry),
@@ -143,7 +147,7 @@ export const loadoutMounts = (
       );
 
       // An empty slot holds nothing, and nothing sits below it.
-      if (slot && !slot.part) return [];
+      if (slot && !slot.part && !slot.docked) return [];
 
       // A part the export never draws -- a shield generator -- is in neither
       // the hull nor any holo, so it is placed like a stripped one; where it
@@ -167,7 +171,14 @@ export const loadoutMounts = (
       // missile rack on a turret -- has its own.
       const color = categoryColor(slot?.category) ?? parentColor;
 
-      const mounts = build(node.children, slot?.slots, !!slot?.refitted, color);
+      // The export puts a docked vehicle on a port of its own below the
+      // docking port, which the loadout's slots skip: its parts are the
+      // docking port's slots.
+      const vehicle = port.types.some(({ type }) => type === "NOITEM_Vehicle");
+
+      const mounts = vehicle
+        ? build(node.children, levelSlots, parentRefitted, color)
+        : build(node.children, slot?.slots, !!slot?.refitted, color);
 
       if (!path && !mounts.length) return [];
 
