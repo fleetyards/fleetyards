@@ -98,6 +98,21 @@ module ScData
         assert_equal ["Module"], port["types"]
       end
 
+      # The Idris-P's nose port is empty by default, and takes a laser beam or a
+      # torpedo launcher all the same.
+      test "appends an editable weapon port the default loadout leaves empty" do
+        port = ports.fetch("hardpoint_nose_railgun")
+
+        assert_nil port["key"]
+        assert_equal "10", port["max_size"]
+        assert_equal ["WeaponGun", "MissileLauncher"], port["types"]
+      end
+
+      test "leaves out an empty port the game locks, or one for no weapon" do
+        assert_not ports.key?("hardpoint_spare_gun")
+        assert_not ports.key?("hardpoint_spare_seat")
+      end
+
       # The seven collector ships name themselves through a key the export
       # declares with a ",P" marker, so `translate` missed and every one of them
       # loaded nameless.
@@ -409,6 +424,28 @@ module ScData
                       <Types>
                         <Type type="MissileLauncher" subtypes="MissileRack" />
                         <Type type="BombLauncher" subtypes="BombRack" />
+                      </Types>
+                    </ItemPort>
+                  </Part>
+                  <Part name="hardpoint_nose_railgun" class="ItemPort">
+                    <ItemPort minSize="10" maxSize="10" flags="editable">
+                      <Types>
+                        <Type type="WeaponGun" subtypes="Gun" />
+                        <Type type="MissileLauncher" subtypes="Torpedo" />
+                      </Types>
+                    </ItemPort>
+                  </Part>
+                  <Part name="hardpoint_spare_gun" class="ItemPort">
+                    <ItemPort minSize="3" maxSize="3" flags="uneditable">
+                      <Types>
+                        <Type type="WeaponGun" subtypes="Gun" />
+                      </Types>
+                    </ItemPort>
+                  </Part>
+                  <Part name="hardpoint_spare_seat" class="ItemPort">
+                    <ItemPort minSize="1" maxSize="1" flags="editable">
+                      <Types>
+                        <Type type="Seat" subtypes="Pilot" />
                       </Types>
                     </ItemPort>
                   </Part>
