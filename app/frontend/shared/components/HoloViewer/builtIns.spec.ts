@@ -45,6 +45,24 @@ describe("built-in items", () => {
     expect(marks).toHaveLength(2);
   });
 
+  it("finds an item without extras by its name, beside those with them", () => {
+    const scene = hull();
+    const seat = new Group();
+    seat.name = "hardpoint_seat_pilot001";
+    seat.add(new Mesh(new BoxGeometry(1, 1, 1)));
+    scene.add(seat);
+
+    const marks = markBuiltIns(scene, [
+      { id: "hardpoint_mining_laser", node: "hardpoint_mining_laser" },
+      { id: "hardpoint_seat_pilot", node: "hardpoint_seat_pilot.001" },
+    ]);
+
+    expect(marks.map((mark) => mark.userData.builtInId)).toEqual([
+      "hardpoint_mining_laser",
+      "hardpoint_seat_pilot",
+    ]);
+  });
+
   it("fades the marks in, brighter where pointed at", () => {
     const marks = markBuiltIns(hull(), [
       { id: "hardpoint_mining_laser", node: "hardpoint_mining_laser" },

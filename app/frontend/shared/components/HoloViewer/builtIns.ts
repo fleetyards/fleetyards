@@ -4,6 +4,7 @@ import {
   MeshBasicMaterial,
   type Object3D,
   DoubleSide,
+  PropertyBinding,
 } from "three";
 
 // An item the hull holo keeps, which no loadout changes: by its port, and the
@@ -31,20 +32,26 @@ const nodesFor = (scene: Object3D, builtIns: HoloBuiltIn[]) => {
     if (builtIn.node) ids.set(builtIn.node, builtIn.id);
   }
 
-  const found: [Object3D, string][] = [];
+  const found = new Map<Object3D, string>();
   scene.traverse((node) => {
     const port = node.userData.kind === "item" ? node.userData.port : undefined;
-    const id = (port && ids.get(port)) ?? undefined;
-    if (id) found.push([node, id]);
+    const id = port ? ids.get(port) : undefined;
+    if (id) found.set(node, id);
   });
 
-  if (found.length) return found;
+  // An export without the extras is found by the node's name, as the loader
+  // sanitises it.
+  const marked = new Set(found.values());
+  for (const builtIn of builtIns) {
+    if (marked.has(builtIn.id) || !builtIn.node) continue;
 
-  return builtIns.flatMap((builtIn) => {
-    const node = builtIn.node ? scene.getObjectByName(builtIn.node) : undefined;
+    const node = scene.getObjectByName(
+      PropertyBinding.sanitizeNodeName(builtIn.node),
+    );
+    if (node) found.set(node, builtIn.id);
+  }
 
-    return node ? [[node, builtIn.id] as [Object3D, string]] : [];
-  });
+  return [...found];
 };
 
 // A tinted copy laid over each mesh of a built-in item, drawn through the hull
