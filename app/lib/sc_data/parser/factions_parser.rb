@@ -12,7 +12,6 @@ module ScData
 
       FACTIONS_PATH = "factions/factionreputation"
       CONTEXTS_PATH = "reputation/contexts"
-      GENERATORS_PATH = "contracts/contractgenerator"
       FOLDER = "factions"
 
       FACTION_REPUTATION = "FactionReputation"
@@ -113,7 +112,7 @@ module ScData
         @awarded_scopes ||= begin
           counts = Hash.new { |all, faction| all[faction] = Hash.new(0) }
 
-          load_data(GENERATORS_PATH).each { |item| collect_awards(item[:values], counts) }
+          load_contract_generators.each { |item| collect_awards(item[:values], counts) }
 
           counts
         end

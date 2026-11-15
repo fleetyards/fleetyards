@@ -255,6 +255,17 @@ module ScData
         assert @parser.commodities.first[:counted]
       end
 
+      test "#commodities reads stolen goods as consumer goods from their path" do
+        translate("items_commodities_stolengoods" => "Stolen Goods")
+        carryable(
+          "2h/carryable_2h_fl_missionitem_stolen_goods_a",
+          attach_name: "@items_commodities_stolengoods",
+          display_name: "@items_commodities_stolengoods"
+        )
+
+        assert_equal "consumer_goods", @parser.commodities.first[:commodity_type]
+      end
+
       test "#commodities leaves a crate that rolls one quality for the whole container uncounted" do
         translate("items_commodities_iron" => "Iron")
         carryable(

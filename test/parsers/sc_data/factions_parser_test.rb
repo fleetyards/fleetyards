@@ -120,6 +120,19 @@ module ScData
         assert_empty @parser.factions.sole[:ladders]
       end
 
+      test "#factions does not count an award again for a contract slot's inlined copy" do
+        write("contracts/contractgenerator/gen", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
+          <ContractResult_LegacyReputation>
+            <contractResultReputationAmounts factionReputation="#{FACTION_REF}" reputationScope="#{STANDING_SCOPE}" />
+          </ContractResult_LegacyReputation>
+          <otherLocationFilter>
+            <contractResultReputationAmounts factionReputation="#{FACTION_REF}" reputationScope="#{SECURITY_SCOPE}" />
+          </otherLocationFilter>
+        XML
+
+        assert_equal({STANDING_SCOPE => 1}, @parser.send(:awarded_scopes)[FACTION_REF])
+      end
+
       test "#all leaves the manufacturer logos sharing its folder in place" do
         logos = "#{@base_folder}/parsed/test/icons/ui/sharedassets/manufacturerlogos"
         FileUtils.mkdir_p(logos)
