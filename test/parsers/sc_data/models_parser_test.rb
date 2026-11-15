@@ -108,8 +108,9 @@ module ScData
         assert_equal ["WeaponGun", "MissileLauncher"], port["types"]
       end
 
-      test "leaves out an empty port the game locks, or one for no weapon" do
+      test "leaves out an empty port the game locks, one without a size, or one for no weapon" do
         assert_not ports.key?("hardpoint_spare_gun")
+        assert_not ports.key?("hardpoint_sizeless_gun")
         assert_not ports.key?("hardpoint_spare_seat")
       end
 
@@ -437,6 +438,13 @@ module ScData
                   </Part>
                   <Part name="hardpoint_spare_gun" class="ItemPort">
                     <ItemPort minSize="3" maxSize="3" flags="uneditable">
+                      <Types>
+                        <Type type="WeaponGun" subtypes="Gun" />
+                      </Types>
+                    </ItemPort>
+                  </Part>
+                  <Part name="hardpoint_sizeless_gun" class="ItemPort">
+                    <ItemPort flags="editable">
                       <Types>
                         <Type type="WeaponGun" subtypes="Gun" />
                       </Types>

@@ -273,7 +273,10 @@ module ScData
       private def empty_slot?(port_def, from_record:)
         return from_record if port_def[:types].include?("Module")
 
+        # Without a size nothing could ever fit it -- the X1's and the Fury's
+        # spare weapon ports.
         Array(port_def[:flags]).include?("editable") &&
+          port_def[:max_size].present? &&
           port_def[:types].intersect?(EMPTY_SLOT_TYPES)
       end
 
