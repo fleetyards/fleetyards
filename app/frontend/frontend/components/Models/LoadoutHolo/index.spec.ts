@@ -42,6 +42,9 @@ const preview: ModelLoadoutPreview = {
       defaultItem: "mount_gimbal_mining",
     }),
     port("hardpoint_thruster_main", { itemKind: HullItemKindEnum.THRUSTER }),
+    port("hardpoint_stored_pod_1", {
+      defaultItem: "cargo_shipmining_pod_prospector_collapsed",
+    }),
   ],
   items: [],
   servicingAreas: [],
@@ -129,12 +132,24 @@ const mountHolo = async () => {
 };
 
 describe("ModelLoadoutHolo", () => {
-  it("picks out the fixed weapons alone, not the thrusters", async () => {
+  it("picks out the fixed weapons and mining bags, not the thrusters", async () => {
     const { model } = await mountHolo();
 
     expect(model().builtIns.map((builtIn) => builtIn.id)).toEqual([
       "hardpoint_mining_laser",
+      "hardpoint_stored_pod_1",
     ]);
+  });
+
+  it("names a pointed mining bag", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    viewer().vm.$emit("builtInPoint", "hardpoint_stored_pod_1");
+    await nextTick();
+
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-card"]').text(),
+    ).toContain("Mining bag");
   });
 
   it("names a pointed built-in item and opens its page on a click", async () => {

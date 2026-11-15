@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import {
-  HullItemKindEnum,
   type LoadoutSlot,
   useModelLoadoutPreview,
   useModelLoadoutSlots,
@@ -18,6 +17,7 @@ import {
 } from "@/frontend/composables/useComponentFitting";
 import {
   builtInHighlights,
+  builtInKind,
   categoryColor,
   loadoutCargoGrids,
   loadoutMounts,
@@ -220,8 +220,7 @@ const card = computed(() => {
 
   if (pointedBuiltIn.value) {
     const { port, part } = builtInPart(pointedBuiltIn.value);
-    const kind =
-      port?.itemKind === HullItemKindEnum.WEAPON ? "weapon" : "tractorBeam";
+    const kind = (port && builtInKind(port)) ?? "weapon";
 
     return {
       kicker: t(`labels.loadoutHoloBuiltInKinds.${kind}`),

@@ -489,7 +489,8 @@
       },
       "loadoutHoloBuiltInKinds": {
         "weapon": "Waffe",
-        "tractorBeam": "Traktorstrahl"
+        "tractorBeam": "Traktorstrahl",
+        "miningPod": "Erzbeutel"
       },
       "holoViewer": {
         "background": {

@@ -489,7 +489,8 @@
       },
       "loadoutHoloBuiltInKinds": {
         "weapon": "武器",
-        "tractorBeam": "牽引光束"
+        "tractorBeam": "牽引光束",
+        "miningPod": "採礦袋"
       },
       "holoViewer": {
         "background": {

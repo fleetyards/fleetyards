@@ -222,20 +222,36 @@ export const loadoutCargoGrids = (
 };
 
 const TRACTOR_BEAM = /tractor[-_ ]?beam/i;
+const MINING_POD = /mining[-_ ]?pod|ore[-_ ]?pod/i;
 
-// The built-in items worth pointing out on a ship's page: its fixed weapons and
-// tractor beams. Turrets, thrusters and the rest of the structure are never
-// editable either, and marking them would only bury those few.
+export type BuiltInKind = "weapon" | "tractorBeam" | "miningPod";
+
+// What a built-in item is worth pointing out as on a ship's page, if anything:
+// its fixed weapons, tractor beams and the bags its mining heads fill.
+// Turrets, thrusters and the rest of the structure are never editable either,
+// and marking them would only bury those few.
+export const builtInKind = (
+  port: ModelLoadoutPreviewPort,
+): BuiltInKind | undefined => {
+  if (port.editable || !port.hullNode) return undefined;
+
+  const item = port.defaultItem ?? "";
+
+  if (port.itemKind === HullItemKindEnum.WEAPON) return "weapon";
+  if (
+    port.types.some((type) => type.type === "TractorBeam") ||
+    TRACTOR_BEAM.test(item)
+  ) {
+    return "tractorBeam";
+  }
+  if (MINING_POD.test(item)) return "miningPod";
+
+  return undefined;
+};
+
 export const builtInHighlights = (
   ports: ModelLoadoutPreviewPort[],
 ): HoloBuiltIn[] =>
   ports
-    .filter(
-      (port) =>
-        !port.editable &&
-        !!port.hullNode &&
-        (port.itemKind === HullItemKindEnum.WEAPON ||
-          port.types.some((type) => type.type === "TractorBeam") ||
-          TRACTOR_BEAM.test(port.defaultItem ?? "")),
-    )
+    .filter((port) => builtInKind(port))
     .map((port) => ({ id: port.name, node: port.hullNode }));

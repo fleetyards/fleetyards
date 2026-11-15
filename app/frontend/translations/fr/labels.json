@@ -489,7 +489,8 @@
       },
       "loadoutHoloBuiltInKinds": {
         "weapon": "Arme",
-        "tractorBeam": "Rayon tracteur"
+        "tractorBeam": "Rayon tracteur",
+        "miningPod": "Sac de minage"
       },
       "holoViewer": {
         "background": {

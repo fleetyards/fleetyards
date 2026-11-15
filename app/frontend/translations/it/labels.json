@@ -489,7 +489,8 @@
       },
       "loadoutHoloBuiltInKinds": {
         "weapon": "Arma",
-        "tractorBeam": "Raggio traente"
+        "tractorBeam": "Raggio traente",
+        "miningPod": "Sacca mineraria"
       },
       "holoViewer": {
         "background": {

@@ -366,7 +366,7 @@ describe("loadoutCargoGrids", () => {
 });
 
 describe("builtInHighlights", () => {
-  it("picks out fixed weapons and tractor beams only", () => {
+  it("picks out fixed weapons, tractor beams and mining bags only", () => {
     const ports = [
       port("hardpoint_mining_laser", {
         editable: false,
@@ -395,6 +395,18 @@ describe("builtInHighlights", () => {
         hullNode: "hardpoint_thruster_main",
         itemKind: HullItemKindEnum.THRUSTER,
       }),
+      port("hardpoint_stored_pod_1", {
+        editable: false,
+        hullNode: "hardpoint_stored_pod_1",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "cargo_shipmining_pod_prospector_collapsed",
+      }),
+      port("hardpoint_seat_pilot", {
+        editable: false,
+        hullNode: "hardpoint_seat_pilot",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "misc_prospector_scitem_seat",
+      }),
       port("hardpoint_gun_nose", { itemKind: HullItemKindEnum.WEAPON }),
       port("hardpoint_gun_hidden", {
         editable: false,
@@ -406,6 +418,7 @@ describe("builtInHighlights", () => {
       { id: "hardpoint_mining_laser", node: "hardpoint_mining_laser" },
       { id: "hardpoint_tractor_beam", node: "hardpoint_tractor_beam" },
       { id: "hardpoint_tractor_rear", node: "hardpoint_tractor_rear" },
+      { id: "hardpoint_stored_pod_1", node: "hardpoint_stored_pod_1" },
     ]);
   });
 });

@@ -489,7 +489,8 @@
       },
       "loadoutHoloBuiltInKinds": {
         "weapon": "Weapon",
-        "tractorBeam": "Tractor beam"
+        "tractorBeam": "Tractor beam",
+        "miningPod": "Mining bag"
       },
       "holoViewer": {
         "background": {
