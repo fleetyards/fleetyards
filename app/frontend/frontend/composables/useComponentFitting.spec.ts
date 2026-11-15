@@ -3,12 +3,14 @@ import {
   type BlueprintCostSlot,
   BlueprintRampEnum,
   type Hardpoint,
+  HardpointCategoryEnum,
   type LoadoutSlot,
   type ModelModule,
   VehicleLoadoutItemTypeEnum,
 } from "@/services/fyApi";
 import {
   COMPONENT_TABS,
+  componentTabOf,
   filedCategory,
   loadoutValues,
   lowerIsBetter,
@@ -491,5 +493,56 @@ describe("tractor beams", () => {
 
     expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
     expect(fitting.hasSlots(tree, tab("weapons"))).toBe(false);
+  });
+});
+
+describe("ore pods", () => {
+  const pod = (name: string): LoadoutSlot => ({
+    name,
+    hardpointId: `port-${name}`,
+    category: HardpointCategoryEnum.ORE_PODS,
+    types: ["Container"],
+    editable: true,
+    swappable: true,
+    stock: { id: "pod", name: "MISC Ore Pod", type: "Container" },
+    slots: [],
+  });
+
+  const cargoLift = (): LoadoutSlot => ({
+    name: "hardpoint_cargobay_exterior",
+    hardpointId: "port-lift",
+    category: HardpointCategoryEnum.UNKNOWN,
+    types: ["Container"],
+    editable: false,
+    stock: { id: "lift", name: "Cargo Lift", type: "Container" },
+    slots: [],
+  });
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("lists a mining ship's pod slots on the auxiliary tab", () => {
+    const fitting = useComponentFitting();
+    const slots = [
+      pod("hardpoint_mining_pod_1"),
+      pod("hardpoint_mining_pod_2"),
+    ];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(componentTabOf(HardpointCategoryEnum.ORE_PODS)?.id).toBe(
+      "auxiliary",
+    );
+    expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
+  });
+
+  it("leaves another Container port, a cargo lift, to the shipwright", () => {
+    const fitting = useComponentFitting();
+    const slots = [cargoLift()];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(COMPONENT_TABS.some((entry) => fitting.hasSlots(tree, entry))).toBe(
+      false,
+    );
   });
 });

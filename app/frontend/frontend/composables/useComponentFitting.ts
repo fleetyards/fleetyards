@@ -63,7 +63,13 @@ export const COMPONENT_TABS: ComponentTab[] = [
       HardpointCategoryEnum.MINING_LASERS,
     ],
   },
-  { id: "auxiliary", categories: [HardpointCategoryEnum.TRACTOR_BEAMS] },
+  {
+    id: "auxiliary",
+    categories: [
+      HardpointCategoryEnum.TRACTOR_BEAMS,
+      HardpointCategoryEnum.ORE_PODS,
+    ],
+  },
 ];
 
 const CARRIER_CATEGORIES = new Set<string>([
@@ -263,12 +269,17 @@ const FITTED_CATEGORIES = new Set<string>([
   HardpointCategoryEnum.TRACTOR_BEAMS,
   HardpointCategoryEnum.MISSILES,
   HardpointCategoryEnum.BOMBS,
+  HardpointCategoryEnum.ORE_PODS,
 ]);
 
 // A port whose types name none of those, or, naming no types at all, whose
 // category is none of the loadout's.
 const takesAPart = (slot: LoadoutSlot) => {
   const types = slot.types.filter(Boolean);
+
+  // An ore pod is a Container, as the shipwright's cargo lifts and canister
+  // shelves are; only its category says a loadout fills it.
+  if (slot.category === HardpointCategoryEnum.ORE_PODS) return true;
 
   return types.length
     ? types.some((type) => FITTED_TYPES.has(type))
