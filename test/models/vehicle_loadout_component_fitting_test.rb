@@ -362,6 +362,20 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_docking_collar_merlin"
   end
 
+  test "fits a part into an editable weapon port the ship comes without" do
+    beam = create(:component, component_type: "WeaponGun", category: "weapons", size: "10")
+    torpedoes = create(:component, component_type: "MissileLauncher", category: "missile_racks", size: "10")
+    port(@model, "hardpoint_nose_railgun", types: %w[WeaponGun MissileLauncher], min_size: 10, max_size: 10,
+      flags: ["editable"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert_includes slots.fittable_hull.map(&:name), "hardpoint_nose_railgun"
+    assert slots.swappable?(slots["hardpoint_nose_railgun"])
+    assert fleetyards_loadout(fit(["hardpoint_nose_railgun", beam])).save
+    assert fleetyards_loadout(fit(["hardpoint_nose_railgun", torpedoes])).save
+  end
+
   test "takes a slot's stock part out, leaving nothing below it" do
     empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
     loadout = fleetyards_loadout([empty])
