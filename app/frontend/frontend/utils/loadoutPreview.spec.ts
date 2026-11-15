@@ -314,6 +314,29 @@ describe("loadoutMounts", () => {
   });
 });
 
+describe("loadoutMounts on a port the ship comes without a part in", () => {
+  const nose = port("hardpoint_nose_railgun", { position: [0, -12.6, -79.3] });
+
+  it("draws what the loadout fits there", () => {
+    const mounts = loadoutMounts({ ...preview, ports: [nose] }, [
+      {
+        name: "hardpoint_nose_railgun",
+        path: "hardpoint_nose_railgun",
+        part: { holoUrl: holo("exodus_laser_beam") },
+        slots: [],
+      },
+    ]);
+
+    expect(mounts.map((mount) => mount.path)).toEqual([
+      holo("exodus_laser_beam"),
+    ]);
+  });
+
+  it("draws nothing there until something is fitted", () => {
+    expect(loadoutMounts({ ...preview, ports: [nose] })).toEqual([]);
+  });
+});
+
 describe("loadoutMounts on a docked vehicle", () => {
   it("matches the vehicle's parts to the docking port's slots", () => {
     const mounts = loadoutMounts(

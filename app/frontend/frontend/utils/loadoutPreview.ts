@@ -152,8 +152,12 @@ export const loadoutMounts = (
       // A part the export never draws -- a shield generator -- is in neither
       // the hull nor any holo, so it is placed like a stripped one; where it
       // has no holo of its own either, nothing comes of it.
+      // A port the ship comes without a part in -- the Idris-P's nose -- has
+      // nothing in the hull either, so what a loadout fits there is drawn too.
       const drawn =
-        (port.stripped || !port.geometry) && !port.inParentHolo && port.helper;
+        (port.stripped || !port.geometry || !port.defaultItem) &&
+        !port.inParentHolo &&
+        port.helper;
 
       let path: string | undefined;
 
