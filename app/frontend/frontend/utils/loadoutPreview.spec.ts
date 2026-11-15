@@ -377,6 +377,33 @@ describe("loadoutCargoGrids", () => {
 });
 
 describe("builtInHighlights", () => {
+  it("leaves a locked mount whose part the loadout swaps unmarked", () => {
+    // The Prospector: a locked arm holds a locked gimbal, whose mining head is
+    // the loadout's to change.
+    const ports = [
+      port("hardpoint_mining_arm", {
+        editable: false,
+        hullNode: "hardpoint_mining_arm",
+        itemKind: HullItemKindEnum.UTILITY,
+      }),
+      port("hardpoint_mining_laser", {
+        parent: "hardpoint_mining_arm",
+        editable: false,
+        hullNode: "hardpoint_mining_laser",
+        itemKind: HullItemKindEnum.WEAPON,
+        defaultItem: "mount_gimbal_mining",
+      }),
+      port("hardpoint_mining_laser", {
+        parent: "hardpoint_mining_laser",
+        editable: true,
+        stripped: true,
+        defaultItem: "mining_laser_grin_arbor_s1",
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([]);
+  });
+
   it("picks out fixed weapons, tractor beams and mining bags only", () => {
     const ports = [
       port("hardpoint_mining_laser", {

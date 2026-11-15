@@ -246,9 +246,20 @@ export const builtInKind = (
   return undefined;
 };
 
+// A locked mount whose part a loadout swaps, a mining head in its gimbal, is
+// no built-in weapon: the part in it is the loadout's.
 export const builtInHighlights = (
   ports: ModelLoadoutPreviewPort[],
-): HoloBuiltIn[] =>
-  ports
-    .filter((port) => builtInKind(port))
+): HoloBuiltIn[] => {
+  const carriers = new Set(
+    ports
+      .filter((port) => port.editable && port.parent)
+      .map((port) => port.parent?.toLowerCase()),
+  );
+
+  return ports
+    .filter(
+      (port) => builtInKind(port) && !carriers.has(port.name.toLowerCase()),
+    )
     .map((port) => ({ id: port.name, node: port.hullNode }));
+};
