@@ -95,6 +95,10 @@ export type HoloModel = {
   // The holo's doors, drawn closed, and those of them standing open.
   doors?: HoloDoor[];
   openDoors?: string[];
+  // Doors answer the pointer, and the one it rests on is drawn as a box; each
+  // on unless turned off.
+  doorTargets?: boolean;
+  doorHighlight?: boolean;
   // Items the holo keeps that are picked out on it, answering the pointer.
   builtIns?: HoloBuiltIn[];
   layers?: HoloLayers;

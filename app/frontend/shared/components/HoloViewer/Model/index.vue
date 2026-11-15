@@ -834,6 +834,7 @@ let doorTargets: Group | undefined;
 const doorTweens = new Map<string, Tween>();
 
 const placeDoors = (scene: Group) => {
+  pointDoor(undefined);
   for (const bound of boundDoors) poseDoor(bound, 0);
   doorTweens.forEach((tween) => tweens.delete(tween));
   doorTweens.clear();
@@ -844,9 +845,10 @@ const placeDoors = (scene: Group) => {
 
   const doors = props.model.doors ?? [];
   boundDoors = bindDoors(scene, doors);
-  doorTargets = boundDoors.length
-    ? buildDoorTargets(boundDoors.map((bound) => bound.door))
-    : undefined;
+  doorTargets =
+    boundDoors.length && props.model.doorTargets !== false
+      ? buildDoorTargets(boundDoors.map((bound) => bound.door))
+      : undefined;
   if (doorTargets) scene.add(doorTargets);
 
   for (const bound of boundDoors) {
@@ -1332,7 +1334,12 @@ const pointDoor = (id: string | undefined) => {
   if (id === pointedDoor) return;
 
   pointedDoor = id;
-  if (doorTargets) pointDoorTarget(doorTargets, id);
+  if (doorTargets) {
+    pointDoorTarget(
+      doorTargets,
+      props.model.doorHighlight === false ? undefined : id,
+    );
+  }
   invalidate();
   emit("doorPoint", id);
 };
@@ -1632,6 +1639,13 @@ watch(
 watch(
   () => (props.model.openDoors ?? []).join(","),
   () => openDoors(),
+);
+
+watch(
+  () => props.model.doorTargets !== false,
+  () => {
+    if (state.value) placeDoors(state.value.scene);
+  },
 );
 
 watch(
