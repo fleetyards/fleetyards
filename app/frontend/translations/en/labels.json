@@ -477,6 +477,20 @@
       "texturedHoloOwnPaint": "Standard paint",
       "loadoutHolo": "Loadout",
       "loadoutHoloServicingArea": "Service area",
+      "loadoutHoloDoor": "Door",
+      "loadoutHoloBuiltIn": "Built-in, not editable",
+      "loadoutHoloDoorKinds": {
+        "door": "Door",
+        "airlock": "Airlock",
+        "elevator": "Elevator",
+        "hatch": "Hatch",
+        "sideDoor": "Side door",
+        "ramp": "Ramp"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "Weapon",
+        "tractorBeam": "Tractor beam"
+      },
       "holoViewer": {
         "background": {
           "dark": "Dark",

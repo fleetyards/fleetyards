@@ -477,6 +477,20 @@
       "texturedHoloOwnPaint": "Pintura estándar",
       "loadoutHolo": "Equipamiento",
       "loadoutHoloServicingArea": "Zona de servicio",
+      "loadoutHoloDoor": "Puerta",
+      "loadoutHoloBuiltIn": "Integrado, no editable",
+      "loadoutHoloDoorKinds": {
+        "door": "Puerta",
+        "airlock": "Esclusa",
+        "elevator": "Ascensor",
+        "hatch": "Escotilla",
+        "sideDoor": "Puerta lateral",
+        "ramp": "Rampa"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "Arma",
+        "tractorBeam": "Rayo tractor"
+      },
       "holoViewer": {
         "background": {
           "dark": "Oscuro",

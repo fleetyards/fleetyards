@@ -477,6 +477,20 @@
       "texturedHoloOwnPaint": "Standardlackierung",
       "loadoutHolo": "Loadout",
       "loadoutHoloServicingArea": "Servicebereich",
+      "loadoutHoloDoor": "Tür",
+      "loadoutHoloBuiltIn": "Fest verbaut, nicht änderbar",
+      "loadoutHoloDoorKinds": {
+        "door": "Tür",
+        "airlock": "Luftschleuse",
+        "elevator": "Aufzug",
+        "hatch": "Luke",
+        "sideDoor": "Seitentür",
+        "ramp": "Rampe"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "Waffe",
+        "tractorBeam": "Traktorstrahl"
+      },
       "holoViewer": {
         "background": {
           "dark": "Dunkel",

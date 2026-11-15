@@ -417,7 +417,20 @@
         "grid": {
           "enable": "Afficher la grille",
           "disable": "Masquer la grille"
-        }
+        },
+        "cargo": {
+          "enable": "Afficher les grilles de cargo",
+          "disable": "Masquer les grilles de cargo"
+        },
+        "doors": {
+          "enable": "Ouvrir toutes les portes",
+          "disable": "Fermer toutes les portes"
+        },
+        "door": {
+          "open": "Cliquer pour ouvrir",
+          "close": "Cliquer pour fermer"
+        },
+        "builtIn": "Cliquer pour voir l'objet"
       },
       "logistics": {
         "addToInventory": "Ajouter à l'inventaire",

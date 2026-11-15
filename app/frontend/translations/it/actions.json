@@ -417,7 +417,20 @@
         "grid": {
           "enable": "Mostra griglia",
           "disable": "Nascondi griglia"
-        }
+        },
+        "cargo": {
+          "enable": "Mostra griglie di carico",
+          "disable": "Nascondi griglie di carico"
+        },
+        "doors": {
+          "enable": "Apri tutte le porte",
+          "disable": "Chiudi tutte le porte"
+        },
+        "door": {
+          "open": "Clicca per aprire",
+          "close": "Clicca per chiudere"
+        },
+        "builtIn": "Clicca per vedere l'oggetto"
       },
       "logistics": {
         "addToInventory": "Aggiungi all'inventario",

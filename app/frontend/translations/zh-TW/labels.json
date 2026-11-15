@@ -477,6 +477,20 @@
       "texturedHoloOwnPaint": "標準塗裝",
       "loadoutHolo": "配置",
       "loadoutHoloServicingArea": "服務區域",
+      "loadoutHoloDoor": "艙門",
+      "loadoutHoloBuiltIn": "內建，不可更改",
+      "loadoutHoloDoorKinds": {
+        "door": "艙門",
+        "airlock": "氣閘",
+        "elevator": "電梯",
+        "hatch": "艙口",
+        "sideDoor": "側門",
+        "ramp": "坡道"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "武器",
+        "tractorBeam": "牽引光束"
+      },
       "holoViewer": {
         "background": {
           "dark": "深色",

@@ -417,7 +417,20 @@
         "grid": {
           "enable": "Raster einblenden",
           "disable": "Raster ausblenden"
-        }
+        },
+        "cargo": {
+          "enable": "Frachtraster anzeigen",
+          "disable": "Frachtraster ausblenden"
+        },
+        "doors": {
+          "enable": "Alle Türen öffnen",
+          "disable": "Alle Türen schließen"
+        },
+        "door": {
+          "open": "Zum Öffnen klicken",
+          "close": "Zum Schließen klicken"
+        },
+        "builtIn": "Klicken, um das Item anzuzeigen"
       },
       "logistics": {
         "addToInventory": "Zum Inventar hinzufügen",

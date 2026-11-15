@@ -417,7 +417,20 @@
         "grid": {
           "enable": "Mostrar cuadrícula",
           "disable": "Ocultar cuadrícula"
-        }
+        },
+        "cargo": {
+          "enable": "Mostrar rejillas de carga",
+          "disable": "Ocultar rejillas de carga"
+        },
+        "doors": {
+          "enable": "Abrir todas las puertas",
+          "disable": "Cerrar todas las puertas"
+        },
+        "door": {
+          "open": "Haz clic para abrir",
+          "close": "Haz clic para cerrar"
+        },
+        "builtIn": "Haz clic para ver el objeto"
       },
       "logistics": {
         "addToInventory": "Añadir al inventario",

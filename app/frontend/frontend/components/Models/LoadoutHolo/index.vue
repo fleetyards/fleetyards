@@ -6,20 +6,27 @@ export default {
 
 <script lang="ts" setup>
 import {
+  HullItemKindEnum,
   type LoadoutSlot,
   useModelLoadoutPreview,
   useModelLoadoutSlots,
 } from "@/services/fyApi";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   componentTabOf,
   filedCategory,
 } from "@/frontend/composables/useComponentFitting";
 import {
+  builtInHighlights,
   categoryColor,
+  loadoutCargoGrids,
   loadoutMounts,
   type PreviewSlot,
 } from "@/frontend/utils/loadoutPreview";
+import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
 import { BOX_COLOR } from "@/shared/components/HoloViewer/boxes";
+import { BUILT_IN_COLOR } from "@/shared/components/HoloViewer/builtIns";
+import { DOOR_COLOR } from "@/shared/components/HoloViewer/doors";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   servicingAreaLabel,
@@ -86,6 +93,18 @@ const partsByPath = computed(() => {
 
 const pointedPath = ref<string>();
 const pointedArea = ref<string>();
+const pointedBuiltIn = ref<string>();
+const pointedDoor = ref<string>();
+
+const servicingAreasShown = ref(true);
+const cargoGridsShown = ref(true);
+const doorsOpen = ref(false);
+
+const doors = computed(() => preview.value?.doors ?? []);
+
+const { isOpen, openDoors, toggleDoor } = useHoloDoors(doors, doorsOpen);
+
+const router = useRouter();
 
 const previewSlots = (slots: LoadoutSlot[], prefix = ""): PreviewSlot[] =>
   slots.map((slot) => {
@@ -107,10 +126,20 @@ const holoModel = computed(() => {
 
   if (!preview.value || !hull?.url) return undefined;
 
+  const slots = previewSlots(loadoutSlots.value);
+
   return {
     path: hull.url,
     size: hull.size ?? undefined,
-    mounts: loadoutMounts(preview.value, previewSlots(loadoutSlots.value)),
+    mounts: loadoutMounts(preview.value, slots),
+    cargoGrids: loadoutCargoGrids(preview.value, slots),
+    doors: doors.value,
+    openDoors: openDoors.value,
+    builtIns: builtInHighlights(preview.value.ports),
+    layers: {
+      boxes: servicingAreasShown.value,
+      cargo: cargoGridsShown.value,
+    },
     boxes: preview.value.servicingAreas.map((area) => ({
       id: area.key,
       position: area.position as [number, number, number],
@@ -141,6 +170,32 @@ const pointedPart = computed(() =>
   pointedPath.value ? partsByPath.value.get(pointedPath.value) : undefined,
 );
 
+// A built-in item by its port: the stock part the ship's slots name for it.
+const builtInPart = (id: string) => {
+  const port = preview.value?.ports.find((candidate) => candidate.name === id);
+  const slot = [...partsByPath.value.values()].find(
+    ({ slot: candidate }) => candidate.name.toLowerCase() === id.toLowerCase(),
+  )?.slot;
+
+  return { port, part: slot?.stock };
+};
+
+const openBuiltIn = (id: string) => {
+  const { part } = builtInPart(id);
+  if (!part?.slug) return;
+
+  void router.push({ name: "component", params: { slug: part.slug } });
+};
+
+const DOOR_KINDS: Record<string, string> = {
+  door: "door",
+  airlock: "airlock",
+  elevator: "elevator",
+  hatch: "hatch",
+  side_door: "sideDoor",
+  ramp: "ramp",
+};
+
 const card = computed(() => {
   if (pointedPart.value) {
     const { slot, category } = pointedPart.value;
@@ -163,6 +218,42 @@ const card = computed(() => {
     };
   }
 
+  if (pointedBuiltIn.value) {
+    const { port, part } = builtInPart(pointedBuiltIn.value);
+    const kind =
+      port?.itemKind === HullItemKindEnum.WEAPON ? "weapon" : "tractorBeam";
+
+    return {
+      kicker: t(`labels.loadoutHoloBuiltInKinds.${kind}`),
+      color: BUILT_IN_COLOR,
+      title: part?.name ?? port?.defaultItem ?? pointedBuiltIn.value,
+      details: [
+        part?.size ? `S${part.size}` : undefined,
+        t("labels.loadoutHoloBuiltIn"),
+        part?.slug ? t("actions.holoViewer.builtIn") : undefined,
+      ].filter(Boolean),
+    };
+  }
+
+  const door = doors.value.find(
+    (candidate) => candidate.id === pointedDoor.value,
+  );
+
+  if (door) {
+    const kind = DOOR_KINDS[door.kind ?? ""] ?? "door";
+
+    return {
+      kicker: t("labels.loadoutHoloDoor"),
+      color: DOOR_COLOR,
+      title: t(`labels.loadoutHoloDoorKinds.${kind}`),
+      details: [
+        isOpen(door.id)
+          ? t("actions.holoViewer.door.close")
+          : t("actions.holoViewer.door.open"),
+      ],
+    };
+  }
+
   const area = preview.value?.servicingAreas.find(
     (candidate) => candidate.key === pointedArea.value,
   );
@@ -181,8 +272,28 @@ watch(holoModel, (model) => {
   if (!model) {
     pointedPath.value = undefined;
     pointedArea.value = undefined;
+    pointedBuiltIn.value = undefined;
+    pointedDoor.value = undefined;
   }
 });
+
+const servicingAreasLabel = computed(() =>
+  servicingAreasShown.value
+    ? t("actions.vehicleLoadout.hideServicingAreas")
+    : t("actions.vehicleLoadout.showServicingAreas"),
+);
+
+const cargoGridsLabel = computed(() =>
+  cargoGridsShown.value
+    ? t("actions.holoViewer.cargo.disable")
+    : t("actions.holoViewer.cargo.enable"),
+);
+
+const doorsLabel = computed(() =>
+  doorsOpen.value
+    ? t("actions.holoViewer.doors.disable")
+    : t("actions.holoViewer.doors.enable"),
+);
 </script>
 
 <template>
@@ -197,8 +308,51 @@ watch(holoModel, (model) => {
     @pointermove="trackPointer"
     @mount-point="pointedPath = $event"
     @box-point="pointedArea = $event"
+    @built-in-point="pointedBuiltIn = $event"
+    @built-in-select="openBuiltIn"
+    @door-point="pointedDoor = $event"
+    @door-select="toggleDoor"
     @unavailable="emit('unavailable')"
   >
+    <template #actions>
+      <Btn
+        v-if="holoModel.boxes.length"
+        v-tooltip="servicingAreasLabel"
+        :aria-label="servicingAreasLabel"
+        :aria-pressed="servicingAreasShown"
+        :active="servicingAreasShown"
+        :data-test="`${testId}-servicing-areas`"
+        @click="servicingAreasShown = !servicingAreasShown"
+      >
+        <i class="fa-light fa-screwdriver-wrench" />
+      </Btn>
+      <Btn
+        v-if="holoModel.cargoGrids.length"
+        v-tooltip="cargoGridsLabel"
+        :aria-label="cargoGridsLabel"
+        :aria-pressed="cargoGridsShown"
+        :active="cargoGridsShown"
+        :data-test="`${testId}-cargo-grids`"
+        @click="cargoGridsShown = !cargoGridsShown"
+      >
+        <i class="fa-light fa-boxes-stacked" />
+      </Btn>
+      <Btn
+        v-if="holoModel.doors.length"
+        v-tooltip="doorsLabel"
+        :aria-label="doorsLabel"
+        :aria-pressed="doorsOpen"
+        :active="doorsOpen"
+        :data-test="`${testId}-doors`"
+        @click="doorsOpen = !doorsOpen"
+      >
+        <i
+          :class="
+            doorsOpen ? 'fa-light fa-door-open' : 'fa-light fa-door-closed'
+          "
+        />
+      </Btn>
+    </template>
     <div
       v-if="card"
       class="model-loadout-holo__card"

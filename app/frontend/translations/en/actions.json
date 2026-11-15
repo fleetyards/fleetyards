@@ -417,7 +417,20 @@
         "grid": {
           "enable": "Show grid",
           "disable": "Hide grid"
-        }
+        },
+        "cargo": {
+          "enable": "Show cargo grids",
+          "disable": "Hide cargo grids"
+        },
+        "doors": {
+          "enable": "Open all doors",
+          "disable": "Close all doors"
+        },
+        "door": {
+          "open": "Click to open",
+          "close": "Click to close"
+        },
+        "builtIn": "Click to view the item"
       },
       "logistics": {
         "addToInventory": "Add to Inventory",
