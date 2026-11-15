@@ -65,12 +65,21 @@ Both hull holo viewers can show the cargo grids filled with real SCU containers,
 
 ## Discovery Log
 
+- **2026-11-15** In the 4.10.3 build, the swappable ore pods are `hardpoint_mining_pod_*` (`ore_pods`, editable). `hardpoint_stored_pod_*` are the spare racks, `uneditable` and retired since 4.10.2. The pods were missing from the editor only because of `HULL_CATEGORIES` and the frontend tab and type filters.
+
 - **2026-11-15** The browser never reads S3: `ShipViewsImportJob` stores the exports and the frontend reads `GET /api/v1/models/:slug/loadout-preview`, so the issue's `files.json` check happens in the import listing. The hull scene isn't merged, so nodes can be found by name or extras.
 - **2026-11-15** In the Prospector export, door nodes are `door_<doorId>_<part>` with `extras`, not `parts[].object`. Door kinds include hatch and side_door. Keyframes run over t 0–1, nine per part. `cargo_grids` is empty. `hullNode` repeats. The flight_doors.json file is 141 KB (mostly keyframes).
 
+### Phase 6: Mining bags
+1. `LoadoutSlots::HULL_CATEGORIES` gains `ore_pods`, so the pod slots are served, fittable and swappable.
+2. The editor lists them on the Auxiliary tab, and `takesAPart` accepts an `ore_pods` slot by category. Other Container ports (cargo lifts, canister shelves) stay hidden.
+3. Stowed spare pods left in the hull get the built-in "Mining bag" mark on the detail pages.
+
 ## Progress
-- [ ] Phase 1: backend import and API
-- [ ] Phase 2: layers and the animation
-- [ ] Phase 3: cargo grids with containers
-- [ ] Phase 4: doors
-- [ ] Phase 5: built-in items
+- [x] Phase 1: backend import and API
+- [x] Phase 2: layers and the animation
+- [x] Phase 3: cargo grids with containers
+- [x] Phase 4: doors
+- [x] Phase 5: built-in items
+- [x] Phase 6: mining bags
+- [ ] Visual check against the Prospector export on a running server
