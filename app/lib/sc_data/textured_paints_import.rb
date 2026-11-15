@@ -197,10 +197,11 @@ module ScData
     private def share_hull(model, variants)
       share_holos(model, variants, %i[holo_hull])
 
-      return if model.hardpoint_transforms.nil?
-
       variants.each do |variant|
-        variant.update!(hardpoint_transforms: model.hardpoint_transforms) if variant.hardpoint_transforms.nil?
+        variant.update!(hardpoint_transforms: model.hardpoint_transforms) if variant.hardpoint_transforms.nil? && model.hardpoint_transforms
+        # The doors are parts of the hull holo, so a variant shown with the base
+        # ship's hull opens the base ship's doors.
+        variant.update!(holo_doors: model.holo_doors) if variant.holo_doors.nil? && model.holo_doors
       end
     end
 
