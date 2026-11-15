@@ -11,9 +11,11 @@ import {
   useModelLoadoutPreview,
 } from "@/services/fyApi";
 import {
+  loadoutCargoGrids,
   loadoutMounts,
   type PreviewSlot,
 } from "@/frontend/utils/loadoutPreview";
+import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { HoloFrameInsets } from "@/shared/components/HoloViewer/frameInsets";
@@ -40,6 +42,10 @@ type Props = {
   servicingAreas?: boolean;
   // The area to pick out, by key.
   highlightedArea?: string;
+  // Draw the cargo grids, filled with containers.
+  cargoGrids?: boolean;
+  // Every door open; a click on one turns it the other way.
+  doorsOpen?: boolean;
   testId?: string;
 };
 
@@ -52,6 +58,8 @@ const props = withDefaults(defineProps<Props>(), {
   insets: undefined,
   servicingAreas: false,
   highlightedArea: undefined,
+  cargoGrids: false,
+  doorsOpen: false,
   testId: "loadout-preview",
 });
 
@@ -63,6 +71,8 @@ const emit = defineEmits<{
   point: [path: string | undefined];
   // The servicing areas placed on the holo, for a caller to list.
   servicingAreas: [areas: ModelLoadoutPreviewServicingArea[]];
+  // What else the holo has to show, for a caller to offer the switches.
+  overlays: [overlays: { cargoGrids: boolean; doors: boolean }];
 }>();
 
 // The pose of a ship's angled render: from ahead on its port side and well
@@ -113,17 +123,24 @@ const mounts = computed(() =>
   preview.value ? loadoutMounts(preview.value, props.slots) : [],
 );
 
+// Kept while hidden, so turning them off fades them out.
 const boxes = computed(() =>
-  props.servicingAreas
-    ? (preview.value?.servicingAreas ?? []).map((area) => ({
-        id: area.key,
-        position: area.position as [number, number, number],
-        rotation: area.rotation as [number, number, number, number],
-        size: area.size as [number, number, number],
-        highlighted: area.key === props.highlightedArea,
-      }))
-    : undefined,
+  (preview.value?.servicingAreas ?? []).map((area) => ({
+    id: area.key,
+    position: area.position as [number, number, number],
+    rotation: area.rotation as [number, number, number, number],
+    size: area.size as [number, number, number],
+    highlighted: area.key === props.highlightedArea,
+  })),
 );
+
+const cargoGrids = computed(() =>
+  preview.value ? loadoutCargoGrids(preview.value, props.slots) : [],
+);
+
+const doors = computed(() => preview.value?.doors ?? []);
+
+const { openDoors, toggleDoor } = useHoloDoors(doors, () => props.doorsOpen);
 
 const holoModel = computed(() => {
   const hull = preview.value?.holoHull;
@@ -135,8 +152,21 @@ const holoModel = computed(() => {
     size: hull.size ?? undefined,
     mounts: mounts.value,
     boxes: boxes.value,
+    cargoGrids: cargoGrids.value,
+    doors: doors.value,
+    openDoors: openDoors.value,
+    layers: { boxes: props.servicingAreas, cargo: props.cargoGrids },
   };
 });
+
+watch(
+  () => ({
+    cargoGrids: enabled.value && cargoGrids.value.length > 0,
+    doors: enabled.value && doors.value.length > 0,
+  }),
+  (overlays) => emit("overlays", overlays),
+  { immediate: true, deep: true },
+);
 
 watch(
   () => (enabled.value ? (preview.value?.servicingAreas ?? []) : []),
@@ -209,6 +239,7 @@ onBeforeUnmount(() => {
       @loaded="loaded = true"
       @mount-select="emit('select', $event)"
       @mount-point="emit('point', $event)"
+      @door-select="toggleDoor"
     />
     <HoloViewer
       v-else-if="variant === 'stage'"

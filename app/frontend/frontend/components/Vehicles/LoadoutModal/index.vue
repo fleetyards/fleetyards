@@ -393,6 +393,23 @@ const servicingAreasToggleLabel = computed(() =>
     : t("actions.vehicleLoadout.showServicingAreas"),
 );
 
+// The cargo grids and doors the holo has, offered once it says so.
+const overlays = ref({ cargoGrids: false, doors: false });
+const cargoGridsShown = ref(false);
+const doorsOpen = ref(false);
+
+const cargoGridsToggleLabel = computed(() =>
+  cargoGridsShown.value
+    ? t("actions.holoViewer.cargo.disable")
+    : t("actions.holoViewer.cargo.enable"),
+);
+
+const doorsToggleLabel = computed(() =>
+  doorsOpen.value
+    ? t("actions.holoViewer.doors.disable")
+    : t("actions.holoViewer.doors.enable"),
+);
+
 const figuresToggleLabel = computed(() =>
   inspecting.value
     ? t("actions.vehicleLoadout.showFigures")
@@ -1565,7 +1582,10 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @point="onPreviewPoint"
             :servicing-areas="servicingAreasShown"
             :highlighted-area="pointedArea"
+            :cargo-grids="cargoGridsShown"
+            :doors-open="doorsOpen"
             @servicing-areas="servicingAreas = $event"
+            @overlays="overlays = $event"
           />
         </div>
       </div>
@@ -1592,6 +1612,34 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @click="servicingAreasShown = !servicingAreasShown"
           >
             <i class="fa-solid fa-screwdriver-wrench" />
+          </Btn>
+          <Btn
+            v-if="previewShown && overlays.cargoGrids"
+            variant="bare"
+            :aria-label="cargoGridsToggleLabel"
+            v-tooltip="cargoGridsToggleLabel"
+            :aria-pressed="cargoGridsShown"
+            :active="cargoGridsShown"
+            data-test="vehicle-loadout-cargo-grids-toggle"
+            @click="cargoGridsShown = !cargoGridsShown"
+          >
+            <i class="fa-solid fa-boxes-stacked" />
+          </Btn>
+          <Btn
+            v-if="previewShown && overlays.doors"
+            variant="bare"
+            :aria-label="doorsToggleLabel"
+            v-tooltip="doorsToggleLabel"
+            :aria-pressed="doorsOpen"
+            :active="doorsOpen"
+            data-test="vehicle-loadout-doors-toggle"
+            @click="doorsOpen = !doorsOpen"
+          >
+            <i
+              :class="
+                doorsOpen ? 'fa-solid fa-door-open' : 'fa-solid fa-door-closed'
+              "
+            />
           </Btn>
           <Btn
             variant="bare"

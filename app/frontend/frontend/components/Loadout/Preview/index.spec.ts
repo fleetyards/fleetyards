@@ -32,6 +32,28 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           height: 12,
         },
       ],
+      cargoGrids: [
+        {
+          name: "hardpoint_cargogrid",
+          port: null,
+          parentPort: null,
+          position: [0, 1, 2],
+          rotation: [0, 0, 0, 1],
+          size: [2.5, 2.5, 10],
+          scu: 32,
+          stripped: false,
+        },
+      ],
+      doors: [
+        {
+          id: "hardpoint_door_rear",
+          kind: "hatch",
+          position: [0, 0, 10],
+          durationS: 3,
+          bounds: null,
+          parts: [],
+        },
+      ],
     }),
     isError: ref(false),
     isSuccess: ref(true),
@@ -95,9 +117,11 @@ describe("LoadoutPreview", () => {
     const models = () =>
       wrapper.findComponent({ name: "HoloViewer" }).props("models") as {
         boxes?: unknown[];
+        layers?: { boxes?: boolean };
       }[];
 
-    expect(models()[0].boxes).toBeUndefined();
+    // Kept while hidden, so turning them off fades them out.
+    expect(models()[0].layers?.boxes).toBe(false);
     expect(wrapper.emitted("servicingAreas")?.at(-1)?.[0]).toHaveLength(1);
 
     await wrapper.setProps({
@@ -114,5 +138,37 @@ describe("LoadoutPreview", () => {
         highlighted: true,
       },
     ]);
+    expect(models()[0].layers?.boxes).toBe(true);
+  });
+
+  it("offers the cargo grids and doors, shown and opened when asked", async () => {
+    const wrapper = mount(Component, {
+      props: { modelSlug: "caterpillar", variant: "backdrop" },
+    });
+    await flushPromises();
+
+    const model = () =>
+      (
+        wrapper.findComponent({ name: "HoloViewer" }).props("models") as {
+          cargoGrids: { id: string }[];
+          openDoors: string[];
+          layers: { cargo?: boolean };
+        }[]
+      )[0];
+
+    expect(wrapper.emitted("overlays")?.at(-1)?.[0]).toEqual({
+      cargoGrids: true,
+      doors: true,
+    });
+    expect(model().cargoGrids.map((grid) => grid.id)).toEqual([
+      "hardpoint_cargogrid",
+    ]);
+    expect(model().layers.cargo).toBe(false);
+    expect(model().openDoors).toEqual([]);
+
+    await wrapper.setProps({ cargoGrids: true, doorsOpen: true });
+
+    expect(model().layers.cargo).toBe(true);
+    expect(model().openDoors).toEqual(["hardpoint_door_rear"]);
   });
 });

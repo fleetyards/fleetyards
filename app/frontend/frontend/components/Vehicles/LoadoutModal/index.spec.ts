@@ -2658,4 +2658,33 @@ describe("VehicleLoadoutModal component tabs", () => {
 
     expect(preview.props("highlightedArea")).toBeUndefined();
   });
+
+  it("offers the cargo grids and doors the holo has, and switches them", async () => {
+    const wrapper = await mountClosed(vehicle());
+    await flushPromises();
+
+    const preview = wrapper.findComponent({ name: "LoadoutPreview" });
+    const cargo = "[data-test='vehicle-loadout-cargo-grids-toggle']";
+    const doors = "[data-test='vehicle-loadout-doors-toggle']";
+
+    preview.vm.$emit("available", true);
+    preview.vm.$emit("overlays", { cargoGrids: true, doors: false });
+    await flushPromises();
+
+    expect(wrapper.find(doors).exists()).toBe(false);
+    expect(preview.props("cargoGrids")).toBe(false);
+
+    await wrapper.get(cargo).trigger("click");
+
+    expect(preview.props("cargoGrids")).toBe(true);
+
+    preview.vm.$emit("overlays", { cargoGrids: true, doors: true });
+    await flushPromises();
+
+    expect(preview.props("doorsOpen")).toBe(false);
+
+    await wrapper.get(doors).trigger("click");
+
+    expect(preview.props("doorsOpen")).toBe(true);
+  });
 });
