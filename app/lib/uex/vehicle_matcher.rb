@@ -3,7 +3,8 @@
 module Uex
   class VehicleMatcher
     # UEX vehicle slug => our Model slug, for the vehicles neither the slug nor
-    # either name form resolves. Maintained by hand, same as the mapping hashes
+    # either name form resolves. A list holds candidates across a rename; the
+    # first that exists wins. Maintained by hand, same as the mapping hashes
     # in Rsi::LoanerLoader and ModulesImporter.
     MAPPINGS = {
       "a2-hercules-starlifter" => "crus-a2-hercules",
@@ -12,6 +13,9 @@ module Uex
       "ares-star-fighter-inferno" => "crus-ares-inferno",
       "ares-star-fighter-ion" => "crus-ares-ion",
       "c8r-pisces-rescue" => "anvl-c8r-pisces",
+      "hm6-ballista" => ["anvl-hm6-ballista", "anvl-ballista"],
+      "hm6-centurion" => ["anvl-hm6-centurion", "anvl-centurion"],
+      "hm6-spartan" => ["anvl-hm6-spartan", "anvl-spartan"],
       "constellation-andromeda" => "rsi-constellation-mk-iv-andromeda",
       "rsi-constellation-aquila" => "rsi-constellation-mk-iv-aquila",
       "rsi-constellation-phoenix" => "rsi-constellation-mk-iv-phoenix",
@@ -43,7 +47,7 @@ module Uex
 
       # The hand-written mapping is an override: it wins over the generic
       # strategies so a wrong name collision can always be corrected.
-      return @by_slug[mapped] if mapped.present?
+      return Array(mapped).lazy.filter_map { |slug| @by_slug[slug] }.first if mapped.present?
 
       @by_slug[vehicle["slug"]] ||
         @by_name[vehicle["name"].to_s.downcase] ||

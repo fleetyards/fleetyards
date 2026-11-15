@@ -30,6 +30,19 @@ module Uex
       assert_equal @models[:mapping_match].id, @matcher.match(@vehicles[4]).id
     end
 
+    test "takes the first mapped candidate slug that exists" do
+      anvil = create(:manufacturer, code: "ANVL")
+      spartan = create(:model, name: "Spartan", manufacturer: anvil)
+      vehicle = {"slug" => "hm6-spartan", "name" => "HM6 Spartan", "name_full" => "Anvil HM6 Spartan"}
+
+      assert_equal spartan.id, Uex::VehicleMatcher.new.match(vehicle).id
+
+      renamed = create(:model, name: "HM6 Spartan", manufacturer: anvil)
+
+      assert_equal "anvl-hm6-spartan", renamed.slug
+      assert_equal renamed.id, Uex::VehicleMatcher.new.match(vehicle).id
+    end
+
     test "returns nil and records a miss for an unknown vehicle" do
       assert_nil @matcher.match(@vehicles[5])
       assert_equal ["vanduul-scythe"], @matcher.misses.map { |vehicle| vehicle["slug"] }
