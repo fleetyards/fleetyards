@@ -26,6 +26,8 @@ const port = (
   stripped: false,
   inParentHolo: false,
   hullNode: name,
+  defaultItemName: null,
+  defaultItemSlug: null,
   itemKind: HullItemKindEnum.OTHER,
   ...overrides,
 });
@@ -45,6 +47,8 @@ const preview: ModelLoadoutPreview = {
     port("hardpoint_thruster_main", { itemKind: HullItemKindEnum.THRUSTER }),
     port("hardpoint_stored_pod_1", {
       defaultItem: "cargo_shipmining_pod_prospector_collapsed",
+      defaultItemName: "MISC Ore Pod",
+      defaultItemSlug: "misc-ore-pod",
     }),
   ],
   items: [],
@@ -193,15 +197,23 @@ describe("ModelLoadoutHolo", () => {
     }
   });
 
-  it("names a pointed mining bag", async () => {
-    const { wrapper, viewer } = await mountHolo();
+  it("names a mining bag with no slot of its own from the catalogue", async () => {
+    const { wrapper, viewer, push } = await mountHolo();
 
     viewer().vm.$emit("builtInPoint", "hardpoint_stored_pod_1");
     await nextTick();
 
-    expect(
-      wrapper.find('[data-test="model-loadout-holo-card"]').text(),
-    ).toContain("Mining bag");
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]').text();
+    expect(card).toContain("Mining bag");
+    expect(card).toContain("MISC Ore Pod");
+    expect(card).not.toContain("cargo_shipmining_pod");
+
+    viewer().vm.$emit("builtInSelect", "hardpoint_stored_pod_1");
+
+    expect(push).toHaveBeenCalledWith({
+      name: "component",
+      params: { slug: "misc-ore-pod" },
+    });
   });
 
   it("names a pointed built-in item and opens its page on a click", async () => {

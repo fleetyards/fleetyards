@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import {
+  type LoadoutComponentRef,
   type LoadoutSlot,
   useModelLoadoutPreview,
   useModelLoadoutSlots,
@@ -170,6 +171,8 @@ const pointedPart = computed(() =>
   pointedPath.value ? partsByPath.value.get(pointedPath.value) : undefined,
 );
 
+type BuiltInPart = Pick<LoadoutComponentRef, "name" | "slug" | "size">;
+
 // A built-in item by its port: the part its slot holds. A nested port is found
 // through its parents, as the slots are pathed.
 const builtInPart = (id: string) => {
@@ -193,7 +196,18 @@ const builtInPart = (id: string) => {
     ([candidate]) => candidate.toLowerCase() === path,
   )?.[1].slot;
 
-  return { port, part: slot?.fitted ?? slot?.stock };
+  const part: BuiltInPart | undefined = slot?.fitted ?? slot?.stock;
+  if (part || !port?.defaultItemName) return { port, part };
+
+  // Kept in the hull with no slot of its own, a stowed mining bag: named from
+  // the catalogue.
+  return {
+    port,
+    part: {
+      name: port.defaultItemName,
+      slug: port.defaultItemSlug ?? undefined,
+    },
+  };
 };
 
 const openBuiltIn = (id: string) => {

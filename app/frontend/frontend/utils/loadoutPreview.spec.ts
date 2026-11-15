@@ -33,6 +33,8 @@ const port = (
   stripped: false,
   inParentHolo: false,
   hullNode: null,
+  defaultItemName: null,
+  defaultItemSlug: null,
   itemKind: null,
   ...overrides,
 });
