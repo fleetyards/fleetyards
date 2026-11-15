@@ -322,6 +322,46 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_seat_pilot"
   end
 
+  test "fits the docked command module's own parts below the port it docks at" do
+    bridge = create(:model, hidden: true)
+    bridge_plant = create(:component, component_type: "PowerPlant", category: "powerplant", size: "1")
+    port(bridge, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: bridge_plant, flags: ["editable"])
+    port(bridge, "hardpoint_door", component: create(:component, component_type: "Door", category: "doors", size: "1"))
+    @model.update!(command_module: bridge)
+    port(@model, "hardpoint_docking_module", types: [], flags: ["uneditable", "dockingport4"])
+
+    slots = LoadoutSlots.new(@model)
+    dock = slots["hardpoint_docking_module"]
+
+    assert_equal bridge, dock.docked
+    assert_includes slots.fittable_hull, dock
+    assert_equal ["hardpoint_power_plant"], slots.children(dock).map(&:name)
+    assert fleetyards_loadout(fit(["hardpoint_docking_module/hardpoint_power_plant", @plant])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_docking_module/hardpoint_power_plant", @big_plant])), :component_not_in_slot
+  end
+
+  test "docks a snub at its collar, and leaves a carried ground vehicle out" do
+    merlin = create(:model)
+    port(merlin, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: @plant, flags: ["editable"])
+    rover = create(:model, ground: true)
+    port(rover, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: @plant, flags: ["editable"])
+    @model.snub_crafts << rover
+    @model.snub_crafts << merlin
+    port(@model, "hardpoint_docking_collar_merlin", types: [], flags: ["uneditable", "dockingport3"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert_equal merlin, slots["hardpoint_docking_collar_merlin"].docked
+    assert slots.fittable?("hardpoint_docking_collar_merlin/hardpoint_power_plant")
+    assert slots.occupied?("hardpoint_docking_collar_merlin")
+  end
+
+  test "serves no docking port for a ship that carries nothing there" do
+    port(@model, "hardpoint_docking_collar_merlin", types: [], flags: ["uneditable", "dockingport3"])
+
+    assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_docking_collar_merlin"
+  end
+
   test "takes a slot's stock part out, leaving nothing below it" do
     empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
     loadout = fleetyards_loadout([empty])

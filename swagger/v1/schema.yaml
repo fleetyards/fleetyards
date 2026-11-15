@@ -44298,6 +44298,18 @@ components:
       - id
       - name
       title: LoadoutComponentRef
+    LoadoutDockedVehicle:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: LoadoutDockedVehicle
     LoadoutItemProblem:
       type: object
       properties:
@@ -44376,6 +44388,8 @@ components:
         emptied:
           type: boolean
           description: The loadout took the stock part out
+        docked:
+          "$ref": "#/components/schemas/LoadoutDockedVehicle"
         slots:
           type: array
           items:

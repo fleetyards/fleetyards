@@ -20,6 +20,7 @@ module V1
             stock: ::V1::Schemas::Loadouts::LoadoutComponentRef,
             fitted: ::V1::Schemas::Loadouts::LoadoutComponentRef,
             emptied: {type: :boolean, description: "The loadout took the stock part out"},
+            docked: ::V1::Schemas::Loadouts::LoadoutDockedVehicle,
             slots: {type: :array, items: ::V1::Schemas::Loadouts::LoadoutSlot}
           },
           additionalProperties: false,

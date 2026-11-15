@@ -72,6 +72,24 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-slots names the vehicle docked at a port, with its slots below" do
+    bridge = create(:model, name: "Command Module", hidden: true)
+    plant = create(:component, name: "Bridge Plant", component_type: "PowerPlant", category: "powerplant", size: "1")
+    create(:hardpoint, parent: bridge, sc_name: "hardpoint_power_plant", source: :game_files, types: ["PowerPlant"],
+      min_size: 1, max_size: 1, component: plant, flags: ["editable"])
+    @model.update!(command_module: bridge)
+    create(:hardpoint, parent: @model, sc_name: "hardpoint_docking_module", source: :game_files, types: [],
+      flags: ["uneditable", "dockingport4"])
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      dock = parsed_body.find { |slot| slot["name"] == "hardpoint_docking_module" }
+
+      assert_equal({"name" => "Command Module", "slug" => bridge.slug}, dock["docked"])
+      assert_not dock["editable"]
+      assert_equal "Bridge Plant", dock["slots"].sole.dig("stock", "name")
+    end
+  end
+
   test "GET /models/:slug/loadout-slots says which parts a recipe makes" do
     create(:blueprint, craftable: @gun)
 
