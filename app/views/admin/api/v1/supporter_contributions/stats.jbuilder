@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 total_amount_cents, currency, total_count, recurring_count, anonymous_count = @stats
-current_month_amount_cents, current_month_count, recurring_amount_cents, active_recurring_count = @current_month
+current_month_amount_cents, current_month_count = @current_month
+recurring_amount_cents, active_recurring_count = @recurring
 
 json.total_amount_cents total_amount_cents.to_i
 json.currency currency || "EUR"

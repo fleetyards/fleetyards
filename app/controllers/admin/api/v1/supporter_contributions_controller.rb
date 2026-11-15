@@ -46,9 +46,11 @@ module Admin
           # supporters giving the same amount into one.
           @current_month = scope.active_now.pick(
             Arel.sql("COALESCE(SUM(amount_cents), 0)"),
-            Arel.sql("COUNT(*)"),
-            Arel.sql("COALESCE(SUM(amount_cents) FILTER (WHERE recurring), 0)"),
-            Arel.sql("COUNT(*) FILTER (WHERE recurring)")
+            Arel.sql("COUNT(*)")
+          )
+          @recurring = scope.recurring_running.pick(
+            Arel.sql("COALESCE(SUM(amount_cents), 0)"),
+            Arel.sql("COUNT(*)")
           )
         end
 

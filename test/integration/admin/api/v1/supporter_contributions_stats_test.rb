@@ -66,8 +66,22 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
       assert_equal 4, parsed_body["totalCount"]
       assert_equal 1_500, parsed_body["currentMonthAmountCents"]
       assert_equal 2, parsed_body["currentMonthCount"]
-      assert_equal 1_000, parsed_body["recurringAmountCents"]
-      assert_equal 1, parsed_body["activeRecurringCount"]
+    end
+  end
+
+  test "GET /supporter-contributions/stats sums the recurring money still running" do
+    travel_to Date.new(2026, 5, 20) do
+      create(:supporter_contribution, :recurring, amount_cents: 1_000, started_at: Date.new(2025, 11, 3))
+      create(:supporter_contribution, :recurring, amount_cents: 700, started_at: Date.new(2025, 9, 1), ended_at: Date.new(2026, 5, 2))
+      create(:supporter_contribution, :kofi, amount_cents: 300, kofi_subscription: true, started_at: Date.new(2026, 4, 28))
+      create(:supporter_contribution, :kofi, amount_cents: 300, kofi_subscription: true, started_at: Date.new(2026, 3, 28))
+      create(:supporter_contribution, amount_cents: 500, started_at: Date.new(2026, 5, 10))
+      sign_in @user
+
+      assert_api_response :get, 200 do
+        assert_equal 1_300, parsed_body["recurringAmountCents"]
+        assert_equal 2, parsed_body["activeRecurringCount"]
+      end
     end
   end
 

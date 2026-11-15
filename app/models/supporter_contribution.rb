@@ -118,6 +118,19 @@ class SupporterContribution < ApplicationRecord
     )
   }
 
+  # Recurring money still coming in on `date`: a pledge nobody has ended yet,
+  # and a Ko-fi membership whose last payment still covers it -- Ko-fi records
+  # each renewal as a one-off, see Kofi::PaymentImporter. Not `active_now` or
+  # `covering`, which keep a pledge cancelled on the 2nd for the rest of the
+  # month.
+  scope :recurring_running, ->(date = Date.current) {
+    where(
+      "(recurring = TRUE AND started_at <= CAST(? AS date) AND (ended_at IS NULL OR ended_at >= CAST(? AS date))) OR " \
+      "(kofi_subscription = TRUE AND started_at <= CAST(? AS date) AND (started_at + interval '1 month')::date > CAST(? AS date))",
+      date, date, date, date
+    )
+  }
+
   # Named on the supporters page -- the SQL half of `listed?`, which has to
   # agree with it.
   scope :listed, -> {
