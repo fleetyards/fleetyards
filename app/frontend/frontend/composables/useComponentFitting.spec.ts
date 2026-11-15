@@ -623,3 +623,46 @@ describe("parts held by a locked hull part", () => {
     ).toEqual(["auxiliary"]);
   });
 });
+
+describe("docked vehicles", () => {
+  const plant = (name: string, id: string): LoadoutSlot => ({
+    name: "hardpoint_power_plant",
+    hardpointId: `port-${id}`,
+    category: HardpointCategoryEnum.POWERPLANT,
+    types: ["PowerPlant"],
+    editable: true,
+    swappable: true,
+    stock: { id, name, type: ComponentTypeEnum.POWER_PLANT },
+    slots: [],
+  });
+
+  const tree = [
+    plant("Caterpillar Plant", "ship"),
+    {
+      name: "hardpoint_docking_module",
+      hardpointId: "port-dock",
+      category: HardpointCategoryEnum.UNKNOWN,
+      types: [],
+      editable: false,
+      docked: { name: "Command Module", slug: "drak-command-module" },
+      slots: [plant("Bridge Plant", "bridge")],
+    } as LoadoutSlot,
+  ];
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("lists a docked vehicle's parts on their tabs, named for the vehicle", () => {
+    const fitting = useComponentFitting();
+    fitting.learn(tree);
+    const resolved = fitting.resolve(tree, {});
+
+    const labels = fitting
+      .groups(resolved, tab("powerPlants"))
+      .flatMap((group) => group.slots)
+      .map((slot) => slot.label);
+
+    expect(labels).toHaveLength(2);
+    expect(labels[1]).toMatch(/^Command Module · /);
+    expect(labels[0]).not.toContain("Command Module");
+  });
+});

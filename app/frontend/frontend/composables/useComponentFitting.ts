@@ -624,18 +624,33 @@ export const useComponentFitting = () => {
         slot,
         content: part ? craft(part, crafted) : undefined,
         crafted,
-        children: partId
-          ? resolve(below.value[path]?.[partId] ?? [], fitted, crafting, path)
-          : [],
+        // A docked vehicle holds no part of its own; its slots are the port's.
+        children: slot.docked
+          ? resolve(slot.slots, fitted, crafting, path)
+          : partId
+            ? resolve(below.value[path]?.[partId] ?? [], fitted, crafting, path)
+            : [],
       };
     });
 
+  // The vehicle each slot listed from a docked one belongs to, to name it by.
+  const dockedIn = new WeakMap<FittedSlot, string>();
+
   // The slots a tab lists: the hull's own of its categories, and those inside
-  // a fitted module -- a combat module's shield is the shields tab's.
+  // a fitted module or a docked vehicle -- a combat module's shield is the
+  // shields tab's, and so is the Caterpillar command module's.
   const roots = (tree: FittedSlot[], tab: ComponentTab): FittedSlot[] =>
     tree.flatMap((entry) => {
       if (entry.slot.category === HardpointCategoryEnum.MODULE) {
         return roots(entry.children, tab);
+      }
+
+      const docked = entry.slot.docked;
+      if (docked) {
+        const inside = roots(entry.children, tab);
+        inside.forEach((child) => dockedIn.set(child, docked.name));
+
+        return inside;
       }
 
       const category = fittedCategory(entry);
@@ -680,7 +695,9 @@ export const useComponentFitting = () => {
 
     return {
       id: entry.path,
-      label: slotName(entry.slot.name),
+      label: dockedIn.has(entry)
+        ? `${dockedIn.get(entry)} · ${slotName(entry.slot.name)}`
+        : slotName(entry.slot.name),
       size: sizeLabel(entry.slot),
       maxSize: entry.slot.maxSize,
       kind: slotKind(entry.slot),
