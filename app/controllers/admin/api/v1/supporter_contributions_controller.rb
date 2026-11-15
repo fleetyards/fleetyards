@@ -48,6 +48,10 @@ module Admin
             Arel.sql("COALESCE(SUM(amount_cents), 0)"),
             Arel.sql("COUNT(*)")
           )
+          @recurring = scope.recurring_running.pick(
+            Arel.sql("COALESCE(SUM(amount_cents), 0)"),
+            Arel.sql("COUNT(*)")
+          )
         end
 
         def per_month

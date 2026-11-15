@@ -1974,7 +1974,12 @@
           "count": "Beiträge",
           "currentMonth": "Diesen Monat",
           "currentMonthCount": "%{count} Beiträge",
-          "recurringCount": "Wiederkehrend",
+          "recurringAmount": "Wiederkehrend / Monat",
+          "recurringAmountCount": {
+            "one": "%{count} aktive Zusage",
+            "other": "%{count} aktive Zusagen"
+          },
+          "recurringCount": "Wiederkehrend (gesamt)",
           "anonymousCount": "Anonym"
         },
         "chart": {
