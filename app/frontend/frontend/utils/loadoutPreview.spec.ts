@@ -363,6 +363,15 @@ describe("loadoutCargoGrids", () => {
       loadoutCargoGrids(withGrids, [refitted]).map((each) => each.id),
     ).toEqual(["hardpoint_cargogrid_main"]);
   });
+  it("goes by the hull's own slots alone, not a namesake inside a part", () => {
+    const nested = {
+      name: "hardpoint_turret",
+      part: { holoUrl: holo("turret") },
+      slots: [{ name: "hardpoint_module_04", part: null, slots: [] }],
+    };
+
+    expect(loadoutCargoGrids(withGrids, [nested])).toHaveLength(2);
+  });
 });
 
 describe("builtInHighlights", () => {

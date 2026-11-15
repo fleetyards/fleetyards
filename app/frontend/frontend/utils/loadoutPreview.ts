@@ -190,21 +190,18 @@ export const loadoutMounts = (
 /**
  * The cargo grids to draw for a fitting. A grid on a module or container
  * belongs to its stock part: emptied or swapped for another, the grid goes
- * with it.
+ * with it. The export names a grid's ports by name alone, which is unique only
+ * among the hull's own slots.
  */
 export const loadoutCargoGrids = (
   preview: ModelLoadoutPreview,
   slots?: PreviewSlot[],
 ): HoloCargoGrid[] => {
-  const changed = new Set<string>();
-
-  const walk = (level: PreviewSlot[]) => {
-    for (const slot of level) {
-      if (!slot.part || slot.refitted) changed.add(slot.name.toLowerCase());
-      walk(slot.slots);
-    }
-  };
-  walk(slots ?? []);
+  const changed = new Set(
+    (slots ?? [])
+      .filter((slot) => !slot.part || slot.refitted)
+      .map((slot) => slot.name.toLowerCase()),
+  );
 
   return preview.cargoGrids
     .filter(
