@@ -1979,7 +1979,7 @@
             "one": "%{count} active pledge",
             "other": "%{count} active pledges"
           },
-          "recurringCount": "Recurring",
+          "recurringCount": "Recurring (all time)",
           "anonymousCount": "Anonymous"
         },
         "chart": {

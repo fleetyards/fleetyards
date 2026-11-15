@@ -1979,7 +1979,7 @@
             "one": "%{count} engagement actif",
             "other": "%{count} engagements actifs"
           },
-          "recurringCount": "Récurrentes",
+          "recurringCount": "Récurrentes (total)",
           "anonymousCount": "Anonymes"
         },
         "chart": {

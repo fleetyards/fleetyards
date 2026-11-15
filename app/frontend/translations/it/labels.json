@@ -1979,7 +1979,7 @@
             "one": "%{count} contributo attivo",
             "other": "%{count} contributi attivi"
           },
-          "recurringCount": "Ricorrenti",
+          "recurringCount": "Ricorrenti (totale)",
           "anonymousCount": "Anonimi"
         },
         "chart": {

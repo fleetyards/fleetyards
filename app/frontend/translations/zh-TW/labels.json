@@ -1979,7 +1979,7 @@
             "one": "%{count} 筆有效定期捐助",
             "other": "%{count} 筆有效定期捐助"
           },
-          "recurringCount": "定期",
+          "recurringCount": "定期（累計）",
           "anonymousCount": "匿名"
         },
         "chart": {
