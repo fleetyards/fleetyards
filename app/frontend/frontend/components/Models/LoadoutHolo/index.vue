@@ -170,14 +170,30 @@ const pointedPart = computed(() =>
   pointedPath.value ? partsByPath.value.get(pointedPath.value) : undefined,
 );
 
-// A built-in item by its port: the stock part the ship's slots name for it.
+// A built-in item by its port: the part its slot holds. A nested port is found
+// through its parents, as the slots are pathed.
 const builtInPart = (id: string) => {
-  const port = preview.value?.ports.find((candidate) => candidate.name === id);
-  const slot = [...partsByPath.value.values()].find(
-    ({ slot: candidate }) => candidate.name.toLowerCase() === id.toLowerCase(),
-  )?.slot;
+  const ports = preview.value?.ports ?? [];
+  const port = ports.find((candidate) => candidate.name === id);
 
-  return { port, part: slot?.stock };
+  const names: string[] = [];
+  for (
+    let current = port;
+    current;
+    current = current.parent
+      ? ports.find((candidate) => candidate.name === current?.parent)
+      : undefined
+  ) {
+    names.unshift(current.name.toLowerCase());
+    if (names.length > ports.length) break;
+  }
+
+  const path = names.join("/");
+  const slot = [...partsByPath.value].find(
+    ([candidate]) => candidate.toLowerCase() === path,
+  )?.[1].slot;
+
+  return { port, part: slot?.fitted ?? slot?.stock };
 };
 
 const openBuiltIn = (id: string) => {

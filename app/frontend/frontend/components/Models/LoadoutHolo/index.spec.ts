@@ -142,6 +142,57 @@ describe("ModelLoadoutHolo", () => {
     ]);
   });
 
+  it("names a nested built-in by its own slot, not a namesake elsewhere", async () => {
+    preview.ports.push(
+      port("hardpoint_turret", { itemKind: HullItemKindEnum.TURRET }),
+      port("hardpoint_class_1", {
+        parent: "hardpoint_turret",
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+    );
+    slots.push(
+      {
+        name: "hardpoint_class_1",
+        hardpointId: "hardpoint_class_1",
+        types: [],
+        editable: false,
+        slots: [],
+        stock: { id: "decoy", name: "Hull Gun" },
+      },
+      {
+        name: "hardpoint_turret",
+        hardpointId: "hardpoint_turret",
+        types: [],
+        editable: false,
+        stock: { id: "turret", name: "Turret" },
+        slots: [
+          {
+            name: "hardpoint_class_1",
+            hardpointId: "hardpoint_class_1",
+            types: [],
+            editable: false,
+            slots: [],
+            stock: { id: "gun", name: "Turret Gun", slug: "turret-gun" },
+          },
+        ],
+      },
+    );
+
+    try {
+      const { wrapper, viewer } = await mountHolo();
+
+      viewer().vm.$emit("builtInPoint", "hardpoint_class_1");
+      await nextTick();
+
+      expect(
+        wrapper.find('[data-test="model-loadout-holo-card"]').text(),
+      ).toContain("Turret Gun");
+    } finally {
+      preview.ports.splice(-2);
+      slots.splice(-2);
+    }
+  });
+
   it("names a pointed mining bag", async () => {
     const { wrapper, viewer } = await mountHolo();
 
