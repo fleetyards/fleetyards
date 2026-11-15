@@ -344,7 +344,8 @@ module ScData
 
     test "keeps the stored hardpoint transforms when a cargo grid is malformed" do
       @model.update!(hardpoint_transforms: JSON.parse(HARDPOINTS))
-      publish({"flight_hardpoints.json" => JSON.parse(HARDPOINTS).merge("cargo_grids" => [{"name" => "grid", "size" => [1, 2]}]).to_json})
+      grid = {"name" => "grid", "position" => [0, 0, 0], "rotation" => [0, 0, 0, 1], "size" => [1, 2, 3]}
+      publish({"flight_hardpoints.json" => JSON.parse(HARDPOINTS).merge("cargo_grids" => [grid.merge("size" => [1, 2]), grid.merge("port" => 3)]).to_json})
 
       perform
 
@@ -372,13 +373,25 @@ module ScData
     end
 
     test "keeps the stored doors when a door is malformed" do
-      @model.update!(holo_doors: JSON.parse(DOORS))
-      publish({"flight_doors.json" => {doors: [{id: "hardpoint_door_rear", parts: [{object: "RearDoor"}]}]}.to_json})
+      door = JSON.parse(DOORS)["doors"].first
+      malformed = [
+        door.merge("parts" => [{"object" => "RearDoor"}]),
+        door.merge("parts" => [nil]),
+        door.merge("parts" => [5]),
+        door.merge("parts" => [{"object" => "RearDoor", "motion" => "slide"}]),
+        door.merge("obb_closed" => {"center" => [0, 0, 0], "axes" => [[1, 0, 0], [0, 1, 0]], "half_size" => [1, 1, 1]}),
+        door.merge("obb_closed" => {"center" => [0, 0, 0], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]]})
+      ]
 
-      perform
+      malformed.each_with_index do |bad, index|
+        @model.update!(holo_doors: JSON.parse(DOORS), ship_views_digest: nil, ship_view_md5s: {})
+        publish({"flight_doors.json" => {doors: [bad]}.to_json}, digest: "listing-#{index + 2}")
 
-      assert_equal JSON.parse(DOORS), @model.holo_doors
-      assert_nil @model.ship_views_digest
+        perform
+
+        assert_equal JSON.parse(DOORS), @model.holo_doors, bad.inspect
+        assert_nil @model.ship_views_digest
+      end
     end
 
     test "keeps the stored hardpoint transforms when a port is malformed" do
@@ -658,6 +671,7 @@ module ScData
           "landed_textured.glb" => GLB,
           "flight_holo_hull.glb" => GLB,
           "flight_hardpoints.json" => HARDPOINTS,
+          "flight_doors.json" => DOORS,
           "flight_textured_gladiusvaliant.webp" => PNG,
           "flight_textured_gladiusvaliant_orm.webp" => "orm"
         }
@@ -670,6 +684,7 @@ module ScData
       assert_equal @model.landed_holo_textured.blob, variant.landed_holo_textured.blob
       assert_equal @model.holo_hull.blob, variant.holo_hull.blob
       assert_equal JSON.parse(HARDPOINTS), variant.hardpoint_transforms
+      assert_equal JSON.parse(DOORS), variant.holo_doors
       assert_equal "flight_textured_gladiusvaliant.webp", variant.holo_texture.filename.to_s
       assert_equal "flight_textured_gladiusvaliant_orm.webp", variant.holo_texture_orm.filename.to_s
       assert_not @model.holo_texture.attached?

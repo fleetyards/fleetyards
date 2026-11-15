@@ -176,6 +176,8 @@ module ScData
     private def valid_cargo_grid?(grid)
       grid.is_a?(Hash) &&
         grid["name"].is_a?(String) &&
+        name_or_nil?(grid["port"]) &&
+        name_or_nil?(grid["parentPort"]) &&
         numbers?(grid["position"], 3) &&
         numbers?(grid["rotation"], 4) &&
         numbers?(grid["size"], 3) &&
@@ -185,13 +187,27 @@ module ScData
     private def valid_door?(door)
       door.is_a?(Hash) &&
         door["id"].is_a?(String) &&
+        name_or_nil?(door["kind"]) &&
+        (door["position"].nil? || numbers?(door["position"], 3)) &&
         door["duration_s"].is_a?(Numeric) &&
+        (door["obb_closed"].nil? || valid_bounds?(door["obb_closed"])) &&
         door["parts"].is_a?(Array) &&
         door["parts"].all? { |part| valid_door_part?(part) }
     end
 
+    private def valid_bounds?(bounds)
+      bounds.is_a?(Hash) &&
+        numbers?(bounds["center"], 3) &&
+        numbers?(bounds["half_size"], 3) &&
+        bounds["axes"].is_a?(Array) &&
+        bounds["axes"].size == 3 &&
+        bounds["axes"].all? { |axis| numbers?(axis, 3) }
+    end
+
     private def valid_door_part?(part)
-      keyframes = part.is_a?(Hash) && part.dig("motion", "keyframes")
+      return false unless part.is_a?(Hash) && part["motion"].is_a?(Hash)
+
+      keyframes = part["motion"]["keyframes"]
 
       part["object"].is_a?(String) &&
         keyframes.is_a?(Array) &&
@@ -201,6 +217,10 @@ module ScData
             numbers?(keyframe["translation"], 3) &&
             numbers?(keyframe["rotation"], 4)
         end
+    end
+
+    private def name_or_nil?(value)
+      value.nil? || value.is_a?(String)
     end
 
     private def numbers?(value, size)
