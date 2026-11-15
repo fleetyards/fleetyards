@@ -24234,6 +24234,10 @@ components:
           type: integer
         currentMonthCount:
           type: integer
+        recurringAmountCents:
+          type: integer
+        activeRecurringCount:
+          type: integer
         patreonSyncEnabled:
           type: boolean
       additionalProperties: false
@@ -24245,6 +24249,8 @@ components:
       - anonymousCount
       - currentMonthAmountCents
       - currentMonthCount
+      - recurringAmountCents
+      - activeRecurringCount
       - patreonSyncEnabled
       title: SupporterContributionStats
     SupporterContributionUpdateBulkInput:

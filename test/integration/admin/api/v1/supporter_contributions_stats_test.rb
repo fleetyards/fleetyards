@@ -66,6 +66,8 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
       assert_equal 4, parsed_body["totalCount"]
       assert_equal 1_500, parsed_body["currentMonthAmountCents"]
       assert_equal 2, parsed_body["currentMonthCount"]
+      assert_equal 1_000, parsed_body["recurringAmountCents"]
+      assert_equal 1, parsed_body["activeRecurringCount"]
     end
   end
 
