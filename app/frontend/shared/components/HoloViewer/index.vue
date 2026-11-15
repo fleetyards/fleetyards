@@ -61,6 +61,17 @@ import {
   disposeBackdrop,
 } from "@/shared/components/HoloViewer/backdrop";
 import type { HoloBox } from "@/shared/components/HoloViewer/boxes";
+import type { HoloCargoGrid } from "@/shared/components/HoloViewer/cargo";
+import type { HoloDoor } from "@/shared/components/HoloViewer/doors";
+import type { HoloBuiltIn } from "@/shared/components/HoloViewer/builtIns";
+
+// Which overlays show; each does unless turned off. Shown and hidden by
+// fading, never at once.
+export type HoloLayers = {
+  boxes?: boolean;
+  cargo?: boolean;
+  builtIns?: boolean;
+};
 
 export type HoloModel = {
   path: string;
@@ -79,6 +90,14 @@ export type HoloModel = {
   mounts?: HoloMount[];
   // Boxes drawn through the holo, in its own frame.
   boxes?: HoloBox[];
+  // Cargo grids drawn through the holo, filled with containers.
+  cargoGrids?: HoloCargoGrid[];
+  // The holo's doors, drawn closed, and those of them standing open.
+  doors?: HoloDoor[];
+  openDoors?: string[];
+  // Items the holo keeps that are picked out on it, answering the pointer.
+  builtIns?: HoloBuiltIn[];
+  layers?: HoloLayers;
   // Framed and centred with its parts rather than on its own: a figure whose
   // pieces all share one frame.
   frameMounts?: boolean;
@@ -173,6 +192,10 @@ const emit = defineEmits<{
   mountPoint: [id: string | undefined];
   // A box under the pointer, where no part is: by its id.
   boxPoint: [id: string | undefined];
+  builtInPoint: [id: string | undefined];
+  builtInSelect: [id: string];
+  doorPoint: [id: string | undefined];
+  doorSelect: [id: string];
   unplaced: [paths: string[]];
   fellBack: [paths: string[]];
 }>();
@@ -984,6 +1007,7 @@ defineExpose({
       >
         <i class="fa-light fa-grid" />
       </Btn>
+      <slot name="actions" />
       <BtnDropdown
         v-if="offersBackgrounds"
         expand-top
@@ -1134,6 +1158,10 @@ defineExpose({
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
           @box-point="emit('boxPoint', $event)"
+          @built-in-point="emit('builtInPoint', $event)"
+          @built-in-select="emit('builtInSelect', $event)"
+          @door-point="emit('doorPoint', $event)"
+          @door-select="emit('doorSelect', $event)"
           @unplaced="emit('unplaced', $event)"
           @fell-back="emit('fellBack', $event)"
           @busy="busy = $event"

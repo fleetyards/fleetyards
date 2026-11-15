@@ -88,7 +88,30 @@ import {
   boxesLayoutKey,
   buildBoxes,
   disposeBoxes,
+  revealBoxes,
 } from "../boxes";
+import {
+  buildCargo,
+  cargoLayoutKey,
+  disposeCargo,
+  revealCargo,
+} from "../cargo";
+import {
+  bindDoors,
+  type BoundDoor,
+  buildDoorTargets,
+  disposeDoorTargets,
+  doorsLayoutKey,
+  pointDoorTarget,
+  poseDoor,
+} from "../doors";
+import {
+  builtInsKey,
+  markBuiltIns,
+  paintBuiltIns,
+  unmarkBuiltIns,
+} from "../builtIns";
+import { retarget, stepTween, type Tween } from "../reveal";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -562,10 +585,17 @@ const { onBeforeRender } = useLoop();
 // made here, and each step of a fade until it is done.
 const { invalidate, camera, renderer } = useTres();
 
+// Layers fading in and out, doors opening and closing.
+const tweens = new Set<Tween>();
+
 onBeforeRender(({ delta }) => {
   mixer.value?.update(delta);
 
   let moving = false;
+
+  for (const tween of tweens) {
+    if (stepTween(tween, delta)) moving = true;
+  }
 
   for (const entry of fading.values()) {
     if (entry.glow === entry.target) continue;
@@ -620,6 +650,9 @@ onUnmounted(() => {
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
   if (boxRoot) disposeBoxes(boxRoot);
+  if (cargoRoot) disposeCargo(cargoRoot);
+  if (doorTargets) disposeDoorTargets(doorTargets);
+  unmarkBuiltIns(builtInMarks);
   if (pedestal) disposePedestal(pedestal);
   // The body model is cached for the next viewer: it gets its own head back.
   undressNeck?.();
@@ -636,6 +669,10 @@ const emit = defineEmits<{
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
   boxPoint: [id: string | undefined];
+  builtInPoint: [id: string | undefined];
+  builtInSelect: [id: string];
+  doorPoint: [id: string | undefined];
+  doorSelect: [id: string];
   // The rig pieces and attachments left off the figure, by path: their mount
   // is not in the rig of the piece they hang from.
   unplaced: [paths: string[]];
@@ -730,6 +767,28 @@ const placeRigLights = (scene: Group) => {
 // hull is centred, so the camera frames the ship alone.
 let boxRoot: Group | undefined;
 
+const layerShown = (layer: "boxes" | "cargo" | "builtIns") =>
+  props.model.layers?.[layer] !== false;
+
+// A layer's fade, kept across rebuilds: grids swapped while shown stay shown.
+const layerTween = (apply: (amount: number) => void, shown: boolean): Tween => {
+  const tween = {
+    value: shown ? 1 : 0,
+    target: shown ? 1 : 0,
+    perSecond: 4,
+    apply,
+  };
+  tweens.add(tween);
+
+  return tween;
+};
+
+const boxReveal = layerTween((amount) => {
+  if (!boxRoot) return;
+
+  revealBoxes(boxRoot, props.model.boxes ?? [], amount);
+}, layerShown("boxes"));
+
 const placeBoxes = (scene: Group) => {
   if (boxRoot) {
     scene.remove(boxRoot);
@@ -738,8 +797,93 @@ const placeBoxes = (scene: Group) => {
 
   const boxes = props.model.boxes ?? [];
   boxRoot = boxes.length ? buildBoxes(boxes) : undefined;
-  if (boxRoot) scene.add(boxRoot);
+  if (boxRoot) {
+    revealBoxes(boxRoot, boxes, boxReveal.value);
+    scene.add(boxRoot);
+  }
 
+  invalidate();
+};
+
+// The cargo grids with the containers they take, in the export's frame.
+let cargoRoot: Group | undefined;
+
+const cargoReveal = layerTween((amount) => {
+  if (cargoRoot) revealCargo(cargoRoot, amount);
+}, layerShown("cargo"));
+
+const placeCargo = (scene: Group) => {
+  if (cargoRoot) {
+    scene.remove(cargoRoot);
+    disposeCargo(cargoRoot);
+  }
+
+  const grids = props.model.cargoGrids ?? [];
+  cargoRoot = grids.length ? buildCargo(grids) : undefined;
+  if (cargoRoot) {
+    revealCargo(cargoRoot, cargoReveal.value);
+    scene.add(cargoRoot);
+  }
+
+  invalidate();
+};
+
+// The hull's own door parts, posed by how far each door stands open.
+let boundDoors: BoundDoor[] = [];
+let doorTargets: Group | undefined;
+const doorTweens = new Map<string, Tween>();
+
+const placeDoors = (scene: Group) => {
+  for (const bound of boundDoors) poseDoor(bound, 0);
+  doorTweens.forEach((tween) => tweens.delete(tween));
+  doorTweens.clear();
+  if (doorTargets) {
+    scene.remove(doorTargets);
+    disposeDoorTargets(doorTargets);
+  }
+
+  const doors = props.model.doors ?? [];
+  boundDoors = bindDoors(scene, doors);
+  doorTargets = boundDoors.length
+    ? buildDoorTargets(boundDoors.map((bound) => bound.door))
+    : undefined;
+  if (doorTargets) scene.add(doorTargets);
+
+  for (const bound of boundDoors) {
+    const tween: Tween = {
+      value: 0,
+      target: 0,
+      perSecond: 1 / Math.max(bound.door.durationS, 0.1),
+      apply: (amount) => poseDoor(bound, amount),
+    };
+    tweens.add(tween);
+    doorTweens.set(bound.door.id, tween);
+  }
+
+  openDoors();
+};
+
+const openDoors = () => {
+  const open = new Set(props.model.openDoors ?? []);
+
+  doorTweens.forEach((tween, id) => retarget(tween, open.has(id) ? 1 : 0));
+  invalidate();
+};
+
+// Items the hull keeps, tinted over the hull.
+let builtInMarks: ReturnType<typeof markBuiltIns> = [];
+let pointedBuiltIn: string | undefined;
+let builtInAmount = layerShown("builtIns") ? 1 : 0;
+
+const builtInReveal = layerTween((amount) => {
+  builtInAmount = amount;
+  paintBuiltIns(builtInMarks, amount, pointedBuiltIn);
+}, layerShown("builtIns"));
+
+const placeBuiltIns = (scene: Group) => {
+  unmarkBuiltIns(builtInMarks);
+  builtInMarks = markBuiltIns(scene, props.model.builtIns ?? []);
+  paintBuiltIns(builtInMarks, builtInAmount, pointedBuiltIn);
   invalidate();
 };
 
@@ -1127,7 +1271,7 @@ const mountAt = (event: PointerEvent | MouseEvent) => {
 // The boxes are drawn through the hull, so one answers wherever it shows; the
 // smallest under the pointer wins, as the one nested in a larger area.
 const boxAt = (event: PointerEvent | MouseEvent) => {
-  if (!boxRoot || !camera.value) return undefined;
+  if (!boxRoot?.visible || !camera.value) return undefined;
 
   castFrom(event, camera.value);
 
@@ -1140,6 +1284,31 @@ const boxAt = (event: PointerEvent | MouseEvent) => {
   return hits[0]?.userData.boxId as string | undefined;
 };
 
+// The built-in items show through the hull too, wherever they are tinted.
+const builtInAt = (event: PointerEvent | MouseEvent) => {
+  const marks = builtInMarks.filter((mark) => mark.visible);
+  if (!marks.length || !camera.value) return undefined;
+
+  castFrom(event, camera.value);
+
+  return raycaster.intersectObjects(marks, false)[0]?.object.userData
+    .builtInId as string | undefined;
+};
+
+const doorAt = (event: PointerEvent | MouseEvent) => {
+  if (!doorTargets || !camera.value) return undefined;
+
+  castFrom(event, camera.value);
+
+  const hits = raycaster
+    .intersectObjects(doorTargets.children, false)
+    .map(({ object }) => object as Mesh<BoxGeometry>);
+
+  hits.sort((a, b) => boxVolume(a) - boxVolume(b));
+
+  return hits[0]?.userData.doorId as string | undefined;
+};
+
 const boxVolume = (mesh: Mesh<BoxGeometry>) => {
   const { width, height, depth } = mesh.geometry.parameters;
 
@@ -1148,12 +1317,37 @@ const boxVolume = (mesh: Mesh<BoxGeometry>) => {
 
 let pointed: string | undefined;
 let pointedBox: string | undefined;
+let pointedDoor: string | undefined;
+
+const pointBuiltIn = (id: string | undefined) => {
+  if (id === pointedBuiltIn) return;
+
+  pointedBuiltIn = id;
+  paintBuiltIns(builtInMarks, builtInAmount, id);
+  invalidate();
+  emit("builtInPoint", id);
+};
+
+const pointDoor = (id: string | undefined) => {
+  if (id === pointedDoor) return;
+
+  pointedDoor = id;
+  if (doorTargets) pointDoorTarget(doorTargets, id);
+  invalidate();
+  emit("doorPoint", id);
+};
 
 const onPointerMove = (event: PointerEvent) => {
   const id = event.buttons ? undefined : mountAt(event);
-  const boxId = event.buttons || id ? undefined : boxAt(event);
+  const builtInId = event.buttons || id ? undefined : builtInAt(event);
+  const doorId = event.buttons || id || builtInId ? undefined : doorAt(event);
+  const boxId =
+    event.buttons || id || builtInId || doorId ? undefined : boxAt(event);
 
-  renderer.domElement.style.cursor = id ? "pointer" : "";
+  renderer.domElement.style.cursor = id || builtInId || doorId ? "pointer" : "";
+
+  pointBuiltIn(builtInId);
+  pointDoor(doorId);
 
   if (boxId !== pointedBox) {
     pointedBox = boxId;
@@ -1168,6 +1362,9 @@ const onPointerMove = (event: PointerEvent) => {
 
 const onPointerLeave = () => {
   renderer.domElement.style.cursor = "";
+
+  pointBuiltIn(undefined);
+  pointDoor(undefined);
 
   if (pointedBox) {
     pointedBox = undefined;
@@ -1198,7 +1395,19 @@ const onClick = (event: MouseEvent) => {
   }
 
   const id = mountAt(event);
-  if (id) emit("mountSelect", id);
+  if (id) {
+    emit("mountSelect", id);
+    return;
+  }
+
+  const builtInId = builtInAt(event);
+  if (builtInId) {
+    emit("builtInSelect", builtInId);
+    return;
+  }
+
+  const doorId = doorAt(event);
+  if (doorId) emit("doorSelect", doorId);
 };
 
 if (props.pickable) {
@@ -1377,6 +1586,9 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
 
   if (!props.model.frameMounts) void attachMounts(scene);
   placeBoxes(scene);
+  placeCargo(scene);
+  placeDoors(scene);
+  placeBuiltIns(scene);
 };
 
 watch(
@@ -1400,6 +1612,43 @@ watch(
   () => boxesLayoutKey(props.model.boxes),
   () => {
     if (state.value) placeBoxes(state.value.scene);
+  },
+);
+
+watch(
+  () => cargoLayoutKey(props.model.cargoGrids),
+  () => {
+    if (state.value) placeCargo(state.value.scene);
+  },
+);
+
+watch(
+  () => doorsLayoutKey(props.model.doors),
+  () => {
+    if (state.value) placeDoors(state.value.scene);
+  },
+);
+
+watch(
+  () => (props.model.openDoors ?? []).join(","),
+  () => openDoors(),
+);
+
+watch(
+  () => builtInsKey(props.model.builtIns),
+  () => {
+    if (state.value) placeBuiltIns(state.value.scene);
+  },
+);
+
+watch(
+  () =>
+    [layerShown("boxes"), layerShown("cargo"), layerShown("builtIns")].join(),
+  () => {
+    retarget(boxReveal, layerShown("boxes") ? 1 : 0);
+    retarget(cargoReveal, layerShown("cargo") ? 1 : 0);
+    retarget(builtInReveal, layerShown("builtIns") ? 1 : 0);
+    invalidate();
   },
 );
 
