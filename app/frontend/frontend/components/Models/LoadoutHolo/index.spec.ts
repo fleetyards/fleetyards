@@ -33,6 +33,7 @@ const port = (
 const preview: ModelLoadoutPreview = {
   holoHull: {
     name: "flight_holo_hull.glb",
+    contentType: "model/gltf-binary",
     url: "https://example.test/hull.glb",
     size: 1000,
   },
