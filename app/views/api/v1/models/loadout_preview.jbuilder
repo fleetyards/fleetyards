@@ -23,6 +23,9 @@ json.ports(@ports) do |port|
   json.stripped port["stripped"] == true
   json.in_parent_holo port["inParentHolo"] == true
   json.hull_node port["hullNode"]
+  built_in = @built_in_items[port["defaultItem"]] if port["hullNode"]
+  json.default_item_name built_in&.name
+  json.default_item_slug built_in&.slug
   json.item_kind port["itemKind"] && (V1::Schemas::Enums::HullItemKindEnum::VALUES.include?(port["itemKind"]) ? port["itemKind"] : "other")
 end
 

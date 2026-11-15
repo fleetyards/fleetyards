@@ -112,6 +112,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /models/:slug/loadout-preview returns the cargo grids, doors and built-in items" do
+    create(:component, sc_key: "misc_prospector_thruster_main", name: "Prospector Main Thruster")
     model = create(:model,
       hardpoint_transforms: {
         "ports" => [
@@ -142,6 +143,9 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
 
       assert_equal "hardpoint_thruster_main", thruster["hullNode"]
       assert_equal "thruster", thruster["itemKind"]
+      assert_equal "Prospector Main Thruster", thruster["defaultItemName"]
+      assert_match(/prospector-main-thruster/, thruster["defaultItemSlug"])
+      assert_nil bed["defaultItemName"]
       assert_equal "other", bed["itemKind"]
 
       grid = parsed_body["cargoGrids"].sole

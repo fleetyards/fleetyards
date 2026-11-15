@@ -46767,6 +46767,16 @@ components:
           - 'null'
           description: The node of a built-in item left in the hull holo; several
             nodes can share the name
+        defaultItemName:
+          type:
+          - string
+          - 'null'
+          description: The catalogue name of a built-in item's default part
+        defaultItemSlug:
+          type:
+          - string
+          - 'null'
+          description: The slug of a built-in item's default part, for its page
         itemKind:
           anyOf:
           - "$ref": "#/components/schemas/HullItemKindEnum"
@@ -46786,6 +46796,8 @@ components:
       - stripped
       - inParentHolo
       - hullNode
+      - defaultItemName
+      - defaultItemSlug
       - itemKind
       title: ModelLoadoutPreviewPort
     ModelLoadoutPreviewPortType:

@@ -183,6 +183,11 @@ module Api
           .filter_map { |port| port["defaultItem"] }
           .uniq
         @item_holos = Component.where(sc_key: default_items).joins(:holo_attachment).with_attached_holo
+
+        # The items the hull keeps, named for the viewer: they have no slot in
+        # the loadout to name them.
+        built_ins = @ports.filter_map { |port| port["defaultItem"] if port["hullNode"] && port["editable"] == false }.uniq
+        @built_in_items = Component.where(sc_key: built_ins).index_by(&:sc_key)
       end
 
       def positions

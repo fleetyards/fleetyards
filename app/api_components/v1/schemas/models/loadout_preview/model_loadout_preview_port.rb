@@ -26,10 +26,12 @@ module V1
               stripped: {type: :boolean, description: "The default item is left out of the hull holo"},
               inParentHolo: {type: :boolean, description: "The default item is part of its parent item and drawn by the parent's holo"},
               hullNode: {type: [:string, :null], description: "The node of a built-in item left in the hull holo; several nodes can share the name"},
+              defaultItemName: {type: [:string, :null], description: "The catalogue name of a built-in item's default part"},
+              defaultItemSlug: {type: [:string, :null], description: "The slug of a built-in item's default part, for its page"},
               itemKind: {anyOf: [::V1::Schemas::Enums::HullItemKindEnum, {type: :null}]}
             },
             additionalProperties: false,
-            required: %w[name parent helper position rotation flags editable types defaultItem geometry stripped inParentHolo hullNode itemKind]
+            required: %w[name parent helper position rotation flags editable types defaultItem geometry stripped inParentHolo hullNode defaultItemName defaultItemSlug itemKind]
           })
         end
       end
