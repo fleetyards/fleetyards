@@ -219,12 +219,13 @@ class LoadoutSlots
   end
 
   # The hull slots a player fits: the systems, the weapons and what holds them,
-  # and the module slots, whose own slots open up once a module is fitted.
-  # Doors, seats, thrusters and the rest are the shipwright's.
+  # the ore pods a mining ship fills, and the module slots, whose own slots open
+  # up once a module is fitted. Doors, seats, thrusters and the rest are the
+  # shipwright's.
   HULL_CATEGORIES = %w[
     radar cooler lifesupport powerplant shieldgenerator quantumdrive controller
     weapons weapon_mounts turret missile_racks module
-    mining_lasers tractor_beams missiles bombs
+    mining_lasers tractor_beams missiles bombs ore_pods
   ].freeze
 
   # What a slot's facts read: the port's build and the stock part, with the

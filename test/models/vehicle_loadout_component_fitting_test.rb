@@ -274,6 +274,19 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert slots.swappable?(slots["hardpoint_gun_nose"])
   end
 
+  test "fits another ore pod into a mining ship's pod slot" do
+    stock_pod = create(:component, component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    enhanced_pod = create(:component, component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    port(@model, "hardpoint_mining_pod_1", category: "ore_pods", types: ["Container"], sub_types: {"Container" => ["Cargo"]},
+      min_size: 1, max_size: 1, component: stock_pod, flags: ["editable"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert slots.fittable?("hardpoint_mining_pod_1")
+    assert slots.swappable?(slots["hardpoint_mining_pod_1"])
+    assert fleetyards_loadout(fit(["hardpoint_mining_pod_1", enhanced_pod])).save
+  end
+
   test "takes a slot's stock part out, leaving nothing below it" do
     empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
     loadout = fleetyards_loadout([empty])

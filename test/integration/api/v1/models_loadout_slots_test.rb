@@ -59,6 +59,19 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-slots returns a mining ship's ore pod slots" do
+    pod = create(:component, name: "MISC Ore Pod", component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    create(:hardpoint, parent: @model, sc_name: "hardpoint_mining_pod_1", source: :game_files, category: "ore_pods",
+      types: ["Container"], min_size: 1, max_size: 1, component: pod, flags: ["editable"])
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      pod_slot = parsed_body.find { |slot| slot["name"] == "hardpoint_mining_pod_1" }
+
+      assert_equal "MISC Ore Pod", pod_slot.dig("stock", "name")
+      assert pod_slot["editable"]
+    end
+  end
+
   test "GET /models/:slug/loadout-slots says which parts a recipe makes" do
     create(:blueprint, craftable: @gun)
 
