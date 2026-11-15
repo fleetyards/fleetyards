@@ -124,8 +124,25 @@ const mounts = computed(() =>
 );
 
 // Kept while hidden, so turning them off fades them out.
+const servicingAreasEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_SERVICING_AREAS),
+);
+const cargoGridsEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_CARGO_GRIDS),
+);
+const doorAnimationEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_ANIMATION),
+);
+const doorHighlightEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_HIGHLIGHT),
+);
+
+const servicingAreas = computed(() =>
+  servicingAreasEnabled.value ? (preview.value?.servicingAreas ?? []) : [],
+);
+
 const boxes = computed(() =>
-  (preview.value?.servicingAreas ?? []).map((area) => ({
+  servicingAreas.value.map((area) => ({
     id: area.key,
     position: area.position as [number, number, number],
     rotation: area.rotation as [number, number, number, number],
@@ -135,10 +152,16 @@ const boxes = computed(() =>
 );
 
 const cargoGrids = computed(() =>
-  preview.value ? loadoutCargoGrids(preview.value, props.slots) : [],
+  preview.value && cargoGridsEnabled.value
+    ? loadoutCargoGrids(preview.value, props.slots)
+    : [],
 );
 
-const doors = computed(() => preview.value?.doors ?? []);
+const doors = computed(() =>
+  doorAnimationEnabled.value || doorHighlightEnabled.value
+    ? (preview.value?.doors ?? [])
+    : [],
+);
 
 const { openDoors, toggleDoor } = useHoloDoors(doors, () => props.doorsOpen);
 
@@ -154,7 +177,9 @@ const holoModel = computed(() => {
     boxes: boxes.value,
     cargoGrids: cargoGrids.value,
     doors: doors.value,
-    openDoors: openDoors.value,
+    openDoors: doorAnimationEnabled.value ? openDoors.value : [],
+    doorTargets: doorAnimationEnabled.value || doorHighlightEnabled.value,
+    doorHighlight: doorHighlightEnabled.value,
     layers: { boxes: props.servicingAreas, cargo: props.cargoGrids },
   };
 });
@@ -162,14 +187,15 @@ const holoModel = computed(() => {
 watch(
   () => ({
     cargoGrids: enabled.value && cargoGrids.value.length > 0,
-    doors: enabled.value && doors.value.length > 0,
+    doors:
+      enabled.value && doorAnimationEnabled.value && doors.value.length > 0,
   }),
   (overlays) => emit("overlays", overlays),
   { immediate: true, deep: true },
 );
 
 watch(
-  () => (enabled.value ? (preview.value?.servicingAreas ?? []) : []),
+  () => (enabled.value ? servicingAreas.value : []),
   (areas) => emit("servicingAreas", areas),
   { immediate: true },
 );
@@ -239,7 +265,7 @@ onBeforeUnmount(() => {
       @loaded="loaded = true"
       @mount-select="emit('select', $event)"
       @mount-point="emit('point', $event)"
-      @door-select="toggleDoor"
+      @door-select="doorAnimationEnabled && toggleDoor($event)"
     />
     <HoloViewer
       v-else-if="variant === 'stage'"

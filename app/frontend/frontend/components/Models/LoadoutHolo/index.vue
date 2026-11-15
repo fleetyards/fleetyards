@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import {
+  FeatureFlagName,
   type LoadoutComponentRef,
   type LoadoutSlot,
   useModelLoadoutPreview,
@@ -25,6 +26,7 @@ import {
   type PreviewSlot,
 } from "@/frontend/utils/loadoutPreview";
 import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BOX_COLOR } from "@/shared/components/HoloViewer/boxes";
 import { BUILT_IN_COLOR } from "@/shared/components/HoloViewer/builtIns";
 import { DOOR_COLOR } from "@/shared/components/HoloViewer/doors";
@@ -101,7 +103,26 @@ const servicingAreasShown = ref(true);
 const cargoGridsShown = ref(true);
 const doorsOpen = ref(false);
 
-const doors = computed(() => preview.value?.doors ?? []);
+const { isFeatureEnabled } = useFeatures();
+
+const servicingAreasEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_SERVICING_AREAS),
+);
+const cargoGridsEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_CARGO_GRIDS),
+);
+const doorAnimationEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_ANIMATION),
+);
+const doorHighlightEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_HIGHLIGHT),
+);
+
+const doors = computed(() =>
+  doorAnimationEnabled.value || doorHighlightEnabled.value
+    ? (preview.value?.doors ?? [])
+    : [],
+);
 
 const { isOpen, openDoors, toggleDoor } = useHoloDoors(doors, doorsOpen);
 
@@ -133,15 +154,22 @@ const holoModel = computed(() => {
     path: hull.url,
     size: hull.size ?? undefined,
     mounts: loadoutMounts(preview.value, slots),
-    cargoGrids: loadoutCargoGrids(preview.value, slots),
+    cargoGrids: cargoGridsEnabled.value
+      ? loadoutCargoGrids(preview.value, slots)
+      : [],
     doors: doors.value,
-    openDoors: openDoors.value,
+    openDoors: doorAnimationEnabled.value ? openDoors.value : [],
+    doorTargets: doorHighlightEnabled.value || doorAnimationEnabled.value,
+    doorHighlight: doorHighlightEnabled.value,
     builtIns: builtInHighlights(preview.value.ports),
     layers: {
       boxes: servicingAreasShown.value,
       cargo: cargoGridsShown.value,
     },
-    boxes: preview.value.servicingAreas.map((area) => ({
+    boxes: (servicingAreasEnabled.value
+      ? preview.value.servicingAreas
+      : []
+    ).map((area) => ({
       id: area.key,
       position: area.position as [number, number, number],
       rotation: area.rotation as [number, number, number, number],
@@ -264,9 +292,9 @@ const card = computed(() => {
     };
   }
 
-  const door = doors.value.find(
-    (candidate) => candidate.id === pointedDoor.value,
-  );
+  const door = doorHighlightEnabled.value
+    ? doors.value.find((candidate) => candidate.id === pointedDoor.value)
+    : undefined;
 
   if (door) {
     const kind = DOOR_KINDS[door.kind ?? ""] ?? "door";
@@ -275,11 +303,13 @@ const card = computed(() => {
       kicker: t("labels.loadoutHoloDoor"),
       color: DOOR_COLOR,
       title: t(`labels.loadoutHoloDoorKinds.${kind}`),
-      details: [
-        isOpen(door.id)
-          ? t("actions.holoViewer.door.close")
-          : t("actions.holoViewer.door.open"),
-      ],
+      details: doorAnimationEnabled.value
+        ? [
+            isOpen(door.id)
+              ? t("actions.holoViewer.door.close")
+              : t("actions.holoViewer.door.open"),
+          ]
+        : [],
     };
   }
 
@@ -340,7 +370,7 @@ const doorsLabel = computed(() =>
     @built-in-point="pointedBuiltIn = $event"
     @built-in-select="openBuiltIn"
     @door-point="pointedDoor = $event"
-    @door-select="toggleDoor"
+    @door-select="doorAnimationEnabled && toggleDoor($event)"
     @unavailable="emit('unavailable')"
   >
     <template #actions>
@@ -367,7 +397,7 @@ const doorsLabel = computed(() =>
         <i class="fa-light fa-boxes-stacked" />
       </Btn>
       <Btn
-        v-if="holoModel.doors.length"
+        v-if="doorAnimationEnabled && holoModel.doors.length"
         v-tooltip="doorsLabel"
         :aria-label="doorsLabel"
         :aria-pressed="doorsOpen"

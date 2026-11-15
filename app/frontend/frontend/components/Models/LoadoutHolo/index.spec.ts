@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createMemoryHistory } from "vue-router";
 import {
+  FeatureFlagName,
   HullItemKindEnum,
   type LoadoutSlot,
   type ModelLoadoutPreview,
@@ -94,6 +95,28 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useModelLoadoutSlots: () => ({ data: ref(slots) }),
 }));
 
+const { enabledFlags } = vi.hoisted(() => ({
+  enabledFlags: new Set<string>(),
+}));
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: (flag: string) => enabledFlags.has(flag),
+  }),
+}));
+
+const ALL_FLAGS = [
+  FeatureFlagName.HOLO_SERVICING_AREAS,
+  FeatureFlagName.HOLO_CARGO_GRIDS,
+  FeatureFlagName.HOLO_DOOR_ANIMATION,
+  FeatureFlagName.HOLO_DOOR_HIGHLIGHT,
+];
+
+beforeEach(() => {
+  enabledFlags.clear();
+  ALL_FLAGS.forEach((flag) => enabledFlags.add(flag));
+});
+
 vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
   __esModule: true,
   default: {
@@ -128,7 +151,11 @@ const mountHolo = async () => {
     (
       viewer().props("models") as {
         builtIns: { id: string }[];
+        cargoGrids: unknown[];
+        doors: unknown[];
         openDoors: string[];
+        doorTargets?: boolean;
+        doorHighlight?: boolean;
         layers: { cargo?: boolean };
       }[]
     )[0];
@@ -265,5 +292,55 @@ describe("ModelLoadoutHolo", () => {
 
     expect(model().openDoors).toEqual(["hardpoint_door_rear"]);
     expect(card().text()).toContain("Click to close");
+  });
+
+  it("draws no cargo grids or doors while their flags are off", async () => {
+    enabledFlags.clear();
+    const { wrapper, model } = await mountHolo();
+
+    expect(model().cargoGrids).toEqual([]);
+    expect(model().doors).toEqual([]);
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-cargo-grids"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-doors"]').exists(),
+    ).toBe(false);
+  });
+
+  it("names a door without opening it while only the highlight is on", async () => {
+    enabledFlags.delete(FeatureFlagName.HOLO_DOOR_ANIMATION);
+    const { wrapper, viewer, model } = await mountHolo();
+
+    expect(model().doorHighlight).toBe(true);
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-doors"]').exists(),
+    ).toBe(false);
+
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    viewer().vm.$emit("doorSelect", "hardpoint_door_rear");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]').text();
+    expect(card).toContain("Hatch");
+    expect(card).not.toContain("Click to");
+    expect(model().openDoors).toEqual([]);
+  });
+
+  it("opens doors without picking them out while only the animation is on", async () => {
+    enabledFlags.delete(FeatureFlagName.HOLO_DOOR_HIGHLIGHT);
+    const { wrapper, viewer, model } = await mountHolo();
+
+    expect(model().doorHighlight).toBe(false);
+    expect(model().doorTargets).toBe(true);
+
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    viewer().vm.$emit("doorSelect", "hardpoint_door_rear");
+    await nextTick();
+
+    expect(wrapper.find('[data-test="model-loadout-holo-card"]').exists()).toBe(
+      false,
+    );
+    expect(model().openDoors).toEqual(["hardpoint_door_rear"]);
   });
 });
