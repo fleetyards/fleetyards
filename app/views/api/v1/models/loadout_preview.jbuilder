@@ -22,6 +22,8 @@ json.ports(@ports) do |port|
   json.geometry port["geometry"] != false
   json.stripped port["stripped"] == true
   json.in_parent_holo port["inParentHolo"] == true
+  json.hull_node port["hullNode"]
+  json.item_kind port["itemKind"] && (V1::Schemas::Enums::HullItemKindEnum::VALUES.include?(port["itemKind"]) ? port["itemKind"] : "other")
 end
 
 json.items(@item_holos) do |component|
@@ -39,4 +41,42 @@ json.servicing_areas(@servicing_areas) do |area|
   json.width area["width"]
   json.length area["length"]
   json.height area["height"]
+end
+
+json.cargo_grids(@cargo_grids) do |grid|
+  json.name grid["name"]
+  json.port grid["port"]
+  json.parent_port grid["parentPort"]
+  json.position grid["position"]
+  json.rotation grid["rotation"]
+  json.size grid["size"]
+  json.scu grid["scu"]
+  json.stripped grid["stripped"] == true
+end
+
+json.doors(@doors) do |door|
+  json.id door["id"]
+  json.kind door["kind"]
+  json.position door["position"]
+  json.duration_s door["duration_s"]
+
+  if (bounds = door["obb_closed"])
+    json.bounds do
+      json.center bounds["center"]
+      json.axes bounds["axes"]
+      json.half_size bounds["half_size"]
+    end
+  else
+    json.bounds nil
+  end
+
+  json.parts(door["parts"].each_with_index.to_a) do |(part, index)|
+    json.part index
+    json.object part["object"]
+    json.keyframes(part.dig("motion", "keyframes")) do |keyframe|
+      json.t keyframe["t"]
+      json.translation keyframe["translation"]
+      json.rotation keyframe["rotation"]
+    end
+  end
 end

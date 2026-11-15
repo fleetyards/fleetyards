@@ -42881,6 +42881,23 @@ components:
       - name
       - slug
       title: HomepageFeaturedShip
+    HullItemKindEnum:
+      type: string
+      enum:
+      - weapon
+      - turret
+      - missile
+      - thruster
+      - utility
+      - other
+      x-enumNames:
+      - WEAPON
+      - TURRET
+      - MISSILE
+      - THRUSTER
+      - UTILITY
+      - OTHER
+      title: HullItemKindEnum
     Image:
       type: object
       properties:
@@ -46501,12 +46518,188 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelLoadoutPreviewServicingArea"
+        cargoGrids:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewCargoGrid"
+        doors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewDoor"
       additionalProperties: false
       required:
       - ports
       - items
       - servicingAreas
+      - cargoGrids
+      - doors
       title: ModelLoadoutPreview
+    ModelLoadoutPreviewCargoGrid:
+      type: object
+      properties:
+        name:
+          type: string
+        port:
+          type:
+          - string
+          - 'null'
+        parentPort:
+          type:
+          - string
+          - 'null'
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: The grid's centre
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+        size:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Metres along the grid's own x, up and depth axes
+        scu:
+          type:
+          - number
+          - 'null'
+        stripped:
+          type: boolean
+          description: The grid belongs to an item left out of the hull holo
+      additionalProperties: false
+      required:
+      - name
+      - port
+      - parentPort
+      - position
+      - rotation
+      - size
+      - scu
+      - stripped
+      title: ModelLoadoutPreviewCargoGrid
+    ModelLoadoutPreviewDoor:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          type:
+          - string
+          - 'null'
+          description: door, airlock, elevator, hatch, side_door, ...
+        position:
+          type:
+          - array
+          - 'null'
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        durationS:
+          type: number
+          description: Seconds the door takes to open
+        bounds:
+          anyOf:
+          - "$ref": "#/components/schemas/ModelLoadoutPreviewDoorBounds"
+          - type: 'null'
+        parts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewDoorPart"
+      additionalProperties: false
+      required:
+      - id
+      - kind
+      - position
+      - durationS
+      - bounds
+      - parts
+      title: ModelLoadoutPreviewDoor
+    ModelLoadoutPreviewDoorBounds:
+      type: object
+      properties:
+        center:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        axes:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 3
+            maxItems: 3
+          minItems: 3
+          maxItems: 3
+          description: The box's unit axes
+        halfSize:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Half the extent along each axis
+      additionalProperties: false
+      required:
+      - center
+      - axes
+      - halfSize
+      title: ModelLoadoutPreviewDoorBounds
+    ModelLoadoutPreviewDoorKeyframe:
+      type: object
+      properties:
+        t:
+          type: number
+          description: 0 closed, 1 open
+        translation:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+      additionalProperties: false
+      required:
+      - t
+      - translation
+      - rotation
+      title: ModelLoadoutPreviewDoorKeyframe
+    ModelLoadoutPreviewDoorPart:
+      type: object
+      properties:
+        part:
+          type: integer
+        object:
+          type: string
+          description: The piece's name in the game files
+        keyframes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewDoorKeyframe"
+      additionalProperties: false
+      required:
+      - part
+      - object
+      - keyframes
+      title: ModelLoadoutPreviewDoorPart
     ModelLoadoutPreviewItem:
       type: object
       properties:
@@ -46568,6 +46761,16 @@ components:
           type: boolean
           description: The default item is part of its parent item and drawn by the
             parent's holo
+        hullNode:
+          type:
+          - string
+          - 'null'
+          description: The node of a built-in item left in the hull holo; several
+            nodes can share the name
+        itemKind:
+          anyOf:
+          - "$ref": "#/components/schemas/HullItemKindEnum"
+          - type: 'null'
       additionalProperties: false
       required:
       - name
@@ -46582,6 +46785,8 @@ components:
       - geometry
       - stripped
       - inParentHolo
+      - hullNode
+      - itemKind
       title: ModelLoadoutPreviewPort
     ModelLoadoutPreviewPortType:
       type: object

@@ -111,6 +111,57 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-preview returns the cargo grids, doors and built-in items" do
+    model = create(:model,
+      hardpoint_transforms: {
+        "ports" => [
+          {"name" => "hardpoint_thruster_main", "position" => [0, 0, 5], "rotation" => [0, 0, 0, 1],
+           "editable" => false, "stripped" => false, "hullNode" => "hardpoint_thruster_main", "itemKind" => "thruster",
+           "defaultItem" => "misc_prospector_thruster_main"},
+          {"name" => "hardpoint_bed", "position" => [1, 0, 0], "rotation" => [0, 0, 0, 1],
+           "editable" => false, "hullNode" => "bed_helper", "itemKind" => "furniture"}
+        ],
+        "cargo_grids" => [
+          {"name" => "hardpoint_cargogrid_module_04", "port" => "hardpoint_cargogrid_module_04", "parentPort" => nil,
+           "position" => [0, 1, 2], "rotation" => [0, 0, 0, 1], "size" => [5.0, 5.0, 7.5], "dimensions" => [5.0, 7.5, 5.0],
+           "scu" => 96, "minItem" => [1.25, 1.25, 1.25], "stripped" => false}
+        ]
+      },
+      holo_doors: {"doors" => [
+        {"id" => "hardpoint_door_rear", "kind" => "hatch", "position" => [0, -0.4, 10.6], "duration_s" => 3.0,
+         "obb_closed" => {"center" => [0, -0.8, 10.7], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]], "half_size" => [1.9, 1.5, 1.0]},
+         "datacore" => {"record" => "Door_Ship_Ext"},
+         "parts" => [{"object" => "RearDoor", "motion" => {"type" => "slide", "open_matrix" => Array.new(16, 0), "keyframes" => [
+           {"t" => 0.0, "translation" => [0, 0, 0], "rotation" => [0, 0, 0, 1]},
+           {"t" => 1.0, "translation" => [0, -2.0, 0], "rotation" => [0, 0, 0, 1]}
+         ]}}]}
+      ]})
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      thruster, bed = parsed_body["ports"]
+
+      assert_equal "hardpoint_thruster_main", thruster["hullNode"]
+      assert_equal "thruster", thruster["itemKind"]
+      assert_equal "other", bed["itemKind"]
+
+      grid = parsed_body["cargoGrids"].sole
+
+      assert_equal 96, grid["scu"]
+      assert_equal [5.0, 5.0, 7.5], grid["size"]
+      assert_not grid.key?("dimensions")
+
+      door = parsed_body["doors"].sole
+
+      assert_equal "hatch", door["kind"]
+      assert_equal 3.0, door["durationS"]
+      assert_equal [1.9, 1.5, 1.0], door.dig("bounds", "halfSize")
+      assert_equal [{"part" => 0, "object" => "RearDoor", "keyframes" => [
+        {"t" => 0.0, "translation" => [0, 0, 0], "rotation" => [0, 0, 0, 1]},
+        {"t" => 1.0, "translation" => [0, -2.0, 0], "rotation" => [0, 0, 0, 1]}
+      ]}], door["parts"]
+    end
+  end
+
   test "GET /models/:slug/loadout-preview lists no ports for a ship without an export" do
     model = create(:model)
 
@@ -118,6 +169,8 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body["ports"]
       assert_empty parsed_body["items"]
       assert_empty parsed_body["servicingAreas"]
+      assert_empty parsed_body["cargoGrids"]
+      assert_empty parsed_body["doors"]
       assert_not parsed_body.key?("holoHull")
     end
   end
@@ -129,6 +182,8 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body["ports"]
       assert_empty parsed_body["items"]
       assert_empty parsed_body["servicingAreas"]
+      assert_empty parsed_body["cargoGrids"]
+      assert_empty parsed_body["doors"]
       assert_not parsed_body.key?("holoHull")
     end
   end

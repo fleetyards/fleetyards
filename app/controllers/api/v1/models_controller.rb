@@ -172,6 +172,8 @@ module Api
         @loadout_preview_enabled = feature_enabled?("loadout_preview")
         @ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
         @servicing_areas = @loadout_preview_enabled ? @model.holo_servicing_areas : []
+        @cargo_grids = (@model.hardpoint_transforms&.fetch("cargo_grids", nil) if @loadout_preview_enabled) || []
+        @doors = (@model.holo_doors&.fetch("doors", nil) if @loadout_preview_enabled) || []
 
         # The parts the preview draws itself: those the hull leaves out, a part
         # the export never draws among them, unless the holo of the part they
