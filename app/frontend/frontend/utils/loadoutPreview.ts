@@ -218,7 +218,9 @@ export const loadoutCargoGrids = (
     }));
 };
 
-const TRACTOR_BEAM = /tractor[-_ ]?beam/i;
+// A tractor beam item, `grin_tractorbeam_s2`: not the seat or the turret
+// named after the beam it works.
+const TRACTOR_BEAM = /(^|_)tractor[-_]?beam_s\d/i;
 const MINING_POD = /mining[-_ ]?pod|ore[-_ ]?pod/i;
 
 export type BuiltInKind = "weapon" | "tractorBeam" | "miningPod";
@@ -230,7 +232,16 @@ export type BuiltInKind = "weapon" | "tractorBeam" | "miningPod";
 export const builtInKind = (
   port: ModelLoadoutPreviewPort,
 ): BuiltInKind | undefined => {
-  if (port.editable || !port.hullNode) return undefined;
+  // An item merged into a larger piece names that piece's node, as everything
+  // on the Caterpillar's command module names the module: tinting it would mark
+  // the whole module.
+  if (
+    port.editable ||
+    !port.hullNode ||
+    port.hullNode.toLowerCase() !== port.name.toLowerCase()
+  ) {
+    return undefined;
+  }
 
   const item = port.defaultItem ?? "";
 

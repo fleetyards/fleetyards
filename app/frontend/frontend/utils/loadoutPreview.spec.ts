@@ -377,6 +377,42 @@ describe("loadoutCargoGrids", () => {
 });
 
 describe("builtInHighlights", () => {
+  it("marks nothing merged into a larger piece, nor a seat named for a beam", () => {
+    // The Caterpillar: the command module's tractor turret and guns all name
+    // the module's node.
+    const ports = [
+      port("hardpoint_tractor_beam", {
+        parent: "itemport_vehicle_attach",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.TURRET,
+      }),
+      port("turret_weapon", {
+        parent: "hardpoint_tractor_beam",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.UTILITY,
+        defaultItem: "grin_tractorbeam_s2",
+        types: [{ type: "TractorBeam", subTypes: "" }],
+      }),
+      port("hardpoint_weapon_left", {
+        parent: "itemport_vehicle_attach",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+      port("hardpoint_seat_tractorbeam_right", {
+        editable: false,
+        hullNode: "hardpoint_seat_tractorbeam_right",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "drak_caterpillar_scitem_seat_tractorbeam",
+        types: [{ type: "Seat", subTypes: "" }],
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([]);
+  });
+
   it("leaves a locked mount whose part the loadout swaps unmarked", () => {
     // The Prospector: a locked arm holds a locked gimbal, whose mining head is
     // the loadout's to change.
