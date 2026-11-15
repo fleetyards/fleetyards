@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.54.0](https://github.com/fleetyards/fleetyards/compare/v9.53.1...v9.54.0) (2026-11-15)
+
+
+### Features
+
+* **admin:** daily pace chart with projection for supporter contributions ([#6329](https://github.com/fleetyards/fleetyards/issues/6329)) ([9adb80d](https://github.com/fleetyards/fleetyards/commit/9adb80d79ec2002b9f7b8a7983c33ac60da37e73))
+
+
+### Bug Fixes
+
+* **uex:** follow the renamed Ares Star Fighter slugs ([3eec2e4](https://github.com/fleetyards/fleetyards/commit/3eec2e43d82664263696292af45d54fd171eef9a))
+* **uex:** map the HM6 vehicles across the Anvil rename ([1851be2](https://github.com/fleetyards/fleetyards/commit/1851be24f1b8cb7f3696eca053bbe6baacb575c6))
+
+
+### Chores
+
+* **sc_data:** bump ptu to 5.0.0-ptu.13189690 ([#6227](https://github.com/fleetyards/fleetyards/issues/6227)) ([290a387](https://github.com/fleetyards/fleetyards/commit/290a3875ac6fde0812754a8744bdb6d11f19ef72))
+
 ## [9.53.1](https://github.com/fleetyards/fleetyards/compare/v9.53.0...v9.53.1) (2026-11-14)
 
 
