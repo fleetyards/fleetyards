@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   type BlueprintCostSlot,
   BlueprintRampEnum,
+  ComponentTypeEnum,
   type Hardpoint,
   HardpointCategoryEnum,
   type LoadoutSlot,
@@ -544,5 +545,81 @@ describe("ore pods", () => {
     expect(COMPONENT_TABS.some((entry) => fitting.hasSlots(tree, entry))).toBe(
       false,
     );
+  });
+});
+
+describe("parts held by a locked hull part", () => {
+  const arm = (held: {
+    type: ComponentTypeEnum;
+    scKey: string;
+  }): LoadoutSlot => ({
+    name: "hardpoint_mining_arm",
+    hardpointId: "port-arm",
+    category: HardpointCategoryEnum.UTILITY,
+    types: ["ToolArm"],
+    editable: false,
+    stock: { id: "arm", name: "Mining Arm" },
+    slots: [
+      {
+        name: "hardpoint_mining_laser",
+        hardpointId: "port-gimbal",
+        category: HardpointCategoryEnum.UNKNOWN,
+        types: ["UtilityTurret"],
+        editable: true,
+        stock: {
+          id: "gimbal",
+          name: "Gimbal",
+          type: ComponentTypeEnum.UTILITY_TURRET,
+        },
+        slots: [
+          {
+            name: "hardpoint_mining_laser",
+            hardpointId: "port-head",
+            category: HardpointCategoryEnum.UNKNOWN,
+            types: [held.type],
+            editable: true,
+            swappable: true,
+            stock: { id: "head", name: "Arbor MH1", ...held },
+            slots: [],
+          },
+        ],
+      },
+    ],
+  });
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  const tabsShowing = (slots: LoadoutSlot[]) => {
+    const fitting = useComponentFitting();
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    return COMPONENT_TABS.filter((entry) => fitting.hasSlots(tree, entry)).map(
+      (entry) => entry.id,
+    );
+  };
+
+  it("lists a mining arm's head on the weapons tab, with the mining lasers", () => {
+    const mining = arm({
+      type: "WeaponMining",
+      scKey: "mining_laser_grin_arbor_s1",
+    });
+
+    expect(filedCategory(mining)).toBe(HardpointCategoryEnum.MINING_LASERS);
+    expect(tabsShowing([mining])).toEqual(["weapons"]);
+    expect(tab("weapons").categories).toContain(
+      HardpointCategoryEnum.MINING_LASERS,
+    );
+  });
+
+  it("lists a tractor arm's beam on the auxiliary tab", () => {
+    expect(
+      tabsShowing([
+        arm({
+          type: ComponentTypeEnum.TRACTOR_BEAM,
+          scKey: "grin_tractorbeam_s2",
+        }),
+      ]),
+    ).toEqual(["auxiliary"]);
   });
 });

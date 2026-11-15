@@ -93,10 +93,33 @@ const filedType = (part: CarriedPart): string | undefined =>
 
 // A turret or mount is filed by the parts it carries, as the ship page files
 // it: one holding a tractor beam and no gun, missile or bomb is auxiliary.
+// What a locked hull part no tab lists is filed under by the part it holds: a
+// mining arm by its head, a tractor arm by its beam, a bomb bay by its bombs.
+const HELD_CATEGORIES: Record<string, HardpointCategoryEnum> = {
+  WeaponMining: HardpointCategoryEnum.MINING_LASERS,
+  TractorBeam: HardpointCategoryEnum.TRACTOR_BEAMS,
+  TowingBeam: HardpointCategoryEnum.TRACTOR_BEAMS,
+  Bomb: HardpointCategoryEnum.BOMBS,
+  Missile: HardpointCategoryEnum.MISSILES,
+  WeaponGun: HardpointCategoryEnum.WEAPONS,
+};
+
 const categoryCarrying = (
   category: LoadoutSlot["category"],
   carried: CarriedPart[],
 ) => {
+  if (
+    category &&
+    category !== HardpointCategoryEnum.MODULE &&
+    !componentTabOf(category)
+  ) {
+    const held = carried
+      .map(filedType)
+      .find((type) => type && HELD_CATEGORIES[type]);
+
+    return held ? HELD_CATEGORIES[held] : category;
+  }
+
   if (!category || !CARRIER_CATEGORIES.has(category)) return category;
 
   const types = carried.map(filedType);
