@@ -25,6 +25,15 @@ module ScData
                flags: "editable", editable: true, types: [{type: "WeaponGun", subTypes: "Gun"}],
                defaultItem: "mount_gimbal_s3", stripped: true}]
     }.to_json
+    DOORS = {
+      entity: "AEGS_Gladius", frame: "gltf-y-up", units: "m",
+      doors: [{id: "hardpoint_door_rear", kind: "hatch", port: "hardpoint_door_rear", position: [0, -0.4, 10.6], hullState: "closed",
+               duration_s: 3.0, obb_closed: {center: [0, -0.8, 10.7], axes: [[1, 0, 0], [0, 1, 0], [0, 0, 1]], half_size: [1.9, 1.5, 1.0]},
+               parts: [{object: "RearDoor", motion: {type: "slide", keyframes: [
+                 {t: 0.0, translation: [0, 0, 0], rotation: [0, 0, 0, 1]},
+                 {t: 1.0, translation: [0, -2.0, 0], rotation: [0, 0, 0, 1]}
+               ]}}]}]
+    }.to_json
 
     setup do
       Sidekiq::Worker.clear_all
@@ -316,6 +325,59 @@ module ScData
       assert @model.front_view.attached?
       assert_nil @model.hardpoint_transforms
       assert_nil @model.ship_view_md5s["hardpoint_transforms"]
+      assert_nil @model.ship_views_digest
+    end
+
+    test "stores the cargo grids and the built-in items beside the ports" do
+      transforms = JSON.parse(HARDPOINTS)
+      transforms["ports"] << {"name" => "hardpoint_thruster_main", "position" => [0, 0, 5], "rotation" => [0, 0, 0, 1],
+                              "editable" => false, "stripped" => false, "hullNode" => "hardpoint_thruster_main", "itemKind" => "thruster"}
+      transforms["cargo_grids"] = [{"name" => "hardpoint_cargogrid", "position" => [0, 1, 2], "rotation" => [0, 0, 0, 1],
+                                    "size" => [2.5, 1.25, 5.0], "scu" => 16}]
+      publish({"flight_hardpoints.json" => transforms.to_json})
+
+      perform
+
+      assert_equal 16, @model.hardpoint_transforms["cargo_grids"].first["scu"]
+      assert_equal "thruster", @model.hardpoint_transforms["ports"].last["itemKind"]
+    end
+
+    test "keeps the stored hardpoint transforms when a cargo grid is malformed" do
+      @model.update!(hardpoint_transforms: JSON.parse(HARDPOINTS))
+      publish({"flight_hardpoints.json" => JSON.parse(HARDPOINTS).merge("cargo_grids" => [{"name" => "grid", "size" => [1, 2]}]).to_json})
+
+      perform
+
+      assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
+      assert_nil @model.ship_views_digest
+    end
+
+    test "stores the doors of the flight hull holo" do
+      publish({"flight_hardpoints.json" => HARDPOINTS, "flight_doors.json" => DOORS})
+
+      perform
+
+      assert_equal JSON.parse(DOORS), @model.holo_doors
+      assert_equal Digest::MD5.hexdigest(DOORS), @model.ship_view_md5s["holo_doors"]
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "stores no doors for an export that has none" do
+      publish({"flight_hardpoints.json" => HARDPOINTS})
+
+      perform
+
+      assert_nil @model.holo_doors
+      assert_not_nil @model.hardpoint_transforms
+    end
+
+    test "keeps the stored doors when a door is malformed" do
+      @model.update!(holo_doors: JSON.parse(DOORS))
+      publish({"flight_doors.json" => {doors: [{id: "hardpoint_door_rear", parts: [{object: "RearDoor"}]}]}.to_json})
+
+      perform
+
+      assert_equal JSON.parse(DOORS), @model.holo_doors
       assert_nil @model.ship_views_digest
     end
 

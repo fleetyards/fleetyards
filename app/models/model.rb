@@ -647,6 +647,15 @@ class Model < ApplicationRecord
     (hardpoint_transforms_record || build_hardpoint_transforms_record).data = data
   end
 
+  # How each door of the flight hull holo opens, as the ship views publish it.
+  def holo_doors
+    hardpoint_transforms_record&.doors
+  end
+
+  def holo_doors=(doors)
+    (hardpoint_transforms_record || build_hardpoint_transforms_record).doors = doors
+  end
+
   # The servicing areas placed on the flight holo, numbered as the ship's page
   # numbers them; an area the build does not list comes after those.
   def holo_servicing_areas
