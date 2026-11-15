@@ -1974,6 +1974,11 @@
           "count": "Aportaciones",
           "currentMonth": "Este mes",
           "currentMonthCount": "%{count} aportaciones",
+          "recurringAmount": "Recurrente / mes",
+          "recurringAmountCount": {
+            "one": "%{count} aportación activa",
+            "other": "%{count} aportaciones activas"
+          },
           "recurringCount": "Recurrentes",
           "anonymousCount": "Anónimas"
         },

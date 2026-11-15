@@ -60,6 +60,21 @@ const { data: stats } = useSupporterContributionsStats(queryParams);
     </div>
     <div class="supporter-contributions-stats__entry">
       <span class="supporter-contributions-stats__label">
+        {{ t("labels.supporterContribution.stats.recurringAmount") }}
+      </span>
+      <span class="supporter-contributions-stats__value">
+        {{ formatCents(stats.recurringAmountCents, stats.currency) }}
+        <span class="supporter-contributions-stats__meta">
+          {{
+            t("labels.supporterContribution.stats.recurringAmountCount", {
+              count: stats.activeRecurringCount,
+            })
+          }}
+        </span>
+      </span>
+    </div>
+    <div class="supporter-contributions-stats__entry">
+      <span class="supporter-contributions-stats__label">
         {{ t("labels.supporterContribution.stats.count") }}
       </span>
       <span class="supporter-contributions-stats__value">{{

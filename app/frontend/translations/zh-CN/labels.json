@@ -1974,6 +1974,11 @@
           "count": "捐助数",
           "currentMonth": "本月",
           "currentMonthCount": "%{count} 笔捐助",
+          "recurringAmount": "每月周期性",
+          "recurringAmountCount": {
+            "one": "%{count} 笔有效周期捐助",
+            "other": "%{count} 笔有效周期捐助"
+          },
           "recurringCount": "周期性",
           "anonymousCount": "匿名"
         },

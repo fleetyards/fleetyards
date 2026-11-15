@@ -1974,6 +1974,11 @@
           "count": "Contributions",
           "currentMonth": "This Month",
           "currentMonthCount": "%{count} contributions",
+          "recurringAmount": "Recurring / Month",
+          "recurringAmountCount": {
+            "one": "%{count} active pledge",
+            "other": "%{count} active pledges"
+          },
           "recurringCount": "Recurring",
           "anonymousCount": "Anonymous"
         },
