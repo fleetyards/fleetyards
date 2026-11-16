@@ -365,7 +365,9 @@
         "unmatched": "Todo lo demás se sincronizó. Nada de lo que aparece abajo se añadió a tu hangar.",
         "partialFailure": "Puede que algunos cambios ya estén en tu hangar. Reintentar es seguro: las naves ya sincronizadas se emparejan de nuevo, no se añaden dos veces.",
         "pointMatch": "Encuentra las naves de tu hangar de RSI que ya están aquí, por nombre e ID del pledge.",
-        "pointAdd": "Añade las que aún no están aquí."
+        "pointAdd": "Añade las que aún no están aquí.",
+        "pointCcusOnly": "Lee solo los upgrades de tu hangar RSI y actualiza tus CCUs. Las naves y el resto de objetos se quedan como están.",
+        "ccusNeedUpdate": "Tu extensión de sincronización aún no puede leer solo los upgrades. Actualízala para sincronizar tus CCUs aquí."
       },
       "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección.",
       "oauthApplications": {

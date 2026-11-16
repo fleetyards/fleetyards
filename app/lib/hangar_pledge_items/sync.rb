@@ -22,7 +22,7 @@ module HangarPledgeItems
 
     PAINT_WORDS = %w[paint livery].freeze
 
-    attr_reader :user, :items, :kinds, :keep_unlisted
+    attr_reader :user, :items, :kinds, :keep_unlisted, :upgrades_only_list
 
     # The kind each item would be stored as, or nil for one it cannot store.
     def self.kinds_for(items)
@@ -196,10 +196,15 @@ module HangarPledgeItems
     # not read is no statement that the pledge is gone either.
     #
     # `item_kinds` is `kinds_for(items)`, for a caller that already has it.
-    def initialize(user, items, kinds: HangarPledgeItem::KINDS, keep_unlisted: false, item_kinds: nil)
+    #
+    # `upgrades_only_list` is for a read of RSI's list filtered to upgrades,
+    # whose page numbers count that list rather than the whole one.
+    def initialize(user, items, kinds: HangarPledgeItem::KINDS, keep_unlisted: false, item_kinds: nil,
+      upgrades_only_list: false)
       @user = user
       @kinds = kinds
       @keep_unlisted = keep_unlisted
+      @upgrades_only_list = upgrades_only_list
       @items = items.zip(item_kinds || self.class.kinds_for(items))
         .select { |_item, kind| kinds.include?(kind) }
         .map { |item, kind| item.merge(kind:) }
@@ -250,6 +255,7 @@ module HangarPledgeItems
             pledge_item_count: group.first[:pledge_item_count].presence,
             pledge_created_on: group.first[:pledge_created_on].presence,
             rsi_page: group.first[:page].presence&.to_i,
+            rsi_page_upgrades_only: upgrades_only_list,
             meltable: ActiveModel::Type::Boolean.new.cast(group.first[:meltable]) || false
           }
         end

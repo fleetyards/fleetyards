@@ -35,11 +35,13 @@ import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue"
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
+import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import UpgradeFits from "@/frontend/components/Hangar/Planner/UpgradeFits/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
@@ -74,6 +76,23 @@ const { updatePlan } = useHangarPlanCache();
 const planId = computed(() => String(route.params.id));
 
 const { data: plan, isLoading } = useHangarPlan(planId);
+
+// A sync changes what the plan's routes can draw on, so the plan and everything
+// read from it are fetched again.
+const queryClient = useQueryClient();
+let offSyncFinished: (() => void) | undefined;
+
+onMounted(() => {
+  offSyncFinished = comlink.on("hangar-sync-finished", () => {
+    void queryClient.invalidateQueries({
+      queryKey: ["hangar", "plans", planId.value],
+    });
+  });
+});
+
+onUnmounted(() => {
+  offSyncFinished?.();
+});
 const { data: summary, isFetching: summaryFetching } =
   useHangarPlanSummary(planId);
 const { data: drift } = useHangarPlanDrift(planId);
@@ -378,6 +397,7 @@ const onDestroy = async () => {
         <i class="fa-light fa-lightbulb" />
         {{ t("hangarPlanner.suggestions.title") }}
       </Btn>
+      <HangarSyncBtn ccus-only />
       <BtnDropdown data-test="hangar-plan-more">
         <Btn :variant="BtnVariantsEnum.BARE" @click="editPlan">
           <i class="fa-light fa-pen" />

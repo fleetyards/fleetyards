@@ -56,6 +56,22 @@ class Api::V1::HangarSyncRsiLastReadTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/sync-rsi-hangar/last-read passes over a sync of the upgrades alone" do
+    user = create(:user)
+    sign_in user
+    Imports::HangarSync.create!(user:, aasm_state: "finished", finished_at: 2.days.ago,
+      input: [{id: "1", name: "Avenger Titan", type: "ship", page: 1}])
+    Imports::HangarSync.create!(user:, aasm_state: "finished", finished_at: 1.day.ago, sync_scope: "ccus",
+      input: [{id: "2", name: "Upgrade - Aurora MR To Cutlass Black", type: "ccu", page: 1}])
+
+    assert_api_response :get, 200 do
+      body = response.parsed_body
+
+      assert_equal 1, body.dig("counts", "ship")
+      assert_equal 0, body.dig("counts", "ccu")
+    end
+  end
+
   test "GET /hangar/sync-rsi-hangar/last-read counts modules and ship parts apart" do
     user = create(:user)
     sign_in user

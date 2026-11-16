@@ -25,6 +25,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChannel";
 import {
+  HangarSyncScopeEnum,
   RsiPageKindEnum,
   syncRsiHangar,
   syncRsiHangarLastRead,
@@ -118,6 +119,10 @@ const awaitingResult = computed(
 const polling = computed(() => awaitingResult.value && submitted.value);
 
 let input: Omit<SyncRsiHangarInput, "items"> = {};
+
+// A CCU sync reads RSI's list filtered to upgrades. Kept with the run, so a
+// modal opened on it later tells it as the sync it is.
+const ccusOnlyRun = ref(false);
 
 let extensionVersion: string | undefined;
 let syncStoreCredit = false;
@@ -348,7 +353,12 @@ export const useHangarSync = () => {
     if (id !== runId) return;
 
     const message = await extension
-      .request(FleetyardsSyncAction.SYNC, { page: currentPage.value })
+      .request(
+        ccusOnlyRun.value
+          ? FleetyardsSyncAction.SYNC_UPGRADES
+          : FleetyardsSyncAction.SYNC,
+        { page: currentPage.value },
+      )
       .catch(() => undefined);
 
     // A reply after the fetch has ended belongs to a run that is over: read
@@ -378,6 +388,7 @@ export const useHangarSync = () => {
     clear();
     abort = new AbortController();
     input = syncInput;
+    ccusOnlyRun.value = syncInput.syncScope === HangarSyncScopeEnum.CCUS;
     extensionVersion = version;
     syncStoreCredit = !!withStoreCredit;
     started.value = true;
@@ -385,12 +396,14 @@ export const useHangarSync = () => {
     const id = runId;
 
     // Only a measure to read the run against; without it the run reads all the
-    // same.
-    syncRsiHangarLastRead()
-      .then((read) => {
-        if (id === runId && read.total > 0) lastRead.value = read;
-      })
-      .catch(() => undefined);
+    // same. A whole list is no measure for a read of its upgrades.
+    if (!ccusOnlyRun.value) {
+      syncRsiHangarLastRead()
+        .then((read) => {
+          if (id === runId && read.total > 0) lastRead.value = read;
+        })
+        .catch(() => undefined);
+    }
 
     void fetchPage(runId);
 
@@ -494,6 +507,7 @@ export const useHangarSync = () => {
     fetching,
     awaitingResult,
     polling,
+    ccusOnlyRun,
     start,
     retry,
     receive,

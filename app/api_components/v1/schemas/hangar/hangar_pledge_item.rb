@@ -22,13 +22,14 @@ module V1
             pledgeName: {type: :string},
             pledgeValue: {type: :number, description: "What melting the whole pledge returns, in USD"},
             rsiPage: {type: :integer, description: "The page of the RSI hangar the pledge was last read from"},
+            rsiPageUpgradesOnly: {type: :boolean, description: "Whether rsiPage counts RSI's list filtered to upgrades rather than the whole list"},
             catalogueItem: ::V1::Schemas::Hangar::HangarPledgeItemCatalogueItem,
             inventory: ::V1::Schemas::InventoryRef,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id rsiPledgeId kind name quantity standalone meltable createdAt updatedAt]
+          required: %w[id rsiPledgeId kind name quantity standalone meltable rsiPageUpgradesOnly createdAt updatedAt]
         })
       end
     end

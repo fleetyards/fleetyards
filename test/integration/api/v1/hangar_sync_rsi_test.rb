@@ -164,6 +164,23 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_predicate import, :sync_ship_components?
   end
 
+  test "PUT /hangar/sync-rsi-hangar syncs only the CCUs for a read of the upgrades, whatever else is sent" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Upgrade - Aurora MR To Cutlass Black", type: "ccu"}], syncScope: "ccus",
+            syncPaints: true, syncEquipment: true, unmatchedVehiclesAction: "delete", addBundledVehicles: true}
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.find_by(user_id: user.id)
+    assert_predicate import, :ccus_only?
+    assert_predicate import, :sync_ccus?
+    refute_predicate import, :sync_paints?
+    refute_predicate import, :sync_equipment?
+    refute_predicate import, :add_bundled_vehicles?
+    assert_equal "keep", import.unmatched_vehicles_action
+  end
+
   test "PUT /hangar/sync-rsi-hangar leaves paints and hangar flair alone when the flags are absent" do
     user = create(:user)
     sign_in user

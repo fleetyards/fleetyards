@@ -365,7 +365,9 @@
         "unmatched": "Tout le reste a été synchronisé. Rien de ce qui est listé ci-dessous n'a été ajouté à votre hangar.",
         "partialFailure": "Certains changements sont peut-être déjà dans votre hangar. Réessayer est sans risque : les vaisseaux déjà synchronisés sont réassociés, pas ajoutés deux fois.",
         "pointMatch": "Retrouve les vaisseaux de votre hangar RSI déjà présents ici, par nom et identifiant de pledge.",
-        "pointAdd": "Ajoute ceux qui ne sont pas encore ici."
+        "pointAdd": "Ajoute ceux qui ne sont pas encore ici.",
+        "pointCcusOnly": "Lit uniquement les upgrades de votre hangar RSI et met à jour vos CCU. Les vaisseaux et tous les autres objets restent tels quels.",
+        "ccusNeedUpdate": "Votre extension de synchronisation ne sait pas encore lire les upgrades seuls. Mettez-la à jour pour synchroniser vos CCU ici."
       },
       "setEmail": "Pour définir un mot de passe, activer l'authentification à deux facteurs ou recevoir des notifications par e-mail, vous devez ajouter une adresse e-mail à votre compte. Vous recevrez un e-mail de confirmation pour vérifier l'adresse.",
       "oauthApplications": {

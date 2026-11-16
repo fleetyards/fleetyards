@@ -97,6 +97,16 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert_equal 4, @user.hangar_pledge_items.upgrades.sole.rsi_page
   end
 
+  test "remembers a CCU read from the list of upgrades alone" do
+    item = {id: "1003", type: "ccu", name: "Upgrade - Aurora To Cutter", page: 2}
+
+    HangarPledgeItems::Sync.new(@user, [item], kinds: ["ccu"], upgrades_only_list: true).run
+    assert_predicate @user.hangar_pledge_items.upgrades.sole, :rsi_page_upgrades_only?
+
+    HangarPledgeItems::Sync.new(@user, [item.merge(page: 9)], kinds: ["ccu"]).run
+    refute_predicate @user.hangar_pledge_items.upgrades.sole, :rsi_page_upgrades_only?
+  end
+
   test "syncs a CCU-only hangar without attempting vehicle upgrades and preserves skipped CCUs" do
     input = [{id: "1002", type: "ccu", name: "Upgrade - Aurora To Cutter"}]
     import = Imports::HangarSync.create!(user: @user, input:, sync_ccus: true)

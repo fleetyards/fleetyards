@@ -27,6 +27,7 @@ import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   HangarSyncOutcomeEnum,
+  HangarSyncScopeEnum,
   HangarSyncUnmatchedActionEnum,
   syncRsiHangarLastRead,
 } from "@/services/fyApi";
@@ -36,6 +37,16 @@ import {
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
+
+type Props = {
+  // Reads only the upgrades and syncs only the CCUs, leaving everything else as
+  // it is.
+  ccusOnly?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  ccusOnly: false,
+});
 
 const { t } = useI18n();
 
@@ -55,7 +66,10 @@ const hangarStore = useHangarStore();
 // stored here is.
 const lastSyncedAt = ref<string | null>();
 
+// Not shown for a CCU sync, which reads the upgrades whatever came before.
 onMounted(() => {
+  if (props.ccusOnly) return;
+
   syncRsiHangarLastRead()
     .then((read) => {
       lastSyncedAt.value = read.finishedAt;
@@ -80,7 +94,24 @@ const {
   cancelled,
   running,
   fetching,
+  ccusOnlyRun,
 } = hangarSync;
+
+// A run already going is told as the sync it is, whichever button opened this.
+const ccusOnly = computed(() =>
+  started.value ? ccusOnlyRun.value : props.ccusOnly,
+);
+
+// Only an extension that knows the action can read the upgrades on their own.
+const upgradesReadable = ref<boolean>();
+
+const checkUpgradesReadable = async () => {
+  if (!ccusOnly.value) return;
+
+  upgradesReadable.value = await extension.supports(
+    FleetyardsSyncAction.SYNC_UPGRADES,
+  );
+};
 
 const hangarGroupId = ref<string | undefined>(undefined);
 
@@ -157,6 +188,8 @@ onMounted(() => {
   if (hangarStore.extensionReady && !running.value) {
     void checkRSIIdentity();
   }
+  // Asked whatever the run is doing: Start comes back once it fails.
+  if (hangarStore.extensionReady) void checkUpgradesReadable();
 });
 
 let unmounted = false;
@@ -175,6 +208,7 @@ watch(
     if (hangarStore.extensionReady && !running.value) {
       void checkRSIIdentity();
     }
+    if (hangarStore.extensionReady) void checkUpgradesReadable();
   },
 );
 
@@ -219,7 +253,9 @@ const checkRSIIdentity = async ({ quiet = false } = {}) => {
 };
 
 // The run's state names the dialog; the sync it is stays above as the eyebrow.
-const headline = computed(() => t("headlines.syncExtension"));
+const headline = computed(() =>
+  ccusOnly.value ? t("headlines.syncCcus") : t("headlines.syncExtension"),
+);
 
 const title = computed(() => {
   if (!hangarStore.extensionReady) {
@@ -282,6 +318,14 @@ const cancelRun = () => {
 };
 
 const start = () => {
+  if (ccusOnly.value) {
+    hangarSync.start({
+      syncScope: HangarSyncScopeEnum.CCUS,
+      extensionVersion: hangarStore.extensionVersion,
+    });
+    return;
+  }
+
   hangarSync.start({
     hangarGroupId: hangarGroupId.value,
     addBundledVehicles: hangarStore.syncAddBundledVehicles,
@@ -385,76 +429,106 @@ const refreshPage = async () => {
             :hint="t('texts.syncExtension.sessionHint')"
             @recheck="checkRSIIdentity"
           />
-          <SyncLastSynced :finished-at="lastSyncedAt" />
-          <SyncPoints
-            :points="[
-              {
-                icon: 'fa-light fa-arrow-right',
-                text: t('texts.syncExtension.pointMatch'),
-              },
-              {
-                icon: 'fa-light fa-plus',
-                text: t('texts.syncExtension.pointAdd'),
-              },
-            ]"
-          />
-          <dl class="hangar-sync__list hangar-sync__summary">
-            <div class="hangar-sync__summary-row">
-              <div class="hangar-sync__summary-text">
-                <dt>{{ t("labels.syncExtension.unmatchedVehiclesAction") }}</dt>
-                <dd>{{ unmatchedActionLabel }}</dd>
-              </div>
-              <Btn
-                :variant="BtnVariantsEnum.BARE"
-                data-test="open-sync-settings"
-                @click="settingsOpen = true"
-              >
-                {{ t("actions.syncExtension.change") }}
-              </Btn>
-            </div>
-            <div
-              v-if="skippedItems.length"
-              class="hangar-sync__summary-row"
-              data-test="sync-skipped-items"
+          <template v-if="ccusOnly">
+            <SyncPoints
+              :points="[
+                {
+                  icon: 'fa-light fa-arrow-up',
+                  text: t('texts.syncExtension.pointCcusOnly'),
+                },
+              ]"
+            />
+            <Alert
+              v-if="upgradesReadable === false"
+              :variant="AlertVariantsEnum.WARNING"
+              data-test="sync-ccus-needs-update"
             >
-              <div class="hangar-sync__summary-text">
-                <dt>{{ t("labels.syncExtension.notSyncing") }}</dt>
-                <dd class="hangar-sync__chips">
-                  <span
-                    v-for="item in skippedItems"
-                    :key="item"
-                    class="hangar-sync__chip"
-                  >
-                    {{ item }}
-                  </span>
-                </dd>
+              {{ t("texts.syncExtension.ccusNeedUpdate") }}
+            </Alert>
+            <Alert
+              v-if="hangarStore.syncRunning"
+              :variant="AlertVariantsEnum.WARNING"
+            >
+              {{ t("texts.syncExtension.alreadyRunning") }}
+            </Alert>
+          </template>
+          <template v-else>
+            <SyncLastSynced :finished-at="lastSyncedAt" />
+            <SyncPoints
+              :points="[
+                {
+                  icon: 'fa-light fa-arrow-right',
+                  text: t('texts.syncExtension.pointMatch'),
+                },
+                {
+                  icon: 'fa-light fa-plus',
+                  text: t('texts.syncExtension.pointAdd'),
+                },
+              ]"
+            />
+            <dl class="hangar-sync__list hangar-sync__summary">
+              <div class="hangar-sync__summary-row">
+                <div class="hangar-sync__summary-text">
+                  <dt>
+                    {{ t("labels.syncExtension.unmatchedVehiclesAction") }}
+                  </dt>
+                  <dd>{{ unmatchedActionLabel }}</dd>
+                </div>
+                <Btn
+                  :variant="BtnVariantsEnum.BARE"
+                  data-test="open-sync-settings"
+                  @click="settingsOpen = true"
+                >
+                  {{ t("actions.syncExtension.change") }}
+                </Btn>
               </div>
-              <Btn :variant="BtnVariantsEnum.BARE" @click="settingsOpen = true">
-                {{ t("actions.syncExtension.change") }}
-              </Btn>
-            </div>
-          </dl>
-          <Alert
-            v-if="missingUnmatchedGroup"
-            :variant="AlertVariantsEnum.WARNING"
-            data-test="sync-missing-unmatched-group"
-          >
-            {{ t("texts.syncExtension.missingUnmatchedGroup") }}
-          </Alert>
-          <HangarGroupsSelect
-            v-model="hangarGroupId"
-            name="hangarGroupId"
-            :multiple="false"
-            :no-label="false"
-            :label="t('labels.syncExtension.targetGroup')"
-            :info="t('labels.syncExtension.targetGroupHint')"
-          />
-          <Alert
-            v-if="hangarStore.syncRunning"
-            :variant="AlertVariantsEnum.WARNING"
-          >
-            {{ t("texts.syncExtension.alreadyRunning") }}
-          </Alert>
+              <div
+                v-if="skippedItems.length"
+                class="hangar-sync__summary-row"
+                data-test="sync-skipped-items"
+              >
+                <div class="hangar-sync__summary-text">
+                  <dt>{{ t("labels.syncExtension.notSyncing") }}</dt>
+                  <dd class="hangar-sync__chips">
+                    <span
+                      v-for="item in skippedItems"
+                      :key="item"
+                      class="hangar-sync__chip"
+                    >
+                      {{ item }}
+                    </span>
+                  </dd>
+                </div>
+                <Btn
+                  :variant="BtnVariantsEnum.BARE"
+                  @click="settingsOpen = true"
+                >
+                  {{ t("actions.syncExtension.change") }}
+                </Btn>
+              </div>
+            </dl>
+            <Alert
+              v-if="missingUnmatchedGroup"
+              :variant="AlertVariantsEnum.WARNING"
+              data-test="sync-missing-unmatched-group"
+            >
+              {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+            </Alert>
+            <HangarGroupsSelect
+              v-model="hangarGroupId"
+              name="hangarGroupId"
+              :multiple="false"
+              :no-label="false"
+              :label="t('labels.syncExtension.targetGroup')"
+              :info="t('labels.syncExtension.targetGroupHint')"
+            />
+            <Alert
+              v-if="hangarStore.syncRunning"
+              :variant="AlertVariantsEnum.WARNING"
+            >
+              {{ t("texts.syncExtension.alreadyRunning") }}
+            </Alert>
+          </template>
         </div>
       </div>
       <div v-else>
@@ -470,17 +544,17 @@ const refreshPage = async () => {
           :finished-with-errors="finishedWithErrors"
           :cancelled="cancelled"
           :show-support-hint="showSupportHint"
-          :sync-paints="hangarStore.syncPaints"
-          :sync-hangar-flair="hangarStore.syncHangarFlair"
-          :sync-equipment="hangarStore.syncEquipment"
-          :sync-ccus="hangarStore.syncCcus"
-          :sync-ship-components="hangarStore.syncShipComponents"
+          :sync-paints="!ccusOnly && hangarStore.syncPaints"
+          :sync-hangar-flair="!ccusOnly && hangarStore.syncHangarFlair"
+          :sync-equipment="!ccusOnly && hangarStore.syncEquipment"
+          :sync-ccus="ccusOnly || hangarStore.syncCcus"
+          :sync-ship-components="!ccusOnly && hangarStore.syncShipComponents"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>
     </transition>
     <template
-      v-if="!finished && hangarStore.extensionReady && !started"
+      v-if="!finished && hangarStore.extensionReady && !started && !ccusOnly"
       #footer-start
     >
       <Btn
@@ -543,7 +617,7 @@ const refreshPage = async () => {
           :disabled="
             identityStatus !== 'connected' ||
             hangarStore.syncRunning ||
-            missingUnmatchedGroup
+            (ccusOnly ? !upgradesReadable : missingUnmatchedGroup)
           "
           @click="start"
         >

@@ -198,6 +198,11 @@ onUnmounted(() => {
     </template>
 
     <template #actions-right>
+      <HangarSyncBtn
+        v-if="kind === 'upgrades'"
+        :size="BtnSizesEnum.SM"
+        ccus-only
+      />
       <HangarSyncBtn :size="BtnSizesEnum.SM" />
     </template>
 

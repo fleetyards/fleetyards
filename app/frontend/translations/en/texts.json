@@ -366,7 +366,9 @@
         "unmatched": "Everything else was synced. Nothing listed below was added to your hangar.",
         "partialFailure": "Some changes may already be in your hangar. Retrying is safe: ships that are already synced are matched again, not added twice.",
         "pointMatch": "Finds the ships from your RSI hangar that are already here, by name and pledge ID.",
-        "pointAdd": "Adds the ones that aren't here yet."
+        "pointAdd": "Adds the ones that aren't here yet.",
+        "pointCcusOnly": "Reads only the upgrades in your RSI hangar and updates your CCUs. Ships and every other item stay as they are.",
+        "ccusNeedUpdate": "Your sync extension can't read the upgrades on their own yet. Update it to sync your CCUs here."
       },
       "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address.",
       "oauthApplications": {

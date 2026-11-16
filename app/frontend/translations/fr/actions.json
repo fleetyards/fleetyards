@@ -169,6 +169,7 @@
       "unlink": "Délier",
       "syncRsiBuybacks": "Synchroniser les rachats RSI",
       "syncRsiHangar": "Synchroniser le hangar RSI",
+      "syncCcus": "Synchroniser les CCU",
       "oauthApplications": {
         "create": "Nouvelle application",
         "regenerateSecret": "Régénérer le secret",

@@ -73,6 +73,7 @@ const upgrade = (
   quantity: 1,
   standalone: true,
   meltable: true,
+  rsiPageUpgradesOnly: false,
   pledgeValue: 85,
   meltValue: 85,
   createdAt: NOW,
