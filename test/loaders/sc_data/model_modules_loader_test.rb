@@ -217,6 +217,236 @@ module ScData
 
         assert_not_nil present.reload.builds.sole, "the module after the missing one still loaded"
       end
+
+      # --- Discovery ------------------------------------------------------------
+
+      private def module_slot(model, name: "hardpoint_module", types: ["Module"], tag: "TEST_Ship_Module", stock: nil)
+        create(:hardpoint, parent: model, source: :game_files, sc_name: name, types:,
+          min_size: 3, max_size: 3, port_tags: [tag], required_tags: [tag], component: stock)
+      end
+
+      private def module_part(sc_key, name: nil, component_type: "Module", tag: "TEST_Ship_Module", size: "3", category: "module")
+        create(:component, sc_key:, name:, component_type:, category:, size:, tags: [tag], required_tags: [tag],
+          version: ::ScData::Source.version)
+      end
+
+      private def discover
+        ::ScData::Loader::ModelModulesLoader.new.discover_modules
+      end
+
+      test "#discover_modules creates a module for each part a ship's module slot takes" do
+        model = create(:model)
+        module_slot(model)
+        module_part("TEST_Ship_Module_CargoPod")
+
+        discover
+
+        created = ModelModule.find_by!(sc_key: "TEST_Ship_Module_CargoPod")
+        assert_equal "Ship Module Cargo Pod", created.name
+        assert_not created.hidden
+        assert_equal [model], created.models.to_a
+        assert_equal "hardpoint_module", created.module_hardpoints.sole.slot
+      end
+
+      test "#discover_modules links the module an admin or the store already keyed rather than another" do
+        model = create(:model)
+        module_slot(model)
+        module_part("TEST_Ship_Module_CargoPod")
+        curated = create(:model_module, sc_key: "test_ship_module_cargopod", name: "Cargo Pod")
+
+        assert_no_difference -> { ModelModule.count } do
+          discover
+          discover
+        end
+
+        assert_equal "Cargo Pod", curated.reload.name
+        assert_equal [model], curated.models.to_a
+      end
+
+      test "#discover_modules gives the store's keyless module of the ship the key rather than a twin" do
+        model = create(:model, name: "Galaxy")
+        module_slot(model)
+        module_part("TEST_Galaxy_Module_Refinery")
+        store = create(:model_module, name: "Refinery Module", sc_key: nil)
+        create(:module_hardpoint, model:, model_module: store)
+
+        discover
+
+        assert_equal "TEST_Galaxy_Module_Refinery", store.reload.sc_key
+        assert_equal [store], model.modules.reload.to_a
+      end
+
+      test "#discover_modules leaves the store's modules alone when several could be the one" do
+        model = create(:model, name: "Galaxy")
+        module_slot(model)
+        module_part("TEST_Galaxy_Module_Refinery")
+        2.times { |i| create(:module_hardpoint, model:, model_module: create(:model_module, name: "Refinery Module #{i}", sc_key: nil)) }
+
+        discover
+
+        assert ModelModule.exists?(sc_key: "TEST_Galaxy_Module_Refinery")
+        assert_equal 2, ModelModule.where(sc_key: nil).count
+      end
+
+      # Components keep their key lowercased, so the name has to come from the
+      # item file's spelling.
+      test "#discover_modules keys and names a module as the item file spells it" do
+        model = create(:model)
+        module_slot(model)
+        module_part("test_ship_module_cargopod")
+        loader = ::ScData::Loader::ModelModulesLoader.new
+        loader.stubs(:load_module_data).returns({"key" => "TEST_Ship_Module_CargoPod"})
+
+        loader.discover_modules
+
+        created = ModelModule.sole
+        assert_equal "TEST_Ship_Module_CargoPod", created.sc_key
+        assert_equal "Ship Module Cargo Pod", created.name
+      end
+
+      test "#discover_modules leaves out a part whose tags the slot does not meet" do
+        model = create(:model)
+        module_slot(model)
+        module_part("OTHER_Ship_Module_Cargo", tag: "OTHER_Ship_Module")
+
+        discover
+
+        assert_not ModelModule.exists?(sc_key: "OTHER_Ship_Module_Cargo")
+      end
+
+      test "#discover_modules leaves out the empty bay, templates and the record a family is cloned from" do
+        model = create(:model)
+        module_slot(model)
+        module_part("TEST_Ship_Module_Base")
+        module_part("TEST_Ship_Module_Template")
+        module_part("TEST_Ship_Module")
+
+        discover
+
+        assert_empty ModelModule.where(sc_key: %w[TEST_Ship_Module_Base TEST_Ship_Module_Template TEST_Ship_Module])
+      end
+
+      test "#discover_modules leaves out a stub whose ports all take nothing" do
+        model = create(:model)
+        module_slot(model)
+        stub = module_part("TEST_Ship_1C_Module")
+        create(:hardpoint, parent: stub, source: :game_files, sc_name: "hardpoint_door_left", min_size: 0, max_size: 0)
+        real = module_part("TEST_Ship_Module_1C_CargoPod")
+        create(:hardpoint, parent: real, source: :game_files, sc_name: "hardpoint_door_left", min_size: 0, max_size: 1)
+
+        discover
+
+        assert_not ModelModule.exists?(sc_key: "TEST_Ship_1C_Module")
+        assert ModelModule.exists?(sc_key: "TEST_Ship_Module_1C_CargoPod")
+      end
+
+      # The Hornet's centre bay takes a ball turret as readily as the cargo box.
+      test "#discover_modules offers every kind of part a mixed module slot takes" do
+        model = create(:model)
+        module_slot(model, name: "hardpoint_weapon_center", types: %w[Turret Module], tag: "TEST_Center")
+        module_part("TEST_Ship_Cargo_Mod", tag: "TEST_Center")
+        module_part("TEST_Ship_Ball_Turret", component_type: "Turret", category: "weapon_mounts", tag: "TEST_Center")
+
+        discover
+
+        assert_equal %w[TEST_Ship_Ball_Turret TEST_Ship_Cargo_Mod], model.modules.pluck(:sc_key).sort
+      end
+
+      test "#discover_modules leaves body kits to their own list" do
+        model = create(:model)
+        module_slot(model, name: "hardpoint_front", tag: "TEST_Ship_Base")
+        module_part("TEST_Ship_Cosmetic_Front_A", name: "Bodykit Front", tag: "TEST_Ship_Base", category: "bodykit")
+
+        discover
+
+        assert_empty ModelModule.all
+      end
+
+      test "#discover_modules offers only modules in a mixed slot that names no tag" do
+        model = create(:model)
+        create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_weapon_center",
+          types: %w[Turret Module], min_size: 3, max_size: 3)
+        create(:component, sc_key: "TEST_Ship_Cargo_Mod", component_type: "Module", category: "module", size: "3",
+          version: ::ScData::Source.version)
+        create(:component, sc_key: "OTHER_Ship_Ball_Turret", component_type: "Turret", category: "weapon_mounts", size: "3",
+          version: ::ScData::Source.version)
+
+        discover
+
+        assert_equal %w[TEST_Ship_Cargo_Mod], model.modules.pluck(:sc_key)
+      end
+
+      # The game fits it there, whatever the tags say.
+      test "#discover_modules offers the part a slot comes with" do
+        model = create(:model)
+        stock = module_part("TEST_Ship_Module_Stock", tag: "TEST_Variant_Module")
+        module_slot(model, stock:)
+
+        discover
+
+        assert_equal %w[TEST_Ship_Module_Stock], model.modules.pluck(:sc_key)
+      end
+
+      test "#discover_modules leaves a slot that takes no module alone" do
+        model = create(:model)
+        module_slot(model, name: "hardpoint_turret", types: ["Turret"], tag: "TEST_Center")
+        module_part("TEST_Ship_Ball_Turret", component_type: "Turret", category: "weapon_mounts", tag: "TEST_Center")
+
+        discover
+
+        assert_empty ModelModule.all
+      end
+
+      # --- Names ----------------------------------------------------------------
+
+      private def load_with(model_module, data)
+        loader = ::ScData::Loader::ModelModulesLoader.new
+        loader.stubs(:load_module_data).returns({"key" => model_module.sc_key}.merge(data))
+        loader.load_model_module(model_module)
+      end
+
+      test "#load_model_module gives the stand-in name way once the game names the module" do
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod",
+          name: ::ScData::Loader::ModelModulesLoader.fallback_name("ARGO_MPUV_Module_1C_CargoPod"))
+
+        load_with(model_module, "name" => "Argo MPUV Cargo Pod")
+
+        assert_equal "Argo MPUV Cargo Pod", model_module.reload.name
+      end
+
+      test "#load_model_module keeps a name an admin chose" do
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", name: "Cargo Pod")
+
+        load_with(model_module, "name" => "Argo MPUV Cargo Pod")
+
+        assert_equal "Cargo Pod", model_module.reload.name
+      end
+
+      test "#load_model_module leaves a module nobody has named out of flight-ready" do
+        loading_live
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", production_status: "in-concept",
+          name: ::ScData::Loader::ModelModulesLoader.fallback_name("ARGO_MPUV_Module_1C_CargoPod"))
+
+        load_with(model_module, "name" => nil)
+
+        assert_equal "in-concept", model_module.reload.production_status
+      end
+
+      # The store or an admin named it, so it is a real module the item file
+      # merely leaves unnamed.
+      test "#load_model_module marks a module named outside the game flight-ready" do
+        loading_live
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", production_status: "in-concept",
+          name: "Cargo Pod")
+
+        load_with(model_module, "name" => nil)
+
+        assert_equal "flight-ready", model_module.reload.production_status
+      end
+
+      test ".fallback_name drops the manufacturer code and splits the words" do
+        assert_equal "MPUV Module 1C Cargo Pod", ::ScData::Loader::ModelModulesLoader.fallback_name("ARGO_MPUV_Module_1C_CargoPod")
+      end
     end
   end
 end

@@ -39,6 +39,7 @@ it:
         items:
           armor: Corazza
           batteries: Batterie
+          bodykit: Body kit
           bombcompartments: Vani bombe
           cargogrid: Griglie di carico
           computers: Computer

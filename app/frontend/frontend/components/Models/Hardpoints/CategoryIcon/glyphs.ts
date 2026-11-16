@@ -439,7 +439,8 @@ const OWN_GLYPHS = {
 } satisfies Partial<Record<HardpointCategoryEnum, Glyph>>;
 
 // Parts drawn as what they belong to: a mount as the weapon it carries, a
-// missile as its rack, a head or module as the kit it works with.
+// missile as its rack, a head or module as the kit it works with, a body kit as
+// the paint, since both only change how the ship looks.
 export const SHARED_GLYPHS = {
   [HardpointCategoryEnum.WEAPON_MOUNTS]: HardpointCategoryEnum.WEAPONS,
   [HardpointCategoryEnum.MISSILES]: HardpointCategoryEnum.MISSILE_RACKS,
@@ -449,6 +450,7 @@ export const SHARED_GLYPHS = {
   [HardpointCategoryEnum.TRACTOR_BEAMS]: HardpointCategoryEnum.UTILITY,
   [HardpointCategoryEnum.SALVAGE_MODULES]: HardpointCategoryEnum.UTILITY,
   [HardpointCategoryEnum.MINING_MODULES]: HardpointCategoryEnum.UTILITY,
+  [HardpointCategoryEnum.BODYKIT]: HardpointCategoryEnum.PAINTS,
 } as const;
 
 export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {

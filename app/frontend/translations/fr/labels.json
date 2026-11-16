@@ -1412,6 +1412,8 @@
         "loaners": "Prêts",
         "paints": "Peintures",
         "modules": "Modules",
+        "bodykits": "Kits de carrosserie",
+        "bodykitStock": "D'usine",
         "modulePackages": "Paquets de module",
         "upgrades": "Kits d'Amélioration",
         "brochure": "Brochure",
@@ -2525,7 +2527,8 @@
           "seat": "Sièges",
           "thrusters": "Propulseurs",
           "bombcompartments": "Soutes à bombes",
-          "paints": "Peintures"
+          "paints": "Peintures",
+          "bodykit": "Kits de carrosserie"
         },
         "name": "Nom",
         "category": "Catégorie",

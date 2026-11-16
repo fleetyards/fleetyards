@@ -329,12 +329,22 @@ module ScData
         return {} unless File.exist?(definition_file)
 
         definition_data = extract_modification_definition(
-          Hash.from_xml(File.read(definition_file)),
+          Hash.from_xml(keep_port_type_attributes(File.read(definition_file))),
           component_params.dig("modification")
         )
 
         collect_item_ports(definition_data.dig("Vehicle", "Parts", "Part"))
       end
+
+      # `Hash.from_xml` reads a `type` attribute as a cast hint rather than as
+      # data, so `<Type type="Module" />` came back as nil and every port type
+      # written without `subtypes` was lost -- the Galaxy's and the MPUV's module
+      # ports among them. Renamed before parsing, it stays an ordinary value.
+      private def keep_port_type_attributes(xml)
+        xml.gsub(/<Type\b([^>]*?)\stype="/) { "<Type#{$1} #{PORT_TYPE_ATTRIBUTE}=\"" }
+      end
+
+      PORT_TYPE_ATTRIBUTE = "portType"
 
       # The same nested part tree `collect_hull_parts` walks, keeping exactly the
       # parts it throws away.
@@ -349,8 +359,8 @@ module ScData
             ports[node["name"]] ||= {
               min_size: item_port["minSize"],
               max_size: item_port["maxSize"],
-              port_tags: normalize_tags(item_port["portTags"]),
-              required_tags: normalize_tags(item_port["requiredTags"]),
+              port_tags: normalize_tags(item_port["portTags"] || item_port["PortTags"]),
+              required_tags: normalize_tags(item_port["requiredTags"] || item_port["RequiredTags"]),
               flags: normalize_tags(item_port["flags"]),
               types: extract_item_port_types(item_port),
               sub_types: extract_item_port_sub_types(item_port)
@@ -372,7 +382,7 @@ module ScData
         return [] unless types.is_a?(Hash)
 
         Array.wrap(types["Type"]).filter_map do |type|
-          type["type"] if type.is_a?(Hash)
+          type[PORT_TYPE_ATTRIBUTE] if type.is_a?(Hash)
         end
       end
 
@@ -382,7 +392,7 @@ module ScData
         return {} unless types.is_a?(Hash)
 
         port_sub_types(Array.wrap(types["Type"]).filter_map do |type|
-          [type["type"], type["subtypes"].to_s.split(",").filter_map { |sub_type| value_or_nil(sub_type.strip) }] if type.is_a?(Hash)
+          [type[PORT_TYPE_ATTRIBUTE], type["subtypes"].to_s.split(",").filter_map { |sub_type| value_or_nil(sub_type.strip) }] if type.is_a?(Hash)
         end)
       end
 

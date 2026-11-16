@@ -18,6 +18,7 @@ import OwnersList from "@/frontend/components/Models/OwnersList/index.vue";
 import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
 import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
 import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
+import BodykitsList from "@/frontend/components/Models/BodykitsList/index.vue";
 import {
   FeatureFlagName,
   useModelModules as useModelModulesQuery,
@@ -723,16 +724,13 @@ const adiMap = computed(() => {
     </div>
   </div>
 
-  <PaintsList :model-slug="model.slug" :model-name="model.name" />
-  <ModulesList
-    :model-slug="model.slug"
-    :model-name="model.name"
-    :modules="modelModules"
-  />
-  <UpgradesList :model-slug="model.slug" :model-name="model.name" />
+  <PaintsList :model-slug="model.slug" />
+  <ModulesList :model-slug="model.slug" :modules="modelModules" />
+  <BodykitsList :model-slug="model.slug" />
+  <UpgradesList :model-slug="model.slug" />
   <CarriedByList :carried-by="model.carriedBy" />
-  <LoanersList :model-slug="model.slug" :model-name="model.name" />
-  <VariantsList :model-slug="model.slug" :model-name="model.name" />
+  <LoanersList :model-slug="model.slug" />
+  <VariantsList :model-slug="model.slug" />
 </template>
 
 <style lang="scss" scoped>

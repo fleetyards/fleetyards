@@ -1412,6 +1412,8 @@
         "loaners": "借用船",
         "paints": "涂装",
         "modules": "模块",
+        "bodykits": "车身套件",
+        "bodykitStock": "出厂标配",
         "modulePackages": "模块包",
         "upgrades": "升级套件",
         "brochure": "手册",
@@ -2525,7 +2527,8 @@
           "seat": "座位",
           "thrusters": "推进器",
           "bombcompartments": "炸弹舱",
-          "paints": "涂装"
+          "paints": "涂装",
+          "bodykit": "车身套件"
         },
         "name": "名称",
         "category": "分类",

@@ -434,9 +434,6 @@
         "pickReplacesUpload": "從圖庫或塗裝中選擇圖片會取代你上傳的圖片。",
         "galleryEmpty": "這艘艦船還沒有圖庫圖片。"
       },
-      "model": {
-        "sectionEmpty": "%{model} 沒有任何%{section}。"
-      },
       "hangarPledgeItems": {
         "addToInventory": "每項按其禮包所含數量加入。",
         "alreadyInInventory": {

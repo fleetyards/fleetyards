@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
 import ModelSection from "@/frontend/components/Models/Section/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -23,7 +22,6 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
 type Props = {
   modelSlug: string;
-  modelName: string;
 };
 
 const props = defineProps<Props>();
@@ -51,13 +49,19 @@ const storeImage = (paint: ModelPaint) => {
 
   return fallbackImageJpg;
 };
+
+// Drawn while its request is out, so a link to the section has somewhere to
+// land; a ship with nothing to show here loses the section once it is back.
+const isEmpty = computed(
+  () =>
+    !paints.value?.length &&
+    (asyncStatus.isSuccess.value || asyncStatus.isError.value),
+);
 </script>
 
 <template>
-  <!-- Always drawn, so the ship page's sections stand in the same place for
-       every ship and a link to one has an anchor to land on before the
-       request is back. -->
   <ModelSection
+    v-if="!isEmpty"
     anchor="paints"
     :model-slug="modelSlug"
     :title="t('labels.model.paints')"
@@ -89,11 +93,6 @@ const storeImage = (paint: ModelPaint) => {
             </Panel>
           </div>
         </transition-group>
-        <SectionEmpty
-          v-else
-          :model-name="modelName"
-          :section="t('labels.model.paints')"
-        />
       </template>
     </AsyncData>
   </ModelSection>
