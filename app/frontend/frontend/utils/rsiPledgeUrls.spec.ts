@@ -53,4 +53,13 @@ describe("rsiHangarUrl", () => {
     );
     expect(rsiHangarUrl()).toBe("https://rsi.test/account/pledges");
   });
+
+  it("links a CCU read from the list of upgrades to that list", () => {
+    expect(rsiHangarUrl({ rsiPage: 2, rsiPageUpgradesOnly: true })).toBe(
+      "https://rsi.test/account/pledges?page=2&product-type=upgrade",
+    );
+    expect(rsiHangarUrl({ rsiPage: 1, rsiPageUpgradesOnly: true })).toBe(
+      "https://rsi.test/account/pledges?product-type=upgrade",
+    );
+  });
 });
