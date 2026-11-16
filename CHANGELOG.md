@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.55.0](https://github.com/fleetyards/fleetyards/compare/v9.54.0...v9.55.0) (2026-11-16)
+
+
+### Features
+
+* **admin:** blend last year's month into the supporter pace projection ([#6334](https://github.com/fleetyards/fleetyards/issues/6334)) ([99d14db](https://github.com/fleetyards/fleetyards/commit/99d14db23db8397df4e12bd71f2782f038e26dd0))
+* **admin:** monthly recurring amount in the supporter stats ([#6333](https://github.com/fleetyards/fleetyards/issues/6333)) ([d726704](https://github.com/fleetyards/fleetyards/commit/d72670490c2021d5c575388198b7b1c97f07c4e4))
+* cargo grids, doors, built-in items and ore pods in the hull holo ([#6335](https://github.com/fleetyards/fleetyards/issues/6335)) ([0ade4a0](https://github.com/fleetyards/fleetyards/commit/0ade4a0754d0eb8da141c0683a70ff943c72abe2))
+* **cargo:** place holds from the hull export alone, modules included ([#6358](https://github.com/fleetyards/fleetyards/issues/6358)) ([4e971ba](https://github.com/fleetyards/fleetyards/commit/4e971baa93535bc334e682b26b751ab9151ca3d6))
+* create ship modules and body kits from the game files ([#6360](https://github.com/fleetyards/fleetyards/issues/6360)) ([dcaa84a](https://github.com/fleetyards/fleetyards/commit/dcaa84a10d20eaa97266129805ddb7916d418bfd))
+* **fleets:** take a Discord channel id by hand when the guild cannot be listed ([4987e6a](https://github.com/fleetyards/fleetyards/commit/4987e6ab9996e919a3ae621b1265c5c1cd9844a7))
+* **hangar-planner:** count ships coming in and going out one by one ([99be70e](https://github.com/fleetyards/fleetyards/commit/99be70ec3c7aeae20d6237a40426779042355b27))
+* **hangar-planner:** put held upgrades into routes without rebuilding them ([#6340](https://github.com/fleetyards/fleetyards/issues/6340)) ([d10fdde](https://github.com/fleetyards/fleetyards/commit/d10fdde0c2f6b33c137fc56dc64f8a7e8d21444e))
+* **hangar-sync:** a quick sync for CCUs only ([#6354](https://github.com/fleetyards/fleetyards/issues/6354)) ([107988f](https://github.com/fleetyards/fleetyards/commit/107988fff716da2286aead7dd58329a0d2afc5ed))
+* **vehicles:** offer the upgrades tab when editing a wishlist ship ([2679552](https://github.com/fleetyards/fleetyards/commit/267955260ee61021641b5a03790d13f4695ce32b))
+* **vehicles:** open a wishlist ship's upgrades from its panel ([70b63f4](https://github.com/fleetyards/fleetyards/commit/70b63f4959867574a17d488c346cbbc7cc9300a0))
+
+
+### Bug Fixes
+
+* **cart:** size the list switcher to match the header button ([5421179](https://github.com/fleetyards/fleetyards/commit/542117988ae45814ff19580f2eabd3cd2352285e))
+* **components:** remove developer test and dummy items ([#6357](https://github.com/fleetyards/fleetyards/issues/6357)) ([0c0f366](https://github.com/fleetyards/fleetyards/commit/0c0f366ba34848be4d5f228c78d395835e76f854))
+* **fleets:** give Discord longer to list a guild and say when it timed out ([d9a862a](https://github.com/fleetyards/fleetyards/commit/d9a862a3093bc3c22225d3d0a1d633d638d3b0d3))
+* **fleets:** say Fleetyards-side Discord problems are not fixed in the server ([262d1a2](https://github.com/fleetyards/fleetyards/commit/262d1a2062e999f059559e930cf1d57c250ada74))
+* **fleets:** say why there is no list to publish when every list is empty ([8fb88ec](https://github.com/fleetyards/fleetyards/commit/8fb88ecfc6b5bfbaf4fca9486c3b729c4c3f6855))
+* **hangar-planner:** drop the 1 × prefix from unrouted slot rows ([66d5213](https://github.com/fleetyards/fleetyards/commit/66d52136525ecd718289deda2be0951fab55164c))
+* **hangar-planner:** list ships that move but keep their count in the plan changes ([f1a5be0](https://github.com/fleetyards/fleetyards/commit/f1a5be0d5f558be7c75771012d80b214aa3cd615))
+* **hangar-planner:** show routeless and undecided slots under comes in ([a0810da](https://github.com/fleetyards/fleetyards/commit/a0810da502da60b0fe61369e1aeb049295ef017b))
+* **holo-viewer:** refit every model when its frame resizes ([#6359](https://github.com/fleetyards/fleetyards/issues/6359)) ([b6517e9](https://github.com/fleetyards/fleetyards/commit/b6517e915dab11e8aab6e8f07edf60df4c6ca35d))
+* **paints:** give existing paints without a picture the store image on sync ([3c56372](https://github.com/fleetyards/fleetyards/commit/3c563720bfd314d3cd77a329d67115df0b5bdca6))
+
+
+### Refactorings
+
+* **hangar-planner:** remove the always-one count from plan gaps ([f84dc24](https://github.com/fleetyards/fleetyards/commit/f84dc2499728eb9ac63240b077277da8f470cd88))
+
+
+### Chores
+
+* **api:** ignore the removed plan gap count in the breaking-change check ([4bcfceb](https://github.com/fleetyards/fleetyards/commit/4bcfceb5e571b0a9c3c353af155851d5f193a7f5))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#6348](https://github.com/fleetyards/fleetyards/issues/6348)) ([ddf120a](https://github.com/fleetyards/fleetyards/commit/ddf120a96f36fa8f47600c03063292be5dda538b))
+* **deps-dev:** bump @vitejs/plugin-vue from 6.0.10 to 6.0.11 ([#6347](https://github.com/fleetyards/fleetyards/issues/6347)) ([560274d](https://github.com/fleetyards/fleetyards/commit/560274de51c33ac0862c23d88a7ed123592afa03))
+* **deps-dev:** bump i18n-tasks from 1.2.0 to 1.2.1 ([#6342](https://github.com/fleetyards/fleetyards/issues/6342)) ([165fd66](https://github.com/fleetyards/fleetyards/commit/165fd662ae4167b0f3e824ec794e4409665bda68))
+* **deps-dev:** bump knip from 6.44.2 to 6.45.1 ([#6345](https://github.com/fleetyards/fleetyards/issues/6345)) ([b67a912](https://github.com/fleetyards/fleetyards/commit/b67a912480e70562f6ca18a770692cebc71e1136))
+* **deps-dev:** bump msw from 3.0.4 to 3.0.5 ([#6344](https://github.com/fleetyards/fleetyards/issues/6344)) ([b697e43](https://github.com/fleetyards/fleetyards/commit/b697e436b478296d045ff2d9b52e35e1ae10e664))
+* **deps-dev:** bump prettier from 3.9.10 to 3.10.1 ([#6346](https://github.com/fleetyards/fleetyards/issues/6346)) ([9cbc6fa](https://github.com/fleetyards/fleetyards/commit/9cbc6fa9e2d609dda09c18267bdd8b8ed5df8851))
+* **deps-dev:** bump sass from 1.108.1 to 1.108.2 ([#6351](https://github.com/fleetyards/fleetyards/issues/6351)) ([54641b4](https://github.com/fleetyards/fleetyards/commit/54641b42decaf74c1ea6d3c4001f871832545526))
+* **deps-dev:** bump stylelint-scss from 7.4.0 to 7.5.0 ([#6349](https://github.com/fleetyards/fleetyards/issues/6349)) ([a09b279](https://github.com/fleetyards/fleetyards/commit/a09b279b26af0989060173bf846a69e62190cef6))
+* **deps-dev:** bump vite from 8.3.7 to 8.3.8 ([#6352](https://github.com/fleetyards/fleetyards/issues/6352)) ([3750d38](https://github.com/fleetyards/fleetyards/commit/3750d3853fa343cb8c42dac2b02746463bcb643a))
+* **deps:** bump aws-sdk-s3 from 1.240.0 to 1.242.0 ([#6341](https://github.com/fleetyards/fleetyards/issues/6341)) ([2e4ad34](https://github.com/fleetyards/fleetyards/commit/2e4ad3468ee7e27f68c48f1b9dfab3b443efc281))
+* **deps:** bump papaparse from 5.7.0 to 5.7.1 ([#6350](https://github.com/fleetyards/fleetyards/issues/6350)) ([3e95ab0](https://github.com/fleetyards/fleetyards/commit/3e95ab0cd1ec4bc9c4a052340fcfdaf6cb3249f5))
+* **deps:** bump the tiptap group with 8 updates ([#6343](https://github.com/fleetyards/fleetyards/issues/6343)) ([b18f0d1](https://github.com/fleetyards/fleetyards/commit/b18f0d103187cabe9d6dd60d8c5051a211a37abb))
+
 ## [9.54.0](https://github.com/fleetyards/fleetyards/compare/v9.53.1...v9.54.0) (2026-11-15)
 
 
