@@ -1586,7 +1586,43 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             :doors-open="doorsOpen"
             @servicing-areas="servicingAreas = $event"
             @overlays="overlays = $event"
-          />
+          >
+            <template #actions>
+              <Btn
+                v-if="servicingAreas.length"
+                :aria-label="servicingAreasToggleLabel"
+                v-tooltip="servicingAreasToggleLabel"
+                :aria-pressed="servicingAreasShown"
+                :active="servicingAreasShown"
+                data-test="vehicle-loadout-servicing-areas-toggle"
+                @click="servicingAreasShown = !servicingAreasShown"
+              >
+                <i class="fa-light fa-screwdriver-wrench" />
+              </Btn>
+              <Btn
+                v-if="overlays.cargoGrids"
+                :aria-label="cargoGridsToggleLabel"
+                v-tooltip="cargoGridsToggleLabel"
+                :aria-pressed="cargoGridsShown"
+                :active="cargoGridsShown"
+                data-test="vehicle-loadout-cargo-grids-toggle"
+                @click="cargoGridsShown = !cargoGridsShown"
+              >
+                <i class="fa-light fa-boxes-stacked" />
+              </Btn>
+              <Btn
+                v-if="overlays.doors"
+                :aria-label="doorsToggleLabel"
+                v-tooltip="doorsToggleLabel"
+                :aria-pressed="doorsOpen"
+                :active="doorsOpen"
+                data-test="vehicle-loadout-doors-toggle"
+                @click="doorsOpen = !doorsOpen"
+              >
+                <i class="fa-light fa-arrows-left-right" />
+              </Btn>
+            </template>
+          </LoadoutPreview>
         </div>
       </div>
 
@@ -1601,42 +1637,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             <span v-html="vehicle.model.manufacturer?.name" />
             <strong>{{ vehicle.model.name }}</strong>
           </p>
-          <Btn
-            v-if="previewShown && servicingAreas.length"
-            variant="bare"
-            :aria-label="servicingAreasToggleLabel"
-            v-tooltip="servicingAreasToggleLabel"
-            :aria-pressed="servicingAreasShown"
-            :active="servicingAreasShown"
-            data-test="vehicle-loadout-servicing-areas-toggle"
-            @click="servicingAreasShown = !servicingAreasShown"
-          >
-            <i class="fa-solid fa-screwdriver-wrench" />
-          </Btn>
-          <Btn
-            v-if="previewShown && overlays.cargoGrids"
-            variant="bare"
-            :aria-label="cargoGridsToggleLabel"
-            v-tooltip="cargoGridsToggleLabel"
-            :aria-pressed="cargoGridsShown"
-            :active="cargoGridsShown"
-            data-test="vehicle-loadout-cargo-grids-toggle"
-            @click="cargoGridsShown = !cargoGridsShown"
-          >
-            <i class="fa-solid fa-boxes-stacked" />
-          </Btn>
-          <Btn
-            v-if="previewShown && overlays.doors"
-            variant="bare"
-            :aria-label="doorsToggleLabel"
-            v-tooltip="doorsToggleLabel"
-            :aria-pressed="doorsOpen"
-            :active="doorsOpen"
-            data-test="vehicle-loadout-doors-toggle"
-            @click="doorsOpen = !doorsOpen"
-          >
-            <i class="fa-solid fa-arrows-left-right" />
-          </Btn>
           <Btn
             variant="bare"
             :aria-label="figuresToggleLabel"

@@ -133,6 +133,37 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     activateVehicleLoadout(...args),
 }));
 
+// The real preview draws nothing without a hull to load, and with it the
+// toggles it carries in its viewer's bar.
+vi.mock("@/frontend/components/Loadout/Preview/index.vue", () => ({
+  default: {
+    name: "LoadoutPreview",
+    props: [
+      "modelSlug",
+      "slots",
+      "variant",
+      "interactive",
+      "zoomable",
+      "pickable",
+      "insets",
+      "servicingAreas",
+      "highlightedArea",
+      "cargoGrids",
+      "doorsOpen",
+      "testId",
+    ],
+    emits: [
+      "available",
+      "absent",
+      "select",
+      "point",
+      "servicingAreas",
+      "overlays",
+    ],
+    template: '<div :data-test="testId"><slot name="actions" /></div>',
+  },
+}));
+
 vi.mock("@/frontend/composables/useMaterialStock", () => ({
   useMaterialStock: () => ({
     forCommodity: () => ({ own: [], fleet: [] }),

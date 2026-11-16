@@ -266,7 +266,11 @@ onBeforeUnmount(() => {
       @mount-select="emit('select', $event)"
       @mount-point="emit('point', $event)"
       @door-select="doorAnimationEnabled && toggleDoor($event)"
-    />
+    >
+      <template #actions>
+        <slot name="actions" />
+      </template>
+    </HoloViewer>
     <HoloViewer
       v-else-if="variant === 'stage'"
       ref="viewer"
