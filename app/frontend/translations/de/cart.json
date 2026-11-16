@@ -114,6 +114,8 @@
         "editTitle": "Einkaufsliste bearbeiten",
         "source": "Deine Liste",
         "sourceHint": "Ihre Artikel und Mengen werden in die Flotte kopiert, gewählte Shops nicht.",
+        "noSource": "Noch keine deiner Listen enthält Artikel. Füge einer Liste welche hinzu und veröffentliche sie dann hier.",
+        "toLists": "Zu deinen Listen",
         "replaceFrom": "Artikel ersetzen durch",
         "replaceHint": "Leer lassen, um die Artikel unverändert zu lassen.",
         "description": "Beschreibung",

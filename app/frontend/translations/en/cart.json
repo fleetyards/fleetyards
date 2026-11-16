@@ -114,6 +114,8 @@
         "editTitle": "Edit shopping list",
         "source": "Your list",
         "sourceHint": "Its items and quantities are copied to the fleet. Picked shops are not.",
+        "noSource": "None of your lists has any items yet. Add some to one, then publish it here.",
+        "toLists": "Open your lists",
         "replaceFrom": "Replace items with",
         "replaceHint": "Leave empty to keep the items as they are.",
         "description": "Description",

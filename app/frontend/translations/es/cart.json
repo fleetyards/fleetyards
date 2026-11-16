@@ -114,6 +114,8 @@
         "editTitle": "Editar lista de compras",
         "source": "Tu lista",
         "sourceHint": "Se copian a la flota sus artículos y cantidades, pero no las tiendas elegidas.",
+        "noSource": "Ninguna de tus listas tiene artículos todavía. Añade algunos a una y publícala aquí.",
+        "toLists": "Abrir tus listas",
         "replaceFrom": "Reemplazar artículos con",
         "replaceHint": "Déjalo vacío para mantener los artículos como están.",
         "description": "Descripción",

@@ -80,6 +80,12 @@ const cartOptions = computed<FilterOption[]>(() =>
     })),
 );
 
+// Empty lists cannot be published, so with nothing else the select would open
+// on no options at all.
+const noSource = computed(
+  () => !!carts.value && cartOptions.value.length === 0,
+);
+
 // A new list takes the name of the one it is published from, and follows a
 // change of source, until somebody types a name of their own.
 const sourceName = (id: string | null) =>
@@ -175,7 +181,18 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="fleet-shopping-list-form" @submit.prevent="onSubmit">
+      <p
+        v-if="noSource"
+        class="fleet-shopping-list-no-source"
+        data-test="fleet-shopping-list-no-source"
+      >
+        {{ t("cart.fleetLists.noSource") }}
+        <RouterLink :to="{ name: 'cart' }">
+          {{ t("cart.fleetLists.toLists") }}
+        </RouterLink>
+      </p>
       <BaseSelect
+        v-else
         v-model="cartId"
         v-bind="cartIdProps"
         name="cartId"
@@ -238,3 +255,9 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.fleet-shopping-list-no-source {
+  color: var(--color-text-dim);
+}
+</style>

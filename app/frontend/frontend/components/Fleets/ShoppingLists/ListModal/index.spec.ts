@@ -11,6 +11,7 @@ import type { VueWrapper } from "@vue/test-utils";
 import { flushPromises } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { max, required } from "@vee-validate/rules";
+import { createMemoryHistory, createRouter } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type CartList, type Fleet } from "@/services/fyApi";
 
@@ -65,9 +66,15 @@ afterEach(() => {
   wrapper = undefined;
 });
 
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [{ path: "/cart", name: "cart", component: { render: () => null } }],
+});
+
 const mount = async (props: Record<string, unknown> = {}) => {
   wrapper = await mountWithDefaults(Component, {
     props: { fleet, ...props } as never,
+    plugins: [router],
   });
 
   return wrapper;
@@ -101,6 +108,20 @@ describe("FleetShoppingListModal", () => {
         (option) => option.value,
       ),
     ).toEqual(["a", "b"]);
+  });
+
+  it("says why there is nothing to publish when every list is empty", async () => {
+    lists.value = [
+      { id: "c", name: "Empty", active: false, itemsCount: 0 } as CartList,
+    ];
+
+    const subject = await mount();
+
+    expect(
+      subject.find("[data-test='fleet-shopping-list-no-source']").exists(),
+    ).toBe(true);
+    expect(source(subject)).toBeUndefined();
+    expect(submit(subject).attributes("disabled")).toBeDefined();
   });
 
   it("cannot publish until one of the user's lists is picked", async () => {

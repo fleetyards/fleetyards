@@ -114,6 +114,8 @@
         "editTitle": "Modifier la liste d'achats",
         "source": "Ta liste",
         "sourceHint": "Ses articles et quantités sont copiés dans la flotte, pas les boutiques choisies.",
+        "noSource": "Aucune de tes listes ne contient encore d'articles. Ajoutes-en à l'une d'elles, puis publie-la ici.",
+        "toLists": "Ouvrir tes listes",
         "replaceFrom": "Remplacer les articles par",
         "replaceHint": "Laisse vide pour garder les articles tels quels.",
         "description": "Description",

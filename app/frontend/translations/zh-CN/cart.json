@@ -114,6 +114,8 @@
         "editTitle": "编辑购物清单",
         "source": "你的清单",
         "sourceHint": "会将其物品和数量复制到舰队，但不包括所选商店。",
+        "noSource": "你的清单中还没有任何物品。先向其中一个清单添加物品，再在这里发布。",
+        "toLists": "打开你的清单",
         "replaceFrom": "将物品替换为",
         "replaceHint": "留空则保持物品不变。",
         "description": "描述",

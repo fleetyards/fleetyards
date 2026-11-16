@@ -114,6 +114,8 @@
         "editTitle": "Modifica lista della spesa",
         "source": "La tua lista",
         "sourceHint": "Vengono copiati nella flotta articoli e quantità, non i negozi scelti.",
+        "noSource": "Nessuna delle tue liste contiene ancora articoli. Aggiungine a una, poi pubblicala qui.",
+        "toLists": "Apri le tue liste",
         "replaceFrom": "Sostituisci gli articoli con",
         "replaceHint": "Lascia vuoto per mantenere gli articoli come sono.",
         "description": "Descrizione",
