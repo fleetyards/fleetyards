@@ -40836,14 +40836,11 @@ components:
           type: string
         model:
           "$ref": "#/components/schemas/HangarPlanModel"
-        count:
-          type: integer
       additionalProperties: false
       required:
       - slotId
       - label
       - model
-      - count
       title: HangarPlanGap
     HangarPlanIssue:
       type: object

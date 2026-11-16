@@ -134,10 +134,7 @@ const tallies = computed(() =>
     {
       key: "toAcquire",
       variant: PillVariantsEnum.WARNING,
-      value: (comparison.value?.gaps ?? []).reduce(
-        (sum, gap) => sum + gap.count,
-        0,
-      ),
+      value: comparison.value?.gaps.length ?? 0,
     },
   ]
     .map((tally) => ({ variant: PillVariantsEnum.NEUTRAL, ...tally }))

@@ -12,7 +12,7 @@ module HangarPlans
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
     ModelDiff = Data.define(:model, :left_count, :right_count, :change)
-    Gap = Data.define(:slot, :model, :count)
+    Gap = Data.define(:slot, :model)
     # One ship of the hangar once the plan is carried out: a unit of a decided
     # slot, with the hangar ship that becomes it if one does, or a hangar ship
     # the plan leaves as it is.
@@ -78,7 +78,7 @@ module HangarPlans
         candidate = slot.decided_candidate
         next if candidate.nil?
 
-        Gap.new(slot:, model: candidate.model, count: 1) if candidate.acquisitions.empty?
+        Gap.new(slot:, model: candidate.model) if candidate.acquisitions.empty?
       end
     end
 
@@ -94,7 +94,7 @@ module HangarPlans
     # so first.
     def fleet
       @fleet ||= begin
-        open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
+        open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += 1 }
         leaving, settled = vehicles
           .reject { |entry| entry.status == "melted" || decided_routes.key?(entry.vehicle.id) }
           .partition { |entry| LEAVING_STATUSES.include?(entry.status) }

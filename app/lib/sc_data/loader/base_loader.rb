@@ -3,6 +3,13 @@ module ScData
     class BaseLoader
       DEFAULT_BASE_FOLDER = Rails.root.join("data/sc_data").freeze
 
+      # Developer stand-ins CIG leaves in the export: `mine_test` or
+      # `behr_lasercannon_s7_idris_m_dummy` borrow a real item's name, so
+      # loaded they read as a duplicate of it. Matched on whole key parts. A
+      # slot defaulting to one is left empty, or a row kept for a player's
+      # inventory would be fitted again on every load.
+      TEST_ITEM_PARTS = %w[test dummy].freeze
+
       attr_accessor :sc_version, :sc_environment, :base_folder
 
       # Returns what each loader did, so the job that ran it can keep the counts
@@ -468,11 +475,17 @@ module ScData
       # and `version` says which build it was last seen in rather than which row
       # to use. A key that fails to resolve does not fall through to the ref.
       private def resolve_component(item)
+        return if test_item_key?(item["key"])
+
         if item["key"].present?
           Component.find_by(sc_key: item["key"]&.downcase)
         elsif item["ref"].present?
           Component.find_by(sc_ref: item["ref"])
         end
+      end
+
+      private def test_item_key?(key)
+        key.to_s.downcase.split("_").intersect?(TEST_ITEM_PARTS)
       end
 
       # Matched on the raw name, case-sensitively, while the row is keyed on the
