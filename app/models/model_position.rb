@@ -209,7 +209,9 @@ class ModelPosition < ApplicationRecord
   # dual-written and agree for any slot still in the build. They have to become
   # joins to the build when the columns go.
   def self.collect_seat_hardpoints(model)
-    model.hardpoints.in_build.includes(:component).where(group: :seat).select do |hp|
+    # Ordered, or a page's seats -- and the positions numbered from them --
+    # come back in whatever order the database reads them.
+    model.hardpoints.in_build.includes(:component).where(group: :seat).order(:created_at, :id).select do |hp|
       hp.sc_name.present? && !hp.sc_name.include?("_access")
     end
   end
