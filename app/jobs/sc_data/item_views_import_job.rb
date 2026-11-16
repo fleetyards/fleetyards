@@ -19,6 +19,8 @@ module ScData
 
     ITEM_CLASSES = %w[Component Equipment].freeze
     FIELDS = (ItemViews::ATTACHMENT_NAMES.map(&:to_s) + %w[attach_points]).to_set.freeze
+    # A module's hull and its export, which only a component has.
+    HULL_FIELDS = %w[holo_hull hardpoint_transforms holo_doors].to_set.freeze
     ATTACH_POINTS_NAME = "attach_points.json"
 
     def perform(record_type = nil, record_id = nil)
@@ -58,6 +60,7 @@ module ScData
 
         next if record_id.nil? && record.item_views_digest == entry["files"]
 
+        @hull = record.is_a?(Component)
         fields = import(store, record, path, entry["files"])
         attached[record.sc_key] = fields if fields.any?
       rescue => e
@@ -96,6 +99,9 @@ module ScData
     private def field_for(name)
       return "attach_points" if name == ATTACH_POINTS_NAME
 
+      hull_field = HullExport.field_for(name.split("/").last.to_s) || ShipViewFields.field_for(name)
+      return (hull_field if @hull) if HULL_FIELDS.include?(hull_field)
+
       if (rigged = RIGGED_NAME.match(name))
         field = "holo_rigged_#{rigged[1]}"
 
@@ -114,7 +120,9 @@ module ScData
     # The helpers an item is hung by -- where a weapon meets its back mount or
     # holster, a backpack its core -- in its holo's frame:
     # {"helpers" => {"<name>" => {"position" => [x, y, z], "rotation" => [x, y, z, w]}}}.
-    private def render_data(_field, file)
+    private def render_data(field, file)
+      return HullExport.read(field, file) if HULL_FIELDS.include?(field)
+
       data = JSON.parse(file.read)
       helpers = data["helpers"] if data.is_a?(Hash)
 

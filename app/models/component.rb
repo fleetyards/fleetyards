@@ -325,6 +325,27 @@ class Component < ApplicationRecord
   has_one_attached :store_image
   ransack_attachment :store_image
 
+  # A module's hull: its holo with the parts on its own ports left out, and
+  # where those ports and its cargo grids and doors are, as for a ship.
+  has_one_attached :holo_hull
+  has_one :hardpoint_transforms_record, class_name: "ComponentHardpointTransforms", dependent: :delete, autosave: true
+
+  def hardpoint_transforms
+    hardpoint_transforms_record&.data
+  end
+
+  def hardpoint_transforms=(data)
+    (hardpoint_transforms_record || build_hardpoint_transforms_record).data = data
+  end
+
+  def holo_doors
+    hardpoint_transforms_record&.doors
+  end
+
+  def holo_doors=(doors)
+    (hardpoint_transforms_record || build_hardpoint_transforms_record).doors = doors
+  end
+
   # jsonb, not a YAML string: every metric a component has lives in here,
   # and as text none of it could be filtered, sorted or indexed on. The
   # type keeps indifferent access, which the readers already assume.
