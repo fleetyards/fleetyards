@@ -841,6 +841,7 @@
             "bot_not_in_guild": "El bot no está en este servidor. Usa el enlace de instalación para añadirlo.",
             "guild_not_found": "Discord no reconoce este ID de servidor. Revisa el valor.",
             "discord_error": "Discord devolvió un error inesperado.",
+            "timeout": "Discord tardó demasiado en responder. Inténtalo de nuevo en un momento.",
             "request_failed": "No se pudo contactar con Fleetyards. Inténtalo de nuevo."
           }
         },

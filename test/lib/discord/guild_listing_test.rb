@@ -11,12 +11,12 @@ module Discord
       @api = mock("Discord::ApiClient")
     end
 
-    test "a guild Discord does not answer for in time reads as a Discord error" do
+    test "a guild Discord does not answer for in time reads as a timeout" do
       @api.stubs(:get_guild_roles).raises(Faraday::TimeoutError)
 
       result = GuildRoles.new(GUILD, api: @api).fetch
 
-      assert_equal :discord_error, result.code
+      assert_equal :timeout, result.code
       assert_empty result.items
     end
 

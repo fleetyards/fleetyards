@@ -33453,6 +33453,7 @@ components:
       - bot_not_in_guild
       - guild_not_found
       - discord_error
+      - timeout
       x-extensible-enum:
       - ok
       - missing_token
@@ -33461,6 +33462,7 @@ components:
       - bot_not_in_guild
       - guild_not_found
       - discord_error
+      - timeout
       x-enumNames:
       - OK
       - MISSING_TOKEN
@@ -33469,6 +33471,7 @@ components:
       - BOT_NOT_IN_GUILD
       - GUILD_NOT_FOUND
       - DISCORD_ERROR
+      - TIMEOUT
       title: FleetDiscordConnectionCodeEnum
     FleetDiscordRole:
       type: object

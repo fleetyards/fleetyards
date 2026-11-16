@@ -6,7 +6,7 @@ module V1
       class FleetDiscordConnectionCodeEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = %w[ok missing_token missing_guild invalid_token bot_not_in_guild guild_not_found discord_error].freeze
+        VALUES = %w[ok missing_token missing_guild invalid_token bot_not_in_guild guild_not_found discord_error timeout].freeze
 
         schema({
           type: :string,

@@ -841,6 +841,7 @@
             "bot_not_in_guild": "机器人不在该服务器中。请使用安装链接将其添加进去。",
             "guild_not_found": "Discord 无法识别此服务器 ID。请仔细核对该值。",
             "discord_error": "Discord 返回了意外的错误。",
+            "timeout": "Discord 响应超时。请稍后重试。",
             "request_failed": "无法连接到 Fleetyards。请重试。"
           }
         },
