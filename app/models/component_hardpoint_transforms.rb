@@ -7,12 +7,12 @@ class ComponentHardpointTransforms < ApplicationRecord
 
   # The modules this part is have their cargo holds placed from the export,
   # inside fragments keyed on the module.
-  after_save :touch_model_modules
+  after_save :touch_model_modules, if: :saved_change_to_data?
 
   private def touch_model_modules
     key = component&.sc_key
     return if key.blank?
 
-    ModelModule.where("LOWER(sc_key) = ?", key.downcase).find_each(&:touch)
+    ModelModule.where("LOWER(sc_key) = ?", key.downcase).update_all(updated_at: Time.current)
   end
 end
