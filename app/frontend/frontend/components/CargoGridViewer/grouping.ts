@@ -105,10 +105,19 @@ export function groupCargoHolds(holds: CargoHold[]): CargoHoldGroup[] {
   const frames = new Map<string, number[]>();
   const loose: number[] = [];
 
+  // The same module fitted twice repeats its holds: each copy is a frame of
+  // its own, told apart by how often a hold's name has come up in it.
+  const seen = new Map<string, number>();
+
   holds.forEach((hold, index) => {
     if (hold.placedIn && hold.offset) {
-      if (!frames.has(hold.placedIn)) frames.set(hold.placedIn, []);
-      frames.get(hold.placedIn)!.push(index);
+      const name = `${hold.placedIn}:${hold.name ?? index}`;
+      const copy = seen.get(name) ?? 0;
+      seen.set(name, copy + 1);
+
+      const frame = `${hold.placedIn}#${copy}`;
+      if (!frames.has(frame)) frames.set(frame, []);
+      frames.get(frame)!.push(index);
     } else {
       loose.push(index);
     }

@@ -76,4 +76,23 @@ describe("groupCargoHolds", () => {
       [[3], false],
     ]);
   });
+
+  it("keeps a module fitted twice in two frames", () => {
+    const module = (name: string) =>
+      hold(name, {
+        offset: { x: 0, y: 0, z: 0 },
+        placedIn: "model_module/cargo-module",
+      });
+    const holds = [
+      module("hardpoint_cargo_grid_left"),
+      module("hardpoint_cargo_grid_right"),
+      module("hardpoint_cargo_grid_left"),
+      module("hardpoint_cargo_grid_right"),
+    ];
+
+    expect(groupCargoHolds(holds).map((group) => group.holdIndices)).toEqual([
+      [0, 1],
+      [2, 3],
+    ]);
+  });
 });
