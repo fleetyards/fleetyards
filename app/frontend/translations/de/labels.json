@@ -1412,6 +1412,8 @@
         "loaners": "Leihschiffe",
         "paints": "Lackierungen",
         "modules": "Module",
+        "bodykits": "Bodykits",
+        "bodykitStock": "Ab Werk",
         "modulePackages": "Modulpakete",
         "upgrades": "Upgrade-Kits",
         "brochure": "Broschüre",

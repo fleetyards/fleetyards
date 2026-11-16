@@ -1412,6 +1412,8 @@
         "loaners": "Prêts",
         "paints": "Peintures",
         "modules": "Modules",
+        "bodykits": "Kits de carrosserie",
+        "bodykitStock": "D'usine",
         "modulePackages": "Paquets de module",
         "upgrades": "Kits d'Amélioration",
         "brochure": "Brochure",

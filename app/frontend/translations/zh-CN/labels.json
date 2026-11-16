@@ -1412,6 +1412,8 @@
         "loaners": "借用船",
         "paints": "涂装",
         "modules": "模块",
+        "bodykits": "车身套件",
+        "bodykitStock": "出厂标配",
         "modulePackages": "模块包",
         "upgrades": "升级套件",
         "brochure": "手册",

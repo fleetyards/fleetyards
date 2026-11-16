@@ -1412,6 +1412,8 @@
         "loaners": "Loaners",
         "paints": "Paints",
         "modules": "Modules",
+        "bodykits": "Body Kits",
+        "bodykitStock": "Factory fitted",
         "modulePackages": "Module Packages",
         "upgrades": "Upgrade-Kits",
         "brochure": "Brochure",
