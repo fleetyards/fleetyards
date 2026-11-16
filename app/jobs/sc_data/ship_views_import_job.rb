@@ -191,6 +191,8 @@ module ScData
         (door["position"].nil? || numbers?(door["position"], 3)) &&
         door["duration_s"].is_a?(Numeric) &&
         (door["obb_closed"].nil? || valid_bounds?(door["obb_closed"])) &&
+        (door["outline"].nil? || valid_bounds?(door["outline"])) &&
+        (door["outlineNodes"].nil? || (door["outlineNodes"].is_a?(Array) && door["outlineNodes"].all?(String))) &&
         door["parts"].is_a?(Array) &&
         door["parts"].all? { |part| valid_door_part?(part) }
     end

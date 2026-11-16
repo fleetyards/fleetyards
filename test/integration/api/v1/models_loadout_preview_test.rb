@@ -131,6 +131,8 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       holo_doors: {"doors" => [
         {"id" => "hardpoint_door_rear", "kind" => "hatch", "position" => [0, -0.4, 10.6], "duration_s" => 3.0,
          "obb_closed" => {"center" => [0, -0.8, 10.7], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]], "half_size" => [1.9, 1.5, 1.0]},
+         "outline" => {"center" => [0, -0.6, 10.7], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]], "half_size" => [1.9, 1.0, 0.4]},
+         "outlineNodes" => ["door_hardpoint_door_rear_0"], "exterior" => true,
          "datacore" => {"record" => "Door_Ship_Ext"},
          "parts" => [{"object" => "RearDoor", "motion" => {"type" => "slide", "open_matrix" => Array.new(16, 0), "keyframes" => [
            {"t" => 0.0, "translation" => [0, 0, 0], "rotation" => [0, 0, 0, 1]},
@@ -159,6 +161,9 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_equal "hatch", door["kind"]
       assert_equal 3.0, door["durationS"]
       assert_equal [1.9, 1.5, 1.0], door.dig("bounds", "halfSize")
+      assert_equal [1.9, 1.0, 0.4], door.dig("outline", "halfSize")
+      assert_equal ["door_hardpoint_door_rear_0"], door["outlineNodes"]
+      assert door["exterior"]
       assert_equal [{"part" => 0, "object" => "RearDoor", "keyframes" => [
         {"t" => 0.0, "translation" => [0, 0, 0], "rotation" => [0, 0, 0, 1]},
         {"t" => 1.0, "translation" => [0, -2.0, 0], "rotation" => [0, 0, 0, 1]}

@@ -46637,6 +46637,21 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/ModelLoadoutPreviewDoorBounds"
           - type: 'null'
+          description: Around every moving part of the closed door, hidden ones included
+        outline:
+          anyOf:
+          - "$ref": "#/components/schemas/ModelLoadoutPreviewDoorBounds"
+          - type: 'null'
+          description: 'Around only what of the closed door shows from outside: what
+            to point at'
+        outlineNodes:
+          type: array
+          items:
+            type: string
+          description: The hull holo's nodes that make up the visible door
+        exterior:
+          type: boolean
+          description: An entrance from outside the ship, door port or not
         parts:
           type: array
           items:
@@ -46648,6 +46663,9 @@ components:
       - position
       - durationS
       - bounds
+      - outline
+      - outlineNodes
+      - exterior
       - parts
       title: ModelLoadoutPreviewDoor
     ModelLoadoutPreviewDoorBounds:

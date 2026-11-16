@@ -380,7 +380,9 @@ module ScData
         door.merge("parts" => [5]),
         door.merge("parts" => [{"object" => "RearDoor", "motion" => "slide"}]),
         door.merge("obb_closed" => {"center" => [0, 0, 0], "axes" => [[1, 0, 0], [0, 1, 0]], "half_size" => [1, 1, 1]}),
-        door.merge("obb_closed" => {"center" => [0, 0, 0], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]]})
+        door.merge("obb_closed" => {"center" => [0, 0, 0], "axes" => [[1, 0, 0], [0, 1, 0], [0, 0, 1]]}),
+        door.merge("outline" => {"center" => [0, 0, 0], "half_size" => [1, 1, 1]}),
+        door.merge("outlineNodes" => ["door_rear_0", 3])
       ]
 
       malformed.each_with_index do |bad, index|
