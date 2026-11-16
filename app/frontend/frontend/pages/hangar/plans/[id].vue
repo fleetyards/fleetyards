@@ -35,6 +35,7 @@ import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue"
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
+import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import UpgradeFits from "@/frontend/components/Hangar/Planner/UpgradeFits/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
@@ -378,6 +379,7 @@ const onDestroy = async () => {
         <i class="fa-light fa-lightbulb" />
         {{ t("hangarPlanner.suggestions.title") }}
       </Btn>
+      <HangarSyncBtn ccus-only />
       <BtnDropdown data-test="hangar-plan-more">
         <Btn :variant="BtnVariantsEnum.BARE" @click="editPlan">
           <i class="fa-light fa-pen" />
