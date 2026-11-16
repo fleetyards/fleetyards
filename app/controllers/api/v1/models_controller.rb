@@ -313,9 +313,11 @@ module Api
         @module_packages = model.module_packages
           .visible
           .active
+          .includes(:model_modules)
           .order(name: :asc)
           .page(page_params)
           .per(per_page(ModelModule))
+        ModelModule.preload_cargo_grid_exports(@module_packages.flat_map(&:model_modules))
       end
 
       def upgrades

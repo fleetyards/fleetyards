@@ -182,8 +182,8 @@ class ModelModule < ApplicationRecord
     return {} if keys.empty?
 
     exports = ComponentHardpointTransforms.joins(:component)
-      .where(components: {sc_key: keys})
-      .select(:id, :updated_at, "components.sc_key AS component_sc_key",
+      .where("LOWER(components.sc_key) IN (?)", keys)
+      .select(:id, Arel.sql("LOWER(components.sc_key) AS component_sc_key"),
         Arel.sql("component_hardpoint_transforms.data -> 'cargo_grids' AS cargo_grids"))
       .index_by(&:component_sc_key)
 
