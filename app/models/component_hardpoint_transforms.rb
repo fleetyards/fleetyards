@@ -6,13 +6,19 @@ class ComponentHardpointTransforms < ApplicationRecord
   belongs_to :component
 
   # The modules this part is have their cargo holds placed from the export,
-  # inside fragments keyed on the module.
+  # inside fragments keyed on the module and on the packages holding it.
   after_save :touch_model_modules, if: :saved_change_to_data?
 
   private def touch_model_modules
     key = component&.sc_key
     return if key.blank?
 
-    ModelModule.where("LOWER(sc_key) = ?", key.downcase).update_all(updated_at: Time.current)
+    model_modules = ModelModule.where("LOWER(sc_key) = ?", key.downcase)
+    now = Time.current
+
+    model_modules.update_all(updated_at: now)
+    # A package renders its modules' holds inside its own fragment.
+    ModelModulePackage.where(id: ModelModulePackageItem.where(model_module_id: model_modules.select(:id)).select(:model_module_package_id))
+      .update_all(updated_at: now)
   end
 end

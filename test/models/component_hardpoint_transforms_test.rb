@@ -27,4 +27,18 @@ class ComponentHardpointTransformsTest < ActiveSupport::TestCase
 
     assert_equal before, model_module.reload.updated_at
   end
+
+  test "touches the packages holding the module, which render its holds" do
+    model_module = create(:model_module, sc_key: "RSI_Galaxy_Module_Cargo")
+    package = create(:model_module_package)
+    ModelModulePackageItem.create!(model_module_package: package, model_module:)
+    other = create(:model_module_package)
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+
+    travel 1.minute do
+      part.update!(hardpoint_transforms: {"cargo_grids" => []})
+    end
+
+    assert_operator package.reload.updated_at, :>, other.reload.updated_at
+  end
 end
