@@ -32,7 +32,6 @@ json.gaps @comparison.gaps do |gap|
   json.model do
     json.partial! "api/v1/hangar_plans/model", model: gap.model
   end
-  json.count gap.count
 end
 
 metrics = @comparison.metrics

@@ -35,6 +35,15 @@ module ScData
         assert_equal [component], slots.map(&:component)
       end
 
+      test "leaves a slot defaulting to a developer stand-in empty" do
+        create(:component, sc_key: "behr_javelinballisticcannon_s7_dummy")
+
+        slots = resolve({"loadout" => [{"name" => "hardpoint_gun", "key" => "BEHR_JavelinBallisticCannon_S7_Dummy"}]})
+
+        assert_equal ["hardpoint_gun"], slots.map(&:name)
+        assert_nil slots.sole.component
+      end
+
       test "leaves the component nil when nothing resolves" do
         slots = resolve({"loadout" => [{"name" => "hardpoint_mystery", "key" => "absent"}]})
 

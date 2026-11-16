@@ -506,7 +506,6 @@ describe("Hangar/Planner/HangarFlow", () => {
               slotId: "Explorer",
               label: "Explorer",
               model: carrack,
-              count: 1,
             },
           ],
         },
@@ -554,9 +553,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       plan: { ...plan, slots: [withoutRoute(explorer), ...rest] },
       comparison: {
         ...comparison,
-        gaps: [
-          { slotId: "Explorer", label: "Explorer", model: carrack, count: 1 },
-        ],
+        gaps: [{ slotId: "Explorer", label: "Explorer", model: carrack }],
       },
     };
     const summary = (storeCost: number | null, storeCostMin = storeCost) => ({
