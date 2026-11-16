@@ -21,6 +21,7 @@ resources :models, param: :slug, only: %i[index show] do
     get "snub-crafts" => "models#snub_crafts"
     get :modules
     get :module_packages, path: "module-packages"
+    get :bodykits
     get :upgrades
     get :paints
     get :sales

@@ -283,6 +283,28 @@ module Api
         @craftable_module_component_ids = module_component_ids(@model_modules) & craftable_component_ids
       end
 
+      # The body kits each of the ship's slots takes, the one it comes with
+      # first. A body kit fits a module slot like a module does; what sets the
+      # slot apart is that body kits are what fits it.
+      def bodykits
+        model = find_model_by_slug!
+        return if performed?
+
+        provided = LoadoutSlots.ship_tags_for(model)
+        candidates = {}
+
+        @bodykits = model.hardpoints.game_files.in_build
+          .includes(LoadoutSlots::FACTS_PRELOAD)
+          .select { |slot| Array(slot.facts.types).include?("Module") }
+          .sort_by(&:sc_name)
+          .flat_map do |slot|
+            LoadoutSlots.options(slot, candidates, provided:)
+              .select { |component| component.category == "bodykit" }
+              .sort_by { |component| [(component.id == slot.facts.component&.id) ? 0 : 1, component.name] }
+              .map { |component| [slot, component] }
+          end
+      end
+
       def module_packages
         model = find_model_by_slug!
         return if performed?

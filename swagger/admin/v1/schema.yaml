@@ -18450,6 +18450,7 @@ components:
       - cargogrid
       - inventory
       - controller
+      - bodykit
       - unknown
       x-enumNames:
       - RADAR
@@ -18500,6 +18501,7 @@ components:
       - CARGOGRID
       - INVENTORY
       - CONTROLLER
+      - BODYKIT
       - UNKNOWN
       title: HardpointCategoryEnum
     HardpointGroupEnum:

@@ -18788,6 +18788,35 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/bodykits":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Model Body Kits
+      tags:
+      - Models
+      operationId: modelBodykits
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelBodykitList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/changes":
     parameters:
     - name: slug
@@ -42758,6 +42787,7 @@ components:
       - cargogrid
       - inventory
       - controller
+      - bodykit
       - unknown
       x-enumNames:
       - RADAR
@@ -42808,6 +42838,7 @@ components:
       - CARGOGRID
       - INVENTORY
       - CONTROLLER
+      - BODYKIT
       - UNKNOWN
       title: HardpointCategoryEnum
     HardpointGroupEnum:
@@ -46038,6 +46069,28 @@ components:
       - soldAt
       - rentalAt
       title: ModelAvailability
+    ModelBodykit:
+      type: object
+      properties:
+        slot:
+          type: string
+          description: The hardpoint the body kit fits (its sc_name)
+        stock:
+          type: boolean
+          description: Whether the hull comes with this body kit from the factory
+        component:
+          "$ref": "#/components/schemas/LoadoutComponentRef"
+      additionalProperties: false
+      required:
+      - slot
+      - stock
+      - component
+      title: ModelBodykit
+    ModelBodykitList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelBodykit"
+      title: ModelBodykitList
     ModelBuildChange:
       type: object
       properties:
