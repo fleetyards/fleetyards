@@ -23,7 +23,6 @@ const { t } = useI18n();
     <br />
     {{ t("messages.error.hangar.accountRequired.paragraph3") }}
     <router-link :to="{ name: 'hangar-preview' }">
-      {{ t("actions.here") }}</router-link
-    >.
+      {{ t("actions.here") }}</router-link>.
   </MessageBody>
 </template>

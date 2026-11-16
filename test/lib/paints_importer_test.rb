@@ -104,6 +104,27 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["Twilight"], arrow.paints.pluck(:name)
   end
 
+  test "#run gives an existing paint without a picture the store image" do
+    arrow = create(:model, name: "Arrow")
+    paint = create(:model_paint, model: arrow, name: "Twilight")
+    hangar_sync("Arrow - Twilight Paint")
+
+    PaintsImporter.new(model: arrow).run
+
+    assert_equal "paint.jpg", paint.reload.store_image.filename.to_s
+  end
+
+  test "#run leaves the picture of an existing paint alone" do
+    arrow = create(:model, name: "Arrow")
+    paint = create(:model_paint, model: arrow, name: "Twilight")
+    paint.store_image.attach(io: StringIO.new("curated"), filename: "curated.jpg", content_type: "image/jpeg")
+    hangar_sync("Arrow - Twilight Paint")
+
+    PaintsImporter.new(model: arrow).run
+
+    assert_equal "curated.jpg", paint.reload.store_image.filename.to_s
+  end
+
   test "#run imports a Sabre Raven paint into the Raven EX as well" do
     raven = create(:model, name: "Sabre Raven")
     raven_ex = create(:model, name: "Sabre Raven EX")

@@ -575,8 +575,8 @@ const popoverStyle = computed(() => {
             </span>
             <span><kbd>↵</kbd> {{ t("home.landing.searchKeys.open") }}</span>
             <span v-if="addable" data-test="home-search-key-add">
-              <kbd>{{ addKey }}</kbd
-              ><kbd>↵</kbd> {{ t("home.landing.searchKeys.add") }}
+              <kbd>{{ addKey }}</kbd><kbd>↵</kbd>
+              {{ t("home.landing.searchKeys.add") }}
             </span>
             <span v-if="canSwitchScope" data-test="home-search-key-scope">
               <kbd>tab</kbd> {{ t("home.landing.searchKeys.scope") }}

@@ -279,6 +279,22 @@ class Admin::Api::V1::ModelPaintsTest < ActionDispatch::IntegrationTest
     assert_not_predicate paint.reload.store_image, :attached?
   end
 
+  test "PUT /model-paints/:id attaches an uploaded store image" do
+    paint = create(:model_paint)
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "by-hand.png",
+      content_type: "image/png"
+    )
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: paint.id}, body: {name: paint.name, storeImage: blob.signed_id} do
+      assert parsed_body.dig("media", "storeImage", "url").present?
+    end
+
+    assert_equal "by-hand.png", paint.reload.store_image.filename.to_s
+  end
+
   test "PUT /model-paints/:id returns 404 for missing id" do
     sign_in @user
 

@@ -42,6 +42,10 @@ test.describe("Admin Supporter Contributions", () => {
     await expect(entry(/^Total/)).toHaveText("€85.00");
     await expect(entry(/^This Month/)).toContainText("€75.00");
     await expect(entry(/^This Month/)).toContainText("2 contributions");
+    await expect(entry(/^Recurring \/ Month/)).toContainText("€25.00");
+    await expect(entry(/^Recurring \/ Month/)).toContainText(
+      /\b1 active pledge\s*$/,
+    );
     await expect(entry(/^Contributions/)).toHaveText("3");
   });
 

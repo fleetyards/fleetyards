@@ -270,6 +270,7 @@
       },
       "buybackSync": "Sync RSI Buy-Back Pledges",
       "syncExtension": "Sync RSI Hangar",
+      "syncCcus": "Sync CCUs",
       "editMyVehicle": "Edit my %{vehicle}",
       "vehicleLoadout": "Loadout for %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",

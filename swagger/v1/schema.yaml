@@ -42062,6 +42062,10 @@ components:
         rsiPage:
           type: integer
           description: The page of the RSI hangar the pledge was last read from
+        rsiPageUpgradesOnly:
+          type: boolean
+          description: Whether rsiPage counts RSI's list filtered to upgrades rather
+            than the whole list
         catalogueItem:
           "$ref": "#/components/schemas/HangarPledgeItemCatalogueItem"
         inventory:
@@ -42081,6 +42085,7 @@ components:
       - quantity
       - standalone
       - meltable
+      - rsiPageUpgradesOnly
       - createdAt
       - updatedAt
       title: HangarPledgeItem
@@ -42580,6 +42585,17 @@ components:
       - missingUpgrades
       - missingUpgradeVehicles
       title: HangarSyncResult
+    HangarSyncScopeEnum:
+      type: string
+      enum:
+      - full
+      - ccus
+      x-enumNames:
+      - FULL
+      - CCUS
+      description: full reads the whole pledge list; ccus reads only the upgrades
+        and syncs only the CCUs
+      title: HangarSyncScopeEnum
     HangarSyncStatus:
       type: object
       properties:
@@ -52881,6 +52897,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/RsiHangarItemInput"
+        syncScope:
+          "$ref": "#/components/schemas/HangarSyncScopeEnum"
         hangarGroupId:
           type: string
           format: uuid

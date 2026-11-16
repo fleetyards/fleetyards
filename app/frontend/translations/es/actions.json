@@ -169,6 +169,7 @@
       "unlink": "Desvincular",
       "syncRsiBuybacks": "Sincronizar recompras de RSI",
       "syncRsiHangar": "Sincronizar hangar RSI",
+      "syncCcus": "Sincronizar CCUs",
       "oauthApplications": {
         "create": "Nueva aplicación",
         "regenerateSecret": "Regenerar secreto",

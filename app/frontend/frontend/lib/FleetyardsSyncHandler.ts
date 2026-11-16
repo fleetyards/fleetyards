@@ -6,6 +6,7 @@ export enum FleetyardsSyncDirection {
 export enum FleetyardsSyncAction {
   HEALTH = "health",
   SYNC = "sync",
+  SYNC_UPGRADES = "syncUpgrades",
   SYNC_BUYBACK = "syncBuyback",
   SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
   SYNC_BUYBACK_PRICING = "syncBuybackPricing",

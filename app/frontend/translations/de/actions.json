@@ -169,6 +169,7 @@
       "unlink": "Verknüpfung aufheben",
       "syncRsiBuybacks": "RSI-Rückkäufe synchronisieren",
       "syncRsiHangar": "RSI-Hangar synchronisieren",
+      "syncCcus": "CCUs synchronisieren",
       "oauthApplications": {
         "create": "Neue Anwendung",
         "regenerateSecret": "Schlüssel neu generieren",

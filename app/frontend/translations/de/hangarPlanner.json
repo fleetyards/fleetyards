@@ -306,6 +306,13 @@
         "prices": "Preise geändert: %{before} bei der Planung, heute %{now}.",
         "rebase": "Aus Hangar aktualisieren"
       },
+      "upgradeFits": {
+        "title": "Deine Upgrades können Wege günstiger machen",
+        "fit": "%{upgrade} passt in den Weg zur %{ship}",
+        "saves": "spart %{amount}",
+        "apply": "Verwenden",
+        "applied": "Der Weg zur %{ship} nutzt jetzt das Upgrade."
+      },
       "messages": {
         "saved": "Plan gespeichert.",
         "saveFailed": "Das hat nicht geklappt. Bitte prüfe deine Eingaben.",
@@ -526,6 +533,8 @@
         "more": "Mehr zeigen",
         "steps": "Die Schritte",
         "addStop": "Zwischenstopp",
+        "heldFits": "Passende Upgrades, die du besitzt",
+        "heldFitsHint": "Wähle eines, um es an passender Stelle in den Weg einzufügen. Die Schritte davor und danach bleiben.",
         "stepPaidWith": "Schritt %{number} · bezahlt mit",
         "routeEnd": "Ziel des Wegs",
         "saveRoute": "Weg speichern",

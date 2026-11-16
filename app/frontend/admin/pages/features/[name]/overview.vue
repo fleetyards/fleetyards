@@ -86,8 +86,7 @@ const rangeValue = (event: Event) =>
                     t("labels.features.historyBy", {
                       actor: feature.lastChangedBy,
                     })
-                  }}</template
-                >)
+                  }}</template>)
               </template>
             </template>
           </p>

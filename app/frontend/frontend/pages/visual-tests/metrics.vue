@@ -395,8 +395,7 @@ const sampleMetrics = [
   >
   <p>
     The metrics-card family on the ship detail page, fed with the live game-file
-    hardpoints of <code>{{ SLUG }}</code
-    >.
+    hardpoints of <code>{{ SLUG }}</code>.
     <template v-if="hardpointsLoading"> Loading hardpoints…</template>
   </p>
   <div v-if="model" class="row">

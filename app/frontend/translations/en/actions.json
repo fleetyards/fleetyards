@@ -169,6 +169,7 @@
       "unlink": "Unlink",
       "syncRsiBuybacks": "Sync RSI Buy-Backs",
       "syncRsiHangar": "Sync RSI Hangar",
+      "syncCcus": "Sync CCUs",
       "oauthApplications": {
         "create": "New Application",
         "regenerateSecret": "Regenerate Secret",

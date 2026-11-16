@@ -268,6 +268,7 @@
       },
       "buybackSync": "同步 RSI 可回購承諾",
       "syncExtension": "同步 RSI 機庫",
+      "syncCcus": "同步CCU",
       "editMyVehicle": "Edit my %{vehicle}",
       "vehicleLoadout": "%{vehicle} 的裝配",
       "nameMyVehicle": "Name my %{vehicle}",

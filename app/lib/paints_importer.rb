@@ -165,6 +165,12 @@ class PaintsImporter
       existing_paint = ModelPaint.find_by(model_id: model.id, name: paint_name)
 
       if existing_paint.present?
+        begin
+          attach_store_image(existing_paint, paint[:image]) unless existing_paint.store_image.attached?
+        rescue => e
+          Appsignal.report_error(e)
+        end
+
         next {
           new: false,
           paint_id: existing_paint.id,
@@ -182,13 +188,7 @@ class PaintsImporter
         active: true
       )
 
-      if paint[:image].present?
-        uri = URI.parse(paint[:image])
-        tempfile = uri.open # rubocop:disable Security/Open
-        filename = File.basename(uri.path)
-        content_type = Marcel::MimeType.for(name: filename)
-        model_paint.store_image.attach(io: tempfile, filename: filename, content_type: content_type)
-      end
+      attach_store_image(model_paint, paint[:image])
 
       {
         new: true,
@@ -210,6 +210,16 @@ class PaintsImporter
         error: true
       }
     end
+  end
+
+  private def attach_store_image(model_paint, image)
+    return if image.blank?
+
+    uri = URI.parse(image)
+    tempfile = uri.open # rubocop:disable Security/Open
+    filename = File.basename(uri.path)
+    content_type = Marcel::MimeType.for(name: filename)
+    model_paint.store_image.attach(io: tempfile, filename: filename, content_type: content_type)
   end
 
   private def paint_mapping(name)

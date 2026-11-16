@@ -1990,7 +1990,12 @@
           "count": "Contributi",
           "currentMonth": "Questo mese",
           "currentMonthCount": "%{count} contributi",
-          "recurringCount": "Ricorrenti",
+          "recurringAmount": "Ricorrente / mese",
+          "recurringAmountCount": {
+            "one": "%{count} contributo attivo",
+            "other": "%{count} contributi attivi"
+          },
+          "recurringCount": "Ricorrenti (totale)",
           "anonymousCount": "Anonimi"
         },
         "chart": {

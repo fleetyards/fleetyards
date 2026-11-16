@@ -16,10 +16,12 @@ module Admin
             anonymousCount: {type: :integer},
             currentMonthAmountCents: {type: :integer},
             currentMonthCount: {type: :integer},
+            recurringAmountCents: {type: :integer},
+            activeRecurringCount: {type: :integer},
             patreonSyncEnabled: {type: :boolean}
           },
           additionalProperties: false,
-          required: %w[totalAmountCents currency totalCount recurringCount anonymousCount currentMonthAmountCents currentMonthCount patreonSyncEnabled]
+          required: %w[totalAmountCents currency totalCount recurringCount anonymousCount currentMonthAmountCents currentMonthCount recurringAmountCents activeRecurringCount patreonSyncEnabled]
         })
       end
     end
