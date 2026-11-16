@@ -275,6 +275,7 @@ module Api
           .pluck(:model_module_id, :slot)
           .to_h
         @stock_module_ids = ModuleHardpoint.stock_modules(model).values
+        ModelModule.preload_cargo_grid_exports(@model_modules.to_a)
         # A module is a part in the game files: its holo is that part's.
         module_keys = @model_modules.filter_map { |model_module| model_module.sc_key&.downcase }
         @module_holos = Component.where("LOWER(sc_key) IN (?)", module_keys.presence || [""])
