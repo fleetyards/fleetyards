@@ -168,8 +168,10 @@ const facts = computed(() =>
             class="overview-config__edit"
             @click="fact.edit"
           >
-            <span>{{ fact.value }}</span
-            ><i class="fa-light fa-pen" aria-hidden="true" />
+            <span>{{ fact.value }}</span><i
+              class="fa-light fa-pen"
+              aria-hidden="true"
+            />
           </button>
           <span v-else>{{ fact.value }}</span>
         </dd>

@@ -158,8 +158,10 @@ const fleetShipsRoute = (slug: string) => ({
                 params: { username: friend.username },
               }"
               class="model-owners__friend"
-              >{{ friend.username }}</router-link
-            ><span v-if="friend.count > 1" class="model-owners__muted">
+              >{{ friend.username }}</router-link><span
+              v-if="friend.count > 1"
+              class="model-owners__muted"
+            >
               ×{{ friend.count }}</span
             ><template v-if="index < namedFriends.length - 1">, </template>
           </template>
