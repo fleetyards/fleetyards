@@ -27281,14 +27281,32 @@ components:
           "$ref": "#/components/schemas/CargoHoldContainerSize"
         limits:
           "$ref": "#/components/schemas/CargoHoldLimits"
-        offset:
-          "$ref": "#/components/schemas/CargoHoldOffset"
-        rotation:
-          type: integer
-        placed:
-          type: boolean
-          description: The offset and rotation are where the hold sits in the ship,
-            from its ship-view export
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: The grid's centre
+        orientation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: 'Quaternion x, y, z, w: the cargo grid''s rotation'
+        size:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Metres along the grid's own x, up and depth axes
+        placedIn:
+          type: string
+          description: The ship or module whose hull export the position and orientation
+            come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in
+            the same one share a frame; a hold without it is not placed
       additionalProperties: false
       required:
       - dimensions
@@ -27346,21 +27364,6 @@ components:
       required:
       - min
       title: CargoHoldLimits
-    CargoHoldOffset:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-      additionalProperties: false
-      required:
-      - x
-      - "y"
-      - z
-      title: CargoHoldOffset
     Cart:
       type: object
       properties:
@@ -46679,10 +46682,11 @@ components:
           minItems: 3
           maxItems: 3
           description: Metres along the grid's own x, up and depth axes
-        scu:
+        capacity:
           type:
           - number
           - 'null'
+          description: SCU the grid holds
         stripped:
           type: boolean
           description: The grid belongs to an item left out of the hull holo
@@ -46694,7 +46698,7 @@ components:
       - position
       - rotation
       - size
-      - scu
+      - capacity
       - stripped
       title: ModelLoadoutPreviewCargoGrid
     ModelLoadoutPreviewDoor:

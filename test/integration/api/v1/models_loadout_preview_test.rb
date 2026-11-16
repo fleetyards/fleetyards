@@ -152,7 +152,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
 
       grid = parsed_body["cargoGrids"].sole
 
-      assert_equal 96, grid["scu"]
+      assert_equal 96, grid["capacity"]
       assert_equal [5.0, 5.0, 7.5], grid["size"]
       assert_not grid.key?("dimensions")
 
@@ -206,7 +206,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       cargo_hull = hulls["rsi_galaxy_module_cargo"]
       assert_match(/holo_hull\.glb/, cargo_hull["holoHullUrl"])
       assert_equal "Cargo Tractor Turret", cargo_hull["ports"].first["defaultItemName"]
-      assert_equal 256, cargo_hull["cargoGrids"].first["scu"]
+      assert_equal 256, cargo_hull["cargoGrids"].first["capacity"]
       assert_equal "door_close", cargo_hull["doors"].first["id"]
     end
   end

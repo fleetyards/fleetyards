@@ -159,6 +159,40 @@ class ModelModule < ApplicationRecord
     update_cargo_holds_db
   end
 
+  # The cargo grids of the module's hull export, which lies on the part the
+  # module is in the game files. Found by sc_key, whose case differs between
+  # the two tables, so a list loads them in one go with `preload_cargo_grid_exports`.
+  def cargo_grid_export
+    return @cargo_grid_export if defined?(@cargo_grid_export)
+
+    @cargo_grid_export = self.class.cargo_grid_exports([self])[id]
+  end
+
+  def measured_cargo_placements
+    @measured_cargo_placements ||= CargoGridPlacements.call(cargo_grid_export&.read_attribute(:cargo_grids))
+  end
+
+  def self.preload_cargo_grid_exports(model_modules)
+    exports = cargo_grid_exports(model_modules)
+    model_modules.each { |model_module| model_module.instance_variable_set(:@cargo_grid_export, exports[model_module.id]) }
+  end
+
+  def self.cargo_grid_exports(model_modules)
+    keys = model_modules.filter_map { |model_module| model_module.sc_key&.downcase }.uniq
+    return {} if keys.empty?
+
+    exports = ComponentHardpointTransforms.joins(:component)
+      .where("LOWER(components.sc_key) IN (?)", keys)
+      .select(:id, Arel.sql("LOWER(components.sc_key) AS component_sc_key"),
+        Arel.sql("component_hardpoint_transforms.data -> 'cargo_grids' AS cargo_grids"))
+      .index_by(&:component_sc_key)
+
+    model_modules.each_with_object({}) do |model_module, by_module|
+      export = exports[model_module.sc_key&.downcase]
+      by_module[model_module.id] = export if export
+    end
+  end
+
   private def touch_models
     models.update_all(updated_at: Time.zone.now)
   end

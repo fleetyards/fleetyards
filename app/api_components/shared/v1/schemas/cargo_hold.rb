@@ -16,9 +16,12 @@ module Shared
             capacity: {type: :integer},
             maxContainerSize: ::Shared::V1::Schemas::CargoHoldContainerSize,
             limits: CargoHoldLimits,
-            offset: CargoHoldOffset,
-            rotation: {type: :integer},
-            placed: {type: :boolean, description: "The offset and rotation are where the hold sits in the ship, from its ship-view export"}
+            # Where the hull export placed the hold, in the values the loadout
+            # preview serves its cargo grids with.
+            position: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "The grid's centre"},
+            orientation: {type: :array, items: {type: :number}, minItems: 4, maxItems: 4, description: "Quaternion x, y, z, w: the cargo grid's rotation"},
+            size: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "Metres along the grid's own x, up and depth axes"},
+            placedIn: {type: :string, description: "The ship or module whose hull export the position and orientation come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in the same one share a frame; a hold without it is not placed"}
           },
           additionalProperties: false,
           required: %w[dimensions capacity maxContainerSize limits]

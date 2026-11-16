@@ -9,10 +9,6 @@ json.capacity_scu cargo_hold.capacity_scu.to_f
 json.dimension_x cargo_hold.dimension_x.to_f
 json.dimension_y cargo_hold.dimension_y.to_f
 json.dimension_z cargo_hold.dimension_z.to_f
-json.offset_x cargo_hold.offset_x&.to_f
-json.offset_y cargo_hold.offset_y&.to_f
-json.offset_z cargo_hold.offset_z&.to_f
-json.rotation cargo_hold.rotation
 json.max_container_size_scu cargo_hold.max_container_size_scu
 json.max_loadable_container_size_scu cargo_hold.max_loadable_container_size_scu
 

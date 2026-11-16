@@ -145,6 +145,53 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules places a module's holds where its hull export has them" do
+    model = create(:model)
+    cargo = create(:model_module, name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo")
+    cargo.update_column(:cargo_holds, [
+      {"name" => "hardpoint_cargo_grid_left", "capacity" => 256, "dimensions" => {"x" => 5.0, "y" => 20.0, "z" => 5.0}},
+      {"name" => "hardpoint_lift-cargo_grid", "capacity" => 144, "dimensions" => {"x" => 7.5, "y" => 15.0, "z" => 2.5}}
+    ])
+    create(:module_hardpoint, model:, model_module: cargo, slot: "hardpoint_module")
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+    part.update!(hardpoint_transforms: {"cargo_grids" => [
+      {"name" => "hardpoint_cargo_grid_left", "parentPort" => nil, "position" => [-10.1, -0.5, 4.5],
+       "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [5.0, 20.0, 5.0]},
+      {"name" => "cargo_grid", "parentPort" => "hardpoint_lift", "position" => [0.0, -1.68, 4.74],
+       "rotation" => [0.0, -1.0, 0.0, 0.0], "dimensions" => [7.5, 15.0, 2.5]}
+    ]})
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      holds = parsed_body["items"].sole["cargoHolds"]
+      assert_equal ["model_module/#{cargo.slug}"] * 2, holds.pluck("placedIn"), holds.inspect
+      assert_equal [[-10.1, -0.5, 4.5], [0.0, -1.68, 4.74]], holds.pluck("position")
+      assert_equal [[0.0, 0.0, 0.0, 1.0], [0.0, -1.0, 0.0, 0.0]], holds.pluck("orientation")
+    end
+  end
+
+  test "GET /models/:slug/modules places a module's holds again once its export changes" do
+    model = create(:model)
+    cargo = create(:model_module, sc_key: "RSI_Galaxy_Module_Cargo")
+    cargo.update_column(:cargo_holds, [{"name" => "hardpoint_cargo_grid_left", "capacity" => 256, "dimensions" => {"x" => 5.0, "y" => 20.0, "z" => 5.0}}])
+    create(:module_hardpoint, model:, model_module: cargo, slot: "hardpoint_module")
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules"
+      assert_not response.parsed_body["items"].sole["cargoHolds"].sole["placedIn"]
+
+      travel 1.minute do
+        part.update!(hardpoint_transforms: {"cargo_grids" => [
+          {"name" => "hardpoint_cargo_grid_left", "position" => [-10.1, -0.5, 4.5],
+           "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [5.0, 20.0, 5.0]}
+        ]})
+      end
+      get "/api/v1/models/#{model.slug}/modules"
+
+      assert response.parsed_body["items"].sole["cargoHolds"].sole["placedIn"]
+    end
+  end
+
   test "GET /models/:slug/modules says which of a module's ports the game locks" do
     model = create(:model)
     cargo = create(:model_module, name: "Cargo Module")

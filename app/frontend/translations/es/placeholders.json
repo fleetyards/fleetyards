@@ -98,10 +98,6 @@
         "baseModel": "Modelo base"
       },
       "cargoHold": {
-        "offsetX": "Desfase X",
-        "offsetY": "Desfase Y",
-        "offsetZ": "Desfase Z",
-        "rotation": "0 or 90",
         "maxLoadableContainerSizeScu": "Máximo de la rejilla"
       },
       "manufacturer": {

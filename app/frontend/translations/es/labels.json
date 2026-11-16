@@ -2100,10 +2100,6 @@
         "hidden": "¿Oculto?"
       },
       "cargoHold": {
-        "offsetX": "Offset X (SCU)",
-        "offsetY": "Offset Y (SCU)",
-        "offsetZ": "Offset Z (SCU)",
-        "rotation": "Rotación (°)",
         "maxLoadableContainerSizeScu": "Caja cargable más grande"
       },
       "modelLoaner": {

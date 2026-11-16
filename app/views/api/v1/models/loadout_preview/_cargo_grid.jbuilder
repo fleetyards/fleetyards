@@ -6,5 +6,5 @@ json.parent_port grid["parentPort"]
 json.position grid["position"]
 json.rotation grid["rotation"]
 json.size grid["size"]
-json.scu grid["scu"]
+json.capacity grid["scu"]
 json.stripped grid["stripped"] == true

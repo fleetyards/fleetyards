@@ -93,18 +93,6 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
   end
 
   # PUT /cargo-holds/{id}
-  test "PUT /cargo-holds/{id} updates the cargo hold offsets" do
-    cargo_hold = create(:cargo_hold)
-    sign_in @user
-
-    body = {offsetX: 2.5, offsetY: 1.0, offsetZ: 0.0}
-    assert_api_response :put, 200, path_params: {id: cargo_hold.id}, body: body do
-      assert_equal 2.5, parsed_body["offsetX"]
-      assert_equal 1.0, parsed_body["offsetY"]
-      assert_equal 0.0, parsed_body["offsetZ"]
-    end
-  end
-
   test "PUT /cargo-holds/{id} limits the crates the hold can be loaded with" do
     cargo_hold = create(:cargo_hold, dimension_x: 2.5, dimension_y: 3.75, dimension_z: 2.5, capacity_scu: 12, max_container_size_scu: 8)
     cargo_hold.calculate_container_capacities!
@@ -140,7 +128,7 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 404,
       path_params: {id: "00000000-0000-0000-0000-000000000000"},
-      body: {offsetX: 0, offsetY: 0, offsetZ: 0}
+      body: {maxLoadableContainerSizeScu: nil}
   end
 
   test "PUT /cargo-holds/{id} returns 401 when not signed in" do
@@ -148,7 +136,7 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 401,
       path_params: {id: cargo_hold.id},
-      body: {offsetX: 0, offsetY: 0, offsetZ: 0}
+      body: {maxLoadableContainerSizeScu: nil}
   end
 
   test "PUT /cargo-holds/{id} returns 403 for admin without access" do
@@ -157,6 +145,6 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 403,
       path_params: {id: cargo_hold.id},
-      body: {offsetX: 0, offsetY: 0, offsetZ: 0}
+      body: {maxLoadableContainerSizeScu: nil}
   end
 end

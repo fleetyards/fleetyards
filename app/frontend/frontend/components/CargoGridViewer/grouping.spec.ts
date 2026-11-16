@@ -26,22 +26,78 @@ const names = [
 ];
 
 describe("groupCargoHolds", () => {
-  it("keeps hand-placed modules apart, each laid out on its own", () => {
-    const holds = names.map((name) =>
-      hold(name, { offset: { x: 0, y: 0, z: 0 } }),
-    );
+  it("groups holds no export placed by their names", () => {
+    const groups = groupCargoHolds(names.map((name) => hold(name)));
 
-    expect(groupCargoHolds(holds)).toHaveLength(2);
+    expect(groups.map((group) => group.holdIndices)).toEqual([
+      [0, 1, 2],
+      [3, 4, 5],
+    ]);
+    expect(groups.every((group) => !group.placed)).toBe(true);
   });
 
   it("lays a ship the export placed out as one, as its holds sit in it", () => {
     const holds = names.map((name, index) =>
-      hold(name, { offset: { x: index * 10, y: 0, z: 0 }, placed: true }),
+      hold(name, {
+        position: [index * 10, 0, 0],
+        orientation: [0, 0, 0, 1],
+        placedIn: "model/drak-caterpillar",
+      }),
     );
 
     const groups = groupCargoHolds(holds);
 
     expect(groups).toHaveLength(1);
+    expect(groups[0].placed).toBe(true);
     expect(groups[0].holdIndices).toEqual([0, 1, 2, 3, 4, 5]);
+  });
+
+  it("keeps a ship and each module fitted to it in their own frames", () => {
+    const holds = [
+      hold("hardpoint_cargo_bay", {
+        position: [0, 0, 0],
+        orientation: [0, 0, 0, 1],
+        placedIn: "model/rsi-galaxy",
+      }),
+      hold("hardpoint_cargo_grid_left", {
+        position: [0, 0, 0],
+        orientation: [0, 0, 0, 1],
+        placedIn: "model_module/cargo-module",
+      }),
+      hold("hardpoint_cargo_grid_right", {
+        position: [0, 10, 0],
+        orientation: [0, 0, 0, 1],
+        placedIn: "model_module/cargo-module",
+      }),
+      hold("cargo_front"),
+    ];
+
+    const groups = groupCargoHolds(holds);
+
+    expect(groups.map((group) => [group.holdIndices, group.placed])).toEqual([
+      [[0], true],
+      [[1, 2], true],
+      [[3], false],
+    ]);
+  });
+
+  it("keeps a module fitted twice in two frames", () => {
+    const module = (name: string) =>
+      hold(name, {
+        position: [0, 0, 0],
+        orientation: [0, 0, 0, 1],
+        placedIn: "model_module/cargo-module",
+      });
+    const holds = [
+      module("hardpoint_cargo_grid_left"),
+      module("hardpoint_cargo_grid_right"),
+      module("hardpoint_cargo_grid_left"),
+      module("hardpoint_cargo_grid_right"),
+    ];
+
+    expect(groupCargoHolds(holds).map((group) => group.holdIndices)).toEqual([
+      [0, 1],
+      [2, 3],
+    ]);
   });
 });

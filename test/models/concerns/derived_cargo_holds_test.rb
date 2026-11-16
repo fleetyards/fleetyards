@@ -44,35 +44,36 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
   end
 
   # The bug this concern exists for. A build that inserts a hold ahead of a
-  # curated one used to shift every offset onto its neighbour, because the rows
-  # were destroyed and the offsets copied back by array index.
-  test "keeps a curated offset on its own hold when a hold is inserted ahead of it" do
-    build_holds(@model, [hold("hold_a"), hold("hold_b")])
-    @model.cargo_holds_db.find_by(name: "hold_b").update!(offset_x: 5, offset_y: 6, offset_z: 7, rotation: 90)
+  # curated one used to shift every curated value onto its neighbour, because
+  # the rows were destroyed and the values copied back by array index.
+  test "keeps a curated crate limit on its own hold when a hold is inserted ahead of it" do
+    grid_max = {"size" => 8, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+    build_holds(@model, [hold("hold_a", max_container_size: grid_max), hold("hold_b", max_container_size: grid_max)])
+    @model.cargo_holds_db.find_by(name: "hold_b").update!(max_loadable_container_size_scu: 2)
 
-    rows = build_holds(@model, [hold("hold_new"), hold("hold_a"), hold("hold_b")])
+    rows = build_holds(@model, [hold("hold_new", max_container_size: grid_max), hold("hold_a", max_container_size: grid_max), hold("hold_b", max_container_size: grid_max)])
 
-    placed = rows.find { |row| row.name == "hold_b" }
-    assert_equal [5, 6, 7], [placed.offset_x.to_i, placed.offset_y.to_i, placed.offset_z.to_i]
-    assert_equal 90, placed.rotation
-    assert_equal 2, placed.position, "position still tracks the new order"
+    limited = rows.find { |row| row.name == "hold_b" }
+    assert_equal 2, limited.max_loadable_container_size_scu
+    assert_equal 2, limited.position, "position still tracks the new order"
 
-    assert_nil rows.find { |row| row.name == "hold_new" }.offset_x
-    assert_nil rows.find { |row| row.name == "hold_a" }.offset_x
+    assert_nil rows.find { |row| row.name == "hold_new" }.max_loadable_container_size_scu
+    assert_nil rows.find { |row| row.name == "hold_a" }.max_loadable_container_size_scu
   end
 
-  test "keeps a curated offset when the holds are reordered" do
-    build_holds(@model, [hold("hold_a"), hold("hold_b")])
-    @model.cargo_holds_db.find_by(name: "hold_a").update!(offset_x: 3)
+  test "keeps a curated crate limit when the holds are reordered" do
+    grid_max = {"size" => 8, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+    build_holds(@model, [hold("hold_a", max_container_size: grid_max), hold("hold_b", max_container_size: grid_max)])
+    @model.cargo_holds_db.find_by(name: "hold_a").update!(max_loadable_container_size_scu: 2)
 
-    rows = build_holds(@model, [hold("hold_b"), hold("hold_a")])
+    rows = build_holds(@model, [hold("hold_b", max_container_size: grid_max), hold("hold_a", max_container_size: grid_max)])
 
-    assert_equal 3, rows.find { |row| row.name == "hold_a" }.offset_x.to_i
-    assert_nil rows.find { |row| row.name == "hold_b" }.offset_x
+    assert_equal 2, rows.find { |row| row.name == "hold_a" }.max_loadable_container_size_scu
+    assert_nil rows.find { |row| row.name == "hold_b" }.max_loadable_container_size_scu
   end
 
   # Updated in place rather than rebuilt, so anything hanging off the row -- and
-  # the row a curated offset was set on -- survives a reload.
+  # the row a curated limit was set on -- survives a reload.
   test "reuses the existing row instead of replacing it" do
     original_id = build_holds(@model, [hold("hold_a")]).first.id
 
@@ -131,9 +132,9 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     assert_equal 8, rows.first.max_container_size_scu
     assert_equal 0, rows.first.cargo_hold_container_capacities.find_by(container_size_scu: 8).max_quantity
 
-    served = @model.reload.cargo_holds_with_offsets.first
+    served = @model.reload.cargo_holds_with_placement.first
     assert_equal({"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}}, served["max_container_size"])
-    assert_nil served["offset"], "a loadable size alone places nothing"
+    assert_nil served["position"], "a loadable size alone places nothing"
   end
 
   test "lets a load shrink the grid under a curated limit, which then stops applying" do
@@ -143,7 +144,7 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     rows = build_holds(@model, [hold("hold_a")])
 
     assert_equal 4, rows.first.max_loadable_container_size_scu
-    assert_equal 2, @model.reload.cargo_holds_with_offsets.first.dig("max_container_size", "size")
+    assert_equal 2, @model.reload.cargo_holds_with_placement.first.dig("max_container_size", "size")
   end
 
   # ModelModule carries the same column and used to carry its own copy of this.
@@ -156,32 +157,43 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     assert_equal %w[module_bay], model_module.cargo_holds_db.reload.map(&:name)
   end
 
-  test "places every hold where the ship-view export measured it, over a hand-set offset" do
+  test "places every hold where the ship-view export measured it" do
     build_holds(@model, [hold("hold_a"), hold("hold_b")])
-    @model.cargo_holds_db.first.update!(offset_x: 9, offset_y: 9, offset_z: 9)
     @model.update!(hardpoint_transforms: {"ports" => [], "cargo_grids" => [
       {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], "dimensions" => [2.5, 2.5, 2.5]},
       {"name" => "hold_b", "position" => [0.0, 1.25, 5.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
     ]})
 
-    hold_a, hold_b = Model.find(@model.id).cargo_holds_with_offsets
+    hold_a, hold_b = Model.find(@model.id).cargo_holds_with_placement
 
-    assert hold_a["placed"]
-    assert_equal({"x" => -1.25, "y" => -1.25, "z" => 0.0}, hold_a["offset"])
-    assert_nil hold_a["rotation"]
-    assert_equal 270, hold_b["rotation"]
+    assert_equal "model/#{@model.slug}", hold_a["placed_in"]
+    assert_equal [0.0, 1.25, 0.0], hold_a["position"]
+    assert_equal [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], hold_a["orientation"]
+    assert_equal [0.0, 0.0, 0.0, 1.0], hold_b["orientation"]
   end
 
-  test "keeps the hand-set offsets when the export places only some holds" do
+  test "places no hold when the export places only some of them" do
     build_holds(@model, [hold("hold_a"), hold("hold_b")])
-    @model.cargo_holds_db.first.update!(offset_x: 1, offset_y: 2, offset_z: 3)
     @model.update!(hardpoint_transforms: {"ports" => [], "cargo_grids" => [
       {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
     ]})
 
-    hold_a, = Model.find(@model.id).cargo_holds_with_offsets
+    holds = Model.find(@model.id).cargo_holds_with_placement
 
-    assert_nil hold_a["placed"]
-    assert_equal({"x" => 1.0, "y" => 2.0, "z" => 3.0}, hold_a["offset"])
+    assert holds.none? { |hold| hold["placed_in"] || hold["position"] || hold["orientation"] }, holds.inspect
+  end
+
+  test "keeps a curated crate limit on a hold the export places" do
+    grid_max = {"size" => 8, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+    build_holds(@model, [hold("hold_a", max_container_size: grid_max)])
+    @model.cargo_holds_db.first.update!(max_loadable_container_size_scu: 2)
+    @model.update!(hardpoint_transforms: {"ports" => [], "cargo_grids" => [
+      {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
+    ]})
+
+    hold_a, = Model.find(@model.id).cargo_holds_with_placement
+
+    assert hold_a["placed_in"]
+    assert_equal 2, hold_a.dig("max_container_size", "size")
   end
 end

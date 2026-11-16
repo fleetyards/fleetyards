@@ -2,52 +2,34 @@
 
 # A parent whose `cargo_holds` YAML column -- written by the sc_data loader out
 # of the game files -- is projected into CargoHold rows so a hold can be queried,
-# and so it can carry placement an admin set by hand.
+# and so it can carry the loadable crate size an admin set by hand.
 #
-# The geometry is rewritten on every load. The placement columns
-# (`offset_x/y/z`, `rotation`) are never written here at all, which is what keeps
-# a curated offset on the hold it was set on.
+# The geometry is rewritten on every load. `max_loadable_container_size_scu` is
+# never written here at all, which is what keeps it on the hold it was set on.
 module DerivedCargoHolds
   extend ActiveSupport::Concern
 
-  def cargo_holds_with_offsets
+  # The holds, each placed where the hull export says it sits. That export is
+  # the only source of placement: a parent it does not place every hold of
+  # comes back with none placed, since half a layout would overlap the rest.
+  def cargo_holds_with_placement
     holds = projected_cargo_holds
 
-    # Where the ship-view export says every hold sits: measured, so it wins
-    # over a hand-set offset. Only when it places all of them -- a ship laid out
-    # half by the export and half by hand would overlap.
     measured = measured_cargo_placements
-    if holds.any? && holds.all? { |hold| measured.key?(hold["name"]) }
-      return holds.map { |hold| hold.merge(measured[hold["name"]].compact, "placed" => true) }
-    end
+    placed = holds.any? && holds.all? { |hold| measured.key?(hold["name"]) }
 
     # Selected in Ruby rather than with `where`, which would issue a query per
     # record and so ignore a preloaded association -- 50 queries for a page of
     # 50 ships. There are a handful of holds per parent, so the filtering itself
     # costs nothing either way.
-    db_records = cargo_holds_db
-      .select { |hold| hold.offset_x || hold.offset_y || hold.offset_z || hold.rotation || hold.max_loadable_container_size_scu }
+    limits = cargo_holds_db
+      .select(&:max_loadable_container_size_scu)
       .index_by(&:position)
 
-    return holds if db_records.empty?
-
     holds.each_with_index.map do |hold_data, index|
-      db_record = db_records[index]
+      extra = placed ? measured[hold_data["name"]].compact.merge("placed_in" => cargo_placement_frame) : {}
 
-      next hold_data if db_record.blank?
-
-      extra = {}
-
-      if db_record.offset_x || db_record.offset_y || db_record.offset_z || db_record.rotation
-        extra["offset"] = {
-          "x" => db_record.offset_x&.to_f || 0.0,
-          "y" => db_record.offset_y&.to_f || 0.0,
-          "z" => db_record.offset_z&.to_f || 0.0
-        }
-      end
-      extra["rotation"] = db_record.rotation if db_record.rotation.present?
-
-      loadable = loadable_container_size(db_record)
+      loadable = limits[index] && loadable_container_size(limits[index])
       extra["max_container_size"] = loadable if loadable
 
       hold_data.merge(extra)
@@ -57,7 +39,7 @@ module DerivedCargoHolds
   # Holds are matched to their existing row and updated in place. They used to be
   # destroyed and rebuilt, with the placement columns copied back onto whatever
   # row landed at the same array index -- so adding, dropping or reordering a
-  # hold in the game files moved a curated offset onto a different hold, quietly.
+  # hold in the game files moved a curated value onto a different hold, quietly.
   def update_cargo_holds_db
     holds = projected_cargo_holds
     keys = cargo_hold_keys(holds.map { |hold| hold["name"] })
@@ -85,9 +67,9 @@ module DerivedCargoHolds
   # only the index in the array the loader wrote, and it moves with the build.
   #
   # A hold the loader wrote without dimensions is not projected into a row, so
-  # it has no position an offset could be matched to. Both readers have to skip
-  # the same ones: `cargo_holds_with_offsets` pairs holds to rows by array
-  # index, and filtering in one place but not the other shifts every offset
+  # it has no position a curated value could be matched to. Both readers have to skip
+  # the same ones: `cargo_holds_with_placement` pairs holds to rows by array
+  # index, and filtering in one place but not the other shifts every value
   # past a malformed hold onto its neighbour — the bug this concern exists for,
   # arrived at from the other side.
   private def projected_cargo_holds
@@ -114,6 +96,12 @@ module DerivedCargoHolds
   # The holds' placements a parent has measured; none by default.
   def measured_cargo_placements
     {}
+  end
+
+  # Names the export the holds were placed from: holds placed from different
+  # exports -- a ship and a module fitted to it -- are each in their own frame.
+  def cargo_placement_frame
+    "#{model_name.element}/#{slug}"
   end
 
   # Only a limit below what the grid itself takes changes anything.
