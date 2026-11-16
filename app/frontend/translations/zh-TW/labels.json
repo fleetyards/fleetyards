@@ -830,15 +830,15 @@
             "channel_shared": "%{names} 與看不到其活動的讀者共用一個頻道。在各自擁有專屬頻道之前，不會在那裡發布任何內容。"
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Fleetyards 機器人暫時無法列出此伺服器的成員，因此加入身分組只在玩家使用邀請連結時生效。請聯絡管理員。",
-            "live_updates_off": "身分組變更每天只同步到 Fleetyards 一次：機器人沒有即時監聽這些變更。請聯絡管理員。",
-            "bot_offline": "Fleetyards 機器人目前未連線到 Discord，因此身分組變更會等到每日同步時處理。請聯絡管理員。"
+            "members_intent_missing": "Fleetyards 機器人暫時無法列出此伺服器的成員，因此加入身分組只在玩家使用邀請連結時生效。只有 Fleetyards 能變更這一點，你的 Discord 伺服器中的任何設定或權限都無法改變。",
+            "live_updates_off": "身分組變更每天只同步到 Fleetyards 一次：機器人沒有即時監聽這些變更。只有 Fleetyards 能變更這一點，你的 Discord 伺服器中的任何設定或權限都無法改變。",
+            "bot_offline": "Fleetyards 機器人目前未連線到 Discord，因此身分組變更會等到每日同步時處理。只有 Fleetyards 能變更這一點，你的 Discord 伺服器中的任何設定或權限都無法改變。"
           },
           "statusOk": "已連線至 %{name}",
           "statusCodes": {
-            "missing_token": "伺服器端尚未設定 Fleetyards 機器人。請聯絡管理員。",
+            "missing_token": "伺服器端尚未設定 Fleetyards 機器人。只有 Fleetyards 能變更這一點，你的 Discord 伺服器中的任何設定或權限都無法改變。",
             "missing_guild": "請先輸入 Discord 伺服器 ID。",
-            "invalid_token": "機器人權杖無效。請聯絡管理員。",
+            "invalid_token": "機器人權杖無效。只有 Fleetyards 能變更這一點，你的 Discord 伺服器中的任何設定或權限都無法改變。",
             "bot_not_in_guild": "機器人不在這個伺服器裡。請使用安裝連結把它加進去。",
             "guild_not_found": "Discord 無法辨識這個伺服器 ID。請再次確認輸入的值。",
             "discord_error": "Discord 回傳了非預期的錯誤。",

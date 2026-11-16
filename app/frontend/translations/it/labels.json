@@ -830,15 +830,15 @@
             "channel_shared": "%{names} condivide un canale con lettori a cui i suoi eventi sono nascosti. Non viene pubblicato nulla finché ognuno non ha un canale proprio."
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Il bot di Fleetyards non può ancora elencare i membri di questo server, quindi il ruolo di adesione vale solo quando un giocatore usa un link di invito. Contatta un amministratore.",
-            "live_updates_off": "Le modifiche ai ruoli arrivano a Fleetyards una volta al giorno: il bot non le ascolta mentre avvengono. Contatta un amministratore.",
-            "bot_offline": "Il bot di Fleetyards non è connesso a Discord in questo momento, quindi le modifiche ai ruoli attendono la sincronizzazione giornaliera. Contatta un amministratore."
+            "members_intent_missing": "Il bot di Fleetyards non può ancora elencare i membri di questo server, quindi il ruolo di adesione vale solo quando un giocatore usa un link di invito. Solo Fleetyards può cambiarlo: nessuna impostazione o permesso del tuo server Discord lo fa.",
+            "live_updates_off": "Le modifiche ai ruoli arrivano a Fleetyards una volta al giorno: il bot non le ascolta mentre avvengono. Solo Fleetyards può cambiarlo: nessuna impostazione o permesso del tuo server Discord lo fa.",
+            "bot_offline": "Il bot di Fleetyards non è connesso a Discord in questo momento, quindi le modifiche ai ruoli attendono la sincronizzazione giornaliera. Solo Fleetyards può cambiarlo: nessuna impostazione o permesso del tuo server Discord lo fa."
           },
           "statusOk": "Connesso a %{name}",
           "statusCodes": {
-            "missing_token": "Il bot Fleetyards non è configurato lato server. Contatta un amministratore.",
+            "missing_token": "Il bot Fleetyards non è configurato lato server. Solo Fleetyards può cambiarlo: nessuna impostazione o permesso del tuo server Discord lo fa.",
             "missing_guild": "Inserisci prima un ID del server Discord.",
-            "invalid_token": "Il token del bot non è valido. Contatta un amministratore.",
+            "invalid_token": "Il token del bot non è valido. Solo Fleetyards può cambiarlo: nessuna impostazione o permesso del tuo server Discord lo fa.",
             "bot_not_in_guild": "Il bot non è presente in questo server. Usa il link di installazione per aggiungerlo.",
             "guild_not_found": "Discord non riconosce questo ID del server. Ricontrolla il valore.",
             "discord_error": "Discord ha restituito un errore imprevisto.",
