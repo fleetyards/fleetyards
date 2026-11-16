@@ -12,11 +12,10 @@ module V1
             properties: {
               slotId: {type: :string, format: :uuid},
               label: {type: :string},
-              model: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
-              count: {type: :integer}
+              model: ::V1::Schemas::Hangar::Plans::HangarPlanModel
             },
             additionalProperties: false,
-            required: %w[slotId label model count]
+            required: %w[slotId label model]
           })
         end
       end

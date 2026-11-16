@@ -4222,3 +4222,4 @@ PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups added the new `invited` enu
 POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence added the new `invited` enum value to the `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/status` response property for the response status `200`
 POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence added the new `invited` enum value to the `allOf[subschema #2]/teams/items/slots/items/signups/items/status` response property for the response status `200`
 POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence added the new `invited` enum value to the `allOf[subschema #2]/unassignedSignups/items/status` response property for the response status `200`
+GET /hangar/plans/{id}/comparison removed the required property `gaps/items/count` from the response with the `200` status

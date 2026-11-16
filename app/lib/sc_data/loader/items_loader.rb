@@ -23,7 +23,7 @@ module ScData
 
       def all
         exported = load_items("items")
-        items = exported.reject { |item| item["category"] == "inventory" }
+        items = exported.reject { |item| item["category"] == "inventory" || test_item_key?(item["key"]) }
         items_by_ref = index_by_ref(exported)
         salvage_parts = ::ScData::SalvageParts.new(
           load_items("models"),
@@ -234,6 +234,7 @@ module ScData
 
       private def add_default_loadout(default_loadout, name, update_params)
         return update_params if default_loadout.blank?
+        return update_params.merge(component_id: nil) if test_item_key?(default_loadout["key"])
 
         loadout_component = find_component(default_loadout["key"]&.downcase, default_loadout["key"], default_loadout["ref"])
 

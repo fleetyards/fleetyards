@@ -123,7 +123,7 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
 
     gaps = HangarPlans::Comparison.new(@plan).gaps
 
-    assert_equal [[@carrack, 1], [@carrack, 1]], gaps.map { |gap| [gap.model, gap.count] }
+    assert_equal [@carrack, @carrack], gaps.map(&:model)
   end
 
   test "upgrade names from the RSI hangar resolve to ships" do
