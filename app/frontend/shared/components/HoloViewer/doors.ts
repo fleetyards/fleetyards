@@ -18,10 +18,17 @@ export type HoloDoorKeyframe = {
 
 // A door of the holo, drawn closed. Each keyframe moves a part rigidly in the
 // holo's frame, applied over where the part sits closed.
+type DoorBox = { center: number[]; axes: number[][]; halfSize: number[] };
+
 export type HoloDoor = {
   id: string;
   durationS: number;
-  bounds?: { center: number[]; axes: number[][]; halfSize: number[] } | null;
+  // Around every moving part, hidden ones too.
+  bounds?: DoorBox | null;
+  // Around only what shows from outside, and the hull nodes that make that up:
+  // what the pointer finds the door by and what lights up.
+  outline?: DoorBox | null;
+  outlineNodes?: string[];
   parts: { part: number; object: string; keyframes: HoloDoorKeyframe[] }[];
 };
 
@@ -46,13 +53,14 @@ export const DOOR_COLOR = "#9cf0b0";
 const closedPoses = new WeakMap<Object3D, Matrix4>();
 
 const TARGET_OPACITY = 0.28;
+const MARK_OPACITY = 0.45;
 const RENDER_ORDER = 12;
 
 export const doorsLayoutKey = (doors: HoloDoor[] = []): string =>
   doors
     .map(
       (door) =>
-        `${door.id}:${door.parts.map((part) => `${part.part}/${part.object}/${part.keyframes.length}`).join(",")}`,
+        `${door.id}:${door.parts.map((part) => `${part.part}/${part.object}/${part.keyframes.length}`).join(",")}:${(door.outlineNodes ?? []).join("+")}`,
     )
     .join(";");
 
@@ -153,14 +161,16 @@ export const poseDoor = (bound: BoundDoor, amount: number) => {
   }
 };
 
-// Click targets around the closed doors, drawn only while pointed at.
+// Click targets around the closed doors, drawn only while pointed at: around
+// what shows of a door where the export says, around all of it otherwise.
 export const buildDoorTargets = (doors: HoloDoor[]) => {
   const root = new Group();
 
   for (const door of doors) {
-    if (!door.bounds) continue;
+    const box = door.outline ?? door.bounds;
+    if (!box) continue;
 
-    const { center, axes, halfSize } = door.bounds;
+    const { center, axes, halfSize } = box;
     const target = new Mesh(
       new BoxGeometry(halfSize[0] * 2, halfSize[1] * 2, halfSize[2] * 2),
       new MeshBasicMaterial({
@@ -188,11 +198,90 @@ export const buildDoorTargets = (doors: HoloDoor[]) => {
   return root;
 };
 
-export const pointDoorTarget = (root: Object3D, id?: string) => {
-  for (const child of root.children) {
-    ((child as Mesh).material as MeshBasicMaterial).visible =
-      child.userData.doorId === id;
+// A tinted copy over each mesh of a door's visible nodes, moving with them.
+export type DoorMarks = Map<
+  string,
+  Mesh<Mesh["geometry"], MeshBasicMaterial>[]
+>;
+
+export const markDoors = (scene: Object3D, doors: HoloDoor[]): DoorMarks => {
+  const marks: DoorMarks = new Map();
+
+  for (const door of doors) {
+    const meshes: Mesh[] = [];
+
+    for (const name of door.outlineNodes ?? []) {
+      scene
+        .getObjectByName(PropertyBinding.sanitizeNodeName(name))
+        ?.traverse((child) => {
+          const mesh = child as Mesh;
+          if (
+            mesh.isMesh &&
+            !mesh.userData.overlay &&
+            !mesh.userData.wire &&
+            !mesh.userData.depth
+          ) {
+            meshes.push(mesh);
+          }
+        });
+    }
+
+    if (!meshes.length) continue;
+
+    marks.set(
+      door.id,
+      meshes.map((mesh) => {
+        const mark = new Mesh(
+          mesh.geometry,
+          new MeshBasicMaterial({
+            color: DOOR_COLOR,
+            transparent: true,
+            opacity: MARK_OPACITY,
+            depthTest: false,
+            depthWrite: false,
+          }),
+        );
+        mark.userData.overlay = true;
+        mark.renderOrder = RENDER_ORDER;
+        mark.visible = false;
+        mesh.add(mark);
+
+        return mark;
+      }),
+    );
   }
+
+  return marks;
+};
+
+export const unmarkDoors = (marks: DoorMarks) => {
+  marks.forEach((list) =>
+    list.forEach((mark) => {
+      mark.removeFromParent();
+      mark.material.dispose();
+    }),
+  );
+  marks.clear();
+};
+
+// The pointed door lit up by its own meshes where they are known, by its box
+// otherwise.
+export const pointDoorTarget = (
+  root: Object3D,
+  id?: string,
+  marks: DoorMarks = new Map(),
+) => {
+  for (const child of root.children) {
+    const doorId = child.userData.doorId;
+    ((child as Mesh).material as MeshBasicMaterial).visible =
+      doorId === id && !marks.has(doorId);
+  }
+
+  marks.forEach((list, doorId) =>
+    list.forEach((mark) => {
+      mark.visible = doorId === id;
+    }),
+  );
 };
 
 export const disposeDoorTargets = (root: Object3D) => {

@@ -104,8 +104,11 @@ import {
   buildDoorTargets,
   disposeDoorTargets,
   doorsLayoutKey,
+  type DoorMarks,
+  markDoors,
   pointDoorTarget,
   poseDoor,
+  unmarkDoors,
 } from "../doors";
 import {
   builtInsKey,
@@ -654,6 +657,7 @@ onUnmounted(() => {
   if (boxRoot) disposeBoxes(boxRoot);
   if (cargoRoot) disposeCargo(cargoRoot);
   if (doorTargets) disposeDoorTargets(doorTargets);
+  unmarkDoors(doorMarks);
   unmarkBuiltIns(builtInMarks);
   if (pedestal) disposePedestal(pedestal);
   // The body model is cached for the next viewer: it gets its own head back.
@@ -835,6 +839,7 @@ const placeCargo = (scene: Group) => {
 // The hull's own door parts, posed by how far each door stands open.
 let boundDoors: BoundDoor[] = [];
 let doorTargets: Group | undefined;
+const doorMarks: DoorMarks = new Map();
 const doorTweens = new Map<string, Tween>();
 
 const placeDoors = (scene: Group) => {
@@ -846,14 +851,20 @@ const placeDoors = (scene: Group) => {
     scene.remove(doorTargets);
     disposeDoorTargets(doorTargets);
   }
+  unmarkDoors(doorMarks);
 
   const doors = props.model.doors ?? [];
   boundDoors = bindDoors(scene, doors);
+  // Every door answers the pointer, one that cannot move as well: a ladder or
+  // a canopy is still an entrance to point out.
   doorTargets =
-    boundDoors.length && props.model.doorTargets !== false
-      ? buildDoorTargets(boundDoors.map((bound) => bound.door))
+    doors.length && props.model.doorTargets !== false
+      ? buildDoorTargets(doors)
       : undefined;
-  if (doorTargets) scene.add(doorTargets);
+  if (doorTargets) {
+    scene.add(doorTargets);
+    markDoors(scene, doors).forEach((list, id) => doorMarks.set(id, list));
+  }
 
   for (const bound of boundDoors) {
     const tween: Tween = {
@@ -1366,6 +1377,7 @@ const pointDoor = (id: string | undefined) => {
     pointDoorTarget(
       doorTargets,
       props.model.doorHighlight === false ? undefined : id,
+      doorMarks,
     );
   }
   invalidate();

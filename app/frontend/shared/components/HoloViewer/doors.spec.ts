@@ -1,6 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { BoxGeometry, Group, Mesh, Quaternion, Vector3 } from "three";
-import { bindDoors, buildDoorTargets, type HoloDoor, poseDoor } from "./doors";
+import {
+  BoxGeometry,
+  Group,
+  Mesh,
+  type MeshBasicMaterial,
+  Quaternion,
+  Vector3,
+} from "three";
+import {
+  bindDoors,
+  buildDoorTargets,
+  type HoloDoor,
+  markDoors,
+  pointDoorTarget,
+  poseDoor,
+  unmarkDoors,
+} from "./doors";
 
 // The Prospector's rear hatch: a door part hinged 130 degrees about x at its
 // pivot, under a parent node that is itself offset in the hull.
@@ -179,5 +194,53 @@ describe("doors", () => {
     expect(targets.children).toHaveLength(1);
     expect(targets.children[0].userData.doorId).toBe("hardpoint_door_rear");
     expect(targets.children[0].position.toArray()).toEqual([0, -0.77, 10.73]);
+  });
+
+  it("is pointed at by what shows of it, where the export outlines that", () => {
+    const outlined: HoloDoor = {
+      ...hatch,
+      outline: {
+        center: [0, -0.6, 10.7],
+        axes: hatch.bounds!.axes,
+        halfSize: [1.9, 1.0, 0.4],
+      },
+    };
+
+    const [target] = buildDoorTargets([outlined])
+      .children as Mesh<BoxGeometry>[];
+
+    expect(target.position.toArray()).toEqual([0, -0.6, 10.7]);
+    expect(target.geometry.parameters.depth).toBeCloseTo(0.8);
+  });
+
+  it("lights up the door's own meshes, not its box, where it names them", () => {
+    const { scene } = hull();
+    const outlined = { ...hatch, outlineNodes: ["door_hardpoint_door_rear_1"] };
+    const targets = buildDoorTargets([outlined]);
+    const marks = markDoors(scene, [outlined]);
+    const [mark] = marks.get("hardpoint_door_rear") ?? [];
+
+    pointDoorTarget(targets, "hardpoint_door_rear", marks);
+
+    expect(mark.visible).toBe(true);
+    expect(
+      ((targets.children[0] as Mesh).material as MeshBasicMaterial).visible,
+    ).toBe(false);
+
+    pointDoorTarget(targets, undefined, marks);
+    expect(mark.visible).toBe(false);
+
+    unmarkDoors(marks);
+    expect(mark.parent).toBeNull();
+  });
+
+  it("still shows the box for a door it has no meshes of", () => {
+    const targets = buildDoorTargets([hatch]);
+
+    pointDoorTarget(targets, "hardpoint_door_rear", new Map());
+
+    expect(
+      ((targets.children[0] as Mesh).material as MeshBasicMaterial).visible,
+    ).toBe(true);
   });
 });
