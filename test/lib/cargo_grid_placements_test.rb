@@ -49,6 +49,15 @@ class CargoGridPlacementsTest < ActiveSupport::TestCase
     end
   end
 
+  test "names a grid on a nested port as its hold is named" do
+    placements = CargoGridPlacements.call([
+      grid("cargo_grid", position: [0.0, -1.68, 4.74]).merge("parentPort" => "hardpoint_lift"),
+      grid("hardpoint_cargo_grid_left", position: [-10.1, -0.5, 4.5]).merge("parentPort" => nil)
+    ])
+
+    assert_equal %w[hardpoint_cargo_grid_left hardpoint_lift-cargo_grid], placements.keys.sort
+  end
+
   test "places nothing for an export without grids" do
     assert_empty CargoGridPlacements.call(nil)
     assert_empty CargoGridPlacements.call([])

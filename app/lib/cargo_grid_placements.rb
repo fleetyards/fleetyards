@@ -26,7 +26,7 @@ class CargoGridPlacements
     @grids = Array(grids)
   end
 
-  # {grid name => {"offset" => {"x", "y", "z"}, "rotation" => 270 or nil}}
+  # {hold name => {"offset" => {"x", "y", "z"}, "rotation" => 270 or nil}}
   def call
     placements = @grids.map { |grid| placement(grid) }
     return {} if placements.empty? || placements.any?(&:nil?)
@@ -63,7 +63,14 @@ class CargoGridPlacements
 
     offset = %w[x y z].each_with_index.to_h { |axis, index| [axis, (centre[index] - extent[index] / 2.0).round(3)] }
 
-    [grid["name"], {"offset" => offset, "rotation" => (across ? 270 : nil)}]
+    [hold_name(grid), {"offset" => offset, "rotation" => (across ? 270 : nil)}]
+  end
+
+  # The hold a grid on a nested port is loaded as carries its parent port's
+  # name in front, as `hardpoint_lift-cargo_grid`.
+  private def hold_name(grid)
+    parent = grid["parentPort"]
+    (parent.is_a?(String) && parent.present?) ? "#{parent}-#{grid["name"]}" : grid["name"]
   end
 
   private def normalize(angle)
