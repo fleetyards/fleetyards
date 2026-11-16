@@ -96,6 +96,18 @@ module ScData
         assert_nil parsed_item("rsi_apollo_module_left_tier_2")["medical_beds"]
       end
 
+      test "files a module named as a cosmetic part under body kits" do
+        write_item("grey_shiv_cosmetic_front_a", name: "@item_NameMODU_GREY_Shiv_Cosmetic_Nose_SetA", category: "module", type: "Module")
+
+        assert_equal "bodykit", parsed_item("grey_shiv_cosmetic_front_a")["category"]
+      end
+
+      test "keeps a module whose name is not a cosmetic part a module" do
+        write_item("rsi_aurora_mk2_module_cargo", name: "@item_NameRSI_Aurora_Mk2_Module_Cargo", category: "module", type: "Module")
+
+        assert_equal "module", parsed_item("rsi_aurora_mk2_module_cargo")["category"]
+      end
+
       private def parsed
         @parsed ||= begin
           @parser.all

@@ -2525,7 +2525,8 @@
           "seat": "Sedili",
           "thrusters": "Propulsori",
           "bombcompartments": "Vani bombe",
-          "paints": "Verniciature"
+          "paints": "Verniciature",
+          "bodykit": "Body kit"
         },
         "name": "Nome",
         "category": "Categoria",

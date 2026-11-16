@@ -2525,7 +2525,8 @@
           "seat": "Seats",
           "thrusters": "Thrusters",
           "bombcompartments": "Bomb Compartments",
-          "paints": "Paints"
+          "paints": "Paints",
+          "bodykit": "Body Kits"
         },
         "name": "Name",
         "category": "Category",

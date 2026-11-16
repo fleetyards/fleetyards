@@ -2525,7 +2525,8 @@
           "seat": "座位",
           "thrusters": "推進器",
           "bombcompartments": "炸彈艙",
-          "paints": "塗裝"
+          "paints": "塗裝",
+          "bodykit": "車身套件"
         },
         "name": "名稱",
         "category": "分類",

@@ -129,7 +129,7 @@ class Hardpoint < ApplicationRecord
     mining_lasers: 65, mining_modules: 66, salvage_heads: 67, salvage_modules: 68, tractor_beams: 69,
     seat: 70,
     relay: 80,
-    paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
+    paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94, bodykit: 95,
     unknown: 999
   }.freeze
 
@@ -226,7 +226,7 @@ class Hardpoint < ApplicationRecord
       :weapon
     when "fueltanks", "fuel_intakes", "quantumdrive"
       :propulsion
-    when "cargogrid"
+    when "cargogrid", "bodykit"
       :other
     when "module"
       :module

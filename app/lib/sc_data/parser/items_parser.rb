@@ -173,6 +173,15 @@ module ScData
         ]
       end
 
+      # Body kits are swappable Module parts that change only a ship's looks.
+      # Their records carry no marker of their own, but CIG names them all
+      # `MODU_<manufacturer>_<ship>_Cosmetic_…` in the localization keys, and
+      # those keys are the only thing setting them apart from real modules.
+      private def bodykit?(values)
+        values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "Name")
+          .to_s.match?(/_Cosmetic_/i)
+      end
+
       private def parse_item(key, values, category)
         return unless values.dig("Components").present?
         # The key filter is there for cameras, lights and screens fitted into a
@@ -187,6 +196,7 @@ module ScData
         # Only AttachDef Type == "Module" entries are user-swappable; drop the
         # rest down to :unknown so they don't surface as module slots.
         category = "unknown" if category == "module" && type != "Module"
+        category = "bodykit" if category == "module" && bodykit?(values)
 
         # Split here for the two readers below that want the list; the stored
         # field normalizes the raw value itself. Handing this array to
