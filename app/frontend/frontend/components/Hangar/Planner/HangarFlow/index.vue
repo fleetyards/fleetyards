@@ -652,7 +652,7 @@ const neededRows = computed<Row[]>(() => {
           detail: gapDetail(slot),
         },
         right: {
-          title: `${gap.count} × ${gap.model.name}`,
+          title: gap.model.name,
           sub: gap.label,
           model: gap.model,
           tone: "warning",
