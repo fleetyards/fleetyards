@@ -174,9 +174,59 @@ describe("Hangar/Planner/chain", () => {
         spliceHeld("Cutlass", steps, held("Aurora", "Avenger"), "Mole", ctx),
       ).toBeUndefined();
     });
+
+    it("finishes a route that would stop short of the target with a store upgrade", () => {
+      expect(
+        route(
+          spliceHeld(
+            "Aurora",
+            [store("Cutlass")],
+            held("Cutlass", "Taurus"),
+            "Mole",
+            ctx,
+          )!,
+        ),
+      ).toEqual(["store:Cutlass", "owned_ccu:Taurus", "store:Mole"]);
+    });
+
+    it("offers nothing that would drop a held upgrade the route already spends", () => {
+      const steps = [store("Cutlass"), owned("Cutlass", "Merchantman")];
+
+      expect(
+        spliceHeld(
+          "Aurora",
+          steps,
+          held("Aurora", "Taurus"),
+          "Merchantman",
+          ctx,
+        ),
+      ).toBeUndefined();
+    });
+
+    it("offers nothing while a stop in the middle is still being picked", () => {
+      const pending = { ...store("Cutlass"), toModelId: null };
+
+      expect(
+        spliceHeld(
+          "Aurora",
+          [pending, store("Mole")],
+          held("Aurora", "Avenger"),
+          "Mole",
+          ctx,
+        ),
+      ).toBeUndefined();
+    });
   });
 
   describe("reattach", () => {
+    it("ends the route once it reaches the target", () => {
+      const steps = [store("Cutlass"), store("Taurus")];
+
+      expect(
+        reattach("Taurus", tailOf("Aurora", steps, 1), ctx, "Taurus"),
+      ).toEqual([]);
+    });
+
     it("keeps the steps after a changed one that still connect", () => {
       const steps = [store("Cutlass"), store("Taurus"), store("Mole")];
 

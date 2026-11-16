@@ -61,12 +61,16 @@ export const tailOf = <S extends ChainStep>(
 // another ship. The first step that can still follow keeps it and everything
 // after it: one that starts there anyway, a store upgrade to a dearer ship, or
 // a held upgrade a store upgrade can bridge to. Steps before it are passed over,
-// and with none that can follow the route stops here.
+// and with none that can follow, or once the route has reached its target, the
+// route stops here.
 export const reattach = <S extends ChainStep>(
   end: string,
   tail: TailEntry<S>[],
   ctx: ChainContext<S>,
+  target?: string,
 ): S[] => {
+  if (end === target) return [];
+
   for (let index = 0; index < tail.length; index++) {
     const { step, from } = tail[index];
     const rest = tail.slice(index + 1).map((entry) => entry.step);
@@ -95,8 +99,11 @@ export type HeldUpgrade<S> = { step: S; from: string; to: string };
 
 // A held upgrade goes in after the last stop it can follow, with a store
 // upgrade in front of it when that stop is not the ship it starts from. The
-// steps it passes over make way for it. Undefined when the route has no stop it
-// can follow, or it leads somewhere the target cannot be reached from.
+// store steps it passes over make way for it, and a store upgrade finishes a
+// route that would otherwise stop short of the target. Undefined when the route
+// has no stop it can follow, when it leads somewhere the target cannot be
+// reached from, or when it would drop a held upgrade or a stop still being
+// picked.
 export const spliceHeld = <S extends ChainStep>(
   start: string,
   steps: S[],
@@ -105,6 +112,14 @@ export const spliceHeld = <S extends ChainStep>(
   ctx: ChainContext<S>,
 ): S[] | undefined => {
   if (held.to !== target && !storeLeads(ctx, held.to, target)) return undefined;
+
+  const pendingStop = steps.findIndex((step) => !step.toModelId);
+  if (
+    pendingStop >= 0 &&
+    steps.slice(pendingStop + 1).some((step) => !!step.toModelId)
+  ) {
+    return undefined;
+  }
 
   const stops = [start, ...steps.map((step) => step.toModelId)];
   let after = -1;
@@ -117,10 +132,21 @@ export const spliceHeld = <S extends ChainStep>(
 
   const bridge = stops[after] === held.from ? [] : [ctx.storeStep(held.from)];
 
-  return [
+  const spliced = [
     ...steps.slice(0, after),
     ...bridge,
     held.step,
-    ...reattach(held.to, tailOf(start, steps, after), ctx),
+    ...reattach(held.to, tailOf(start, steps, after), ctx, target),
   ];
+
+  const dropsHeld = steps.some(
+    (step) => !isStore(step) && step.toModelId && !spliced.includes(step),
+  );
+  if (dropsHeld) return undefined;
+
+  const end = spliced[spliced.length - 1].toModelId;
+  if (end === target) return spliced;
+  if (!storeLeads(ctx, end, target)) return undefined;
+
+  return [...spliced, ctx.storeStep(target)];
 };
