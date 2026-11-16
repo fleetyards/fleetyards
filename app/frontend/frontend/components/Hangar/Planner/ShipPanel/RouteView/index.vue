@@ -439,8 +439,10 @@ const listedUpgrades = (step: StepDraft, index: number) =>
     ? heldUpgrades(step).filter((option) => belowTargetId(option.toId))
     : fittingUpgrades(step, index);
 
-const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
-  key: stepKey++,
+// A step built only to try a change out has no key yet; it gets one when the
+// change is made.
+const blank = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
+  key: -1,
   sourceKind,
   toModelId: null,
   hangarPledgeItemId: null,
@@ -448,6 +450,14 @@ const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
   priceOverride: "",
   usesBuybackToken: true,
 });
+
+const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
+  ...blank(sourceKind),
+  key: stepKey++,
+});
+
+const keyed = (list: StepDraft[]) =>
+  list.map((step) => (step.key < 0 ? { ...step, key: stepKey++ } : step));
 
 const heldFromId = (step: StepDraft) => {
   if (step.hangarPledgeItemId) {
@@ -467,7 +477,7 @@ const chain: ChainContext<StepDraft> = {
   model: (id) => models.value.get(id),
   heldFrom: heldFromId,
   storeStep: (toModelId) => ({
-    ...draft(HangarPlanUpgradeSourceEnum.STORE),
+    ...blank(HangarPlanUpgradeSourceEnum.STORE),
     toModelId,
   }),
   restart: (step) => ({ ...step, priceOverride: "", price: undefined }),
@@ -476,18 +486,21 @@ const chain: ChainContext<StepDraft> = {
 const restOf = (
   tail: ReturnType<typeof tailOf<StepDraft>>,
   end?: string | null,
-) => (end ? reattach(end, tail, chain) : tail.map((entry) => entry.step));
+) =>
+  end
+    ? reattach(end, tail, chain, target.value.id)
+    : tail.map((entry) => entry.step);
 
 // The steps after a changed one keep what still connects to where it now ends;
 // while it ends nowhere yet they stay as they are.
 const replaceStep = (index: number, next: StepDraft) => {
   const tail = tailOf(startModel.value, steps.value, index + 1);
 
-  steps.value = [
+  steps.value = keyed([
     ...steps.value.slice(0, index),
     next,
     ...restOf(tail, next.toModelId),
-  ];
+  ]);
 };
 
 const setSource = (index: number, sourceKind: HangarPlanUpgradeSourceEnum) => {
@@ -535,7 +548,7 @@ const heldStep = (option: UpgradeOption): StepDraft => {
   const owned = option.sourceKind === HangarPlanUpgradeSourceEnum.OWNED_CCU;
 
   return {
-    ...draft(option.sourceKind),
+    ...blank(option.sourceKind),
     toModelId: option.toId ?? null,
     hangarPledgeItemId: owned ? option.id : null,
     buybackPledgeId: owned ? null : option.id,
@@ -642,7 +655,7 @@ const fittingHeld = computed(() => {
 const putHeld = (item: PickListItem) => {
   const option = fittingHeld.value.find((entry) => entry.id === item.id);
   const spliced = option && splice(option);
-  if (spliced) steps.value = spliced;
+  if (spliced) steps.value = keyed(spliced);
 };
 
 // The last upgrade is what reaches the target, so it can be changed but not
@@ -654,10 +667,10 @@ const removeStep = (key: number) => {
   const index = steps.value.findIndex((step) => step.key === key);
   const tail = tailOf(startModel.value, steps.value, index + 1);
 
-  steps.value = [
+  steps.value = keyed([
     ...steps.value.slice(0, index),
     ...restOf(tail, stepFromId(index)),
-  ];
+  ]);
 };
 
 const toPrice = (value: string) => (value === "" ? null : Number(value));
