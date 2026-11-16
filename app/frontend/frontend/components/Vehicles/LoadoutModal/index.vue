@@ -165,6 +165,10 @@ const loadoutPending = computed(
   () => props.editable && !props.newLoadout && loadoutsPending.value,
 );
 
+// The modules the ship comes with, by slot, once its module list is in: a
+// slot the loadout fits nothing in holds its stock module, as the ship does.
+const stockModuleSlots = ref<Record<string, string>>({});
+
 const savedValues = (): LoadoutValues => {
   const { modules, components, crafted } = loadoutValues(
     editedLoadout.value?.items,
@@ -179,7 +183,7 @@ const savedValues = (): LoadoutValues => {
       (!!props.vehicle.public && !props.vehicle.activeLoadout),
     loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
     linkUrl: editedLoadout.value?.url ?? "",
-    fittedModules: modules,
+    fittedModules: { ...stockModuleSlots.value, ...modules },
     fittedComponents: components,
     craftedComponents: crafted,
   };
@@ -284,6 +288,17 @@ const { data: modulesData, ...modulesAsyncStatus } =
 
 const modules = computed(() => modulesData.value?.items ?? []);
 
+// At once too: a module list already cached when the modal opens never
+// changes, and its first values were taken before it was read.
+watch(
+  modules,
+  (list) => {
+    stockModuleSlots.value = stockModuleValues(list);
+    if (!changed.value) resetForm({ values: savedValues() });
+  },
+  { immediate: true },
+);
+
 const flightReady = computed(
   () =>
     model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
@@ -350,6 +365,9 @@ const cartItems = computed(() => nonStockFittedItems(componentTree.value));
 const previewSlots = computed(() =>
   previewSlotsFromFitting(componentTree.value, [
     ...(activeKind.value === "component" ? activeMembers.value : []),
+    ...(activeKind.value === "module" && activeSlot.value
+      ? [activeSlot.value]
+      : []),
     ...pointedMembers.value,
   ]),
 );
@@ -825,16 +843,31 @@ const socketForPath = (path: string) => {
   return undefined;
 };
 
+// A module's hull on the holo stands for its slot on the modules tab.
+const moduleSocketFor = (path: string) =>
+  slots.value.includes(path)
+    ? { tabId: VehicleLoadoutTabsEnum.MODULES as string, slotId: path }
+    : undefined;
+
 const onPreviewPoint = (path: string | undefined) => {
-  pointedSocket.value = path ? socketForPath(path) : undefined;
+  pointedSocket.value = path
+    ? (socketForPath(path) ?? moduleSocketFor(path))
+    : undefined;
 };
 
 const onPreviewSelect = (path: string) => {
   const socket = socketForPath(path);
-  if (!socket) return;
+  if (socket) {
+    pickedTab.value = socket.tabId;
+    void onSocketSelect(socket.slotId, "component", socket.tabId);
+    return;
+  }
 
-  pickedTab.value = socket.tabId;
-  void onSocketSelect(socket.slotId, "component", socket.tabId);
+  const moduleSocket = moduleSocketFor(path);
+  if (!moduleSocket || !props.editable) return;
+
+  pickedTab.value = moduleSocket.tabId;
+  void onSocketSelect(moduleSocket.slotId, "module");
 };
 
 const onCraft = async (slot: string, tabId: string) => {
