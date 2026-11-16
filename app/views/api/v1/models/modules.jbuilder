@@ -9,7 +9,7 @@ json.items do
     # pictures change without touching either. The locale, because the
     # hardpoints' components carry translated labels.
     json.cache! [
-      "v7", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), component_key, Manufacturer.artwork_version
+      "v8", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), component_key, Manufacturer.artwork_version
     ] do
       json.partial!("api/v1/model_modules/base", model_module:)
     end
