@@ -362,6 +362,31 @@ module ScData
         assert_empty ModelModule.all
       end
 
+      test "#discover_modules offers only modules in a mixed slot that names no tag" do
+        model = create(:model)
+        create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_weapon_center",
+          types: %w[Turret Module], min_size: 3, max_size: 3)
+        create(:component, sc_key: "TEST_Ship_Cargo_Mod", component_type: "Module", category: "module", size: "3",
+          version: ::ScData::Source.version)
+        create(:component, sc_key: "OTHER_Ship_Ball_Turret", component_type: "Turret", category: "weapon_mounts", size: "3",
+          version: ::ScData::Source.version)
+
+        discover
+
+        assert_equal %w[TEST_Ship_Cargo_Mod], model.modules.pluck(:sc_key)
+      end
+
+      # The game fits it there, whatever the tags say.
+      test "#discover_modules offers the part a slot comes with" do
+        model = create(:model)
+        stock = module_part("TEST_Ship_Module_Stock", tag: "TEST_Variant_Module")
+        module_slot(model, stock:)
+
+        discover
+
+        assert_equal %w[TEST_Ship_Module_Stock], model.modules.pluck(:sc_key)
+      end
+
       test "#discover_modules leaves a slot that takes no module alone" do
         model = create(:model)
         module_slot(model, name: "hardpoint_turret", types: ["Turret"], tag: "TEST_Center")

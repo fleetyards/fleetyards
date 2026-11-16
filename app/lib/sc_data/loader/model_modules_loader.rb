@@ -65,15 +65,24 @@ module ScData
           .where.not(sc_key: nil)
           .to_a
 
+        stock = facts.component
+        # A port that takes turrets as well as modules but names no tag would
+        # take every turret in the game; only a tag ties the other kinds of part
+        # to this ship.
+        other_kinds = Array(facts.required_tags).compact_blank.any?
+
         candidates[types].select do |component|
+          next false unless offered_module?(component)
+          next true if component.id == stock&.id
+          next false unless component.component_type == "Module" || other_kinds
+
           size = Integer(component.size, exception: false)
 
-          offered_module?(component) &&
-            !size.nil? &&
+          !size.nil? &&
             (facts.min_size.nil? || size >= facts.min_size) &&
             (facts.max_size.nil? || size <= facts.max_size) &&
             ::LoadoutSlots.sub_type_fits?(facts, component) &&
-            ::LoadoutSlots.tags_fit?(facts, component, facts.component, provided)
+            ::LoadoutSlots.tags_fit?(facts, component, stock, provided)
         end
       end
 
