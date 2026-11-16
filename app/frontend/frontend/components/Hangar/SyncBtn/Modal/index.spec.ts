@@ -165,10 +165,12 @@ let mounted: ReturnType<typeof mount> | undefined;
 
 const mountModal = async (
   identity: { handle?: string } = { handle: "ACaptain" },
+  props: { ccusOnly?: boolean } = {},
 ) => {
   rsiIdentity.mockResolvedValueOnce({ code: 200, payload: identity });
 
   const wrapper = mount(Component, {
+    props,
     global: {
       plugins: [createTestingPinia({ stubActions: false })],
       stubs: {
@@ -199,13 +201,13 @@ const hangarPage = (items: string) =>
   `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101"><input type="hidden" class="js-pledge-name" value="Package - Cutter Starter Pack">${items}</li></ul>`;
 
 // The modal waits half a second before it asks for the next page.
-const replyWithPage = async (items: string) => {
+const replyWithPage = async (items: string, action = "sync") => {
   vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 
   try {
     const sent = vi.mocked(window.postMessage).mock.calls.length;
 
-    extensionReplies("sync", hangarPage(items));
+    extensionReplies(action, hangarPage(items));
     await flushPromises();
 
     vi.advanceTimersByTime(500);
@@ -216,7 +218,7 @@ const replyWithPage = async (items: string) => {
     );
 
     extensionReplies(
-      "sync",
+      action,
       '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
     );
     await flushPromises();
@@ -820,6 +822,65 @@ describe("HangarSyncModal", () => {
       { data: Record<string, unknown> },
     ];
     expect(data).not.toHaveProperty("storeCredit");
+  });
+
+  describe("syncing only the CCUs", () => {
+    const answerHealth = (actions: string[]) =>
+      extensionAnswer.mockImplementation((action) =>
+        action === "health"
+          ? Promise.resolve({ code: 200, payload: { actions } })
+          : undefined,
+      );
+
+    afterEach(() => {
+      extensionAnswer.mockReset();
+    });
+
+    it("reads RSI's list of upgrades and submits a CCU sync, whatever the settings", async () => {
+      answerHealth(["sync", "syncUpgrades"]);
+      const { wrapper, hangarStore } = await mountModal(undefined, {
+        ccusOnly: true,
+      });
+      hangarStore.syncPaints = true;
+
+      expect(wrapper.find("[data-test='toggle-sync-settings']").exists()).toBe(
+        false,
+      );
+
+      await wrapper.find("[data-test='start-sync']").trigger("click");
+      await flushPromises();
+
+      const requested = vi
+        .mocked(window.postMessage)
+        .mock.calls.map(([message]) => (message as { message: string }).message)
+        .filter((message) => message.includes('"page"'));
+      expect(requested.at(-1)).toContain('"action":"syncUpgrades"');
+
+      await replyWithPage(
+        '<div class="item"><div class="title">Upgrade - Aurora MR to Cutlass Black</div><div class="kind">Upgrade</div></div>',
+        "syncUpgrades",
+      );
+
+      expect(lastRead).not.toHaveBeenCalled();
+      const [{ data }] = mutateAsync.mock.calls.at(-1) as [
+        { data: Record<string, unknown> },
+      ];
+      expect(data).toMatchObject({ syncScope: "ccus", syncCcus: true });
+      expect(data).not.toHaveProperty("syncPaints");
+      expect(data).not.toHaveProperty("unmatchedVehiclesAction");
+    });
+
+    it("asks for an extension update when it cannot read the upgrades alone", async () => {
+      answerHealth(["sync"]);
+      const { wrapper } = await mountModal(undefined, { ccusOnly: true });
+
+      expect(
+        wrapper.find("[data-test='sync-ccus-needs-update']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='start-sync']").attributes("disabled"),
+      ).toBeDefined();
+    });
   });
 
   it("submits each pledge with the hangar page it was read from", async () => {

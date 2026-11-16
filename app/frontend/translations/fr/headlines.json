@@ -268,6 +268,7 @@
       },
       "buybackSync": "Synchroniser les pledges rachetables RSI",
       "syncExtension": "Synchroniser le hangar RSI",
+      "syncCcus": "Synchroniser les CCU",
       "editMyVehicle": "Éditer mon %{vehicle}",
       "vehicleLoadout": "Configuration pour %{vehicle}",
       "nameMyVehicle": "Nommer mon %{vehicle}",

@@ -25,12 +25,15 @@ type Props = {
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
   loading?: boolean;
+  // Syncs only the CCUs, from RSI's list of upgrades.
+  ccusOnly?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   variant: undefined,
   size: undefined,
   loading: false,
+  ccusOnly: false,
 });
 
 const { t } = useI18n();
@@ -45,7 +48,7 @@ onMounted(async () => {
 
   checkExtension();
 
-  if (route.query.openSync) {
+  if (route.query.openSync && !props.ccusOnly) {
     await router.replace({
       name: "hangar",
       query: { ...route.query, openSync: undefined },
@@ -92,6 +95,7 @@ const openModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Hangar/SyncBtn/Modal/index.vue"),
+    props: { ccusOnly: props.ccusOnly },
   });
 };
 </script>
@@ -101,13 +105,14 @@ const openModal = () => {
     v-if="!mobile"
     :size="size"
     :variant="variant"
-    :aria-label="t('actions.import')"
+    :aria-label="ccusOnly ? t('actions.syncCcus') : t('actions.import')"
     :loading="loading"
+    :data-test="ccusOnly ? 'sync-ccus' : undefined"
     @click="openModal"
   >
     <i class="fa-light fa-sync" />
     <span>
-      {{ t("actions.syncRsiHangar") }}
+      {{ ccusOnly ? t("actions.syncCcus") : t("actions.syncRsiHangar") }}
     </span>
   </Btn>
 </template>

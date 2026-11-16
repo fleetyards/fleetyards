@@ -366,7 +366,9 @@
         "unmatched": "Alles andere wurde synchronisiert. Nichts von dem unten Aufgeführten wurde deinem Hangar hinzugefügt.",
         "partialFailure": "Einige Änderungen sind möglicherweise schon in deinem Hangar. Ein erneuter Versuch ist sicher: Bereits synchronisierte Schiffe werden wieder zugeordnet, nicht doppelt hinzugefügt.",
         "pointMatch": "Findet die Schiffe aus deinem RSI-Hangar, die schon hier sind, anhand von Name und Pledge-ID.",
-        "pointAdd": "Fügt die hinzu, die noch nicht hier sind."
+        "pointAdd": "Fügt die hinzu, die noch nicht hier sind.",
+        "pointCcusOnly": "Liest nur die Upgrades aus deinem RSI-Hangar und aktualisiert deine CCUs. Schiffe und alle anderen Gegenstände bleiben, wie sie sind.",
+        "ccusNeedUpdate": "Deine Sync-Erweiterung kann die Upgrades noch nicht einzeln lesen. Aktualisiere sie, um deine CCUs hier zu synchronisieren."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
       "oauthApplications": {

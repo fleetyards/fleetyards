@@ -169,6 +169,7 @@
       "unlink": "取消連結",
       "syncRsiBuybacks": "同步 RSI 回購",
       "syncRsiHangar": "同步RSI機庫",
+      "syncCcus": "同步CCU",
       "oauthApplications": {
         "create": "新增應用程式",
         "regenerateSecret": "重新產生密鑰",
