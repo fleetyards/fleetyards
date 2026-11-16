@@ -506,7 +506,6 @@ describe("Hangar/Planner/HangarFlow", () => {
               slotId: "Explorer",
               label: "Explorer",
               model: carrack,
-              count: 1,
             },
           ],
         },
@@ -555,7 +554,7 @@ describe("Hangar/Planner/HangarFlow", () => {
       comparison: {
         ...comparison,
         gaps: [
-          { slotId: "Explorer", label: "Explorer", model: carrack, count: 1 },
+          { slotId: "Explorer", label: "Explorer", model: carrack },
         ],
       },
     };

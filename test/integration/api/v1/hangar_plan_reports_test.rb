@@ -197,7 +197,7 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
       assert_equal({"Carrack" => "added", "Cutlass Black" => "unchanged"},
         parsed_body["models"].to_h { |diff| [diff.dig("model", "name"), diff["change"]] })
       assert_equal [1, 3], [parsed_body.dig("metrics", "live", "total"), parsed_body.dig("metrics", "plan", "total")]
-      assert_equal [1], parsed_body["gaps"].pluck("count")
+      assert_equal ["Carrack"], parsed_body["gaps"].map { |gap| gap.dig("model", "name") }
     end
   end
 
