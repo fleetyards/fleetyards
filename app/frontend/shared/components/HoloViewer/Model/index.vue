@@ -864,6 +864,7 @@ const placeDoors = (scene: Group) => {
   if (doorTargets) {
     scene.add(doorTargets);
     markDoors(scene, doors).forEach((list, id) => doorMarks.set(id, list));
+    paintDoors();
   }
 
   for (const bound of boundDoors) {
@@ -1369,18 +1370,24 @@ const pointBuiltIn = (id: string | undefined) => {
   emit("builtInPoint", id);
 };
 
+const paintDoors = () => {
+  if (doorTargets) {
+    const highlight = props.model.doorHighlight !== false;
+    pointDoorTarget(
+      doorTargets,
+      highlight ? pointedDoor : undefined,
+      doorMarks,
+      highlight && !!props.model.doorsMarked,
+    );
+  }
+  invalidate();
+};
+
 const pointDoor = (id: string | undefined) => {
   if (id === pointedDoor) return;
 
   pointedDoor = id;
-  if (doorTargets) {
-    pointDoorTarget(
-      doorTargets,
-      props.model.doorHighlight === false ? undefined : id,
-      doorMarks,
-    );
-  }
-  invalidate();
+  paintDoors();
   emit("doorPoint", id);
 };
 
@@ -1685,6 +1692,11 @@ watch(
 watch(
   () => (props.model.openDoors ?? []).join(","),
   () => openDoors(),
+);
+
+watch(
+  () => !!props.model.doorsMarked,
+  () => paintDoors(),
 );
 
 watch(

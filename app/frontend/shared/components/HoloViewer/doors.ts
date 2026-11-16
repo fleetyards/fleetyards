@@ -264,22 +264,23 @@ export const unmarkDoors = (marks: DoorMarks) => {
   marks.clear();
 };
 
-// The pointed door lit up by its own meshes where they are known, by its box
-// otherwise.
+// The pointed door, or every door, lit up by its own meshes where they are
+// known, by its box otherwise.
 export const pointDoorTarget = (
   root: Object3D,
   id?: string,
   marks: DoorMarks = new Map(),
+  all = false,
 ) => {
   for (const child of root.children) {
     const doorId = child.userData.doorId;
     ((child as Mesh).material as MeshBasicMaterial).visible =
-      doorId === id && !marks.has(doorId);
+      (all || doorId === id) && !marks.has(doorId);
   }
 
   marks.forEach((list, doorId) =>
     list.forEach((mark) => {
-      mark.visible = doorId === id;
+      mark.visible = all || doorId === id;
     }),
   );
 };

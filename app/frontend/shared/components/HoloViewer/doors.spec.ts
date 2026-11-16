@@ -234,6 +234,23 @@ describe("doors", () => {
     expect(mark.parent).toBeNull();
   });
 
+  it("lights up every door at once, by meshes or by box", () => {
+    const { scene } = hull();
+    const outlined = { ...hatch, outlineNodes: ["door_hardpoint_door_rear_1"] };
+    const ramp = { ...hatch, id: "hardpoint_door_ramp" };
+    const targets = buildDoorTargets([outlined, ramp]);
+    const marks = markDoors(scene, [outlined]);
+    const [mark] = marks.get("hardpoint_door_rear") ?? [];
+    const visible = (index: number) =>
+      ((targets.children[index] as Mesh).material as MeshBasicMaterial).visible;
+
+    pointDoorTarget(targets, undefined, marks, true);
+
+    expect(mark.visible).toBe(true);
+    expect(visible(0)).toBe(false);
+    expect(visible(1)).toBe(true);
+  });
+
   it("still shows the box for a door it has no meshes of", () => {
     const targets = buildDoorTargets([hatch]);
 

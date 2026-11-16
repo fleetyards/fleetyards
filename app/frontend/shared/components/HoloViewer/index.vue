@@ -99,6 +99,8 @@ export type HoloModel = {
   // on unless turned off.
   doorTargets?: boolean;
   doorHighlight?: boolean;
+  // Every door lit up at once, not only the pointed one.
+  doorsMarked?: boolean;
   // Items the holo keeps that are picked out on it, answering the pointer.
   builtIns?: HoloBuiltIn[];
   layers?: HoloLayers;

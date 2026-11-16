@@ -1635,11 +1635,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             data-test="vehicle-loadout-doors-toggle"
             @click="doorsOpen = !doorsOpen"
           >
-            <i
-              :class="
-                doorsOpen ? 'fa-solid fa-door-open' : 'fa-solid fa-door-closed'
-              "
-            />
+            <i class="fa-solid fa-arrows-left-right" />
           </Btn>
           <Btn
             variant="bare"
