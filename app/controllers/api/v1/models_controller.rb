@@ -272,6 +272,11 @@ module Api
           .pluck(:model_module_id, :slot)
           .to_h
         @stock_module_ids = ModuleHardpoint.stock_modules(model).values
+        # A module is a part in the game files: its holo is that part's.
+        module_keys = @model_modules.filter_map { |model_module| model_module.sc_key&.downcase }
+        @module_holos = Component.where("LOWER(sc_key) IN (?)", module_keys.presence || [""])
+          .joins(:holo_attachment).with_attached_holo
+          .index_by { |component| component.sc_key.downcase }
         @craftable_module_component_ids = module_component_ids(@model_modules) & craftable_component_ids
       end
 

@@ -588,6 +588,7 @@ export const useComponentFitting = () => {
         id: mod.id,
         name: mod.name,
         category: HardpointCategoryEnum.MODULE,
+        holoUrl: mod.holoUrl ?? undefined,
       });
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));

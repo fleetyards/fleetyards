@@ -47204,6 +47204,12 @@ components:
           type: boolean
           description: Whether the hull comes with this module from the factory. Present
             when fetched via a model's modules endpoint.
+        holoUrl:
+          type:
+          - string
+          - 'null'
+          description: The module's holo, with its origin on the slot it fits. Present
+            when fetched via a model's modules endpoint.
         hardpoints:
           type: array
           items:

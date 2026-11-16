@@ -332,6 +332,23 @@ describe("learnModules", () => {
     expect(fitting.components.value.shield.craftable).toBe(true);
     expect(fitting.components.value.cooler.craftable).toBe(false);
   });
+  it("knows a module by its holo, so the preview draws it in its slot", () => {
+    const fitting = useComponentFitting();
+    fitting.learnModules([
+      {
+        id: "cargo",
+        name: "Cargo Module",
+        slot: "hardpoint_module",
+        holoUrl: "https://example.test/cargo.glb",
+        hardpoints: [],
+      } as unknown as ModelModule,
+    ]);
+
+    expect(fitting.components.value.cargo.holoUrl).toBe(
+      "https://example.test/cargo.glb",
+    );
+  });
+
   it("carries a module part's catalogue slug to its row", () => {
     const fitting = useComponentFitting();
 
