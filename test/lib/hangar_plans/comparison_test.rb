@@ -118,6 +118,39 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal({melted.id => "melted", sibling.id => "melted"}, statuses)
   end
 
+  test "a ship melted while a slot brings in another of its model goes out and comes in" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.melts.create!(vehicle: melted)
+    slot_for(@carrack)
+
+    diff = HangarPlans::Comparison.new(@plan).models.sole
+
+    assert_equal [1, 1, "unchanged"], [diff.left_count, diff.right_count, diff.change]
+    assert_equal [1, 1], [diff.in_count, diff.out_count]
+  end
+
+  test "a route out of a ship counts the ship out and the slot's ship in" do
+    kept = create(:vehicle, user: @user, model: @cutlass)
+    upgraded = create(:vehicle, user: @user, model: @cutlass)
+    @plan.acquisitions.create!(candidate: slot_for(@cutlass), start_kind: "owned", source_vehicle: kept)
+    route = @plan.acquisitions.new(candidate: slot_for(@carrack), start_kind: "owned", source_vehicle: upgraded)
+    route.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)
+    route.save!
+
+    moves = HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, [diff.in_count, diff.out_count]] }
+
+    assert_equal({"Carrack" => [1, 0], "Cutlass Black" => [0, 1]}, moves)
+  end
+
+  test "a ship left out that fills a slot of its model neither comes in nor goes" do
+    create(:vehicle, user: @user, model: @cutlass)
+    slot_for(@cutlass)
+
+    diff = HangarPlans::Comparison.new(@plan).models.sole
+
+    assert_equal [1, 1, 0, 0], [diff.left_count, diff.right_count, diff.in_count, diff.out_count]
+  end
+
   test "decided slots without a route are gaps" do
     2.times { slot_for(@carrack) }
 

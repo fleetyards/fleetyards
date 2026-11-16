@@ -41154,12 +41154,22 @@ components:
           type: integer
         change:
           "$ref": "#/components/schemas/HangarPlanModelChangeEnum"
+        inCount:
+          type: integer
+          description: Ships of the model that come in, counted one by one rather
+            than net
+        outCount:
+          type: integer
+          description: Ships of the model that go, counted one by one rather than
+            net
       additionalProperties: false
       required:
       - model
       - leftCount
       - rightCount
       - change
+      - inCount
+      - outCount
       title: HangarPlanModelDiff
     HangarPlanNewVehicle:
       type: object

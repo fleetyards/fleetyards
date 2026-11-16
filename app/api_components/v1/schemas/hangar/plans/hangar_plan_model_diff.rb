@@ -14,10 +14,12 @@ module V1
               model: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
               leftCount: {type: :integer},
               rightCount: {type: :integer},
-              change: ::V1::Schemas::Enums::HangarPlanModelChangeEnum
+              change: ::V1::Schemas::Enums::HangarPlanModelChangeEnum,
+              inCount: {type: :integer, description: "Ships of the model that come in, counted one by one rather than net"},
+              outCount: {type: :integer, description: "Ships of the model that go, counted one by one rather than net"}
             },
             additionalProperties: false,
-            required: %w[model leftCount rightCount change]
+            required: %w[model leftCount rightCount change inCount outCount]
           })
         end
       end

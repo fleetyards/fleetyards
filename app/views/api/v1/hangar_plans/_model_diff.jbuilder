@@ -6,3 +6,5 @@ end
 json.left_count diff.left_count
 json.right_count diff.right_count
 json.change diff.change
+json.in_count diff.in_count
+json.out_count diff.out_count

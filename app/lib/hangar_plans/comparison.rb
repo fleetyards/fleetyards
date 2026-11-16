@@ -11,16 +11,20 @@ module HangarPlans
     LEAVING_STATUSES = %w[change unrouted].freeze
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
-    ModelDiff = Data.define(:model, :left_count, :right_count, :change)
+    # in_count and out_count count ships, not the net: a ship melted while a
+    # slot brings in another of its model is one of each.
+    ModelDiff = Data.define(:model, :left_count, :right_count, :change, :in_count, :out_count)
     Gap = Data.define(:slot, :model)
     # One ship of the hangar once the plan is carried out: a unit of a decided
     # slot, with the hangar ship that becomes it if one does, or a hangar ship
     # the plan leaves as it is.
     FleetEntry = Data.define(:model, :slot, :vehicle)
 
-    def self.diff(left_models, right_models)
+    def self.diff(left_models, right_models, moves: nil)
       left = left_models.group_by(&:id)
       right = right_models.group_by(&:id)
+      arriving = moves&.fetch(:in)&.map(&:id)&.tally
+      leaving = moves&.fetch(:out)&.map(&:id)&.tally
 
       (left.keys | right.keys).map do |id|
         model = (left[id] || right[id]).first
@@ -34,7 +38,11 @@ module HangarPlans
           else "unchanged"
           end
 
-        ModelDiff.new(model:, left_count:, right_count:, change:)
+        delta = right_count - left_count
+        in_count = arriving ? arriving.fetch(id, 0) : [delta, 0].max
+        out_count = leaving ? leaving.fetch(id, 0) : [-delta, 0].max
+
+        ModelDiff.new(model:, left_count:, right_count:, change:, in_count:, out_count:)
       end.sort_by { |diff| [diff.model.name.downcase, diff.model.id] }
     end
 
@@ -70,7 +78,20 @@ module HangarPlans
     end
 
     def models
-      self.class.diff(live_vehicles.map(&:model), after_models)
+      self.class.diff(live_vehicles.map(&:model), after_models, moves:)
+    end
+
+    # Ship by ship: a hangar ship goes when it is melted or a route turns it
+    # into another model, and a ship comes in for every slot unit no hangar
+    # ship of its model fills, and for every ship a bought-back pledge brings.
+    def moves
+      fleet
+      melted = vehicles.select { |entry| entry.status == "melted" }.map { |entry| entry.vehicle.model }
+      leaving = slot_entries.filter_map { |entry| entry.vehicle.model if entry.vehicle && entry.vehicle.model_id != entry.model.id }
+      arriving = slot_entries.reject { |entry| entry.vehicle&.model_id == entry.model.id }.map(&:model)
+      @filled_models.each { |model| arriving.delete_at(arriving.index { |entry| entry.id == model.id }) }
+
+      {in: arriving + @brought_models, out: melted + leaving}
     end
 
     def gaps
@@ -106,8 +127,10 @@ module HangarPlans
           open_units[model_id] -= 1
           true
         end
-        staying = left_out.reject { |vehicle| fills_open_unit.call(vehicle.model_id) }
+        staying, filling = left_out.partition { |vehicle| !fills_open_unit.call(vehicle.model_id) }
         brought = bundled_models.reject { |model| fills_open_unit.call(model.id) }
+        @filled_models = filling.map(&:model)
+        @brought_models = brought
 
         slot_entries + staying.map { |vehicle| FleetEntry.new(model: vehicle.model, slot: nil, vehicle:) } +
           brought.map { |model| FleetEntry.new(model:, slot: nil, vehicle: nil) }
@@ -120,6 +143,10 @@ module HangarPlans
 
     # The ship of each decided slot, by the hangar ship routed to it where one is.
     private def slot_entries
+      @slot_entries ||= slot_entries_for_decided
+    end
+
+    private def slot_entries_for_decided
       by_candidate = decided_routes.values.group_by(&:hangar_plan_candidate_id)
       vehicles_by_id = live_vehicles.index_by(&:id)
 
