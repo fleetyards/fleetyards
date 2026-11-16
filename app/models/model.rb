@@ -1181,7 +1181,13 @@ class Model < ApplicationRecord
 
     self.cargo = cargo_holds_capacity(holds_for_cargo)
 
-    update_cargo_holds_db if holds_for_cargo.present? && (fills_gap || cargo_holds_change_to_be_saved)
+    update_cargo_holds_db if holds_for_cargo.present? && (fills_gap || cargo_holds_change_to_be_saved || missing_cargo_hold_rows?)
+  end
+
+  # Holds in the column with no rows to show them: the cargo grid tool lists a
+  # ship by its rows, and the Liberator had none while its figure stood.
+  private def missing_cargo_hold_rows?
+    persisted? && !cargo_holds_db.exists?
   end
 
   # Once a ship flies and the game files know it, its cargo is what its holds
