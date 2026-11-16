@@ -41,6 +41,7 @@ import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
@@ -75,6 +76,23 @@ const { updatePlan } = useHangarPlanCache();
 const planId = computed(() => String(route.params.id));
 
 const { data: plan, isLoading } = useHangarPlan(planId);
+
+// A sync changes what the plan's routes can draw on, so the plan and everything
+// read from it are fetched again.
+const queryClient = useQueryClient();
+let offSyncFinished: (() => void) | undefined;
+
+onMounted(() => {
+  offSyncFinished = comlink.on("hangar-sync-finished", () => {
+    void queryClient.invalidateQueries({
+      queryKey: ["hangar", "plans", planId.value],
+    });
+  });
+});
+
+onUnmounted(() => {
+  offSyncFinished?.();
+});
 const { data: summary, isFetching: summaryFetching } =
   useHangarPlanSummary(planId);
 const { data: drift } = useHangarPlanDrift(planId);
