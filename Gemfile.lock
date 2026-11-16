@@ -313,7 +313,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (1.2.0)
+    i18n-tasks (1.2.1)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
@@ -1109,7 +1109,7 @@ CHECKSUMS
   http-cookie (1.1.6) sha256=ba4b82be64de61dc281243dac70e3c382c45142f20268ed9276a3670c93feaa9
   httparty (0.24.3) sha256=5c95cf29ca70d5bfd834e56140ddfca6e94166c3b870cde9c25d157cdb5a00d2
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
-  i18n-tasks (1.2.0) sha256=71203cd2fe69ef66f08fd6a8620dff46f53d6f40b78dbacf0ab37eec917810a5
+  i18n-tasks (1.2.1) sha256=509b0061ecceeedbc0a28d1d9c0faecaf373982f5e087d2bc05d554fd3e26a07
   image_processing (2.2.0) sha256=e0cb9892a4395ac2b7bb2fac5c6f5bc63361f2f18ed08773e21fce5b111c6974
   io-console (0.9.5) sha256=83dd9bbf4c4680416629245b39cd4212eb5f4d9a4ea91804870c1f6b846414d5
   irb (1.19.0) sha256=55ee56acbdd6c9fe06a2e6909f46a24e5c41f45f16906bab04e8049cf46f1d27
