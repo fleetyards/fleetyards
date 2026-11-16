@@ -422,6 +422,10 @@
           "enable": "顯示貨物網格",
           "disable": "隱藏貨物網格"
         },
+        "doorHighlight": {
+          "enable": "醒目標示所有艙門",
+          "disable": "隱藏艙門醒目標示"
+        },
         "doors": {
           "enable": "打開所有艙門",
           "disable": "關閉所有艙門"

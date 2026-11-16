@@ -422,6 +422,10 @@
           "enable": "显示货物网格",
           "disable": "隐藏货物网格"
         },
+        "doorHighlight": {
+          "enable": "高亮所有舱门",
+          "disable": "隐藏舱门高亮"
+        },
         "doors": {
           "enable": "打开所有舱门",
           "disable": "关闭所有舱门"

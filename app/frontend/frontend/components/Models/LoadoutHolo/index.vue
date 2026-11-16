@@ -27,6 +27,11 @@ import {
 } from "@/frontend/utils/loadoutPreview";
 import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import {
+  LOADOUT_HOLO_LAYERS,
+  type LoadoutHoloLayers,
+  useModelsStore,
+} from "@/frontend/stores/models";
 import { BOX_COLOR } from "@/shared/components/HoloViewer/boxes";
 import { BUILT_IN_COLOR } from "@/shared/components/HoloViewer/builtIns";
 import { DOOR_COLOR } from "@/shared/components/HoloViewer/doors";
@@ -102,9 +107,24 @@ const pointedBuiltIn = ref<string>();
 const pointedDoor = ref<string>();
 const pointedCargoGrid = ref<string>();
 
-const servicingAreasShown = ref(true);
-const cargoGridsShown = ref(true);
-const doorsOpen = ref(false);
+const modelsStore = useModelsStore();
+
+const layer = (key: keyof LoadoutHoloLayers) =>
+  computed({
+    get: () => modelsStore.loadoutHoloLayers?.[key] ?? LOADOUT_HOLO_LAYERS[key],
+    set: (shown: boolean) => {
+      modelsStore.loadoutHoloLayers = {
+        ...LOADOUT_HOLO_LAYERS,
+        ...modelsStore.loadoutHoloLayers,
+        [key]: shown,
+      };
+    },
+  });
+
+const servicingAreasShown = layer("servicingAreas");
+const cargoGridsShown = layer("cargoGrids");
+const doorsOpen = layer("doorsOpen");
+const doorsMarked = layer("doorsMarked");
 
 const { isFeatureEnabled } = useFeatures();
 
@@ -165,6 +185,7 @@ const holoModel = computed(() => {
     openDoors: doorAnimationEnabled.value ? openDoors.value : [],
     doorTargets: doorHighlightEnabled.value || doorAnimationEnabled.value,
     doorHighlight: doorHighlightEnabled.value,
+    doorsMarked: doorHighlightEnabled.value && doorsMarked.value,
     builtIns: builtInHighlights(preview.value.ports),
     layers: {
       boxes: servicingAreasShown.value,
@@ -373,6 +394,12 @@ const cargoGridsLabel = computed(() =>
     : t("actions.holoViewer.cargo.enable"),
 );
 
+const doorsMarkedLabel = computed(() =>
+  doorsMarked.value
+    ? t("actions.holoViewer.doorHighlight.disable")
+    : t("actions.holoViewer.doorHighlight.enable"),
+);
+
 const doorsLabel = computed(() =>
   doorsOpen.value
     ? t("actions.holoViewer.doors.disable")
@@ -423,6 +450,17 @@ const doorsLabel = computed(() =>
         <i class="fa-light fa-boxes-stacked" />
       </Btn>
       <Btn
+        v-if="doorHighlightEnabled && holoModel.doors.length"
+        v-tooltip="doorsMarkedLabel"
+        :aria-label="doorsMarkedLabel"
+        :aria-pressed="doorsMarked"
+        :active="doorsMarked"
+        :data-test="`${testId}-door-highlight`"
+        @click="doorsMarked = !doorsMarked"
+      >
+        <i class="fa-light fa-door-closed" />
+      </Btn>
+      <Btn
         v-if="doorAnimationEnabled && holoModel.doors.length"
         v-tooltip="doorsLabel"
         :aria-label="doorsLabel"
@@ -431,11 +469,7 @@ const doorsLabel = computed(() =>
         :data-test="`${testId}-doors`"
         @click="doorsOpen = !doorsOpen"
       >
-        <i
-          :class="
-            doorsOpen ? 'fa-light fa-door-open' : 'fa-light fa-door-closed'
-          "
-        />
+        <i class="fa-light fa-arrows-left-right" />
       </Btn>
     </template>
     <div

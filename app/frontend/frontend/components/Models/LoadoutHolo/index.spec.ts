@@ -8,6 +8,7 @@ import {
   type ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { useModelsStore } from "@/frontend/stores/models";
 import Component from "./index.vue";
 
 const port = (
@@ -130,7 +131,7 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
   },
 }));
 
-const mountHolo = async () => {
+const mountHolo = async (initialState = {}) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [
@@ -147,6 +148,7 @@ const mountHolo = async () => {
   const wrapper = await mountWithDefaults(Component, {
     props: { modelSlug: "prospector" },
     plugins: [router],
+    initialState,
   });
 
   const viewer = () => wrapper.findComponent({ name: "HoloViewer" });
@@ -159,6 +161,7 @@ const mountHolo = async () => {
         openDoors: string[];
         doorTargets?: boolean;
         doorHighlight?: boolean;
+        doorsMarked?: boolean;
         layers: { cargo?: boolean };
       }[]
     )[0];
@@ -330,12 +333,54 @@ describe("ModelLoadoutHolo", () => {
     expect(model().openDoors).toEqual([]);
   });
 
+  it("keeps what was toggled in the store and starts from it", async () => {
+    const { wrapper, model } = await mountHolo({
+      models: {
+        loadoutHoloLayers: {
+          servicingAreas: true,
+          cargoGrids: false,
+          doorsOpen: false,
+          doorsMarked: true,
+        },
+      },
+    });
+
+    expect(model().layers.cargo).toBe(false);
+    expect(model().doorsMarked).toBe(true);
+
+    await wrapper
+      .find('[data-test="model-loadout-holo-doors"]')
+      .trigger("click");
+
+    expect(useModelsStore().loadoutHoloLayers).toEqual({
+      servicingAreas: true,
+      cargoGrids: false,
+      doorsOpen: true,
+      doorsMarked: true,
+    });
+  });
+
+  it("lights up every door from its button", async () => {
+    const { wrapper, model } = await mountHolo();
+
+    expect(model().doorsMarked).toBe(false);
+
+    await wrapper
+      .find('[data-test="model-loadout-holo-door-highlight"]')
+      .trigger("click");
+
+    expect(model().doorsMarked).toBe(true);
+  });
+
   it("opens doors without picking them out while only the animation is on", async () => {
     enabledFlags.delete(FeatureFlagName.HOLO_DOOR_HIGHLIGHT);
     const { wrapper, viewer, model } = await mountHolo();
 
     expect(model().doorHighlight).toBe(false);
     expect(model().doorTargets).toBe(true);
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-door-highlight"]').exists(),
+    ).toBe(false);
 
     viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
     viewer().vm.$emit("doorSelect", "hardpoint_door_rear");

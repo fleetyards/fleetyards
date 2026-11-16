@@ -422,6 +422,10 @@
           "enable": "Afficher les grilles de cargo",
           "disable": "Masquer les grilles de cargo"
         },
+        "doorHighlight": {
+          "enable": "Mettre en évidence toutes les portes",
+          "disable": "Masquer la mise en évidence des portes"
+        },
         "doors": {
           "enable": "Ouvrir toutes les portes",
           "disable": "Fermer toutes les portes"

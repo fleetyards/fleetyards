@@ -422,6 +422,10 @@
           "enable": "Mostra griglie di carico",
           "disable": "Nascondi griglie di carico"
         },
+        "doorHighlight": {
+          "enable": "Evidenzia tutte le porte",
+          "disable": "Nascondi l'evidenziazione delle porte"
+        },
         "doors": {
           "enable": "Apri tutte le porte",
           "disable": "Chiudi tutte le porte"

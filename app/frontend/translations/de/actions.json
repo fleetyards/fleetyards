@@ -422,6 +422,10 @@
           "enable": "Frachtraster anzeigen",
           "disable": "Frachtraster ausblenden"
         },
+        "doorHighlight": {
+          "enable": "Alle Türen hervorheben",
+          "disable": "Türhervorhebung ausblenden"
+        },
         "doors": {
           "enable": "Alle Türen öffnen",
           "disable": "Alle Türen schließen"

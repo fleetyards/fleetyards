@@ -422,6 +422,10 @@
           "enable": "Show cargo grids",
           "disable": "Hide cargo grids"
         },
+        "doorHighlight": {
+          "enable": "Highlight all doors",
+          "disable": "Hide the door highlight"
+        },
         "doors": {
           "enable": "Open all doors",
           "disable": "Close all doors"
