@@ -434,7 +434,8 @@
           "open": "Click to open",
           "close": "Click to close"
         },
-        "builtIn": "Click to view the item"
+        "builtIn": "Click to view the item",
+        "part": "Click to change the part"
       },
       "logistics": {
         "addToInventory": "Add to Inventory",

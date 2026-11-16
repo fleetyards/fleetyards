@@ -12,10 +12,14 @@ import {
 } from "@/services/fyApi";
 import {
   loadoutCargoGrids,
+  loadoutHull,
   loadoutMounts,
   type PreviewSlot,
 } from "@/frontend/utils/loadoutPreview";
 import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
+import { useLoadoutHoloCard } from "@/frontend/composables/useLoadoutHoloCard";
+import LoadoutHoloCard from "@/frontend/components/Loadout/HoloCard/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { HoloFrameInsets } from "@/shared/components/HoloViewer/frameInsets";
@@ -157,13 +161,55 @@ const cargoGrids = computed(() =>
     : [],
 );
 
+// The hull as fitted: the ship's own ports, grids and doors, and those of the
+// modules in its slots.
+const fittedHull = computed(() =>
+  preview.value ? loadoutHull(preview.value, props.slots) : undefined,
+);
+
 const doors = computed(() =>
   doorAnimationEnabled.value || doorHighlightEnabled.value
-    ? (preview.value?.doors ?? [])
+    ? (fittedHull.value?.doors ?? [])
     : [],
 );
 
-const { openDoors, toggleDoor } = useHoloDoors(doors, () => props.doorsOpen);
+const { openDoors, toggleDoor, isOpen } = useHoloDoors(
+  doors,
+  () => props.doorsOpen,
+);
+
+const { t } = useI18n();
+
+// What is under the pointer, named beside it: a part with what a click does
+// to it, a door, a cargo grid or a servicing area with its figures.
+const {
+  pointedPath,
+  pointedArea,
+  pointedDoor,
+  pointedCargoGrid,
+  cursor,
+  trackPointer,
+  card,
+  reset: resetCard,
+} = useLoadoutHoloCard({
+  preview,
+  slots: () => props.slots ?? [],
+  hull: fittedHull,
+  doors,
+  doorsAnimated: doorAnimationEnabled,
+  doorsHighlighted: doorHighlightEnabled,
+  isOpen,
+  cargoGrids: cargoGridsEnabled,
+  partHint: (slot) =>
+    props.pickable && slot.changeable
+      ? t("actions.holoViewer.part")
+      : undefined,
+});
+
+const onPoint = (path: string | undefined) => {
+  pointedPath.value = path;
+  emit("point", path);
+};
 
 const holoModel = computed(() => {
   const hull = preview.value?.holoHull;
@@ -211,6 +257,7 @@ watch(
   () => {
     loaded.value = false;
     unavailable.value = false;
+    resetCard();
   },
 );
 
@@ -263,13 +310,23 @@ onBeforeUnmount(() => {
       :pickable="pickable"
       @unavailable="unavailable = true"
       @loaded="loaded = true"
+      @pointermove="trackPointer"
       @mount-select="emit('select', $event)"
-      @mount-point="emit('point', $event)"
+      @mount-point="onPoint"
+      @box-point="pointedArea = $event"
+      @door-point="pointedDoor = $event"
+      @cargo-point="pointedCargoGrid = $event"
       @door-select="doorAnimationEnabled && toggleDoor($event)"
     >
       <template #actions>
         <slot name="actions" />
       </template>
+      <LoadoutHoloCard
+        v-if="interactive && card"
+        :card="card"
+        :cursor="cursor"
+        :test-id="`${testId}-card`"
+      />
     </HoloViewer>
     <HoloViewer
       v-else-if="variant === 'stage'"

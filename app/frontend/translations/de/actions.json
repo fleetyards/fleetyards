@@ -434,7 +434,8 @@
           "open": "Zum Öffnen klicken",
           "close": "Zum Schließen klicken"
         },
-        "builtIn": "Klicken, um das Item anzuzeigen"
+        "builtIn": "Klicken, um das Item anzuzeigen",
+        "part": "Klicken, um das Teil zu ändern"
       },
       "logistics": {
         "addToInventory": "Zum Inventar hinzufügen",

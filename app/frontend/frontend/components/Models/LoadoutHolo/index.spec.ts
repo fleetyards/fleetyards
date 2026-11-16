@@ -54,6 +54,7 @@ const preview: ModelLoadoutPreview = {
     }),
   ],
   items: [],
+  moduleHulls: [],
   servicingAreas: [],
   cargoGrids: [
     {

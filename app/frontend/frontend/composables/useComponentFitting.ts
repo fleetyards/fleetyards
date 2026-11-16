@@ -563,7 +563,7 @@ export const useComponentFitting = () => {
       minSize: hardpoint.minSize,
       maxSize: hardpoint.maxSize,
       types: hardpoint.types ?? [],
-      editable: true,
+      editable: hardpoint.editable !== false,
       stock,
       // A port inside a module names what sits in it through the part's own
       // ports, as a ship page's hardpoint row reads them: a missile rack's
@@ -589,6 +589,7 @@ export const useComponentFitting = () => {
         name: mod.name,
         category: HardpointCategoryEnum.MODULE,
         holoUrl: mod.holoUrl ?? undefined,
+        scKey: mod.scKey,
       });
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
@@ -876,6 +877,9 @@ export const useComponentFitting = () => {
             maxSize: port.maxSize,
             kind: slotKind(port),
             locked: true,
+            // A port the game locks says so; one a loadout does fit is fitted
+            // from its own tab, and listed here only for what the module brings.
+            lockedBy: port.editable ? undefined : "ship",
             item: port.stock
               ? {
                   id: port.stock.id,

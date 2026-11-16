@@ -434,7 +434,8 @@
           "open": "點擊打開",
           "close": "點擊關閉"
         },
-        "builtIn": "點擊查看物品"
+        "builtIn": "點擊查看物品",
+        "part": "點擊更換部件"
       },
       "logistics": {
         "addToInventory": "加入庫存",

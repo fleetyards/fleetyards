@@ -434,7 +434,8 @@
           "open": "Haz clic para abrir",
           "close": "Haz clic para cerrar"
         },
-        "builtIn": "Haz clic para ver el objeto"
+        "builtIn": "Haz clic para ver el objeto",
+        "part": "Haz clic para cambiar la pieza"
       },
       "logistics": {
         "addToInventory": "Añadir al inventario",

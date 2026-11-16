@@ -434,7 +434,8 @@
           "open": "Cliquer pour ouvrir",
           "close": "Cliquer pour fermer"
         },
-        "builtIn": "Cliquer pour voir l'objet"
+        "builtIn": "Cliquer pour voir l'objet",
+        "part": "Cliquer pour changer la pièce"
       },
       "logistics": {
         "addToInventory": "Ajouter à l'inventaire",

@@ -369,6 +369,34 @@ describe("learnModules", () => {
 
     expect(row.item?.slug).toBe("shield-alpha");
   });
+
+  it("says which of a module's ports the game locks", () => {
+    const fitting = useComponentFitting();
+
+    const [tractor, shield] = fitting.moduleContents({
+      id: "m1",
+      name: "Cargo Module",
+      slot: "hardpoint_module",
+      hardpoints: [
+        {
+          id: "hp-tractor",
+          name: "hardpoint_tractor_left",
+          category: "turret",
+          editable: false,
+          component: { id: "tractor", name: "Tractor Turret" },
+        },
+        {
+          id: "hp-shield",
+          name: "hardpoint_shield",
+          category: "shieldgenerator",
+          component: { id: "shield", name: "Shield" },
+        },
+      ],
+    } as unknown as ModelModule);
+
+    expect(tractor.lockedBy).toBe("ship");
+    expect(shield.lockedBy).toBeUndefined();
+  });
 });
 
 describe("loadoutValues", () => {
