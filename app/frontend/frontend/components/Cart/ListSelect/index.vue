@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { BaseSelectSizesEnum } from "@/shared/components/base/Select/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCartLists } from "@/services/fyApi";
 
@@ -58,6 +59,7 @@ const show = (id?: string | null) => {
     :options="options"
     :label="t('cart.lists.shown')"
     :nullable="false"
+    :size="BaseSelectSizesEnum.MEDIUM"
     no-label
     unsorted
     class="cart-list-select"
