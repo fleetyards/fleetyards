@@ -40,7 +40,7 @@ describe("groupCargoHolds", () => {
     const holds = names.map((name, index) =>
       hold(name, {
         position: [index * 10, 0, 0],
-        rotation: [0, 0, 0, 1],
+        orientation: [0, 0, 0, 1],
         placedIn: "model/drak-caterpillar",
       }),
     );
@@ -56,17 +56,17 @@ describe("groupCargoHolds", () => {
     const holds = [
       hold("hardpoint_cargo_bay", {
         position: [0, 0, 0],
-        rotation: [0, 0, 0, 1],
+        orientation: [0, 0, 0, 1],
         placedIn: "model/rsi-galaxy",
       }),
       hold("hardpoint_cargo_grid_left", {
         position: [0, 0, 0],
-        rotation: [0, 0, 0, 1],
+        orientation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       }),
       hold("hardpoint_cargo_grid_right", {
         position: [0, 10, 0],
-        rotation: [0, 0, 0, 1],
+        orientation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       }),
       hold("cargo_front"),
@@ -85,7 +85,7 @@ describe("groupCargoHolds", () => {
     const module = (name: string) =>
       hold(name, {
         position: [0, 0, 0],
-        rotation: [0, 0, 0, 1],
+        orientation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       });
     const holds = [

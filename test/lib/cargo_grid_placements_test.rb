@@ -16,8 +16,8 @@ class CargoGridPlacementsTest < ActiveSupport::TestCase
       grid("nose", position: [-0.01, -0.8, -43.74], rotation: STRAIGHT, size: [6.25, 3.75, 5.0])
     ])
 
-    assert_equal({"position" => [0.625, -0.25, -2.625], "rotation" => QUARTER, "size" => [5.0, 5.0, 7.5]}, placements["module"])
-    assert_equal STRAIGHT, placements["nose"]["rotation"]
+    assert_equal({"position" => [0.625, -0.25, -2.625], "orientation" => QUARTER, "size" => [5.0, 5.0, 7.5]}, placements["module"])
+    assert_equal STRAIGHT, placements["nose"]["orientation"]
   end
 
   test "places nothing when a grid is tilted or turned by less than a quarter" do

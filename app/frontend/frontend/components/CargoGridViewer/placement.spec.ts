@@ -7,9 +7,9 @@ const QUARTER = [0, -Math.SQRT1_2, 0, Math.SQRT1_2];
 
 const hold = (
   position: number[],
-  rotation: number[],
+  orientation: number[],
   dimensions: { x: number; y: number; z: number },
-) => ({ position, rotation, dimensions }) as CargoHold;
+) => ({ position, orientation, dimensions }) as CargoHold;
 
 const rounded = (offset: { x: number; y: number; z: number }) =>
   [offset.x, offset.y, offset.z].map(

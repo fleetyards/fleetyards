@@ -22,11 +22,16 @@ const SHIP_TURN = -QUARTER;
  * by quarters.
  */
 export const holdPlacement = (hold: CargoHold): HoldPlacement | undefined => {
-  const { position, rotation } = hold;
-  if (!position || position.length !== 3 || !rotation || rotation.length !== 4)
+  const { position, orientation } = hold;
+  if (
+    !position ||
+    position.length !== 3 ||
+    !orientation ||
+    orientation.length !== 4
+  )
     return undefined;
 
-  const [, qy, , qw] = rotation;
+  const [, qy, , qw] = orientation;
   const turn = 2 * Math.atan2(qy, qw) + SHIP_TURN;
   const turned = Math.abs(Math.round(turn / QUARTER)) % 2 === 1;
 

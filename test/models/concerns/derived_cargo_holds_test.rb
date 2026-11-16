@@ -168,8 +168,8 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
 
     assert_equal "model/#{@model.slug}", hold_a["placed_in"]
     assert_equal [0.0, 1.25, 0.0], hold_a["position"]
-    assert_equal [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], hold_a["rotation"]
-    assert_equal [0.0, 0.0, 0.0, 1.0], hold_b["rotation"]
+    assert_equal [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], hold_a["orientation"]
+    assert_equal [0.0, 0.0, 0.0, 1.0], hold_b["orientation"]
   end
 
   test "places no hold when the export places only some of them" do
@@ -180,7 +180,7 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
 
     holds = Model.find(@model.id).cargo_holds_with_placement
 
-    assert holds.none? { |hold| hold["placed_in"] || hold["position"] || hold["rotation"] }, holds.inspect
+    assert holds.none? { |hold| hold["placed_in"] || hold["position"] || hold["orientation"] }, holds.inspect
   end
 
   test "keeps a curated crate limit on a hold the export places" do

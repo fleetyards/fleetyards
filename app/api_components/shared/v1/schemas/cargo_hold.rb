@@ -19,9 +19,9 @@ module Shared
             # Where the hull export placed the hold, in the values the loadout
             # preview serves its cargo grids with.
             position: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "The grid's centre"},
-            rotation: {type: :array, items: {type: :number}, minItems: 4, maxItems: 4, description: "Quaternion x, y, z, w"},
+            orientation: {type: :array, items: {type: :number}, minItems: 4, maxItems: 4, description: "Quaternion x, y, z, w: the cargo grid's rotation"},
             size: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "Metres along the grid's own x, up and depth axes"},
-            placedIn: {type: :string, description: "The ship or module whose hull export the position and rotation come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in the same one share a frame; a hold without it is not placed"}
+            placedIn: {type: :string, description: "The ship or module whose hull export the position and orientation come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in the same one share a frame; a hold without it is not placed"}
           },
           additionalProperties: false,
           required: %w[dimensions capacity maxContainerSize limits]

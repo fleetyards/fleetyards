@@ -165,7 +165,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
       holds = parsed_body["items"].sole["cargoHolds"]
       assert_equal ["model_module/#{cargo.slug}"] * 2, holds.pluck("placedIn"), holds.inspect
       assert_equal [[-10.1, -0.5, 4.5], [0.0, -1.68, 4.74]], holds.pluck("position")
-      assert_equal [[0.0, 0.0, 0.0, 1.0], [0.0, -1.0, 0.0, 0.0]], holds.pluck("rotation")
+      assert_equal [[0.0, 0.0, 0.0, 1.0], [0.0, -1.0, 0.0, 0.0]], holds.pluck("orientation")
     end
   end
 

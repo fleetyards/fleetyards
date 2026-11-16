@@ -3,7 +3,8 @@
 # Where each cargo grid of a ship or module sits, as its hull export says:
 # the grid's centre in metres and its turn as a quaternion, in the hull holo's
 # frame (glTF, y up), and its size along its own axes -- the values the
-# loadout preview serves its grids with.
+# loadout preview serves its grids with. A hold carries the quaternion as its
+# `orientation`, since its `rotation` once meant degrees.
 #
 # The cargo grid tool lays holds out on a floor, so it can only draw a grid
 # that stands upright and is turned by a quarter about the vertical. A parent
@@ -19,7 +20,7 @@ class CargoGridPlacements
     @grids = Array(grids)
   end
 
-  # {hold name => {"position" => [x, y, z], "rotation" => [x, y, z, w], "size" => [x, y, z]}}
+  # {hold name => {"position" => [x, y, z], "orientation" => [x, y, z, w], "size" => [x, y, z]}}
   def call
     placements = @grids.map { |grid| placement(grid) }
     return {} if placements.empty? || placements.any?(&:nil?)
@@ -40,7 +41,7 @@ class CargoGridPlacements
     return unless upright_quarter?(*rotation)
 
     size = grid["size"]
-    [grid, {"position" => position, "rotation" => rotation, "size" => (size if numbers?(size, 3))}]
+    [grid, {"position" => position, "orientation" => rotation, "size" => (size if numbers?(size, 3))}]
   end
 
   # Tilted when the quaternion turns about more than the vertical; otherwise
