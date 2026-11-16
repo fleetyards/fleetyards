@@ -434,9 +434,6 @@
         "pickReplacesUpload": "从图库或涂装中选择图片会替换你上传的图片。",
         "galleryEmpty": "这艘舰船还没有图库图片。"
       },
-      "model": {
-        "sectionEmpty": "%{model} 没有任何%{section}。"
-      },
       "hangarPledgeItems": {
         "addToInventory": "每项按其礼包所含数量添加。",
         "alreadyInInventory": {

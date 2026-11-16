@@ -434,9 +434,6 @@
         "pickReplacesUpload": "Choisir une image de la galerie ou une peinture remplace celle que tu as téléversée.",
         "galleryEmpty": "Ce vaisseau n'a pas encore d'images dans la galerie."
       },
-      "model": {
-        "sectionEmpty": "%{model} n'a pas de %{section}."
-      },
       "hangarPledgeItems": {
         "addToInventory": "Chacun est ajouté autant de fois que son pledge le contient.",
         "alreadyInInventory": {

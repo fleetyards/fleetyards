@@ -435,9 +435,6 @@
         "pickReplacesUpload": "Ein Bild aus der Galerie oder eine Lackierung ersetzt dein hochgeladenes Bild.",
         "galleryEmpty": "Für dieses Schiff gibt es noch keine Galeriebilder."
       },
-      "model": {
-        "sectionEmpty": "%{model} hat keine %{section}."
-      },
       "hangarPledgeItems": {
         "addToInventory": "Jeder Eintrag wird so oft hinzugefügt, wie sein Pledge ihn enthält.",
         "alreadyInInventory": {

@@ -435,9 +435,6 @@
         "pickReplacesUpload": "Picking a gallery picture or a paint replaces the one you uploaded.",
         "galleryEmpty": "This ship has no gallery pictures yet."
       },
-      "model": {
-        "sectionEmpty": "The %{model} does not have any %{section}."
-      },
       "hangarPledgeItems": {
         "addToInventory": "Each is added as often as its pledge lists it.",
         "alreadyInInventory": {

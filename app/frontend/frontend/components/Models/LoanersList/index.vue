@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import ModelSection from "@/frontend/components/Models/Section/index.vue";
-import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -15,7 +14,6 @@ import { useModelLoaners as useModelLoanersQuery } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
-  modelName: string;
 };
 
 const props = defineProps<Props>();
@@ -23,10 +21,19 @@ const props = defineProps<Props>();
 const { data: loaners, ...asyncStatus } = useModelLoanersQuery(props.modelSlug);
 
 const { t } = useI18n();
+
+// Drawn while its request is out, so a link to the section has somewhere to
+// land; a ship with nothing to show here loses the section once it is back.
+const isEmpty = computed(
+  () =>
+    !loaners.value?.items.length &&
+    (asyncStatus.isSuccess.value || asyncStatus.isError.value),
+);
 </script>
 
 <template>
   <ModelSection
+    v-if="!isEmpty"
     anchor="loaners"
     :model-slug="modelSlug"
     :title="t('labels.model.loaners')"
@@ -52,11 +59,6 @@ const { t } = useI18n();
             />
           </div>
         </transition-group>
-        <SectionEmpty
-          v-else
-          :model-name="modelName"
-          :section="t('labels.model.loaners')"
-        />
       </template>
     </AsyncData>
   </ModelSection>
