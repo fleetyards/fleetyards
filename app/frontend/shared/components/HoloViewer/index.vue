@@ -656,7 +656,9 @@ const framed = shallowRef<{ size: Vector3; scene: Object3D }>();
 const scaleLiveCamera = (ratio: number) => {
   if (!liveCamera) return;
 
-  liveCamera.position.multiplyScalar(ratio);
+  // About the orbit target: a view panned off the origin only moves closer.
+  const target = liveControls?.target ?? new Vector3();
+  liveCamera.position.sub(target).multiplyScalar(ratio).add(target);
   liveCamera.near = nearPlaneFor(liveCamera.position.length());
   liveCamera.updateProjectionMatrix();
   const { x, y, z } = liveCamera.position;
