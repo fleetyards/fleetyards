@@ -58,6 +58,23 @@ module ScData
         assert_equal ["ore_pods", true], [template.category, template.hidden]
       end
 
+      test "#all leaves out the developer stand-ins and retires one an earlier load wrote" do
+        stand_in = create(:component, sc_key: "mining_laser_test", version: ScData::Source.version)
+
+        items_loader.all
+
+        assert_nil Component.find_by(sc_ref: "5f0c3a1e-7d2b-4c8e-9a61-2b4d8e0f7c13")
+        assert_nil stand_in.reload.version
+      end
+
+      test "#all leaves a port defaulting to a developer stand-in empty" do
+        create(:component, sc_key: "mine_test")
+
+        params = items_loader.send(:add_default_loadout, {"key" => "MINE_Test"}, "hardpoint_mine", {})
+
+        assert_equal({component_id: nil}, params)
+      end
+
       test "#all names an item the game left without a localised name" do
         items_loader.all
 
