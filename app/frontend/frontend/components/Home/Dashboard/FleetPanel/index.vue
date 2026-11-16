@@ -134,8 +134,10 @@ const pending = computed(() => {
         {{ t("home.dashboard.fleet.others") }}
         <template v-for="(other, index) in others" :key="other.id">
           <router-link :to="{ name: 'fleet', params: { slug: other.slug } }">
-            {{ other.name }}</router-link
-          ><template v-if="index < others.length - 1">, </template>
+            {{ other.name }}</router-link><template
+            v-if="index < others.length - 1"
+            >,
+          </template>
         </template>
       </p>
     </div>
