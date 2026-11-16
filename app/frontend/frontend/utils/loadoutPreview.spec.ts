@@ -441,6 +441,25 @@ describe("loadoutCargoGrids", () => {
 
     expect(loadoutCargoGrids(withGrids, [nested])).toHaveLength(2);
   });
+
+  it("skips a grid whose port lost its place, a root port at the origin", () => {
+    const unplaced = {
+      ...withGrids,
+      ports: [
+        port("CargoGrid_Hangar_Left"),
+        port("hardpoint_cargogrid_module_04", { position: [1, -2.75, -2] }),
+      ],
+      cargoGrids: [
+        ...withGrids.cargoGrids,
+        grid("CargoGrid_Hangar_Left", "CargoGrid_Hangar_Left", null),
+      ],
+    };
+
+    expect(loadoutCargoGrids(unplaced).map((each) => each.id)).toEqual([
+      "hardpoint_cargogrid_main",
+      "hardpoint_cargogrid_module_04",
+    ]);
+  });
 });
 
 describe("builtInHighlights", () => {

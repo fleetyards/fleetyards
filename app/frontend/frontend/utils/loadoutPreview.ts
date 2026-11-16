@@ -218,9 +218,18 @@ export const loadoutCargoGrids = (
       .map((slot) => slot.name.toLowerCase()),
   );
 
+  // A grid whose port is a root port at the hull origin lost its interior's
+  // placement in the export: drawn, every such grid lands in one pile.
+  const unplaced = new Set(
+    preview.ports
+      .filter((port) => !port.parent && port.position.every((v) => v === 0))
+      .map((port) => port.name.toLowerCase()),
+  );
+
   return preview.cargoGrids
     .filter(
       (grid) =>
+        !(grid.port && unplaced.has(grid.port.toLowerCase())) &&
         ![grid.port, grid.parentPort].some(
           (name) => name && changed.has(name.toLowerCase()),
         ),
