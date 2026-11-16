@@ -458,8 +458,8 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0(postcss@8.5.32)(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
       stylelint-scss:
-        specifier: ^7.4.0
-        version: 7.4.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
+        specifier: ^7.5.0
+        version: 7.5.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
       stylelint-selector-bem-pattern:
         specifier: ^5.0.0
         version: 5.0.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
@@ -6408,11 +6408,11 @@ packages:
     peerDependencies:
       stylelint: ^17.0.0
 
-  stylelint-scss@7.4.0:
-    resolution: {integrity: sha512-OvN+AestcvtB/IFvde1kpFLq2mpIsPaeB8E+Cjlxu7qjf0ja7NCoTrDW97tuNeXFlYGUdwqGq5cXaByLpNwuxA==}
+  stylelint-scss@7.5.0:
+    resolution: {integrity: sha512-oRbhTDu8ocyWbgRfp7nWCvIX1DP50qnD9zPrtOxkIasJSiGZaMWKP0gcdl0HzNU1PRe5ZTfpHtvBIurtDjvilw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
-      stylelint: ^16.8.2 || ^17.0.0
+      stylelint: ^16.8.2 || ^17.0.0 || ^18.0.0
 
   stylelint-selector-bem-pattern@5.0.0:
     resolution: {integrity: sha512-nXcfLw2mZkNCyTLYPESavGLfWhY1RrjzsjVufbpKsMTH65WeOYGwouB3yqyV8l4WtKMVniz29LlELJcJ0d660A==}
@@ -13589,7 +13589,7 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.5.32)
       stylelint: 17.16.0(supports-color@8.1.1)(typescript@6.0.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
-      stylelint-scss: 7.4.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
+      stylelint-scss: 7.5.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
     optionalDependencies:
       postcss: 8.5.32
 
@@ -13610,7 +13610,7 @@ snapshots:
       stylelint: 17.16.0(supports-color@8.1.1)(typescript@6.0.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3))
 
-  stylelint-scss@7.4.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3)):
+  stylelint-scss@7.5.0(stylelint@17.16.0(supports-color@8.1.1)(typescript@6.0.3)):
     dependencies:
       '@csstools/css-calc': 3.4.3(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
       '@csstools/css-parser-algorithms': 4.0.2(@csstools/css-tokenizer@4.0.2)
@@ -13621,7 +13621,7 @@ snapshots:
       known-css-properties: 0.37.0
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.7
-      postcss-selector-parser: 7.1.6
+      postcss-selector-parser: 7.1.8
       postcss-value-parser: 4.2.0
       stylelint: 17.16.0(supports-color@8.1.1)(typescript@6.0.3)
 
