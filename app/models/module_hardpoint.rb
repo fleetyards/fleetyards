@@ -41,6 +41,15 @@ class ModuleHardpoint < ApplicationRecord
     hardpoint.component&.sc_key&.downcase
   end
 
+  # A module imported before the game files gave its hull a module slot was
+  # linked to none, and nothing else ever places it.
+  def self.fill_missing_slots(model)
+    where(model:, slot: nil).includes(:model_module).find_each do |module_hardpoint|
+      slot = derive_slot(model, module_hardpoint.model_module)
+      module_hardpoint.update!(slot:) if slot
+    end
+  end
+
   def self.derive_slot(model, model_module)
     module_slots = game_file_slots(model)
     return nil if module_slots.empty?

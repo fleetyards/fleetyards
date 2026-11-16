@@ -155,6 +155,7 @@ module ScData
         model.reload
 
         assign_command_module(model, model_data)
+        ::ModuleHardpoint.fill_missing_slots(model)
 
         ModelPosition.generate_for_model!(model)
 
