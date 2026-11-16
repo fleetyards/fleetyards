@@ -311,6 +311,16 @@ module ScData
         assert_equal %w[TEST_Ship_Ball_Turret TEST_Ship_Cargo_Mod], model.modules.pluck(:sc_key).sort
       end
 
+      test "#discover_modules leaves body kits to their own list" do
+        model = create(:model)
+        module_slot(model, name: "hardpoint_front", tag: "TEST_Ship_Base")
+        module_part("TEST_Ship_Cosmetic_Front_A", name: "Bodykit Front", tag: "TEST_Ship_Base", category: "bodykit")
+
+        discover
+
+        assert_empty ModelModule.all
+      end
+
       test "#discover_modules leaves a slot that takes no module alone" do
         model = create(:model)
         module_slot(model, name: "hardpoint_turret", types: ["Turret"], tag: "TEST_Center")

@@ -29,7 +29,9 @@ module ScData
       # modules: what the game offers, not only what the RSI store sells or an
       # admin entered. A slot is a port that takes a `Module`; the parts are
       # whatever fits it, so the Hornet's centre bay offers its ball turrets,
-      # rotodome and interdiction generator beside the cargo box.
+      # rotodome and interdiction generator beside the cargo box. Body kits fit
+      # module slots as well and change only looks, so the ship page lists them
+      # on their own.
       #
       # Runs against the components this build's items load wrote, so it uses
       # the loadout editor's fitting rules rather than a second copy of them.
@@ -59,6 +61,7 @@ module ScData
 
         candidates[types] ||= ::Component.joins(::Component.current_facts_join(source))
           .where(::Component.fact_sql(:component_type).in(types))
+          .where(::Component.fact_sql(:category).not_eq("bodykit").or(::Component.fact_sql(:category).eq(nil)))
           .where.not(sc_key: nil)
           .to_a
 
