@@ -300,7 +300,14 @@ const disableFullscreen = () => {
 
   // A turntable has no zoom of its own: back from full screen, it returns
   // to the framing it opened on rather than wherever full screen left it.
-  if (props.turntable) cameraPosition.value = [...cameraPosition.value];
+  // The pose is put at full screen's fit, which the refit as the frame
+  // shrinks back scales down from.
+  if (props.turntable) {
+    const ratio = poseDistance ? fitDistance.value / poseDistance : 1;
+    cameraPosition.value = cameraPosition.value.map(
+      (axis) => axis * ratio,
+    ) as typeof cameraPosition.value;
+  }
 };
 
 const closeOnEscape = (event: KeyboardEvent) => {
@@ -545,6 +552,9 @@ const handleControlsChange = (controls: Controls) => {
 };
 
 const fitDistance = ref(100);
+
+// The fit the pose was set for.
+let poseDistance = 0;
 
 // The camera is held to 0.7 of the room's radius. A frame narrow for its
 // model fits it from further out than that, and the first drag would pull
@@ -831,6 +841,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     ];
 
     cameraPosition.value = position;
+    poseDistance = reach;
     lightPosition.value = position;
 
     return;
@@ -879,6 +890,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
   ];
 
   cameraPosition.value = position;
+  poseDistance = distance;
   lightPosition.value = position;
 };
 
