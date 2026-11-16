@@ -35,8 +35,18 @@ const { updatePlan } = useHangarPlanCache();
 
 const { data: resources } = useHangarPlanResources(() => props.plan.id);
 
+// The plan updates at once, the resources only once they are fetched again, so
+// an upgrade just applied stays out of the list until they count it.
+const spent = ref<string[]>([]);
+
+watch(resources, () => {
+  spent.value = [];
+});
+
 const fits = computed(() =>
-  resources.value ? findUpgradeFits(props.plan, resources.value) : [],
+  resources.value
+    ? findUpgradeFits(props.plan, resources.value, spent.value)
+    : [],
 );
 
 const update = useUpdateHangarPlanAcquisition();
@@ -46,13 +56,13 @@ const apply = async (fit: UpgradeFit) => {
   applying.value = fit.upgradeId;
 
   try {
-    updatePlan(
-      await update.mutateAsync({
-        hangarPlanId: props.plan.id,
-        id: fit.acquisition.id,
-        data: { steps: fit.steps },
-      }),
-    );
+    const plan = await update.mutateAsync({
+      hangarPlanId: props.plan.id,
+      id: fit.acquisition.id,
+      data: { steps: fit.steps },
+    });
+    spent.value = [...spent.value, fit.upgradeId];
+    updatePlan(plan);
     displaySuccess({
       text: t("hangarPlanner.upgradeFits.applied", {
         ship: fit.candidate.model.name,

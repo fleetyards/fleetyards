@@ -82,7 +82,28 @@ const freeHeld = (resources: HangarPlanResources): Held[] => [
   ),
 ];
 
-const savedStep = (step: HangarPlanUpgradeStep): FitStep => ({
+// A held upgrade starts on the ship it was sold for, wherever the route put it.
+const heldStart = (
+  step: HangarPlanUpgradeStep,
+  resources: HangarPlanResources,
+) => {
+  if (step.hangarPledgeItemId) {
+    return resources.upgrades.find(
+      (item) => item.id === step.hangarPledgeItemId,
+    )?.fromModel?.id;
+  }
+  if (step.buybackPledgeId) {
+    return resources.buybacks.find(
+      (pledge) => pledge.id === step.buybackPledgeId,
+    )?.upgradeFromModel?.id;
+  }
+  return undefined;
+};
+
+const savedStep = (
+  step: HangarPlanUpgradeStep,
+  resources: HangarPlanResources,
+): FitStep => ({
   sourceKind: step.sourceKind,
   toModelId: step.toModel.id,
   hangarPledgeItemId: step.hangarPledgeItemId ?? null,
@@ -92,7 +113,7 @@ const savedStep = (step: HangarPlanUpgradeStep): FitStep => ({
   heldFrom:
     step.sourceKind === HangarPlanUpgradeSourceEnum.STORE
       ? undefined
-      : step.fromModel.id,
+      : (heldStart(step, resources) ?? step.fromModel.id),
   price: step.price,
   saved: step,
 });
@@ -170,6 +191,8 @@ const toInput = (step: FitStep): HangarPlanUpgradeStepInput => ({
 export const findUpgradeFits = (
   plan: HangarPlan,
   resources: HangarPlanResources,
+  // Upgrades just spent whose use the resources do not count yet.
+  spent: string[] = [],
 ): UpgradeFit[] => {
   const models = planModels(plan, resources);
   const model = (id: string) => models.get(id);
@@ -205,12 +228,15 @@ export const findUpgradeFits = (
   );
 
   return freeHeld(resources)
+    .filter((held) => !spent.includes(held.id))
     .flatMap((held) => {
       let best: UpgradeFit | undefined;
 
       routes.forEach(({ candidate, acquisition }) => {
         const start = acquisition.startModel.id;
-        const steps = acquisition.steps.map(savedStep);
+        const steps = acquisition.steps.map((step) =>
+          savedStep(step, resources),
+        );
         const before = total(steps.map((step) => step.price));
         if (before === null) return;
 
