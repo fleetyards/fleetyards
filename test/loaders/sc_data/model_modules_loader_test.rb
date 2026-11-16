@@ -263,6 +263,47 @@ module ScData
         assert_equal [model], curated.models.to_a
       end
 
+      test "#discover_modules gives the store's keyless module of the ship the key rather than a twin" do
+        model = create(:model, name: "Galaxy")
+        module_slot(model)
+        module_part("TEST_Galaxy_Module_Refinery")
+        store = create(:model_module, name: "Refinery Module", sc_key: nil)
+        create(:module_hardpoint, model:, model_module: store)
+
+        discover
+
+        assert_equal "TEST_Galaxy_Module_Refinery", store.reload.sc_key
+        assert_equal [store], model.modules.reload.to_a
+      end
+
+      test "#discover_modules leaves the store's modules alone when several could be the one" do
+        model = create(:model, name: "Galaxy")
+        module_slot(model)
+        module_part("TEST_Galaxy_Module_Refinery")
+        2.times { |i| create(:module_hardpoint, model:, model_module: create(:model_module, name: "Refinery Module #{i}", sc_key: nil)) }
+
+        discover
+
+        assert ModelModule.exists?(sc_key: "TEST_Galaxy_Module_Refinery")
+        assert_equal 2, ModelModule.where(sc_key: nil).count
+      end
+
+      # Components keep their key lowercased, so the name has to come from the
+      # item file's spelling.
+      test "#discover_modules keys and names a module as the item file spells it" do
+        model = create(:model)
+        module_slot(model)
+        module_part("test_ship_module_cargopod")
+        loader = ::ScData::Loader::ModelModulesLoader.new
+        loader.stubs(:load_module_data).returns({"key" => "TEST_Ship_Module_CargoPod"})
+
+        loader.discover_modules
+
+        created = ModelModule.sole
+        assert_equal "TEST_Ship_Module_CargoPod", created.sc_key
+        assert_equal "Ship Module Cargo Pod", created.name
+      end
+
       test "#discover_modules leaves out a part whose tags the slot does not meet" do
         model = create(:model)
         module_slot(model)

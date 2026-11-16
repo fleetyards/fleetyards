@@ -95,22 +95,53 @@ module ScData
       end
 
       private def link_module(model, slot, component)
-        model_module = ModelModule.find_by("lower(sc_key) = ?", component.sc_key.downcase) ||
-          create_module(component)
+        key = item_key(component)
+        model_module = ModelModule.find_by("lower(sc_key) = ?", key.downcase) ||
+          adopt_store_module(model, key) ||
+          create_module(component, key)
 
         module_hardpoint = ModuleHardpoint.find_or_initialize_by(model:, model_module:)
         module_hardpoint.slot ||= slot.sc_name
         module_hardpoint.save! if module_hardpoint.changed?
       end
 
-      private def create_module(component)
+      # Components keep their key lowercased; the item file keeps it as CIG
+      # writes it, which is what the curated modules carry and what a name can
+      # be read from.
+      private def item_key(component)
+        load_module_data(component.sc_key)&.dig("key").presence || component.sc_key
+      end
+
+      # A module the RSI store sells is already on the ship, under the store's
+      # name and without a key: the Galaxy's "Refinery Module" is
+      # `RSI_Galaxy_Module_Refinery`. It takes the key rather than getting a
+      # twin, when exactly one of the ship's keyless modules names every word
+      # of the key that is not the maker, the ship or "module".
+      private def adopt_store_module(model, key)
+        ship_words = model.name.to_s.downcase.split(/[^a-z0-9]+/)
+        wanted = self.class.key_words(key).drop(1) - ship_words - %w[module mod]
+        return if wanted.empty?
+
+        matches = model.modules.where(sc_key: nil).select do |model_module|
+          (wanted - model_module.name.to_s.downcase.split(/[^a-z0-9]+/)).empty?
+        end
+        return unless matches.one?
+
+        apply(matches.first, {sc_key: key, update_reason: :sc_loader})
+      end
+
+      private def create_module(component, key)
         apply(ModelModule.new, {
-          sc_key: component.sc_key,
-          name: component.name.presence || self.class.fallback_name(component.sc_key),
+          sc_key: key,
+          name: component.name.presence || self.class.fallback_name(key),
           manufacturer: component.manufacturer,
           hidden: false,
           active: true
         })
+      end
+
+      def self.key_words(sc_key)
+        sc_key.to_s.split("_").flat_map { |word| word.gsub(/(?<=[a-z])(?=[A-Z])/, " ").split }.map(&:downcase)
       end
 
       # What a module is called until CIG names it: its key without the
@@ -164,7 +195,7 @@ module ScData
         update_params[:production_status] = "flight-ready" if ships_in_live && named
         # The stand-in name gives way once the game names the module; a name an
         # admin chose stays.
-        update_params[:name] = module_data["name"] if named && model_module.name == self.class.fallback_name(model_module.sc_key)
+        update_params[:name] = module_data["name"] if named && model_module.name == self.class.fallback_name(module_data["key"] || model_module.sc_key)
 
         update_params = update_metrics(model_module, module_data, update_params)
         # This build's slots, for the same reason the models loader asks that
