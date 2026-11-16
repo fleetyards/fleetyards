@@ -354,7 +354,7 @@ describe("vehicle add-ons shortcut", () => {
     expect(openEditModal).toHaveBeenLastCalledWith(ship, { tab: "modules" });
   });
 
-  it("shows the upgrades on a wishlist ship without modules", async () => {
+  it("opens the upgrades a wishlist ship without modules is wanted with", async () => {
     const ship = vehicle({
       wanted: true,
       modelUpgradeIds: ["u1"],
@@ -364,8 +364,7 @@ describe("vehicle add-ons shortcut", () => {
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
-    expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
-    expect(openAddonsView).toHaveBeenLastCalledWith(ship);
+    expect(openEditModal).toHaveBeenLastCalledWith(ship, { tab: "upgrades" });
   });
 
   it("shows a visitor the add-ons rather than a loadout", async () => {
