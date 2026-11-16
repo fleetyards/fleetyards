@@ -306,6 +306,13 @@
         "prices": "價格已變動：規劃時為 %{before}，今天為 %{now}。",
         "rebase": "從機庫更新"
       },
+      "upgradeFits": {
+        "title": "你持有的升級可以讓途徑更便宜",
+        "fit": "%{upgrade} 適用於通往 %{ship} 的途徑",
+        "saves": "節省 %{amount}",
+        "apply": "使用",
+        "applied": "通往 %{ship} 的途徑現已使用該升級。"
+      },
       "messages": {
         "saved": "方案已儲存。",
         "saveFailed": "操作失敗，請檢查你的輸入。",

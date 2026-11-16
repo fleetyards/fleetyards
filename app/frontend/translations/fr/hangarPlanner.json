@@ -306,6 +306,13 @@
         "prices": "Les prix ont changé : %{before} lors de la planification, %{now} aujourd'hui.",
         "rebase": "Mettre à jour depuis le hangar"
       },
+      "upgradeFits": {
+        "title": "Vos upgrades peuvent rendre des voies moins chères",
+        "fit": "%{upgrade} convient à la voie vers le %{ship}",
+        "saves": "économise %{amount}",
+        "apply": "L'utiliser",
+        "applied": "La voie vers le %{ship} utilise maintenant l'upgrade."
+      },
       "messages": {
         "saved": "Plan enregistré.",
         "saveFailed": "Cela n'a pas fonctionné. Veuillez vérifier votre saisie.",

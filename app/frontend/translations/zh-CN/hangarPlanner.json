@@ -306,6 +306,13 @@
         "prices": "价格已变化：规划时为 %{before}，今天为 %{now}。",
         "rebase": "从机库更新"
       },
+      "upgradeFits": {
+        "title": "你持有的升级可以让途径更便宜",
+        "fit": "%{upgrade} 适用于通往 %{ship} 的途径",
+        "saves": "节省 %{amount}",
+        "apply": "使用",
+        "applied": "通往 %{ship} 的途径现已使用该升级。"
+      },
       "messages": {
         "saved": "方案已保存。",
         "saveFailed": "操作失败，请检查你的输入。",

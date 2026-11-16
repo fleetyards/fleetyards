@@ -306,6 +306,13 @@
         "prices": "Prices changed: %{before} when planned, %{now} today.",
         "rebase": "Update from hangar"
       },
+      "upgradeFits": {
+        "title": "Upgrades you hold can make routes cheaper",
+        "fit": "%{upgrade} fits the route to the %{ship}",
+        "saves": "saves %{amount}",
+        "apply": "Use it",
+        "applied": "The route to the %{ship} now uses the upgrade."
+      },
       "messages": {
         "saved": "Plan saved.",
         "saveFailed": "That did not work. Please check your input.",
