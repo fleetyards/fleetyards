@@ -4,4 +4,15 @@
 # open, as the item views publish them beside the module's holo.
 class ComponentHardpointTransforms < ApplicationRecord
   belongs_to :component
+
+  # The modules this part is have their cargo holds placed from the export,
+  # inside fragments keyed on the module.
+  after_save :touch_model_modules
+
+  private def touch_model_modules
+    key = component&.sc_key
+    return if key.blank?
+
+    ModelModule.where("LOWER(sc_key) = ?", key.downcase).find_each(&:touch)
+  end
 end
