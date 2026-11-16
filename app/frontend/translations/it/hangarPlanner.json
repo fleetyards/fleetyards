@@ -526,6 +526,8 @@
         "more": "Mostra altre",
         "steps": "I passaggi",
         "addStop": "Aggiungi una tappa",
+        "heldFits": "I tuoi upgrade adatti",
+        "heldFitsHint": "Scegline uno per inserirlo nel percorso dove si adatta. Le tappe attorno restano.",
         "stepPaidWith": "Passaggio %{number} · pagato con",
         "routeEnd": "Fine del percorso",
         "saveRoute": "Salva il percorso",

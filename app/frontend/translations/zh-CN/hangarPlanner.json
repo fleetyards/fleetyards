@@ -526,6 +526,8 @@
         "more": "显示更多",
         "steps": "步骤",
         "addStop": "添加中转",
+        "heldFits": "你持有的适用升级",
+        "heldFitsHint": "选择一个即可将其插入途径中合适的位置，前后的步骤保持不变。",
         "stepPaidWith": "第 %{number} 步 · 支付方式",
         "routeEnd": "途径终点",
         "saveRoute": "保存途径",

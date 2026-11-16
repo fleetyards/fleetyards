@@ -526,6 +526,8 @@
         "more": "顯示更多",
         "steps": "步驟",
         "addStop": "新增中轉",
+        "heldFits": "你持有的適用升級",
+        "heldFitsHint": "選擇一個即可將其插入途徑中合適的位置，前後的步驟保持不變。",
         "stepPaidWith": "第 %{number} 步 · 支付方式",
         "routeEnd": "途徑終點",
         "saveRoute": "儲存途徑",

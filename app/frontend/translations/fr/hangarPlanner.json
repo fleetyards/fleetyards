@@ -526,6 +526,8 @@
         "more": "Afficher plus",
         "steps": "Les étapes",
         "addStop": "Ajouter une étape",
+        "heldFits": "Vos upgrades qui conviennent",
+        "heldFitsHint": "Choisissez-en un pour l'insérer dans la voie là où il convient. Les étapes autour restent.",
         "stepPaidWith": "Étape %{number} · payée avec",
         "routeEnd": "Fin de la voie",
         "saveRoute": "Enregistrer la voie",

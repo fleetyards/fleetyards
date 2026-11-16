@@ -32,6 +32,12 @@ import {
   canLeave,
   ccuNote,
 } from "@/frontend/components/Hangar/Planner/reach";
+import {
+  type ChainContext,
+  reattach,
+  spliceHeld,
+  tailOf,
+} from "@/frontend/components/Hangar/Planner/chain";
 import { useElementSize } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -433,11 +439,6 @@ const listedUpgrades = (step: StepDraft, index: number) =>
     ? heldUpgrades(step).filter((option) => belowTargetId(option.toId))
     : fittingUpgrades(step, index);
 
-// A later upgrade starts where this one ends, so changing one drops the rest.
-const dropAfter = (index: number) => {
-  steps.value = steps.value.slice(0, index + 1);
-};
-
 const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
   key: stepKey++,
   sourceKind,
@@ -448,11 +449,51 @@ const draft = (sourceKind: HangarPlanUpgradeSourceEnum): StepDraft => ({
   usesBuybackToken: true,
 });
 
+const heldFromId = (step: StepDraft) => {
+  if (step.hangarPledgeItemId) {
+    return resources.value?.upgrades.find(
+      (item) => item.id === step.hangarPledgeItemId,
+    )?.fromModel?.id;
+  }
+  if (step.buybackPledgeId) {
+    return resources.value?.buybacks.find(
+      (pledge) => pledge.id === step.buybackPledgeId,
+    )?.upgradeFromModel?.id;
+  }
+  return undefined;
+};
+
+const chain: ChainContext<StepDraft> = {
+  model: (id) => models.value.get(id),
+  heldFrom: heldFromId,
+  storeStep: (toModelId) => ({
+    ...draft(HangarPlanUpgradeSourceEnum.STORE),
+    toModelId,
+  }),
+  restart: (step) => ({ ...step, priceOverride: "", price: undefined }),
+};
+
+const restOf = (
+  tail: ReturnType<typeof tailOf<StepDraft>>,
+  end?: string | null,
+) => (end ? reattach(end, tail, chain) : tail.map((entry) => entry.step));
+
+// The steps after a changed one keep what still connects to where it now ends;
+// while it ends nowhere yet they stay as they are.
+const replaceStep = (index: number, next: StepDraft) => {
+  const tail = tailOf(startModel.value, steps.value, index + 1);
+
+  steps.value = [
+    ...steps.value.slice(0, index),
+    next,
+    ...restOf(tail, next.toModelId),
+  ];
+};
+
 const setSource = (index: number, sourceKind: HangarPlanUpgradeSourceEnum) => {
   if (steps.value[index].sourceKind === sourceKind) return;
 
-  steps.value[index] = { ...draft(sourceKind), key: steps.value[index].key };
-  dropAfter(index);
+  replaceStep(index, { ...draft(sourceKind), key: steps.value[index].key });
 };
 
 // A new upgrade starts on what the user holds when something fits, and falls
@@ -490,14 +531,11 @@ watch(
   { immediate: true },
 );
 
-const pickHeld = (index: number, item: PickListItem) => {
-  const step = steps.value[index];
-  const option = heldUpgrades(step).find((entry) => entry.id === item.id);
-  if (!option) return;
+const heldStep = (option: UpgradeOption): StepDraft => {
+  const owned = option.sourceKind === HangarPlanUpgradeSourceEnum.OWNED_CCU;
 
-  const owned = step.sourceKind === HangarPlanUpgradeSourceEnum.OWNED_CCU;
-  steps.value[index] = {
-    ...step,
+  return {
+    ...draft(option.sourceKind),
     toModelId: option.toId ?? null,
     hangarPledgeItemId: owned ? option.id : null,
     buybackPledgeId: owned ? null : option.id,
@@ -505,12 +543,23 @@ const pickHeld = (index: number, item: PickListItem) => {
     price: option.priceValue,
     pickTarget: !option.toId,
   };
-  dropAfter(index);
 };
 
-const pickStoreTarget = (index: number, name?: string) => {
-  remember(steps.value[index].toModelId, name);
-  dropAfter(index);
+const pickHeld = (index: number, item: PickListItem) => {
+  const step = steps.value[index];
+  const option = heldUpgrades(step).find((entry) => entry.id === item.id);
+  if (!option) return;
+
+  replaceStep(index, {
+    ...heldStep(option),
+    key: step.key,
+    priceOverride: step.priceOverride,
+    usesBuybackToken: step.usesBuybackToken,
+  });
+};
+
+const pickStoreTarget = (index: number, toModelId: string | null) => {
+  replaceStep(index, { ...steps.value[index], toModelId });
 };
 
 // A store upgrade leads from where the step starts to something dearer, short
@@ -541,22 +590,59 @@ const storeStepItems = (index: number) => {
 };
 
 // A stop between two steps is a store upgrade, the one source that leads
-// anywhere. The steps after it now start from wherever it ends, so an upgrade
-// held for their old start is asked for again.
+// anywhere. The steps after it are fitted to wherever it ends once it is picked.
 const insertStep = (index: number) => {
-  const later = steps.value
-    .slice(index)
-    .map((step) =>
-      step.sourceKind === HangarPlanUpgradeSourceEnum.STORE
-        ? step
-        : { ...draft(step.sourceKind), key: step.key },
-    );
-
   steps.value = [
     ...steps.value.slice(0, index),
     draft(HangarPlanUpgradeSourceEnum.STORE),
-    ...later,
+    ...steps.value.slice(index),
   ];
+};
+
+// The upgrades the user holds that this route can take as it stands, each put
+// in where it fits in one pick.
+const heldOptions = (sourceKind: HangarPlanUpgradeSourceEnum) =>
+  heldUpgrades({
+    key: -1,
+    sourceKind,
+    toModelId: null,
+    hangarPledgeItemId: null,
+    buybackPledgeId: null,
+    priceOverride: "",
+  });
+
+const splice = (option: UpgradeOption) => {
+  if (!option.fromId || !option.toId) return undefined;
+
+  return spliceHeld(
+    startModel.value,
+    steps.value,
+    { step: heldStep(option), from: option.fromId, to: option.toId },
+    target.value.id,
+    chain,
+  );
+};
+
+const fittingHeld = computed(() => {
+  if (!upgradable.value) return [];
+
+  return [
+    HangarPlanUpgradeSourceEnum.OWNED_CCU,
+    HangarPlanUpgradeSourceEnum.BUYBACK,
+  ].flatMap((sourceKind) =>
+    heldOptions(sourceKind)
+      .filter((option) => !!splice(option))
+      .map((option) => ({
+        ...option,
+        tags: [{ label: t(`hangarPlanner.upgradeSources.${sourceKind}`) }],
+      })),
+  );
+});
+
+const putHeld = (item: PickListItem) => {
+  const option = fittingHeld.value.find((entry) => entry.id === item.id);
+  const spliced = option && splice(option);
+  if (spliced) steps.value = spliced;
 };
 
 // The last upgrade is what reaches the target, so it can be changed but not
@@ -566,7 +652,12 @@ const removable = (index: number) =>
 
 const removeStep = (key: number) => {
   const index = steps.value.findIndex((step) => step.key === key);
-  steps.value = steps.value.slice(0, index);
+  const tail = tailOf(startModel.value, steps.value, index + 1);
+
+  steps.value = [
+    ...steps.value.slice(0, index),
+    ...restOf(tail, stepFromId(index)),
+  ];
 };
 
 const toPrice = (value: string) => (value === "" ? null : Number(value));
@@ -768,6 +859,25 @@ const onSubmit = async () => {
           :class="{ 'route-view--stacked': stacked }"
         >
           <div ref="main" class="route-view__steps">
+            <section
+              v-if="fittingHeld.length"
+              class="route-view__held"
+              data-test="hangar-plan-route-held"
+            >
+              <h3 class="panel-view__label">
+                {{ t("hangarPlanner.panel.heldFits") }}
+              </h3>
+              <p class="panel-view__muted route-view__held-hint">
+                {{ t("hangarPlanner.panel.heldFitsHint") }}
+              </p>
+              <PickList
+                name="heldFits"
+                actions
+                :items="fittingHeld"
+                :empty="t('hangarPlanner.panel.heldFits')"
+                @pick="putHeld"
+              />
+            </section>
             <h3 class="panel-view__label">
               {{ t("hangarPlanner.panel.steps") }}
             </h3>
@@ -892,12 +1002,7 @@ const onSubmit = async () => {
                       :model-value="step.toModelId"
                       :items="storeStepItems(index)"
                       :empty="t('hangarPlanner.route.noStoreShip')"
-                      @pick="
-                        (item) => {
-                          step.toModelId = item.id;
-                          pickStoreTarget(index);
-                        }
-                      "
+                      @pick="(item) => pickStoreTarget(index, item.id)"
                     />
                     <template v-else>
                       <PickList
@@ -937,11 +1042,12 @@ const onSubmit = async () => {
                       </Btn>
                       <ModelSelect
                         v-if="step.pickTarget"
-                        v-model="step.toModelId"
+                        :model-value="step.toModelId"
                         :name="`steps.${index}.toModelId`"
                         no-label
                         :label="t('hangarPlanner.route.unknownTarget')"
-                        @pick="(name) => pickStoreTarget(index, name)"
+                        @update:model-value="(id) => pickStoreTarget(index, id)"
+                        @pick="(name) => remember(steps[index].toModelId, name)"
                       />
                     </template>
 
@@ -1107,6 +1213,17 @@ const onSubmit = async () => {
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+}
+
+.route-view__held {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.route-view__held-hint {
+  margin: 0;
 }
 
 .route-view__chain {
