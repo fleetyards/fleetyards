@@ -474,7 +474,8 @@ class Model < ApplicationRecord
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
       :build, :last_build, :loadout_stats,
-      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, {cargo_module_hardpoints: :model_module},
+      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, :cargo_grid_export,
+      {cargo_module_hardpoints: :model_module},
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
     ] + list_attachment_preloads
@@ -641,6 +642,16 @@ class Model < ApplicationRecord
 
   def hardpoint_transforms
     hardpoint_transforms_record&.data
+  end
+
+  # The export's cargo grids alone, for lists that place every ship's holds:
+  # the rest of the export is far larger and none of their business.
+  has_one :cargo_grid_export,
+    -> { select(:id, :model_id, Arel.sql("data -> 'cargo_grids' AS cargo_grids")) },
+    class_name: "ModelHardpointTransforms"
+
+  def measured_cargo_placements
+    @measured_cargo_placements ||= CargoGridPlacements.call(cargo_grid_export&.read_attribute(:cargo_grids))
   end
 
   def hardpoint_transforms=(data)

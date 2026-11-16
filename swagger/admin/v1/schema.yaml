@@ -12614,6 +12614,10 @@ components:
           "$ref": "#/components/schemas/CargoHoldOffset"
         rotation:
           type: integer
+        placed:
+          type: boolean
+          description: The offset and rotation are where the hold sits in the ship,
+            from its ship-view export
       additionalProperties: false
       required:
       - dimensions

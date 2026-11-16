@@ -155,4 +155,33 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
 
     assert_equal %w[module_bay], model_module.cargo_holds_db.reload.map(&:name)
   end
+
+  test "places every hold where the ship-view export measured it, over a hand-set offset" do
+    build_holds(@model, [hold("hold_a"), hold("hold_b")])
+    @model.cargo_holds_db.first.update!(offset_x: 9, offset_y: 9, offset_z: 9)
+    @model.update!(hardpoint_transforms: {"ports" => [], "cargo_grids" => [
+      {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], "dimensions" => [2.5, 2.5, 2.5]},
+      {"name" => "hold_b", "position" => [0.0, 1.25, 5.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
+    ]})
+
+    hold_a, hold_b = Model.find(@model.id).cargo_holds_with_offsets
+
+    assert hold_a["placed"]
+    assert_equal({"x" => -1.25, "y" => -1.25, "z" => 0.0}, hold_a["offset"])
+    assert_nil hold_a["rotation"]
+    assert_equal 270, hold_b["rotation"]
+  end
+
+  test "keeps the hand-set offsets when the export places only some holds" do
+    build_holds(@model, [hold("hold_a"), hold("hold_b")])
+    @model.cargo_holds_db.first.update!(offset_x: 1, offset_y: 2, offset_z: 3)
+    @model.update!(hardpoint_transforms: {"ports" => [], "cargo_grids" => [
+      {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
+    ]})
+
+    hold_a, = Model.find(@model.id).cargo_holds_with_offsets
+
+    assert_nil hold_a["placed"]
+    assert_equal({"x" => 1.0, "y" => 2.0, "z" => 3.0}, hold_a["offset"])
+  end
 end
