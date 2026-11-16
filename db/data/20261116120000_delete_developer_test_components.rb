@@ -14,10 +14,11 @@ class DeleteDeveloperTestComponents < ActiveRecord::Migration[8.1]
   KEY_PATTERN = "(^|_)(test|dummy)(_|$)"
 
   # Written by the game files or the price sync, and cleared below or by
-  # `destroy`, so a row there does not keep a stand-in.
+  # `destroy`, so a row there does not keep a stand-in. Attachments are
+  # checked apart from these: the icon is the load's, the store image curated.
   GAME_DATA_TABLES = %w[
     component_builds component_build_changes hardpoints hardpoint_builds
-    item_prices item_price_snapshots active_storage_attachments model_paints
+    item_prices item_price_snapshots model_paints
   ].freeze
 
   DESCRIBING_PAIRS = [
@@ -35,15 +36,14 @@ class DeleteDeveloperTestComponents < ActiveRecord::Migration[8.1]
 
     ids = stand_ins.pluck(:id)
 
-    # The slots are touched as well: their hull's cached payload embeds them.
-    slot_parents = Hardpoint.where(component_id: ids).distinct.pluck(:parent_type, :parent_id)
+    slot_ids = Hardpoint.where(component_id: ids).pluck(:id)
     HardpointBuild.where(component_id: ids).update_all(component_id: nil)
     ItemPriceSnapshot.where(item_type: "Component", item_id: ids).delete_all
     Component.where(id: ids).find_each(&:destroy!)
 
-    slot_parents.group_by(&:first).each do |type, pairs|
-      type.constantize.where(id: pairs.map(&:last)).update_all(updated_at: Time.current)
-    end
+    # `destroy` empties the slots without a touch. Touching each one walks up
+    # through a turret's ports to the hull, whose cached payload embeds them.
+    Hardpoint.where(id: slot_ids).find_each(&:touch)
 
     say "Deleted #{ids.size} developer test components"
   end
@@ -59,6 +59,7 @@ class DeleteDeveloperTestComponents < ActiveRecord::Migration[8.1]
     sql = "SELECT 1 FROM #{connection.quote_table_name(table)} refs " \
       "WHERE refs.#{connection.quote_column_name(id_column)} = #{component_id}"
     sql += " AND refs.#{connection.quote_column_name(type_column)} = 'Component'" if type_column
+    sql += " AND refs.name <> 'icon'" if table == "active_storage_attachments"
     sql
   end
 
