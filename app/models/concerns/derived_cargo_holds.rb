@@ -27,7 +27,7 @@ module DerivedCargoHolds
       .index_by(&:position)
 
     holds.each_with_index.map do |hold_data, index|
-      extra = placed ? measured[hold_data["name"]].compact.merge("placed" => true) : {}
+      extra = placed ? measured[hold_data["name"]].compact.merge("placed_in" => cargo_placement_frame) : {}
 
       loadable = limits[index] && loadable_container_size(limits[index])
       extra["max_container_size"] = loadable if loadable
@@ -96,6 +96,12 @@ module DerivedCargoHolds
   # The holds' placements a parent has measured; none by default.
   def measured_cargo_placements
     {}
+  end
+
+  # Names the export the holds were placed from: holds placed from different
+  # exports -- a ship and a module fitted to it -- are each in their own frame.
+  def cargo_placement_frame
+    "#{model_name.element}/#{slug}"
   end
 
   # Only a limit below what the grid itself takes changes anything.

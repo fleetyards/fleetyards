@@ -163,7 +163,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
       holds = parsed_body["items"].sole["cargoHolds"]
-      assert holds.all? { |hold| hold["placed"] }, holds.inspect
+      assert_equal ["model_module/#{cargo.slug}"] * 2, holds.pluck("placedIn"), holds.inspect
       assert_equal [270, 270], holds.pluck("rotation")
     end
   end
@@ -177,7 +177,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
 
     with_fragment_caching do
       get "/api/v1/models/#{model.slug}/modules"
-      assert_not response.parsed_body["items"].sole["cargoHolds"].sole["placed"]
+      assert_not response.parsed_body["items"].sole["cargoHolds"].sole["placedIn"]
 
       travel 1.minute do
         part.update!(hardpoint_transforms: {"cargo_grids" => [
@@ -187,7 +187,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
       end
       get "/api/v1/models/#{model.slug}/modules"
 
-      assert response.parsed_body["items"].sole["cargoHolds"].sole["placed"]
+      assert response.parsed_body["items"].sole["cargoHolds"].sole["placedIn"]
     end
   end
 

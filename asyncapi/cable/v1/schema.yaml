@@ -394,10 +394,11 @@ components:
           "$ref": "#/components/schemas/CargoHoldOffset"
         rotation:
           type: integer
-        placed:
-          type: boolean
-          description: The offset and rotation are where the hold sits in the ship,
-            from its ship-view export
+        placedIn:
+          type: string
+          description: The ship or module whose hull export the offset and rotation
+            come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in
+            the same one share a frame; a hold without it is not placed
       additionalProperties: false
       required:
       - dimensions

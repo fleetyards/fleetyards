@@ -25,7 +25,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
-import { groupCargoHolds } from "./grouping";
+import { type CargoHoldGroup, groupCargoHolds } from "./grouping";
 
 const { t } = useI18n();
 
@@ -159,12 +159,13 @@ function placementsToResult(placements: Placement[]): ArrangeResult {
   };
 }
 
-function findBestHoldArrangement(
+// A group the hull export placed sits as it does in the ship; any other is set
+// out in a row, plainly not where its holds are.
+function arrangeHoldGroup(
   cargoHolds: CargoHold[],
-  holdIndices: number[],
+  group: CargoHoldGroup,
 ): ArrangeResult {
-  type HoldDim = { hi: number; x: number; y: number; z: number };
-  const dims: HoldDim[] = holdIndices.map((hi) => {
+  const dims = group.holdIndices.map((hi) => {
     const h = cargoHolds[hi];
     return {
       hi,
@@ -174,138 +175,41 @@ function findBestHoldArrangement(
     };
   });
 
-  // Check if all holds in this group have offsets — use manual placement
-  const allHaveOffsets = holdIndices.every((hi) => {
-    const h = cargoHolds[hi];
-    return (
-      h.offset && h.offset.x != null && h.offset.y != null && h.offset.z != null
+  if (group.placed) {
+    // Offsets are in metres, the lowest corner of the hold; a hold turned a
+    // quarter about the vertical swaps its length and width.
+    return placementsToResult(
+      dims.map((d) => {
+        const h = cargoHolds[d.hi];
+        const turned = h.rotation === 270;
+        return {
+          hi: d.hi,
+          ox: h.offset!.x / SCU_UNIT,
+          oy: h.offset!.z / SCU_UNIT,
+          oz: h.offset!.y / SCU_UNIT,
+          gx: turned ? d.y : d.x,
+          gy: turned ? d.x : d.y,
+          gz: d.z,
+        };
+      }),
     );
-  });
+  }
 
-  if (allHaveOffsets) {
-    // Use manual offsets: offset values are in meters, convert to grid cells
-    const placements: Placement[] = dims.map((d) => {
-      const h = cargoHolds[d.hi];
-      const rotXZ = h.rotation === 90;
-      const rotXY = h.rotation === 270;
-      return {
+  let ox = 0;
+  return placementsToResult(
+    dims.map((d) => {
+      const placement = {
         hi: d.hi,
-        ox: h.offset!.x / SCU_UNIT,
-        oy: h.offset!.z / SCU_UNIT,
-        oz: h.offset!.y / SCU_UNIT,
-        gx: rotXZ ? d.z : rotXY ? d.y : d.x,
-        gy: rotXY ? d.x : d.y,
-        gz: rotXZ ? d.x : d.z,
+        ox,
+        oy: 0,
+        oz: 0,
+        gx: d.x,
+        gy: d.y,
+        gz: d.z,
       };
-    });
-    return placementsToResult(placements);
-  }
-
-  const candidates: ArrangeResult[] = [];
-
-  // Option 1: All along X
-  {
-    let ox = 0;
-    const pl: Placement[] = dims.map((d) => {
-      const p = { hi: d.hi, ox, oy: 0, oz: 0, gx: d.x, gy: d.y, gz: d.z };
       ox += d.x;
-      return p;
-    });
-    candidates.push(placementsToResult(pl));
-  }
-
-  // Option 2: All along Z
-  {
-    let oz = 0;
-    const pl: Placement[] = dims.map((d) => {
-      const p = { hi: d.hi, ox: 0, oy: 0, oz, gx: d.x, gy: d.y, gz: d.z };
-      oz += d.y;
-      return p;
-    });
-    candidates.push(placementsToResult(pl));
-  }
-
-  // Option 3: L-shaped — pull each hold out and place it on the side
-  if (dims.length >= 2) {
-    for (let i = 0; i < dims.length; i++) {
-      const side = dims[i];
-      const main = dims
-        .filter((_, j) => j !== i)
-        .sort((a, b) => b.x * b.y * b.z - a.x * a.y * a.z);
-
-      for (const mainAxis of ["x", "z"] as const) {
-        let offset = 0;
-        const mainPl: Placement[] = main.map((d) => {
-          const p =
-            mainAxis === "x"
-              ? {
-                  hi: d.hi,
-                  ox: offset,
-                  oy: 0,
-                  oz: 0,
-                  gx: d.x,
-                  gy: d.y,
-                  gz: d.z,
-                }
-              : {
-                  hi: d.hi,
-                  ox: 0,
-                  oy: 0,
-                  oz: offset,
-                  gx: d.x,
-                  gy: d.y,
-                  gz: d.z,
-                };
-          offset += mainAxis === "x" ? d.x : d.y;
-          return p;
-        });
-
-        const mainWidth =
-          mainAxis === "x"
-            ? main.reduce((s, d) => s + d.x, 0)
-            : Math.max(...main.map((d) => d.x));
-        const mainDepth =
-          mainAxis === "z"
-            ? main.reduce((s, d) => s + d.y, 0)
-            : Math.max(...main.map((d) => d.y));
-
-        // Side hold on +X edge
-        candidates.push(
-          placementsToResult([
-            ...mainPl,
-            {
-              hi: side.hi,
-              ox: mainWidth,
-              oy: 0,
-              oz: 0,
-              gx: side.x,
-              gy: side.y,
-              gz: side.z,
-            },
-          ]),
-        );
-
-        // Side hold on +Z edge
-        candidates.push(
-          placementsToResult([
-            ...mainPl,
-            {
-              hi: side.hi,
-              ox: 0,
-              oy: 0,
-              oz: mainDepth,
-              gx: side.x,
-              gy: side.y,
-              gz: side.z,
-            },
-          ]),
-        );
-      }
-    }
-  }
-
-  return candidates.reduce((best, c) =>
-    c.boundingVolume < best.boundingVolume ? c : best,
+      return placement;
+    }),
   );
 }
 
@@ -423,10 +327,7 @@ const packResult = computed<PackResult>(() => {
 
   let totalSceneWidthSCU = 0;
   for (const group of holdGroups) {
-    const arrangement = findBestHoldArrangement(
-      props.cargoHolds,
-      group.holdIndices,
-    );
+    const arrangement = arrangeHoldGroup(props.cargoHolds, group);
     groupInfos.push({ arrangement, group });
     totalSceneWidthSCU += arrangement.groupWidthSCU;
   }
@@ -680,7 +581,7 @@ function packSingleShip(
   }[] = [];
 
   for (const group of holdGroups) {
-    const arrangement = findBestHoldArrangement(cargoHolds, group.holdIndices);
+    const arrangement = arrangeHoldGroup(cargoHolds, group);
     groupInfos.push({ arrangement, group });
   }
 
@@ -793,7 +694,7 @@ const multiShipPackResults = computed<ShipPackResult[]>(() => {
     let maxDepthSCU = 0;
 
     for (const group of holdGroups) {
-      const arr = findBestHoldArrangement(ship.cargoHolds, group.holdIndices);
+      const arr = arrangeHoldGroup(ship.cargoHolds, group);
       widthSCU += arr.groupWidthSCU;
       maxHeightSCU = Math.max(maxHeightSCU, arr.groupHeightSCU);
       maxDepthSCU = Math.max(maxDepthSCU, arr.groupDepthSCU);
@@ -890,7 +791,7 @@ const holdGeometry = computed(() => {
   let maxZ = 0;
 
   for (const group of holdGroups) {
-    const arr = findBestHoldArrangement(props.cargoHolds, group.holdIndices);
+    const arr = arrangeHoldGroup(props.cargoHolds, group);
     totalWidthSCU += arr.groupWidthSCU;
     maxY = Math.max(maxY, arr.groupHeightSCU * SCU_UNIT);
     maxZ = Math.max(maxZ, arr.groupDepthSCU * SCU_UNIT);
