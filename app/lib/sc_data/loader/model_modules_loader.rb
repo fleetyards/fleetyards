@@ -197,14 +197,17 @@ module ScData
         live = ::ScData::Source.default
         ships_in_live = source == live || model_module.builds.current(live).any?
 
-        # A module CIG has not named yet is not in players' hands, live or not.
-        named = module_data["name"].present?
+        # A module still under the stand-in name its key gave it is one nobody
+        # has named -- not CIG, not the store, not an admin -- and so not in
+        # players' hands, live or not.
+        stand_in = model_module.name == self.class.fallback_name(module_data["key"] || model_module.sc_key)
+        game_name = module_data["name"].presence
 
         update_params = {}
-        update_params[:production_status] = "flight-ready" if ships_in_live && named
-        # The stand-in name gives way once the game names the module; a name an
-        # admin chose stays.
-        update_params[:name] = module_data["name"] if named && model_module.name == self.class.fallback_name(module_data["key"] || model_module.sc_key)
+        update_params[:production_status] = "flight-ready" if ships_in_live && (game_name || !stand_in)
+        # The stand-in gives way once the game names the module; a name an admin
+        # chose stays.
+        update_params[:name] = game_name if game_name && stand_in
 
         update_params = update_metrics(model_module, module_data, update_params)
         # This build's slots, for the same reason the models loader asks that

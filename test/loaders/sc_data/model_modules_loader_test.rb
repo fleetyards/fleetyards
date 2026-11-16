@@ -422,12 +422,26 @@ module ScData
         assert_equal "Cargo Pod", model_module.reload.name
       end
 
-      test "#load_model_module leaves a module the game has not named out of flight-ready" do
-        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", production_status: "in-concept")
+      test "#load_model_module leaves a module nobody has named out of flight-ready" do
+        loading_live
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", production_status: "in-concept",
+          name: ::ScData::Loader::ModelModulesLoader.fallback_name("ARGO_MPUV_Module_1C_CargoPod"))
 
         load_with(model_module, "name" => nil)
 
         assert_equal "in-concept", model_module.reload.production_status
+      end
+
+      # The store or an admin named it, so it is a real module the item file
+      # merely leaves unnamed.
+      test "#load_model_module marks a module named outside the game flight-ready" do
+        loading_live
+        model_module = create(:model_module, sc_key: "ARGO_MPUV_Module_1C_CargoPod", production_status: "in-concept",
+          name: "Cargo Pod")
+
+        load_with(model_module, "name" => nil)
+
+        assert_equal "flight-ready", model_module.reload.production_status
       end
 
       test ".fallback_name drops the manufacturer code and splits the words" do
