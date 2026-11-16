@@ -93,7 +93,9 @@ import {
 import {
   buildCargo,
   cargoLayoutKey,
+  cargoTargets,
   disposeCargo,
+  pointCargo,
   revealCargo,
 } from "../cargo";
 import {
@@ -673,6 +675,7 @@ const emit = defineEmits<{
   builtInSelect: [id: string];
   doorPoint: [id: string | undefined];
   doorSelect: [id: string];
+  cargoPoint: [id: string | undefined];
   // The rig pieces and attachments left off the figure, by path: their mount
   // is not in the rig of the piece they hang from.
   unplaced: [paths: string[]];
@@ -813,6 +816,7 @@ const cargoReveal = layerTween((amount) => {
 }, layerShown("cargo"));
 
 const placeCargo = (scene: Group) => {
+  pointCargoGrid(undefined);
   if (cargoRoot) {
     scene.remove(cargoRoot);
     disposeCargo(cargoRoot);
@@ -1311,6 +1315,20 @@ const doorAt = (event: PointerEvent | MouseEvent) => {
   return hits[0]?.userData.doorId as string | undefined;
 };
 
+const cargoAt = (event: PointerEvent | MouseEvent) => {
+  if (!cargoRoot?.visible || !camera.value) return undefined;
+
+  castFrom(event, camera.value);
+
+  const hits = raycaster
+    .intersectObjects(cargoTargets(cargoRoot), false)
+    .map(({ object }) => object as Mesh<BoxGeometry>);
+
+  hits.sort((a, b) => boxVolume(a) - boxVolume(b));
+
+  return hits[0]?.userData.cargoGridId as string | undefined;
+};
+
 const boxVolume = (mesh: Mesh<BoxGeometry>) => {
   const { width, height, depth } = mesh.geometry.parameters;
 
@@ -1320,6 +1338,16 @@ const boxVolume = (mesh: Mesh<BoxGeometry>) => {
 let pointed: string | undefined;
 let pointedBox: string | undefined;
 let pointedDoor: string | undefined;
+let pointedCargo: string | undefined;
+
+const pointCargoGrid = (id: string | undefined) => {
+  if (id === pointedCargo) return;
+
+  pointedCargo = id;
+  if (cargoRoot) pointCargo(cargoRoot, id);
+  invalidate();
+  emit("cargoPoint", id);
+};
 
 const pointBuiltIn = (id: string | undefined) => {
   if (id === pointedBuiltIn) return;
@@ -1348,13 +1376,18 @@ const onPointerMove = (event: PointerEvent) => {
   const id = event.buttons ? undefined : mountAt(event);
   const builtInId = event.buttons || id ? undefined : builtInAt(event);
   const doorId = event.buttons || id || builtInId ? undefined : doorAt(event);
+  const cargoId =
+    event.buttons || id || builtInId || doorId ? undefined : cargoAt(event);
   const boxId =
-    event.buttons || id || builtInId || doorId ? undefined : boxAt(event);
+    event.buttons || id || builtInId || doorId || cargoId
+      ? undefined
+      : boxAt(event);
 
   renderer.domElement.style.cursor = id || builtInId || doorId ? "pointer" : "";
 
   pointBuiltIn(builtInId);
   pointDoor(doorId);
+  pointCargoGrid(cargoId);
 
   if (boxId !== pointedBox) {
     pointedBox = boxId;
@@ -1372,6 +1405,7 @@ const onPointerLeave = () => {
 
   pointBuiltIn(undefined);
   pointDoor(undefined);
+  pointCargoGrid(undefined);
 
   if (pointedBox) {
     pointedBox = undefined;

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { type Material, type Mesh } from "three";
-import { buildCargo, disposeCargo, revealCargo } from "./cargo";
+import {
+  buildCargo,
+  cargoTargets,
+  disposeCargo,
+  pointCargo,
+  revealCargo,
+} from "./cargo";
 
 const grid = {
   id: "hardpoint_cargogrid_module_04",
@@ -60,5 +66,33 @@ describe("buildCargo", () => {
     expect(root.children[0].scale.x).toBe(1);
 
     disposeCargo(root);
+  });
+
+  it("answers the pointer over its whole volume, by the grid's id", () => {
+    const root = buildCargo([grid]);
+    const [target] = cargoTargets(root);
+
+    expect(target.userData.cargoGridId).toBe("hardpoint_cargogrid_module_04");
+    expect(((target as Mesh).material as Material).visible).toBe(false);
+  });
+
+  it("draws the pointed grid's outline bright", () => {
+    const root = buildCargo([grid, { ...grid, id: "other" }]);
+    const outline = (index: number) =>
+      (
+        root.children[index].children.find(
+          (child) => child.userData.outline,
+        ) as Mesh
+      ).material as Material;
+    const plain = outline(0).opacity;
+
+    pointCargo(root, "hardpoint_cargogrid_module_04");
+
+    expect(outline(0).opacity).toBeGreaterThan(plain);
+    expect(outline(1).opacity).toBe(plain);
+
+    pointCargo(root, undefined);
+
+    expect(outline(0).opacity).toBe(plain);
   });
 });

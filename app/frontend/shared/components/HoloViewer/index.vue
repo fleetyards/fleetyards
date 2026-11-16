@@ -200,6 +200,7 @@ const emit = defineEmits<{
   builtInSelect: [id: string];
   doorPoint: [id: string | undefined];
   doorSelect: [id: string];
+  cargoPoint: [id: string | undefined];
   unplaced: [paths: string[]];
   fellBack: [paths: string[]];
 }>();
@@ -1166,6 +1167,7 @@ defineExpose({
           @built-in-select="emit('builtInSelect', $event)"
           @door-point="emit('doorPoint', $event)"
           @door-select="emit('doorSelect', $event)"
+          @cargo-point="emit('cargoPoint', $event)"
           @unplaced="emit('unplaced', $event)"
           @fell-back="emit('fellBack', $event)"
           @busy="busy = $event"

@@ -27,6 +27,7 @@ export type HoloCargoGrid = {
 export const CARGO_GRID_COLOR = "#7fd8ff";
 
 const GRID_EDGE_OPACITY = 0.55;
+const POINTED_EDGE_OPACITY = 1;
 const CONTAINER_FILL_OPACITY = 0.32;
 const CONTAINER_EDGE_OPACITY = 0.85;
 // Room between neighbouring containers, so each one reads on its own.
@@ -91,7 +92,16 @@ export const buildCargo = (grids: HoloCargoGrid[]) => {
       ),
     );
     outline.renderOrder = RENDER_ORDER;
+    outline.userData.outline = true;
     group.add(outline);
+
+    // What the pointer finds the grid by: the whole volume, empty cells too.
+    const pick = new Mesh(
+      boxOf(width, height, depth),
+      new MeshBasicMaterial({ visible: false }),
+    );
+    pick.userData.cargoGridId = grid.id;
+    group.add(pick);
 
     // Packed lengthwise along x, across along depth, stacked up.
     const placements = packGrid(cells(width), cells(depth), cells(height));
@@ -141,18 +151,36 @@ export const buildCargo = (grids: HoloCargoGrid[]) => {
 // they come.
 export const revealCargo = (root: Object3D, amount: number) => {
   root.visible = amount > 0;
+  root.userData.reveal = amount;
 
   for (const group of root.children) {
     group.scale.setScalar(REVEAL_FROM + (1 - REVEAL_FROM) * amount);
+    const pointed = group.userData.cargoGridId === root.userData.pointed;
 
     group.traverse((node) => {
       const material = (node as Mesh).material as Material | undefined;
       if (!material) return;
 
-      material.opacity = (material.userData.opacity ?? 1) * amount;
+      const base =
+        node.userData.outline && pointed
+          ? POINTED_EDGE_OPACITY
+          : (material.userData.opacity ?? 1);
+      material.opacity = base * amount;
     });
   }
 };
+
+// The grid under the pointer, its outline drawn bright.
+export const pointCargo = (root: Object3D, id?: string) => {
+  root.userData.pointed = id;
+  revealCargo(root, (root.userData.reveal as number | undefined) ?? 1);
+};
+
+// The pick boxes, for the pointer to be cast against.
+export const cargoTargets = (root: Object3D) =>
+  root.children.flatMap((group) =>
+    group.children.filter((child) => child.userData.cargoGridId),
+  );
 
 export const disposeCargo = (root: Object3D) => {
   root.traverse((node) => {
