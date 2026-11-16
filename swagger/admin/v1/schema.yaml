@@ -10663,14 +10663,6 @@ components:
           type: number
         dimensionZ:
           type: number
-        offsetX:
-          type: number
-        offsetY:
-          type: number
-        offsetZ:
-          type: number
-        rotation:
-          type: integer
         maxContainerSizeScu:
           type: integer
         maxLoadableContainerSizeScu:
@@ -12655,22 +12647,6 @@ components:
     CargoHoldInput:
       type: object
       properties:
-        offsetX:
-          type:
-          - number
-          - 'null'
-        offsetY:
-          type:
-          - number
-          - 'null'
-        offsetZ:
-          type:
-          - number
-          - 'null'
-        rotation:
-          type:
-          - integer
-          - 'null'
         maxLoadableContainerSizeScu:
           type:
           - integer

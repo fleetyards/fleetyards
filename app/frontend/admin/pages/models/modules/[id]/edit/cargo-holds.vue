@@ -20,11 +20,6 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import {
-  InputAlignmentsEnum,
-  InputTypesEnum,
-} from "@/shared/components/base/FormInput/types";
 import {
   formatMaxContainer,
   hasLoadableLimit,
@@ -84,10 +79,6 @@ const loadableSizeOptions = computed<FilterOption[]>(() =>
 const onStartEdit = (hold: AdminCargoHold) => {
   editingHold.value = hold;
   editForm.value = {
-    offsetX: hold.offsetX ?? undefined,
-    offsetY: hold.offsetY ?? undefined,
-    offsetZ: hold.offsetZ ?? undefined,
-    rotation: hold.rotation ?? undefined,
     maxLoadableContainerSizeScu: hold.maxLoadableContainerSizeScu ?? undefined,
   };
 };
@@ -111,10 +102,6 @@ const onSaveEdit = async () => {
   await updateMutation.mutateAsync({
     id,
     data: {
-      offsetX: toNumberOrNull(editForm.value.offsetX),
-      offsetY: toNumberOrNull(editForm.value.offsetY),
-      offsetZ: toNumberOrNull(editForm.value.offsetZ),
-      rotation: toNumberOrNull(editForm.value.rotation),
       maxLoadableContainerSizeScu: toNumberOrNull(
         editForm.value.maxLoadableContainerSizeScu,
       ),
@@ -124,32 +111,8 @@ const onSaveEdit = async () => {
   editableList.value?.finishEdit();
 };
 
-const clearOffsets = async (hold: AdminCargoHold) => {
-  await updateMutation.mutateAsync({
-    id: hold.id,
-    data: {
-      offsetX: null,
-      offsetY: null,
-      offsetZ: null,
-      rotation: null,
-    },
-  });
-};
-
-const hasOffset = (hold: AdminCargoHold) =>
-  hold.offsetX != null ||
-  hold.offsetY != null ||
-  hold.offsetZ != null ||
-  hold.rotation != null;
-
 const formatDimensions = (hold: AdminCargoHold) =>
   `${hold.dimensionX} x ${hold.dimensionY} x ${hold.dimensionZ}m`;
-
-const formatOffset = (hold: AdminCargoHold) => {
-  if (!hasOffset(hold)) return "Auto";
-  const parts = `${hold.offsetX ?? 0}, ${hold.offsetY ?? 0}, ${hold.offsetZ ?? 0}`;
-  return hold.rotation != null ? `${parts} (r=${hold.rotation}°)` : parts;
-};
 </script>
 
 <template>
@@ -184,23 +147,9 @@ const formatOffset = (hold: AdminCargoHold) => {
           {{ formatDimensions(item) }} &middot; {{ item.capacityScu }} SCU
         </span>
       </span>
-      <span :class="{ 'text-muted': !hasOffset(item) }">
-        Offset: {{ formatOffset(item) }}
-      </span>
       <span :class="{ 'text-muted': !hasLoadableLimit(item) }">
         Max crate: {{ formatMaxContainer(item) }}
       </span>
-    </template>
-
-    <template #actions="{ item }">
-      <Btn
-        v-if="hasOffset(item)"
-        v-tooltip="'Clear offsets'"
-        @click="clearOffsets(item)"
-        :variant="BtnVariantsEnum.GHOST"
-      >
-        <i class="fa-duotone fa-undo" />
-      </Btn>
     </template>
 
     <template #headline="{ item }">
@@ -208,38 +157,6 @@ const formatOffset = (hold: AdminCargoHold) => {
     </template>
 
     <template #edit>
-      <FormInput
-        v-model="editForm.offsetX"
-        :type="InputTypesEnum.NUMBER"
-        :alignment="InputAlignmentsEnum.RIGHT"
-        name="offsetX"
-        translation-key="cargoHold.offsetX"
-        :step="0.5"
-      />
-      <FormInput
-        v-model="editForm.offsetY"
-        :type="InputTypesEnum.NUMBER"
-        :alignment="InputAlignmentsEnum.RIGHT"
-        name="offsetY"
-        translation-key="cargoHold.offsetY"
-        :step="0.5"
-      />
-      <FormInput
-        v-model="editForm.offsetZ"
-        :type="InputTypesEnum.NUMBER"
-        :alignment="InputAlignmentsEnum.RIGHT"
-        name="offsetZ"
-        translation-key="cargoHold.offsetZ"
-        :step="0.5"
-      />
-      <FormInput
-        v-model="editForm.rotation"
-        :type="InputTypesEnum.NUMBER"
-        :alignment="InputAlignmentsEnum.RIGHT"
-        name="rotation"
-        translation-key="cargoHold.rotation"
-        :step="90"
-      />
       <BaseSelect
         v-model="editForm.maxLoadableContainerSizeScu"
         name="maxLoadableContainerSizeScu"

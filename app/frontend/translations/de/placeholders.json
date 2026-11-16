@@ -98,10 +98,6 @@
         "baseModel": "Basismodell"
       },
       "cargoHold": {
-        "offsetX": "Versatz X",
-        "offsetY": "Versatz Y",
-        "offsetZ": "Versatz Z",
-        "rotation": "0 or 90",
         "maxLoadableContainerSizeScu": "Grid-Maximum"
       },
       "manufacturer": {

@@ -68,19 +68,6 @@ test.describe("Admin Cargo Holds", () => {
     await expect(page.getByText("· 16 SCU")).toBeVisible();
   });
 
-  test("Shows auto offset by default", async ({ page }) => {
-    await page.goto("/admin/models/");
-
-    await page.getByText("Caterpillar").first().click();
-
-    const cargoHoldsTab = page.getByText("Cargo Holds").first();
-    await cargoHoldsTab.click();
-
-    // Both holds should show Auto offset
-    const autoLabels = page.getByText("Auto");
-    await expect(autoLabels.first()).toBeVisible();
-  });
-
   test("Opens edit mode for a cargo hold", async ({ page }) => {
     await page.goto("/admin/models/");
 
@@ -105,46 +92,11 @@ test.describe("Admin Cargo Holds", () => {
       page.getByTestId("list-group-item").first().getByTestId("edit-headline"),
     ).toHaveText("Cargo Front");
 
-    // Should show offset and rotation inputs
-    await expect(page.locator('input[name="offsetX"]')).toBeVisible();
-    await expect(page.locator('input[name="offsetY"]')).toBeVisible();
-    await expect(page.locator('input[name="offsetZ"]')).toBeVisible();
-    await expect(page.locator('input[name="rotation"]')).toBeVisible();
-  });
-
-  test("Saves cargo hold offset", async ({ page }) => {
-    await page.goto("/admin/models/");
-
-    await page.getByText("Caterpillar").first().click();
-
-    const cargoHoldsTab = page.getByText("Cargo Holds").first();
-    await cargoHoldsTab.click();
-
-    // Wait for cargo holds list to load
-    await page.getByTestId("list-group-item").first().waitFor();
-
-    // Click edit button on first cargo hold
-    const editBtn = page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("start-edit");
-    await editBtn.click();
-
-    // Fill in offset values
-    await page.locator('input[name="offsetX"]').fill("1.5");
-    await page.locator('input[name="offsetY"]').fill("2.0");
-    await page.locator('input[name="offsetZ"]').fill("0.5");
-    await page.locator('input[name="rotation"]').fill("90");
-
-    // Click save
-    const saveBtn = page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("save-edit");
-    await saveBtn.click();
-
-    // Should exit edit mode and show the offset values
-    await expect(page.locator('input[name="offsetX"]')).not.toBeVisible();
-    await expect(page.getByText("1.5, 2, 0.5")).toBeVisible();
+    // Only the loadable crate limit is set by hand: the hull export places
+    // the holds.
+    await expect(
+      page.getByTestId("base-select-maxLoadableContainerSizeScu"),
+    ).toBeVisible();
+    await expect(page.locator('input[name="offsetX"]')).toHaveCount(0);
   });
 });
