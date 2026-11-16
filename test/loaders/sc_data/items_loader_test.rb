@@ -67,6 +67,14 @@ module ScData
         assert_nil stand_in.reload.version
       end
 
+      test "#all leaves a port defaulting to a developer stand-in empty" do
+        create(:component, sc_key: "mine_test")
+
+        params = items_loader.send(:add_default_loadout, {"key" => "MINE_Test"}, "hardpoint_mine", {})
+
+        assert_equal({component_id: nil}, params)
+      end
+
       test "#all names an item the game left without a localised name" do
         items_loader.all
 

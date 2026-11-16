@@ -13,11 +13,6 @@ module ScData
       # ore pod.
       ORE_POD_VARIANT = /mining_pod.*_(template|collapsed)\z/
 
-      # Developer stand-ins CIG leaves in the export: `mine_test` or
-      # `behr_lasercannon_s7_idris_m_dummy` borrow a real item's name, so
-      # loaded they read as a duplicate of it. Matched on whole key parts.
-      TEST_ITEM_PARTS = %w[test dummy].freeze
-
       # Items whose name key the game references but never localises. Without a
       # name a component has no slug and stays out of the catalogue. A name the
       # export does carry always wins, so an entry here retires itself once the
@@ -28,7 +23,7 @@ module ScData
 
       def all
         exported = load_items("items")
-        items = exported.reject { |item| item["category"] == "inventory" || test_item?(item) }
+        items = exported.reject { |item| item["category"] == "inventory" || test_item_key?(item["key"]) }
         items_by_ref = index_by_ref(exported)
         salvage_parts = ::ScData::SalvageParts.new(
           load_items("models"),
@@ -178,10 +173,6 @@ module ScData
           .to_set
       end
 
-      private def test_item?(item)
-        item["key"].to_s.downcase.split("_").intersect?(TEST_ITEM_PARTS)
-      end
-
       # Same reason, for the export side: `find_item_by_ref` reaches for the
       # tree again on every call and `load_items` globs and parses every one of
       # the eight thousand item files, so resolving the hundred-odd
@@ -243,6 +234,7 @@ module ScData
 
       private def add_default_loadout(default_loadout, name, update_params)
         return update_params if default_loadout.blank?
+        return update_params.merge(component_id: nil) if test_item_key?(default_loadout["key"])
 
         loadout_component = find_component(default_loadout["key"]&.downcase, default_loadout["key"], default_loadout["ref"])
 
