@@ -131,16 +131,23 @@ const modulesVisible = computed(
   () => !props.vehicle.loaner && !!props.vehicle.model.hasModules,
 );
 
-// A wishlist ship is named, watched for sales and wanted with its modules; how
-// it was bought, its groups and its picture belong to a ship in the hangar.
+const upgradesVisible = computed(
+  () => !props.vehicle.loaner && !!props.vehicle.model.hasUpgrades,
+);
+
+// A wishlist ship is named, watched for sales and wanted with its modules and
+// upgrades; how it was bought, its groups and its picture belong to a ship in
+// the hangar.
 const WISHLIST_TABS = [
   VehicleEditTabsEnum.NAMES,
   VehicleEditTabsEnum.VISIBILITY,
   VehicleEditTabsEnum.MODULES,
+  VehicleEditTabsEnum.UPGRADES,
 ];
 
 const tabVisible = (tab: VehicleEditTabsEnum) =>
   (tab !== VehicleEditTabsEnum.MODULES || modulesVisible.value) &&
+  (tab !== VehicleEditTabsEnum.UPGRADES || upgradesVisible.value) &&
   (!props.wishlist || WISHLIST_TABS.includes(tab));
 
 const activeTab = ref<string>(
@@ -360,12 +367,9 @@ const vehicleName = computed(
           :label="t('labels.vehicleLoadout.tabs.upgrades')"
           icon="fa-duotone fa-wrench"
           :fields="['modelUpgradeIds']"
-          :hidden="!equipmentVisible || !vehicle.model.hasUpgrades"
+          :hidden="!tabVisible(VehicleEditTabsEnum.UPGRADES)"
         >
-          <Upgrades
-            v-if="equipmentVisible && vehicle.model.hasUpgrades"
-            :vehicle="vehicle"
-          />
+          <Upgrades v-if="upgradesVisible" :vehicle="vehicle" />
         </FormTab>
         <FormTab
           :id="VehicleEditTabsEnum.PAINT"

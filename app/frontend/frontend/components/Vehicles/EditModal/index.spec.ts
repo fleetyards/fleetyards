@@ -53,6 +53,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     ...resolved(),
   }),
   useModelModulePackages: () => ({ data: ref({ items: [] }), ...resolved() }),
+  useModelUpgrades: () => ({
+    data: ref([{ id: "u1", name: "Engine Upgrade", slug: "engine" }]),
+    ...resolved(),
+  }),
   useModelPaints: () => ({ data: ref([]), ...resolved() }),
   useVehiclePaints: () => ({
     data: ref([
@@ -288,6 +292,31 @@ describe("VehicleEditModal", () => {
       expect(mutateAsync).toHaveBeenCalledWith({
         id: "vehicle-1",
         data: { modelModuleIds: ["m1"] },
+      }),
+    );
+  });
+
+  it("records an upgrade a wishlist ship is wanted with", async () => {
+    const v = vehicle(false);
+    v.model.hasUpgrades = true;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: v, wishlist: true, tab: VehicleEditTabsEnum.UPGRADES },
+    });
+    await flushPromises();
+
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .filter((tab) => !tab.props("hidden"))
+        .map((tab) => tab.props("id")),
+    ).toEqual(["visibility", "names", "upgrades"]);
+
+    await wrapper.get("[data-test='vehicle-addon-toggle']").trigger("click");
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { modelUpgradeIds: ["u1"] },
       }),
     );
   });
