@@ -90,6 +90,23 @@ module ScData
         assert_equal ["Relay"], port["types"]
       end
 
+      # `Hash.from_xml` takes a lone `type` attribute for a cast hint, which
+      # emptied every port type written without `subtypes`.
+      test "carries a type the definition writes without sub types" do
+        write_ship(entries: '<SItemPortLoadoutEntryParams itemPortName="hardpoint_cargo_module" entityClassName="TEST_Module" />')
+
+        assert_equal ["Module"], ports.fetch("hardpoint_cargo_module")["types"]
+      end
+
+      test "carries tags the definition spells with a capital" do
+        write_ship(entries: '<SItemPortLoadoutEntryParams itemPortName="hardpoint_cargo_module" entityClassName="TEST_Module" />')
+
+        port = ports.fetch("hardpoint_cargo_module")
+
+        assert_equal ["TEST_Bomber_Module"], port["port_tags"]
+        assert_equal ["TEST_Bomber_Module"], port["required_tags"]
+      end
+
       test "still appends a module port the default loadout leaves empty" do
         port = ports.fetch("hardpoint_front_module")
 
@@ -454,6 +471,13 @@ module ScData
                     <ItemPort minSize="1" maxSize="1" flags="editable">
                       <Types>
                         <Type type="Seat" subtypes="Pilot" />
+                      </Types>
+                    </ItemPort>
+                  </Part>
+                  <Part name="hardpoint_cargo_module" class="ItemPort">
+                    <ItemPort minSize="3" maxSize="3" flags="swaponly editable" PortTags="TEST_Bomber_Module" RequiredTags="$TEST_Bomber_Module">
+                      <Types>
+                        <Type type="Module" />
                       </Types>
                     </ItemPort>
                   </Part>
