@@ -15,7 +15,7 @@ import type {
   LoadoutPickerOption,
   LoadoutPickerSort,
 } from "@/frontend/components/Loadout/Picker/types";
-import type { ModelModule } from "@/services/fyApi";
+import { type ModelModule, ModelProductionStatusEnum } from "@/services/fyApi";
 
 /**
  * A hull's modules in the shape the loadout sockets and picker take: the slots
@@ -142,6 +142,13 @@ export const useModuleSockets = () => {
           figure: figure(mod),
           delta: delta(mod, fitted),
           sortValues: cargo ? { [CARGO]: cargo } : undefined,
+          // A module the game does not have yet is shown, but not fitted.
+          unavailable:
+            mod.productionStatus &&
+            mod.productionStatus !== ModelProductionStatusEnum.FLIGHT_READY &&
+            mod.id !== fittedId
+              ? t(`labels.model.productionStatus.${mod.productionStatus}`)
+              : undefined,
         };
       });
   };

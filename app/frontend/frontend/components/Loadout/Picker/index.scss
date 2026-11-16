@@ -172,6 +172,20 @@
   }
 }
 
+// Shown for what it is, but not something to pick.
+.loadout-picker__option--unavailable,
+.loadout-picker__option--unavailable:hover {
+  cursor: not-allowed;
+  background: transparent;
+  border-color: transparent;
+
+  .loadout-picker__image,
+  .loadout-picker__body,
+  .loadout-picker__figure {
+    opacity: 0.5;
+  }
+}
+
 // `:hover` included, for the reason the addon row gives: it outranks a plain
 // modifier, and a pick under the pointer would show no change.
 .loadout-picker__option--selected,

@@ -331,6 +331,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
     option.manufacturer,
     option.owned ? t("labels.loadoutPicker.owned") : undefined,
     option.stock ? t("labels.loadoutPicker.stock") : undefined,
+    option.unavailable,
     option.figure,
     option.delta?.label,
   ]
@@ -539,13 +540,15 @@ const accessibleName = (option: LoadoutPickerOption) =>
             class="loadout-picker__option"
             :class="{
               'loadout-picker__option--selected': option.id === selectedId,
+              'loadout-picker__option--unavailable': !!option.unavailable,
             }"
             :aria-pressed="option.id === selectedId"
+            :aria-disabled="!!option.unavailable || undefined"
             :aria-label="accessibleName(option)"
             data-test="loadout-picker-option"
-            @mouseenter="emit('preview', option.id)"
-            @focusin="emit('preview', option.id)"
-            @click="emit('pick', option.id)"
+            @mouseenter="option.unavailable || emit('preview', option.id)"
+            @focusin="option.unavailable || emit('preview', option.id)"
+            @click="option.unavailable || emit('pick', option.id)"
           >
             <img
               :src="imageFor(option)"
@@ -567,7 +570,17 @@ const accessibleName = (option: LoadoutPickerOption) =>
               </span>
             </span>
             <span class="loadout-picker__badges">
-              <Pill v-if="option.owned" :variant="PillVariantsEnum.SUCCESS">
+              <Pill
+                v-if="option.unavailable"
+                :variant="PillVariantsEnum.WARNING"
+                data-test="loadout-picker-unavailable"
+              >
+                {{ option.unavailable }}
+              </Pill>
+              <Pill
+                v-else-if="option.owned"
+                :variant="PillVariantsEnum.SUCCESS"
+              >
                 {{ t("labels.loadoutPicker.owned") }}
               </Pill>
               <Pill

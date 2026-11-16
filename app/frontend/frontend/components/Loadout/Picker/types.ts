@@ -18,6 +18,8 @@ export interface LoadoutPickerOption {
   sortValues?: Record<string, number>;
   // A value per filter the caller offers, such as a weapon's type or a grade.
   facets?: Record<string, string | undefined>;
+  // Shown but not pickable, and why: a module still in concept.
+  unavailable?: string;
 }
 
 // A filter the caller offers over its options' `facets`, shown behind the
