@@ -477,17 +477,22 @@ const toggleAutoRotate = () => {
   internalAutoRotate.value = !internalAutoRotate.value;
 };
 
+// Kept by the resize observer: a computed reading the element's size directly
+// caches whatever the frame measured first, often before the page around it
+// has finished loading.
+const frameSize = ref({ width: 0, height: 0 });
+
 const innerWidth = computed(() => {
-  if (!internalFullscreen.value && holoViewer.value) {
-    return holoViewer.value.clientWidth;
+  if (!internalFullscreen.value && frameSize.value.width) {
+    return frameSize.value.width;
   }
 
   return window.innerWidth;
 });
 
 const innerHeight = computed(() => {
-  if (!internalFullscreen.value && holoViewer.value) {
-    return holoViewer.value.clientHeight;
+  if (!internalFullscreen.value && frameSize.value.height) {
+    return frameSize.value.height;
   }
 
   return window.innerHeight;
@@ -636,13 +641,24 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
-// Measured once, a contained model keeps the scale of the box it loaded in: a
-// modal still opening, or a window resized since, leaves it too large or small.
+// Measured once, a model keeps the scale of the box it loaded in: a modal still
+// opening, a page still filling in around it, or a window resized since,
+// leaves it too large or small.
 const lastFrameSize = { width: 0, height: 0 };
 
-// The model last framed, so a contained one can be framed again when its box
-// changes size.
+// The model last framed, so it can be framed again when its box changes size.
 const framed = shallowRef<{ size: Vector3; scene: Object3D }>();
+
+const scaleLiveCamera = (ratio: number) => {
+  if (!liveCamera) return;
+
+  liveCamera.position.multiplyScalar(ratio);
+  liveCamera.near = nearPlaneFor(liveCamera.position.length());
+  liveCamera.updateProjectionMatrix();
+  const { x, y, z } = liveCamera.position;
+  lightPosition.value = [x, y, z];
+  canvas.value?.context?.renderer?.invalidate();
+};
 
 const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   // if (props.grid) {
@@ -655,6 +671,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   framed.value = { size, scene };
   lastFrameSize.width = holoViewer.value?.clientWidth ?? 0;
   lastFrameSize.height = holoViewer.value?.clientHeight ?? 0;
+  frameSize.value = { ...lastFrameSize };
   // Framed first: the room is sized past the distance it settles on.
   frameModel(size, scene);
   placeBackdrop(size);
@@ -796,12 +813,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
     if (keepView && liveCamera && previousReach > 0) {
-      liveCamera.position.multiplyScalar(reach / previousReach);
-      liveCamera.near = nearPlaneFor(liveCamera.position.length());
-      liveCamera.updateProjectionMatrix();
-      const { x, y, z } = liveCamera.position;
-      lightPosition.value = [x, y, z];
-      canvas.value?.context?.renderer?.invalidate();
+      scaleLiveCamera(reach / previousReach);
 
       return;
     }
@@ -836,8 +848,15 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect)),
   );
 
+  const previousDistance = fitDistance.value;
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
+
+  if (keepView && liveCamera && previousDistance > 0) {
+    scaleLiveCamera(distance / previousDistance);
+
+    return;
+  }
 
   const height =
     props.elevation === undefined
@@ -900,11 +919,14 @@ watch(
   },
 );
 
-const refitContained = useDebounceFn(() => {
+const refitFrame = useDebounceFn(() => {
   const frame = holoViewer.value;
-  if (!props.contain || !framed.value || !frame) return;
+  if (!frame) return;
 
   const { clientWidth: width, clientHeight: height } = frame;
+  frameSize.value = { width, height };
+
+  if (!framed.value) return;
   if (width === lastFrameSize.width && height === lastFrameSize.height) return;
 
   lastFrameSize.width = width;
@@ -913,7 +935,7 @@ const refitContained = useDebounceFn(() => {
 }, 150);
 
 useResizeObserver(holoViewer, () => {
-  void refitContained();
+  void refitFrame();
 });
 
 const handleRenderError = (error: Error) => {
