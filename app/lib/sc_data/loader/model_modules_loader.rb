@@ -4,13 +4,15 @@ module ScData
       def all
         loaded = []
 
+        discover_modules
+
         ModelModule.where.not(sc_key: nil).find_each do |model_module|
           loaded << model_module.id if load_model_module(model_module)
         end
 
-        # A module this build stopped describing keeps its row -- it is created
-        # by `ModulesImporter` or by an admin, never here, so a load has no
-        # business deleting it -- and stops having a row for this build. That is
+        # A module this build stopped describing keeps its row -- a hangar or a
+        # loadout may still point at it, so a load has no business deleting it
+        # -- and stops having a row for this build. That is
         # what makes it answerable whether the build ships the module at all,
         # which is the whole point of the table: without it a module only the
         # ptu build knows is offered under live as well.
@@ -21,6 +23,98 @@ module ScData
 
       def one(model_module)
         load_model_module(model_module)
+      end
+
+      # Every part a ship's module slot takes, linked to that ship as one of its
+      # modules: what the game offers, not only what the RSI store sells or an
+      # admin entered. A slot is a port that takes a `Module`; the parts are
+      # whatever fits it, so the Hornet's centre bay offers its ball turrets,
+      # rotodome and interdiction generator beside the cargo box.
+      #
+      # Runs against the components this build's items load wrote, so it uses
+      # the loadout editor's fitting rules rather than a second copy of them.
+      def discover_modules
+        ::ScData::Source.with(source) do
+          candidates = {}
+
+          Model.find_each do |model|
+            slots = model.hardpoints.game_files.in_build(source).includes(::LoadoutSlots::FACTS_PRELOAD)
+              .select { |hardpoint| Array(hardpoint.facts.types).include?("Module") }
+            next if slots.empty?
+
+            provided = ::LoadoutSlots.ship_tags_for(model)
+
+            slots.each do |slot|
+              module_options(slot, provided, candidates).each do |component|
+                link_module(model, slot, component)
+              end
+            end
+          end
+        end
+      end
+
+      private def module_options(slot, provided, candidates)
+        facts = slot.facts
+        types = Array(facts.types).compact_blank.sort
+
+        candidates[types] ||= ::Component.joins(::Component.current_facts_join(source))
+          .where(::Component.fact_sql(:component_type).in(types))
+          .where.not(sc_key: nil)
+          .to_a
+
+        candidates[types].select do |component|
+          size = Integer(component.size, exception: false)
+
+          offered_module?(component) &&
+            !size.nil? &&
+            (facts.min_size.nil? || size >= facts.min_size) &&
+            (facts.max_size.nil? || size <= facts.max_size) &&
+            ::LoadoutSlots.sub_type_fits?(facts, component) &&
+            ::LoadoutSlots.tags_fit?(facts, component, facts.component, provided)
+        end
+      end
+
+      # The game files keep records no player fits beside the real modules:
+      # the empty bay a ship comes with (`_Base`), templates, the parent record
+      # each family of modules is cloned from -- named after the slot tag it
+      # carries, `RSI_Galaxy_Module` -- and stubs whose ports are all size 0,
+      # left behind when CIG rebuilt a module under another key (the MPUV's
+      # pods under `aegs/` beside the real ones under `argo/`).
+      NOT_OFFERED_KEY = /_(base|template|temp)(_|\z)/i
+
+      private def offered_module?(component)
+        key = component.sc_key.to_s
+        return false if key.match?(NOT_OFFERED_KEY)
+        return false if Array(component.tags).any? { |tag| tag.casecmp?(key) }
+
+        ports = component.hardpoints.in_build(source).to_a
+        ports.empty? || ports.any? { |port| port.facts.max_size.to_i.positive? }
+      end
+
+      private def link_module(model, slot, component)
+        model_module = ModelModule.find_by("lower(sc_key) = ?", component.sc_key.downcase) ||
+          create_module(component)
+
+        module_hardpoint = ModuleHardpoint.find_or_initialize_by(model:, model_module:)
+        module_hardpoint.slot ||= slot.sc_name
+        module_hardpoint.save! if module_hardpoint.changed?
+      end
+
+      private def create_module(component)
+        apply(ModelModule.new, {
+          sc_key: component.sc_key,
+          name: component.name.presence || self.class.fallback_name(component.sc_key),
+          manufacturer: component.manufacturer,
+          hidden: false,
+          active: true
+        })
+      end
+
+      # What a module is called until CIG names it: its key without the
+      # manufacturer code, words split -- `ARGO_MPUV_Module_1C_CargoPod` reads
+      # "MPUV Module 1C Cargo Pod".
+      def self.fallback_name(sc_key)
+        sc_key.to_s.split("_").drop(1).map { |word| word.gsub(/(?<=[a-z])(?=[A-Z])/, " ") }.join(" ")
       end
 
       def load_model_module(model_module)
@@ -60,8 +154,14 @@ module ScData
         live = ::ScData::Source.default
         ships_in_live = source == live || model_module.builds.current(live).any?
 
+        # A module CIG has not named yet is not in players' hands, live or not.
+        named = module_data["name"].present?
+
         update_params = {}
-        update_params[:production_status] = "flight-ready" if ships_in_live
+        update_params[:production_status] = "flight-ready" if ships_in_live && named
+        # The stand-in name gives way once the game names the module; a name an
+        # admin chose stays.
+        update_params[:name] = module_data["name"] if named && model_module.name == self.class.fallback_name(model_module.sc_key)
 
         update_params = update_metrics(model_module, module_data, update_params)
         # This build's slots, for the same reason the models loader asks that
