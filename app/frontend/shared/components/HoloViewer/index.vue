@@ -482,8 +482,12 @@ const toggleAutoRotate = () => {
 // has finished loading.
 const frameSize = ref({ width: 0, height: 0 });
 
+const frameMeasured = computed(
+  () => !!frameSize.value.width && !!frameSize.value.height,
+);
+
 const innerWidth = computed(() => {
-  if (!internalFullscreen.value && frameSize.value.width) {
+  if (!internalFullscreen.value && frameMeasured.value) {
     return frameSize.value.width;
   }
 
@@ -491,7 +495,7 @@ const innerWidth = computed(() => {
 });
 
 const innerHeight = computed(() => {
-  if (!internalFullscreen.value && frameSize.value.height) {
+  if (!internalFullscreen.value && frameMeasured.value) {
     return frameSize.value.height;
   }
 
@@ -921,12 +925,11 @@ watch(
 
 const refitFrame = useDebounceFn(() => {
   const frame = holoViewer.value;
-  if (!frame) return;
+  if (!frame || !framed.value) return;
 
   const { clientWidth: width, clientHeight: height } = frame;
-  frameSize.value = { width, height };
-
-  if (!framed.value) return;
+  // A hidden frame has nothing to fit to; it is fitted again once shown.
+  if (!width || !height) return;
   if (width === lastFrameSize.width && height === lastFrameSize.height) return;
 
   lastFrameSize.width = width;
@@ -935,6 +938,11 @@ const refitFrame = useDebounceFn(() => {
 }, 150);
 
 useResizeObserver(holoViewer, () => {
+  const frame = holoViewer.value;
+  if (frame) {
+    frameSize.value = { width: frame.clientWidth, height: frame.clientHeight };
+  }
+
   void refitFrame();
 });
 
