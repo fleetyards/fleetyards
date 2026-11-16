@@ -398,7 +398,7 @@ describe("loadoutCargoGrids", () => {
     position: [0, 1, 2],
     rotation: [0, 0, 0, 1],
     size: [5, 5, 7.5],
-    scu: 96,
+    capacity: 96,
     stripped: false,
   });
 
@@ -655,7 +655,7 @@ describe("module hulls", () => {
             position: [-10, 0, 4],
             rotation: [0, 0, 0, 1],
             size: [5, 5, 20],
-            scu: 256,
+            capacity: 256,
             stripped: false,
           },
         ],

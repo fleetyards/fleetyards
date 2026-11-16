@@ -48,7 +48,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           position: [0, 1, 2],
           rotation: [0, 0, 0, 1],
           size: [2.5, 2.5, 10],
-          scu: 32,
+          capacity: 32,
           stripped: false,
         },
       ],

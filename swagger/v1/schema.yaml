@@ -46680,10 +46680,11 @@ components:
           minItems: 3
           maxItems: 3
           description: Metres along the grid's own x, up and depth axes
-        scu:
+        capacity:
           type:
           - number
           - 'null'
+          description: SCU the grid holds
         stripped:
           type: boolean
           description: The grid belongs to an item left out of the hull holo
@@ -46695,7 +46696,7 @@ components:
       - position
       - rotation
       - size
-      - scu
+      - capacity
       - stripped
       title: ModelLoadoutPreviewCargoGrid
     ModelLoadoutPreviewDoor:

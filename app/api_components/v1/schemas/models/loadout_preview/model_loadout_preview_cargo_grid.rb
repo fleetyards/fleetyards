@@ -18,11 +18,11 @@ module V1
               position: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "The grid's centre"},
               rotation: {type: :array, items: {type: :number}, minItems: 4, maxItems: 4, description: "Quaternion x, y, z, w"},
               size: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3, description: "Metres along the grid's own x, up and depth axes"},
-              scu: {type: [:number, :null]},
+              capacity: {type: [:number, :null], description: "SCU the grid holds"},
               stripped: {type: :boolean, description: "The grid belongs to an item left out of the hull holo"}
             },
             additionalProperties: false,
-            required: %w[name port parentPort position rotation size scu stripped]
+            required: %w[name port parentPort position rotation size capacity stripped]
           })
         end
       end

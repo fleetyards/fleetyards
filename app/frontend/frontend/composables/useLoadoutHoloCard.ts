@@ -235,7 +235,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         color: CARGO_GRID_COLOR,
         title: humanizeHoldName(grid.name),
         details: [
-          grid.scu ? `${toNumber(grid.scu)} SCU` : undefined,
+          grid.capacity ? `${toNumber(grid.capacity)} SCU` : undefined,
           `${toNumber(length)} × ${toNumber(width)} × ${toNumber(height)} m`,
         ].filter((detail): detail is string => !!detail),
       };
