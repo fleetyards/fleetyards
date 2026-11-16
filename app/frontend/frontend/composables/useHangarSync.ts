@@ -124,8 +124,6 @@ let input: Omit<SyncRsiHangarInput, "items"> = {};
 // modal opened on it later tells it as the sync it is.
 const ccusOnlyRun = ref(false);
 
-const ccusOnly = () => ccusOnlyRun.value;
-
 let extensionVersion: string | undefined;
 let syncStoreCredit = false;
 
@@ -356,7 +354,7 @@ export const useHangarSync = () => {
 
     const message = await extension
       .request(
-        ccusOnly()
+        ccusOnlyRun.value
           ? FleetyardsSyncAction.SYNC_UPGRADES
           : FleetyardsSyncAction.SYNC,
         { page: currentPage.value },
@@ -399,7 +397,7 @@ export const useHangarSync = () => {
 
     // Only a measure to read the run against; without it the run reads all the
     // same. A whole list is no measure for a read of its upgrades.
-    if (!ccusOnly()) {
+    if (!ccusOnlyRun.value) {
       syncRsiHangarLastRead()
         .then((read) => {
           if (id === runId && read.total > 0) lastRead.value = read;

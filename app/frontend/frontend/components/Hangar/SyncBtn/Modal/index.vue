@@ -106,7 +106,7 @@ const ccusOnly = computed(() =>
 const upgradesReadable = ref<boolean>();
 
 const checkUpgradesReadable = async () => {
-  if (!props.ccusOnly) return;
+  if (!ccusOnly.value) return;
 
   upgradesReadable.value = await extension.supports(
     FleetyardsSyncAction.SYNC_UPGRADES,
@@ -187,8 +187,9 @@ onMounted(() => {
 
   if (hangarStore.extensionReady && !running.value) {
     void checkRSIIdentity();
-    void checkUpgradesReadable();
   }
+  // Asked whatever the run is doing: Start comes back once it fails.
+  if (hangarStore.extensionReady) void checkUpgradesReadable();
 });
 
 let unmounted = false;
@@ -206,8 +207,8 @@ watch(
   () => {
     if (hangarStore.extensionReady && !running.value) {
       void checkRSIIdentity();
-      void checkUpgradesReadable();
     }
+    if (hangarStore.extensionReady) void checkUpgradesReadable();
   },
 );
 
@@ -317,10 +318,9 @@ const cancelRun = () => {
 };
 
 const start = () => {
-  if (props.ccusOnly) {
+  if (ccusOnly.value) {
     hangarSync.start({
       syncScope: HangarSyncScopeEnum.CCUS,
-      syncCcus: true,
       extensionVersion: hangarStore.extensionVersion,
     });
     return;

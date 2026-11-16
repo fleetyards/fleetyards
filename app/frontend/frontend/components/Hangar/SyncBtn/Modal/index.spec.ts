@@ -865,7 +865,7 @@ describe("HangarSyncModal", () => {
       const [{ data }] = mutateAsync.mock.calls.at(-1) as [
         { data: Record<string, unknown> },
       ];
-      expect(data).toMatchObject({ syncScope: "ccus", syncCcus: true });
+      expect(data).toMatchObject({ syncScope: "ccus" });
       expect(data).not.toHaveProperty("syncPaints");
       expect(data).not.toHaveProperty("unmatchedVehiclesAction");
     });
