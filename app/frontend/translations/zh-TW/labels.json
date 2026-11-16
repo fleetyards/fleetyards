@@ -477,6 +477,7 @@
       "texturedHoloOwnPaint": "標準塗裝",
       "loadoutHolo": "配置",
       "loadoutHoloServicingArea": "服務區域",
+      "loadoutHoloCargoGrid": "貨物網格",
       "loadoutHoloDoor": "艙門",
       "loadoutHoloBuiltIn": "內建，不可更改",
       "loadoutHoloDoorKinds": {

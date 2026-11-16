@@ -30,6 +30,8 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BOX_COLOR } from "@/shared/components/HoloViewer/boxes";
 import { BUILT_IN_COLOR } from "@/shared/components/HoloViewer/builtIns";
 import { DOOR_COLOR } from "@/shared/components/HoloViewer/doors";
+import { CARGO_GRID_COLOR } from "@/shared/components/HoloViewer/cargo";
+import { humanizeHoldName } from "@/shared/utils/CargoHolds";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   servicingAreaLabel,
@@ -98,6 +100,7 @@ const pointedPath = ref<string>();
 const pointedArea = ref<string>();
 const pointedBuiltIn = ref<string>();
 const pointedDoor = ref<string>();
+const pointedCargoGrid = ref<string>();
 
 const servicingAreasShown = ref(true);
 const cargoGridsShown = ref(true);
@@ -314,6 +317,26 @@ const card = computed(() => {
     };
   }
 
+  const grid = cargoGridsEnabled.value
+    ? preview.value?.cargoGrids.find(
+        (candidate) => candidate.name === pointedCargoGrid.value,
+      )
+    : undefined;
+
+  if (grid) {
+    const [width, height, length] = grid.size;
+
+    return {
+      kicker: t("labels.loadoutHoloCargoGrid"),
+      color: CARGO_GRID_COLOR,
+      title: humanizeHoldName(grid.name),
+      details: [
+        grid.scu ? `${toNumber(grid.scu)} SCU` : undefined,
+        `${toNumber(length)} × ${toNumber(width)} × ${toNumber(height)} m`,
+      ].filter(Boolean),
+    };
+  }
+
   const area = preview.value?.servicingAreas.find(
     (candidate) => candidate.key === pointedArea.value,
   );
@@ -334,6 +357,7 @@ watch(holoModel, (model) => {
     pointedArea.value = undefined;
     pointedBuiltIn.value = undefined;
     pointedDoor.value = undefined;
+    pointedCargoGrid.value = undefined;
   }
 });
 
@@ -371,6 +395,7 @@ const doorsLabel = computed(() =>
     @built-in-point="pointedBuiltIn = $event"
     @built-in-select="openBuiltIn"
     @door-point="pointedDoor = $event"
+    @cargo-point="pointedCargoGrid = $event"
     @door-select="doorAnimationEnabled && toggleDoor($event)"
     @unavailable="emit('unavailable')"
   >

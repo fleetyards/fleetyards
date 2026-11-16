@@ -477,6 +477,7 @@
       "texturedHoloOwnPaint": "Peinture standard",
       "loadoutHolo": "Équipement",
       "loadoutHoloServicingArea": "Zone de service",
+      "loadoutHoloCargoGrid": "Grille de cargo",
       "loadoutHoloDoor": "Porte",
       "loadoutHoloBuiltIn": "Intégré, non modifiable",
       "loadoutHoloDoorKinds": {

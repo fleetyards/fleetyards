@@ -477,6 +477,7 @@
       "texturedHoloOwnPaint": "Standardlackierung",
       "loadoutHolo": "Loadout",
       "loadoutHoloServicingArea": "Servicebereich",
+      "loadoutHoloCargoGrid": "Frachtraster",
       "loadoutHoloDoor": "Tür",
       "loadoutHoloBuiltIn": "Fest verbaut, nicht änderbar",
       "loadoutHoloDoorKinds": {

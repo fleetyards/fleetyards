@@ -343,4 +343,16 @@ describe("ModelLoadoutHolo", () => {
     );
     expect(model().openDoors).toEqual(["hardpoint_door_rear"]);
   });
+
+  it("names a pointed cargo grid with its own SCU and size", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    viewer().vm.$emit("cargoPoint", "hardpoint_cargogrid");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]').text();
+    expect(card).toContain("Cargo grid");
+    expect(card).toContain("32 SCU");
+    expect(card).toMatch(/10 × 2[.,]5 × 2[.,]5 m/);
+  });
 });
