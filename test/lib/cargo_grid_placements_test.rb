@@ -49,13 +49,23 @@ class CargoGridPlacementsTest < ActiveSupport::TestCase
     end
   end
 
-  test "names a grid on a nested port as its hold is named" do
+  test "names a grid on a nested port by both names a hold may carry" do
     placements = CargoGridPlacements.call([
       grid("cargo_grid", position: [0.0, -1.68, 4.74]).merge("parentPort" => "hardpoint_lift"),
       grid("hardpoint_cargo_grid_left", position: [-10.1, -0.5, 4.5]).merge("parentPort" => nil)
     ])
 
-    assert_equal %w[hardpoint_cargo_grid_left hardpoint_lift-cargo_grid], placements.keys.sort
+    assert_equal %w[cargo_grid hardpoint_cargo_grid_left hardpoint_lift-cargo_grid], placements.keys.sort
+    assert_equal placements["cargo_grid"], placements["hardpoint_lift-cargo_grid"]
+  end
+
+  test "keeps a grid at the top on its name when a nested one shares it" do
+    placements = CargoGridPlacements.call([
+      grid("cargo_grid", position: [0.0, 0.0, 0.0]).merge("parentPort" => "hardpoint_lift"),
+      grid("cargo_grid", position: [0.0, 0.0, 20.0])
+    ])
+
+    assert_not_equal placements["cargo_grid"], placements["hardpoint_lift-cargo_grid"]
   end
 
   test "places nothing for an export without grids" do

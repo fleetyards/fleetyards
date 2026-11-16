@@ -31,7 +31,11 @@ class CargoGridPlacements
     placements = @grids.map { |grid| placement(grid) }
     return {} if placements.empty? || placements.any?(&:nil?)
 
-    placements.to_h
+    # A grid on a nested port answers to its own name too, unless a grid at
+    # the top carries that name: those come last, so theirs stands.
+    names = placements.sort_by { |grid, _| nested_name(grid) ? 0 : 1 }.to_h { |grid, placed| [grid["name"], placed] }
+    placements.each { |grid, placed| names[nested_name(grid)] = placed if nested_name(grid) }
+    names
   end
 
   private def placement(grid)
@@ -63,14 +67,16 @@ class CargoGridPlacements
 
     offset = %w[x y z].each_with_index.to_h { |axis, index| [axis, (centre[index] - extent[index] / 2.0).round(3)] }
 
-    [hold_name(grid), {"offset" => offset, "rotation" => (across ? 270 : nil)}]
+    [grid, {"offset" => offset, "rotation" => (across ? 270 : nil)}]
   end
 
-  # The hold a grid on a nested port is loaded as carries its parent port's
-  # name in front, as `hardpoint_lift-cargo_grid`.
-  private def hold_name(grid)
+  # A grid on a port of a fitted part is loaded as a hold named with the
+  # part's port in front, as `hardpoint_lift-cargo_grid`; one deeper in the
+  # ship's own loadout keeps its port's name alone. The export does not say
+  # which, so a nested grid answers to both.
+  private def nested_name(grid)
     parent = grid["parentPort"]
-    (parent.is_a?(String) && parent.present?) ? "#{parent}-#{grid["name"]}" : grid["name"]
+    "#{parent}-#{grid["name"]}" if parent.is_a?(String) && parent.present?
   end
 
   private def normalize(angle)
