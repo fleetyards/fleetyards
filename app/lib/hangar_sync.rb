@@ -166,14 +166,17 @@ class HangarSync < HangarImporter
     # A sync rewrites `name` and `wanted` on rows a user also edits by hand, so
     # nothing in here is a change the user made. Held out here rather than at
     # each `update!` so a write added later is silent by default.
-    vehicles, components, upgrades = if import.ccus_only?
-      # The upgrade list holds no ship, and every one would read as unmatched.
-      [VEHICLE_KEYS.index_with { [] }, [[], [], [], []], [[], [], [], []]]
-    else
-      PaperTrail.request(enabled: false) do
-        Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
-          [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
-        end
+    # A read of the upgrades alone is no statement about ships, modules or
+    # vehicle upgrades, and every ship would read as unmatched.
+    if import.ccus_only?
+      @ships = []
+      @components = []
+      @upgrades = []
+    end
+
+    vehicles, components, upgrades = PaperTrail.request(enabled: false) do
+      Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
+        [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
       end
     end
 
@@ -239,6 +242,8 @@ class HangarSync < HangarImporter
   end
 
   def sync_vehicles(user_id)
+    return VEHICLE_KEYS.index_with { [] } if @import&.ccus_only?
+
     vehicle_ids = []
     imported_vehicles = []
     found_vehicles = []
