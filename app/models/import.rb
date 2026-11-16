@@ -28,6 +28,16 @@ class Import < ApplicationRecord
 
   validates :unmatched_vehicles_action, inclusion: {in: UNMATCHED_VEHICLES_ACTIONS}
 
+  # What a hangar sync read: the whole pledge list, or only its upgrades, which
+  # RSI can list on their own and which is all a CCU sync needs.
+  SYNC_SCOPES = %w[full ccus].freeze
+
+  validates :sync_scope, inclusion: {in: SYNC_SCOPES}
+
+  def ccus_only?
+    sync_scope == "ccus"
+  end
+
   # `unmatched_hangar_group_id` is deliberately not validated against the action
   # that uses it. The foreign key nullifies rather than cascading, so deleting
   # the group between queueing a sync and running one would leave a `group`

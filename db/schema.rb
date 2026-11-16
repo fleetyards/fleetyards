@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_100100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1860,6 +1860,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_120000) do
     t.integer "rsi_page"
     t.uuid "component_id"
     t.uuid "equipment_id"
+    t.boolean "rsi_page_upgrades_only", default: false, null: false
     t.index ["component_id"], name: "index_hangar_pledge_items_on_component_id"
     t.index ["equipment_id"], name: "index_hangar_pledge_items_on_equipment_id"
     t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
@@ -1960,6 +1961,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_120000) do
     t.boolean "sync_equipment", default: true, null: false
     t.boolean "sync_ccus", default: false, null: false
     t.boolean "sync_ship_components", default: true, null: false
+    t.string "sync_scope", default: "full", null: false
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"

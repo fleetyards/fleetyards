@@ -782,6 +782,40 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
   end
 
+  class CcusOnlyTest < HangarSyncTest
+    setup do
+      ::HangarSync.new(@input).run(@user.id)
+      @vehicle_ids = @user.vehicles.reload.pluck(:id).sort
+      @kept_kinds = @user.hangar_pledge_items.where.not(kind: "ccu").pluck(:id).sort
+    end
+
+    test "syncs the CCUs and leaves every ship and other item alone" do
+      ccus = [{"id" => "9001", "name" => "Upgrade - Aurora MR To Cutlass Black", "type" => "ccu", "page" => 1}]
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: ccus, sync_scope: "ccus", sync_ccus: true,
+        unmatched_vehicles_action: "keep", add_bundled_vehicles: false)
+
+      result = ::HangarSync.new(ccus).run_with_import(import)
+
+      assert_equal "synced", result[:outcome]
+      assert_equal ["Upgrade - Aurora MR To Cutlass Black"], @user.hangar_pledge_items.upgrades.pluck(:name)
+      assert_empty result[:unchanged_vehicles]
+      assert_equal @vehicle_ids, @user.vehicles.reload.pluck(:id).sort
+      assert_equal @kept_kinds, @user.hangar_pledge_items.where.not(kind: "ccu").pluck(:id).sort
+    end
+
+    test "an empty list of upgrades means every CCU is gone" do
+      create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Aurora MR To Cutlass Black")
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], sync_scope: "ccus", sync_ccus: true,
+        unmatched_vehicles_action: "keep", add_bundled_vehicles: false)
+
+      result = ::HangarSync.new([]).run_with_import(import)
+
+      assert_equal "synced", result[:outcome]
+      assert_empty @user.hangar_pledge_items.upgrades
+      assert_equal @vehicle_ids, @user.vehicles.reload.pluck(:id).sort
+    end
+  end
+
   class NothingToSyncTest < HangarSyncTest
     setup do
       @input += [{"id" => "00064531", "name" => "Space Globe - Terra", "type" => "flair"}]

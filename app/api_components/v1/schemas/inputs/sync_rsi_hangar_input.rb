@@ -13,6 +13,7 @@ module V1
               type: :array,
               items: ::V1::Schemas::Inputs::RsiHangarItemInput
             },
+            syncScope: ::V1::Schemas::Enums::HangarSyncScopeEnum,
             hangarGroupId: {type: :string, format: :uuid},
             addBundledVehicles: {type: :boolean, default: true},
             syncPaints: {type: :boolean, default: false},

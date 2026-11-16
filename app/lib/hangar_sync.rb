@@ -36,6 +36,17 @@ class HangarSync < HangarImporter
     synced_ship_components
   ].freeze
 
+  # What the vehicle half of a run reports.
+  VEHICLE_KEYS = %i[
+    imported_vehicles
+    found_vehicles
+    missing_models
+    moved_vehicles_to_wanted
+    deleted_vehicles
+    grouped_vehicles
+    unchanged_vehicles
+  ].freeze
+
   WARNING_KEYS = %i[
     missing_models
     missing_components
@@ -136,7 +147,11 @@ class HangarSync < HangarImporter
   # Decided before anything is touched: an empty paint or flair list would
   # otherwise replace the stored ones with nothing, and a run without a ship
   # lists every purchased one as unchanged.
+  #
+  # A CCU sync read every upgrade the user has, so finding none is a statement
+  # that they are all gone.
   private def sync_outcome
+    return "synced" if @import&.ccus_only?
     return "synced" if @ships.any? || @components.any? || @upgrades.any?
 
     pledge_kinds = item_kinds.compact
@@ -151,9 +166,14 @@ class HangarSync < HangarImporter
     # A sync rewrites `name` and `wanted` on rows a user also edits by hand, so
     # nothing in here is a change the user made. Held out here rather than at
     # each `update!` so a write added later is silent by default.
-    vehicles, components, upgrades = PaperTrail.request(enabled: false) do
-      Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
-        [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+    vehicles, components, upgrades = if import.ccus_only?
+      # The upgrade list holds no ship, and every one would read as unmatched.
+      [VEHICLE_KEYS.index_with { [] }, [[], [], [], []], [[], [], [], []]]
+    else
+      PaperTrail.request(enabled: false) do
+        Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
+          [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+        end
       end
     end
 
@@ -709,7 +729,7 @@ class HangarSync < HangarImporter
     return {} if @cancelled || @import&.cancel_requested?
 
     ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, item_kinds:,
-      keep_unlisted: @import&.unread_pages&.any?).run
+      keep_unlisted: @import&.unread_pages&.any?, upgrades_only_list: @import&.ccus_only? || false).run
   end
 
   # Sorting the extras reads the whole equipment catalogue, so it happens once
@@ -718,7 +738,11 @@ class HangarSync < HangarImporter
     @item_kinds ||= ::HangarPledgeItems::Sync.kinds_for(@data)
   end
 
+  # A read of the upgrades alone says nothing about any other kind, whatever the
+  # import's flags.
   private def pledge_item_kinds
+    return ["ccu"] if @import&.ccus_only?
+
     kinds = []
     kinds << "paint" if @import.nil? || @import.sync_paints?
     kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
