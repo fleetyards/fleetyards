@@ -581,7 +581,11 @@ const onDestroy = async () => {
       </aside>
     </div>
 
-    <ComparisonDetails v-if="comparison" :comparison="comparison" />
+    <ComparisonDetails
+      v-if="comparison"
+      :comparison="comparison"
+      :slots="plan?.slots"
+    />
 
     <ShipPanel
       v-if="panel"
