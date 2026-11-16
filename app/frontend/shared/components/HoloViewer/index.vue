@@ -307,6 +307,7 @@ const disableFullscreen = () => {
     cameraPosition.value = cameraPosition.value.map(
       (axis) => axis * ratio,
     ) as typeof cameraPosition.value;
+    poseDistance = fitDistance.value;
   }
 };
 
