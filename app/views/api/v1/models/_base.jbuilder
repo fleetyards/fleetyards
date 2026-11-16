@@ -241,7 +241,7 @@ json.metrics do
   json.vehicle_size model.vehicle_size
 end
 
-json.cargo_holds model.cargo_holds_with_offsets
+json.cargo_holds model.cargo_holds_with_placement
 json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
 json.quantum_fuel_tanks model.quantum_fuel_tanks
 json.external_fuel_tanks model.external_fuel_tanks

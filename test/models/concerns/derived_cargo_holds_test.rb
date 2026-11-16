@@ -132,9 +132,9 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     assert_equal 8, rows.first.max_container_size_scu
     assert_equal 0, rows.first.cargo_hold_container_capacities.find_by(container_size_scu: 8).max_quantity
 
-    served = @model.reload.cargo_holds_with_offsets.first
+    served = @model.reload.cargo_holds_with_placement.first
     assert_equal({"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}}, served["max_container_size"])
-    assert_nil served["offset"], "a loadable size alone places nothing"
+    assert_nil served["position"], "a loadable size alone places nothing"
   end
 
   test "lets a load shrink the grid under a curated limit, which then stops applying" do
@@ -144,7 +144,7 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     rows = build_holds(@model, [hold("hold_a")])
 
     assert_equal 4, rows.first.max_loadable_container_size_scu
-    assert_equal 2, @model.reload.cargo_holds_with_offsets.first.dig("max_container_size", "size")
+    assert_equal 2, @model.reload.cargo_holds_with_placement.first.dig("max_container_size", "size")
   end
 
   # ModelModule carries the same column and used to carry its own copy of this.
@@ -164,12 +164,12 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
       {"name" => "hold_b", "position" => [0.0, 1.25, 5.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
     ]})
 
-    hold_a, hold_b = Model.find(@model.id).cargo_holds_with_offsets
+    hold_a, hold_b = Model.find(@model.id).cargo_holds_with_placement
 
     assert_equal "model/#{@model.slug}", hold_a["placed_in"]
-    assert_equal({"x" => -1.25, "y" => -1.25, "z" => 0.0}, hold_a["offset"])
-    assert_nil hold_a["rotation"]
-    assert_equal 270, hold_b["rotation"]
+    assert_equal [0.0, 1.25, 0.0], hold_a["position"]
+    assert_equal [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)], hold_a["rotation"]
+    assert_equal [0.0, 0.0, 0.0, 1.0], hold_b["rotation"]
   end
 
   test "places no hold when the export places only some of them" do
@@ -178,9 +178,9 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
       {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
     ]})
 
-    holds = Model.find(@model.id).cargo_holds_with_offsets
+    holds = Model.find(@model.id).cargo_holds_with_placement
 
-    assert holds.none? { |hold| hold["placed_in"] || hold["offset"] || hold["rotation"] }, holds.inspect
+    assert holds.none? { |hold| hold["placed_in"] || hold["position"] || hold["rotation"] }, holds.inspect
   end
 
   test "keeps a curated crate limit on a hold the export places" do
@@ -191,7 +191,7 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
       {"name" => "hold_a", "position" => [0.0, 1.25, 0.0], "rotation" => [0.0, 0.0, 0.0, 1.0], "dimensions" => [2.5, 2.5, 2.5]}
     ]})
 
-    hold_a, = Model.find(@model.id).cargo_holds_with_offsets
+    hold_a, = Model.find(@model.id).cargo_holds_with_placement
 
     assert hold_a["placed_in"]
     assert_equal 2, hold_a.dig("max_container_size", "size")

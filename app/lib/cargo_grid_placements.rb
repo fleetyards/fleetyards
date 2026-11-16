@@ -1,24 +1,17 @@
 # frozen_string_literal: true
 
-# Where each cargo grid sits in a ship, as the cargo grid tool places a hold:
-# the hold's lowest corner in metres, with x along the hold's length, y across
-# it and z up, and a rotation of 270 for a hold turned a quarter about the
-# vertical. Read from the ship-view export's grids, which are centres and
-# quaternions in the hull holo's frame (glTF, y up).
+# Where each cargo grid of a ship or module sits, as its hull export says:
+# the grid's centre in metres and its turn as a quaternion, in the hull holo's
+# frame (glTF, y up), and its size along its own axes -- the values the
+# loadout preview serves its grids with.
 #
-# The tool's unturned hold lies a quarter turn from the export's frame -- the
-# Caterpillar's modules, its hand-placed reference, are turned -90 degrees in
-# the export and not at all in the tool -- so the whole ship is turned by that
-# first.
-#
-# A grid tilted off the vertical, or turned by anything but a quarter, has no
-# placement the tool can draw; the ship then has none at all, since a ship half
-# placed by the export and half by the tool's own layout would overlap.
+# The cargo grid tool lays holds out on a floor, so it can only draw a grid
+# that stands upright and is turned by a quarter about the vertical. A parent
+# with any other grid is placed not at all, since one laid out half by the
+# export and half by the tool would overlap.
 class CargoGridPlacements
   # Radians a grid's turn may stray from a quarter and still count as one.
   TOLERANCE = 0.02
-
-  SHIP_TURN = -Math::PI / 2
 
   def self.call(grids) = new(grids).call
 
@@ -26,7 +19,7 @@ class CargoGridPlacements
     @grids = Array(grids)
   end
 
-  # {hold name => {"offset" => {"x", "y", "z"}, "rotation" => 270 or nil}}
+  # {hold name => {"position" => [x, y, z], "rotation" => [x, y, z, w], "size" => [x, y, z]}}
   def call
     placements = @grids.map { |grid| placement(grid) }
     return {} if placements.empty? || placements.any?(&:nil?)
@@ -41,33 +34,28 @@ class CargoGridPlacements
   private def placement(grid)
     return unless grid.is_a?(Hash) && grid["name"].is_a?(String)
 
-    dimensions = grid["dimensions"]
     position = grid["position"]
-    qx, qy, qz, qw = grid["rotation"]
-    return unless [dimensions, position].all? { |value| value.is_a?(Array) && value.size == 3 }
-    return if [qx, qy, qz, qw].any?(&:nil?)
+    rotation = grid["rotation"]
+    return unless numbers?(position, 3) && numbers?(rotation, 4)
+    return unless upright_quarter?(*rotation)
 
-    # Tilted: the quaternion turns about more than the vertical.
-    return if qx.abs > TOLERANCE || qz.abs > TOLERANCE
+    size = grid["size"]
+    [grid, {"position" => position, "rotation" => rotation, "size" => (size if numbers?(size, 3))}]
+  end
 
-    turn = normalize(2 * Math.atan2(qy, qw) + SHIP_TURN)
-    quarters = (turn / (Math::PI / 2)).round
-    return if (turn - quarters * Math::PI / 2).abs > TOLERANCE
+  # Tilted when the quaternion turns about more than the vertical; otherwise
+  # its turn about the vertical has to land on a quarter.
+  private def upright_quarter?(qx, qy, qz, qw)
+    return false if qx.abs > TOLERANCE || qz.abs > TOLERANCE
 
-    across = quarters.odd?
-    length, width, height = dimensions
-    extent = across ? [width, length, height] : [length, width, height]
+    turn = 2 * Math.atan2(qy, qw)
+    quarter = Math::PI / 2
 
-    # The ship turned by SHIP_TURN about the vertical, then glTF's (x, up, z)
-    # read as the tool's (x, y, up).
-    x, up, z = position
-    sin = Math.sin(SHIP_TURN)
-    cos = Math.cos(SHIP_TURN)
-    centre = [x * cos + z * sin, -x * sin + z * cos, up]
+    (turn - (turn / quarter).round * quarter).abs <= TOLERANCE
+  end
 
-    offset = %w[x y z].each_with_index.to_h { |axis, index| [axis, (centre[index] - extent[index] / 2.0).round(3)] }
-
-    [grid, {"offset" => offset, "rotation" => (across ? 270 : nil)}]
+  private def numbers?(value, size)
+    value.is_a?(Array) && value.size == size && value.all?(Numeric)
   end
 
   # A grid on a port of a fitted part is loaded as a hold named with the
@@ -77,9 +65,5 @@ class CargoGridPlacements
   private def nested_name(grid)
     parent = grid["parentPort"]
     "#{parent}-#{grid["name"]}" if parent.is_a?(String) && parent.present?
-  end
-
-  private def normalize(angle)
-    angle % (2 * Math::PI)
   end
 end

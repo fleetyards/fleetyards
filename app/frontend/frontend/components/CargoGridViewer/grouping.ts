@@ -1,5 +1,6 @@
 import type { CargoHold } from "@/services/fyApi";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
+import { holdPlacement } from "./placement";
 
 export type CargoHoldGroup = {
   key: string;
@@ -110,7 +111,7 @@ export function groupCargoHolds(holds: CargoHold[]): CargoHoldGroup[] {
   const seen = new Map<string, number>();
 
   holds.forEach((hold, index) => {
-    if (hold.placedIn && hold.offset) {
+    if (hold.placedIn && holdPlacement(hold)) {
       const name = `${hold.placedIn}:${hold.name ?? index}`;
       const copy = seen.get(name) ?? 0;
       seen.set(name, copy + 1);

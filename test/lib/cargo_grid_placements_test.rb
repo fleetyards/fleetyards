@@ -6,35 +6,18 @@ class CargoGridPlacementsTest < ActiveSupport::TestCase
   QUARTER = [0.0, -Math.sqrt(0.5), 0.0, Math.sqrt(0.5)].freeze
   STRAIGHT = [0.0, 0.0, 0.0, 1.0].freeze
 
-  # The Caterpillar's fourth module and its nose, as the export places them.
-  private def grid(name, position:, rotation: QUARTER, dimensions: [5.0, 7.5, 5.0])
-    {"name" => name, "position" => position, "rotation" => rotation, "dimensions" => dimensions}
+  private def grid(name, position:, rotation: QUARTER, size: [5.0, 5.0, 7.5])
+    {"name" => name, "position" => position, "rotation" => rotation, "size" => size}
   end
 
-  private def relative(placements)
-    mins = %w[x y z].to_h { |axis| [axis, placements.values.map { |placed| placed["offset"][axis] }.min] }
-
-    placements.transform_values do |placed|
-      %w[x y z].map { |axis| (placed["offset"][axis] - mins[axis]).round(2) }
-    end
-  end
-
-  test "places a module's grids the way the tool lays them out by hand" do
+  test "places a grid with the values its export gives it" do
     placements = CargoGridPlacements.call([
       grid("module", position: [0.625, -0.25, -2.625]),
-      grid("walkway", position: [-3.75, -1.5, -2.625], dimensions: [5.0, 1.25, 2.5])
+      grid("nose", position: [-0.01, -0.8, -43.74], rotation: STRAIGHT, size: [6.25, 3.75, 5.0])
     ])
 
-    assert_equal({"module" => [0.0, 1.25, 0.0], "walkway" => [0.0, 0.0, 0.0]}, relative(placements))
-    assert_nil placements["module"]["rotation"]
-  end
-
-  test "turns a grid a quarter off the ship's modules" do
-    placements = CargoGridPlacements.call([
-      grid("nose", position: [-0.01, -0.8, -43.74], rotation: STRAIGHT, dimensions: [6.25, 5.0, 3.75])
-    ])
-
-    assert_equal 270, placements["nose"]["rotation"]
+    assert_equal({"position" => [0.625, -0.25, -2.625], "rotation" => QUARTER, "size" => [5.0, 5.0, 7.5]}, placements["module"])
+    assert_equal STRAIGHT, placements["nose"]["rotation"]
   end
 
   test "places nothing when a grid is tilted or turned by less than a quarter" do

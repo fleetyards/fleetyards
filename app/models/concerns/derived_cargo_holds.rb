@@ -12,7 +12,7 @@ module DerivedCargoHolds
   # The holds, each placed where the hull export says it sits. That export is
   # the only source of placement: a parent it does not place every hold of
   # comes back with none placed, since half a layout would overlap the rest.
-  def cargo_holds_with_offsets
+  def cargo_holds_with_placement
     holds = projected_cargo_holds
 
     measured = measured_cargo_placements
@@ -68,7 +68,7 @@ module DerivedCargoHolds
   #
   # A hold the loader wrote without dimensions is not projected into a row, so
   # it has no position a curated value could be matched to. Both readers have to skip
-  # the same ones: `cargo_holds_with_offsets` pairs holds to rows by array
+  # the same ones: `cargo_holds_with_placement` pairs holds to rows by array
   # index, and filtering in one place but not the other shifts every value
   # past a malformed hold onto its neighbour — the bug this concern exists for,
   # arrived at from the other side.

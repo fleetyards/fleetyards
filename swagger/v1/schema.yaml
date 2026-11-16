@@ -27281,13 +27281,30 @@ components:
           "$ref": "#/components/schemas/CargoHoldContainerSize"
         limits:
           "$ref": "#/components/schemas/CargoHoldLimits"
-        offset:
-          "$ref": "#/components/schemas/CargoHoldOffset"
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: The grid's centre
         rotation:
-          type: integer
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+        size:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Metres along the grid's own x, up and depth axes
         placedIn:
           type: string
-          description: The ship or module whose hull export the offset and rotation
+          description: The ship or module whose hull export the position and rotation
             come from, as `model/<slug>` or `model_module/<slug>`. Holds placed in
             the same one share a frame; a hold without it is not placed
       additionalProperties: false
@@ -27347,21 +27364,6 @@ components:
       required:
       - min
       title: CargoHoldLimits
-    CargoHoldOffset:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-      additionalProperties: false
-      required:
-      - x
-      - "y"
-      - z
-      title: CargoHoldOffset
     Cart:
       type: object
       properties:

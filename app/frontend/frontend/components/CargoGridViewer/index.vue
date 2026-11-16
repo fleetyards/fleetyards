@@ -26,6 +26,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type CargoHoldGroup, groupCargoHolds } from "./grouping";
+import { holdPlacement } from "./placement";
 
 const { t } = useI18n();
 
@@ -176,17 +177,15 @@ function arrangeHoldGroup(
   });
 
   if (group.placed) {
-    // Offsets are in metres, the lowest corner of the hold; a hold turned a
-    // quarter about the vertical swaps its length and width.
+    // A hold turned a quarter about the vertical swaps its length and width.
     return placementsToResult(
       dims.map((d) => {
-        const h = cargoHolds[d.hi];
-        const turned = h.rotation === 270;
+        const { offset, turned } = holdPlacement(cargoHolds[d.hi])!;
         return {
           hi: d.hi,
-          ox: h.offset!.x / SCU_UNIT,
-          oy: h.offset!.z / SCU_UNIT,
-          oz: h.offset!.y / SCU_UNIT,
+          ox: offset.x / SCU_UNIT,
+          oy: offset.z / SCU_UNIT,
+          oz: offset.y / SCU_UNIT,
           gx: turned ? d.y : d.x,
           gy: turned ? d.x : d.y,
           gz: d.z,
@@ -471,15 +470,10 @@ function tryPlaceOne(
             }
           }
 
-          const rotXZ = hold.rotation === 90;
-          const rotXY = hold.rotation === 270;
-          const cargoX = rotXZ
-            ? hold.dimensions.z
-            : rotXY
-              ? hold.dimensions.y
-              : hold.dimensions.x;
-          const cargoY = rotXY ? hold.dimensions.x : hold.dimensions.y;
-          const cargoZ = rotXZ ? hold.dimensions.x : hold.dimensions.z;
+          const turned = !!hold.placedIn && !!holdPlacement(hold)?.turned;
+          const cargoX = turned ? hold.dimensions.y : hold.dimensions.x;
+          const cargoY = turned ? hold.dimensions.x : hold.dimensions.y;
+          const cargoZ = hold.dimensions.z;
 
           // Container dims in cargo space
           const cDimsC: [number, number, number] = [

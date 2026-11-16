@@ -39,7 +39,8 @@ describe("groupCargoHolds", () => {
   it("lays a ship the export placed out as one, as its holds sit in it", () => {
     const holds = names.map((name, index) =>
       hold(name, {
-        offset: { x: index * 10, y: 0, z: 0 },
+        position: [index * 10, 0, 0],
+        rotation: [0, 0, 0, 1],
         placedIn: "model/drak-caterpillar",
       }),
     );
@@ -54,15 +55,18 @@ describe("groupCargoHolds", () => {
   it("keeps a ship and each module fitted to it in their own frames", () => {
     const holds = [
       hold("hardpoint_cargo_bay", {
-        offset: { x: 0, y: 0, z: 0 },
+        position: [0, 0, 0],
+        rotation: [0, 0, 0, 1],
         placedIn: "model/rsi-galaxy",
       }),
       hold("hardpoint_cargo_grid_left", {
-        offset: { x: 0, y: 0, z: 0 },
+        position: [0, 0, 0],
+        rotation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       }),
       hold("hardpoint_cargo_grid_right", {
-        offset: { x: 0, y: 10, z: 0 },
+        position: [0, 10, 0],
+        rotation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       }),
       hold("cargo_front"),
@@ -80,7 +84,8 @@ describe("groupCargoHolds", () => {
   it("keeps a module fitted twice in two frames", () => {
     const module = (name: string) =>
       hold(name, {
-        offset: { x: 0, y: 0, z: 0 },
+        position: [0, 0, 0],
+        rotation: [0, 0, 0, 1],
         placedIn: "model_module/cargo-module",
       });
     const holds = [

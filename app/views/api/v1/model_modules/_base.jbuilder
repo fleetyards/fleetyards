@@ -49,7 +49,7 @@ json.manufacturer do
   json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer if model_module.manufacturer.present?
 end
 
-json.cargo_holds model_module.cargo_holds_with_offsets
+json.cargo_holds model_module.cargo_holds_with_placement
 
 json.hardpoints do
   json.array! model_module.hardpoints.in_build.includes(Hardpoint::RENDERED), partial: "api/v1/hardpoints/hardpoint", as: :hardpoint
