@@ -7,31 +7,30 @@ if @loadout_preview_enabled && @model.holo_hull.attached?
 end
 
 json.ports(@ports) do |port|
-  json.name port["name"]
-  json.parent port["parent"]
-  json.helper port["helper"] != false
-  json.position port["position"]
-  json.rotation port["rotation"]
-  json.flags port["flags"].to_s
-  json.editable port["editable"] == true
-  json.types(port["types"] || []) do |type|
-    json.type type["type"]
-    json.sub_types type["subTypes"].to_s
-  end
-  json.default_item port["defaultItem"]
-  json.geometry port["geometry"] != false
-  json.stripped port["stripped"] == true
-  json.in_parent_holo port["inParentHolo"] == true
-  json.hull_node port["hullNode"]
-  built_in = @built_in_items[port["defaultItem"]] if port["hullNode"]
-  json.default_item_name built_in&.name
-  json.default_item_slug built_in&.slug
-  json.item_kind port["itemKind"] && (V1::Schemas::Enums::HullItemKindEnum::VALUES.include?(port["itemKind"]) ? port["itemKind"] : "other")
+  json.partial! "api/v1/models/loadout_preview/port", port:, built_in_items: @built_in_items
 end
 
 json.items(@item_holos) do |component|
   json.sc_key component.sc_key
   json.holo_url rails_blob_url(component.holo)
+end
+
+# The modules that fit this ship's slots, drawn by their own hull: the parts on
+# a module's ports, its cargo grids and its doors are its own, in its frame.
+json.module_hulls(@module_hulls) do |component|
+  export = component.hardpoint_transforms || {}
+
+  json.sc_key component.sc_key.downcase
+  json.holo_hull_url rails_blob_url(component.holo_hull)
+  json.ports(export["ports"] || []) do |port|
+    json.partial! "api/v1/models/loadout_preview/port", port:, built_in_items: @built_in_items
+  end
+  json.cargo_grids(export["cargo_grids"] || []) do |grid|
+    json.partial! "api/v1/models/loadout_preview/cargo_grid", grid:
+  end
+  json.doors(component.holo_doors&.fetch("doors", nil) || []) do |door|
+    json.partial! "api/v1/models/loadout_preview/door", door:
+  end
 end
 
 json.servicing_areas(@servicing_areas) do |area|
@@ -47,51 +46,9 @@ json.servicing_areas(@servicing_areas) do |area|
 end
 
 json.cargo_grids(@cargo_grids) do |grid|
-  json.name grid["name"]
-  json.port grid["port"]
-  json.parent_port grid["parentPort"]
-  json.position grid["position"]
-  json.rotation grid["rotation"]
-  json.size grid["size"]
-  json.scu grid["scu"]
-  json.stripped grid["stripped"] == true
+  json.partial! "api/v1/models/loadout_preview/cargo_grid", grid:
 end
 
 json.doors(@doors) do |door|
-  json.id door["id"]
-  json.kind door["kind"]
-  json.position door["position"]
-  json.duration_s door["duration_s"]
-  json.exterior door["exterior"] == true
-
-  if (bounds = door["obb_closed"])
-    json.bounds do
-      json.center bounds["center"]
-      json.axes bounds["axes"]
-      json.half_size bounds["half_size"]
-    end
-  else
-    json.bounds nil
-  end
-
-  if (outline = door["outline"])
-    json.outline do
-      json.center outline["center"]
-      json.axes outline["axes"]
-      json.half_size outline["half_size"]
-    end
-  else
-    json.outline nil
-  end
-  json.outline_nodes door["outlineNodes"] || []
-
-  json.parts(door["parts"].each_with_index.to_a) do |(part, index)|
-    json.part index
-    json.object part["object"]
-    json.keyframes(part.dig("motion", "keyframes")) do |keyframe|
-      json.t keyframe["t"]
-      json.translation keyframe["translation"]
-      json.rotation keyframe["rotation"]
-    end
-  end
+  json.partial! "api/v1/models/loadout_preview/door", door:
 end

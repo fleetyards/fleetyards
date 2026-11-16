@@ -184,9 +184,12 @@ module Api
           .uniq
         @item_holos = Component.where(sc_key: default_items).joins(:holo_attachment).with_attached_holo
 
-        # The items the hull keeps, named for the viewer: they have no slot in
-        # the loadout to name them.
-        built_ins = @ports.filter_map { |port| port["defaultItem"] if port["hullNode"] && port["editable"] == false }.uniq
+        @module_hulls = @loadout_preview_enabled ? module_hulls(@model, @ports) : []
+
+        # The items a hull keeps, the ship's and its modules', named for the
+        # viewer: they have no slot in the loadout to name them.
+        hull_ports = @ports + @module_hulls.flat_map { |component| component.hardpoint_transforms&.fetch("ports", nil) || [] }
+        built_ins = hull_ports.filter_map { |port| port["defaultItem"] if port["hullNode"] && port["editable"] == false }.uniq
         @built_in_items = Component.where(sc_key: built_ins).index_by(&:sc_key)
       end
 
@@ -401,6 +404,19 @@ module Api
           .visible
           .active
           .order(name: :asc)
+      end
+
+      # The hulls of the modules a slot of the ship takes: the one it comes
+      # with, as the stock part of a stripped port, and the ones it is sold.
+      private def module_hulls(model, ports)
+        keys = ports.filter_map { |port| port["defaultItem"]&.downcase if port["stripped"] }
+        keys |= model.modules.filter_map { |model_module| model_module.sc_key&.downcase }
+        return [] if keys.empty?
+
+        Component.where("LOWER(sc_key) IN (?)", keys)
+          .joins(:holo_hull_attachment).with_attached_holo_hull
+          .includes(:hardpoint_transforms_record)
+          .to_a
       end
 
       # A module the asker's own ship has stays listed even once the catalogue

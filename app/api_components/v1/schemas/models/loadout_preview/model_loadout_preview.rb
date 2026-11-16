@@ -15,12 +15,13 @@ module V1
               holoHull: ::Shared::V1::Schemas::MediaFile,
               ports: {type: :array, items: ModelLoadoutPreviewPort},
               items: {type: :array, items: ModelLoadoutPreviewItem, description: "The holos of the parts the hull leaves out that its ports mount by default"},
+              moduleHulls: {type: :array, items: ModelLoadoutPreviewModuleHull, description: "The hulls of the modules this ship's slots take"},
               servicingAreas: {type: :array, items: ModelLoadoutPreviewServicingArea},
               cargoGrids: {type: :array, items: ModelLoadoutPreviewCargoGrid},
               doors: {type: :array, items: ModelLoadoutPreviewDoor}
             },
             additionalProperties: false,
-            required: %w[ports items servicingAreas cargoGrids doors]
+            required: %w[ports items moduleHulls servicingAreas cargoGrids doors]
           })
         end
       end

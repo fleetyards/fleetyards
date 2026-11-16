@@ -42667,6 +42667,9 @@ components:
           type: array
           items:
             type: string
+        editable:
+          type: boolean
+          description: Whether the game lets a player swap what sits here
         details:
           type: string
         component:
@@ -46540,6 +46543,11 @@ components:
             "$ref": "#/components/schemas/ModelLoadoutPreviewItem"
           description: The holos of the parts the hull leaves out that its ports mount
             by default
+        moduleHulls:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewModuleHull"
+          description: The hulls of the modules this ship's slots take
         servicingAreas:
           type: array
           items:
@@ -46556,6 +46564,7 @@ components:
       required:
       - ports
       - items
+      - moduleHulls
       - servicingAreas
       - cargoGrids
       - doors
@@ -46756,6 +46765,34 @@ components:
       - scKey
       - holoUrl
       title: ModelLoadoutPreviewItem
+    ModelLoadoutPreviewModuleHull:
+      type: object
+      properties:
+        scKey:
+          type: string
+          description: The module part's game-file key, lowercased
+        holoHullUrl:
+          type: string
+        ports:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewPort"
+        cargoGrids:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewCargoGrid"
+        doors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewDoor"
+      additionalProperties: false
+      required:
+      - scKey
+      - holoHullUrl
+      - ports
+      - cargoGrids
+      - doors
+      title: ModelLoadoutPreviewModuleHull
     ModelLoadoutPreviewPort:
       type: object
       properties:

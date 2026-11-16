@@ -145,6 +145,19 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules says which of a module's ports the game locks" do
+    model = create(:model)
+    cargo = create(:model_module, name: "Cargo Module")
+    create(:module_hardpoint, model:, model_module: cargo)
+    create(:hardpoint, parent: cargo, sc_name: "hardpoint_tractor_left", source: :game_files, flags: ["uneditable"])
+    create(:hardpoint, parent: cargo, sc_name: "hardpoint_shield", source: :game_files, flags: [])
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      editable = parsed_body["items"].first["hardpoints"].to_h { |hardpoint| [hardpoint["name"], hardpoint["editable"]] }
+      assert_equal({"hardpoint_shield" => true, "hardpoint_tractor_left" => false}, editable)
+    end
+  end
+
   test "GET /models/:slug/modules returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end

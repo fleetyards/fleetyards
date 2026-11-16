@@ -171,6 +171,46 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-preview returns the hull of each module the ship takes, with its own ports, grids and doors" do
+    galaxy = create(:model, hardpoint_transforms: {
+      "ports" => [
+        {"name" => "hardpoint_module", "parent" => nil, "position" => [0, 0, 0], "rotation" => [0, 0, 0, 1],
+         "editable" => true, "defaultItem" => "rsi_galaxy_module_base", "stripped" => true, "geometry" => false}
+      ]
+    })
+    galaxy.holo_hull.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_hull.glb")
+    cargo = create(:model_module, sc_key: "RSI_Galaxy_Module_Cargo")
+    create(:module_hardpoint, model: galaxy, model_module: cargo, slot: "hardpoint_module")
+    tractor = create(:component, sc_key: "rsi_galaxy_cargo_tractor_turret", name: "Cargo Tractor Turret")
+
+    {"rsi_galaxy_module_base" => [], "rsi_galaxy_module_cargo" => [{
+      "name" => "hardpoint_tractor_left", "parent" => nil, "position" => [6.25, 2.5, -8.5], "rotation" => [0, 0, 0, 1],
+      "editable" => false, "defaultItem" => tractor.sc_key, "hullNode" => "hardpoint_tractor_left", "itemKind" => "turret"
+    }]}.each do |sc_key, ports|
+      part = create(:component, sc_key:, category: "module", component_type: "Module")
+      part.holo_hull.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo_hull.glb")
+      part.update!(
+        hardpoint_transforms: {"ports" => ports, "cargo_grids" => [{"name" => "grid_#{sc_key}", "port" => nil, "parentPort" => nil,
+                                                                    "position" => [-10.1, -0.5, 4.5], "rotation" => [0, 0, 0, 1], "size" => [5, 5, 20], "scu" => 256}]},
+        holo_doors: {"doors" => [{"id" => "door_close", "kind" => "door", "duration_s" => 10.0, "parts" => []}]}
+      )
+    end
+    # A module part of another ship, which this one takes no slot for.
+    create(:component, sc_key: "rsi_aurora_mk2_module_cargo")
+      .holo_hull.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo_hull.glb")
+
+    assert_api_response :get, 200, path_params: {slug: galaxy.slug} do
+      hulls = parsed_body["moduleHulls"].index_by { |hull| hull["scKey"] }
+
+      assert_equal %w[rsi_galaxy_module_base rsi_galaxy_module_cargo], hulls.keys.sort
+      cargo_hull = hulls["rsi_galaxy_module_cargo"]
+      assert_match(/holo_hull\.glb/, cargo_hull["holoHullUrl"])
+      assert_equal "Cargo Tractor Turret", cargo_hull["ports"].first["defaultItemName"]
+      assert_equal 256, cargo_hull["cargoGrids"].first["scu"]
+      assert_equal "door_close", cargo_hull["doors"].first["id"]
+    end
+  end
+
   test "GET /models/:slug/loadout-preview lists no ports for a ship without an export" do
     model = create(:model)
 
@@ -180,6 +220,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body["servicingAreas"]
       assert_empty parsed_body["cargoGrids"]
       assert_empty parsed_body["doors"]
+      assert_empty parsed_body["moduleHulls"]
       assert_not parsed_body.key?("holoHull")
     end
   end
@@ -193,6 +234,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body["servicingAreas"]
       assert_empty parsed_body["cargoGrids"]
       assert_empty parsed_body["doors"]
+      assert_empty parsed_body["moduleHulls"]
       assert_not parsed_body.key?("holoHull")
     end
   end
