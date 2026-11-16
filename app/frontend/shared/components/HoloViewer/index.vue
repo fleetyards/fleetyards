@@ -300,7 +300,15 @@ const disableFullscreen = () => {
 
   // A turntable has no zoom of its own: back from full screen, it returns
   // to the framing it opened on rather than wherever full screen left it.
-  if (props.turntable) cameraPosition.value = [...cameraPosition.value];
+  // The pose is put at full screen's fit, which the refit as the frame
+  // shrinks back scales down from.
+  if (props.turntable) {
+    const ratio = poseDistance ? fitDistance.value / poseDistance : 1;
+    cameraPosition.value = cameraPosition.value.map(
+      (axis) => axis * ratio,
+    ) as typeof cameraPosition.value;
+    poseDistance = fitDistance.value;
+  }
 };
 
 const closeOnEscape = (event: KeyboardEvent) => {
@@ -477,17 +485,26 @@ const toggleAutoRotate = () => {
   internalAutoRotate.value = !internalAutoRotate.value;
 };
 
+// Kept by the resize observer: a computed reading the element's size directly
+// caches whatever the frame measured first, often before the page around it
+// has finished loading.
+const frameSize = ref({ width: 0, height: 0 });
+
+const frameMeasured = computed(
+  () => !!frameSize.value.width && !!frameSize.value.height,
+);
+
 const innerWidth = computed(() => {
-  if (!internalFullscreen.value && holoViewer.value) {
-    return holoViewer.value.clientWidth;
+  if (!internalFullscreen.value && frameMeasured.value) {
+    return frameSize.value.width;
   }
 
   return window.innerWidth;
 });
 
 const innerHeight = computed(() => {
-  if (!internalFullscreen.value && holoViewer.value) {
-    return holoViewer.value.clientHeight;
+  if (!internalFullscreen.value && frameMeasured.value) {
+    return frameSize.value.height;
   }
 
   return window.innerHeight;
@@ -536,6 +553,9 @@ const handleControlsChange = (controls: Controls) => {
 };
 
 const fitDistance = ref(100);
+
+// The fit the pose was set for.
+let poseDistance = 0;
 
 // The camera is held to 0.7 of the room's radius. A frame narrow for its
 // model fits it from further out than that, and the first drag would pull
@@ -636,13 +656,26 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
-// Measured once, a contained model keeps the scale of the box it loaded in: a
-// modal still opening, or a window resized since, leaves it too large or small.
+// Measured once, a model keeps the scale of the box it loaded in: a modal still
+// opening, a page still filling in around it, or a window resized since,
+// leaves it too large or small.
 const lastFrameSize = { width: 0, height: 0 };
 
-// The model last framed, so a contained one can be framed again when its box
-// changes size.
+// The model last framed, so it can be framed again when its box changes size.
 const framed = shallowRef<{ size: Vector3; scene: Object3D }>();
+
+const scaleLiveCamera = (ratio: number) => {
+  if (!liveCamera) return;
+
+  // About the orbit target: a view panned off the origin only moves closer.
+  const target = liveControls?.target ?? new Vector3();
+  liveCamera.position.sub(target).multiplyScalar(ratio).add(target);
+  liveCamera.near = nearPlaneFor(liveCamera.position.length());
+  liveCamera.updateProjectionMatrix();
+  const { x, y, z } = liveCamera.position;
+  lightPosition.value = [x, y, z];
+  canvas.value?.context?.renderer?.invalidate();
+};
 
 const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   // if (props.grid) {
@@ -655,6 +688,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   framed.value = { size, scene };
   lastFrameSize.width = holoViewer.value?.clientWidth ?? 0;
   lastFrameSize.height = holoViewer.value?.clientHeight ?? 0;
+  frameSize.value = { ...lastFrameSize };
   // Framed first: the room is sized past the distance it settles on.
   frameModel(size, scene);
   placeBackdrop(size);
@@ -796,12 +830,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
     if (keepView && liveCamera && previousReach > 0) {
-      liveCamera.position.multiplyScalar(reach / previousReach);
-      liveCamera.near = nearPlaneFor(liveCamera.position.length());
-      liveCamera.updateProjectionMatrix();
-      const { x, y, z } = liveCamera.position;
-      lightPosition.value = [x, y, z];
-      canvas.value?.context?.renderer?.invalidate();
+      scaleLiveCamera(reach / previousReach);
 
       return;
     }
@@ -813,6 +842,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     ];
 
     cameraPosition.value = position;
+    poseDistance = reach;
     lightPosition.value = position;
 
     return;
@@ -836,8 +866,15 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect)),
   );
 
+  const previousDistance = fitDistance.value;
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
+
+  if (keepView && liveCamera && previousDistance > 0) {
+    scaleLiveCamera(distance / previousDistance);
+
+    return;
+  }
 
   const height =
     props.elevation === undefined
@@ -854,6 +891,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
   ];
 
   cameraPosition.value = position;
+  poseDistance = distance;
   lightPosition.value = position;
 };
 
@@ -900,11 +938,13 @@ watch(
   },
 );
 
-const refitContained = useDebounceFn(() => {
+const refitFrame = useDebounceFn(() => {
   const frame = holoViewer.value;
-  if (!props.contain || !framed.value || !frame) return;
+  if (!frame || !framed.value) return;
 
   const { clientWidth: width, clientHeight: height } = frame;
+  // A hidden frame has nothing to fit to; it is fitted again once shown.
+  if (!width || !height) return;
   if (width === lastFrameSize.width && height === lastFrameSize.height) return;
 
   lastFrameSize.width = width;
@@ -913,7 +953,12 @@ const refitContained = useDebounceFn(() => {
 }, 150);
 
 useResizeObserver(holoViewer, () => {
-  void refitContained();
+  const frame = holoViewer.value;
+  if (frame) {
+    frameSize.value = { width: frame.clientWidth, height: frame.clientHeight };
+  }
+
+  void refitFrame();
 });
 
 const handleRenderError = (error: Error) => {
