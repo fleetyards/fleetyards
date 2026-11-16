@@ -77,6 +77,7 @@ import {
   cloneShared,
   disposeTextures,
   loadHolo,
+  MODULE_COLOR,
   mountsHighlightKey,
   mountsLayoutKey,
   releaseMountCache,
@@ -166,6 +167,25 @@ const material = new MaterialClass({
   ...hologramLook,
 });
 
+// A module's hull, in a colour of its own so it reads as the part fitted
+// inside the ship. Drawn through the ship's hull, as a part is, and so through
+// itself: every layer adds up, so each is thinner than the hull's one.
+const MODULE_HULL_OPACITY = 0.22;
+const MODULE_HULL_HIGHLIGHT_OPACITY = 0.38;
+
+const moduleMaterial = new MaterialClass({
+  color: MODULE_COLOR,
+  side,
+  ...hologramLook,
+  ...(props.hologram ? { opacity: MODULE_HULL_OPACITY, depthTest: false } : {}),
+});
+
+// Pointed at, or open in the editor.
+const moduleHighlightMaterial = moduleMaterial.clone();
+moduleHighlightMaterial.color.set(MODULE_COLOR).offsetHSL(0, 0, 0.1);
+if (props.hologram)
+  moduleHighlightMaterial.opacity = MODULE_HULL_HIGHLIGHT_OPACITY;
+
 // Faint over a dark page, a hull lit only by the light reads as black on the
 // side turned from it: a hologram glows evenly in its own colour.
 const HULL_EMISSIVE = 0.6;
@@ -173,6 +193,10 @@ const HULL_EMISSIVE = 0.6;
 const updateHullGlow = () => {
   if (props.hologram) {
     material.emissive.set(props.color).multiplyScalar(HULL_EMISSIVE);
+    moduleMaterial.emissive.set(MODULE_COLOR).multiplyScalar(HULL_EMISSIVE);
+    moduleHighlightMaterial.emissive
+      .copy(moduleHighlightMaterial.color)
+      .multiplyScalar(HULL_EMISSIVE);
   }
 };
 
@@ -202,9 +226,10 @@ const COLORED_HIGHLIGHT = 0.55;
 // its own lines -- at the same distance but for a rounding -- swapped from one
 // part to the next: lines over the body read as a bright part, lines under it
 // as a dim one. Lines go over their body everywhere.
+// A module's hull after the ship's, before the parts fitted in it.
 const RENDER_ORDER = props.hologram
-  ? { hullWire: 1, part: 2, partWire: 3, overlay: 4 }
-  : { hullWire: 0, part: 0, partWire: 0, overlay: 1 };
+  ? { hullWire: 1, module: 1.5, part: 2, partWire: 3, overlay: 4 }
+  : { hullWire: 0, module: 0, part: 0, partWire: 0, overlay: 1 };
 
 updatePartColor();
 
@@ -256,6 +281,16 @@ const wireMaterial = new LineBasicMaterial({
   color: props.color,
   opacity: WIRE_OPACITY,
   ...wireLook,
+});
+
+// A module's edges in its own colour, and a little stronger than the hull's.
+const MODULE_WIRE_OPACITY = 0.45;
+
+const moduleWireMaterial = new LineBasicMaterial({
+  color: MODULE_COLOR,
+  opacity: MODULE_WIRE_OPACITY,
+  ...wireLook,
+  ...(props.hologram ? { depthTest: false } : {}),
 });
 // The hull's inside, seen through its one surface: every layer drawn faint,
 // the fainter the more surface the ship has for its size, so a large ship's
@@ -434,6 +469,17 @@ const withinMounts = (node: Object3D) => {
   return false;
 };
 
+// Within a module's hull, rather than a part mounted on it: the nearest mount
+// says which.
+const withinHullMount = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === mountRoot) return false;
+    if (current.userData.hull !== undefined) return !!current.userData.hull;
+  }
+
+  return false;
+};
+
 // A painted part keeps the materials it was exported with.
 const withinTexturedMount = (node: Object3D) => {
   for (let current: Object3D | null = node; current; current = current.parent) {
@@ -499,17 +545,31 @@ const setMaterials = (scene: Group) => {
   });
 
   for (const body of bodies) {
-    const own = withinMounts(body);
+    const moduleHull = withinHullMount(body);
+    const own = withinMounts(body) && !moduleHull;
 
     const lined =
       props.hologram &&
       (body.geometry.getAttribute("position")?.count ?? 0) <= EDGE_POINT_LIMIT;
 
     if (lined && !wireOf(body)) {
-      const wire = new LineSegments(edgesFor(body.geometry), wireMaterial);
+      const wire = new LineSegments(
+        edgesFor(body.geometry),
+        moduleHull ? moduleWireMaterial : wireMaterial,
+      );
       wire.userData.wire = true;
-      wire.renderOrder = RENDER_ORDER.hullWire;
+      wire.renderOrder = moduleHull
+        ? RENDER_ORDER.module
+        : RENDER_ORDER.hullWire;
       body.add(wire);
+    }
+
+    if (moduleHull) {
+      body.material = highlighted(body)
+        ? moduleHighlightMaterial
+        : moduleMaterial;
+      body.renderOrder = RENDER_ORDER.module;
+      continue;
     }
 
     if (!own) {
@@ -646,6 +706,9 @@ onUnmounted(() => {
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
+  moduleMaterial.dispose();
+  moduleHighlightMaterial.dispose();
+  moduleWireMaterial.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
   depthMaterial.dispose();
@@ -738,6 +801,10 @@ const attachMountsNow = async (scene: Group) => {
     scene.add(next);
     setMaterials(next);
   }
+
+  // A module's hull holds doors and built-in items of its own.
+  placeDoors(scene);
+  placeBuiltIns(scene);
 
   invalidate();
 
@@ -1265,7 +1332,9 @@ const castFrom = (event: PointerEvent | MouseEvent, from: Camera) => {
   raycaster.setFromCamera(pointer, from);
 };
 
-const mountAt = (event: PointerEvent | MouseEvent) => {
+// A part under the pointer, or with `moduleHull`, a module's hull: that is
+// asked last, so what the module holds answers before the module does.
+const mountAt = (event: PointerEvent | MouseEvent, moduleHull = false) => {
   if (!mountRoot || !camera.value) return undefined;
 
   castFrom(event, camera.value);
@@ -1274,7 +1343,10 @@ const mountAt = (event: PointerEvent | MouseEvent) => {
     .intersectObject(mountRoot, true)
     .find(
       ({ object }) =>
-        (object as Mesh).isMesh && !object.userData.overlay && object.visible,
+        (object as Mesh).isMesh &&
+        !object.userData.overlay &&
+        object.visible &&
+        withinHullMount(object) === moduleHull,
     );
 
   // A part with no slot of its own, a default gun on its mount, stands for
@@ -1397,12 +1469,17 @@ const onPointerMove = (event: PointerEvent) => {
   const doorId = event.buttons || id || builtInId ? undefined : doorAt(event);
   const cargoId =
     event.buttons || id || builtInId || doorId ? undefined : cargoAt(event);
-  const boxId =
+  const moduleId =
     event.buttons || id || builtInId || doorId || cargoId
+      ? undefined
+      : mountAt(event, true);
+  const boxId =
+    event.buttons || id || builtInId || doorId || cargoId || moduleId
       ? undefined
       : boxAt(event);
 
-  renderer.domElement.style.cursor = id || builtInId || doorId ? "pointer" : "";
+  renderer.domElement.style.cursor =
+    id || builtInId || doorId || moduleId ? "pointer" : "";
 
   pointBuiltIn(builtInId);
   pointDoor(doorId);
@@ -1413,10 +1490,11 @@ const onPointerMove = (event: PointerEvent) => {
     emit("boxPoint", boxId);
   }
 
-  if (id === pointed) return;
+  const mountId = id ?? moduleId;
+  if (mountId === pointed) return;
 
-  pointed = id;
-  emit("mountPoint", id);
+  pointed = mountId;
+  emit("mountPoint", mountId);
 };
 
 const onPointerLeave = () => {
@@ -1467,7 +1545,13 @@ const onClick = (event: MouseEvent) => {
   }
 
   const doorId = doorAt(event);
-  if (doorId) emit("doorSelect", doorId);
+  if (doorId) {
+    emit("doorSelect", doorId);
+    return;
+  }
+
+  const moduleId = mountAt(event, true);
+  if (moduleId) emit("mountSelect", moduleId);
 };
 
 if (props.pickable) {

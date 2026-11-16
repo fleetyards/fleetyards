@@ -8,6 +8,9 @@ import {
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
+// What a module's hull is drawn in, apart from the ship's own colour.
+export const MODULE_COLOR = "#a8c8ec";
+
 // A part drawn on a port of the holo below it: the port's place in its parent's
 // frame, the part's own holo, and whatever sits on the part's ports in turn.
 export type HoloMount = {
@@ -26,6 +29,9 @@ export type HoloMount = {
   highlighted?: boolean;
   // Drawn in this colour, with whatever is mounted on it that has none.
   color?: string;
+  // A module's hull: drawn as the ship's is, see-through, and picked as the
+  // hull is, through to what it holds.
+  hull?: boolean;
   mounts: HoloMount[];
 };
 
@@ -35,7 +41,7 @@ export const mountsLayoutKey = (mounts: HoloMount[] = []): string =>
   mounts
     .map(
       (mount) =>
-        `${mount.path ?? ""}@${mount.position.join(",")}/${mount.rotation.join(",")}(${mountsLayoutKey(mount.mounts)})`,
+        `${mount.hull ? "hull:" : ""}${mount.path ?? ""}@${mount.position.join(",")}/${mount.rotation.join(",")}(${mountsLayoutKey(mount.mounts)})`,
     )
     .join(";");
 
@@ -146,6 +152,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         group.userData.mountId = mount.id;
         group.userData.color = mount.color;
         group.userData.textured = !!mount.textured;
+        group.userData.hull = !!mount.hull;
         group.userData.mountGroups = [];
         parent.add(group);
         // In list order, before anything is awaited, so a repaint can walk the
