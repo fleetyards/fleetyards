@@ -306,6 +306,13 @@
         "prices": "Prices changed: %{before} when planned, %{now} today.",
         "rebase": "Update from hangar"
       },
+      "upgradeFits": {
+        "title": "Upgrades you hold can make routes cheaper",
+        "fit": "%{upgrade} fits the route to the %{ship}",
+        "saves": "saves %{amount}",
+        "apply": "Use it",
+        "applied": "The route to the %{ship} now uses the upgrade."
+      },
       "messages": {
         "saved": "Plan saved.",
         "saveFailed": "That did not work. Please check your input.",
@@ -526,6 +533,8 @@
         "more": "Show more",
         "steps": "The steps",
         "addStop": "Add a stop",
+        "heldFits": "Upgrades you hold that fit",
+        "heldFitsHint": "Pick one to put it into the route where it fits. The steps around it stay.",
         "stepPaidWith": "Step %{number} · paid with",
         "routeEnd": "End of the route",
         "saveRoute": "Save the route",

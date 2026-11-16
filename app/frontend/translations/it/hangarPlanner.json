@@ -306,6 +306,13 @@
         "prices": "Prezzi cambiati: %{before} al momento della pianificazione, %{now} oggi.",
         "rebase": "Aggiorna dall'hangar"
       },
+      "upgradeFits": {
+        "title": "I tuoi upgrade possono rendere i percorsi più economici",
+        "fit": "%{upgrade} si adatta al percorso verso la %{ship}",
+        "saves": "risparmia %{amount}",
+        "apply": "Usalo",
+        "applied": "Il percorso verso la %{ship} ora usa l'upgrade."
+      },
       "messages": {
         "saved": "Piano salvato.",
         "saveFailed": "Non ha funzionato. Controlla i dati inseriti.",
@@ -526,6 +533,8 @@
         "more": "Mostra altre",
         "steps": "I passaggi",
         "addStop": "Aggiungi una tappa",
+        "heldFits": "I tuoi upgrade adatti",
+        "heldFitsHint": "Scegline uno per inserirlo nel percorso dove si adatta. Le tappe attorno restano.",
         "stepPaidWith": "Passaggio %{number} · pagato con",
         "routeEnd": "Fine del percorso",
         "saveRoute": "Salva il percorso",

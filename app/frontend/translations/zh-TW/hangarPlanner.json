@@ -306,6 +306,13 @@
         "prices": "價格已變動：規劃時為 %{before}，今天為 %{now}。",
         "rebase": "從機庫更新"
       },
+      "upgradeFits": {
+        "title": "你持有的升級可以讓途徑更便宜",
+        "fit": "%{upgrade} 適用於通往 %{ship} 的途徑",
+        "saves": "節省 %{amount}",
+        "apply": "使用",
+        "applied": "通往 %{ship} 的途徑現已使用該升級。"
+      },
       "messages": {
         "saved": "方案已儲存。",
         "saveFailed": "操作失敗，請檢查你的輸入。",
@@ -526,6 +533,8 @@
         "more": "顯示更多",
         "steps": "步驟",
         "addStop": "新增中轉",
+        "heldFits": "你持有的適用升級",
+        "heldFitsHint": "選擇一個即可將其插入途徑中合適的位置，前後的步驟保持不變。",
         "stepPaidWith": "第 %{number} 步 · 支付方式",
         "routeEnd": "途徑終點",
         "saveRoute": "儲存途徑",

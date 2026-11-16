@@ -8,6 +8,8 @@ import {
   type HangarPlanCandidate,
   type HangarPlanModel,
   type HangarPlanResources,
+  type HangarPlanUpgradeStep,
+  HangarPlanUpgradeSourceEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -314,6 +316,91 @@ describe("Hangar/Planner/ShipPanel/RouteView", () => {
         .find('[data-test="hangar-plan-route-step-source-store"]')
         .classes(),
     ).toContain("active");
+  });
+
+  const storeStep = (
+    from: HangarPlanModel,
+    to: HangarPlanModel,
+  ): HangarPlanUpgradeStep => ({
+    id: `step-${to.id}`,
+    sourceKind: HangarPlanUpgradeSourceEnum.STORE,
+    fromModel: from,
+    toModel: to,
+    usesBuybackToken: false,
+    sourceMissing: false,
+    price: (to.pledgePrice ?? 0) - (from.pledgePrice ?? 0),
+  });
+
+  it("puts a held upgrade into a saved route, keeping the steps after it", async () => {
+    const wrapper = await mount(
+      pairing({
+        sourceVehicleId: "vehicle-aurora",
+        startModel: aurora,
+        routeComplete: true,
+        steps: [storeStep(aurora, cutlass), storeStep(cutlass, carrack)],
+      }),
+    );
+
+    const fits = rows(wrapper, "heldFits");
+    expect(fits).toHaveLength(2);
+
+    await fits
+      .find((row) => row.text().includes("Aurora MR → Constellation Taurus"))!
+      .trigger("click");
+
+    const steps = wrapper.findAll('[data-test="hangar-plan-route-step"]');
+    expect(steps).toHaveLength(2);
+    expect(
+      steps[0]
+        .find('[data-test="hangar-plan-route-step-source-owned_ccu"]')
+        .classes(),
+    ).toContain("active");
+    expect(steps[1].text()).toContain("Constellation Taurus");
+
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(saveRoute).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          steps: [
+            expect.objectContaining({
+              sourceKind: "owned_ccu",
+              hangarPledgeItemId: "ccu-aurora",
+              toModelId: "Constellation Taurus",
+            }),
+            expect.objectContaining({
+              sourceKind: "store",
+              toModelId: "Carrack",
+            }),
+          ],
+        }),
+      }),
+    );
+  });
+
+  it("keeps the later steps when a step changes how it is paid", async () => {
+    const wrapper = await mount(
+      pairing({
+        routeComplete: true,
+        steps: [storeStep(cutlass, taurus), storeStep(taurus, carrack)],
+      }),
+    );
+
+    await wrapper
+      .find('[data-test="hangar-plan-route-step-source-owned_ccu"]')
+      .trigger("click");
+
+    expect(
+      wrapper.findAll('[data-test="hangar-plan-route-step"]'),
+    ).toHaveLength(2);
+
+    await rows(wrapper, "steps.0.upgrade")[0].trigger("click");
+
+    // The upgrade reaches the Carrack itself, so the store step it replaces goes.
+    expect(
+      wrapper.findAll('[data-test="hangar-plan-route-step"]'),
+    ).toHaveLength(1);
   });
 
   it("pays for a melted pledge bought back like any buy-back", async () => {

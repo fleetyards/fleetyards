@@ -35,6 +35,7 @@ import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue"
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
+import UpgradeFits from "@/frontend/components/Hangar/Planner/UpgradeFits/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import type { HangarFlowTarget } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -452,6 +453,7 @@ const onDestroy = async () => {
     />
 
     <DriftAlert v-if="drift?.drifted" :plan-id="plan.id" :drift="drift" />
+    <UpgradeFits :plan="plan" />
 
     <CostTiles v-if="summary" :totals="summary.totals" />
     <Readiness :slots="plan.slots" :costs="summary?.slots" />

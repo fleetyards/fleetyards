@@ -306,6 +306,13 @@
         "prices": "Los precios han cambiado: %{before} al planificar, %{now} hoy.",
         "rebase": "Actualizar desde el hangar"
       },
+      "upgradeFits": {
+        "title": "Tus upgrades pueden abaratar vías",
+        "fit": "%{upgrade} encaja en la vía hacia la %{ship}",
+        "saves": "ahorra %{amount}",
+        "apply": "Usarlo",
+        "applied": "La vía hacia la %{ship} ya usa el upgrade."
+      },
       "messages": {
         "saved": "Plan guardado.",
         "saveFailed": "No ha funcionado. Revisa los datos introducidos.",
@@ -526,6 +533,8 @@
         "more": "Mostrar más",
         "steps": "Los pasos",
         "addStop": "Añadir una parada",
+        "heldFits": "Upgrades tuyos que encajan",
+        "heldFitsHint": "Elige uno para insertarlo en la vía donde encaja. Los pasos de alrededor se mantienen.",
         "stepPaidWith": "Paso %{number} · pagado con",
         "routeEnd": "Fin de la vía",
         "saveRoute": "Guardar la vía",
