@@ -803,6 +803,7 @@
           "digestTimeHint": "In your timezone (%{timezone}).",
           "channelMissing": "This channel no longer exists on Discord or can no longer take posts. Nothing is posted until another one is picked.",
           "missingChannel": "Unavailable channel",
+          "channelIdManualHint": "You can paste the channel's ID instead: with Developer Mode on in Discord, right-click the channel and pick Copy Channel ID.",
           "joinRole": "Join Role",
           "joinRoleHint": "Players holding this role in the server join the fleet without a request, at the default rank. Taking the role away removes the members it brought in. Leave empty to approve every request by hand.",
           "roleMissing": "This role no longer exists on Discord. Nobody joins through it until another one is picked.",

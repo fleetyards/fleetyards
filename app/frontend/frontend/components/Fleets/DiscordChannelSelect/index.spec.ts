@@ -99,4 +99,31 @@ describe("FleetDiscordChannelSelect", () => {
 
     expect(subject.find("[disabled]").exists()).toBe(true);
   });
+
+  it("takes a channel id by hand when Discord did not list the guild in time", async () => {
+    response = { code: FleetDiscordConnectionCodeEnum.TIMEOUT, items: [] };
+
+    const subject = await mount(null);
+    const input = subject.find('[data-test="channel-id-input"] input');
+
+    expect(input.exists()).toBe(true);
+    expect(input.attributes("disabled")).toBeUndefined();
+
+    await input.setValue("123456789012345678");
+
+    expect(subject.emitted("update:modelValue")?.at(-1)).toEqual([
+      "123456789012345678",
+    ]);
+  });
+
+  it("offers no id field when the bot is not in the guild", async () => {
+    response = {
+      code: FleetDiscordConnectionCodeEnum.BOT_NOT_IN_GUILD,
+      items: [],
+    };
+
+    const subject = await mount(null);
+
+    expect(find(subject, "channel-id-input").exists()).toBe(false);
+  });
 });

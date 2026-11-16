@@ -803,6 +803,7 @@
           "digestTimeHint": "En tu zona horaria (%{timezone}).",
           "channelMissing": "Este canal ya no existe en Discord o ya no admite publicaciones. No se publica nada hasta elegir otro.",
           "missingChannel": "Canal no disponible",
+          "channelIdManualHint": "Puedes pegar el ID del canal: con el modo desarrollador activado en Discord, haz clic derecho en el canal y elige Copiar ID del canal.",
           "joinRole": "Rol de ingreso",
           "joinRoleHint": "Los jugadores con este rol en el servidor se unen a la flota sin solicitud, con el rango predeterminado. Si se les quita el rol, los miembros que entraron con él salen de la flota. Déjalo vacío para aprobar cada solicitud a mano.",
           "roleMissing": "Este rol ya no existe en Discord. Nadie se une con él hasta que se elija otro.",

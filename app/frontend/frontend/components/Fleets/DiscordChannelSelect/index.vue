@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetDiscordConnectionCodeEnum,
@@ -38,6 +39,15 @@ const { data: channels, isLoading } = useFleetDiscordChannels(
 
 const connected = computed(
   () => channels.value?.code === FleetDiscordConnectionCodeEnum.OK,
+);
+
+// A guild Discord failed to list in time is still one the bot can post to, so
+// its channel is typed in by id. Every other failure means posting fails too.
+const manualEntry = computed(
+  () =>
+    !isLoading.value &&
+    (channels.value?.code === FleetDiscordConnectionCodeEnum.TIMEOUT ||
+      channels.value?.code === FleetDiscordConnectionCodeEnum.DISCORD_ERROR),
 );
 
 /*
@@ -90,7 +100,19 @@ const selected = computed({
 
 <template>
   <div class="discord-channel-select">
+    <FormInput
+      v-if="manualEntry"
+      v-model="selected"
+      :name="props.name"
+      :label="props.label"
+      :info="props.info"
+      :disabled="props.disabled"
+      inputmode="numeric"
+      no-placeholder
+      data-test="channel-id-input"
+    />
     <BaseSelect
+      v-else
       v-model="selected"
       :options="options"
       :name="props.name"
@@ -110,6 +132,9 @@ const selected = computed({
       data-test="channel-unavailable"
     >
       {{ t(`labels.fleet.discord.statusCodes.${channels.code}`) }}
+      <template v-if="manualEntry">
+        {{ t("labels.fleet.discord.channelIdManualHint") }}
+      </template>
     </p>
   </div>
 </template>
