@@ -4462,3 +4462,6 @@ GET /wishlist removed the optional property `items/items/modulePackage/modules/i
 GET /wishlist removed the optional property `items/items/modulePackage/modules/items/cargoHolds/items/rotation` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/offset` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/rotation` from the response with the `200` status
+GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/offset` from the response with the `200` status
+GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/placed` from the response with the `200` status
+GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/rotation` from the response with the `200` status
