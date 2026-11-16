@@ -19,6 +19,7 @@ module Shared
             maxSize: {type: :integer},
             source: ::Shared::V1::Schemas::Enums::HardpointSourceEnum,
             types: {type: :array, items: {type: :string}},
+            editable: {type: :boolean, description: "Whether the game lets a player swap what sits here"},
             details: {type: :string},
             component: {"$ref": "#/components/schemas/Component"},
             hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},

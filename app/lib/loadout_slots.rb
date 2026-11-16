@@ -15,7 +15,10 @@
 # it stays addressable. A module slot does not: a module is fitted by choice or
 # not at all.
 class LoadoutSlots
-  Slot = Struct.new(:path, :port, :instance, :stock) do
+  # `docked` is the vehicle a docking port carries in the ship's default
+  # loadout -- the Caterpillar's command module, a Constellation's snub -- whose
+  # own slots the ship's loadout fits below that port.
+  Slot = Struct.new(:path, :port, :instance, :stock, :docked) do
     def name
       port.sc_name
     end
@@ -219,12 +222,13 @@ class LoadoutSlots
   end
 
   # The hull slots a player fits: the systems, the weapons and what holds them,
-  # and the module slots, whose own slots open up once a module is fitted.
-  # Doors, seats, thrusters and the rest are the shipwright's.
+  # the ore pods a mining ship fills, and the module slots, whose own slots open
+  # up once a module is fitted. Doors, seats, thrusters and the rest are the
+  # shipwright's.
   HULL_CATEGORIES = %w[
     radar cooler lifesupport powerplant shieldgenerator quantumdrive controller
     weapons weapon_mounts turret missile_racks module
-    mining_lasers tractor_beams missiles bombs
+    mining_lasers tractor_beams missiles bombs ore_pods
   ].freeze
 
   # What a slot's facts read: the port's build and the stock part, with the
@@ -267,6 +271,9 @@ class LoadoutSlots
   # The tags a part in `slot` may demand: the ship's, and those of its port and
   # every port above it.
   def provided(slot)
+    # A docked vehicle's parts answer to its own tags, not the carrier's.
+    return LoadoutSlots.ship_tags_for(slot.docked) if slot.docked
+
     parent_path = slot.path.rpartition("/").first
     above = if parent_path.empty?
       ship_tags
@@ -289,15 +296,51 @@ class LoadoutSlots
   end
 
   def fittable_hull
-    @fittable_hull ||= hull.select do |slot|
-      next false unless HULL_CATEGORIES.include?(slot.facts.category)
-      next true unless slot.facts.category == "controller"
+    @fittable_hull ||= begin
+      fitted, rest = hull.partition { |slot| fitted_hull_slot?(slot) }
+      (fitted + carriers(rest)).tap { |slots| prefetch_below(slots) }
+    end
+  end
 
-      # Shield, missile and weapon controllers are ship internals; the flight
-      # blade is the one controller a player swaps, as in the catalogue.
-      Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
-        Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
-    end.tap { |slots| prefetch_below(slots) }
+  # How deep a part a loadout fits may sit inside a locked hull part: the
+  # Prospector's mining head is in a gimbal on its arm.
+  CARRIER_DEPTH = 2
+
+  private def fitted_hull_slot?(slot)
+    return below(slot).any? if slot.docked
+    return false unless HULL_CATEGORIES.include?(slot.facts.category)
+    return true unless slot.facts.category == "controller"
+
+    # Shield, missile and weapon controllers are ship internals; the flight
+    # blade is the one controller a player swaps, as in the catalogue.
+    Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
+      Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
+  end
+
+  # The other hull slots that hold such a part: a mining arm is the
+  # shipwright's, the head in it the player's.
+  private def carriers(slots)
+    level = slots.select(&:stock).map { |slot| [slot, slot] }
+    found = []
+
+    CARRIER_DEPTH.times do
+      break if level.empty?
+
+      prefetch_ports(level.flat_map { |(_root, slot)| [slot.stock, slot.instance] }.compact)
+      # Judged by the stock part, so a loadout swapping it does not unmake the
+      # slot it is fitted to.
+      level = level.flat_map { |(root, slot)| below_stock(slot).values.map { |child| [root, child] } }
+      found |= level.filter_map { |(root, child)| root if fitted_part_slot?(child) }
+      level = level.reject { |(root, child)| found.include?(root) || child.stock.nil? }
+    end
+
+    found
+  end
+
+  # A port inside a part is filed as nothing; what it takes says what it is.
+  private def fitted_part_slot?(slot)
+    HULL_CATEGORIES.include?(slot.facts.category) ||
+      Array(slot.facts.types).any? { |type| HULL_CATEGORIES.include?(::Hardpoint::TYPE_CATEGORIES[type].to_s) }
   end
 
   # Whether anything but the part the slot came with fits it, so a slot with
@@ -331,7 +374,7 @@ class LoadoutSlots
     return !emptied?(path) if @items.key?(path)
 
     slot = self[path]
-    slot.present? && !slot.module_slot? && slot.stock.present?
+    slot.present? && !slot.module_slot? && (slot.stock.present? || slot.docked.present?)
   end
 
   # Taken out by the loadout, stock part and all.
@@ -349,9 +392,37 @@ class LoadoutSlots
   private def hull_slots
     @hull_slots ||= @model.hardpoints.game_files.in_build.includes(PRELOAD)
       .to_h { |hardpoint| [hardpoint.sc_name, slot_at(nil, hardpoint, hardpoint, hardpoint.facts.component)] }
+      .tap { |slots| dock_vehicles(slots) }
+  end
+
+  # Where the detachable bridge docks, and where a snub does: the Constellation's
+  # `hardpoint_docking_collar_merlin`, the Mk V's `hardpoint_docking_port`. A
+  # ground vehicle a ship carries rides in its hold, docked nowhere.
+  COMMAND_MODULE_PORT = "hardpoint_docking_module"
+  SNUB_PORT = /\Ahardpoint_docking_(?:collar_\w+|port)\z/
+
+  private def dock_vehicles(slots)
+    if @model.command_module && (bridge = slots[COMMAND_MODULE_PORT])
+      bridge.docked = @model.command_module
+    end
+
+    collars = slots.values.select { |slot| SNUB_PORT.match?(slot.name) && slot.stock.nil? }.sort_by(&:name)
+    snubs = @model.snub_crafts.reject(&:ground).sort_by(&:name)
+    collars.zip(snubs).each { |collar, snub| collar.docked = snub if snub }
+  end
+
+  # The docked vehicle's own slots a loadout fits, under the port it docks at.
+  private def below_docked(parent)
+    fitted = LoadoutSlots.new(parent.docked).fittable_hull.map(&:name).to_set
+
+    ports(parent.docked)
+      .select { |port| port.game_files? && fitted.include?(port.sc_name) }
+      .to_h { |port| [port.sc_name, slot_at(parent, port, port, port.facts.component)] }
   end
 
   private def below(parent)
+    return @below[parent.path] ||= below_docked(parent) if parent.docked
+
     @below[parent.path] ||= case (content = fitted(parent.path))
     when ModelModule
       ports(content).to_h { |port| [port.sc_name, slot_at(parent, port, port, port.facts.component)] }

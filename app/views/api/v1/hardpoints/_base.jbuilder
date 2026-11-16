@@ -19,6 +19,8 @@ json.min_size facts.min_size
 json.max_size facts.max_size
 
 json.types facts.types
+# Whether the game lets a player swap what sits here.
+json.editable Array(facts.flags).none? { |flag| flag.to_s.casecmp?("uneditable") }
 
 json.category facts.category
 

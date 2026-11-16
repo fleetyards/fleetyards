@@ -63,7 +63,13 @@ export const COMPONENT_TABS: ComponentTab[] = [
       HardpointCategoryEnum.MINING_LASERS,
     ],
   },
-  { id: "auxiliary", categories: [HardpointCategoryEnum.TRACTOR_BEAMS] },
+  {
+    id: "auxiliary",
+    categories: [
+      HardpointCategoryEnum.TRACTOR_BEAMS,
+      HardpointCategoryEnum.ORE_PODS,
+    ],
+  },
 ];
 
 const CARRIER_CATEGORIES = new Set<string>([
@@ -87,10 +93,33 @@ const filedType = (part: CarriedPart): string | undefined =>
 
 // A turret or mount is filed by the parts it carries, as the ship page files
 // it: one holding a tractor beam and no gun, missile or bomb is auxiliary.
+// What a locked hull part no tab lists is filed under by the part it holds: a
+// mining arm by its head, a tractor arm by its beam, a bomb bay by its bombs.
+const HELD_CATEGORIES: Record<string, HardpointCategoryEnum> = {
+  WeaponMining: HardpointCategoryEnum.MINING_LASERS,
+  TractorBeam: HardpointCategoryEnum.TRACTOR_BEAMS,
+  TowingBeam: HardpointCategoryEnum.TRACTOR_BEAMS,
+  Bomb: HardpointCategoryEnum.BOMBS,
+  Missile: HardpointCategoryEnum.MISSILES,
+  WeaponGun: HardpointCategoryEnum.WEAPONS,
+};
+
 const categoryCarrying = (
   category: LoadoutSlot["category"],
   carried: CarriedPart[],
 ) => {
+  if (
+    category &&
+    category !== HardpointCategoryEnum.MODULE &&
+    !componentTabOf(category)
+  ) {
+    const held = carried
+      .map(filedType)
+      .find((type) => type && HELD_CATEGORIES[type]);
+
+    return held ? HELD_CATEGORIES[held] : category;
+  }
+
   if (!category || !CARRIER_CATEGORIES.has(category)) return category;
 
   const types = carried.map(filedType);
@@ -263,12 +292,17 @@ const FITTED_CATEGORIES = new Set<string>([
   HardpointCategoryEnum.TRACTOR_BEAMS,
   HardpointCategoryEnum.MISSILES,
   HardpointCategoryEnum.BOMBS,
+  HardpointCategoryEnum.ORE_PODS,
 ]);
 
 // A port whose types name none of those, or, naming no types at all, whose
 // category is none of the loadout's.
 const takesAPart = (slot: LoadoutSlot) => {
   const types = slot.types.filter(Boolean);
+
+  // An ore pod is a Container, as the shipwright's cargo lifts and canister
+  // shelves are; only its category says a loadout fills it.
+  if (slot.category === HardpointCategoryEnum.ORE_PODS) return true;
 
   return types.length
     ? types.some((type) => FITTED_TYPES.has(type))
@@ -529,7 +563,7 @@ export const useComponentFitting = () => {
       minSize: hardpoint.minSize,
       maxSize: hardpoint.maxSize,
       types: hardpoint.types ?? [],
-      editable: true,
+      editable: hardpoint.editable !== false,
       stock,
       // A port inside a module names what sits in it through the part's own
       // ports, as a ship page's hardpoint row reads them: a missile rack's
@@ -554,6 +588,8 @@ export const useComponentFitting = () => {
         id: mod.id,
         name: mod.name,
         category: HardpointCategoryEnum.MODULE,
+        holoUrl: mod.holoUrl ?? undefined,
+        scKey: mod.scKey,
       });
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
@@ -590,18 +626,33 @@ export const useComponentFitting = () => {
         slot,
         content: part ? craft(part, crafted) : undefined,
         crafted,
-        children: partId
-          ? resolve(below.value[path]?.[partId] ?? [], fitted, crafting, path)
-          : [],
+        // A docked vehicle holds no part of its own; its slots are the port's.
+        children: slot.docked
+          ? resolve(slot.slots, fitted, crafting, path)
+          : partId
+            ? resolve(below.value[path]?.[partId] ?? [], fitted, crafting, path)
+            : [],
       };
     });
 
+  // The vehicle each slot listed from a docked one belongs to, to name it by.
+  const dockedIn = new WeakMap<FittedSlot, string>();
+
   // The slots a tab lists: the hull's own of its categories, and those inside
-  // a fitted module -- a combat module's shield is the shields tab's.
+  // a fitted module or a docked vehicle -- a combat module's shield is the
+  // shields tab's, and so is the Caterpillar command module's.
   const roots = (tree: FittedSlot[], tab: ComponentTab): FittedSlot[] =>
     tree.flatMap((entry) => {
       if (entry.slot.category === HardpointCategoryEnum.MODULE) {
         return roots(entry.children, tab);
+      }
+
+      const docked = entry.slot.docked;
+      if (docked) {
+        const inside = roots(entry.children, tab);
+        inside.forEach((child) => dockedIn.set(child, docked.name));
+
+        return inside;
       }
 
       const category = fittedCategory(entry);
@@ -646,7 +697,9 @@ export const useComponentFitting = () => {
 
     return {
       id: entry.path,
-      label: slotName(entry.slot.name),
+      label: dockedIn.has(entry)
+        ? `${dockedIn.get(entry)} · ${slotName(entry.slot.name)}`
+        : slotName(entry.slot.name),
       size: sizeLabel(entry.slot),
       maxSize: entry.slot.maxSize,
       kind: slotKind(entry.slot),
@@ -824,6 +877,9 @@ export const useComponentFitting = () => {
             maxSize: port.maxSize,
             kind: slotKind(port),
             locked: true,
+            // A port the game locks says so; one a loadout does fit is fitted
+            // from its own tab, and listed here only for what the module brings.
+            lockedBy: port.editable ? undefined : "ship",
             item: port.stock
               ? {
                   id: port.stock.id,

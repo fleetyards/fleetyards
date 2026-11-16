@@ -44,9 +44,15 @@ const measure = () => {
   }
 
   if (!wrapped.value) {
+    // Against the row itself: `offsetLeft` and `offsetTop` count from the
+    // nearest positioned ancestor, which in a nested socket tree is the list
+    // around it, and the rail landed on the row's edge.
+    const rowBox = row.getBoundingClientRect();
+    const controlsBox = controls.getBoundingClientRect();
+
     railBox.value = {
-      top: controls.offsetTop,
-      right: row.clientWidth - controls.offsetLeft - controls.offsetWidth,
+      top: controlsBox.top - rowBox.top - row.clientTop,
+      right: rowBox.right - row.clientLeft - controlsBox.right,
       // Its width and the gap before it: what the lines beside it lacked.
       room:
         controls.offsetWidth +

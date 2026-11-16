@@ -2,13 +2,16 @@ import { describe, expect, it, vi } from "vitest";
 import {
   type BlueprintCostSlot,
   BlueprintRampEnum,
+  ComponentTypeEnum,
   type Hardpoint,
+  HardpointCategoryEnum,
   type LoadoutSlot,
   type ModelModule,
   VehicleLoadoutItemTypeEnum,
 } from "@/services/fyApi";
 import {
   COMPONENT_TABS,
+  componentTabOf,
   filedCategory,
   loadoutValues,
   lowerIsBetter,
@@ -329,6 +332,23 @@ describe("learnModules", () => {
     expect(fitting.components.value.shield.craftable).toBe(true);
     expect(fitting.components.value.cooler.craftable).toBe(false);
   });
+  it("knows a module by its holo, so the preview draws it in its slot", () => {
+    const fitting = useComponentFitting();
+    fitting.learnModules([
+      {
+        id: "cargo",
+        name: "Cargo Module",
+        slot: "hardpoint_module",
+        holoUrl: "https://example.test/cargo.glb",
+        hardpoints: [],
+      } as unknown as ModelModule,
+    ]);
+
+    expect(fitting.components.value.cargo.holoUrl).toBe(
+      "https://example.test/cargo.glb",
+    );
+  });
+
   it("carries a module part's catalogue slug to its row", () => {
     const fitting = useComponentFitting();
 
@@ -348,6 +368,34 @@ describe("learnModules", () => {
     } as unknown as ModelModule);
 
     expect(row.item?.slug).toBe("shield-alpha");
+  });
+
+  it("says which of a module's ports the game locks", () => {
+    const fitting = useComponentFitting();
+
+    const [tractor, shield] = fitting.moduleContents({
+      id: "m1",
+      name: "Cargo Module",
+      slot: "hardpoint_module",
+      hardpoints: [
+        {
+          id: "hp-tractor",
+          name: "hardpoint_tractor_left",
+          category: "turret",
+          editable: false,
+          component: { id: "tractor", name: "Tractor Turret" },
+        },
+        {
+          id: "hp-shield",
+          name: "hardpoint_shield",
+          category: "shieldgenerator",
+          component: { id: "shield", name: "Shield" },
+        },
+      ],
+    } as unknown as ModelModule);
+
+    expect(tractor.lockedBy).toBe("ship");
+    expect(shield.lockedBy).toBeUndefined();
   });
 });
 
@@ -491,5 +539,175 @@ describe("tractor beams", () => {
 
     expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
     expect(fitting.hasSlots(tree, tab("weapons"))).toBe(false);
+  });
+});
+
+describe("ore pods", () => {
+  const pod = (name: string): LoadoutSlot => ({
+    name,
+    hardpointId: `port-${name}`,
+    category: HardpointCategoryEnum.ORE_PODS,
+    types: ["Container"],
+    editable: true,
+    swappable: true,
+    stock: { id: "pod", name: "MISC Ore Pod", type: "Container" },
+    slots: [],
+  });
+
+  const cargoLift = (): LoadoutSlot => ({
+    name: "hardpoint_cargobay_exterior",
+    hardpointId: "port-lift",
+    category: HardpointCategoryEnum.UNKNOWN,
+    types: ["Container"],
+    editable: false,
+    stock: { id: "lift", name: "Cargo Lift", type: "Container" },
+    slots: [],
+  });
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("lists a mining ship's pod slots on the auxiliary tab", () => {
+    const fitting = useComponentFitting();
+    const slots = [
+      pod("hardpoint_mining_pod_1"),
+      pod("hardpoint_mining_pod_2"),
+    ];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(componentTabOf(HardpointCategoryEnum.ORE_PODS)?.id).toBe(
+      "auxiliary",
+    );
+    expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
+  });
+
+  it("leaves another Container port, a cargo lift, to the shipwright", () => {
+    const fitting = useComponentFitting();
+    const slots = [cargoLift()];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(COMPONENT_TABS.some((entry) => fitting.hasSlots(tree, entry))).toBe(
+      false,
+    );
+  });
+});
+
+describe("parts held by a locked hull part", () => {
+  const arm = (held: {
+    type: ComponentTypeEnum;
+    scKey: string;
+  }): LoadoutSlot => ({
+    name: "hardpoint_mining_arm",
+    hardpointId: "port-arm",
+    category: HardpointCategoryEnum.UTILITY,
+    types: ["ToolArm"],
+    editable: false,
+    stock: { id: "arm", name: "Mining Arm" },
+    slots: [
+      {
+        name: "hardpoint_mining_laser",
+        hardpointId: "port-gimbal",
+        category: HardpointCategoryEnum.UNKNOWN,
+        types: ["UtilityTurret"],
+        editable: true,
+        stock: {
+          id: "gimbal",
+          name: "Gimbal",
+          type: ComponentTypeEnum.UTILITY_TURRET,
+        },
+        slots: [
+          {
+            name: "hardpoint_mining_laser",
+            hardpointId: "port-head",
+            category: HardpointCategoryEnum.UNKNOWN,
+            types: [held.type],
+            editable: true,
+            swappable: true,
+            stock: { id: "head", name: "Arbor MH1", ...held },
+            slots: [],
+          },
+        ],
+      },
+    ],
+  });
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  const tabsShowing = (slots: LoadoutSlot[]) => {
+    const fitting = useComponentFitting();
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    return COMPONENT_TABS.filter((entry) => fitting.hasSlots(tree, entry)).map(
+      (entry) => entry.id,
+    );
+  };
+
+  it("lists a mining arm's head on the weapons tab, with the mining lasers", () => {
+    const mining = arm({
+      type: "WeaponMining",
+      scKey: "mining_laser_grin_arbor_s1",
+    });
+
+    expect(filedCategory(mining)).toBe(HardpointCategoryEnum.MINING_LASERS);
+    expect(tabsShowing([mining])).toEqual(["weapons"]);
+    expect(tab("weapons").categories).toContain(
+      HardpointCategoryEnum.MINING_LASERS,
+    );
+  });
+
+  it("lists a tractor arm's beam on the auxiliary tab", () => {
+    expect(
+      tabsShowing([
+        arm({
+          type: ComponentTypeEnum.TRACTOR_BEAM,
+          scKey: "grin_tractorbeam_s2",
+        }),
+      ]),
+    ).toEqual(["auxiliary"]);
+  });
+});
+
+describe("docked vehicles", () => {
+  const plant = (name: string, id: string): LoadoutSlot => ({
+    name: "hardpoint_power_plant",
+    hardpointId: `port-${id}`,
+    category: HardpointCategoryEnum.POWERPLANT,
+    types: ["PowerPlant"],
+    editable: true,
+    swappable: true,
+    stock: { id, name, type: ComponentTypeEnum.POWER_PLANT },
+    slots: [],
+  });
+
+  const tree = [
+    plant("Caterpillar Plant", "ship"),
+    {
+      name: "hardpoint_docking_module",
+      hardpointId: "port-dock",
+      category: HardpointCategoryEnum.UNKNOWN,
+      types: [],
+      editable: false,
+      docked: { name: "Command Module", slug: "drak-command-module" },
+      slots: [plant("Bridge Plant", "bridge")],
+    } as LoadoutSlot,
+  ];
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("lists a docked vehicle's parts on their tabs, named for the vehicle", () => {
+    const fitting = useComponentFitting();
+    fitting.learn(tree);
+    const resolved = fitting.resolve(tree, {});
+
+    const labels = fitting
+      .groups(resolved, tab("powerPlants"))
+      .flatMap((group) => group.slots)
+      .map((slot) => slot.label);
+
+    expect(labels).toHaveLength(2);
+    expect(labels[1]).toMatch(/^Command Module · /);
+    expect(labels[0]).not.toContain("Command Module");
   });
 });

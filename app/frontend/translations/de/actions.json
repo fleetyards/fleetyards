@@ -418,7 +418,25 @@
         "grid": {
           "enable": "Raster einblenden",
           "disable": "Raster ausblenden"
-        }
+        },
+        "cargo": {
+          "enable": "Frachtraster anzeigen",
+          "disable": "Frachtraster ausblenden"
+        },
+        "doorHighlight": {
+          "enable": "Alle Türen hervorheben",
+          "disable": "Türhervorhebung ausblenden"
+        },
+        "doors": {
+          "enable": "Alle Türen öffnen",
+          "disable": "Alle Türen schließen"
+        },
+        "door": {
+          "open": "Zum Öffnen klicken",
+          "close": "Zum Schließen klicken"
+        },
+        "builtIn": "Klicken, um das Item anzuzeigen",
+        "part": "Klicken, um das Teil zu ändern"
       },
       "logistics": {
         "addToInventory": "Zum Inventar hinzufügen",

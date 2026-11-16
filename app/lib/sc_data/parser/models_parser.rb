@@ -234,7 +234,10 @@ module ScData
       # that an S9 torpedo rack is in it today.
       #
       # A port that accepts a module is also appended when the loadout leaves it
-      # empty, since an empty module slot is still a slot.
+      # empty, since an empty module slot is still a slot -- and so is a port
+      # the game marks editable for a weapon, a launcher or a turret: the Idris-P
+      # leaves its nose port empty, which takes a laser beam or a torpedo
+      # launcher.
       private def merge_port_defs(values, loadout)
         record_port_defs = extract_port_defs(values)
         port_defs = extract_definition_port_defs(values.dig("Components", "VehicleComponentParams"))
@@ -255,14 +258,26 @@ module ScData
         # calls the Hornet's configurable centre mount module-capable, and
         # appending that would hand the Super Hornet a module slot it has never
         # had -- a change to what the ship offers, not to what a port declares.
-        record_port_defs.each do |name, port_def|
+        port_defs.each do |name, port_def|
           next if merged_names.include?(name)
-          next unless port_def[:types].include?("Module")
+          next unless empty_slot?(port_def, from_record: record_port_defs.key?(name))
 
           merged << {name:, ref: nil, key: nil, **port_def}
         end
 
         merged
+      end
+
+      EMPTY_SLOT_TYPES = %w[WeaponGun MissileLauncher BombLauncher Turret TurretBase].freeze
+
+      private def empty_slot?(port_def, from_record:)
+        return from_record if port_def[:types].include?("Module")
+
+        # Without a size nothing could ever fit it -- the X1's and the Fury's
+        # spare weapon ports.
+        Array(port_def[:flags]).include?("editable") &&
+          port_def[:max_size].present? &&
+          port_def[:types].intersect?(EMPTY_SLOT_TYPES)
       end
 
       private def extract_port_defs(values)

@@ -274,6 +274,108 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert slots.swappable?(slots["hardpoint_gun_nose"])
   end
 
+  test "fits another ore pod into a mining ship's pod slot" do
+    stock_pod = create(:component, component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    enhanced_pod = create(:component, component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    port(@model, "hardpoint_mining_pod_1", category: "ore_pods", types: ["Container"], sub_types: {"Container" => ["Cargo"]},
+      min_size: 1, max_size: 1, component: stock_pod, flags: ["editable"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert slots.fittable?("hardpoint_mining_pod_1")
+    assert slots.swappable?(slots["hardpoint_mining_pod_1"])
+    assert fleetyards_loadout(fit(["hardpoint_mining_pod_1", enhanced_pod])).save
+  end
+
+  test "fits another mining head into the gimbal on a locked mining arm" do
+    arm = create(:component, component_type: "ToolArm", category: "utility", size: "1")
+    gimbal = create(:component, component_type: "UtilityTurret", category: "weapon_mounts", size: "1")
+    head = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    other_head = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    port(arm, "hardpoint_mining_laser", types: ["UtilityTurret"], min_size: 1, max_size: 1)
+    port(gimbal, "hardpoint_mining_laser", types: ["WeaponMining"], min_size: 1, max_size: 1, flags: ["editable"])
+
+    arm_port = port(@model, "hardpoint_mining_arm", category: "utility", types: ["ToolArm"], min_size: 1, max_size: 1,
+      component: arm, flags: ["uneditable"])
+    gimbal_copy = port(arm_port, "hardpoint_mining_laser", component: gimbal)
+    port(gimbal_copy, "hardpoint_mining_laser", component: head)
+
+    slots = LoadoutSlots.new(@model)
+    path = "hardpoint_mining_arm/hardpoint_mining_laser/hardpoint_mining_laser"
+
+    assert_includes slots.fittable_hull.map(&:name), "hardpoint_mining_arm"
+    assert slots.fittable?(path)
+    assert fleetyards_loadout(fit([path, other_head])).save
+    other_arm = create(:component, component_type: "ToolArm", category: "utility", size: "1")
+    assert_refused fleetyards_loadout(fit(["hardpoint_mining_arm", other_arm])), :slot_not_editable
+  end
+
+  test "serves no locked hull part that holds nothing a loadout fits" do
+    seat = create(:component, component_type: "Seat", category: "seat", size: "1")
+    screen = create(:component, component_type: "Display", category: "unknown", size: "1")
+    port(seat, "screen", types: ["Display"])
+    port(seat, "cupholder", types: ["Misc"])
+    seat_port = port(@model, "hardpoint_seat_pilot", category: "seat", types: ["Seat"], component: seat, flags: ["uneditable"])
+    port(seat_port, "screen", component: screen)
+    port(seat_port, "cupholder")
+
+    assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_seat_pilot"
+  end
+
+  test "fits the docked command module's own parts below the port it docks at" do
+    bridge = create(:model, hidden: true)
+    bridge_plant = create(:component, component_type: "PowerPlant", category: "powerplant", size: "1")
+    port(bridge, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: bridge_plant, flags: ["editable"])
+    port(bridge, "hardpoint_door", component: create(:component, component_type: "Door", category: "doors", size: "1"))
+    @model.update!(command_module: bridge)
+    port(@model, "hardpoint_docking_module", types: [], flags: ["uneditable", "dockingport4"])
+
+    slots = LoadoutSlots.new(@model)
+    dock = slots["hardpoint_docking_module"]
+
+    assert_equal bridge, dock.docked
+    assert_includes slots.fittable_hull, dock
+    assert_equal ["hardpoint_power_plant"], slots.children(dock).map(&:name)
+    assert fleetyards_loadout(fit(["hardpoint_docking_module/hardpoint_power_plant", @plant])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_docking_module/hardpoint_power_plant", @big_plant])), :component_not_in_slot
+  end
+
+  test "docks a snub at its collar, and leaves a carried ground vehicle out" do
+    merlin = create(:model)
+    port(merlin, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: @plant, flags: ["editable"])
+    rover = create(:model, ground: true)
+    port(rover, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: @plant, flags: ["editable"])
+    @model.snub_crafts << rover
+    @model.snub_crafts << merlin
+    port(@model, "hardpoint_docking_collar_merlin", types: [], flags: ["uneditable", "dockingport3"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert_equal merlin, slots["hardpoint_docking_collar_merlin"].docked
+    assert slots.fittable?("hardpoint_docking_collar_merlin/hardpoint_power_plant")
+    assert slots.occupied?("hardpoint_docking_collar_merlin")
+  end
+
+  test "serves no docking port for a ship that carries nothing there" do
+    port(@model, "hardpoint_docking_collar_merlin", types: [], flags: ["uneditable", "dockingport3"])
+
+    assert_not_includes LoadoutSlots.new(@model).fittable_hull.map(&:name), "hardpoint_docking_collar_merlin"
+  end
+
+  test "fits a part into an editable weapon port the ship comes without" do
+    beam = create(:component, component_type: "WeaponGun", category: "weapons", size: "10")
+    torpedoes = create(:component, component_type: "MissileLauncher", category: "missile_racks", size: "10")
+    port(@model, "hardpoint_nose_railgun", types: %w[WeaponGun MissileLauncher], min_size: 10, max_size: 10,
+      flags: ["editable"])
+
+    slots = LoadoutSlots.new(@model)
+
+    assert_includes slots.fittable_hull.map(&:name), "hardpoint_nose_railgun"
+    assert slots.swappable?(slots["hardpoint_nose_railgun"])
+    assert fleetyards_loadout(fit(["hardpoint_nose_railgun", beam])).save
+    assert fleetyards_loadout(fit(["hardpoint_nose_railgun", torpedoes])).save
+  end
+
   test "takes a slot's stock part out, leaving nothing below it" do
     empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
     loadout = fleetyards_loadout([empty])

@@ -129,6 +129,29 @@ describe("useModuleSockets", () => {
     expect(offered[1]).toMatchObject({ owned: true, stock: false });
   });
 
+  it("shows a module the game does not have yet, but not to pick", () => {
+    const { options } = useModuleSockets();
+    const concept = [
+      ...MODULES,
+      {
+        id: "refinery",
+        name: "Refinery Module",
+        slot: "hardpoint_front_module",
+        productionStatus: "in-concept",
+        media: {},
+      },
+    ] as unknown as ModelModule[];
+
+    const offered = options(concept, "hardpoint_front_module", "cargo", []);
+
+    expect(
+      offered.find((option) => option.id === "refinery")?.unavailable,
+    ).toBe("labels.model.productionStatus.in-concept");
+    expect(offered.find((option) => option.id === "cargo")?.unavailable).toBe(
+      undefined,
+    );
+  });
+
   it("says what each module changes against the one fitted", () => {
     const { options } = useModuleSockets();
 

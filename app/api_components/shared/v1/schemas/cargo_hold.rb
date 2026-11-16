@@ -17,7 +17,8 @@ module Shared
             maxContainerSize: ::Shared::V1::Schemas::CargoHoldContainerSize,
             limits: CargoHoldLimits,
             offset: CargoHoldOffset,
-            rotation: {type: :integer}
+            rotation: {type: :integer},
+            placed: {type: :boolean, description: "The offset and rotation are where the hold sits in the ship, from its ship-view export"}
           },
           additionalProperties: false,
           required: %w[dimensions capacity maxContainerSize limits]

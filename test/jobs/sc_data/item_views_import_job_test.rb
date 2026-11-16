@@ -119,6 +119,29 @@ module ScData
       assert @equipment.top_view.attached?
     end
 
+    test "takes in a module's hull holo, its ports and its doors" do
+      ports = {"ports" => [{"name" => "hardpoint_tractor_left", "parent" => nil, "position" => [6.25, 2.5, -8.5], "rotation" => [0, 0, 0, 1], "defaultItem" => "rsi_galaxy_cargo_tractor_turret", "hullNode" => "hardpoint_tractor_left"}],
+               "cargo_grids" => [{"name" => "hardpoint_cargo_grid_left", "port" => "hardpoint_cargo_grid_left", "parentPort" => nil, "position" => [-10.1, -0.5, 4.5], "rotation" => [0, 0, 0, 1], "size" => [5, 5, 20], "scu" => 256}]}
+      doors = {"doors" => [{"id" => "door_close", "kind" => "door", "duration_s" => 10.0, "parts" => []}]}
+      publish(@component.sc_key, {"holo.gltf" => HOLO, "holo_hull.gltf" => HOLO, "hardpoints.json" => ports.to_json, "doors.json" => doors.to_json})
+
+      perform
+
+      assert @component.holo.attached?
+      assert @component.holo_hull.attached?
+      assert_equal ports, @component.hardpoint_transforms
+      assert_equal doors, @component.holo_doors
+    end
+
+    test "leaves a hull export alone on equipment, which has no hull" do
+      publish(@equipment.sc_key, {"front.png" => PNG, "holo_hull.gltf" => HOLO, "hardpoints.json" => {"ports" => []}.to_json})
+
+      perform
+
+      assert @equipment.front_view.attached?
+      assert_equal ["index.json", "files.json", "front.png"], fetched
+    end
+
     test "skips a name for a field an item does not have" do
       publish(@component.sc_key, {"top_colored.png" => PNG, "extended_front.png" => PNG, "front.png" => PNG})
 

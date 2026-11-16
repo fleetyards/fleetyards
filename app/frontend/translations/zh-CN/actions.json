@@ -418,7 +418,25 @@
         "grid": {
           "enable": "显示网格",
           "disable": "隐藏网格"
-        }
+        },
+        "cargo": {
+          "enable": "显示货物网格",
+          "disable": "隐藏货物网格"
+        },
+        "doorHighlight": {
+          "enable": "高亮所有舱门",
+          "disable": "隐藏舱门高亮"
+        },
+        "doors": {
+          "enable": "打开所有舱门",
+          "disable": "关闭所有舱门"
+        },
+        "door": {
+          "open": "点击打开",
+          "close": "点击关闭"
+        },
+        "builtIn": "点击查看物品",
+        "part": "点击更换部件"
       },
       "logistics": {
         "addToInventory": "添加到库存",

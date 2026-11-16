@@ -477,6 +477,22 @@
       "texturedHoloOwnPaint": "Verniciatura standard",
       "loadoutHolo": "Equipaggiamento",
       "loadoutHoloServicingArea": "Area di servizio",
+      "loadoutHoloCargoGrid": "Griglia di carico",
+      "loadoutHoloDoor": "Porta",
+      "loadoutHoloBuiltIn": "Integrato, non modificabile",
+      "loadoutHoloDoorKinds": {
+        "door": "Porta",
+        "airlock": "Camera di equilibrio",
+        "elevator": "Ascensore",
+        "hatch": "Portello",
+        "sideDoor": "Porta laterale",
+        "ramp": "Rampa"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "Arma",
+        "tractorBeam": "Raggio traente",
+        "miningPod": "Sacca mineraria"
+      },
       "holoViewer": {
         "background": {
           "dark": "Scuro",

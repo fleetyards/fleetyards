@@ -12614,6 +12614,10 @@ components:
           "$ref": "#/components/schemas/CargoHoldOffset"
         rotation:
           type: integer
+        placed:
+          type: boolean
+          description: The offset and rotation are where the hold sits in the ship,
+            from its ship-view export
       additionalProperties: false
       required:
       - dimensions
@@ -18371,6 +18375,9 @@ components:
           type: array
           items:
             type: string
+        editable:
+          type: boolean
+          description: Whether the game lets a player swap what sits here
         details:
           type: string
         component:
@@ -21022,6 +21029,12 @@ components:
         stock:
           type: boolean
           description: Whether the hull comes with this module from the factory. Present
+            when fetched via a model's modules endpoint.
+        holoUrl:
+          type:
+          - string
+          - 'null'
+          description: The module's holo, with its origin on the slot it fits. Present
             when fetched via a model's modules endpoint.
         hardpoints:
           type: array

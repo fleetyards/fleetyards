@@ -61,6 +61,24 @@ class Api::V1::VehicleLoadoutsSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/loadouts/:id/slots names the module fitted to a module slot" do
+    base = create(:component, name: "Galaxy Stock Module", sc_key: "rsi_galaxy_module_base", category: "module", component_type: "Module")
+    create(:hardpoint, parent: @vehicle.model, sc_name: "hardpoint_module", source: :game_files, category: :module, component: base)
+    cargo = create(:model_module, name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo")
+    create(:module_hardpoint, model: @vehicle.model, model_module: cargo, slot: "hardpoint_module")
+    loadout = @vehicle.vehicle_loadouts.create!(kind: "fleetyards",
+      item_list: [{slot_path: "hardpoint_module", item_type: "ModelModule", item_id: cargo.id}])
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id, id: loadout.id} do
+      bay = parsed_body.find { |slot| slot["name"] == "hardpoint_module" }
+
+      assert_equal "Galaxy Stock Module", bay.dig("stock", "name")
+      assert_equal "Cargo Module", bay.dig("fitted", "name")
+      assert_equal "RSI_Galaxy_Module_Cargo", bay.dig("fitted", "scKey")
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/loadouts/:id/slots says which parts a recipe makes" do
     create(:blueprint, craftable: @upgrade)
     sign_in @user

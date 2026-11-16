@@ -418,7 +418,25 @@
         "grid": {
           "enable": "Mostrar cuadrícula",
           "disable": "Ocultar cuadrícula"
-        }
+        },
+        "cargo": {
+          "enable": "Mostrar rejillas de carga",
+          "disable": "Ocultar rejillas de carga"
+        },
+        "doorHighlight": {
+          "enable": "Resaltar todas las puertas",
+          "disable": "Ocultar el resaltado de las puertas"
+        },
+        "doors": {
+          "enable": "Abrir todas las puertas",
+          "disable": "Cerrar todas las puertas"
+        },
+        "door": {
+          "open": "Haz clic para abrir",
+          "close": "Haz clic para cerrar"
+        },
+        "builtIn": "Haz clic para ver el objeto",
+        "part": "Haz clic para cambiar la pieza"
       },
       "logistics": {
         "addToInventory": "Añadir al inventario",

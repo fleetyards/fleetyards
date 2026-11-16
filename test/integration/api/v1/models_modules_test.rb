@@ -130,6 +130,34 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules gives a module the holo of its part in the game files" do
+    model = create(:model)
+    cargo = create(:model_module, name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo")
+    bare = create(:model_module, name: "Med Bay Module", sc_key: "RSI_Galaxy_Module_Medical")
+    [cargo, bare].each { |model_module| create(:module_hardpoint, model:, model_module:, slot: "hardpoint_module") }
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+    part.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      holos = parsed_body["items"].to_h { |item| [item["name"], item["holoUrl"]] }
+      assert_includes holos["Cargo Module"].to_s, "holo.glb", holos.inspect
+      assert_nil holos["Med Bay Module"]
+    end
+  end
+
+  test "GET /models/:slug/modules says which of a module's ports the game locks" do
+    model = create(:model)
+    cargo = create(:model_module, name: "Cargo Module")
+    create(:module_hardpoint, model:, model_module: cargo)
+    create(:hardpoint, parent: cargo, sc_name: "hardpoint_tractor_left", source: :game_files, flags: ["uneditable"])
+    create(:hardpoint, parent: cargo, sc_name: "hardpoint_shield", source: :game_files, flags: [])
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      editable = parsed_body["items"].first["hardpoints"].to_h { |hardpoint| [hardpoint["name"], hardpoint["editable"]] }
+      assert_equal({"hardpoint_shield" => true, "hardpoint_tractor_left" => false}, editable)
+    end
+  end
+
   test "GET /models/:slug/modules returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end

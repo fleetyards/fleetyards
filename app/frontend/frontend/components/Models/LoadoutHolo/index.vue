@@ -6,25 +6,30 @@ export default {
 
 <script lang="ts" setup>
 import {
+  FeatureFlagName,
   type LoadoutSlot,
   useModelLoadoutPreview,
   useModelLoadoutSlots,
 } from "@/services/fyApi";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { filedCategory } from "@/frontend/composables/useComponentFitting";
 import {
-  componentTabOf,
-  filedCategory,
-} from "@/frontend/composables/useComponentFitting";
-import {
-  categoryColor,
+  builtInHighlights,
+  loadoutCargoGrids,
+  loadoutHull,
   loadoutMounts,
   type PreviewSlot,
 } from "@/frontend/utils/loadoutPreview";
-import { BOX_COLOR } from "@/shared/components/HoloViewer/boxes";
-import { useI18n } from "@/shared/composables/useI18n";
+import { useHoloDoors } from "@/frontend/composables/useHoloDoors";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
-  servicingAreaLabel,
-  servicingAreaSize,
-} from "@/shared/utils/LandingServices";
+  LOADOUT_HOLO_LAYERS,
+  type LoadoutHoloLayers,
+  useModelsStore,
+} from "@/frontend/stores/models";
+import { useLoadoutHoloCard } from "@/frontend/composables/useLoadoutHoloCard";
+import LoadoutHoloCard from "@/frontend/components/Loadout/HoloCard/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   modelSlug: string;
@@ -46,7 +51,7 @@ const HoloViewer = defineAsyncComponent(
   () => import("@/shared/components/HoloViewer/index.vue"),
 );
 
-const { t, toNumber } = useI18n();
+const { t } = useI18n();
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
 
@@ -62,30 +67,41 @@ const { data: stockSlots } = useModelLoadoutSlots(() => props.modelSlug, {
 
 const loadoutSlots = computed(() => props.slots ?? stockSlots.value ?? []);
 
-type PointedPart = {
-  slot: LoadoutSlot;
-  category?: string;
-};
-
-// Every slot by the path its part on the holo is named by.
-const partsByPath = computed(() => {
-  const parts = new Map<string, PointedPart>();
-
-  const walk = (slots: LoadoutSlot[], prefix: string) => {
-    for (const slot of slots) {
-      const path = `${prefix}${slot.name}`;
-      parts.set(path, { slot, category: filedCategory(slot) });
-      walk(slot.slots, `${path}/`);
-    }
-  };
-
-  walk(loadoutSlots.value, "");
-
-  return parts;
-});
-
 const pointedPath = ref<string>();
-const pointedArea = ref<string>();
+
+const modelsStore = useModelsStore();
+
+const layer = (key: keyof LoadoutHoloLayers) =>
+  computed({
+    get: () => modelsStore.loadoutHoloLayers?.[key] ?? LOADOUT_HOLO_LAYERS[key],
+    set: (shown: boolean) => {
+      modelsStore.loadoutHoloLayers = {
+        ...LOADOUT_HOLO_LAYERS,
+        ...modelsStore.loadoutHoloLayers,
+        [key]: shown,
+      };
+    },
+  });
+
+const servicingAreasShown = layer("servicingAreas");
+const cargoGridsShown = layer("cargoGrids");
+const doorsOpen = layer("doorsOpen");
+const doorsMarked = layer("doorsMarked");
+
+const { isFeatureEnabled } = useFeatures();
+
+const servicingAreasEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_SERVICING_AREAS),
+);
+const cargoGridsEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_CARGO_GRIDS),
+);
+const doorAnimationEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_ANIMATION),
+);
+const doorHighlightEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_DOOR_HIGHLIGHT),
+);
 
 const previewSlots = (slots: LoadoutSlot[], prefix = ""): PreviewSlot[] =>
   slots.map((slot) => {
@@ -95,6 +111,7 @@ const previewSlots = (slots: LoadoutSlot[], prefix = ""): PreviewSlot[] =>
       name: slot.name,
       path,
       part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
+      docked: !!slot.docked,
       active: path === pointedPath.value,
       refitted: !!slot.fitted && slot.fitted.id !== slot.stock?.id,
       category: filedCategory(slot),
@@ -102,16 +119,52 @@ const previewSlots = (slots: LoadoutSlot[], prefix = ""): PreviewSlot[] =>
     };
   });
 
+// The hull as fitted: the ship's own ports, grids and doors, and those of the
+// modules in its slots.
+const fittedHull = computed(() =>
+  preview.value
+    ? loadoutHull(preview.value, previewSlots(loadoutSlots.value))
+    : undefined,
+);
+
+const doors = computed(() =>
+  doorAnimationEnabled.value || doorHighlightEnabled.value
+    ? (fittedHull.value?.doors ?? [])
+    : [],
+);
+
+const { isOpen, openDoors, toggleDoor } = useHoloDoors(doors, doorsOpen);
+
+const router = useRouter();
+
 const holoModel = computed(() => {
   const hull = preview.value?.holoHull;
 
   if (!preview.value || !hull?.url) return undefined;
 
+  const slots = previewSlots(loadoutSlots.value);
+
   return {
     path: hull.url,
     size: hull.size ?? undefined,
-    mounts: loadoutMounts(preview.value, previewSlots(loadoutSlots.value)),
-    boxes: preview.value.servicingAreas.map((area) => ({
+    mounts: loadoutMounts(preview.value, slots),
+    cargoGrids: cargoGridsEnabled.value
+      ? loadoutCargoGrids(preview.value, slots)
+      : [],
+    doors: doors.value,
+    openDoors: doorAnimationEnabled.value ? openDoors.value : [],
+    doorTargets: doorHighlightEnabled.value || doorAnimationEnabled.value,
+    doorHighlight: doorHighlightEnabled.value,
+    doorsMarked: doorHighlightEnabled.value && doorsMarked.value,
+    builtIns: builtInHighlights(fittedHull.value?.ports ?? []),
+    layers: {
+      boxes: servicingAreasShown.value,
+      cargo: cargoGridsShown.value,
+    },
+    boxes: (servicingAreasEnabled.value
+      ? preview.value.servicingAreas
+      : []
+    ).map((area) => ({
       id: area.key,
       position: area.position as [number, number, number],
       rotation: area.rotation as [number, number, number, number],
@@ -121,68 +174,63 @@ const holoModel = computed(() => {
   };
 });
 
-// Where the pointer is over the holo, for the card to follow it.
-const cursor = ref({ x: 0, y: 0, flipX: false, flipY: false });
+const {
+  pointedArea,
+  pointedBuiltIn,
+  pointedDoor,
+  pointedCargoGrid,
+  cursor,
+  trackPointer,
+  builtInPart,
+  card,
+  reset,
+} = useLoadoutHoloCard({
+  preview,
+  slots: () => previewSlots(loadoutSlots.value),
+  hull: fittedHull,
+  doors,
+  doorsAnimated: doorAnimationEnabled,
+  doorsHighlighted: doorHighlightEnabled,
+  isOpen,
+  cargoGrids: cargoGridsEnabled,
+  builtInHint: t("actions.holoViewer.builtIn"),
+  pointedPath,
+});
 
-const trackPointer = (event: PointerEvent) => {
-  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
+const openBuiltIn = (id: string) => {
+  const { part } = builtInPart(id);
+  if (!part?.slug) return;
 
-  cursor.value = {
-    x,
-    y,
-    flipX: x > rect.width - 260,
-    flipY: y > rect.height - 120,
-  };
+  void router.push({ name: "component", params: { slug: part.slug } });
 };
 
-const pointedPart = computed(() =>
-  pointedPath.value ? partsByPath.value.get(pointedPath.value) : undefined,
+watch(holoModel, (model) => {
+  if (!model) reset();
+});
+
+const servicingAreasLabel = computed(() =>
+  servicingAreasShown.value
+    ? t("actions.vehicleLoadout.hideServicingAreas")
+    : t("actions.vehicleLoadout.showServicingAreas"),
 );
 
-const card = computed(() => {
-  if (pointedPart.value) {
-    const { slot, category } = pointedPart.value;
-    const part = slot.emptied ? undefined : (slot.fitted ?? slot.stock);
-    const tab = componentTabOf(category);
+const cargoGridsLabel = computed(() =>
+  cargoGridsShown.value
+    ? t("actions.holoViewer.cargo.disable")
+    : t("actions.holoViewer.cargo.enable"),
+);
 
-    if (!part) return undefined;
+const doorsMarkedLabel = computed(() =>
+  doorsMarked.value
+    ? t("actions.holoViewer.doorHighlight.disable")
+    : t("actions.holoViewer.doorHighlight.enable"),
+);
 
-    return {
-      kicker: tab ? t(`labels.vehicleLoadout.tabs.${tab.id}`) : undefined,
-      color: categoryColor(category),
-      title: part.name,
-      details: [
-        part.size ? `S${part.size}` : undefined,
-        part.itemClassLabel,
-        part.gradeLabel
-          ? `${t("labels.component.grade")} ${part.gradeLabel}`
-          : undefined,
-      ].filter(Boolean),
-    };
-  }
-
-  const area = preview.value?.servicingAreas.find(
-    (candidate) => candidate.key === pointedArea.value,
-  );
-
-  if (!area) return undefined;
-
-  return {
-    kicker: t("labels.loadoutHoloServicingArea"),
-    color: BOX_COLOR,
-    title: servicingAreaLabel(area, area.index, { t }),
-    details: [servicingAreaSize(area, { toNumber })],
-  };
-});
-
-watch(holoModel, (model) => {
-  if (!model) {
-    pointedPath.value = undefined;
-    pointedArea.value = undefined;
-  }
-});
+const doorsLabel = computed(() =>
+  doorsOpen.value
+    ? t("actions.holoViewer.doors.disable")
+    : t("actions.holoViewer.doors.enable"),
+);
 </script>
 
 <template>
@@ -197,86 +245,64 @@ watch(holoModel, (model) => {
     @pointermove="trackPointer"
     @mount-point="pointedPath = $event"
     @box-point="pointedArea = $event"
+    @built-in-point="pointedBuiltIn = $event"
+    @built-in-select="openBuiltIn"
+    @door-point="pointedDoor = $event"
+    @cargo-point="pointedCargoGrid = $event"
+    @door-select="doorAnimationEnabled && toggleDoor($event)"
     @unavailable="emit('unavailable')"
   >
-    <div
+    <template #actions>
+      <Btn
+        v-if="holoModel.boxes.length"
+        v-tooltip="servicingAreasLabel"
+        :aria-label="servicingAreasLabel"
+        :aria-pressed="servicingAreasShown"
+        :active="servicingAreasShown"
+        :data-test="`${testId}-servicing-areas`"
+        @click="servicingAreasShown = !servicingAreasShown"
+      >
+        <i class="fa-light fa-screwdriver-wrench" />
+      </Btn>
+      <Btn
+        v-if="holoModel.cargoGrids.length"
+        v-tooltip="cargoGridsLabel"
+        :aria-label="cargoGridsLabel"
+        :aria-pressed="cargoGridsShown"
+        :active="cargoGridsShown"
+        :data-test="`${testId}-cargo-grids`"
+        @click="cargoGridsShown = !cargoGridsShown"
+      >
+        <i class="fa-light fa-boxes-stacked" />
+      </Btn>
+      <Btn
+        v-if="doorHighlightEnabled && holoModel.doors.length"
+        v-tooltip="doorsMarkedLabel"
+        :aria-label="doorsMarkedLabel"
+        :aria-pressed="doorsMarked"
+        :active="doorsMarked"
+        :data-test="`${testId}-door-highlight`"
+        @click="doorsMarked = !doorsMarked"
+      >
+        <i class="fa-light fa-door-closed" />
+      </Btn>
+      <Btn
+        v-if="doorAnimationEnabled && holoModel.doors.length"
+        v-tooltip="doorsLabel"
+        :aria-label="doorsLabel"
+        :aria-pressed="doorsOpen"
+        :active="doorsOpen"
+        :data-test="`${testId}-doors`"
+        @click="doorsOpen = !doorsOpen"
+      >
+        <i class="fa-light fa-arrows-left-right" />
+      </Btn>
+    </template>
+    <LoadoutHoloCard
       v-if="card"
-      class="model-loadout-holo__card"
-      :class="{
-        'model-loadout-holo__card--flip-x': cursor.flipX,
-        'model-loadout-holo__card--flip-y': cursor.flipY,
-      }"
-      :style="{
-        '--card-x': `${cursor.x}px`,
-        '--card-y': `${cursor.y}px`,
-        '--card-color': card.color,
-      }"
-      role="tooltip"
-      :data-test="`${testId}-card`"
-    >
-      <span v-if="card.kicker" class="model-loadout-holo__kicker">
-        {{ card.kicker }}
-      </span>
-      <strong class="model-loadout-holo__title">{{ card.title }}</strong>
-      <span v-if="card.details.length" class="model-loadout-holo__details">
-        {{ card.details.join(" · ") }}
-      </span>
-    </div>
+      :card="card"
+      :cursor="cursor"
+      :test-id="`${testId}-card`"
+    />
   </HoloViewer>
 </template>
-
-<style lang="scss" scoped>
-.model-loadout-holo__card {
-  --card-offset: 16px;
-
-  position: absolute;
-  top: var(--card-y);
-  left: var(--card-x);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  max-width: 240px;
-  padding: 8px 12px;
-  border: 1px solid var(--card-color, var(--color-edge));
-  border-radius: 6px;
-  background: rgb(10 14 20 / 88%);
-  color: var(--color-text);
-  font-size: 0.75rem;
-  pointer-events: none;
-  transform: translate(var(--card-offset), var(--card-offset));
-
-  &--flip-x {
-    transform: translate(calc(-100% - var(--card-offset)), var(--card-offset));
-  }
-
-  &--flip-y {
-    transform: translate(var(--card-offset), calc(-100% - var(--card-offset)));
-  }
-
-  &--flip-x#{&}--flip-y {
-    transform: translate(
-      calc(-100% - var(--card-offset)),
-      calc(-100% - var(--card-offset))
-    );
-  }
-}
-
-.model-loadout-holo__kicker {
-  color: var(--card-color, var(--color-text-dim));
-  font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.model-loadout-holo__title {
-  color: var(--color-lifted);
-  font-weight: 600;
-}
-
-.model-loadout-holo__details {
-  color: var(--color-text-dim);
-  font-variant-numeric: tabular-nums;
-}
-</style>

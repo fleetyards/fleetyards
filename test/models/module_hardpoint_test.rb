@@ -14,4 +14,26 @@ class ModuleHardpointTest < ActiveSupport::TestCase
 
     assert_operator model_module.reload.updated_at, :>, 1.minute.ago
   end
+
+  test "fill_missing_slots places a module linked before its hull had a slot" do
+    model = create(:model)
+    unplaced = create(:module_hardpoint, model:, slot: nil)
+    placed = create(:module_hardpoint, model:, slot: "hardpoint_kept")
+    stock = create(:component, sc_key: "rsi_module_base", category: "module", component_type: "Module")
+    create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_module", category: :module, component: stock)
+
+    ModuleHardpoint.fill_missing_slots(model)
+
+    assert_equal "hardpoint_module", unplaced.reload.slot
+    assert_equal "hardpoint_kept", placed.reload.slot
+  end
+
+  test "fill_missing_slots leaves a module unplaced while the hull has no slot for it" do
+    model = create(:model)
+    unplaced = create(:module_hardpoint, model:, slot: nil)
+
+    ModuleHardpoint.fill_missing_slots(model)
+
+    assert_nil unplaced.reload.slot
+  end
 end

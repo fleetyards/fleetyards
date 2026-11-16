@@ -172,6 +172,8 @@ module Api
         @loadout_preview_enabled = feature_enabled?("loadout_preview")
         @ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
         @servicing_areas = @loadout_preview_enabled ? @model.holo_servicing_areas : []
+        @cargo_grids = (@model.hardpoint_transforms&.fetch("cargo_grids", nil) if @loadout_preview_enabled) || []
+        @doors = (@model.holo_doors&.fetch("doors", nil) if @loadout_preview_enabled) || []
 
         # The parts the preview draws itself: those the hull leaves out, a part
         # the export never draws among them, unless the holo of the part they
@@ -181,6 +183,14 @@ module Api
           .filter_map { |port| port["defaultItem"] }
           .uniq
         @item_holos = Component.where(sc_key: default_items).joins(:holo_attachment).with_attached_holo
+
+        @module_hulls = @loadout_preview_enabled ? module_hulls(@model, @ports) : []
+
+        # The items a hull keeps, the ship's and its modules', named for the
+        # viewer: they have no slot in the loadout to name them.
+        hull_ports = @ports + @module_hulls.flat_map { |component| component.hardpoint_transforms&.fetch("ports", nil) || [] }
+        built_ins = hull_ports.filter_map { |port| port["defaultItem"] if port["hullNode"] && port["editable"] == false }.uniq
+        @built_in_items = Component.where(sc_key: built_ins).index_by(&:sc_key)
       end
 
       def positions
@@ -265,6 +275,11 @@ module Api
           .pluck(:model_module_id, :slot)
           .to_h
         @stock_module_ids = ModuleHardpoint.stock_modules(model).values
+        # A module is a part in the game files: its holo is that part's.
+        module_keys = @model_modules.filter_map { |model_module| model_module.sc_key&.downcase }
+        @module_holos = Component.where("LOWER(sc_key) IN (?)", module_keys.presence || [""])
+          .joins(:holo_attachment).with_attached_holo
+          .index_by { |component| component.sc_key.downcase }
         @craftable_module_component_ids = module_component_ids(@model_modules) & craftable_component_ids
       end
 
@@ -389,6 +404,19 @@ module Api
           .visible
           .active
           .order(name: :asc)
+      end
+
+      # The hulls of the modules a slot of the ship takes: the one it comes
+      # with, as the stock part of a stripped port, and the ones it is sold.
+      private def module_hulls(model, ports)
+        keys = ports.filter_map { |port| port["defaultItem"]&.downcase if port["stripped"] }
+        keys |= model.modules.filter_map { |model_module| model_module.sc_key&.downcase }
+        return [] if keys.empty?
+
+        Component.where("LOWER(sc_key) IN (?)", keys)
+          .joins(:holo_hull_attachment).with_attached_holo_hull
+          .includes(:hardpoint_transforms_record)
+          .to_a
       end
 
       # A module the asker's own ship has stays listed even once the catalogue

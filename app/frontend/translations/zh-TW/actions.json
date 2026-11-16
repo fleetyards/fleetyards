@@ -418,7 +418,25 @@
         "grid": {
           "enable": "顯示網格",
           "disable": "隱藏網格"
-        }
+        },
+        "cargo": {
+          "enable": "顯示貨物網格",
+          "disable": "隱藏貨物網格"
+        },
+        "doorHighlight": {
+          "enable": "醒目標示所有艙門",
+          "disable": "隱藏艙門醒目標示"
+        },
+        "doors": {
+          "enable": "打開所有艙門",
+          "disable": "關閉所有艙門"
+        },
+        "door": {
+          "open": "點擊打開",
+          "close": "點擊關閉"
+        },
+        "builtIn": "點擊查看物品",
+        "part": "點擊更換部件"
       },
       "logistics": {
         "addToInventory": "加入庫存",

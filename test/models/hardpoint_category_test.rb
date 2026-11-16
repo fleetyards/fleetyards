@@ -111,4 +111,22 @@ class HardpointCategoryTest < ActiveSupport::TestCase
     assert_equal "tractor_beams", hardpoint("hardpoint_beam", component: beam).category
     assert_equal "auxiliary", turret(beam).group
   end
+
+  test "files an empty editable weapon port by what it takes" do
+    model = create(:model)
+    nose = Hardpoint.create!(parent: model, sc_name: "hardpoint_nose_railgun", source: :game_files,
+      types: %w[WeaponGun MissileLauncher], flags: ["editable"], min_size: 10, max_size: 10)
+    bay = Hardpoint.create!(parent: model, sc_name: "hardpoint_torpedo_bay", source: :game_files,
+      types: %w[MissileLauncher], flags: ["editable"], min_size: 9, max_size: 9)
+
+    assert_equal "weapons", nose.category
+    assert_equal "missile_racks", bay.category
+  end
+
+  test "leaves an empty weapon port the game locks unknown" do
+    spare = Hardpoint.create!(parent: create(:model), sc_name: "hardpoint_spare_gun", source: :game_files,
+      types: %w[WeaponGun], flags: ["uneditable"], min_size: 3, max_size: 3)
+
+    assert_equal "unknown", spare.category
+  end
 end

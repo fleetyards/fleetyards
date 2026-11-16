@@ -295,6 +295,8 @@ class Hardpoint < ApplicationRecord
     # a fitted component keeps deciding for itself.
     elsif component.nil? && sc_name&.start_with?("hardpoint_paint")
       :paints
+    elsif component.nil? && (empty = empty_port_category)
+      empty
     else
       case component&.component_type
       when *TYPE_CATEGORIES.keys
@@ -315,6 +317,22 @@ class Hardpoint < ApplicationRecord
           derived
         end
       end
+    end
+  end
+
+  # An editable port the default loadout leaves empty -- the Idris-P's nose,
+  # which takes a laser beam or a torpedo launcher -- has no part to name its
+  # category; what it takes does.
+  private def empty_port_category
+    return unless Array(flags).include?("editable")
+
+    taken = Array(types)
+    if taken.include?("WeaponGun")
+      :weapons
+    elsif taken.intersect?(%w[MissileLauncher BombLauncher])
+      :missile_racks
+    elsif taken.intersect?(%w[Turret TurretBase])
+      :turret
     end
   end
 

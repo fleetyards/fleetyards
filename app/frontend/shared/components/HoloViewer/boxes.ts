@@ -84,7 +84,12 @@ export const buildBoxes = (boxes: HoloBox[]) => {
   return root;
 };
 
+// Grown from this share of their size as they fade in.
+const REVEAL_FROM = 0.85;
+
 export const applyBoxHighlights = (root: Object3D, boxes: HoloBox[]) => {
+  const reveal = (root.userData.reveal as number | undefined) ?? 1;
+
   root.children.forEach((child, index) => {
     const highlighted = !!boxes[index]?.highlighted;
     const fill = child as Mesh<BoxGeometry, MeshBasicMaterial>;
@@ -93,11 +98,27 @@ export const applyBoxHighlights = (root: Object3D, boxes: HoloBox[]) => {
       LineBasicMaterial
     >;
 
-    fill.material.opacity = highlighted ? HIGHLIGHT_FILL_OPACITY : FILL_OPACITY;
-    edges.material.opacity = highlighted
-      ? HIGHLIGHT_EDGE_OPACITY
-      : EDGE_OPACITY;
+    fill.material.opacity =
+      (highlighted ? HIGHLIGHT_FILL_OPACITY : FILL_OPACITY) * reveal;
+    edges.material.opacity =
+      (highlighted ? HIGHLIGHT_EDGE_OPACITY : EDGE_OPACITY) * reveal;
   });
+};
+
+// Faded and grown in, each box from its own centre.
+export const revealBoxes = (
+  root: Object3D,
+  boxes: HoloBox[],
+  amount: number,
+) => {
+  root.userData.reveal = amount;
+  root.visible = amount > 0;
+
+  for (const child of root.children) {
+    child.scale.setScalar(REVEAL_FROM + (1 - REVEAL_FROM) * amount);
+  }
+
+  applyBoxHighlights(root, boxes);
 };
 
 export const disposeBoxes = (root: Object3D) => {

@@ -165,6 +165,10 @@ const loadoutPending = computed(
   () => props.editable && !props.newLoadout && loadoutsPending.value,
 );
 
+// The modules the ship comes with, by slot, once its module list is in: a
+// slot the loadout fits nothing in holds its stock module, as the ship does.
+const stockModuleSlots = ref<Record<string, string>>({});
+
 const savedValues = (): LoadoutValues => {
   const { modules, components, crafted } = loadoutValues(
     editedLoadout.value?.items,
@@ -179,7 +183,7 @@ const savedValues = (): LoadoutValues => {
       (!!props.vehicle.public && !props.vehicle.activeLoadout),
     loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
     linkUrl: editedLoadout.value?.url ?? "",
-    fittedModules: modules,
+    fittedModules: { ...stockModuleSlots.value, ...modules },
     fittedComponents: components,
     craftedComponents: crafted,
   };
@@ -284,6 +288,17 @@ const { data: modulesData, ...modulesAsyncStatus } =
 
 const modules = computed(() => modulesData.value?.items ?? []);
 
+// At once too: a module list already cached when the modal opens never
+// changes, and its first values were taken before it was read.
+watch(
+  modules,
+  (list) => {
+    stockModuleSlots.value = stockModuleValues(list);
+    if (!changed.value) resetForm({ values: savedValues() });
+  },
+  { immediate: true },
+);
+
 const flightReady = computed(
   () =>
     model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
@@ -350,6 +365,9 @@ const cartItems = computed(() => nonStockFittedItems(componentTree.value));
 const previewSlots = computed(() =>
   previewSlotsFromFitting(componentTree.value, [
     ...(activeKind.value === "component" ? activeMembers.value : []),
+    ...(activeKind.value === "module" && activeSlot.value
+      ? [activeSlot.value]
+      : []),
     ...pointedMembers.value,
   ]),
 );
@@ -391,6 +409,23 @@ const servicingAreasToggleLabel = computed(() =>
   servicingAreasShown.value
     ? t("actions.vehicleLoadout.hideServicingAreas")
     : t("actions.vehicleLoadout.showServicingAreas"),
+);
+
+// The cargo grids and doors the holo has, offered once it says so.
+const overlays = ref({ cargoGrids: false, doors: false });
+const cargoGridsShown = ref(false);
+const doorsOpen = ref(false);
+
+const cargoGridsToggleLabel = computed(() =>
+  cargoGridsShown.value
+    ? t("actions.holoViewer.cargo.disable")
+    : t("actions.holoViewer.cargo.enable"),
+);
+
+const doorsToggleLabel = computed(() =>
+  doorsOpen.value
+    ? t("actions.holoViewer.doors.disable")
+    : t("actions.holoViewer.doors.enable"),
 );
 
 const figuresToggleLabel = computed(() =>
@@ -808,16 +843,31 @@ const socketForPath = (path: string) => {
   return undefined;
 };
 
+// A module's hull on the holo stands for its slot on the modules tab.
+const moduleSocketFor = (path: string) =>
+  slots.value.includes(path)
+    ? { tabId: VehicleLoadoutTabsEnum.MODULES as string, slotId: path }
+    : undefined;
+
 const onPreviewPoint = (path: string | undefined) => {
-  pointedSocket.value = path ? socketForPath(path) : undefined;
+  pointedSocket.value = path
+    ? (socketForPath(path) ?? moduleSocketFor(path))
+    : undefined;
 };
 
 const onPreviewSelect = (path: string) => {
   const socket = socketForPath(path);
-  if (!socket) return;
+  if (socket) {
+    pickedTab.value = socket.tabId;
+    void onSocketSelect(socket.slotId, "component", socket.tabId);
+    return;
+  }
 
-  pickedTab.value = socket.tabId;
-  void onSocketSelect(socket.slotId, "component", socket.tabId);
+  const moduleSocket = moduleSocketFor(path);
+  if (!moduleSocket || !props.editable) return;
+
+  pickedTab.value = moduleSocket.tabId;
+  void onSocketSelect(moduleSocket.slotId, "module");
 };
 
 const onCraft = async (slot: string, tabId: string) => {
@@ -1565,8 +1615,47 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @point="onPreviewPoint"
             :servicing-areas="servicingAreasShown"
             :highlighted-area="pointedArea"
+            :cargo-grids="cargoGridsShown"
+            :doors-open="doorsOpen"
             @servicing-areas="servicingAreas = $event"
-          />
+            @overlays="overlays = $event"
+          >
+            <template #actions>
+              <Btn
+                v-if="servicingAreas.length"
+                :aria-label="servicingAreasToggleLabel"
+                v-tooltip="servicingAreasToggleLabel"
+                :aria-pressed="servicingAreasShown"
+                :active="servicingAreasShown"
+                data-test="vehicle-loadout-servicing-areas-toggle"
+                @click="servicingAreasShown = !servicingAreasShown"
+              >
+                <i class="fa-light fa-screwdriver-wrench" />
+              </Btn>
+              <Btn
+                v-if="overlays.cargoGrids"
+                :aria-label="cargoGridsToggleLabel"
+                v-tooltip="cargoGridsToggleLabel"
+                :aria-pressed="cargoGridsShown"
+                :active="cargoGridsShown"
+                data-test="vehicle-loadout-cargo-grids-toggle"
+                @click="cargoGridsShown = !cargoGridsShown"
+              >
+                <i class="fa-light fa-boxes-stacked" />
+              </Btn>
+              <Btn
+                v-if="overlays.doors"
+                :aria-label="doorsToggleLabel"
+                v-tooltip="doorsToggleLabel"
+                :aria-pressed="doorsOpen"
+                :active="doorsOpen"
+                data-test="vehicle-loadout-doors-toggle"
+                @click="doorsOpen = !doorsOpen"
+              >
+                <i class="fa-light fa-arrows-left-right" />
+              </Btn>
+            </template>
+          </LoadoutPreview>
         </div>
       </div>
 
@@ -1581,18 +1670,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             <span v-html="vehicle.model.manufacturer?.name" />
             <strong>{{ vehicle.model.name }}</strong>
           </p>
-          <Btn
-            v-if="previewShown && servicingAreas.length"
-            variant="bare"
-            :aria-label="servicingAreasToggleLabel"
-            v-tooltip="servicingAreasToggleLabel"
-            :aria-pressed="servicingAreasShown"
-            :active="servicingAreasShown"
-            data-test="vehicle-loadout-servicing-areas-toggle"
-            @click="servicingAreasShown = !servicingAreasShown"
-          >
-            <i class="fa-solid fa-screwdriver-wrench" />
-          </Btn>
           <Btn
             variant="bare"
             :aria-label="figuresToggleLabel"

@@ -133,6 +133,37 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     activateVehicleLoadout(...args),
 }));
 
+// The real preview draws nothing without a hull to load, and with it the
+// toggles it carries in its viewer's bar.
+vi.mock("@/frontend/components/Loadout/Preview/index.vue", () => ({
+  default: {
+    name: "LoadoutPreview",
+    props: [
+      "modelSlug",
+      "slots",
+      "variant",
+      "interactive",
+      "zoomable",
+      "pickable",
+      "insets",
+      "servicingAreas",
+      "highlightedArea",
+      "cargoGrids",
+      "doorsOpen",
+      "testId",
+    ],
+    emits: [
+      "available",
+      "absent",
+      "select",
+      "point",
+      "servicingAreas",
+      "overlays",
+    ],
+    template: '<div :data-test="testId"><slot name="actions" /></div>',
+  },
+}));
+
 vi.mock("@/frontend/composables/useMaterialStock", () => ({
   useMaterialStock: () => ({
     forCommodity: () => ({ own: [], fleet: [] }),
@@ -2657,5 +2688,34 @@ describe("VehicleLoadoutModal component tabs", () => {
     await wrapper.get(toggle).trigger("click");
 
     expect(preview.props("highlightedArea")).toBeUndefined();
+  });
+
+  it("offers the cargo grids and doors the holo has, and switches them", async () => {
+    const wrapper = await mountClosed(vehicle());
+    await flushPromises();
+
+    const preview = wrapper.findComponent({ name: "LoadoutPreview" });
+    const cargo = "[data-test='vehicle-loadout-cargo-grids-toggle']";
+    const doors = "[data-test='vehicle-loadout-doors-toggle']";
+
+    preview.vm.$emit("available", true);
+    preview.vm.$emit("overlays", { cargoGrids: true, doors: false });
+    await flushPromises();
+
+    expect(wrapper.find(doors).exists()).toBe(false);
+    expect(preview.props("cargoGrids")).toBe(false);
+
+    await wrapper.get(cargo).trigger("click");
+
+    expect(preview.props("cargoGrids")).toBe(true);
+
+    preview.vm.$emit("overlays", { cargoGrids: true, doors: true });
+    await flushPromises();
+
+    expect(preview.props("doorsOpen")).toBe(false);
+
+    await wrapper.get(doors).trigger("click");
+
+    expect(preview.props("doorsOpen")).toBe(true);
   });
 });

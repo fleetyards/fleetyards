@@ -23,10 +23,6 @@ module ScData
 
     sidekiq_options queue: "loaders"
 
-    # Where on the flight holo hull each item port sits. Only the flying pose
-    # is exported without its components, so there is no landed set.
-    HARDPOINT_TRANSFORMS_NAME = /\A(?:flight[-_ ]?)?hardpoints\.json\z/i
-
     def perform(model_id = nil, paints_only = false)
       return unless ::ScData::ShipViewsStore.configured?
 
@@ -114,7 +110,9 @@ module ScData
     end
 
     private def field_for(name)
-      return "hardpoint_transforms" if HARDPOINT_TRANSFORMS_NAME.match?(name.split("/").last.to_s)
+      basename = name.split("/").last.to_s
+      export_field = HullExport.field_for(basename)
+      return export_field if export_field
 
       field = ShipViewFields.field_for(name)
 
@@ -127,31 +125,7 @@ module ScData
 
     # Checked here rather than where it is served, so a malformed export keeps
     # the last good one instead of breaking the endpoint.
-    private def render_data(_field, file)
-      transforms = JSON.parse(file.read)
-
-      raise ArgumentError, "no ports listed" unless transforms.is_a?(Hash) && transforms["ports"].is_a?(Array)
-
-      transforms["ports"].each_with_index do |port, index|
-        raise ArgumentError, "port #{index} is malformed" unless valid_port?(port)
-      end
-
-      transforms
-    end
-
-    private def valid_port?(port)
-      port.is_a?(Hash) &&
-        port["name"].is_a?(String) &&
-        numbers?(port["position"], 3) &&
-        numbers?(port["rotation"], 4) &&
-        (port["parent"].nil? || port["parent"].is_a?(String)) &&
-        (port["defaultItem"].nil? || port["defaultItem"].is_a?(String)) &&
-        Array(port["types"]).all? { |type| type.is_a?(Hash) && type["type"].is_a?(String) }
-    end
-
-    private def numbers?(value, size)
-      value.is_a?(Array) && value.size == size && value.all?(Numeric)
-    end
+    private def render_data(field, file) = HullExport.read(field, file)
 
     private def render_metadata(model, field)
       model.trimmed_attachment_names.include?(field.to_s) ? {trimmed: true} : {}

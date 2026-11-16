@@ -477,6 +477,22 @@
       "texturedHoloOwnPaint": "标准涂装",
       "loadoutHolo": "配置",
       "loadoutHoloServicingArea": "服务区域",
+      "loadoutHoloCargoGrid": "货物网格",
+      "loadoutHoloDoor": "舱门",
+      "loadoutHoloBuiltIn": "内置，不可更改",
+      "loadoutHoloDoorKinds": {
+        "door": "舱门",
+        "airlock": "气闸",
+        "elevator": "电梯",
+        "hatch": "舱口",
+        "sideDoor": "侧门",
+        "ramp": "坡道"
+      },
+      "loadoutHoloBuiltInKinds": {
+        "weapon": "武器",
+        "tractorBeam": "牵引光束",
+        "miningPod": "采矿袋"
+      },
       "holoViewer": {
         "background": {
           "dark": "深色",

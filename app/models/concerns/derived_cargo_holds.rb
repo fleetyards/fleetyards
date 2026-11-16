@@ -13,6 +13,14 @@ module DerivedCargoHolds
   def cargo_holds_with_offsets
     holds = projected_cargo_holds
 
+    # Where the ship-view export says every hold sits: measured, so it wins
+    # over a hand-set offset. Only when it places all of them -- a ship laid out
+    # half by the export and half by hand would overlap.
+    measured = measured_cargo_placements
+    if holds.any? && holds.all? { |hold| measured.key?(hold["name"]) }
+      return holds.map { |hold| hold.merge(measured[hold["name"]].compact, "placed" => true) }
+    end
+
     # Selected in Ruby rather than with `where`, which would issue a query per
     # record and so ignore a preloaded association -- 50 queries for a page of
     # 50 ships. There are a handful of holds per parent, so the filtering itself
@@ -101,6 +109,11 @@ module DerivedCargoHolds
 
       key
     end
+  end
+
+  # The holds' placements a parent has measured; none by default.
+  def measured_cargo_placements
+    {}
   end
 
   # Only a limit below what the grid itself takes changes anything.

@@ -1,12 +1,17 @@
 import { describe, expect, it } from "vitest";
 import {
   HardpointCategoryEnum,
+  HullItemKindEnum,
   type LoadoutSlot,
   type ModelLoadoutPreview,
   type ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
 import {
+  builtInHighlights,
+  builtInKind,
   categoryColor,
+  loadoutCargoGrids,
+  loadoutHull,
   loadoutMounts,
   portTree,
   previewSlotsFromLoadout,
@@ -29,6 +34,10 @@ const port = (
   geometry: true,
   stripped: false,
   inParentHolo: false,
+  hullNode: null,
+  defaultItemName: null,
+  defaultItemSlug: null,
+  itemKind: null,
   ...overrides,
 });
 
@@ -100,7 +109,10 @@ const preview: ModelLoadoutPreview = {
     "mrck_s03_behr_dual_s02",
     "misl_s02_ir_fski_ignite",
   ].map((scKey) => ({ scKey, holoUrl: holo(scKey) })),
+  moduleHulls: [],
   servicingAreas: [],
+  cargoGrids: [],
+  doors: [],
 };
 
 describe("portTree", () => {
@@ -270,7 +282,10 @@ describe("loadoutMounts", () => {
           geometry: false,
         }),
       ],
+      moduleHulls: [],
       servicingAreas: [],
+      cargoGrids: [],
+      doors: [],
       items: [
         {
           scKey: "shld_godi_s01_securehyde_scitem",
@@ -294,9 +309,451 @@ describe("loadoutMounts", () => {
         }),
       ],
       items: preview.items,
+      moduleHulls: [],
       servicingAreas: [],
+      cargoGrids: [],
+      doors: [],
     });
 
     expect(mounts).toEqual([]);
+  });
+});
+
+describe("loadoutMounts on a port the ship comes without a part in", () => {
+  const nose = port("hardpoint_nose_railgun", { position: [0, -12.6, -79.3] });
+
+  it("draws what the loadout fits there", () => {
+    const mounts = loadoutMounts({ ...preview, ports: [nose] }, [
+      {
+        name: "hardpoint_nose_railgun",
+        path: "hardpoint_nose_railgun",
+        part: { holoUrl: holo("exodus_laser_beam") },
+        slots: [],
+      },
+    ]);
+
+    expect(mounts.map((mount) => mount.path)).toEqual([
+      holo("exodus_laser_beam"),
+    ]);
+  });
+
+  it("draws nothing there until something is fitted", () => {
+    expect(loadoutMounts({ ...preview, ports: [nose] })).toEqual([]);
+  });
+});
+
+describe("loadoutMounts on a docked vehicle", () => {
+  it("matches the vehicle's parts to the docking port's slots", () => {
+    const mounts = loadoutMounts(
+      {
+        ...preview,
+        ports: [
+          port("hardpoint_docking_module", { helper: true }),
+          port("itemport_vehicle_attach", {
+            parent: "hardpoint_docking_module",
+            types: [{ type: "NOITEM_Vehicle", subTypes: "" }],
+          }),
+          port("hardpoint_power_plant", {
+            parent: "itemport_vehicle_attach",
+            defaultItem: "mount_gimbal_s3",
+            stripped: true,
+          }),
+        ],
+      },
+      [
+        {
+          name: "hardpoint_docking_module",
+          path: "hardpoint_docking_module",
+          part: null,
+          docked: true,
+          slots: [
+            {
+              name: "hardpoint_power_plant",
+              path: "hardpoint_docking_module/hardpoint_power_plant",
+              part: { holoUrl: holo("bridge_plant") },
+              active: true,
+              slots: [],
+            },
+          ],
+        },
+      ],
+    );
+
+    const plant = mounts[0]?.mounts?.[0]?.mounts?.[0];
+    expect(plant?.path).toBe(holo("bridge_plant"));
+    expect(plant?.id).toBe("hardpoint_docking_module/hardpoint_power_plant");
+    expect(plant?.highlighted).toBe(true);
+  });
+});
+
+describe("loadoutCargoGrids", () => {
+  const grid = (
+    name: string,
+    port: string | null,
+    parentPort: string | null,
+  ) => ({
+    name,
+    port,
+    parentPort,
+    position: [0, 1, 2],
+    rotation: [0, 0, 0, 1],
+    size: [5, 5, 7.5],
+    scu: 96,
+    stripped: false,
+  });
+
+  const withGrids = {
+    ...preview,
+    cargoGrids: [
+      grid("hardpoint_cargogrid_main", null, null),
+      grid(
+        "hardpoint_cargogrid_module_04",
+        "hardpoint_cargogrid_module_04",
+        "hardpoint_module_04",
+      ),
+    ],
+  };
+
+  it("draws every grid of the stock ship", () => {
+    expect(loadoutCargoGrids(withGrids).map((each) => each.id)).toEqual([
+      "hardpoint_cargogrid_main",
+      "hardpoint_cargogrid_module_04",
+    ]);
+  });
+
+  it("drops a grid whose module was taken out or swapped", () => {
+    const emptied = { name: "hardpoint_module_04", part: null, slots: [] };
+    const refitted = {
+      name: "Hardpoint_Module_04",
+      part: { holoUrl: holo("other_module") },
+      refitted: true,
+      slots: [],
+    };
+
+    expect(
+      loadoutCargoGrids(withGrids, [emptied]).map((each) => each.id),
+    ).toEqual(["hardpoint_cargogrid_main"]);
+    expect(
+      loadoutCargoGrids(withGrids, [refitted]).map((each) => each.id),
+    ).toEqual(["hardpoint_cargogrid_main"]);
+  });
+  it("goes by the hull's own slots alone, not a namesake inside a part", () => {
+    const nested = {
+      name: "hardpoint_turret",
+      part: { holoUrl: holo("turret") },
+      slots: [{ name: "hardpoint_module_04", part: null, slots: [] }],
+    };
+
+    expect(loadoutCargoGrids(withGrids, [nested])).toHaveLength(2);
+  });
+
+  it("skips a grid whose port lost its place, a root port at the origin", () => {
+    const unplaced = {
+      ...withGrids,
+      ports: [
+        port("CargoGrid_Hangar_Left"),
+        port("hardpoint_cargogrid_module_04", { position: [1, -2.75, -2] }),
+      ],
+      cargoGrids: [
+        ...withGrids.cargoGrids,
+        grid("CargoGrid_Hangar_Left", "CargoGrid_Hangar_Left", null),
+      ],
+    };
+
+    expect(loadoutCargoGrids(unplaced).map((each) => each.id)).toEqual([
+      "hardpoint_cargogrid_main",
+      "hardpoint_cargogrid_module_04",
+    ]);
+  });
+});
+
+describe("builtInHighlights", () => {
+  it("picks out a tractor turret by the beam merged into it", () => {
+    const turret = port("hardpoint_tractor_left", {
+      editable: false,
+      hullNode: "hardpoint_tractor_left",
+      itemKind: HullItemKindEnum.TURRET,
+      defaultItem: "rsi_galaxy_cargo_tractor_turret",
+    });
+    const beam = port("turret_tractor", {
+      parent: "hardpoint_tractor_left",
+      editable: false,
+      hullNode: "hardpoint_tractor_left",
+      defaultItem: "grin_tractorbeam_s2",
+    });
+    const gunTurret = port("hardpoint_turret", {
+      editable: false,
+      hullNode: "hardpoint_turret",
+      itemKind: HullItemKindEnum.TURRET,
+    });
+
+    expect(builtInHighlights([turret, beam, gunTurret])).toEqual([
+      { id: "hardpoint_tractor_left", node: "hardpoint_tractor_left" },
+    ]);
+    expect(builtInKind(turret, [turret, beam])).toBe("tractorBeam");
+  });
+
+  it("marks nothing merged into a larger piece, nor a seat named for a beam", () => {
+    // The Caterpillar: the command module's tractor turret and guns all name
+    // the module's node.
+    const ports = [
+      port("hardpoint_tractor_beam", {
+        parent: "itemport_vehicle_attach",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.TURRET,
+      }),
+      port("turret_weapon", {
+        parent: "hardpoint_tractor_beam",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.UTILITY,
+        defaultItem: "grin_tractorbeam_s2",
+        types: [{ type: "TractorBeam", subTypes: "" }],
+      }),
+      port("hardpoint_weapon_left", {
+        parent: "itemport_vehicle_attach",
+        editable: false,
+        hullNode: "itemport_vehicle_attach",
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+      port("hardpoint_seat_tractorbeam_right", {
+        editable: false,
+        hullNode: "hardpoint_seat_tractorbeam_right",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "drak_caterpillar_scitem_seat_tractorbeam",
+        types: [{ type: "Seat", subTypes: "" }],
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([]);
+  });
+
+  it("leaves a locked mount whose part the loadout swaps unmarked", () => {
+    // The Prospector: a locked arm holds a locked gimbal, whose mining head is
+    // the loadout's to change.
+    const ports = [
+      port("hardpoint_mining_arm", {
+        editable: false,
+        hullNode: "hardpoint_mining_arm",
+        itemKind: HullItemKindEnum.UTILITY,
+      }),
+      port("hardpoint_mining_laser", {
+        parent: "hardpoint_mining_arm",
+        editable: false,
+        hullNode: "hardpoint_mining_laser",
+        itemKind: HullItemKindEnum.WEAPON,
+        defaultItem: "mount_gimbal_mining",
+      }),
+      port("hardpoint_mining_laser", {
+        parent: "hardpoint_mining_laser",
+        editable: true,
+        stripped: true,
+        defaultItem: "mining_laser_grin_arbor_s1",
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([]);
+  });
+
+  it("picks out fixed weapons, tractor beams and mining bags only", () => {
+    const ports = [
+      port("hardpoint_mining_laser", {
+        editable: false,
+        hullNode: "hardpoint_mining_laser",
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+      port("hardpoint_tractor_beam", {
+        editable: false,
+        hullNode: "hardpoint_tractor_beam",
+        itemKind: HullItemKindEnum.UTILITY,
+        types: [{ type: "TractorBeam", subTypes: "" }],
+      }),
+      port("hardpoint_tractor_rear", {
+        editable: false,
+        hullNode: "hardpoint_tractor_rear",
+        itemKind: HullItemKindEnum.UTILITY,
+        defaultItem: "grin_tractorbeam_s1",
+      }),
+      port("hardpoint_turret_manned_rear", {
+        editable: false,
+        hullNode: "hardpoint_turret_manned_rear",
+        itemKind: HullItemKindEnum.TURRET,
+      }),
+      port("hardpoint_thruster_main", {
+        editable: false,
+        hullNode: "hardpoint_thruster_main",
+        itemKind: HullItemKindEnum.THRUSTER,
+      }),
+      port("hardpoint_stored_pod_1", {
+        editable: false,
+        hullNode: "hardpoint_stored_pod_1",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "cargo_shipmining_pod_prospector_collapsed",
+      }),
+      port("hardpoint_seat_pilot", {
+        editable: false,
+        hullNode: "hardpoint_seat_pilot",
+        itemKind: HullItemKindEnum.OTHER,
+        defaultItem: "misc_prospector_scitem_seat",
+      }),
+      port("hardpoint_gun_nose", { itemKind: HullItemKindEnum.WEAPON }),
+      port("hardpoint_gun_hidden", {
+        editable: false,
+        itemKind: HullItemKindEnum.WEAPON,
+      }),
+    ];
+
+    expect(builtInHighlights(ports)).toEqual([
+      { id: "hardpoint_mining_laser", node: "hardpoint_mining_laser" },
+      { id: "hardpoint_tractor_beam", node: "hardpoint_tractor_beam" },
+      { id: "hardpoint_tractor_rear", node: "hardpoint_tractor_rear" },
+      { id: "hardpoint_stored_pod_1", node: "hardpoint_stored_pod_1" },
+    ]);
+  });
+});
+
+describe("module hulls", () => {
+  const hullUrl = (scKey: string) =>
+    `https://example.com/${scKey}/holo_hull.glb`;
+
+  // The Galaxy: one module slot, a little above the ship's origin, and the
+  // hulls of the base module it comes with and of the cargo module.
+  const galaxy: ModelLoadoutPreview = {
+    ports: [
+      port("hardpoint_module", {
+        position: [0, 1, 0],
+        defaultItem: "rsi_galaxy_module_base",
+        stripped: true,
+        geometry: false,
+      }),
+    ],
+    items: [],
+    moduleHulls: [
+      {
+        scKey: "rsi_galaxy_module_base",
+        holoHullUrl: hullUrl("rsi_galaxy_module_base"),
+        ports: [],
+        cargoGrids: [],
+        doors: [],
+      },
+      {
+        scKey: "rsi_galaxy_module_cargo",
+        holoHullUrl: hullUrl("rsi_galaxy_module_cargo"),
+        ports: [
+          port("hardpoint_tractor_left", {
+            editable: false,
+            hullNode: "hardpoint_tractor_left",
+            defaultItem: "rsi_galaxy_cargo_tractor_turret",
+          }),
+        ],
+        cargoGrids: [
+          {
+            name: "hardpoint_cargo_grid_left",
+            port: "hardpoint_cargo_grid_left",
+            parentPort: null,
+            position: [-10, 0, 4],
+            rotation: [0, 0, 0, 1],
+            size: [5, 5, 20],
+            scu: 256,
+            stripped: false,
+          },
+        ],
+        doors: [
+          {
+            id: "door_close",
+            kind: "door",
+            position: [0, -5, 4],
+            durationS: 10,
+            exterior: false,
+            bounds: null,
+            outline: {
+              center: [0, -5, 4],
+              axes: [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+              ],
+              halfSize: [9, 5, 2],
+            },
+            outlineNodes: [],
+            parts: [
+              {
+                part: 0,
+                object: "door_door_close_0",
+                keyframes: [
+                  { t: 1, translation: [0, 0, 3], rotation: [0, 0, 0, 1] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    servicingAreas: [],
+    cargoGrids: [],
+    doors: [],
+  };
+
+  const cargoFitted = [
+    {
+      name: "hardpoint_module",
+      path: "hardpoint_module",
+      part: { scKey: "RSI_Galaxy_Module_Cargo", holoUrl: holo("cargo") },
+      refitted: true,
+      slots: [],
+    },
+  ];
+
+  it("draws the module the ship comes with by its own hull", () => {
+    const [mount] = loadoutMounts(galaxy);
+
+    expect(mount.path).toBe(hullUrl("rsi_galaxy_module_base"));
+    expect(mount.hull).toBe(true);
+    expect(mount.color).toBeUndefined();
+  });
+
+  it("draws a fitted module by its hull, not its plain holo", () => {
+    const [mount] = loadoutMounts(galaxy, cargoFitted);
+
+    expect(mount.path).toBe(hullUrl("rsi_galaxy_module_cargo"));
+    expect(mount.position).toEqual([0, 1, 0]);
+  });
+
+  it("brings the fitted module's ports, cargo grids and doors, placed by its slot", () => {
+    const hull = loadoutHull(galaxy, cargoFitted);
+
+    expect(hull.ports.map((each) => each.name)).toEqual([
+      "hardpoint_module",
+      "hardpoint_tractor_left",
+    ]);
+
+    const [grid] = hull.cargoGrids;
+    expect(grid.position).toEqual([-10, 1, 4]);
+    expect(
+      loadoutCargoGrids(galaxy, cargoFitted).map((each) => each.id),
+    ).toEqual(["hardpoint_cargo_grid_left"]);
+
+    const [door] = hull.doors;
+    expect(door.position).toEqual([0, -4, 4]);
+    expect(door.outline?.center).toEqual([0, -4, 4]);
+    // A slide along the module is the same slide along the ship.
+    expect(door.parts[0].keyframes[0].translation).toEqual([0, 0, 3]);
+  });
+
+  it("shows the module the ship comes with in an empty module slot", () => {
+    const emptied = [
+      {
+        name: "hardpoint_module",
+        path: "hardpoint_module",
+        part: null,
+        slots: [],
+      },
+    ];
+
+    const [mount] = loadoutMounts(galaxy, emptied);
+    expect(mount.path).toBe(hullUrl("rsi_galaxy_module_base"));
+    expect(mount.id).toBe("hardpoint_module");
+    expect(loadoutHull(galaxy, emptied).cargoGrids).toEqual([]);
   });
 });

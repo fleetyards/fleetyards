@@ -242,6 +242,22 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 64.0, bigger_holds.reload.cargo
   end
 
+  test "a ship whose holds have no rows gets them on its next save" do
+    hold = {"name" => "hardpoint_cargo_garage_a", "capacity" => 192,
+            "dimensions" => {"x" => 7.5, "y" => 10.0, "z" => 5.0},
+            "max_container_size" => {"size" => 32, "dimensions" => {"x" => 10.0, "y" => 2.5, "z" => 2.5}},
+            "limits" => {"min" => {"dimensions" => {"x" => 1.25, "y" => 1.25, "z" => 1.25}, "capacity" => 1},
+                         "max" => {"dimensions" => {"x" => 2.5, "y" => 10.0, "z" => 2.5}, "capacity" => 32}}}
+    model = create(:model, production_status: "flight-ready", cargo: 192.0)
+    create(:model_build, model:, cargo_holds: [hold])
+    model.cargo_holds_db.delete_all
+
+    model.reload.save!
+
+    assert_equal ["hardpoint_cargo_garage_a"], model.cargo_holds_db.reload.pluck(:name)
+    assert_equal 192.0, model.reload.cargo
+  end
+
   test "a ship flagged to keep its cargo keeps the figure entered" do
     model = create(:model, production_status: "flight-ready", cargo: 5400.0, keep_cargo: true)
     create(:model_build, model:, cargo_holds: [])

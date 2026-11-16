@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_100100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -523,6 +523,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_100100) do
     t.index ["component_id", "environment", "version"], name: "index_component_builds_on_component_and_build", unique: true
     t.index ["environment", "version"], name: "index_component_builds_on_environment_and_version"
     t.index ["manufacturer_id"], name: "index_component_builds_on_manufacturer_id"
+  end
+
+  create_table "component_hardpoint_transforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "component_id", null: false
+    t.jsonb "data"
+    t.jsonb "doors"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["component_id"], name: "index_component_hardpoint_transforms_on_component_id", unique: true
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -2471,9 +2480,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_100100) do
 
   create_table "model_hardpoint_transforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id", null: false
-    t.jsonb "data", null: false
+    t.jsonb "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "doors"
     t.index ["model_id"], name: "index_model_hardpoint_transforms_on_model_id", unique: true
   end
 
@@ -3514,6 +3524,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_100100) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
+  add_foreign_key "component_hardpoint_transforms", "components", on_delete: :cascade
   add_foreign_key "discord_member_reads", "fleets"
   add_foreign_key "dock_additions", "docks", on_delete: :cascade
   add_foreign_key "dock_additions", "models", on_delete: :cascade

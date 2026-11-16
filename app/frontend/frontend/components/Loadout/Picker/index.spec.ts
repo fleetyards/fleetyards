@@ -56,6 +56,31 @@ const sortChip = (wrapper: Wrapper, label: string) =>
     .find((chip) => chip.text() === label);
 
 describe("LoadoutPicker", () => {
+  it("shows an option it cannot pick, says why, and does not pick it", async () => {
+    const wrapper = await mount({
+      options: [
+        { id: "cargo", name: "Cargo Module" },
+        { id: "refinery", name: "Refinery Module", unavailable: "In Concept" },
+      ],
+    });
+
+    const [cargo, refinery] = wrapper.findAll(
+      "[data-test='loadout-picker-option']",
+    );
+    expect(refinery.attributes("aria-disabled")).toBe("true");
+    expect(
+      refinery.find("[data-test='loadout-picker-unavailable']").text(),
+    ).toBe("In Concept");
+
+    await refinery.trigger("click");
+    await refinery.trigger("mouseenter");
+    expect(wrapper.emitted("pick")).toBeUndefined();
+    expect(wrapper.emitted("preview")).toBeUndefined();
+
+    await cargo.trigger("click");
+    expect(wrapper.emitted("pick")).toEqual([["cargo"]]);
+  });
+
   it("lists every option, by name, with the total", async () => {
     const wrapper = await mount();
 

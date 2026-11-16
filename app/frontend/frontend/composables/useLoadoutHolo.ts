@@ -1,6 +1,7 @@
 import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useModelsStore } from "@/frontend/stores/models";
 
 // The 3D view's loadout holo: whether the ship has a hull holo to draw its
 // loadout on, asked only once the view is open, and the switch to it. It and
@@ -31,7 +32,14 @@ export const useLoadoutHolo = (
     () => enabled.value && !!preview.value?.holoHull?.url,
   );
 
-  const loadoutHolo = ref(false);
+  const modelsStore = useModelsStore();
+
+  const loadoutHolo = computed({
+    get: () => modelsStore.loadoutHolo,
+    set: (shown: boolean) => {
+      modelsStore.loadoutHolo = shown;
+    },
+  });
 
   const loadoutHoloShown = computed(
     () => loadoutHoloAvailable.value && loadoutHolo.value,

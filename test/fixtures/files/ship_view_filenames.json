@@ -96,7 +96,8 @@
       "holo-hull.glb": "holoHull",
       "landed_holo_hull.glb": null,
       "extended_holo_hull.glb": null,
-      "flight_hardpoints.json": null
+      "flight_hardpoints.json": null,
+      "flight_doors.json": null
     }
   },
   {

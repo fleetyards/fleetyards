@@ -59,6 +59,37 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-slots returns a mining ship's ore pod slots" do
+    pod = create(:component, name: "MISC Ore Pod", component_type: "Container", component_sub_type: "Cargo", category: "ore_pods", size: "1")
+    create(:hardpoint, parent: @model, sc_name: "hardpoint_mining_pod_1", source: :game_files, category: "ore_pods",
+      types: ["Container"], min_size: 1, max_size: 1, component: pod, flags: ["editable"])
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      pod_slot = parsed_body.find { |slot| slot["name"] == "hardpoint_mining_pod_1" }
+
+      assert_equal "MISC Ore Pod", pod_slot.dig("stock", "name")
+      assert pod_slot["editable"]
+    end
+  end
+
+  test "GET /models/:slug/loadout-slots names the vehicle docked at a port, with its slots below" do
+    bridge = create(:model, name: "Command Module", hidden: true)
+    plant = create(:component, name: "Bridge Plant", component_type: "PowerPlant", category: "powerplant", size: "1")
+    create(:hardpoint, parent: bridge, sc_name: "hardpoint_power_plant", source: :game_files, types: ["PowerPlant"],
+      min_size: 1, max_size: 1, component: plant, flags: ["editable"])
+    @model.update!(command_module: bridge)
+    create(:hardpoint, parent: @model, sc_name: "hardpoint_docking_module", source: :game_files, types: [],
+      flags: ["uneditable", "dockingport4"])
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      dock = parsed_body.find { |slot| slot["name"] == "hardpoint_docking_module" }
+
+      assert_equal({"name" => "Command Module", "slug" => bridge.slug}, dock["docked"])
+      assert_not dock["editable"]
+      assert_equal "Bridge Plant", dock["slots"].sole.dig("stock", "name")
+    end
+  end
+
   test "GET /models/:slug/loadout-slots says which parts a recipe makes" do
     create(:blueprint, craftable: @gun)
 

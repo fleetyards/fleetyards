@@ -56,8 +56,25 @@ export enum ModelSortFieldsEnum {
   PLEDGE_PRICE = "pledgePrice",
 }
 
+export type LoadoutHoloLayers = {
+  servicingAreas: boolean;
+  cargoGrids: boolean;
+  doorsOpen: boolean;
+  doorsMarked: boolean;
+};
+
+export const LOADOUT_HOLO_LAYERS: LoadoutHoloLayers = {
+  servicingAreas: true,
+  cargoGrids: true,
+  doorsOpen: false,
+  doorsMarked: false,
+};
+
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
+  // The 3D view shows the loadout holo rather than the plain one.
+  loadoutHolo: boolean;
+  loadoutHoloLayers: LoadoutHoloLayers;
   // The ship page's full metrics cards, rather than the row of key figures.
   shipMetricsAdvanced: boolean;
   // The hardpoint cards a reader set differently from how they open, by ship or
@@ -75,6 +92,8 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
+    loadoutHolo: false,
+    loadoutHoloLayers: { ...LOADOUT_HOLO_LAYERS },
     shipMetricsAdvanced: false,
     foldedHardpointGroups: {},
     collapsedSections: {},
@@ -186,6 +205,8 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
+      "loadoutHolo",
+      "loadoutHoloLayers",
       "shipMetricsAdvanced",
       "foldedHardpointGroups",
       "collapsedSections",
