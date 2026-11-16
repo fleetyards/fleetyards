@@ -69,12 +69,16 @@ const comparison: HangarPlanComparison = {
       leftCount: 0,
       rightCount: 1,
       change: HangarPlanModelChangeEnum.ADDED,
+      inCount: 1,
+      outCount: 0,
     },
     {
       model: stingray,
       leftCount: 1,
       rightCount: 1,
       change: HangarPlanModelChangeEnum.UNCHANGED,
+      inCount: 1,
+      outCount: 1,
     },
   ],
   gaps: [
@@ -88,18 +92,26 @@ const mount = (slots: HangarPlanSlot[] = []) =>
   mountWithDefaults(Component, { props: { comparison, slots } });
 
 describe("ComparisonDetails", () => {
-  it("brings in a slot without a route whose count the plan evens out", async () => {
+  it("lists a model melted and brought in again on both sides", async () => {
     const wrapper = await mount();
 
-    const diffs = wrapper.findAll('[data-test="hangar-plan-model-diff"]');
-    const slots = wrapper.findAll('[data-test="hangar-plan-slot-diff"]');
+    const sides = wrapper
+      .findAll(".comparison-details__change-column")
+      .map((column) =>
+        column
+          .findAll('[data-test="hangar-plan-model-diff"]')
+          .map((row) => row.text()),
+      );
 
-    expect(diffs.map((row) => row.text())).toEqual([
-      expect.stringContaining("Crucible"),
+    expect(sides).toEqual([
+      [
+        expect.stringContaining("Crucible"),
+        expect.stringContaining("Stingray"),
+      ],
+      [expect.stringContaining("Stingray")],
     ]);
-    expect(slots).toHaveLength(1);
-    expect(slots[0].text()).toContain("Stingray");
-    expect(slots[0].text()).toContain("Fighter");
+    expect(sides[0][1]).toContain("+1");
+    expect(sides[1][0]).toContain("−1");
   });
 
   it("brings in an undecided slot with every ship it weighs", async () => {
@@ -112,9 +124,9 @@ describe("ComparisonDetails", () => {
       .findAll('[data-test="hangar-plan-slot-diff"]')
       .map((row) => row.text());
 
-    expect(texts).toHaveLength(2);
-    expect(texts[1]).toContain("Odyssey");
-    expect(texts[1]).toContain("Carrack");
-    expect(texts[1]).toContain("Explorer");
+    expect(texts).toHaveLength(1);
+    expect(texts[0]).toContain("Odyssey");
+    expect(texts[0]).toContain("Carrack");
+    expect(texts[0]).toContain("Explorer");
   });
 });

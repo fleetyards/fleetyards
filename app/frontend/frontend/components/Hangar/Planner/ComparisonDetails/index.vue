@@ -18,7 +18,6 @@ import {
   type HangarPlanComparison,
   type HangarPlanModel,
   type HangarPlanSlot,
-  HangarPlanModelChangeEnum,
   HangarPlanSlotStateEnum,
 } from "@/services/fyApi";
 
@@ -33,67 +32,44 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// What comes into the hangar and what leaves it, the biggest moves first;
-// models the plan leaves alone are only counted.
-const moved = computed(() =>
-  props.comparison.models.filter(
-    (diff) => diff.change !== HangarPlanModelChangeEnum.UNCHANGED,
-  ),
-);
-
-const byDelta = (side: "in" | "out") =>
-  moved.value
-    .filter((diff) =>
-      side === "in"
-        ? diff.rightCount > diff.leftCount
-        : diff.rightCount < diff.leftCount,
-    )
-    .map((diff) => ({ ...diff, delta: diff.rightCount - diff.leftCount }))
+// What comes into the hangar and what leaves it, ship by ship, so a model
+// melted in one place and brought in by a slot shows on both sides even where
+// its count stays the same. The biggest moves come first; models the plan
+// leaves alone are only counted.
+const byMoves = (side: "in" | "out") =>
+  props.comparison.models
+    .map((diff) => ({
+      ...diff,
+      moves: side === "in" ? diff.inCount : diff.outCount,
+    }))
+    .filter((diff) => diff.moves > 0)
     .sort(
-      (a, b) =>
-        Math.abs(b.delta) - Math.abs(a.delta) ||
-        a.model.name.localeCompare(b.model.name),
+      (a, b) => b.moves - a.moves || a.model.name.localeCompare(b.model.name),
     );
 
 type SlotRow = {
   key: string;
   ships: HangarPlanModel[];
   label: string;
-  state: string;
 };
 
-// A slot with no route yet still brings its ship in, even where the counts
-// cancel out, as when the plan melts the same model. A slot still choosing
-// its ship is not counted at all, so it shows with every ship it weighs.
-const slotRows = computed<SlotRow[]>(() => {
-  const counted = new Set(byDelta("in").map((diff) => diff.model.id));
-
-  const unrouted = props.comparison.gaps
-    .filter((gap) => !counted.has(gap.model.id))
-    .map((gap) => ({
-      key: `gap-${gap.slotId}`,
-      ships: [gap.model],
-      label: gap.label,
-      state: t("hangarPlanner.comparison.flow.noRoute"),
-    }));
-
-  const undecided = props.slots
+// A slot still choosing its ship is not counted, so it shows with every ship
+// it weighs.
+const slotRows = computed<SlotRow[]>(() =>
+  props.slots
     .filter((slot) => slot.state === HangarPlanSlotStateEnum.UNDECIDED)
     .map((slot) => ({
       key: `undecided-${slot.id}`,
       ships: slot.candidates.map((candidate) => candidate.model),
       label: slot.label,
-      state: t("hangarPlanner.states.undecided"),
-    }));
-
-  return [...unrouted, ...undecided];
-});
+    })),
+);
 
 const changeColumns = computed(() =>
   (["in", "out"] as const)
     .map((side) => ({
       side,
-      rows: byDelta(side),
+      rows: byMoves(side),
       slots: side === "in" ? slotRows.value : [],
     }))
     .filter((column) => column.rows.length || column.slots.length),
@@ -104,7 +80,7 @@ const hasChanges = computed(() => changeColumns.value.length > 0);
 const unchangedCount = computed(
   () =>
     props.comparison.models.filter(
-      (diff) => diff.change === HangarPlanModelChangeEnum.UNCHANGED,
+      (diff) => diff.inCount === 0 && diff.outCount === 0,
     ).length,
 );
 </script>
@@ -150,10 +126,11 @@ const unchangedCount = computed(
                 <span
                   class="comparison-details__change-delta"
                   :class="{
-                    'comparison-details__change-delta--out': diff.delta < 0,
+                    'comparison-details__change-delta--out':
+                      column.side === 'out',
                   }"
                 >
-                  {{ diff.delta > 0 ? "+" : "−" }}{{ Math.abs(diff.delta) }}
+                  {{ column.side === "in" ? "+" : "−" }}{{ diff.moves }}
                 </span>
               </li>
               <li
@@ -178,7 +155,7 @@ const unchangedCount = computed(
                     </template>
                   </strong>
                   <span class="comparison-details__muted">
-                    {{ slot.label }} · {{ slot.state }}
+                    {{ slot.label }} · {{ t("hangarPlanner.states.undecided") }}
                   </span>
                 </span>
                 <span class="comparison-details__change-delta">+1</span>
