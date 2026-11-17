@@ -310,6 +310,7 @@
         "title": "I tuoi upgrade possono rendere i percorsi più economici",
         "fit": "%{upgrade} si adatta al percorso verso la %{ship}",
         "saves": "risparmia %{amount}",
+        "credit": "rinuncia a %{amount} di credito",
         "apply": "Usalo",
         "applied": "Il percorso verso la %{ship} ora usa l'upgrade."
       },

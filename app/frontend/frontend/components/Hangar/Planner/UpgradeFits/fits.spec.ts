@@ -76,11 +76,13 @@ const ccu = (
   from: HangarPlanModel,
   to: HangarPlanModel,
   usedCount = 0,
+  pledgeValue: number | null = null,
 ): HangarPlanUpgradeResource => ({
   id,
   name: `Upgrade - ${from.name} to ${to.name}`,
   quantity: 1,
   usedCount,
+  pledgeValue,
   fromModel: from,
   toModel: to,
 });
@@ -122,6 +124,17 @@ describe("Hangar/Planner/UpgradeFits/fits", () => {
     });
   });
 
+  it("counts the saving in new money and keeps the melt credit apart", () => {
+    const [fit] = findUpgradeFits(
+      planWith(route),
+      resourcesWith({
+        upgrades: [ccu("ccu-aurora", aurora, taurus, 0, 60)],
+      }),
+    );
+
+    expect(fit).toMatchObject({ saving: 120, credit: 60 });
+  });
+
   it("leaves out upgrades already spent and upgrades that fit no route", () => {
     expect(
       findUpgradeFits(
@@ -158,6 +171,7 @@ describe("Hangar/Planner/UpgradeFits/fits", () => {
     expect(findUpgradeFits(planWith(route), buyback(500))).toEqual([]);
     expect(findUpgradeFits(planWith(route), buyback(400))[0]).toMatchObject({
       saving: 90,
+      credit: null,
       steps: [
         { toModelId: "Cutlass" },
         { buybackPledgeId: "buyback-400", usesBuybackToken: true },

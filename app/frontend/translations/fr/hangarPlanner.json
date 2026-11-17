@@ -310,6 +310,7 @@
         "title": "Vos upgrades peuvent rendre des voies moins chères",
         "fit": "%{upgrade} convient à la voie vers le %{ship}",
         "saves": "économise %{amount}",
+        "credit": "renonce à %{amount} de crédit",
         "apply": "L'utiliser",
         "applied": "La voie vers le %{ship} utilise maintenant l'upgrade."
       },

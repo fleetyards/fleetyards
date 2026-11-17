@@ -38,6 +38,8 @@ export type UpgradeFit = {
   candidate: HangarPlanCandidate;
   acquisition: HangarPlanAcquisition;
   saving: number;
+  // What melting the upgrade instead would give back; using it spends that.
+  credit: number | null;
   steps: HangarPlanUpgradeStepInput[];
 };
 
@@ -47,6 +49,7 @@ type Held = {
   from: HangarPlanModel;
   to: HangarPlanModel;
   price: number | null;
+  credit: number | null;
 };
 
 // Upgrades the user holds and no route spends yet.
@@ -60,6 +63,7 @@ const freeHeld = (resources: HangarPlanResources): Held[] => [
             from: item.fromModel,
             to: item.toModel,
             price: 0,
+            credit: item.pledgeValue ?? null,
           },
         ]
       : [],
@@ -76,6 +80,7 @@ const freeHeld = (resources: HangarPlanResources): Held[] => [
             from: pledge.upgradeFromModel,
             to: pledge.upgradeToModel,
             price: pledge.price ?? null,
+            credit: null,
           },
         ]
       : [],
@@ -266,6 +271,7 @@ export const findUpgradeFits = (
           candidate,
           acquisition,
           saving,
+          credit: held.credit,
           steps: spliced.map(toInput),
         };
       });

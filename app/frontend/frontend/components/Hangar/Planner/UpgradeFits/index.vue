@@ -105,6 +105,19 @@ const apply = async (fit: UpgradeFit) => {
               })
             }}
           </strong>
+          <template v-if="fit.credit">
+            ·
+            <span
+              class="upgrade-fits__credit"
+              data-test="hangar-plan-upgrade-fit-credit"
+            >
+              {{
+                t("hangarPlanner.upgradeFits.credit", {
+                  amount: money(fit.credit),
+                })
+              }}
+            </span>
+          </template>
         </span>
         <Btn
           :size="BtnSizesEnum.SM"
@@ -129,6 +142,10 @@ const apply = async (fit: UpgradeFit) => {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.upgrade-fits__credit {
+  color: var(--color-text-dim);
 }
 
 .upgrade-fits__item {

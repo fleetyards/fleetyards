@@ -310,6 +310,7 @@
         "title": "Tus upgrades pueden abaratar vías",
         "fit": "%{upgrade} encaja en la vía hacia la %{ship}",
         "saves": "ahorra %{amount}",
+        "credit": "renuncia a %{amount} de crédito",
         "apply": "Usarlo",
         "applied": "La vía hacia la %{ship} ya usa el upgrade."
       },
