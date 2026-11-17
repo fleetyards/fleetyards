@@ -29,6 +29,7 @@ import HangarFlow from "@/frontend/components/Hangar/Planner/HangarFlow/index.vu
 import ShipPanel from "@/frontend/components/Hangar/Planner/ShipPanel/index.vue";
 import ComparisonDetails from "@/frontend/components/Hangar/Planner/ComparisonDetails/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
+import BuyList from "@/frontend/components/Hangar/Planner/BuyList/index.vue";
 import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
 import CostTiles from "@/frontend/components/Hangar/Planner/CostTiles/index.vue";
 import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue";
@@ -522,6 +523,7 @@ const onDestroy = async () => {
 
       <aside class="plan-side">
         <SummaryPanel :summary="summary" :loading="summaryFetching" />
+        <BuyList :slots="plan.slots" />
 
         <Panel :variant="PanelVariantsEnum.SLIM" data-test="hangar-plan-melts">
           <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
