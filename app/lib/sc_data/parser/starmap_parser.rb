@@ -22,6 +22,10 @@ module ScData
       # the raw tree does not carry. Exports before it existed have no file.
       LANDING_ZONES_FILE = "derived/landingzones.json"
 
+      # Where each record is placed in its system's object container, in metres
+      # from the star. Written by the exporter for the same reason.
+      PLACEMENTS_FILE = "derived/starmap.json"
+
       # The game's `LandingPadSize` names, onto the sizes a ship is sold in.
       # The game's Small hangar holds an XSmall-sized pad; the size is the one
       # the game calls it, and the pad's box is kept beside it.
@@ -160,8 +164,33 @@ module ScData
           always_shown: record ? record[:permanent] : false,
           quantum_travel_destination: record ? record[:quantum_travel] : false,
           mission_template_refs: template_refs.to_a.sort,
-          facilities: place[:facilities]
+          facilities: place[:facilities],
+          position: position_of(place)
         }
+      end
+
+      # The first of a place's refs placed exactly once. A record placed
+      # several times is a kind of place rather than one: a QV Logistics
+      # Station on every Nyx asteroid, the Vision Center in Orison and in New
+      # Babbage.
+      private def position_of(place)
+        Array.wrap(place[:refs]).lazy.filter_map { |ref| placements[ref] }.first
+      end
+
+      private def placements
+        @placements ||= begin
+          file = "#{base_path}/#{PLACEMENTS_FILE}"
+
+          if File.exist?(file)
+            Array.wrap(JSON.parse(File.read(file))["objects"])
+              .select { |object| object["record"].present? }
+              .group_by { |object| object["record"] }
+              .filter_map { |ref, objects| [ref, objects.first["pos"].map(&:to_f)] if objects.one? }
+              .to_h
+          else
+            {}
+          end
+        end
       end
 
       # Keyed by record key: every later step names places that way, and a

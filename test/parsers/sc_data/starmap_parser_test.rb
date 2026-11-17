@@ -427,6 +427,30 @@ module ScData
         assert_nil location("Stanton1_Lorville_Spaceport")
       end
 
+      test "#locations places a record where the system's object container puts it" do
+        stanton
+        place("Stanton3_Area18", "Area18", type: "LandingZone", parent: "Stanton1")
+        placements([placement("Stanton1", [12_850_457_093.0, 0, 0]), placement("Stanton3_Area18", [18_586_917_331.5, -22_152_033_654.0, -262_094.0])])
+
+        assert_equal [12_850_457_093.0, 0.0, 0.0], location("Stanton1")[:position]
+        assert_equal [18_586_917_331.5, -22_152_033_654.0, -262_094.0], location("Stanton3_Area18")[:position]
+        assert_nil location("StantonSolarSystem")[:position]
+      end
+
+      test "#locations gives a record placed more than once no position" do
+        stanton
+        place("QV_Station", "QV Logistics Station", type: "Outpost", parent: "Stanton1")
+        placements([placement("QV_Station", [1, 2, 3]), placement("QV_Station", [4, 5, 6])])
+
+        assert_nil location("QV_Station")[:position]
+      end
+
+      test "#locations has no positions for an export without placements" do
+        stanton
+
+        assert_nil location("Stanton1")[:position]
+      end
+
       private def parser
         tags_file
         File.write("#{localization_path}/global.ini", @translations.map { |key, value| "#{key}=#{value}" }.join("\n"))
@@ -484,6 +508,17 @@ module ScData
 
         FileUtils.mkdir_p(File.dirname(target))
         File.write(target, JSON.generate({padSizes: [], locations:}))
+      end
+
+      private def placements(objects)
+        target = "#{@raw_path}/derived/starmap.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({systems: [], objects:}))
+      end
+
+      private def placement(key, pos)
+        {record: ref_for(key), name: key, pos:}
       end
 
       private def landing_zone(key, zones:, ref: nil)
