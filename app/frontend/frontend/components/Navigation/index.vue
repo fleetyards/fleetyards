@@ -26,6 +26,7 @@ import {
   HOME_ENTRY,
   LOCATIONS_ENTRY,
   SHIPS_ITEMS,
+  STARMAP_ENTRY,
   STATS_ENTRY,
 } from "./entries";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
@@ -142,6 +143,7 @@ const isHangarRoute = computed(() => {
              the catalogue reachable only by typing the address. -->
           <CatalogueNav />
           <EntryItem :entry="LOCATIONS_ENTRY" />
+          <EntryItem :entry="STARMAP_ENTRY" />
           <ToolsNav />
           <EntryItem :entry="STATS_ENTRY" />
           <template v-if="visualTestsEnabled">

@@ -197,6 +197,14 @@ export const LOCATIONS_ENTRY: NavEntry = {
   activeRoutes: ["locations-places", "location", "shop"],
 };
 
+export const STARMAP_ENTRY: NavEntry = {
+  key: "starmap",
+  route: "starmap",
+  labelKey: "nav.starmap",
+  icon: "fa-duotone fa-galaxy",
+  featureFlag: FeatureFlagName.STARMAP,
+};
+
 export const FLEET_DIRECTORY_ENTRY: NavEntry = {
   key: "fleet-directory",
   route: "fleet-directory",
@@ -271,6 +279,7 @@ export const NAV_ENTRIES: NavEntry[] = [
   ...SHIPS_ITEMS,
   ...CATALOGUE_ENTRIES,
   LOCATIONS_ENTRY,
+  STARMAP_ENTRY,
   FLEET_DIRECTORY_ENTRY,
   ...TOOLS_ITEMS,
   STATS_ENTRY,

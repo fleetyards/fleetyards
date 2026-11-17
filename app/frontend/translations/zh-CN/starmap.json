@@ -1,0 +1,29 @@
+{
+  "zh-CN": {
+    "starmap": {
+      "systems": "星系",
+      "level": "星图层级",
+      "loading": "正在加载星图…",
+      "unavailable": "无法加载星图。",
+      "notFound": "此地点不在星图上。",
+      "empty": "游戏文件尚未在此星系中放置任何内容。",
+      "reset": "重置视图",
+      "parent": "位于",
+      "distanceStar": "距恒星",
+      "distanceBody": "距中心",
+      "radius": "半径",
+      "enter": "缩放至 %{name}",
+      "openLocation": "地点页面",
+      "footnote": "游戏文件没有给出星系之间的相对位置，因此此层级仅显示跳跃隧道如何连接它们。",
+      "hints": {
+        "systems": "单击星系以选中，双击以打开。拖动旋转，滚动缩放。",
+        "system": "单击地点以选中，双击行星或卫星以缩放至该处。拖动旋转，滚动缩放。"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      }
+    }
+  }
+}

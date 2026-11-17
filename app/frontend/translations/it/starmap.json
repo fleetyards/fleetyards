@@ -1,0 +1,29 @@
+{
+  "it": {
+    "starmap": {
+      "systems": "Sistemi",
+      "level": "Livello della mappa stellare",
+      "loading": "Caricamento della mappa stellare…",
+      "unavailable": "Impossibile caricare la mappa stellare.",
+      "notFound": "Questo luogo non è sulla mappa stellare.",
+      "empty": "I file di gioco non collocano ancora nulla in questo sistema.",
+      "reset": "Reimposta vista",
+      "parent": "In",
+      "distanceStar": "Dalla stella",
+      "distanceBody": "Dal centro",
+      "radius": "Raggio",
+      "enter": "Zoom su %{name}",
+      "openLocation": "Pagina del luogo",
+      "footnote": "I file di gioco non collocano nessun sistema rispetto a un altro, quindi questo livello mostra solo come li collegano i tunnel di salto.",
+      "hints": {
+        "systems": "Clicca un sistema per selezionarlo, doppio clic per aprirlo. Trascina per ruotare, scorri per lo zoom.",
+        "system": "Clicca un luogo per selezionarlo, doppio clic su un pianeta o una luna per avvicinarti. Trascina per ruotare, scorri per lo zoom."
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      }
+    }
+  }
+}

@@ -121,6 +121,16 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/locations.vue"),
     children: locationsRoutes,
   },
+  // The places of every system at the positions the game gives them, in 3D.
+  {
+    path: "/starmap/",
+    name: "starmap",
+    component: () => import("@/frontend/pages/starmap.vue"),
+    meta: {
+      title: "starmap",
+      feature: FeatureFlagName.STARMAP,
+    },
+  },
   // A shop UEX lists at a place, with everything it sells.
   {
     path: "/shops/:slug/",

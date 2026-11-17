@@ -1,0 +1,29 @@
+{
+  "fr": {
+    "starmap": {
+      "systems": "Systèmes",
+      "level": "Niveau de la carte stellaire",
+      "loading": "Chargement de la carte stellaire…",
+      "unavailable": "La carte stellaire n'a pas pu être chargée.",
+      "notFound": "Ce lieu n'est pas sur la carte stellaire.",
+      "empty": "Les fichiers du jeu ne placent encore rien dans ce système.",
+      "reset": "Réinitialiser la vue",
+      "parent": "Dans",
+      "distanceStar": "Depuis l'étoile",
+      "distanceBody": "Depuis le centre",
+      "radius": "Rayon",
+      "enter": "Zoomer sur %{name}",
+      "openLocation": "Page du lieu",
+      "footnote": "Les fichiers du jeu ne placent aucun système par rapport à un autre ; ce niveau montre donc seulement comment les tunnels de saut les relient.",
+      "hints": {
+        "systems": "Cliquez sur un système pour le sélectionner, double-cliquez pour l'ouvrir. Faites glisser pour tourner, défilez pour zoomer.",
+        "system": "Cliquez sur un lieu pour le sélectionner, double-cliquez sur une planète ou une lune pour zoomer. Faites glisser pour tourner, défilez pour zoomer."
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      }
+    }
+  }
+}

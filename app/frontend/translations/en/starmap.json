@@ -1,0 +1,29 @@
+{
+  "en": {
+    "starmap": {
+      "systems": "Systems",
+      "level": "Starmap level",
+      "loading": "Loading the starmap…",
+      "unavailable": "The starmap could not be loaded.",
+      "notFound": "This place is not on the starmap.",
+      "empty": "The game files place nothing in this system yet.",
+      "reset": "Reset view",
+      "parent": "In",
+      "distanceStar": "From the star",
+      "distanceBody": "From the centre",
+      "radius": "Radius",
+      "enter": "Zoom to %{name}",
+      "openLocation": "Location page",
+      "footnote": "The game files place no system relative to another, so this level only shows how the jump tunnels join them.",
+      "hints": {
+        "systems": "Click a system to select it, double-click to open it. Drag to turn, scroll to zoom.",
+        "system": "Click a place to select it, double-click a planet or moon to zoom to it. Drag to turn, scroll to zoom."
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      }
+    }
+  }
+}
