@@ -258,6 +258,8 @@ const sourceFoci = computed(() =>
             <FormInput
               v-model="rsiId"
               translation-key="model.rsiId"
+              type="number"
+              :step="1"
               v-bind="rsiIdProps"
               name="rsiId"
             />
