@@ -25,6 +25,13 @@ module V1
           shownWithParentOnly: {type: :boolean},
           alwaysShown: {type: :boolean},
           quantumTravelDestination: {type: :boolean},
+          # Where the system's object container places it, in metres from the
+          # star. Null where the game does not place it, or places the same
+          # record more than once.
+          position: {type: [:array, :null], items: {type: :number}, minItems: 3, maxItems: 3},
+          # A star's, planet's or moon's radius in metres. Null for every other
+          # kind of place.
+          radius: {type: [:number, :null]},
 
           # Null for a system.
           parent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

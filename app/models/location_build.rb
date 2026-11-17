@@ -9,7 +9,7 @@ class LocationBuild < ApplicationRecord
   FACTS = %i[
     name description resources kind body_type game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
-    facilities
+    facilities position radius
   ].freeze
 
   READ_THROUGH = FACTS

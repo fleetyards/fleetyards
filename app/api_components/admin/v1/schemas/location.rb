@@ -25,6 +25,8 @@ module Admin
             shownWithParentOnly: {type: :boolean},
             alwaysShown: {type: :boolean},
             quantumTravelDestination: {type: :boolean},
+            position: {type: [:array, :null], items: {type: :number}, minItems: 3, maxItems: 3},
+            radius: {type: [:number, :null]},
             parent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
 
             # Detail responses only.
