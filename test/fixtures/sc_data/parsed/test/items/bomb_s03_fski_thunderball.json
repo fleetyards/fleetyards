@@ -1,0 +1,65 @@
+{
+  "key": "BOMB_S03_FSKI_Thunderball",
+  "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+  "category": "weapons",
+  "type": "Bomb",
+  "tags": [
+    "FSKI",
+    "CS",
+    "flightReady"
+  ],
+  "required_tags": [],
+  "sub_type": "Utility",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Thunderball Bomb",
+  "short_name": "Thunderball",
+  "description": "Manufacturer: FireStorm Kinetics\\nItem Type: Explosive Bomb\\nSize: 3\\n\\nTarget ground forces from a safe distance above with the Thunderball. Despite the small size, these S3 bombs pack a powerful payload, allowing users to either deploy multiple bombs to overwhelm a stationary target or drop them at intervals to hit moving targets. The Thunderball uses FireStorm Kinetics' patented Atmo-Xact fins that deploy once dropped to provide additional guidance en route to target.",
+  "inventory_consumption": {
+    "micro_scu": 3000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 3.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 1000.0,
+    "mass": 252.0,
+    "resistances": {
+      "physical": 1.0,
+      "energy": 1.0,
+      "distortion": 1.0,
+      "thermal": 0.19048,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "distortion": {
+      "maximum": 1000.0,
+      "warning_ratio": 0.75,
+      "recovery_ratio": 0.7,
+      "decay_rate": 40.0,
+      "decay_delay": 1.5
+    }
+  },
+  "temperature": {
+    "min_cooling_temperature": 300.0
+  },
+  "type_data": {
+    "damage_per_shot": {
+      "physical": 12500.0,
+      "energy": 14500.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "max_lifetime": 300.0,
+    "max_drop_angle": 90.0,
+    "arm_time": 0.5,
+    "safety_distance": 50.0,
+    "blast_radius_min": 40.0,
+    "blast_radius_max": 40.0
+  }
+}

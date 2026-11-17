@@ -75,6 +75,7 @@ en:
           weapons: Weapons
       sub_type:
         items:
+          bomb: Bomb
           ground_vehicle_missile: Ground Vehicle Missile
           pdc_turret: PDC Turret
           salvage_modifier_tractor_beam: Salvage Tractor Beam

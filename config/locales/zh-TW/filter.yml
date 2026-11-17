@@ -75,6 +75,7 @@ zh-TW:
           weapons: 武器
       sub_type:
         items:
+          bomb: 炸彈
           ground_vehicle_missile: 地面載具飛彈
           pdc_turret: 近防砲塔
           salvage_modifier_tractor_beam: 打撈牽引光束

@@ -75,6 +75,7 @@ zh-CN:
           weapons: 武器
       sub_type:
         items:
+          bomb: 炸弹
           ground_vehicle_missile: 地面载具导弹
           pdc_turret: 近防炮塔
           salvage_modifier_tractor_beam: 打捞牵引光束
