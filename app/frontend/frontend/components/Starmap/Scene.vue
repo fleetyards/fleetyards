@@ -167,7 +167,6 @@ const gameSurface = (url: string) => {
     pending = loader.loadAsync(url).then((texture) => {
       texture.colorSpace = SRGBColorSpace;
       texture.anisotropy = 4;
-      textures.push(texture);
       return texture;
     });
     gameSurfaces.set(url, pending);
@@ -177,20 +176,28 @@ const gameSurface = (url: string) => {
 };
 
 // The game's own surface replaces the painted one once it has loaded; until
-// then, or if it fails, the painted one stays.
+// then, or if it fails, the painted one stays. One that arrives after the
+// scene it was for was torn down is thrown away.
 const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
   const built = generation;
 
   gameSurface(url)
     .then((texture) => {
-      if (built !== generation) return;
+      if (built !== generation) {
+        texture.dispose();
+        return;
+      }
+
+      if (!textures.includes(texture)) textures.push(texture);
 
       const painted = material.map;
       material.map = texture;
       material.needsUpdate = true;
+
       if (painted && painted !== texture) {
         painted.dispose();
-        textures.splice(textures.indexOf(painted), 1);
+        const index = textures.indexOf(painted);
+        if (index !== -1) textures.splice(index, 1);
       }
     })
     .catch(() => undefined);
