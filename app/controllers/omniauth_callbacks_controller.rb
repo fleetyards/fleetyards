@@ -74,6 +74,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         extract_citizenid_claims(current_user)
         current_user.save!
         verify_fleet_memberships(current_user)
+        AttachRemoteAvatarJob.enqueue(current_user, citizenid_avatar_url)
       end
 
       redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
@@ -92,6 +93,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         extract_citizenid_claims(current_user)
         current_user.save!
         verify_fleet_memberships(current_user)
+        AttachRemoteAvatarJob.enqueue(current_user, citizenid_avatar_url)
       end
 
       redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
@@ -127,8 +129,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      attach_remote_avatar(user, auth.info.image)
-
       extract_citizenid_claims(user) if citizenid_provider?
 
       if user.new_record?
@@ -151,6 +151,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end
 
         verify_fleet_memberships(user) if citizenid_provider?
+        AttachRemoteAvatarJob.enqueue(user, auth.info.image.presence || citizenid_avatar_url)
 
         user.remember_me = true
 
@@ -221,24 +222,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     rsi_handle = raw_info["urn:user:rsi:username"]
     user.verify_rsi_handle(rsi_handle, via: :citizenid) if rsi_handle.present?
-
-    attach_remote_avatar(user, raw_info["urn:user:rsi:avatar:url"])
   end
 
-  # The picture is the provider's, not something the account holder picked, so
-  # one the app will not serve is passed over rather than left to fail the
-  # sign-in they actually asked for.
-  private def attach_remote_avatar(user, url)
-    return if user.avatar.attached?
-    return if url.blank?
+  private def citizenid_avatar_url
+    return unless citizenid_provider?
 
-    avatar_uri = URI.parse(url)
-    filename = "avatar#{File.extname(avatar_uri.path)}"
-    content_type = Marcel::MimeType.for(name: filename)
-
-    return if ActiveStorageVariants::VECTOR_CONTENT_TYPES.include?(content_type)
-
-    user.avatar.attach(io: avatar_uri.open, filename:, content_type:)
+    auth.extra&.raw_info&.[]("urn:user:rsi:avatar:url")
   end
 
   private def verify_fleet_memberships(user)
