@@ -7,6 +7,7 @@ module ScData
   module Loader
     class LocationsLoaderTest < ActiveSupport::TestCase
       include ScDataFixtureTree
+      include ActiveJob::TestHelper
 
       setup do
         GameMissionLocation.delete_all
@@ -60,6 +61,18 @@ module ScData
         default_loader.all
 
         assert_equal blob, Location.find_by!(sc_key: "Stanton1").starmap_texture.blob
+      end
+
+      test "#all removes a texture the export no longer names" do
+        default_loader.all
+        hurston = Location.find_by!(sc_key: "Stanton1")
+        system = Location.find_by!(sc_key: "StantonSolarSystem")
+        system.starmap_texture.attach(io: StringIO.new("stale"), filename: "stale.webp", content_type: "image/webp")
+
+        perform_enqueued_jobs { default_loader.all }
+
+        refute system.reload.starmap_texture.attached?
+        assert hurston.reload.starmap_texture.attached?
       end
 
       test "#all leaves the texture to the default environment's load" do

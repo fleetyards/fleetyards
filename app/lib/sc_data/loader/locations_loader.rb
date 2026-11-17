@@ -75,9 +75,16 @@ module ScData
       # The surface the game's own starmap wraps a body in. Not a fact of the
       # build: a texture is the same on every channel that has the body, so only
       # the default environment's load sets it and a PTU load cannot swap it.
+      #
+      # Removed when the export stops naming one: unlike a logo, nobody uploads
+      # these by hand, so one the game dropped is only ever stale.
       private def attach_starmap_texture(location, path)
         return unless default_environment?
-        return if path.blank?
+
+        if path.blank?
+          location.starmap_texture.purge_later if location.starmap_texture.attached?
+          return
+        end
 
         attach_parsed_file(location, :starmap_texture, export_path.join(path).to_s)
       end
