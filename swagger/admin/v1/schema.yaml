@@ -13452,6 +13452,10 @@ components:
           type:
           - string
           - 'null'
+        holoHull:
+          type:
+          - string
+          - 'null'
         scIdentifier:
           type: string
         scKey:
@@ -18852,6 +18856,8 @@ components:
       - uex_component_prices
       - uex_equipment_prices
       - uex_trade_routes
+      - ship_views
+      - item_views
       x-enumNames:
       - SHIP_MATRIX
       - MODULES
@@ -18865,6 +18871,8 @@ components:
       - UEX_COMPONENT_PRICES
       - UEX_EQUIPMENT_PRICES
       - UEX_TRADE_ROUTES
+      - SHIP_VIEWS
+      - ITEM_VIEWS
       title: ImportLoaderEnum
     ImportQuery:
       type: object
@@ -19176,6 +19184,8 @@ components:
         holo:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        holoHull:
           "$ref": "#/components/schemas/MediaFile"
         holoRiggedMale:
           "$ref": "#/components/schemas/MediaFile"
@@ -21017,6 +21027,11 @@ components:
           - 'null'
           description: The module's holo, with its origin on the slot it fits. Present
             when fetched via a model's modules endpoint.
+        angledView:
+          description: The render of the module's part in the game files, where it
+            has one. Present when fetched via a model's modules endpoint.
+          allOf:
+          - "$ref": "#/components/schemas/MediaFile"
         hardpoints:
           type: array
           items:
@@ -21035,6 +21050,13 @@ components:
           type: boolean
         hidden:
           type: boolean
+        componentId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The part the module is in the game files, by sc_key. Present
+            on a single module.
         models:
           type: array
           items:

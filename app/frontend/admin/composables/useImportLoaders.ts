@@ -17,8 +17,8 @@ export type ImportLoaderOption = {
   group: ImportLoaderGroup;
   environment?: ImportLoadInputEnvironment;
   // The import a run of it writes, which is how the page knows it is running.
-  // Trade routes write none: they show as running only while the request to
-  // start them is out.
+  // Trade routes and the views write none: they show as running only while
+  // the request to start them is out.
   types: ImportTypeEnum[];
   // Loads the backend starts by itself once this one's run is in. They count
   // as running from the start: started by hand meanwhile, they would run twice.
@@ -92,6 +92,18 @@ export const IMPORT_LOADERS: ImportLoaderOption[] = [
   {
     id: "uex_trade_routes",
     loader: ImportLoaderEnum.UEX_TRADE_ROUTES,
+    group: "scData",
+    types: [],
+  },
+  {
+    id: "ship_views",
+    loader: ImportLoaderEnum.SHIP_VIEWS,
+    group: "scData",
+    types: [],
+  },
+  {
+    id: "item_views",
+    loader: ImportLoaderEnum.ITEM_VIEWS,
     group: "scData",
     types: [],
   },

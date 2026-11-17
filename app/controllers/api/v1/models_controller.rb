@@ -276,10 +276,11 @@ module Api
           .to_h
         @stock_module_ids = ModuleHardpoint.stock_modules(model).values
         ModelModule.preload_cargo_grid_exports(@model_modules.to_a)
-        # A module is a part in the game files: its holo is that part's.
+        # A module is a part in the game files: its holo and its render are
+        # that part's.
         module_keys = @model_modules.filter_map { |model_module| model_module.sc_key&.downcase }
-        @module_holos = Component.where("LOWER(sc_key) IN (?)", module_keys.presence || [""])
-          .joins(:holo_attachment).with_attached_holo
+        @module_parts = Component.where("LOWER(sc_key) IN (?)", module_keys.presence || [""])
+          .with_attached_holo.with_attached_angled_view
           .index_by { |component| component.sc_key.downcase }
         @craftable_module_component_ids = module_component_ids(@model_modules) & craftable_component_ids
       end

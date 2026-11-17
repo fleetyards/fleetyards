@@ -16,6 +16,8 @@ import { type ItemMedia } from "@/services/fyAdminApi";
 interface Props {
   media?: ItemMedia;
   syncing?: boolean;
+  // A component can be a module, whose hull the ship's holo draws it by.
+  hull?: boolean;
 }
 
 defineProps<Props>();
@@ -62,6 +64,15 @@ const VIEW_FIELDS = [
         name="holoTextured"
         :allowed-types="AllowedFileTypes.HOLO"
         textured-holo
+        clearable
+      />
+    </div>
+    <div v-if="hull" class="col-12 col-sm-6 col-md-3">
+      <FormFileInput
+        :file="media?.holoHull"
+        translation-key="model.holoHull"
+        name="holoHull"
+        :allowed-types="AllowedFileTypes.HOLO"
         clearable
       />
     </div>

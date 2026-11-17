@@ -160,6 +160,15 @@ module ScData
       assert_not @component.top_view.attached?
     end
 
+    test "a forced run reads an item whose listing has not changed" do
+      @component.update!(item_views_digest: "listing-1")
+      publish(@component.sc_key, {"top.png" => PNG})
+
+      perform(nil, nil, true)
+
+      assert @component.top_view.attached?
+    end
+
     test "skips a game-file key no item has and carries on" do
       publish("no_such_item", {"top.png" => PNG})
       publish(@component.sc_key, {"top.png" => PNG})

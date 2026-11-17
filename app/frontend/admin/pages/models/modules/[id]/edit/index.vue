@@ -13,7 +13,10 @@ import {
   useUpdateModelModule,
   getListModelModulesQueryKey,
   getModelModuleQueryKey,
+  useSyncComponentViews,
 } from "@/services/fyAdminApi";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useForm } from "vee-validate";
 import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -94,6 +97,29 @@ const updateMutation = useUpdateModelModule({
 
 const { updated, failed } = useFormFeedback();
 
+const { displayConfirm, displaySuccess } = useAppNotifications();
+
+// The module's renders and hull lie on the part it is in the game files.
+const syncViewsMutation = useSyncComponentViews({
+  mutation: {
+    onSuccess: () => {
+      displaySuccess({ text: t("messages.itemViews.syncStarted") });
+    },
+  },
+});
+
+const syncViews = () => {
+  const id = props.modelModule.componentId;
+  if (!id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.itemViews.sync"),
+    onConfirm: async () => {
+      await syncViewsMutation.mutateAsync({ id });
+    },
+  });
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -135,6 +161,30 @@ const handleCancel = async () => {
           translation-key="modelModule.scKey"
           name="scKey"
         />
+        <div
+          v-if="modelModule.componentId"
+          class="flex flex-wrap gap-2 mb-4"
+          data-test="model-module-component-actions"
+        >
+          <Btn
+            :to="{
+              name: 'admin-component-edit',
+              params: { id: modelModule.componentId },
+            }"
+            data-test="model-module-component-link"
+          >
+            <i class="fa-duotone fa-microchip" />
+            {{ t("actions.itemViews.openComponent") }}
+          </Btn>
+          <Btn
+            :loading="syncViewsMutation.isPending.value"
+            data-test="model-module-sync-views"
+            @click="syncViews"
+          >
+            <i class="fa-duotone fa-cloud-arrow-down" />
+            {{ t("actions.itemViews.sync") }}
+          </Btn>
+        </div>
         <FormInput
           v-model="cargo"
           v-bind="cargoProps"

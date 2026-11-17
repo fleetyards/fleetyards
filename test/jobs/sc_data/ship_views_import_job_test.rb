@@ -128,6 +128,15 @@ module ScData
       assert_equal ["ship-views/index.json"], @client.api_requests.map { |request| request[:params][:key] }
     end
 
+    test "a forced run reads a ship whose listing has not changed" do
+      @model.update!(ship_views_digest: "listing-1")
+      publish({"flight_top.png" => PNG})
+
+      perform(nil, false, true)
+
+      assert @model.top_view.attached?
+    end
+
     test "skips an unknown slug and carries on" do
       publish({"flight_top.png" => PNG}, slug: "no-such-ship")
 
@@ -426,6 +435,16 @@ module ScData
       perform
 
       assert @model.top_view.attached?
+    end
+
+    test "a forced run leaves a render detached in the admin detached" do
+      publish({"flight_top.png" => PNG})
+      perform
+      @model.top_view.purge
+
+      perform(nil, false, true)
+
+      assert_not @model.reload.top_view.attached?
     end
 
     test "skips a model two folders claim" do

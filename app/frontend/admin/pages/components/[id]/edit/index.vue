@@ -253,6 +253,7 @@ const handleCancel = async () => {
     <ItemViewsFields
       :media="component.media"
       :syncing="syncViewsMutation.isPending.value"
+      hull
       @sync="syncViews"
     />
     <FormActions

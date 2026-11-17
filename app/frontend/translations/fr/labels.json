@@ -3505,6 +3505,14 @@
             "name": "Terminaux et routes commerciales",
             "description": "Les terminaux d'UEX et les routes commerciales entre eux."
           },
+          "ship_views": {
+            "name": "Rendus des vaisseaux",
+            "description": "Les rendus et holos de tous les vaisseaux, comparés fichier par fichier pour recharger ceux qui manquent."
+          },
+          "item_views": {
+            "name": "Rendus des objets",
+            "description": "Les rendus et holos de tous les composants et objets, comparés fichier par fichier pour recharger ceux qui manquent."
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"

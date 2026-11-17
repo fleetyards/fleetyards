@@ -3502,6 +3502,14 @@
             "name": "终端和贸易路线",
             "description": "UEX 的终端及其之间的贸易路线。"
           },
+          "ship_views": {
+            "name": "舰船渲染图",
+            "description": "所有舰船渲染图和全息模型，逐个文件比对，重新载入缺失的文件。"
+          },
+          "item_views": {
+            "name": "物品渲染图",
+            "description": "所有组件和物品渲染图及全息模型，逐个文件比对，重新载入缺失的文件。"
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"

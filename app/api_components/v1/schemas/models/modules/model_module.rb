@@ -34,6 +34,11 @@ module V1
               stock: {type: :boolean, description: "Whether the hull comes with this module from the factory. Present when fetched via a model's modules endpoint."},
               holoUrl: {type: [:string, :null], description: "The module's holo, with its origin on the slot it fits. Present when fetched via a model's modules endpoint."},
 
+              angledView: {
+                description: "The render of the module's part in the game files, where it has one. Present when fetched via a model's modules endpoint.",
+                allOf: [::Shared::V1::Schemas::MediaFile]
+              },
+
               hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},
 
               createdAt: {type: :string, format: "date-time"},

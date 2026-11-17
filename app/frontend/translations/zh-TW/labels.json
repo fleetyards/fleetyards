@@ -3502,6 +3502,14 @@
             "name": "終端和貿易路線",
             "description": "UEX 的終端及其之間的貿易路線。"
           },
+          "ship_views": {
+            "name": "艦船渲染圖",
+            "description": "所有艦船渲染圖和全像模型，逐一比對檔案，重新載入缺失的檔案。"
+          },
+          "item_views": {
+            "name": "物品渲染圖",
+            "description": "所有組件和物品渲染圖及全像模型，逐一比對檔案，重新載入缺失的檔案。"
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"

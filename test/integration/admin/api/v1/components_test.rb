@@ -425,6 +425,19 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     assert_predicate component.reload.holo_textured, :attached?
   end
 
+  test "PUT /components/:id attaches a module's hull holo" do
+    component = create(:component)
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(io: StringIO.new("glTF"), filename: "holo_hull.glb", content_type: "model/gltf-binary")
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {holoHull: blob.signed_id} do
+      assert_equal "holo_hull.glb", parsed_body["media"]["holoHull"]["name"]
+    end
+
+    assert_predicate component.reload.holo_hull, :attached?
+  end
+
   test "GET /components leaves the views out of the list" do
     create(:component)
     sign_in @user

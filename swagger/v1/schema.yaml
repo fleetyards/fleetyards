@@ -44160,6 +44160,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoHull:
+          "$ref": "#/components/schemas/MediaFile"
         holoRiggedMale:
           "$ref": "#/components/schemas/MediaFile"
         holoRiggedFemale:
@@ -47330,6 +47332,11 @@ components:
           - 'null'
           description: The module's holo, with its origin on the slot it fits. Present
             when fetched via a model's modules endpoint.
+        angledView:
+          description: The render of the module's part in the game files, where it
+            has one. Present when fetched via a model's modules endpoint.
+          allOf:
+          - "$ref": "#/components/schemas/MediaFile"
         hardpoints:
           type: array
           items:

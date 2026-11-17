@@ -53,6 +53,23 @@ describe("ItemViewsFields", () => {
     ]);
   });
 
+  it("offers a component's hull holo beside its holos", () => {
+    const wrapper = mount(ItemViewsFields, {
+      props: {
+        media: {
+          holoHull: { url: "https://example.test/holo_hull.glb" },
+        } as ItemMedia,
+        hull: true,
+      },
+    });
+
+    const hull = wrapper.find("[data-name='holoHull']");
+    expect(hull.attributes("data-types")).toBe("holo");
+    expect(hull.attributes("data-url")).toBe(
+      "https://example.test/holo_hull.glb",
+    );
+  });
+
   it("takes holo files for the holos and images for the views", () => {
     const [holo, holoTextured, ...views] = inputs(mountFields());
 

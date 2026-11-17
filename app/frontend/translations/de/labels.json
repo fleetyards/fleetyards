@@ -3505,6 +3505,14 @@
             "name": "Terminals und Handelsrouten",
             "description": "Die Terminals von UEX und die Handelsrouten zwischen ihnen."
           },
+          "ship_views": {
+            "name": "Schiff-Renderings",
+            "description": "Die Renderings und Holos aller Schiffe, Datei für Datei abgeglichen, sodass fehlende neu geladen werden."
+          },
+          "item_views": {
+            "name": "Item-Renderings",
+            "description": "Die Renderings und Holos aller Komponenten und Items, Datei für Datei abgeglichen, sodass fehlende neu geladen werden."
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"

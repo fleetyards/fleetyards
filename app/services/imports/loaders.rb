@@ -7,7 +7,7 @@ module Imports
   # start.
   class Loaders
     SHIP_MATRIX = %w[ship_matrix modules paints loaners uex_vehicle_prices].freeze
-    SC_DATA = %w[sc_data sc_data_models uex_commodity_prices uex_component_prices uex_equipment_prices uex_trade_routes].freeze
+    SC_DATA = %w[sc_data sc_data_models uex_commodity_prices uex_component_prices uex_equipment_prices uex_trade_routes ship_views item_views].freeze
     # Every ship matrix load at once, which is what a new RSI patch needs.
     SHIP_MATRIX_ALL = "ship_matrix_all"
     KEYS = (SHIP_MATRIX + [SHIP_MATRIX_ALL] + SC_DATA).freeze
@@ -40,6 +40,10 @@ module Imports
       when "uex_component_prices" then ::Loaders::UexComponentPricesJob.perform_async(@admin_user_id)
       when "uex_equipment_prices" then ::Loaders::UexEquipmentPricesJob.perform_async(@admin_user_id)
       when "uex_trade_routes" then ::Loaders::UexTradeRoutesJob.perform_async
+      # Forced: the daily run already takes in what the index says changed,
+      # and one started by hand is for what that run skipped.
+      when "ship_views" then ::ScData::ShipViewsImportJob.perform_async(nil, false, true)
+      when "item_views" then ::ScData::ItemViewsImportJob.perform_async(nil, nil, true)
       else raise ArgumentError, "unknown loader: #{@key}"
       end
     end

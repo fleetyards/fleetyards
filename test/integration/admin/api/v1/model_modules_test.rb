@@ -315,6 +315,16 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: mod.id}
   end
 
+  test "GET /model-modules/:id names the part the module is in the game files" do
+    mod = create(:model_module, sc_key: "RSI_Galaxy_Module_Cargo")
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+    bare = create(:model_module, sc_key: "RSI_Galaxy_Module_Medical")
+    sign_in @user
+
+    assert_api_response(:get, 200, path_params: {id: mod.id}) { assert_equal part.id, parsed_body["componentId"] }
+    assert_api_response(:get, 200, path_params: {id: bare.id}) { assert_nil parsed_body["componentId"] }
+  end
+
   test "GET /model-modules/:id returns 404 for missing id" do
     sign_in @user
 
