@@ -74,11 +74,8 @@ module HangarPlans
     # The decided spend as priced when each route was planned, next to today's,
     # so a price change since then shows.
     def decided_spend(snapshot: false)
-      slots.select { |slot| slot.state == "decided" }.sum do |slot|
-        candidate = slot.candidates.first
-        routed(candidate).sum do |acquisition|
-          route_cost(acquisition, candidate, snapshot:, record: false) || 0
-        end
+      decided_routes.sum do |_slot, candidate, acquisition|
+        route_cost(acquisition, candidate, snapshot:, record: false) || 0
       end
     end
 
@@ -101,7 +98,7 @@ module HangarPlans
       @purchases ||= begin
         lines = {}
         decided_routes.each do |slot, candidate, acquisition|
-          purchase_parts(candidate, acquisition).each do |part|
+          route_parts(acquisition, candidate).select { |part| part[:kind] }.each do |part|
             line = lines[part[:key]] ||= {**part.except(:key, :record, :price), prices: [], token_count: 0, slot_ids: []}
             line[:prices] << part[:price]
             line[:token_count] += 1 if tokened_buybacks.include?(part[:record])
@@ -123,32 +120,41 @@ module HangarPlans
       end
     end
 
-    private def purchase_parts(candidate, acquisition)
-      parts = []
-
-      if (kind = START_PURCHASE_KINDS[acquisition.start_kind])
-        model = acquisition.start_model
-        parts << {key: [kind, nil, model.id], kind:, from_model: nil, model:, name: model.name, record: acquisition, price: acquisition.price,
-                  not_on_sale: kind == "ship" && !model.on_sale}
-      end
+    # Every priced part of a route: its start, each upgrade and what is fitted to
+    # the ship. A part with a kind is bought; one without is already held.
+    private def route_parts(acquisition, candidate, snapshot: false)
+      start_kind = START_PURCHASE_KINDS[acquisition.start_kind]
+      start_model = acquisition.start_model
+      parts = [{
+        key: [start_kind, nil, start_model.id], kind: start_kind, from_model: nil, model: start_model,
+        name: start_model.name, record: acquisition, price: snapshot ? acquisition.snapshot_price : acquisition.price,
+        not_on_sale: start_kind == "ship" && !start_model.on_sale
+      }]
 
       acquisition.upgrade_steps.each do |step|
         kind = STEP_PURCHASE_KINDS[step.source_kind]
-        next unless kind
-
-        parts << {key: [kind, step.origin_model.id, step.target_model.id], kind:, from_model: step.origin_model,
-                  model: step.target_model, name: "#{step.origin_model.name} → #{step.target_model.name}", record: step, price: step.price,
-                  not_on_sale: kind == "ccu" && !step.target_model.on_sale}
+        parts << {
+          key: [kind, step.origin_model.id, step.target_model.id], kind:, from_model: step.origin_model,
+          model: step.target_model, name: "#{step.origin_model.name} → #{step.target_model.name}", record: step,
+          price: snapshot ? step.snapshot_price : step.price, not_on_sale: kind == "ccu" && !step.target_model.on_sale
+        }
       end
 
+      # A ship already in the hangar comes with whatever it was fitted with.
       unless acquisition.start_kind == "owned"
-        candidate.extras.each do |extra|
-          parts << {key: ["extra", extra.class.name, extra.id], kind: "extra", from_model: nil, model: nil, name: extra.name,
-                    record: extra, price: extra.pledge_price, not_on_sale: false}
+        extras_of(candidate).each do |extra|
+          parts << {
+            key: ["extra", extra.class.name, extra.id], kind: "extra", from_model: nil, model: nil, name: extra.name,
+            record: extra, price: extra.pledge_price, not_on_sale: false
+          }
         end
       end
 
       parts
+    end
+
+    private def extras_of(candidate)
+      (@extras ||= {})[candidate.id] ||= candidate.extras
     end
 
     # Marked beyond the tokens held, the dearest marked buy-backs keep theirs,
@@ -160,7 +166,7 @@ module HangarPlans
 
     private def tokened_buybacks
       @tokened_buybacks ||= buybacks.select { |buyback| buyback[:token] }
-        .sort_by { |buyback| -buyback[:price] }
+        .sort_by { |buyback| [-buyback[:price], buyback[:record].class.name, buyback[:record].id] }
         .first(buyback_tokens_available)
         .map { |buyback| buyback[:record] }
     end
@@ -181,7 +187,7 @@ module HangarPlans
       @slots ||= plan.slots.includes(candidates: [
         :model_paint,
         {model: :manufacturer},
-        {acquisitions: [:start_model, :buyback_pledge, {upgrade_steps: %i[origin_model target_model buyback_pledge]}]}
+        {acquisitions: [:buyback_pledge, {start_model: MODEL_PRELOAD, upgrade_steps: [:buyback_pledge, {origin_model: MODEL_PRELOAD, target_model: MODEL_PRELOAD}]}]}
       ]).to_a
     end
 
@@ -318,29 +324,15 @@ module HangarPlans
 
     # Nil when any part of the route has no price, after reporting which.
     private def route_cost(acquisition, candidate, slot_id: nil, snapshot: false, record: true)
-      parts = [[snapshot ? acquisition.snapshot_price : acquisition.price, acquisition.start_model.name]]
+      parts = route_parts(acquisition, candidate, snapshot:)
 
-      if acquisition.start_kind == "store" && !acquisition.start_model.on_sale && record
-        issue("not_on_sale", acquisition.start_model.name, slot_id)
+      if record
+        parts.select { |part| part[:not_on_sale] }.each { |part| issue("not_on_sale", part[:name], slot_id) }
+        parts.select { |part| part[:price].nil? }.each { |part| issue("missing_price", part[:name], slot_id) }
       end
+      return if parts.any? { |part| part[:price].nil? }
 
-      acquisition.upgrade_steps.each do |step|
-        parts << [snapshot ? step.snapshot_price : step.price, "#{step.origin_model.name} → #{step.target_model.name}"]
-        if step.source_kind == "store" && !step.target_model.on_sale && record
-          issue("not_on_sale", "#{step.origin_model.name} → #{step.target_model.name}", slot_id)
-        end
-      end
-
-      # A ship already in the hangar comes with whatever it was fitted with.
-      unless acquisition.start_kind == "owned"
-        candidate.extras.each { |extra| parts << [extra.pledge_price, extra.name] }
-      end
-
-      missing = parts.select { |price, _| price.nil? }
-      missing.each { |_, name| issue("missing_price", name, slot_id) } if record
-      return if missing.any?
-
-      parts.sum { |price, _| price }
+      parts.sum { |part| part[:price] }
     end
 
     private def melt_value(melt)
@@ -354,7 +346,7 @@ module HangarPlans
     end
 
     private def unit_price(candidate)
-      sum_known([candidate.model.pledge_price, *candidate.extras.map(&:pledge_price)])
+      sum_known([candidate.model.pledge_price, *extras_of(candidate).map(&:pledge_price)])
     end
 
     private def sum_known(prices)
