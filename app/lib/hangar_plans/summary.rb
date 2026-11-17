@@ -12,6 +12,13 @@ module HangarPlans
 
     SlotCost = Data.define(:slot_id, :state, :min_cost, :max_cost, :store_cost_min, :store_cost, :uncounted_max, :unresolved_count, :complete)
     Issue = Data.define(:kind, :name, :slot_id)
+    # One line of the buy list: the same purchase made for several slots, with
+    # what all of them cost together and how many of them a buy-back token pays.
+    Purchase = Data.define(:kind, :from_model, :model, :name, :price, :quantity, :token_count, :slot_ids, :not_on_sale)
+
+    PURCHASE_KINDS = %w[ccu buyback ship ingame extra].freeze
+    START_PURCHASE_KINDS = {"store" => "ship", "buyback" => "buyback", "melted" => "buyback", "ingame" => "ingame"}.freeze
+    STEP_PURCHASE_KINDS = {"store" => "ccu", "buyback" => "buyback"}.freeze
 
     attr_reader :plan, :slot_costs, :issues, :melt_credit, :estimated_melts_count
 
@@ -86,26 +93,86 @@ module HangarPlans
       credited_melts.sum { |melt| (snapshot ? melt.snapshot_value : melt.value) || 0 }
     end
 
+    # What the decided routes still have to buy, in the order they are bought:
+    # upgrades, buy-backs, store ships, ships earned in game, then what is
+    # fitted to them. A ship kept from the hangar, an upgrade already held and a
+    # ship bundled with a buy-back cost nothing more.
+    def purchases
+      @purchases ||= begin
+        lines = {}
+        decided_routes.each do |slot, candidate, acquisition|
+          purchase_parts(candidate, acquisition).each do |part|
+            line = lines[part[:key]] ||= {**part.except(:key, :record, :price), prices: [], token_count: 0, slot_ids: []}
+            line[:prices] << part[:price]
+            line[:token_count] += 1 if tokened_buybacks.include?(part[:record])
+            line[:slot_ids] << slot.id unless line[:slot_ids].include?(slot.id)
+          end
+        end
+
+        lines.values.sort_by.with_index { |line, index| [PURCHASE_KINDS.index(line[:kind]), index] }.map do |line|
+          prices = line.delete(:prices)
+          Purchase.new(**line, quantity: prices.size, price: (prices.sum if prices.none?(&:nil?)))
+        end
+      end
+    end
+
+    private def decided_routes
+      slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
+        candidate = slot.candidates.first
+        routed(candidate).map { |acquisition| [slot, candidate, acquisition] }
+      end
+    end
+
+    private def purchase_parts(candidate, acquisition)
+      parts = []
+
+      if (kind = START_PURCHASE_KINDS[acquisition.start_kind])
+        model = acquisition.start_model
+        parts << {key: [kind, nil, model.id], kind:, from_model: nil, model:, name: model.name, record: acquisition, price: acquisition.price,
+                  not_on_sale: kind == "ship" && !model.on_sale}
+      end
+
+      acquisition.upgrade_steps.each do |step|
+        kind = STEP_PURCHASE_KINDS[step.source_kind]
+        next unless kind
+
+        parts << {key: [kind, step.origin_model.id, step.target_model.id], kind:, from_model: step.origin_model,
+                  model: step.target_model, name: "#{step.origin_model.name} → #{step.target_model.name}", record: step, price: step.price,
+                  not_on_sale: kind == "ccu" && !step.target_model.on_sale}
+      end
+
+      unless acquisition.start_kind == "owned"
+        candidate.extras.each do |extra|
+          parts << {key: ["extra", extra.class.name, extra.id], kind: "extra", from_model: nil, model: nil, name: extra.name,
+                    record: extra, price: extra.pledge_price, not_on_sale: false}
+        end
+      end
+
+      parts
+    end
+
     # Marked beyond the tokens held, the dearest marked buy-backs keep theirs,
     # since that is where a token saves the most new money.
     private def buybacks_without_token
-      @buybacks_without_token ||= begin
-        marked, unmarked = buybacks.partition { |buyback| buyback[:token] }
-        overflow = marked.sort_by { |buyback| -buyback[:price] }.drop(buyback_tokens_available)
-        (unmarked + overflow).map { |buyback| buyback[:price] }
-      end
+      @buybacks_without_token ||= buybacks.reject { |buyback| tokened_buybacks.include?(buyback[:record]) }
+        .map { |buyback| buyback[:price] }
+    end
+
+    private def tokened_buybacks
+      @tokened_buybacks ||= buybacks.select { |buyback| buyback[:token] }
+        .sort_by { |buyback| -buyback[:price] }
+        .first(buyback_tokens_available)
+        .map { |buyback| buyback[:record] }
     end
 
     # Each buy-back in the decided routes, one entry per pledge, with its price
     # and whether the user spends a token on it.
     private def buybacks
-      @buybacks ||= slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
-        routed(slot.candidates.first).flat_map do |acquisition|
-          start = HangarPlanAcquisition::BUYBACK_START_KINDS.include?(acquisition.start_kind) ? [acquisition] : []
-          steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
-          (start + steps).filter_map do |record|
-            {price: record.price, token: record.uses_buyback_token} unless record.price.nil?
-          end
+      @buybacks ||= decided_routes.flat_map do |_slot, _candidate, acquisition|
+        start = HangarPlanAcquisition::BUYBACK_START_KINDS.include?(acquisition.start_kind) ? [acquisition] : []
+        steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
+        (start + steps).filter_map do |record|
+          {record:, price: record.price, token: record.uses_buyback_token} unless record.price.nil?
         end
       end
     end

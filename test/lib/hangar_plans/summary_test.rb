@@ -378,6 +378,75 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_equal [300, 300], [summary.melt_credit_at, summary.melt_credit_at(snapshot: true)]
   end
 
+  test "the buy list names what each route still buys, upgrades first" do
+    paint = create(:model_paint, model: @carrack, name: "Carrack - Ghoul", pledge_price: 20)
+    bought = decided_slot(@carrack)
+    bought.update!(model_paint: paint)
+    route = @plan.acquisitions.new(candidate: bought, start_kind: "store", start_model: @cutlass)
+    route.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)
+    route.save!
+
+    pledge = create(:buyback_pledge, user: @user, price: 220)
+    @plan.acquisitions.create!(candidate: decided_slot(@constellation), start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @constellation)
+
+    held = decided_slot(@constellation)
+    ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Cutlass Black To Constellation Andromeda")
+    chain = @plan.acquisitions.new(candidate: held, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model: @cutlass))
+    chain.upgrade_steps.build(source_kind: "owned_ccu", hangar_pledge_item: ccu, origin_model: @cutlass, target_model: @constellation, position: 0)
+    chain.save!
+
+    purchases = HangarPlans::Summary.new(@plan).purchases
+
+    assert_equal [
+      ["ccu", "Cutlass Black → Carrack", 500],
+      ["buyback", "Constellation Andromeda", 220],
+      ["ship", "Cutlass Black", 100],
+      ["extra", "Carrack - Ghoul", 20]
+    ], purchases.map { |purchase| [purchase.kind, purchase.name, purchase.price] }
+    assert_equal @cutlass, purchases.first.from_model
+    assert_equal [bought.slot.id], purchases.first.slot_ids
+  end
+
+  test "the same purchase for several slots is one line with every unit's price" do
+    slots = decided_slots(@carrack, 2)
+    slots.each_with_index do |candidate, index|
+      @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack, price_override: index.zero? ? 600 : 550)
+    end
+
+    purchase = HangarPlans::Summary.new(@plan).purchases.sole
+
+    assert_equal 2, purchase.quantity
+    assert_equal 1150, purchase.price
+    assert_equal slots.map { |candidate| candidate.slot.id }, purchase.slot_ids
+  end
+
+  test "the buy list counts only the buy-back tokens the user holds" do
+    @plan.update!(buyback_tokens: 1)
+    first, second = decided_slots(@carrack, 2)
+    [[first, 550], [second, 120]].each do |candidate, price|
+      pledge = create(:buyback_pledge, user: @user, price:)
+      @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
+        uses_buyback_token: true)
+    end
+
+    purchase = HangarPlans::Summary.new(@plan).purchases.sole
+
+    assert_equal 2, purchase.quantity
+    assert_equal 1, purchase.token_count
+  end
+
+  test "the buy list leaves out undecided slots and routes still being planned" do
+    undecided = create(:hangar_plan_slot, hangar_plan: @plan)
+    create(:hangar_plan_candidate, slot: undecided, model: @cutlass)
+    create(:hangar_plan_candidate, slot: undecided, model: @carrack)
+
+    unfinished = decided_slot(@carrack)
+    @plan.acquisitions.create!(candidate: unfinished, start_kind: "store", start_model: @cutlass)
+
+    assert_empty HangarPlans::Summary.new(@plan).purchases
+  end
+
   private def decided_slot(model)
     slot = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot:, model:)

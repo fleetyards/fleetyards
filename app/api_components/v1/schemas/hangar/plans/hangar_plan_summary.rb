@@ -12,10 +12,11 @@ module V1
             properties: {
               totals: ::V1::Schemas::Hangar::Plans::HangarPlanTotals,
               slots: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanSlotCost},
-              issues: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanIssue}
+              issues: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanIssue},
+              purchases: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanPurchase}
             },
             additionalProperties: false,
-            required: %w[totals slots issues]
+            required: %w[totals slots issues purchases]
           })
         end
       end

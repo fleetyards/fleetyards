@@ -21,3 +21,27 @@ json.issues @summary.issues do |issue|
   json.name issue.name
   json.slot_id issue.slot_id
 end
+
+json.purchases @summary.purchases do |purchase|
+  json.kind purchase.kind
+  if purchase.from_model
+    json.from_model do
+      json.partial! "api/v1/hangar_plans/model", model: purchase.from_model
+    end
+  else
+    json.from_model nil
+  end
+  if purchase.model
+    json.model do
+      json.partial! "api/v1/hangar_plans/model", model: purchase.model
+    end
+  else
+    json.model nil
+  end
+  json.name purchase.name
+  json.price purchase.price&.to_f
+  json.quantity purchase.quantity
+  json.token_count purchase.token_count
+  json.slot_ids purchase.slot_ids
+  json.not_on_sale purchase.not_on_sale
+end

@@ -41230,6 +41230,70 @@ components:
       - id
       - model
       title: HangarPlanPledgeShip
+    HangarPlanPurchase:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanPurchaseKindEnum"
+        fromModel:
+          anyOf:
+          - "$ref": "#/components/schemas/HangarPlanModel"
+          - type: 'null'
+          description: 'For an upgrade: the ship it leads from'
+        model:
+          anyOf:
+          - "$ref": "#/components/schemas/HangarPlanModel"
+          - type: 'null'
+          description: The ship bought or upgraded to; null for a paint, module or
+            upgrade fitted to one
+        name:
+          type: string
+        price:
+          type:
+          - number
+          - 'null'
+          description: What every unit costs together in USD; null when any price
+            is unknown
+        quantity:
+          type: integer
+          minimum: 1
+        tokenCount:
+          type: integer
+          minimum: 0
+          description: Units paid for with a buy-back token
+        slotIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        notOnSale:
+          type: boolean
+      additionalProperties: false
+      required:
+      - kind
+      - fromModel
+      - model
+      - name
+      - quantity
+      - tokenCount
+      - slotIds
+      - notOnSale
+      title: HangarPlanPurchase
+    HangarPlanPurchaseKindEnum:
+      type: string
+      enum:
+      - ccu
+      - buyback
+      - ship
+      - ingame
+      - extra
+      x-enumNames:
+      - CCU
+      - BUYBACK
+      - SHIP
+      - INGAME
+      - EXTRA
+      title: HangarPlanPurchaseKindEnum
     HangarPlanRedundancy:
       type: object
       description: 'Ships of the planned hangar that do the same job: one model more
@@ -41606,11 +41670,16 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanIssue"
+        purchases:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanPurchase"
       additionalProperties: false
       required:
       - totals
       - slots
       - issues
+      - purchases
       title: HangarPlanSummary
     HangarPlanTotals:
       type: object
