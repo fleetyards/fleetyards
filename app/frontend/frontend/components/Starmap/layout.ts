@@ -1,5 +1,7 @@
+import type { StarmapSurface } from "./bodies";
 import {
   LocationKindEnum,
+  NullableLocationBodyTypeEnum,
   type Location,
   type LocationJumpPoint,
   type LocationStarmapPlace,
@@ -23,6 +25,10 @@ export interface StarmapItem {
   // Null where the game gives no size: everything but stars, planets and moons.
   radius: number | null;
   color: string;
+  // How a planet or moon is painted; null for everything else.
+  surface: StarmapSurface | null;
+  // A flare star, as Pyro is.
+  unstable: boolean;
   labelled: boolean;
   // Which label gives way where two would overlap: the lower keeps its own.
   rank: number;
@@ -113,6 +119,28 @@ const rankOf = (place: LocationStarmapPlace, role: StarmapRole) => {
   return LABELLED_PLACES.has(place.kind) || place.gateway ? 3 : 4;
 };
 
+// As the location pages paint a body: an ordinary moon is cratered like an
+// asteroid, an ordinary planet has continents.
+const surfaceOf = (
+  place: LocationStarmapPlace,
+  role: StarmapRole,
+): StarmapSurface | null => {
+  if (role !== "planet" && role !== "moon") return null;
+
+  switch (place.bodyType) {
+    case NullableLocationBodyTypeEnum.GAS_GIANT:
+      return "gas";
+    case NullableLocationBodyTypeEnum.ICE_GIANT:
+      return "ice";
+    case NullableLocationBodyTypeEnum.CITY:
+      return "city";
+    case NullableLocationBodyTypeEnum.ASTEROID:
+      return "cratered";
+    default:
+      return role === "moon" ? "cratered" : "rocky";
+  }
+};
+
 const item = (
   place: LocationStarmapPlace,
   origin: number[],
@@ -131,6 +159,8 @@ const item = (
     position: toScene(place.position, origin, unit),
     radius: place.radius ? place.radius / unit : null,
     color: place.color ?? COLORS[role],
+    surface: surfaceOf(place, role),
+    unstable: place.unstable,
     labelled,
     rank: rankOf(place, role),
     enterable: role === "planet" || role === "moon",
@@ -176,6 +206,8 @@ export const systemsScene = (
       position,
       radius: null,
       color: COLORS.system,
+      surface: null,
+      unstable: false,
       labelled: true,
       rank: 0,
       enterable: true,

@@ -31,6 +31,7 @@ const place = (
   gateway: false,
   color: null,
   unstable: false,
+  bodyType: null,
   ...overrides,
 });
 

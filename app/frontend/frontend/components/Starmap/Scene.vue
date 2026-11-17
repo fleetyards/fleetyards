@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import {
+  type Texture,
   AmbientLight,
   Color,
   DirectionalLight,
@@ -14,7 +15,9 @@ import {
   Mesh,
   MeshBasicMaterial,
   MeshLambertMaterial,
+  type Object3D,
   PerspectiveCamera,
+  PointLight,
   SphereGeometry,
   Vector2,
   Vector3,
@@ -26,6 +29,7 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { useLoop, useTres } from "@tresjs/core";
 import { Html } from "@tresjs/cientos";
 import StarmapLabel from "./Label.vue";
+import { sun, surfaceTexture, type StarmapSun } from "./bodies";
 import type { StarmapItem, StarmapRole, StarmapScene } from "./layout";
 
 type Props = {
@@ -50,9 +54,9 @@ const { onBeforeRender } = useLoop();
 // thousandth of a unit in its system and would never be seen.
 const MIN_PIXELS: Record<StarmapRole, number> = {
   system: 16,
-  star: 18,
-  planet: 10,
-  moon: 8,
+  star: 30,
+  planet: 24,
+  moon: 15,
   place: 4,
 };
 
@@ -60,10 +64,15 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
 const PICK_PIXELS = 12;
 const TIE_PIXELS = 3;
 
-const sphere = new SphereGeometry(1, 48, 32);
+const sphere = new SphereGeometry(1, 64, 32);
 const group = new Group();
-const meshes = new Map<string, Mesh>();
+const meshes = new Map<string, Object3D>();
 const lineMaterials: LineMaterial[] = [];
+const textures: Texture[] = [];
+const suns: StarmapSun[] = [];
+// The bodies that turn: every planet and moon but the one whose places are
+// shown on it, which would carry them off the ground they stand on.
+const turning: Object3D[] = [];
 
 const disposeGroup = () => {
   group.traverse((object) => {
@@ -72,10 +81,28 @@ const disposeGroup = () => {
       (object.material as Material).dispose();
     }
   });
+  for (const texture of textures) texture.dispose();
+  for (const star of suns) star.dispose();
   group.clear();
   meshes.clear();
   lineMaterials.length = 0;
+  textures.length = 0;
+  suns.length = 0;
+  turning.length = 0;
 };
+
+// One turn of a body's surface, as on the location pages.
+const TURN_SECONDS = 90;
+
+const reducedMotion = () =>
+  typeof window !== "undefined" &&
+  !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+const LINE_COLOR = new Color(0x5aafd4);
+// The stage's backdrop, near enough: a line is mixed against it rather than
+// blended, since a translucent line draws its joints twice and they show as
+// a string of brighter dots.
+const BACKDROP = new Color(0x0a1626);
 
 // Lines a pixel and a half wide whatever the screen's pixel ratio: a plain
 // three.js line is one device pixel, which a high-density screen all but
@@ -88,10 +115,8 @@ const line = (
   geometry.setPositions(points);
 
   const material = new LineMaterial({
-    color: 0x5aafd4,
+    color: BACKDROP.clone().lerp(LINE_COLOR, opacity),
     linewidth: 1.5,
-    transparent: true,
-    opacity,
     dashed,
     dashScale: 1,
     dashSize: 0.8,
@@ -104,10 +129,13 @@ const line = (
   return object;
 };
 
+// Enough that the widest orbit on a wide screen still reads as a circle.
+const ORBIT_STEPS = 512;
+
 const circle = (radius: number) => {
   const points: number[] = [];
-  for (let step = 0; step <= 128; step += 1) {
-    const angle = (step / 128) * Math.PI * 2;
+  for (let step = 0; step <= ORBIT_STEPS; step += 1) {
+    const angle = (step / ORBIT_STEPS) * Math.PI * 2;
     points.push(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
   }
   return points;
@@ -119,43 +147,67 @@ const build = (scene: StarmapScene) => {
   disposeGroup();
 
   for (const radius of scene.orbits) {
-    group.add(line(circle(radius), { opacity: 0.45 }));
+    group.add(line(circle(radius), { opacity: 0.22 }));
   }
 
   for (const link of scene.links) {
     group.add(
       line([...link.from, ...link.to], {
-        opacity: link.temporary ? 0.55 : 0.8,
+        opacity: link.temporary ? 0.3 : 0.45,
         dashed: link.temporary,
       }),
     );
   }
 
-  // Close up a body is a sphere, so it is lit from its star; everywhere else
-  // things are dots and stay flat.
+  // Bodies are lit from their star: around a body from the star's direction,
+  // in a system from the star itself.
   if (scene.sun) {
-    const light = new DirectionalLight(0xffffff, 2.4);
+    const light = new DirectionalLight(0xffffff, 1.6);
     light.position.set(...scene.sun).normalize();
-    group.add(light, new AmbientLight(0xffffff, 0.5));
+    group.add(light);
+  } else {
+    group.add(new PointLight(0xffffff, 1.6, 0, 0));
   }
+  // Enough that the night side still shows its surface: this is a map, and a
+  // body half lost in the dark is half unreadable.
+  group.add(new AmbientLight(0xffffff, 1.3));
 
   for (const entry of scene.items) {
+    if (entry.role === "star") {
+      const star = sun(entry.color, entry.unstable);
+      star.object.position.set(...entry.position);
+      suns.push(star);
+      group.add(star.object);
+      meshes.set(entry.key, star.object);
+      continue;
+    }
+
     const color = new Color(entry.color);
-    const material =
-      scene.sun && BODY_ROLES.has(entry.role)
-        ? new MeshLambertMaterial({ color })
-        : new MeshBasicMaterial({
-            color,
-            transparent: entry.role === "place",
-            opacity: entry.role === "place" ? 0.9 : 1,
-          });
+    let material: Material;
+
+    if (entry.surface && BODY_ROLES.has(entry.role)) {
+      const map = surfaceTexture(entry.surface, entry.color, entry.slug);
+      textures.push(map);
+      material = new MeshLambertMaterial({ map });
+    } else {
+      material = new MeshBasicMaterial({
+        color,
+        transparent: entry.role === "place",
+        opacity: entry.role === "place" ? 0.9 : 1,
+      });
+    }
+
     const mesh = new Mesh(sphere, material);
+    if (entry.surface && !isCentre(entry)) turning.push(mesh);
     mesh.position.set(...entry.position);
     mesh.userData.key = entry.key;
     group.add(mesh);
     meshes.set(entry.key, mesh);
   }
 };
+
+const isCentre = (entry: StarmapItem) =>
+  !!props.scene.occluder && entry.position.every((value) => value === 0);
 
 // --- Camera ---
 
@@ -165,10 +217,28 @@ const goal = {
   active: false,
 };
 
+const UP = new Vector3(0, 1, 0);
+
+// Where the camera looks from, as a direction from the centre. A body is seen
+// from its star's side and a little off it, so it shows its day side with the
+// night drawing in at one edge.
+const viewpoint = (scene: StarmapScene) => {
+  if (!scene.sun) return new Vector3(0, 0.6, 1.1).normalize();
+
+  const towardSun = new Vector3(...scene.sun).setY(0).normalize();
+  const aside = new Vector3().crossVectors(UP, towardSun);
+
+  return towardSun
+    .multiplyScalar(0.8)
+    .addScaledVector(aside, 0.55)
+    .addScaledVector(UP, 0.5)
+    .normalize();
+};
+
 const frame = (scene: StarmapScene) => {
   const extent = scene.extent;
   goal.target.set(0, 0, 0);
-  goal.position.set(0, extent * 0.6, extent * 1.1);
+  goal.position.copy(viewpoint(scene)).multiplyScalar(extent * 1.25);
 
   const cam = camera.value;
   if (cam instanceof PerspectiveCamera) {
@@ -267,9 +337,15 @@ const occluded = (point: Vector3, from: Vector3) => {
   return closest.length() < radius * 0.995;
 };
 
-onBeforeRender(() => {
+onBeforeRender(({ elapsed }) => {
   const cam = camera.value;
   if (!(cam instanceof PerspectiveCamera)) return;
+
+  if (!reducedMotion()) {
+    const angle = (elapsed / TURN_SECONDS) * Math.PI * 2;
+    for (const body of turning) body.rotation.y = angle;
+    for (const star of suns) star.animate(elapsed);
+  }
 
   const target = controlsTarget();
 
