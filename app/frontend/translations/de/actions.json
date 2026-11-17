@@ -378,7 +378,8 @@
         "hideViews": "Weniger Ansichten"
       },
       "itemViews": {
-        "sync": "Ansichten synchronisieren"
+        "sync": "Ansichten synchronisieren",
+        "openComponent": "Spieldatei-Teil öffnen"
       },
       "models": {
         "sync": "Von RSI synchronisieren",

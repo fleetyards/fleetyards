@@ -162,6 +162,13 @@ class ModelModule < ApplicationRecord
   # The cargo grids of the module's hull export, which lies on the part the
   # module is in the game files. Found by sc_key, whose case differs between
   # the two tables, so a list loads them in one go with `preload_cargo_grid_exports`.
+  # The part the module is in the game files, which holds its renders and hull.
+  def component
+    return @component if defined?(@component)
+
+    @component = sc_key.present? ? Component.find_by("LOWER(sc_key) = ?", sc_key.downcase) : nil
+  end
+
   def cargo_grid_export
     return @cargo_grid_export if defined?(@cargo_grid_export)
 

@@ -378,7 +378,8 @@
         "hideViews": "收起视图"
       },
       "itemViews": {
-        "sync": "同步视图"
+        "sync": "同步视图",
+        "openComponent": "打开游戏文件部件"
       },
       "models": {
         "sync": "从 RSI 同步",

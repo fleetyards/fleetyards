@@ -378,7 +378,8 @@
         "hideViews": "Fewer views"
       },
       "itemViews": {
-        "sync": "Sync Views"
+        "sync": "Sync Views",
+        "openComponent": "Open Game-File Part"
       },
       "models": {
         "sync": "Sync from RSI",

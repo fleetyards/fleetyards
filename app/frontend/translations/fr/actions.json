@@ -378,7 +378,8 @@
         "hideViews": "Moins de vues"
       },
       "itemViews": {
-        "sync": "Synchroniser les vues"
+        "sync": "Synchroniser les vues",
+        "openComponent": "Ouvrir la pièce du jeu"
       },
       "models": {
         "sync": "Synchroniser depuis RSI",

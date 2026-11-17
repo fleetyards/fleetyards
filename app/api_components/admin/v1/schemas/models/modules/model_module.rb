@@ -14,6 +14,11 @@ module Admin
                 cargo: {type: :number},
                 active: {type: :boolean},
                 hidden: {type: :boolean},
+                componentId: {
+                  type: [:string, :null],
+                  format: :uuid,
+                  description: "The part the module is in the game files, by sc_key. Present on a single module."
+                },
                 models: {type: :array, items: {"$ref": "#/components/schemas/Model"}},
                 moduleHardpoints: {
                   type: :array,
