@@ -10,9 +10,11 @@ import {
   Color,
   Group,
   LineBasicMaterial,
+  Line,
   LineDashedMaterial,
   LineLoop,
   LineSegments,
+  Matrix4,
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
@@ -26,6 +28,9 @@ import type { StarmapItem, StarmapRole, StarmapScene } from "./layout";
 
 type Props = {
   scene: StarmapScene;
+  // What the camera frames: a new level is framed afresh, while a scene that
+  // only changes because more data arrived keeps the reader's view.
+  levelKey: string;
   selectedKey: string | null;
 };
 
@@ -58,7 +63,7 @@ const meshes = new Map<string, Mesh>();
 
 const disposeGroup = () => {
   group.traverse((object) => {
-    if (object instanceof Mesh || object instanceof LineLoop) {
+    if (object instanceof Mesh || object instanceof Line) {
       if (object.geometry !== sphere) object.geometry.dispose();
       (object.material as MeshBasicMaterial).dispose();
     }
@@ -176,13 +181,50 @@ const flyTo = (entry: StarmapItem) => {
 const controlsTarget = (): Vector3 | undefined =>
   (controls.value as { target?: Vector3 } | null)?.target;
 
+const hidden = shallowRef<Set<string>>(new Set());
+
+// Labels are only laid out again when the view moved, the canvas was resized
+// or the scene or selection changed: not on every frame of an idle map.
+let dirty = true;
+const lastView = { matrix: new Matrix4(), width: 0, height: 0 };
+
+const viewChanged = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
+  const changed =
+    dirty ||
+    !lastView.matrix.equals(cam.matrixWorld) ||
+    lastView.width !== element.clientWidth ||
+    lastView.height !== element.clientHeight;
+
+  if (changed) {
+    lastView.matrix.copy(cam.matrixWorld);
+    lastView.width = element.clientWidth;
+    lastView.height = element.clientHeight;
+    dirty = false;
+  }
+
+  return changed;
+};
+
 watch(
   () => props.scene,
   (scene) => {
     build(scene);
-    frame(scene);
+    dirty = true;
   },
   { immediate: true },
+);
+
+watch(
+  () => props.levelKey,
+  () => frame(props.scene),
+  { immediate: true },
+);
+
+watch(
+  () => props.selectedKey,
+  () => {
+    dirty = true;
+  },
 );
 
 // --- Per frame ---
@@ -225,7 +267,7 @@ onBeforeRender(() => {
   }
 
   const element = canvas();
-  if (element) declutter(cam, element);
+  if (element && viewChanged(cam, element)) declutter(cam, element);
 });
 
 // --- Picking ---
@@ -316,8 +358,13 @@ const unbind = () => {
   bound = null;
 };
 
+// The canvas is only there once the renderer is: bind on the first frame that
+// has it, then stop looking.
 onMounted(bind);
-onBeforeRender(bind);
+const { off: stopBinding } = onBeforeRender(() => {
+  bind();
+  if (bound) stopBinding();
+});
 
 onBeforeUnmount(() => {
   unbind();
@@ -337,8 +384,6 @@ const RANK: Record<StarmapRole, number> = {
 const LABEL_HEIGHT = 14;
 const LABEL_CHAR_WIDTH = 6.5;
 
-const hidden = shallowRef<Set<string>>(new Set());
-
 const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
   const width = element.clientWidth;
   const height = element.clientHeight;
@@ -356,6 +401,11 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
 
   for (const entry of candidates) {
     projected.set(...entry.position).project(cam);
+
+    if (projected.z > 1 && entry.key !== props.selectedKey) {
+      next.add(entry.key);
+      continue;
+    }
 
     const x = ((projected.x + 1) / 2) * width;
     const y = ((1 - projected.y) / 2) * height;

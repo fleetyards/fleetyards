@@ -52,8 +52,6 @@ const bodySlug = computed(() =>
 );
 
 const navigate = (system: string | null, body: string | null = null) => {
-  selectedKey.value = null;
-
   const query: Record<string, string> = {};
   if (system) query.system = system;
   if (system && body) query.body = body;
@@ -130,6 +128,16 @@ const crumbs = computed(() => {
 });
 
 const selectedKey = ref<string | null>(null);
+
+const levelKey = computed(() =>
+  [systemSlug.value, bodySlug.value].filter(Boolean).join("/"),
+);
+
+// Whichever way the level changed -- a crumb, a double-click or the browser's
+// back button -- what was picked on the last one does not carry over.
+watch(levelKey, () => {
+  selectedKey.value = null;
+});
 
 const selected = computed(
   () =>
@@ -257,6 +265,7 @@ const hint = computed(() => {
           v-if="scene"
           ref="sceneRef"
           :scene="scene"
+          :level-key="levelKey"
           :selected-key="selectedKey"
           @select="onSelect"
           @enter="enter"

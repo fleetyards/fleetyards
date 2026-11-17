@@ -6,7 +6,7 @@ vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable }));
 
 vi.mock("@tresjs/core", () => ({
   TresCanvas: { template: "<div data-test='canvas'><slot /></div>" },
-  useLoop: () => ({ onBeforeRender: () => undefined }),
+  useLoop: () => ({ onBeforeRender: () => ({ off: () => undefined }) }),
   useTres: () => ({
     camera: { value: undefined },
     controls: { value: null },
