@@ -47331,7 +47331,10 @@ components:
           description: The module's holo, with its origin on the slot it fits. Present
             when fetched via a model's modules endpoint.
         angledView:
-          "$ref": "#/components/schemas/MediaFile"
+          description: The render of the module's part in the game files, where it
+            has one. Present when fetched via a model's modules endpoint.
+          allOf:
+          - "$ref": "#/components/schemas/MediaFile"
         hardpoints:
           type: array
           items:
