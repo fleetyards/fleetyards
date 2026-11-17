@@ -113,7 +113,8 @@ const LINE_COLOR = new Color(0x5aafd4);
 // a string of brighter dots.
 const BACKDROP = new Color(0x0a1626);
 
-const lineColor = (amount: number) => BACKDROP.clone().lerp(LINE_COLOR, amount);
+const lineColor = (amount: number, target = new Color()) =>
+  target.lerpColors(BACKDROP, LINE_COLOR, amount);
 
 // Lines a pixel and a half wide whatever the screen's pixel ratio: a plain
 // three.js line is one device pixel, which a high-density screen all but
@@ -156,28 +157,48 @@ const loader = new TextureLoader().setCrossOrigin("anonymous");
 // Bumped on every rebuild, so a texture that arrives for a scene already torn
 // down is thrown away rather than put on a disposed material.
 let generation = 0;
+// One load per surface: Pyro V and Ignis share theirs.
+const gameSurfaces = new Map<string, Promise<Texture>>();
+
+const gameSurface = (url: string) => {
+  let pending = gameSurfaces.get(url);
+
+  if (!pending) {
+    pending = loader.loadAsync(url).then((texture) => {
+      texture.colorSpace = SRGBColorSpace;
+      texture.anisotropy = 4;
+      textures.push(texture);
+      return texture;
+    });
+    gameSurfaces.set(url, pending);
+  }
+
+  return pending;
+};
 
 // The game's own surface replaces the painted one once it has loaded; until
 // then, or if it fails, the painted one stays.
 const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
   const built = generation;
 
-  loader.load(url, (texture) => {
-    if (built !== generation) {
-      texture.dispose();
-      return;
-    }
+  gameSurface(url)
+    .then((texture) => {
+      if (built !== generation) return;
 
-    texture.colorSpace = SRGBColorSpace;
-    texture.anisotropy = 4;
-    textures.push(texture);
-    material.map = texture;
-    material.needsUpdate = true;
-  });
+      const painted = material.map;
+      material.map = texture;
+      material.needsUpdate = true;
+      if (painted && painted !== texture) {
+        painted.dispose();
+        textures.splice(textures.indexOf(painted), 1);
+      }
+    })
+    .catch(() => undefined);
 };
 
 const disposeBodies = () => {
   generation += 1;
+  gameSurfaces.clear();
   bodies.traverse((object) => {
     if (object instanceof Mesh) {
       if (object.geometry !== sphere && object.geometry !== dot) {
@@ -344,13 +365,27 @@ type Orbiting = {
 
 const orbiting = () => controls.value as Orbiting | null;
 
+// The distances the reader can zoom between around what is focused. Only set
+// once a flight has landed: during one the camera passes nearer than the new
+// focus allows, and the controls would clamp it off its path.
 const limit = (entry: StarmapItem | undefined) => {
   const orbit = orbiting();
-  if (!orbit) return;
+  if (!orbit) return false;
 
   orbit.minDistance = entry?.radius ? entry.radius * 1.08 : 0.0005;
   orbit.maxDistance = props.scene.extent * 4;
+  return true;
 };
+
+const unlimit = () => {
+  const orbit = orbiting();
+  if (!orbit) return;
+
+  orbit.minDistance = 0;
+  orbit.maxDistance = Infinity;
+};
+
+let limited = false;
 
 const flyTo = (
   entry: StarmapItem | undefined,
@@ -372,7 +407,17 @@ const flyTo = (
   flight.active = true;
 
   flownTo = entry?.key ?? null;
-  limit(entry);
+  limited = false;
+  unlimit();
+};
+
+// A flight interrupted by the reader ends where it was going, so what they
+// orbit is what they picked, rather than a point partway there.
+const land = (cam: PerspectiveCamera) => {
+  if (!flight.active) return;
+
+  flight.elapsed = FLIGHT_SECONDS;
+  advance(cam, 0);
 };
 
 const focused = computed(() =>
@@ -423,6 +468,15 @@ const advance = (cam: PerspectiveCamera, delta: number) => {
   orbiting()?.update?.();
 
   if (t >= 1) flight.active = false;
+};
+
+// The first flight waits for a camera, and the limits for the controls: both
+// are mounted beside the scene and can come after it.
+const settle = () => {
+  if (flownTo === undefined) flyTo(focused.value);
+  if (!flight.active && !limited) {
+    limited = limit(flownTo ? byKey.value.get(flownTo) : undefined);
+  }
 };
 
 // Zoomed well out of what it is on, the map steps back out to what that
@@ -519,18 +573,19 @@ const scratchCentre = new Vector3();
 const resolution = new Vector2();
 const projected = new Vector3();
 const point = new Vector3();
-let turned = 0;
 
-const reducedMotion = () =>
-  typeof window !== "undefined" &&
-  !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+const motionQuery =
+  typeof window !== "undefined"
+    ? window.matchMedia?.("(prefers-reduced-motion: reduce)")
+    : undefined;
 
 onBeforeRender(({ delta, elapsed }) => {
   const cam = camera.value;
   if (!(cam instanceof PerspectiveCamera)) return;
 
+  settle();
   if (flight.active) advance(cam, delta);
-  else stepOut(cam);
+  else if (limited) stepOut(cam);
 
   world.position.copy(origin).negate();
   cameraWorld.copy(cam.position).add(origin);
@@ -548,9 +603,8 @@ onBeforeRender(({ delta, elapsed }) => {
     for (const material of lineMaterials) material.resolution.copy(resolution);
   }
 
-  const motion = !reducedMotion();
+  const motion = !motionQuery?.matches;
   if (motion) {
-    turned += (delta / TURN_SECONDS) * Math.PI * 2;
     for (const star of suns) star.animate(elapsed);
   }
 
@@ -579,16 +633,18 @@ onBeforeRender(({ delta, elapsed }) => {
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
 
-    // A body only turns while nothing is shown on it: its places stand on
-    // the ground, and the ground would carry them off.
-    if (entry.surface && motion && shownOn(entry) < 0.02) {
-      mesh.rotation.y = turned;
+    // A painted body turns, from where it last stood, while nothing is shown
+    // on it: its places stand on the ground, and the ground would carry them
+    // off. The game's own surface never turns, so a place stays over the
+    // ground the game puts it on.
+    if (entry.surface && !entry.texture && motion && shownOn(entry) < 0.02) {
+      mesh.rotation.y += (delta / TURN_SECONDS) * Math.PI * 2;
     }
   }
 
   for (const orbit of orbitLines) {
     const fade = fades.get(orbit.body) ?? 1;
-    orbit.material.color.copy(lineColor(orbit.base * fade));
+    lineColor(orbit.base * fade, orbit.material.color);
   }
 
   if (pointer.moved) {
@@ -651,10 +707,15 @@ const pick = (clientX: number, clientY: number): StarmapItem | null => {
 
 const pointer = { x: 0, y: 0, moved: false, downX: 0, downY: 0 };
 
+const landNow = () => {
+  const cam = camera.value;
+  if (cam instanceof PerspectiveCamera) land(cam);
+};
+
 const onPointerDown = (event: PointerEvent) => {
   pointer.downX = event.clientX;
   pointer.downY = event.clientY;
-  flight.active = false;
+  landNow();
 };
 
 const onPointerMove = (event: PointerEvent) => {
@@ -688,13 +749,8 @@ const onPointerUp = (event: PointerEvent) => {
   emit("focus", entry);
 };
 
-const onDoubleClick = (event: MouseEvent) => {
-  const entry = pick(event.clientX, event.clientY);
-  if (entry?.role === "system") emit("enter", entry);
-};
-
 const onWheel = () => {
-  flight.active = false;
+  landNow();
 };
 
 let bound: HTMLCanvasElement | null = null;
@@ -704,7 +760,6 @@ const listeners = {
   pointermove: onPointerMove,
   pointerleave: onPointerLeave,
   pointerup: onPointerUp,
-  dblclick: onDoubleClick,
   wheel: onWheel,
 } as unknown as Record<string, EventListener>;
 

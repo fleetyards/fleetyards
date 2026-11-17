@@ -158,6 +158,15 @@ const onKeydown = (event: KeyboardEvent) => {
   const target = event.target as HTMLElement | null;
   if (target?.closest("input, textarea, select, [contenteditable]")) return;
 
+  // Escape belongs to whatever is open over the map first: a modal, a menu.
+  // Menus stay in the page while closed, so only a visible one counts.
+  const overlays = document.querySelectorAll<HTMLElement>(
+    "[role='dialog'], dialog[open], [aria-modal='true'], [role='menu']",
+  );
+  if ([...overlays].some((element) => element.checkVisibility?.() ?? true)) {
+    return;
+  }
+
   stepOut();
 };
 

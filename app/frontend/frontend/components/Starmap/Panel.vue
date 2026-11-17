@@ -40,10 +40,12 @@ const childrenOf = computed(() => {
   }
 
   for (const list of map.values()) {
-    list.sort((a, b) =>
-      a.role === b.role
-        ? (a.distance ?? 0) - (b.distance ?? 0) || a.name.localeCompare(b.name)
-        : a.rank - b.rank,
+    // Moons before places, then nearest first.
+    list.sort(
+      (a, b) =>
+        a.rank - b.rank ||
+        (a.distance ?? 0) - (b.distance ?? 0) ||
+        a.name.localeCompare(b.name),
     );
   }
 
