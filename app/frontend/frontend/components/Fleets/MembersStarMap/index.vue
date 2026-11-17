@@ -14,13 +14,7 @@ import { OrbitControls, Html } from "@tresjs/cientos";
 import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
-import type { FleetMember } from "@/services/fyApi";
-import {
-  starSystems,
-  jumpTunnels,
-  ACTIVE_SYSTEMS,
-  type StarSystem,
-} from "@/frontend/data/starmap";
+import { useGalaxy, type FleetMember, type StarSystem } from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];
@@ -42,23 +36,41 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
   mobile.value ? "low-power" : "default",
 );
 
+const { data: galaxy } = useGalaxy();
+
+const starSystems = computed(() => galaxy.value?.systems ?? []);
+
+const jumpTunnels = computed(() => galaxy.value?.tunnels ?? []);
+
+const activeSystems = computed(
+  () =>
+    new Set(
+      starSystems.value
+        .filter((system) => system.inGame)
+        .map((system) => system.code),
+    ),
+);
+
+const isActive = (code: string) => activeSystems.value.has(code);
+
 // --- Coordinate scaling ---
 const SCALE = 0.5;
 
 const systemPosition = (system: StarSystem): [number, number, number] => [
-  system.positionX * SCALE,
-  system.positionY * SCALE,
-  system.positionZ * SCALE,
+  system.position[0] * SCALE,
+  system.position[1] * SCALE,
+  system.position[2] * SCALE,
 ];
 
 const labelOffset = (system: StarSystem): [number, number, number] => [
-  system.positionX * SCALE,
-  system.positionY * SCALE + (ACTIVE_SYSTEMS.has(system.code) ? 1.2 : 0.6),
-  system.positionZ * SCALE,
+  system.position[0] * SCALE,
+  system.position[1] * SCALE + (isActive(system.code) ? 1.2 : 0.6),
+  system.position[2] * SCALE,
 ];
 
-// Build a lookup map
-const systemByCode = new Map(starSystems.map((s) => [s.code, s]));
+const systemByCode = computed(
+  () => new Map(starSystems.value.map((system) => [system.code, system])),
+);
 
 // --- Track all LineMaterials so we can update their resolution ---
 const lineMaterials: LineMaterial[] = [];
@@ -91,9 +103,9 @@ const buildLineSegments = (
 // --- Jump route line objects ---
 const routeLines = computed(() => {
   const positions: number[] = [];
-  for (const tunnel of jumpTunnels) {
-    const fromSys = systemByCode.get(tunnel.from);
-    const toSys = systemByCode.get(tunnel.to);
+  for (const tunnel of jumpTunnels.value) {
+    const fromSys = systemByCode.value.get(tunnel.entryCode);
+    const toSys = systemByCode.value.get(tunnel.exitCode);
     if (!fromSys || !toSys) continue;
     const [fx, fy, fz] = systemPosition(fromSys);
     const [tx, ty, tz] = systemPosition(toSys);
@@ -105,11 +117,10 @@ const routeLines = computed(() => {
 // --- Highlight routes (connecting active systems) ---
 const activeRouteLines = computed(() => {
   const positions: number[] = [];
-  for (const tunnel of jumpTunnels) {
-    if (!ACTIVE_SYSTEMS.has(tunnel.from) || !ACTIVE_SYSTEMS.has(tunnel.to))
-      continue;
-    const fromSys = systemByCode.get(tunnel.from);
-    const toSys = systemByCode.get(tunnel.to);
+  for (const tunnel of jumpTunnels.value) {
+    if (!isActive(tunnel.entryCode) || !isActive(tunnel.exitCode)) continue;
+    const fromSys = systemByCode.value.get(tunnel.entryCode);
+    const toSys = systemByCode.value.get(tunnel.exitCode);
     if (!fromSys || !toSys) continue;
     const [fx, fy, fz] = systemPosition(fromSys);
     const [tx, ty, tz] = systemPosition(toSys);
@@ -154,13 +165,13 @@ const systemMemberBadges = computed(() => {
     position: [number, number, number];
   }[] = [];
   for (const [code, members] of membersBySystem.value) {
-    const system = systemByCode.get(code);
+    const system = systemByCode.value.get(code);
     if (!system) continue;
     const [sx, sy, sz] = systemPosition(system);
     badges.push({
       systemCode: code,
       members,
-      position: [sx, sy - (ACTIVE_SYSTEMS.has(code) ? 1.4 : 0.8), sz],
+      position: [sx, sy - (isActive(code) ? 1.4 : 0.8), sz],
     });
   }
   return badges;
@@ -168,16 +179,16 @@ const systemMemberBadges = computed(() => {
 
 // --- Camera position (centered on the active systems) ---
 const cameraTarget = computed(() => {
-  const activeSystems = starSystems.filter((s) => ACTIVE_SYSTEMS.has(s.code));
-  if (activeSystems.length === 0) return new Vector3(0, 0, 0);
-  const avg = activeSystems.reduce(
+  const active = starSystems.value.filter((s) => isActive(s.code));
+  if (active.length === 0) return new Vector3(0, 0, 0);
+  const avg = active.reduce(
     (acc, s) => {
       const [x, y, z] = systemPosition(s);
       return [acc[0] + x, acc[1] + y, acc[2] + z];
     },
     [0, 0, 0],
   );
-  const n = activeSystems.length;
+  const n = active.length;
   return new Vector3(avg[0] / n, avg[1] / n, avg[2] / n);
 });
 
@@ -245,19 +256,17 @@ const ResolutionUpdater = defineComponent({
         <TresMesh
           :position="systemPosition(system)"
           :material="
-            ACTIVE_SYSTEMS.has(system.code)
-              ? activeSystemMaterial
-              : dimmedSystemMaterial
+            isActive(system.code) ? activeSystemMaterial : dimmedSystemMaterial
           "
           :render-order="1"
         >
           <TresSphereGeometry
-            :args="[ACTIVE_SYSTEMS.has(system.code) ? 0.4 : 0.2, 16, 16]"
+            :args="[isActive(system.code) ? 0.4 : 0.2, 16, 16]"
           />
         </TresMesh>
         <!-- Glow for active systems -->
         <TresMesh
-          v-if="ACTIVE_SYSTEMS.has(system.code)"
+          v-if="isActive(system.code)"
           :position="systemPosition(system)"
           :material="activeSystemGlowMaterial"
         >
@@ -268,7 +277,7 @@ const ResolutionUpdater = defineComponent({
           <span
             :class="[
               'system-label',
-              ACTIVE_SYSTEMS.has(system.code)
+              isActive(system.code)
                 ? 'system-label-active'
                 : 'system-label-dimmed',
             ]"

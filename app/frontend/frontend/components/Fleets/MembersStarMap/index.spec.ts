@@ -4,6 +4,29 @@ const webglAvailable = vi.hoisted(() => vi.fn(() => true));
 
 vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable }));
 
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const { ref } = await import("vue");
+
+  return {
+    ...(await importOriginal<typeof import("@/services/fyApi")>()),
+    useGalaxy: () => ({
+      data: ref({
+        systems: [
+          {
+            code: "STANTON",
+            name: "Stanton",
+            position: [49.5, -2.6, 16.5],
+            systemType: "single_star",
+            affiliations: ["UEE"],
+            inGame: true,
+          },
+        ],
+        tunnels: [],
+      }),
+    }),
+  };
+});
+
 vi.mock("@tresjs/core", () => ({
   TresCanvas: { template: "<div data-test='canvas' />" },
   useLoop: () => ({ onBeforeRender: () => undefined }),
