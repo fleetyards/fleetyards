@@ -161,8 +161,9 @@ export const systemsScene = (
     };
   });
 
-  const seen = new Set<string>();
-  const links: StarmapLink[] = [];
+  // One line per pair of systems, whichever end lists the tunnel. It is only
+  // drawn as temporary while every tunnel between the two is.
+  const pairs = new Map<string, StarmapLink>();
 
   for (const point of jumpPoints) {
     if (!point.destinationSystemId) continue;
@@ -172,13 +173,55 @@ export const systemsScene = (
     if (!from || !to) continue;
 
     const pair = [point.systemId, point.destinationSystemId].sort().join(":");
-    if (seen.has(pair)) continue;
-    seen.add(pair);
+    const known = pairs.get(pair);
 
-    links.push({ from, to, temporary: point.temporary });
+    if (known) {
+      known.temporary = known.temporary && point.temporary;
+    } else {
+      pairs.set(pair, { from, to, temporary: point.temporary });
+    }
   }
 
+  const links = [...pairs.values()];
+
   return { items, orbits: [], links, extent: SYSTEMS_RING * 1.8 };
+};
+
+const BODY_KINDS = new Set<LocationKindEnum>([
+  LocationKindEnum.STAR,
+  LocationKindEnum.PLANET,
+  LocationKindEnum.MOON,
+]);
+
+// Where a place belongs, walked up its parents: the body it is on or around,
+// and whether it sits at a Lagrange point, which the game draws with the star.
+const ancestry = (places: LocationStarmapPlace[]) => {
+  const byId = new Map(places.map((place) => [place.id, place]));
+  const parentOf = (place: LocationStarmapPlace) =>
+    place.parentId ? byId.get(place.parentId) : undefined;
+
+  const bodyOf = (place: LocationStarmapPlace) => {
+    let parent = parentOf(place);
+
+    while (parent && !BODY_KINDS.has(parent.kind)) {
+      parent = parentOf(parent);
+    }
+
+    return parent;
+  };
+
+  const atLagrangePoint = (place: LocationStarmapPlace) => {
+    let current: LocationStarmapPlace | undefined = place;
+
+    while (current && !BODY_KINDS.has(current.kind)) {
+      if (current.lagrangePoint) return true;
+      current = parentOf(current);
+    }
+
+    return false;
+  };
+
+  return { bodyOf, atLagrangePoint };
 };
 
 const starOf = (places: LocationStarmapPlace[]) =>
@@ -187,16 +230,18 @@ const starOf = (places: LocationStarmapPlace[]) =>
 /**
  * A system as its star sees it: the planets on their orbits, and what sits
  * directly under the star -- stations, asteroid fields, jump points -- along
- * with the Lagrange points and gateways the game draws at this level too.
+ * with the gateways, and the Lagrange points with what sits at them, which the
+ * game draws at this level too.
  */
 export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
   const star = starOf(places);
   const origin = star?.position ?? [0, 0, 0];
+  const { atLagrangePoint } = ancestry(places);
 
   const shown = places.filter((place) => {
     if (place === star) return true;
     if (place.kind === LocationKindEnum.PLANET) return true;
-    if (place.lagrangePoint || place.gateway) return true;
+    if (place.gateway || atLagrangePoint(place)) return true;
 
     return !!star && place.parentId === star.id;
   });
@@ -219,12 +264,6 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
   return { items, orbits, links: [], extent: extentOf(items, 1) };
 };
 
-const BODY_KINDS = new Set<LocationKindEnum>([
-  LocationKindEnum.STAR,
-  LocationKindEnum.PLANET,
-  LocationKindEnum.MOON,
-]);
-
 /**
  * A planet or moon at the centre, its moons on their orbits, and every place
  * that belongs to it rather than to one of its moons: what is on the surface,
@@ -237,29 +276,7 @@ export const bodyScene = (
   const body = places.find((place) => place.slug === bodySlug);
   if (!body || !BODY_KINDS.has(body.kind)) return null;
 
-  const byId = new Map(places.map((place) => [place.id, place]));
-
-  const bodyOf = (place: LocationStarmapPlace) => {
-    let parent = place.parentId ? byId.get(place.parentId) : undefined;
-
-    while (parent && !BODY_KINDS.has(parent.kind)) {
-      parent = parent.parentId ? byId.get(parent.parentId) : undefined;
-    }
-
-    return parent;
-  };
-
-  // A Lagrange point is drawn with the star, and what sits at it with it.
-  const atLagrangePoint = (place: LocationStarmapPlace) => {
-    let current: LocationStarmapPlace | undefined = place;
-
-    while (current && !BODY_KINDS.has(current.kind)) {
-      if (current.lagrangePoint) return true;
-      current = current.parentId ? byId.get(current.parentId) : undefined;
-    }
-
-    return false;
-  };
+  const { bodyOf, atLagrangePoint } = ancestry(places);
 
   const shown = places.filter((place) => {
     if (place === body) return true;

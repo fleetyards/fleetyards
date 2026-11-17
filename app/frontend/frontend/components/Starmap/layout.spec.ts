@@ -105,9 +105,9 @@ describe("toScene", () => {
 describe("systemScene", () => {
   const scene = systemScene(places);
 
-  it("draws the star, its planets, the Lagrange points and the gateways", () => {
+  it("draws the star, its planets, the gateways, and the Lagrange points with what sits at them", () => {
     expect(keys(scene.items)).toEqual(
-      ["stanton", "hurston", "hur-l1", "pyro-gateway"].sort(),
+      ["stanton", "hurston", "hur-l1", "hur-l1-station", "pyro-gateway"].sort(),
     );
   });
 
@@ -198,5 +198,16 @@ describe("systemsScene", () => {
     expect(scene.items).toHaveLength(3);
     expect(scene.links).toHaveLength(2);
     expect(scene.links.filter((link) => link.temporary)).toHaveLength(1);
+  });
+
+  it("draws a tunnel as temporary only while every tunnel of the pair is", () => {
+    const scene = systemsScene(
+      [system("stanton"), system("nyx")],
+      [jump("stanton", "nyx", true), jump("nyx", "stanton")],
+    );
+
+    expect(scene.links).toEqual([
+      expect.objectContaining({ temporary: false }),
+    ]);
   });
 });
