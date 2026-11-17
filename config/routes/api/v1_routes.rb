@@ -71,7 +71,6 @@ v1_api_routes = lambda do
 
   resources :game_events, path: "game-events", only: %i[index]
   get "homepage", to: "homepage#show"
-  draw "api/galaxy_routes"
   draw "api/locations_routes"
   draw "api/shops_routes"
   draw "api/cart_routes"

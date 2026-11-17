@@ -11,11 +11,16 @@ import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { TresCanvas, useLoop } from "@tresjs/core";
 import { OrbitControls, Html } from "@tresjs/cientos";
-import AsyncData from "@/shared/components/AsyncData.vue";
 import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
-import { useGalaxy, type FleetMember, type StarSystem } from "@/services/fyApi";
+import type { FleetMember } from "@/services/fyApi";
+import {
+  starSystems,
+  jumpTunnels,
+  ACTIVE_SYSTEMS,
+  type StarSystem,
+} from "@/frontend/data/starmap";
 
 type Props = {
   members: FleetMember[];
@@ -37,41 +42,23 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
   mobile.value ? "low-power" : "default",
 );
 
-const { data: galaxy, ...galaxyStatus } = useGalaxy();
-
-const starSystems = computed(() => galaxy.value?.systems ?? []);
-
-const jumpTunnels = computed(() => galaxy.value?.tunnels ?? []);
-
-const activeSystems = computed(
-  () =>
-    new Set(
-      starSystems.value
-        .filter((system) => system.inGame)
-        .map((system) => system.code),
-    ),
-);
-
-const isActive = (code: string) => activeSystems.value.has(code);
-
 // --- Coordinate scaling ---
 const SCALE = 0.5;
 
 const systemPosition = (system: StarSystem): [number, number, number] => [
-  system.position[0] * SCALE,
-  system.position[1] * SCALE,
-  system.position[2] * SCALE,
+  system.positionX * SCALE,
+  system.positionY * SCALE,
+  system.positionZ * SCALE,
 ];
 
 const labelOffset = (system: StarSystem): [number, number, number] => [
-  system.position[0] * SCALE,
-  system.position[1] * SCALE + (isActive(system.code) ? 1.2 : 0.6),
-  system.position[2] * SCALE,
+  system.positionX * SCALE,
+  system.positionY * SCALE + (ACTIVE_SYSTEMS.has(system.code) ? 1.2 : 0.6),
+  system.positionZ * SCALE,
 ];
 
-const systemByCode = computed(
-  () => new Map(starSystems.value.map((system) => [system.code, system])),
-);
+// Build a lookup map
+const systemByCode = new Map(starSystems.map((s) => [s.code, s]));
 
 // --- Track all LineMaterials so we can update their resolution ---
 const lineMaterials: LineMaterial[] = [];
@@ -101,23 +88,12 @@ const buildLineSegments = (
   return line;
 };
 
-// A recomputed line replaces its predecessor, whose GPU buffers would
-// otherwise outlive it.
-const disposeLine = (line?: LineSegments2) => {
-  if (!line) return;
-  line.geometry.dispose();
-  line.material.dispose();
-  const index = lineMaterials.indexOf(line.material);
-  if (index !== -1) lineMaterials.splice(index, 1);
-};
-
 // --- Jump route line objects ---
-const routeLines = computed((previous?: LineSegments2) => {
-  disposeLine(previous);
+const routeLines = computed(() => {
   const positions: number[] = [];
-  for (const tunnel of jumpTunnels.value) {
-    const fromSys = systemByCode.value.get(tunnel.entryCode);
-    const toSys = systemByCode.value.get(tunnel.exitCode);
+  for (const tunnel of jumpTunnels) {
+    const fromSys = systemByCode.get(tunnel.from);
+    const toSys = systemByCode.get(tunnel.to);
     if (!fromSys || !toSys) continue;
     const [fx, fy, fz] = systemPosition(fromSys);
     const [tx, ty, tz] = systemPosition(toSys);
@@ -127,24 +103,19 @@ const routeLines = computed((previous?: LineSegments2) => {
 });
 
 // --- Highlight routes (connecting active systems) ---
-const activeRouteLines = computed((previous?: LineSegments2) => {
-  disposeLine(previous);
+const activeRouteLines = computed(() => {
   const positions: number[] = [];
-  for (const tunnel of jumpTunnels.value) {
-    if (!isActive(tunnel.entryCode) || !isActive(tunnel.exitCode)) continue;
-    const fromSys = systemByCode.value.get(tunnel.entryCode);
-    const toSys = systemByCode.value.get(tunnel.exitCode);
+  for (const tunnel of jumpTunnels) {
+    if (!ACTIVE_SYSTEMS.has(tunnel.from) || !ACTIVE_SYSTEMS.has(tunnel.to))
+      continue;
+    const fromSys = systemByCode.get(tunnel.from);
+    const toSys = systemByCode.get(tunnel.to);
     if (!fromSys || !toSys) continue;
     const [fx, fy, fz] = systemPosition(fromSys);
     const [tx, ty, tz] = systemPosition(toSys);
     positions.push(fx, fy, fz, tx, ty, tz);
   }
   return buildLineSegments(positions, "#5aafd4", 0.85, 3);
-});
-
-onBeforeUnmount(() => {
-  disposeLine(routeLines.value);
-  disposeLine(activeRouteLines.value);
 });
 
 // Dimmed system nodes: muted purple-grey
@@ -183,13 +154,13 @@ const systemMemberBadges = computed(() => {
     position: [number, number, number];
   }[] = [];
   for (const [code, members] of membersBySystem.value) {
-    const system = systemByCode.value.get(code);
+    const system = systemByCode.get(code);
     if (!system) continue;
     const [sx, sy, sz] = systemPosition(system);
     badges.push({
       systemCode: code,
       members,
-      position: [sx, sy - (isActive(code) ? 1.4 : 0.8), sz],
+      position: [sx, sy - (ACTIVE_SYSTEMS.has(code) ? 1.4 : 0.8), sz],
     });
   }
   return badges;
@@ -197,16 +168,16 @@ const systemMemberBadges = computed(() => {
 
 // --- Camera position (centered on the active systems) ---
 const cameraTarget = computed(() => {
-  const active = starSystems.value.filter((s) => isActive(s.code));
-  if (active.length === 0) return new Vector3(0, 0, 0);
-  const avg = active.reduce(
+  const activeSystems = starSystems.filter((s) => ACTIVE_SYSTEMS.has(s.code));
+  if (activeSystems.length === 0) return new Vector3(0, 0, 0);
+  const avg = activeSystems.reduce(
     (acc, s) => {
       const [x, y, z] = systemPosition(s);
       return [acc[0] + x, acc[1] + y, acc[2] + z];
     },
     [0, 0, 0],
   );
-  const n = active.length;
+  const n = activeSystems.length;
   return new Vector3(avg[0] / n, avg[1] / n, avg[2] / n);
 });
 
@@ -234,110 +205,98 @@ const ResolutionUpdater = defineComponent({
 
 <template>
   <div class="members-starmap">
-    <WebglFallback v-if="!webglSupported" />
-    <AsyncData v-else :async-status="galaxyStatus">
-      <template #resolved>
-        <TresCanvas
-          :clear-alpha="0"
-          :shadows="false"
-          :dpr="dpr"
-          :power-preference="powerPreference"
-          alpha
+    <TresCanvas
+      v-if="webglSupported"
+      :clear-alpha="0"
+      :shadows="false"
+      :dpr="dpr"
+      :power-preference="powerPreference"
+      alpha
+    >
+      <TresPerspectiveCamera
+        :position="cameraPosition"
+        :args="[60, 1, 0.1, 500]"
+      />
+      <OrbitControls
+        enable-rotate
+        :enable-zoom="true"
+        :zoom-speed="0.5"
+        :min-distance="10"
+        :max-distance="120"
+        enable-damping
+        :damping-factor="0.05"
+        :enable-pan="true"
+        :target="cameraTarget"
+        make-default
+      />
+
+      <!-- Resolution updater for fat lines -->
+      <ResolutionUpdater />
+
+      <!-- Jump routes (dimmed) -->
+      <primitive :object="routeLines" />
+
+      <!-- Active routes (highlighted) -->
+      <primitive :object="activeRouteLines" />
+
+      <!-- Star systems -->
+      <TresGroup v-for="system in starSystems" :key="system.code">
+        <!-- System node -->
+        <TresMesh
+          :position="systemPosition(system)"
+          :material="
+            ACTIVE_SYSTEMS.has(system.code)
+              ? activeSystemMaterial
+              : dimmedSystemMaterial
+          "
+          :render-order="1"
         >
-          <TresPerspectiveCamera
-            :position="cameraPosition"
-            :args="[60, 1, 0.1, 500]"
+          <TresSphereGeometry
+            :args="[ACTIVE_SYSTEMS.has(system.code) ? 0.4 : 0.2, 16, 16]"
           />
-          <OrbitControls
-            enable-rotate
-            :enable-zoom="true"
-            :zoom-speed="0.5"
-            :min-distance="10"
-            :max-distance="120"
-            enable-damping
-            :damping-factor="0.05"
-            :enable-pan="true"
-            :target="cameraTarget"
-            make-default
-          />
-
-          <!-- Resolution updater for fat lines -->
-          <ResolutionUpdater />
-
-          <!-- Jump routes (dimmed) -->
-          <primitive :object="routeLines" />
-
-          <!-- Active routes (highlighted) -->
-          <primitive :object="activeRouteLines" />
-
-          <!-- Star systems -->
-          <TresGroup v-for="system in starSystems" :key="system.code">
-            <!-- System node -->
-            <TresMesh
-              :position="systemPosition(system)"
-              :material="
-                isActive(system.code)
-                  ? activeSystemMaterial
-                  : dimmedSystemMaterial
-              "
-              :render-order="1"
-            >
-              <TresSphereGeometry
-                :args="[isActive(system.code) ? 0.4 : 0.2, 16, 16]"
-              />
-            </TresMesh>
-            <!-- Glow for active systems -->
-            <TresMesh
-              v-if="isActive(system.code)"
-              :position="systemPosition(system)"
-              :material="activeSystemGlowMaterial"
-            >
-              <TresSphereGeometry :args="[0.7, 16, 16]" />
-            </TresMesh>
-            <!-- System label -->
-            <Html
-              :position="labelOffset(system)"
-              center
-              :z-index-range="[1, 10]"
-            >
-              <span
-                :class="[
-                  'system-label',
-                  isActive(system.code)
-                    ? 'system-label-active'
-                    : 'system-label-dimmed',
-                ]"
-              >
-                {{ system.name }}
-              </span>
-            </Html>
-          </TresGroup>
-
-          <!-- Member badges per system -->
-          <TresGroup
-            v-for="badge in systemMemberBadges"
-            :key="badge.systemCode"
+        </TresMesh>
+        <!-- Glow for active systems -->
+        <TresMesh
+          v-if="ACTIVE_SYSTEMS.has(system.code)"
+          :position="systemPosition(system)"
+          :material="activeSystemGlowMaterial"
+        >
+          <TresSphereGeometry :args="[0.7, 16, 16]" />
+        </TresMesh>
+        <!-- System label -->
+        <Html :position="labelOffset(system)" center :z-index-range="[1, 10]">
+          <span
+            :class="[
+              'system-label',
+              ACTIVE_SYSTEMS.has(system.code)
+                ? 'system-label-active'
+                : 'system-label-dimmed',
+            ]"
           >
-            <Html :position="badge.position" center :z-index-range="[50, 100]">
-              <div class="member-badge">
-                <span class="member-badge-count">{{
-                  badge.members.length
-                }}</span>
-                <div class="member-badge-names">
-                  <span
-                    v-for="m in badge.members"
-                    :key="m.id"
-                    class="member-badge-name"
-                  >
-                    {{ m.username }}
-                  </span>
-                </div>
-              </div>
-            </Html>
-          </TresGroup>
-        </TresCanvas>
-      </template>
-    </AsyncData>
+            {{ system.name }}
+          </span>
+        </Html>
+      </TresGroup>
+
+      <!-- Member badges per system -->
+      <TresGroup v-for="badge in systemMemberBadges" :key="badge.systemCode">
+        <Html :position="badge.position" center :z-index-range="[50, 100]">
+          <div class="member-badge">
+            <span class="member-badge-count">{{ badge.members.length }}</span>
+            <div class="member-badge-names">
+              <span
+                v-for="m in badge.members"
+                :key="m.id"
+                class="member-badge-name"
+              >
+                {{ m.username }}
+              </span>
+            </div>
+          </div>
+        </Html>
+      </TresGroup>
+    </TresCanvas>
+    <WebglFallback v-else />
 
     <!-- Legend -->
     <div v-if="webglSupported" class="starmap-legend">
