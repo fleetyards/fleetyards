@@ -32,6 +32,10 @@ withDefaults(defineProps<Props>(), {
 .starmap-label {
   display: block;
   transform: translateY(14px);
+  // A faint backing, so a name still reads over a body's bright ice or cloud.
+  padding: 0 4px;
+  border-radius: 3px;
+  background: rgb(5 10 18 / 45%);
   font-size: 0.6875rem;
   font-weight: 500;
   white-space: nowrap;
