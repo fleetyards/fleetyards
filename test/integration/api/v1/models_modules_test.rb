@@ -145,6 +145,21 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules gives a module the render of its part in the game files" do
+    model = create(:model)
+    cargo = create(:model_module, name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo")
+    bare = create(:model_module, name: "Med Bay Module", sc_key: "RSI_Galaxy_Module_Medical")
+    [cargo, bare].each { |model_module| create(:module_hardpoint, model:, model_module:, slot: "hardpoint_module") }
+    part = create(:component, sc_key: "rsi_galaxy_module_cargo", category: "module", component_type: "Module")
+    part.angled_view.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "angled.png")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      views = parsed_body["items"].to_h { |item| [item["name"], item["angledView"]] }
+      assert_includes views["Cargo Module"]["url"].to_s, "angled.png", views.inspect
+      assert_nil views["Med Bay Module"]
+    end
+  end
+
   test "GET /models/:slug/modules places a module's holds where its hull export has them" do
     model = create(:model)
     cargo = create(:model_module, name: "Cargo Module", sc_key: "RSI_Galaxy_Module_Cargo")

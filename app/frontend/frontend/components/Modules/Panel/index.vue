@@ -31,6 +31,10 @@ const storeImage = computed(() => {
     return props.module.media.storeImage.mediumUrl;
   }
 
+  if (props.module.angledView?.mediumUrl) {
+    return props.module.angledView.mediumUrl;
+  }
+
   if (webpSupported) {
     return fallbackImage;
   }

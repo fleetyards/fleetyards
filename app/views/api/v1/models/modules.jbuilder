@@ -15,8 +15,14 @@ json.items do
     end
     json.slot @module_slots[model_module.id]
     json.stock @stock_module_ids.include?(model_module.id)
-    holo = @module_holos[model_module.sc_key&.downcase]&.holo
-    json.holo_url holo ? rails_blob_url(holo) : nil
+    part = @module_parts[model_module.sc_key&.downcase]
+    json.holo_url part&.holo&.attached? ? rails_blob_url(part.holo) : nil
+    # Drawn where the module has no store image of its own.
+    if part&.angled_view&.attached?
+      json.angled_view do
+        json.partial! "api/v1/shared/file", record: part, attr: :angled_view
+      end
+    end
   end
 end
 # Outside the cached items: which parts a recipe makes follows the build being
