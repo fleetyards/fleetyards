@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Says what every berth in the catalogue is built for. Until a dock carries an
-# entry, will-it-fit falls back to the envelope with clearance, and no dock has
-# carried one since the class model shipped.
+# Says what every berth in the catalogue is built for. A dock without an entry
+# answers will-it-fit from its envelope with clearance, which is wrong wherever
+# the recorded dimensions are.
 #
 # Vehicle berths take the largest rung whose reference vehicle the envelope
 # admits, which settles the cases the envelope got wrong once and for all: the
