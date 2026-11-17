@@ -31,6 +31,7 @@ module Admin
               starboardView: {type: [:string, :null]},
               holo: {type: [:string, :null]},
               holoTextured: {type: [:string, :null]},
+              holoHull: {type: [:string, :null]},
               scIdentifier: {type: :string},
               scKey: {type: :string},
               scRef: {type: :string}

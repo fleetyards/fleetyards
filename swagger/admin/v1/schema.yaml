@@ -13452,6 +13452,10 @@ components:
           type:
           - string
           - 'null'
+        holoHull:
+          type:
+          - string
+          - 'null'
         scIdentifier:
           type: string
         scKey:
@@ -19180,6 +19184,8 @@ components:
         holo:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        holoHull:
           "$ref": "#/components/schemas/MediaFile"
         holoRiggedMale:
           "$ref": "#/components/schemas/MediaFile"

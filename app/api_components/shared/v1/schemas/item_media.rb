@@ -23,6 +23,8 @@ module Shared
             starboardView: ::Shared::V1::Schemas::MediaFile,
             holo: ::Shared::V1::Schemas::MediaFile,
             holoTextured: ::Shared::V1::Schemas::MediaFile,
+            # A module's holo without the parts on its own ports; components only.
+            holoHull: ::Shared::V1::Schemas::MediaFile,
             holoRiggedMale: ::Shared::V1::Schemas::MediaFile,
             holoRiggedFemale: ::Shared::V1::Schemas::MediaFile,
             holoRiggedTexturedMale: ::Shared::V1::Schemas::MediaFile,

@@ -86,7 +86,7 @@ module Admin
             :name, :category, :component_type, :component_sub_type,
             :size, :grade, :item_class, :manufacturer_id,
             :description, :hidden, :store_image, :sc_key, :sc_ref,
-            *ItemViews::ATTACHMENT_NAMES
+            :holo_hull, *ItemViews::ATTACHMENT_NAMES
           )
         end
 

@@ -33,6 +33,11 @@ end
 json.media({})
 json.media do
   json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false), views: %i[angled_view]
+  if local_assigns.fetch(:extended, false)
+    json.holo_hull do
+      json.partial! "api/v1/shared/file", record: component, attr: :holo_hull
+    end
+  end
 end
 
 json.size component.size
