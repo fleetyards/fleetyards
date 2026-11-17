@@ -16,23 +16,36 @@ module ScData
         items = load_items("star_systems")
         return if items.empty?
 
-        systems = items.to_h { |item| [item["code"], one(item)] }
+        StarSystem.transaction do
+          systems = items.to_h { |item| [item["code"], one(item)] }
 
-        StarSystem.where.not(id: systems.values.map(&:id)).destroy_all
+          StarSystem.where.not(id: systems.values.map(&:id)).destroy_all
 
-        tunnels = load_items("jump_tunnels").filter_map { |item| tunnel(item, systems) }
-
-        JumpTunnel.where.not(id: tunnels.map(&:id)).delete_all
+          load_tunnels(systems)
+        end
       end
 
+      # Nil `in_game` is a parse that could not tell, and leaves the row's.
       def one(item)
-        apply(StarSystem.find_or_initialize_by(code: item["code"]), {
+        system = StarSystem.find_or_initialize_by(code: item["code"])
+
+        apply(system, {
           name: item["name"],
           position: item["position"],
           system_type: item["system_type"],
           affiliations: Array.wrap(item["affiliations"]),
-          in_game: item["in_game"] || false
+          in_game: item["in_game"].nil? ? system.in_game : item["in_game"]
         })
+      end
+
+      # No tunnels at all is a map that failed to say, not one without any.
+      private def load_tunnels(systems)
+        items = load_items("jump_tunnels")
+        return if items.empty?
+
+        tunnels = items.filter_map { |item| tunnel(item, systems) }
+
+        JumpTunnel.where.not(id: tunnels.map(&:id)).delete_all
       end
 
       private def tunnel(item, systems)

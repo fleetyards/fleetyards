@@ -34,10 +34,27 @@ module ScData
         refute elsin[:in_game]
       end
 
-      test "#systems has nothing in game for an export without placements" do
+      test "#systems cannot tell what is in game for an export without placements" do
         galaxy
 
-        assert parser.systems.none? { |system| system[:in_game] }
+        assert parser.systems.all? { |system| system[:in_game].nil? }
+      end
+
+      test "#systems leaves out a system without a position" do
+        galaxy(extra_systems: [{system: "nul", name: "Nul", pos: nil}, {system: "oso", name: "Oso", pos: [1, 2]}])
+
+        assert_equal %w[STANTON EL'SIN], parser.systems.pluck(:code)
+      end
+
+      test "#all treats a galaxy file it cannot read as none, and clears the last parse's" do
+        galaxy
+        parser.all
+        write("derived/galaxy.json", "{\"systems\": [")
+
+        parser.all
+
+        refute File.exist?("#{@base_folder}/parsed/test/star_systems")
+        refute File.exist?("#{@base_folder}/parsed/test/jump_tunnels")
       end
 
       test "#tunnels names both ends by system code" do
@@ -64,12 +81,13 @@ module ScData
         ::ScData::Parser::GalaxyParser.new(base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test")
       end
 
-      private def galaxy
+      private def galaxy(extra_systems: [])
         write("derived/galaxy.json", {
           source: "https://robertsspaceindustries.com/api/starmap/bootup",
           systems: [
             {system: "stanton", name: "Stanton", pos: [49.534718, -2.6339645, 16.475292], type: "SINGLE_STAR", status: "P", size: 4.85, affiliation: ["UEE"]},
-            {system: "el'sin", name: "El'sin", pos: [80.758041, 70.457497, 24.673809], type: "BINARY", status: "N", size: 0.0, affiliation: ["Xi'an"]}
+            {system: "el'sin", name: "El'sin", pos: [80.758041, 70.457497, 24.673809], type: "BINARY", status: "N", size: 0.0, affiliation: ["Xi'an"]},
+            *extra_systems
           ],
           tunnels: [
             {size: "M", direction: "B", entry: {system: "stanton", code: "STANTON.JUMPPOINTS.ELSIN"}, exit: {system: "el'sin", code: "ELSIN.JUMPPOINTS.STANTON"}}

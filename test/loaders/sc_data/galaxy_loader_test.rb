@@ -42,6 +42,29 @@ module ScData
         assert_equal 2, JumpTunnel.count
       end
 
+      test "#all keeps a system's in-game flag when the parse cannot tell" do
+        create(:star_system, code: "MAGNUS", in_game: true)
+        galaxy_loader = loader
+        galaxy_loader.define_singleton_method(:load_items) do |path|
+          items = super(path)
+          (path == "star_systems") ? items.map { |item| item.merge("in_game" => nil) } : items
+        end
+
+        galaxy_loader.all
+
+        assert StarSystem.find_by!(code: "MAGNUS").in_game
+      end
+
+      test "#all keeps the tunnels when the parse has none" do
+        create(:jump_tunnel, entry_system: create(:star_system, code: "STANTON"), exit_system: create(:star_system, code: "PYRO"))
+        galaxy_loader = loader
+        galaxy_loader.define_singleton_method(:load_items) { |path| (path == "jump_tunnels") ? [] : super(path) }
+
+        galaxy_loader.all
+
+        assert_equal 1, JumpTunnel.count
+      end
+
       test "#all keeps what is there when the parse has no galaxy" do
         create(:star_system, code: "STANTON")
 
