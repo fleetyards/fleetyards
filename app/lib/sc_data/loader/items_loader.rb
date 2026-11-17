@@ -45,7 +45,7 @@ module ScData
             hidden: true,
             category: category(item),
             component_type: item["type"],
-            component_sub_type: item_sub_type(item),
+            component_sub_type: catalogue_sub_type(item),
             tags: item["tags"],
             required_tags: item["required_tags"],
             size: item["size"],
@@ -205,7 +205,7 @@ module ScData
             min_size: loadout["min_size"],
             max_size: loadout["max_size"],
             types: loadout["types"],
-            sub_types: port_sub_types(loadout["sub_types"]),
+            sub_types: bomb_port_sub_types(loadout["sub_types"]),
             port_tags: loadout["port_tags"],
             required_tags: loadout["required_tags"],
             flags: loadout["flags"]

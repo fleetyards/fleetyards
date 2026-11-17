@@ -409,7 +409,7 @@ module ScData
             min_size: item["min_size"],
             max_size: item["max_size"],
             types: item["types"],
-            sub_types: port_sub_types(item["sub_types"]),
+            sub_types: bomb_port_sub_types(item["sub_types"]),
             port_tags: item["port_tags"],
             required_tags: item["required_tags"],
             flags: item["flags"]
@@ -637,13 +637,13 @@ module ScData
       BOMB_TYPE = "Bomb"
       GAME_BOMB_SUB_TYPE = "Utility"
 
-      private def item_sub_type(item)
+      private def catalogue_sub_type(item)
         return item["sub_type"] unless item["type"] == BOMB_TYPE && item["sub_type"] == GAME_BOMB_SUB_TYPE
 
         BOMB_TYPE
       end
 
-      private def port_sub_types(sub_types)
+      private def bomb_port_sub_types(sub_types)
         return sub_types unless sub_types.is_a?(Hash) && sub_types[BOMB_TYPE].is_a?(Array)
 
         sub_types.merge(BOMB_TYPE => sub_types[BOMB_TYPE].map { |sub_type| (sub_type == GAME_BOMB_SUB_TYPE) ? BOMB_TYPE : sub_type })
