@@ -3,7 +3,7 @@
 module Api
   module V1
     class LocationsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show tree contents shops people jump_points]
+      skip_verify_authorized only: %i[index show tree starmap contents shops people jump_points]
 
       PEOPLE_LIMIT = 50
       PEOPLE_MAX_LIMIT = 200
@@ -45,6 +45,11 @@ module Api
 
       def tree
         @tree = ::Locations::Tree.new(find_location).call
+      end
+
+      def starmap
+        @starmap = ::Locations::Starmap.new(find_location)
+        @places = @starmap.call
       end
 
       def contents

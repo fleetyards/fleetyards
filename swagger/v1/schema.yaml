@@ -17530,6 +17530,35 @@ paths:
           "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/locations/{slug}/starmap":
+    get:
+      summary: Location system starmap
+      tags:
+      - Locations
+      operationId: locationStarmap
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationStarmap"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/locations/{slug}/tree":
     get:
       summary: Location system tree
@@ -31738,6 +31767,7 @@ components:
       - oauth-patreon
       - oauth-twitch
       - paint_booth
+      - starmap
       x-enumNames:
       - DRESSING_ROOM
       - FLEET_CONTRACTS
@@ -31767,6 +31797,7 @@ components:
       - OAUTH_PATREON
       - OAUTH_TWITCH
       - PAINT_BOOTH
+      - STARMAP
       title: FeatureFlagName
     FeatureNamesList:
       type: array
@@ -45102,6 +45133,90 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: LocationSortingEnum
+    LocationStarmap:
+      type: object
+      properties:
+        system:
+          "$ref": "#/components/schemas/LocationLink"
+        places:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationStarmapPlace"
+      additionalProperties: false
+      required:
+      - system
+      - places
+      title: LocationStarmap
+    LocationStarmapPlace:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+        parentId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        radius:
+          type:
+          - number
+          - 'null'
+        shownOnStarmap:
+          type: boolean
+        shownWithParentOnly:
+          type: boolean
+        alwaysShown:
+          type: boolean
+        quantumTravelDestination:
+          type: boolean
+        lagrangePoint:
+          type: boolean
+        gateway:
+          type: boolean
+        color:
+          type:
+          - string
+          - 'null'
+        unstable:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - kind
+      - parentName
+      - parentId
+      - position
+      - radius
+      - shownOnStarmap
+      - shownWithParentOnly
+      - alwaysShown
+      - quantumTravelDestination
+      - lagrangePoint
+      - gateway
+      - color
+      - unstable
+      title: LocationStarmapPlace
     LocationTerminal:
       type: object
       properties:
