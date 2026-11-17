@@ -460,6 +460,52 @@ module ScData
         assert_nil location("Stanton1")[:position]
       end
 
+      test "#locations carries a body's starmap texture into the parsed tree" do
+        stanton
+        place("Stanton3_Area18", "Area18", type: "LandingZone", parent: "Stanton1")
+        starmap_materials(
+          "materials/ui/starmap/planetsmoons/stanton/ui_sm_stanton_1_hurston.mtl" => {
+            records: [ref_for("Stanton1"), ref_for("Stanton3_Area18")],
+            maps: {surface: "starmap_materials/ui_sm_stanton_1_hurston.webp", dotgrid: "starmap_materials/dots.webp"}
+          }
+        )
+
+        assert_equal "starmap_materials/ui_sm_stanton_1_hurston.webp", location("Stanton1")[:starmap_texture]
+        assert_nil location("Stanton3_Area18")[:starmap_texture]
+        assert File.file?("#{@base_folder}/parsed/test/starmap_materials/ui_sm_stanton_1_hurston.webp")
+      end
+
+      test "#locations takes no texture from outside the textures folder" do
+        stanton
+        starmap_materials(
+          "materials/hurston.mtl" => {records: [ref_for("Stanton1")], maps: {surface: "starmap_materials/../../secret.webp"}}
+        )
+
+        assert_nil location("Stanton1")[:starmap_texture]
+      end
+
+      test "#locations has no textures for an export without starmap materials" do
+        stanton
+
+        assert_nil location("Stanton1")[:starmap_texture]
+      end
+
+      private def starmap_materials(materials)
+        target = "#{@raw_path}/derived/starmap_materials.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({derivation: {}, materials:}))
+
+        materials.each_value do |material|
+          material[:maps].each_value do |path|
+            next if path.include?("..")
+
+            FileUtils.mkdir_p(File.dirname("#{@raw_path}/derived/#{path}"))
+            File.write("#{@raw_path}/derived/#{path}", "webp")
+          end
+        end
+      end
+
       private def parser
         tags_file
         File.write("#{localization_path}/global.ini", @translations.map { |key, value| "#{key}=#{value}" }.join("\n"))

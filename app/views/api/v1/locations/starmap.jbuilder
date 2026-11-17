@@ -20,4 +20,12 @@ json.places @places do |place|
   json.color location.drawn_color
   json.unstable location.flare_star?
   json.body_type location.body_type
+
+  if location.starmap_texture.attached?
+    json.texture do
+      json.partial! "api/v1/shared/file", record: location, attr: :starmap_texture
+    end
+  else
+    json.texture nil
+  end
 end

@@ -233,9 +233,12 @@ module ScData
       # that changes still replaces what it put there, since the checksum moves
       # with it.
       def attach_icon(record, attachment_name, icon_path)
-        file = parsed_icon(icon_path)
+        attach_parsed_file(record, attachment_name, parsed_icon(icon_path))
+      end
 
-        return if file.blank?
+      # Any file the parser carried into the parsed tree, under the same guard.
+      def attach_parsed_file(record, attachment_name, file)
+        return if file.blank? || !File.file?(file)
 
         attachment = record.public_send(attachment_name)
         checksum = Digest::MD5.file(file).base64digest

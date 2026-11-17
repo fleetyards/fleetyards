@@ -39,6 +39,8 @@ module ScData
           apply_build(location, build_params(item))
         end
 
+        attach_starmap_texture(location, item["starmap_texture"])
+
         (@by_key ||= {})[item["sc_key"]] = location
       end
 
@@ -68,6 +70,16 @@ module ScData
           position: item["position"],
           radius: item["radius"]
         }
+      end
+
+      # The surface the game's own starmap wraps a body in. Not a fact of the
+      # build: a texture is the same on every channel that has the body, so only
+      # the default environment's load sets it and a PTU load cannot swap it.
+      private def attach_starmap_texture(location, path)
+        return unless default_environment?
+        return if path.blank?
+
+        attach_parsed_file(location, :starmap_texture, export_path.join(path).to_s)
       end
 
       private def lookup(key)

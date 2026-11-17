@@ -26,6 +26,11 @@ module ScData
       # from the star. Written by the exporter for the same reason.
       PLACEMENTS_FILE = "derived/starmap.json"
 
+      # The materials the game's starmap draws its bodies with, and the
+      # surface texture of each, keyed by the starmap records that use them.
+      MATERIALS_FILE = "derived/starmap_materials.json"
+      TEXTURES_FOLDER = "starmap_materials"
+
       # The placement's `size` is a radius only for these: Hurston's is its
       # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
       # cluster it measures something else.
@@ -130,6 +135,7 @@ module ScData
       # An export without a starmap leaves no places behind, rather than the
       # last parse's: the parsed-tree floor then sees the catalogue missing.
       def all
+        clear_once("#{export_path}/#{TEXTURES_FOLDER}")
         parsed = locations
 
         return clear_once("#{export_path}/locations") if parsed.blank?
@@ -171,8 +177,40 @@ module ScData
           mission_template_refs: template_refs.to_a.sort,
           facilities: place[:facilities],
           position: placement_of(place)&.dig(:position),
-          radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind]))
+          radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
+          starmap_texture: (starmap_texture(place) if BODY_KINDS.include?(place[:kind]))
         }
+      end
+
+      # Carried into the parsed tree, as artwork is, so a load attaches it from
+      # disk. Two bodies can share one: Pyro V and Ignis do.
+      private def starmap_texture(place)
+        path = Array.wrap(place[:refs]).lazy.filter_map { |ref| surfaces[ref] }.first
+        return if path.blank?
+
+        source = "#{base_path}/derived/#{path}"
+        return unless File.file?(source)
+
+        target = "#{export_path}/#{path}"
+        FileUtils.mkdir_p(File.dirname(target))
+        FileUtils.cp(source, target) unless File.exist?(target)
+
+        path
+      end
+
+      # Record ref => surface texture, as a path under `derived/`.
+      private def surfaces
+        @surfaces ||= begin
+          file = "#{base_path}/#{MATERIALS_FILE}"
+          materials = File.exist?(file) ? JSON.parse(File.read(file))["materials"].to_h : {}
+
+          materials.each_value.each_with_object({}) do |material, map|
+            surface = material.dig("maps", "surface")
+            next if surface.blank? || !surface.start_with?("#{TEXTURES_FOLDER}/") || surface.include?("..")
+
+            Array.wrap(material["records"]).each { |ref| map[ref] ||= surface }
+          end
+        end
       end
 
       # The first of a place's refs placed exactly once. A record placed

@@ -45200,6 +45200,10 @@ components:
           type: boolean
         bodyType:
           "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        texture:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
       additionalProperties: false
       required:
       - id
@@ -45219,6 +45223,7 @@ components:
       - color
       - unstable
       - bodyType
+      - texture
       title: LocationStarmapPlace
     LocationTerminal:
       type: object

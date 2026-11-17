@@ -28,13 +28,16 @@ module V1
           gateway: {type: :boolean},
           color: {type: [:string, :null]},
           unstable: {type: :boolean},
-          bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum
+          bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
+          # The surface the game's own starmap wraps a body in: equirectangular,
+          # poles at the top and bottom edges. Null where the export has none.
+          texture: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
         },
         additionalProperties: false,
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
           shownWithParentOnly alwaysShown quantumTravelDestination lagrangePoint
-          gateway color unstable bodyType
+          gateway color unstable bodyType texture
         ]
       })
     end

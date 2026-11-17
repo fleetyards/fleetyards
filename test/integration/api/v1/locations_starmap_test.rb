@@ -70,6 +70,22 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/starmap serves a body's starmap texture where it has one" do
+    @hurston.starmap_texture.attach(
+      io: File.open(Rails.root.join("test/fixtures/sc_data/parsed/test/starmap_materials/ui_sm_stanton_1_hurston.webp")),
+      filename: "ui_sm_stanton_1_hurston.webp",
+      content_type: "image/webp"
+    )
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      places = parsed_body["places"].index_by { |place| place["name"] }
+
+      assert_equal "ui_sm_stanton_1_hurston.webp", places.dig("Hurston", "texture", "name")
+      assert places.dig("Hurston", "texture", "url").present?
+      assert_nil places.dig("Stanton", "texture")
+    end
+  end
+
   test "GET /locations/{slug}/starmap reads the position of the served build" do
     @hurston.builds.sole.update!(position: [1.0, 2.0, 3.0])
 

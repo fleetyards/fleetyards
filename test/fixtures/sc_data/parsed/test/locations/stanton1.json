@@ -16,5 +16,6 @@
   "quantum_travel_destination": true,
   "mission_template_refs": [],
   "position": [12850457093.0, 0.0, 0.0],
-  "radius": 1000000.0
+  "radius": 1000000.0,
+  "starmap_texture": "starmap_materials/ui_sm_stanton_1_hurston.webp"
 }

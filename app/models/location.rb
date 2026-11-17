@@ -65,6 +65,8 @@ class Location < ApplicationRecord
   # Curated, where everything else is loaded: no game file carries a picture
   # of a planet.
   has_one_attached :image
+  # The surface the game's own starmap wraps the body in, from the export.
+  has_one_attached :starmap_texture
 
   before_save :update_slugs
 

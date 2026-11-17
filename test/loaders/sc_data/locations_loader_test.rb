@@ -18,6 +18,10 @@ module ScData
         fixture_loader(::ScData::Loader::LocationsLoader)
       end
 
+      def default_loader
+        loader.tap { |instance| instance.define_singleton_method(:default_environment?) { true } }
+      end
+
       test "#all loads every place with a current build" do
         loader.all
 
@@ -37,6 +41,31 @@ module ScData
         assert_equal planet.position, planet.builds.sole.position
         assert_equal 1_000_000.0, planet.radius
         assert_nil Location.find_by!(sc_key: "StantonSolarSystem").position
+      end
+
+      test "#all attaches the starmap texture the parse carried for a body" do
+        default_loader.all
+
+        planet = Location.find_by!(sc_key: "Stanton1")
+
+        assert planet.starmap_texture.attached?
+        assert_equal "ui_sm_stanton_1_hurston.webp", planet.starmap_texture.filename.to_s
+        refute Location.find_by!(sc_key: "StantonSolarSystem").starmap_texture.attached?
+      end
+
+      test "#all keeps the texture's blob when a load finds the same file" do
+        default_loader.all
+        blob = Location.find_by!(sc_key: "Stanton1").starmap_texture.blob
+
+        default_loader.all
+
+        assert_equal blob, Location.find_by!(sc_key: "Stanton1").starmap_texture.blob
+      end
+
+      test "#all leaves the texture to the default environment's load" do
+        loader.all
+
+        refute Location.find_by!(sc_key: "Stanton1").starmap_texture.attached?
       end
 
       test "#all loads a place's hangars and pads as a fact of the build" do
