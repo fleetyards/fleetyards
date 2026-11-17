@@ -189,16 +189,18 @@
       "buyList": {
         "title": "Buy list",
         "empty": "Nothing to buy yet. Decided ships with a finished route show what they need here.",
-        "sections": {
-          "ccus": "Upgrades from the store",
-          "buybacks": "Buy-backs",
-          "ships": "Ships from the store",
-          "ingame": "Earned in game"
+        "kinds": {
+          "ccu": "Upgrades from the store",
+          "buyback": "Buy-backs",
+          "ship": "Ships from the store",
+          "ingame": "Earned in game",
+          "extra": "Paints and add-ons"
         },
         "notOnSale": "Not on sale right now",
-        "usesToken": "Pays with a buy-back token",
-        "total": "Total",
-        "unknownPrices": "Some prices are unknown"
+        "usesToken": {
+          "one": "%{count} paid with a buy-back token",
+          "other": "%{count} paid with buy-back tokens"
+        }
       },
       "comparison": {
         "title": "Compared with your hangar",

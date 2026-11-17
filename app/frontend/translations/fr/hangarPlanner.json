@@ -189,16 +189,18 @@
       "buyList": {
         "title": "Liste d'achats",
         "empty": "Rien à acheter pour l'instant. Les vaisseaux décidés avec un itinéraire terminé affichent ici ce qu'il leur faut.",
-        "sections": {
-          "ccus": "Améliorations de la boutique",
-          "buybacks": "Rachats",
-          "ships": "Vaisseaux de la boutique",
-          "ingame": "Obtenus en jeu"
+        "kinds": {
+          "ccu": "Améliorations de la boutique",
+          "buyback": "Rachats",
+          "ship": "Vaisseaux de la boutique",
+          "ingame": "Obtenus en jeu",
+          "extra": "Peintures et accessoires"
         },
         "notOnSale": "Pas en vente actuellement",
-        "usesToken": "Payé avec un jeton de rachat",
-        "total": "Total",
-        "unknownPrices": "Certains prix sont inconnus"
+        "usesToken": {
+          "one": "%{count} payé avec un jeton de rachat",
+          "other": "%{count} payés avec des jetons de rachat"
+        }
       },
       "comparison": {
         "title": "Comparé à votre hangar",

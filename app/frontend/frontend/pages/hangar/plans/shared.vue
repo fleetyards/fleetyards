@@ -54,7 +54,7 @@ const slotCost = (slotId: string) =>
       </section>
       <aside class="plan-side">
         <SummaryPanel :summary="summary" />
-        <BuyList :slots="plan.slots" />
+        <BuyList :purchases="summary?.purchases" :slots="plan.slots" />
       </aside>
     </div>
   </template>

@@ -523,7 +523,11 @@ const onDestroy = async () => {
 
       <aside class="plan-side">
         <SummaryPanel :summary="summary" :loading="summaryFetching" />
-        <BuyList :slots="plan.slots" />
+        <BuyList
+          :purchases="summary?.purchases"
+          :slots="plan.slots"
+          :loading="summaryFetching"
+        />
 
         <Panel :variant="PanelVariantsEnum.SLIM" data-test="hangar-plan-melts">
           <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>

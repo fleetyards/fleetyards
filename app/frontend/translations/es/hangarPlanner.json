@@ -189,16 +189,18 @@
       "buyList": {
         "title": "Lista de compra",
         "empty": "Aún no hay nada que comprar. Las naves decididas con una ruta terminada muestran aquí lo que necesitan.",
-        "sections": {
-          "ccus": "Mejoras de la tienda",
-          "buybacks": "Recompras",
-          "ships": "Naves de la tienda",
-          "ingame": "Obtenidas en el juego"
+        "kinds": {
+          "ccu": "Mejoras de la tienda",
+          "buyback": "Recompras",
+          "ship": "Naves de la tienda",
+          "ingame": "Obtenidas en el juego",
+          "extra": "Pinturas y complementos"
         },
         "notOnSale": "No está a la venta ahora",
-        "usesToken": "Se paga con una ficha de recompra",
-        "total": "Total",
-        "unknownPrices": "Algunos precios son desconocidos"
+        "usesToken": {
+          "one": "%{count} pagada con una ficha de recompra",
+          "other": "%{count} pagadas con fichas de recompra"
+        }
       },
       "comparison": {
         "title": "Comparado con tu hangar",

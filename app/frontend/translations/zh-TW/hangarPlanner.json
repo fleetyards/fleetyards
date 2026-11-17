@@ -189,16 +189,18 @@
       "buyList": {
         "title": "購買清單",
         "empty": "暫無需要購買的內容。已決定且路線完整的艦船會在此顯示所需購買項。",
-        "sections": {
-          "ccus": "商店升級",
-          "buybacks": "回購",
-          "ships": "商店艦船",
-          "ingame": "遊戲內獲得"
+        "kinds": {
+          "ccu": "商店升級",
+          "buyback": "回購",
+          "ship": "商店艦船",
+          "ingame": "遊戲內獲得",
+          "extra": "塗裝與附加項"
         },
         "notOnSale": "目前未在售",
-        "usesToken": "使用回購代幣支付",
-        "total": "合計",
-        "unknownPrices": "部分價格未知"
+        "usesToken": {
+          "one": "%{count} 項使用回購代幣支付",
+          "other": "%{count} 項使用回購代幣支付"
+        }
       },
       "comparison": {
         "title": "與你的機庫比較",
