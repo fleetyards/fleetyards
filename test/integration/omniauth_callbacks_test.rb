@@ -103,18 +103,27 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # The avatar is the provider's pick, not the user's, so one the app refuses
-  # to store must not cost them the sign-in. Nothing is fetched either: the URL
-  # here points nowhere, and reaching it would fail the test.
-  test "an avatar the app will not store is passed over rather than failing the sign in" do
-    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME, image: "https://example.com/avatar.svg")
+  # A storage outage while the provider's picture is uploaded must not cost
+  # the sign-in, so the picture is left to a job.
+  test "the provider's avatar is fetched after the sign in rather than during it" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME, image: "https://example.com/avatar.png")
 
-    assert_difference -> { User.count }, 1 do
+    assert_difference -> { AttachRemoteAvatarJob.jobs.size }, 1 do
       post "/users/auth/google/callback"
     end
 
-    assert_response :redirect
-    assert_not_predicate User.last.avatar, :attached?
+    assert_redirected_to frontend_hangar_url
+    assert_equal [User.last.id, "https://example.com/avatar.png"], AttachRemoteAvatarJob.jobs.last["args"]
+  end
+
+  test "a user who already has an avatar keeps it" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME, image: "https://example.com/avatar.png")
+    user = create(:user, email: EMAIL)
+    user.avatar.attach(io: file_fixture("test.png").open, filename: "test.png", content_type: "image/png")
+
+    assert_no_difference -> { AttachRemoteAvatarJob.jobs.size } do
+      post "/users/auth/google/callback"
+    end
   end
 
   ["/login/", "/login", "/login/?foo=bar", "/sign-up/"].each do |path|
