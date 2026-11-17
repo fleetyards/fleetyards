@@ -62,7 +62,6 @@ const paintRocky = (
   next: () => number,
 ) => {
   context.fillStyle = mix(color, 0.84, "#000");
-  context.filter = "blur(3px)";
 
   for (let count = 0; count < 7; count += 1) {
     const x = next() * WIDTH;
@@ -105,7 +104,6 @@ const paintRocky = (
   }
 
   context.globalAlpha = 1;
-  context.filter = "none";
 };
 
 // Bands of the colour, lighter and darker, with a storm.
@@ -145,7 +143,6 @@ const paintBands = (
   }
 
   const stormX = WIDTH * (0.15 + next() * 0.7);
-  context.filter = "blur(4px)";
   context.fillStyle = mix(color, 0.55, "#fff");
   wrapped((offset) => {
     context.beginPath();
@@ -160,7 +157,6 @@ const paintBands = (
     );
     context.fill();
   });
-  context.filter = "none";
 };
 
 // Pits lit the way a low sun lights them: the wall facing the light in
@@ -173,7 +169,6 @@ const paintCraters = (
   const shadow = mix(color, 0.78, "#000");
   const rim = mix(color, 0.88, "#fff");
   const floor = mix(color, 0.92, "#000");
-  context.filter = "blur(2px)";
 
   for (let count = 0; count < 46; count += 1) {
     const x = next() * WIDTH;
@@ -205,8 +200,6 @@ const paintCraters = (
       }
     });
   }
-
-  context.filter = "none";
 };
 
 // A planet covered by one city: a lattice of districts, about as many across
@@ -246,12 +239,26 @@ export const surfaceTexture = (
     context.fillStyle = color;
     context.fillRect(0, 0, WIDTH, HEIGHT);
 
-    if (surface === "rocky") paintRocky(context, color, next);
-    if (surface === "gas") paintBands(context, color, next);
-    if (surface === "cratered") paintCraters(context, color, next);
-    if (surface === "city") paintCity(context, color);
+    // Shapes are drawn hard-edged on a layer of their own and softened in one
+    // pass as it is laid down: a blur on every crater is thousands of blurs
+    // a system, which stalls the page while it paints.
+    const layer = canvas();
+    const shapes = layer.getContext("2d");
+
+    if (shapes) {
+      if (surface === "rocky") paintRocky(shapes, color, next);
+      if (surface === "gas" || surface === "ice") {
+        paintBands(shapes, color, next);
+      }
+      if (surface === "cratered") paintCraters(shapes, color, next);
+      if (surface === "city") paintCity(shapes, color);
+
+      context.filter = surface === "city" ? "none" : "blur(2px)";
+      context.drawImage(layer, 0, 0);
+      context.filter = "none";
+    }
+
     if (surface === "ice") {
-      paintBands(context, color, next);
       // The same bands, washed out.
       context.globalAlpha = 0.4;
       context.fillStyle = color;
