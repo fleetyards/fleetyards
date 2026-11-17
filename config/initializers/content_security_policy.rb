@@ -16,9 +16,9 @@ Rails.application.configure do
     admin_endpoint = "#{admin_uri.scheme}://#{admin_uri.host}"
     cdn_endpoint = Rails.configuration.app.cdn_endpoint || FRONTEND_ENDPOINT
     legacy_cdn_endpoint = Rails.configuration.app.legacy_cdn_endpoint || FRONTEND_ENDPOINT
-    s3_protocol = Rails.application.credentials.s3_protocol
-    s3_bucket = Rails.application.credentials.s3_bucket
-    s3_host = Rails.application.credentials.s3_endpoint
+    s3_protocol = Rails.app.creds.option(:s3_protocol)
+    s3_bucket = Rails.app.creds.option(:s3_bucket)
+    s3_host = Rails.app.creds.option(:s3_endpoint)
     s3_endpoint = "#{s3_protocol}://#{s3_bucket}.#{s3_host}" if s3_protocol && s3_bucket && s3_host
     storage_cdn_endpoint = Rails.configuration.app.storage_cdn_endpoint
 

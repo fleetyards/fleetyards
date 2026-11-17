@@ -8,11 +8,11 @@ local:
 
 cloud:
   service: S3
-  endpoint: <%= Rails.application.credentials.s3_protocol %>://<%= Rails.application.credentials.s3_endpoint %>
-  access_key_id: <%= Rails.application.credentials.s3_access_key %>
-  secret_access_key: <%= Rails.application.credentials.s3_secret_key %>
-  bucket: <%= Rails.application.credentials.s3_bucket %>
-  region: unused
+  endpoint: <%= Rails.app.creds.option(:s3_protocol) %>://<%= Rails.app.creds.option(:s3_endpoint) %>
+  access_key_id: <%= Rails.app.creds.option(:s3_access_key) %>
+  secret_access_key: <%= Rails.app.creds.option(:s3_secret_key) %>
+  bucket: <%= Rails.app.creds.option(:s3_bucket) %>
+  region: <%= Rails.app.creds.option(:s3_region, default: "unused") %>
   public: true
   upload:
     acl: "public-read"
