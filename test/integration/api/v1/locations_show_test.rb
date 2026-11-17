@@ -48,6 +48,18 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug} returns where the system places it" do
+    @delamar.builds.sole.update!(position: [-1.5e10, 7.2e9, 0.0])
+
+    assert_api_response :get, 200, params: {slug: "delamar"} do
+      assert_equal [-1.5e10, 7.2e9, 0.0], parsed_body["position"]
+    end
+
+    assert_api_response :get, 200, params: {slug: "levski"} do
+      assert_nil parsed_body["position"]
+    end
+  end
+
   test "GET /locations/{slug} counts the places inside and names its terminals" do
     assert_api_response :get, 200, params: {slug: "levski"} do
       assert_equal 1, parsed_body["childrenCount"]

@@ -1,0 +1,14 @@
+{
+  "code": "MAGNUS",
+  "name": "Magnus",
+  "position": [
+    47.0,
+    -1.0,
+    20.0
+  ],
+  "system_type": "single_star",
+  "affiliations": [
+    "UEE"
+  ],
+  "in_game": false
+}

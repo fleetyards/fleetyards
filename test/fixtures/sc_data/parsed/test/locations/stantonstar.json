@@ -14,5 +14,6 @@
   "shown_with_parent_only": false,
   "always_shown": false,
   "quantum_travel_destination": false,
-  "mission_template_refs": []
+  "mission_template_refs": [],
+  "position": [0.0, 0.0, 0.0]
 }

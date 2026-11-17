@@ -1,0 +1,14 @@
+{
+  "code": "STANTON",
+  "name": "Stanton",
+  "position": [
+    49.534718,
+    -2.6339645,
+    16.475292
+  ],
+  "system_type": "single_star",
+  "affiliations": [
+    "UEE"
+  ],
+  "in_game": true
+}

@@ -28,6 +28,16 @@ module ScData
         assert_equal slugs.uniq.size, slugs.size
       end
 
+      test "#all loads a place's position as a fact of the build" do
+        loader.all
+
+        planet = Location.find_by!(sc_key: "Stanton1")
+
+        assert_equal [12_850_457_093.0, 0.0, 0.0], planet.position
+        assert_equal planet.position, planet.builds.sole.position
+        assert_nil Location.find_by!(sc_key: "StantonSolarSystem").position
+      end
+
       test "#all loads a place's hangars and pads as a fact of the build" do
         loader.all
 

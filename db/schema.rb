@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_17_100100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2150,6 +2150,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
+  create_table "jump_tunnels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "entry_system_id", null: false
+    t.uuid "exit_system_id", null: false
+    t.string "size"
+    t.boolean "bidirectional", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_system_id", "exit_system_id"], name: "index_jump_tunnels_on_entry_system_id_and_exit_system_id", unique: true
+    t.index ["entry_system_id"], name: "index_jump_tunnels_on_entry_system_id"
+    t.index ["exit_system_id"], name: "index_jump_tunnels_on_exit_system_id"
+  end
+
   create_table "landing_services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -2201,6 +2213,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.jsonb "resources", default: [], null: false
     t.string "body_type"
     t.jsonb "facilities"
+    t.float "position", array: true
     t.index ["environment", "name"], name: "index_location_builds_on_environment_and_name"
     t.index ["environment", "version"], name: "index_location_builds_on_environment_and_version"
     t.index ["location_id", "environment", "version"], name: "index_location_builds_on_location_and_build", unique: true
@@ -2231,6 +2244,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.string "body_type"
     t.jsonb "appearance_seed", default: {}, null: false
     t.jsonb "facilities"
+    t.float "position", array: true
     t.index ["map_parent_id"], name: "index_locations_on_map_parent_id"
     t.index ["mission_template_refs"], name: "index_locations_on_mission_template_refs", using: :gin
     t.index ["name"], name: "index_locations_on_name"
@@ -3093,6 +3107,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "star_systems", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code", null: false
+    t.string "name", null: false
+    t.float "position", null: false, array: true
+    t.string "system_type"
+    t.text "affiliations", default: [], null: false, array: true
+    t.boolean "in_game", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_star_systems_on_code", unique: true
+  end
+
   create_table "supporter_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.integer "amount_cents", null: false
@@ -3674,6 +3700,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
   add_foreign_key "item_prices", "shops", on_delete: :nullify
   add_foreign_key "item_prices", "terminals", on_delete: :nullify
+  add_foreign_key "jump_tunnels", "star_systems", column: "entry_system_id", on_delete: :cascade
+  add_foreign_key "jump_tunnels", "star_systems", column: "exit_system_id", on_delete: :cascade
   add_foreign_key "location_builds", "locations", on_delete: :cascade
   add_foreign_key "locations", "locations", column: "map_parent_id", on_delete: :nullify
   add_foreign_key "locations", "locations", column: "parent_id", on_delete: :nullify

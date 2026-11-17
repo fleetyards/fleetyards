@@ -19411,6 +19411,14 @@ components:
           type: boolean
         quantumTravelDestination:
           type: boolean
+        position:
+          type:
+          - array
+          - 'null'
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
         parent:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"

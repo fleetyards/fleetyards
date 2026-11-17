@@ -13122,6 +13122,21 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/galaxy":
+    get:
+      summary: Star systems and jump tunnels
+      tags:
+      - Locations
+      operationId: galaxy
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Galaxy"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/game-events":
     get:
       summary: Game events list
@@ -38867,6 +38882,22 @@ components:
       required:
       - capacity
       title: FuelTank
+    Galaxy:
+      type: object
+      properties:
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StarSystem"
+        tunnels:
+          type: array
+          items:
+            "$ref": "#/components/schemas/JumpTunnel"
+      additionalProperties: false
+      required:
+      - systems
+      - tunnels
+      title: Galaxy
     Gallery:
       type: object
       properties:
@@ -44265,6 +44296,24 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    JumpTunnel:
+      type: object
+      properties:
+        entryCode:
+          type: string
+        exitCode:
+          type: string
+        size:
+          "$ref": "#/components/schemas/NullableJumpTunnelSizeEnum"
+        bidirectional:
+          type: boolean
+      additionalProperties: false
+      required:
+      - entryCode
+      - exitCode
+      - size
+      - bidirectional
+      title: JumpTunnel
     LandingService:
       type: object
       properties:
@@ -44515,6 +44564,14 @@ components:
           type: boolean
         quantumTravelDestination:
           type: boolean
+        position:
+          type:
+          - array
+          - 'null'
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
         parent:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
@@ -49734,6 +49791,21 @@ components:
       - 30_DAYS
       - 'NULL'
       title: NullableItemPriceTimeRangeEnum
+    NullableJumpTunnelSizeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - small
+      - medium
+      - large
+      -
+      x-enumNames:
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - 'NULL'
+      title: NullableJumpTunnelSizeEnum
     NullableLocationBodyTypeEnum:
       type:
       - string
@@ -49792,6 +49864,19 @@ components:
       - PILOT
       - 'NULL'
       title: NullableSlotRoleEnum
+    NullableStarSystemTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - single_star
+      - binary
+      -
+      x-enumNames:
+      - SINGLE_STAR
+      - BINARY
+      - 'NULL'
+      title: NullableStarSystemTypeEnum
     NullableTradeRouteLoadLimitEnum:
       type:
       - string
@@ -52723,6 +52808,36 @@ components:
       - code
       - message
       title: StandardMessage
+    StarSystem:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        systemType:
+          "$ref": "#/components/schemas/NullableStarSystemTypeEnum"
+        affiliations:
+          type: array
+          items:
+            type: string
+        inGame:
+          type: boolean
+      additionalProperties: false
+      required:
+      - code
+      - name
+      - position
+      - systemType
+      - affiliations
+      - inGame
+      title: StarSystem
     Stats:
       type: object
       properties:

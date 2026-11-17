@@ -52,6 +52,7 @@ The later catalogues are curated the same way, by branch rather than by volume:
 | `manufacturers/` | `sasu` and `roo` are both Sakura Sun, which is the de-duplication; `roo` names no logo where `sasu` does, which is the load-order trap; `mxox`, `prar` and `aeg` the corrected names; `taln` the icon every artwork test attaches |
 | `blueprints/` + `blueprint_pools/` | two recipes and the Foxwell pool that hands one of them out, so a load walks the source side as well as the recipe side |
 | `locations/` | Stanton down to Lorville, where the map parent is the parent; Nyx down to Levski, drawn under the Nyx star while it sits in Delamar; the two Outpost 54 facilities on Aberdeen, which share a name and a parent; Pyro down to PYR2 L4, the place the Firesale contracts' templates stand for |
+| `star_systems/`, `jump_tunnels/` | Stanton and Pyro in the game, Magnus not, and a tunnel from Stanton to each |
 | `equipment/` | a rifle, a skin of it and its magazine, two sights, two medical consumables, a keycard, the template that borrows a name, a helmet, an armour suit, three skins and a dev copy, and `behr_ltp_kinetic_01`, the unmeasured placeholder that has to stay blank |
 
 `parsed/empty/` is a second environment holding nothing at all — what a build

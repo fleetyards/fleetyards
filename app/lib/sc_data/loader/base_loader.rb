@@ -34,6 +34,7 @@ module ScData
           ::ScData::Loader::EquipmentLoader,
           ::ScData::Loader::BlueprintsLoader,
           ::ScData::Loader::LocationsLoader,
+          ::ScData::Loader::GalaxyLoader,
           ::ScData::Loader::GameMissionsLoader,
           ::ScData::Loader::FactionsLoader
         ].to_h do |loader_class|
