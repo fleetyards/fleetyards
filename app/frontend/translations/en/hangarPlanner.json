@@ -310,6 +310,7 @@
         "title": "Upgrades you hold can make routes cheaper",
         "fit": "%{upgrade} fits the route to the %{ship}",
         "saves": "saves %{amount}",
+        "credit": "gives up %{amount} credit",
         "apply": "Use it",
         "applied": "The route to the %{ship} now uses the upgrade."
       },

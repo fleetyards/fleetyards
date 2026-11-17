@@ -35,6 +35,7 @@ const resources = ref<HangarPlanResources>({
       name: "Upgrade - Aurora to Taurus",
       quantity: 1,
       usedCount: 0,
+      pledgeValue: 60,
       fromModel: aurora,
       toModel: taurus,
     },
@@ -102,6 +103,9 @@ describe("Hangar/Planner/UpgradeFits", () => {
     expect(fit.text()).toContain("Aurora → Taurus");
     expect(fit.text()).toContain("Carrack");
     expect(fit.text()).toContain("$120");
+    expect(
+      fit.find('[data-test="hangar-plan-upgrade-fit-credit"]').text(),
+    ).toBe("gives up $60 credit");
 
     await fit
       .find('[data-test="hangar-plan-upgrade-fit-apply"]')

@@ -310,6 +310,7 @@
         "title": "你持有的升级可以让途径更便宜",
         "fit": "%{upgrade} 适用于通往 %{ship} 的途径",
         "saves": "节省 %{amount}",
+        "credit": "放弃 %{amount} 积分",
         "apply": "使用",
         "applied": "通往 %{ship} 的途径现已使用该升级。"
       },

@@ -310,6 +310,7 @@
         "title": "Deine Upgrades können Wege günstiger machen",
         "fit": "%{upgrade} passt in den Weg zur %{ship}",
         "saves": "spart %{amount}",
+        "credit": "verzichtet auf %{amount} Guthaben",
         "apply": "Verwenden",
         "applied": "Der Weg zur %{ship} nutzt jetzt das Upgrade."
       },
