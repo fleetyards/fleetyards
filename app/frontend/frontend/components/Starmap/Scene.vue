@@ -6,22 +6,20 @@ export default {
 
 <script lang="ts" setup>
 import {
-  type Texture,
   AmbientLight,
   Color,
-  DirectionalLight,
   Group,
-  Matrix4,
   Mesh,
   MeshBasicMaterial,
   MeshLambertMaterial,
-  type Object3D,
   PerspectiveCamera,
   PointLight,
   SphereGeometry,
   Vector2,
   Vector3,
   type Material,
+  type Object3D,
+  type Texture,
 } from "three";
 import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
@@ -34,69 +32,78 @@ import type { StarmapItem, StarmapRole, StarmapScene } from "./layout";
 
 type Props = {
   scene: StarmapScene;
-  // What the camera frames: a new level is framed afresh, while a scene that
-  // only changes because more data arrived keeps the reader's view.
-  levelKey: string;
-  selectedKey: string | null;
+  // What the camera is on: it orbits this and every flight ends at it.
+  focusKey: string | null;
 };
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  select: [item: StarmapItem | null];
+  // The reader picked something, or zoomed far enough out of what they were
+  // on that the map stepped back out to what it belongs to.
+  focus: [item: StarmapItem];
+  // A system on the ring was opened.
   enter: [item: StarmapItem];
 }>();
 
 const { camera, controls, renderer } = useTres();
 const { onBeforeRender } = useLoop();
 
-// The smallest a thing is drawn, in pixels across: at true scale a planet is a
-// thousandth of a unit in its system and would never be seen.
+// The smallest a thing is drawn, in pixels across: at true scale a planet seen
+// from across its system is a fraction of a pixel.
 const MIN_PIXELS: Record<StarmapRole, number> = {
-  system: 16,
+  system: 18,
   star: 30,
   planet: 24,
   moon: 15,
-  place: 4,
+  place: 5,
 };
 
-// How near the pointer has to come to a thing to pick it, in pixels.
-const PICK_PIXELS = 12;
+// How near the pointer has to come to a thing to pick it, in pixels, and how
+// close two have to be to count as one spot.
+const PICK_PIXELS = 14;
 const TIE_PIXELS = 3;
 
-const sphere = new SphereGeometry(1, 64, 32);
-const group = new Group();
-const meshes = new Map<string, Object3D>();
-const lineMaterials: LineMaterial[] = [];
-const textures: Texture[] = [];
-const suns: StarmapSun[] = [];
-// The bodies that turn: every planet and moon but the one whose places are
-// shown on it, which would carry them off the ground they stand on.
-const turning: Object3D[] = [];
-
-const disposeGroup = () => {
-  group.traverse((object) => {
-    if (object instanceof Mesh) {
-      if (object.geometry !== sphere) object.geometry.dispose();
-      (object.material as Material).dispose();
-    }
-  });
-  for (const texture of textures) texture.dispose();
-  for (const star of suns) star.dispose();
-  group.clear();
-  meshes.clear();
-  lineMaterials.length = 0;
-  textures.length = 0;
-  suns.length = 0;
-  turning.length = 0;
-};
+// How long a flight takes, in seconds.
+const FLIGHT_SECONDS = 1.3;
 
 // One turn of a body's surface, as on the location pages.
 const TURN_SECONDS = 90;
 
-const reducedMotion = () =>
-  typeof window !== "undefined" &&
-  !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+// What is near a body comes into view within this many of its radii, and is
+// gone again at twice that. A moon is near its planet much further out.
+const PLACES_NEAR = 14;
+const MOONS_NEAR = 140;
+
+const items = computed(() => props.scene.items);
+const byKey = computed(
+  () => new Map(props.scene.items.map((entry) => [entry.key, entry])),
+);
+
+// --- The world ---
+//
+// Everything is drawn around a floating origin: the world group is moved so
+// that the point the camera orbits sits at zero. Positions stay exact in
+// JavaScript's doubles, and the GPU only ever sees what is near the camera,
+// so an outpost a few hundred metres off a planet sixty gigametres from its
+// star does not shake.
+
+const world = new Group();
+const bodies = new Group();
+world.add(bodies);
+
+const origin = new Vector3();
+
+// A body is seen close up; a place is a dot a few pixels across and needs a
+// fraction of the triangles, which a system of eight hundred of them adds up.
+const sphere = new SphereGeometry(1, 64, 32);
+const dot = new SphereGeometry(1, 12, 8);
+const meshes = new Map<string, Object3D>();
+const fades = new Map<string, number>();
+const lineMaterials: LineMaterial[] = [];
+const orbitLines: { body: string; material: LineMaterial; base: number }[] = [];
+const textures: Texture[] = [];
+const suns: StarmapSun[] = [];
 
 const LINE_COLOR = new Color(0x5aafd4);
 // The stage's backdrop, near enough: a line is mixed against it rather than
@@ -104,18 +111,20 @@ const LINE_COLOR = new Color(0x5aafd4);
 // a string of brighter dots.
 const BACKDROP = new Color(0x0a1626);
 
+const lineColor = (amount: number) => BACKDROP.clone().lerp(LINE_COLOR, amount);
+
 // Lines a pixel and a half wide whatever the screen's pixel ratio: a plain
 // three.js line is one device pixel, which a high-density screen all but
 // loses.
 const line = (
   points: number[],
-  { opacity, dashed = false }: { opacity: number; dashed?: boolean },
+  { amount, dashed = false }: { amount: number; dashed?: boolean },
 ) => {
   const geometry = new LineGeometry();
   geometry.setPositions(points);
 
   const material = new LineMaterial({
-    color: BACKDROP.clone().lerp(LINE_COLOR, opacity),
+    color: lineColor(amount),
     linewidth: 1.5,
     dashed,
     dashScale: 1,
@@ -126,7 +135,7 @@ const line = (
 
   const object = new Line2(geometry, material);
   object.computeLineDistances();
-  return object;
+  return { object, material };
 };
 
 // Enough that the widest orbit on a wide screen still reads as a circle.
@@ -141,157 +150,207 @@ const circle = (radius: number) => {
   return points;
 };
 
-const BODY_ROLES = new Set<StarmapRole>(["planet", "moon"]);
+const disposeBodies = () => {
+  bodies.traverse((object) => {
+    if (object instanceof Mesh) {
+      if (object.geometry !== sphere && object.geometry !== dot) {
+        object.geometry.dispose();
+      }
+      (object.material as Material).dispose();
+    }
+  });
+  for (const texture of textures) texture.dispose();
+  for (const star of suns) star.dispose();
+  bodies.clear();
+  meshes.clear();
+  fades.clear();
+  lineMaterials.length = 0;
+  orbitLines.length = 0;
+  textures.length = 0;
+  suns.length = 0;
+};
 
 const build = (scene: StarmapScene) => {
-  disposeGroup();
+  disposeBodies();
 
-  for (const radius of scene.orbits) {
-    group.add(line(circle(radius), { opacity: 0.22 }));
+  for (const orbit of scene.orbits) {
+    const center = byKey.value.get(orbit.center);
+    if (!center) continue;
+
+    const base = byKey.value.get(orbit.body)?.role === "moon" ? 0.18 : 0.24;
+    const { object, material } = line(circle(orbit.radius), { amount: base });
+    // Drawn around its centre, so a moon's orbit stays exact next to its
+    // planet rather than inheriting the planet's distance from the star.
+    object.position.set(...center.position);
+    orbitLines.push({ body: orbit.body, material, base });
+    bodies.add(object);
   }
 
   for (const link of scene.links) {
-    group.add(
+    bodies.add(
       line([...link.from, ...link.to], {
-        opacity: link.temporary ? 0.3 : 0.45,
+        amount: link.temporary ? 0.3 : 0.45,
         dashed: link.temporary,
-      }),
+      }).object,
     );
   }
 
-  // Bodies are lit from their star: around a body from the star's direction,
-  // in a system from the star itself.
-  if (scene.sun) {
-    const light = new DirectionalLight(0xffffff, 1.6);
-    light.position.set(...scene.sun).normalize();
-    group.add(light);
-  } else {
-    group.add(new PointLight(0xffffff, 1.6, 0, 0));
+  if (scene.kind === "system") {
+    bodies.add(new PointLight(0xffffff, 1.6, 0, 0));
   }
   // Enough that the night side still shows its surface: this is a map, and a
   // body half lost in the dark is half unreadable.
-  group.add(new AmbientLight(0xffffff, 1.3));
+  bodies.add(new AmbientLight(0xffffff, 1.3));
 
   for (const entry of scene.items) {
     if (entry.role === "star") {
       const star = sun(entry.color, entry.unstable);
       star.object.position.set(...entry.position);
       suns.push(star);
-      group.add(star.object);
+      bodies.add(star.object);
       meshes.set(entry.key, star.object);
       continue;
     }
 
-    const color = new Color(entry.color);
     let material: Material;
 
-    if (entry.surface && BODY_ROLES.has(entry.role)) {
+    if (entry.surface) {
       const map = surfaceTexture(entry.surface, entry.color, entry.slug);
       textures.push(map);
-      material = new MeshLambertMaterial({ map });
+      material = new MeshLambertMaterial({ map, transparent: true });
     } else {
       material = new MeshBasicMaterial({
-        color,
-        transparent: entry.role === "place",
-        opacity: entry.role === "place" ? 0.9 : 1,
+        color: new Color(entry.color),
+        transparent: true,
+        opacity: 0.9,
       });
     }
 
-    const mesh = new Mesh(sphere, material);
-    if (entry.surface && !isCentre(entry)) turning.push(mesh);
+    const mesh = new Mesh(entry.surface ? sphere : dot, material);
     mesh.position.set(...entry.position);
-    mesh.userData.key = entry.key;
-    group.add(mesh);
+    bodies.add(mesh);
     meshes.set(entry.key, mesh);
   }
 };
 
-const isCentre = (entry: StarmapItem) =>
-  !!props.scene.occluder && entry.position.every((value) => value === 0);
-
-// --- Camera ---
-
-const goal = {
-  target: new Vector3(),
-  position: new Vector3(),
-  active: false,
-};
+// --- Flying ---
 
 const UP = new Vector3(0, 1, 0);
 
-// Where the camera looks from, as a direction from the centre. A body is seen
-// from its star's side and a little off it, so it shows its day side with the
-// night drawing in at one edge.
-const viewpoint = (scene: StarmapScene) => {
-  if (!scene.sun) return new Vector3(0, 0.6, 1.1).normalize();
+const vector = (entry: StarmapItem) => new Vector3(...entry.position);
 
-  const towardSun = new Vector3(...scene.sun).setY(0).normalize();
-  const aside = new Vector3().crossVectors(UP, towardSun);
+const anchorOf = (entry: StarmapItem) =>
+  entry.anchor ? byKey.value.get(entry.anchor) : undefined;
 
-  return towardSun
-    .multiplyScalar(0.8)
-    .addScaledVector(aside, 0.55)
-    .addScaledVector(UP, 0.5)
-    .normalize();
-};
+const overview = () => ({
+  direction: new Vector3(0, 0.55, 1).normalize(),
+  distance: props.scene.extent * 1.35,
+});
 
-const frame = (scene: StarmapScene) => {
-  const extent = scene.extent;
-  goal.target.set(0, 0, 0);
-  goal.position.copy(viewpoint(scene)).multiplyScalar(extent * 1.25);
-
-  const cam = camera.value;
-  if (cam instanceof PerspectiveCamera) {
-    cam.near = extent / 10000;
-    cam.far = Math.max(extent, scene.reach) * 40;
-    cam.updateProjectionMatrix();
+// Where the camera sits for an item, as a direction from it and a distance.
+const viewOf = (entry: StarmapItem, current: Vector3) => {
+  if (entry.role === "system") {
+    return { direction: current.clone(), distance: 9 };
   }
 
-  goal.active = true;
+  if (entry.role === "star") return overview();
+
+  const position = vector(entry);
+
+  // A body is seen from its star's side and a little off it, so it shows its
+  // day side with the night drawing in at one edge.
+  if (entry.radius) {
+    const towardStar = position.clone().negate().setY(0).normalize();
+    const aside = new Vector3().crossVectors(UP, towardStar);
+
+    return {
+      direction: towardStar
+        .multiplyScalar(0.8)
+        .addScaledVector(aside, 0.55)
+        .addScaledVector(UP, 0.5)
+        .normalize(),
+      distance: entry.radius * 3.4,
+    };
+  }
+
+  // A place on or over a body is seen from above it.
+  const anchor = anchorOf(entry);
+
+  if (anchor?.radius && anchor.role !== "star") {
+    const outward = position.clone().sub(vector(anchor)).normalize();
+
+    return {
+      direction: outward
+        .multiplyScalar(0.8)
+        .addScaledVector(current, 0.35)
+        .normalize(),
+      distance: anchor.radius * 0.5,
+    };
+  }
+
+  return { direction: current.clone(), distance: 4 };
 };
 
-const flyTo = (entry: StarmapItem) => {
+const flight = {
+  active: false,
+  elapsed: 0,
+  fromOrigin: new Vector3(),
+  toOrigin: new Vector3(),
+  fromDistance: 1,
+  toDistance: 1,
+  fromDirection: new Vector3(),
+  toDirection: new Vector3(),
+};
+
+// The key the camera last set out for, so a focus the scene asked for itself
+// is not flown to a second time once it comes back as a prop.
+let flownTo: string | null | undefined;
+
+type Orbiting = {
+  target?: Vector3;
+  minDistance: number;
+  maxDistance: number;
+  update?: () => void;
+};
+
+const orbiting = () => controls.value as Orbiting | null;
+
+const limit = (entry: StarmapItem | undefined) => {
+  const orbit = orbiting();
+  if (!orbit) return;
+
+  orbit.minDistance = entry?.radius ? entry.radius * 1.08 : 0.0005;
+  orbit.maxDistance = props.scene.extent * 4;
+};
+
+const flyTo = (
+  entry: StarmapItem | undefined,
+  { keepDistance = false }: { keepDistance?: boolean } = {},
+) => {
   const cam = camera.value;
-  const target = controlsTarget();
-  if (!cam || !target) return;
+  if (!cam) return;
 
-  const offset = cam.position.clone().sub(target);
-  const point = new Vector3(...entry.position);
-  const distance = entry.radius
-    ? Math.max(entry.radius * 8, props.scene.extent * 0.05)
-    : Math.max(offset.length() * 0.5, props.scene.extent * 0.05);
+  const current = cam.position.clone().normalize();
+  const view = entry ? viewOf(entry, current) : overview();
 
-  goal.target.copy(point);
-  goal.position.copy(point).add(offset.setLength(distance));
-  goal.active = true;
+  flight.fromOrigin.copy(origin);
+  flight.toOrigin.copy(entry ? vector(entry) : new Vector3());
+  flight.fromDistance = Math.max(cam.position.length(), 1e-6);
+  flight.toDistance = keepDistance ? flight.fromDistance : view.distance;
+  flight.fromDirection.copy(current);
+  flight.toDirection.copy(keepDistance ? current : view.direction);
+  flight.elapsed = 0;
+  flight.active = true;
+
+  flownTo = entry?.key ?? null;
+  limit(entry);
 };
 
-const controlsTarget = (): Vector3 | undefined =>
-  (controls.value as { target?: Vector3 } | null)?.target;
+const focused = computed(() =>
+  props.focusKey ? byKey.value.get(props.focusKey) : undefined,
+);
 
-const hidden = shallowRef<Set<string>>(new Set());
-
-// Labels are only laid out again when the view moved, the canvas was resized
-// or the scene or selection changed: not on every frame of an idle map.
 let dirty = true;
-const lastView = { matrix: new Matrix4(), width: 0, height: 0 };
-
-const viewChanged = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
-  const changed =
-    dirty ||
-    !lastView.matrix.equals(cam.matrixWorld) ||
-    lastView.width !== element.clientWidth ||
-    lastView.height !== element.clientHeight;
-
-  if (changed) {
-    lastView.matrix.copy(cam.matrixWorld);
-    lastView.width = element.clientWidth;
-    lastView.height = element.clientHeight;
-    dirty = false;
-  }
-
-  return changed;
-};
 
 watch(
   () => props.scene,
@@ -303,64 +362,154 @@ watch(
 );
 
 watch(
-  () => props.levelKey,
-  () => frame(props.scene),
+  () => props.focusKey,
+  (key) => {
+    if (key !== flownTo) flyTo(focused.value);
+  },
   { immediate: true },
 );
 
-watch(
-  () => props.selectedKey,
-  () => {
-    dirty = true;
-  },
-);
+const ease = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+
+const advance = (cam: PerspectiveCamera, delta: number) => {
+  flight.elapsed += delta;
+  const t = Math.min(flight.elapsed / FLIGHT_SECONDS, 1);
+  const e = ease(t);
+
+  origin.lerpVectors(flight.fromOrigin, flight.toOrigin, e);
+
+  // Distance in log space: a flight from across a system to a planet's
+  // surface spends its time evenly over every scale on the way.
+  const distance = Math.exp(
+    Math.log(flight.fromDistance) * (1 - e) + Math.log(flight.toDistance) * e,
+  );
+  const direction = flight.fromDirection
+    .clone()
+    .lerp(flight.toDirection, e)
+    .normalize();
+
+  cam.position.copy(direction.multiplyScalar(distance));
+  orbiting()?.target?.set(0, 0, 0);
+  orbiting()?.update?.();
+
+  if (t >= 1) flight.active = false;
+};
+
+// Zoomed well out of what it is on, the map steps back out to what that
+// belongs to, so zooming out is a way back as much as Escape is.
+const stepOut = (cam: PerspectiveCamera) => {
+  const entry = focused.value;
+  if (!entry || props.scene.kind !== "system") return;
+
+  const anchor = anchorOf(entry);
+  if (!anchor) return;
+
+  const reach = entry.radius
+    ? entry.radius * 25
+    : (anchor.radius ?? 1) * PLACES_NEAR * 1.2;
+
+  if (cam.position.length() > reach) {
+    flyTo(anchor, { keepDistance: true });
+    emit("focus", anchor);
+  }
+};
+
+// --- Near and far ---
+
+const cameraWorld = new Vector3();
+const scratch = new Vector3();
+
+// From 1 within `near` down to 0 at twice it.
+const nearness = (distance: number, near: number) =>
+  Math.min(Math.max((near * 2 - distance) / near, 0), 1);
+
+const chain = computed(() => {
+  const keys = new Set<string>();
+  let current = focused.value;
+  while (current) {
+    keys.add(current.key);
+    current = anchorOf(current);
+  }
+  return keys;
+});
+
+const fadeOf = (entry: StarmapItem) => {
+  if (chain.value.has(entry.key)) return 1;
+  if (entry.role !== "place" && entry.role !== "moon") return 1;
+
+  const anchor = anchorOf(entry);
+  if (!anchor?.radius || anchor.role === "star") return 1;
+
+  const distance = cameraWorld.distanceTo(scratch.set(...anchor.position));
+  const near =
+    anchor.radius * (entry.role === "moon" ? MOONS_NEAR : PLACES_NEAR);
+
+  return nearness(distance, near);
+};
+
+// How far shown what stands on a body is.
+const shownOn = (body: StarmapItem) => {
+  if (!body.radius) return 0;
+  const distance = cameraWorld.distanceTo(scratch.set(...body.position));
+  return nearness(distance, body.radius * PLACES_NEAR);
+};
+
+// The body whose surface the camera is over: what is on its far side is
+// neither labelled nor picked.
+const occluder = computed(() => {
+  const entry = focused.value;
+  if (!entry) return undefined;
+  if (entry.radius && entry.role !== "star") return entry;
+
+  const anchor = anchorOf(entry);
+  return anchor?.radius && anchor.role !== "star" ? anchor : undefined;
+});
+
+const toPoint = new Vector3();
+const closest = new Vector3();
+const fromCentre = new Vector3();
+
+const occluded = (point: Vector3) => {
+  const body = occluder.value;
+  if (!body?.radius) return false;
+
+  fromCentre.copy(cameraWorld).sub(scratchCentre.set(...body.position));
+  toPoint.copy(point).sub(cameraWorld);
+  const t = -fromCentre.dot(toPoint) / toPoint.lengthSq();
+  if (t <= 0 || t >= 1) return false;
+
+  closest.copy(fromCentre).addScaledVector(toPoint, t);
+  return closest.length() < body.radius * 0.995;
+};
+
+const scratchCentre = new Vector3();
 
 // --- Per frame ---
 
-const world = new Vector3();
-const projected = new Vector3();
 const resolution = new Vector2();
-const toPoint = new Vector3();
-const closest = new Vector3();
+const projected = new Vector3();
+const point = new Vector3();
+let turned = 0;
 
-// Whether the body at the centre stands between the camera and a point: what
-// is on its far side is neither labelled nor picked.
-const occluded = (point: Vector3, from: Vector3) => {
-  const radius = props.scene.occluder;
-  if (!radius) return false;
+const reducedMotion = () =>
+  typeof window !== "undefined" &&
+  !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-  toPoint.copy(point).sub(from);
-  const t = -from.dot(toPoint) / toPoint.lengthSq();
-  if (t <= 0 || t >= 1) return false;
-
-  closest.copy(from).addScaledVector(toPoint, t);
-  return closest.length() < radius * 0.995;
-};
-
-onBeforeRender(({ elapsed }) => {
+onBeforeRender(({ delta, elapsed }) => {
   const cam = camera.value;
   if (!(cam instanceof PerspectiveCamera)) return;
 
-  if (!reducedMotion()) {
-    const angle = (elapsed / TURN_SECONDS) * Math.PI * 2;
-    for (const body of turning) body.rotation.y = angle;
-    for (const star of suns) star.animate(elapsed);
-  }
+  if (flight.active) advance(cam, delta);
+  else stepOut(cam);
 
-  const target = controlsTarget();
+  world.position.copy(origin).negate();
+  cameraWorld.copy(cam.position).add(origin);
 
-  if (goal.active && target) {
-    cam.position.lerp(goal.position, 0.12);
-    target.lerp(goal.target, 0.12);
-    (controls.value as { update?: () => void } | null)?.update?.();
-
-    if (
-      cam.position.distanceTo(goal.position) < props.scene.extent * 1e-4 &&
-      target.distanceTo(goal.target) < props.scene.extent * 1e-4
-    ) {
-      goal.active = false;
-    }
-  }
+  const distance = cam.position.length();
+  cam.near = Math.max(distance * 1e-3, 1e-7);
+  cam.far = 1e7;
+  cam.updateProjectionMatrix();
 
   const element = canvas();
   const height = element?.clientHeight || 1;
@@ -370,21 +519,57 @@ onBeforeRender(({ elapsed }) => {
     for (const material of lineMaterials) material.resolution.copy(resolution);
   }
 
+  const motion = !reducedMotion();
+  if (motion) {
+    turned += (delta / TURN_SECONDS) * Math.PI * 2;
+    for (const star of suns) star.animate(elapsed);
+  }
+
   const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
 
-  for (const entry of props.scene.items) {
+  for (const entry of items.value) {
     const mesh = meshes.get(entry.key);
     if (!mesh) continue;
 
-    mesh.getWorldPosition(world);
-    const minimum =
-      (MIN_PIXELS[entry.role] / 2) * perPixel * cam.position.distanceTo(world);
-    const selected = entry.key === props.selectedKey ? 1.4 : 1;
+    const fade = fadeOf(entry);
+    fades.set(entry.key, fade);
+    mesh.visible = fade > 0.02;
+    if (!mesh.visible) continue;
 
-    mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * selected);
+    if (mesh instanceof Mesh) {
+      const material = mesh.material as MeshBasicMaterial;
+      material.opacity = (entry.role === "place" ? 0.9 : 1) * fade;
+    }
+
+    const minimum =
+      (MIN_PIXELS[entry.role] / 2) *
+      perPixel *
+      cameraWorld.distanceTo(point.set(...entry.position));
+    const lifted =
+      entry.key === hoverKey.value || entry.key === props.focusKey ? 1.3 : 1;
+
+    mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
+
+    // A body only turns while nothing is shown on it: its places stand on
+    // the ground, and the ground would carry them off.
+    if (entry.surface && motion && shownOn(entry) < 0.02) {
+      mesh.rotation.y = turned;
+    }
   }
 
-  if (element && viewChanged(cam, element)) declutter(cam, element);
+  for (const orbit of orbitLines) {
+    const fade = fades.get(orbit.body) ?? 1;
+    orbit.material.color.copy(lineColor(orbit.base * fade));
+  }
+
+  if (pointer.moved) {
+    pointer.moved = false;
+    const entry = pick(pointer.x, pointer.y);
+    hoverKey.value = entry?.key ?? null;
+    if (element) element.style.cursor = entry ? "pointer" : "";
+  }
+
+  if (element) declutter(cam, element);
 });
 
 // --- Picking ---
@@ -395,7 +580,9 @@ const canvas = (): HTMLCanvasElement | null => {
   return instance?.domElement ?? instance?.value?.domElement ?? null;
 };
 
-const pick = (event: PointerEvent | MouseEvent): StarmapItem | null => {
+const hoverKey = shallowRef<string | null>(null);
+
+const pick = (clientX: number, clientY: number): StarmapItem | null => {
   const element = canvas();
   const cam = camera.value;
   if (!element || !cam) return null;
@@ -404,23 +591,23 @@ const pick = (event: PointerEvent | MouseEvent): StarmapItem | null => {
   let best: StarmapItem | null = null;
   let bestDistance = Infinity;
 
-  for (const entry of props.scene.items) {
-    const mesh = meshes.get(entry.key);
-    if (!mesh) continue;
+  for (const entry of items.value) {
+    if ((fades.get(entry.key) ?? 1) < 0.5) continue;
 
-    if (occluded(mesh.position, cam.position)) continue;
+    point.set(...entry.position);
+    if (occluded(point)) continue;
 
-    projected.copy(mesh.position).project(cam);
+    projected.copy(point).sub(origin).project(cam);
     if (projected.z > 1) continue;
 
     const x = ((projected.x + 1) / 2) * rect.width + rect.left;
     const y = ((1 - projected.y) / 2) * rect.height + rect.top;
-    const distance = Math.hypot(x - event.clientX, y - event.clientY);
+    const distance = Math.hypot(x - clientX, y - clientY);
 
     if (distance >= PICK_PIXELS) continue;
 
     // Dots a few pixels apart are one spot to the pointer: the place that
-    // matters more wins, as its label did.
+    // matters more wins, as its label does.
     const closer = distance < bestDistance - TIE_PIXELS;
     const tied = Math.abs(distance - bestDistance) <= TIE_PIXELS;
 
@@ -433,54 +620,81 @@ const pick = (event: PointerEvent | MouseEvent): StarmapItem | null => {
   return best;
 };
 
-const pressed = { x: 0, y: 0 };
+const pointer = { x: 0, y: 0, moved: false, downX: 0, downY: 0 };
 
 const onPointerDown = (event: PointerEvent) => {
-  pressed.x = event.clientX;
-  pressed.y = event.clientY;
-  goal.active = false;
+  pointer.downX = event.clientX;
+  pointer.downY = event.clientY;
+  flight.active = false;
+};
+
+const onPointerMove = (event: PointerEvent) => {
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  pointer.moved = true;
+};
+
+const onPointerLeave = () => {
+  hoverKey.value = null;
 };
 
 // A drag turns the view; only a click picks.
 const onPointerUp = (event: PointerEvent) => {
-  if (Math.hypot(event.clientX - pressed.x, event.clientY - pressed.y) > 4) {
+  if (
+    Math.hypot(event.clientX - pointer.downX, event.clientY - pointer.downY) > 4
+  ) {
     return;
   }
 
-  const entry = pick(event);
-  emit("select", entry);
-  if (entry) flyTo(entry);
+  const entry = pick(event.clientX, event.clientY);
+  if (!entry) return;
+
+  // A system already picked opens on a second click.
+  if (entry.role === "system" && entry.key === props.focusKey) {
+    emit("enter", entry);
+    return;
+  }
+
+  flyTo(entry);
+  emit("focus", entry);
 };
 
 const onDoubleClick = (event: MouseEvent) => {
-  const entry = pick(event);
-  if (entry?.enterable) emit("enter", entry);
+  const entry = pick(event.clientX, event.clientY);
+  if (entry?.role === "system") emit("enter", entry);
 };
 
 const onWheel = () => {
-  goal.active = false;
+  flight.active = false;
 };
 
 let bound: HTMLCanvasElement | null = null;
+
+const listeners = {
+  pointerdown: onPointerDown,
+  pointermove: onPointerMove,
+  pointerleave: onPointerLeave,
+  pointerup: onPointerUp,
+  dblclick: onDoubleClick,
+  wheel: onWheel,
+} as unknown as Record<string, EventListener>;
 
 const bind = () => {
   const element = canvas();
   if (!element || element === bound) return;
 
-  element.addEventListener("pointerdown", onPointerDown);
-  element.addEventListener("pointerup", onPointerUp);
-  element.addEventListener("dblclick", onDoubleClick);
-  element.addEventListener("wheel", onWheel, { passive: true });
+  for (const [name, listener] of Object.entries(listeners)) {
+    element.addEventListener(name, listener, { passive: true });
+  }
   bound = element;
 };
 
 const unbind = () => {
   if (!bound) return;
 
-  bound.removeEventListener("pointerdown", onPointerDown);
-  bound.removeEventListener("pointerup", onPointerUp);
-  bound.removeEventListener("dblclick", onDoubleClick);
-  bound.removeEventListener("wheel", onWheel);
+  for (const [name, listener] of Object.entries(listeners)) {
+    bound.removeEventListener(name, listener);
+  }
   bound = null;
 };
 
@@ -494,22 +708,57 @@ const { off: stopBinding } = onBeforeRender(() => {
 
 onBeforeUnmount(() => {
   unbind();
-  disposeGroup();
+  disposeBodies();
   sphere.dispose();
+  dot.dispose();
 });
+
+// --- Labels ---
 
 const LABEL_HEIGHT = 14;
 const LABEL_CHAR_WIDTH = 6.5;
+
+const shown = shallowRef<Set<string>>(new Set());
+let lastSignature = "";
 
 const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
   const width = element.clientWidth;
   const height = element.clientHeight;
 
-  const candidates = props.scene.items
-    .filter((entry) => entry.labelled || entry.key === props.selectedKey)
+  // Only laid out again when the view moved, the canvas was resized or what
+  // is focused or hovered changed: not on every frame of an idle map.
+  const signature = [
+    ...cam.position.toArray().map((value) => value.toPrecision(6)),
+    ...origin.toArray().map((value) => value.toPrecision(9)),
+    width,
+    height,
+    props.focusKey,
+    hoverKey.value,
+  ].join("|");
+  if (!dirty && signature === lastSignature) return;
+  lastSignature = signature;
+  dirty = false;
+
+  const important = (entry: StarmapItem) =>
+    entry.key === props.focusKey || entry.key === hoverKey.value;
+
+  // Down over a body's surface its own name would sit in the middle of the
+  // view, on top of the place the reader flew to.
+  const over = occluder.value;
+  const underfoot =
+    over?.radius && over.key !== props.focusKey
+      ? cameraWorld.distanceTo(point.set(...over.position)) < over.radius * 3
+      : false;
+
+  const candidates = items.value
+    .filter(
+      (entry) =>
+        (entry.labelled || important(entry)) &&
+        (fades.get(entry.key) ?? 1) >= 0.5 &&
+        !(underfoot && entry.key === over?.key && !important(entry)),
+    )
     .sort((a, b) => {
-      if (a.key === props.selectedKey) return -1;
-      if (b.key === props.selectedKey) return 1;
+      if (important(a) !== important(b)) return important(a) ? -1 : 1;
       return a.rank - b.rank;
     });
 
@@ -517,17 +766,16 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
   const next = new Set<string>();
 
   for (const entry of candidates) {
-    projected.set(...entry.position);
-    const behind = occluded(projected, cam.position);
-    projected.project(cam);
+    point.set(...entry.position);
+    if (occluded(point) && !important(entry)) continue;
 
-    if ((behind || projected.z > 1) && entry.key !== props.selectedKey) {
-      next.add(entry.key);
-      continue;
-    }
+    projected.copy(point).sub(origin).project(cam);
+    if (projected.z > 1) continue;
 
     const x = ((projected.x + 1) / 2) * width;
     const y = ((1 - projected.y) / 2) * height;
+    if (x < -50 || x > width + 50 || y < -20 || y > height + 20) continue;
+
     const half = (entry.name.length * LABEL_CHAR_WIDTH) / 2;
 
     const overlaps = placed.some(
@@ -536,46 +784,41 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
         Math.abs(other.y - y) < LABEL_HEIGHT,
     );
 
-    if (overlaps && entry.key !== props.selectedKey) {
-      next.add(entry.key);
-    } else {
+    if (!overlaps || important(entry)) {
       placed.push({ x, y, half });
+      next.add(entry.key);
     }
   }
 
   const changed =
-    next.size !== hidden.value.size ||
-    [...next].some((key) => !hidden.value.has(key));
+    next.size !== shown.value.size ||
+    [...next].some((key) => !shown.value.has(key));
 
-  if (changed) hidden.value = next;
+  if (changed) shown.value = next;
 };
 
 const labelled = computed(() =>
-  props.scene.items.filter(
-    (entry) =>
-      (entry.labelled || entry.key === props.selectedKey) &&
-      !hidden.value.has(entry.key),
-  ),
+  items.value.filter((entry) => shown.value.has(entry.key)),
 );
 
-defineExpose({ flyTo, frame: () => frame(props.scene) });
+defineExpose({ reframe: () => flyTo(focused.value) });
 </script>
 
 <template>
-  <primitive :object="group" />
-
-  <Html
-    v-for="entry in labelled"
-    :key="entry.key"
-    :position="entry.position"
-    center
-    pointer-events="none"
-    :z-index-range="[1, 10]"
-  >
-    <StarmapLabel
-      :name="entry.name"
-      :role="entry.role"
-      :selected="entry.key === selectedKey"
-    />
-  </Html>
+  <primitive :object="world">
+    <Html
+      v-for="entry in labelled"
+      :key="entry.key"
+      :position="entry.position"
+      center
+      pointer-events="none"
+      :z-index-range="[1, 10]"
+    >
+      <StarmapLabel
+        :name="entry.name"
+        :role="entry.role"
+        :selected="entry.key === focusKey || entry.key === hoverKey"
+      />
+    </Html>
+  </primitive>
 </template>

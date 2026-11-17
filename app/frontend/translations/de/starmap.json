@@ -7,17 +7,22 @@
       "unavailable": "Die Sternenkarte konnte nicht geladen werden.",
       "notFound": "Dieser Ort ist nicht auf der Sternenkarte.",
       "empty": "Die Spieldateien platzieren in diesem System noch nichts.",
-      "reset": "Ansicht zurücksetzen",
-      "parent": "In",
-      "distanceStar": "Vom Stern",
-      "distanceBody": "Vom Zentrum",
-      "radius": "Radius",
-      "enter": "Zu %{name} zoomen",
-      "openLocation": "Ortsseite",
       "footnote": "Die Spieldateien platzieren kein System relativ zu einem anderen, daher zeigt diese Ebene nur, wie die Sprungtunnel sie verbinden.",
+      "parent": "In",
+      "radius": "Radius",
+      "openLocation": "Ortsseite",
+      "openSystem": "%{name} öffnen",
+      "distanceFrom": "Von %{name}",
+      "search": "Ort finden",
+      "noMatches": "Kein Ort trägt diesen Namen.",
+      "reframe": "Zentrieren",
+      "panel": {
+        "show": "Orte",
+        "hide": "Orte ausblenden"
+      },
       "hints": {
-        "systems": "Klicke ein System an, um es auszuwählen, Doppelklick öffnet es. Ziehen dreht, Scrollen zoomt.",
-        "system": "Klicke einen Ort an, um ihn auszuwählen, Doppelklick auf einen Planeten oder Mond zoomt hin. Ziehen dreht, Scrollen zoomt."
+        "systems": "Klicke ein System an, um es auszuwählen, ein zweiter Klick öffnet es. Ziehen dreht, Scrollen zoomt.",
+        "system": "Klicke etwas an, um hinzufliegen. Herauszoomen oder Esc geht zurück. Ziehen dreht."
       },
       "units": {
         "gm": "%{value} Gm",

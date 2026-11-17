@@ -7,17 +7,22 @@
       "unavailable": "No se pudo cargar el mapa estelar.",
       "notFound": "Este lugar no está en el mapa estelar.",
       "empty": "Los archivos del juego aún no sitúan nada en este sistema.",
-      "reset": "Restablecer vista",
-      "parent": "En",
-      "distanceStar": "Desde la estrella",
-      "distanceBody": "Desde el centro",
-      "radius": "Radio",
-      "enter": "Acercar a %{name}",
-      "openLocation": "Página del lugar",
       "footnote": "Los archivos del juego no sitúan ningún sistema respecto a otro, así que este nivel solo muestra cómo los unen los túneles de salto.",
+      "parent": "En",
+      "radius": "Radio",
+      "openLocation": "Página del lugar",
+      "openSystem": "Abrir %{name}",
+      "distanceFrom": "Desde %{name}",
+      "search": "Buscar un lugar",
+      "noMatches": "Ningún lugar se llama así.",
+      "reframe": "Recentrar",
+      "panel": {
+        "show": "Lugares",
+        "hide": "Ocultar lugares"
+      },
       "hints": {
-        "systems": "Haz clic en un sistema para seleccionarlo, doble clic para abrirlo. Arrastra para girar, desplaza para hacer zoom.",
-        "system": "Haz clic en un lugar para seleccionarlo, doble clic en un planeta o luna para acercarte. Arrastra para girar, desplaza para hacer zoom."
+        "systems": "Haz clic en un sistema para elegirlo y otra vez para abrirlo. Arrastra para girar, desplaza para hacer zoom.",
+        "system": "Haz clic en algo para volar hasta allí. Aleja el zoom o pulsa Esc para volver. Arrastra para girar."
       },
       "units": {
         "gm": "%{value} Gm",

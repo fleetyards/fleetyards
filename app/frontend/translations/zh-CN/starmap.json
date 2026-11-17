@@ -7,17 +7,22 @@
       "unavailable": "无法加载星图。",
       "notFound": "此地点不在星图上。",
       "empty": "游戏文件尚未在此星系中放置任何内容。",
-      "reset": "重置视图",
-      "parent": "位于",
-      "distanceStar": "距恒星",
-      "distanceBody": "距中心",
-      "radius": "半径",
-      "enter": "缩放至 %{name}",
-      "openLocation": "地点页面",
       "footnote": "游戏文件没有给出星系之间的相对位置，因此此层级仅显示跳跃隧道如何连接它们。",
+      "parent": "位于",
+      "radius": "半径",
+      "openLocation": "地点页面",
+      "openSystem": "打开 %{name}",
+      "distanceFrom": "距 %{name}",
+      "search": "查找地点",
+      "noMatches": "没有叫这个名字的地点。",
+      "reframe": "重新居中",
+      "panel": {
+        "show": "地点",
+        "hide": "隐藏地点"
+      },
       "hints": {
-        "systems": "单击星系以选中，双击以打开。拖动旋转，滚动缩放。",
-        "system": "单击地点以选中，双击行星或卫星以缩放至该处。拖动旋转，滚动缩放。"
+        "systems": "单击星系以选中，再次单击以打开。拖动旋转，滚动缩放。",
+        "system": "单击任意对象即可飞往该处。缩小或按 Esc 返回。拖动旋转。"
       },
       "units": {
         "gm": "%{value} Gm",

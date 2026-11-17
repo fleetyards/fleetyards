@@ -19,8 +19,9 @@ import {
   useLocations,
 } from "@/services/fyApi";
 import StarmapScene from "./Scene.vue";
+import StarmapPanel from "./Panel.vue";
 import {
-  bodyScene,
+  chainOf,
   systemScene,
   systemsScene,
   type StarmapItem,
@@ -42,19 +43,19 @@ const dpr = computed(() =>
 );
 
 // Where the reader is lives in the address, so a view can be shared and the
-// back button steps out a level.
+// back button walks back along the way they came.
 const queryValue = (value: unknown) =>
   typeof value === "string" && value ? value : null;
 
 const systemSlug = computed(() => queryValue(route.query.system));
-const bodySlug = computed(() =>
-  systemSlug.value ? queryValue(route.query.body) : null,
+const focusSlug = computed(() =>
+  systemSlug.value ? queryValue(route.query.focus) : null,
 );
 
-const navigate = (system: string | null, body: string | null = null) => {
+const navigate = (system: string | null, focus: string | null = null) => {
   const query: Record<string, string> = {};
   if (system) query.system = system;
-  if (system && body) query.body = body;
+  if (system && focus) query.focus = focus;
 
   void router.push({ query });
 };
@@ -86,22 +87,82 @@ const scene = computed<Scene | null>(() => {
   }
 
   const places = starmap.value?.places;
-  if (!places) return null;
-
-  if (bodySlug.value) return bodyScene(places, bodySlug.value);
-
-  return systemScene(places);
+  return places ? systemScene(places) : null;
 });
 
 const empty = computed(
   () => !loading.value && !!scene.value && scene.value.items.length === 0,
 );
 
-const bodyName = computed(
-  () =>
-    starmap.value?.places.find((place) => place.slug === bodySlug.value)
-      ?.name ?? bodySlug.value,
+// On the ring a picked system is only held here: it is not a place to share.
+const pickedSystem = ref<string | null>(null);
+
+watch(systemSlug, () => {
+  pickedSystem.value = null;
+});
+
+const star = computed(() =>
+  scene.value?.items.find((entry) => entry.role === "star"),
 );
+
+const focusKey = computed(() => {
+  if (!scene.value) return null;
+  if (scene.value.kind === "systems") return pickedSystem.value;
+
+  const entry = focusSlug.value
+    ? scene.value.items.find((item) => item.slug === focusSlug.value)
+    : undefined;
+
+  return entry?.key ?? star.value?.key ?? null;
+});
+
+const focused = computed(
+  () =>
+    scene.value?.items.find((entry) => entry.key === focusKey.value) ?? null,
+);
+
+const chain = computed(() =>
+  scene.value?.kind === "system" ? chainOf(scene.value, focusKey.value) : [],
+);
+
+const onFocus = (entry: StarmapItem) => {
+  if (scene.value?.kind === "systems") {
+    pickedSystem.value = entry.key;
+    return;
+  }
+
+  if (entry.key === focusKey.value) return;
+  navigate(systemSlug.value, entry.role === "star" ? null : entry.slug);
+};
+
+const enter = (entry: StarmapItem) => {
+  if (entry.role === "system") navigate(entry.slug);
+};
+
+// Escape steps out: from a place to its body, a moon to its planet, a planet
+// to the star, and from the star to the systems.
+const stepOut = () => {
+  if (!systemSlug.value) {
+    pickedSystem.value = null;
+    return;
+  }
+
+  const parent = chain.value.at(-2);
+  if (parent) onFocus(parent);
+  else navigate(null);
+};
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key !== "Escape" || event.defaultPrevented) return;
+
+  const target = event.target as HTMLElement | null;
+  if (target?.closest("input, textarea, select, [contenteditable]")) return;
+
+  stepOut();
+};
+
+onMounted(() => window.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 
 const crumbs = computed(() => {
   const list: { key: string; label: string; go?: () => void }[] = [
@@ -112,70 +173,53 @@ const crumbs = computed(() => {
     },
   ];
 
-  if (systemSlug.value) {
-    list.push({
-      key: "system",
-      label: starmap.value?.system.name ?? systemSlug.value,
-      go: bodySlug.value ? () => navigate(systemSlug.value) : undefined,
-    });
-  }
+  if (!systemSlug.value) return list;
 
-  if (bodySlug.value) {
-    list.push({ key: "body", label: bodyName.value ?? "" });
-  }
+  const steps = chain.value.slice(1);
+
+  list.push({
+    key: "system",
+    label: starmap.value?.system.name ?? systemSlug.value,
+    go: steps.length ? () => navigate(systemSlug.value) : undefined,
+  });
+
+  steps.forEach((entry, index) => {
+    list.push({
+      key: entry.key,
+      label: entry.name,
+      go: index < steps.length - 1 ? () => onFocus(entry) : undefined,
+    });
+  });
 
   return list;
 });
 
-const selectedKey = ref<string | null>(null);
-
-const levelKey = computed(() =>
-  [systemSlug.value, bodySlug.value].filter(Boolean).join("/"),
-);
-
-// Whichever way the level changed -- a crumb, a double-click or the browser's
-// back button -- what was picked on the last one does not carry over.
-watch(levelKey, () => {
-  selectedKey.value = null;
-});
-
-const selected = computed(
-  () =>
-    scene.value?.items.find((entry) => entry.key === selectedKey.value) ?? null,
-);
-
-const onSelect = (entry: StarmapItem | null) => {
-  selectedKey.value = entry?.key ?? null;
-};
-
-const enter = (entry: StarmapItem) => {
-  if (entry.role === "system") {
-    navigate(entry.slug);
-  } else if (systemSlug.value) {
-    navigate(systemSlug.value, entry.slug);
-  }
-};
-
 const sceneRef = ref<InstanceType<typeof StarmapScene> | null>(null);
 
-const resetView = () => sceneRef.value?.frame();
+const reframe = () => sceneRef.value?.reframe();
+
+// The panel starts open where there is room for it beside the map.
+const panelOpen = ref(!mobile.value);
 
 // Metres, in the largest unit that keeps the number readable: a planet's
 // radius reads as 1,000 km rather than 1 Mm.
 const formatLength = (metres: number) => {
-  if (metres >= 1e9)
+  if (metres >= 1e9) {
     return t("starmap.units.gm", { value: toNumber(metres / 1e9) });
-  if (metres >= 1e7)
+  }
+  if (metres >= 1e7) {
     return t("starmap.units.mm", { value: toNumber(metres / 1e6) });
+  }
 
   return t("starmap.units.km", { value: toNumber(metres / 1e3) });
 };
 
 const facts = computed(() => {
-  const entry = selected.value;
+  const entry = focused.value;
   if (!entry) return [];
 
   const list: { key: string; label: string; value: string }[] = [];
+  const anchor = chain.value.at(-2);
 
   if (entry.parentName) {
     list.push({
@@ -185,12 +229,10 @@ const facts = computed(() => {
     });
   }
 
-  if (entry.distance) {
+  if (anchor && entry.distance) {
     list.push({
       key: "distance",
-      label: bodySlug.value
-        ? t("starmap.distanceBody")
-        : t("starmap.distanceStar"),
+      label: t("starmap.distanceFrom", { name: anchor.name }),
       value: formatLength(entry.distance),
     });
   }
@@ -206,11 +248,9 @@ const facts = computed(() => {
   return list;
 });
 
-const hint = computed(() => {
-  if (!systemSlug.value) return t("starmap.hints.systems");
-
-  return t("starmap.hints.system");
-});
+const hint = computed(() =>
+  systemSlug.value ? t("starmap.hints.system") : t("starmap.hints.systems"),
+);
 </script>
 
 <template>
@@ -248,26 +288,27 @@ const hint = computed(() => {
         :shadows="false"
         :dpr="dpr"
         :power-preference="mobile ? 'low-power' : 'default'"
+        logarithmic-depth-buffer
         alpha
       >
         <TresPerspectiveCamera
           :position="[0, 30, 50]"
-          :args="[50, 1, 0.01, 10000]"
+          :args="[50, 1, 0.001, 1e7]"
         />
         <OrbitControls
           enable-damping
           :damping-factor="0.08"
-          :zoom-speed="0.8"
-          :enable-pan="true"
+          :zoom-speed="2.6"
+          :rotate-speed="0.6"
+          :enable-pan="false"
           make-default
         />
         <StarmapScene
           v-if="scene"
           ref="sceneRef"
           :scene="scene"
-          :level-key="levelKey"
-          :selected-key="selectedKey"
-          @select="onSelect"
+          :focus-key="focusKey"
+          @focus="onFocus"
           @enter="enter"
         />
       </TresCanvas>
@@ -287,53 +328,77 @@ const hint = computed(() => {
         {{ t("starmap.empty") }}
       </p>
 
-      <div v-if="webglSupported" class="starmap__tools">
-        <Btn size="sm" data-test="starmap-reset" @click="resetView">
-          <i class="fa-light fa-arrows-to-circle" aria-hidden="true" />
-          {{ t("starmap.reset") }}
-        </Btn>
-      </div>
+      <template v-if="webglSupported">
+        <aside
+          v-if="scene?.kind === 'system' && panelOpen"
+          class="starmap__panel"
+          data-test="starmap-panel"
+        >
+          <StarmapPanel
+            :items="scene.items"
+            :focus-key="focusKey"
+            @focus="onFocus"
+          />
+        </aside>
 
-      <aside
-        v-if="selected"
-        class="starmap__detail"
-        data-test="starmap-detail"
-        :aria-label="selected.name"
-      >
-        <span class="starmap__detail-kind">
-          {{ t(`labels.location.kinds.${selected.kind}`) }}
-        </span>
-        <h2 class="starmap__detail-name">{{ selected.name }}</h2>
-
-        <dl v-if="facts.length" class="starmap__facts">
-          <template v-for="fact in facts" :key="fact.key">
-            <dt>{{ fact.label }}</dt>
-            <dd>{{ fact.value }}</dd>
-          </template>
-        </dl>
-
-        <div class="starmap__detail-actions">
+        <div class="starmap__tools">
           <Btn
-            v-if="selected.enterable"
+            v-if="scene?.kind === 'system'"
             size="sm"
-            data-test="starmap-enter"
-            @click="enter(selected)"
+            data-test="starmap-panel-toggle"
+            :active="panelOpen"
+            @click="panelOpen = !panelOpen"
           >
-            <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true" />
-            {{ t("starmap.enter", { name: selected.name }) }}
+            <i class="fa-light fa-list-tree" aria-hidden="true" />
+            {{ panelOpen ? t("starmap.panel.hide") : t("starmap.panel.show") }}
           </Btn>
-          <Btn
-            size="sm"
-            variant="ghost"
-            :to="{ name: 'location', params: { slug: selected.slug } }"
-            data-test="starmap-location-link"
-          >
-            {{ t("starmap.openLocation") }}
+          <Btn size="sm" data-test="starmap-reset" @click="reframe">
+            <i class="fa-light fa-arrows-to-circle" aria-hidden="true" />
+            {{ t("starmap.reframe") }}
           </Btn>
         </div>
-      </aside>
 
-      <p class="starmap__hint">{{ hint }}</p>
+        <aside
+          v-if="focused && focused.role !== 'star'"
+          class="starmap__detail"
+          data-test="starmap-detail"
+          :aria-label="focused.name"
+        >
+          <span class="starmap__detail-kind">
+            {{ t(`labels.location.kinds.${focused.kind}`) }}
+          </span>
+          <h2 class="starmap__detail-name">{{ focused.name }}</h2>
+
+          <dl v-if="facts.length" class="starmap__facts">
+            <template v-for="fact in facts" :key="fact.key">
+              <dt>{{ fact.label }}</dt>
+              <dd>{{ fact.value }}</dd>
+            </template>
+          </dl>
+
+          <div class="starmap__detail-actions">
+            <Btn
+              v-if="focused.role === 'system'"
+              size="sm"
+              data-test="starmap-enter"
+              @click="enter(focused)"
+            >
+              <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true" />
+              {{ t("starmap.openSystem", { name: focused.name }) }}
+            </Btn>
+            <Btn
+              size="sm"
+              variant="ghost"
+              :to="{ name: 'location', params: { slug: focused.slug } }"
+              data-test="starmap-location-link"
+            >
+              {{ t("starmap.openLocation") }}
+            </Btn>
+          </div>
+        </aside>
+
+        <p class="starmap__hint">{{ hint }}</p>
+      </template>
     </div>
 
     <p v-if="!systemSlug" class="starmap__footnote">
@@ -378,7 +443,7 @@ const hint = computed(() => {
   &__stage {
     position: relative;
     height: calc(100vh - 240px);
-    min-height: 420px;
+    min-height: 480px;
     border: 1px solid var(--color-edge-soft);
     border-radius: var(--radius-surface-slim);
     background: radial-gradient(circle at 50% 40%, #0d1c30 0%, #050a12 70%);
@@ -399,10 +464,25 @@ const hint = computed(() => {
     pointer-events: none;
   }
 
+  &__panel {
+    position: absolute;
+    top: 56px;
+    bottom: 36px;
+    left: 12px;
+    width: min(260px, calc(100% - 24px));
+    padding: 10px;
+    border: 1px solid rgb(90 175 212 / 30%);
+    border-radius: var(--radius-surface-slim);
+    background: rgb(8 16 28 / 88%);
+  }
+
   &__tools {
     position: absolute;
     top: 12px;
     left: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   &__detail {
@@ -477,6 +557,10 @@ const hint = computed(() => {
 @media (width <= 767px) {
   .starmap__detail {
     top: auto;
+    bottom: 36px;
+  }
+
+  .starmap__panel {
     bottom: 36px;
   }
 }
