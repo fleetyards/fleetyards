@@ -27,13 +27,14 @@ module V1
           lagrangePoint: {type: :boolean},
           gateway: {type: :boolean},
           color: {type: [:string, :null]},
-          unstable: {type: :boolean}
+          unstable: {type: :boolean},
+          bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum
         },
         additionalProperties: false,
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
           shownWithParentOnly alwaysShown quantumTravelDestination lagrangePoint
-          gateway color unstable
+          gateway color unstable bodyType
         ]
       })
     end

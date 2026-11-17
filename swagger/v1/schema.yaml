@@ -45198,6 +45198,8 @@ components:
           - 'null'
         unstable:
           type: boolean
+        bodyType:
+          "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
       additionalProperties: false
       required:
       - id
@@ -45216,6 +45218,7 @@ components:
       - gateway
       - color
       - unstable
+      - bodyType
       title: LocationStarmapPlace
     LocationTerminal:
       type: object

@@ -58,6 +58,18 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/starmap carries how a body is drawn" do
+    @hurston.update!(color: "#9c846e", body_type: "gas_giant")
+    @hurston.builds.sole.update!(body_type: "gas_giant")
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body["places"].find { |place| place["name"] == "Hurston" }
+
+      assert_equal "#9c846e", hurston["color"]
+      assert_equal "gas_giant", hurston["bodyType"]
+    end
+  end
+
   test "GET /locations/{slug}/starmap reads the position of the served build" do
     @hurston.builds.sole.update!(position: [1.0, 2.0, 3.0])
 

@@ -19,4 +19,5 @@ json.places @places do |place|
   json.gateway place.gateway
   json.color location.drawn_color
   json.unstable location.flare_star?
+  json.body_type location.body_type
 end
