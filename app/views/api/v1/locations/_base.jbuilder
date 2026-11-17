@@ -14,6 +14,7 @@ json.shown_with_parent_only location.shown_with_parent_only
 json.always_shown location.always_shown
 json.quantum_travel_destination location.quantum_travel_destination
 json.position location.position
+json.radius location.radius
 
 # Shown with the name wherever the name is not unique: there are two Outpost
 # 54s on Aberdeen and 306 QV Logistics Stations in Nyx.

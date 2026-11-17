@@ -15,5 +15,6 @@
   "always_shown": false,
   "quantum_travel_destination": false,
   "mission_template_refs": [],
-  "position": [0.0, 0.0, 0.0]
+  "position": [0.0, 0.0, 0.0],
+  "radius": 696000000.0
 }

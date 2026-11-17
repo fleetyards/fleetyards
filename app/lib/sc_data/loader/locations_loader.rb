@@ -65,7 +65,8 @@ module ScData
           always_shown: item["always_shown"] || false,
           quantum_travel_destination: item["quantum_travel_destination"] || false,
           facilities: item["facilities"],
-          position: item["position"]
+          position: item["position"],
+          radius: item["radius"]
         }
       end
 

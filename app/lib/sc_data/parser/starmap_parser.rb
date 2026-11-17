@@ -26,6 +26,11 @@ module ScData
       # from the star. Written by the exporter for the same reason.
       PLACEMENTS_FILE = "derived/starmap.json"
 
+      # The placement's `size` is a radius only for these: Hurston's is its
+      # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
+      # cluster it measures something else.
+      BODY_KINDS = %w[star planet moon].freeze
+
       # The game's `LandingPadSize` names, onto the sizes a ship is sold in.
       # The game's Small hangar holds an XSmall-sized pad; the size is the one
       # the game calls it, and the pad's box is kept beside it.
@@ -165,7 +170,8 @@ module ScData
           quantum_travel_destination: record ? record[:quantum_travel] : false,
           mission_template_refs: template_refs.to_a.sort,
           facilities: place[:facilities],
-          position: position_of(place)
+          position: placement_of(place)&.dig(:position),
+          radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind]))
         }
       end
 
@@ -173,7 +179,7 @@ module ScData
       # several times is a kind of place rather than one: a QV Logistics
       # Station on every Nyx asteroid, the Vision Center in Orison and in New
       # Babbage.
-      private def position_of(place)
+      private def placement_of(place)
         Array.wrap(place[:refs]).lazy.filter_map { |ref| placements[ref] }.first
       end
 
@@ -185,12 +191,16 @@ module ScData
             Array.wrap(JSON.parse(File.read(file))["objects"])
               .select { |object| object["record"].present? }
               .group_by { |object| object["record"] }
-              .filter_map { |ref, objects| [ref, objects.first["pos"].map(&:to_f)] if objects.one? }
+              .filter_map { |ref, objects| [ref, placement(objects.first)] if objects.one? }
               .to_h
           else
             {}
           end
         end
+      end
+
+      private def placement(object)
+        {position: object["pos"].map(&:to_f), radius: object["size"]&.to_f}
       end
 
       # Keyed by record key: every later step names places that way, and a

@@ -29,6 +29,9 @@ module V1
           # star. Null where the game does not place it, or places the same
           # record more than once.
           position: {type: [:array, :null], items: {type: :number}, minItems: 3, maxItems: 3},
+          # A star's, planet's or moon's radius in metres. Null for every other
+          # kind of place.
+          radius: {type: [:number, :null]},
 
           # Null for a system.
           parent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

@@ -437,6 +437,15 @@ module ScData
         assert_nil location("StantonSolarSystem")[:position]
       end
 
+      test "#locations takes a body's radius from its placement, and no other place's" do
+        stanton
+        place("Stanton3_Area18", "Area18", type: "LandingZone", parent: "Stanton1")
+        placements([placement("Stanton1", [12_850_457_093.0, 0, 0], size: 1_000_000.0), placement("Stanton3_Area18", [1, 2, 3], size: 4_000.0)])
+
+        assert_equal 1_000_000.0, location("Stanton1")[:radius]
+        assert_nil location("Stanton3_Area18")[:radius]
+      end
+
       test "#locations gives a record placed more than once no position" do
         stanton
         place("QV_Station", "QV Logistics Station", type: "Outpost", parent: "Stanton1")
@@ -517,8 +526,8 @@ module ScData
         File.write(target, JSON.generate({systems: [], objects:}))
       end
 
-      private def placement(key, pos)
-        {record: ref_for(key), name: key, pos:}
+      private def placement(key, pos, size: nil)
+        {record: ref_for(key), name: key, pos:, size:}
       end
 
       private def landing_zone(key, zones:, ref: nil)

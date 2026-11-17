@@ -19419,6 +19419,10 @@ components:
             type: number
           minItems: 3
           maxItems: 3
+        radius:
+          type:
+          - number
+          - 'null'
         parent:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"

@@ -49,10 +49,11 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /locations/{slug} returns where the system places it" do
-    @delamar.builds.sole.update!(position: [-1.5e10, 7.2e9, 0.0])
+    @delamar.builds.sole.update!(position: [-1.5e10, 7.2e9, 0.0], radius: 320_000.0)
 
     assert_api_response :get, 200, params: {slug: "delamar"} do
       assert_equal [-1.5e10, 7.2e9, 0.0], parsed_body["position"]
+      assert_equal 320_000.0, parsed_body["radius"]
     end
 
     assert_api_response :get, 200, params: {slug: "levski"} do

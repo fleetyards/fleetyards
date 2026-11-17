@@ -35,6 +35,7 @@ module ScData
 
         assert_equal [12_850_457_093.0, 0.0, 0.0], planet.position
         assert_equal planet.position, planet.builds.sole.position
+        assert_equal 1_000_000.0, planet.radius
         assert_nil Location.find_by!(sc_key: "StantonSolarSystem").position
       end
 
