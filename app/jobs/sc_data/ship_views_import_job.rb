@@ -20,7 +20,8 @@ module ScData
   # and its renders are left as they are.
   #
   # Forced, every ship's listing is compared render by render, so a render
-  # missing from a model whose digest is current comes down again.
+  # missing from a model whose digest is current comes down again. One
+  # detached in the admin stays detached: only syncing the ship restores it.
   class ShipViewsImportJob < ApplicationJob
     include RenderImport
 
@@ -29,6 +30,7 @@ module ScData
     def perform(model_id = nil, paints_only = false, force = false)
       return unless ::ScData::ShipViewsStore.configured?
 
+      @restore_detached = !force || model_id.present?
       store = ::ScData::ShipViewsStore.new
       ships = store.ships
 
@@ -107,6 +109,8 @@ module ScData
         .filter_map { |value, models| [value, models.first] if models.one? }
         .to_h
     end
+
+    private def restore_detached? = @restore_detached
 
     private def textured_paints(store)
       @textured_paints ||= TexturedPaintsImport.new(store, logger: method(:log))

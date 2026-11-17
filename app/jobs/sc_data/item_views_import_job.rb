@@ -14,7 +14,8 @@ module ScData
   # kept: the stored md5s still name the render it replaced.
   #
   # Forced, every item's listing is compared render by render, so a render
-  # missing from a record whose digest is current comes down again.
+  # missing from a record whose digest is current comes down again. One
+  # detached in the admin stays detached: only syncing the item restores it.
   class ItemViewsImportJob < ApplicationJob
     include RenderImport
 

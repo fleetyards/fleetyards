@@ -437,6 +437,16 @@ module ScData
       assert @model.top_view.attached?
     end
 
+    test "a forced run leaves a render detached in the admin detached" do
+      publish({"flight_top.png" => PNG})
+      perform
+      @model.top_view.purge
+
+      perform(nil, false, true)
+
+      assert_not @model.reload.top_view.attached?
+    end
+
     test "skips a model two folders claim" do
       publish({"flight_top.png" => PNG})
       index = JSON.parse(@objects["index.json"])
