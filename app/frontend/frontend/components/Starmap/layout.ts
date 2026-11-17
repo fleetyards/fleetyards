@@ -24,6 +24,8 @@ export interface StarmapItem {
   radius: number | null;
   color: string;
   labelled: boolean;
+  // Which label gives way where two would overlap: the lower keeps its own.
+  rank: number;
   enterable: boolean;
   // How far the item is from the centre of its level, in metres.
   distance: number | null;
@@ -42,7 +44,13 @@ export interface StarmapScene {
   // Circles in the orbital plane, centred on the level's origin.
   orbits: number[];
   links: StarmapLink[];
+  // How far out the camera starts, and how far out anything is drawn.
   extent: number;
+  reach: number;
+  // Where the star lies, seen from the body at the centre: the body is lit
+  // from there and hides what is on its far side. Null on the other levels.
+  sun: StarmapVector | null;
+  occluder: number | null;
 }
 
 // Metres per scene unit. A system is tens of gigametres across, a planet's
@@ -91,6 +99,20 @@ const roleOf = (place: LocationStarmapPlace): StarmapRole => {
   return "place";
 };
 
+const RANKS: Record<StarmapRole, number> = {
+  system: 0,
+  star: 0,
+  planet: 1,
+  moon: 2,
+  place: 3,
+};
+
+const rankOf = (place: LocationStarmapPlace, role: StarmapRole) => {
+  if (role !== "place") return RANKS[role];
+
+  return LABELLED_PLACES.has(place.kind) || place.gateway ? 3 : 4;
+};
+
 const item = (
   place: LocationStarmapPlace,
   origin: number[],
@@ -110,6 +132,7 @@ const item = (
     radius: place.radius ? place.radius / unit : null,
     color: place.color ?? COLORS[role],
     labelled,
+    rank: rankOf(place, role),
     enterable: role === "planet" || role === "moon",
     distance: length(offset),
     realRadius: place.radius,
@@ -154,6 +177,7 @@ export const systemsScene = (
       radius: null,
       color: COLORS.system,
       labelled: true,
+      rank: 0,
       enterable: true,
       distance: null,
       realRadius: null,
@@ -184,7 +208,15 @@ export const systemsScene = (
 
   const links = [...pairs.values()];
 
-  return { items, orbits: [], links, extent: SYSTEMS_RING * 1.8 };
+  return {
+    items,
+    orbits: [],
+    links,
+    extent: SYSTEMS_RING * 1.8,
+    reach: SYSTEMS_RING * 2,
+    sun: null,
+    occluder: null,
+  };
 };
 
 const BODY_KINDS = new Set<LocationKindEnum>([
@@ -192,6 +224,8 @@ const BODY_KINDS = new Set<LocationKindEnum>([
   LocationKindEnum.PLANET,
   LocationKindEnum.MOON,
 ]);
+
+const INSIDE_METRES = 20_000;
 
 // Where a place belongs, walked up its parents: the body it is on or around,
 // and whether it sits at a Lagrange point, which the game draws with the star.
@@ -221,7 +255,24 @@ const ancestry = (places: LocationStarmapPlace[]) => {
     return false;
   };
 
-  return { bodyOf, atLagrangePoint };
+  // A clinic inside a station or a venue in a city is the same point at any
+  // zoom the map has: drawn apart, a click on the station would as likely
+  // land on its clinic. They are folded into the place they are in, whose
+  // page lists them.
+  const inside = (place: LocationStarmapPlace) => {
+    const parent = parentOf(place);
+    if (!parent || BODY_KINDS.has(parent.kind) || parent.lagrangePoint) {
+      return false;
+    }
+
+    const gap = Math.hypot(
+      ...place.position.map((value, index) => value - parent.position[index]),
+    );
+
+    return gap < INSIDE_METRES;
+  };
+
+  return { bodyOf, atLagrangePoint, inside };
 };
 
 const starOf = (places: LocationStarmapPlace[]) =>
@@ -236,24 +287,36 @@ const starOf = (places: LocationStarmapPlace[]) =>
 export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
   const star = starOf(places);
   const origin = star?.position ?? [0, 0, 0];
-  const { atLagrangePoint } = ancestry(places);
+  const { atLagrangePoint, inside } = ancestry(places);
 
   const shown = places.filter((place) => {
     if (place === star) return true;
+    if (inside(place)) return false;
     if (place.kind === LocationKindEnum.PLANET) return true;
     if (place.gateway || atLagrangePoint(place)) return true;
 
     return !!star && place.parentId === star.id;
   });
 
+  // A Lagrange point with a station at it is named by the station: "HUR-L1
+  // Green Glade Station" already says where it is, and the two would sit on
+  // top of each other.
+  const occupied = new Set(
+    shown
+      .filter((place) => !place.lagrangePoint)
+      .map((place) => place.parentId),
+  );
+
   const items = shown.map((place) =>
     item(
       place,
       origin,
       SYSTEM_UNIT,
-      roleOf(place) !== "place" ||
-        place.gateway ||
-        LABELLED_PLACES.has(place.kind),
+      place.lagrangePoint
+        ? !occupied.has(place.id)
+        : roleOf(place) !== "place" ||
+            place.gateway ||
+            LABELLED_PLACES.has(place.kind),
     ),
   );
 
@@ -261,7 +324,17 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
     .filter((place) => place.kind === LocationKindEnum.PLANET)
     .map((place) => planarDistance(place.position, origin) / SYSTEM_UNIT);
 
-  return { items, orbits, links: [], extent: extentOf(items, 1) };
+  const extent = extentOf(items, 1);
+
+  return {
+    items,
+    orbits,
+    links: [],
+    extent,
+    reach: extent,
+    sun: null,
+    occluder: null,
+  };
 };
 
 /**
@@ -276,39 +349,36 @@ export const bodyScene = (
   const body = places.find((place) => place.slug === bodySlug);
   if (!body || !BODY_KINDS.has(body.kind)) return null;
 
-  const { bodyOf, atLagrangePoint } = ancestry(places);
+  const { bodyOf, atLagrangePoint, inside } = ancestry(places);
 
   const shown = places.filter((place) => {
     if (place === body) return true;
-    if (atLagrangePoint(place)) return false;
+    if (atLagrangePoint(place) || inside(place)) return false;
 
     return bodyOf(place)?.id === body.id;
   });
 
   const items = shown.map((place) =>
-    item(
-      place,
-      body.position,
-      BODY_UNIT,
-      roleOf(place) !== "place" || LABELLED_PLACES.has(place.kind),
-    ),
+    item(place, body.position, BODY_UNIT, true),
   );
 
   const orbits = shown
     .filter((place) => place.kind === LocationKindEnum.MOON)
     .map((place) => planarDistance(place.position, body.position) / BODY_UNIT);
 
-  // Framed on the moons where there are any: what orbits further out is a
-  // handful of stations that would shrink the body to a dot.
-  const moons = items.filter((entry) => entry.role === "moon");
+  // Framed on the body itself: its cities, outposts and the stations in low
+  // orbit sit within a few percent of its radius, and framed on the moons
+  // they would all be under a ten-pixel dot. The moons are a zoom out away.
   const radius = (body.radius ?? BODY_UNIT) / BODY_UNIT;
+  const star = starOf(places);
 
   return {
     items,
     orbits,
     links: [],
-    extent: moons.length
-      ? extentOf(moons, radius) * 1.15
-      : extentOf(items, radius),
+    extent: radius * 2.6,
+    reach: extentOf(items, radius),
+    sun: star ? toScene(star.position, body.position, 1) : null,
+    occluder: body.radius ? radius : null,
   };
 };

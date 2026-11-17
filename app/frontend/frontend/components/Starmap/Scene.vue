@@ -6,21 +6,23 @@ export default {
 
 <script lang="ts" setup>
 import {
-  BufferGeometry,
+  AmbientLight,
   Color,
+  DirectionalLight,
   Group,
-  LineBasicMaterial,
-  Line,
-  LineDashedMaterial,
-  LineLoop,
-  LineSegments,
   Matrix4,
   Mesh,
   MeshBasicMaterial,
+  MeshLambertMaterial,
   PerspectiveCamera,
   SphereGeometry,
+  Vector2,
   Vector3,
+  type Material,
 } from "three";
+import { Line2 } from "three/examples/jsm/lines/Line2.js";
+import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { useLoop, useTres } from "@tresjs/core";
 import { Html } from "@tresjs/cientos";
 import StarmapLabel from "./Label.vue";
@@ -56,82 +58,98 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
 
 // How near the pointer has to come to a thing to pick it, in pixels.
 const PICK_PIXELS = 12;
+const TIE_PIXELS = 3;
 
-const sphere = new SphereGeometry(1, 24, 16);
+const sphere = new SphereGeometry(1, 48, 32);
 const group = new Group();
 const meshes = new Map<string, Mesh>();
+const lineMaterials: LineMaterial[] = [];
 
 const disposeGroup = () => {
   group.traverse((object) => {
-    if (object instanceof Mesh || object instanceof Line) {
+    if (object instanceof Mesh) {
       if (object.geometry !== sphere) object.geometry.dispose();
-      (object.material as MeshBasicMaterial).dispose();
+      (object.material as Material).dispose();
     }
   });
   group.clear();
   meshes.clear();
+  lineMaterials.length = 0;
+};
+
+// Lines a pixel and a half wide whatever the screen's pixel ratio: a plain
+// three.js line is one device pixel, which a high-density screen all but
+// loses.
+const line = (
+  points: number[],
+  { opacity, dashed = false }: { opacity: number; dashed?: boolean },
+) => {
+  const geometry = new LineGeometry();
+  geometry.setPositions(points);
+
+  const material = new LineMaterial({
+    color: 0x5aafd4,
+    linewidth: 1.5,
+    transparent: true,
+    opacity,
+    dashed,
+    dashScale: 1,
+    dashSize: 0.8,
+    gapSize: 0.6,
+  });
+  lineMaterials.push(material);
+
+  const object = new Line2(geometry, material);
+  object.computeLineDistances();
+  return object;
 };
 
 const circle = (radius: number) => {
-  const points: Vector3[] = [];
-  for (let step = 0; step < 128; step += 1) {
+  const points: number[] = [];
+  for (let step = 0; step <= 128; step += 1) {
     const angle = (step / 128) * Math.PI * 2;
-    points.push(
-      new Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius),
-    );
+    points.push(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
   }
-  return new BufferGeometry().setFromPoints(points);
+  return points;
 };
+
+const BODY_ROLES = new Set<StarmapRole>(["planet", "moon"]);
 
 const build = (scene: StarmapScene) => {
   disposeGroup();
 
   for (const radius of scene.orbits) {
-    group.add(
-      new LineLoop(
-        circle(radius),
-        new LineBasicMaterial({
-          color: 0x5aafd4,
-          transparent: true,
-          opacity: 0.35,
-        }),
-      ),
-    );
+    group.add(line(circle(radius), { opacity: 0.45 }));
   }
 
   for (const link of scene.links) {
-    const line = new LineSegments(
-      new BufferGeometry().setFromPoints([
-        new Vector3(...link.from),
-        new Vector3(...link.to),
-      ]),
-      link.temporary
-        ? new LineDashedMaterial({
-            color: 0x5aafd4,
-            dashSize: 0.8,
-            gapSize: 0.6,
-            transparent: true,
-            opacity: 0.5,
-          })
-        : new LineBasicMaterial({
-            color: 0x5aafd4,
-            transparent: true,
-            opacity: 0.7,
-          }),
+    group.add(
+      line([...link.from, ...link.to], {
+        opacity: link.temporary ? 0.55 : 0.8,
+        dashed: link.temporary,
+      }),
     );
-    line.computeLineDistances();
-    group.add(line);
+  }
+
+  // Close up a body is a sphere, so it is lit from its star; everywhere else
+  // things are dots and stay flat.
+  if (scene.sun) {
+    const light = new DirectionalLight(0xffffff, 2.4);
+    light.position.set(...scene.sun).normalize();
+    group.add(light, new AmbientLight(0xffffff, 0.5));
   }
 
   for (const entry of scene.items) {
-    const mesh = new Mesh(
-      sphere,
-      new MeshBasicMaterial({
-        color: new Color(entry.color),
-        transparent: entry.role === "place",
-        opacity: entry.role === "place" ? 0.85 : 1,
-      }),
-    );
+    const color = new Color(entry.color);
+    const material =
+      scene.sun && BODY_ROLES.has(entry.role)
+        ? new MeshLambertMaterial({ color })
+        : new MeshBasicMaterial({
+            color,
+            transparent: entry.role === "place",
+            opacity: entry.role === "place" ? 0.9 : 1,
+          });
+    const mesh = new Mesh(sphere, material);
     mesh.position.set(...entry.position);
     mesh.userData.key = entry.key;
     group.add(mesh);
@@ -155,7 +173,7 @@ const frame = (scene: StarmapScene) => {
   const cam = camera.value;
   if (cam instanceof PerspectiveCamera) {
     cam.near = extent / 10000;
-    cam.far = extent * 100;
+    cam.far = Math.max(extent, scene.reach) * 40;
     cam.updateProjectionMatrix();
   }
 
@@ -231,6 +249,23 @@ watch(
 
 const world = new Vector3();
 const projected = new Vector3();
+const resolution = new Vector2();
+const toPoint = new Vector3();
+const closest = new Vector3();
+
+// Whether the body at the centre stands between the camera and a point: what
+// is on its far side is neither labelled nor picked.
+const occluded = (point: Vector3, from: Vector3) => {
+  const radius = props.scene.occluder;
+  if (!radius) return false;
+
+  toPoint.copy(point).sub(from);
+  const t = -from.dot(toPoint) / toPoint.lengthSq();
+  if (t <= 0 || t >= 1) return false;
+
+  closest.copy(from).addScaledVector(toPoint, t);
+  return closest.length() < radius * 0.995;
+};
 
 onBeforeRender(() => {
   const cam = camera.value;
@@ -251,7 +286,14 @@ onBeforeRender(() => {
     }
   }
 
-  const height = canvas()?.clientHeight || 1;
+  const element = canvas();
+  const height = element?.clientHeight || 1;
+
+  if (element) {
+    resolution.set(element.clientWidth, element.clientHeight);
+    for (const material of lineMaterials) material.resolution.copy(resolution);
+  }
+
   const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
 
   for (const entry of props.scene.items) {
@@ -266,7 +308,6 @@ onBeforeRender(() => {
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * selected);
   }
 
-  const element = canvas();
   if (element && viewChanged(cam, element)) declutter(cam, element);
 });
 
@@ -291,6 +332,8 @@ const pick = (event: PointerEvent | MouseEvent): StarmapItem | null => {
     const mesh = meshes.get(entry.key);
     if (!mesh) continue;
 
+    if (occluded(mesh.position, cam.position)) continue;
+
     projected.copy(mesh.position).project(cam);
     if (projected.z > 1) continue;
 
@@ -298,7 +341,14 @@ const pick = (event: PointerEvent | MouseEvent): StarmapItem | null => {
     const y = ((1 - projected.y) / 2) * rect.height + rect.top;
     const distance = Math.hypot(x - event.clientX, y - event.clientY);
 
-    if (distance < PICK_PIXELS && distance < bestDistance) {
+    if (distance >= PICK_PIXELS) continue;
+
+    // Dots a few pixels apart are one spot to the pointer: the place that
+    // matters more wins, as its label did.
+    const closer = distance < bestDistance - TIE_PIXELS;
+    const tied = Math.abs(distance - bestDistance) <= TIE_PIXELS;
+
+    if (!best || closer || (tied && entry.rank < best.rank)) {
       best = entry;
       bestDistance = distance;
     }
@@ -372,15 +422,6 @@ onBeforeUnmount(() => {
   sphere.dispose();
 });
 
-// Which label gives way where two would overlap: the bodies keep theirs.
-const RANK: Record<StarmapRole, number> = {
-  system: 0,
-  star: 0,
-  planet: 1,
-  moon: 2,
-  place: 3,
-};
-
 const LABEL_HEIGHT = 14;
 const LABEL_CHAR_WIDTH = 6.5;
 
@@ -393,16 +434,18 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     .sort((a, b) => {
       if (a.key === props.selectedKey) return -1;
       if (b.key === props.selectedKey) return 1;
-      return RANK[a.role] - RANK[b.role];
+      return a.rank - b.rank;
     });
 
   const placed: { x: number; y: number; half: number }[] = [];
   const next = new Set<string>();
 
   for (const entry of candidates) {
-    projected.set(...entry.position).project(cam);
+    projected.set(...entry.position);
+    const behind = occluded(projected, cam.position);
+    projected.project(cam);
 
-    if (projected.z > 1 && entry.key !== props.selectedKey) {
+    if ((behind || projected.z > 1) && entry.key !== props.selectedKey) {
       next.add(entry.key);
       continue;
     }

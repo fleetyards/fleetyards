@@ -151,6 +151,25 @@ describe("bodyScene", () => {
     expect(keys(scene!.items)).toEqual(["aberdeen", "klescher"]);
   });
 
+  it("folds a place inside another one into it, so a click lands on the station", () => {
+    const everus = place({
+      id: "everus-harbor",
+      parentId: "hurston",
+      position: [12_850_457_093 + 1_030_000, 0, 0],
+    });
+    const clinic = place({
+      id: "everus-harbor-clinic",
+      kind: LocationKindEnum.CLINIC,
+      parentId: "everus-harbor",
+      position: [12_850_457_093 + 1_032_000, 0, 0],
+    });
+
+    const scene = bodyScene([...places, everus, clinic], "hurston");
+
+    expect(keys(scene!.items)).toContain("everus-harbor");
+    expect(keys(scene!.items)).not.toContain("everus-harbor-clinic");
+  });
+
   it("has nothing for a place that is not a body", () => {
     expect(bodyScene(places, "lorville")).toBeNull();
     expect(bodyScene(places, "nowhere")).toBeNull();
