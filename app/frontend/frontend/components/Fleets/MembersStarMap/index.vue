@@ -11,6 +11,7 @@ import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { TresCanvas, useLoop } from "@tresjs/core";
 import { OrbitControls, Html } from "@tresjs/cientos";
+import AsyncData from "@/shared/components/AsyncData.vue";
 import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
@@ -36,7 +37,7 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
   mobile.value ? "low-power" : "default",
 );
 
-const { data: galaxy } = useGalaxy();
+const { data: galaxy, ...galaxyStatus } = useGalaxy();
 
 const starSystems = computed(() => galaxy.value?.systems ?? []);
 
@@ -100,8 +101,19 @@ const buildLineSegments = (
   return line;
 };
 
+// A recomputed line replaces its predecessor, whose GPU buffers would
+// otherwise outlive it.
+const disposeLine = (line?: LineSegments2) => {
+  if (!line) return;
+  line.geometry.dispose();
+  line.material.dispose();
+  const index = lineMaterials.indexOf(line.material);
+  if (index !== -1) lineMaterials.splice(index, 1);
+};
+
 // --- Jump route line objects ---
-const routeLines = computed(() => {
+const routeLines = computed((previous?: LineSegments2) => {
+  disposeLine(previous);
   const positions: number[] = [];
   for (const tunnel of jumpTunnels.value) {
     const fromSys = systemByCode.value.get(tunnel.entryCode);
@@ -115,7 +127,8 @@ const routeLines = computed(() => {
 });
 
 // --- Highlight routes (connecting active systems) ---
-const activeRouteLines = computed(() => {
+const activeRouteLines = computed((previous?: LineSegments2) => {
+  disposeLine(previous);
   const positions: number[] = [];
   for (const tunnel of jumpTunnels.value) {
     if (!isActive(tunnel.entryCode) || !isActive(tunnel.exitCode)) continue;
@@ -127,6 +140,11 @@ const activeRouteLines = computed(() => {
     positions.push(fx, fy, fz, tx, ty, tz);
   }
   return buildLineSegments(positions, "#5aafd4", 0.85, 3);
+});
+
+onBeforeUnmount(() => {
+  disposeLine(routeLines.value);
+  disposeLine(activeRouteLines.value);
 });
 
 // Dimmed system nodes: muted purple-grey
@@ -216,96 +234,110 @@ const ResolutionUpdater = defineComponent({
 
 <template>
   <div class="members-starmap">
-    <TresCanvas
-      v-if="webglSupported"
-      :clear-alpha="0"
-      :shadows="false"
-      :dpr="dpr"
-      :power-preference="powerPreference"
-      alpha
-    >
-      <TresPerspectiveCamera
-        :position="cameraPosition"
-        :args="[60, 1, 0.1, 500]"
-      />
-      <OrbitControls
-        enable-rotate
-        :enable-zoom="true"
-        :zoom-speed="0.5"
-        :min-distance="10"
-        :max-distance="120"
-        enable-damping
-        :damping-factor="0.05"
-        :enable-pan="true"
-        :target="cameraTarget"
-        make-default
-      />
-
-      <!-- Resolution updater for fat lines -->
-      <ResolutionUpdater />
-
-      <!-- Jump routes (dimmed) -->
-      <primitive :object="routeLines" />
-
-      <!-- Active routes (highlighted) -->
-      <primitive :object="activeRouteLines" />
-
-      <!-- Star systems -->
-      <TresGroup v-for="system in starSystems" :key="system.code">
-        <!-- System node -->
-        <TresMesh
-          :position="systemPosition(system)"
-          :material="
-            isActive(system.code) ? activeSystemMaterial : dimmedSystemMaterial
-          "
-          :render-order="1"
+    <WebglFallback v-if="!webglSupported" />
+    <AsyncData v-else :async-status="galaxyStatus">
+      <template #resolved>
+        <TresCanvas
+          :clear-alpha="0"
+          :shadows="false"
+          :dpr="dpr"
+          :power-preference="powerPreference"
+          alpha
         >
-          <TresSphereGeometry
-            :args="[isActive(system.code) ? 0.4 : 0.2, 16, 16]"
+          <TresPerspectiveCamera
+            :position="cameraPosition"
+            :args="[60, 1, 0.1, 500]"
           />
-        </TresMesh>
-        <!-- Glow for active systems -->
-        <TresMesh
-          v-if="isActive(system.code)"
-          :position="systemPosition(system)"
-          :material="activeSystemGlowMaterial"
-        >
-          <TresSphereGeometry :args="[0.7, 16, 16]" />
-        </TresMesh>
-        <!-- System label -->
-        <Html :position="labelOffset(system)" center :z-index-range="[1, 10]">
-          <span
-            :class="[
-              'system-label',
-              isActive(system.code)
-                ? 'system-label-active'
-                : 'system-label-dimmed',
-            ]"
-          >
-            {{ system.name }}
-          </span>
-        </Html>
-      </TresGroup>
+          <OrbitControls
+            enable-rotate
+            :enable-zoom="true"
+            :zoom-speed="0.5"
+            :min-distance="10"
+            :max-distance="120"
+            enable-damping
+            :damping-factor="0.05"
+            :enable-pan="true"
+            :target="cameraTarget"
+            make-default
+          />
 
-      <!-- Member badges per system -->
-      <TresGroup v-for="badge in systemMemberBadges" :key="badge.systemCode">
-        <Html :position="badge.position" center :z-index-range="[50, 100]">
-          <div class="member-badge">
-            <span class="member-badge-count">{{ badge.members.length }}</span>
-            <div class="member-badge-names">
+          <!-- Resolution updater for fat lines -->
+          <ResolutionUpdater />
+
+          <!-- Jump routes (dimmed) -->
+          <primitive :object="routeLines" />
+
+          <!-- Active routes (highlighted) -->
+          <primitive :object="activeRouteLines" />
+
+          <!-- Star systems -->
+          <TresGroup v-for="system in starSystems" :key="system.code">
+            <!-- System node -->
+            <TresMesh
+              :position="systemPosition(system)"
+              :material="
+                isActive(system.code)
+                  ? activeSystemMaterial
+                  : dimmedSystemMaterial
+              "
+              :render-order="1"
+            >
+              <TresSphereGeometry
+                :args="[isActive(system.code) ? 0.4 : 0.2, 16, 16]"
+              />
+            </TresMesh>
+            <!-- Glow for active systems -->
+            <TresMesh
+              v-if="isActive(system.code)"
+              :position="systemPosition(system)"
+              :material="activeSystemGlowMaterial"
+            >
+              <TresSphereGeometry :args="[0.7, 16, 16]" />
+            </TresMesh>
+            <!-- System label -->
+            <Html
+              :position="labelOffset(system)"
+              center
+              :z-index-range="[1, 10]"
+            >
               <span
-                v-for="m in badge.members"
-                :key="m.id"
-                class="member-badge-name"
+                :class="[
+                  'system-label',
+                  isActive(system.code)
+                    ? 'system-label-active'
+                    : 'system-label-dimmed',
+                ]"
               >
-                {{ m.username }}
+                {{ system.name }}
               </span>
-            </div>
-          </div>
-        </Html>
-      </TresGroup>
-    </TresCanvas>
-    <WebglFallback v-else />
+            </Html>
+          </TresGroup>
+
+          <!-- Member badges per system -->
+          <TresGroup
+            v-for="badge in systemMemberBadges"
+            :key="badge.systemCode"
+          >
+            <Html :position="badge.position" center :z-index-range="[50, 100]">
+              <div class="member-badge">
+                <span class="member-badge-count">{{
+                  badge.members.length
+                }}</span>
+                <div class="member-badge-names">
+                  <span
+                    v-for="m in badge.members"
+                    :key="m.id"
+                    class="member-badge-name"
+                  >
+                    {{ m.username }}
+                  </span>
+                </div>
+              </div>
+            </Html>
+          </TresGroup>
+        </TresCanvas>
+      </template>
+    </AsyncData>
 
     <!-- Legend -->
     <div v-if="webglSupported" class="starmap-legend">
