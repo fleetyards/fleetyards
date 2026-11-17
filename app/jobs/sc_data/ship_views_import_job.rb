@@ -18,12 +18,15 @@ module ScData
   #
   # Paints only, every ship's paint maps are read again whatever its digest says,
   # and its renders are left as they are.
+  #
+  # Forced, every ship's listing is compared render by render, so a render
+  # missing from a model whose digest is current comes down again.
   class ShipViewsImportJob < ApplicationJob
     include RenderImport
 
     sidekiq_options queue: "loaders"
 
-    def perform(model_id = nil, paints_only = false)
+    def perform(model_id = nil, paints_only = false, force = false)
       return unless ::ScData::ShipViewsStore.configured?
 
       store = ::ScData::ShipViewsStore.new
@@ -55,7 +58,7 @@ module ScData
           next
         end
 
-        next if model_id.nil? && !paints_only && model.ship_views_digest == entry["files"]
+        next if model_id.nil? && !paints_only && !force && model.ship_views_digest == entry["files"]
 
         listing = store.listing(path)
         @liveried = Model::LIVERY_MAP_ATTACHMENT_NAMES.any? { |name| model.public_send(name).attached? }

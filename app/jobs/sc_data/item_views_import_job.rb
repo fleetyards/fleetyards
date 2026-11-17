@@ -12,6 +12,9 @@ module ScData
   # by render even when the digest says nothing changed, so a render detached in
   # the admin comes back. A view uploaded by hand over an imported render is
   # kept: the stored md5s still name the render it replaced.
+  #
+  # Forced, every item's listing is compared render by render, so a render
+  # missing from a record whose digest is current comes down again.
   class ItemViewsImportJob < ApplicationJob
     include RenderImport
 
@@ -23,7 +26,7 @@ module ScData
     HULL_FIELDS = %w[holo_hull hardpoint_transforms holo_doors].to_set.freeze
     ATTACH_POINTS_NAME = "attach_points.json"
 
-    def perform(record_type = nil, record_id = nil)
+    def perform(record_type = nil, record_id = nil, force = false)
       return unless ::ScData::ItemViewsStore.configured?
 
       @restore_detached = record_id.present?
@@ -58,7 +61,7 @@ module ScData
           next
         end
 
-        next if record_id.nil? && record.item_views_digest == entry["files"]
+        next if record_id.nil? && !force && record.item_views_digest == entry["files"]
 
         @hull = record.is_a?(Component)
         fields = import(store, record, path, entry["files"])

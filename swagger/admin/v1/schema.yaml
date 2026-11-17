@@ -18852,6 +18852,8 @@ components:
       - uex_component_prices
       - uex_equipment_prices
       - uex_trade_routes
+      - ship_views
+      - item_views
       x-enumNames:
       - SHIP_MATRIX
       - MODULES
@@ -18865,6 +18867,8 @@ components:
       - UEX_COMPONENT_PRICES
       - UEX_EQUIPMENT_PRICES
       - UEX_TRADE_ROUTES
+      - SHIP_VIEWS
+      - ITEM_VIEWS
       title: ImportLoaderEnum
     ImportQuery:
       type: object

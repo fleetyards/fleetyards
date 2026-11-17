@@ -23,6 +23,16 @@ module Imports
       assert_equal Imports::Loaders::SHIP_MATRIX - ["ship_matrix"], ::Loaders::ModelsJob.jobs.first["args"].last
     end
 
+    test "reloading the views compares every listing, whatever its digest" do
+      Sidekiq::Worker.clear_all
+
+      Imports::Loaders.new("ship_views", admin_user_id: nil).enqueue
+      Imports::Loaders.new("item_views", admin_user_id: nil).enqueue
+
+      assert_equal [nil, false, true], ::ScData::ShipViewsImportJob.jobs.first["args"]
+      assert_equal [nil, nil, true], ::ScData::ItemViewsImportJob.jobs.first["args"]
+    end
+
     test "an unknown environment is an error, not the default build" do
       assert_raises(ArgumentError) do
         Imports::Loaders.new("sc_data", admin_user_id: nil, environment: "ptuu").enqueue

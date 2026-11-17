@@ -3505,6 +3505,14 @@
             "name": "Terminals and trade routes",
             "description": "UEX's terminals and the trade routes between them."
           },
+          "ship_views": {
+            "name": "Ship renders",
+            "description": "Every ship's renders and holos, compared file by file, so missing ones come in again."
+          },
+          "item_views": {
+            "name": "Item renders",
+            "description": "Every component's and item's renders and holos, compared file by file, so missing ones come in again."
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"

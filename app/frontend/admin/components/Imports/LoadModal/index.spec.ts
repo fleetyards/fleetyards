@@ -64,6 +64,8 @@ describe("ImportsLoadModal", () => {
       "import-loader-uex_component_prices",
       "import-loader-uex_equipment_prices",
       "import-loader-uex_trade_routes",
+      "import-loader-ship_views",
+      "import-loader-item_views",
     ]);
   });
 

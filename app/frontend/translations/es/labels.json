@@ -3505,6 +3505,14 @@
             "name": "Terminales y rutas comerciales",
             "description": "Las terminales de UEX y las rutas comerciales entre ellas."
           },
+          "ship_views": {
+            "name": "Renders de naves",
+            "description": "Los renders y hologramas de todas las naves, comparados archivo por archivo para volver a cargar los que falten."
+          },
+          "item_views": {
+            "name": "Renders de objetos",
+            "description": "Los renders y hologramas de todos los componentes y objetos, comparados archivo por archivo para volver a cargar los que falten."
+          },
           "environments": {
             "live": "Live",
             "ptu": "PTU"
