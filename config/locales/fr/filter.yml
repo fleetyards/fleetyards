@@ -75,6 +75,7 @@ fr:
           weapons: Armes
       sub_type:
         items:
+          bomb: Bombe
           ground_vehicle_missile: Missile de véhicule terrestre
           pdc_turret: Tourelle PDC
           salvage_modifier_tractor_beam: Rayon tracteur de récupération

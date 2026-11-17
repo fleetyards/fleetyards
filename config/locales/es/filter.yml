@@ -75,6 +75,7 @@ es:
           weapons: Armas
       sub_type:
         items:
+          bomb: Bomba
           ground_vehicle_missile: Misil de vehículo terrestre
           pdc_turret: Torreta PDC
           salvage_modifier_tractor_beam: Rayo tractor de salvamento

@@ -75,6 +75,23 @@ module ScData
         assert_equal({component_id: nil}, params)
       end
 
+      test "#all lists a bomb under its own sub type and keeps it fitting its port" do
+        loader = items_loader
+
+        assert_equal "Bomb", loader.send(:item_sub_type, {"type" => "Bomb", "sub_type" => "Utility"})
+        assert_equal "Utility", loader.send(:item_sub_type, {"type" => "Turret", "sub_type" => "Utility"})
+
+        ports = loader.send(:port_sub_types, {"Bomb" => ["Utility"], "Turret" => ["Utility"]})
+
+        assert_equal({"Bomb" => ["Bomb"], "Turret" => ["Utility"]}, ports)
+        assert_nil loader.send(:port_sub_types, nil)
+
+        facts = Struct.new(:sub_types).new(ports)
+        bomb = Struct.new(:component_type, :component_sub_type).new("Bomb", "Bomb")
+
+        assert ::LoadoutSlots.sub_type_fits?(facts, bomb)
+      end
+
       test "#all names an item the game left without a localised name" do
         items_loader.all
 

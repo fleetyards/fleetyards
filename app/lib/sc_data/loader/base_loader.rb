@@ -409,7 +409,7 @@ module ScData
             min_size: item["min_size"],
             max_size: item["max_size"],
             types: item["types"],
-            sub_types: item["sub_types"],
+            sub_types: port_sub_types(item["sub_types"]),
             port_tags: item["port_tags"],
             required_tags: item["required_tags"],
             flags: item["flags"]
@@ -628,6 +628,25 @@ module ScData
         floor = (declared_min if declared_min.present? && declared_min < installed_size)
 
         {min_size: floor || installed_size, max_size: installed_size}
+      end
+
+      # The game files give a bomb the sub type `Utility`, and every bomb port
+      # asks for exactly that, so the catalogue had no sub type to list bombs
+      # under. Renamed on the item and on the port alike, so a port still takes
+      # what it took. Only under `Bomb`: a turret's `Utility` is a real one.
+      BOMB_TYPE = "Bomb"
+      GAME_BOMB_SUB_TYPE = "Utility"
+
+      private def item_sub_type(item)
+        return item["sub_type"] unless item["type"] == BOMB_TYPE && item["sub_type"] == GAME_BOMB_SUB_TYPE
+
+        BOMB_TYPE
+      end
+
+      private def port_sub_types(sub_types)
+        return sub_types unless sub_types.is_a?(Hash) && sub_types[BOMB_TYPE].is_a?(Array)
+
+        sub_types.merge(BOMB_TYPE => sub_types[BOMB_TYPE].map { |sub_type| (sub_type == GAME_BOMB_SUB_TYPE) ? BOMB_TYPE : sub_type })
       end
 
       private def loadout_name_blacklisted?(name, default_loadout = nil)
