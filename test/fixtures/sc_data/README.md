@@ -30,6 +30,8 @@ real shape. Each one is present for a reason:
 | `items/aegs_avenger_nose_s3.json` | carries a `loadout`, so the hardpoint pass runs |
 | `items/cargo_shipmining_pod_hyun.json` | an ore pod the game gives no localised name, which the loader names itself |
 | `items/rsi_apollo_module_left_tier_2.json` | a module item with no `loadout` at all, which the module load must not resolve |
+| `items/bomb_s03_fski_thunderball.json` | a bomb, which the game files give the sub type `Utility` |
+| `items/bmbrck_crus_starl_s03_left.json` | a bomb rack whose ports ask for that `Utility` |
 | `equipment/behr_rifle_ballistic_01.json` | names a manufacturer_ref the manufacturers tree carries |
 | `equipment/gys_helmet_03_01_01.json` | carries a volume and the box it fills |
 | `equipment/behr_rifle_ballistic_01_white02.json` | a skin filed under the rifle's family |

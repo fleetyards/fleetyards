@@ -75,21 +75,23 @@ module ScData
         assert_equal({component_id: nil}, params)
       end
 
-      test "#all lists a bomb under its own sub type and keeps it fitting its port" do
+      test "a loaded bomb carries its own sub type and still fits its rack's ports" do
+        items_loader.all
+
+        bomb = Component.find_by!(sc_key: "bomb_s03_fski_thunderball")
+        port = Component.find_by!(sc_key: "bmbrck_crus_starl_s03_left").hardpoints.find_by!(sc_name: "missile_01_attach")
+
+        assert_equal "Bomb", bomb.component_sub_type
+        assert_equal ["Bomb"], port.sub_types["Bomb"]
+        assert ::LoadoutSlots.sub_type_fits?(port, bomb)
+      end
+
+      test "a turret keeps the Utility sub type a bomb gives up" do
         loader = items_loader
 
-        assert_equal "Bomb", loader.send(:item_sub_type, {"type" => "Bomb", "sub_type" => "Utility"})
-        assert_equal "Utility", loader.send(:item_sub_type, {"type" => "Turret", "sub_type" => "Utility"})
-
-        ports = loader.send(:port_sub_types, {"Bomb" => ["Utility"], "Turret" => ["Utility"]})
-
-        assert_equal({"Bomb" => ["Bomb"], "Turret" => ["Utility"]}, ports)
-        assert_nil loader.send(:port_sub_types, nil)
-
-        facts = Struct.new(:sub_types).new(ports)
-        bomb = Struct.new(:component_type, :component_sub_type).new("Bomb", "Bomb")
-
-        assert ::LoadoutSlots.sub_type_fits?(facts, bomb)
+        assert_equal "Utility", loader.send(:catalogue_sub_type, {"type" => "Turret", "sub_type" => "Utility"})
+        assert_equal({"Turret" => ["Utility"]}, loader.send(:bomb_port_sub_types, {"Turret" => ["Utility"]}))
+        assert_nil loader.send(:bomb_port_sub_types, nil)
       end
 
       test "#all names an item the game left without a localised name" do
