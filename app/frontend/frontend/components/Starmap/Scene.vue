@@ -15,6 +15,8 @@ import {
   PerspectiveCamera,
   PointLight,
   SphereGeometry,
+  SRGBColorSpace,
+  TextureLoader,
   Vector2,
   Vector3,
   type Material,
@@ -150,7 +152,32 @@ const circle = (radius: number) => {
   return points;
 };
 
+const loader = new TextureLoader().setCrossOrigin("anonymous");
+// Bumped on every rebuild, so a texture that arrives for a scene already torn
+// down is thrown away rather than put on a disposed material.
+let generation = 0;
+
+// The game's own surface replaces the painted one once it has loaded; until
+// then, or if it fails, the painted one stays.
+const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
+  const built = generation;
+
+  loader.load(url, (texture) => {
+    if (built !== generation) {
+      texture.dispose();
+      return;
+    }
+
+    texture.colorSpace = SRGBColorSpace;
+    texture.anisotropy = 4;
+    textures.push(texture);
+    material.map = texture;
+    material.needsUpdate = true;
+  });
+};
+
 const disposeBodies = () => {
+  generation += 1;
   bodies.traverse((object) => {
     if (object instanceof Mesh) {
       if (object.geometry !== sphere && object.geometry !== dot) {
@@ -217,7 +244,9 @@ const build = (scene: StarmapScene) => {
     if (entry.surface) {
       const map = surfaceTexture(entry.surface, entry.color, entry.slug);
       textures.push(map);
-      material = new MeshLambertMaterial({ map, transparent: true });
+      const lambert = new MeshLambertMaterial({ map, transparent: true });
+      material = lambert;
+      if (entry.texture) wrapInGameSurface(lambert, entry.texture);
     } else {
       material = new MeshBasicMaterial({
         color: new Color(entry.color),

@@ -27,6 +27,9 @@ export interface StarmapItem {
   color: string;
   // How a planet or moon is painted; null for everything else.
   surface: StarmapSurface | null;
+  // The surface the game's own starmap wraps the body in, where the export
+  // has one. The painted surface stands in while it loads, or without it.
+  texture: string | null;
   // A flare star, as Pyro is.
   unstable: boolean;
   // Whether it is named on the map where there is room. Every item is named
@@ -236,6 +239,7 @@ export const systemsScene = (
       radius: null,
       color: COLORS.system,
       surface: null,
+      texture: null,
       unstable: false,
       labelled: true,
       rank: 0,
@@ -318,6 +322,7 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       radius: place.radius ? place.radius / UNIT : null,
       color: place.color ?? COLORS[role],
       surface: surfaceOf(place, role),
+      texture: place.texture?.largeUrl ?? place.texture?.url ?? null,
       unstable: place.unstable,
       labelled: !place.lagrangePoint || !occupied.has(place.id),
       rank: rankOf(place, role),

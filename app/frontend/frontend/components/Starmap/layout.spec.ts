@@ -26,6 +26,7 @@ const place = (
   color: null,
   unstable: false,
   bodyType: null,
+  texture: null,
   ...overrides,
 });
 
