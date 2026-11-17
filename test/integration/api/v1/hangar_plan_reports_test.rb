@@ -153,6 +153,18 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET summary lists what the decided routes still buy" do
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/summary", path_params: {id: @plan.id} do
+      purchase = parsed_body["purchases"].sole
+
+      assert_equal "ship", purchase["kind"]
+      assert_equal "Carrack", purchase.dig("model", "name")
+      assert_nil purchase["fromModel"]
+      assert_in_delta 600.0, purchase["price"]
+      assert_equal [@carrack_slot.id], purchase["slotIds"]
+    end
+  end
+
   test "GET summary counts the synced store credit unless the plan sets its own" do
     @user.update!(rsi_store_credit: 450)
     @plan.update!(starting_credit: nil)

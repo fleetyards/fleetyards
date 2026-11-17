@@ -186,6 +186,22 @@
           "other": "%{count} buy-backs use a token, but you have %{available}. The rest is counted as new money."
         }
       },
+      "buyList": {
+        "title": "Buy list",
+        "empty": "Nothing to buy yet. Decided ships with a finished route show what they need here.",
+        "kinds": {
+          "ccu": "Upgrades from the store",
+          "buyback": "Buy-backs",
+          "ship": "Ships from the store",
+          "ingame": "Earned in game",
+          "extra": "Paints and add-ons"
+        },
+        "notOnSale": "Not on sale right now",
+        "usesToken": {
+          "one": "%{count} paid with a buy-back token",
+          "other": "%{count} paid with buy-back tokens"
+        }
+      },
       "comparison": {
         "title": "Compared with your hangar",
         "yourShips": "Your ships",

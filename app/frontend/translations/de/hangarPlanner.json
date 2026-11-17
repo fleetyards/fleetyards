@@ -186,6 +186,22 @@
           "other": "%{count} Buy-Backs nutzen ein Token, du hast aber %{available}. Der Rest zählt als neues Geld."
         }
       },
+      "buyList": {
+        "title": "Einkaufsliste",
+        "empty": "Noch nichts zu kaufen. Entschiedene Schiffe mit fertiger Route zeigen hier, was sie brauchen.",
+        "kinds": {
+          "ccu": "Upgrades aus dem Store",
+          "buyback": "Buy-Backs",
+          "ship": "Schiffe aus dem Store",
+          "ingame": "Im Spiel erworben",
+          "extra": "Lackierungen und Zusätze"
+        },
+        "notOnSale": "Derzeit nicht im Verkauf",
+        "usesToken": {
+          "one": "%{count} mit einem Buy-Back-Token bezahlt",
+          "other": "%{count} mit Buy-Back-Tokens bezahlt"
+        }
+      },
       "comparison": {
         "title": "Im Vergleich zu deinem Hangar",
         "yourShips": "Deine Schiffe",

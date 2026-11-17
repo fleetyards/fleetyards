@@ -186,6 +186,22 @@
           "other": "%{count} rachats utilisent un jeton, mais vous en avez %{available}. Le reste compte comme argent frais."
         }
       },
+      "buyList": {
+        "title": "Liste d'achats",
+        "empty": "Rien à acheter pour l'instant. Les vaisseaux décidés avec un itinéraire terminé affichent ici ce qu'il leur faut.",
+        "kinds": {
+          "ccu": "Améliorations de la boutique",
+          "buyback": "Rachats",
+          "ship": "Vaisseaux de la boutique",
+          "ingame": "Obtenus en jeu",
+          "extra": "Peintures et accessoires"
+        },
+        "notOnSale": "Pas en vente actuellement",
+        "usesToken": {
+          "one": "%{count} payé avec un jeton de rachat",
+          "other": "%{count} payés avec des jetons de rachat"
+        }
+      },
       "comparison": {
         "title": "Comparé à votre hangar",
         "yourShips": "Vos vaisseaux",

@@ -559,6 +559,7 @@ describe("Hangar/Planner/HangarFlow", () => {
     const summary = (storeCost: number | null, storeCostMin = storeCost) => ({
       totals: {} as HangarPlanSummary["totals"],
       issues: [],
+      purchases: [],
       slots: [
         {
           slotId: "Explorer",

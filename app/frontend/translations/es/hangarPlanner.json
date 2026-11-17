@@ -186,6 +186,22 @@
           "other": "%{count} recompras usan una ficha, pero tienes %{available}. El resto cuenta como dinero nuevo."
         }
       },
+      "buyList": {
+        "title": "Lista de compra",
+        "empty": "Aún no hay nada que comprar. Las naves decididas con una ruta terminada muestran aquí lo que necesitan.",
+        "kinds": {
+          "ccu": "Mejoras de la tienda",
+          "buyback": "Recompras",
+          "ship": "Naves de la tienda",
+          "ingame": "Obtenidas en el juego",
+          "extra": "Pinturas y complementos"
+        },
+        "notOnSale": "No está a la venta ahora",
+        "usesToken": {
+          "one": "%{count} pagada con una ficha de recompra",
+          "other": "%{count} pagadas con fichas de recompra"
+        }
+      },
       "comparison": {
         "title": "Comparado con tu hangar",
         "yourShips": "Tus naves",

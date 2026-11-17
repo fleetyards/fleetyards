@@ -186,6 +186,22 @@
           "other": "%{count} riacquisti usano un token, ma ne hai %{available}. Il resto conta come denaro nuovo."
         }
       },
+      "buyList": {
+        "title": "Lista acquisti",
+        "empty": "Ancora niente da comprare. Le navi decise con un percorso completo mostrano qui ciò che serve.",
+        "kinds": {
+          "ccu": "Upgrade dallo store",
+          "buyback": "Riacquisti",
+          "ship": "Navi dallo store",
+          "ingame": "Ottenute in gioco",
+          "extra": "Vernici e accessori"
+        },
+        "notOnSale": "Non in vendita al momento",
+        "usesToken": {
+          "one": "%{count} pagato con un token di riacquisto",
+          "other": "%{count} pagati con token di riacquisto"
+        }
+      },
       "comparison": {
         "title": "Confronto con il tuo hangar",
         "yourShips": "Le tue navi",

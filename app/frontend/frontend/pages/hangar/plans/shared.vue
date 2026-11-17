@@ -11,6 +11,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
+import BuyList from "@/frontend/components/Hangar/Planner/BuyList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   usePublicHangarPlan,
@@ -51,8 +52,9 @@ const slotCost = (slotId: string) =>
           :cost="slotCost(slot.id)"
         />
       </section>
-      <aside>
+      <aside class="plan-side">
         <SummaryPanel :summary="summary" />
+        <BuyList :purchases="summary?.purchases" :slots="plan.slots" />
       </aside>
     </div>
   </template>
@@ -73,7 +75,8 @@ const slotCost = (slotId: string) =>
   }
 }
 
-.plan-slots {
+.plan-slots,
+.plan-side {
   display: flex;
   flex-direction: column;
   gap: 16px;

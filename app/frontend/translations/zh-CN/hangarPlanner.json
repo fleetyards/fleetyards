@@ -186,6 +186,22 @@
           "other": "%{count} 次回购使用代币，但你只有 %{available} 个。其余按新钱计算。"
         }
       },
+      "buyList": {
+        "title": "购买清单",
+        "empty": "暂无需要购买的内容。已决定且路线完整的舰船会在此显示所需购买项。",
+        "kinds": {
+          "ccu": "商店升级",
+          "buyback": "回购",
+          "ship": "商店舰船",
+          "ingame": "游戏内获得",
+          "extra": "涂装与附加项"
+        },
+        "notOnSale": "目前未在售",
+        "usesToken": {
+          "one": "%{count} 项使用回购代币支付",
+          "other": "%{count} 项使用回购代币支付"
+        }
+      },
       "comparison": {
         "title": "与你的机库对比",
         "yourShips": "你的飞船",
