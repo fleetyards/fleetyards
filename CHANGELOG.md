@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.56.0](https://github.com/fleetyards/fleetyards/compare/v9.55.0...v9.56.0) (2026-11-17)
+
+
+### Features
+
+* **hangar-planner:** show the melt credit a held CCU gives up next to its saving ([#6373](https://github.com/fleetyards/fleetyards/issues/6373)) ([e3e6f49](https://github.com/fleetyards/fleetyards/commit/e3e6f49e93d860b56a86d073f86611a77228062e))
+* reload ship and item renders from the imports page, and module render tooling ([#6374](https://github.com/fleetyards/fleetyards/issues/6374)) ([95895c5](https://github.com/fleetyards/fleetyards/commit/95895c5dc2f375a42f303a6831a2a3c4d3f67fa3))
+
+
+### Bug Fixes
+
+* **auth:** store the provider's avatar after the sign-in, not during it ([#6371](https://github.com/fleetyards/fleetyards/issues/6371)) ([a63a2c2](https://github.com/fleetyards/fleetyards/commit/a63a2c27e85a919a2abee191c84902ddb541daee))
+* **imports:** list bombs under their own sub type in the catalogue ([#6375](https://github.com/fleetyards/fleetyards/issues/6375)) ([7b323da](https://github.com/fleetyards/fleetyards/commit/7b323da2c541044d9ff2d60ecaf2cbbee8f8ca06))
+
+
+### Chores
+
+* **deploy:** enable the Server Members intent for the live Discord bot ([ef0580f](https://github.com/fleetyards/fleetyards/commit/ef0580f6b5f8ef1cd138c2926217e9d6f695ad82))
+* **deps-dev:** bump eslint from 10.14.0 to 10.15.0 ([#6366](https://github.com/fleetyards/fleetyards/issues/6366)) ([873a71b](https://github.com/fleetyards/fleetyards/commit/873a71bea6970d48321cc59473234ba2897b7b7b))
+* **deps-dev:** bump jsdom from 31.0.0 to 31.0.1 ([#6369](https://github.com/fleetyards/fleetyards/issues/6369)) ([e3f0b1d](https://github.com/fleetyards/fleetyards/commit/e3f0b1d7ba87eebe8d9f5b86332c7d3e95053720))
+* **deps:** bump @event-calendar/core from 5.18.1 to 5.19.0 ([#6370](https://github.com/fleetyards/fleetyards/issues/6370)) ([ef7b67f](https://github.com/fleetyards/fleetyards/commit/ef7b67fca27d026b4ce8e73da559f0a4f0486f03))
+* **deps:** bump @tresjs/cientos from 5.10.1 to 5.11.0 ([#6367](https://github.com/fleetyards/fleetyards/issues/6367)) ([73cba67](https://github.com/fleetyards/fleetyards/commit/73cba673c3e5f7215691fbd702a776f6a8517e6f))
+* **deps:** bump @tresjs/core from 5.10.1 to 5.11.0 ([#6365](https://github.com/fleetyards/fleetyards/issues/6365)) ([54c5acf](https://github.com/fleetyards/fleetyards/commit/54c5acfe5f233e676145d013f255cac6cd6785c8))
+* **deps:** bump puma from 8.0.2 to 8.0.3 ([#6362](https://github.com/fleetyards/fleetyards/issues/6362)) ([78c7f52](https://github.com/fleetyards/fleetyards/commit/78c7f527324564bf685be0996720ace5a2405070))
+* **deps:** bump swagger-ui-dist from 5.34.1 to 5.35.0 ([#6364](https://github.com/fleetyards/fleetyards/issues/6364)) ([f6c3750](https://github.com/fleetyards/fleetyards/commit/f6c375013df26b9706477b30dbbaf82c098b2c82))
+* **deps:** bump the tiptap group across 1 directory with 8 updates ([#6363](https://github.com/fleetyards/fleetyards/issues/6363)) ([c1aa684](https://github.com/fleetyards/fleetyards/commit/c1aa684bd097da9801c3e0381123352984424eb5))
+* **deps:** bump vue-router from 5.4.0 to 5.5.1 ([#6368](https://github.com/fleetyards/fleetyards/issues/6368)) ([532ff3e](https://github.com/fleetyards/fleetyards/commit/532ff3ea3422abde6c96d58df5b652bc9c064985))
+
 ## [9.55.0](https://github.com/fleetyards/fleetyards/compare/v9.54.0...v9.55.0) (2026-11-16)
 
 
