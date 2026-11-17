@@ -14,6 +14,9 @@ servers:
   discord_bot:
     hosts:
       - <%= ENV.fetch("KAMAL_DISCORD_BOT_HOST", web_ips.first) %>
+    env:
+      clear:
+        DISCORD_SERVER_MEMBERS_INTENT: "true"
 
 builder:
   args:
