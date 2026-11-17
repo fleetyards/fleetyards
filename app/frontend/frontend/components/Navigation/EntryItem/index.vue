@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { checkFeatures } from "@/shared/utils/Access";
 import {
   type NavEntry,
   isEntryActive,
@@ -22,6 +24,12 @@ const { t } = useI18n();
 
 const route = useRoute();
 
+const { isFeatureEnabled } = useFeatures();
+
+const visible = computed(() =>
+  checkFeatures(props.entry.featureFlag, isFeatureEnabled),
+);
+
 const active = computed(() =>
   isEntryActive(props.entry, String(route.name ?? "")),
 );
@@ -29,6 +37,7 @@ const active = computed(() =>
 
 <template>
   <NavItem
+    v-if="visible"
     :to="{ name: entry.route }"
     :menu-key="entry.key"
     :label="t(entry.labelKey)"
