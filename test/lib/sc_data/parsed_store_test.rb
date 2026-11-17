@@ -63,6 +63,20 @@ module ScData
       refute ::ScData::ParsedStore.configured?(SETTINGS.merge(access_key_id: ""))
     end
 
+    test ".settings never borrow the upload store's endpoint or keys" do
+      Rails.app.creds.stubs(:option).returns(nil)
+      Rails.app.creds.stubs(:option).with(:sc_data_s3, :bucket).returns("fltyrd-sc")
+      Rails.application.credentials.stubs(:s3_protocol).returns("https")
+      Rails.application.credentials.stubs(:s3_endpoint).returns("uploads.test")
+      Rails.application.credentials.stubs(:s3_access_key).returns("upload-key")
+      Rails.application.credentials.stubs(:s3_secret_key).returns("upload-secret")
+
+      settings = ::ScData::ObjectStore.settings
+
+      assert_equal({endpoint: nil, access_key_id: nil, secret_access_key: nil, bucket: "fltyrd-sc"}, settings)
+      refute ::ScData::ObjectStore.configured?(settings)
+    end
+
     # The message names what is missing: this surfaces on a loaders container
     # where nobody can inspect the credential store from the failure.
     test "raises NotConfigured naming the missing settings" do
