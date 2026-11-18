@@ -20,8 +20,11 @@ module Locations
     end
 
     def call
-      places.filter_map do |place|
-        fallback = place.position ? nil : placed_build(place)
+      list = places.to_a
+      fallbacks = placed_builds(list.reject(&:position))
+
+      list.filter_map do |place|
+        fallback = fallbacks[place.id]
         position = place.position || fallback&.position
         next if position.blank?
 
@@ -35,8 +38,17 @@ module Locations
       end
     end
 
-    private def placed_build(place)
-      place.builds.select(&:position).max_by(&:created_at)
+    # The latest build that places each of these, in one query rather than
+    # every build of every place in the system.
+    private def placed_builds(unplaced)
+      return {} if unplaced.empty?
+
+      LocationBuild
+        .where(location_id: unplaced.map(&:id))
+        .where.not(position: nil)
+        .select("DISTINCT ON (location_builds.location_id) location_builds.*")
+        .order(:location_id, created_at: :desc)
+        .index_by(&:location_id)
     end
 
     private def places
@@ -46,7 +58,7 @@ module Locations
         .with_facts
         .where(system_id: system.id)
         .where("#{Location.fact_sql(:position)} IS NOT NULL OR locations.id IN (?)", placed_anywhere)
-        .includes(:parent, :build, :last_build, :builds, surfaces: ::LocationSurface::ROLES.map { |role| {"#{role}_attachment": :blob} })
+        .includes(:parent, :build, :last_build, surfaces: ::LocationSurface::ROLES.map { |role| {"#{role}_attachment": :blob} })
         .order(:sc_key)
     end
   end
