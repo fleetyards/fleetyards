@@ -126,15 +126,24 @@ const linkLabel = computed(() =>
 const BADGES_PER_ROW = 3;
 
 // More than a row holds -- a station's landing, trade and law -- wraps into
-// rows of three even columns.
-const wrapsBadges = computed(() => props.badges.length > BADGES_PER_ROW + 1);
+// rows of three even columns, and so does a card with a wide badge, which
+// takes a row of its own below the rest.
+const narrowBadges = computed(
+  () => props.badges.filter((badge) => !badge.wide).length,
+);
+
+const wrapsBadges = computed(
+  () =>
+    narrowBadges.value > BADGES_PER_ROW + 1 ||
+    narrowBadges.value !== props.badges.length,
+);
 
 // The last figure of a short row runs to the card's edge, so every row is
 // ruled off across the card rather than stopping at an empty slot.
 const spanOf = (index: number) => {
   if (!wrapsBadges.value) return undefined;
 
-  const columns = props.badges.filter((badge) => !badge.wide).length;
+  const columns = narrowBadges.value;
   const short = columns % BADGES_PER_ROW;
   if (!short || index !== columns - 1) return undefined;
 
