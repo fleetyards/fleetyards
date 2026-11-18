@@ -240,6 +240,52 @@ describe("HangarPlannerBuyList", () => {
         .find('[data-test="hangar-plan-buy-list-open-cart"]')
         .attributes("href"),
     ).toBe("https://robertsspaceindustries.com/en/store/pledge/cart");
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-add-ship:0"]').exists(),
+    ).toBe(false);
+  });
+
+  it("never sends what is already in the cart again", async () => {
+    const requests = stubExtension((id) =>
+      id.startsWith("sku-2:")
+        ? { ok: false, error: FleetyardsSyncCartErrorEnum.UNAVAILABLE }
+        : { ok: true },
+    );
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        slots,
+        purchases: [
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: cutlass,
+            cartItems: [sku(1)],
+          }),
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: avenger,
+            cartItems: [sku(2)],
+          }),
+        ],
+      },
+    });
+    await flushPromises();
+
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-ship:0"]')
+      .trigger("click");
+    await flushPromises();
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-all-ship"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(
+      requests.map((request) => request.items.map((item) => item.id)),
+    ).toEqual([["sku-1:0"], ["sku-2:0"]]);
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-add-all-ship"]').exists(),
+    ).toBe(true);
   });
 
   it("adds a whole group, and says why RSI refused an item", async () => {

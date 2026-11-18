@@ -88,11 +88,18 @@ const results = ref<Record<string, FleetyardsSyncCartResult>>({});
 const busy = ref<string>();
 const added = ref(false);
 
+// What is already in the cart is never sent again: RSI would add a second one.
+const pendingOf = (entries: RsiCartEntry[]) =>
+  entries.filter(({ key }) => !results.value[key]?.ok);
+
 const addToCart = async (
-  entries: RsiCartEntry[],
+  allEntries: RsiCartEntry[],
   busyKey: string,
   kind: HangarPlanPurchaseKindEnum,
 ) => {
+  const entries = pendingOf(allEntries);
+  if (!entries.length) return;
+
   busy.value = busyKey;
   const answer = await cart.add(entries);
   busy.value = undefined;
@@ -209,7 +216,7 @@ const statuses = computed(
             {{ t("hangarPlanner.buyList.cart.buybackAlone") }}
           </p>
           <Btn
-            v-else
+            v-else-if="pendingOf(group.entries).length"
             :size="BtnSizesEnum.XS"
             :variant="BtnVariantsEnum.GHOST"
             :loading="busy === group.kind"
@@ -258,28 +265,29 @@ const statuses = computed(
               class="buy-list-cart"
             >
               <template v-if="alone(group.kind)">
-                <Btn
-                  v-for="(entry, unit) in row.entries"
-                  :key="entry.key"
-                  :size="BtnSizesEnum.XS"
-                  :variant="BtnVariantsEnum.BARE"
-                  :loading="busy === entry.key"
-                  :disabled="!!busy"
-                  :data-test="`hangar-plan-buy-list-add-${row.key}-${unit}`"
-                  @click="addToCart([entry], entry.key, group.kind)"
-                >
-                  <i class="fa-light fa-cart-plus" />
-                  {{
-                    row.entries.length > 1
-                      ? t("hangarPlanner.buyList.cart.addUnit", {
-                          number: unit + 1,
-                        })
-                      : t("hangarPlanner.buyList.cart.add")
-                  }}
-                </Btn>
+                <template v-for="(entry, unit) in row.entries" :key="entry.key">
+                  <Btn
+                    v-if="!results[entry.key]?.ok"
+                    :size="BtnSizesEnum.XS"
+                    :variant="BtnVariantsEnum.BARE"
+                    :loading="busy === entry.key"
+                    :disabled="!!busy"
+                    :data-test="`hangar-plan-buy-list-add-${row.key}-${unit}`"
+                    @click="addToCart([entry], entry.key, group.kind)"
+                  >
+                    <i class="fa-light fa-cart-plus" />
+                    {{
+                      row.entries.length > 1
+                        ? t("hangarPlanner.buyList.cart.addUnit", {
+                            number: unit + 1,
+                          })
+                        : t("hangarPlanner.buyList.cart.add")
+                    }}
+                  </Btn>
+                </template>
               </template>
               <Btn
-                v-else
+                v-else-if="pendingOf(row.entries).length"
                 :size="BtnSizesEnum.XS"
                 :variant="BtnVariantsEnum.BARE"
                 :loading="busy === row.key"
