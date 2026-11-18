@@ -67,7 +67,7 @@ module Loaders
 
       ::Loaders::UexCommodityPricesJob.new.perform
 
-      assert_equal ["items_commodities_ventslug"], Imports::UexCommodityPricesImport.last.output["unmapped"]
+      assert_equal ["items_commodities_hadaniteshard"], Imports::UexCommodityPricesImport.last.output["unmapped"]
     end
 
     test "#perform opens an issue for priced commodities we do not carry" do
@@ -116,7 +116,7 @@ module Loaders
         "a volatile body would defeat GithubIssueCreator's digest and open an issue every day"
     end
 
-    private def mapping_result(unmapped: [Commodity.new(name: "Vent Slug", sc_key: "items_commodities_ventslug")])
+    private def mapping_result(unmapped: [Commodity.new(name: "Hadanite Shard", sc_key: "items_commodities_hadaniteshard")])
       ::Uex::CommodityMapper::Result.new(mapped: 7, updated: 2, unmatched: [], unmapped:)
     end
 
