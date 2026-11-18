@@ -14,9 +14,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
-  getHangarEquipmentQueryKey,
   getHangarInventoriesQueryKey,
-  getHangarShipComponentsQueryKey,
+  getHangarPledgeItemsQueryKey,
   useAddPledgeItemsToHangarInventory,
   useHangarInventories,
   type FilterOption,
@@ -81,8 +80,7 @@ const onSubmit = async () => {
 
     await Promise.all(
       [
-        getHangarShipComponentsQueryKey(),
-        getHangarEquipmentQueryKey(),
+        getHangarPledgeItemsQueryKey(),
         getHangarInventoriesQueryKey(),
       ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
     );

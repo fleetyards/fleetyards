@@ -24,16 +24,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import {
-  useHangarPaints,
-  getHangarPaintsQueryKey,
-  useHangarFlair,
-  getHangarFlairQueryKey,
-  useHangarUpgrades,
-  getHangarUpgradesQueryKey,
-  useHangarEquipment,
-  getHangarEquipmentQueryKey,
-  useHangarShipComponents,
-  getHangarShipComponentsQueryKey,
+  HangarPledgeItemKindEnum,
+  useHangarPledgeItems,
   type HangarPledgeItem,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
@@ -46,36 +38,31 @@ const props = defineProps<Props>();
 
 const KINDS = {
   upgrades: {
-    useItems: useHangarUpgrades,
-    getQueryKey: getHangarUpgradesQueryKey,
+    kind: HangarPledgeItemKindEnum.CCU,
     headline: "headlines.hangar.upgrades",
     emptyName: "labels.hangarPledgeItems.upgrades",
     icon: "fa-duotone fa-arrow-up",
   },
   paints: {
-    useItems: useHangarPaints,
-    getQueryKey: getHangarPaintsQueryKey,
+    kind: HangarPledgeItemKindEnum.PAINT,
     headline: "headlines.hangar.paints",
     emptyName: "labels.hangarPledgeItems.paints",
     icon: "fa-duotone fa-paint-roller",
   },
   flair: {
-    useItems: useHangarFlair,
-    getQueryKey: getHangarFlairQueryKey,
+    kind: HangarPledgeItemKindEnum.FLAIR,
     headline: "headlines.hangar.flair",
     emptyName: "labels.hangarPledgeItems.flair",
     icon: "fa-duotone fa-trophy-star",
   },
   equipment: {
-    useItems: useHangarEquipment,
-    getQueryKey: getHangarEquipmentQueryKey,
+    kind: HangarPledgeItemKindEnum.EQUIPMENT,
     headline: "headlines.hangar.equipment",
     emptyName: "labels.hangarPledgeItems.equipment",
     icon: "fa-duotone fa-shirt",
   },
   shipComponents: {
-    useItems: useHangarShipComponents,
-    getQueryKey: getHangarShipComponentsQueryKey,
+    kind: HangarPledgeItemKindEnum.SHIP_COMPONENT,
     headline: "headlines.hangar.shipComponents",
     emptyName: "labels.hangarPledgeItems.shipComponents",
     icon: "fa-duotone fa-microchip",
@@ -88,6 +75,7 @@ const config = KINDS[props.kind];
 const { t } = useI18n();
 
 const queryParams = computed(() => ({
+  kind: config.kind,
   page: page.value,
   perPage: perPage.value,
   q: getQuery(),
@@ -105,7 +93,7 @@ const {
   data: pledgeItems,
   refetch,
   ...asyncStatus
-} = config.useItems(queryParams);
+} = useHangarPledgeItems(queryParams);
 
 const comlink = useComlink();
 

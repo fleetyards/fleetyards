@@ -3,35 +3,17 @@
 module Api
   module V1
     class HangarPledgeItemsController < ::Api::BaseController
-      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment upgrades ship_components]
+      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[paints flair equipment upgrades ship_components]
+        only: %i[index]
 
-      def upgrades
-        list(HangarPledgeItem.upgrades)
-      end
-
-      def paints
-        list(HangarPledgeItem.paints)
-      end
-
-      def flair
-        list(HangarPledgeItem.flair)
-      end
-
-      def equipment
-        list(HangarPledgeItem.equipment)
-      end
-
-      def ship_components
-        list(HangarPledgeItem.ship_components)
-      end
-
-      private def list(scope)
+      def index
         authorize! with: ::HangarPledgeItemPolicy, to: :index?
+
+        scope = HangarPledgeItem.where(kind: params.require(:kind))
 
         normalize_sort_params(pledge_item_query_params)
         sorts = sorting_params(HangarPledgeItem, pledge_item_query_params.delete("sorts"))
@@ -46,8 +28,6 @@ module Api
           .per(per_page(HangarPledgeItem))
 
         @deposits = HangarPledgeItem.deposits_for(current_resource_owner, @hangar_pledge_items.to_a)
-
-        render :index
       end
 
       private def pledge_item_query_params

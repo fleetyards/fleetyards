@@ -13414,52 +13414,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
-  "/hangar/equipment":
-    get:
-      summary: Hangar Equipment
-      tags:
-      - Hangar
-      operationId: hangarEquipment
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 48
-        required: false
-      - name: q
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HangarPledgeItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarPledgeItems"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    parameters:
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/export":
     get:
       summary: Export your personal Hangar
@@ -13528,52 +13482,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/VehicleExportsList"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    parameters:
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
-  "/hangar/flair":
-    get:
-      summary: Hangar Flair
-      tags:
-      - Hangar
-      operationId: hangarFlair
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 48
-        required: false
-      - name: q
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HangarPledgeItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarPledgeItems"
         '401':
           description: unauthorized
           content:
@@ -15199,52 +15107,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
-  "/hangar/paints":
-    get:
-      summary: Hangar Paints
-      tags:
-      - Hangar
-      operationId: hangarPaints
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 48
-        required: false
-      - name: q
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HangarPledgeItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarPledgeItems"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    parameters:
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/plans":
     get:
       summary: Hangar Plans
@@ -16536,6 +16398,57 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/pledge-items":
+    get:
+      summary: Hangar Pledge Items
+      tags:
+      - Hangar
+      operationId: hangarPledgeItems
+      parameters:
+      - name: kind
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemKindEnum"
+        required: true
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/rsi-page-reports":
     post:
       summary: Report an RSI Page the Sync Does Not Recognise
@@ -16592,52 +16505,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SearchResults"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    parameters:
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
-  "/hangar/ship-components":
-    get:
-      summary: Hangar Ship Components
-      tags:
-      - Hangar
-      operationId: hangarShipComponents
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 48
-        required: false
-      - name: q
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HangarPledgeItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarPledgeItems"
         '401':
           description: unauthorized
           content:
@@ -17011,52 +16878,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-    parameters:
-    - "$ref": "#/components/parameters/ScDataSourceParameter"
-  "/hangar/upgrades":
-    get:
-      summary: Hangar Upgrades
-      tags:
-      - Hangar
-      operationId: hangarUpgrades
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 48
-        required: false
-      - name: q
-        in: query
-        schema:
-          "$ref": "#/components/schemas/HangarPledgeItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarPledgeItems"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hardpoints/{id}/loadout-options":

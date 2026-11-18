@@ -39,7 +39,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       isLoading: ref(false),
     };
   },
-  useHangarUpgrades: (query: () => unknown) => {
+  useHangarPledgeItems: (query: () => unknown) => {
     params.upgrades = query();
     return {
       data: computed(() => page(upgrades.value)),

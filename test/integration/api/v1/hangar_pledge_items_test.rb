@@ -7,47 +7,40 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   openapi_schema :"v1/schema"
 
-  {
-    "/hangar/paints" => ["Hangar Paints", "hangarPaints"],
-    "/hangar/flair" => ["Hangar Flair", "hangarFlair"],
-    "/hangar/upgrades" => ["Hangar Upgrades", "hangarUpgrades"],
-    "/hangar/equipment" => ["Hangar Equipment", "hangarEquipment"],
-    "/hangar/ship-components" => ["Hangar Ship Components", "hangarShipComponents"]
-  }.each do |path, (summary, operation_id)|
-    api_path path do
-      get(summary) do
-        operationId operation_id
-        tags "Hangar"
-        produces "application/json"
+  api_path "/hangar/pledge-items" do
+    get("Hangar Pledge Items") do
+      operationId "hangarPledgeItems"
+      tags "Hangar"
+      produces "application/json"
 
-        security [
-          {SessionCookie: []},
-          {Oauth2: ["hangar", "hangar:read"]},
-          {OpenId: ["hangar", "hangar:read"]}
-        ]
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:read"]},
+        {OpenId: ["hangar", "hangar:read"]}
+      ]
 
-        parameter "$ref": "#/components/parameters/PageParameter"
-        parameter name: "perPage", in: :query, schema: {
-          type: :string, default: HangarPledgeItem.default_per_page
-        }, required: false
-        parameter name: "q", in: :query,
-          schema: ::V1::Schemas::Queries::HangarPledgeItemQuery,
-          style: :deepObject,
-          explode: true,
-          required: false
+      parameter name: "kind", in: :query, schema: ::V1::Schemas::Enums::HangarPledgeItemKindEnum, required: true
+      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter name: "perPage", in: :query, schema: {
+        type: :string, default: HangarPledgeItem.default_per_page
+      }, required: false
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::HangarPledgeItemQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
 
-        response(200, "successful") do
-          schema ::V1::Schemas::Hangar::HangarPledgeItems
-        end
+      response(200, "successful") do
+        schema ::V1::Schemas::Hangar::HangarPledgeItems
+      end
 
-        response(401, "unauthorized") do
-          schema ::Shared::V1::Schemas::StandardError
-        end
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
 
-  test "GET /hangar/paints lists the caller's paints newest pledge first, as RSI does" do
+  test "GET /hangar/pledge-items lists the caller's paints newest pledge first, as RSI does" do
     user = create(:user)
     older = create(:hangar_pledge_item, user:, rsi_pledge_id: "9000001", pledge_created_on: Date.new(2024, 5, 1))
     newer = create(:hangar_pledge_item, user:, rsi_pledge_id: "112870675", name: "Stingray - Marina Paint", quantity: 2,
@@ -57,7 +50,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/paints" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "paint"} do
       assert_equal [same_day.id, newer.id, older.id, undated.id], parsed_body["items"].pluck("id")
       assert_equal 2, parsed_body["items"].second["quantity"]
       assert_equal "2026-10-08", parsed_body["items"].second["pledgeCreatedOn"]
@@ -65,31 +58,31 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/paints filters to what RSI offers to melt" do
+  test "GET /hangar/pledge-items filters to what RSI offers to melt" do
     user = create(:user)
     meltable = create(:hangar_pledge_item, user:, meltable: true)
     create(:hangar_pledge_item, user:, name: "Constellation Mk IV - Disco Paint", meltable: false)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/paints", params: {q: {"meltableEq" => true}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "paint", q: {"meltableEq" => true}} do
       assert_equal [meltable.id], parsed_body["items"].pluck("id")
       assert parsed_body["items"].first["meltable"]
     end
   end
 
-  test "GET /hangar/flair filters to items whose pledge is worth something" do
+  test "GET /hangar/pledge-items filters to items whose pledge is worth something" do
     user = create(:user)
     valued = create(:hangar_pledge_item, user:, kind: "flair", name: "Space Globe - Terra", pledge_value: 5)
     create(:hangar_pledge_item, user:, kind: "flair", name: "200M Commemorative Coin", pledge_value: 0)
     create(:hangar_pledge_item, user:, kind: "flair", name: "Unpriced Trophy")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/flair", params: {q: {"withValue" => true}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "flair", q: {"withValue" => true}} do
       assert_equal [valued.id], parsed_body["items"].pluck("id")
     end
   end
 
-  test "GET /hangar/paints gives a melt value only to an item that is its whole pledge" do
+  test "GET /hangar/pledge-items gives a melt value only to an item that is its whole pledge" do
     user = create(:user)
     create(:hangar_pledge_item, user:, name: "Cutlass - Akuma Paint", pledge_name: "Paints - Cutlass - Akuma Paint", pledge_value: 10, pledge_item_count: 1)
     create(:hangar_pledge_item, user:, name: "CSV - Granite Paint", pledge_name: "Standalone Ships - CSV-SM plus Granite Paint",
@@ -97,7 +90,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     create(:hangar_pledge_item, user:, kind: "flair", name: "Poster - Banu Merchantman", pledge_value: 6, pledge_item_count: 2, quantity: 2)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/paints" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "paint"} do
       items = parsed_body["items"].index_by { |item| item["name"] }
       standalone = items.fetch("Cutlass - Akuma Paint")
       bundled = items.fetch("CSV - Granite Paint")
@@ -110,7 +103,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
       assert_equal "Standalone Ships - CSV-SM plus Granite Paint", bundled["pledgeName"]
     end
 
-    assert_api_response :get, 200, api_path: "/hangar/flair" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "flair"} do
       poster = parsed_body["items"].sole
 
       assert poster["standalone"]
@@ -118,52 +111,48 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/flair lists only the caller's flair" do
+  test "GET /hangar/pledge-items lists only the caller's flair" do
     user = create(:user)
     create(:hangar_pledge_item, user:)
     poster = create(:hangar_pledge_item, user:, kind: "flair", name: "Poster - Banu Merchantman")
     create(:hangar_pledge_item, kind: "flair", name: "Space Globe - Terra")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/flair" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "flair"} do
       assert_equal [poster.id], parsed_body["items"].pluck("id")
       assert_equal "flair", parsed_body["items"].first["kind"]
     end
   end
 
-  test "GET /hangar/paints filters by name" do
+  test "GET /hangar/pledge-items filters by name" do
     user = create(:user)
     create(:hangar_pledge_item, user:)
     marina = create(:hangar_pledge_item, user:, name: "Stingray - Marina Paint")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/paints", params: {q: {"nameCont" => "marina"}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "paint", q: {"nameCont" => "marina"}} do
       assert_equal [marina.id], parsed_body["items"].pluck("id")
     end
   end
 
-  test "GET /hangar/paints requires a session or token" do
-    assert_api_response :get, 401, api_path: "/hangar/paints"
+  test "GET /hangar/pledge-items requires a session or token" do
+    assert_api_response :get, 401, api_path: "/hangar/pledge-items", params: {kind: "paint"}
   end
 
-  test "GET /hangar/flair requires a session or token" do
-    assert_api_response :get, 401, api_path: "/hangar/flair"
-  end
-
-  test "GET /hangar/equipment lists only the caller's FPS equipment" do
+  test "GET /hangar/pledge-items lists only the caller's FPS equipment" do
     user = create(:user)
     rifle = create(:hangar_pledge_item, user:, kind: "equipment", name: "Gallant ‘Redline’ Rifle")
     create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
     create(:hangar_pledge_item, kind: "equipment", name: "Arrowhead Sniper Rifle")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "equipment"} do
       assert_equal [rifle.id], parsed_body["items"].pluck("id")
       assert_equal "equipment", parsed_body["items"].first["kind"]
     end
   end
 
-  test "GET /hangar/ship-components lists the caller's ship components with the part they are" do
+  test "GET /hangar/pledge-items lists the caller's ship components with the part they are" do
     user = create(:user)
     cooler = create(:component, name: "BriskAir IC-20", category: "cooler", size: "1")
     matched = create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20", catalogue_component: cooler)
@@ -172,7 +161,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     create(:hangar_pledge_item, kind: "ship_component", name: "Sovereign IP-10")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/ship-components" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ship_component"} do
       items = parsed_body["items"].index_by { |item| item["id"] }
 
       assert_equal [matched.id, unmatched.id].sort, items.keys.sort
@@ -183,7 +172,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/ship-components names the inventory an item was added to" do
+  test "GET /hangar/pledge-items names the inventory an item was added to" do
     user = create(:user)
     inventory = create(:inventory, holder: user, name: "Spare Parts")
     item = create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20")
@@ -191,53 +180,49 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
       unit: "units", entry_type: "deposit", source_pledge_item_key: item.source_key)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/ship-components" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ship_component"} do
       assert_equal({"name" => "Spare Parts", "slug" => inventory.slug}, parsed_body["items"].sole["inventory"])
     end
   end
 
-  test "GET /hangar/equipment names the catalogue gear a piece was matched to" do
+  test "GET /hangar/pledge-items names the catalogue gear a piece was matched to" do
     user = create(:user)
     rifle = create(:equipment, name: "P4-AR Rifle", equipment_type: "weapon")
     create(:hangar_pledge_item, user:, kind: "equipment", name: "P4-AR Rifle", catalogue_equipment: rifle)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "equipment"} do
       assert_equal ["Equipment", rifle.id, "weapon"],
         parsed_body["items"].sole["catalogueItem"].values_at("itemType", "id", "category")
     end
   end
 
-  test "GET /hangar/equipment says when the matched gear is left out of the catalogue" do
+  test "GET /hangar/pledge-items says when the matched gear is left out of the catalogue" do
     user = create(:user)
     variant = create(:equipment, name: "P4-AR Rifle Lumberjack", equipment_type: "weapon", hidden: true)
     create(:hangar_pledge_item, user:, kind: "equipment", name: "P4-AR Rifle Lumberjack", catalogue_equipment: variant)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "equipment"} do
       assert_equal false, parsed_body["items"].sole["catalogueItem"]["listed"]
     end
   end
 
-  test "GET /hangar/equipment needs a signed-in user" do
-    assert_api_response :get, 401, api_path: "/hangar/equipment"
-  end
-
-  test "GET /hangar/upgrades lists only the caller's CCUs" do
+  test "GET /hangar/pledge-items lists only the caller's CCUs" do
     user = create(:user)
     ccu = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter", rsi_page: 2)
     create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
     create(:hangar_pledge_item, kind: "ccu", name: "Upgrade - Merchantman To Hull E")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/upgrades" do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu"} do
       assert_equal [ccu.id], parsed_body["items"].pluck("id")
       assert_equal "ccu", parsed_body["items"].first["kind"]
       assert_equal 2, parsed_body["items"].first["rsiPage"]
     end
   end
 
-  test "GET /hangar/upgrades filters from and to by the selected catalogue ships" do
+  test "GET /hangar/pledge-items filters from and to by the selected catalogue ships" do
     user = create(:user)
     from = create(:model, name: "Clipper", rsi_name: "Anvil Clipper")
     to = create(:model, name: "S-65 Stingray")
@@ -248,32 +233,32 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Super Clipper To S-65 Stingray")
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: from.slug}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeFromModelSlugEq: from.slug}} do
       assert_equal [matching.id, other_to.id].sort, parsed_body["items"].pluck("id").sort
     end
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: from.slug}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeToModelSlugEq: from.slug}} do
       assert_equal [reverse.id], parsed_body["items"].pluck("id")
     end
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: from.slug, upgradeToModelSlugEq: to.slug}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeFromModelSlugEq: from.slug, upgradeToModelSlugEq: to.slug}} do
       assert_equal [matching.id], parsed_body["items"].pluck("id")
     end
     standard = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to S-65 Stingray Standard Edition")
     best_in_show = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to S-65 Stingray Best In Show Edition 2955")
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: to.slug}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeToModelSlugEq: to.slug}} do
       assert_includes parsed_body["items"].pluck("id"), standard.id
       assert_includes parsed_body["items"].pluck("id"), best_in_show.id
     end
     pirate = create(:model, name: "Gladius Pirate Edition")
     pirate_upgrade = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to Gladius Pirate Edition")
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: pirate.slug}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeToModelSlugEq: pirate.slug}} do
       assert_equal [pirate_upgrade.id], parsed_body["items"].pluck("id")
     end
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: "unknown-model"}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {upgradeFromModelSlugEq: "unknown-model"}} do
       assert_empty parsed_body["items"]
     end
   end
 
-  test "GET /hangar/upgrades sorts by melt value, items without one last either way" do
+  test "GET /hangar/pledge-items sorts by melt value, items without one last either way" do
     user = create(:user)
     pricey = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Hull C", pledge_value: 300, pledge_item_count: 1)
     bundled = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter", pledge_value: 500, pledge_item_count: 4)
@@ -281,25 +266,21 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     cheap = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Avenger", pledge_value: 15, pledge_item_count: 1)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {s: "meltValue asc"}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {s: "meltValue asc"}} do
       assert_equal [cheap.id, pricey.id], parsed_body["items"].pluck("id").first(2)
       assert_equal [bundled.id, unknown.id].sort, parsed_body["items"].pluck("id").last(2).sort
     end
-    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {s: "meltValue desc"}} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "ccu", q: {s: "meltValue desc"}} do
       assert_equal [pricey.id, cheap.id], parsed_body["items"].pluck("id").first(2)
     end
   end
 
-  test "GET /hangar/upgrades needs a signed-in user" do
-    assert_api_response :get, 401, api_path: "/hangar/upgrades"
-  end
-
-  test "GET /hangar/paints pages by perPage and offers its page sizes" do
+  test "GET /hangar/pledge-items pages by perPage and offers its page sizes" do
     user = create(:user)
     create_list(:hangar_pledge_item, 2, user:)
     sign_in user
 
-    assert_api_response :get, 200, api_path: "/hangar/paints", params: {perPage: 1} do
+    assert_api_response :get, 200, api_path: "/hangar/pledge-items", params: {kind: "paint", perPage: 1} do
       assert_equal 1, parsed_body["items"].count
       assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
       assert_equal HangarPledgeItem.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")

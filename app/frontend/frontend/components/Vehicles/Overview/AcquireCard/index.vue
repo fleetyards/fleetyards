@@ -14,9 +14,10 @@ import {
   type HangarPledgeItem,
   type Vehicle,
   BuybackPledgeSortingEnum,
+  HangarPledgeItemKindEnum,
   HangarPledgeItemSortingEnum,
   useHangarBuybacks,
-  useHangarUpgrades,
+  useHangarPledgeItems,
 } from "@/services/fyApi";
 
 type Props = {
@@ -45,8 +46,9 @@ const { data: buybacks, isLoading: buybacksLoading } = useHangarBuybacks(
   }),
 );
 
-const { data: upgrades, isLoading: upgradesLoading } = useHangarUpgrades(
+const { data: upgrades, isLoading: upgradesLoading } = useHangarPledgeItems(
   () => ({
+    kind: HangarPledgeItemKindEnum.CCU,
     q: {
       upgradeToModelSlugEq: slug.value,
       s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,
