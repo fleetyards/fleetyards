@@ -19,15 +19,25 @@ module Overlay
 
     class NotConfigured < StandardError; end
 
+    # The same store `config/storage.yml` points ActiveStorage at.
     def self.settings
-      creds = Rails.application.credentials
+      creds = Rails.app.creds
 
       {
-        endpoint: ::ScData::ObjectStore.storage_endpoint(creds),
-        access_key_id: creds.s3_access_key,
-        secret_access_key: creds.s3_secret_key,
-        bucket: creds.s3_bucket
+        endpoint: endpoint(creds.option(:s3_protocol), creds.option(:s3_endpoint)),
+        access_key_id: creds.option(:s3_access_key),
+        secret_access_key: creds.option(:s3_secret_key),
+        bucket: creds.option(:s3_bucket),
+        region: creds.option(:s3_region, default: "unused")
       }
+    end
+
+    # Nil rather than a bare "://" when either half is missing, so `configured?`
+    # reports it as absent instead of building a broken client.
+    def self.endpoint(protocol, host)
+      return if protocol.blank? || host.blank?
+
+      "#{protocol}://#{host}"
     end
 
     def self.configured?
@@ -97,7 +107,7 @@ module Overlay
           endpoint: settings.fetch(:endpoint),
           access_key_id: settings.fetch(:access_key_id),
           secret_access_key: settings.fetch(:secret_access_key),
-          region: "unused",
+          region: settings.fetch(:region),
           retry_limit: 5,
           retry_mode: "standard"
         )

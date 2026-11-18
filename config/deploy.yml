@@ -64,6 +64,7 @@ env:
     MAX_THREADS: "5"
     MIN_THREADS: "5"
     ON_SUBDOMAIN: "true"
+    SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
   secret:
     # Rails core (all other secrets are in Rails credentials)
     - RAILS_MASTER_KEY
@@ -71,6 +72,9 @@ env:
     - DATABASE_URL
     # Redis
     - REDIS_URL
+    # sc_data object store, kept apart from the upload store
+    - SC_DATA_S3__ACCESS_KEY_ID
+    - SC_DATA_S3__SECRET_ACCESS_KEY
 accessories:
   db:
     image: public.ecr.aws/docker/library/postgres:16

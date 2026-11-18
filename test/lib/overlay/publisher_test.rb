@@ -7,7 +7,7 @@ module Overlay
   class PublisherTest < ActiveSupport::TestCase
     setup do
       @client = Aws::S3::Client.new(stub_responses: true)
-      Publisher.stubs(:settings).returns(endpoint: "https://s3.test", access_key_id: "a", secret_access_key: "b", bucket: "public")
+      Publisher.stubs(:settings).returns(endpoint: "https://s3.test", access_key_id: "a", secret_access_key: "b", bucket: "public", region: "unused")
       @result = Export::Result.new(
         manifest: {schema: 1, channel: "live", sha256: "ab" * 32, file: "items.#{"ab" * 8}.json.gz", count: 0},
         items_gzip: "gz".b,
