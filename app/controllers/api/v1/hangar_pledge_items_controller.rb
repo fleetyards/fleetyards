@@ -13,7 +13,7 @@ module Api
       def index
         authorize! with: ::HangarPledgeItemPolicy, to: :index?
 
-        scope = HangarPledgeItem.where(kind: params.require(:kind))
+        scope = HangarPledgeItem.where(kind: kind_param)
 
         normalize_sort_params(pledge_item_query_params)
         sorts = sorting_params(HangarPledgeItem, pledge_item_query_params.delete("sorts"))
@@ -28,6 +28,14 @@ module Api
           .per(per_page(HangarPledgeItem))
 
         @deposits = HangarPledgeItem.deposits_for(current_resource_owner, @hangar_pledge_items.to_a)
+      end
+
+      private def kind_param
+        params.require(:kind)
+      end
+
+      private def page_link_params
+        {kind: kind_param}
       end
 
       private def pledge_item_query_params

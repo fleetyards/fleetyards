@@ -57,8 +57,15 @@ module Pagination
       controller: controller_name,
       action: action_name,
       page:,
-      per_page: (page.present? && !per_page_params.to_i.zero?) ? per_page_params.to_i : nil
+      per_page: (page.present? && !per_page_params.to_i.zero?) ? per_page_params.to_i : nil,
+      **page_link_params
     )
+  end
+
+  # Query parameters an endpoint cannot answer without, carried into every
+  # page link.
+  private def page_link_params
+    {}
   end
 
   private def paginate_all?

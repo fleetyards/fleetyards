@@ -275,6 +275,18 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/pledge-items keeps the kind in its page links" do
+    user = create(:user)
+    create_list(:hangar_pledge_item, 2, user:)
+    sign_in user
+
+    get "/api/v1/hangar/pledge-items", params: {kind: "paint", perPage: 1}
+
+    links = response.headers["Link"].scan(/<([^>]+)>/).flatten
+    assert_not_empty links
+    assert links.all? { |link| Rack::Utils.parse_query(URI(link).query)["kind"] == "paint" }, links.inspect
+  end
+
   test "GET /hangar/pledge-items pages by perPage and offers its page sizes" do
     user = create(:user)
     create_list(:hangar_pledge_item, 2, user:)
