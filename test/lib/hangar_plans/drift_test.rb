@@ -104,6 +104,135 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_not HangarPlans::Drift.new(@plan).drifted?
   end
 
+  test "a rebase moves a route on to the upgraded ship that replaced its start" do
+    cutlass = create(:model, name: "Cutlass", pledge_price: 100)
+    start = create(:vehicle, user: @user, model: @gladius)
+    candidate = @plan.slots.create!(label: "Hauler").candidates.create!(model: cutlass)
+    route = @plan.acquisitions.build(candidate:, start_kind: "owned", source_vehicle: start)
+    route.upgrade_steps.build(source_kind: "store", origin_model: @gladius, target_model: cutlass, position: 0)
+    route.save!
+
+    upgraded = travel 1.minute do
+      start.update!(wanted: true)
+      create(:vehicle, user: @user, model: cutlass).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    route.reload
+    assert_equal [upgraded, cutlass], [route.source_vehicle, route.start_model]
+    assert_empty route.upgrade_steps
+    assert_not @plan.reload.vehicle_marks.exists?(vehicle_id: upgraded.id)
+    assert_empty HangarPlans::Drift.new(@plan).missing_sources
+  end
+
+  test "a rebase moves a route on to the step its ship reached" do
+    cutlass = create(:model, name: "Cutlass", pledge_price: 100)
+    start = create(:vehicle, user: @user, model: @gladius)
+    candidate = @plan.slots.create!(label: "Hauler").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.build(candidate:, start_kind: "owned", source_vehicle: start)
+    route.upgrade_steps.build(source_kind: "store", origin_model: @gladius, target_model: cutlass, position: 0)
+    route.upgrade_steps.build(source_kind: "store", origin_model: cutlass, target_model: @carrack, position: 1)
+    route.save!
+
+    upgraded = travel 1.minute do
+      start.destroy!
+      create(:vehicle, user: @user, model: cutlass).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    route.reload
+    assert_equal [upgraded, cutlass], [route.source_vehicle, route.start_model]
+    assert_equal [[cutlass.id, @carrack.id]], route.upgrade_steps.pluck(:from_model_id, :to_model_id)
+  end
+
+  test "a rebase leaves a route flagged when nothing along it arrived" do
+    @kept.destroy!
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_equal ["acquisition"], HangarPlans::Drift.new(@plan.reload).missing_sources.map(&:kind)
+  end
+
+  test "a rebase ends a melt whose ship is gone and counts its credit as held" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.update!(starting_credit: 50)
+    @plan.melts.create!(vehicle: melted, value_override: 550)
+    melted.update!(wanted: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    @plan.reload
+    assert_empty @plan.melts
+    assert_equal 600, @plan.starting_credit
+    assert_empty HangarPlans::Drift.new(@plan).missing_sources
+  end
+
+  test "a rebase takes the ship bought back from a melt as the route's start" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.melts.create!(vehicle: melted)
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "melted", source_vehicle: melted)
+
+    returned = travel 1.minute do
+      melted.update!(wanted: true)
+      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    assert_equal ["owned", returned], [route.reload.start_kind, route.source_vehicle]
+    assert_empty @plan.reload.melts
+    assert_not HangarPlans::Drift.new(@plan).drifted?
+  end
+
+  test "a rebase counts no credit for a melt whose pledge a route bought back" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.update!(starting_credit: 50)
+    @plan.melts.create!(vehicle: melted, value_override: 550)
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "melted", source_vehicle: melted)
+
+    travel 1.minute do
+      melted.update!(wanted: true)
+      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    @plan.reload
+    assert_empty @plan.melts
+    assert_equal 50, @plan.starting_credit
+  end
+
+  test "a rebase keeps a melt whose ship is hidden for now" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.update!(starting_credit: 50)
+    @plan.melts.create!(vehicle: melted, value_override: 550)
+    melted.update!(hidden: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    @plan.reload
+    assert_equal 1, @plan.melts.count
+    assert_equal 50, @plan.starting_credit
+  end
+
+  test "a rebase keeps a melt whose ship is still to be bought back" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.melts.create!(vehicle: melted)
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "melted", source_vehicle: melted)
+    melted.update!(wanted: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_equal 1, @plan.reload.melts.count
+  end
+
+  test "a rebase drops the mark of a kept ship moved to the wishlist" do
+    gone = create(:vehicle, user: @user, model: @carrack)
+    @plan.vehicle_marks.create!(vehicle: gone, mark: "keep")
+    gone.update!(wanted: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_not @plan.reload.vehicle_marks.exists?(vehicle_id: gone.id)
+  end
+
   test "a rebase keeps the mark of a ship hidden for now" do
     hidden = create(:vehicle, user: @user, model: @carrack)
     @plan.vehicle_marks.create!(vehicle: hidden, mark: "keep")
