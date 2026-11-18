@@ -10,6 +10,7 @@ import { extrasLoadingManager } from "../gltfLoader";
 import { buildSky, disposeSky } from "../sky";
 import {
   RepeatWrapping,
+  type ShaderMaterial,
   SRGBColorSpace,
   type Texture,
   TextureLoader,
@@ -64,6 +65,23 @@ watch(
     invalidate();
   },
   { immediate: true },
+);
+
+// Faded in place: the starmap fades a system's sky out and in with the
+// system. Only translucent below 1, since a translucent sky is drawn after the
+// scene and would cover it.
+watch(
+  () => props.opacity,
+  (opacity) => {
+    if (!sky) return;
+    const material = sky.material as ShaderMaterial;
+    material.uniforms.opacity.value = opacity;
+    if (material.transparent !== opacity < 1) {
+      material.transparent = opacity < 1;
+      material.needsUpdate = true;
+    }
+    invalidate();
+  },
 );
 
 onBeforeUnmount(() => {
