@@ -30322,12 +30322,15 @@ components:
           type: string
         typeLabel:
           type: string
+        label:
+          type: string
       additionalProperties: false
       required:
       - size
       - count
       - type
       - typeLabel
+      - label
       title: DockCount
     Equipment:
       type: object

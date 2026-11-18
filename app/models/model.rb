@@ -1395,11 +1395,13 @@ class Model < ApplicationRecord
   end
 
   def dock_counts
-    docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
-      docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
-        DockCount.new(dock_size: size, dock_type:, dock_type_label: docks_by_type.first.dock_type_label, dock_count: docks_by_type.size)
-      end
-    end.flatten
+    docks.includes(:capacities).to_a.group_by { |dock| [dock.display_key, dock.dock_type] }.map do |_key, grouped|
+      dock = grouped.first
+      DockCount.new(
+        dock_size: dock.display_size, dock_type: dock.dock_type, dock_type_label: dock.dock_type_label,
+        dock_count: grouped.size, label: dock.display_label
+      )
+    end
   end
 
   def variants

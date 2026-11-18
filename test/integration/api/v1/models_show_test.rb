@@ -80,6 +80,36 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug labels a berth from its flagged entry" do
+    model = create(:model)
+    deck = create(:dock, parent: model, dock_type: :landingpad, ship_size: :large)
+    create(:dock_capacity, dock: deck, ladder: :ship, size: "large", quantity: 1)
+    create(:dock_capacity, dock: deck, ladder: :ship, size: "medium", quantity: 2, display: true)
+    create(:dock, parent: model, dock_type: :hangar, ship_size: :small)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      labels = parsed_body["dockCounts"].to_h { |entry| [entry["type"], entry["label"]] }
+
+      assert_equal({"landingpad" => "2 medium pads", "hangar" => "Small (S)"}, labels)
+    end
+  end
+
+  test "GET /models/:slug counts berths that read the same as one line" do
+    model = create(:model)
+    2.times do
+      dock = create(:dock, parent: model, dock_type: :hangar, ship_size: :small)
+      create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 1, display: true)
+    end
+    other = create(:dock, parent: model, dock_type: :hangar, ship_size: :small)
+    create(:dock_capacity, dock: other, ladder: :ship, size: "small", quantity: 4, display: true)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      counts = parsed_body["dockCounts"].to_h { |entry| [entry["label"], entry["count"]] }
+
+      assert_equal({"1 small pad" => 2, "4 small pads" => 1}, counts)
+    end
+  end
+
   test "GET /models/:slug names the ships that can carry it" do
     carrier = create(:model, name: "Big Carrier")
     create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
