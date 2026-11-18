@@ -67,14 +67,9 @@ module HangarPlans
     # Ships the plan has not placed yet: bought since it was based, or still
     # waiting for the user to decide on them.
     private def arrived_vehicles
-      scope = plan.live_vehicles.where.not(id: plan.used_vehicle_ids)
-        .where.not(id: plan.vehicle_marks.where(mark: "keep").select(:vehicle_id))
-      fresh = if plan.based_on_vehicle_ids.nil?
-        scope.where(created_at: plan.based_on_at..)
-      else
-        scope.where.not(id: plan.based_on_vehicle_ids)
-      end
-      pending = scope.where(id: plan.vehicle_marks.where(mark: "pending").select(:vehicle_id))
+      fresh = plan.added_vehicles.where.not(id: plan.vehicle_marks.where(mark: "keep").select(:vehicle_id))
+      pending = plan.live_vehicles.where.not(id: plan.used_vehicle_ids)
+        .where(id: plan.vehicle_marks.where(mark: "pending").select(:vehicle_id))
 
       (fresh.order(created_at: :desc).to_a + pending.order(created_at: :desc).to_a).uniq
     end

@@ -68,6 +68,16 @@ class HangarPlan < ApplicationRecord
     @pledged_vehicle_ids ||= pledged_vehicles.pluck(:id).to_set
   end
 
+  # Ships the plan has not placed that joined the hangar since it was based:
+  # against the hangar as it stood, not by creation date, since a wishlist ship
+  # the user buys keeps its row, and with it a created_at from before the plan.
+  def added_vehicles
+    scope = live_vehicles.where.not(id: used_vehicle_ids)
+    return scope.where(created_at: based_on_at..) if based_on_vehicle_ids.nil?
+
+    scope.where.not(id: based_on_vehicle_ids)
+  end
+
   def used_vehicle_ids
     acquisitions.where.not(source_vehicle_id: nil).pluck(:source_vehicle_id) + melted_vehicle_ids
   end
