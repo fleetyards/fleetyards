@@ -165,6 +165,15 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET summary says what RSI's cart takes for a purchase" do
+    @carrack.update!(rsi_standalone_sku_id: 1062)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/summary", path_params: {id: @plan.id} do
+      assert_equal [{"kind" => "sku", "skuId" => 1062}],
+        parsed_body.dig("purchases", 0, "cartItems")
+    end
+  end
+
   test "GET summary counts the synced store credit unless the plan sets its own" do
     @user.update!(rsi_store_credit: 450)
     @plan.update!(starting_credit: nil)

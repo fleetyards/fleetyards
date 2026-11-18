@@ -40461,6 +40461,42 @@ components:
             format: uuid
       additionalProperties: false
       title: HangarPlanCandidateUpdateInput
+    HangarPlanCartItem:
+      type: object
+      description: What RSI's cart takes for one unit of a purchase
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanCartItemKindEnum"
+        skuId:
+          type: integer
+          description: 'For a store SKU: its RSI id'
+        fromShipId:
+          type: integer
+          description: 'For an upgrade: the RSI id of the ship it leads from'
+        toShipId:
+          type: integer
+          description: 'For an upgrade: the RSI id of the ship it leads to'
+        toSkuId:
+          type: integer
+          description: 'For an upgrade: the RSI upgrade SKU of the ship it leads to'
+        pledgeId:
+          type: string
+          description: 'For a buy-back, or an upgrade bought back: the RSI pledge'
+      additionalProperties: false
+      required:
+      - kind
+      title: HangarPlanCartItem
+    HangarPlanCartItemKindEnum:
+      type: string
+      enum:
+      - sku
+      - upgrade
+      - buyback
+      x-enumNames:
+      - SKU
+      - UPGRADE
+      - BUYBACK
+      title: HangarPlanCartItemKindEnum
     HangarPlanCcuIntoEnum:
       type: string
       enum:
@@ -41122,6 +41158,11 @@ components:
             format: uuid
         notOnSale:
           type: boolean
+        cartItems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCartItem"
+          description: One per unit RSI's cart can take; empty on a shared plan
       additionalProperties: false
       required:
       - kind
@@ -41132,6 +41173,7 @@ components:
       - tokenCount
       - slotIds
       - notOnSale
+      - cartItems
       title: HangarPlanPurchase
     HangarPlanPurchaseKindEnum:
       type: string

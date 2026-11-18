@@ -24,10 +24,15 @@ module V1
               quantity: {type: :integer, minimum: 1},
               tokenCount: {type: :integer, minimum: 0, description: "Units paid for with a buy-back token"},
               slotIds: {type: :array, items: {type: :string, format: :uuid}},
-              notOnSale: {type: :boolean}
+              notOnSale: {type: :boolean},
+              cartItems: {
+                type: :array,
+                items: ::V1::Schemas::Hangar::Plans::HangarPlanCartItem,
+                description: "One per unit RSI's cart can take; empty on a shared plan"
+              }
             },
             additionalProperties: false,
-            required: %w[kind fromModel model name quantity tokenCount slotIds notOnSale]
+            required: %w[kind fromModel model name quantity tokenCount slotIds notOnSale cartItems]
           })
         end
       end
