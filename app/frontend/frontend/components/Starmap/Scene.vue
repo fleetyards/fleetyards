@@ -1170,9 +1170,15 @@ const originGoal = new Vector3();
 const nearest = () => {
   for (const entry of items.value) {
     if (!entry.radius) continue;
-    if (originGoal.distanceTo(point.set(...entry.position)) < entry.radius) {
-      return entry.radius * 1.08;
-    }
+    const depth = originGoal.distanceTo(point.set(...entry.position));
+    if (depth >= entry.radius) continue;
+
+    // Measured from the surface, not the centre: a place on the ground,
+    // a little under the radius or a little over it with the terrain, keeps
+    // the camera just above the ground either way. Kept at a full radius
+    // from the centre, places either side of the radius would flip the limit
+    // between a thousand kilometres and half of one as a zoom passed them.
+    return Math.max(entry.radius * 1.08 - depth, 0.0005);
   }
   return 0.0005;
 };
