@@ -15,6 +15,8 @@ import {
   PerspectiveCamera,
   PointLight,
   SphereGeometry,
+  Sprite,
+  SpriteMaterial,
   SRGBColorSpace,
   TextureLoader,
   Vector2,
@@ -30,6 +32,7 @@ import { useLoop, useTres } from "@tresjs/core";
 import { Html } from "@tresjs/cientos";
 import StarmapLabel from "./Label.vue";
 import { sun, surfaceTexture, type StarmapSun } from "./bodies";
+import { disposeMarkers, markerOf, markerTexture } from "./icons";
 import type { StarmapItem, StarmapRole, StarmapScene } from "./layout";
 
 type Props = {
@@ -207,6 +210,8 @@ const disposeBodies = () => {
   generation += 1;
   gameSurfaces.clear();
   bodies.traverse((object) => {
+    // A marker's texture is shared across scenes; only its material is its own.
+    if (object instanceof Sprite) object.material.dispose();
     if (object instanceof Mesh) {
       if (object.geometry !== sphere && object.geometry !== dot) {
         object.geometry.dispose();
@@ -275,6 +280,23 @@ const build = (scene: StarmapScene) => {
       const lambert = new MeshLambertMaterial({ map, transparent: true });
       material = lambert;
       if (entry.texture) wrapInGameSurface(lambert, entry.texture);
+    } else if (entry.role === "place") {
+      // A place is its kind's glyph, the same size on screen at any distance.
+      // Not depth tested: the body it stands on would cut it in half, so what
+      // is behind a body is hidden by the occlusion test instead.
+      const marker = new Sprite(
+        new SpriteMaterial({
+          map: markerTexture(entry.kind),
+          transparent: true,
+          depthTest: false,
+          depthWrite: false,
+        }),
+      );
+      marker.renderOrder = 2;
+      marker.position.set(...entry.position);
+      bodies.add(marker);
+      meshes.set(entry.key, marker);
+      continue;
     } else {
       material = new MeshBasicMaterial({
         color: new Color(entry.color),
@@ -673,20 +695,32 @@ onBeforeRender(({ delta, elapsed }) => {
 
     const fade = fadeOf(entry);
     fades.set(entry.key, fade);
+    point.set(...entry.position);
+
+    const lifted =
+      entry.key === hoverKey.value || entry.key === props.focusKey ? 1.3 : 1;
+    const away = cameraWorld.distanceTo(point);
+
+    if (mesh instanceof Sprite) {
+      mesh.visible = fade > 0.02 && !occluded(point);
+      if (!mesh.visible) continue;
+
+      mesh.material.opacity = fade;
+      mesh.scale.setScalar(
+        markerOf(entry.kind).size * perPixel * away * lifted,
+      );
+      continue;
+    }
+
     mesh.visible = fade > 0.02;
     if (!mesh.visible) continue;
 
     if (mesh instanceof Mesh) {
       const material = mesh.material as MeshBasicMaterial;
-      material.opacity = (entry.role === "place" ? 0.9 : 1) * fade;
+      material.opacity = fade;
     }
 
-    const minimum =
-      (MIN_PIXELS[entry.role] / 2) *
-      perPixel *
-      cameraWorld.distanceTo(point.set(...entry.position));
-    const lifted =
-      entry.key === hoverKey.value || entry.key === props.focusKey ? 1.3 : 1;
+    const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
 
@@ -892,6 +926,7 @@ onBeforeUnmount(() => {
   disposeBodies();
   sphere.dispose();
   dot.dispose();
+  disposeMarkers();
 });
 
 // --- Labels ---

@@ -139,7 +139,10 @@ const RANKS: Record<StarmapRole, number> = {
 const rankOf = (place: LocationStarmapPlace, role: StarmapRole) => {
   if (role !== "place") return RANKS[role];
 
-  return LABELLED_PLACES.has(place.kind) || place.gateway ? 3 : 4;
+  // What a reader travels to keeps its name over what is merely there: a
+  // station over an outpost, an outpost over a clinic or a mining claim.
+  if (LABELLED_PLACES.has(place.kind) || place.gateway) return 3;
+  return place.kind === LocationKindEnum.OUTPOST ? 4 : 5;
 };
 
 // As the location pages paint a body: an ordinary moon is cratered like an
