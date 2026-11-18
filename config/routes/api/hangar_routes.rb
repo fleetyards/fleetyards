@@ -14,11 +14,7 @@ resource :hangar, only: %i[show destroy] do
   get "buybacks", to: "hangar_buybacks#index"
   get "buybacks/insurance-terms", to: "hangar_buybacks#insurance_terms"
   delete "buybacks/:id", to: "hangar_buybacks#destroy"
-  get "paints", to: "hangar_pledge_items#paints"
-  get "flair", to: "hangar_pledge_items#flair"
-  get "upgrades", to: "hangar_pledge_items#upgrades"
-  get "equipment", to: "hangar_pledge_items#equipment"
-  get "ship-components", to: "hangar_pledge_items#ship_components"
+  get "pledge-items", to: "hangar_pledge_items#index"
   get "blueprint-missions", to: "hangar_blueprint_missions#index"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"

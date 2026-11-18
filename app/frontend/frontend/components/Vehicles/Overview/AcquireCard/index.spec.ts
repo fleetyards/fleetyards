@@ -39,7 +39,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       isLoading: ref(false),
     };
   },
-  useHangarUpgrades: (query: () => unknown) => {
+  useHangarPledgeItems: (query: () => unknown) => {
     params.upgrades = query();
     return {
       data: computed(() => page(upgrades.value)),
@@ -122,6 +122,7 @@ describe("VehicleOverviewAcquireCard", () => {
       },
     });
     expect(params.upgrades).toMatchObject({
+      kind: HangarPledgeItemKindEnum.CCU,
       q: {
         upgradeToModelSlugEq: "cutlass-black",
         s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,

@@ -4465,3 +4465,8 @@ GET /wishlist removed the optional property `items/items/modulePackage/modules/i
 GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/offset` from the response with the `200` status
 GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/placed` from the response with the `200` status
 GET /models/{slug}/bodykits removed the optional property `items/component/typeData/anyOf[subschema #4: CargoHold]/rotation` from the response with the `200` status
+GET /hangar/paints API path removed without deprecation
+GET /hangar/flair API path removed without deprecation
+GET /hangar/upgrades API path removed without deprecation
+GET /hangar/equipment API path removed without deprecation
+GET /hangar/ship-components API path removed without deprecation
