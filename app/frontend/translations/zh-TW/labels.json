@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "無需 ATC 指派平台即可降落。",
         "vehiclePads": "地面載具平台",
         "dockingTubes": "對接艙口",
+        "jurisdiction": "管轄方",
+        "lawful": "合法區域",
+        "unlawful": "無法區域",
+        "freightElevator": "貨運電梯",
+        "maxContainer": "最大貨櫃",
         "kinds": {
           "system": "星系",
           "star": "恆星",

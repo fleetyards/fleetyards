@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Atterra senza che l'ATC assegni la piattaforma.",
         "vehiclePads": "Piattaforme per veicoli di terra",
         "dockingTubes": "Tubi di attracco",
+        "jurisdiction": "Giurisdizione",
+        "lawful": "Legale",
+        "unlawful": "Senza legge",
+        "freightElevator": "Montacarichi",
+        "maxContainer": "Container più grande",
         "kinds": {
           "system": "Sistema stellare",
           "star": "Stella",

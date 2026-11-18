@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Atterrissez sans attribution de plateforme par l'ATC.",
         "vehiclePads": "Plateformes pour véhicules terrestres",
         "dockingTubes": "Sas d'amarrage",
+        "jurisdiction": "Juridiction",
+        "lawful": "Légal",
+        "unlawful": "Sans loi",
+        "freightElevator": "Monte-charge",
+        "maxContainer": "Plus grand conteneur",
         "kinds": {
           "system": "Système stellaire",
           "star": "Étoile",

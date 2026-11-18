@@ -62,28 +62,122 @@ const status = computed<StatsCardStatus | undefined>(() => {
     return { label: t("labels.location.unstable"), tone: "warning" };
   }
 
+  // Then whether the place keeps any law, which a pilot needs to know before
+  // going there.
+  if (props.location?.lawful === false) {
+    return { label: t("labels.location.unlawful"), tone: "warning" };
+  }
+
+  if (props.location?.lawful) {
+    return { label: t("labels.location.lawful"), tone: "success" };
+  }
+
   return undefined;
 });
+
+const sum = (entries?: { count: number }[]) =>
+  (entries ?? []).reduce((total, entry) => total + entry.count, 0);
 
 const badges = computed<StatsCardBadge[]>(() => {
   const location = props.location;
   if (!location) return [];
 
-  const list: StatsCardBadge[] = [
-    {
-      key: "quantum",
-      label: t("labels.location.quantumTravel"),
-      value: location.quantumTravelDestination
-        ? t("labels.location.quantumTravelYes")
-        : t("labels.location.quantumTravelNo"),
-    },
-  ];
+  const yesNo = (value: boolean) =>
+    value
+      ? t("labels.location.quantumTravelYes")
+      : t("labels.location.quantumTravelNo");
+
+  const list: StatsCardBadge[] = [];
+
+  // Where a ship can set down, as the location page counts it.
+  const facilities = location.facilities;
+  const hangars = sum(facilities?.hangars);
+  const pads = sum(facilities?.landingPads);
+
+  if (hangars) {
+    list.push({
+      key: "hangars",
+      label: t("labels.location.hangars"),
+      value: String(hangars),
+    });
+  }
+
+  if (pads) {
+    list.push({
+      key: "pads",
+      label: t("labels.location.landingPads"),
+      value: String(pads),
+    });
+  }
+
+  if (facilities?.dockingTubes) {
+    list.push({
+      key: "docking",
+      label: t("labels.location.dockingTubes"),
+      value: String(facilities.dockingTubes),
+    });
+  }
+
+  // What a hauler can do there: its terminals, whether one has a freight
+  // elevator, and the largest container any of them takes.
+  const terminals = location.terminals ?? [];
+
+  if (terminals.length) {
+    list.push({
+      key: "terminals",
+      label: t("labels.location.terminals"),
+      value: String(terminals.length),
+    });
+    list.push({
+      key: "freight",
+      label: t("labels.location.freightElevator"),
+      value: yesNo(terminals.some((terminal) => terminal.hasFreightElevator)),
+    });
+
+    const largest = Math.max(
+      0,
+      ...terminals.map((terminal) => terminal.maxContainerSize ?? 0),
+    );
+
+    if (largest) {
+      list.push({
+        key: "container",
+        label: t("labels.location.maxContainer"),
+        value: String(largest),
+        unit: "SCU",
+      });
+    }
+  }
+
+  if (location.shopsCount) {
+    list.push({
+      key: "shops",
+      label: t("labels.location.shops"),
+      value: String(location.shopsCount),
+    });
+  }
+
+  list.push({
+    key: "quantum",
+    label: t("labels.location.quantumTravel"),
+    value: yesNo(location.quantumTravelDestination),
+  });
 
   if (location.childrenCount) {
     list.push({
       key: "places",
       label: t("labels.location.places"),
       value: String(location.childrenCount),
+    });
+  }
+
+  // Last, on a row of its own: its name is longer than a third of the card.
+  if (location.jurisdiction) {
+    list.push({
+      key: "jurisdiction",
+      label: t("labels.location.jurisdiction"),
+      value: location.jurisdiction,
+      wide: true,
     });
   }
 
