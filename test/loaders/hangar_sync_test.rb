@@ -752,6 +752,8 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal 1, result[:imported_components].size
       assert_equal cargo.id, vehicle.vehicle_modules.sole.model_module_id
       assert_equal ["Galaxy - Cargo Module"], @user.hangar_pledge_items.ship_components.pluck(:name)
+      # Counted once, with the modules.
+      assert_empty result[:synced_ship_components]
     end
 
     test "keeps a module whose ship is not in the hangar without a warning" do

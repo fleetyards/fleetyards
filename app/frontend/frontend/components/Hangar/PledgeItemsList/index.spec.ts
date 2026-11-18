@@ -31,7 +31,7 @@ const pledgeItem = (
   quantity: 1,
   standalone: true,
   meltable: false,
-  shipModule: false,
+  inventoriable: false,
   rsiPageUpgradesOnly: false,
   createdAt: "2026-10-08T12:00:00Z",
   updatedAt: "2026-10-08T12:00:00Z",
@@ -195,6 +195,7 @@ describe("Hangar/PledgeItemsList", () => {
         id: "part",
         kind: HangarPledgeItemKindEnum.SHIP_COMPONENT,
         name: "BriskAir IC-20",
+        inventoriable: true,
         ...attrs,
       });
 
@@ -240,7 +241,7 @@ describe("Hangar/PledgeItemsList", () => {
 
     it("never offers a ship module, which is fitted to a ship instead", async () => {
       const wrapper = await mountWithActions([
-        part({ name: "Galaxy - Cargo Module", shipModule: true }),
+        part({ name: "Galaxy - Cargo Module", inventoriable: false }),
       ]);
 
       expect(

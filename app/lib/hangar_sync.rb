@@ -202,7 +202,8 @@ class HangarSync < HangarImporter
       synced_hangar_flair: pledge_items.fetch("flair", []),
       synced_equipment: pledge_items.fetch("equipment", []),
       synced_ccus: pledge_items.fetch("ccu", []),
-      synced_ship_components: pledge_items.fetch("ship_component", [])
+      # Each module is counted once, with the modules fitted to a ship.
+      synced_ship_components: HangarPledgeItem.where(id: pledge_items.fetch("ship_component", []), ship_module: false).pluck(:id)
     }
   end
 
