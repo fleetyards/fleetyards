@@ -1415,7 +1415,18 @@ describe("FleetchartCanvas", () => {
     });
 
     it("offers the options an arrangement uses", async () => {
-      const wrapper = await mountFree();
+      const store = useFleetchartStore();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.COLUMNS,
+      });
+      const wrapper = mountCanvas([entry("a"), entry("b")]);
+      await nextTick();
+      store.updateLayout({
+        namespace: "hangar",
+        layout: FleetchartLayouts.FREE,
+      });
+      await nextTick();
 
       await wrapper.get("[data-test='fleetchart-options']").trigger("click");
 
@@ -1424,6 +1435,19 @@ describe("FleetchartCanvas", () => {
           wrapper.find(`[data-test^='fleetchart-${name}-']`).exists(),
         ).toBe(true);
       });
+    });
+
+    it("leaves the ships alone when the active option is picked", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+      await wrapper
+        .get(`[data-test='fleetchart-facing-${FleetchartFacings.LEFT}']`)
+        .trigger("click");
+
+      expect(
+        wrapper.get("[data-test='fleetchart-undo']").attributes("disabled"),
+      ).toBeDefined();
     });
 
     it("turns every ship to a facing in one undoable step", async () => {

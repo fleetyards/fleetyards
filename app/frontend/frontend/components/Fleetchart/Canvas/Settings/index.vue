@@ -29,11 +29,17 @@ interface Props {
   // Ships are being placed by hand: the options a layout uses apply to them
   // by arranging them again.
   arranging?: boolean;
+  // The layout arranging again applies.
+  arrangement?: FleetchartLayouts;
+  // The way every ship faces, while each keeps its own: none when they differ.
+  shipsFacing?: FleetchartFacings;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   canArrange: false,
   arranging: false,
+  arrangement: FleetchartLayouts.PACKED,
+  shipsFacing: undefined,
 });
 
 const emit = defineEmits<{
@@ -49,15 +55,34 @@ const ARRANGING_OPTIONS: (keyof FleetchartOptions)[] = [
   "group",
   "spacing",
   "facing",
+  "headingSize",
 ];
 
-const update = (changes: Partial<FleetchartOptions>) => {
-  fleetchartStore.updateOptions({
-    namespace: props.namespace,
-    options: changes,
-  });
+const current = (name: keyof FleetchartOptions) =>
+  props.arranging && name === "facing"
+    ? props.shipsFacing
+    : props.options[name];
 
-  if (props.arranging && ARRANGING_OPTIONS.some((name) => name in changes)) {
+const update = (changes: Partial<FleetchartOptions>) => {
+  const [name, value] = Object.entries(changes)[0] as [
+    keyof FleetchartOptions,
+    unknown,
+  ];
+
+  if (current(name) === value) return;
+
+  const arranges = props.arranging && ARRANGING_OPTIONS.includes(name);
+
+  // Ships placed by hand each keep their own facing, so turning them leaves
+  // the chart's own alone.
+  if (!(arranges && name === "facing")) {
+    fleetchartStore.updateOptions({
+      namespace: props.namespace,
+      options: changes,
+    });
+  }
+
+  if (arranges) {
     emit("arrange", changes);
   }
 };
@@ -74,7 +99,9 @@ const groupable = computed(
 
 // Packing decides the order itself, so a sort would do nothing there.
 const sortable = computed(
-  () => layout.value !== FleetchartLayouts.PACKED && groupable.value,
+  () =>
+    (props.arranging ? props.arrangement : layout.value) !==
+      FleetchartLayouts.PACKED && groupable.value,
 );
 
 const choices = computed(() => [
@@ -158,7 +185,7 @@ const choices = computed(() => [
         <Btn
           v-for="value in choice.values"
           :key="value"
-          :active="options[choice.name] === value"
+          :active="current(choice.name) === value"
           :data-test="`fleetchart-${choice.name}-${value}`"
           size="sm"
           @click="update({ [choice.name]: value })"

@@ -855,11 +855,14 @@ const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
 
 let seedLayout = FleetchartLayouts.PACKED;
 
+const lastArrangement = ref(FleetchartLayouts.PACKED);
+
 watch(
   layout,
   (_current, previous) => {
     if (previous && previous !== FleetchartLayouts.FREE) {
       seedLayout = previous;
+      lastArrangement.value = previous;
     }
   },
   { flush: "sync" },
@@ -881,16 +884,20 @@ watch(
   { immediate: true },
 );
 
-const lastArrangement = ref(FleetchartLayouts.PACKED);
-
 const groupAndArrange = (option: FleetchartGroups) => {
   fleetchartStore.updateOptions({
     namespace: props.namespace,
     options: { group: option },
   });
 
-  arrangeAs(lastArrangement.value);
+  arrangeWithOptions({ group: option });
 };
+
+const shipsFacing = computed(() => {
+  const facings = new Set(ships.value.map((ship) => ship.facing));
+
+  return facings.size === 1 ? [...facings][0] : undefined;
+});
 
 const ARRANGEMENTS = [
   FleetchartLayouts.COLUMNS,
@@ -1882,6 +1889,8 @@ const toggleLabels = () => {
       :groups="groups"
       :can-arrange="canArrange"
       :arranging="arranging"
+      :arrangement="lastArrangement"
+      :ships-facing="shipsFacing"
       @arrange="arrangeWithOptions"
     />
 
