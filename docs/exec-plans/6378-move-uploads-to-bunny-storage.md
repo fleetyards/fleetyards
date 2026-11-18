@@ -102,13 +102,13 @@ Follow-up PR: `cloud` becomes plain Bunny S3 (no mirror), the `hetzner` service,
 - **2026-11-17** `Rails.app.creds` checks `ENV` before the encrypted credentials, so store settings can come from the deploy config. The sc_data store's fallback to the upload settings would have followed the uploads; #6380 removes it and sets `SC_DATA_S3__*` in production.
 - **2026-11-17** Infrastructure applied to stage and live: zones `fltyrd-<env>-uploads` (S3, DE), `BUNNY_UPLOADS_<ENV>`. rclone and `s3cmd --region=de` write, read and list the zones with those credentials. Live apply needed two drift fixes first (SSH key re-added under a new ID, Volume tier on the live storage pull zone) and now waits for approval in the pipeline.
 - **2026-11-18** Plan changed from a cutover to a mirror (write to both, copy history, switch when in sync), and Hetzner will be retired for uploads afterwards instead of kept as a nightly copy.
-- **2026-11-18** Mirror checked against the stage stores with `STORAGE_PRIMARY=bunny`: upload lands on Bunny, `mirror` copies it to Hetzner byte-identical, URLs come from the Bunny bucket, the publisher lists Bunny then Hetzner, delete removes it from both. `STORAGE_PRIMARY=r2`, and `bunny` without `BUNNY_S3__*`, fail at boot with their messages; without `BUNNY_S3__*` `cloud` is plain Hetzner. The Hetzner-primary run hit an FSN1 outage (status page: "Object Storage in location fsn1 partially degraded"): every PUT returned 405 even from a bare client, and `storage.fltyrd.net` served 503 for uncached objects — rerun once FSN1 recovers.
+- **2026-11-18** Mirror checked against the stage stores with `STORAGE_PRIMARY=bunny`: upload lands on Bunny, `mirror` copies it to Hetzner byte-identical, URLs come from the Bunny bucket, the publisher lists Bunny then Hetzner, delete removes it from both. `STORAGE_PRIMARY=r2`, and `bunny` without `BUNNY_S3__*`, fail at boot with their messages; without `BUNNY_S3__*` `cloud` is plain Hetzner. The Hetzner-primary run hit an FSN1 outage (status page: "Object Storage in location fsn1 partially degraded"): every PUT returned 405 even from a bare client, and `storage.fltyrd.net` served 503 for uncached objects. The rerun once FSN1 answered again passed: with Hetzner primary the upload lands on Hetzner, `mirror` copies it to Bunny, URLs come from the Hetzner bucket, the publisher lists Hetzner then Bunny, delete removes it from both.
 
 ## Progress
 - [x] Infrastructure: zones, 1Password items, cache rules on stage and live
 - [x] #6380 ready
 - [x] Mirror branch: storage config, publisher, deploy config, rclone accessory
-- [ ] Hetzner-primary mirror check against stage (blocked on FSN1)
+- [x] Mirror checked against the stage stores with either primary
 - [ ] Steps 1–4
 - [ ] Step 5 follow-up
 - [ ] Findings to `docs/findings/`, exec-plan deleted
