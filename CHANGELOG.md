@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.59.0](https://github.com/fleetyards/fleetyards/compare/v9.58.0...v9.59.0) (2026-11-18)
+
+
+### Features
+
+* **fleetchart:** arrangement options in the free layout, Pyro and Nyx skies ([#6403](https://github.com/fleetyards/fleetyards/issues/6403)) ([5ee1faf](https://github.com/fleetyards/fleetyards/commit/5ee1faf4949ab5cf286006b52b63a29c870b3818))
+* **hangar:** list pledge-store modules under ship components ([#6396](https://github.com/fleetyards/fleetyards/issues/6396)) ([4d216ff](https://github.com/fleetyards/fleetyards/commit/4d216ff6076b4ba3e7bbb430399cc8b31db287b1))
+* show the referral code to people who don't play yet ([#6395](https://github.com/fleetyards/fleetyards/issues/6395)) ([fe0ac08](https://github.com/fleetyards/fleetyards/commit/fe0ac08319f319485253858a435c5ce489f5a0b0))
+* **starmap:** draw the in-game systems in 3D at /starmap ([#6386](https://github.com/fleetyards/fleetyards/issues/6386)) ([93bd223](https://github.com/fleetyards/fleetyards/commit/93bd223f44142801133b31c22bc569b886628634))
+
+
+### Bug Fixes
+
+* **hangar-planner:** keep the slot state badge from covering the ship name ([#6404](https://github.com/fleetyards/fleetyards/issues/6404)) ([861fe1e](https://github.com/fleetyards/fleetyards/commit/861fe1e70918a04c2358abb036def8f70d3476c1))
+* **hangar-plans:** move the plan on to what the user carried out when updating from the hangar ([#6401](https://github.com/fleetyards/fleetyards/issues/6401)) ([37246a8](https://github.com/fleetyards/fleetyards/commit/37246a8f067d94eda4f5e9fb8f807bc1e4e46171))
+* **hangar:** warn about a shipless module only when it is not kept ([#6402](https://github.com/fleetyards/fleetyards/issues/6402)) ([eff4458](https://github.com/fleetyards/fleetyards/commit/eff4458a7f4cf20b53ddea0c1219db6128abe7dc))
+* **models:** add the C8 Pisces as a snub craft of the Carrack ([#6399](https://github.com/fleetyards/fleetyards/issues/6399)) ([ca3bf13](https://github.com/fleetyards/fleetyards/commit/ca3bf134a2c6b39f3ce9cf6e4431012f74c33085))
+
+
+### Refactorings
+
+* **hangar:** serve pledge items from one endpoint filtered by kind ([#6398](https://github.com/fleetyards/fleetyards/issues/6398)) ([617b82f](https://github.com/fleetyards/fleetyards/commit/617b82fba2fffbffe8d34078f393937c7929ffdc))
+* **hangar:** store the ship module flag and count modules once ([#6400](https://github.com/fleetyards/fleetyards/issues/6400)) ([7208598](https://github.com/fleetyards/fleetyards/commit/7208598876ec89a454d5d72e1df5cbd435fbd8c9))
+
 ## [9.58.0](https://github.com/fleetyards/fleetyards/compare/v9.57.0...v9.58.0) (2026-11-18)
 
 
