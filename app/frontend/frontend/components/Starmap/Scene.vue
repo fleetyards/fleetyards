@@ -444,62 +444,8 @@ const raiseRelief = (material: MeshLambertMaterial, url: string) => {
 
 const RELIEF = 4;
 
-// How opaque the thickest cloud is: thin enough to see the ground through.
-const CLOUD_COVER = 0.6;
-
-// The cloud map is the cloud shader's data, its cover in the red channel;
-// turned here into white cloud with that cover as its opacity.
-const cloudsFrom = (image: HTMLImageElement) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 512;
-  const context = canvas.getContext("2d", { willReadFrequently: true });
-
-  if (context) {
-    context.drawImage(image, 0, 0, canvas.width, canvas.height);
-    const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
-    const data = pixels.data;
-
-    for (let index = 0; index < data.length; index += 4) {
-      // Squared, so thin haze stays clear and only real cloud shows.
-      data[index + 3] = (data[index] / 255) ** 2 * 255 * CLOUD_COVER;
-      data[index] = 255;
-      data[index + 1] = 255;
-      data[index + 2] = 255;
-    }
-
-    context.putImageData(pixels, 0, 0);
-  }
-
-  const texture = new CanvasTexture(canvas);
-  texture.colorSpace = SRGBColorSpace;
-  return terrainMap(texture);
-};
-
-const wrapInClouds = (material: MeshLambertMaterial, url: string) => {
-  const built = generation;
-  const image = new Image();
-  image.crossOrigin = "anonymous";
-
-  image.onload = () => {
-    if (built !== generation) return;
-
-    const texture = cloudsFrom(image);
-    textures.push(texture);
-    material.map = texture;
-    material.needsUpdate = true;
-  };
-  image.src = url;
-};
-
-// A body's cloud layer, by the body's key. It drifts on its own, a little
-// faster than a painted surface turns.
-const cloudShells = new Map<string, Mesh>();
-const CLOUD_TURN_SECONDS = 240;
-
 const disposeBodies = () => {
   generation += 1;
-  cloudShells.clear();
   gameSurfaces.clear();
   bodies.traverse((object) => {
     // A marker's texture is shared across scenes; only its material is its own.
@@ -619,22 +565,6 @@ const build = (scene: StarmapScene) => {
     mesh.position.set(...entry.position);
     bodies.add(mesh);
     meshes.set(entry.key, mesh);
-
-    if (entry.clouds) {
-      const shell = new Mesh(
-        sphere,
-        new MeshLambertMaterial({
-          transparent: true,
-          opacity: 0,
-          depthWrite: false,
-        }),
-      );
-      shell.position.copy(mesh.position);
-      shell.renderOrder = 1;
-      cloudShells.set(entry.key, shell);
-      bodies.add(shell);
-      wrapInClouds(shell.material, entry.clouds);
-    }
   }
 };
 
@@ -1185,18 +1115,6 @@ onBeforeRender(({ delta, elapsed }) => {
     const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
-
-    const shell = cloudShells.get(entry.key);
-    if (shell) {
-      shell.scale.copy(mesh.scale).multiplyScalar(1.012);
-      // Thinner as the camera comes down to the surface, where the places
-      // under the cloud are what the reader came for.
-      (shell.material as MeshLambertMaterial).opacity =
-        fade * (1 - 0.6 * shownOn(entry));
-      if (motion) {
-        shell.rotation.y += (delta / CLOUD_TURN_SECONDS) * Math.PI * 2;
-      }
-    }
 
     // A painted body turns, from where it last stood, while nothing is shown
     // on it: its places stand on the ground, and the ground would carry them
