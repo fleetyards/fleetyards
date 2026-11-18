@@ -94,6 +94,23 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
   place: 5,
 };
 
+// A planet or moon is drawn no smaller than its size on a compressed scale,
+// so from afar Pyro V still reads as a giant and Euterpe as a speck: a
+// radius of 1,000 km is 20 pixels across, and ten times that about 45.
+const BODY_PIXELS_AT_1000_KM = 20;
+const BODY_PIXELS_CURVE = 0.35;
+const BODY_PIXELS_RANGE = [9, 44] as const;
+
+const minPixelsOf = (entry: StarmapItem) => {
+  if ((entry.role !== "planet" && entry.role !== "moon") || !entry.radius) {
+    return MIN_PIXELS[entry.role];
+  }
+
+  // Scene units are thousands of kilometres.
+  const pixels = BODY_PIXELS_AT_1000_KM * entry.radius ** BODY_PIXELS_CURVE;
+  return Math.min(Math.max(pixels, BODY_PIXELS_RANGE[0]), BODY_PIXELS_RANGE[1]);
+};
+
 // How near the pointer has to come to a thing to pick it, in pixels, and how
 // close two have to be to count as one spot.
 const PICK_PIXELS = 14;
@@ -1414,7 +1431,7 @@ onBeforeRender(({ delta, elapsed }) => {
       y: ((1 - projected.y) / 2) * height,
       across: Math.max(
         entry.radius / (perPixel * away),
-        MIN_PIXELS[entry.role] / 2,
+        minPixelsOf(entry) / 2,
       ),
       away,
     });
@@ -1470,10 +1487,8 @@ onBeforeRender(({ delta, elapsed }) => {
     const drawn =
       entry.role === "place"
         ? (markerOf(entry.kind).size * (entry.minor ? MINOR_MARKER : 1)) / 2
-        : Math.max(
-            (entry.radius ?? 0) / starPixel,
-            MIN_PIXELS[entry.role] / 2,
-          ) * (lifts.get(entry.key) ?? 1);
+        : Math.max((entry.radius ?? 0) / starPixel, minPixelsOf(entry) / 2) *
+          (lifts.get(entry.key) ?? 1);
     const gap = apart - starDrawn - drawn;
 
     return Math.min(
@@ -1532,7 +1547,7 @@ onBeforeRender(({ delta, elapsed }) => {
       material.opacity = fade;
     }
 
-    const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
+    const minimum = (minPixelsOf(entry) / 2) * perPixel * away;
 
     // Only the size it is drawn at beyond its own grows: a body seen at its
     // true size keeps it, or its places would float off its ground.
