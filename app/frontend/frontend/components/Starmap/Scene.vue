@@ -745,6 +745,9 @@ onBeforeRender(({ delta, elapsed }) => {
     if (element) element.style.cursor = entry ? "pointer" : "";
   }
 
+  // The camera has moved since the last render, and its matrices with it:
+  // labels laid out against the old ones land somewhere else.
+  cam.updateMatrixWorld();
   if (element) declutter(cam, element);
 });
 
