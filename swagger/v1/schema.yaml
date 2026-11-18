@@ -46499,6 +46499,8 @@ components:
                 type: string
               accessLabel:
                 type: string
+              capacityLabel:
+                type: string
               moduleName:
                 type: string
               storeImage:

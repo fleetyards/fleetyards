@@ -164,6 +164,34 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug says what the carrier's berth is built for" do
+    carrier = create(:model, name: "Flagged Carrier")
+    dock = create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
+    create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 2, display: true)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      entry = parsed_body["carriedBy"].find { |item| item["name"] == carrier.name }
+
+      assert_equal "2 small pads", entry["capacityLabel"]
+    end
+  end
+
+  test "GET /models/:slug leaves capacityLabel off a berth with no flagged entry" do
+    carrier = create(:model, name: "Unflagged Carrier")
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      entry = parsed_body["carriedBy"].find { |item| item["name"] == carrier.name }
+
+      assert_not_nil entry
+      assert_nil entry["capacityLabel"]
+    end
+  end
+
   test "GET /models/:slug leaves moduleName off a berth built into the hull" do
     carrier = create(:model, name: "Fixed Carrier")
     create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)

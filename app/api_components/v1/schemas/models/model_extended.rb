@@ -28,6 +28,9 @@ module V1
                   # A label rather than the enum, for the reason DockCount
                   # gives: a value added later would fail the public gate.
                   accessLabel: {type: :string},
+                  # What the berth is built for, from its flagged capacity
+                  # entry ("2 medium pads"). Absent until an entry is flagged.
+                  capacityLabel: {type: :string},
                   # Set when the berth arrives with a module rather than being
                   # built into the hull, so the carrier is conditional on
                   # actually mounting it.

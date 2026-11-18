@@ -82,6 +82,7 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
                     <Pill :variant="PillVariantsEnum.NEUTRAL" uppercase>
                       {{
                         item.moduleName ||
+                        item.capacityLabel ||
                         t(`labels.dockTypes.${item.dockType}`)
                       }}
                     </Pill>
