@@ -129,6 +129,18 @@ const BADGES_PER_ROW = 3;
 // rows of three even columns.
 const wrapsBadges = computed(() => props.badges.length > BADGES_PER_ROW + 1);
 
+// The last figure of a short row runs to the card's edge, so every row is
+// ruled off across the card rather than stopping at an empty slot.
+const spanOf = (index: number) => {
+  if (!wrapsBadges.value) return undefined;
+
+  const columns = props.badges.filter((badge) => !badge.wide).length;
+  const short = columns % BADGES_PER_ROW;
+  if (!short || index !== columns - 1) return undefined;
+
+  return `span ${BADGES_PER_ROW - short + 1}`;
+};
+
 const badgeColumns = computed(() => {
   const count = props.badges.length;
 
@@ -286,10 +298,11 @@ const hasBody = computed(
         :style="{ gridTemplateColumns: badgeColumns }"
       >
         <div
-          v-for="badge in badges"
+          v-for="(badge, index) in badges"
           :key="badge.key"
           class="stats-card__spec"
           :class="{ 'stats-card__spec--wide': badge.wide }"
+          :style="{ gridColumn: spanOf(index) }"
           data-test="stats-card-spec"
         >
           <span class="stats-card__label">{{ badge.label }}</span>
