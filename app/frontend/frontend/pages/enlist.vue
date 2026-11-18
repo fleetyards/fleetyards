@@ -132,6 +132,7 @@ const copyCode = async () => {
   margin: 0;
   padding-left: 1.25rem;
   line-height: 1.5;
+  list-style: decimal;
 }
 
 .enlist-page__actions {
