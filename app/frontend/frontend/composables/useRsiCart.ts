@@ -9,8 +9,11 @@ import type { HangarPlanCartItem } from "@/services/fyApi";
 export const RSI_CART_URL =
   "https://robertsspaceindustries.com/en/store/pledge/cart";
 
-// Every item takes up to three requests to RSI, one after the other.
-const CART_TIMEOUT = 120000;
+// Every item takes up to three requests to RSI, one after the other, after
+// one for the store page. A request that times out leaves the items it
+// managed in the cart unmarked, so it is sized to the list.
+const CART_TIMEOUT_BASE = 15000;
+const CART_TIMEOUT_PER_ITEM = 10000;
 
 export type RsiCartEntry = { key: string; item: HangarPlanCartItem };
 
@@ -36,7 +39,7 @@ export const useRsiCart = () => {
       .request(
         FleetyardsSyncAction.ADD_TO_CART,
         { items: entries.map(({ key, item }) => ({ ...item, id: key })) },
-        CART_TIMEOUT,
+        CART_TIMEOUT_BASE + entries.length * CART_TIMEOUT_PER_ITEM,
       )
       .catch(() => undefined);
 
