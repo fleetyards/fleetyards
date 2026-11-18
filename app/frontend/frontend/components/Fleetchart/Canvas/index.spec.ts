@@ -1414,6 +1414,35 @@ describe("FleetchartCanvas", () => {
       );
     });
 
+    it("offers the options an arrangement uses", async () => {
+      const wrapper = await mountFree();
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+
+      ["sort", "facing", "group", "headingSize", "spacing"].forEach((name) => {
+        expect(
+          wrapper.find(`[data-test^='fleetchart-${name}-']`).exists(),
+        ).toBe(true);
+      });
+    });
+
+    it("turns every ship to a facing in one undoable step", async () => {
+      const wrapper = await mountFree();
+      const before = { ...placement("a") };
+
+      await wrapper.get("[data-test='fleetchart-options']").trigger("click");
+      await wrapper
+        .get(`[data-test='fleetchart-facing-${FleetchartFacings.TOP}']`)
+        .trigger("click");
+
+      expect(placement("a").facing).toBe(FleetchartFacings.TOP);
+      expect(placement("b").facing).toBe(FleetchartFacings.TOP);
+
+      await wrapper.get("[data-test='fleetchart-undo']").trigger("click");
+
+      expect(placement("a")).toEqual(before);
+    });
+
     it("clears a ship's angle on reset", async () => {
       const store = useFleetchartStore();
       store.updateLayout({

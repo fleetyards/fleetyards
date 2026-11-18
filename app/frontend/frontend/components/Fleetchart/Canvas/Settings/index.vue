@@ -26,37 +26,56 @@ interface Props {
   options: FleetchartOptions;
   groups: FleetchartGroups[];
   canArrange?: boolean;
+  // Ships are being placed by hand: the options a layout uses apply to them
+  // by arranging them again.
+  arranging?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   canArrange: false,
+  arranging: false,
 });
+
+const emit = defineEmits<{
+  arrange: [changes: Partial<FleetchartOptions>];
+}>();
 
 const { t } = useI18n();
 
 const fleetchartStore = useFleetchartStore();
+
+const ARRANGING_OPTIONS: (keyof FleetchartOptions)[] = [
+  "sort",
+  "group",
+  "spacing",
+  "facing",
+];
 
 const update = (changes: Partial<FleetchartOptions>) => {
   fleetchartStore.updateOptions({
     namespace: props.namespace,
     options: changes,
   });
+
+  if (props.arranging && ARRANGING_OPTIONS.some((name) => name in changes)) {
+    emit("arrange", changes);
+  }
 };
 
-// Packing decides the order itself, so a sort would do nothing there.
 const layout = computed(() =>
   fleetchartStore.fleetchartLayout(props.namespace, props.canArrange),
 );
 
-const sortable = computed(
-  () =>
-    layout.value !== FleetchartLayouts.PACKED &&
-    layout.value !== FleetchartLayouts.FREE,
+// A free arrangement only changes when it is arranged again, which a chart
+// that cannot be edited never is.
+const groupable = computed(
+  () => layout.value !== FleetchartLayouts.FREE || props.arranging,
 );
 
-// Ships in a free arrangement stay where they were put, facing the way they were
-// turned.
-const groupable = computed(() => layout.value !== FleetchartLayouts.FREE);
+// Packing decides the order itself, so a sort would do nothing there.
+const sortable = computed(
+  () => layout.value !== FleetchartLayouts.PACKED && groupable.value,
+);
 
 const choices = computed(() => [
   {
@@ -95,7 +114,8 @@ const choices = computed(() => [
           optionsKey: "groupOptions",
           values: props.groups as string[],
         },
-        ...(props.options.group === FleetchartGroups.NONE
+        ...(props.options.group === FleetchartGroups.NONE &&
+        layout.value !== FleetchartLayouts.FREE
           ? []
           : [
               {

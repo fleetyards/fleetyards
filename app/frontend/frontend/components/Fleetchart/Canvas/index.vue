@@ -83,6 +83,7 @@ import {
   FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
+  type FleetchartOptions,
   type FleetchartPlacement,
   type FleetchartPlacements,
 } from "@/shared/stores/fleetchart";
@@ -815,8 +816,11 @@ const savePlacements = (next: FleetchartPlacements) => {
   });
 };
 
-const changePlacements = (next: FleetchartPlacements) => {
-  undoStack.value = [...undoStack.value, placements.value].slice(-UNDO_LIMIT);
+const changePlacements = (
+  next: FleetchartPlacements,
+  previous = placements.value,
+) => {
+  undoStack.value = [...undoStack.value, previous].slice(-UNDO_LIMIT);
 
   savePlacements(next);
 };
@@ -896,7 +900,7 @@ const ARRANGEMENTS = [
 
 // Applies a layout to what is selected, where it stands, or else to everything. Only
 // the places change: each ship keeps the angle, facing and state it was given.
-const arrangeAs = (kind: FleetchartLayouts) => {
+const arrangeAs = (kind: FleetchartLayouts, undoTo = placements.value) => {
   lastArrangement.value = kind;
 
   const selected = selectedShips.value;
@@ -929,14 +933,40 @@ const arrangeAs = (kind: FleetchartLayouts) => {
 
   if (selected.length) {
     holdingView(() => {
-      changePlacements({ ...placements.value, ...moved });
+      changePlacements({ ...placements.value, ...moved }, undoTo);
     });
 
     return;
   }
 
-  changePlacements({ ...placements.value, ...moved });
+  changePlacements({ ...placements.value, ...moved }, undoTo);
   fitToScreen();
+};
+
+// Turned where they stand, they would overlap, so they are arranged again.
+const turnAndArrange = (option: FleetchartFacings) => {
+  const before = placements.value;
+  const turned = (
+    selectedIds.value.length
+      ? selectedIds.value
+      : ships.value.map(({ id }) => id)
+  ).map((id) => [
+    id,
+    { ...before[id], ...positions.value[id], facing: option },
+  ]);
+
+  savePlacements({ ...before, ...Object.fromEntries(turned) });
+  arrangeAs(lastArrangement.value, before);
+};
+
+const arrangeWithOptions = (changes: Partial<FleetchartOptions>) => {
+  if (changes.facing) {
+    turnAndArrange(changes.facing);
+
+    return;
+  }
+
+  arrangeAs(lastArrangement.value);
 };
 
 // Back to the chart as it was before anything was done to it. Ships hidden by a
@@ -1851,6 +1881,8 @@ const toggleLabels = () => {
       :options="options"
       :groups="groups"
       :can-arrange="canArrange"
+      :arranging="arranging"
+      @arrange="arrangeWithOptions"
     />
 
     <div
