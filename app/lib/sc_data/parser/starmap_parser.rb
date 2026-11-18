@@ -195,6 +195,8 @@ module ScData
           parent_key = template_parent(object, keys, by_ref)
           next if parent_key.nil?
 
+          placed_under = template_parent(object, {}, by_ref)
+
           {
             sc_key: keys[object["id"]],
             sc_refs: [object["id"]],
@@ -207,8 +209,8 @@ module ScData
             parent_key:,
             map_parent_key: nil,
             # The system and the law of the record-backed place it hangs from.
-            system_key: system_of(template_parent(object, {}, by_ref), places),
-            **jurisdiction_facts(places[template_parent(object, {}, by_ref)], places),
+            system_key: system_of(placed_under, places),
+            **jurisdiction_facts(places[placed_under], places),
             shown_on_starmap: true,
             shown_with_parent_only: false,
             always_shown: false,
