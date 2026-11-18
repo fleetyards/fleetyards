@@ -81,3 +81,48 @@ zh-CN:
       url: 链接地址
     tax_excluded: 不含增值税
     unknown: 未知
+    dock_capacity:
+      ship:
+        extra_extra_small:
+          one: "%{count} 个微型停机坪"
+          other: "%{count} 个微型停机坪"
+        extra_small:
+          one: "%{count} 个超小型停机坪"
+          other: "%{count} 个超小型停机坪"
+        small:
+          one: "%{count} 个小型停机坪"
+          other: "%{count} 个小型停机坪"
+        medium:
+          one: "%{count} 个中型停机坪"
+          other: "%{count} 个中型停机坪"
+        large:
+          one: "%{count} 个大型停机坪"
+          other: "%{count} 个大型停机坪"
+        extra_large:
+          one: "%{count} 个超大型停机坪"
+          other: "%{count} 个超大型停机坪"
+        capital:
+          one: "%{count} 个主力舰停机坪"
+          other: "%{count} 个主力舰停机坪"
+      vehicle:
+        extra_extra_small:
+          one: "%{count} 个微型载具位"
+          other: "%{count} 个微型载具位"
+        extra_small:
+          one: "%{count} 个超小型载具位"
+          other: "%{count} 个超小型载具位"
+        small:
+          one: "%{count} 个小型载具位"
+          other: "%{count} 个小型载具位"
+        medium:
+          one: "%{count} 个中型载具位"
+          other: "%{count} 个中型载具位"
+        large:
+          one: "%{count} 个大型载具位"
+          other: "%{count} 个大型载具位"
+        extra_large:
+          one: "%{count} 个超大型载具位"
+          other: "%{count} 个超大型载具位"
+        extra_extra_large:
+          one: "%{count} 个特大型载具位"
+          other: "%{count} 个特大型载具位"

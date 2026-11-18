@@ -308,6 +308,25 @@ class Dock < ApplicationRecord
     capacities.find(&:display?)
   end
 
+  # Until an entry is flagged the berth reads as its pad class alone, as it did
+  # before entries existed -- a class says nothing about how many, so no count
+  # is invented for it.
+  def display_label
+    display_capacity&.display_label || ship_size_label
+  end
+
+  def display_size
+    display_capacity&.size || ship_size
+  end
+
+  # Two berths share a line on the ship page only when they read the same.
+  def display_key
+    capacity = display_capacity
+    return [nil, ship_size, nil] if capacity.nil?
+
+    [capacity.ladder, capacity.size, capacity.quantity]
+  end
+
   def access_label
     Dock.human_enum_name(:access, access)
   end

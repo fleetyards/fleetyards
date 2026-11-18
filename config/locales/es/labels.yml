@@ -81,3 +81,48 @@ es:
       url: URL
     tax_excluded: sin IVA
     unknown: Desconocido
+    dock_capacity:
+      ship:
+        extra_extra_small:
+          one: "%{count} plataforma snub"
+          other: "%{count} plataformas snub"
+        extra_small:
+          one: "%{count} plataforma muy pequeña"
+          other: "%{count} plataformas muy pequeñas"
+        small:
+          one: "%{count} plataforma pequeña"
+          other: "%{count} plataformas pequeñas"
+        medium:
+          one: "%{count} plataforma mediana"
+          other: "%{count} plataformas medianas"
+        large:
+          one: "%{count} plataforma grande"
+          other: "%{count} plataformas grandes"
+        extra_large:
+          one: "%{count} plataforma muy grande"
+          other: "%{count} plataformas muy grandes"
+        capital:
+          one: "%{count} plataforma capital"
+          other: "%{count} plataformas capitales"
+      vehicle:
+        extra_extra_small:
+          one: "%{count} plaza de vehículo diminuta"
+          other: "%{count} plazas de vehículo diminutas"
+        extra_small:
+          one: "%{count} plaza de vehículo muy pequeña"
+          other: "%{count} plazas de vehículo muy pequeñas"
+        small:
+          one: "%{count} plaza de vehículo pequeña"
+          other: "%{count} plazas de vehículo pequeñas"
+        medium:
+          one: "%{count} plaza de vehículo mediana"
+          other: "%{count} plazas de vehículo medianas"
+        large:
+          one: "%{count} plaza de vehículo grande"
+          other: "%{count} plazas de vehículo grandes"
+        extra_large:
+          one: "%{count} plaza de vehículo muy grande"
+          other: "%{count} plazas de vehículo muy grandes"
+        extra_extra_large:
+          one: "%{count} plaza de vehículo enorme"
+          other: "%{count} plazas de vehículo enormes"

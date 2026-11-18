@@ -81,3 +81,48 @@ de:
       url: URL
     tax_excluded: zzgl. MwSt.
     unknown: Unbekannt
+    dock_capacity:
+      ship:
+        extra_extra_small:
+          one: "%{count} Snub-Landeplatz"
+          other: "%{count} Snub-Landeplätze"
+        extra_small:
+          one: "%{count} sehr kleiner Landeplatz"
+          other: "%{count} sehr kleine Landeplätze"
+        small:
+          one: "%{count} kleiner Landeplatz"
+          other: "%{count} kleine Landeplätze"
+        medium:
+          one: "%{count} mittelgroßer Landeplatz"
+          other: "%{count} mittelgroße Landeplätze"
+        large:
+          one: "%{count} großer Landeplatz"
+          other: "%{count} große Landeplätze"
+        extra_large:
+          one: "%{count} sehr großer Landeplatz"
+          other: "%{count} sehr große Landeplätze"
+        capital:
+          one: "%{count} Capital-Landeplatz"
+          other: "%{count} Capital-Landeplätze"
+      vehicle:
+        extra_extra_small:
+          one: "%{count} winziger Fahrzeugstellplatz"
+          other: "%{count} winzige Fahrzeugstellplätze"
+        extra_small:
+          one: "%{count} sehr kleiner Fahrzeugstellplatz"
+          other: "%{count} sehr kleine Fahrzeugstellplätze"
+        small:
+          one: "%{count} kleiner Fahrzeugstellplatz"
+          other: "%{count} kleine Fahrzeugstellplätze"
+        medium:
+          one: "%{count} mittelgroßer Fahrzeugstellplatz"
+          other: "%{count} mittelgroße Fahrzeugstellplätze"
+        large:
+          one: "%{count} großer Fahrzeugstellplatz"
+          other: "%{count} große Fahrzeugstellplätze"
+        extra_large:
+          one: "%{count} sehr großer Fahrzeugstellplatz"
+          other: "%{count} sehr große Fahrzeugstellplätze"
+        extra_extra_large:
+          one: "%{count} riesiger Fahrzeugstellplatz"
+          other: "%{count} riesige Fahrzeugstellplätze"
