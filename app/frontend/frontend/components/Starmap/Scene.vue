@@ -261,7 +261,7 @@ const raiseRelief = (material: MeshLambertMaterial, url: string) => {
 const RELIEF = 4;
 
 // How opaque the thickest cloud is: thin enough to see the ground through.
-const CLOUD_COVER = 0.75;
+const CLOUD_COVER = 0.6;
 
 // The cloud map is the cloud shader's data, its cover in the red channel;
 // turned here into white cloud with that cover as its opacity.
@@ -277,7 +277,8 @@ const cloudsFrom = (image: HTMLImageElement) => {
     const data = pixels.data;
 
     for (let index = 0; index < data.length; index += 4) {
-      data[index + 3] = data[index] * CLOUD_COVER;
+      // Squared, so thin haze stays clear and only real cloud shows.
+      data[index + 3] = (data[index] / 255) ** 2 * 255 * CLOUD_COVER;
       data[index] = 255;
       data[index + 1] = 255;
       data[index + 2] = 255;
@@ -962,7 +963,10 @@ onBeforeRender(({ delta, elapsed }) => {
     const shell = cloudShells.get(entry.key);
     if (shell) {
       shell.scale.copy(mesh.scale).multiplyScalar(1.012);
-      (shell.material as MeshLambertMaterial).opacity = fade;
+      // Thinner as the camera comes down to the surface, where the places
+      // under the cloud are what the reader came for.
+      (shell.material as MeshLambertMaterial).opacity =
+        fade * (1 - 0.6 * shownOn(entry));
       if (motion) {
         shell.rotation.y += (delta / CLOUD_TURN_SECONDS) * Math.PI * 2;
       }
