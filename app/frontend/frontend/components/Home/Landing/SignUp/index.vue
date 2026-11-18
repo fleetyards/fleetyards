@@ -113,17 +113,16 @@ const links: CommunityLink[] = [
       </span>
       <SocialLogins only-icons :block="false" :providers="providers" />
     </div>
-    <div v-if="!isAuthenticated" class="home-landing-sign-up__login">
-      {{ t("home.landing.signUpPanel.loggedIn") }}
-      <Btn :variant="BtnVariantsEnum.BARE" :to="{ name: 'login' }">
-        <i class="fa-light fa-right-to-bracket" />
-        {{ t("home.landing.signUpPanel.login") }}
-      </Btn>
+    <div v-if="!isAuthenticated" class="home-landing-sign-up__signed-out">
+      <div class="home-landing-sign-up__login">
+        {{ t("home.landing.signUpPanel.loggedIn") }}
+        <Btn :variant="BtnVariantsEnum.BARE" :to="{ name: 'login' }">
+          <i class="fa-light fa-right-to-bracket" />
+          {{ t("home.landing.signUpPanel.login") }}
+        </Btn>
+      </div>
+      <ReferralHint class="home-landing-sign-up__referral" />
     </div>
-    <ReferralHint
-      v-if="!isAuthenticated"
-      class="home-landing-sign-up__referral"
-    />
     <div class="home-landing-sign-up__links">
       <component
         :is="link.to ? 'router-link' : link.href ? 'a' : 'button'"
@@ -226,10 +225,16 @@ const links: CommunityLink[] = [
   gap: 4px;
 }
 
+.home-landing-sign-up__signed-out {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 .home-landing-sign-up__referral {
   --referral-hint-color: var(--color-text-dim);
 
-  margin-top: -14px;
   text-shadow: 0 1px 8px rgb(0 0 0 / 90%);
 }
 
