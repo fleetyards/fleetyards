@@ -5,11 +5,12 @@ module HangarPledgeItems
   # components with the ones a hangar sync read. The pledge list is the whole truth: a melted or gifted
   # pledge simply stops being listed, so anything not in `items` goes.
   class Sync
-    KINDS_BY_ITEM_TYPE = {"ccu" => "ccu", "skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
-
-    # RSI lists ship modules and ship parts alike as components; the modules are
-    # fitted to a ship by the hangar sync, the parts are kept here.
-    COMPONENT_ITEM_TYPE = "component"
+    # RSI lists ship modules and ship parts alike as components. Both are kept
+    # as ship components, so the list shows everything the hangar holds; the
+    # hangar sync also fits the modules to a ship.
+    KINDS_BY_ITEM_TYPE = {
+      "ccu" => "ccu", "skin" => "paint", "flair" => "flair", "equipment" => "equipment", "component" => "ship_component"
+    }.freeze
 
     # RSI gives the items it lists under "Also Contains" no kind at all, and
     # labels coins, statues and ship models "FPS Equipment" as often as gear.
@@ -32,9 +33,6 @@ module HangarPledgeItems
         next unless item[:id].present? && item[:name].present?
 
         type = item[:type].to_s
-        if type == COMPONENT_ITEM_TYPE
-          next(::HangarModuleMapping.module?(item[:name]) ? nil : "ship_component")
-        end
         next KINDS_BY_ITEM_TYPE[type] unless CATALOGUED_ITEM_TYPES.include?(type)
 
         if type == EXTRA_ITEM_TYPE && EquipmentCatalogue.words(item[:name]).intersect?(PAINT_WORDS)
@@ -242,7 +240,7 @@ module HangarPledgeItems
       items.group_by { |item| [item[:kind], item[:id].to_s, item[:name].strip] }
         .map do |(kind, rsi_pledge_id, name), group|
           {
-            component_id: (component_catalogue.find(name) if kind == "ship_component"),
+            component_id: (component_catalogue.find(name) if kind == "ship_component" && !::HangarModuleMapping.module?(name)),
             equipment_id: (equipment_catalogue.find(name) if kind == "equipment"),
             user_id: user.id,
             kind:,

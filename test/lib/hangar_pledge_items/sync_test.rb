@@ -70,14 +70,20 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert_nil catalogue.find("Cargo Door")
   end
 
-  # Modules are fitted to a ship by the hangar sync, whether it knows them or not.
-  test "leaves ship modules to the hangar sync" do
+  # The hangar sync fits them to a ship as well, whether it knows them or not.
+  test "keeps ship modules as ship components, linked to no part" do
+    create(:component, name: "Cargo Module")
     items = [
       {id: "2002", type: "component", name: "Aurora Mk II Cargo Module"},
       {id: "2002", type: "component", name: "Mystery Ship - Science Module"}
     ]
 
-    assert_equal [nil, nil], HangarPledgeItems::Sync.kinds_for(items)
+    HangarPledgeItems::Sync.new(@user, items, kinds: ["ship_component"]).run
+
+    stored = @user.hangar_pledge_items.ship_components.order(:name)
+    assert_equal ["Aurora Mk II Cargo Module", "Mystery Ship - Science Module"], stored.map(&:name)
+    assert stored.all?(&:ship_module?)
+    assert_nil stored.first.catalogue_component
   end
 
   test "links FPS gear to the catalogue item it is" do

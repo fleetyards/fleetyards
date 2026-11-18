@@ -75,8 +75,8 @@ const ofType =
     pledge.type === type;
 
 // RSI lists ship modules and ship parts alike as components. A module is named
-// as one, as the server tells them apart: it is fitted to a ship, and a part is
-// kept as a ship component.
+// as one, as the server tells them apart, and counted once, with the modules
+// fitted to a ship, though it is kept with the ship components too.
 const MODULE_NAME = /\bmodule\b/i;
 
 const isModule: PledgeFilter = (pledge) =>
