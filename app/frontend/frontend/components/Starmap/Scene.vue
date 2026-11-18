@@ -494,13 +494,25 @@ const raiseRelief = (material: MeshLambertMaterial, url: string) => {
 };
 
 // How opaque the thickest cloud is: thin enough to see the ground through.
-const CLOUD_COVER = 0.55;
-// The cover the map reads below which the sky is clear, and above which it
-// is full cloud: the cloud shader's data is noisy, and drawn straight it
-// speckles the whole body.
-const CLOUD_CLEAR = 0.3;
-const CLOUD_FULL = 0.8;
-const CLOUD_SOFTEN_PIXELS = 3;
+const CLOUD_COVER = 0.75;
+const CLOUD_SOFTEN_PIXELS = 2;
+// The share of a map read as its thickest cloud. The maps cover very
+// different ranges -- Hurston's reaches 80%, Bloom's barely 35% -- so each is
+// drawn against its own, and a thinly clouded body still shows its clouds.
+const CLOUD_PEAK_SHARE = 0.01;
+
+const peakOf = (data: Uint8ClampedArray) => {
+  const counts = new Array<number>(256).fill(0);
+  for (let index = 0; index < data.length; index += 4) counts[data[index]]++;
+
+  let above = 0;
+  const wanted = (data.length / 4) * CLOUD_PEAK_SHARE;
+  for (let value = 255; value > 0; value--) {
+    above += counts[value];
+    if (above >= wanted) return value;
+  }
+  return 255;
+};
 
 // The cloud map is the cloud shader's data, its cover in the red channel;
 // turned here into white cloud with that cover as its opacity.
@@ -518,17 +530,11 @@ const cloudsFrom = (image: HTMLImageElement) => {
     const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
     const data = pixels.data;
 
+    const peak = Math.max(peakOf(data), 1);
+
     for (let index = 0; index < data.length; index += 4) {
-      // Eased in between clear and full, so haze stays clear and only real
-      // cloud shows, with a soft edge.
-      const cover = Math.min(
-        Math.max(
-          (data[index] / 255 - CLOUD_CLEAR) / (CLOUD_FULL - CLOUD_CLEAR),
-          0,
-        ),
-        1,
-      );
-      data[index + 3] = cover * cover * (3 - 2 * cover) * 255 * CLOUD_COVER;
+      const cover = Math.min(data[index] / peak, 1);
+      data[index + 3] = cover ** 1.4 * 255 * CLOUD_COVER;
       data[index] = 255;
       data[index + 1] = 255;
       data[index + 2] = 255;
@@ -562,8 +568,8 @@ const wrapInClouds = (material: MeshLambertMaterial, url: string) => {
 // clouds painted in -- Bloom's in coarse blocks -- so the layer drifts to and
 // fro over them rather than round the body, which would uncover them.
 const cloudShells = new Map<string, Mesh>();
-const CLOUD_SWAY = 0.05;
-const CLOUD_SWAY_SECONDS = 90;
+const CLOUD_SWAY = 0.12;
+const CLOUD_SWAY_SECONDS = 40;
 let cloudTime = 0;
 
 const disposeBodies = () => {
@@ -1417,7 +1423,7 @@ onBeforeRender(({ delta, elapsed }) => {
       // Thinner as the camera comes down to the surface, where the places
       // under the cloud are what the reader came for.
       (shell.material as MeshLambertMaterial).opacity =
-        fade * (1 - 0.6 * shownOn(entry));
+        fade * (1 - 0.35 * shownOn(entry));
       shell.rotation.y =
         CLOUD_SWAY * Math.sin((cloudTime / CLOUD_SWAY_SECONDS) * Math.PI * 2);
     }
