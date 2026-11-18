@@ -36,8 +36,10 @@ module Rsi
       # seen, as most come back for a sale.
       ccu_on_sale = Array(pledge_data["upgrades"]).any?
 
-      # The cart needs a SKU, not the ship. A SKU keeps its id across sales,
-      # so one RSI leaves out today is kept rather than forgotten.
+      # The cart needs a SKU, not the ship. An upgrade SKU keeps its id across
+      # sales, so one RSI leaves out today is kept; whether it is on sale is
+      # `ccu_on_sale`. A ship no longer sold on its own loses its standalone
+      # SKU, unless RSI could not be asked.
       standalone_sku_id = standalone_sku_id(pledge_data["skus"])
       upgrade_sku_id = Array(pledge_data["upgrades"]).first&.dig("id")
 
@@ -49,7 +51,7 @@ module Rsi
         pledge_price: nil_or_decimal(pledge_price),
         ccu_on_sale:,
         ccu_target_seen_at: model.ccu_target_seen_at || (Time.current if ccu_on_sale),
-        rsi_standalone_sku_id: standalone_sku_id&.to_i || model.rsi_standalone_sku_id,
+        rsi_standalone_sku_id: (standalone_sku_id == :unknown) ? model.rsi_standalone_sku_id : standalone_sku_id&.to_i,
         rsi_upgrade_sku_id: upgrade_sku_id&.to_i || model.rsi_upgrade_sku_id
       )
 
@@ -62,22 +64,25 @@ module Rsi
     # The ship's `skus` mix its upgrade, its standalone versions, packages and
     # packs, all with the subtitle "Pledge". Only a search by slug says which
     # store category each is in. A warbond SKU cannot be paid with store
-    # credit, so a regular one wins.
+    # credit, so a regular one wins. `:unknown` when RSI gave no usable answer.
     private def standalone_sku_id(skus)
       slugs = Array(skus).filter_map { |sku| sku["slug"] }
       return if slugs.empty?
 
       operation = [{operationName: "GetSkus", variables: {query: {skus: {slugs:}}}, query: get_skus_query}]
       response = fetch_graphql(operation.to_json)
-      return unless response.success?
+      return :unknown unless response.success?
 
-      resources = JSON.parse(response.body).first.dig("data", "store", "search", "resources")
-      standalone = Array(resources).select { |sku| sku["subtitle"] == STANDALONE_CATEGORY }
+      body = JSON.parse(response.body)
+      resources = body.first&.dig("data", "store", "search", "resources") if body.is_a?(Array) && body.first.is_a?(Hash)
+      return :unknown unless resources.is_a?(Array)
+
+      standalone = resources.select { |sku| sku.is_a?(Hash) && sku["subtitle"] == STANDALONE_CATEGORY }
 
       (standalone.find { |sku| !sku["isWarbond"] } || standalone.first)&.dig("id")
     rescue JSON::ParserError => e
       Appsignal.report_error(e)
-      nil
+      :unknown
     end
 
     private def get_skus_query

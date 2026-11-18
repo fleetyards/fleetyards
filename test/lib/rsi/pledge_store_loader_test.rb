@@ -95,14 +95,23 @@ module Rsi
       assert_equal 2, @model.reload.rsi_standalone_sku_id
     end
 
-    test "keeps the SKUs it knew when the store leaves them out" do
+    test "keeps the upgrade SKU through a sale's end, and drops a standalone SKU only packs sell now" do
       @model.update!(rsi_standalone_sku_id: 3, rsi_upgrade_sku_id: 1)
       stub_store(store_body([], skus: [{id: "4", slug: "pack"}]), skus_body([{id: "4", subtitle: "Packs", isWarbond: false}]))
 
       PledgeStoreLoader.new.run(@model)
 
-      assert_equal 3, @model.reload.rsi_standalone_sku_id
+      assert_nil @model.reload.rsi_standalone_sku_id
       assert_equal 1, @model.rsi_upgrade_sku_id
+    end
+
+    test "keeps the standalone SKU when RSI gives no usable answer" do
+      @model.update!(rsi_standalone_sku_id: 3)
+      stub_store(store_body([], skus: [{id: "3", slug: "standalone"}]), {errors: [{message: "boom"}]}.to_json)
+
+      PledgeStoreLoader.new.run(@model)
+
+      assert_equal 3, @model.reload.rsi_standalone_sku_id
     end
 
     test "names a ship on sale that only a pack sells" do
