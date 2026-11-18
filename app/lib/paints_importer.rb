@@ -99,7 +99,16 @@ class PaintsImporter
       .distinct
       .pluck(Arel.sql("item->>'name'"), Arel.sql("item->>'image'"))
 
-    skins.map { |name, image| extract_paint(name, image) }.uniq
+    skins
+      .reject { |name, _image| placeholder_skin?(name) }
+      .map { |name, image| extract_paint(name, image) }
+      .uniq
+  end
+
+  # RSI ships some skins under a "[TEMP" working title before they are named.
+  # They name no ship, so they would come back as a missing model on every run.
+  private def placeholder_skin?(name)
+    name.to_s.lstrip.start_with?("[TEMP")
   end
 
   private def paint_for_target?(paint)
