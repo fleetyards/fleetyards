@@ -20,12 +20,17 @@ json.places @places do |place|
   json.color location.drawn_color
   json.unstable location.flare_star?
   json.body_type location.body_type
+  # Whether a ship can dock or land there: a rest stop rather than a comm
+  # array, which the map keeps in view the longest.
+  json.docking Array.wrap(location.facilities&.dig("hangars")).any? || Array.wrap(location.facilities&.dig("pads")).any?
 
-  if location.starmap_texture.attached?
-    json.texture do
-      json.partial! "api/v1/shared/file", record: location, attr: :starmap_texture
+  {texture: :starmap_texture, elevation: :starmap_elevation, clouds: :starmap_clouds}.each do |key, attr|
+    if location.public_send(attr).attached?
+      json.set! key do
+        json.partial! "api/v1/shared/file", record: location, attr:
+      end
+    else
+      json.set! key, nil
     end
-  else
-    json.texture nil
   end
 end

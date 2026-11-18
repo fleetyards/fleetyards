@@ -39,7 +39,9 @@ module ScData
           apply_build(location, build_params(item))
         end
 
-        attach_starmap_texture(location, item["starmap_texture"])
+        attach_starmap_map(location, :starmap_texture, item["starmap_texture"])
+        attach_starmap_map(location, :starmap_elevation, item["starmap_elevation"])
+        attach_starmap_map(location, :starmap_clouds, item["starmap_clouds"])
 
         (@by_key ||= {})[item["sc_key"]] = location
       end
@@ -72,21 +74,24 @@ module ScData
         }
       end
 
-      # The surface the game's own starmap wraps a body in. Not a fact of the
-      # build: a texture is the same on every channel that has the body, so only
-      # the default environment's load sets it and a PTU load cannot swap it.
+      # The surface the game's own starmap wraps a body in, and its terrain's
+      # elevation and cloud cover. Not facts of the build: a texture is the same
+      # on every channel that has the body, so only the default environment's
+      # load sets it and a PTU load cannot swap it.
       #
       # Removed when the export stops naming one: unlike a logo, nobody uploads
       # these by hand, so one the game dropped is only ever stale.
-      private def attach_starmap_texture(location, path)
+      private def attach_starmap_map(location, attachment_name, path)
         return unless default_environment?
 
+        attachment = location.public_send(attachment_name)
+
         if path.blank?
-          location.starmap_texture.purge_later if location.starmap_texture.attached?
+          attachment.purge_later if attachment.attached?
           return
         end
 
-        attach_parsed_file(location, :starmap_texture, export_path.join(path).to_s)
+        attach_parsed_file(location, attachment_name, export_path.join(path).to_s)
       end
 
       private def lookup(key)

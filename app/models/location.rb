@@ -67,6 +67,9 @@ class Location < ApplicationRecord
   has_one_attached :image
   # The surface the game's own starmap wraps the body in, from the export.
   has_one_attached :starmap_texture
+  # Its terrain's elevation and cloud cover, from the same export.
+  has_one_attached :starmap_elevation
+  has_one_attached :starmap_clouds
 
   before_save :update_slugs
 

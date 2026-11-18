@@ -29,15 +29,22 @@ module V1
           color: {type: [:string, :null]},
           unstable: {type: :boolean},
           bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
+          # Whether a ship can dock or land there, by the hangars and pads it has.
+          docking: {type: :boolean},
           # The surface the game's own starmap wraps a body in: equirectangular,
           # poles at the top and bottom edges. Null where the export has none.
-          texture: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
+          texture: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
+          # Its terrain's elevation (a 16-bit greyscale map, unscaled) and cloud
+          # cover (the red channel), both equirectangular and a quarter turn
+          # round from the texture: the texture at u matches them at u + 0.25.
+          elevation: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
+          clouds: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
         },
         additionalProperties: false,
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
           shownWithParentOnly alwaysShown quantumTravelDestination lagrangePoint
-          gateway color unstable bodyType texture
+          gateway color unstable bodyType docking texture elevation clouds
         ]
       })
     end

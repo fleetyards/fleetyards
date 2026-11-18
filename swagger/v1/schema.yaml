@@ -45200,7 +45200,17 @@ components:
           type: boolean
         bodyType:
           "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        docking:
+          type: boolean
         texture:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        elevation:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        clouds:
           anyOf:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
@@ -45223,7 +45233,10 @@ components:
       - color
       - unstable
       - bodyType
+      - docking
       - texture
+      - elevation
+      - clouds
       title: LocationStarmapPlace
     LocationTerminal:
       type: object

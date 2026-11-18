@@ -178,14 +178,16 @@ module ScData
           facilities: place[:facilities],
           position: placement_of(place)&.dig(:position),
           radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
-          starmap_texture: (starmap_texture(place) if BODY_KINDS.include?(place[:kind]))
+          starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
+          starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
+          starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind]))
         }
       end
 
       # Carried into the parsed tree, as artwork is, so a load attaches it from
       # disk. Two bodies can share one: Pyro V and Ignis do.
-      private def starmap_texture(place)
-        path = Array.wrap(place[:refs]).lazy.filter_map { |ref| surfaces[ref] }.first
+      private def starmap_map(place, maps)
+        path = Array.wrap(place[:refs]).lazy.filter_map { |ref| maps[ref] }.first
         return if path.blank?
 
         source = "#{base_path}/derived/#{path}"
@@ -200,17 +202,36 @@ module ScData
 
       # Record ref => surface texture, as a path under `derived/`.
       private def surfaces
-        @surfaces ||= begin
-          file = "#{base_path}/#{MATERIALS_FILE}"
-          materials = File.exist?(file) ? JSON.parse(File.read(file))["materials"].to_h : {}
+        @surfaces ||= starmap_materials["materials"].to_h.each_value.each_with_object({}) do |material, map|
+          surface = material.dig("maps", "surface")
+          next unless texture_path?(surface)
 
-          materials.each_value.each_with_object({}) do |material, map|
-            surface = material.dig("maps", "surface")
-            next if surface.blank? || !surface.start_with?("#{TEXTURES_FOLDER}/") || surface.include?("..")
+          Array.wrap(material["records"]).each { |ref| map[ref] ||= surface }
+        end
+      end
 
-            Array.wrap(material["records"]).each { |ref| map[ref] ||= surface }
+      # Role => record ref => the body's terrain map of that role: its elevation
+      # and its cloud cover, from the terrain material its container names.
+      # Both are a quarter turn round from the surface; the map applies that.
+      private def terrain_maps
+        @terrain_maps ||= starmap_materials["bodies"].to_h.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |(ref, body), maps|
+          body["maps"].to_h.each do |role, path|
+            maps[role][ref] = path if texture_path?(path)
           end
         end
+      end
+
+      private def starmap_materials
+        @starmap_materials ||= begin
+          file = "#{base_path}/#{MATERIALS_FILE}"
+          File.exist?(file) ? JSON.parse(File.read(file)) : {}
+        end
+      end
+
+      # Only ever a file in the textures folder: the manifest is the exporter's,
+      # and a path out of it would copy whatever it named.
+      private def texture_path?(path)
+        path.present? && path.start_with?("#{TEXTURES_FOLDER}/") && !path.include?("..")
       end
 
       # The first of a place's refs placed exactly once. A record placed

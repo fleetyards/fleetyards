@@ -51,6 +51,8 @@ module ScData
 
         assert planet.starmap_texture.attached?
         assert_equal "ui_sm_stanton_1_hurston.webp", planet.starmap_texture.filename.to_s
+        assert_equal "stanton1_global_elev.png", planet.starmap_elevation.filename.to_s
+        assert_equal "stanton1_clouds_global.webp", planet.starmap_clouds.filename.to_s
         refute Location.find_by!(sc_key: "StantonSolarSystem").starmap_texture.attached?
       end
 

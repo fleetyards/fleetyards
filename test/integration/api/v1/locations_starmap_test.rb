@@ -55,6 +55,7 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
       assert places.dig("HUR-L1", "lagrangePoint")
       assert places.dig("Pyro Gateway", "gateway")
       refute places.dig("Hurston", "gateway")
+      refute places.dig("Pyro Gateway", "docking")
     end
   end
 
@@ -83,6 +84,16 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
       assert_equal "ui_sm_stanton_1_hurston.webp", places.dig("Hurston", "texture", "name")
       assert places.dig("Hurston", "texture", "url").present?
       assert_nil places.dig("Stanton", "texture")
+      assert_nil places.dig("Hurston", "elevation")
+      assert_nil places.dig("Hurston", "clouds")
+    end
+  end
+
+  test "GET /locations/{slug}/starmap says where a ship can dock" do
+    @gateway.builds.sole.update!(facilities: {"hangars" => [{"size" => "large", "count" => 2}], "pads" => []})
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      assert parsed_body["places"].find { |place| place["name"] == "Pyro Gateway" }["docking"]
     end
   end
 

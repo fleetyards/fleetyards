@@ -17,5 +17,7 @@
   "mission_template_refs": [],
   "position": [12850457093.0, 0.0, 0.0],
   "radius": 1000000.0,
-  "starmap_texture": "starmap_materials/ui_sm_stanton_1_hurston.webp"
+  "starmap_texture": "starmap_materials/ui_sm_stanton_1_hurston.webp",
+  "starmap_elevation": "starmap_materials/stanton1_global_elev.png",
+  "starmap_clouds": "starmap_materials/stanton1_clouds_global.webp"
 }

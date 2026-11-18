@@ -464,9 +464,11 @@ module ScData
         stanton
         place("Stanton3_Area18", "Area18", type: "LandingZone", parent: "Stanton1")
         starmap_materials(
-          "materials/ui/starmap/planetsmoons/stanton/ui_sm_stanton_1_hurston.mtl" => {
-            records: [ref_for("Stanton1"), ref_for("Stanton3_Area18")],
-            maps: {surface: "starmap_materials/ui_sm_stanton_1_hurston.webp", dotgrid: "starmap_materials/dots.webp"}
+          {
+            "materials/ui/starmap/planetsmoons/stanton/ui_sm_stanton_1_hurston.mtl" => {
+              records: [ref_for("Stanton1"), ref_for("Stanton3_Area18")],
+              maps: {surface: "starmap_materials/ui_sm_stanton_1_hurston.webp", dotgrid: "starmap_materials/dots.webp"}
+            }
           }
         )
 
@@ -475,13 +477,33 @@ module ScData
         assert File.file?("#{@base_folder}/parsed/test/starmap_materials/ui_sm_stanton_1_hurston.webp")
       end
 
+      test "#locations carries a body's elevation and cloud cover by its starmap record" do
+        stanton
+        starmap_materials(
+          {},
+          bodies: {
+            ref_for("Stanton1") => {
+              name: "Hurston",
+              maps: {elevation: "starmap_materials/stanton1_global_elev.png", clouds: "starmap_materials/stanton1_clouds_global.webp"}
+            }
+          }
+        )
+
+        assert_equal "starmap_materials/stanton1_global_elev.png", location("Stanton1")[:starmap_elevation]
+        assert_equal "starmap_materials/stanton1_clouds_global.webp", location("Stanton1")[:starmap_clouds]
+        assert_nil location("Stanton1")[:starmap_texture]
+        assert File.file?("#{@base_folder}/parsed/test/starmap_materials/stanton1_global_elev.png")
+      end
+
       test "#locations takes no texture from outside the textures folder" do
         stanton
         starmap_materials(
-          "materials/hurston.mtl" => {records: [ref_for("Stanton1")], maps: {surface: "starmap_materials/../../secret.webp"}}
+          {"materials/hurston.mtl" => {records: [ref_for("Stanton1")], maps: {surface: "starmap_materials/../../secret.webp"}}},
+          bodies: {ref_for("Stanton1") => {maps: {elevation: "../secret.png"}}}
         )
 
         assert_nil location("Stanton1")[:starmap_texture]
+        assert_nil location("Stanton1")[:starmap_elevation]
       end
 
       test "#locations has no textures for an export without starmap materials" do
@@ -490,13 +512,13 @@ module ScData
         assert_nil location("Stanton1")[:starmap_texture]
       end
 
-      private def starmap_materials(materials)
+      private def starmap_materials(materials, bodies: {})
         target = "#{@raw_path}/derived/starmap_materials.json"
 
         FileUtils.mkdir_p(File.dirname(target))
-        File.write(target, JSON.generate({derivation: {}, materials:}))
+        File.write(target, JSON.generate({derivation: {}, materials:, bodies:}))
 
-        materials.each_value do |material|
+        (materials.values + bodies.values).each do |material|
           material[:maps].each_value do |path|
             next if path.include?("..")
 
