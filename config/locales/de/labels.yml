@@ -84,45 +84,45 @@ de:
     dock_capacity:
       ship:
         extra_extra_small:
-          one: "%{count} Snub-Landeplatz"
-          other: "%{count} Snub-Landeplätze"
+          one: "%{count} Snub-Pad"
+          other: "%{count} Snub-Pads"
         extra_small:
-          one: "%{count} sehr kleiner Landeplatz"
-          other: "%{count} sehr kleine Landeplätze"
+          one: "%{count} sehr kleines Pad"
+          other: "%{count} sehr kleine Pads"
         small:
-          one: "%{count} kleiner Landeplatz"
-          other: "%{count} kleine Landeplätze"
+          one: "%{count} kleines Pad"
+          other: "%{count} kleine Pads"
         medium:
-          one: "%{count} mittelgroßer Landeplatz"
-          other: "%{count} mittelgroße Landeplätze"
+          one: "%{count} mittelgroßes Pad"
+          other: "%{count} mittelgroße Pads"
         large:
-          one: "%{count} großer Landeplatz"
-          other: "%{count} große Landeplätze"
+          one: "%{count} großes Pad"
+          other: "%{count} große Pads"
         extra_large:
-          one: "%{count} sehr großer Landeplatz"
-          other: "%{count} sehr große Landeplätze"
+          one: "%{count} sehr großes Pad"
+          other: "%{count} sehr große Pads"
         capital:
-          one: "%{count} Capital-Landeplatz"
-          other: "%{count} Capital-Landeplätze"
+          one: "%{count} Capital-Pad"
+          other: "%{count} Capital-Pads"
       vehicle:
         extra_extra_small:
-          one: "%{count} winziger Fahrzeugstellplatz"
-          other: "%{count} winzige Fahrzeugstellplätze"
+          one: "%{count} winziger Stellplatz"
+          other: "%{count} winzige Stellplätze"
         extra_small:
-          one: "%{count} sehr kleiner Fahrzeugstellplatz"
-          other: "%{count} sehr kleine Fahrzeugstellplätze"
+          one: "%{count} sehr kleiner Stellplatz"
+          other: "%{count} sehr kleine Stellplätze"
         small:
-          one: "%{count} kleiner Fahrzeugstellplatz"
-          other: "%{count} kleine Fahrzeugstellplätze"
+          one: "%{count} kleiner Stellplatz"
+          other: "%{count} kleine Stellplätze"
         medium:
-          one: "%{count} mittelgroßer Fahrzeugstellplatz"
-          other: "%{count} mittelgroße Fahrzeugstellplätze"
+          one: "%{count} mittelgroßer Stellplatz"
+          other: "%{count} mittelgroße Stellplätze"
         large:
-          one: "%{count} großer Fahrzeugstellplatz"
-          other: "%{count} große Fahrzeugstellplätze"
+          one: "%{count} großer Stellplatz"
+          other: "%{count} große Stellplätze"
         extra_large:
-          one: "%{count} sehr großer Fahrzeugstellplatz"
-          other: "%{count} sehr große Fahrzeugstellplätze"
+          one: "%{count} sehr großer Stellplatz"
+          other: "%{count} sehr große Stellplätze"
         extra_extra_large:
-          one: "%{count} riesiger Fahrzeugstellplatz"
-          other: "%{count} riesige Fahrzeugstellplätze"
+          one: "%{count} riesiger Stellplatz"
+          other: "%{count} riesige Stellplätze"
