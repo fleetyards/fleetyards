@@ -50,11 +50,15 @@ type Props = {
   // focused or under the pointer is named either way.
   showLabels?: boolean;
   showOrbits?: boolean;
+  // The system the reader just stepped out of, which the systems view pulls
+  // back from.
+  cameFrom?: string | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showLabels: true,
   showOrbits: true,
+  cameFrom: null,
 });
 
 const emit = defineEmits<{
@@ -63,6 +67,9 @@ const emit = defineEmits<{
   focus: [item: StarmapItem];
   // A system on the ring was opened.
   enter: [item: StarmapItem];
+  // How much of the scene is shown while it fades between the systems and a
+  // system, for what is drawn outside it: the system's sky.
+  curtain: [shown: number];
   // A click on empty space let go of what was picked.
   release: [];
   // What is under the pointer and where it is on the canvas, in CSS pixels,
@@ -304,6 +311,7 @@ const orbitLines: {
 const orbitFades = new Map<string, number>();
 const textures: Texture[] = [];
 const suns: StarmapSun[] = [];
+const linkLines: { material: LineMaterial; base: number }[] = [];
 
 // Orbits and tunnels in the app's neutral, as the connectors on the location
 // pages: colour on the map is kept for what something is.
@@ -579,6 +587,7 @@ const disposeBodies = () => {
   fades.clear();
   lineMaterials.length = 0;
   orbitLines.length = 0;
+  linkLines.length = 0;
   orbitFades.clear();
   textures.length = 0;
   suns.length = 0;
@@ -608,12 +617,13 @@ const build = (scene: StarmapScene) => {
   }
 
   for (const link of scene.links) {
-    bodies.add(
-      line([...link.from, ...link.to], {
-        amount: link.temporary ? 0.24 : 0.32,
-        dashed: link.temporary,
-      }).object,
-    );
+    const base = link.temporary ? 0.24 : 0.32;
+    const { object, material } = line([...link.from, ...link.to], {
+      amount: base,
+      dashed: link.temporary,
+    });
+    linkLines.push({ material, base });
+    bodies.add(object);
   }
 
   if (scene.kind === "system") {
@@ -841,11 +851,123 @@ const focused = computed(() =>
 
 let dirty = true;
 
+// --- Between the systems and a system ---
+//
+// The two are different scales, so the camera cannot fly from one into the
+// other. Instead the star is kept and everything else fades: into a system,
+// the camera dives at its star as the ring fades, and arrives far out over
+// the system as it fades in; out of one, it climbs away from the star as the
+// system fades, and the ring fades in as it pulls back from that system.
+
+const CURTAIN_EASE = 6;
+const curtain = { value: 1, goal: 1 };
+let curtainReported = 1;
+// What stays in view while the rest fades: the star the camera is on.
+let curtainKeep: string | null = null;
+// Between leaving one scene and arriving in the next, the focus the page
+// reports is the old one's or none; the camera is not sent after it.
+let crossing = false;
+let leaving: (() => void) | null = null;
+
+const shownOf = (entry: StarmapItem) =>
+  entry.key === curtainKeep ? 1 : curtain.value;
+
+const DIVE = 0.3;
+const PULL_BACK_FROM = 0.75;
+
+const arrive = (scene: StarmapScene) => {
+  crossing = false;
+  entering = null;
+  leaving?.();
+  leaving = null;
+  flight.active = false;
+  curtain.value = 0;
+  curtain.goal = 1;
+  origin.set(0, 0, 0);
+  originGoal.set(0, 0, 0);
+  flownTo = undefined;
+
+  if (scene.kind === "system") {
+    curtainKeep =
+      scene.items.find((entry) => entry.role === "star")?.key ?? null;
+    // Settled from far out, the way a system has always opened.
+    zoom.distance = 0;
+    return;
+  }
+
+  const left = scene.items.find((entry) => entry.slug === props.cameFrom);
+  curtainKeep = left?.key ?? null;
+  if (left) {
+    origin.set(...left.position);
+    originGoal.copy(origin);
+    zoom.distance = zoom.goal = PULL_BACK_FROM;
+    camera.value?.position.setLength(PULL_BACK_FROM);
+  }
+};
+
+// Out of a system: climbs away from its star as the system fades, and
+// resolves once only the star is left.
+const leave = () =>
+  new Promise<void>((resolve) => {
+    const cam = camera.value;
+    if (props.scene.kind !== "system" || !cam) {
+      resolve();
+      return;
+    }
+
+    crossing = true;
+    entering = null;
+    curtainKeep =
+      props.scene.items.find((entry) => entry.role === "star")?.key ?? null;
+
+    flight.fromOrigin.copy(origin);
+    flight.toOrigin.set(0, 0, 0);
+    flight.fromDistance = Math.max(cam.position.length(), 1e-6);
+    flight.toDistance = props.scene.extent * ARRIVAL_DISTANCE;
+    flight.fromDirection.copy(cam.position).normalize();
+    flight.toDirection.copy(overview().direction);
+    flight.ownsDistance = true;
+    flight.ownsDirection = true;
+    flight.elapsed = 0;
+    flight.active = true;
+    flownTo = null;
+
+    leaving = resolve;
+  });
+
+const crossFrame = (delta: number) => {
+  // The system fades once the climb is under way, not as it starts.
+  if (leaving && flight.elapsed > FLIGHT_SECONDS * 0.3) curtain.goal = 0;
+
+  curtain.value +=
+    (curtain.goal - curtain.value) * Math.min(delta * CURTAIN_EASE, 1);
+  if (Math.abs(curtain.goal - curtain.value) < 0.01) {
+    curtain.value = curtain.goal;
+  }
+  if (curtain.value !== curtainReported) {
+    curtainReported = curtain.value;
+    emit("curtain", curtain.value);
+  }
+
+  if (curtain.value > 0.03) return;
+
+  if (entering && !flight.active) {
+    emit("enter", entering);
+    entering = null;
+  }
+
+  if (leaving && !flight.active) {
+    leaving();
+    leaving = null;
+  }
+};
+
 watch(
   () => props.scene,
-  (scene) => {
+  (scene, before) => {
     build(scene);
     dirty = true;
+    if (before && before.kind !== scene.kind) arrive(scene);
   },
   { immediate: true },
 );
@@ -853,6 +975,7 @@ watch(
 watch(
   () => props.focusKey,
   (key) => {
+    if (crossing) return;
     if (key !== flownTo) flyTo(focused.value);
   },
   { immediate: true },
@@ -904,9 +1027,13 @@ const advance = (cam: PerspectiveCamera, delta: number) => {
   if (t >= 1) {
     flight.active = false;
 
+    // At the star, the camera keeps diving at it as the ring fades; the
+    // system opens once only the star is left.
     if (entering) {
-      emit("enter", entering);
-      entering = null;
+      crossing = true;
+      curtainKeep = entering.key;
+      curtain.goal = 0;
+      zoom.goal = zoom.distance * DIVE;
     }
   }
 };
@@ -1145,6 +1272,7 @@ onBeforeRender(({ delta, elapsed }) => {
   if (!(cam instanceof PerspectiveCamera)) return;
 
   move(cam, delta);
+  crossFrame(delta);
 
   world.position.copy(origin).negate();
   starField.position.copy(cam.position);
@@ -1214,13 +1342,17 @@ onBeforeRender(({ delta, elapsed }) => {
 
     orbitFades.set(orbit.body, fade);
     orbit.line.visible = props.showOrbits && fade > 0.02;
-    lineColor(orbit.base * fade, orbit.material.color);
+    lineColor(orbit.base * fade * curtain.value, orbit.material.color);
 
     // The orbit of what is focused is drawn in the accent, a little wider:
     // the one ring the reader is following.
     const followed = orbit.body === props.focusKey;
     if (followed) {
-      lineColor(fade * 0.75, orbit.material.color, FOLLOWED_COLOR);
+      lineColor(
+        fade * curtain.value * 0.75,
+        orbit.material.color,
+        FOLLOWED_COLOR,
+      );
     }
     orbit.material.linewidth = followed ? 2 : 1.2;
   }
@@ -1229,7 +1361,7 @@ onBeforeRender(({ delta, elapsed }) => {
     const mesh = meshes.get(entry.key);
     if (!mesh) continue;
 
-    const fade = fadeOf(entry);
+    const fade = fadeOf(entry) * shownOf(entry);
     fades.set(entry.key, fade);
     point.set(...entry.position);
 
@@ -1276,6 +1408,8 @@ onBeforeRender(({ delta, elapsed }) => {
     const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
+    // A star has no opacity of its own to fade; it shrinks away instead.
+    if (!(mesh instanceof Mesh)) mesh.scale.multiplyScalar(fade);
 
     const shell = cloudShells.get(entry.key);
     if (shell) {
@@ -1297,12 +1431,17 @@ onBeforeRender(({ delta, elapsed }) => {
     }
   }
 
+  for (const link of linkLines) {
+    lineColor(link.base * curtain.value, link.material.color);
+  }
+
   // The ring sits around the focused thing at the size it is drawn.
   const selected = props.focusKey ? meshes.get(props.focusKey) : undefined;
   const selectedItem = props.focusKey
     ? byKey.value.get(props.focusKey)
     : undefined;
   selection.visible =
+    curtain.value > 0.5 &&
     !!selected?.visible &&
     !!selectedItem &&
     selectedItem.role !== "star" &&
@@ -1673,7 +1812,7 @@ const zoomStep = (factor: number) => {
   clampGoal();
 };
 
-defineExpose({ reframe: () => flyTo(focused.value), zoomStep });
+defineExpose({ reframe: () => flyTo(focused.value), zoomStep, leave });
 </script>
 
 <template>

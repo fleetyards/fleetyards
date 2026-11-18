@@ -119,6 +119,24 @@ const loading = computed(() =>
   systemSlug.value ? starmapLoading.value : systemsLoading.value,
 );
 
+// Out of a system the camera climbs away from its star first, and the
+// systems view opens once it has. The browser's back button skips the climb
+// and the systems view only fades in.
+const leaveSystem = async () => {
+  await sceneRef.value?.leave();
+  navigate(null);
+};
+
+// How much of the scene is shown as it fades between the systems and a system.
+const curtain = ref(1);
+
+// The system just stepped out of, which the systems view pulls back from.
+const cameFrom = ref<string | null>(null);
+
+watch(systemSlug, (_now, before) => {
+  cameFrom.value = before ?? null;
+});
+
 const scene = computed<Scene | null>(() => {
   if (!systemSlug.value) {
     return systemsScene(
@@ -156,6 +174,18 @@ const pickedSystem = ref<string | null>(null);
 watch(systemSlug, () => {
   pickedSystem.value = null;
 });
+
+// The scene on screen: the last one built, kept while the next one loads, so
+// the systems view stays behind the star being opened rather than blanking.
+const shownScene = shallowRef<Scene | null>(null);
+
+watch(
+  scene,
+  (next) => {
+    if (next || !systemSlug.value) shownScene.value = next;
+  },
+  { immediate: true },
+);
 
 const star = computed(() =>
   scene.value?.items.find((entry) => entry.role === "star"),
@@ -214,7 +244,7 @@ const stepOut = () => {
 
   const parent = chain.value.at(-2);
   if (parent) onFocus(parent);
-  else navigate(null);
+  else void leaveSystem();
 };
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -243,7 +273,7 @@ const crumbs = computed(() => {
     {
       key: "systems",
       label: t("starmap.systems"),
-      go: systemSlug.value ? () => navigate(null) : undefined,
+      go: systemSlug.value ? () => void leaveSystem() : undefined,
     },
   ];
 
@@ -431,12 +461,13 @@ watch(
           v-if="backdrop"
           :key="backdrop.src"
           :src="backdrop.src"
-          :opacity="backdrop.opacity"
+          :opacity="backdrop.opacity * curtain"
         />
         <StarmapScene
-          v-if="scene"
+          v-if="shownScene"
           ref="sceneRef"
-          :scene="scene"
+          :scene="shownScene"
+          :came-from="cameFrom"
           :focus-key="focusKey"
           :show-labels="showLabels"
           :show-orbits="showOrbits"
@@ -444,6 +475,7 @@ watch(
           @enter="enter"
           @release="release"
           @hover="hovered = $event"
+          @curtain="curtain = $event"
         />
       </TresCanvas>
       <WebglFallback v-else />
