@@ -31,7 +31,7 @@ const { t } = useI18n();
 
 <style lang="scss" scoped>
 .referral-hint {
-  margin: 0;
+  margin: var(--referral-hint-margin, 0);
   color: var(--referral-hint-color, inherit);
   font-size: 0.82rem;
   line-height: 1.45;
