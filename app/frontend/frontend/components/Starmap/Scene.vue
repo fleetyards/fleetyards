@@ -597,6 +597,31 @@ const vector = (entry: StarmapItem) => new Vector3(...entry.position);
 const anchorOf = (entry: StarmapItem) =>
   entry.anchor ? byKey.value.get(entry.anchor) : undefined;
 
+// The body under a place, through the districts it is in; not the star.
+const bodyFor = (entry: StarmapItem) => {
+  let current = anchorOf(entry);
+  while (current && !(current.radius && current.role !== "star")) {
+    current = anchorOf(current);
+  }
+  return current;
+};
+
+// How many districts a place sits in: a sector's cluster is one deep.
+const districtDepth = (entry: StarmapItem) => {
+  let depth = 0;
+  let current = anchorOf(entry);
+  while (current?.kind === "district") {
+    depth += 1;
+    current = anchorOf(current);
+  }
+  return depth;
+};
+
+// How far above a place the camera sits, in its body's radii, by how many
+// districts deep it is: a sector from high up, a cluster closer, a site in
+// it closer still.
+const PLACE_VIEWS = [0.5, 0.18, 0.06];
+
 const overview = () => ({
   direction: new Vector3(0, 0.55, 1).normalize(),
   distance: props.scene.extent * 1.35,
@@ -628,18 +653,20 @@ const viewOf = (entry: StarmapItem, current: Vector3) => {
     };
   }
 
-  // A place on or over a body is seen from above it.
-  const anchor = anchorOf(entry);
+  // A place on or over a body is seen from above it: a region from high
+  // enough to take it in, a site in it from closer.
+  const body = bodyFor(entry);
 
-  if (anchor?.radius && anchor.role !== "star") {
-    const outward = position.clone().sub(vector(anchor)).normalize();
+  if (body?.radius) {
+    const outward = position.clone().sub(vector(body)).normalize();
+    const depth = districtDepth(entry);
 
     return {
       direction: outward
         .multiplyScalar(0.8)
         .addScaledVector(current, 0.35)
         .normalize(),
-      distance: anchor.radius * 0.5,
+      distance: body.radius * (PLACE_VIEWS[depth] ?? PLACE_VIEWS.at(-1)!),
     };
   }
 
@@ -805,10 +832,8 @@ const nearest = () => {
 const reachOf = (entry: StarmapItem) => {
   if (entry.radius) return entry.radius * 25;
 
-  const anchor = anchorOf(entry);
-  return anchor?.radius && anchor.role !== "star"
-    ? anchor.radius * PLACES_NEAR * 1.2
-    : 30;
+  const body = bodyFor(entry);
+  return body?.radius ? body.radius * PLACES_NEAR * 1.2 : 30;
 };
 
 const clampGoal = () => {
@@ -908,6 +933,11 @@ const chain = computed(() => {
 // the steps the layout gives each place as the camera moves away.
 const fadeOf = (entry: StarmapItem) => {
   if (chain.value.has(entry.key)) return 1;
+
+  // What is in a district only shows once the district is zoomed onto.
+  const anchor = anchorOf(entry);
+  if (anchor?.kind === "district" && !chain.value.has(anchor.key)) return 0;
+
   if (entry.role === "moon") return orbitFades.get(entry.key) ?? 1;
   if (entry.near === null) return 1;
 
@@ -931,8 +961,7 @@ const occluder = computed(() => {
   if (!entry) return undefined;
   if (entry.radius && entry.role !== "star") return entry;
 
-  const anchor = anchorOf(entry);
-  return anchor?.radius && anchor.role !== "star" ? anchor : undefined;
+  return bodyFor(entry);
 });
 
 const toPoint = new Vector3();

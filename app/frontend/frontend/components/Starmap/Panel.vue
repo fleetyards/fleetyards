@@ -148,16 +148,10 @@ const rows = computed(() => {
         expanded,
       });
 
+      // A member opens like a body when it is focused or holds the focus: a
+      // sector into its clusters, a cluster into its sites.
       if (expanded) {
-        for (const member of members) {
-          list.push({
-            type: "item",
-            key: member.key,
-            entry: member,
-            depth: depth + 2,
-            count: 0,
-          });
-        }
+        for (const member of members) walk(member, depth + 2);
       }
     }
   };

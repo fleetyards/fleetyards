@@ -145,9 +145,16 @@ const gap = (a: number[], b: number[]) =>
 const planarDistance = (position: number[], origin: number[]) =>
   Math.hypot(position[0] - origin[0], position[1] - origin[1]);
 
-const roleOf = (place: LocationStarmapPlace): StarmapRole => {
+// A planet the game hangs under another planet is that planet's moon to the
+// map, as Pyro IV is Pyro V's: drawn and orbiting as one.
+const roleOf = (
+  place: LocationStarmapPlace,
+  parent?: LocationStarmapPlace,
+): StarmapRole => {
   if (place.kind === LocationKindEnum.STAR) return "star";
-  if (place.kind === LocationKindEnum.PLANET) return "planet";
+  if (place.kind === LocationKindEnum.PLANET) {
+    return parent?.kind === LocationKindEnum.PLANET ? "moon" : "planet";
+  }
   if (place.kind === LocationKindEnum.MOON) return "moon";
   return "place";
 };
@@ -216,6 +223,8 @@ const bodyReachOf = (place: LocationStarmapPlace) => {
     return BODY_REACH.city;
   }
   if (place.kind === LocationKindEnum.STATION) return BODY_REACH.station;
+  // A body's regions are seen from as far as its cities.
+  if (place.kind === LocationKindEnum.DISTRICT) return BODY_REACH.city;
   return BODY_REACH.place;
 };
 
@@ -290,7 +299,20 @@ const ancestry = (places: LocationStarmapPlace[]) => {
     return gap(place.position, parent.position) < INSIDE_METRES;
   };
 
-  return { bodyOf, atLagrangePoint, inside };
+  // The nearest district above a place, short of its body: the sector a
+  // cluster is in, the cluster a site is in.
+  const districtOf = (place: LocationStarmapPlace) => {
+    let parent = parentOf(place);
+
+    while (parent && !BODY_KINDS.has(parent.kind)) {
+      if (parent.kind === LocationKindEnum.DISTRICT) return parent;
+      parent = parentOf(parent);
+    }
+
+    return undefined;
+  };
+
+  return { bodyOf, atLagrangePoint, inside, districtOf, parentOf };
 };
 
 /**
@@ -385,7 +407,8 @@ export const systemsScene = (
 export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
   const star = places.find((place) => place.kind === LocationKindEnum.STAR);
   const origin = star?.position ?? [0, 0, 0];
-  const { bodyOf, atLagrangePoint, inside } = ancestry(places);
+  const { bodyOf, atLagrangePoint, inside, districtOf, parentOf } =
+    ancestry(places);
 
   const shown = places.filter((place) => place === star || !inside(place));
 
@@ -397,12 +420,19 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       .map((place) => place.parentId),
   );
 
-  const anchorOf = (place: LocationStarmapPlace) => {
+  // The body a place is on or around.
+  const bodyUnder = (place: LocationStarmapPlace) => {
     if (place === star) return null;
     if (atLagrangePoint(place)) return star ?? null;
 
     return bodyOf(place) ?? star ?? null;
   };
+
+  // What a place belongs to on the map: the district it is in where there
+  // is one -- so a site is reached through its cluster and its sector, and
+  // only shown once they are -- else its body.
+  const anchorOf = (place: LocationStarmapPlace) =>
+    districtOf(place) ?? bodyUnder(place);
 
   const extent = Math.max(
     1,
@@ -432,8 +462,9 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
   };
 
   const items = shown.map((place): StarmapItem => {
-    const role = roleOf(place);
+    const role = roleOf(place, parentOf(place));
     const anchor = anchorOf(place);
+    const body = bodyUnder(place);
 
     return {
       key: place.id,
@@ -453,7 +484,7 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       unstable: place.unstable,
       labelled: !place.lagrangePoint || !occupied.has(place.id),
       rank: rankOf(place, role),
-      ...reachOf(place, role, anchor),
+      ...reachOf(place, role, body),
       minor: isMinor(place),
       anchor: anchor?.id ?? null,
       distance: anchor ? gap(place.position, anchor.position) : null,
@@ -470,7 +501,7 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       return [];
     }
 
-    const center = anchorOf(place);
+    const center = bodyUnder(place);
     if (!center) return [];
 
     return [

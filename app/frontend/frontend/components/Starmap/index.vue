@@ -13,10 +13,13 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useQueries } from "@tanstack/vue-query";
+import { refDebounced } from "@vueuse/core";
+import LocationStatsCard from "@/frontend/components/StatsCard/Location/index.vue";
 import {
   LocationKindEnum,
   getLocationTreeQueryOptions,
   useLocationJumpPoints,
+  useLocation,
   useLocationStarmap,
   useLocations,
 } from "@/services/fyApi";
@@ -363,18 +366,28 @@ const hovered = shallowRef<{ item: StarmapItem; x: number; y: number } | null>(
 const tooltip = computed(() => {
   const target = hovered.value;
   if (!target || target.item.key === focusKey.value) return null;
+  if (target.item.role === "system") return null;
 
-  const anchor = target.item.anchor
-    ? scene.value?.items.find((item) => item.key === target.item.anchor)
-    : undefined;
-
-  return {
-    ...target,
-    kind: t(`labels.location.kinds.${target.item.kind}`),
-    anchor: anchor?.role === "star" ? undefined : anchor?.name,
-    facts: factsOf(target.item).filter((fact) => fact.key !== "places"),
-  };
+  // Below the place where above it would run off the top of the map.
+  return { ...target, below: target.y < HOVER_CARD_ROOM };
 });
+
+const HOVER_CARD_ROOM = 300;
+
+// The hover card every place link in the app opens, for what is under the
+// pointer. Fetched once the pointer rests on a place, so sweeping across the
+// map does not ask for every marker it passes.
+const hoveredSlug = computed(() => tooltip.value?.item.slug ?? "");
+const restingSlug = refDebounced(hoveredSlug, 250);
+
+const { data: hoverLocation, isPending: hoverPending } = useLocation(
+  restingSlug,
+  { query: { enabled: computed(() => !!restingSlug.value) } },
+);
+
+const hoverCardReady = computed(
+  () => !!tooltip.value && restingSlug.value === hoveredSlug.value,
+);
 
 watch(
   () => scene.value,
@@ -638,23 +651,18 @@ watch(
         </section>
 
         <div
-          v-if="tooltip"
-          class="starmap__tooltip"
+          v-if="tooltip && hoverCardReady"
+          class="starmap__hover-card"
+          :class="{ 'starmap__hover-card--below': tooltip.below }"
           :style="{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }"
-          role="tooltip"
           data-test="starmap-tooltip"
         >
-          <strong class="starmap__tooltip-name">{{ tooltip.item.name }}</strong>
-          <span class="starmap__tooltip-kind">
-            {{ tooltip.kind
-            }}<template v-if="tooltip.anchor"> · {{ tooltip.anchor }}</template>
-          </span>
-          <dl v-if="tooltip.facts.length" class="starmap__tooltip-facts">
-            <div v-for="fact in tooltip.facts" :key="fact.key">
-              <dt>{{ fact.label }}</dt>
-              <dd>{{ fact.value }}</dd>
-            </div>
-          </dl>
+          <LocationStatsCard
+            :to="false"
+            :name="tooltip.item.name"
+            :location="hoverLocation"
+            :loading="hoverPending"
+          />
         </div>
 
         <p v-if="!systemSlug" class="starmap__footnote">
@@ -987,64 +995,23 @@ $card-height: 96px;
     }
   }
 
-  // As the app's tooltip: a dark panel with an arrow, over the thing it is
-  // about, fading in.
-  &__tooltip {
+  // The frame of the app's popover, which the same card opens in everywhere
+  // else, over the place it is about.
+  &__hover-card {
     position: absolute;
     z-index: $overlay;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    max-width: 260px;
-    padding: 7px 12px 8px;
-    border-radius: 6px;
-    background: #272b30;
-    color: #fff;
-    font-size: 13px;
-    line-height: 1.4;
+    width: max-content;
+    max-width: min(340px, calc(100% - 24px));
+    border: 1px solid var(--color-edge);
+    border-radius: var(--radius-control);
+    background: var(--color-gray-darker, #272b30);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
     pointer-events: none;
     transform: translate(-50%, calc(-100% - 12px));
     animation: starmap-tooltip-in 0.15s ease-out;
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      border: 6px solid transparent;
-      border-top-color: #272b30;
-      transform: translateX(-50%);
-    }
-  }
-
-  &__tooltip-name {
-    font-weight: 600;
-  }
-
-  &__tooltip-kind {
-    font-size: 11.5px;
-    color: var(--color-text-dim);
-  }
-
-  &__tooltip-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px 14px;
-    margin: 4px 0 0;
-    font-size: 11.5px;
-
-    div {
-      display: flex;
-      gap: 5px;
-    }
-
-    dt {
-      color: var(--color-text-dim);
-    }
-
-    dd {
-      margin: 0;
-      font-weight: 600;
+    &--below {
+      transform: translate(-50%, 36px);
     }
   }
 
@@ -1074,7 +1041,7 @@ $card-height: 96px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .starmap__tooltip {
+  .starmap__hover-card {
     animation: none;
   }
 }
