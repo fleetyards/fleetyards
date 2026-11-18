@@ -12,6 +12,7 @@ import { createTestingPinia } from "@pinia/testing";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createMemoryHistory, createRouter } from "vue-router";
 import { FeatureFlagName, type ModelExtended } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const viewport = vi.hoisted(() => ({ phone: false }));
 const flags = vi.hoisted(() => ({ enabled: [] as string[] }));
@@ -172,6 +173,27 @@ describe("ShipPage", () => {
         wrapper.find("[data-test='model-holo-states-menu']").exists(),
       ).toBe(true);
       expect(wrapper.find("[data-test='model-holo-states']").exists()).toBe(
+        false,
+      );
+    });
+  });
+
+  describe("referral hint", () => {
+    it("shows the hint to a signed-out visitor", async () => {
+      const wrapper = await mountPage();
+
+      expect(wrapper.findComponent({ name: "ReferralHint" }).exists()).toBe(
+        true,
+      );
+    });
+
+    it("leaves it out for a signed-in pilot", async () => {
+      const wrapper = await mountPage();
+      // @ts-expect-error a getter is writable under the testing pinia
+      useSessionStore().isAuthenticated = true;
+      await flushPromises();
+
+      expect(wrapper.findComponent({ name: "ReferralHint" }).exists()).toBe(
         false,
       );
     });

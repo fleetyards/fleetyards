@@ -306,3 +306,10 @@
     margin: 10px 0 20px;
   }
 }
+
+.ship-referral-hint {
+  --referral-hint-color: var(--color-text-dim);
+
+  margin-top: 4px;
+  text-align: center;
+}

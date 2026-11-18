@@ -30,6 +30,7 @@ import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import ReferralHint from "@/frontend/components/ReferralHint/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -706,6 +707,10 @@ const adiMap = computed(() => {
               </Btn>
             </BtnDropdown>
           </div>
+          <ReferralHint
+            v-if="!sessionStore.isAuthenticated"
+            class="ship-referral-hint"
+          />
         </div>
         <!-- Beside the hero once there is room for a third column, under it
              before. A phone folds them into the side column instead. -->
