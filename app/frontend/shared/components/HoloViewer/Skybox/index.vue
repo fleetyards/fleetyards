@@ -18,9 +18,11 @@ import {
 type Props = {
   // An equirectangular panorama.
   src: string;
+  // Below 1 where the sky is drawn over something, such as a star field.
+  opacity?: number;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { opacity: 1 });
 
 const { scene, invalidate } = useTres();
 
@@ -57,7 +59,7 @@ watch(
 
     release();
     panorama = loaded;
-    sky = buildSky(loaded);
+    sky = buildSky(loaded, props.opacity);
     scene.value.add(sky);
     invalidate();
   },
