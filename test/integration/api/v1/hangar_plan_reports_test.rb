@@ -242,7 +242,7 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
 
   test "PUT rebase adds ships bought since" do
     travel 1.minute do
-      bought = create(:vehicle, user: @user, model: @carrack)
+      bought = create(:vehicle, user: @user, model: @cutlass)
 
       assert_api_response :put, 200, api_path: "/hangar/plans/{id}/rebase", path_params: {id: @plan.id} do
         assert_equal 3, parsed_body["slots"].size

@@ -23,15 +23,23 @@ module HangarPlans
       @changed_sources ||= find_changed_sources
     end
 
+    # A ship the update takes as what a route bought shows there instead.
     def new_vehicles
-      @new_vehicles ||= plan.added_vehicles.includes(model: MODEL_PRELOAD).order(:created_at).to_a
+      @new_vehicles ||= plan.added_vehicles.where.not(id: progress.arrivals.map { |arrival| arrival.vehicle.id })
+        .includes(model: MODEL_PRELOAD).order(:created_at).to_a
+    end
+
+    # What the update moves the plan on to: routes whose ship arrived, and
+    # upgrades still to buy that the user holds now.
+    def progress
+      @progress ||= Progress.new(plan)
     end
 
     private def find_missing_sources
-      routes = acquisitions.select(&:source_missing?).map do |acquisition|
+      routes = acquisitions.select(&:source_missing?).reject { |acquisition| moving_on?(acquisition) }.map do |acquisition|
         SourceIssue.new(kind: "acquisition", record_id: acquisition.id, planned_model: acquisition.start_model, current_model: nil)
       end
-      steps = plan.upgrade_steps.includes(:origin_model, :target_model, :hangar_pledge_item, :buyback_pledge).select(&:source_missing?).map do |step|
+      steps = plan.upgrade_steps.includes(:origin_model, :target_model, :hangar_pledge_item, :buyback_pledge).select(&:source_missing?).reject { |step| held_step_ids.include?(step.id) }.map do |step|
         SourceIssue.new(kind: "upgrade_step", record_id: step.id, planned_model: step.target_model, current_model: nil)
       end
       gone = melts.select(&:vehicle_missing?).map do |melt|
@@ -45,7 +53,7 @@ module HangarPlans
     end
 
     private def find_changed_sources
-      routes = acquisitions.select(&:source_changed?).map do |acquisition|
+      routes = acquisitions.select(&:source_changed?).reject { |acquisition| moving_on?(acquisition) }.map do |acquisition|
         SourceIssue.new(kind: "acquisition", record_id: acquisition.id, planned_model: acquisition.start_model,
           current_model: acquisition.source_vehicle.model)
       end
@@ -65,7 +73,8 @@ module HangarPlans
     end
 
     def drifted?
-      missing_sources.any? || changed_sources.any? || new_vehicles.any? || previous_total != current_total
+      missing_sources.any? || changed_sources.any? || new_vehicles.any? || progress.any? ||
+        previous_total != current_total
     end
 
     # Brings the plan up to the live hangar without discarding the user's
@@ -76,10 +85,11 @@ module HangarPlans
     # now stays, to apply again once it is back.
     def rebase!
       HangarPlan.transaction do
-        Progress.new(plan).apply!
+        progress.apply!
+        @progress = nil
         @new_vehicles = nil
 
-        HangarPlanVehicleMark.write(plan, new_vehicles, "pending")
+        HangarPlanVehicleMark.write(plan, plan.added_vehicles.to_a, "pending")
         gone = plan.vehicle_marks.where.not(vehicle_id: plan.pledged_vehicles.select(:id))
           .where.not(vehicle_id: plan.user.vehicles.where(hidden: true).select(:id))
         plan.vehicle_marks.where(vehicle_id: nil).or(gone).delete_all
@@ -94,6 +104,15 @@ module HangarPlans
 
         plan.update!(based_on_at: Time.current, based_on_vehicle_ids: plan.live_vehicles.pluck(:id))
       end
+    end
+
+    private def moving_on?(acquisition)
+      @moving_on_ids ||= progress.arrivals.map { |arrival| arrival.acquisition.id }.to_set
+      @moving_on_ids.include?(acquisition.id)
+    end
+
+    private def held_step_ids
+      @held_step_ids ||= progress.held_upgrades.map { |held| held.step.id }.to_set
     end
 
     private def summary
