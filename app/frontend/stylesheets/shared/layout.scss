@@ -128,6 +128,25 @@ body {
     }
   }
 
+  // A page that is one surface, such as the starmap: the window below the
+  // header is the page, with no column, margin or footer around it.
+  .main-inner--fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 0;
+
+    .main {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+      max-width: 100%;
+      margin-bottom: 0;
+      padding-inline: 0;
+    }
+  }
+
   .main {
     position: relative;
     left: 0;
