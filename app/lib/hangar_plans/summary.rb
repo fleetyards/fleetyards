@@ -109,7 +109,7 @@ module HangarPlans
           route_parts(acquisition, candidate).select { |part| part[:kind] }.each do |part|
             line = lines[part[:key]] ||= {**part.except(:key, :record, :price, :cart), prices: [], token_count: 0, slot_ids: [], cart_items: []}
             line[:prices] << part[:price]
-            line[:cart_items] << part[:cart] if part[:cart]
+            line[:cart_items] << part[:cart] if part[:cart] && !part[:not_on_sale]
             line[:token_count] += 1 if tokened_buybacks.include?(part[:record])
             line[:slot_ids] << slot.id unless line[:slot_ids].include?(slot.id)
           end
@@ -117,6 +117,8 @@ module HangarPlans
 
         lines.values.sort_by.with_index { |line, index| [PURCHASE_KINDS.index(line[:kind]), index] }.map do |line|
           prices = line.delete(:prices)
+          # Every unit or none: a cart holding part of a line would read as done.
+          line[:cart_items] = [] if line[:cart_items].size != prices.size
           Purchase.new(**line, quantity: prices.size, price: (prices.sum if prices.none?(&:nil?)))
         end
       end
