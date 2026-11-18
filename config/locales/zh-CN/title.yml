@@ -43,6 +43,7 @@ zh-CN:
       login: 登录
       password_change: 修改密码
       password_request: 请求密码
+      enlist: "星际公民邀请码"
       privacy-policy: 隐私政策
       public_hangar: "%{user} 的机库"
       public_plaque: "%{vehicle} 的命名铭牌"

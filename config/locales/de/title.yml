@@ -43,6 +43,7 @@ de:
       login: Anmelden
       password_change: Passwort ändern
       password_request: Passwort anfordern
+      enlist: "Star Citizen Referral-Code"
       privacy-policy: Datenschutzerklärung
       public_hangar: "%{user} Hangar"
       public_plaque: "Widmungstafel der %{vehicle}"

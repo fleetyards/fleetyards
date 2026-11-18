@@ -43,6 +43,7 @@ es:
       login: Iniciar sesión
       password_change: Cambiar contraseña
       password_request: Solicitar contraseña
+      enlist: "Código de referido de Star Citizen"
       privacy-policy: Política de privacidad
       public_hangar: Hangar de %{user}
       public_plaque: "Placa de dedicatoria de %{vehicle}"

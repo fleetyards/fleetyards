@@ -8,6 +8,7 @@ export default {
 import type { RouteLocationRaw } from "vue-router";
 import NumberFlow from "@number-flow/vue";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
+import ReferralHint from "@/frontend/components/ReferralHint/index.vue";
 import { OmniauthProviderEnum } from "@/services/fyApi";
 import {
   BtnSizesEnum,
@@ -112,12 +113,15 @@ const links: CommunityLink[] = [
       </span>
       <SocialLogins only-icons :block="false" :providers="providers" />
     </div>
-    <div v-if="!isAuthenticated" class="home-landing-sign-up__login">
-      {{ t("home.landing.signUpPanel.loggedIn") }}
-      <Btn :variant="BtnVariantsEnum.BARE" :to="{ name: 'login' }">
-        <i class="fa-light fa-right-to-bracket" />
-        {{ t("home.landing.signUpPanel.login") }}
-      </Btn>
+    <div v-if="!isAuthenticated" class="home-landing-sign-up__signed-out">
+      <div class="home-landing-sign-up__login">
+        {{ t("home.landing.signUpPanel.loggedIn") }}
+        <Btn :variant="BtnVariantsEnum.BARE" :to="{ name: 'login' }">
+          <i class="fa-light fa-right-to-bracket" />
+          {{ t("home.landing.signUpPanel.login") }}
+        </Btn>
+      </div>
+      <ReferralHint class="home-landing-sign-up__referral" />
     </div>
     <div class="home-landing-sign-up__links">
       <component
@@ -219,6 +223,19 @@ const links: CommunityLink[] = [
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.home-landing-sign-up__signed-out {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-landing-sign-up__referral {
+  --referral-hint-color: var(--color-text-dim);
+
+  text-shadow: 0 1px 8px rgb(0 0 0 / 90%);
 }
 
 .home-landing-sign-up__links {

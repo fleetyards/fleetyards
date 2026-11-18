@@ -1,6 +1,9 @@
 {
   "es": {
     "labels": {
+      "enlist": {
+        "code": "Código de referido"
+      },
       "saved": "Guardado",
       "hangarShare": {
         "intro": "Crea un enlace secreto que muestra tu hangar y sus estadísticas a quien se lo des, incluso mientras tu hangar es privado. Tu lista de deseos mantiene su propia configuración.",

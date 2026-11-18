@@ -1,6 +1,8 @@
 ---
 it:
   meta:
+    enlist:
+      description: "Iscriviti a Star Citizen con il codice referral di FleetYards e ricevi 50.000 UEC con il tuo primo pacchetto di gioco."
     plaque_tool:
       description: "Dai a qualsiasi nave di Star Citizen una targa di dedica, come quella che CIG ha appeso per The Only Constant, e condividila come immagine."
     admin_description: FleetYards.net Command App.

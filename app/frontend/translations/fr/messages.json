@@ -67,6 +67,10 @@
         "success": "URL \"%{url}\" copiée !",
         "failure": "Impossible de copier l'URL"
       },
+      "copyReferralCode": {
+        "success": "Code de parrainage copié",
+        "failure": "Impossible de copier le code de parrainage"
+      },
       "copyInviteUrl": {
         "success": "URL d'invitation \"%{url}\" copiée !",
         "failure": "Impossible de copier l'URL d'invitation"

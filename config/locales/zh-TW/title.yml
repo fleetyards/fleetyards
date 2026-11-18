@@ -43,6 +43,7 @@ zh-TW:
       login: 登入
       password_change: 變更密碼
       password_request: 請求密碼
+      enlist: "星際公民邀請碼"
       privacy-policy: 隱私政策
       public_hangar: "%{user} 的機庫"
       public_plaque: "%{vehicle} 的命名銘牌"

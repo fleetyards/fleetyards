@@ -5,10 +5,21 @@
         "maintainer": "Erhält das Maintainer-Abzeichen und alle Vorteile für Unterstützer der höchsten Stufe."
       },
       "index": "Deine Datenbank für alle Informationen rund um Schiffe und Stationen in Star Citizen.",
+      "referral": {
+        "hint": "Neu bei Star Citizen? Registriere dich mit diesem Code und erhalte 50.000 UEC zu deinem ersten Game Package:"
+      },
+      "enlist": {
+        "lede": "Erstelle deinen Star Citizen Account mit einem Referral-Code und du erhältst 50.000 UEC für das Spiel, sobald du dein erstes Game Package kaufst. Jeder Code gibt denselben Bonus, und mit diesem wird FleetYards angerechnet, dich geworben zu haben.",
+        "steps": {
+          "signUp": "Registriere dich über den Button unten auf der RSI-Website. Der Code ist bereits eingetragen.",
+          "package": "Kaufe ein Game Package. Ohne eins kannst du nicht spielen.",
+          "bonus": "Die 50.000 UEC werden deinem Account gutgeschrieben und stehen dir im Spiel zur Verfügung."
+        },
+        "note": "Der Code zählt nur, wenn du einen neuen Account erstellst."
+      },
       "support": {
         "info": "Kein Geld übrig? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Gib uns eine Stimme auf Spectrum</b></a> und hilf mehr Leuten, FleetYards zu finden.",
         "goal": "Deckt laufende Kosten wie Server-Hosting und Datendienste.",
-        "code": "Neu bei Star Citizen? Nutze diesen Code für 5000 UEC Startguthaben:",
         "thisMonth": "von %{goal} in diesem Monat",
         "subline": "Unterstütze uns direkt",
         "anonymousSupporters": {

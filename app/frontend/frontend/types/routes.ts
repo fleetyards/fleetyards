@@ -13,6 +13,7 @@ import type {
 type FrontendSimpleRoutes =
   | "home"
   | "impressum"
+  | "enlist"
   | "privacy-policy"
   | "compare"
   | "compare-components"

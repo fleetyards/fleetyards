@@ -53,6 +53,9 @@
       "sortBy": "排序方式",
       "back": "返回",
       "open": "打开",
+      "enlist": {
+        "signUp": "在 RSI 注册"
+      },
       "copy": "复制",
       "download": "下载",
       "zoom": "缩放",

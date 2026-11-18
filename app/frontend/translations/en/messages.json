@@ -63,6 +63,10 @@
         "success": "URL \"%{url}\" Copied!",
         "failure": "Could not copy URL"
       },
+      "copyReferralCode": {
+        "success": "Referral code copied",
+        "failure": "Could not copy the referral code"
+      },
       "copyInviteUrl": {
         "success": "Invite URL \"%{url}\" Copied!",
         "failure": "Could not copy Invite URL"

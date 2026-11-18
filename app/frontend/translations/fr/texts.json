@@ -5,10 +5,21 @@
         "maintainer": "Reçoit le badge de mainteneur et tous les avantages du plus haut niveau de soutien."
       },
       "index": "Your database for all information around Ships and Stations in Star Citizen.",
+      "referral": {
+        "hint": "Nouveau sur Star Citizen ? Inscrivez-vous avec ce code et recevez 50 000 UEC avec votre premier pack de jeu :"
+      },
+      "enlist": {
+        "lede": "Créez votre compte Star Citizen avec un code de parrainage et vous recevez 50 000 UEC à dépenser en jeu dès l'achat de votre premier pack de jeu. Tous les codes donnent le même bonus, et celui-ci indique que c'est FleetYards qui vous a amené.",
+        "steps": {
+          "signUp": "Inscrivez-vous sur le site de RSI avec le bouton ci-dessous. Le code est déjà renseigné.",
+          "package": "Achetez un pack de jeu. Il en faut un pour jouer.",
+          "bonus": "Les 50 000 UEC sont ajoutés à votre compte pour être utilisés en jeu."
+        },
+        "note": "Le code ne compte que lors de la création d'un nouveau compte."
+      },
       "support": {
         "info": "Pas de budget ? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Votez pour nous sur Spectrum</b></a> pour aider plus de monde à trouver FleetYards.",
         "goal": "Couvre les frais courants comme l'hébergement et les services de données.",
-        "code": "Nouveau sur Star Citizen ? Utilisez ce code pour 5000 UEC de départ :",
         "thisMonth": "sur %{goal} ce mois-ci",
         "subline": "Soutenez-nous directement",
         "anonymousSupporters": {

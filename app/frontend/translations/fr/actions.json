@@ -53,6 +53,9 @@
       "sortBy": "Trier par",
       "back": "Précédent",
       "open": "Ouvrir",
+      "enlist": {
+        "signUp": "S'inscrire sur RSI"
+      },
       "copy": "Copier",
       "download": "Télécharger",
       "zoom": "Zoom",
