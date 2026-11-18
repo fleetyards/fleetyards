@@ -10,6 +10,7 @@ module Uex
     setup do
       Commodity.delete_all
       @commodities = create_uex_fixture_commodities
+      @commodities[:untracked] = create(:commodity, name: "Hadanite Shard", sc_key: "items_commodities_hadaniteshard")
     end
 
     test "#run writes the UEX id and code onto the commodities it resolves" do
@@ -27,7 +28,15 @@ module Uex
       result = Uex::CommodityMapper.new(client: uex_client_stub).run
 
       assert_nil @commodities[:near_neighbour].reload.uex_id
-      assert_equal ["Organs"], result.unmapped.map(&:name)
+      assert_nil @commodities[:untracked].reload.uex_id
+      assert_equal ["Hadanite Shard"], result.unmapped.map(&:name)
+    end
+
+    test "#run leaves the commodities UEX does not track out of the unmapped report" do
+      result = Uex::CommodityMapper.new(client: uex_client_stub).run
+
+      assert_includes Uex::CommodityMatcher::UNTRACKED, @commodities[:near_neighbour].sc_key
+      assert_not_includes result.unmapped, @commodities[:near_neighbour]
     end
 
     test "#run reports UEX rows that resolve to nothing of ours" do
@@ -89,7 +98,7 @@ module Uex
       body = Uex::CommodityMapper.github_issue_body(result)
 
       assert_match(/Commodities Without a UEX Mapping \(1\)/, body)
-      assert_match(/\*\*Organs\*\* — `items_commodities_organs`/, body)
+      assert_match(/\*\*Hadanite Shard\*\* — `items_commodities_hadaniteshard`/, body)
       assert_no_match(/mapped=/, body)
     end
   end

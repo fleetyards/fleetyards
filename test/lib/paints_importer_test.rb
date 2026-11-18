@@ -68,6 +68,16 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal 1, results[:new][:count]
   end
 
+  test "#run skips skins RSI still lists under a [TEMP working title" do
+    create(:model, name: "MTC")
+    hangar_sync("[TEMP MTC CFP", "[TEMP] MTC Headhunters")
+
+    results = PaintsImporter.new.run
+
+    assert_empty results[:model_not_found][:items]
+    refute PaintsImporter.actionable?(results)
+  end
+
   test "#run for a single model imports a series paint into the whole series" do
     aurora_cl = create(:model, name: "Aurora Mk I CL")
     aurora_es = create(:model, name: "Aurora Mk I ES")
