@@ -1493,7 +1493,9 @@ onBeforeRender(({ delta, elapsed }) => {
     // Grows under the pointer, and when focused, over a moment rather than
     // in one frame.
     const lift =
-      entry.key === hoverKey.value || entry.key === props.focusKey ? 1.3 : 1;
+      entry.key === hoverKey.value || entry.key === props.focusKey
+        ? HOVER_LIFT
+        : 1;
     const previous = lifts.get(entry.key) ?? 1;
     const lifted =
       previous + (lift - previous) * Math.min(delta * LIFT_EASE, 1);
@@ -1845,6 +1847,28 @@ const LABEL_CHAR_WIDTH = 6.5;
 const shown = shallowRef<Set<string>>(new Set());
 let lastSignature = "";
 
+// How much a body under the pointer, or focused, grows: enough to answer the
+// pointer, not so much that it crowds what is around it.
+const HOVER_LIFT = 1.15;
+
+// From a body's drawn edge to the middle of its name: half a line and a gap.
+const LABEL_BELOW_PIXELS = 11;
+// The labels' own elements, by key: their drop is set on them directly, since
+// it changes on every frame of a zoom and Vue would redraw every label for it.
+const labelElements = new Map<string, HTMLElement>();
+const labelDrops = new Map<string, number>();
+
+const keepLabel = (key: string) => (instance: unknown) => {
+  const element = (instance as { $el?: unknown } | null)?.$el;
+  if (element instanceof HTMLElement) {
+    labelElements.set(key, element);
+    const drop = labelDrops.get(key);
+    if (drop !== undefined) element.style.transform = `translateY(${drop}px)`;
+  } else {
+    labelElements.delete(key);
+  }
+};
+
 const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
   const width = element.clientWidth;
   const height = element.clientHeight;
@@ -1889,6 +1913,7 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
 
   const placed: { x: number; y: number; half: number }[] = [];
   const next = new Set<string>();
+  const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
 
   for (const entry of candidates) {
     point.set(...entry.position);
@@ -1912,6 +1937,22 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     if (!overlaps || important(entry)) {
       placed.push({ x, y, half });
       next.add(entry.key);
+
+      // A body's name goes under its disc as drawn, however large that is,
+      // but not with the hover's growth: the name stays where it was.
+      const mesh = meshes.get(entry.key);
+      if (mesh && !(mesh instanceof Sprite) && entry.role !== "system") {
+        const drawn =
+          mesh.scale.x /
+          (lifts.get(entry.key) ?? 1) /
+          (perPixel * cameraWorld.distanceTo(point));
+        const drop = Math.round(drawn + LABEL_BELOW_PIXELS);
+        if (labelDrops.get(entry.key) !== drop) {
+          labelDrops.set(entry.key, drop);
+          const element = labelElements.get(entry.key);
+          if (element) element.style.transform = `translateY(${drop}px)`;
+        }
+      }
     }
   }
 
@@ -1956,6 +1997,7 @@ defineExpose({ reframe: () => flyTo(focused.value), zoomStep, leave });
       <StarmapLabel
         :name="entry.name"
         :role="entry.role"
+        :ref="keepLabel(entry.key)"
         :selected="entry.key === focusKey || entry.key === hoverKey"
       />
     </Html>
