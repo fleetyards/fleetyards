@@ -45,7 +45,7 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
 
       execute <<~SQL.squish
         UPDATE models
-        SET foci = #{array(keys)}, focus = #{quote(focus(keys))}#{", stealth = TRUE" if stealth}, updated_at = NOW()
+        SET foci = #{array(keys)}#{focus_assignment("models", keys)}#{", stealth = TRUE" if stealth}, updated_at = NOW()
         WHERE id = #{quote(id)}
       SQL
     end
@@ -54,7 +54,7 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
       select_rows("SELECT id, array_to_json(foci) FROM #{table} WHERE 'recon' = ANY(foci)").each do |id, foci|
         keys = ::Model.ordered_foci(without_recon(JSON.parse(foci)))
 
-        execute "UPDATE #{table} SET foci = #{array(keys)}, focus = #{quote(focus(keys))} WHERE id = #{quote(id)}"
+        execute "UPDATE #{table} SET foci = #{array(keys)}#{focus_assignment(table, keys)} WHERE id = #{quote(id)}"
       end
     end
   end
@@ -65,6 +65,15 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
 
   private def without_recon(foci)
     foci.map { |key| (key == "recon") ? "pathfinder" : key }
+  end
+
+  # The string focus has since been dropped; where it is gone only the keys
+  # are written.
+  private def focus_assignment(table, keys)
+    @focus_columns ||= Hash.new { |columns, name| columns[name] = column_exists?(name, :focus) }
+    return "" unless @focus_columns[table]
+
+    ", focus = #{quote(focus(keys))}"
   end
 
   # The string the keys replaced, still served beside them, in the words
