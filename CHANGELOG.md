@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.58.0](https://github.com/fleetyards/fleetyards/compare/v9.57.0...v9.58.0) (2026-11-18)
+
+
+### Features
+
+* **storage:** move the uploads to Bunny Storage through an ActiveStorage mirror ([#6381](https://github.com/fleetyards/fleetyards/issues/6381)) ([2665041](https://github.com/fleetyards/fleetyards/commit/2665041d7b633c89c922a008344e9e12c69ef209))
+
 ## [9.57.0](https://github.com/fleetyards/fleetyards/compare/v9.56.0...v9.57.0) (2026-11-18)
 
 
