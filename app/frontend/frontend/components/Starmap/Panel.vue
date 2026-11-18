@@ -372,6 +372,10 @@ const indent = (depth: number) => ({ paddingLeft: `${10 + depth * 16}px` });
     font-size: 0.84375rem;
     text-align: left;
     cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
 
     &:hover {
       background: var(--color-control-hover);

@@ -6,8 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import {
+  AdditiveBlending,
   AmbientLight,
+  BufferGeometry,
   CanvasTexture,
+  Float32BufferAttribute,
+  Points,
+  PointsMaterial,
   Color,
   Group,
   Mesh,
@@ -85,6 +90,10 @@ const TIE_PIXELS = 3;
 const ORBIT_GONE_PIXELS = 14;
 const ORBIT_FADE_PIXELS = 20;
 
+// How far each thing has grown towards its hovered size, and how quickly.
+const lifts = new Map<string, number>();
+const LIFT_EASE = 14;
+
 // How much smaller a minor place's marker is than its kind's.
 const MINOR_MARKER = 0.65;
 
@@ -139,6 +148,133 @@ const selection = (() => {
   return ring;
 })();
 world.add(selection);
+
+// The stars behind everything, carried with the camera so the sky never comes
+// closer. Built the way a night sky looks: most stars at the edge of seeing,
+// a few bright ones, in the colours of their temperatures, and a band of
+// faint ones where the galaxy's disc runs across the sky. Seeded, so it is
+// the same sky on every visit.
+const STAR_COLORS: [number, number, number, number][] = [
+  // r, g, b, how common
+  [0.61, 0.69, 1.0, 0.1],
+  [0.79, 0.84, 1.0, 0.2],
+  [1.0, 1.0, 1.0, 0.25],
+  [1.0, 0.96, 0.92, 0.2],
+  [1.0, 0.86, 0.69, 0.15],
+  [1.0, 0.76, 0.52, 0.1],
+];
+
+const starDisc = (() => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 32;
+  canvas.height = 32;
+  const context = canvas.getContext("2d");
+  if (context) {
+    const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+    gradient.addColorStop(0.35, "rgba(255, 255, 255, 0.8)");
+    gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 32, 32);
+  }
+  return new CanvasTexture(canvas);
+})();
+
+const PIXEL_RATIO =
+  typeof window === "undefined" ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+
+const starField = (() => {
+  let seed = 1337;
+  const next = () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
+  };
+
+  const tint = () => {
+    let pick = next();
+    for (const [r, g, b, share] of STAR_COLORS) {
+      if (pick < share) return [r, g, b];
+      pick -= share;
+    }
+    return [1, 1, 1];
+  };
+
+  // The galaxy's disc as a great circle tilted across the sky.
+  const pole = new Vector3(0.35, 0.86, 0.37).normalize();
+  const across = new Vector3(1, 0, 0).cross(pole).normalize();
+  const along = new Vector3().crossVectors(pole, across);
+
+  const direction = (band: boolean) => {
+    if (!band) {
+      const z = next() * 2 - 1;
+      const angle = next() * Math.PI * 2;
+      const ring = Math.sqrt(1 - z * z);
+      return new Vector3(ring * Math.cos(angle), z, ring * Math.sin(angle));
+    }
+
+    // Close to the disc, thinning away from it.
+    const angle = next() * Math.PI * 2;
+    const height = (next() + next() + next() - 1.5) * 0.18;
+    return across
+      .clone()
+      .multiplyScalar(Math.cos(angle))
+      .addScaledVector(along, Math.sin(angle))
+      .addScaledVector(pole, height)
+      .normalize();
+  };
+
+  const layer = (
+    count: number,
+    size: number,
+    brightness: [number, number],
+    bandShare: number,
+  ) => {
+    const positions: number[] = [];
+    const colors: number[] = [];
+
+    for (let index = 0; index < count; index += 1) {
+      positions.push(...direction(next() < bandShare).toArray());
+      const light =
+        brightness[0] + next() ** 2 * (brightness[1] - brightness[0]);
+      const [r, g, b] = tint();
+      colors.push(r * light, g * light, b * light);
+    }
+
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
+
+    const points = new Points(
+      geometry,
+      new PointsMaterial({
+        // Device pixels: the same size on a dense screen as on any other.
+        size: size * PIXEL_RATIO,
+        map: starDisc,
+        sizeAttenuation: false,
+        vertexColors: true,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+        blending: AdditiveBlending,
+      }),
+    );
+    // Behind the sky, which is drawn over the stars as the game draws it:
+    // fully over Nyx's, at 0.6 over Pyro's gas.
+    points.renderOrder = -1001;
+    points.frustumCulled = false;
+    return points;
+  };
+
+  const sky = new Group();
+  sky.add(
+    // The faint dust of the galaxy's band, then ordinary stars, then the few
+    // bright ones.
+    layer(12000, 1.8, [0.08, 0.32], 0.85),
+    layer(3000, 2.4, [0.25, 0.75], 0.35),
+    layer(260, 3.8, [0.75, 1], 0.2),
+  );
+  return sky;
+})();
 
 // How far outside the drawn edge the ring sits, in pixels.
 const SELECTION_GAP_PIXELS = 5;
@@ -197,6 +333,9 @@ const line = (
     dashSize: 0.8,
     gapSize: 0.6,
   });
+  // A line on the map is a guide, not a body: it writes no depth, so a star
+  // drawn after it covers it where the two meet.
+  material.depthWrite = false;
   lineMaterials.push(material);
 
   const object = new Line2(geometry, material);
@@ -441,12 +580,14 @@ const build = (scene: StarmapScene) => {
       textures.push(map);
       const lambert = new MeshLambertMaterial({ map, transparent: true });
       material = lambert;
-      // The ground's own colour where the game has it, on a body its newer
-      // planet engine paints; else the surface its starmap uses.
-      if (entry.ground) {
-        wrapInGameSurface(lambert, entry.ground, { terrain: true });
-      } else if (entry.texture) {
+      // The surface the game's starmap wraps the body in. The 5.0 ground
+      // colour is only the soil, without the rock and water it blends with,
+      // and reads as a different planet; it is the texture until the map can
+      // compose the ground the way the game does.
+      if (entry.texture) {
         wrapInGameSurface(lambert, entry.texture);
+      } else if (entry.ground) {
+        wrapInGameSurface(lambert, entry.ground, { terrain: true });
       }
       if (entry.elevation) raiseRelief(lambert, entry.elevation);
     } else if (entry.role === "place") {
@@ -514,7 +655,7 @@ const overview = () => ({
 // Where the camera sits for an item, as a direction from it and a distance.
 const viewOf = (entry: StarmapItem, current: Vector3) => {
   if (entry.role === "system") {
-    return { direction: current.clone(), distance: 9 };
+    return { direction: current.clone(), distance: 2.5 };
   }
 
   if (entry.role === "star") return overview();
@@ -672,7 +813,14 @@ const advance = (cam: PerspectiveCamera, delta: number) => {
     cam.position.copy(direction);
   }
 
-  if (t >= 1) flight.active = false;
+  if (t >= 1) {
+    flight.active = false;
+
+    if (entering) {
+      emit("enter", entering);
+      entering = null;
+    }
+  }
 };
 
 // --- Zooming ---
@@ -754,13 +902,22 @@ const zoomBy = (factor: number, clientX: number, clientY: number) => {
 };
 
 // The first flight waits for a camera: it is mounted beside the scene and can
-// come after it.
+// come after it. A system opens from far out, so arriving in one reads as
+// the zoom into it that a click on the ring began.
 const settle = (cam: PerspectiveCamera) => {
   if (zoom.distance === 0) {
+    if (props.scene.kind === "system") {
+      cam.position.setLength(props.scene.extent * ARRIVAL_DISTANCE);
+    }
     zoom.distance = zoom.goal = cam.position.length() || 1;
   }
   if (flownTo === undefined) flyTo(focused.value);
 };
+
+const ARRIVAL_DISTANCE = 30;
+
+// A system on the ring the camera is flying into, opened when it arrives.
+let entering: StarmapItem | null = null;
 
 const move = (cam: PerspectiveCamera, delta: number) => {
   settle(cam);
@@ -900,6 +1057,8 @@ onBeforeRender(({ delta, elapsed }) => {
   move(cam, delta);
 
   world.position.copy(origin).negate();
+  starField.position.copy(cam.position);
+  starField.scale.setScalar(Math.max(cam.position.length() * 4, 1));
   cameraWorld.copy(cam.position).add(origin);
 
   const distance = cam.position.length();
@@ -983,8 +1142,15 @@ onBeforeRender(({ delta, elapsed }) => {
     fades.set(entry.key, fade);
     point.set(...entry.position);
 
-    const lifted =
+    // Grows under the pointer, and when focused, over a moment rather than
+    // in one frame.
+    const lift =
       entry.key === hoverKey.value || entry.key === props.focusKey ? 1.3 : 1;
+    const previous = lifts.get(entry.key) ?? 1;
+    const lifted =
+      previous + (lift - previous) * Math.min(delta * LIFT_EASE, 1);
+    if (Math.abs(lifted - 1) < 0.001) lifts.delete(entry.key);
+    else lifts.set(entry.key, lifted);
     const away = cameraWorld.distanceTo(point);
 
     if (mesh instanceof Sprite) {
@@ -1200,8 +1366,11 @@ const onPointerUp = (event: PointerEvent) => {
   }
 
   // A system opens on a click: there is nothing on the ring to fly to.
+  // A system is flown into: the camera closes on its star and the system
+  // opens as it arrives.
   if (entry.role === "system") {
-    emit("enter", entry);
+    flyTo(entry);
+    entering = entry;
     return;
   }
 
@@ -1263,6 +1432,13 @@ const { off: stopBinding } = onBeforeRender(() => {
 onBeforeUnmount(() => {
   selection.geometry.dispose();
   selectionMaterial.dispose();
+  starField.traverse((object) => {
+    if (object instanceof Points) {
+      object.geometry.dispose();
+      (object.material as PointsMaterial).dispose();
+    }
+  });
+  starDisc.dispose();
   unbind();
   disposeBodies();
   sphere.dispose();
@@ -1376,6 +1552,7 @@ defineExpose({ reframe: () => flyTo(focused.value), zoomStep });
 </script>
 
 <template>
+  <primitive :object="starField" />
   <primitive :object="world">
     <Html
       v-for="entry in labelled"

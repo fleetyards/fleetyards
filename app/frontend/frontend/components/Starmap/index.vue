@@ -23,7 +23,8 @@ import {
 import StarmapScene from "./Scene.vue";
 import StarmapPanel from "./Panel.vue";
 import Skybox from "@/shared/components/HoloViewer/Skybox/index.vue";
-import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import nyxSky from "@/images/skyboxes/nyx_sky_4k.webp";
+import pyroSky from "@/images/skyboxes/pyro_sky_4k.webp";
 import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import {
   chainOf,
@@ -128,11 +129,13 @@ const scene = computed<Scene | null>(() => {
   return places ? systemScene(places) : null;
 });
 
-// The game's own sky behind a system, where there is one: Stanton's and
-// Pyro's nebulae, as the holo viewer offers them. Nyx has none yet.
-const BACKDROPS: Record<string, string> = {
-  stanton: stantonNebula,
-  pyro: pyroNebula,
+// The game's own sky behind a system: Nyx's and Pyro's as the game draws
+// them, at the opacity it draws them with over the stars, and Stanton's
+// nebula as the holo viewer offers it until Stanton's own is exported.
+const BACKDROPS: Record<string, { src: string; opacity: number }> = {
+  stanton: { src: stantonNebula, opacity: 1 },
+  pyro: { src: pyroSky, opacity: 0.6 },
+  nyx: { src: nyxSky, opacity: 1 },
 };
 
 const backdrop = computed(() => {
@@ -379,7 +382,12 @@ const facts = computed(() => {
           :enable-pan="false"
           make-default
         />
-        <Skybox v-if="backdrop" :src="backdrop" />
+        <Skybox
+          v-if="backdrop"
+          :key="backdrop.src"
+          :src="backdrop.src"
+          :opacity="backdrop.opacity"
+        />
         <StarmapScene
           v-if="scene"
           ref="sceneRef"
@@ -624,7 +632,7 @@ $card-height: 96px;
     position: relative;
     flex: 1;
     min-height: 420px;
-    background: radial-gradient(circle at 50% 40%, #0d1c30 0%, #050a12 70%);
+    background: #03050a;
     overflow: hidden;
     user-select: none;
     touch-action: none;

@@ -33,6 +33,7 @@ withDefaults(defineProps<Props>(), {
 // bright surface or nebula without a plate behind every name.
 .starmap-label {
   display: block;
+  animation: starmap-label-in 0.18s ease-out;
   transform: translateY(15px);
   font-size: 0.71875rem;
   line-height: 1.3;
@@ -67,6 +68,20 @@ withDefaults(defineProps<Props>(), {
 
   &--selected {
     color: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes starmap-label-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 </style>
