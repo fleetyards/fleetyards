@@ -76,8 +76,7 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
     ", focus = #{quote(focus(keys))}"
   end
 
-  # The string the keys replaced, still served beside them, in the words
-  # `FociList` keeps it in.
+  # The string the keys replaced, in the words it was served in beside them.
   private def focus(keys)
     I18n.with_locale(:en) { ::Model.focus_labels(keys).join(" / ") }.presence
   end

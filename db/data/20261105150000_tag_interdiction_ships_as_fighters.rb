@@ -15,17 +15,24 @@ class TagInterdictionShipsAsFighters < ActiveRecord::Migration[8.1]
   }.freeze
 
   def up
+    # The string focus has since been dropped; where it is gone only the keys
+    # are written.
+    focus_column = column_exists?(:models, :focus)
+
     FIGHTER_KEYS.each do |slug, key|
       row = select_one("SELECT id, array_to_json(foci) AS foci FROM models WHERE slug = #{connection.quote(slug)}")
       next if row.nil?
 
       keys = ::Model.normalize_value_for(:foci, JSON.parse(row["foci"]) + [key])
-      focus = I18n.with_locale(:en) { ::Model.focus_labels(keys).join(" / ") }.presence
+      focus_set = if focus_column
+        focus = I18n.with_locale(:en) { ::Model.focus_labels(keys).join(" / ") }.presence
+        ", focus = #{connection.quote(focus)}"
+      end
       array = keys.map { |entry| connection.quote(entry) }.join(", ")
 
       execute <<~SQL.squish
         UPDATE models
-        SET foci = ARRAY[#{array}]::varchar[], focus = #{connection.quote(focus)}, updated_at = NOW()
+        SET foci = ARRAY[#{array}]::varchar[]#{focus_set}, updated_at = NOW()
         WHERE id = #{connection.quote(row["id"])}
       SQL
     end
