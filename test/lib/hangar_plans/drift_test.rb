@@ -181,6 +181,36 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_not HangarPlans::Drift.new(@plan).drifted?
   end
 
+  test "a rebase counts no credit for a melt whose pledge a route bought back" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.update!(starting_credit: 50)
+    @plan.melts.create!(vehicle: melted, value_override: 550)
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "melted", source_vehicle: melted)
+
+    travel 1.minute do
+      melted.update!(wanted: true)
+      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    @plan.reload
+    assert_empty @plan.melts
+    assert_equal 50, @plan.starting_credit
+  end
+
+  test "a rebase keeps a melt whose ship is hidden for now" do
+    melted = create(:vehicle, user: @user, model: @carrack)
+    @plan.update!(starting_credit: 50)
+    @plan.melts.create!(vehicle: melted, value_override: 550)
+    melted.update!(hidden: true)
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    @plan.reload
+    assert_equal 1, @plan.melts.count
+    assert_equal 50, @plan.starting_credit
+  end
+
   test "a rebase keeps a melt whose ship is still to be bought back" do
     melted = create(:vehicle, user: @user, model: @carrack)
     @plan.melts.create!(vehicle: melted)

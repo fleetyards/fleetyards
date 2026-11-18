@@ -14,6 +14,7 @@ module HangarPlans
     end
 
     def apply!
+      @bought_back_melt_ids = []
       pool = arrived_vehicles
       # A bundled start rides on another; it moves on first, or the other's
       # move would take it along.
@@ -41,15 +42,23 @@ module HangarPlans
           next if vehicle.nil?
 
           pool.delete(vehicle)
+          @bought_back_melt_ids << acquisition.source_melt&.id if acquisition.start_kind == "melted"
           return move_on(acquisition, vehicle, steps.first(done))
         end
       end
     end
 
     private def start_gone?(acquisition)
-      return true if acquisition.source_missing?
+      case acquisition.start_kind
+      when "owned" then left_hangar?(acquisition.source_vehicle)
+      when "melted" then acquisition.source_missing? || left_hangar?(acquisition.source_melt.vehicle)
+      else acquisition.source_missing?
+      end
+    end
 
-      acquisition.start_kind == "melted" && acquisition.source_melt.vehicle_missing?
+    # A ship hidden for now is still the user's, to count again once it is back.
+    private def left_hangar?(vehicle)
+      vehicle.nil? || (plan.pledged_vehicle_ids.exclude?(vehicle.id) && !vehicle.hidden)
     end
 
     private def move_on(acquisition, vehicle, done_steps)
@@ -75,13 +84,14 @@ module HangarPlans
     end
 
     # A credit the user entered was what they held before melting; one read
-    # from RSI is read again by the next sync.
+    # from RSI is read again by the next sync. A melt whose pledge a route
+    # bought back spent its credit on that.
     private def finish_melts
       credit = 0
-      plan.melts.includes(:vehicle).to_a.select(&:vehicle_missing?).each do |melt|
+      plan.melts.includes(:vehicle).to_a.select { |melt| left_hangar?(melt.vehicle) }.each do |melt|
         next if melt.bought_back_starts.exists?
 
-        credit += melt.snapshot_value || 0
+        credit += melt.snapshot_value || 0 unless @bought_back_melt_ids.include?(melt.id)
         melt.destroy!
       end
 
