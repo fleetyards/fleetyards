@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -995,7 +995,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_190000) do
     t.string "title"
     t.text "description"
     t.string "classification"
-    t.string "focus"
     t.string "min_size"
     t.string "max_size"
     t.integer "min_crew"
@@ -2346,7 +2345,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_190000) do
     t.string "title"
     t.text "description"
     t.string "classification"
-    t.string "focus"
     t.string "min_size"
     t.string "max_size"
     t.integer "min_crew"
@@ -2637,7 +2635,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_190000) do
     t.datetime "updated_at", precision: nil
     t.string "production_status", limit: 255
     t.string "production_note", limit: 255
-    t.string "focus", limit: 255
     t.boolean "on_sale", default: false
     t.decimal "pledge_price", precision: 15, scale: 2
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
