@@ -22,6 +22,63 @@ module Uex
       40 => "items_commodities_hephaestanite_raw"              # Hephaestanite (Raw), ours truncates to (R)
     }.freeze
 
+    # Our commodities UEX has no row for: mission crates, harvestables, creature
+    # parts and event items it does not trade. Left out of the unmapped report
+    # so that report only shows what is new. The name match still runs over
+    # them, so one UEX starts listing maps itself.
+    UNTRACKED = %w[
+      items_commodities_amiantpod
+      items_commodities_ammocrate
+      items_commodities_biologicalsamples
+      items_commodities_evafuel
+      items_commodities_flareweedstalk
+      items_commodities_fotiascrub
+      items_commodities_gatalafungi
+      items_commodities_genmodseeds
+      items_commodities_hlx99hyperprocessors
+      items_commodities_kopionhorn_savannah
+      items_commodities_medgel
+      items_commodities_medpens
+      items_commodities_militarysupplies
+      items_commodities_mixedmining
+      items_commodities_mobyglass
+      items_commodities_organs
+      items_commodities_oxypens
+      items_commodities_oza
+      items_commodities_pingala
+      items_commodities_pouchweed
+      items_commodities_quasigrazeregg
+      items_commodities_quasigrazeregg_boreal
+      items_commodities_quasigrazeregg_grassland
+      items_commodities_quasigrazeregg_jungle
+      items_commodities_quasigrazeregg_tundra
+      items_commodities_quasigrazertongue
+      items_commodities_rs1odyseyspacesuits
+      items_commodities_shipammo_size_8
+      items_commodities_shipammo_size_9
+      items_commodities_special_lunar_envelope
+      items_commodities_special_lunar_envelope_1_ram_a
+      items_commodities_stolengoods
+      items_commodities_uncutslam
+      items_commodities_valakkarfang
+      items_commodities_valakkarfang_adult
+      items_commodities_valakkarfang_adult_irradiated
+      items_commodities_valakkarfang_apex
+      items_commodities_valakkarfang_apex_irradiated
+      items_commodities_valakkarfang_juvenile
+      items_commodities_valakkarfang_juvenile_irradiated
+      items_commodities_valakkaregg_irradiated
+      items_commodities_valakkarpearl_apex_irradiated_tier1
+      items_commodities_valakkarpearl_apex_irradiated_tier2
+      items_commodities_valakkarpearl_apex_irradiated_tier3
+      items_commodities_valakkarpearl_apex_irradiated_tier4
+      items_commodities_valakkarpearl_apex_irradiated_tier5
+      items_commodities_ventslug
+      items_commodities_viruscultures
+      items_commodities_yormandi_eye
+      items_commodities_yormandi_tongue
+    ].to_set.freeze
+
     # UEX id => the UEX id it duplicates. A commodity carries one uex_id, so a
     # second UEX row for the same good cannot go in MAPPINGS -- it would claim
     # the commodity from the canonical row. Its prices are read as the

@@ -39,7 +39,9 @@ module Uex
       Result.new(
         mapped:, updated:,
         unmatched: matcher.misses,
-        unmapped: Commodity.where(uex_id: nil).order(:name).to_a
+        unmapped: Commodity.where(uex_id: nil).order(:name).reject { |commodity|
+          Uex::CommodityMatcher::UNTRACKED.include?(commodity.sc_key)
+        }
       )
     end
 
@@ -79,7 +81,7 @@ module Uex
       lines = ["## Commodities Without a UEX Mapping (#{result.unmapped.size})", ""]
       lines << "These commodities carry no `uex_id`, so no price can be joined to them."
       lines << "If UEX lists an equivalent, add it to `Uex::CommodityMatcher::MAPPINGS`;"
-      lines << "several are mission crates and harvestables UEX does not track at all."
+      lines << "if UEX does not track it, add its key to `Uex::CommodityMatcher::UNTRACKED`."
       lines << ""
 
       result.unmapped.each do |commodity|
