@@ -12,8 +12,8 @@ json.places @places do |place|
 
   json.partial! "api/v1/locations/link", location: location
   json.parent_id location.parent_id
-  json.position location.position
-  json.radius location.radius
+  json.position place.position
+  json.radius place.radius
   json.shown_on_starmap location.shown_on_starmap
   json.shown_with_parent_only location.shown_with_parent_only
   json.always_shown location.always_shown

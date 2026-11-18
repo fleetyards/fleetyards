@@ -237,12 +237,16 @@ class Location < ApplicationRecord
     self.class.where(name: own_name).where.not(id:).exists?
   end
 
-  # The starmap image of a role for an environment, or the other
-  # environment's where that one has none: PTU's export may carry only what
-  # changed. Reads the preloaded surfaces rather than querying.
+  # The starmap image of a role for an environment. A body the environment
+  # has images for shows only those; one it has none for borrows another
+  # environment's whole set, never single images, which would put one
+  # build's clouds on another build's planet. Reads the preloaded surfaces
+  # rather than querying.
   def starmap_image(role, environment)
-    own, others = surfaces.partition { |surface| surface.environment == environment.to_s }
+    surface = surfaces.find { |candidate| candidate.environment == environment.to_s } ||
+      surfaces.max_by(&:updated_at)
 
-    [*own, *others].lazy.map { |surface| surface.public_send(role) }.find(&:attached?)
+    image = surface&.public_send(role)
+    image if image&.attached?
   end
 end

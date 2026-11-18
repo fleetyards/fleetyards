@@ -89,7 +89,7 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /locations/{slug}/starmap falls back to the other environment's image" do
+  test "GET /locations/{slug}/starmap shows only the served environment's images where it has any" do
     @hurston.surfaces.create!(environment: ScData::Source.environment).elevation.attach(
       io: StringIO.new("served"), filename: "served.png", content_type: "image/png"
     )
@@ -101,8 +101,31 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
       hurston = parsed_body["places"].find { |place| place["name"] == "Hurston" }
 
       assert_equal "served.png", hurston.dig("elevation", "name")
+      assert_nil hurston["texture"]
+    end
+  end
+
+  test "GET /locations/{slug}/starmap borrows another environment's images where it has none" do
+    @hurston.surfaces.create!(environment: "elsewhere").texture.attach(
+      io: StringIO.new("other"), filename: "other.webp", content_type: "image/webp"
+    )
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body["places"].find { |place| place["name"] == "Hurston" }
+
       assert_equal "other.webp", hurston.dig("texture", "name")
-      assert_nil hurston["ground"]
+    end
+  end
+
+  test "GET /locations/{slug}/starmap places a body the served build does not where an older build did" do
+    @hurston.builds.sole.update!(position: nil, radius: nil)
+    @hurston.builds.create!(environment: "elsewhere", version: "0.9.0", position: [1.0, 2.0, 3.0], radius: 5.0)
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body["places"].find { |place| place["name"] == "Hurston" }
+
+      assert_equal [1.0, 2.0, 3.0], hurston["position"]
+      assert_equal 5.0, hurston["radius"]
     end
   end
 
