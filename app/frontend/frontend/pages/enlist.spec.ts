@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -21,6 +21,14 @@ describe("EnlistPage", () => {
     displayAlert.mockClear();
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  const stubClipboard = (clipboard?: Partial<Clipboard>) => {
+    vi.stubGlobal("navigator", { ...navigator, clipboard });
+  };
+
   it("shows the code and links to RSI's sign-up with it", async () => {
     const wrapper = await mountWithDefaults(EnlistPage);
 
@@ -34,7 +42,7 @@ describe("EnlistPage", () => {
 
   it("copies the code", async () => {
     const writeText = vi.fn(() => Promise.resolve());
-    Object.assign(navigator, { clipboard: { writeText } });
+    stubClipboard({ writeText });
 
     const wrapper = await mountWithDefaults(EnlistPage);
     await wrapper.get("[data-test='enlist-copy']").trigger("click");
@@ -45,10 +53,11 @@ describe("EnlistPage", () => {
   });
 
   it("says so when the browser has no clipboard", async () => {
-    Object.assign(navigator, { clipboard: undefined });
+    stubClipboard(undefined);
 
     const wrapper = await mountWithDefaults(EnlistPage);
     await wrapper.get("[data-test='enlist-copy']").trigger("click");
+    await flushPromises();
 
     expect(displayAlert).toHaveBeenCalled();
   });

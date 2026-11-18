@@ -24,22 +24,13 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 
 const steps = ["signUp", "package", "bonus"] as const;
 
-const copyCode = () => {
-  const failed = () => {
-    displayAlert({ text: t("messages.copyReferralCode.failure") });
-  };
-
-  const written = navigator.clipboard?.writeText(RSI_REFERRAL_CODE);
-
-  if (written === undefined) {
-    failed();
-
-    return;
-  }
-
-  void written.then(() => {
+const copyCode = async () => {
+  try {
+    await navigator.clipboard.writeText(RSI_REFERRAL_CODE);
     displaySuccess({ text: t("messages.copyReferralCode.success") });
-  }, failed);
+  } catch {
+    displayAlert({ text: t("messages.copyReferralCode.failure") });
+  }
 };
 </script>
 
