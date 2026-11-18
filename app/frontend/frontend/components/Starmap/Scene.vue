@@ -895,10 +895,7 @@ type Orbiting = {
 
 const orbiting = () => controls.value as Orbiting | null;
 
-const flyTo = (
-  entry: StarmapItem | undefined,
-  { keepDistance = false }: { keepDistance?: boolean } = {},
-) => {
+const flyTo = (entry: StarmapItem | undefined) => {
   const cam = camera.value;
   if (!cam) return;
 
@@ -910,9 +907,9 @@ const flyTo = (
   flight.fromDistance = Math.max(cam.position.length(), 1e-6);
   flight.toDistance = view.distance;
   flight.fromDirection.copy(current);
-  flight.toDirection.copy(keepDistance ? current : view.direction);
-  flight.ownsDistance = !keepDistance;
-  flight.ownsDirection = !keepDistance;
+  flight.toDirection.copy(view.direction);
+  flight.ownsDistance = true;
+  flight.ownsDirection = true;
   flight.elapsed = 0;
   flight.active = true;
 
@@ -1217,8 +1214,14 @@ const zoomBy = (factor: number, clientX: number, clientY: number) => {
 
     goalCamera.copy(cam.position).setLength(zoom.goal).add(originGoal);
 
+    // It becomes the focus without a flight: the view keeps easing toward
+    // it as the zoom does. A flight sets off from a standstill, and zooming
+    // through a body's places hands the focus on from one to the next, so the
+    // view would stop and start at every one of them.
     if (goalCamera.distanceTo(pointedAt) < reachOf(entry) * 0.8) {
-      flyTo(entry, { keepDistance: true });
+      flight.active = false;
+      originGoal.copy(pointedAt);
+      flownTo = entry.key;
       emit("focus", entry);
     }
   }
