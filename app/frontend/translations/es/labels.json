@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Aterriza sin que el ATC asigne la plataforma.",
         "vehiclePads": "Plataformas para vehículos terrestres",
         "dockingTubes": "Anillos de atraque",
+        "jurisdiction": "Jurisdicción",
+        "lawful": "Legal",
+        "unlawful": "Sin ley",
+        "freightElevator": "Montacargas",
+        "maxContainer": "Contenedor más grande",
         "kinds": {
           "system": "Sistema estelar",
           "star": "Estrella",
@@ -499,7 +504,8 @@
           "space": "Espacio",
           "stanton": "Nebulosa de Stanton",
           "crusader": "Nebulosa de Crusader",
-          "pyro": "Nebulosa de Pyro"
+          "pyro": "Nebulosa de Pyro",
+          "nyx": "Nebulosa de Nyx"
         }
       },
       "viewInAr": "RA",

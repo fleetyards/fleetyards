@@ -11,6 +11,9 @@ resources :locations, only: %i[index show], param: :slug do
     # The system the place is in, as its bodies: what the strip at the top of
     # every location page draws.
     get :tree
+    # Every place in that system the game positions on its starmap, in metres
+    # from the star: what the starmap page draws.
+    get :starmap
     # What sits directly inside, by kind, namesakes folded together.
     get :contents
     # The shops UEX lists at the place, with what each sells.

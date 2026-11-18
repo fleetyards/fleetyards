@@ -7,6 +7,7 @@ module ScData
   module Loader
     class LocationsLoaderTest < ActiveSupport::TestCase
       include ScDataFixtureTree
+      include ActiveJob::TestHelper
 
       setup do
         GameMissionLocation.delete_all
@@ -16,6 +17,10 @@ module ScData
 
       def loader
         fixture_loader(::ScData::Loader::LocationsLoader)
+      end
+
+      def default_loader
+        loader.tap { |instance| instance.define_singleton_method(:default_environment?) { true } }
       end
 
       test "#all loads every place with a current build" do
@@ -37,6 +42,57 @@ module ScData
         assert_equal planet.position, planet.builds.sole.position
         assert_equal 1_000_000.0, planet.radius
         assert_nil Location.find_by!(sc_key: "StantonSolarSystem").position
+      end
+
+      def surface(sc_key, environment = fixture_environment)
+        Location.find_by!(sc_key:).surfaces.find_by(environment:)
+      end
+
+      def fixture_environment
+        loader.sc_environment
+      end
+
+      test "#all attaches the starmap images the parse carried for a body, for its environment" do
+        loader.all
+
+        hurston = surface("Stanton1")
+
+        assert_equal "ui_sm_stanton_1_hurston.webp", hurston.texture.filename.to_s
+        assert_equal "stanton1_global_elev.png", hurston.elevation.filename.to_s
+        assert_equal "stanton1_clouds_global.webp", hurston.clouds.filename.to_s
+        refute hurston.ground.attached?
+        assert_nil surface("StantonSolarSystem")
+      end
+
+      test "#all keeps an image's blob when a load finds the same file" do
+        loader.all
+        blob = surface("Stanton1").texture.blob
+
+        loader.all
+
+        assert_equal blob, surface("Stanton1").texture.blob
+      end
+
+      test "#all removes an image the export no longer names" do
+        loader.all
+        stale = surface("Stanton1")
+        stale.ground.attach(io: StringIO.new("stale"), filename: "stale.webp", content_type: "image/webp")
+
+        perform_enqueued_jobs { loader.all }
+
+        refute stale.reload.ground.attached?
+        assert stale.texture.attached?
+      end
+
+      test "#all keeps each environment's images apart" do
+        hurston = create(:location, sc_key: "Stanton1", name: "Hurston", kind: "planet")
+        other = hurston.surfaces.create!(environment: "elsewhere")
+        other.texture.attach(io: StringIO.new("other"), filename: "other.webp", content_type: "image/webp")
+
+        loader.all
+
+        assert_equal "other.webp", other.reload.texture.filename.to_s
+        assert_equal "ui_sm_stanton_1_hurston.webp", surface("Stanton1").texture.filename.to_s
       end
 
       test "#all loads a place's hangars and pads as a fact of the build" do

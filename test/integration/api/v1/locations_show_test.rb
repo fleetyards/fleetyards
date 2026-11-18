@@ -69,6 +69,22 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug} says what a hauler can load there and who keeps the law" do
+    Terminal.find_by!(name: "Admin - Levski").update!(has_freight_elevator: true, max_container_size: 32)
+    @levski.builds.sole.update!(jurisdiction: "People's Alliance", lawful: true)
+
+    assert_api_response :get, 200, params: {slug: "levski"} do
+      terminal = parsed_body["terminals"].sole
+
+      assert terminal["hasFreightElevator"]
+      refute terminal["hasLoadingDock"]
+      assert_equal 32, terminal["maxContainerSize"]
+      assert_equal 0, parsed_body["shopsCount"]
+      assert_equal "People's Alliance", parsed_body["jurisdiction"]
+      assert parsed_body["lawful"]
+    end
+  end
+
   test "GET /locations/{slug} lists the hangars and pads a pilot can land in" do
     facilities = {
       "hangars" => [{"size" => "large", "door" => "front", "count" => 6, "length" => 128.0, "beam" => 72.0, "height" => 48.0}],

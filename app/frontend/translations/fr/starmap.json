@@ -1,0 +1,57 @@
+{
+  "fr": {
+    "starmap": {
+      "systems": "Systèmes",
+      "level": "Niveau de la carte stellaire",
+      "loading": "Chargement de la carte stellaire…",
+      "unavailable": "La carte stellaire n'a pas pu être chargée.",
+      "notFound": "Ce lieu n'est pas sur la carte stellaire.",
+      "empty": "Les fichiers du jeu ne placent encore rien dans ce système.",
+      "footnote": "Les fichiers du jeu ne placent aucun système par rapport à un autre ; ce niveau montre donc seulement comment les tunnels de saut les relient.",
+      "parent": "Dans",
+      "radius": "Rayon",
+      "openLocation": "Page du lieu",
+      "openSystem": "Ouvrir %{name}",
+      "distanceFrom": "Depuis %{name}",
+      "search": "Trouver un lieu",
+      "noMatches": "Aucun lieu ne porte ce nom.",
+      "reframe": "Recentrer",
+      "panel": {
+        "show": "Afficher la liste des lieux",
+        "hide": "Masquer la liste des lieux"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "Corps célestes",
+      "moons": "Lunes",
+      "places": "Lieux",
+      "view": "Vue",
+      "labels": "Noms",
+      "orbits": "Orbites",
+      "zoom": "Zoom",
+      "zoomIn": "Zoomer",
+      "zoomOut": "Dézoomer",
+      "groups": {
+        "system": "Systèmes",
+        "star": "Étoiles",
+        "planet": "Planètes",
+        "moon": "Lunes",
+        "city": "Villes",
+        "spaceport": "Spatioports",
+        "station": "Stations",
+        "outpost": "Avant-postes",
+        "clinic": "Cliniques",
+        "district": "Quartiers",
+        "asteroid": "Astéroïdes",
+        "anomaly": "Anomalies",
+        "jump_point": "Points de saut",
+        "point_of_interest": "Points d'intérêt",
+        "nav_point": "Points de navigation",
+        "other": "Autres"
+      }
+    }
+  }
+}

@@ -39,6 +39,8 @@ module ScData
           apply_build(location, build_params(item))
         end
 
+        attach_surface(location, item)
+
         (@by_key ||= {})[item["sc_key"]] = location
       end
 
@@ -66,8 +68,48 @@ module ScData
           quantum_travel_destination: item["quantum_travel_destination"] || false,
           facilities: item["facilities"],
           position: item["position"],
-          radius: item["radius"]
+          radius: item["radius"],
+          jurisdiction: item["jurisdiction"],
+          lawful: item["lawful"]
         }
+      end
+
+      # How the game's starmap draws the body: its surface texture, its
+      # terrain's elevation and cloud cover, and the ground colour of a body on
+      # the newer planet engine. Kept per environment, so a PTU load writes
+      # PTU's and leaves live's alone.
+      #
+      # An image the export stops naming is removed: unlike a logo, nobody
+      # uploads these by hand, so one the game dropped is only ever stale.
+      SURFACE_KEYS = {
+        texture: "starmap_texture",
+        elevation: "starmap_elevation",
+        clouds: "starmap_clouds",
+        ground: "starmap_ground"
+      }.freeze
+
+      private def attach_surface(location, item)
+        paths = SURFACE_KEYS.transform_values { |key| item[key].presence }
+        surface = surfaces_by_location[location.id]
+        return if surface.nil? && paths.values.none?
+
+        surface ||= location.surfaces.create!(environment: sc_environment)
+
+        paths.each do |role, path|
+          attachment = surface.public_send(role)
+
+          if path.nil?
+            attachment.purge_later if attachment.attached?
+          else
+            attach_parsed_file(surface, role, export_path.join(path).to_s)
+          end
+        end
+      end
+
+      # The surfaces this environment already has, read once: most places are
+      # stations and outposts without one.
+      private def surfaces_by_location
+        @surfaces_by_location ||= LocationSurface.where(environment: sc_environment).index_by(&:location_id)
       end
 
       private def lookup(key)

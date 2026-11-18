@@ -336,6 +336,7 @@ const setLocale = (locale: string) => {
           class="main-inner"
           :class="{
             'main-inner--with-primary-action': route.meta.primaryAction,
+            'main-inner--fullscreen': route.meta.fullscreen,
           }"
         >
           <AppNavigationHeader>
@@ -369,6 +370,7 @@ const setLocale = (locale: string) => {
         </div>
 
         <AppFooter
+          v-if="!route.meta.fullscreen"
           :codename="appStore.codename"
           :version="appStore.version"
           :git-revision="appStore.gitRevision"

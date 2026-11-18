@@ -128,6 +128,43 @@ body {
     }
   }
 
+  // A page that is one surface, such as the starmap: the whole window is the
+  // page, with the header floating over it and no column, margin or footer
+  // around it. The page keeps its own controls clear of the header with
+  // `--fullscreen-header-height`.
+  .main-inner--fullscreen {
+    --fullscreen-header-height: 84px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 0;
+
+    .navigation-header {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 30;
+      pointer-events: none;
+
+      > * {
+        pointer-events: auto;
+      }
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+      max-width: 100%;
+      margin-bottom: 0;
+      padding-inline: 0;
+    }
+  }
+
   .main {
     position: relative;
     left: 0;
@@ -142,6 +179,10 @@ body {
 }
 
 @media (max-width: $desktop-breakpoint) {
+  .main-inner--fullscreen {
+    --fullscreen-header-height: 60px;
+  }
+
   body {
     padding-bottom: $navigation-mobile-height + $navigation-mobile-bottom-offset;
   }

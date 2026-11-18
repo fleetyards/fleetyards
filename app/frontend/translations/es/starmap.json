@@ -1,0 +1,57 @@
+{
+  "es": {
+    "starmap": {
+      "systems": "Sistemas",
+      "level": "Nivel del mapa estelar",
+      "loading": "Cargando el mapa estelar…",
+      "unavailable": "No se pudo cargar el mapa estelar.",
+      "notFound": "Este lugar no está en el mapa estelar.",
+      "empty": "Los archivos del juego aún no sitúan nada en este sistema.",
+      "footnote": "Los archivos del juego no sitúan ningún sistema respecto a otro, así que este nivel solo muestra cómo los unen los túneles de salto.",
+      "parent": "En",
+      "radius": "Radio",
+      "openLocation": "Página del lugar",
+      "openSystem": "Abrir %{name}",
+      "distanceFrom": "Desde %{name}",
+      "search": "Buscar un lugar",
+      "noMatches": "Ningún lugar se llama así.",
+      "reframe": "Recentrar",
+      "panel": {
+        "show": "Mostrar la lista de lugares",
+        "hide": "Ocultar la lista de lugares"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "Cuerpos",
+      "moons": "Lunas",
+      "places": "Lugares",
+      "view": "Vista",
+      "labels": "Nombres",
+      "orbits": "Órbitas",
+      "zoom": "Zoom",
+      "zoomIn": "Acercar",
+      "zoomOut": "Alejar",
+      "groups": {
+        "system": "Sistemas",
+        "star": "Estrellas",
+        "planet": "Planetas",
+        "moon": "Lunas",
+        "city": "Ciudades",
+        "spaceport": "Puertos espaciales",
+        "station": "Estaciones",
+        "outpost": "Puestos avanzados",
+        "clinic": "Clínicas",
+        "district": "Distritos",
+        "asteroid": "Asteroides",
+        "anomaly": "Anomalías",
+        "jump_point": "Puntos de salto",
+        "point_of_interest": "Puntos de interés",
+        "nav_point": "Puntos de navegación",
+        "other": "Otros"
+      }
+    }
+  }
+}

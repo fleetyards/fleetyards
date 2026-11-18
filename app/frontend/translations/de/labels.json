@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Landung ohne Zuweisung durch die Flugsicherung.",
         "vehiclePads": "Landeplätze für Bodenfahrzeuge",
         "dockingTubes": "Andockschleusen",
+        "jurisdiction": "Zuständigkeit",
+        "lawful": "Rechtsgebiet",
+        "unlawful": "Gesetzlos",
+        "freightElevator": "Frachtaufzug",
+        "maxContainer": "Größter Container",
         "kinds": {
           "system": "Sternsystem",
           "star": "Stern",
@@ -499,7 +504,8 @@
           "space": "Weltraum",
           "stanton": "Stanton-Nebel",
           "crusader": "Crusader-Nebel",
-          "pyro": "Pyro-Nebel"
+          "pyro": "Pyro-Nebel",
+          "nyx": "Nyx-Nebel"
         }
       },
       "viewInAr": "AR",

@@ -8,6 +8,9 @@ declare module "vue-router" {
     customTitle?: boolean;
     needsAuthentication?: boolean;
     primaryAction?: boolean;
+    // The page is one surface that fills the window below the header -- a
+    // map -- rather than content in a column with the footer under it.
+    fullscreen?: boolean;
     backgroundImage?: string;
     icon?: Icon;
     exact?: boolean;

@@ -165,6 +165,7 @@ const vertexShader = /* glsl */ `
 const fragmentShader = /* glsl */ `
   uniform sampler2D panorama;
   uniform sampler3D noise;
+  uniform float opacity;
 
   varying vec3 vDirection;
 
@@ -243,7 +244,7 @@ const fragmentShader = /* glsl */ `
     detail = mix(detail, min(detail, 1.0), smoothstep(0.4, 1.0, peak));
 
 
-    gl_FragColor = vec4(sky * detail, 1.0);
+    gl_FragColor = vec4(sky * detail, opacity);
 
     #include <colorspace_fragment>
 
@@ -255,11 +256,14 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-export const buildSky = (panorama: Texture) => {
+// `opacity` below 1 lets what is drawn behind the sky show through: the
+// starmap's stars through Pyro's gas, as the game draws it.
+export const buildSky = (panorama: Texture, opacity = 1) => {
   const noise = buildNoiseTexture();
   const material = new ShaderMaterial({
     uniforms: {
       panorama: { value: panorama },
+      opacity: { value: opacity },
       noise: { value: noise },
     },
     vertexShader,
@@ -267,6 +271,7 @@ export const buildSky = (panorama: Texture) => {
     side: BackSide,
     depthTest: false,
     depthWrite: false,
+    transparent: opacity < 1,
     toneMapped: false,
   });
 

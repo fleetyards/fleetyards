@@ -1,0 +1,57 @@
+{
+  "en": {
+    "starmap": {
+      "systems": "Systems",
+      "level": "Starmap level",
+      "loading": "Loading the starmap…",
+      "unavailable": "The starmap could not be loaded.",
+      "notFound": "This place is not on the starmap.",
+      "empty": "The game files place nothing in this system yet.",
+      "footnote": "The game files place no system relative to another, so this level only shows how the jump tunnels join them.",
+      "parent": "In",
+      "radius": "Radius",
+      "openLocation": "Location page",
+      "openSystem": "Open %{name}",
+      "distanceFrom": "From %{name}",
+      "search": "Find a place",
+      "noMatches": "Nothing here goes by that name.",
+      "reframe": "Recentre",
+      "panel": {
+        "show": "Show the place list",
+        "hide": "Hide the place list"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "Bodies",
+      "moons": "Moons",
+      "places": "Places",
+      "view": "View",
+      "labels": "Names",
+      "orbits": "Orbits",
+      "zoom": "Zoom",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "groups": {
+        "system": "Systems",
+        "star": "Stars",
+        "planet": "Planets",
+        "moon": "Moons",
+        "city": "Cities",
+        "spaceport": "Spaceports",
+        "station": "Stations",
+        "outpost": "Outposts",
+        "clinic": "Clinics",
+        "district": "Districts",
+        "asteroid": "Asteroids",
+        "anomaly": "Anomalies",
+        "jump_point": "Jump points",
+        "point_of_interest": "Points of interest",
+        "nav_point": "Nav points",
+        "other": "Other"
+      }
+    }
+  }
+}

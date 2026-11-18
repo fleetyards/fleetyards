@@ -1,0 +1,57 @@
+{
+  "zh-CN": {
+    "starmap": {
+      "systems": "星系",
+      "level": "星图层级",
+      "loading": "正在加载星图…",
+      "unavailable": "无法加载星图。",
+      "notFound": "此地点不在星图上。",
+      "empty": "游戏文件尚未在此星系中放置任何内容。",
+      "footnote": "游戏文件没有给出星系之间的相对位置，因此此层级仅显示跳跃隧道如何连接它们。",
+      "parent": "位于",
+      "radius": "半径",
+      "openLocation": "地点页面",
+      "openSystem": "打开 %{name}",
+      "distanceFrom": "距 %{name}",
+      "search": "查找地点",
+      "noMatches": "没有叫这个名字的地点。",
+      "reframe": "重新居中",
+      "panel": {
+        "show": "显示地点列表",
+        "hide": "隐藏地点列表"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "天体",
+      "moons": "卫星",
+      "places": "地点",
+      "view": "视图",
+      "labels": "名称",
+      "orbits": "轨道",
+      "zoom": "缩放",
+      "zoomIn": "放大",
+      "zoomOut": "缩小",
+      "groups": {
+        "system": "星系",
+        "star": "恒星",
+        "planet": "行星",
+        "moon": "卫星",
+        "city": "城市",
+        "spaceport": "太空港",
+        "station": "空间站",
+        "outpost": "前哨站",
+        "clinic": "诊所",
+        "district": "区域",
+        "asteroid": "小行星",
+        "anomaly": "异常",
+        "jump_point": "跳跃点",
+        "point_of_interest": "兴趣点",
+        "nav_point": "导航点",
+        "other": "其他"
+      }
+    }
+  }
+}

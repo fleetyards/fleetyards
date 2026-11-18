@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Atterrissez sans attribution de plateforme par l'ATC.",
         "vehiclePads": "Plateformes pour véhicules terrestres",
         "dockingTubes": "Sas d'amarrage",
+        "jurisdiction": "Juridiction",
+        "lawful": "Légal",
+        "unlawful": "Sans loi",
+        "freightElevator": "Monte-charge",
+        "maxContainer": "Plus grand conteneur",
         "kinds": {
           "system": "Système stellaire",
           "star": "Étoile",
@@ -499,7 +504,8 @@
           "space": "Espace",
           "stanton": "Nébuleuse de Stanton",
           "crusader": "Nébuleuse de Crusader",
-          "pyro": "Nébuleuse de Pyro"
+          "pyro": "Nébuleuse de Pyro",
+          "nyx": "Nébuleuse de Nyx"
         }
       },
       "viewInAr": "RA",

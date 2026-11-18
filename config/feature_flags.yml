@@ -130,3 +130,6 @@ paint_booth:
 
 fleetchart_layouts:
   description: "Rebuilt fleetchart with one renderer, selectable layouts and saved layouts"
+
+starmap:
+  description: "Starmap — the in-game systems in 3D at /starmap, from the positions the game files give every place"

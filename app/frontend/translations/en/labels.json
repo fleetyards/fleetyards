@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "Land without ATC assigning the pad.",
         "vehiclePads": "Ground vehicle pads",
         "dockingTubes": "Docking collars",
+        "jurisdiction": "Jurisdiction",
+        "lawful": "Lawful",
+        "unlawful": "Unlawful",
+        "freightElevator": "Freight elevator",
+        "maxContainer": "Largest container",
         "kinds": {
           "system": "Star system",
           "star": "Star",
@@ -499,7 +504,8 @@
           "space": "Space",
           "stanton": "Stanton Nebula",
           "crusader": "Crusader Nebula",
-          "pyro": "Pyro Nebula"
+          "pyro": "Pyro Nebula",
+          "nyx": "Nyx Nebula"
         }
       },
       "viewInAr": "AR",

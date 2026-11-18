@@ -454,10 +454,127 @@ module ScData
         assert_nil location("QV_Station")[:position]
       end
 
+      test "#locations takes the places a planet builds from location templates" do
+        stanton
+        template = ->(id, parent, name, level, template = "#{level.downcase}_tpl") do
+          {id:, parent:, name:, class: "BaseLocationTemplate", locationClass: level, template:, record: nil, pos: [1.0, 2.0, 3.0]}
+        end
+
+        placements([
+          {id: "hurston", record: ref_for("Stanton1"), name: "Hurston", pos: [12_850_457_093.0, 0, 0]},
+          template.call("sector", "hurston", "Fenwick Territories", "Sector"),
+          template.call("cluster", "sector", nil, "Cluster"),
+          template.call("site", "cluster", "Covalex Capital Z3SP02", "Location", "location_logistics_hub"),
+          template.call("camp-1", "cluster", "Campsite", "Location"),
+          template.call("camp-2", "cluster", "Campsite", "Location"),
+          template.call("nameless", "cluster", nil, "Location")
+        ])
+
+        sector = location("sector_tpl@sector")
+        site = location("location_logistics_hub@site")
+
+        assert_equal "district", sector[:kind]
+        assert_equal "Stanton1", sector[:parent_key]
+        assert_equal "StantonSolarSystem", sector[:system_key]
+        assert_equal "outpost", site[:kind]
+        assert_equal "sector_tpl@sector", site[:parent_key]
+        assert_equal [1.0, 2.0, 3.0], site[:position]
+        assert_equal ["site"], site[:sc_refs]
+
+        names = parser.locations.pluck(:name)
+        refute_includes names, "Campsite"
+        refute_includes names.compact, nil
+      end
+
+      test "#locations puts a place under the jurisdiction above it, lawful where it keeps any law" do
+        jurisdiction("uee", "UEE", laws: true)
+        jurisdiction("hurston", "Hurston Dynamics", parent: "uee", defers: true)
+        jurisdiction("unclaimed", "Unclaimed Space")
+        place("StantonSolarSystem", "Stanton System", type: "SolarSystem", parent: nil)
+        place("StantonStar", "Stanton", type: "Star", parent: nil)
+        place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar", jurisdiction: "hurston")
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton2", "Crusader", type: "Planet", parent: "StantonStar", jurisdiction: "unclaimed")
+
+        assert_equal "Hurston Dynamics", location("Stanton1_Lorville")[:jurisdiction]
+        assert location("Stanton1_Lorville")[:lawful]
+        assert_equal "Unclaimed Space", location("Stanton2")[:jurisdiction]
+        assert_equal false, location("Stanton2")[:lawful]
+        assert_nil location("StantonStar")[:jurisdiction]
+      end
+
       test "#locations has no positions for an export without placements" do
         stanton
 
         assert_nil location("Stanton1")[:position]
+      end
+
+      test "#locations carries a body's starmap texture into the parsed tree" do
+        stanton
+        place("Stanton3_Area18", "Area18", type: "LandingZone", parent: "Stanton1")
+        starmap_materials(
+          {
+            "materials/ui/starmap/planetsmoons/stanton/ui_sm_stanton_1_hurston.mtl" => {
+              records: [ref_for("Stanton1"), ref_for("Stanton3_Area18")],
+              maps: {surface: "starmap_materials/ui_sm_stanton_1_hurston.webp", dotgrid: "starmap_materials/dots.webp"}
+            }
+          }
+        )
+
+        assert_equal "starmap_materials/ui_sm_stanton_1_hurston.webp", location("Stanton1")[:starmap_texture]
+        assert_nil location("Stanton3_Area18")[:starmap_texture]
+        assert File.file?("#{@base_folder}/parsed/test/starmap_materials/ui_sm_stanton_1_hurston.webp")
+      end
+
+      test "#locations carries a body's elevation and cloud cover by its starmap record" do
+        stanton
+        starmap_materials(
+          {},
+          bodies: {
+            ref_for("Stanton1") => {
+              name: "Hurston",
+              maps: {elevation: "starmap_materials/stanton1_global_elev.png", clouds: "starmap_materials/stanton1_clouds_global.webp"}
+            }
+          }
+        )
+
+        assert_equal "starmap_materials/stanton1_global_elev.png", location("Stanton1")[:starmap_elevation]
+        assert_equal "starmap_materials/stanton1_clouds_global.webp", location("Stanton1")[:starmap_clouds]
+        assert_nil location("Stanton1")[:starmap_texture]
+        assert File.file?("#{@base_folder}/parsed/test/starmap_materials/stanton1_global_elev.png")
+      end
+
+      test "#locations takes no texture from outside the textures folder" do
+        stanton
+        starmap_materials(
+          {"materials/hurston.mtl" => {records: [ref_for("Stanton1")], maps: {surface: "starmap_materials/../../secret.webp"}}},
+          bodies: {ref_for("Stanton1") => {maps: {elevation: "../secret.png"}}}
+        )
+
+        assert_nil location("Stanton1")[:starmap_texture]
+        assert_nil location("Stanton1")[:starmap_elevation]
+      end
+
+      test "#locations has no textures for an export without starmap materials" do
+        stanton
+
+        assert_nil location("Stanton1")[:starmap_texture]
+      end
+
+      private def starmap_materials(materials, bodies: {})
+        target = "#{@raw_path}/derived/starmap_materials.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({derivation: {}, materials:, bodies:}))
+
+        (materials.values + bodies.values).each do |material|
+          material[:maps].each_value do |path|
+            next if path.include?("..")
+
+            FileUtils.mkdir_p(File.dirname("#{@raw_path}/derived/#{path}"))
+            File.write("#{@raw_path}/derived/#{path}", "webp")
+          end
+        end
       end
 
       private def parser
@@ -491,7 +608,7 @@ module ScData
         place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar")
       end
 
-      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil)
+      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil, jurisdiction: nil)
         ref = ref_for(key)
         name_key = "loc_#{key.downcase}"
         @translations[name_key] = name if name
@@ -506,10 +623,23 @@ module ScData
           locationHierarchyTag: tag ? tag_ref(tag) : nil,
           hideInStarmap: hidden ? 1 : 0,
           onlyShowWhenParentSelected: parent_only ? 1 : 0,
-          overridePermanent: permanent ? "True" : "NoOverride"
+          overridePermanent: permanent ? "True" : "NoOverride",
+          jurisdiction: jurisdiction ? ref_for("jurisdiction_#{jurisdiction}") : nil
         }.compact
 
         write("starmap/pu/#{key.downcase}", "StarMapObject", key, ref, attributes)
+      end
+
+      private def jurisdiction(key, name, parent: nil, defers: false, laws: false)
+        @translations["jurisdiction_#{key}"] = name
+        attributes = {
+          name: "@jurisdiction_#{key}",
+          parentJurisdiction: parent ? ref_for("jurisdiction_#{parent}") : nil,
+          respectsParentJurisdictionLaws: defers ? 1 : 0
+        }.compact
+        body = laws ? %(<infractions><Infraction definition="x" /></infractions>) : ""
+
+        write("lawsystem/jurisdictions/#{key}", "Jurisdiction", key, ref_for("jurisdiction_#{key}"), attributes, body:)
       end
 
       private def landing_zones(locations)

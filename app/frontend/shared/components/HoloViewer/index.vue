@@ -34,7 +34,8 @@ import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
 import Skybox from "./Skybox/index.vue";
-import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import pyroSky from "@/images/skyboxes/pyro_sky_4k.webp";
+import nyxSky from "@/images/skyboxes/nyx_sky_4k.webp";
 import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -436,7 +437,14 @@ const toggleZoom = () => {
   zoom.value = !zoom.value;
 };
 
-const BACKGROUNDS = ["dark", "space", "stanton", "crusader", "pyro"] as const;
+const BACKGROUNDS = [
+  "dark",
+  "space",
+  "stanton",
+  "crusader",
+  "pyro",
+  "nyx",
+] as const;
 
 type Background = (typeof BACKGROUNDS)[number];
 
@@ -446,14 +454,19 @@ const BACKGROUND_ICONS: Record<Background, string> = {
   stanton: "fa-light fa-galaxy",
   crusader: "fa-light fa-planet-moon",
   pyro: "fa-light fa-fire",
+  nyx: "fa-light fa-cloud-moon",
 };
 
-// Panoramas from the game's own skies, which give ./sky.ts its shapes and colours.
-const SKYBOXES: Partial<Record<Background, string>> = {
-  stanton: stantonNebula,
-  crusader: crusaderNebula,
-  pyro: pyroNebula,
-};
+// Panoramas from the game's own skies, which give ./sky.ts its shapes and
+// colours. Pyro's and Nyx's are the systems' skies as the game draws them,
+// Pyro's gas at the opacity the game lays it over the stars with.
+const SKYBOXES: Partial<Record<Background, { src: string; opacity: number }>> =
+  {
+    stanton: { src: stantonNebula, opacity: 1 },
+    crusader: { src: crusaderNebula, opacity: 1 },
+    pyro: { src: pyroSky, opacity: 0.6 },
+    nyx: { src: nyxSky, opacity: 1 },
+  };
 
 const background = ref<Background>("dark");
 
@@ -1175,7 +1188,12 @@ defineExpose({
         :count="4000"
         :size="maxZoomDistance / 150"
       />
-      <Skybox v-if="skybox" :src="skybox" />
+      <Skybox
+        v-if="skybox"
+        :key="skybox.src"
+        :src="skybox.src"
+        :opacity="skybox.opacity"
+      />
       <primitive v-if="staged && backdrop" :object="backdrop" />
       <Grid
         v-if="grid && gridVisible"

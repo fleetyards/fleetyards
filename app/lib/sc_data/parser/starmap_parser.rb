@@ -14,6 +14,10 @@ module ScData
       OVERRIDES_PATH = "config/sc_data/location_overrides.yml"
 
       STARMAP_PATH = "starmap/pu"
+
+      # Who keeps the law where: a starmap record names its jurisdiction, and a
+      # place without one is under its parent's.
+      JURISDICTIONS_PATH = "lawsystem/jurisdictions"
       TYPES_FILE = "starmap/starmapobjecttypes.records.xml"
       TAGS_FILE = "TagDatabase/tagdatabase.tagdatabase.records.xml"
       TEMPLATES_PATH = "missiondata/pu_locations/templates"
@@ -25,6 +29,11 @@ module ScData
       # Where each record is placed in its system's object container, in metres
       # from the star. Written by the exporter for the same reason.
       PLACEMENTS_FILE = "derived/starmap.json"
+
+      # The materials the game's starmap draws its bodies with, and the
+      # surface texture of each, keyed by the starmap records that use them.
+      MATERIALS_FILE = "derived/starmap_materials.json"
+      TEXTURES_FOLDER = "starmap_materials"
 
       # The placement's `size` is a radius only for these: Hurston's is its
       # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
@@ -130,6 +139,7 @@ module ScData
       # An export without a starmap leaves no places behind, rather than the
       # last parse's: the parsed-tree floor then sees the catalogue missing.
       def all
+        clear_once("#{export_path}/#{TEXTURES_FOLDER}")
         parsed = locations
 
         return clear_once("#{export_path}/locations") if parsed.blank?
@@ -145,8 +155,155 @@ module ScData
 
           places.values.map do |place|
             serialize(place, places, templates[place[:key]])
-          end
+          end + template_locations(places)
         end
+      end
+
+      # The places the game builds from location templates rather than starmap
+      # records: from 5.0 every place on Nyx I. The export places them in three
+      # levels -- sectors, clusters in a sector, sites in a cluster -- each
+      # under the one above, and the top under its planet.
+      #
+      # Sectors and clusters are kept where they have a name. A site is kept
+      # only where its name is its own: "Remote Location", "Campsite" and
+      # "Survey Site" stand for hundreds of sites each and say nothing about
+      # any one of them.
+      TEMPLATE_CLASSES = %w[BaseLocationTemplate MissionLocationTemplate].freeze
+      TEMPLATE_KINDS = {"Sector" => "district", "Cluster" => "district", "Location" => "outpost"}.freeze
+
+      private def template_locations(places)
+        templates = starmap_objects.select { |object| TEMPLATE_CLASSES.include?(object["class"]) }
+        return [] if templates.empty?
+
+        repeated = templates
+          .select { |object| object["locationClass"] == "Location" }
+          .map { |object| object["name"] }.compact.tally
+          .select { |_name, count| count > 1 }.keys.to_set
+
+        kept = templates.select do |object|
+          next false if object["name"].blank? || !TEMPLATE_KINDS.key?(object["locationClass"])
+
+          object["locationClass"] != "Location" || repeated.exclude?(object["name"])
+        end
+
+        keys = kept.to_h { |object| [object["id"], template_key(object)] }
+        by_ref = places.each_value.with_object({}) do |place, map|
+          Array.wrap(place[:refs]).each { |ref| map[ref] = place[:key] }
+        end
+
+        kept.filter_map do |object|
+          parent_key = template_parent(object, keys, by_ref)
+          next if parent_key.nil?
+
+          placed_under = template_parent(object, {}, by_ref)
+
+          {
+            sc_key: keys[object["id"]],
+            sc_refs: [object["id"]],
+            name: object["name"],
+            description: nil,
+            resources: [],
+            kind: TEMPLATE_KINDS[object["locationClass"]],
+            body_type: nil,
+            game_type: object["locationClass"],
+            parent_key:,
+            map_parent_key: nil,
+            # The system and the law of the record-backed place it hangs from.
+            system_key: system_of(placed_under, places),
+            **jurisdiction_facts(places[placed_under], places),
+            shown_on_starmap: true,
+            shown_with_parent_only: false,
+            always_shown: false,
+            quantum_travel_destination: false,
+            mission_template_refs: [],
+            facilities: nil,
+            position: object["pos"]&.map(&:to_f),
+            radius: nil,
+            starmap_texture: nil,
+            starmap_elevation: nil,
+            starmap_clouds: nil,
+            starmap_ground: nil
+          }
+        end
+      end
+
+      # The template's own name in the editor, with the object's id to keep it
+      # apart from every other copy of the template.
+      private def template_key(object)
+        "#{object["template"].presence || "location_template"}@#{object["id"]}"
+      end
+
+      # The nearest object above it that is kept, or the record-backed place
+      # the hierarchy hangs from: Nyx I for its sectors.
+      private def template_parent(object, keys, by_ref)
+        seen = Set.new
+        current = objects_by_id[object["parent"]]
+
+        while current && seen.add?(current["id"])
+          return keys[current["id"]] if keys.key?(current["id"])
+          return by_ref[current["record"]] if current["record"].present? && by_ref.key?(current["record"])
+
+          current = objects_by_id[current["parent"]]
+        end
+
+        nil
+      end
+
+      # The jurisdiction a place is under -- its own, or the nearest one above
+      # it -- and whether it keeps any law there.
+      private def jurisdiction_facts(place, places)
+        seen = Set.new
+        current = place
+
+        while current && seen.add?(current[:key])
+          ref = current.dig(:record, :jurisdiction)
+          jurisdiction = jurisdictions[ref] if ref
+
+          return {jurisdiction: jurisdiction[:name], lawful: lawful?(ref)} if jurisdiction
+
+          current = places[current[:parent]]
+        end
+
+        {jurisdiction: nil, lawful: nil}
+      end
+
+      # Lawful where the jurisdiction has laws of its own, or defers to a
+      # parent that does: the People's Alliance in Nyx keeps the UEE's. Pyro's
+      # gangs and Nyx's unclaimed space have none and defer to no one.
+      private def lawful?(ref, seen = Set.new)
+        jurisdiction = jurisdictions[ref]
+        return false if jurisdiction.nil? || !seen.add?(ref)
+        return true if jurisdiction[:laws]
+
+        jurisdiction[:defers] && jurisdiction[:parent].present? && lawful?(jurisdiction[:parent], seen)
+      end
+
+      private def jurisdictions
+        @jurisdictions ||= load_data(JURISDICTIONS_PATH).each_with_object({}) do |item, all|
+          values = item[:values]
+          next unless values.is_a?(Hash)
+
+          ref = value_or_nil(values["__ref"])
+          next if ref.nil?
+
+          all[ref] = {
+            name: localize_name(values["name"]),
+            parent: value_or_nil(values["parentJurisdiction"]),
+            defers: values["respectsParentJurisdictionLaws"] == "1",
+            laws: values.dig("infractions", "Infraction").present?
+          }
+        end
+      end
+
+      private def starmap_objects
+        @starmap_objects ||= begin
+          file = "#{base_path}/#{PLACEMENTS_FILE}"
+          File.exist?(file) ? Array.wrap(JSON.parse(File.read(file))["objects"]) : []
+        end
+      end
+
+      private def objects_by_id
+        @objects_by_id ||= starmap_objects.index_by { |object| object["id"] }
       end
 
       private def serialize(place, places, template_refs)
@@ -171,8 +328,64 @@ module ScData
           mission_template_refs: template_refs.to_a.sort,
           facilities: place[:facilities],
           position: placement_of(place)&.dig(:position),
-          radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind]))
+          radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
+          **jurisdiction_facts(place, places),
+          starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
+          starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
+          starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind])),
+          starmap_ground: (starmap_map(place, terrain_maps["soilColor"]) if BODY_KINDS.include?(place[:kind]))
         }
+      end
+
+      # Carried into the parsed tree, as artwork is, so a load attaches it from
+      # disk. Two bodies can share one: Pyro V and Ignis do.
+      private def starmap_map(place, maps)
+        path = Array.wrap(place[:refs]).lazy.filter_map { |ref| maps[ref] }.first
+        return if path.blank?
+
+        source = "#{base_path}/derived/#{path}"
+        return unless File.file?(source)
+
+        target = "#{export_path}/#{path}"
+        FileUtils.mkdir_p(File.dirname(target))
+        FileUtils.cp(source, target) unless File.exist?(target)
+
+        path
+      end
+
+      # Record ref => surface texture, as a path under `derived/`.
+      private def surfaces
+        @surfaces ||= starmap_materials["materials"].to_h.each_value.each_with_object({}) do |material, map|
+          surface = material.dig("maps", "surface")
+          next unless texture_path?(surface)
+
+          Array.wrap(material["records"]).each { |ref| map[ref] ||= surface }
+        end
+      end
+
+      # Role => record ref => the body's terrain map of that role: its elevation
+      # and its cloud cover, from the terrain material its container names, and
+      # on a body the newer planet engine paints, its ground colour.
+      # Both are a quarter turn round from the surface; the map applies that.
+      private def terrain_maps
+        @terrain_maps ||= starmap_materials["bodies"].to_h.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |(ref, body), maps|
+          body["maps"].to_h.each do |role, path|
+            maps[role][ref] = path if texture_path?(path)
+          end
+        end
+      end
+
+      private def starmap_materials
+        @starmap_materials ||= begin
+          file = "#{base_path}/#{MATERIALS_FILE}"
+          File.exist?(file) ? JSON.parse(File.read(file)) : {}
+        end
+      end
+
+      # Only ever a file in the textures folder: the manifest is the exporter's,
+      # and a path out of it would copy whatever it named.
+      private def texture_path?(path)
+        path.present? && path.start_with?("#{TEXTURES_FOLDER}/") && !path.include?("..")
       end
 
       # The first of a place's refs placed exactly once. A record placed
@@ -188,7 +401,7 @@ module ScData
           file = "#{base_path}/#{PLACEMENTS_FILE}"
 
           if File.exist?(file)
-            Array.wrap(JSON.parse(File.read(file))["objects"])
+            starmap_objects
               .select { |object| object["record"].present? }
               .group_by { |object| object["record"] }
               .filter_map { |ref, objects| [ref, placement(objects.first)] if objects.one? }
@@ -739,7 +952,8 @@ module ScData
             hidden: values["hideInStarmap"] == "1",
             parent_only: values["onlyShowWhenParentSelected"] == "1",
             permanent: values["overridePermanent"] == "True",
-            quantum_travel: type[:quantum_travel] || false
+            quantum_travel: type[:quantum_travel] || false,
+            jurisdiction: value_or_nil(values["jurisdiction"])
           }
         end
       end

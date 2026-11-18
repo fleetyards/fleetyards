@@ -1,0 +1,57 @@
+{
+  "de": {
+    "starmap": {
+      "systems": "Systeme",
+      "level": "Ebene der Sternenkarte",
+      "loading": "Sternenkarte wird geladen…",
+      "unavailable": "Die Sternenkarte konnte nicht geladen werden.",
+      "notFound": "Dieser Ort ist nicht auf der Sternenkarte.",
+      "empty": "Die Spieldateien platzieren in diesem System noch nichts.",
+      "footnote": "Die Spieldateien platzieren kein System relativ zu einem anderen, daher zeigt diese Ebene nur, wie die Sprungtunnel sie verbinden.",
+      "parent": "In",
+      "radius": "Radius",
+      "openLocation": "Ortsseite",
+      "openSystem": "%{name} öffnen",
+      "distanceFrom": "Von %{name}",
+      "search": "Ort finden",
+      "noMatches": "Kein Ort trägt diesen Namen.",
+      "reframe": "Zentrieren",
+      "panel": {
+        "show": "Ortsliste einblenden",
+        "hide": "Ortsliste ausblenden"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "Himmelskörper",
+      "moons": "Monde",
+      "places": "Orte",
+      "view": "Ansicht",
+      "labels": "Namen",
+      "orbits": "Umlaufbahnen",
+      "zoom": "Zoom",
+      "zoomIn": "Hineinzoomen",
+      "zoomOut": "Herauszoomen",
+      "groups": {
+        "system": "Systeme",
+        "star": "Sterne",
+        "planet": "Planeten",
+        "moon": "Monde",
+        "city": "Städte",
+        "spaceport": "Raumhäfen",
+        "station": "Stationen",
+        "outpost": "Außenposten",
+        "clinic": "Kliniken",
+        "district": "Bezirke",
+        "asteroid": "Asteroiden",
+        "anomaly": "Anomalien",
+        "jump_point": "Sprungpunkte",
+        "point_of_interest": "Sehenswürdigkeiten",
+        "nav_point": "Navigationspunkte",
+        "other": "Sonstige"
+      }
+    }
+  }
+}

@@ -3,6 +3,9 @@ export interface StatsCardBadge {
   label: string;
   value: string;
   unit?: string;
+  // A value too long for a third of the card -- a jurisdiction's name -- gets
+  // a row to itself. Only on the last badge.
+  wide?: boolean;
 }
 
 // The types a hover card can describe, named as the API names them so a

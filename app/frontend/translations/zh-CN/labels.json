@@ -114,6 +114,11 @@
         "freeLandingPadsNote": "无需 ATC 分配平台即可降落。",
         "vehiclePads": "地面载具平台",
         "dockingTubes": "对接舱口",
+        "jurisdiction": "管辖方",
+        "lawful": "合法区域",
+        "unlawful": "无法区域",
+        "freightElevator": "货运电梯",
+        "maxContainer": "最大集装箱",
         "kinds": {
           "system": "星系",
           "star": "恒星",
@@ -499,7 +504,8 @@
           "space": "太空",
           "stanton": "Stanton 星云",
           "crusader": "Crusader 星云",
-          "pyro": "Pyro 星云"
+          "pyro": "Pyro 星云",
+          "nyx": "Nyx 星云"
         }
       },
       "viewInAr": "AR",

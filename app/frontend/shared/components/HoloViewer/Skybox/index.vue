@@ -10,6 +10,7 @@ import { extrasLoadingManager } from "../gltfLoader";
 import { buildSky, disposeSky } from "../sky";
 import {
   RepeatWrapping,
+  type ShaderMaterial,
   SRGBColorSpace,
   type Texture,
   TextureLoader,
@@ -18,9 +19,11 @@ import {
 type Props = {
   // An equirectangular panorama.
   src: string;
+  // Below 1 where the sky is drawn over something, such as a star field.
+  opacity?: number;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { opacity: 1 });
 
 const { scene, invalidate } = useTres();
 
@@ -57,11 +60,28 @@ watch(
 
     release();
     panorama = loaded;
-    sky = buildSky(loaded);
+    sky = buildSky(loaded, props.opacity);
     scene.value.add(sky);
     invalidate();
   },
   { immediate: true },
+);
+
+// Faded in place: the starmap fades a system's sky out and in with the
+// system. Only translucent below 1, since a translucent sky is drawn after the
+// scene and would cover it.
+watch(
+  () => props.opacity,
+  (opacity) => {
+    if (!sky) return;
+    const material = sky.material as ShaderMaterial;
+    material.uniforms.opacity.value = opacity;
+    if (material.transparent !== opacity < 1) {
+      material.transparent = opacity < 1;
+      material.needsUpdate = true;
+    }
+    invalidate();
+  },
 );
 
 onBeforeUnmount(() => {

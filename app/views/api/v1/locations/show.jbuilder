@@ -67,4 +67,12 @@ json.places_count @places_count
 json.terminals @location.terminals.select(&:available).sort_by(&:name) do |terminal|
   json.id terminal.id
   json.name terminal.name
+  json.has_freight_elevator !!terminal.has_freight_elevator
+  json.has_loading_dock !!terminal.has_loading_dock
+  json.has_docking_port !!terminal.has_docking_port
+  json.max_container_size terminal.max_container_size
 end
+
+json.shops_count @location.shops.size
+json.jurisdiction @location.jurisdiction
+json.lawful @location.lawful

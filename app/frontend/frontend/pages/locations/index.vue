@@ -10,13 +10,17 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import SystemLanes from "@/frontend/components/Locations/SystemLanes/index.vue";
 import SystemCardSkeleton from "@/frontend/components/Locations/SystemCard/Skeleton.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
+  FeatureFlagName,
   LocationKindEnum,
   useLocationJumpPoints,
   useLocations,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const { isFeatureEnabled } = useFeatures();
 
 // Every system, laid out as its bodies. The list of every place has a page of
 // its own, with the filters.
@@ -41,10 +45,20 @@ const PLACEHOLDERS = 4;
   <div class="locations-systems__head">
     <Heading hero>{{ t("headlines.locations.index") }}</Heading>
 
-    <Btn :to="{ name: 'locations-places' }" data-test="locations-places-link">
-      <i class="fa-light fa-list" aria-hidden="true" />
-      {{ t("labels.location.allPlaces") }}
-    </Btn>
+    <div class="locations-systems__actions">
+      <Btn
+        v-if="isFeatureEnabled(FeatureFlagName.STARMAP)"
+        :to="{ name: 'starmap' }"
+        data-test="locations-starmap-link"
+      >
+        <i class="fa-light fa-galaxy" aria-hidden="true" />
+        {{ t("nav.starmap") }}
+      </Btn>
+      <Btn :to="{ name: 'locations-places' }" data-test="locations-places-link">
+        <i class="fa-light fa-list" aria-hidden="true" />
+        {{ t("labels.location.allPlaces") }}
+      </Btn>
+    </div>
   </div>
 
   <section
@@ -90,6 +104,12 @@ const PLACEHOLDERS = 4;
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 24px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
 </style>

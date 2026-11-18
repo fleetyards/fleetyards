@@ -1,0 +1,57 @@
+{
+  "it": {
+    "starmap": {
+      "systems": "Sistemi",
+      "level": "Livello della mappa stellare",
+      "loading": "Caricamento della mappa stellare…",
+      "unavailable": "Impossibile caricare la mappa stellare.",
+      "notFound": "Questo luogo non è sulla mappa stellare.",
+      "empty": "I file di gioco non collocano ancora nulla in questo sistema.",
+      "footnote": "I file di gioco non collocano nessun sistema rispetto a un altro, quindi questo livello mostra solo come li collegano i tunnel di salto.",
+      "parent": "In",
+      "radius": "Raggio",
+      "openLocation": "Pagina del luogo",
+      "openSystem": "Apri %{name}",
+      "distanceFrom": "Da %{name}",
+      "search": "Trova un luogo",
+      "noMatches": "Nessun luogo ha questo nome.",
+      "reframe": "Ricentra",
+      "panel": {
+        "show": "Mostra l'elenco dei luoghi",
+        "hide": "Nascondi l'elenco dei luoghi"
+      },
+      "units": {
+        "gm": "%{value} Gm",
+        "mm": "%{value} Mm",
+        "km": "%{value} km"
+      },
+      "bodies": "Corpi celesti",
+      "moons": "Lune",
+      "places": "Luoghi",
+      "view": "Vista",
+      "labels": "Nomi",
+      "orbits": "Orbite",
+      "zoom": "Zoom",
+      "zoomIn": "Ingrandisci",
+      "zoomOut": "Riduci",
+      "groups": {
+        "system": "Sistemi",
+        "star": "Stelle",
+        "planet": "Pianeti",
+        "moon": "Lune",
+        "city": "Città",
+        "spaceport": "Spazioporti",
+        "station": "Stazioni",
+        "outpost": "Avamposti",
+        "clinic": "Cliniche",
+        "district": "Distretti",
+        "asteroid": "Asteroidi",
+        "anomaly": "Anomalie",
+        "jump_point": "Punti di salto",
+        "point_of_interest": "Punti di interesse",
+        "nav_point": "Punti di navigazione",
+        "other": "Altro"
+      }
+    }
+  }
+}

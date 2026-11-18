@@ -194,7 +194,7 @@ export const LOCATIONS_ENTRY: NavEntry = {
   route: "locations",
   labelKey: "nav.locations",
   icon: "fa-duotone fa-planet-ringed",
-  activeRoutes: ["locations-places", "location", "shop"],
+  activeRoutes: ["locations-places", "location", "shop", "starmap"],
 };
 
 export const FLEET_DIRECTORY_ENTRY: NavEntry = {
