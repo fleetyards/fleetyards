@@ -7,6 +7,7 @@ import {
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFleetSubscription } from "@/frontend/composables/useFleetSubscription";
 
 const EVENTS_ACCESS: FleetRoleResourceAccessEnum[] = [
   FleetRoleResourceAccessEnum.FLEET_MANAGE,
@@ -39,10 +40,11 @@ export const eventsRouteFor = (
 
 export const useFleetNavAccess = (
   fleet: MaybeRefOrGetter<
-    | (Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> & {
-        slug?: string;
-        publicFleetStats?: boolean;
-      })
+    | (Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> &
+        Partial<Pick<Fleet, "subscribed">> & {
+          slug?: string;
+          publicFleetStats?: boolean;
+        })
     | undefined
   >,
 ) => {
@@ -51,6 +53,15 @@ export const useFleetNavAccess = (
   const sessionStore = useSessionStore();
 
   const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
+
+  const { subscriptionRequired } = useFleetSubscription(fleet);
+
+  // A premium tab asks what its API asks: is the capability rolled out here,
+  // and has the fleet bought it. A tab that leads to the upsell is worse than
+  // no tab; the upsell is still there for anyone arriving by URL.
+  const premiumAvailable = (feature: FeatureFlagName) =>
+    isFleetFeatureEnabled(toValue(fleet), feature) &&
+    !subscriptionRequired.value;
 
   // The fleet's own slug first: an account page opened from a fleet keeps the
   // fleet in the navigation, but its route carries no slug.
@@ -112,7 +123,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasLogisticsAccess.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_LOGISTICS),
+      premiumAvailable(FeatureFlagName.FLEET_LOGISTICS),
   );
 
   // No feature flag and no subscription: the fleet's list of what its members
@@ -151,17 +162,14 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasContractsAccess.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_CONTRACTS),
+      premiumAvailable(FeatureFlagName.FLEET_CONTRACTS),
   );
 
   const showEventsNav = computed(
     () =>
       !!membership.value &&
       !!eventsAccessRoute.value &&
-      isFleetFeatureEnabled(
-        toValue(fleet),
-        FeatureFlagName.FLEET_MISSION_BUILDER,
-      ),
+      premiumAvailable(FeatureFlagName.FLEET_MISSION_BUILDER),
   );
 
   const eventsNavRoute = computed(
@@ -169,9 +177,7 @@ export const useFleetNavAccess = (
   );
 
   const showToursNav = computed(
-    () =>
-      !!membership.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_TOURS),
+    () => !!membership.value && premiumAvailable(FeatureFlagName.FLEET_TOURS),
   );
 
   const toursNavActive = computed(() =>

@@ -408,4 +408,53 @@ describe("useFleetNavAccess", () => {
       tab.assetsNavActive.value,
     ]).toEqual([true, true, true]);
   });
+
+  describe("once the fleet subscription is rolled out", () => {
+    const premium = [
+      FeatureFlagName.FLEET_SUBSCRIPTIONS,
+      FeatureFlagName.FLEET_CONTRACTS,
+      FeatureFlagName.FLEET_LOGISTICS,
+      FeatureFlagName.FLEET_MISSION_BUILDER,
+      FeatureFlagName.FLEET_TOURS,
+    ];
+
+    const premiumTabs = (subscribed: boolean) => {
+      membership.value = {
+        ...memberWith(FleetRoleResourceAccessEnum.FLEET_MANAGE),
+        capabilities: { readInventories: true },
+      };
+
+      const tab = useFleetNavAccess({ ...fleetWith(...premium), subscribed });
+
+      return [
+        tab.showContractsNav.value,
+        tab.showLogisticsNav.value,
+        tab.showEventsNav.value,
+        tab.showToursNav.value,
+      ];
+    };
+
+    it("drops the premium tabs for a fleet that has not subscribed", () => {
+      expect(premiumTabs(false)).toEqual([false, false, false, false]);
+    });
+
+    it("keeps the premium tabs for a subscribed fleet", () => {
+      expect(premiumTabs(true)).toEqual([true, true, true, true]);
+    });
+
+    it("keeps the free tabs for a fleet that has not subscribed", () => {
+      membership.value = memberAbleTo("readBlueprints", "readShoppingLists");
+
+      const tab = useFleetNavAccess({
+        ...fleetWith(FeatureFlagName.FLEET_SUBSCRIPTIONS),
+        subscribed: false,
+      });
+
+      expect([
+        tab.showBlueprintsNav.value,
+        tab.showShoppingListsNav.value,
+        tab.showMembersNav.value,
+      ]).toEqual([true, true, true]);
+    });
+  });
 });
