@@ -94,11 +94,15 @@ module Supporters
     # The platform verified it for billing and we verified it at confirmation,
     # so this compares two independently verified records. An unconfirmed
     # account is not one of those and never matches.
+    #
+    # An exact match wins over the other Gmail domain, should both somehow
+    # belong to confirmed accounts.
     private def by_verified_email
-      email = @contribution.payer_email.to_s.strip.downcase
-      return if email.blank?
+      emails = PayerEmail.variants(@contribution.payer_email)
+      return if emails.empty?
 
-      User.confirmed.find_by(email: email)
+      users = User.confirmed.where(email: emails).index_by(&:email)
+      emails.filter_map { |email| users[email] }.first
     end
   end
 end

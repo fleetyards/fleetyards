@@ -155,6 +155,15 @@ class UserTest < ActiveSupport::TestCase
       assert_equal user, contribution.reload.user
     end
 
+    test "confirming claims a contribution paid from the other Gmail domain" do
+      contribution = create(:supporter_contribution, payer_email: "later@googlemail.com")
+      user = create(:user, email: "later@gmail.com", confirmed_at: nil)
+
+      user.update!(confirmed_at: Time.current)
+
+      assert_equal user, contribution.reload.user
+    end
+
     test "confirming claims nothing that is already linked or addressed elsewhere" do
       mine = create(:user, confirmed_at: Time.current)
       taken = create(:supporter_contribution, payer_email: "later@example.test", user: mine)

@@ -19,6 +19,29 @@ module Supporters
       assert_equal user, Supporters::Linker.call(contribution)
     end
 
+    test "treats gmail.com and googlemail.com as one address" do
+      gmail = create(:user, email: "patron@gmail.com", confirmed_at: Time.current)
+      googlemail = create(:user, email: "donor@googlemail.com", confirmed_at: Time.current)
+
+      assert_equal gmail, Supporters::Linker.call(create(:supporter_contribution, payer_email: "patron@googlemail.com"))
+      assert_equal googlemail, Supporters::Linker.call(create(:supporter_contribution, payer_email: "Donor@Gmail.com"))
+    end
+
+    test "prefers the exact address over its other Gmail domain" do
+      create(:user, email: "patron@gmail.com", confirmed_at: Time.current)
+      exact = create(:user, email: "patron@googlemail.com", confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, payer_email: "patron@googlemail.com")
+
+      assert_equal exact, Supporters::Linker.call(contribution)
+    end
+
+    test "does not fold the Gmail domains into any other" do
+      create(:user, email: "patron@gmail.com", confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, payer_email: "patron@example.test")
+
+      assert_nil Supporters::Linker.call(contribution)
+    end
+
     test "never matches an unconfirmed account by email" do
       create(:user, email: "patron@example.test", confirmed_at: nil)
       contribution = create(:supporter_contribution, payer_email: "patron@example.test")

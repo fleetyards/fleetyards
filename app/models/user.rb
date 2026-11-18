@@ -859,7 +859,7 @@ class User < ApplicationRecord
   private def link_supporter_contributions
     SupporterContribution
       .where(user_id: nil)
-      .where(payer_email: email.to_s.strip.downcase)
+      .where(payer_email: ::Supporters::PayerEmail.variants(email))
       .find_each { |contribution| ::Supporters::Linker.call(contribution) }
   end
 
