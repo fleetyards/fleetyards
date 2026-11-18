@@ -132,6 +132,19 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     assert_empty @inventory.inventory_items
   end
 
+  # The hangar sync fits a module to a ship: in an inventory too it would count twice.
+  test "skips a ship module" do
+    ship_module = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "Galaxy - Cargo Module")
+    sign_in @user
+
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/from-pledge-items",
+      params: {pledgeItemIds: [ship_module.id]}, as: :json
+
+    assert_response :ok
+    assert_empty response.parsed_body["addedPledgeItemIds"]
+    assert_empty @inventory.inventory_items
+  end
+
   test "adds nothing to somebody else's inventory" do
     part = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "BriskAir IC-20")
     sign_in @user

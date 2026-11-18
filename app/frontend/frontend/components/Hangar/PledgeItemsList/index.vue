@@ -56,7 +56,9 @@ const INVENTORY_KINDS: string[] = [
 ];
 
 const inventoryable = (item: HangarPledgeItem) =>
-  props.inventoryActions && INVENTORY_KINDS.includes(item.kind);
+  props.inventoryActions &&
+  INVENTORY_KINDS.includes(item.kind) &&
+  !item.shipModule;
 
 const { t, l, tExists } = useI18n();
 
@@ -175,7 +177,7 @@ const sub = (item: HangarPledgeItem) =>
       >
         <template #leading>
           <FormCheckbox
-            v-if="selectable"
+            v-if="selectable && !record.shipModule"
             v-tooltip="t('labels.hangarPledgeItems.select')"
             :model-value="selectedIds.includes(record.id)"
             :aria-label="t('labels.hangarPledgeItems.select')"

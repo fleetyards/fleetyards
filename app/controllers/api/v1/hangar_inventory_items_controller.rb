@@ -30,6 +30,7 @@ module Api
             .where(id: Array(params[:pledge_item_ids]))
             .includes(:catalogue_component, :catalogue_equipment)
             .lock
+            .select(&:inventoriable?)
 
           deposited = HangarPledgeItem.deposits_for(current_resource_owner, pledge_items)
           added, skipped = pledge_items.partition { |item| !deposited.key?(item.source_key) }
