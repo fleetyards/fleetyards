@@ -454,6 +454,38 @@ module ScData
         assert_nil location("QV_Station")[:position]
       end
 
+      test "#locations takes the places a planet builds from location templates" do
+        stanton
+        template = ->(id, parent, name, level, template = "#{level.downcase}_tpl") do
+          {id:, parent:, name:, class: "BaseLocationTemplate", locationClass: level, template:, record: nil, pos: [1.0, 2.0, 3.0]}
+        end
+
+        placements([
+          {id: "hurston", record: ref_for("Stanton1"), name: "Hurston", pos: [12_850_457_093.0, 0, 0]},
+          template.call("sector", "hurston", "Fenwick Territories", "Sector"),
+          template.call("cluster", "sector", nil, "Cluster"),
+          template.call("site", "cluster", "Covalex Capital Z3SP02", "Location", "location_logistics_hub"),
+          template.call("camp-1", "cluster", "Campsite", "Location"),
+          template.call("camp-2", "cluster", "Campsite", "Location"),
+          template.call("nameless", "cluster", nil, "Location")
+        ])
+
+        sector = location("sector_tpl@sector")
+        site = location("location_logistics_hub@site")
+
+        assert_equal "district", sector[:kind]
+        assert_equal "Stanton1", sector[:parent_key]
+        assert_equal "StantonSolarSystem", sector[:system_key]
+        assert_equal "outpost", site[:kind]
+        assert_equal "sector_tpl@sector", site[:parent_key]
+        assert_equal [1.0, 2.0, 3.0], site[:position]
+        assert_equal ["site"], site[:sc_refs]
+
+        names = parser.locations.pluck(:name)
+        refute_includes names, "Campsite"
+        refute_includes names.compact, nil
+      end
+
       test "#locations has no positions for an export without placements" do
         stanton
 

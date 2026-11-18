@@ -151,8 +151,106 @@ module ScData
 
           places.values.map do |place|
             serialize(place, places, templates[place[:key]])
-          end
+          end + template_locations(places)
         end
+      end
+
+      # The places the game builds from location templates rather than starmap
+      # records: from 5.0 every place on Nyx I. The export places them in three
+      # levels -- sectors, clusters in a sector, sites in a cluster -- each
+      # under the one above, and the top under its planet.
+      #
+      # Sectors and clusters are kept where they have a name. A site is kept
+      # only where its name is its own: "Remote Location", "Campsite" and
+      # "Survey Site" stand for hundreds of sites each and say nothing about
+      # any one of them.
+      TEMPLATE_CLASSES = %w[BaseLocationTemplate MissionLocationTemplate].freeze
+      TEMPLATE_KINDS = {"Sector" => "district", "Cluster" => "district", "Location" => "outpost"}.freeze
+
+      private def template_locations(places)
+        templates = starmap_objects.select { |object| TEMPLATE_CLASSES.include?(object["class"]) }
+        return [] if templates.empty?
+
+        repeated = templates
+          .select { |object| object["locationClass"] == "Location" }
+          .map { |object| object["name"] }.compact.tally
+          .select { |_name, count| count > 1 }.keys.to_set
+
+        kept = templates.select do |object|
+          next false if object["name"].blank? || !TEMPLATE_KINDS.key?(object["locationClass"])
+
+          object["locationClass"] != "Location" || repeated.exclude?(object["name"])
+        end
+
+        keys = kept.to_h { |object| [object["id"], template_key(object)] }
+        by_ref = places.each_value.with_object({}) do |place, map|
+          Array.wrap(place[:refs]).each { |ref| map[ref] = place[:key] }
+        end
+
+        kept.filter_map do |object|
+          parent_key = template_parent(object, keys, by_ref)
+          next if parent_key.nil?
+
+          {
+            sc_key: keys[object["id"]],
+            sc_refs: [object["id"]],
+            name: object["name"],
+            description: nil,
+            resources: [],
+            kind: TEMPLATE_KINDS[object["locationClass"]],
+            body_type: nil,
+            game_type: object["locationClass"],
+            parent_key:,
+            map_parent_key: nil,
+            # The system of the record-backed place it hangs from.
+            system_key: system_of(template_parent(object, {}, by_ref), places),
+            shown_on_starmap: true,
+            shown_with_parent_only: false,
+            always_shown: false,
+            quantum_travel_destination: false,
+            mission_template_refs: [],
+            facilities: nil,
+            position: object["pos"]&.map(&:to_f),
+            radius: nil,
+            starmap_texture: nil,
+            starmap_elevation: nil,
+            starmap_clouds: nil,
+            starmap_ground: nil
+          }
+        end
+      end
+
+      # The template's own name in the editor, with the object's id to keep it
+      # apart from every other copy of the template.
+      private def template_key(object)
+        "#{object["template"].presence || "location_template"}@#{object["id"]}"
+      end
+
+      # The nearest object above it that is kept, or the record-backed place
+      # the hierarchy hangs from: Nyx I for its sectors.
+      private def template_parent(object, keys, by_ref)
+        seen = Set.new
+        current = objects_by_id[object["parent"]]
+
+        while current && seen.add?(current["id"])
+          return keys[current["id"]] if keys.key?(current["id"])
+          return by_ref[current["record"]] if current["record"].present? && by_ref.key?(current["record"])
+
+          current = objects_by_id[current["parent"]]
+        end
+
+        nil
+      end
+
+      private def starmap_objects
+        @starmap_objects ||= begin
+          file = "#{base_path}/#{PLACEMENTS_FILE}"
+          File.exist?(file) ? Array.wrap(JSON.parse(File.read(file))["objects"]) : []
+        end
+      end
+
+      private def objects_by_id
+        @objects_by_id ||= starmap_objects.index_by { |object| object["id"] }
       end
 
       private def serialize(place, places, template_refs)
@@ -249,7 +347,7 @@ module ScData
           file = "#{base_path}/#{PLACEMENTS_FILE}"
 
           if File.exist?(file)
-            Array.wrap(JSON.parse(File.read(file))["objects"])
+            starmap_objects
               .select { |object| object["record"].present? }
               .group_by { |object| object["record"] }
               .filter_map { |ref, objects| [ref, placement(objects.first)] if objects.one? }
