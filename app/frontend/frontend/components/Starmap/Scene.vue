@@ -1440,7 +1440,9 @@ onBeforeRender(({ delta, elapsed }) => {
 
     const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
 
-    mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
+    // Only the size it is drawn at beyond its own grows: a body seen at its
+    // true size keeps it, or its places would float off its ground.
+    mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum * lifted));
     // A star has no opacity of its own to fade; it shrinks away instead.
     if (!(mesh instanceof Mesh)) mesh.scale.multiplyScalar(fade);
 
