@@ -11,6 +11,7 @@ export enum FleetyardsSyncAction {
   SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
   SYNC_BUYBACK_PRICING = "syncBuybackPricing",
   SYNC_STORE_CREDIT = "syncStoreCredit",
+  ADD_TO_CART = "addToCart",
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",
@@ -25,6 +26,25 @@ export type FleetyardsSyncSessionPayload = {
 // The store credit RSI lists for the account, in USD.
 export type FleetyardsSyncStoreCreditPayload = {
   credit: number;
+};
+
+// Why RSI's cart refused an item, by cause rather than by RSI's wording.
+export enum FleetyardsSyncCartErrorEnum {
+  UNAVAILABLE = "unavailable",
+  BUYBACK_INVALID = "buybackInvalid",
+  BUYBACK_NOT_ALONE = "buybackNotAlone",
+  FAILED = "failed",
+}
+
+export type FleetyardsSyncCartResult = {
+  id: string;
+  ok: boolean;
+  error?: FleetyardsSyncCartErrorEnum;
+  message?: string;
+};
+
+export type FleetyardsSyncCartPayload = {
+  results: FleetyardsSyncCartResult[];
 };
 
 export interface FleetyardsSyncVerifyPayload {
@@ -50,6 +70,7 @@ export type FleetyardsSyncMessage = {
     | FleetyardsSyncSessionPayload
     | FleetyardsSyncHealthPayload
     | FleetyardsSyncStoreCreditPayload
+    | FleetyardsSyncCartPayload
     | FleetyardsSyncVerifyPayload;
 };
 

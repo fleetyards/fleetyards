@@ -10,10 +10,23 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import ShipName from "@/frontend/components/Hangar/Planner/ShipName/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import {
+  RSI_CART_URL,
+  useRsiCart,
+  type RsiCartEntry,
+} from "@/frontend/composables/useRsiCart";
+import type { FleetyardsSyncCartResult } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  type HangarPlanCartItem,
   type HangarPlanPurchase,
   HangarPlanPurchaseKindEnum,
   type HangarPlanSlot,
@@ -32,6 +45,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 const { money, amount } = usePlanMoney();
+const { displayAlert } = useAppNotifications();
+const cart = useRsiCart();
 
 const slotLabels = computed(
   () => new Map(props.slots.map((slot) => [slot.id, slot.label])),
@@ -47,6 +62,80 @@ const labelsOf = (purchase: HangarPlanPurchase) =>
 const priced = (kind: HangarPlanPurchaseKindEnum) =>
   kind !== HangarPlanPurchaseKindEnum.INGAME;
 
+// A buy-back is only ever bought alone: adding one empties the RSI cart, and
+// RSI refuses anything next to it.
+const alone = (kind: HangarPlanPurchaseKindEnum) =>
+  kind === HangarPlanPurchaseKindEnum.BUYBACK;
+
+// Named by what it adds rather than by its place in the list, so a summary
+// fetched again after an edit keeps what is already in the cart marked.
+const entryKey = (item: HangarPlanCartItem, unit: number) =>
+  [
+    item.kind,
+    item.skuId,
+    item.fromShipId,
+    item.toShipId,
+    item.toSkuId,
+    item.pledgeId,
+  ]
+    .filter((part) => part !== undefined && part !== null)
+    .join("-") + `:${unit}`;
+
+const entriesOf = (purchase: HangarPlanPurchase): RsiCartEntry[] =>
+  purchase.cartItems.map((item, unit) => ({ key: entryKey(item, unit), item }));
+
+const results = ref<Record<string, FleetyardsSyncCartResult>>({});
+const busy = ref<string>();
+const added = ref(false);
+
+const addToCart = async (
+  entries: RsiCartEntry[],
+  busyKey: string,
+  kind: HangarPlanPurchaseKindEnum,
+) => {
+  busy.value = busyKey;
+  const answer = await cart.add(entries);
+  busy.value = undefined;
+
+  if (!answer.ok) {
+    displayAlert({
+      text: t(
+        answer.noSession
+          ? "hangarPlanner.buyList.cart.noSession"
+          : "hangarPlanner.buyList.cart.failure",
+      ),
+    });
+    return;
+  }
+
+  const anyAdded = answer.results.some((result) => result.ok);
+  // What the cart held before a buy-back is gone from it.
+  if (alone(kind) && anyAdded) results.value = {};
+
+  answer.results.forEach((result) => {
+    results.value[result.id] = result;
+  });
+  added.value ||= anyAdded;
+};
+
+type RowStatus = { ok: boolean; text: string; detail?: string };
+
+const statusOf = (entries: RsiCartEntry[]): RowStatus | undefined => {
+  const rowResults = entries.flatMap(({ key }) => results.value[key] ?? []);
+  if (!rowResults.length) return undefined;
+
+  const failure = rowResults.find((result) => !result.ok);
+  if (!failure) {
+    return { ok: true, text: t("hangarPlanner.buyList.cart.added") };
+  }
+
+  return {
+    ok: false,
+    text: t(`hangarPlanner.buyList.cart.errors.${failure.error ?? "failed"}`),
+    detail: failure.message,
+  };
+};
+
 const groups = computed(() =>
   Object.values(HangarPlanPurchaseKindEnum)
     .map((kind) => {
@@ -54,16 +143,31 @@ const groups = computed(() =>
         (purchase) => purchase.kind === kind,
       );
       const prices = purchases.map((purchase) => purchase.price);
+      const rows = purchases.map((purchase, index) => ({
+        purchase,
+        key: `${kind}:${index}`,
+        entries: entriesOf(purchase),
+      }));
 
       return {
         kind,
-        purchases,
+        rows,
+        entries: rows.flatMap((row) => row.entries),
         subtotal: prices.some((price) => price === null || price === undefined)
           ? undefined
           : prices.reduce<number>((sum, price) => sum + (price ?? 0), 0),
       };
     })
-    .filter((group) => group.purchases.length),
+    .filter((group) => group.rows.length),
+);
+
+const statuses = computed(
+  () =>
+    new Map(
+      groups.value.flatMap((group) =>
+        group.rows.map((row) => [row.key, statusOf(row.entries)] as const),
+      ),
+    ),
 );
 </script>
 
@@ -96,44 +200,124 @@ const groups = computed(() =>
             {{ amount(group.subtotal) }}
           </span>
         </h3>
-        <ul class="buy-list-entries">
-          <li
-            v-for="(purchase, index) in group.purchases"
-            :key="index"
-            class="buy-list-entry"
+        <template v-if="cart.available.value && group.entries.length">
+          <p
+            v-if="alone(group.kind)"
+            class="buy-list-muted buy-list-note"
+            data-test="hangar-plan-buy-list-buyback-alone"
           >
+            {{ t("hangarPlanner.buyList.cart.buybackAlone") }}
+          </p>
+          <Btn
+            v-else
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.GHOST"
+            :loading="busy === group.kind"
+            :disabled="!!busy"
+            class="buy-list-add-all"
+            :data-test="`hangar-plan-buy-list-add-all-${group.kind}`"
+            @click="addToCart(group.entries, group.kind, group.kind)"
+          >
+            <i class="fa-light fa-cart-plus" />
+            {{ t("hangarPlanner.buyList.cart.addAll") }}
+          </Btn>
+        </template>
+        <ul class="buy-list-entries">
+          <li v-for="row in group.rows" :key="row.key" class="buy-list-entry">
             <div class="buy-list-row">
               <span class="buy-list-name">
-                <template v-if="purchase.model">
-                  <template v-if="purchase.fromModel">
-                    <ShipName :ship="purchase.fromModel" />
+                <template v-if="row.purchase.model">
+                  <template v-if="row.purchase.fromModel">
+                    <ShipName :ship="row.purchase.fromModel" />
                     <i class="fa-light fa-arrow-right" aria-hidden="true" />
                   </template>
-                  <ShipName :ship="purchase.model" />
+                  <ShipName :ship="row.purchase.model" />
                 </template>
-                <span v-else>{{ purchase.name }}</span>
-                <span v-if="purchase.quantity > 1" class="buy-list-muted">
-                  ×{{ purchase.quantity }}
+                <span v-else>{{ row.purchase.name }}</span>
+                <span v-if="row.purchase.quantity > 1" class="buy-list-muted">
+                  ×{{ row.purchase.quantity }}
                 </span>
               </span>
-              <span v-if="priced(purchase.kind)" class="buy-list-price">
-                {{ money(purchase.price) }}
+              <span v-if="priced(row.purchase.kind)" class="buy-list-price">
+                {{ money(row.purchase.price) }}
               </span>
             </div>
-            <small class="buy-list-muted">{{ labelsOf(purchase) }}</small>
-            <small v-if="purchase.notOnSale" class="buy-list-warning">
+            <small class="buy-list-muted">{{ labelsOf(row.purchase) }}</small>
+            <small v-if="row.purchase.notOnSale" class="buy-list-warning">
               {{ t("hangarPlanner.buyList.notOnSale") }}
             </small>
-            <small v-if="purchase.tokenCount" class="buy-list-muted">
+            <small v-if="row.purchase.tokenCount" class="buy-list-muted">
               {{
                 t("hangarPlanner.buyList.usesToken", {
-                  count: purchase.tokenCount,
+                  count: row.purchase.tokenCount,
                 })
               }}
             </small>
+            <div
+              v-if="cart.available.value && row.entries.length"
+              class="buy-list-cart"
+            >
+              <template v-if="alone(group.kind)">
+                <Btn
+                  v-for="(entry, unit) in row.entries"
+                  :key="entry.key"
+                  :size="BtnSizesEnum.XS"
+                  :variant="BtnVariantsEnum.BARE"
+                  :loading="busy === entry.key"
+                  :disabled="!!busy"
+                  :data-test="`hangar-plan-buy-list-add-${row.key}-${unit}`"
+                  @click="addToCart([entry], entry.key, group.kind)"
+                >
+                  <i class="fa-light fa-cart-plus" />
+                  {{
+                    row.entries.length > 1
+                      ? t("hangarPlanner.buyList.cart.addUnit", {
+                          number: unit + 1,
+                        })
+                      : t("hangarPlanner.buyList.cart.add")
+                  }}
+                </Btn>
+              </template>
+              <Btn
+                v-else
+                :size="BtnSizesEnum.XS"
+                :variant="BtnVariantsEnum.BARE"
+                :loading="busy === row.key"
+                :disabled="!!busy"
+                :data-test="`hangar-plan-buy-list-add-${row.key}`"
+                @click="addToCart(row.entries, row.key, group.kind)"
+              >
+                <i class="fa-light fa-cart-plus" />
+                {{ t("hangarPlanner.buyList.cart.add") }}
+              </Btn>
+              <small
+                v-if="statuses.get(row.key)"
+                :class="
+                  statuses.get(row.key)?.ok
+                    ? 'buy-list-success'
+                    : 'buy-list-warning'
+                "
+                :title="statuses.get(row.key)?.detail"
+                :data-test="`hangar-plan-buy-list-status-${row.key}`"
+              >
+                {{ statuses.get(row.key)?.text }}
+              </small>
+            </div>
           </li>
         </ul>
       </section>
+
+      <a
+        v-if="added"
+        :href="RSI_CART_URL"
+        target="_blank"
+        rel="noopener"
+        class="buy-list-cart-link"
+        data-test="hangar-plan-buy-list-open-cart"
+      >
+        {{ t("hangarPlanner.buyList.cart.open") }}
+        <i class="fa-light fa-arrow-up-right-from-square" aria-hidden="true" />
+      </a>
     </PanelBody>
   </Panel>
 </template>
@@ -145,6 +329,33 @@ const groups = computed(() =>
 
 .buy-list-warning {
   color: var(--color-warning);
+}
+
+.buy-list-success {
+  color: var(--color-success);
+}
+
+.buy-list-note {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+}
+
+.buy-list-add-all {
+  margin-bottom: 4px;
+}
+
+.buy-list-cart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+.buy-list-cart-link {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 12px;
 }
 
 .buy-list-group + .buy-list-group {

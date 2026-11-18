@@ -200,6 +200,22 @@
         "usesToken": {
           "one": "%{count} mit einem Buy-Back-Token bezahlt",
           "other": "%{count} mit Buy-Back-Tokens bezahlt"
+        },
+        "cart": {
+          "add": "In den RSI-Warenkorb",
+          "addAll": "Alle in den RSI-Warenkorb",
+          "addUnit": "#%{number} in den RSI-Warenkorb",
+          "added": "Im RSI-Warenkorb",
+          "buybackAlone": "Ein Buy-Back ersetzt alles im RSI-Warenkorb, daher kommt jedes einzeln hinein.",
+          "open": "RSI-Warenkorb öffnen",
+          "noSession": "Melde dich auf robertsspaceindustries.com an und versuche es erneut.",
+          "failure": "Die Sync-Erweiterung hat den RSI-Warenkorb nicht erreicht.",
+          "errors": {
+            "unavailable": "RSI verkauft das derzeit nicht.",
+            "buybackInvalid": "RSI bietet dieses Buy-Back nicht mehr an.",
+            "buybackNotAlone": "Im RSI-Warenkorb liegt ein Buy-Back. Kaufe oder entferne es zuerst.",
+            "failed": "RSI hat es nicht angenommen."
+          }
         }
       },
       "comparison": {

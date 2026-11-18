@@ -200,6 +200,22 @@
         "usesToken": {
           "one": "%{count} payé avec un jeton de rachat",
           "other": "%{count} payés avec des jetons de rachat"
+        },
+        "cart": {
+          "add": "Ajouter au panier RSI",
+          "addAll": "Tout ajouter au panier RSI",
+          "addUnit": "Ajouter le n° %{number} au panier RSI",
+          "added": "Dans ton panier RSI",
+          "buybackAlone": "Un rachat remplace tout le contenu de ton panier RSI, donc chacun y entre séparément.",
+          "open": "Ouvrir ton panier RSI",
+          "noSession": "Connecte-toi sur robertsspaceindustries.com, puis réessaie.",
+          "failure": "L'extension Sync n'a pas pu joindre le panier RSI.",
+          "errors": {
+            "unavailable": "RSI ne vend pas cela en ce moment.",
+            "buybackInvalid": "RSI ne propose plus ce rachat.",
+            "buybackNotAlone": "Un rachat se trouve dans ton panier RSI. Achète-le ou retire-le d'abord.",
+            "failed": "RSI ne l'a pas accepté."
+          }
         }
       },
       "comparison": {

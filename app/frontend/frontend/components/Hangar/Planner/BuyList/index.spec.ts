@@ -1,6 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
+  clearSyncExtensionOverride,
+  overrideSyncExtension,
+} from "@/frontend/composables/useSyncExtension";
+import {
+  FleetyardsSyncAction,
+  FleetyardsSyncCartErrorEnum,
+  type FleetyardsSyncMessage,
+} from "@/frontend/lib/FleetyardsSyncHandler";
+import {
+  HangarPlanCartItemKindEnum,
   HangarPlanPurchaseKindEnum,
   HangarPlanSlotStateEnum,
   type HangarPlanModel,
@@ -40,7 +51,63 @@ const purchase = (
   tokenCount: 0,
   slotIds: [],
   notOnSale: false,
+  cartItems: [],
   ...attrs,
+});
+
+type CartRequest = { items: { id: string; kind: string }[] };
+
+// Answers like an extension that can fill the cart, with what `answer` says
+// for each item, and keeps what each request asked for.
+const stubExtension = (
+  answer: (id: string) => { ok: boolean; error?: FleetyardsSyncCartErrorEnum },
+  actions = [FleetyardsSyncAction.ADD_TO_CART],
+) => {
+  const requests: CartRequest[] = [];
+  const stub = async (
+    action: FleetyardsSyncAction,
+    params: Record<string, unknown> = {},
+  ): Promise<FleetyardsSyncMessage> => {
+    if (action === FleetyardsSyncAction.HEALTH) {
+      return { action, code: 200, payload: { actions } };
+    }
+
+    const request = params as CartRequest;
+    requests.push(request);
+
+    return {
+      action,
+      code: 200,
+      payload: {
+        results: request.items.map(({ id }) => ({ id, ...answer(id) })),
+      },
+    };
+  };
+  overrideSyncExtension(stub);
+  installed.push(stub);
+
+  return requests;
+};
+
+const installed: Parameters<typeof overrideSyncExtension>[0][] = [];
+
+afterEach(() => {
+  installed.splice(0).forEach(clearSyncExtensionOverride);
+});
+
+const sku = (skuId: number) => ({
+  kind: HangarPlanCartItemKindEnum.SKU,
+  skuId,
+});
+const upgrade = (fromShipId: number, toShipId: number) => ({
+  kind: HangarPlanCartItemKindEnum.UPGRADE,
+  fromShipId,
+  toShipId,
+  toSkuId: toShipId * 100,
+});
+const buyback = (pledgeId: string) => ({
+  kind: HangarPlanCartItemKindEnum.BUYBACK,
+  pledgeId,
 });
 
 const avenger = model("Avenger");
@@ -103,5 +170,177 @@ describe("HangarPlannerBuyList", () => {
     const extras = wrapper.find('[data-test="hangar-plan-buy-list-extra"]');
     expect(extras.text()).toContain("Cutlass - Ghoul");
     expect(extras.text()).toContain("Unknown");
+  });
+
+  it("offers no cart without an extension that can fill one", async () => {
+    stubExtension(() => ({ ok: true }), [FleetyardsSyncAction.SYNC]);
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        slots,
+        purchases: [
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: cutlass,
+            cartItems: [sku(1)],
+          }),
+        ],
+      },
+    });
+    await flushPromises();
+
+    expect(wrapper.text()).not.toContain("Add to RSI cart");
+  });
+
+  it("adds a row to the RSI cart and says it is there", async () => {
+    const requests = stubExtension(() => ({ ok: true }));
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        slots,
+        purchases: [
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: cutlass,
+            quantity: 2,
+            cartItems: [sku(17402), sku(17402)],
+          }),
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: avenger,
+            cartItems: [],
+          }),
+        ],
+      },
+    });
+    await flushPromises();
+
+    expect(
+      wrapper.findAll('[data-test^="hangar-plan-buy-list-add-ship:"]'),
+    ).toHaveLength(1);
+
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-ship:0"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(requests).toEqual([
+      {
+        items: [
+          { id: "sku-17402:0", kind: "sku", skuId: 17402 },
+          { id: "sku-17402:1", kind: "sku", skuId: 17402 },
+        ],
+      },
+    ]);
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-status-ship:0"]').text(),
+    ).toBe("In your RSI cart");
+    expect(
+      wrapper
+        .find('[data-test="hangar-plan-buy-list-open-cart"]')
+        .attributes("href"),
+    ).toBe("https://robertsspaceindustries.com/en/store/pledge/cart");
+  });
+
+  it("adds a whole group, and says why RSI refused an item", async () => {
+    const requests = stubExtension((id) =>
+      id.startsWith("upgrade-2-")
+        ? { ok: false, error: FleetyardsSyncCartErrorEnum.UNAVAILABLE }
+        : { ok: true },
+    );
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        slots,
+        purchases: [
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.CCU,
+            fromModel: avenger,
+            model: cutlass,
+            cartItems: [upgrade(1, 3)],
+          }),
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.CCU,
+            fromModel: cutlass,
+            model: avenger,
+            cartItems: [upgrade(2, 4)],
+          }),
+        ],
+      },
+    });
+    await flushPromises();
+
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-all-ccu"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(requests[0]?.items.map((item) => item.id)).toEqual([
+      "upgrade-1-3-300:0",
+      "upgrade-2-4-400:0",
+    ]);
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-status-ccu:0"]').text(),
+    ).toBe("In your RSI cart");
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-status-ccu:1"]').text(),
+    ).toBe("RSI does not sell this right now.");
+  });
+
+  it("puts buy-backs in one at a time, and forgets what they pushed out of the cart", async () => {
+    const requests = stubExtension(() => ({ ok: true }));
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        slots,
+        purchases: [
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.SHIP,
+            model: avenger,
+            cartItems: [sku(1)],
+          }),
+          purchase({
+            kind: HangarPlanPurchaseKindEnum.BUYBACK,
+            model: cutlass,
+            quantity: 2,
+            cartItems: [buyback("115575665"), buyback("115575666")],
+          }),
+        ],
+      },
+    });
+    await flushPromises();
+
+    const buybacks = wrapper.find('[data-test="hangar-plan-buy-list-buyback"]');
+    expect(
+      buybacks
+        .find('[data-test="hangar-plan-buy-list-buyback-alone"]')
+        .exists(),
+    ).toBe(true);
+    expect(
+      buybacks
+        .find('[data-test="hangar-plan-buy-list-add-all-buyback"]')
+        .exists(),
+    ).toBe(false);
+
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-ship:0"]')
+      .trigger("click");
+    await flushPromises();
+    await wrapper
+      .find('[data-test="hangar-plan-buy-list-add-buyback:0-1"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(requests[1]?.items).toEqual([
+      { id: "buyback-115575666:1", kind: "buyback", pledgeId: "115575666" },
+    ]);
+    expect(
+      wrapper.find('[data-test="hangar-plan-buy-list-status-ship:0"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper
+        .find('[data-test="hangar-plan-buy-list-status-buyback:0"]')
+        .text(),
+    ).toBe("In your RSI cart");
   });
 });
