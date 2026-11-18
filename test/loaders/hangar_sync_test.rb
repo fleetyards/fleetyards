@@ -754,6 +754,33 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal ["Galaxy - Cargo Module"], @user.hangar_pledge_items.ship_components.pluck(:name)
     end
 
+    test "keeps a module whose ship is not in the hangar without a warning" do
+      galaxy = Model.find_by!(slug: "rsi-galaxy")
+      cargo = create(:model_module, name: "Cargo Module")
+      create(:module_hardpoint, model: galaxy, model_module: cargo)
+
+      result = ::HangarSync.new([
+        {"id" => "00012349", "name" => "Galaxy - Cargo Module", "type" => "component"}
+      ]).run(@user.id)
+
+      assert_empty result[:missing_component_vehicles]
+      assert_equal ["Galaxy - Cargo Module"], @user.hangar_pledge_items.ship_components.pluck(:name)
+    end
+
+    test "warns about a module without its ship when ship components are not synced" do
+      galaxy = Model.find_by!(slug: "rsi-galaxy")
+      cargo = create(:model_module, name: "Cargo Module")
+      create(:module_hardpoint, model: galaxy, model_module: cargo)
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], sync_ship_components: false)
+
+      result = ::HangarSync.new([
+        {"id" => "00012350", "name" => "Galaxy - Cargo Module", "type" => "component"}
+      ]).run_with_import(import)
+
+      assert_equal ["Galaxy - Cargo Module"], result[:missing_component_vehicles]
+      assert_empty @user.hangar_pledge_items
+    end
+
     test "reports a module it cannot fit as not found rather than dropping it" do
       result = ::HangarSync.new([
         {"id" => "00012346", "name" => "Mystery Ship - Science Module", "type" => "component"}

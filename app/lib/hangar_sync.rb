@@ -563,7 +563,9 @@ class HangarSync < HangarImporter
         user_id: user_id, loaner: false, hidden: false, model_id: component.model_ids
       ).order(created_at: :asc).first
       if vehicle.blank?
-        missing_component_vehicles << item[:name]
+        # A run that syncs ship components keeps the module with them until
+        # its ship is added: only a module kept nowhere is worth a warning.
+        missing_component_vehicles << item[:name] unless pledge_item_kinds.include?("ship_component")
 
         next
       end
