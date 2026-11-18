@@ -129,6 +129,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "starmap",
       feature: FeatureFlagName.STARMAP,
+      fullscreen: true,
     },
   },
   // A shop UEX lists at a place, with everything it sells.

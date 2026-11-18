@@ -20,6 +20,9 @@ import {
 } from "@/services/fyApi";
 import StarmapScene from "./Scene.vue";
 import StarmapPanel from "./Panel.vue";
+import Skybox from "@/shared/components/HoloViewer/Skybox/index.vue";
+import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import {
   chainOf,
   systemScene,
@@ -88,6 +91,18 @@ const scene = computed<Scene | null>(() => {
 
   const places = starmap.value?.places;
   return places ? systemScene(places) : null;
+});
+
+// The game's own sky behind a system, where there is one: Stanton's and
+// Pyro's nebulae, as the holo viewer offers them. Nyx has none yet.
+const BACKDROPS: Record<string, string> = {
+  stanton: stantonNebula,
+  pyro: pyroNebula,
+};
+
+const backdrop = computed(() => {
+  const name = starmap.value?.system.slug.split("-")[0];
+  return systemSlug.value && name ? BACKDROPS[name] : undefined;
 });
 
 const empty = computed(
@@ -273,32 +288,6 @@ const hint = computed(() =>
 
 <template>
   <div class="starmap">
-    <nav class="starmap__crumbs" :aria-label="t('starmap.level')">
-      <template v-for="(crumb, index) in crumbs" :key="crumb.key">
-        <i
-          v-if="index > 0"
-          class="fa-light fa-chevron-right starmap__crumb-separator"
-          aria-hidden="true"
-        />
-        <button
-          v-if="crumb.go"
-          type="button"
-          class="starmap__crumb"
-          :data-test="`starmap-crumb-${crumb.key}`"
-          @click="crumb.go"
-        >
-          {{ crumb.label }}
-        </button>
-        <span
-          v-else
-          class="starmap__crumb starmap__crumb--current"
-          aria-current="page"
-        >
-          {{ crumb.label }}
-        </span>
-      </template>
-    </nav>
-
     <div class="starmap__stage">
       <TresCanvas
         v-if="webglSupported"
@@ -321,6 +310,7 @@ const hint = computed(() =>
           :enable-pan="false"
           make-default
         />
+        <Skybox v-if="backdrop" :src="backdrop" />
         <StarmapScene
           v-if="scene"
           ref="sceneRef"
@@ -332,6 +322,32 @@ const hint = computed(() =>
         />
       </TresCanvas>
       <WebglFallback v-else />
+
+      <nav class="starmap__crumbs" :aria-label="t('starmap.level')">
+        <template v-for="(crumb, index) in crumbs" :key="crumb.key">
+          <i
+            v-if="index > 0"
+            class="fa-light fa-chevron-right starmap__crumb-separator"
+            aria-hidden="true"
+          />
+          <button
+            v-if="crumb.go"
+            type="button"
+            class="starmap__crumb"
+            :data-test="`starmap-crumb-${crumb.key}`"
+            @click="crumb.go"
+          >
+            {{ crumb.label }}
+          </button>
+          <span
+            v-else
+            class="starmap__crumb starmap__crumb--current"
+            aria-current="page"
+          >
+            {{ crumb.label }}
+          </span>
+        </template>
+      </nav>
 
       <p v-if="loading" class="starmap__status" data-test="starmap-loading">
         <i class="fa-duotone fa-spinner-third fa-spin" aria-hidden="true" />
@@ -417,22 +433,36 @@ const hint = computed(() =>
         </aside>
 
         <p class="starmap__hint">{{ hint }}</p>
+        <p v-if="!systemSlug" class="starmap__footnote">
+          {{ t("starmap.footnote") }}
+        </p>
       </template>
     </div>
-
-    <p v-if="!systemSlug" class="starmap__footnote">
-      {{ t("starmap.footnote") }}
-    </p>
   </div>
 </template>
 
 <style lang="scss" scoped>
+// Above the map's labels, which sit in layers of their own over the canvas.
+$overlay: 20;
+
 .starmap {
+  position: relative;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 12px;
+  min-height: 0;
 
   &__crumbs {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: $overlay;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    padding: 6px 12px;
+    border-radius: var(--radius-surface-slim);
+    background: rgb(8 16 28 / 82%);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -461,10 +491,8 @@ const hint = computed(() =>
 
   &__stage {
     position: relative;
-    height: calc(100vh - 240px);
-    min-height: 480px;
-    border: 1px solid var(--color-edge-soft);
-    border-radius: var(--radius-surface-slim);
+    flex: 1;
+    min-height: 420px;
     background: radial-gradient(circle at 50% 40%, #0d1c30 0%, #050a12 70%);
     overflow: hidden;
     user-select: none;
@@ -485,7 +513,8 @@ const hint = computed(() =>
 
   &__panel {
     position: absolute;
-    top: 56px;
+    z-index: $overlay;
+    top: 100px;
     bottom: 36px;
     left: 12px;
     width: min(260px, calc(100% - 24px));
@@ -497,7 +526,8 @@ const hint = computed(() =>
 
   &__tools {
     position: absolute;
-    top: 12px;
+    z-index: $overlay;
+    top: 56px;
     left: 12px;
     display: flex;
     flex-wrap: wrap;
@@ -506,6 +536,7 @@ const hint = computed(() =>
 
   &__detail {
     position: absolute;
+    z-index: $overlay;
     top: 12px;
     right: 12px;
     display: flex;
@@ -567,9 +598,14 @@ const hint = computed(() =>
   }
 
   &__footnote {
+    position: absolute;
+    bottom: 30px;
+    left: 12px;
+    right: 12px;
     margin: 0;
-    font-size: 0.8125rem;
-    color: var(--color-text-dim);
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 50%);
+    pointer-events: none;
   }
 }
 
