@@ -31,6 +31,7 @@ const pledgeItem = (
   quantity: 1,
   standalone: true,
   meltable: false,
+  shipModule: false,
   rsiPageUpgradesOnly: false,
   createdAt: "2026-10-08T12:00:00Z",
   updatedAt: "2026-10-08T12:00:00Z",
@@ -235,6 +236,19 @@ describe("Hangar/PledgeItemsList", () => {
       expect(wrapper.emitted("add-to-inventory")?.[0]?.[0]).toMatchObject({
         id: "part",
       });
+    });
+
+    it("never offers a ship module, which is fitted to a ship instead", async () => {
+      const wrapper = await mountWithActions([
+        part({ name: "Galaxy - Cargo Module", shipModule: true }),
+      ]);
+
+      expect(
+        wrapper.find("[data-test='pledge-item-add-to-inventory']").exists(),
+      ).toBe(false);
+      expect(wrapper.find("[data-test='pledge-item-select']").exists()).toBe(
+        false,
+      );
     });
 
     it("names the inventory an item went to instead of offering it again", async () => {

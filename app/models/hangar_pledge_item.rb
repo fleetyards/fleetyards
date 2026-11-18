@@ -106,6 +106,16 @@ class HangarPledgeItem < ApplicationRecord
     pledge_value if standalone?
   end
 
+  # A module the hangar sync fits to a ship: listed with the ship components,
+  # but never deposited in an inventory, where it would be counted twice.
+  def ship_module?
+    kind == "ship_component" && ::HangarModuleMapping.module?(name)
+  end
+
+  def inventoriable?
+    INVENTORY_KINDS.include?(kind) && !ship_module?
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[meltable name]
   end
@@ -131,7 +141,7 @@ class HangarPledgeItem < ApplicationRecord
 
   # The user's deposits that came from these items, by source key.
   def self.deposits_for(user, items)
-    keys = items.select { |item| INVENTORY_KINDS.include?(item.kind) }.map(&:source_key)
+    keys = items.select(&:inventoriable?).map(&:source_key)
     return {} if keys.empty?
 
     InventoryItem.joins(:inventory)

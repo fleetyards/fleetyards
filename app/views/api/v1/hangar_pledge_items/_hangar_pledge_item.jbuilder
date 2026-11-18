@@ -10,6 +10,7 @@ json.quantity hangar_pledge_item.quantity
 json.image hangar_pledge_item.image_url if hangar_pledge_item.image_url.present?
 json.standalone hangar_pledge_item.standalone?
 json.meltable hangar_pledge_item.meltable
+json.ship_module hangar_pledge_item.ship_module?
 json.pledge_created_on hangar_pledge_item.pledge_created_on.iso8601 if hangar_pledge_item.pledge_created_on.present?
 json.melt_value hangar_pledge_item.melt_value.to_f unless hangar_pledge_item.melt_value.nil?
 json.pledge_name hangar_pledge_item.pledge_name if hangar_pledge_item.pledge_name.present?

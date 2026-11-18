@@ -17,6 +17,7 @@ module V1
             image: {type: :string, format: :uri},
             standalone: {type: :boolean, description: "Whether the item is all its pledge holds"},
             meltable: {type: :boolean, description: "Whether RSI offers to melt the item's pledge"},
+            shipModule: {type: :boolean, description: "Whether the item is a ship module, which the hangar sync fits to a ship rather than adding to an inventory"},
             pledgeCreatedOn: {type: :string, format: :date},
             meltValue: {type: :number, description: "What melting the item returns, in USD; only for an item that is its whole pledge"},
             pledgeName: {type: :string},
@@ -29,7 +30,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id rsiPledgeId kind name quantity standalone meltable rsiPageUpgradesOnly createdAt updatedAt]
+          required: %w[id rsiPledgeId kind name quantity standalone meltable shipModule rsiPageUpgradesOnly createdAt updatedAt]
         })
       end
     end

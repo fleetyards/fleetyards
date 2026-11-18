@@ -54,6 +54,7 @@ const item = (attrs: Partial<HangarPledgeItem> = {}): HangarPledgeItem => ({
   quantity: 2,
   standalone: false,
   meltable: false,
+  shipModule: false,
   rsiPageUpgradesOnly: false,
   createdAt: "2026-10-19T12:00:00Z",
   updatedAt: "2026-10-19T12:00:00Z",

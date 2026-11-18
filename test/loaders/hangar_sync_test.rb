@@ -751,6 +751,7 @@ class HangarSyncTest < ActiveSupport::TestCase
 
       assert_equal 1, result[:imported_components].size
       assert_equal cargo.id, vehicle.vehicle_modules.sole.model_module_id
+      assert_equal ["Galaxy - Cargo Module"], @user.hangar_pledge_items.ship_components.pluck(:name)
     end
 
     test "reports a module it cannot fit as not found rather than dropping it" do
@@ -759,10 +760,10 @@ class HangarSyncTest < ActiveSupport::TestCase
       ]).run(@user.id)
 
       assert_equal ["Mystery Ship - Science Module"], result[:missing_components]
-      assert_empty @user.hangar_pledge_items
+      assert_equal ["Mystery Ship - Science Module"], @user.hangar_pledge_items.ship_components.pluck(:name)
     end
 
-    test "keeps a ship part as a ship component instead of a module" do
+    test "keeps a ship part as a ship component without fitting it" do
       result = ::HangarSync.new([
         {"id" => "00012347", "name" => "BriskAir IC-20", "type" => "component"}
       ]).run(@user.id)

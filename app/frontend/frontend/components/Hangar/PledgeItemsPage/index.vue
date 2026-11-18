@@ -116,6 +116,11 @@ const inventoryActions = computed(() =>
 
 const records = computed(() => pledgeItems.value?.items ?? []);
 
+// A ship module is fitted to a ship by the sync, never kept in an inventory.
+const selectableRecords = computed(() =>
+  records.value.filter((item) => !item.shipModule),
+);
+
 // The endpoint takes the items themselves, not a query, so a selection stays
 // within the page: the matching count is the page's.
 const {
@@ -131,9 +136,9 @@ const {
   selectAllMatching,
   clear: clearSelection,
 } = useBulkSelection(
-  records,
+  selectableRecords,
   () => queryParams.value.q,
-  () => records.value.length,
+  () => selectableRecords.value.length,
 );
 
 const openAddToInventory = (items: HangarPledgeItem[]) => {

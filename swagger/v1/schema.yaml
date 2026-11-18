@@ -42189,6 +42189,10 @@ components:
         meltable:
           type: boolean
           description: Whether RSI offers to melt the item's pledge
+        shipModule:
+          type: boolean
+          description: Whether the item is a ship module, which the hangar sync fits
+            to a ship rather than adding to an inventory
         pledgeCreatedOn:
           type: string
           format: date
@@ -42227,6 +42231,7 @@ components:
       - quantity
       - standalone
       - meltable
+      - shipModule
       - rsiPageUpgradesOnly
       - createdAt
       - updatedAt
