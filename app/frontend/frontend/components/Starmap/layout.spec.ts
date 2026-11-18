@@ -30,6 +30,7 @@ const place = (
   texture: null,
   elevation: null,
   clouds: null,
+  ground: null,
   ...overrides,
 });
 

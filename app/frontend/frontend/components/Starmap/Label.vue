@@ -57,6 +57,7 @@ withDefaults(defineProps<Props>(), {
 
   &--star,
   &--system {
+    transform: translateY(24px);
     font-family: Orbitron, sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.14em;

@@ -241,7 +241,11 @@ const gameSurface = (url: string) => {
 // The game's own surface replaces the painted one once it has loaded; until
 // then, or if it fails, the painted one stays. One that arrives after the
 // scene it was for was torn down is thrown away.
-const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
+const wrapInGameSurface = (
+  material: MeshLambertMaterial,
+  url: string,
+  { terrain = false }: { terrain?: boolean } = {},
+) => {
   const built = generation;
 
   gameSurface(url)
@@ -250,6 +254,8 @@ const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
         texture.dispose();
         return;
       }
+
+      if (terrain) terrainMap(texture);
 
       if (!textures.includes(texture)) textures.push(texture);
 
@@ -435,7 +441,13 @@ const build = (scene: StarmapScene) => {
       textures.push(map);
       const lambert = new MeshLambertMaterial({ map, transparent: true });
       material = lambert;
-      if (entry.texture) wrapInGameSurface(lambert, entry.texture);
+      // The ground's own colour where the game has it, on a body its newer
+      // planet engine paints; else the surface its starmap uses.
+      if (entry.ground) {
+        wrapInGameSurface(lambert, entry.ground, { terrain: true });
+      } else if (entry.texture) {
+        wrapInGameSurface(lambert, entry.texture);
+      }
       if (entry.elevation) raiseRelief(lambert, entry.elevation);
     } else if (entry.role === "place") {
       // A place is its kind's glyph, the same size on screen at any distance.

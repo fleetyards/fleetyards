@@ -34,6 +34,8 @@ export interface StarmapItem {
   // texture.
   elevation: string | null;
   clouds: string | null;
+  // The colour of the ground, on a body the newer planet engine paints.
+  ground: string | null;
   // A flare star, as Pyro is.
   unstable: boolean;
   // Whether it is named on the map where there is room. Every item is named
@@ -321,6 +323,7 @@ export const systemsScene = (
       texture: null,
       elevation: null,
       clouds: null,
+      ground: null,
       unstable: stars.get(system.id)?.unstable ?? false,
       labelled: true,
       rank: 0,
@@ -437,6 +440,7 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       // As exported: a resized copy would lose what the data maps carry.
       elevation: place.elevation?.url ?? null,
       clouds: place.clouds?.url ?? null,
+      ground: place.ground?.largeUrl ?? place.ground?.url ?? null,
       unstable: place.unstable,
       labelled: !place.lagrangePoint || !occupied.has(place.id),
       rank: rankOf(place, role),

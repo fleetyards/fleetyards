@@ -393,7 +393,10 @@ export const sun = (color: string, unstable: boolean): StarmapSun => {
   const corona = new Sprite(coronaMaterial);
   const coronaScale = 2 * (unstable ? FLARE_CORONA : CORONA);
   corona.scale.setScalar(coronaScale);
-  corona.renderOrder = -1;
+  // Drawn after the orbits and tunnels that meet at the star, so they pass
+  // behind it rather than across it.
+  corona.renderOrder = 4;
+  core.renderOrder = 5;
 
   const object = new Group();
   object.add(corona, core);
