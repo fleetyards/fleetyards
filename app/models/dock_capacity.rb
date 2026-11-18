@@ -45,6 +45,12 @@ class DockCapacity < ApplicationRecord
     size.humanize
   end
 
+  # "2 medium pads". Each class is its own phrase rather than a word dropped
+  # into one, because most locales inflect the adjective with the count.
+  def display_label
+    I18n.t("labels.dock_capacity.#{ladder}.#{size}", count: quantity)
+  end
+
   private def size_belongs_to_its_ladder
     return if ladder.blank? || size.blank?
     return if LADDER_CLASSES.fetch(ladder, []).include?(size)
