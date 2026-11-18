@@ -123,8 +123,18 @@ const linkLabel = computed(() =>
 
 // Short specs (a size, a grade) take only their own width and the last one
 // takes what is left, so a long class name gets the room instead of a third.
+const BADGES_PER_ROW = 3;
+
+// More than a row holds -- a station's landing, trade and law -- wraps into
+// rows of three even columns.
+const wrapsBadges = computed(() => props.badges.length > BADGES_PER_ROW + 1);
+
 const badgeColumns = computed(() => {
   const count = props.badges.length;
+
+  if (wrapsBadges.value) {
+    return `repeat(${BADGES_PER_ROW}, minmax(0, 1fr))`;
+  }
 
   if (props.prominentBadges || count < 2) {
     return `repeat(${count}, minmax(0, 1fr))`;
@@ -269,13 +279,17 @@ const hasBody = computed(
       <div
         v-if="badges.length"
         class="stats-card__specs"
-        :class="{ 'stats-card__specs--prominent': prominentBadges }"
+        :class="{
+          'stats-card__specs--prominent': prominentBadges,
+          'stats-card__specs--rows': wrapsBadges,
+        }"
         :style="{ gridTemplateColumns: badgeColumns }"
       >
         <div
           v-for="badge in badges"
           :key="badge.key"
           class="stats-card__spec"
+          :class="{ 'stats-card__spec--wide': badge.wide }"
           data-test="stats-card-spec"
         >
           <span class="stats-card__label">{{ badge.label }}</span>
