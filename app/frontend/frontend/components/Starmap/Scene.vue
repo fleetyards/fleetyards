@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import {
   AmbientLight,
+  CanvasTexture,
   Color,
   Group,
   Mesh,
@@ -14,6 +15,7 @@ import {
   MeshLambertMaterial,
   PerspectiveCamera,
   PointLight,
+  RepeatWrapping,
   SphereGeometry,
   Sprite,
   SpriteMaterial,
@@ -49,6 +51,8 @@ const emit = defineEmits<{
   focus: [item: StarmapItem];
   // A system on the ring was opened.
   enter: [item: StarmapItem];
+  // A click on empty space let go of what was picked.
+  release: [];
 }>();
 
 const { camera, controls, renderer } = useTres();
@@ -69,16 +73,23 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
 const PICK_PIXELS = 14;
 const TIE_PIXELS = 3;
 
+// An orbit narrower than this on screen, in pixels, is gone, and it takes
+// this many more to fade fully in.
+const ORBIT_GONE_PIXELS = 14;
+const ORBIT_FADE_PIXELS = 20;
+
+// How much smaller a minor place's marker is than its kind's.
+const MINOR_MARKER = 0.65;
+
 // How long a flight takes, in seconds.
-const FLIGHT_SECONDS = 1.3;
+const FLIGHT_SECONDS = 1.8;
 
 // One turn of a body's surface, as on the location pages.
 const TURN_SECONDS = 90;
 
-// What is near a body comes into view within this many of its radii, and is
-// gone again at twice that. A moon is near its planet much further out.
+// Within this many of a body's radii the camera counts as close to it: a
+// body it zooms toward becomes the focus, and a painted one stops turning.
 const PLACES_NEAR = 14;
-const MOONS_NEAR = 140;
 
 const items = computed(() => props.scene.items);
 const byKey = computed(
@@ -106,7 +117,17 @@ const dot = new SphereGeometry(1, 12, 8);
 const meshes = new Map<string, Object3D>();
 const fades = new Map<string, number>();
 const lineMaterials: LineMaterial[] = [];
-const orbitLines: { body: string; material: LineMaterial; base: number }[] = [];
+const orbitLines: {
+  body: string;
+  center: Vector3;
+  radius: number;
+  line: Line2;
+  material: LineMaterial;
+  base: number;
+}[] = [];
+// How much of each moon's orbit can be seen, by the moon's key: the moon is
+// shown with its orbit, and goes when the orbit shrinks to a few pixels.
+const orbitFades = new Map<string, number>();
 const textures: Texture[] = [];
 const suns: StarmapSun[] = [];
 
@@ -206,8 +227,94 @@ const wrapInGameSurface = (material: MeshLambertMaterial, url: string) => {
     .catch(() => undefined);
 };
 
+// The terrain maps are a quarter turn round from the game's surface: the
+// surface at u matches them at u + 0.25.
+const TERRAIN_U_OFFSET = 0.25;
+
+const terrainMap = (texture: Texture) => {
+  texture.wrapS = RepeatWrapping;
+  texture.offset.x = TERRAIN_U_OFFSET;
+  return texture;
+};
+
+// The elevation as relief under the light: the body's ranges and basins
+// catch it where the surface alone is flat colour.
+const raiseRelief = (material: MeshLambertMaterial, url: string) => {
+  const built = generation;
+
+  loader
+    .loadAsync(url)
+    .then((texture) => {
+      if (built !== generation) {
+        texture.dispose();
+        return;
+      }
+
+      textures.push(terrainMap(texture));
+      material.bumpMap = texture;
+      material.bumpScale = RELIEF;
+      material.needsUpdate = true;
+    })
+    .catch(() => undefined);
+};
+
+const RELIEF = 4;
+
+// How opaque the thickest cloud is: thin enough to see the ground through.
+const CLOUD_COVER = 0.75;
+
+// The cloud map is the cloud shader's data, its cover in the red channel;
+// turned here into white cloud with that cover as its opacity.
+const cloudsFrom = (image: HTMLImageElement) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 512;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+
+  if (context) {
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = pixels.data;
+
+    for (let index = 0; index < data.length; index += 4) {
+      data[index + 3] = data[index] * CLOUD_COVER;
+      data[index] = 255;
+      data[index + 1] = 255;
+      data[index + 2] = 255;
+    }
+
+    context.putImageData(pixels, 0, 0);
+  }
+
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return terrainMap(texture);
+};
+
+const wrapInClouds = (material: MeshLambertMaterial, url: string) => {
+  const built = generation;
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+
+  image.onload = () => {
+    if (built !== generation) return;
+
+    const texture = cloudsFrom(image);
+    textures.push(texture);
+    material.map = texture;
+    material.needsUpdate = true;
+  };
+  image.src = url;
+};
+
+// A body's cloud layer, by the body's key. It drifts on its own, a little
+// faster than a painted surface turns.
+const cloudShells = new Map<string, Mesh>();
+const CLOUD_TURN_SECONDS = 240;
+
 const disposeBodies = () => {
   generation += 1;
+  cloudShells.clear();
   gameSurfaces.clear();
   bodies.traverse((object) => {
     // A marker's texture is shared across scenes; only its material is its own.
@@ -226,6 +333,7 @@ const disposeBodies = () => {
   fades.clear();
   lineMaterials.length = 0;
   orbitLines.length = 0;
+  orbitFades.clear();
   textures.length = 0;
   suns.length = 0;
 };
@@ -242,7 +350,14 @@ const build = (scene: StarmapScene) => {
     // Drawn around its centre, so a moon's orbit stays exact next to its
     // planet rather than inheriting the planet's distance from the star.
     object.position.set(...center.position);
-    orbitLines.push({ body: orbit.body, material, base });
+    orbitLines.push({
+      body: orbit.body,
+      center: new Vector3(...center.position),
+      radius: orbit.radius,
+      line: object,
+      material,
+      base,
+    });
     bodies.add(object);
   }
 
@@ -280,6 +395,7 @@ const build = (scene: StarmapScene) => {
       const lambert = new MeshLambertMaterial({ map, transparent: true });
       material = lambert;
       if (entry.texture) wrapInGameSurface(lambert, entry.texture);
+      if (entry.elevation) raiseRelief(lambert, entry.elevation);
     } else if (entry.role === "place") {
       // A place is its kind's glyph, the same size on screen at any distance.
       // Not depth tested: the body it stands on would cut it in half, so what
@@ -309,6 +425,22 @@ const build = (scene: StarmapScene) => {
     mesh.position.set(...entry.position);
     bodies.add(mesh);
     meshes.set(entry.key, mesh);
+
+    if (entry.clouds) {
+      const shell = new Mesh(
+        sphere,
+        new MeshLambertMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false,
+        }),
+      );
+      shell.position.copy(mesh.position);
+      shell.renderOrder = 1;
+      cloudShells.set(entry.key, shell);
+      bodies.add(shell);
+      wrapInClouds(shell.material, entry.clouds);
+    }
   }
 };
 
@@ -450,18 +582,32 @@ const ease = (t: number) =>
 const logLerp = (from: number, to: number, t: number) =>
   Math.exp(Math.log(from) * (1 - t) + Math.log(to) * t);
 
+// From 0 before `from` to 1 after `to`, eased.
+const phase = (t: number, from: number, to: number) =>
+  ease(Math.min(Math.max((t - from) / (to - from), 0), 1));
+
+// A flight rises until both ends are in view, crosses at that height, and
+// comes down on the other side, the way a map flies between two places.
+// Crossing and zooming at once would pass close over the empty space between
+// them, which reads as heading somewhere else first.
 const advance = (cam: PerspectiveCamera, delta: number) => {
   flight.elapsed += delta;
   const t = Math.min(flight.elapsed / FLIGHT_SECONDS, 1);
   const e = ease(t);
 
-  origin.lerpVectors(flight.fromOrigin, flight.toOrigin, e);
+  origin.lerpVectors(flight.fromOrigin, flight.toOrigin, phase(t, 0.2, 0.8));
   originGoal.copy(origin);
 
   // Distance in log space: a flight from across a system to a planet's
   // surface spends its time evenly over every scale on the way.
   if (flight.ownsDistance) {
-    zoom.distance = logLerp(flight.fromDistance, flight.toDistance, e);
+    const span = flight.fromOrigin.distanceTo(flight.toOrigin) * 1.1;
+    const height = Math.max(flight.fromDistance, flight.toDistance, span);
+
+    zoom.distance =
+      t < 0.5
+        ? logLerp(flight.fromDistance, height, phase(t, 0, 0.45))
+        : logLerp(height, flight.toDistance, phase(t, 0.55, 1));
     zoom.goal = zoom.distance;
   }
 
@@ -598,18 +744,17 @@ const chain = computed(() => {
   return keys;
 });
 
+// What is focused, and what it belongs to, always shows; the rest goes in
+// the steps the layout gives each place as the camera moves away.
 const fadeOf = (entry: StarmapItem) => {
   if (chain.value.has(entry.key)) return 1;
-  if (entry.role !== "place" && entry.role !== "moon") return 1;
+  if (entry.role === "moon") return orbitFades.get(entry.key) ?? 1;
+  if (entry.near === null) return 1;
 
-  const anchor = anchorOf(entry);
-  if (!anchor?.radius || anchor.role === "star") return 1;
+  const from = entry.nearFrom === "anchor" ? (anchorOf(entry) ?? entry) : entry;
+  const distance = cameraWorld.distanceTo(scratch.set(...from.position));
 
-  const distance = cameraWorld.distanceTo(scratch.set(...anchor.position));
-  const near =
-    anchor.radius * (entry.role === "moon" ? MOONS_NEAR : PLACES_NEAR);
-
-  return nearness(distance, near);
+  return nearness(distance, entry.near);
 };
 
 // How far shown what stands on a body is.
@@ -651,6 +796,41 @@ const scratchCentre = new Vector3();
 
 // --- Per frame ---
 
+const discs: {
+  key: string;
+  x: number;
+  y: number;
+  across: number;
+  away: number;
+}[] = [];
+
+const markerScreen = new Vector3();
+
+const coveredByBody = (
+  entry: StarmapItem,
+  cam: PerspectiveCamera,
+  away: number,
+) => {
+  if (entry.key === props.focusKey || entry.key === hoverKey.value) {
+    return false;
+  }
+
+  markerScreen
+    .set(...entry.position)
+    .sub(origin)
+    .project(cam);
+  const element = canvas();
+  const x = ((markerScreen.x + 1) / 2) * (element?.clientWidth ?? 1);
+  const y = ((1 - markerScreen.y) / 2) * (element?.clientHeight ?? 1);
+
+  return discs.some(
+    (disc) =>
+      disc.key !== entry.anchor &&
+      disc.away < away * 1.5 &&
+      Math.hypot(disc.x - x, disc.y - y) < disc.across + 6,
+  );
+};
+
 const resolution = new Vector2();
 const projected = new Vector3();
 const point = new Vector3();
@@ -689,6 +869,51 @@ onBeforeRender(({ delta, elapsed }) => {
 
   const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
 
+  // Where each body sits on screen and how wide it is drawn: a marker that
+  // is not the body's own and lands on it gives way, so a planet is not
+  // buried under the stations at its Lagrange points.
+  discs.length = 0;
+  for (const entry of items.value) {
+    if (!entry.radius || entry.role === "place") continue;
+    if (entry.role === "moon" && (orbitFades.get(entry.key) ?? 1) < 0.5) {
+      continue;
+    }
+
+    point.set(...entry.position);
+    const away = cameraWorld.distanceTo(point);
+    projected.copy(point).sub(origin).project(cam);
+    if (projected.z > 1) continue;
+
+    discs.push({
+      key: entry.key,
+      x: ((projected.x + 1) / 2) * (element?.clientWidth ?? 1),
+      y: ((1 - projected.y) / 2) * height,
+      across: Math.max(
+        entry.radius / (perPixel * away),
+        MIN_PIXELS[entry.role] / 2,
+      ),
+      away,
+    });
+  }
+
+  // An orbit, and the moon on it, show while the orbit is wide enough on
+  // screen to read: from a moon's planet they are all there, from across the
+  // system they would be a knot of rings around a dot. One that is gone is
+  // hidden rather than drawn in the backdrop's colour, which the stage's
+  // gradient shows up as a dark ring.
+  for (const orbit of orbitLines) {
+    const across =
+      orbit.radius / (perPixel * cameraWorld.distanceTo(orbit.center));
+    const fade = Math.min(
+      Math.max((across - ORBIT_GONE_PIXELS) / ORBIT_FADE_PIXELS, 0),
+      1,
+    );
+
+    orbitFades.set(orbit.body, fade);
+    orbit.line.visible = fade > 0.02;
+    lineColor(orbit.base * fade, orbit.material.color);
+  }
+
   for (const entry of items.value) {
     const mesh = meshes.get(entry.key);
     if (!mesh) continue;
@@ -702,12 +927,22 @@ onBeforeRender(({ delta, elapsed }) => {
     const away = cameraWorld.distanceTo(point);
 
     if (mesh instanceof Sprite) {
+      if (fade > 0.02 && coveredByBody(entry, cam, away)) {
+        fades.set(entry.key, 0);
+        mesh.visible = false;
+        continue;
+      }
+
       mesh.visible = fade > 0.02 && !occluded(point);
       if (!mesh.visible) continue;
 
       mesh.material.opacity = fade;
       mesh.scale.setScalar(
-        markerOf(entry.kind).size * perPixel * away * lifted,
+        markerOf(entry.kind).size *
+          (entry.minor ? MINOR_MARKER : 1) *
+          perPixel *
+          away *
+          lifted,
       );
       continue;
     }
@@ -724,6 +959,15 @@ onBeforeRender(({ delta, elapsed }) => {
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
 
+    const shell = cloudShells.get(entry.key);
+    if (shell) {
+      shell.scale.copy(mesh.scale).multiplyScalar(1.012);
+      (shell.material as MeshLambertMaterial).opacity = fade;
+      if (motion) {
+        shell.rotation.y += (delta / CLOUD_TURN_SECONDS) * Math.PI * 2;
+      }
+    }
+
     // A painted body turns, from where it last stood, while nothing is shown
     // on it: its places stand on the ground, and the ground would carry them
     // off. The game's own surface never turns, so a place stays over the
@@ -731,11 +975,6 @@ onBeforeRender(({ delta, elapsed }) => {
     if (entry.surface && !entry.texture && motion && shownOn(entry) < 0.02) {
       mesh.rotation.y += (delta / TURN_SECONDS) * Math.PI * 2;
     }
-  }
-
-  for (const orbit of orbitLines) {
-    const fade = fades.get(orbit.body) ?? 1;
-    lineColor(orbit.base * fade, orbit.material.color);
   }
 
   if (pointer.moved) {
@@ -861,7 +1100,19 @@ const onPointerUp = (event: PointerEvent) => {
   }
 
   const entry = pick(event.clientX, event.clientY);
-  if (!entry) return;
+
+  // A click on empty space lets go of what was picked. The camera stays where
+  // it is: the focus falls back to the star without a flight to it.
+  if (!entry) {
+    const centre = items.value.find(
+      (item) => item.role === "star" || item.role === "system",
+    );
+    if (props.focusKey && props.focusKey !== centre?.key) {
+      flownTo = props.scene.kind === "system" ? (centre?.key ?? null) : null;
+      emit("release");
+    }
+    return;
+  }
 
   // A system already picked opens on a second click.
   if (entry.role === "system" && entry.key === props.focusKey) {

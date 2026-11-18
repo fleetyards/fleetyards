@@ -135,6 +135,15 @@ const onFocus = (entry: StarmapItem) => {
   navigate(systemSlug.value, entry.role === "star" ? null : entry.slug);
 };
 
+const release = () => {
+  if (scene.value?.kind === "systems") {
+    pickedSystem.value = null;
+    return;
+  }
+
+  navigate(systemSlug.value);
+};
+
 const enter = (entry: StarmapItem) => {
   if (entry.role === "system") navigate(entry.slug);
 };
@@ -319,6 +328,7 @@ const hint = computed(() =>
           :focus-key="focusKey"
           @focus="onFocus"
           @enter="enter"
+          @release="release"
         />
       </TresCanvas>
       <WebglFallback v-else />
