@@ -573,7 +573,8 @@
           "dark": "Oscuro",
           "stanton": "Nebulosa de Stanton",
           "crusader": "Nebulosa de Crusader",
-          "pyro": "Nebulosa de Pyro"
+          "pyro": "Nebulosa de Pyro",
+          "nyx": "Nebulosa de Nyx"
         },
         "spacing": "Espaciado",
         "spacingOptions": {

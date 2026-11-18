@@ -4471,3 +4471,10 @@ GET /hangar/upgrades API path removed without deprecation
 GET /hangar/equipment API path removed without deprecation
 GET /hangar/ship-components API path removed without deprecation
 GET /hangar/pledge-items removed the required property `items/items/shipModule` from the response with the `200` status
+GET /hangar/fleetchart-layouts added the new `nyx` enum value to the `items/background` response property for the response status `200`
+POST /hangar/fleetchart-layouts added the new `nyx` enum value to the `background` response property for the response status `201`
+GET /hangar/fleetchart-layouts/{id} added the new `nyx` enum value to the `background` response property for the response status `200`
+PUT /hangar/fleetchart-layouts/{id} added the new `nyx` enum value to the `background` response property for the response status `200`
+DELETE /hangar/fleetchart-layouts/{id}/share added the new `nyx` enum value to the `background` response property for the response status `200`
+PUT /hangar/fleetchart-layouts/{id}/share added the new `nyx` enum value to the `background` response property for the response status `200`
+GET /public/fleetchart-layouts/{token} added the new `nyx` enum value to the `background` response property for the response status `200`

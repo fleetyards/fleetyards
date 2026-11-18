@@ -12,7 +12,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
-import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import pyroSky from "@/images/skyboxes/pyro_sky_4k.webp";
+import nyxSky from "@/images/skyboxes/nyx_sky_4k.webp";
 import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
@@ -82,6 +83,7 @@ import {
   FleetchartSpacings,
   FleetchartViewpoints,
   useFleetchartStore,
+  type FleetchartOptions,
   type FleetchartPlacement,
   type FleetchartPlacements,
 } from "@/shared/stores/fleetchart";
@@ -165,7 +167,8 @@ const SOLID_EXPORT_BACKGROUND = "#111";
 const BACKGROUND_IMAGES: Partial<Record<FleetchartBackgrounds, string>> = {
   [FleetchartBackgrounds.STANTON]: stantonNebula,
   [FleetchartBackgrounds.CRUSADER]: crusaderNebula,
-  [FleetchartBackgrounds.PYRO]: pyroNebula,
+  [FleetchartBackgrounds.PYRO]: pyroSky,
+  [FleetchartBackgrounds.NYX]: nyxSky,
 };
 
 const { t } = useI18n();
@@ -813,8 +816,11 @@ const savePlacements = (next: FleetchartPlacements) => {
   });
 };
 
-const changePlacements = (next: FleetchartPlacements) => {
-  undoStack.value = [...undoStack.value, placements.value].slice(-UNDO_LIMIT);
+const changePlacements = (
+  next: FleetchartPlacements,
+  previous = placements.value,
+) => {
+  undoStack.value = [...undoStack.value, previous].slice(-UNDO_LIMIT);
 
   savePlacements(next);
 };
@@ -849,11 +855,14 @@ const placeAll = (kind: FleetchartLayouts): FleetchartPlacements => {
 
 let seedLayout = FleetchartLayouts.PACKED;
 
+const lastArrangement = ref(FleetchartLayouts.PACKED);
+
 watch(
   layout,
   (_current, previous) => {
     if (previous && previous !== FleetchartLayouts.FREE) {
       seedLayout = previous;
+      lastArrangement.value = previous;
     }
   },
   { flush: "sync" },
@@ -875,16 +884,20 @@ watch(
   { immediate: true },
 );
 
-const lastArrangement = ref(FleetchartLayouts.PACKED);
-
 const groupAndArrange = (option: FleetchartGroups) => {
   fleetchartStore.updateOptions({
     namespace: props.namespace,
     options: { group: option },
   });
 
-  arrangeAs(lastArrangement.value);
+  arrangeWithOptions({ group: option });
 };
+
+const shipsFacing = computed(() => {
+  const facings = new Set(ships.value.map((ship) => ship.facing));
+
+  return facings.size === 1 ? [...facings][0] : undefined;
+});
 
 const ARRANGEMENTS = [
   FleetchartLayouts.COLUMNS,
@@ -894,7 +907,7 @@ const ARRANGEMENTS = [
 
 // Applies a layout to what is selected, where it stands, or else to everything. Only
 // the places change: each ship keeps the angle, facing and state it was given.
-const arrangeAs = (kind: FleetchartLayouts) => {
+const arrangeAs = (kind: FleetchartLayouts, undoTo = placements.value) => {
   lastArrangement.value = kind;
 
   const selected = selectedShips.value;
@@ -927,14 +940,40 @@ const arrangeAs = (kind: FleetchartLayouts) => {
 
   if (selected.length) {
     holdingView(() => {
-      changePlacements({ ...placements.value, ...moved });
+      changePlacements({ ...placements.value, ...moved }, undoTo);
     });
 
     return;
   }
 
-  changePlacements({ ...placements.value, ...moved });
+  changePlacements({ ...placements.value, ...moved }, undoTo);
   fitToScreen();
+};
+
+// Turned where they stand, they would overlap, so they are arranged again.
+const turnAndArrange = (option: FleetchartFacings) => {
+  const before = placements.value;
+  const turned = (
+    selectedIds.value.length
+      ? selectedIds.value
+      : ships.value.map(({ id }) => id)
+  ).map((id) => [
+    id,
+    { ...before[id], ...positions.value[id], facing: option },
+  ]);
+
+  savePlacements({ ...before, ...Object.fromEntries(turned) });
+  arrangeAs(lastArrangement.value, before);
+};
+
+const arrangeWithOptions = (changes: Partial<FleetchartOptions>) => {
+  if (changes.facing) {
+    turnAndArrange(changes.facing);
+
+    return;
+  }
+
+  arrangeAs(lastArrangement.value);
 };
 
 // Back to the chart as it was before anything was done to it. Ships hidden by a
@@ -1849,6 +1888,10 @@ const toggleLabels = () => {
       :options="options"
       :groups="groups"
       :can-arrange="canArrange"
+      :arranging="arranging"
+      :arrangement="lastArrangement"
+      :ships-facing="shipsFacing"
+      @arrange="arrangeWithOptions"
     />
 
     <div

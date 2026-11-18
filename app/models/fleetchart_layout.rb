@@ -10,7 +10,7 @@ class FleetchartLayout < ApplicationRecord
   VIEWPOINTS = %w[top port angled front starboard bottom angledRear rear].freeze
   FACINGS = %w[left top right bottom].freeze
   STATES = %w[flight extended landed].freeze
-  BACKGROUNDS = %w[dark stanton crusader pyro].freeze
+  BACKGROUNDS = %w[dark stanton crusader pyro nyx].freeze
 
   belongs_to :user
 

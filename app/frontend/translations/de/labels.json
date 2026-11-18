@@ -573,7 +573,8 @@
           "dark": "Dunkel",
           "stanton": "Stanton-Nebel",
           "crusader": "Crusader-Nebel",
-          "pyro": "Pyro-Nebel"
+          "pyro": "Pyro-Nebel",
+          "nyx": "Nyx-Nebel"
         },
         "spacing": "Abstand",
         "spacingOptions": {

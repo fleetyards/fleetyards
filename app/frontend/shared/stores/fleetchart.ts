@@ -98,6 +98,7 @@ export enum FleetchartBackgrounds {
   STANTON = "stanton",
   CRUSADER = "crusader",
   PYRO = "pyro",
+  NYX = "nyx",
 }
 
 export interface FleetchartOptions {
