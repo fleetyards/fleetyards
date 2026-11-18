@@ -307,7 +307,7 @@ const hint = computed(() =>
         <OrbitControls
           enable-damping
           :damping-factor="0.08"
-          :zoom-speed="2.6"
+          :enable-zoom="false"
           :rotate-speed="0.6"
           :enable-pan="false"
           make-default

@@ -357,6 +357,11 @@ const flight = {
   toDistance: 1,
   fromDirection: new Vector3(),
   toDirection: new Vector3(),
+  // A flight hands the distance to the reader's zoom as soon as they scroll,
+  // and the direction to them as soon as they drag; the origin it always
+  // carries to the end.
+  ownsDistance: true,
+  ownsDirection: true,
 };
 
 // The key the camera last set out for, so a focus the scene asked for itself
@@ -365,34 +370,10 @@ let flownTo: string | null | undefined;
 
 type Orbiting = {
   target?: Vector3;
-  minDistance: number;
-  maxDistance: number;
   update?: () => void;
 };
 
 const orbiting = () => controls.value as Orbiting | null;
-
-// The distances the reader can zoom between around what is focused. Only set
-// once a flight has landed: during one the camera passes nearer than the new
-// focus allows, and the controls would clamp it off its path.
-const limit = (entry: StarmapItem | undefined) => {
-  const orbit = orbiting();
-  if (!orbit) return false;
-
-  orbit.minDistance = entry?.radius ? entry.radius * 1.08 : 0.0005;
-  orbit.maxDistance = props.scene.extent * 4;
-  return true;
-};
-
-const unlimit = () => {
-  const orbit = orbiting();
-  if (!orbit) return;
-
-  orbit.minDistance = 0;
-  orbit.maxDistance = Infinity;
-};
-
-let limited = false;
 
 const flyTo = (
   entry: StarmapItem | undefined,
@@ -407,24 +388,15 @@ const flyTo = (
   flight.fromOrigin.copy(origin);
   flight.toOrigin.copy(entry ? vector(entry) : new Vector3());
   flight.fromDistance = Math.max(cam.position.length(), 1e-6);
-  flight.toDistance = keepDistance ? flight.fromDistance : view.distance;
+  flight.toDistance = view.distance;
   flight.fromDirection.copy(current);
   flight.toDirection.copy(keepDistance ? current : view.direction);
+  flight.ownsDistance = !keepDistance;
+  flight.ownsDirection = !keepDistance;
   flight.elapsed = 0;
   flight.active = true;
 
   flownTo = entry?.key ?? null;
-  limited = false;
-  unlimit();
-};
-
-// A flight interrupted by the reader ends where it was going, so what they
-// orbit is what they picked, rather than a point partway there.
-const land = (cam: PerspectiveCamera) => {
-  if (!flight.active) return;
-
-  flight.elapsed = FLIGHT_SECONDS;
-  advance(cam, 0);
 };
 
 const focused = computed(() =>
@@ -453,56 +425,136 @@ watch(
 const ease = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 
+const logLerp = (from: number, to: number, t: number) =>
+  Math.exp(Math.log(from) * (1 - t) + Math.log(to) * t);
+
 const advance = (cam: PerspectiveCamera, delta: number) => {
   flight.elapsed += delta;
   const t = Math.min(flight.elapsed / FLIGHT_SECONDS, 1);
   const e = ease(t);
 
   origin.lerpVectors(flight.fromOrigin, flight.toOrigin, e);
+  originGoal.copy(origin);
 
   // Distance in log space: a flight from across a system to a planet's
   // surface spends its time evenly over every scale on the way.
-  const distance = Math.exp(
-    Math.log(flight.fromDistance) * (1 - e) + Math.log(flight.toDistance) * e,
-  );
-  const direction = flight.fromDirection
-    .clone()
-    .lerp(flight.toDirection, e)
-    .normalize();
+  if (flight.ownsDistance) {
+    zoom.distance = logLerp(flight.fromDistance, flight.toDistance, e);
+    zoom.goal = zoom.distance;
+  }
 
-  cam.position.copy(direction.multiplyScalar(distance));
-  orbiting()?.target?.set(0, 0, 0);
-  orbiting()?.update?.();
+  if (flight.ownsDirection) {
+    const direction = flight.fromDirection
+      .clone()
+      .lerp(flight.toDirection, e)
+      .normalize();
+    cam.position.copy(direction);
+  }
 
   if (t >= 1) flight.active = false;
 };
 
-// The first flight waits for a camera, and the limits for the controls: both
-// are mounted beside the scene and can come after it.
-const settle = () => {
-  if (flownTo === undefined) flyTo(focused.value);
-  if (!flight.active && !limited) {
-    limited = limit(flownTo ? byKey.value.get(flownTo) : undefined);
+// --- Zooming ---
+//
+// The map's own zoom rather than the orbit controls': smooth in log space so
+// one gesture crosses scales evenly, toward what is under the pointer rather
+// than always into the centre, and in step with flights instead of fighting
+// them.
+
+// How much one pixel of scroll zooms, and how quickly the view catches up.
+const ZOOM_PER_PIXEL = 0.0017;
+const ZOOM_EASE = 12;
+
+const zoom = { distance: 0, goal: 0 };
+// Where the origin is heading as the reader zooms toward something.
+const originGoal = new Vector3();
+
+// How close the camera may come to where it is centred: just outside the
+// body it is centred on, or half a kilometre from anything else.
+const nearest = () => {
+  for (const entry of items.value) {
+    if (!entry.radius) continue;
+    if (originGoal.distanceTo(point.set(...entry.position)) < entry.radius) {
+      return entry.radius * 1.08;
+    }
+  }
+  return 0.0005;
+};
+
+// How close the camera has to come to something it is zooming toward before
+// that becomes the focus: near enough that it fills a fair part of the view.
+const reachOf = (entry: StarmapItem) => {
+  if (entry.radius) return entry.radius * 25;
+
+  const anchor = anchorOf(entry);
+  return anchor?.radius && anchor.role !== "star"
+    ? anchor.radius * PLACES_NEAR * 1.2
+    : 30;
+};
+
+const clampGoal = () => {
+  zoom.goal = Math.min(Math.max(zoom.goal, nearest()), props.scene.extent * 4);
+};
+
+const pointedAt = new Vector3();
+const goalCamera = new Vector3();
+
+const zoomBy = (factor: number, clientX: number, clientY: number) => {
+  const cam = camera.value;
+  if (!cam || zoom.distance === 0) return;
+
+  if (flight.active && flight.ownsDistance) {
+    flight.ownsDistance = false;
+    zoom.goal = zoom.distance;
+  }
+
+  zoom.goal *= factor;
+  clampGoal();
+
+  if (props.scene.kind !== "system") return;
+
+  // Out, the view stays centred where it is: zooming out is not going back.
+  if (factor < 1) {
+    // In: toward what is under the pointer, which becomes the focus once the
+    // camera is close enough that zooming out again would not step back out.
+    const entry = pick(clientX, clientY);
+    if (!entry || entry.key === props.focusKey) return;
+
+    pointedAt.set(...entry.position);
+    if (!flight.active) originGoal.lerp(pointedAt, 1 - factor);
+
+    goalCamera.copy(cam.position).setLength(zoom.goal).add(originGoal);
+
+    if (goalCamera.distanceTo(pointedAt) < reachOf(entry) * 0.8) {
+      flyTo(entry, { keepDistance: true });
+      emit("focus", entry);
+    }
   }
 };
 
-// Zoomed well out of what it is on, the map steps back out to what that
-// belongs to, so zooming out is a way back as much as Escape is.
-const stepOut = (cam: PerspectiveCamera) => {
-  const entry = focused.value;
-  if (!entry || props.scene.kind !== "system") return;
-
-  const anchor = anchorOf(entry);
-  if (!anchor) return;
-
-  const reach = entry.radius
-    ? entry.radius * 25
-    : (anchor.radius ?? 1) * PLACES_NEAR * 1.2;
-
-  if (cam.position.length() > reach) {
-    flyTo(anchor, { keepDistance: true });
-    emit("focus", anchor);
+// The first flight waits for a camera: it is mounted beside the scene and can
+// come after it.
+const settle = (cam: PerspectiveCamera) => {
+  if (zoom.distance === 0) {
+    zoom.distance = zoom.goal = cam.position.length() || 1;
   }
+  if (flownTo === undefined) flyTo(focused.value);
+};
+
+const move = (cam: PerspectiveCamera, delta: number) => {
+  settle(cam);
+
+  if (flight.active) advance(cam, delta);
+
+  const k = 1 - Math.exp(-delta * ZOOM_EASE);
+
+  if (!flight.active || !flight.ownsDistance) {
+    zoom.distance = logLerp(zoom.distance, zoom.goal, k);
+  }
+  if (!flight.active) origin.lerp(originGoal, k);
+
+  cam.position.setLength(zoom.distance);
+  orbiting()?.target?.set(0, 0, 0);
 };
 
 // --- Near and far ---
@@ -590,9 +642,7 @@ onBeforeRender(({ delta, elapsed }) => {
   const cam = camera.value;
   if (!(cam instanceof PerspectiveCamera)) return;
 
-  settle();
-  if (flight.active) advance(cam, delta);
-  else if (limited) stepOut(cam);
+  move(cam, delta);
 
   world.position.copy(origin).negate();
   cameraWorld.copy(cam.position).add(origin);
@@ -714,21 +764,47 @@ const pick = (clientX: number, clientY: number): StarmapItem | null => {
 
 const pointer = { x: 0, y: 0, moved: false, downX: 0, downY: 0 };
 
-const landNow = () => {
-  const cam = camera.value;
-  if (cam instanceof PerspectiveCamera) land(cam);
+// Two fingers on a touch screen zoom as the wheel does, about their middle.
+const touches = new Map<number, { x: number; y: number }>();
+let pinch = 0;
+
+const pinchSpan = () => {
+  const [a, b] = [...touches.values()];
+  return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
 };
 
 const onPointerDown = (event: PointerEvent) => {
   pointer.downX = event.clientX;
   pointer.downY = event.clientY;
-  landNow();
+  // A drag turns the view from here on, whatever a flight was doing to it.
+  flight.ownsDirection = false;
+
+  if (event.pointerType === "touch") {
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    pinch = pinchSpan();
+  }
 };
 
 const onPointerMove = (event: PointerEvent) => {
   pointer.x = event.clientX;
   pointer.y = event.clientY;
   pointer.moved = true;
+
+  if (event.pointerType === "touch" && touches.has(event.pointerId)) {
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const span = pinchSpan();
+
+    if (pinch && span) {
+      const [a, b] = [...touches.values()];
+      zoomBy(pinch / span, (a.x + b.x) / 2, (a.y + b.y) / 2);
+    }
+    pinch = span;
+  }
+};
+
+const onPointerEnd = (event: PointerEvent) => {
+  touches.delete(event.pointerId);
+  pinch = pinchSpan();
 };
 
 const onPointerLeave = () => {
@@ -737,6 +813,10 @@ const onPointerLeave = () => {
 
 // A drag turns the view; only a click picks.
 const onPointerUp = (event: PointerEvent) => {
+  const pinching = touches.size > 1;
+  onPointerEnd(event);
+  if (pinching) return;
+
   if (
     Math.hypot(event.clientX - pointer.downX, event.clientY - pointer.downY) > 4
   ) {
@@ -756,8 +836,16 @@ const onPointerUp = (event: PointerEvent) => {
   emit("focus", entry);
 };
 
-const onWheel = () => {
-  landNow();
+const onWheel = (event: WheelEvent) => {
+  event.preventDefault();
+
+  // Lines and pages, as some mice and settings report them, in pixels.
+  const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? 400 : 1;
+  zoomBy(
+    Math.exp(event.deltaY * unit * ZOOM_PER_PIXEL),
+    event.clientX,
+    event.clientY,
+  );
 };
 
 let bound: HTMLCanvasElement | null = null;
@@ -767,6 +855,7 @@ const listeners = {
   pointermove: onPointerMove,
   pointerleave: onPointerLeave,
   pointerup: onPointerUp,
+  pointercancel: onPointerEnd,
   wheel: onWheel,
 } as unknown as Record<string, EventListener>;
 
@@ -775,7 +864,8 @@ const bind = () => {
   if (!element || element === bound) return;
 
   for (const [name, listener] of Object.entries(listeners)) {
-    element.addEventListener(name, listener, { passive: true });
+    // The wheel is not passive: it zooms the map, not the page.
+    element.addEventListener(name, listener, { passive: name !== "wheel" });
   }
   bound = element;
 };

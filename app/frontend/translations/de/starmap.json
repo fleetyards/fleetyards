@@ -22,7 +22,7 @@
       },
       "hints": {
         "systems": "Klicke ein System an, um es auszuwählen, ein zweiter Klick öffnet es. Ziehen dreht, Scrollen zoomt.",
-        "system": "Klicke etwas an, um hinzufliegen. Herauszoomen oder Esc geht zurück. Ziehen dreht."
+        "system": "Klicke etwas an, um hinzufliegen, oder scrolle darauf zu. Esc geht zurück. Ziehen dreht."
       },
       "units": {
         "gm": "%{value} Gm",

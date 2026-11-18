@@ -22,7 +22,7 @@
       },
       "hints": {
         "systems": "Cliquez sur un système pour le choisir, puis à nouveau pour l'ouvrir. Faites glisser pour tourner, défilez pour zoomer.",
-        "system": "Cliquez sur un élément pour y voler. Dézoomez ou appuyez sur Échap pour revenir. Faites glisser pour tourner."
+        "system": "Cliquez sur un élément pour y voler, ou défilez vers lui. Échap revient en arrière. Faites glisser pour tourner."
       },
       "units": {
         "gm": "%{value} Gm",

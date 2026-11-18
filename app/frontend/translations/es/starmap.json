@@ -22,7 +22,7 @@
       },
       "hints": {
         "systems": "Haz clic en un sistema para elegirlo y otra vez para abrirlo. Arrastra para girar, desplaza para hacer zoom.",
-        "system": "Haz clic en algo para volar hasta allí. Aleja el zoom o pulsa Esc para volver. Arrastra para girar."
+        "system": "Haz clic en algo para volar hasta allí, o desplázate hacia ello. Esc vuelve atrás. Arrastra para girar."
       },
       "units": {
         "gm": "%{value} Gm",

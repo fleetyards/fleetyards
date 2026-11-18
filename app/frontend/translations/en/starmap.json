@@ -22,7 +22,7 @@
       },
       "hints": {
         "systems": "Click a system to pick it, click it again to open it. Drag to turn, scroll to zoom.",
-        "system": "Click anything to fly to it. Scroll out or press Esc to step back. Drag to turn."
+        "system": "Click anything to fly to it, or scroll toward it. Esc steps back out. Drag to turn."
       },
       "units": {
         "gm": "%{value} Gm",
