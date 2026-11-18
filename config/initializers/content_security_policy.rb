@@ -20,6 +20,11 @@ Rails.application.configure do
     s3_bucket = Rails.app.creds.option(:s3_bucket)
     s3_host = Rails.app.creds.option(:s3_endpoint)
     s3_endpoint = "#{s3_protocol}://#{s3_bucket}.#{s3_host}" if s3_protocol && s3_bucket && s3_host
+    # Direct uploads go to whichever store is primary while the uploads move
+    # between providers, so the browser may need to reach either bucket.
+    bunny_s3_uri = URI.parse(Rails.app.creds.option(:bunny_s3, :endpoint).to_s)
+    bunny_s3_bucket = Rails.app.creds.option(:bunny_s3, :bucket)
+    bunny_s3_endpoint = "#{bunny_s3_uri.scheme}://#{bunny_s3_bucket}.#{bunny_s3_uri.host}" if bunny_s3_uri.host && bunny_s3_bucket
     storage_cdn_endpoint = Rails.configuration.app.storage_cdn_endpoint
 
     docs_uri = URI.parse(DOCS_ENDPOINT)
@@ -31,7 +36,7 @@ Rails.application.configure do
       "https://fonts.gstatic.com", "https://pro.fontawesome.com", Rails.configuration.rsi.endpoint,
       "https://kit.fontawesome.com", "https://kit-pro.fontawesome.com",
       "https://kit-free.fontawesome.com", "https://ka-p.fontawesome.com", "https://starship42.com",
-      s3_endpoint, storage_cdn_endpoint,
+      s3_endpoint, bunny_s3_endpoint, storage_cdn_endpoint,
       "https://www.gstatic.com",
       "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com",
@@ -69,7 +74,7 @@ Rails.application.configure do
       Rails.configuration.rsi.endpoint, "https://media.robertsspaceindustries.com",
       "https://img.youtube.com",
       "https://validator.swagger.io",
-      s3_endpoint, storage_cdn_endpoint,
+      s3_endpoint, bunny_s3_endpoint, storage_cdn_endpoint,
       "https://*.basemaps.cartocdn.com"
     ].compact
 
