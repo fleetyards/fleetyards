@@ -53,12 +53,16 @@ type Props = {
   // The system the reader just stepped out of, which the systems view pulls
   // back from.
   cameFrom?: string | null;
+  // The next system is loading: what is shown fades, so the old system's
+  // bodies are not seen under the new system's name.
+  waiting?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showLabels: true,
   showOrbits: true,
   cameFrom: null,
+  waiting: false,
 });
 
 const emit = defineEmits<{
@@ -968,14 +972,37 @@ const crossFrame = (delta: number) => {
   }
 };
 
+const starOf = (scene: StarmapScene) =>
+  scene.items.find((entry) => entry.role === "star")?.key;
+
 watch(
   () => props.scene,
   (scene, before) => {
     build(scene);
     dirty = true;
-    if (before && before.kind !== scene.kind) arrive(scene);
+    // Another kind of scene, or another system: a refetch of the same one
+    // is not an arrival.
+    if (
+      before &&
+      (before.kind !== scene.kind || starOf(before) !== starOf(scene))
+    ) {
+      arrive(scene);
+    }
   },
   { immediate: true },
+);
+
+watch(
+  () => props.waiting,
+  (waiting) => {
+    if (!waiting) return;
+
+    crossing = true;
+    curtain.goal = 0;
+    // From the systems view the star dived at stays; from another system
+    // nothing of it does.
+    if (props.scene.kind === "system") curtainKeep = null;
+  },
 );
 
 watch(

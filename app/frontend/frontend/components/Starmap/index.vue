@@ -106,13 +106,24 @@ const systemStars = computed(() => {
 
 const {
   data: starmap,
-  isLoading: starmapLoading,
+  isLoading: starmapFirstLoading,
+  isPlaceholderData: starmapPlaceholder,
   isError: starmapError,
 } = useLocationStarmap(
   computed(() => systemSlug.value ?? ""),
   {
     query: { enabled: computed(() => !!systemSlug.value) },
   },
+);
+
+// The app keeps a query's last data while the next loads: here that is the
+// last system's places, which are not the opened system's.
+const starmapLoading = computed(
+  () => starmapFirstLoading.value || starmapPlaceholder.value,
+);
+
+const openedStarmap = computed(() =>
+  starmapPlaceholder.value ? undefined : starmap.value,
 );
 
 const loading = computed(() =>
@@ -126,6 +137,11 @@ const leaveSystem = async () => {
   await sceneRef.value?.leave();
   navigate(null);
 };
+
+// A system is opened and its places are not in yet.
+const waiting = computed(
+  () => !!systemSlug.value && !scene.value && !starmapError.value,
+);
 
 // How much of the scene is shown as it fades between the systems and a system.
 const curtain = ref(1);
@@ -146,7 +162,7 @@ const scene = computed<Scene | null>(() => {
     );
   }
 
-  const places = starmap.value?.places;
+  const places = openedStarmap.value?.places;
   return places ? systemScene(places) : null;
 });
 
@@ -160,7 +176,7 @@ const BACKDROPS: Record<string, { src: string; opacity: number }> = {
 };
 
 const backdrop = computed(() => {
-  const name = starmap.value?.system.slug.split("-")[0];
+  const name = openedStarmap.value?.system.slug.split("-")[0];
   return systemSlug.value && name ? BACKDROPS[name] : undefined;
 });
 
@@ -283,7 +299,7 @@ const crumbs = computed(() => {
 
   list.push({
     key: "system",
-    label: starmap.value?.system.name ?? systemSlug.value,
+    label: openedStarmap.value?.system.name ?? systemSlug.value,
     go: steps.length ? () => navigate(systemSlug.value) : undefined,
   });
 
@@ -312,7 +328,7 @@ const railOpen = ref(!mobile.value);
 
 const title = computed(() =>
   systemSlug.value
-    ? (starmap.value?.system.name ?? systemSlug.value)
+    ? (openedStarmap.value?.system.name ?? systemSlug.value)
     : t("starmap.systems"),
 );
 
@@ -468,6 +484,7 @@ watch(
           ref="sceneRef"
           :scene="shownScene"
           :came-from="cameFrom"
+          :waiting="waiting"
           :focus-key="focusKey"
           :show-labels="showLabels"
           :show-orbits="showOrbits"
@@ -480,7 +497,11 @@ watch(
       </TresCanvas>
       <WebglFallback v-else />
 
-      <p v-if="loading" class="starmap__status" data-test="starmap-loading">
+      <p
+        v-if="loading"
+        class="starmap__status starmap__status--loading"
+        data-test="starmap-loading"
+      >
         <i class="fa-duotone fa-spinner-third fa-spin" aria-hidden="true" />
         {{ t("starmap.loading") }}
       </p>
@@ -774,6 +795,11 @@ $card-height: 96px;
     margin: 0;
     color: var(--color-text);
     pointer-events: none;
+
+    // Under the star the camera is on, not over it.
+    &--loading {
+      transform: translateY(48px);
+    }
   }
 
   // As tall as what it lists, and scrolling only once that is taller than
