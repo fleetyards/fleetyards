@@ -86,6 +86,13 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
                         t(`labels.dockTypes.${item.dockType}`)
                       }}
                     </Pill>
+                    <Pill
+                      v-if="item.moduleName && item.capacityLabel"
+                      :variant="PillVariantsEnum.NEUTRAL"
+                      uppercase
+                    >
+                      {{ item.capacityLabel }}
+                    </Pill>
                     <!-- How the ship gets in, when somebody has recorded it.
                          Absent rather than blank on a berth nobody has looked
                          at: "we do not know" is not the same statement as

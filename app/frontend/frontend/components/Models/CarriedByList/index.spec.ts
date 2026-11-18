@@ -114,4 +114,22 @@ describe("ModelsCarriedByList", () => {
     expect(pills).toContain("3 small pads");
     expect(pills).toHaveLength(2);
   });
+
+  it("keeps the module a berth comes with beside what the berth is built for", async () => {
+    const wrapper = await mount({
+      carriedBy: [
+        {
+          slug: "galaxy",
+          name: "Galaxy",
+          dockType: "hangar",
+          moduleName: "Hangar Module",
+          capacityLabel: "1 extra small pad",
+        },
+      ],
+    });
+
+    const pills = wrapper.findAll('[data-test="pill"]').map((p) => p.text());
+
+    expect(pills).toEqual(["Hangar Module", "1 extra small pad"]);
+  });
 });
