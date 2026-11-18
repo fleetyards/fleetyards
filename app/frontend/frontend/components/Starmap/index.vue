@@ -61,12 +61,16 @@ const focusSlug = computed(() =>
   systemSlug.value ? queryValue(route.query.focus) : null,
 );
 
-const navigate = (system: string | null, focus: string | null = null) => {
+const navigate = (
+  system: string | null,
+  focus: string | null = null,
+  { replace = false }: { replace?: boolean } = {},
+) => {
   const query: Record<string, string> = {};
   if (system) query.system = system;
   if (system && focus) query.focus = focus;
 
-  void router.push({ query });
+  void (replace ? router.replace({ query }) : router.push({ query }));
 };
 
 const { data: systems, isLoading: systemsLoading } = useLocations({
@@ -227,14 +231,18 @@ const chain = computed(() =>
   scene.value?.kind === "system" ? chainOf(scene.value, focusKey.value) : [],
 );
 
-const onFocus = (entry: StarmapItem) => {
+// A focus the zoom handed over replaces the last one in the history: one
+// scroll down through a body's places is not a step back for each of them.
+const onFocus = (entry: StarmapItem, zoomed = false) => {
   if (scene.value?.kind === "systems") {
     pickedSystem.value = entry.key;
     return;
   }
 
   if (entry.key === focusKey.value) return;
-  navigate(systemSlug.value, entry.role === "star" ? null : entry.slug);
+  navigate(systemSlug.value, entry.role === "star" ? null : entry.slug, {
+    replace: zoomed,
+  });
 };
 
 const release = () => {

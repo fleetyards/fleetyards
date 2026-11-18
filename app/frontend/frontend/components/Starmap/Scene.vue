@@ -68,7 +68,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   // The reader picked something, or zoomed far enough out of what they were
   // on that the map stepped back out to what it belongs to.
-  focus: [item: StarmapItem];
+  focus: [item: StarmapItem, zoomed?: boolean];
   // A system on the ring was opened.
   enter: [item: StarmapItem];
   // How much of the scene is shown while it fades between the systems and a
@@ -1227,8 +1227,11 @@ const zoomBy = (factor: number, clientX: number, clientY: number) => {
     if (goalCamera.distanceTo(pointedAt) < reachOf(entry) * 0.8) {
       flight.active = false;
       originGoal.copy(pointedAt);
+      // Clamped against where the view now centres, or it would ease on
+      // down inside the body it just reached.
+      clampGoal();
       flownTo = entry.key;
-      emit("focus", entry);
+      emit("focus", entry, true);
     }
   }
 };
