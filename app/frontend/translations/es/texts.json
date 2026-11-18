@@ -8,6 +8,15 @@
       "referral": {
         "hint": "¿Nuevo en Star Citizen? Regístrate con este código y obtén 50.000 UEC con tu primer paquete de juego:"
       },
+      "enlist": {
+        "lede": "Crea tu cuenta de Star Citizen con un código de referido y recibirás 50.000 UEC para gastar en el juego al comprar tu primer paquete de juego. Todos los códigos dan la misma bonificación, y con este FleetYards figura como quien te trajo.",
+        "steps": {
+          "signUp": "Regístrate en la web de RSI con el botón de abajo. El código ya está rellenado.",
+          "package": "Compra un paquete de juego. Lo necesitas para jugar.",
+          "bonus": "Los 50.000 UEC se añaden a tu cuenta para usarlos en el juego."
+        },
+        "note": "El código solo cuenta al crear una cuenta nueva."
+      },
       "support": {
         "info": "¿Sin presupuesto? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Vótanos en Spectrum</b></a> para que más gente encuentre FleetYards.",
         "goal": "Cubre los costes de funcionamiento, como el alojamiento y los servicios de datos.",

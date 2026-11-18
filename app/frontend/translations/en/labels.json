@@ -1,6 +1,9 @@
 {
   "en": {
     "labels": {
+      "enlist": {
+        "code": "Referral code"
+      },
       "saved": "Saved",
       "hangarShare": {
         "intro": "Create a secret link that shows your hangar and its stats to anyone you give it to, even while your hangar is private. Your wishlist keeps its own setting.",

@@ -61,6 +61,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/enlist/",
+    name: "enlist",
+    component: () => import("@/frontend/pages/enlist.vue"),
+    meta: {
+      title: "enlist",
+    },
+  },
+  {
     // Where the web app manifest's `share_target` sends a link shared into the
     // installed app.
     path: "/share/",

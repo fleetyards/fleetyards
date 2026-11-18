@@ -8,6 +8,15 @@
       "referral": {
         "hint": "剛接觸星際公民？使用此邀請碼註冊，購買首個遊戲包即可獲得 50,000 UEC："
       },
+      "enlist": {
+        "lede": "使用邀請碼建立星際公民帳號，購買首個遊戲包後即可獲得 50,000 UEC 遊戲內貨幣。所有邀請碼的獎勵相同，使用這個邀請碼會記為由 FleetYards 邀請。",
+        "steps": {
+          "signUp": "點擊下方按鈕在 RSI 網站註冊，邀請碼已自動填好。",
+          "package": "購買一個遊戲包，這是遊玩所必需的。",
+          "bonus": "50,000 UEC 會加入你的帳號，可在遊戲內使用。"
+        },
+        "note": "邀請碼僅在建立新帳號時有效。"
+      },
       "support": {
         "info": "不方便贊助？<a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>在 Spectrum 為我們按讚</b></a>，讓更多人發現 FleetYards。",
         "goal": "用於伺服器託管與資料服務等日常營運開支。",

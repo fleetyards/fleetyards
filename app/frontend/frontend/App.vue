@@ -384,6 +384,9 @@ const setLocale = (locale: string) => {
           >
             RSI
           </a>
+          <router-link :to="{ name: 'enlist' }">
+            {{ t("nav.enlist") }}
+          </router-link>
           <router-link :to="{ name: 'privacy-policy' }">
             {{ t("nav.privacyPolicy") }}
           </router-link>

@@ -1,6 +1,9 @@
 {
   "fr": {
     "labels": {
+      "enlist": {
+        "code": "Code de parrainage"
+      },
       "saved": "Enregistré",
       "hangarShare": {
         "intro": "Créez un lien secret qui montre votre hangar et ses statistiques à toute personne à qui vous le donnez, même lorsque votre hangar est privé. Votre liste de souhaits garde son propre réglage.",

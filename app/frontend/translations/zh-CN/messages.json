@@ -63,6 +63,10 @@
         "success": "链接 \"%{url}\" 已复制！",
         "failure": "无法复制链接"
       },
+      "copyReferralCode": {
+        "success": "邀请码已复制",
+        "failure": "无法复制邀请码"
+      },
       "copyInviteUrl": {
         "success": "邀请链接 \"%{url}\" 已复制！",
         "failure": "无法复制邀请链接"
