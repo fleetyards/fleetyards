@@ -302,14 +302,15 @@ const isBody = (entry: StarmapItem) =>
   entry.role === "star" ||
   entry.role === "system";
 
-// The figures the location card shows, label over value as on every metrics
-// card in the app.
-const facts = computed(() => {
-  const entry = focused.value;
+// The figures the location card and the hover tooltip show, label over
+// value as on every metrics card in the app.
+const factsOf = (entry: StarmapItem | null | undefined) => {
   if (!entry || !scene.value) return [];
 
   const list: { key: string; label: string; value: string }[] = [];
-  const anchor = chain.value.at(-2);
+  const anchor = entry.anchor
+    ? scene.value.items.find((item) => item.key === entry.anchor)
+    : undefined;
 
   if (anchor && entry.distance) {
     list.push({
@@ -349,7 +350,38 @@ const facts = computed(() => {
   }
 
   return list;
+};
+
+const facts = computed(() => factsOf(focused.value));
+
+// What is under the pointer, for the tooltip over it. Not shown for what is
+// focused: the card already says all of it.
+const hovered = shallowRef<{ item: StarmapItem; x: number; y: number } | null>(
+  null,
+);
+
+const tooltip = computed(() => {
+  const target = hovered.value;
+  if (!target || target.item.key === focusKey.value) return null;
+
+  const anchor = target.item.anchor
+    ? scene.value?.items.find((item) => item.key === target.item.anchor)
+    : undefined;
+
+  return {
+    ...target,
+    kind: t(`labels.location.kinds.${target.item.kind}`),
+    anchor: anchor?.role === "star" ? undefined : anchor?.name,
+    facts: factsOf(target.item).filter((fact) => fact.key !== "places"),
+  };
 });
+
+watch(
+  () => scene.value,
+  () => {
+    hovered.value = null;
+  },
+);
 </script>
 
 <template>
@@ -398,6 +430,7 @@ const facts = computed(() => {
           @focus="onFocus"
           @enter="enter"
           @release="release"
+          @hover="hovered = $event"
         />
       </TresCanvas>
       <WebglFallback v-else />
@@ -603,6 +636,26 @@ const facts = computed(() => {
             />
           </RouterLink>
         </section>
+
+        <div
+          v-if="tooltip"
+          class="starmap__tooltip"
+          :style="{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }"
+          role="tooltip"
+          data-test="starmap-tooltip"
+        >
+          <strong class="starmap__tooltip-name">{{ tooltip.item.name }}</strong>
+          <span class="starmap__tooltip-kind">
+            {{ tooltip.kind
+            }}<template v-if="tooltip.anchor"> · {{ tooltip.anchor }}</template>
+          </span>
+          <dl v-if="tooltip.facts.length" class="starmap__tooltip-facts">
+            <div v-for="fact in tooltip.facts" :key="fact.key">
+              <dt>{{ fact.label }}</dt>
+              <dd>{{ fact.value }}</dd>
+            </div>
+          </dl>
+        </div>
 
         <p v-if="!systemSlug" class="starmap__footnote">
           {{ t("starmap.footnote") }}
@@ -934,6 +987,67 @@ $card-height: 96px;
     }
   }
 
+  // As the app's tooltip: a dark panel with an arrow, over the thing it is
+  // about, fading in.
+  &__tooltip {
+    position: absolute;
+    z-index: $overlay;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 260px;
+    padding: 7px 12px 8px;
+    border-radius: 6px;
+    background: #272b30;
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.4;
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 12px));
+    animation: starmap-tooltip-in 0.15s ease-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      border: 6px solid transparent;
+      border-top-color: #272b30;
+      transform: translateX(-50%);
+    }
+  }
+
+  &__tooltip-name {
+    font-weight: 600;
+  }
+
+  &__tooltip-kind {
+    font-size: 11.5px;
+    color: var(--color-text-dim);
+  }
+
+  &__tooltip-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 14px;
+    margin: 4px 0 0;
+    font-size: 11.5px;
+
+    div {
+      display: flex;
+      gap: 5px;
+    }
+
+    dt {
+      color: var(--color-text-dim);
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+
   &__footnote {
     position: absolute;
     z-index: $overlay - 1;
@@ -946,6 +1060,22 @@ $card-height: 96px;
     color: var(--color-text-dim);
     text-shadow: 0 1px 3px rgb(0 0 0 / 90%);
     pointer-events: none;
+  }
+}
+
+@keyframes starmap-tooltip-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starmap__tooltip {
+    animation: none;
   }
 }
 

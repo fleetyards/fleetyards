@@ -65,6 +65,9 @@ const emit = defineEmits<{
   enter: [item: StarmapItem];
   // A click on empty space let go of what was picked.
   release: [];
+  // What is under the pointer and where it is on the canvas, in CSS pixels,
+  // for the tooltip over it; null once nothing is.
+  hover: [hovered: { item: StarmapItem; x: number; y: number } | null];
 }>();
 
 const { camera, controls, renderer } = useTres();
@@ -423,26 +426,43 @@ const terrainMap = (texture: Texture) => {
 
 // The elevation as relief under the light: the body's ranges and basins
 // catch it where the surface alone is flat colour.
-const raiseRelief = (material: MeshLambertMaterial, url: string) => {
-  const built = generation;
+// The elevation is 16-bit, but a browser reads it at 8: smooth slopes come
+// out as steps, and a bump map turns every step into a hard-edged patch. So
+// it is softened once on load, and the relief kept gentle -- enough to catch
+// the light on ranges and basins, not to draw the steps.
+const RELIEF = 1.2;
+const RELIEF_SOFTEN_PIXELS = 3;
 
-  loader
-    .loadAsync(url)
-    .then((texture) => {
-      if (built !== generation) {
-        texture.dispose();
-        return;
-      }
+const softened = (image: HTMLImageElement) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.min(image.width, 1024);
+  canvas.height = canvas.width / 2;
+  const context = canvas.getContext("2d");
 
-      textures.push(terrainMap(texture));
-      material.bumpMap = texture;
-      material.bumpScale = RELIEF;
-      material.needsUpdate = true;
-    })
-    .catch(() => undefined);
+  if (context) {
+    context.filter = `blur(${RELIEF_SOFTEN_PIXELS}px)`;
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  }
+
+  return new CanvasTexture(canvas);
 };
 
-const RELIEF = 4;
+const raiseRelief = (material: MeshLambertMaterial, url: string) => {
+  const built = generation;
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+
+  image.onload = () => {
+    if (built !== generation) return;
+
+    const texture = terrainMap(softened(image));
+    textures.push(texture);
+    material.bumpMap = texture;
+    material.bumpScale = RELIEF;
+    material.needsUpdate = true;
+  };
+  image.src = url;
+};
 
 const disposeBodies = () => {
   generation += 1;
@@ -1156,6 +1176,7 @@ onBeforeRender(({ delta, elapsed }) => {
   // The camera has moved since the last render, and its matrices with it:
   // labels laid out against the old ones land somewhere else.
   cam.updateMatrixWorld();
+  if (element) reportHover(cam, element);
   if (element) declutter(cam, element);
 });
 
@@ -1254,6 +1275,40 @@ const onPointerEnd = (event: PointerEvent) => {
 
 const onPointerLeave = () => {
   hoverKey.value = null;
+};
+
+// Where the hovered thing sits on screen, sent on whenever it moves by a
+// pixel: the tooltip follows it as the camera turns.
+let reported = "";
+const hovered = new Vector3();
+
+const reportHover = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
+  const entry = hoverKey.value ? byKey.value.get(hoverKey.value) : undefined;
+  const mesh = entry ? meshes.get(entry.key) : undefined;
+
+  if (!entry || !mesh?.visible) {
+    if (reported) emit("hover", null);
+    reported = "";
+    return;
+  }
+
+  hovered.copy(mesh.position).sub(origin).project(cam);
+  const x = Math.round(((hovered.x + 1) / 2) * element.clientWidth);
+  const y = Math.round(((1 - hovered.y) / 2) * element.clientHeight);
+
+  // Clear of the thing itself: above the edge it is drawn with.
+  const height = element.clientHeight || 1;
+  const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
+  const drawn = mesh instanceof Sprite ? mesh.scale.x / 2 : mesh.scale.x;
+  const lift = Math.round(
+    drawn / (perPixel * cameraWorld.distanceTo(mesh.position)),
+  );
+
+  const signature = `${entry.key}|${x}|${y - lift}`;
+  if (signature === reported) return;
+  reported = signature;
+
+  emit("hover", { item: entry, x, y: y - lift });
 };
 
 // A drag turns the view; only a click picks.
