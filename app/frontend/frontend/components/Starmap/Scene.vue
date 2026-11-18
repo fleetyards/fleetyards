@@ -97,10 +97,10 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
 
 // A planet or moon is drawn no smaller than its size on a compressed scale,
 // so from afar Pyro V still reads as a giant and Euterpe as a speck: a
-// radius of 1,000 km is 28 pixels across, and a gas giant's 60.
+// radius of 1,000 km is 28 pixels across, and a gas giant's 48.
 const BODY_PIXELS_AT_1000_KM = 28;
 const BODY_PIXELS_CURVE = 0.35;
-const BODY_PIXELS_RANGE = [14, 60] as const;
+const BODY_PIXELS_RANGE = [14, 48] as const;
 
 const minPixelsOf = (entry: StarmapItem) => {
   if ((entry.role !== "planet" && entry.role !== "moon") || !entry.radius) {
