@@ -319,6 +319,8 @@
           "other": "%{count} 艘飞船现在是其他型号。"
         },
         "added": "你的机库新增：%{ships}",
+        "arrived": "已按计划进入你的机库：%{ships}",
+        "heldUpgrades": "升级已在你的机库中，无需再购买：%{upgrades}",
         "prices": "价格已变化：规划时为 %{before}，今天为 %{now}。",
         "rebase": "从机库更新"
       },

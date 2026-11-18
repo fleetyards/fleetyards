@@ -240,9 +240,22 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT rebase adds ships bought since" do
+  test "GET drift lists a ship bought for a route as carried out" do
     travel 1.minute do
       bought = create(:vehicle, user: @user, model: @carrack)
+
+      assert_api_response :get, 200, api_path: "/hangar/plans/{id}/drift", path_params: {id: @plan.id} do
+        assert parsed_body["drifted"]
+        assert_equal [bought.id], parsed_body["arrivals"].pluck("vehicleId")
+        assert_empty parsed_body["newVehicles"]
+        assert_empty parsed_body["heldUpgrades"]
+      end
+    end
+  end
+
+  test "PUT rebase adds ships bought since" do
+    travel 1.minute do
+      bought = create(:vehicle, user: @user, model: @cutlass)
 
       assert_api_response :put, 200, api_path: "/hangar/plans/{id}/rebase", path_params: {id: @plan.id} do
         assert_equal 3, parsed_body["slots"].size

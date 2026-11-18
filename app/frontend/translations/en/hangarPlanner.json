@@ -319,6 +319,8 @@
           "other": "%{count} ships are now other models."
         },
         "added": "New in your hangar: %{ships}",
+        "arrived": "Now in your hangar as planned: %{ships}",
+        "heldUpgrades": "Upgrades now in your hangar, no longer to buy: %{upgrades}",
         "prices": "Prices changed: %{before} when planned, %{now} today.",
         "rebase": "Update from hangar"
       },

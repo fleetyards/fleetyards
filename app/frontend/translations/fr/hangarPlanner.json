@@ -319,6 +319,8 @@
           "other": "%{count} vaisseaux sont maintenant d'autres modèles."
         },
         "added": "Nouveau dans votre hangar : %{ships}",
+        "arrived": "Désormais dans votre hangar comme prévu : %{ships}",
+        "heldUpgrades": "Améliorations désormais dans votre hangar, plus à acheter : %{upgrades}",
         "prices": "Les prix ont changé : %{before} lors de la planification, %{now} aujourd'hui.",
         "rebase": "Mettre à jour depuis le hangar"
       },

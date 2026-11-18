@@ -40290,6 +40290,28 @@ components:
             "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
       additionalProperties: false
       title: HangarPlanAcquisitionUpdateInput
+    HangarPlanArrival:
+      type: object
+      description: A hangar ship an update takes as the one a route set out to get
+      properties:
+        acquisitionId:
+          type: string
+          format: uuid
+        vehicleId:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - acquisitionId
+      - vehicleId
+      - model
+      title: HangarPlanArrival
     HangarPlanBundledResource:
       type: object
       description: A ship a pledge the plan buys back brings along besides the one
@@ -40639,6 +40661,14 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanNewVehicle"
+        arrivals:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanArrival"
+        heldUpgrades:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanHeldUpgrade"
         previousTotal:
           type: number
           description: Net cost of the decided routes as priced when planned
@@ -40653,6 +40683,8 @@ components:
       - missingSources
       - changedSources
       - newVehicles
+      - arrivals
+      - heldUpgrades
       - previousTotal
       - currentTotal
       - drifted
@@ -40705,6 +40737,24 @@ components:
       - label
       - model
       title: HangarPlanGap
+    HangarPlanHeldUpgrade:
+      type: object
+      description: A planned upgrade still to buy that an update takes from the hangar
+        instead
+      properties:
+        stepId:
+          type: string
+          format: uuid
+        fromModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        toModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - stepId
+      - fromModel
+      - toModel
+      title: HangarPlanHeldUpgrade
     HangarPlanIssue:
       type: object
       properties:
