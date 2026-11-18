@@ -5,10 +5,12 @@
         "maintainer": "Recibe la insignia de mantenedor y todas las ventajas del nivel más alto de apoyo."
       },
       "index": "Your database for all information around Ships and Stations in Star Citizen.",
+      "referral": {
+        "hint": "¿Nuevo en Star Citizen? Regístrate con este código y obtén 50.000 UEC con tu primer paquete de juego:"
+      },
       "support": {
         "info": "¿Sin presupuesto? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Vótanos en Spectrum</b></a> para que más gente encuentre FleetYards.",
         "goal": "Cubre los costes de funcionamiento, como el alojamiento y los servicios de datos.",
-        "code": "¿Nuevo en Star Citizen? Usa este código para 5000 UEC iniciales:",
         "thisMonth": "de %{goal} este mes",
         "subline": "Apóyanos directamente",
         "anonymousSupporters": {

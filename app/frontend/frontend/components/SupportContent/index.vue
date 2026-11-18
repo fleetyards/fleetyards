@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
 import SupporterNomination from "@/frontend/components/SupporterNomination/index.vue";
+import ReferralHint from "@/frontend/components/ReferralHint/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
@@ -218,17 +219,7 @@ const leaveForLogin = () => {
 
       <div class="support-secondary">
         <p v-html="t('texts.support.info')" />
-        <p class="support-secondary__referral">
-          {{ t("texts.support.code") }}
-          <a
-            href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
-            class="support-referral-link"
-            target="_blank"
-            rel="noopener"
-          >
-            <b>STAR-5F32-SJZ4</b>
-          </a>
-        </p>
+        <ReferralHint class="support-secondary__referral" />
       </div>
     </div>
   </div>
