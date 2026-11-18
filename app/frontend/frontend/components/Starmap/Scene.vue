@@ -753,9 +753,56 @@ const districtDepth = (entry: StarmapItem) => {
 // it closer still.
 const PLACE_VIEWS = [0.5, 0.18, 0.06];
 
+const OVERVIEW_DIRECTION = new Vector3(0, 0.55, 1).normalize();
+// The ring the overview fits: the outermost planet's orbit and a little more,
+// for the stations and jump points out past it.
+const OVERVIEW_REACH = 1.12;
+// How much of the view, edge to centre, the ring may fill.
+const OVERVIEW_FILL = 0.92;
+
+// How far back the camera has to stand for a ring around the star to fit the
+// view. Seen at an angle the near side of the ring is much closer than the
+// star, so a fixed distance either crops it in a small window or leaves a
+// large one empty; this tries distances until every point of it fits.
+const fittingDistance = (radius: number) => {
+  const cam = camera.value;
+  if (!(cam instanceof PerspectiveCamera)) return radius * 1.35;
+
+  const tanV = Math.tan((cam.fov * Math.PI) / 360);
+  const tanH = tanV * cam.aspect;
+  const forward = OVERVIEW_DIRECTION.clone().negate();
+  const right = new Vector3().crossVectors(forward, UP).normalize();
+  const up = new Vector3().crossVectors(right, forward);
+  const ring = new Vector3();
+  const offset = new Vector3();
+
+  const fits = (distance: number) => {
+    const eye = OVERVIEW_DIRECTION.clone().multiplyScalar(distance);
+
+    for (let step = 0; step < 48; step++) {
+      const angle = (step / 48) * Math.PI * 2;
+      ring.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+      offset.subVectors(ring, eye);
+      const depth = offset.dot(forward);
+      if (depth <= 0) return false;
+      if (Math.abs(offset.dot(right)) / (depth * tanH) > OVERVIEW_FILL) {
+        return false;
+      }
+      if (Math.abs(offset.dot(up)) / (depth * tanV) > OVERVIEW_FILL) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  let distance = radius;
+  while (!fits(distance) && distance < radius * 20) distance *= 1.04;
+  return distance;
+};
+
 const overview = () => ({
-  direction: new Vector3(0, 0.55, 1).normalize(),
-  distance: props.scene.extent * 1.35,
+  direction: OVERVIEW_DIRECTION.clone(),
+  distance: fittingDistance(props.scene.extent * OVERVIEW_REACH),
 });
 
 // Where the camera sits for an item, as a direction from it and a distance.
@@ -883,6 +930,15 @@ const shownOf = (entry: StarmapItem) =>
   entry.key === curtainKeep ? 1 : curtain.value;
 
 const DIVE = 0.3;
+
+// How close to its star, edge to edge on screen, a body or place is gone, and
+// over how many pixels more it fades in: clear of the sun's glow.
+const STAR_CLEAR_PIXELS = 4;
+const STAR_CLEAR_FADE_PIXELS = 14;
+
+const starItem = computed(() =>
+  items.value.find((entry) => entry.role === "star"),
+);
 const PULL_BACK_FROM = 0.75;
 
 const arrive = (scene: StarmapScene) => {
@@ -900,8 +956,12 @@ const arrive = (scene: StarmapScene) => {
   if (scene.kind === "system") {
     curtainKeep =
       scene.items.find((entry) => entry.role === "star")?.key ?? null;
-    // Settled from far out, the way a system has always opened.
-    zoom.distance = 0;
+    // Far out over the system, with its star a point as it was at the end
+    // of the dive, and zooming in from there. Set here rather than left to
+    // the first frame: the new focus sends the camera off before that, and
+    // it would start from the dive's distance, deep inside the system.
+    zoom.distance = zoom.goal = scene.extent * ARRIVAL_DISTANCE;
+    camera.value?.position.setLength(zoom.distance);
     return;
   }
 
@@ -1390,11 +1450,43 @@ onBeforeRender(({ delta, elapsed }) => {
     orbit.material.linewidth = followed ? 2 : 1.2;
   }
 
+  // From far out a system is its star: what orbits it closes on it on
+  // screen, and is let go before it is drawn over the sun.
+  const star = props.scene.kind === "system" ? starItem.value : undefined;
+  const starPixel = star
+    ? perPixel * cameraWorld.distanceTo(scratch.set(...star.position))
+    : 0;
+  // The sun and what orbits it are drawn no smaller than a few pixels, so
+  // they meet on screen long before their centres do: what counts is the gap
+  // between the two as drawn.
+  const starDrawn = star
+    ? Math.max((star.radius ?? 0) / starPixel, MIN_PIXELS.star / 2)
+    : 0;
+  const clearOfStar = (entry: StarmapItem) => {
+    if (!star || entry.key === star.key) return 1;
+    const apart =
+      point.set(...entry.position).distanceTo(scratch.set(...star.position)) /
+      starPixel;
+    const drawn =
+      entry.role === "place"
+        ? (markerOf(entry.kind).size * (entry.minor ? MINOR_MARKER : 1)) / 2
+        : Math.max(
+            (entry.radius ?? 0) / starPixel,
+            MIN_PIXELS[entry.role] / 2,
+          ) * (lifts.get(entry.key) ?? 1);
+    const gap = apart - starDrawn - drawn;
+
+    return Math.min(
+      Math.max((gap - STAR_CLEAR_PIXELS) / STAR_CLEAR_FADE_PIXELS, 0),
+      1,
+    );
+  };
+
   for (const entry of items.value) {
     const mesh = meshes.get(entry.key);
     if (!mesh) continue;
 
-    const fade = fadeOf(entry) * shownOf(entry);
+    const fade = fadeOf(entry) * shownOf(entry) * clearOfStar(entry);
     fades.set(entry.key, fade);
     point.set(...entry.position);
 
