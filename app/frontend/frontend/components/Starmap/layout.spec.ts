@@ -161,6 +161,24 @@ describe("systemScene", () => {
     expect(orbit("aberdeen")?.radius).toBeCloseTo(40);
   });
 
+  it("keeps the sites in a district apart from it", () => {
+    const district = place({
+      id: "fenwick",
+      kind: LocationKindEnum.DISTRICT,
+      parentId: "hurston",
+      position: [HURSTON + 1_000_000, 0, 0],
+    });
+    const site = place({
+      id: "covalex-capital",
+      kind: LocationKindEnum.OUTPOST,
+      parentId: "fenwick",
+      position: [HURSTON + 1_005_000, 0, 0],
+    });
+    const world = systemScene([...places, district, site]);
+
+    expect(world.items.map((item) => item.key)).toContain("covalex-capital");
+  });
+
   it("paints a body by its type, as the location pages do", () => {
     expect(find("hurston").surface).toBe("rocky");
     expect(find("crusader").surface).toBe("gas");

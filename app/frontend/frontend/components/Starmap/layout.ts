@@ -117,6 +117,15 @@ const BODY_KINDS = new Set<LocationKindEnum>([
 // them.
 const INSIDE_METRES = 20_000;
 
+// What a place can be inside of: a clinic in a station, a venue in a city. A
+// district is an area, and the sites in it are places of their own.
+const CONTAINERS = new Set<LocationKindEnum>([
+  LocationKindEnum.STATION,
+  LocationKindEnum.CITY,
+  LocationKindEnum.SPACEPORT,
+  LocationKindEnum.OUTPOST,
+]);
+
 // The game is z-up with its planets in the xy plane; three.js is y-up.
 export const toScene = (
   position: number[],
@@ -274,7 +283,7 @@ const ancestry = (places: LocationStarmapPlace[]) => {
 
   const inside = (place: LocationStarmapPlace) => {
     const parent = parentOf(place);
-    if (!parent || BODY_KINDS.has(parent.kind) || parent.lagrangePoint) {
+    if (!parent || !CONTAINERS.has(parent.kind) || parent.lagrangePoint) {
       return false;
     }
 
