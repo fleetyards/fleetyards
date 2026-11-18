@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_17_110000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2209,6 +2209,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_110000) do
     t.index ["location_id"], name: "index_location_builds_on_location_id"
   end
 
+  create_table "location_surfaces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "location_id", null: false
+    t.string "environment", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id", "environment"], name: "index_location_surfaces_on_location_id_and_environment", unique: true
+  end
+
   create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "sc_key", null: false
     t.text "sc_refs", default: [], null: false, array: true
@@ -3679,6 +3687,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_110000) do
   add_foreign_key "item_prices", "shops", on_delete: :nullify
   add_foreign_key "item_prices", "terminals", on_delete: :nullify
   add_foreign_key "location_builds", "locations", on_delete: :cascade
+  add_foreign_key "location_surfaces", "locations"
   add_foreign_key "locations", "locations", column: "map_parent_id", on_delete: :nullify
   add_foreign_key "locations", "locations", column: "parent_id", on_delete: :nullify
   add_foreign_key "locations", "locations", column: "system_id", on_delete: :nullify

@@ -180,7 +180,8 @@ module ScData
           radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
           starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
           starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
-          starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind]))
+          starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind])),
+          starmap_ground: (starmap_map(place, terrain_maps["soilColor"]) if BODY_KINDS.include?(place[:kind]))
         }
       end
 
@@ -211,7 +212,8 @@ module ScData
       end
 
       # Role => record ref => the body's terrain map of that role: its elevation
-      # and its cloud cover, from the terrain material its container names.
+      # and its cloud cover, from the terrain material its container names, and
+      # on a body the newer planet engine paints, its ground colour.
       # Both are a quarter turn round from the surface; the map applies that.
       private def terrain_maps
         @terrain_maps ||= starmap_materials["bodies"].to_h.each_with_object(Hash.new { |hash, key| hash[key] = {} }) do |(ref, body), maps|

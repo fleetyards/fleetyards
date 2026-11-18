@@ -4,6 +4,9 @@ json.system do
   json.partial! "api/v1/locations/link", location: @starmap.system
 end
 
+# The images of the build being shown: live's or PTU's.
+environment = ::Location.served_source.environment
+
 json.places @places do |place|
   location = place.location
 
@@ -24,13 +27,15 @@ json.places @places do |place|
   # array, which the map keeps in view the longest.
   json.docking Array.wrap(location.facilities&.dig("hangars")).any? || Array.wrap(location.facilities&.dig("pads")).any?
 
-  {texture: :starmap_texture, elevation: :starmap_elevation, clouds: :starmap_clouds}.each do |key, attr|
-    if location.public_send(attr).attached?
-      json.set! key do
-        json.partial! "api/v1/shared/file", record: location, attr:
+  ::LocationSurface::ROLES.each do |role|
+    image = location.starmap_image(role, environment)
+
+    if image
+      json.set! role do
+        json.partial! "api/v1/shared/file", record: image.record, attr: role
       end
     else
-      json.set! key, nil
+      json.set! role, nil
     end
   end
 end

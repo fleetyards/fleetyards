@@ -39,9 +39,7 @@ module ScData
           apply_build(location, build_params(item))
         end
 
-        attach_starmap_map(location, :starmap_texture, item["starmap_texture"])
-        attach_starmap_map(location, :starmap_elevation, item["starmap_elevation"])
-        attach_starmap_map(location, :starmap_clouds, item["starmap_clouds"])
+        attach_surface(location, item)
 
         (@by_key ||= {})[item["sc_key"]] = location
       end
@@ -74,24 +72,36 @@ module ScData
         }
       end
 
-      # The surface the game's own starmap wraps a body in, and its terrain's
-      # elevation and cloud cover. Not facts of the build: a texture is the same
-      # on every channel that has the body, so only the default environment's
-      # load sets it and a PTU load cannot swap it.
+      # How the game's starmap draws the body: its surface texture, its
+      # terrain's elevation and cloud cover, and the ground colour of a body on
+      # the newer planet engine. Kept per environment, so a PTU load writes
+      # PTU's and leaves live's alone.
       #
-      # Removed when the export stops naming one: unlike a logo, nobody uploads
-      # these by hand, so one the game dropped is only ever stale.
-      private def attach_starmap_map(location, attachment_name, path)
-        return unless default_environment?
+      # An image the export stops naming is removed: unlike a logo, nobody
+      # uploads these by hand, so one the game dropped is only ever stale.
+      SURFACE_KEYS = {
+        texture: "starmap_texture",
+        elevation: "starmap_elevation",
+        clouds: "starmap_clouds",
+        ground: "starmap_ground"
+      }.freeze
 
-        attachment = location.public_send(attachment_name)
+      private def attach_surface(location, item)
+        paths = SURFACE_KEYS.transform_values { |key| item[key].presence }
+        surface = location.surfaces.find_by(environment: sc_environment)
+        return if surface.nil? && paths.values.none?
 
-        if path.blank?
-          attachment.purge_later if attachment.attached?
-          return
+        surface ||= location.surfaces.create!(environment: sc_environment)
+
+        paths.each do |role, path|
+          attachment = surface.public_send(role)
+
+          if path.nil?
+            attachment.purge_later if attachment.attached?
+          else
+            attach_parsed_file(surface, role, export_path.join(path).to_s)
+          end
         end
-
-        attach_parsed_file(location, attachment_name, export_path.join(path).to_s)
       end
 
       private def lookup(key)

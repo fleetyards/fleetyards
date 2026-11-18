@@ -65,11 +65,8 @@ class Location < ApplicationRecord
   # Curated, where everything else is loaded: no game file carries a picture
   # of a planet.
   has_one_attached :image
-  # The surface the game's own starmap wraps the body in, from the export.
-  has_one_attached :starmap_texture
-  # Its terrain's elevation and cloud cover, from the same export.
-  has_one_attached :starmap_elevation
-  has_one_attached :starmap_clouds
+  # How the game's starmap draws the body, per environment.
+  has_many :surfaces, class_name: "LocationSurface", dependent: :destroy
 
   before_save :update_slugs
 
@@ -238,5 +235,14 @@ class Location < ApplicationRecord
     return name_shared unless name_shared.nil?
 
     self.class.where(name: own_name).where.not(id:).exists?
+  end
+
+  # The starmap image of a role for an environment, or the other
+  # environment's where that one has none: PTU's export may carry only what
+  # changed. Reads the preloaded surfaces rather than querying.
+  def starmap_image(role, environment)
+    own, others = surfaces.partition { |surface| surface.environment == environment.to_s }
+
+    [*own, *others].lazy.map { |surface| surface.public_send(role) }.find(&:attached?)
   end
 end

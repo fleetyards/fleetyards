@@ -72,7 +72,7 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /locations/{slug}/starmap serves a body's starmap texture where it has one" do
-    @hurston.starmap_texture.attach(
+    @hurston.surfaces.create!(environment: ScData::Source.environment).texture.attach(
       io: File.open(Rails.root.join("test/fixtures/sc_data/parsed/test/starmap_materials/ui_sm_stanton_1_hurston.webp")),
       filename: "ui_sm_stanton_1_hurston.webp",
       content_type: "image/webp"
@@ -86,6 +86,23 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
       assert_nil places.dig("Stanton", "texture")
       assert_nil places.dig("Hurston", "elevation")
       assert_nil places.dig("Hurston", "clouds")
+    end
+  end
+
+  test "GET /locations/{slug}/starmap falls back to the other environment's image" do
+    @hurston.surfaces.create!(environment: ScData::Source.environment).elevation.attach(
+      io: StringIO.new("served"), filename: "served.png", content_type: "image/png"
+    )
+    @hurston.surfaces.create!(environment: "elsewhere").texture.attach(
+      io: StringIO.new("other"), filename: "other.webp", content_type: "image/webp"
+    )
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body["places"].find { |place| place["name"] == "Hurston" }
+
+      assert_equal "served.png", hurston.dig("elevation", "name")
+      assert_equal "other.webp", hurston.dig("texture", "name")
+      assert_nil hurston["ground"]
     end
   end
 

@@ -31,7 +31,7 @@ module Locations
         .with_facts
         .where(system_id: system.id)
         .where("#{Location.fact_sql(:position)} IS NOT NULL")
-        .includes(:parent, :build, :last_build, starmap_texture_attachment: :blob, starmap_elevation_attachment: :blob, starmap_clouds_attachment: :blob)
+        .includes(:parent, :build, :last_build, surfaces: ::LocationSurface::ROLES.map { |role| {"#{role}_attachment": :blob} })
         .order(:sc_key)
     end
   end

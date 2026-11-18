@@ -38,13 +38,17 @@ module V1
           # cover (the red channel), both equirectangular and a quarter turn
           # round from the texture: the texture at u matches them at u + 0.25.
           elevation: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
-          clouds: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
+          clouds: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
+          # The colour of the ground, on a body the game's newer planet engine
+          # paints: as near as the game files come to a picture of the planet
+          # itself. Turned as the elevation is.
+          ground: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
         },
         additionalProperties: false,
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
           shownWithParentOnly alwaysShown quantumTravelDestination lagrangePoint
-          gateway color unstable bodyType docking texture elevation clouds
+          gateway color unstable bodyType docking texture elevation clouds ground
         ]
       })
     end

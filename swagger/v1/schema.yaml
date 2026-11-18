@@ -45214,6 +45214,10 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
+        ground:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
       additionalProperties: false
       required:
       - id
@@ -45237,6 +45241,7 @@ components:
       - texture
       - elevation
       - clouds
+      - ground
       title: LocationStarmapPlace
     LocationTerminal:
       type: object
