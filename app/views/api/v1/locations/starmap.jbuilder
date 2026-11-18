@@ -25,7 +25,10 @@ json.places @places do |place|
   json.body_type location.body_type
   # Whether a ship can dock or land there: a rest stop rather than a comm
   # array, which the map keeps in view the longest.
-  json.docking Array.wrap(location.facilities&.dig("hangars")).any? || Array.wrap(location.facilities&.dig("pads")).any?
+  facilities = location.facilities || {}
+  json.docking Array.wrap(facilities["hangars"]).any? ||
+    Array.wrap(facilities["landing_pads"]).any? ||
+    facilities["docking_tubes"].to_i.positive?
 
   ::LocationSurface::ROLES.each do |role|
     image = location.starmap_image(role, environment)

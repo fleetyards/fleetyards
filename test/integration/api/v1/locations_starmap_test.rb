@@ -130,7 +130,21 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /locations/{slug}/starmap says where a ship can dock" do
-    @gateway.builds.sole.update!(facilities: {"hangars" => [{"size" => "large", "count" => 2}], "pads" => []})
+    @gateway.builds.sole.update!(facilities: {"hangars" => [{"size" => "large", "count" => 2}], "landing_pads" => []})
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      assert parsed_body["places"].find { |place| place["name"] == "Pyro Gateway" }["docking"]
+    end
+  end
+
+  test "GET /locations/{slug}/starmap counts landing pads and docking collars as somewhere to dock" do
+    @gateway.builds.sole.update!(facilities: {"hangars" => [], "landing_pads" => [{"size" => "medium", "count" => 1}]})
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      assert parsed_body["places"].find { |place| place["name"] == "Pyro Gateway" }["docking"]
+    end
+
+    @gateway.builds.sole.update!(facilities: {"hangars" => [], "landing_pads" => [], "docking_tubes" => 2})
 
     assert_api_response :get, 200, params: {slug: @system.slug} do
       assert parsed_body["places"].find { |place| place["name"] == "Pyro Gateway" }["docking"]
