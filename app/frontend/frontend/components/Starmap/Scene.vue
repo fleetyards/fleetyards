@@ -1961,7 +1961,9 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
           mesh.scale.x /
           (lifts.get(entry.key) ?? 1) /
           (perPixel * cameraWorld.distanceTo(point));
-        const drop = Math.round(drawn + LABEL_BELOW_PIXELS);
+        // To a tenth of a pixel: whole pixels step on every frame of a zoom
+        // while the disc grows smoothly, and the name judders under it.
+        const drop = Math.round((drawn + LABEL_BELOW_PIXELS) * 10) / 10;
         if (labelDrops.get(entry.key) !== drop) {
           labelDrops.set(entry.key, drop);
           const element = labelElements.get(entry.key);
