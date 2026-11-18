@@ -104,9 +104,8 @@ const inventoryActions = computed(() =>
 
 const records = computed(() => pledgeItems.value?.items ?? []);
 
-// A ship module is fitted to a ship by the sync, never kept in an inventory.
 const selectableRecords = computed(() =>
-  records.value.filter((item) => !item.shipModule),
+  records.value.filter((item) => item.inventoriable),
 );
 
 // The endpoint takes the items themselves, not a query, so a selection stays
@@ -213,7 +212,7 @@ onUnmounted(() => {
 
     <template #default="{ records: listed, emptyVisible }">
       <BulkSelectionBar
-        v-if="inventoryActions && listed.length"
+        v-if="inventoryActions && selectableRecords.length"
         :selected-count="selectedCount"
         :matching-count="matchingCount"
         :page-selected="pageSelected"

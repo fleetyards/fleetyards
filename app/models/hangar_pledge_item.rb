@@ -39,7 +39,9 @@ class HangarPledgeItem < ApplicationRecord
   scope :flair, -> { where(kind: "flair") }
   scope :equipment, -> { where(kind: "equipment") }
   scope :ship_components, -> { where(kind: "ship_component") }
-  scope :for_inventory, -> { where(kind: INVENTORY_KINDS) }
+  # A ship module is fitted to its ship by the hangar sync: in an inventory as
+  # well it would be counted twice.
+  scope :for_inventory, -> { where(kind: INVENTORY_KINDS, ship_module: false) }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
   scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
@@ -104,12 +106,6 @@ class HangarPledgeItem < ApplicationRecord
 
   def melt_value
     pledge_value if standalone?
-  end
-
-  # A module the hangar sync fits to a ship: listed with the ship components,
-  # but never deposited in an inventory, where it would be counted twice.
-  def ship_module?
-    kind == "ship_component" && ::HangarModuleMapping.module?(name)
   end
 
   def inventoriable?

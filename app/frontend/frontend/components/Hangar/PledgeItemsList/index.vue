@@ -50,15 +50,8 @@ const emit = defineEmits<{
   "add-to-inventory": [item: HangarPledgeItem];
 }>();
 
-const INVENTORY_KINDS: string[] = [
-  HangarPledgeItemKindEnum.SHIP_COMPONENT,
-  HangarPledgeItemKindEnum.EQUIPMENT,
-];
-
 const inventoryable = (item: HangarPledgeItem) =>
-  props.inventoryActions &&
-  INVENTORY_KINDS.includes(item.kind) &&
-  !item.shipModule;
+  props.inventoryActions && item.inventoriable;
 
 const { t, l, tExists } = useI18n();
 
@@ -177,7 +170,7 @@ const sub = (item: HangarPledgeItem) =>
       >
         <template #leading>
           <FormCheckbox
-            v-if="selectable && !record.shipModule"
+            v-if="selectable && record.inventoriable"
             v-tooltip="t('labels.hangarPledgeItems.select')"
             :model-value="selectedIds.includes(record.id)"
             :aria-label="t('labels.hangarPledgeItems.select')"

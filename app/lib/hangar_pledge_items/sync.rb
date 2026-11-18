@@ -239,8 +239,10 @@ module HangarPledgeItems
     private def build_rows
       items.group_by { |item| [item[:kind], item[:id].to_s, item[:name].strip] }
         .map do |(kind, rsi_pledge_id, name), group|
+          ship_module = kind == "ship_component" && ::HangarModuleMapping.module?(name)
+
           {
-            component_id: (component_catalogue.find(name) if kind == "ship_component" && !::HangarModuleMapping.module?(name)),
+            component_id: (component_catalogue.find(name) if kind == "ship_component" && !ship_module),
             equipment_id: (equipment_catalogue.find(name) if kind == "equipment"),
             user_id: user.id,
             kind:,
@@ -254,7 +256,8 @@ module HangarPledgeItems
             pledge_created_on: group.first[:pledge_created_on].presence,
             rsi_page: group.first[:page].presence&.to_i,
             rsi_page_upgrades_only: upgrades_only_list,
-            meltable: ActiveModel::Type::Boolean.new.cast(group.first[:meltable]) || false
+            meltable: ActiveModel::Type::Boolean.new.cast(group.first[:meltable]) || false,
+            ship_module:
           }
         end
     end

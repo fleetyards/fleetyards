@@ -134,7 +134,8 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
 
   # The hangar sync fits a module to a ship: in an inventory too it would count twice.
   test "skips a ship module" do
-    ship_module = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "Galaxy - Cargo Module")
+    ship_module = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "Galaxy - Cargo Module",
+      ship_module: true)
     sign_in @user
 
     post "/api/v1/hangar/inventories/#{@inventory.slug}/items/from-pledge-items",

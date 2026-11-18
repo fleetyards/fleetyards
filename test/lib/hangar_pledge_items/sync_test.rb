@@ -84,6 +84,7 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert_equal ["Aurora Mk II Cargo Module", "Mystery Ship - Science Module"], stored.map(&:name)
     assert stored.all?(&:ship_module?)
     assert_nil stored.first.catalogue_component
+    assert_empty @user.hangar_pledge_items.for_inventory
   end
 
   test "links FPS gear to the catalogue item it is" do

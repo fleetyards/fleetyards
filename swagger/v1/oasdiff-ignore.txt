@@ -4470,3 +4470,4 @@ GET /hangar/flair API path removed without deprecation
 GET /hangar/upgrades API path removed without deprecation
 GET /hangar/equipment API path removed without deprecation
 GET /hangar/ship-components API path removed without deprecation
+GET /hangar/pledge-items removed the required property `items/items/shipModule` from the response with the `200` status
