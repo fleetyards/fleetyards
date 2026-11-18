@@ -79,14 +79,20 @@ module HangarPlans
     end
 
     # Brings the plan up to the live hangar without discarding the user's
-    # edits: added ships wait for the user to decide on them, routes and melts
-    # of lost ones stay flagged, and prices are taken again as of now. A mark
-    # of a ship deleted from the hangar goes, since the plan shows it nowhere to
-    # edit; one hidden for now stays, to apply again once it is back.
+    # edits: what the user carried out moves the plan on, added ships wait for
+    # the user to decide on them, routes and melts of ships lost otherwise stay
+    # flagged, and prices are taken again as of now. A mark of a ship that left
+    # the hangar goes, since the plan shows it nowhere to edit; one hidden for
+    # now stays, to apply again once it is back.
     def rebase!
       HangarPlan.transaction do
+        Progress.new(plan).apply!
+        @new_vehicles = nil
+
         HangarPlanVehicleMark.write(plan, new_vehicles, "pending")
-        plan.vehicle_marks.where(vehicle_id: nil).or(plan.vehicle_marks.where.not(vehicle_id: plan.user.vehicles.select(:id))).delete_all
+        gone = plan.vehicle_marks.where.not(vehicle_id: plan.pledged_vehicles.select(:id))
+          .where.not(vehicle_id: plan.user.vehicles.where(hidden: true).select(:id))
+        plan.vehicle_marks.where(vehicle_id: nil).or(gone).delete_all
 
         plan.acquisitions.includes(:start_model, :buyback_pledge).find_each do |acquisition|
           acquisition.update_columns(price_snapshot: acquisition.list_price)
