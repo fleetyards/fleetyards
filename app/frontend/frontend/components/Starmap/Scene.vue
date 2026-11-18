@@ -334,6 +334,11 @@ const textures: Texture[] = [];
 const suns: StarmapSun[] = [];
 const linkLines: { material: LineMaterial; base: number }[] = [];
 
+// The labels' own elements, by key: their drop is set on them directly, since
+// it changes on every frame of a zoom and Vue would redraw every label for it.
+const labelElements = new Map<string, HTMLElement>();
+const labelDrops = new Map<string, number>();
+
 // Orbits and tunnels in the app's neutral, as the connectors on the location
 // pages: colour on the map is kept for what something is.
 const LINE_COLOR = new Color(0xc8d0d8);
@@ -615,6 +620,7 @@ const disposeBodies = () => {
   lineMaterials.length = 0;
   orbitLines.length = 0;
   linkLines.length = 0;
+  labelDrops.clear();
   orbitFades.clear();
   textures.length = 0;
   suns.length = 0;
@@ -1869,22 +1875,39 @@ let lastSignature = "";
 // pointer, not so much that it crowds what is around it.
 const HOVER_LIFT = 1.15;
 
+// How far under its point a name sits by default, as Label.vue draws it.
+const LABEL_DROPS: Record<StarmapRole, number> = {
+  system: 24,
+  star: 24,
+  planet: 15,
+  moon: 15,
+  place: 15,
+};
+
 // From a body's drawn edge to the middle of its name: half a line and a gap.
 const LABEL_BELOW_PIXELS = 11;
-// The labels' own elements, by key: their drop is set on them directly, since
-// it changes on every frame of a zoom and Vue would redraw every label for it.
-const labelElements = new Map<string, HTMLElement>();
-const labelDrops = new Map<string, number>();
+// One ref per key, kept: a new function on every render would have Vue
+// unset and set every label's ref each time the list changes.
+const labelRefs = new Map<string, (instance: unknown) => void>();
 
-const keepLabel = (key: string) => (instance: unknown) => {
-  const element = (instance as { $el?: unknown } | null)?.$el;
-  if (element instanceof HTMLElement) {
-    labelElements.set(key, element);
-    const drop = labelDrops.get(key);
-    if (drop !== undefined) element.style.transform = `translateY(${drop}px)`;
-  } else {
-    labelElements.delete(key);
+const keepLabel = (key: string) => {
+  let keep = labelRefs.get(key);
+  if (!keep) {
+    keep = (instance: unknown) => {
+      const element = (instance as { $el?: unknown } | null)?.$el;
+      if (element instanceof HTMLElement) {
+        labelElements.set(key, element);
+        const drop = labelDrops.get(key);
+        if (drop !== undefined) {
+          element.style.transform = `translateY(${drop}px)`;
+        }
+      } else {
+        labelElements.delete(key);
+      }
+    };
+    labelRefs.set(key, keep);
   }
+  return keep;
 };
 
 const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
@@ -1946,32 +1969,38 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
 
     const half = (entry.name.length * LABEL_CHAR_WIDTH) / 2;
 
+    // A body's name goes under its disc as drawn, however large that is,
+    // but not with the hover's growth: the name stays where it was. To a
+    // tenth of a pixel: whole pixels step on every frame of a zoom while the
+    // disc grows smoothly, and the name judders under it.
+    const mesh = meshes.get(entry.key);
+    const drop =
+      mesh && !(mesh instanceof Sprite) && entry.role !== "system"
+        ? Math.round(
+            (mesh.scale.x /
+              (lifts.get(entry.key) ?? 1) /
+              (perPixel * cameraWorld.distanceTo(point)) +
+              LABEL_BELOW_PIXELS) *
+              10,
+          ) / 10
+        : undefined;
+    // Where the name is drawn, which is what has to stay clear of the rest.
+    const labelY = y + (drop ?? LABEL_DROPS[entry.role]);
+
     const overlaps = placed.some(
       (other) =>
         Math.abs(other.x - x) < other.half + half &&
-        Math.abs(other.y - y) < LABEL_HEIGHT,
+        Math.abs(other.y - labelY) < LABEL_HEIGHT,
     );
 
     if (!overlaps || important(entry)) {
-      placed.push({ x, y, half });
+      placed.push({ x, y: labelY, half });
       next.add(entry.key);
 
-      // A body's name goes under its disc as drawn, however large that is,
-      // but not with the hover's growth: the name stays where it was.
-      const mesh = meshes.get(entry.key);
-      if (mesh && !(mesh instanceof Sprite) && entry.role !== "system") {
-        const drawn =
-          mesh.scale.x /
-          (lifts.get(entry.key) ?? 1) /
-          (perPixel * cameraWorld.distanceTo(point));
-        // To a tenth of a pixel: whole pixels step on every frame of a zoom
-        // while the disc grows smoothly, and the name judders under it.
-        const drop = Math.round((drawn + LABEL_BELOW_PIXELS) * 10) / 10;
-        if (labelDrops.get(entry.key) !== drop) {
-          labelDrops.set(entry.key, drop);
-          const element = labelElements.get(entry.key);
-          if (element) element.style.transform = `translateY(${drop}px)`;
-        }
+      if (drop !== undefined && labelDrops.get(entry.key) !== drop) {
+        labelDrops.set(entry.key, drop);
+        const element = labelElements.get(entry.key);
+        if (element) element.style.transform = `translateY(${drop}px)`;
       }
     }
   }
