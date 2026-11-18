@@ -30,6 +30,10 @@ export interface StarmapItem {
   // The surface the game's own starmap wraps the body in, where the export
   // has one. The painted surface stands in while it loads, or without it.
   texture: string | null;
+  // Its terrain's elevation and cloud cover, a quarter turn round from the
+  // texture.
+  elevation: string | null;
+  clouds: string | null;
   // A flare star, as Pyro is.
   unstable: boolean;
   // Whether it is named on the map where there is room. Every item is named
@@ -42,6 +46,15 @@ export interface StarmapItem {
   anchor: string | null;
   // How far it is from its anchor, in metres.
   distance: number | null;
+  // How close the camera has to be for it to show, in scene units: fully
+  // within this, gone at twice it. Measured from its anchor for what stands
+  // on or around a body, from itself for what stands alone in the system.
+  // Null for what always shows.
+  near: number | null;
+  nearFrom: "anchor" | "self";
+  // A place that matters less than its kind suggests: a comm array rather
+  // than a rest stop, a shelter rather than an outpost. Drawn smaller.
+  minor: boolean;
   realRadius: number | null;
   parentName: string | null;
 }
@@ -136,13 +149,74 @@ const RANKS: Record<StarmapRole, number> = {
   place: 3,
 };
 
+// The game has no type for an emergency or aid shelter: it is an outpost the
+// game names as one.
+const SHELTER = /\bshelter\b/i;
+
+const isShelter = (place: LocationStarmapPlace) =>
+  place.kind === LocationKindEnum.OUTPOST && SHELTER.test(place.name ?? "");
+
+// A station a ship cannot dock at: a comm array, a satellite, the rock at a
+// Lagrange point.
+const isMinorStation = (place: LocationStarmapPlace) =>
+  place.kind === LocationKindEnum.STATION && !place.docking && !place.gateway;
+
+const isMinor = (place: LocationStarmapPlace) =>
+  isShelter(place) || isMinorStation(place);
+
 const rankOf = (place: LocationStarmapPlace, role: StarmapRole) => {
   if (role !== "place") return RANKS[role];
 
   // What a reader travels to keeps its name over what is merely there: a
-  // station over an outpost, an outpost over a clinic or a mining claim.
+  // station over an outpost, an outpost over a shelter or a mining claim.
+  if (isMinor(place)) return 5;
   if (LABELLED_PLACES.has(place.kind) || place.gateway) return 3;
   return place.kind === LocationKindEnum.OUTPOST ? 4 : 5;
+};
+
+// Zooming out of a body, what is on and around it goes in steps: shelters
+// first, then outposts, then comm arrays and small stations, then cities,
+// and last the stations a ship docks at. In the body's radii.
+const BODY_REACH = {
+  shelter: 2.5,
+  place: 5,
+  minorStation: 9,
+  city: 16,
+  station: 40,
+  moon: 140,
+};
+
+// The same steps for what stands alone in the system, in parts of the
+// system's own reach: mining claims, then the rocks and arrays at the
+// Lagrange points, and the gateways and rest stops always.
+const SYSTEM_REACH = {
+  place: 0.12,
+  minorStation: 0.35,
+};
+
+const bodyReachOf = (place: LocationStarmapPlace) => {
+  if (place.kind === LocationKindEnum.MOON) return BODY_REACH.moon;
+  if (isShelter(place)) return BODY_REACH.shelter;
+  if (isMinorStation(place)) return BODY_REACH.minorStation;
+  if (
+    place.kind === LocationKindEnum.CITY ||
+    place.kind === LocationKindEnum.SPACEPORT
+  ) {
+    return BODY_REACH.city;
+  }
+  if (place.kind === LocationKindEnum.STATION) return BODY_REACH.station;
+  return BODY_REACH.place;
+};
+
+const systemReachOf = (place: LocationStarmapPlace) => {
+  if (place.gateway || place.docking) return null;
+  if (
+    place.kind === LocationKindEnum.STATION ||
+    place.kind === LocationKindEnum.JUMP_POINT
+  ) {
+    return isMinorStation(place) ? SYSTEM_REACH.minorStation : null;
+  }
+  return SYSTEM_REACH.place;
 };
 
 // As the location pages paint a body: an ordinary moon is cratered like an
@@ -243,9 +317,14 @@ export const systemsScene = (
       color: COLORS.system,
       surface: null,
       texture: null,
+      elevation: null,
+      clouds: null,
       unstable: false,
       labelled: true,
       rank: 0,
+      near: null,
+      nearFrom: "self",
+      minor: false,
       anchor: null,
       distance: null,
       realRadius: null,
@@ -311,6 +390,33 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
     return bodyOf(place) ?? star ?? null;
   };
 
+  const extent = Math.max(
+    1,
+    ...shown
+      .filter((place) => place.kind === LocationKindEnum.PLANET)
+      .map((place) => length(toScene(place.position, origin, UNIT))),
+  );
+
+  const reachOf = (
+    place: LocationStarmapPlace,
+    role: StarmapRole,
+    anchor: LocationStarmapPlace | null,
+  ): Pick<StarmapItem, "near" | "nearFrom"> => {
+    if (role === "star" || role === "planet") {
+      return { near: null, nearFrom: "self" };
+    }
+
+    if (anchor && anchor !== star && anchor.radius) {
+      return {
+        near: (anchor.radius / UNIT) * bodyReachOf(place),
+        nearFrom: "anchor",
+      };
+    }
+
+    const share = systemReachOf(place);
+    return { near: share === null ? null : extent * share, nearFrom: "self" };
+  };
+
   const items = shown.map((place): StarmapItem => {
     const role = roleOf(place);
     const anchor = anchorOf(place);
@@ -326,9 +432,14 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       color: place.color ?? COLORS[role],
       surface: surfaceOf(place, role),
       texture: place.texture?.largeUrl ?? place.texture?.url ?? null,
+      // As exported: a resized copy would lose what the data maps carry.
+      elevation: place.elevation?.url ?? null,
+      clouds: place.clouds?.url ?? null,
       unstable: place.unstable,
       labelled: !place.lagrangePoint || !occupied.has(place.id),
       rank: rankOf(place, role),
+      ...reachOf(place, role, anchor),
+      minor: isMinor(place),
       anchor: anchor?.id ?? null,
       distance: anchor ? gap(place.position, anchor.position) : null,
       realRadius: place.radius,
@@ -355,13 +466,6 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       },
     ];
   });
-
-  const extent = Math.max(
-    1,
-    ...items
-      .filter((entry) => entry.role === "planet")
-      .map((entry) => length(entry.position)),
-  );
 
   return { kind: "system", items, orbits, links: [], extent };
 };

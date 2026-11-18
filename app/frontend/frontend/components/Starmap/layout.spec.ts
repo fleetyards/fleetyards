@@ -26,7 +26,10 @@ const place = (
   color: null,
   unstable: false,
   bodyType: null,
+  docking: false,
   texture: null,
+  elevation: null,
+  clouds: null,
   ...overrides,
 });
 
@@ -162,6 +165,45 @@ describe("systemScene", () => {
     expect(find("crusader").surface).toBe("gas");
     expect(find("aberdeen").surface).toBe("cratered");
     expect(find("lorville").surface).toBeNull();
+  });
+
+  it("lets what is on a body go in steps as the camera leaves it", () => {
+    const shelter = place({
+      id: "aid-shelter",
+      name: "Tamdon Plains Aid Shelter",
+      kind: LocationKindEnum.OUTPOST,
+      parentId: "hurston",
+      position: [HURSTON + 1_000_000, 10, 0],
+    });
+    const outpost = place({
+      id: "outpost",
+      kind: LocationKindEnum.OUTPOST,
+      parentId: "hurston",
+      position: [HURSTON + 1_000_000, 20, 0],
+    });
+    const array = place({
+      id: "comm-array",
+      parentId: "hurston",
+      position: [HURSTON + 2_000_000, 0, 0],
+    });
+    const harbor = place({
+      id: "harbor",
+      parentId: "hurston",
+      docking: true,
+      position: [HURSTON + 1_100_000, 0, 0],
+    });
+    const world = systemScene([...places, shelter, outpost, array, harbor]);
+    const near = (key: string) =>
+      world.items.find((item) => item.key === key)!.near!;
+
+    expect(near("aid-shelter")).toBeLessThan(near("outpost"));
+    expect(near("outpost")).toBeLessThan(near("comm-array"));
+    expect(near("comm-array")).toBeLessThan(near("lorville"));
+    expect(near("lorville")).toBeLessThan(near("harbor"));
+    expect(world.items.find((item) => item.key === "comm-array")!.minor).toBe(
+      true,
+    );
+    expect(world.items.find((item) => item.key === "hurston")!.near).toBeNull();
   });
 
   it("frames the overview on the outermost planet", () => {
