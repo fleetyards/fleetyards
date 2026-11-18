@@ -1072,13 +1072,18 @@ const imageOf = (model?: HangarPlanModel) =>
                 :ships="row.right.ships"
               />
             </strong>
-            <span v-if="row.right.sub" class="hangar-flow__muted">
-              {{ row.right.sub }}
+            <span
+              v-if="row.right.sub || row.right.pill"
+              class="hangar-flow__sub"
+            >
+              <span v-if="row.right.sub" class="hangar-flow__muted">
+                {{ row.right.sub }}
+              </span>
+              <Pill v-if="row.right.pill" :variant="row.right.pill.variant">
+                {{ row.right.pill.label }}
+              </Pill>
             </span>
           </span>
-          <Pill v-if="row.right.pill" :variant="row.right.pill.variant">
-            {{ row.right.pill.label }}
-          </Pill>
           <SlotActions
             v-if="slotOf(row)"
             @edit="emit('editSlot', slotOf(row)!)"
@@ -1221,6 +1226,13 @@ const imageOf = (model?: HangarPlanModel) =>
 .hangar-flow__muted {
   font-size: 0.8rem;
   color: var(--color-text-dim);
+}
+
+.hangar-flow__sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
 }
 
 .hangar-flow__toggle {
