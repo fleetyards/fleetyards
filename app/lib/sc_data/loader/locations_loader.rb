@@ -90,7 +90,7 @@ module ScData
 
       private def attach_surface(location, item)
         paths = SURFACE_KEYS.transform_values { |key| item[key].presence }
-        surface = location.surfaces.find_by(environment: sc_environment)
+        surface = surfaces_by_location[location.id]
         return if surface.nil? && paths.values.none?
 
         surface ||= location.surfaces.create!(environment: sc_environment)
@@ -104,6 +104,12 @@ module ScData
             attach_parsed_file(surface, role, export_path.join(path).to_s)
           end
         end
+      end
+
+      # The surfaces this environment already has, read once: most places are
+      # stations and outposts without one.
+      private def surfaces_by_location
+        @surfaces_by_location ||= LocationSurface.where(environment: sc_environment).index_by(&:location_id)
       end
 
       private def lookup(key)
