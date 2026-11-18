@@ -319,6 +319,8 @@
           "other": "%{count} navi sono ora altri modelli."
         },
         "added": "Novità nel tuo hangar: %{ships}",
+        "arrived": "Ora nel tuo hangar come previsto: %{ships}",
+        "heldUpgrades": "Upgrade ora nel tuo hangar, non più da acquistare: %{upgrades}",
         "prices": "Prezzi cambiati: %{before} al momento della pianificazione, %{now} oggi.",
         "rebase": "Aggiorna dall'hangar"
       },
