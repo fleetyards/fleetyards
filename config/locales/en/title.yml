@@ -42,6 +42,7 @@ en:
       login: Login
       password_change: Change Password
       password_request: Request Password
+      enlist: "Star Citizen Referral Code"
       privacy-policy: Privacy Policy
       public_hangar: "%{user} Hangar"
       public_plaque: "%{vehicle} dedication plaque"

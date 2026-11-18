@@ -1,6 +1,8 @@
 ---
 es:
   meta:
+    enlist:
+      description: "Regístrate en Star Citizen con el código de referido de FleetYards STAR-5F32-SJZ4 y obtén 50.000 UEC con tu primer paquete de juego."
     plaque_tool:
       description: "Dale a cualquier nave de Star Citizen una placa de dedicatoria, como la que CIG colgó para The Only Constant, y compártela como imagen."
     admin_description: FleetYards.net Command App.

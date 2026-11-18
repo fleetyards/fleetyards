@@ -43,6 +43,7 @@ fr:
       login: Connexion
       password_change: Changer le mot de passe
       password_request: Demander un mot de passe
+      enlist: "Code de parrainage Star Citizen"
       privacy-policy: Politique de confidentialité
       public_hangar: Hangar de %{user}
       public_plaque: "Plaque de dédicace de %{vehicle}"

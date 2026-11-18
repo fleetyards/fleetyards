@@ -43,6 +43,7 @@ it:
       login: Accedi
       password_change: Cambia password
       password_request: Richiedi password
+      enlist: "Codice referral di Star Citizen"
       privacy-policy: Informativa sulla privacy
       public_hangar: Hangar di %{user}
       public_plaque: "Targa di dedica di %{vehicle}"

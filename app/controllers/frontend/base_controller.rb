@@ -41,6 +41,13 @@ module Frontend
       render_frontend
     end
 
+    def enlist
+      @title = I18n.t("title.frontend.enlist")
+      @description = I18n.t("meta.enlist.description")
+
+      render_frontend
+    end
+
     def model
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

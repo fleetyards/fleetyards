@@ -145,6 +145,7 @@ namespace :frontend, **frontend_options do
 
   get "notifications", to: "base#index", as: :notifications
   get "support", to: "base#index", as: :support
+  get "enlist", to: "base#enlist", as: :enlist
   get "raffles/preview/:token", to: "base#index", as: :raffle_preview
   get "raffles/:id", to: "base#index", as: :raffle
   get "raffle-claims/:token", to: "base#index", as: :raffle_claim
