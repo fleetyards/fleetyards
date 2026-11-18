@@ -88,7 +88,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.9.0)
+    addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     after_commit_everywhere (1.6.0)
@@ -456,7 +456,7 @@ GEM
       actionmailer (>= 3.1)
       mrml (~> 1.0)
       railties (>= 3.1)
-    msgpack (1.8.6)
+    msgpack (1.8.7)
     multi_xml (0.9.1)
       bigdecimal (>= 3.1, < 5)
     mutex_m (0.3.0)
@@ -501,11 +501,11 @@ GEM
       sawyer (~> 0.9)
     oj (3.17.8)
       bigdecimal (>= 3.0)
-    omniauth (2.1.4)
-      hashie (>= 3.4.6)
+    omniauth (2.4.1)
+      hashie (>= 3.5.2)
       logger
-      rack (>= 2.2.3)
-      rack-protection
+      rack (>= 2.2.8)
+      rack-protection (>= 2.2.0)
     omniauth-atproto (0.1.4)
       atproto_client (~> 0.1.4)
       didkit
@@ -1020,7 +1020,7 @@ CHECKSUMS
   activerecord (8.1.4.1) sha256=bd65599ca0b5d210937f835d42c7aff69d271741c75aab022730be6cbce67e87
   activestorage (8.1.4.1) sha256=0f4e2f114f3584723a80a2c089aacc6170e765a0b2c385c9782e26ed78f05c66
   activesupport (8.1.4.1) sha256=16ac4f341ca65c85a1fcdb8ac73f68891aae9e3c4a6f9c3a27daed8b00017ed7
-  addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
+  addressable (2.9.2) sha256=9117c7e7d6ee07230e75ce41fb9401ae55354dc654fcd0e862ba41d539e9a610
   aes_key_wrap (1.1.0) sha256=b935f4756b37375895db45669e79dfcdc0f7901e12d4e08974d5540c8e0776a5
   after_commit_everywhere (1.6.0) sha256=c8b3409a1172e43070d2e57f4b9d7b89dce5a7f057576b748cb9fe0a0dd4d917
   ahoy_matey (5.5.0) sha256=84280579c1e690233bd0bffa2bdde601b3c4cb0e0cc31684238ef37f1e8cdbc6
@@ -1170,7 +1170,7 @@ CHECKSUMS
   mrml (1.10.0-arm64-darwin) sha256=ee97b8db7df01275fa5449fb9278db0bf89f70d04b1855df20c2834035cab945
   mrml (1.10.0-x86_64-linux) sha256=4c4740121fd25440019ee72e48f021c35b5176e1011b86543bed5ba5f6951a4b
   mrml-rails (0.5.0) sha256=0b1a6ded021aaeff0296ec28cb68282373f4be3920c9c062775834ef596921f9
-  msgpack (1.8.6) sha256=a148c24e7d9026a88baf78918f6b1c297569bb6cc0f87953f444f3069950d4e5
+  msgpack (1.8.7) sha256=dfefec761b5f9047e6e8d95d2c7f8af4b3725d984a01942adc533aa819a2df33
   multi_xml (0.9.1) sha256=7ce766b59c17241ed62976caeae1fae9b2431b263398c35396239a68c4a64e57
   mutex_m (0.3.0) sha256=cfcb04ac16b69c4813777022fdceda24e9f798e48092a2b817eb4c0a782b0751
   net-http (0.10.0) sha256=1a2ff6e37a05724973c43f2bf7bf105f59c36a4cd0a7e9b1c021a0a566987c27
@@ -1189,7 +1189,7 @@ CHECKSUMS
   oauth2 (2.1.0) sha256=69925a45030c231cdca3ef4a54a8e848e5319f12c3fdbbfa5065dfbeb4efe835
   octokit (10.0.0) sha256=82e99a539b7637b7e905e6d277bb0c1a4bed56735935cc33db6da7eae49a24e8
   oj (3.17.8) sha256=6a2d9b93ef289cba6abf8c33173c72920d8dac2799bd89f73c3539947a730306
-  omniauth (2.1.4) sha256=42a05b0496f0d22e1dd85d42aaf602f064e36bb47a6826a27ab55e5ba608763c
+  omniauth (2.4.1) sha256=99950c2cf9231d4e960d2bda87e7efec5ace7c3e2d1860016ad3f2e40366489c
   omniauth-atproto (0.1.4) sha256=e7d0a301519b811efbd21b1901e6419b93b3f8008ffd7d6d796efb54fba050d4
   omniauth-discord (1.2.0) sha256=e6e92649a645862ccb29ce3d5f2f876de9e26198722b9d05f9f6d4f3805d5c70
   omniauth-github (2.0.1) sha256=8ff8e70ac6d6db9d52485eef52cfa894938c941496e66b52b5e2773ade3ccad4
