@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.57.0](https://github.com/fleetyards/fleetyards/compare/v9.56.0...v9.57.0) (2026-11-18)
+
+
+### Features
+
+* **docks:** say what every berth is built for ([#6383](https://github.com/fleetyards/fleetyards/issues/6383)) ([03df6c1](https://github.com/fleetyards/fleetyards/commit/03df6c19cb57c4ea9a257e83c579c95bba98c4e9))
+* **hangar-planner:** show a buy list of the upgrades, buy-backs and ships a plan needs ([#6384](https://github.com/fleetyards/fleetyards/issues/6384)) ([84ecd6a](https://github.com/fleetyards/fleetyards/commit/84ecd6a7110dd023d5547b84582fa8c5554569a2))
+* import location positions from the game's starmap placements ([#6377](https://github.com/fleetyards/fleetyards/issues/6377)) ([aa019a5](https://github.com/fleetyards/fleetyards/commit/aa019a515d993ede4c48d2d47d2c6a5520209ebe))
+* **storage:** upload store settings from Rails.app.creds, sc_data store on its own ([#6380](https://github.com/fleetyards/fleetyards/issues/6380)) ([78fcb61](https://github.com/fleetyards/fleetyards/commit/78fcb612eaeabc362d450cf18507fb60c0484068))
+
+
+### Bug Fixes
+
+* **admin:** send the model RSI id as a number ([c48951a](https://github.com/fleetyards/fleetyards/commit/c48951a2c1daa3fd2c1b4ee96bc814f17f5845cd))
+* **deps:** resolve open Dependabot security alerts ([#6392](https://github.com/fleetyards/fleetyards/issues/6392)) ([6fd7912](https://github.com/fleetyards/fleetyards/commit/6fd79124e8f1bf28e97deb8a8035d19c039884cf))
+* **supporters:** match payer emails across gmail.com and googlemail.com ([083bf85](https://github.com/fleetyards/fleetyards/commit/083bf85b1b12a68cc25ce16c0b2d2ecfcba6840c))
+
+
+### Chores
+
+* **deps-dev:** bump @vue/test-utils from 2.5.1 to 2.6.0 ([#6389](https://github.com/fleetyards/fleetyards/issues/6389)) ([3448d76](https://github.com/fleetyards/fleetyards/commit/3448d76791d56a60be1fcb8aca435ba047eba50d))
+* **deps-dev:** bump msw from 3.0.5 to 3.0.6 ([#6391](https://github.com/fleetyards/fleetyards/issues/6391)) ([be5099e](https://github.com/fleetyards/fleetyards/commit/be5099e4df1fcf7c7781cb96bfb3e6b4bfaf1267))
+* **deps-dev:** bump orval from 8.47.0 to 8.48.0 ([#6390](https://github.com/fleetyards/fleetyards/issues/6390)) ([fe85c1e](https://github.com/fleetyards/fleetyards/commit/fe85c1ed87e2da43b5fc8f9d1fdf2db7dd88ecdd))
+* **deps-dev:** bump the playwright group across 1 directory with 2 updates ([#6361](https://github.com/fleetyards/fleetyards/issues/6361)) ([273a058](https://github.com/fleetyards/fleetyards/commit/273a058aa7099a2c9eeb7d9a24c6d8a3c8e6c718))
+* **deps:** bump lograge from 0.15.1 to 0.16.0 ([#6388](https://github.com/fleetyards/fleetyards/issues/6388)) ([d3b9fd7](https://github.com/fleetyards/fleetyards/commit/d3b9fd73f232ced37a0be724f6dd4b5899797d83))
+* **deps:** bump puma from 8.0.3 to 8.1.0 ([#6387](https://github.com/fleetyards/fleetyards/issues/6387)) ([52f6f96](https://github.com/fleetyards/fleetyards/commit/52f6f967b374a51fc53b7c330255cc6c70a9f8ff))
+* **sc_data:** bump ptu to 5.0.0-ptu.13201184 ([#6382](https://github.com/fleetyards/fleetyards/issues/6382)) ([383cfa5](https://github.com/fleetyards/fleetyards/commit/383cfa5d3c5e09c401f8f0bcf87e3ce687943dc3))
+
 ## [9.56.0](https://github.com/fleetyards/fleetyards/compare/v9.55.0...v9.56.0) (2026-11-17)
 
 
