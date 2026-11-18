@@ -89,9 +89,11 @@ module Fleetyards
     # Each analysis downloads the whole file and each purge is a delete, and an
     # sc_data import queues thousands of them at once. At the default queue's
     # concurrency they ran the bucket into S3 SlowDown, so they take the
-    # storage capsule's few threads instead.
+    # storage capsule's few threads instead. A mirror copies every upload and
+    # variant once more, so it goes there too.
     config.active_storage.queues.analysis = :storage
     config.active_storage.queues.purge = :storage
+    config.active_storage.queues.mirror = :storage
 
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))
