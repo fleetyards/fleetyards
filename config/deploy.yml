@@ -166,3 +166,32 @@ accessories:
         - S3_SECRET_ACCESS_KEY
     options:
       memory: 256m
+
+  # rclone, idle, for copying the uploads between the Hetzner bucket and the
+  # Bunny zone and checking they match, through `kamal accessory exec --reuse`.
+  # ActiveStorage's mirror keeps new uploads in both; this covers what was
+  # there before it.
+  uploads-copy:
+    image: rclone/rclone:1.75.2
+    cmd: infinity
+    env:
+      clear:
+        RCLONE_CONFIG_HETZNER_TYPE: s3
+        RCLONE_CONFIG_HETZNER_PROVIDER: Other
+        RCLONE_CONFIG_HETZNER_ENDPOINT: https://fsn1.your-objectstorage.com
+        RCLONE_CONFIG_HETZNER_REGION: fsn1
+        RCLONE_CONFIG_HETZNER_ACL: public-read
+        RCLONE_CONFIG_HETZNER_NO_CHECK_BUCKET: "true"
+        RCLONE_CONFIG_BUNNY_TYPE: s3
+        RCLONE_CONFIG_BUNNY_PROVIDER: Other
+        RCLONE_CONFIG_BUNNY_ENDPOINT: https://de-s3.storage.bunnycdn.com
+        RCLONE_CONFIG_BUNNY_REGION: de
+        RCLONE_CONFIG_BUNNY_NO_CHECK_BUCKET: "true"
+      secret:
+        - RCLONE_CONFIG_HETZNER_ACCESS_KEY_ID
+        - RCLONE_CONFIG_HETZNER_SECRET_ACCESS_KEY
+        - RCLONE_CONFIG_BUNNY_ACCESS_KEY_ID
+        - RCLONE_CONFIG_BUNNY_SECRET_ACCESS_KEY
+    options:
+      entrypoint: sleep
+      memory: 512m
