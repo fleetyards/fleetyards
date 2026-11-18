@@ -12,7 +12,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
-import pyroNebula from "@/images/skyboxes/pyro_nebula_2k.webp";
+import pyroSky from "@/images/skyboxes/pyro_sky_4k.webp";
+import nyxSky from "@/images/skyboxes/nyx_sky_4k.webp";
 import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
 import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
@@ -165,7 +166,8 @@ const SOLID_EXPORT_BACKGROUND = "#111";
 const BACKGROUND_IMAGES: Partial<Record<FleetchartBackgrounds, string>> = {
   [FleetchartBackgrounds.STANTON]: stantonNebula,
   [FleetchartBackgrounds.CRUSADER]: crusaderNebula,
-  [FleetchartBackgrounds.PYRO]: pyroNebula,
+  [FleetchartBackgrounds.PYRO]: pyroSky,
+  [FleetchartBackgrounds.NYX]: nyxSky,
 };
 
 const { t } = useI18n();

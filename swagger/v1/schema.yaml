@@ -38191,11 +38191,13 @@ components:
       - stanton
       - crusader
       - pyro
+      - nyx
       x-enumNames:
       - DARK
       - STANTON
       - CRUSADER
       - PYRO
+      - NYX
       title: FleetchartBackgroundEnum
     FleetchartCataloguePlacement:
       type: object

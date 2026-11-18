@@ -570,7 +570,8 @@
           "dark": "Sombre",
           "stanton": "Nébuleuse de Stanton",
           "crusader": "Nébuleuse de Crusader",
-          "pyro": "Nébuleuse de Pyro"
+          "pyro": "Nébuleuse de Pyro",
+          "nyx": "Nébuleuse de Nyx"
         },
         "spacing": "Espacement",
         "spacingOptions": {
