@@ -54,6 +54,12 @@ module V1
           # Every place in the system this one is in.
           placesCount: {type: :integer},
           terminals: {type: :array, items: ::V1::Schemas::LocationTerminal},
+          # The shops UEX lists at the place.
+          shopsCount: {type: :integer},
+          # Who keeps the law there, its own or the nearest above it, and
+          # whether they keep any: Pyro's gangs and Nyx's unclaimed space do not.
+          jurisdiction: {type: [:string, :null]},
+          lawful: {type: [:boolean, :null]},
 
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}

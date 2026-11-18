@@ -44669,6 +44669,16 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LocationTerminal"
+        shopsCount:
+          type: integer
+        jurisdiction:
+          type:
+          - string
+          - 'null'
+        lawful:
+          type:
+          - boolean
+          - 'null'
         createdAt:
           type: string
           format: date-time
@@ -45251,10 +45261,24 @@ components:
           format: uuid
         name:
           type: string
+        hasFreightElevator:
+          type: boolean
+        hasLoadingDock:
+          type: boolean
+        hasDockingPort:
+          type: boolean
+        maxContainerSize:
+          type:
+          - integer
+          - 'null'
       additionalProperties: false
       required:
       - id
       - name
+      - hasFreightElevator
+      - hasLoadingDock
+      - hasDockingPort
+      - maxContainerSize
       title: LocationTerminal
     LocationTreeBody:
       type: object

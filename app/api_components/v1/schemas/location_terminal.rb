@@ -10,10 +10,16 @@ module V1
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
-          name: {type: :string}
+          name: {type: :string},
+          # What a hauler can load there, as UEX lists it.
+          hasFreightElevator: {type: :boolean},
+          hasLoadingDock: {type: :boolean},
+          hasDockingPort: {type: :boolean},
+          # The largest container it takes, in SCU.
+          maxContainerSize: {type: [:integer, :null]}
         },
         additionalProperties: false,
-        required: %w[id name]
+        required: %w[id name hasFreightElevator hasLoadingDock hasDockingPort maxContainerSize]
       })
     end
   end
