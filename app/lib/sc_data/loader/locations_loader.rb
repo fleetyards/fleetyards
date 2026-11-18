@@ -68,7 +68,9 @@ module ScData
           quantum_travel_destination: item["quantum_travel_destination"] || false,
           facilities: item["facilities"],
           position: item["position"],
-          radius: item["radius"]
+          radius: item["radius"],
+          jurisdiction: item["jurisdiction"],
+          lawful: item["lawful"]
         }
       end
 

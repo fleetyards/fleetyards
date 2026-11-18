@@ -486,6 +486,23 @@ module ScData
         refute_includes names.compact, nil
       end
 
+      test "#locations puts a place under the jurisdiction above it, lawful where it keeps any law" do
+        jurisdiction("uee", "UEE", laws: true)
+        jurisdiction("hurston", "Hurston Dynamics", parent: "uee", defers: true)
+        jurisdiction("unclaimed", "Unclaimed Space")
+        place("StantonSolarSystem", "Stanton System", type: "SolarSystem", parent: nil)
+        place("StantonStar", "Stanton", type: "Star", parent: nil)
+        place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar", jurisdiction: "hurston")
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton2", "Crusader", type: "Planet", parent: "StantonStar", jurisdiction: "unclaimed")
+
+        assert_equal "Hurston Dynamics", location("Stanton1_Lorville")[:jurisdiction]
+        assert location("Stanton1_Lorville")[:lawful]
+        assert_equal "Unclaimed Space", location("Stanton2")[:jurisdiction]
+        assert_equal false, location("Stanton2")[:lawful]
+        assert_nil location("StantonStar")[:jurisdiction]
+      end
+
       test "#locations has no positions for an export without placements" do
         stanton
 
@@ -591,7 +608,7 @@ module ScData
         place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar")
       end
 
-      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil)
+      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil, jurisdiction: nil)
         ref = ref_for(key)
         name_key = "loc_#{key.downcase}"
         @translations[name_key] = name if name
@@ -606,10 +623,23 @@ module ScData
           locationHierarchyTag: tag ? tag_ref(tag) : nil,
           hideInStarmap: hidden ? 1 : 0,
           onlyShowWhenParentSelected: parent_only ? 1 : 0,
-          overridePermanent: permanent ? "True" : "NoOverride"
+          overridePermanent: permanent ? "True" : "NoOverride",
+          jurisdiction: jurisdiction ? ref_for("jurisdiction_#{jurisdiction}") : nil
         }.compact
 
         write("starmap/pu/#{key.downcase}", "StarMapObject", key, ref, attributes)
+      end
+
+      private def jurisdiction(key, name, parent: nil, defers: false, laws: false)
+        @translations["jurisdiction_#{key}"] = name
+        attributes = {
+          name: "@jurisdiction_#{key}",
+          parentJurisdiction: parent ? ref_for("jurisdiction_#{parent}") : nil,
+          respectsParentJurisdictionLaws: defers ? 1 : 0
+        }.compact
+        body = laws ? %(<infractions><Infraction definition="x" /></infractions>) : ""
+
+        write("lawsystem/jurisdictions/#{key}", "Jurisdiction", key, ref_for("jurisdiction_#{key}"), attributes, body:)
       end
 
       private def landing_zones(locations)

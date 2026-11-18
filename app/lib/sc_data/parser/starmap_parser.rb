@@ -14,6 +14,10 @@ module ScData
       OVERRIDES_PATH = "config/sc_data/location_overrides.yml"
 
       STARMAP_PATH = "starmap/pu"
+
+      # Who keeps the law where: a starmap record names its jurisdiction, and a
+      # place without one is under its parent's.
+      JURISDICTIONS_PATH = "lawsystem/jurisdictions"
       TYPES_FILE = "starmap/starmapobjecttypes.records.xml"
       TAGS_FILE = "TagDatabase/tagdatabase.tagdatabase.records.xml"
       TEMPLATES_PATH = "missiondata/pu_locations/templates"
@@ -202,8 +206,9 @@ module ScData
             game_type: object["locationClass"],
             parent_key:,
             map_parent_key: nil,
-            # The system of the record-backed place it hangs from.
+            # The system and the law of the record-backed place it hangs from.
             system_key: system_of(template_parent(object, {}, by_ref), places),
+            **jurisdiction_facts(places[template_parent(object, {}, by_ref)], places),
             shown_on_starmap: true,
             shown_with_parent_only: false,
             always_shown: false,
@@ -242,6 +247,52 @@ module ScData
         nil
       end
 
+      # The jurisdiction a place is under -- its own, or the nearest one above
+      # it -- and whether it keeps any law there.
+      private def jurisdiction_facts(place, places)
+        seen = Set.new
+        current = place
+
+        while current && seen.add?(current[:key])
+          ref = current.dig(:record, :jurisdiction)
+          jurisdiction = jurisdictions[ref] if ref
+
+          return {jurisdiction: jurisdiction[:name], lawful: lawful?(ref)} if jurisdiction
+
+          current = places[current[:parent]]
+        end
+
+        {jurisdiction: nil, lawful: nil}
+      end
+
+      # Lawful where the jurisdiction has laws of its own, or defers to a
+      # parent that does: the People's Alliance in Nyx keeps the UEE's. Pyro's
+      # gangs and Nyx's unclaimed space have none and defer to no one.
+      private def lawful?(ref, seen = Set.new)
+        jurisdiction = jurisdictions[ref]
+        return false if jurisdiction.nil? || !seen.add?(ref)
+        return true if jurisdiction[:laws]
+
+        jurisdiction[:defers] && jurisdiction[:parent].present? && lawful?(jurisdiction[:parent], seen)
+      end
+
+      private def jurisdictions
+        @jurisdictions ||= load_data(JURISDICTIONS_PATH).each_with_object({}) do |item, all|
+          values = item[:values]
+          next unless values.is_a?(Hash)
+
+          ref = value_or_nil(values["__ref"])
+          next if ref.nil?
+
+          all[ref] = {
+            name: localize_name(values["name"]),
+            parent: value_or_nil(values["parentJurisdiction"]),
+            defers: values["respectsParentJurisdictionLaws"] == "1",
+            laws: values.dig("infractions", "Infraction").present?
+          }
+        end
+      end
+
       private def starmap_objects
         @starmap_objects ||= begin
           file = "#{base_path}/#{PLACEMENTS_FILE}"
@@ -276,6 +327,7 @@ module ScData
           facilities: place[:facilities],
           position: placement_of(place)&.dig(:position),
           radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
+          **jurisdiction_facts(place, places),
           starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
           starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
           starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind])),
@@ -898,7 +950,8 @@ module ScData
             hidden: values["hideInStarmap"] == "1",
             parent_only: values["onlyShowWhenParentSelected"] == "1",
             permanent: values["overridePermanent"] == "True",
-            quantum_travel: type[:quantum_travel] || false
+            quantum_travel: type[:quantum_travel] || false,
+            jurisdiction: value_or_nil(values["jurisdiction"])
           }
         end
       end

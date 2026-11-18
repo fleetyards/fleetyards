@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2203,6 +2203,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_120000) do
     t.jsonb "facilities"
     t.float "position", array: true
     t.float "radius"
+    t.string "jurisdiction"
+    t.boolean "lawful"
     t.index ["environment", "name"], name: "index_location_builds_on_environment_and_name"
     t.index ["environment", "version"], name: "index_location_builds_on_environment_and_version"
     t.index ["location_id", "environment", "version"], name: "index_location_builds_on_location_and_build", unique: true
@@ -2243,6 +2245,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_120000) do
     t.jsonb "facilities"
     t.float "position", array: true
     t.float "radius"
+    t.string "jurisdiction"
+    t.boolean "lawful"
     t.index ["map_parent_id"], name: "index_locations_on_map_parent_id"
     t.index ["mission_template_refs"], name: "index_locations_on_mission_template_refs", using: :gin
     t.index ["name"], name: "index_locations_on_name"
