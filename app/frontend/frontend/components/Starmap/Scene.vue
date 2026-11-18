@@ -88,7 +88,8 @@ const { onBeforeRender } = useLoop();
 // from across its system is a fraction of a pixel.
 const MIN_PIXELS: Record<StarmapRole, number> = {
   system: 34,
-  star: 46,
+  // Above the largest planet's minimum: no gas giant is drawn past its sun.
+  star: 72,
   planet: 24,
   moon: 15,
   place: 5,
@@ -1957,7 +1958,9 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     const y = ((1 - projected.y) / 2) * height;
     if (x < -50 || x > width + 50 || y < -20 || y > height + 20) continue;
 
-    const half = (entry.name.length * LABEL_CHAR_WIDTH) / 2;
+    // A star's or a system's name is set in wide, spaced capitals.
+    const wide = entry.role === "star" || entry.role === "system" ? 1.7 : 1;
+    const half = (entry.name.length * LABEL_CHAR_WIDTH * wide) / 2;
 
     // A body's name goes under its disc as drawn, however large that is,
     // but not with the hover's growth: the name stays where it was. To a
