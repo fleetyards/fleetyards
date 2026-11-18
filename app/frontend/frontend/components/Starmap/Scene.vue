@@ -337,7 +337,6 @@ const linkLines: { material: LineMaterial; base: number }[] = [];
 // The labels' own elements, by key: their drop is set on them directly, since
 // it changes on every frame of a zoom and Vue would redraw every label for it.
 const labelElements = new Map<string, HTMLElement>();
-const labelDrops = new Map<string, number>();
 
 // Orbits and tunnels in the app's neutral, as the connectors on the location
 // pages: colour on the map is kept for what something is.
@@ -620,7 +619,6 @@ const disposeBodies = () => {
   lineMaterials.length = 0;
   orbitLines.length = 0;
   linkLines.length = 0;
-  labelDrops.clear();
   orbitFades.clear();
   textures.length = 0;
   suns.length = 0;
@@ -1889,28 +1887,19 @@ const LABEL_DROPS: Record<StarmapRole, number> = {
 
 // From a body's drawn edge to the middle of its name: half a line and a gap.
 const LABEL_BELOW_PIXELS = 11;
-// One ref per key, kept: a new function on every render would have Vue
-// unset and set every label's ref each time the list changes.
-const labelRefs = new Map<string, (instance: unknown) => void>();
+// A label's element, found by its key and kept while it is in the page.
+// Labels are drawn into the page outside this component's own tree, so a
+// template ref never reaches them.
+const labelElement = (key: string) => {
+  const known = labelElements.get(key);
+  if (known?.isConnected) return known;
 
-const keepLabel = (key: string) => {
-  let keep = labelRefs.get(key);
-  if (!keep) {
-    keep = (instance: unknown) => {
-      const element = (instance as { $el?: unknown } | null)?.$el;
-      if (element instanceof HTMLElement) {
-        labelElements.set(key, element);
-        const drop = labelDrops.get(key);
-        if (drop !== undefined) {
-          element.style.transform = `translateY(${drop}px)`;
-        }
-      } else {
-        labelElements.delete(key);
-      }
-    };
-    labelRefs.set(key, keep);
-  }
-  return keep;
+  const found = document.querySelector<HTMLElement>(
+    `[data-starmap-label="${CSS.escape(key)}"]`,
+  );
+  if (found) labelElements.set(key, found);
+  else labelElements.delete(key);
+  return found ?? undefined;
 };
 
 const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
@@ -1990,20 +1979,34 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     // Where the name is drawn, which is what has to stay clear of the rest.
     const labelY = y + (drop ?? LABEL_DROPS[entry.role]);
 
-    const overlaps = placed.some(
-      (other) =>
-        Math.abs(other.x - x) < other.half + half &&
-        Math.abs(other.y - labelY) < LABEL_HEIGHT,
-    );
+    // Clear of the other names, and of every disc but its own: a name over
+    // the sun or over another planet reads as that one's.
+    const overlaps =
+      placed.some(
+        (other) =>
+          Math.abs(other.x - x) < other.half + half &&
+          Math.abs(other.y - labelY) < LABEL_HEIGHT,
+      ) ||
+      discs.some((disc) => {
+        if (disc.key === entry.key) return false;
+        const nearestX = Math.min(Math.max(disc.x, x - half), x + half);
+        const nearestY = Math.min(
+          Math.max(disc.y, labelY - LABEL_HEIGHT / 2),
+          labelY + LABEL_HEIGHT / 2,
+        );
+        return Math.hypot(disc.x - nearestX, disc.y - nearestY) < disc.across;
+      });
 
     if (!overlaps || important(entry)) {
       placed.push({ x, y: labelY, half });
       next.add(entry.key);
 
-      if (drop !== undefined && labelDrops.get(entry.key) !== drop) {
-        labelDrops.set(entry.key, drop);
-        const element = labelElements.get(entry.key);
-        if (element) element.style.transform = `translateY(${drop}px)`;
+      // Set whenever it differs from what the element shows: a label drawn
+      // anew starts at its role's default.
+      const element = drop === undefined ? undefined : labelElement(entry.key);
+      const transform = `translateY(${drop}px)`;
+      if (element && element.style.transform !== transform) {
+        element.style.transform = transform;
       }
     }
   }
@@ -2012,7 +2015,12 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     next.size !== shown.value.size ||
     [...next].some((key) => !shown.value.has(key));
 
-  if (changed) shown.value = next;
+  if (changed) {
+    shown.value = next;
+    // The labels that just appeared are drawn after this, and get their
+    // place under their disc on the next pass.
+    dirty = true;
+  }
 };
 
 const labelled = computed(() =>
@@ -2049,7 +2057,7 @@ defineExpose({ reframe: () => flyTo(focused.value), zoomStep, leave });
       <StarmapLabel
         :name="entry.name"
         :role="entry.role"
-        :ref="keepLabel(entry.key)"
+        :data-starmap-label="entry.key"
         :selected="entry.key === focusKey || entry.key === hoverKey"
       />
     </Html>
