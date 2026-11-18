@@ -365,11 +365,32 @@ let generation = 0;
 // One load per surface: Pyro V and Ignis share theirs.
 const gameSurfaces = new Map<string, Promise<Texture>>();
 
+// The 5.0 surfaces have their clouds painted in, and some at a far lower
+// resolution than the ground -- Bloom's show as blocks. Softened by a pixel as
+// they load, the blocks read as cloud and the ground barely changes.
+const SURFACE_SOFTEN_PIXELS = 1.2;
+
+const smoothed = (image: HTMLImageElement) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const context = canvas.getContext("2d");
+
+  if (context) {
+    context.filter = `blur(${SURFACE_SOFTEN_PIXELS}px)`;
+    context.drawImage(image, 0, 0);
+  }
+
+  return new CanvasTexture(canvas);
+};
+
 const gameSurface = (url: string) => {
   let pending = gameSurfaces.get(url);
 
   if (!pending) {
-    pending = loader.loadAsync(url).then((texture) => {
+    pending = loader.loadAsync(url).then((loaded) => {
+      const texture = smoothed(loaded.image as HTMLImageElement);
+      loaded.dispose();
       texture.colorSpace = SRGBColorSpace;
       texture.anisotropy = 4;
       return texture;
@@ -464,8 +485,82 @@ const raiseRelief = (material: MeshLambertMaterial, url: string) => {
   image.src = url;
 };
 
+// How opaque the thickest cloud is: thin enough to see the ground through.
+const CLOUD_COVER = 0.55;
+// The cover the map reads below which the sky is clear, and above which it
+// is full cloud: the cloud shader's data is noisy, and drawn straight it
+// speckles the whole body.
+const CLOUD_CLEAR = 0.3;
+const CLOUD_FULL = 0.8;
+const CLOUD_SOFTEN_PIXELS = 3;
+
+// The cloud map is the cloud shader's data, its cover in the red channel;
+// turned here into white cloud with that cover as its opacity.
+const cloudsFrom = (image: HTMLImageElement) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 512;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+
+  if (context) {
+    // Softened first, so cloud edges are soft rather than the map's texels.
+    context.filter = `blur(${CLOUD_SOFTEN_PIXELS}px)`;
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    context.filter = "none";
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = pixels.data;
+
+    for (let index = 0; index < data.length; index += 4) {
+      // Eased in between clear and full, so haze stays clear and only real
+      // cloud shows, with a soft edge.
+      const cover = Math.min(
+        Math.max(
+          (data[index] / 255 - CLOUD_CLEAR) / (CLOUD_FULL - CLOUD_CLEAR),
+          0,
+        ),
+        1,
+      );
+      data[index + 3] = cover * cover * (3 - 2 * cover) * 255 * CLOUD_COVER;
+      data[index] = 255;
+      data[index + 1] = 255;
+      data[index + 2] = 255;
+    }
+
+    context.putImageData(pixels, 0, 0);
+  }
+
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return terrainMap(texture);
+};
+
+const wrapInClouds = (material: MeshLambertMaterial, url: string) => {
+  const built = generation;
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+
+  image.onload = () => {
+    if (built !== generation) return;
+
+    const texture = cloudsFrom(image);
+    textures.push(texture);
+    material.map = texture;
+    material.needsUpdate = true;
+  };
+  image.src = url;
+};
+
+// A body's cloud layer, by the body's key. The game's surfaces have their
+// clouds painted in -- Bloom's in coarse blocks -- so the layer drifts to and
+// fro over them rather than round the body, which would uncover them.
+const cloudShells = new Map<string, Mesh>();
+const CLOUD_SWAY = 0.05;
+const CLOUD_SWAY_SECONDS = 90;
+let cloudTime = 0;
+
 const disposeBodies = () => {
   generation += 1;
+  cloudShells.clear();
   gameSurfaces.clear();
   bodies.traverse((object) => {
     // A marker's texture is shared across scenes; only its material is its own.
@@ -585,6 +680,22 @@ const build = (scene: StarmapScene) => {
     mesh.position.set(...entry.position);
     bodies.add(mesh);
     meshes.set(entry.key, mesh);
+
+    if (entry.clouds) {
+      const shell = new Mesh(
+        sphere,
+        new MeshLambertMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false,
+        }),
+      );
+      shell.position.copy(mesh.position);
+      shell.renderOrder = 1;
+      cloudShells.set(entry.key, shell);
+      bodies.add(shell);
+      wrapInClouds(shell.material, entry.clouds);
+    }
   }
 };
 
@@ -1056,6 +1167,7 @@ onBeforeRender(({ delta, elapsed }) => {
   const motion = !motionQuery?.matches;
   if (motion) {
     for (const star of suns) star.animate(elapsed);
+    cloudTime += delta;
   }
 
   const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
@@ -1164,6 +1276,17 @@ onBeforeRender(({ delta, elapsed }) => {
     const minimum = (MIN_PIXELS[entry.role] / 2) * perPixel * away;
 
     mesh.scale.setScalar(Math.max(entry.radius ?? 0, minimum) * lifted);
+
+    const shell = cloudShells.get(entry.key);
+    if (shell) {
+      shell.scale.copy(mesh.scale).multiplyScalar(1.012);
+      // Thinner as the camera comes down to the surface, where the places
+      // under the cloud are what the reader came for.
+      (shell.material as MeshLambertMaterial).opacity =
+        fade * (1 - 0.6 * shownOn(entry));
+      shell.rotation.y =
+        CLOUD_SWAY * Math.sin((cloudTime / CLOUD_SWAY_SECONDS) * Math.PI * 2);
+    }
 
     // A painted body turns, from where it last stood, while nothing is shown
     // on it: its places stand on the ground, and the ground would carry them
