@@ -8,6 +8,7 @@ export default {
 import type { RouteLocationRaw } from "vue-router";
 import NumberFlow from "@number-flow/vue";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
+import ReferralHint from "@/frontend/components/ReferralHint/index.vue";
 import { OmniauthProviderEnum } from "@/services/fyApi";
 import {
   BtnSizesEnum,
@@ -119,6 +120,10 @@ const links: CommunityLink[] = [
         {{ t("home.landing.signUpPanel.login") }}
       </Btn>
     </div>
+    <ReferralHint
+      v-if="!isAuthenticated"
+      class="home-landing-sign-up__referral"
+    />
     <div class="home-landing-sign-up__links">
       <component
         :is="link.to ? 'router-link' : link.href ? 'a' : 'button'"
@@ -219,6 +224,13 @@ const links: CommunityLink[] = [
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.home-landing-sign-up__referral {
+  --referral-hint-color: var(--color-text-dim);
+
+  margin-top: -14px;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 90%);
 }
 
 .home-landing-sign-up__links {
