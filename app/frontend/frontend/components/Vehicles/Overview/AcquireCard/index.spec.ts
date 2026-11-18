@@ -121,6 +121,7 @@ describe("VehicleOverviewAcquireCard", () => {
       },
     });
     expect(params.upgrades).toMatchObject({
+      kind: HangarPledgeItemKindEnum.CCU,
       q: {
         upgradeToModelSlugEq: "cutlass-black",
         s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,
