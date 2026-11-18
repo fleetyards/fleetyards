@@ -88,7 +88,7 @@ const { onBeforeRender } = useLoop();
 // from across its system is a fraction of a pixel.
 const MIN_PIXELS: Record<StarmapRole, number> = {
   system: 34,
-  star: 30,
+  star: 46,
   planet: 24,
   moon: 15,
   place: 5,
@@ -96,10 +96,10 @@ const MIN_PIXELS: Record<StarmapRole, number> = {
 
 // A planet or moon is drawn no smaller than its size on a compressed scale,
 // so from afar Pyro V still reads as a giant and Euterpe as a speck: a
-// radius of 1,000 km is 20 pixels across, and ten times that about 45.
-const BODY_PIXELS_AT_1000_KM = 20;
+// radius of 1,000 km is 28 pixels across, and a gas giant's 60.
+const BODY_PIXELS_AT_1000_KM = 28;
 const BODY_PIXELS_CURVE = 0.35;
-const BODY_PIXELS_RANGE = [9, 44] as const;
+const BODY_PIXELS_RANGE = [14, 60] as const;
 
 const minPixelsOf = (entry: StarmapItem) => {
   if ((entry.role !== "planet" && entry.role !== "moon") || !entry.radius) {
@@ -1515,12 +1515,10 @@ onBeforeRender(({ delta, elapsed }) => {
     fades.set(entry.key, fade);
     point.set(...entry.position);
 
-    // Grows under the pointer, and when focused, over a moment rather than
-    // in one frame.
-    const lift =
-      entry.key === hoverKey.value || entry.key === props.focusKey
-        ? HOVER_LIFT
-        : 1;
+    // Grows under the pointer, over a moment rather than in one frame. Not
+    // when focused: the ring marks that, and a zoom that hands the focus on
+    // would shrink what it leaves.
+    const lift = entry.key === hoverKey.value ? HOVER_LIFT : 1;
     const previous = lifts.get(entry.key) ?? 1;
     const lifted =
       previous + (lift - previous) * Math.min(delta * LIFT_EASE, 1);
@@ -1872,7 +1870,7 @@ const LABEL_CHAR_WIDTH = 6.5;
 const shown = shallowRef<Set<string>>(new Set());
 let lastSignature = "";
 
-// How much a body under the pointer, or focused, grows: enough to answer the
+// How much a body under the pointer grows: enough to answer the
 // pointer, not so much that it crowds what is around it.
 const HOVER_LIFT = 1.15;
 
