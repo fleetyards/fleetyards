@@ -17,17 +17,40 @@
       "noMatches": "Nessun luogo ha questo nome.",
       "reframe": "Ricentra",
       "panel": {
-        "show": "Luoghi",
-        "hide": "Nascondi luoghi"
-      },
-      "hints": {
-        "systems": "Clicca un sistema per sceglierlo, clicca di nuovo per aprirlo. Trascina per ruotare, scorri per lo zoom.",
-        "system": "Clicca qualsiasi cosa per volarci, o scorri verso di essa. Esc torna indietro. Trascina per ruotare."
+        "show": "Mostra l'elenco dei luoghi",
+        "hide": "Nascondi l'elenco dei luoghi"
       },
       "units": {
         "gm": "%{value} Gm",
         "mm": "%{value} Mm",
         "km": "%{value} km"
+      },
+      "bodies": "Corpi celesti",
+      "moons": "Lune",
+      "places": "Luoghi",
+      "view": "Vista",
+      "labels": "Nomi",
+      "orbits": "Orbite",
+      "zoom": "Zoom",
+      "zoomIn": "Ingrandisci",
+      "zoomOut": "Riduci",
+      "groups": {
+        "system": "Sistemi",
+        "star": "Stelle",
+        "planet": "Pianeti",
+        "moon": "Lune",
+        "city": "Città",
+        "spaceport": "Spazioporti",
+        "station": "Stazioni",
+        "outpost": "Avamposti",
+        "clinic": "Cliniche",
+        "district": "Distretti",
+        "asteroid": "Asteroidi",
+        "anomaly": "Anomalie",
+        "jump_point": "Punti di salto",
+        "point_of_interest": "Punti di interesse",
+        "nav_point": "Punti di navigazione",
+        "other": "Altro"
       }
     }
   }

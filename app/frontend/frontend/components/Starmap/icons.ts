@@ -11,25 +11,31 @@ export interface StarmapMarker {
   // Across, in pixels, whatever the distance.
   size: number;
   color: string;
+  // Framed with a light ring: what a reader travels to.
+  framed: boolean;
 }
 
-const MAJOR: StarmapMarker = { size: 24, color: "#7fd0ff" };
+// Monochrome, as the rest of the app: a place reads by its glyph and its
+// size, and colour is kept for selection and for the jump points that lead
+// out of the system.
+const MAJOR: StarmapMarker = { size: 22, color: "#eeeeee", framed: true };
+const PLACE: StarmapMarker = { size: 15, color: "#b9bfc5", framed: false };
 
 export const MARKERS: Partial<Record<LocationKindEnum, StarmapMarker>> = {
   [LocationKindEnum.STATION]: MAJOR,
-  [LocationKindEnum.CITY]: { size: 24, color: "#ffd27a" },
-  [LocationKindEnum.SPACEPORT]: { size: 22, color: "#ffd27a" },
-  [LocationKindEnum.JUMP_POINT]: { size: 24, color: "#c3a6ff" },
-  [LocationKindEnum.OUTPOST]: { size: 14, color: "#9fb3c8" },
-  [LocationKindEnum.CLINIC]: { size: 14, color: "#ff9d94" },
-  [LocationKindEnum.DISTRICT]: { size: 13, color: "#ffd27a" },
-  [LocationKindEnum.POINT_OF_INTEREST]: { size: 13, color: "#9fb3c8" },
-  [LocationKindEnum.ASTEROID]: { size: 11, color: "#b0a196" },
-  [LocationKindEnum.ANOMALY]: { size: 12, color: "#c3a6ff" },
-  [LocationKindEnum.NAV_POINT]: { size: 10, color: "#90a4ae" },
+  [LocationKindEnum.CITY]: MAJOR,
+  [LocationKindEnum.SPACEPORT]: MAJOR,
+  [LocationKindEnum.JUMP_POINT]: { size: 22, color: "#c39bd3", framed: true },
+  [LocationKindEnum.OUTPOST]: PLACE,
+  [LocationKindEnum.CLINIC]: PLACE,
+  [LocationKindEnum.DISTRICT]: PLACE,
+  [LocationKindEnum.POINT_OF_INTEREST]: PLACE,
+  [LocationKindEnum.ASTEROID]: { size: 12, color: "#959595", framed: false },
+  [LocationKindEnum.ANOMALY]: { size: 13, color: "#c39bd3", framed: false },
+  [LocationKindEnum.NAV_POINT]: { size: 11, color: "#959595", framed: false },
 };
 
-const OTHER: StarmapMarker = { size: 12, color: "#90a4ae" };
+const OTHER: StarmapMarker = { size: 12, color: "#959595", framed: false };
 
 export const markerOf = (kind: LocationKindEnum) => MARKERS[kind] ?? OTHER;
 
@@ -38,14 +44,16 @@ const PIXELS = 96;
 
 // The glyph in its colour on a dark disc, so it reads over a bright surface
 // as well as over space.
-const svgOf = (kind: LocationKindEnum, color: string) => {
+const svgOf = (kind: LocationKindEnum, color: string, framed: boolean) => {
   const glyph = GLYPHS[kind] ?? GLYPHS[LocationKindEnum.OTHER];
   const scoped = (markup?: string) => markup?.replaceAll("{id}", "g") ?? "";
   const width = glyph.width ?? 512;
 
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 -96 ${width + 192} 704" color="${color}">` +
-    `<circle cx="${width / 2}" cy="256" r="340" fill="#050a12" fill-opacity="0.72"/>` +
+    `<circle cx="${width / 2}" cy="256" r="330" fill="#121417" fill-opacity="0.85"${
+      framed ? ` stroke="#eeeeee" stroke-opacity="0.55" stroke-width="24"` : ""
+    }/>` +
     `<defs>${scoped(glyph.defs)}</defs>` +
     `<g fill="${color}" opacity="0.45">${scoped(glyph.secondary)}</g>` +
     `<g fill="${color}">${scoped(glyph.primary)}</g>` +
@@ -60,8 +68,8 @@ const cache = new Map<string, Texture>();
  * as soon as the browser has read the SVG; until then it is transparent.
  */
 export const markerTexture = (kind: LocationKindEnum): Texture => {
-  const { color } = markerOf(kind);
-  const key = `${kind}:${color}`;
+  const { color, framed } = markerOf(kind);
+  const key = `${kind}:${color}:${framed}`;
   const known = cache.get(key);
   if (known) return known;
 
@@ -78,7 +86,7 @@ export const markerTexture = (kind: LocationKindEnum): Texture => {
     canvas.getContext("2d")?.drawImage(image, 0, 0, PIXELS, PIXELS);
     texture.needsUpdate = true;
   };
-  image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgOf(kind, color))}`;
+  image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgOf(kind, color, framed))}`;
 
   return texture;
 };

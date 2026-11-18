@@ -7,13 +7,15 @@ export default {
 <script lang="ts" setup>
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls } from "@tresjs/cientos";
-import Btn from "@/shared/components/base/Btn/index.vue";
+import KindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useQueries } from "@tanstack/vue-query";
 import {
   LocationKindEnum,
+  getLocationTreeQueryOptions,
   useLocationJumpPoints,
   useLocationStarmap,
   useLocations,
@@ -69,6 +71,35 @@ const { data: systems, isLoading: systemsLoading } = useLocations({
 
 const { data: jumpPoints } = useLocationJumpPoints();
 
+// Each system's star, for drawing the systems as their stars: its colour and
+// whether it flares, from the system's tree as the location pages load it.
+const systemTrees = useQueries({
+  queries: computed(() =>
+    (systems.value?.items ?? []).map((system) =>
+      getLocationTreeQueryOptions(system.slug),
+    ),
+  ),
+});
+
+const systemStars = computed(() => {
+  const stars = new Map<string, { color: string | null; unstable: boolean }>();
+
+  for (const result of systemTrees.value) {
+    const tree = result.data;
+    const star = tree?.children.find(
+      (node) => node.location.kind === LocationKindEnum.STAR,
+    )?.location;
+    if (tree && star) {
+      stars.set(tree.location.id, {
+        color: star.color,
+        unstable: !!star.unstable,
+      });
+    }
+  }
+
+  return stars;
+});
+
 const {
   data: starmap,
   isLoading: starmapLoading,
@@ -86,7 +117,11 @@ const loading = computed(() =>
 
 const scene = computed<Scene | null>(() => {
   if (!systemSlug.value) {
-    return systemsScene(systems.value?.items ?? [], jumpPoints.value ?? []);
+    return systemsScene(
+      systems.value?.items ?? [],
+      jumpPoints.value ?? [],
+      systemStars.value,
+    );
   }
 
   const places = starmap.value?.places;
@@ -230,9 +265,20 @@ const crumbs = computed(() => {
 const sceneRef = ref<InstanceType<typeof StarmapScene> | null>(null);
 
 const reframe = () => sceneRef.value?.reframe();
+const zoomIn = () => sceneRef.value?.zoomStep(0.6);
+const zoomOut = () => sceneRef.value?.zoomStep(1 / 0.6);
 
-// The panel starts open where there is room for it beside the map.
-const panelOpen = ref(!mobile.value);
+const showLabels = ref(true);
+const showOrbits = ref(true);
+
+// The rail starts open where there is room for it beside the map.
+const railOpen = ref(!mobile.value);
+
+const title = computed(() =>
+  systemSlug.value
+    ? (starmap.value?.system.name ?? systemSlug.value)
+    : t("starmap.systems"),
+);
 
 // Metres, in the largest unit that keeps the number readable: a planet's
 // radius reads as 1,000 km rather than 1 Mm.
@@ -247,20 +293,20 @@ const formatLength = (metres: number) => {
   return t("starmap.units.km", { value: toNumber(metres / 1e3) });
 };
 
+const isBody = (entry: StarmapItem) =>
+  entry.role === "planet" ||
+  entry.role === "moon" ||
+  entry.role === "star" ||
+  entry.role === "system";
+
+// The figures the location card shows, label over value as on every metrics
+// card in the app.
 const facts = computed(() => {
   const entry = focused.value;
-  if (!entry) return [];
+  if (!entry || !scene.value) return [];
 
   const list: { key: string; label: string; value: string }[] = [];
   const anchor = chain.value.at(-2);
-
-  if (entry.parentName) {
-    list.push({
-      key: "parent",
-      label: t("starmap.parent"),
-      value: entry.parentName,
-    });
-  }
 
   if (anchor && entry.distance) {
     list.push({
@@ -278,16 +324,39 @@ const facts = computed(() => {
     });
   }
 
+  const children = scene.value.items.filter(
+    (item) => item.anchor === entry.key,
+  );
+  const moons = children.filter((item) => item.role === "moon").length;
+  const places = children.length - moons;
+
+  if (moons) {
+    list.push({
+      key: "moons",
+      label: t("starmap.moons"),
+      value: String(moons),
+    });
+  }
+  if (places) {
+    list.push({
+      key: "places",
+      label: t("starmap.places"),
+      value: String(places),
+    });
+  }
+
   return list;
 });
-
-const hint = computed(() =>
-  systemSlug.value ? t("starmap.hints.system") : t("starmap.hints.systems"),
-);
 </script>
 
 <template>
-  <div class="starmap">
+  <div
+    class="starmap"
+    :class="{
+      'starmap--rail': railOpen && webglSupported,
+      'starmap--card': !!focused && focused.role !== 'star',
+    }"
+  >
     <div class="starmap__stage">
       <TresCanvas
         v-if="webglSupported"
@@ -316,38 +385,14 @@ const hint = computed(() =>
           ref="sceneRef"
           :scene="scene"
           :focus-key="focusKey"
+          :show-labels="showLabels"
+          :show-orbits="showOrbits"
           @focus="onFocus"
           @enter="enter"
           @release="release"
         />
       </TresCanvas>
       <WebglFallback v-else />
-
-      <nav class="starmap__crumbs" :aria-label="t('starmap.level')">
-        <template v-for="(crumb, index) in crumbs" :key="crumb.key">
-          <i
-            v-if="index > 0"
-            class="fa-light fa-chevron-right starmap__crumb-separator"
-            aria-hidden="true"
-          />
-          <button
-            v-if="crumb.go"
-            type="button"
-            class="starmap__crumb"
-            :data-test="`starmap-crumb-${crumb.key}`"
-            @click="crumb.go"
-          >
-            {{ crumb.label }}
-          </button>
-          <span
-            v-else
-            class="starmap__crumb starmap__crumb--current"
-            aria-current="page"
-          >
-            {{ crumb.label }}
-          </span>
-        </template>
-      </nav>
 
       <p v-if="loading" class="starmap__status" data-test="starmap-loading">
         <i class="fa-duotone fa-spinner-third fa-spin" aria-hidden="true" />
@@ -364,75 +409,193 @@ const hint = computed(() =>
       </p>
 
       <template v-if="webglSupported">
-        <aside
-          v-if="scene?.kind === 'system' && panelOpen"
-          class="starmap__panel"
-          data-test="starmap-panel"
-        >
-          <StarmapPanel
-            :items="scene.items"
-            :focus-key="focusKey"
-            @focus="onFocus"
-          />
-        </aside>
-
-        <div class="starmap__tools">
-          <Btn
-            v-if="scene?.kind === 'system'"
-            size="sm"
-            data-test="starmap-panel-toggle"
-            :active="panelOpen"
-            @click="panelOpen = !panelOpen"
+        <div class="starmap__column">
+          <aside
+            v-if="railOpen"
+            class="starmap__rail starmap__glass"
+            :aria-label="title"
+            data-test="starmap-panel"
           >
-            <i class="fa-light fa-list-tree" aria-hidden="true" />
-            {{ panelOpen ? t("starmap.panel.hide") : t("starmap.panel.show") }}
-          </Btn>
-          <Btn size="sm" data-test="starmap-reset" @click="reframe">
-            <i class="fa-light fa-arrows-to-circle" aria-hidden="true" />
-            {{ t("starmap.reframe") }}
-          </Btn>
+            <div class="starmap__rail-head">
+              <div class="starmap__rail-titles">
+                <nav class="starmap__crumbs" :aria-label="t('starmap.level')">
+                  <template v-for="(crumb, index) in crumbs" :key="crumb.key">
+                    <i
+                      v-if="index > 0"
+                      class="fa-light fa-chevron-right starmap__crumb-separator"
+                      aria-hidden="true"
+                    />
+                    <button
+                      v-if="crumb.go"
+                      type="button"
+                      class="starmap__crumb"
+                      :data-test="`starmap-crumb-${crumb.key}`"
+                      @click="crumb.go"
+                    >
+                      {{ crumb.label }}
+                    </button>
+                    <span
+                      v-else
+                      class="starmap__crumb starmap__crumb--current"
+                      aria-current="page"
+                    >
+                      {{ crumb.label }}
+                    </span>
+                  </template>
+                </nav>
+                <h1 class="starmap__title">{{ title }}</h1>
+              </div>
+              <button
+                type="button"
+                class="starmap__icon-btn starmap__icon-btn--framed"
+                :aria-label="t('starmap.panel.hide')"
+                data-test="starmap-panel-toggle"
+                @click="railOpen = false"
+              >
+                <i class="fa-light fa-sidebar" aria-hidden="true" />
+              </button>
+            </div>
+
+            <StarmapPanel
+              :items="scene?.items ?? []"
+              :focus-key="focusKey"
+              @focus="onFocus"
+            />
+          </aside>
+          <button
+            v-else
+            type="button"
+            class="starmap__reopen starmap__glass"
+            :aria-label="t('starmap.panel.show')"
+            data-test="starmap-panel-toggle"
+            @click="railOpen = true"
+          >
+            <i class="fa-light fa-sidebar" aria-hidden="true" />
+            <span class="starmap__reopen-title">{{ title }}</span>
+          </button>
         </div>
 
-        <aside
+        <Teleport defer to="#header-right">
+          <div class="starmap__controls">
+            <div
+              class="starmap__group"
+              role="group"
+              :aria-label="t('starmap.view')"
+            >
+              <button
+                type="button"
+                class="starmap__icon-btn"
+                :aria-label="t('starmap.reframe')"
+                :title="t('starmap.reframe')"
+                data-test="starmap-reset"
+                @click="reframe"
+              >
+                <i class="fa-light fa-crosshairs" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="starmap__icon-btn"
+                :class="{ 'starmap__icon-btn--on': showLabels }"
+                :aria-pressed="showLabels"
+                :aria-label="t('starmap.labels')"
+                :title="t('starmap.labels')"
+                @click="showLabels = !showLabels"
+              >
+                <i class="fa-light fa-tag" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="starmap__icon-btn"
+                :class="{ 'starmap__icon-btn--on': showOrbits }"
+                :aria-pressed="showOrbits"
+                :aria-label="t('starmap.orbits')"
+                :title="t('starmap.orbits')"
+                @click="showOrbits = !showOrbits"
+              >
+                <i class="fa-light fa-circle-dashed" aria-hidden="true" />
+              </button>
+            </div>
+            <div
+              class="starmap__group"
+              role="group"
+              :aria-label="t('starmap.zoom')"
+            >
+              <button
+                type="button"
+                class="starmap__icon-btn"
+                :aria-label="t('starmap.zoomIn')"
+                :title="t('starmap.zoomIn')"
+                @click="zoomIn"
+              >
+                <i class="fa-light fa-plus" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="starmap__icon-btn"
+                :aria-label="t('starmap.zoomOut')"
+                :title="t('starmap.zoomOut')"
+                @click="zoomOut"
+              >
+                <i class="fa-light fa-minus" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </Teleport>
+
+        <section
           v-if="focused && focused.role !== 'star'"
-          class="starmap__detail"
+          class="starmap__card starmap__glass"
           data-test="starmap-detail"
           :aria-label="focused.name"
         >
-          <span class="starmap__detail-kind">
-            {{ t(`labels.location.kinds.${focused.kind}`) }}
-          </span>
-          <h2 class="starmap__detail-name">{{ focused.name }}</h2>
+          <span
+            v-if="isBody(focused)"
+            class="starmap__card-globe"
+            :style="{ '--dot-color': focused.color }"
+          />
+          <KindIcon v-else class="starmap__card-glyph" :kind="focused.kind" />
 
-          <dl v-if="facts.length" class="starmap__facts">
-            <template v-for="fact in facts" :key="fact.key">
-              <dt>{{ fact.label }}</dt>
-              <dd>{{ fact.value }}</dd>
-            </template>
-          </dl>
-
-          <div class="starmap__detail-actions">
-            <Btn
-              v-if="focused.role === 'system'"
-              size="sm"
-              data-test="starmap-enter"
-              @click="enter(focused)"
-            >
-              <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true" />
-              {{ t("starmap.openSystem", { name: focused.name }) }}
-            </Btn>
-            <Btn
-              size="sm"
-              variant="ghost"
-              :to="{ name: 'location', params: { slug: focused.slug } }"
-              data-test="starmap-location-link"
-            >
-              {{ t("starmap.openLocation") }}
-            </Btn>
+          <div class="starmap__card-body">
+            <div class="starmap__card-title">
+              <h2 class="starmap__card-name">{{ focused.name }}</h2>
+              <span class="starmap__micro">
+                {{ t(`labels.location.kinds.${focused.kind}`) }}
+              </span>
+            </div>
+            <dl v-if="facts.length" class="starmap__facts">
+              <div v-for="fact in facts" :key="fact.key">
+                <dt class="starmap__micro">{{ fact.label }}</dt>
+                <dd>{{ fact.value }}</dd>
+              </div>
+            </dl>
           </div>
-        </aside>
 
-        <p class="starmap__hint">{{ hint }}</p>
+          <button
+            v-if="focused.role === 'system'"
+            type="button"
+            class="starmap__icon-btn starmap__icon-btn--framed"
+            :aria-label="t('starmap.openSystem', { name: focused.name })"
+            :title="t('starmap.openSystem', { name: focused.name })"
+            data-test="starmap-enter"
+            @click="enter(focused)"
+          >
+            <i class="fa-light fa-arrow-right-to-bracket" aria-hidden="true" />
+          </button>
+          <RouterLink
+            v-else
+            class="starmap__icon-btn starmap__icon-btn--framed"
+            :to="{ name: 'location', params: { slug: focused.slug } }"
+            :aria-label="t('starmap.openLocation')"
+            :title="t('starmap.openLocation')"
+            data-test="starmap-location-link"
+          >
+            <i
+              class="fa-light fa-arrow-up-right-from-square"
+              aria-hidden="true"
+            />
+          </RouterLink>
+        </section>
+
         <p v-if="!systemSlug" class="starmap__footnote">
           {{ t("starmap.footnote") }}
         </p>
@@ -446,6 +609,9 @@ const hint = computed(() =>
 $overlay: 20;
 // The app's header floats over the map; what sits at the map's top clears it.
 $inset: var(--fullscreen-header-height, 0px);
+$gap: 16px;
+$rail: 300px;
+$card-height: 96px;
 
 .starmap {
   position: relative;
@@ -453,43 +619,6 @@ $inset: var(--fullscreen-header-height, 0px);
   flex: 1;
   flex-direction: column;
   min-height: 0;
-
-  &__crumbs {
-    position: absolute;
-    top: calc($inset + 12px);
-    left: 12px;
-    right: 12px;
-    z-index: $overlay;
-    width: fit-content;
-    max-width: calc(100% - 24px);
-    padding: 6px 12px;
-    border-radius: var(--radius-surface-slim);
-    background: rgb(8 16 28 / 82%);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.875rem;
-  }
-
-  &__crumb {
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--color-primary);
-    cursor: pointer;
-
-    &--current {
-      color: var(--color-text);
-      font-weight: 600;
-      cursor: default;
-    }
-  }
-
-  &__crumb-separator {
-    font-size: 0.625rem;
-    color: var(--color-text-dim);
-  }
 
   &__stage {
     position: relative;
@@ -501,6 +630,39 @@ $inset: var(--fullscreen-header-height, 0px);
     touch-action: none;
   }
 
+  // The app's slim panel over the map: dark glass, a soft frame and the
+  // end-caps every panel and button carries.
+  &__glass {
+    position: absolute;
+    z-index: $overlay;
+    border: 1px solid var(--color-edge-soft);
+    border-radius: var(--radius-surface-slim);
+    background: rgb(18 20 23 / 78%);
+    box-shadow: 0 6px 20px -14px rgb(0 0 0 / 90%);
+    backdrop-filter: blur(12px);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      height: 3px;
+      background: var(--color-endcap);
+      pointer-events: none;
+    }
+
+    &::before {
+      top: -1px;
+      border-radius: 0 0 3px 3px;
+    }
+
+    &::after {
+      bottom: -1px;
+      border-radius: 3px 3px 0 0;
+    }
+  }
+
   &__status {
     position: absolute;
     inset: 0;
@@ -509,116 +671,284 @@ $inset: var(--fullscreen-header-height, 0px);
     justify-content: center;
     gap: 8px;
     margin: 0;
-    color: rgb(255 255 255 / 70%);
+    color: var(--color-text);
     pointer-events: none;
   }
 
-  &__panel {
+  // As tall as what it lists, and scrolling only once that is taller than
+  // the map.
+  // The place list down the left of the map, stopping short of the card of
+  // what is focused at the bottom.
+  &__column {
     position: absolute;
     z-index: $overlay;
-    top: calc($inset + 100px);
-    bottom: 36px;
-    left: 12px;
-    width: min(260px, calc(100% - 24px));
-    padding: 10px;
-    border: 1px solid rgb(90 175 212 / 30%);
-    border-radius: var(--radius-surface-slim);
-    background: rgb(8 16 28 / 88%);
-  }
-
-  &__tools {
-    position: absolute;
-    z-index: $overlay;
-    top: calc($inset + 56px);
-    left: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  &__detail {
-    position: absolute;
-    z-index: $overlay;
-    top: calc($inset + 12px);
-    right: 12px;
+    top: calc($inset + $gap);
+    bottom: $gap;
+    transition: bottom 0.2s ease;
+    left: $gap;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    width: $rail;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+
+  &__rail {
+    position: relative;
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  &__rail-head {
+    display: flex;
+    align-items: flex-start;
     gap: 8px;
-    width: min(280px, calc(100% - 24px));
-    padding: 14px 16px;
-    border: 1px solid rgb(90 175 212 / 30%);
-    border-radius: var(--radius-surface-slim);
-    background: rgb(8 16 28 / 90%);
-    color: rgb(255 255 255 / 85%);
   }
 
-  &__detail-kind {
-    font-size: 0.6875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: rgb(255 255 255 / 55%);
+  &__rail-titles {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
   }
 
-  &__detail-name {
+  &__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78125rem;
+  }
+
+  &__crumb {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-dim);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-lifted);
+    }
+
+    &--current {
+      color: var(--color-lifted);
+      cursor: default;
+    }
+  }
+
+  &__crumb-separator {
+    font-size: 0.5625rem;
+    color: var(--color-muted);
+  }
+
+  &__title {
     margin: 0;
-    font-size: 1.125rem;
-    color: #fff;
+    overflow: hidden;
+    font-family: Orbitron, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-lifted);
+  }
+
+  &__reopen {
+    position: relative;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 16px;
+    color: var(--color-text);
+    font-family: Orbitron, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-lifted);
+    }
+  }
+
+  // In the app's header, where a page keeps its own actions.
+  &__controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  &--card &__column {
+    bottom: calc($gap * 2 + #{$card-height});
+  }
+
+  // As the holo viewer's: a dark group of icon buttons on one frame.
+  &__group {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--color-edge);
+    border-radius: var(--radius-control);
+    background: var(--color-control);
+    box-shadow: 0 6px 20px -14px rgb(0 0 0 / 90%);
+  }
+
+  &__icon-btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-control-inner);
+    background: transparent;
+    color: var(--color-text);
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-control-hover);
+      color: var(--color-lifted);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+
+    &--on {
+      background: rgb(66 139 202 / 22%);
+      color: #fff;
+    }
+
+    &--framed {
+      border: 1px solid var(--color-edge);
+      border-radius: var(--radius-control);
+      background: var(--color-control);
+    }
+  }
+
+  // The card of what is focused: wide and low, at the bottom left.
+  &__card {
+    bottom: $gap;
+    left: $gap;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: min(560px, calc(100% - #{$gap * 2}));
+    padding: 16px 18px;
+    box-sizing: border-box;
+  }
+
+  &__card-globe {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        rgb(255 255 255 / 45%) 0%,
+        rgb(255 255 255 / 0%) 34%,
+        rgb(0 0 0 / 30%) 62%,
+        rgb(0 0 0 / 75%) 100%
+      ),
+      var(--dot-color);
+  }
+
+  &__card-glyph {
+    flex-shrink: 0;
+    width: 44px;
+    font-size: 32px;
+    color: var(--color-lifted);
+  }
+
+  &__card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__card-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+  }
+
+  &__card-name {
+    margin: 0;
+    font-family: Orbitron, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-lifted);
+  }
+
+  &__micro {
+    font-family: Orbitron, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
   }
 
   &__facts {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 4px 12px;
-    margin: 0;
-    font-size: 0.8125rem;
-
-    dt {
-      color: rgb(255 255 255 / 55%);
-    }
-
-    dd {
-      margin: 0;
-      text-align: right;
-    }
-  }
-
-  &__detail-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  &__hint {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    right: 12px;
+    gap: 8px 22px;
     margin: 0;
-    font-size: 0.75rem;
-    color: rgb(255 255 255 / 50%);
-    pointer-events: none;
+
+    dd {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-lifted);
+    }
   }
 
   &__footnote {
     position: absolute;
-    bottom: 30px;
-    left: 12px;
-    right: 12px;
+    z-index: $overlay - 1;
+    right: $gap;
+    bottom: calc($gap + 24px);
+    max-width: 420px;
     margin: 0;
-    font-size: 0.75rem;
-    color: rgb(255 255 255 / 50%);
+    font-size: 0.71875rem;
+    text-align: right;
+    color: var(--color-text-dim);
+    text-shadow: 0 1px 3px rgb(0 0 0 / 90%);
     pointer-events: none;
   }
 }
 
 @media (width <= 767px) {
-  .starmap__detail {
-    top: auto;
-    bottom: 36px;
+  .starmap__footnote {
+    display: none;
   }
 
-  .starmap__panel {
-    bottom: 36px;
+  .starmap__column {
+    right: $gap;
+    width: auto;
   }
 }
 </style>

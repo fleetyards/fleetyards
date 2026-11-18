@@ -17,17 +17,40 @@
       "noMatches": "Kein Ort trägt diesen Namen.",
       "reframe": "Zentrieren",
       "panel": {
-        "show": "Orte",
-        "hide": "Orte ausblenden"
-      },
-      "hints": {
-        "systems": "Klicke ein System an, um es auszuwählen, ein zweiter Klick öffnet es. Ziehen dreht, Scrollen zoomt.",
-        "system": "Klicke etwas an, um hinzufliegen, oder scrolle darauf zu. Esc geht zurück. Ziehen dreht."
+        "show": "Ortsliste einblenden",
+        "hide": "Ortsliste ausblenden"
       },
       "units": {
         "gm": "%{value} Gm",
         "mm": "%{value} Mm",
         "km": "%{value} km"
+      },
+      "bodies": "Himmelskörper",
+      "moons": "Monde",
+      "places": "Orte",
+      "view": "Ansicht",
+      "labels": "Namen",
+      "orbits": "Umlaufbahnen",
+      "zoom": "Zoom",
+      "zoomIn": "Hineinzoomen",
+      "zoomOut": "Herauszoomen",
+      "groups": {
+        "system": "Systeme",
+        "star": "Sterne",
+        "planet": "Planeten",
+        "moon": "Monde",
+        "city": "Städte",
+        "spaceport": "Raumhäfen",
+        "station": "Stationen",
+        "outpost": "Außenposten",
+        "clinic": "Kliniken",
+        "district": "Bezirke",
+        "asteroid": "Asteroiden",
+        "anomaly": "Anomalien",
+        "jump_point": "Sprungpunkte",
+        "point_of_interest": "Sehenswürdigkeiten",
+        "nav_point": "Navigationspunkte",
+        "other": "Sonstige"
       }
     }
   }

@@ -17,17 +17,40 @@
       "noMatches": "没有叫这个名字的地点。",
       "reframe": "重新居中",
       "panel": {
-        "show": "地点",
-        "hide": "隐藏地点"
-      },
-      "hints": {
-        "systems": "单击星系以选中，再次单击以打开。拖动旋转，滚动缩放。",
-        "system": "单击任意对象即可飞往该处，或朝它滚动缩放。按 Esc 返回。拖动旋转。"
+        "show": "显示地点列表",
+        "hide": "隐藏地点列表"
       },
       "units": {
         "gm": "%{value} Gm",
         "mm": "%{value} Mm",
         "km": "%{value} km"
+      },
+      "bodies": "天体",
+      "moons": "卫星",
+      "places": "地点",
+      "view": "视图",
+      "labels": "名称",
+      "orbits": "轨道",
+      "zoom": "缩放",
+      "zoomIn": "放大",
+      "zoomOut": "缩小",
+      "groups": {
+        "system": "星系",
+        "star": "恒星",
+        "planet": "行星",
+        "moon": "卫星",
+        "city": "城市",
+        "spaceport": "太空港",
+        "station": "空间站",
+        "outpost": "前哨站",
+        "clinic": "诊所",
+        "district": "区域",
+        "asteroid": "小行星",
+        "anomaly": "异常",
+        "jump_point": "跳跃点",
+        "point_of_interest": "兴趣点",
+        "nav_point": "导航点",
+        "other": "其他"
       }
     }
   }

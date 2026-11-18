@@ -17,17 +17,40 @@
       "noMatches": "Nothing here goes by that name.",
       "reframe": "Recentre",
       "panel": {
-        "show": "Places",
-        "hide": "Hide places"
-      },
-      "hints": {
-        "systems": "Click a system to pick it, click it again to open it. Drag to turn, scroll to zoom.",
-        "system": "Click anything to fly to it, or scroll toward it. Esc steps back out. Drag to turn."
+        "show": "Show the place list",
+        "hide": "Hide the place list"
       },
       "units": {
         "gm": "%{value} Gm",
         "mm": "%{value} Mm",
         "km": "%{value} km"
+      },
+      "bodies": "Bodies",
+      "moons": "Moons",
+      "places": "Places",
+      "view": "View",
+      "labels": "Names",
+      "orbits": "Orbits",
+      "zoom": "Zoom",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "groups": {
+        "system": "Systems",
+        "star": "Stars",
+        "planet": "Planets",
+        "moon": "Moons",
+        "city": "Cities",
+        "spaceport": "Spaceports",
+        "station": "Stations",
+        "outpost": "Outposts",
+        "clinic": "Clinics",
+        "district": "Districts",
+        "asteroid": "Asteroids",
+        "anomaly": "Anomalies",
+        "jump_point": "Jump points",
+        "point_of_interest": "Points of interest",
+        "nav_point": "Nav points",
+        "other": "Other"
       }
     }
   }

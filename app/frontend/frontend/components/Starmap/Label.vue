@@ -29,30 +29,43 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
+// Text on the map rather than in a box: a dark halo keeps it readable over a
+// bright surface or nebula without a plate behind every name.
 .starmap-label {
   display: block;
-  transform: translateY(14px);
-  // A faint backing, so a name still reads over a body's bright ice or cloud.
-  padding: 0 4px;
-  border-radius: 3px;
-  background: rgb(5 10 18 / 45%);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  transform: translateY(15px);
+  font-size: 0.71875rem;
+  line-height: 1.3;
   white-space: nowrap;
   pointer-events: none;
-  color: rgb(255 255 255 / 60%);
-  text-shadow: 0 0 4px rgb(0 0 0 / 90%);
+  color: var(--color-text);
+  text-shadow:
+    0 0 3px rgb(0 0 0 / 95%),
+    0 1px 2px rgb(0 0 0 / 95%),
+    0 0 8px rgb(0 0 0 / 60%);
 
-  &--system,
-  &--star,
-  &--planet {
+  &--planet,
+  &--moon {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-lifted);
+  }
+
+  &--moon {
     font-size: 0.75rem;
-    font-weight: 700;
-    color: rgb(255 255 255 / 85%);
+  }
+
+  &--star,
+  &--system {
+    font-family: Orbitron, sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-lifted);
   }
 
   &--selected {
-    color: var(--color-primary);
+    color: #fff;
   }
 }
 </style>

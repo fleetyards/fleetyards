@@ -41,9 +41,16 @@ type Props = {
   scene: StarmapScene;
   // What the camera is on: it orbits this and every flight ends at it.
   focusKey: string | null;
+  // Whether places are named where there is room, and orbits drawn. What is
+  // focused or under the pointer is named either way.
+  showLabels?: boolean;
+  showOrbits?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  showLabels: true,
+  showOrbits: true,
+});
 
 const emit = defineEmits<{
   // The reader picked something, or zoomed far enough out of what they were
@@ -61,7 +68,7 @@ const { onBeforeRender } = useLoop();
 // The smallest a thing is drawn, in pixels across: at true scale a planet seen
 // from across its system is a fraction of a pixel.
 const MIN_PIXELS: Record<StarmapRole, number> = {
-  system: 18,
+  system: 34,
   star: 30,
   planet: 24,
   moon: 15,
@@ -108,6 +115,34 @@ const world = new Group();
 const bodies = new Group();
 world.add(bodies);
 
+// A ring in the app's accent around what is focused: the one place on the
+// map where colour means "this one". A line two pixels wide whatever the
+// zoom, turned to the camera each frame and kept just outside the edge the
+// focused thing is drawn with.
+const selectionMaterial = new LineMaterial({
+  color: 0x428bca,
+  linewidth: 2,
+});
+selectionMaterial.depthTest = false;
+
+const selection = (() => {
+  const points: number[] = [];
+  for (let step = 0; step <= 96; step += 1) {
+    const angle = (step / 96) * Math.PI * 2;
+    points.push(Math.cos(angle), Math.sin(angle), 0);
+  }
+  const geometry = new LineGeometry();
+  geometry.setPositions(points);
+  const ring = new Line2(geometry, selectionMaterial);
+  ring.renderOrder = 3;
+  ring.visible = false;
+  return ring;
+})();
+world.add(selection);
+
+// How far outside the drawn edge the ring sits, in pixels.
+const SELECTION_GAP_PIXELS = 5;
+
 const origin = new Vector3();
 
 // A body is seen close up; a place is a dot a few pixels across and needs a
@@ -131,14 +166,18 @@ const orbitFades = new Map<string, number>();
 const textures: Texture[] = [];
 const suns: StarmapSun[] = [];
 
-const LINE_COLOR = new Color(0x5aafd4);
+// Orbits and tunnels in the app's neutral, as the connectors on the location
+// pages: colour on the map is kept for what something is.
+const LINE_COLOR = new Color(0xc8d0d8);
 // The stage's backdrop, near enough: a line is mixed against it rather than
 // blended, since a translucent line draws its joints twice and they show as
 // a string of brighter dots.
 const BACKDROP = new Color(0x0a1626);
 
-const lineColor = (amount: number, target = new Color()) =>
-  target.lerpColors(BACKDROP, LINE_COLOR, amount);
+const FOLLOWED_COLOR = new Color(0x428bca);
+
+const lineColor = (amount: number, target = new Color(), tone = LINE_COLOR) =>
+  target.lerpColors(BACKDROP, tone, amount);
 
 // Lines a pixel and a half wide whatever the screen's pixel ratio: a plain
 // three.js line is one device pixel, which a high-density screen all but
@@ -346,7 +385,7 @@ const build = (scene: StarmapScene) => {
     const center = byKey.value.get(orbit.center);
     if (!center) continue;
 
-    const base = byKey.value.get(orbit.body)?.role === "moon" ? 0.18 : 0.24;
+    const base = byKey.value.get(orbit.body)?.role === "moon" ? 0.2 : 0.26;
     const { object, material } = line(circle(orbit.radius), { amount: base });
     // Drawn around its centre, so a moon's orbit stays exact next to its
     // planet rather than inheriting the planet's distance from the star.
@@ -365,7 +404,7 @@ const build = (scene: StarmapScene) => {
   for (const link of scene.links) {
     bodies.add(
       line([...link.from, ...link.to], {
-        amount: link.temporary ? 0.3 : 0.45,
+        amount: link.temporary ? 0.24 : 0.32,
         dashed: link.temporary,
       }).object,
     );
@@ -379,7 +418,8 @@ const build = (scene: StarmapScene) => {
   bodies.add(new AmbientLight(0xffffff, 1.3));
 
   for (const entry of scene.items) {
-    if (entry.role === "star") {
+    // A system on the ring is drawn as its star.
+    if (entry.role === "star" || entry.role === "system") {
       const star = sun(entry.color, entry.unstable);
       star.object.position.set(...entry.position);
       suns.push(star);
@@ -911,8 +951,16 @@ onBeforeRender(({ delta, elapsed }) => {
     );
 
     orbitFades.set(orbit.body, fade);
-    orbit.line.visible = fade > 0.02;
+    orbit.line.visible = props.showOrbits && fade > 0.02;
     lineColor(orbit.base * fade, orbit.material.color);
+
+    // The orbit of what is focused is drawn in the accent, a little wider:
+    // the one ring the reader is following.
+    const followed = orbit.body === props.focusKey;
+    if (followed) {
+      lineColor(fade * 0.75, orbit.material.color, FOLLOWED_COLOR);
+    }
+    orbit.material.linewidth = followed ? 2 : 1.2;
   }
 
   for (const entry of items.value) {
@@ -979,6 +1027,27 @@ onBeforeRender(({ delta, elapsed }) => {
     if (entry.surface && !entry.texture && motion && shownOn(entry) < 0.02) {
       mesh.rotation.y += (delta / TURN_SECONDS) * Math.PI * 2;
     }
+  }
+
+  // The ring sits around the focused thing at the size it is drawn.
+  const selected = props.focusKey ? meshes.get(props.focusKey) : undefined;
+  const selectedItem = props.focusKey
+    ? byKey.value.get(props.focusKey)
+    : undefined;
+  selection.visible =
+    !!selected?.visible &&
+    !!selectedItem &&
+    selectedItem.role !== "star" &&
+    selectedItem.role !== "system";
+  if (selection.visible && selected) {
+    const drawn =
+      selected instanceof Sprite ? selected.scale.x / 2 : selected.scale.x;
+    const pixel = perPixel * cameraWorld.distanceTo(selected.position);
+
+    selection.position.copy(selected.position);
+    selection.quaternion.copy(cam.quaternion);
+    selection.scale.setScalar(drawn + SELECTION_GAP_PIXELS * pixel);
+    selectionMaterial.resolution.copy(resolution);
   }
 
   if (pointer.moved) {
@@ -1118,8 +1187,8 @@ const onPointerUp = (event: PointerEvent) => {
     return;
   }
 
-  // A system already picked opens on a second click.
-  if (entry.role === "system" && entry.key === props.focusKey) {
+  // A system opens on a click: there is nothing on the ring to fly to.
+  if (entry.role === "system") {
     emit("enter", entry);
     return;
   }
@@ -1180,6 +1249,8 @@ const { off: stopBinding } = onBeforeRender(() => {
 });
 
 onBeforeUnmount(() => {
+  selection.geometry.dispose();
+  selectionMaterial.dispose();
   unbind();
   disposeBodies();
   sphere.dispose();
@@ -1208,6 +1279,7 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     height,
     props.focusKey,
     hoverKey.value,
+    props.showLabels,
   ].join("|");
   if (!dirty && signature === lastSignature) return;
   lastSignature = signature;
@@ -1227,7 +1299,7 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
   const candidates = items.value
     .filter(
       (entry) =>
-        (entry.labelled || important(entry)) &&
+        ((props.showLabels && entry.labelled) || important(entry)) &&
         (fades.get(entry.key) ?? 1) >= 0.5 &&
         !(underfoot && entry.key === over?.key && !important(entry)),
     )
@@ -1275,7 +1347,20 @@ const labelled = computed(() =>
   items.value.filter((entry) => shown.value.has(entry.key)),
 );
 
-defineExpose({ reframe: () => flyTo(focused.value) });
+// A step of the zoom buttons, around wherever the view is centred.
+const zoomStep = (factor: number) => {
+  if (zoom.distance === 0) return;
+
+  if (flight.active && flight.ownsDistance) {
+    flight.ownsDistance = false;
+    zoom.goal = zoom.distance;
+  }
+
+  zoom.goal *= factor;
+  clampGoal();
+};
+
+defineExpose({ reframe: () => flyTo(focused.value), zoomStep });
 </script>
 
 <template>

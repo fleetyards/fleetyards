@@ -290,6 +290,7 @@ const ancestry = (places: LocationStarmapPlace[]) => {
 export const systemsScene = (
   systems: Location[],
   jumpPoints: LocationJumpPoint[],
+  stars: Map<string, { color: string | null; unstable: boolean }> = new Map(),
 ): StarmapScene => {
   const sorted = [...systems].sort((a, b) =>
     (a.name ?? a.slug).localeCompare(b.name ?? b.slug),
@@ -314,12 +315,13 @@ export const systemsScene = (
       role: "system",
       position,
       radius: null,
-      color: COLORS.system,
+      // Drawn as its star, in the star's colour.
+      color: stars.get(system.id)?.color ?? COLORS.star,
       surface: null,
       texture: null,
       elevation: null,
       clouds: null,
-      unstable: false,
+      unstable: stars.get(system.id)?.unstable ?? false,
       labelled: true,
       rank: 0,
       near: null,
