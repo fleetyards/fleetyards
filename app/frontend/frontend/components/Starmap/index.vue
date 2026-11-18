@@ -444,6 +444,8 @@ const hint = computed(() =>
 <style lang="scss" scoped>
 // Above the map's labels, which sit in layers of their own over the canvas.
 $overlay: 20;
+// The app's header floats over the map; what sits at the map's top clears it.
+$inset: var(--fullscreen-header-height, 0px);
 
 .starmap {
   position: relative;
@@ -454,7 +456,7 @@ $overlay: 20;
 
   &__crumbs {
     position: absolute;
-    top: 12px;
+    top: calc($inset + 12px);
     left: 12px;
     right: 12px;
     z-index: $overlay;
@@ -514,7 +516,7 @@ $overlay: 20;
   &__panel {
     position: absolute;
     z-index: $overlay;
-    top: 100px;
+    top: calc($inset + 100px);
     bottom: 36px;
     left: 12px;
     width: min(260px, calc(100% - 24px));
@@ -527,7 +529,7 @@ $overlay: 20;
   &__tools {
     position: absolute;
     z-index: $overlay;
-    top: 56px;
+    top: calc($inset + 56px);
     left: 12px;
     display: flex;
     flex-wrap: wrap;
@@ -537,7 +539,7 @@ $overlay: 20;
   &__detail {
     position: absolute;
     z-index: $overlay;
-    top: 12px;
+    top: calc($inset + 12px);
     right: 12px;
     display: flex;
     flex-direction: column;
