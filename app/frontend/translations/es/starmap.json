@@ -33,10 +33,11 @@
         "time": "Tiempo",
         "fuel": "Combustible",
         "scu": "%{value} SCU",
-        "exceedsTank": "La ruta consume %{needed} de combustible cuántico; el depósito admite %{tank}.",
+        "exceedsTank": "Ninguna cadena de saltos llega con un depósito, ni repostando donde hay servicios de vehículos: la ruta consume %{needed} de combustible cuántico y el depósito admite %{tank}.",
         "tunnel": "Túnel de salto",
+        "refuel": "Repostar aquí",
         "missingLoadout": "Esa configuración no es tuya, así que la ruta usa el motor de serie de la nave.",
-        "note": "Los tiempos incluyen la carga de cada salto y el enfriamiento entre saltos. Cada salto rodea las estrellas, planetas y lunas que tenga en medio."
+        "note": "Los tiempos incluyen la carga de cada salto y el enfriamiento entre saltos, no el repostaje. Cada salto rodea las estrellas, planetas y lunas que tenga en medio, y el depósito se rellena donde hay servicios de vehículos cuando no alcanzaría."
       },
       "panel": {
         "show": "Mostrar la lista de lugares",

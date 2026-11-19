@@ -33,10 +33,11 @@
         "time": "Zeit",
         "fuel": "Treibstoff",
         "scu": "%{value} SCU",
-        "exceedsTank": "Die Route verbraucht %{needed} Quantentreibstoff, der Tank fasst %{tank}.",
+        "exceedsTank": "Keine Folge von Sprüngen erreicht das Ziel mit einer Tankfüllung, auch nicht mit Tankstopps an Orten mit Fahrzeugservice: Die Route verbraucht %{needed} Quantentreibstoff, der Tank fasst %{tank}.",
         "tunnel": "Sprungtunnel",
+        "refuel": "Hier tanken",
         "missingLoadout": "Diese Ausrüstung gehört nicht zu deinen, daher nutzt die Route den Serienantrieb des Schiffs.",
-        "note": "Die Zeiten enthalten das Hochfahren vor jedem Sprung und die Abkühlzeit zwischen den Sprüngen. Jeder Sprung führt um Sterne, Planeten und Monde auf seinem Weg herum."
+        "note": "Die Zeiten enthalten das Hochfahren vor jedem Sprung und die Abkühlzeit zwischen den Sprüngen, aber nicht das Tanken. Jeder Sprung führt um Sterne, Planeten und Monde auf seinem Weg herum, und wo der Tank nicht reicht, wird an Orten mit Fahrzeugservice nachgetankt."
       },
       "panel": {
         "show": "Ortsliste einblenden",

@@ -33,10 +33,11 @@
         "time": "Time",
         "fuel": "Fuel",
         "scu": "%{value} SCU",
-        "exceedsTank": "The route burns %{needed} of quantum fuel; the tank holds %{tank}.",
+        "exceedsTank": "No chain of jumps gets there on one tank, even refuelling where vehicle services are: the route burns %{needed} of quantum fuel and the tank holds %{tank}.",
         "tunnel": "Jump tunnel",
+        "refuel": "Refuel here",
         "missingLoadout": "That loadout is not one of yours, so the route uses the ship's stock drive.",
-        "note": "Times include each jump's spool-up and the cooldown between jumps. Every jump goes around the stars, planets and moons in its way."
+        "note": "Times include each jump's spool-up and the cooldown between jumps, not refuelling. Every jump goes around the stars, planets and moons in its way, and the tank is refilled where vehicle services are when it would not last."
       },
       "panel": {
         "show": "Show the place list",

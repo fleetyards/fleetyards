@@ -33,10 +33,11 @@
         "time": "Durée",
         "fuel": "Carburant",
         "scu": "%{value} SCU",
-        "exceedsTank": "L'itinéraire consomme %{needed} de carburant quantique ; le réservoir en contient %{tank}.",
+        "exceedsTank": "Aucune suite de sauts n'y arrive avec un plein, même en faisant le plein là où il y a des services aux véhicules : l'itinéraire consomme %{needed} de carburant quantique et le réservoir en contient %{tank}.",
         "tunnel": "Tunnel de saut",
+        "refuel": "Faire le plein ici",
         "missingLoadout": "Cette configuration ne vous appartient pas, l'itinéraire utilise donc le propulseur d'origine du vaisseau.",
-        "note": "Les durées comprennent la mise en route de chaque saut et le refroidissement entre deux sauts. Chaque saut contourne les étoiles, planètes et lunes sur son chemin."
+        "note": "Les durées comprennent la mise en route de chaque saut et le refroidissement entre deux sauts, pas le plein. Chaque saut contourne les étoiles, planètes et lunes sur son chemin, et le plein est refait là où il y a des services aux véhicules quand le réservoir ne suffirait pas."
       },
       "panel": {
         "show": "Afficher la liste des lieux",

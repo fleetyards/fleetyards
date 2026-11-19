@@ -33,10 +33,11 @@
         "time": "Tempo",
         "fuel": "Carburante",
         "scu": "%{value} SCU",
-        "exceedsTank": "La rotta consuma %{needed} di carburante quantico; il serbatoio ne contiene %{tank}.",
+        "exceedsTank": "Nessuna sequenza di salti ci arriva con un pieno, nemmeno rifornendosi dove ci sono servizi per veicoli: la rotta consuma %{needed} di carburante quantico e il serbatoio ne contiene %{tank}.",
         "tunnel": "Tunnel di salto",
+        "refuel": "Fai rifornimento qui",
         "missingLoadout": "Questa configurazione non è tua, quindi la rotta usa il motore di serie della nave.",
-        "note": "I tempi includono l'avvio di ogni salto e il raffreddamento tra un salto e l'altro. Ogni salto aggira stelle, pianeti e lune sul suo percorso."
+        "note": "I tempi includono l'avvio di ogni salto e il raffreddamento tra un salto e l'altro, non il rifornimento. Ogni salto aggira stelle, pianeti e lune sul suo percorso, e il serbatoio si riempie dove ci sono servizi per veicoli quando non basterebbe."
       },
       "panel": {
         "show": "Mostra l'elenco dei luoghi",
