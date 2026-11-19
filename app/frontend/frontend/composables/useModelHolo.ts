@@ -135,10 +135,13 @@ export const useModelHolo = (
 
     const maps = textured ? mapsFor() : undefined;
 
-    const fallbackFile = textured
-      ? texturedHoloFallback.value?.file
-      : undefined;
-    const fallbackMaps = fallbackFile ? mapsFor(true) : undefined;
+    const fallbackMaps = textured ? mapsFor(true) : undefined;
+    // A picked paint the lite atlas has no maps for would quietly come back
+    // in the ship's own colours, under a picker still naming the paint.
+    const fallbackFile =
+      textured && (!holoPaint.value || fallbackMaps?.base)
+        ? texturedHoloFallback.value?.file
+        : undefined;
 
     return {
       path,

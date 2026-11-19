@@ -86,6 +86,26 @@ describe("useModelHolo", () => {
     paints.value = [];
   });
 
+  it("has nothing to fall back to for a paint without lite maps", () => {
+    lowPower.value = false;
+    paints.value = [
+      {
+        id: "red",
+        name: "Red",
+        media: { holoTexture: "https://example.test/red.webp" },
+      } as unknown as ModelPaint,
+    ];
+
+    const { holoModel } = useModelHolo(model(textured), ModelStateEnum.FLIGHT, {
+      textured: true,
+      paintId: "red",
+    });
+
+    expect(holoModel.value?.paint).toBe("https://example.test/red.webp");
+    expect(holoModel.value?.fallback).toBeUndefined();
+    paints.value = [];
+  });
+
   it("has nothing to fall back to from the lite export", () => {
     lowPower.value = true;
     const { holoModel } = useModelHolo(model(textured), ModelStateEnum.FLIGHT, {
