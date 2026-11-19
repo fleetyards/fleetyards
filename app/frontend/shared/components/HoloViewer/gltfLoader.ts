@@ -17,8 +17,7 @@ export const prepareGltfLoader = (loader: GLTFLoader) =>
     return { name: IMAGE_ELEMENT_TEXTURES };
   });
 
-// For everything a holo loads besides the model itself. The model reports its
-// failure through the default manager, which every loader without its own
-// manager reports to as well: a part or a paint map that failed would read as
-// the whole model failing, after the caller had already dropped the part.
+// For everything a holo loads besides the model itself, which has a manager of
+// its own whose failures fail the model: a part or a paint map that failed would
+// read as the whole model failing, after the caller had already dropped the part.
 export const extrasLoadingManager = new LoadingManager();

@@ -32,7 +32,7 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
-  DefaultLoadingManager,
+  LoadingManager,
   NoColorSpace,
   SRGBColorSpace,
   TextureLoader,
@@ -753,13 +753,25 @@ const emit = defineEmits<{
   busy: [busy: boolean];
 }>();
 
-DefaultLoadingManager.onProgress = (_item, loaded, total) => {
+// This model's own, so progress and failures are not those of another model
+// on the canvas.
+const modelLoadingManager = new LoadingManager();
+
+modelLoadingManager.onProgress = (_item, loaded, total) => {
   emit("progress", loaded, total);
 };
 
-// The loader's own rejection, not the default manager's: that one is shared by
-// every model on the canvas and names a URL, not what went wrong.
+// A texture packed into the file that did not load: the model still resolves,
+// drawn without it. The file's own failure is the loader's rejection below,
+// which says what went wrong rather than which URL.
+modelLoadingManager.onError = (url) => {
+  if (url === props.model.path) return;
+
+  emit("error", new Error(`Holo texture failed to load: ${url}`));
+};
+
 const { state } = useLoader(GLTFLoader, props.model.path, {
+  manager: modelLoadingManager,
   extensions: (loader) => {
     if (loader instanceof GLTFLoader) {
       prepareGltfLoader(loader);
