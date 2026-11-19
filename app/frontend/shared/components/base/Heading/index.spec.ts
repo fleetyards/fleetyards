@@ -1,10 +1,27 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createMemoryHistory, createRouter } from "vue-router";
 import { defineComponent, h } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { FeatureFlagName } from "@/services/fyApi";
 import { PAGE_FEATURE } from "@/shared/utils/BetaFeatures";
 import Heading from "./index.vue";
+
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const original = await importOriginal<typeof import("@/services/fyApi")>();
+  const { ref } = await import("vue");
+
+  return {
+    ...original,
+    useBetaFeatures: () => ({
+      data: ref([
+        original.FeatureFlagName.DRESSING_ROOM,
+        original.FeatureFlagName.HANGAR_PLANNER,
+        original.FeatureFlagName.HOMEPAGE_DASHBOARD,
+        original.FeatureFlagName.FLEET_LOGISTICS,
+      ]),
+    }),
+  };
+});
 
 const Empty = defineComponent({ render: () => null });
 
@@ -43,16 +60,21 @@ describe("Heading", () => {
   it("leaves a heading that is not the page hero alone", async () => {
     expect(
       hasBadge(
-        await mount({ hero: true, level: "h2" }, FeatureFlagName.STARMAP),
+        await mount(
+          { hero: true, level: "h2" },
+          FeatureFlagName.HANGAR_PLANNER,
+        ),
       ),
     ).toBe(false);
-    expect(hasBadge(await mount({}, FeatureFlagName.STARMAP))).toBe(false);
+    expect(hasBadge(await mount({}, FeatureFlagName.HANGAR_PLANNER))).toBe(
+      false,
+    );
   });
 
-  it("leaves a hero on a permanent or unflagged route alone", async () => {
-    expect(
-      hasBadge(await mount({ hero: true }, FeatureFlagName.OAUTH_APPLICATIONS)),
-    ).toBe(false);
+  it("leaves a hero on a route nobody can switch on, or an unflagged one, alone", async () => {
+    expect(hasBadge(await mount({ hero: true }, FeatureFlagName.STARMAP))).toBe(
+      false,
+    );
     expect(hasBadge(await mount({ hero: true }))).toBe(false);
   });
 

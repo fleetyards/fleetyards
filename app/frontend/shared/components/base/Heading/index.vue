@@ -8,7 +8,7 @@ export default {
 import { routeLocationKey } from "vue-router";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
-import { PAGE_FEATURE, isBetaFeature } from "@/shared/utils/BetaFeatures";
+import { PAGE_FEATURE } from "@/shared/utils/BetaFeatures";
 import type { FeatureFlagName } from "@/services/fyApi";
 import {
   HeadingLevelEnum,
@@ -84,15 +84,14 @@ const route = inject(routeLocationKey, null);
 const pageFeature = inject(PAGE_FEATURE, undefined);
 
 // A page behind a beta flag says so next to its title. Only the page's own
-// hero h1 carries it, never a section heading further down.
-const betaFeature = computed(() => {
+// hero h1 carries it, never a section heading further down; the pill itself
+// decides whether the flag is beta.
+const pageFlag = computed(() => {
   if (!props.hero || props.hidden || props.level !== HeadingLevelEnum.H1) {
     return undefined;
   }
 
-  const feature = props.feature ?? pageFeature ?? route?.meta.feature;
-
-  return isBetaFeature(feature) ? feature : undefined;
+  return props.feature ?? pageFeature ?? route?.meta.feature;
 });
 
 const slots = defineSlots<{
@@ -103,9 +102,9 @@ const slots = defineSlots<{
 
 <template>
   <component :is="level" :class="cssClasses" class="font-normal flex gap-2">
-    <span v-if="betaFeature" class="heading__beta">
+    <span v-if="pageFlag" class="heading__beta">
       <slot name="default" />
-      <BetaBadge :feature="betaFeature" />
+      <BetaBadge :feature="pageFlag" />
     </span>
     <slot v-else name="default" />
     <HeadingSmall v-if="slots.subHeading">

@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { isBetaFeature } from "@/shared/utils/BetaFeatures";
-import type { FeatureFlagName } from "@/services/fyApi";
+import {
+  type FeatureFlagName,
+  useBetaFeatures as useBetaFeaturesQuery,
+} from "@/services/fyApi";
 
 type Props = {
   feature: FeatureFlagName | FeatureFlagName[];
@@ -25,7 +28,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const visible = computed(() => isBetaFeature(props.feature));
+// Which flags have a self-service toggle changes only through /admin/features,
+// so one answer serves every pill on the page for a while.
+const { data: betaFeatures } = useBetaFeaturesQuery({
+  query: { staleTime: 5 * 60 * 1000, retry: false },
+});
+
+const visible = computed(() =>
+  isBetaFeature(props.feature, betaFeatures.value),
+);
 </script>
 
 <template>

@@ -1,17 +1,16 @@
 import { provide, type InjectionKey } from "vue";
-import { BetaFeatureFlagName, type FeatureFlagName } from "@/services/fyApi";
-
-const BETA_FEATURES = new Set<string>(Object.values(BetaFeatureFlagName));
+import type { FeatureFlagName } from "@/services/fyApi";
 
 // A stacked gate is beta as soon as one of its flags is.
 export const isBetaFeature = (
   feature: FeatureFlagName | FeatureFlagName[] | undefined | null,
+  betaFeatures: readonly string[] | undefined,
 ): boolean => {
-  if (!feature) {
+  if (!feature || !betaFeatures?.length) {
     return false;
   }
 
-  return [feature].flat().some((entry) => BETA_FEATURES.has(entry));
+  return [feature].flat().some((entry) => betaFeatures.includes(entry));
 };
 
 // A section gated by a wrapper component rather than by its routes' meta
