@@ -34,8 +34,10 @@
   min-width: 0;
 }
 
+// Both lines fit the 40px logo, so expanding the rail keeps the rows below in place.
 .context-switcher__title {
   overflow: hidden;
+  line-height: 22px;
   color: var(--color-text, #c8c8c8);
   font-family: "Orbitron", sans-serif;
   text-overflow: ellipsis;
@@ -46,6 +48,7 @@
   overflow: hidden;
   color: var(--color-text-dim, #959595);
   font-size: 12px;
+  line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

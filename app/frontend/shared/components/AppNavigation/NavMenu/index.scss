@@ -12,8 +12,9 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  // Puts a 40px trigger image on the 40px centre line the nav row icons share.
-  padding: 8px 10px 8px 5px;
+  // The nav row icons share a centre line 40px in: 14px of menu padding, the
+  // 1px border, then this inset and half the leading image.
+  padding: 8px 10px 8px calc(25px - var(--nav-menu-lead-size, 36px) / 2);
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;

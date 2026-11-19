@@ -15,10 +15,13 @@ import { focusEdgeRow, hasModifier } from "../keyboard";
 type Props = {
   // "up" for a menu anchored at the foot of the navigation.
   placement?: "down" | "up";
+  // Width of the image the trigger leads with, to centre it on the icon line.
+  leadSize?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   placement: "down",
+  leadSize: 36,
 });
 
 const open = defineModel<boolean>("open", { default: false });
@@ -207,6 +210,7 @@ onBeforeUnmount(() => {
       class="nav-menu__trigger"
       :aria-expanded="open"
       :aria-controls="open ? menuId : undefined"
+      :style="{ '--nav-menu-lead-size': `${leadSize}px` }"
       v-bind="$attrs"
       @click="toggle"
     >

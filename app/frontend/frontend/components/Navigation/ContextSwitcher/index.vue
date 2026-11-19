@@ -75,6 +75,7 @@ const invitationCount = computed(
   <NavMenu
     v-model:open="open"
     class="context-switcher"
+    :lead-size="40"
     data-test="nav-switcher"
   >
     <template #trigger="{ slim }">
