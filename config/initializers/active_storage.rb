@@ -16,3 +16,9 @@ end
 # AR Quick Look only takes the file under its own type, and the public bucket
 # serves each file under the type it was stamped with at upload.
 Marcel::MimeType.extend "model/vnd.usdz+zip", extensions: %w[usdz], parents: "application/zip"
+
+# Marcel has no glTF type, so a holo the sc_data imports upload went up as
+# application/octet-stream, which the CDN serves uncompressed. Under its own
+# type it is compressed.
+Marcel::MimeType.extend "model/gltf-binary", extensions: %w[glb], magic: [[0, "glTF"]]
+Marcel::MimeType.extend "model/gltf+json", extensions: %w[gltf], parents: "application/json"
