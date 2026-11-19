@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { type FeatureActor } from "@/services/fyAdminApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -77,18 +78,28 @@ const visible = computed(() => filtered.value.slice(0, shown.value));
           class="feature-actor-row"
           data-test="feature-actor-row"
         >
+          <i
+            :class="
+              actor.type === 'Fleet'
+                ? 'fa-light fa-people-group'
+                : 'fa-light fa-user'
+            "
+            class="feature-actor-icon"
+            aria-hidden="true"
+          />
           <span class="feature-actor-name">{{ actor.name }}</span>
           <span v-if="actor.fid" class="feature-actor-fid text-muted">
             {{ actor.fid }}
           </span>
           <Btn
             class="feature-actor-remove"
+            :variant="BtnVariantsEnum.BARE"
             :aria-label="`${t('actions.remove')} ${actor.name}`"
             :title="t('actions.remove')"
             data-test="feature-actor-remove"
             @click="emit('remove', actor)"
           >
-            <i class="fa-duotone fa-times" />
+            <i class="fa-light fa-xmark" />
           </Btn>
         </li>
       </ul>
@@ -118,8 +129,8 @@ const visible = computed(() => filtered.value.slice(0, shown.value));
 
 .feature-actor-rows {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  gap: 0.25rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -128,11 +139,22 @@ const visible = computed(() => filtered.value.slice(0, shown.value));
 .feature-actor-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   min-width: 0;
+  min-height: 44px;
+  padding: 2px 4px 2px 14px;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 12px;
+}
+
+.feature-actor-icon {
+  color: var(--color-text-dim);
 }
 
 .feature-actor-name {
+  min-width: 0;
+  color: var(--color-lifted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
