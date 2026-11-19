@@ -95,13 +95,24 @@ export const useStarmapRoute = ({
     ),
   });
 
-  const routeSystems = computed<RouteSystem[]>(() =>
-    starmaps.value.flatMap((result) =>
+  // Rebuilt only when a system's places change: a refetch that brings the
+  // same data keeps the list, and the plan is not run again for it.
+  const routeSystems = computed<RouteSystem[]>((previous) => {
+    const next = starmaps.value.flatMap((result) =>
       result.data
         ? [{ id: result.data.system.id, places: result.data.places }]
         : [],
-    ),
-  );
+    );
+
+    const unchanged =
+      previous?.length === next.length &&
+      previous.every(
+        (system, index) =>
+          system.id === next[index].id && system.places === next[index].places,
+      );
+
+    return unchanged && previous ? previous : next;
+  });
 
   const placesLoading = computed(
     () => toValue(enabled) && starmaps.value.some((result) => result.isLoading),
