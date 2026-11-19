@@ -102,14 +102,25 @@ const BODY_PIXELS_AT_1000_KM = 28;
 const BODY_PIXELS_CURVE = 0.35;
 const BODY_PIXELS_RANGE = [14, 48] as const;
 
+// The sizes above are for a desktop window. A phone fits the same system
+// into a third of the width, so drawn at them the planets crowd onto their
+// sun and each other; they shrink with the map's shorter side, down to this.
+// A laptop's map, short as it is under the browser's bars, stays above it.
+const SMALL_SCREEN_SIDE = 600;
+const SMALL_SCREEN_SCALE = 0.6;
+let pixelScale = 1;
+
 const minPixelsOf = (entry: StarmapItem) => {
   if ((entry.role !== "planet" && entry.role !== "moon") || !entry.radius) {
-    return MIN_PIXELS[entry.role];
+    return MIN_PIXELS[entry.role] * pixelScale;
   }
 
   // Scene units are thousands of kilometres.
   const pixels = BODY_PIXELS_AT_1000_KM * entry.radius ** BODY_PIXELS_CURVE;
-  return Math.min(Math.max(pixels, BODY_PIXELS_RANGE[0]), BODY_PIXELS_RANGE[1]);
+  return (
+    Math.min(Math.max(pixels, BODY_PIXELS_RANGE[0]), BODY_PIXELS_RANGE[1]) *
+    pixelScale
+  );
 };
 
 // How near the pointer has to come to a thing to pick it, in pixels, and how
@@ -776,6 +787,16 @@ const districtDepth = (entry: StarmapItem) => {
 const PLACE_VIEWS = [0.5, 0.18, 0.06];
 
 const OVERVIEW_DIRECTION = new Vector3(0, 0.55, 1).normalize();
+// A portrait screen is fitted by its width, which leaves the low view of a
+// landscape one a thin band across the middle with its bodies stacked on
+// each other; from higher up the ring opens into the height there is.
+const OVERVIEW_DIRECTION_PORTRAIT = new Vector3(0, 1.4, 1).normalize();
+
+const overviewDirection = () => {
+  const cam = camera.value;
+  const portrait = cam instanceof PerspectiveCamera && cam.aspect < 1;
+  return (portrait ? OVERVIEW_DIRECTION_PORTRAIT : OVERVIEW_DIRECTION).clone();
+};
 // The ring the overview fits: the outermost planet's orbit and a little more,
 // for the stations and jump points out past it.
 const OVERVIEW_REACH = 1.12;
@@ -792,14 +813,15 @@ const fittingDistance = (radius: number) => {
 
   const tanV = Math.tan((cam.fov * Math.PI) / 360);
   const tanH = tanV * cam.aspect;
-  const forward = OVERVIEW_DIRECTION.clone().negate();
+  const direction = overviewDirection();
+  const forward = direction.clone().negate();
   const right = new Vector3().crossVectors(forward, UP).normalize();
   const up = new Vector3().crossVectors(right, forward);
   const ring = new Vector3();
   const offset = new Vector3();
 
   const fits = (distance: number) => {
-    const eye = OVERVIEW_DIRECTION.clone().multiplyScalar(distance);
+    const eye = direction.clone().multiplyScalar(distance);
 
     for (let step = 0; step < 48; step++) {
       const angle = (step / 48) * Math.PI * 2;
@@ -822,8 +844,42 @@ const fittingDistance = (radius: number) => {
   return distance;
 };
 
+// How much of the view, edge to centre along its narrower side, a focused
+// body fills.
+const BODY_FILL = 0.66;
+
+const fillingDistance = (radius: number, tanHalf: number) =>
+  radius / Math.sin(Math.atan(BODY_FILL * tanHalf));
+
+// How far back the camera stands for a body to fill that much of the view.
+// A portrait screen is narrower than it is tall, so a distance set for the
+// height would leave the body overflowing either side.
+const bodyDistance = (radius: number) => {
+  const cam = camera.value;
+  if (!(cam instanceof PerspectiveCamera)) return radius * 3.4;
+
+  const tanV = Math.tan((cam.fov * Math.PI) / 360);
+  return fillingDistance(radius, tanV * Math.min(cam.aspect, 1));
+};
+
+// How much farther back that puts the camera than a landscape view of the
+// same body. What shows by the camera's distance is measured against it, or
+// a portrait screen would stand too far off to see a body's places at all.
+let viewStretch = 1;
+
+const updateViewStretch = (cam: PerspectiveCamera) => {
+  const tanV = Math.tan((cam.fov * Math.PI) / 360);
+  viewStretch =
+    fillingDistance(1, tanV * Math.min(cam.aspect, 1)) /
+    fillingDistance(1, tanV);
+};
+
+// Whether the camera was last framed for a portrait screen: turning the
+// device over frames the view again for the other.
+let framedPortrait: boolean | null = null;
+
 const overview = () => ({
-  direction: OVERVIEW_DIRECTION.clone(),
+  direction: overviewDirection(),
   distance: fittingDistance(props.scene.extent * OVERVIEW_REACH),
 });
 
@@ -849,7 +905,7 @@ const viewOf = (entry: StarmapItem, current: Vector3) => {
         .addScaledVector(aside, 0.55)
         .addScaledVector(UP, 0.5)
         .normalize(),
-      distance: entry.radius * 3.4,
+      distance: bodyDistance(entry.radius),
     };
   }
 
@@ -903,6 +959,8 @@ const orbiting = () => controls.value as Orbiting | null;
 const flyTo = (entry: StarmapItem | undefined) => {
   const cam = camera.value;
   if (!cam) return;
+
+  if (cam instanceof PerspectiveCamera) framedPortrait = cam.aspect < 1;
 
   const current = cam.position.clone().normalize();
   const view = entry ? viewOf(entry, current) : overview();
@@ -1251,7 +1309,17 @@ const settle = (cam: PerspectiveCamera) => {
     }
     zoom.distance = zoom.goal = cam.position.length() || 1;
   }
-  if (flownTo === undefined) flyTo(focused.value);
+  if (flownTo === undefined && sized(cam)) flyTo(focused.value);
+};
+
+// The camera starts square and takes the canvas's shape a frame or two in;
+// a view framed before then is framed for the wrong screen.
+const sized = (cam: PerspectiveCamera) => {
+  const element = canvas();
+  if (!element?.clientHeight) return false;
+  return (
+    Math.abs(cam.aspect - element.clientWidth / element.clientHeight) < 0.01
+  );
 };
 
 const ARRIVAL_DISTANCE = 30;
@@ -1309,14 +1377,14 @@ const fadeOf = (entry: StarmapItem) => {
   const from = entry.nearFrom === "anchor" ? (anchorOf(entry) ?? entry) : entry;
   const distance = cameraWorld.distanceTo(scratch.set(...from.position));
 
-  return nearness(distance, entry.near);
+  return nearness(distance / viewStretch, entry.near);
 };
 
 // How far shown what stands on a body is.
 const shownOn = (body: StarmapItem) => {
   if (!body.radius) return 0;
   const distance = cameraWorld.distanceTo(scratch.set(...body.position));
-  return nearness(distance, body.radius * PLACES_NEAR);
+  return nearness(distance / viewStretch, body.radius * PLACES_NEAR);
 };
 
 // The body whose surface the camera is over: what is on its far side is
@@ -1398,6 +1466,18 @@ onBeforeRender(({ delta, elapsed }) => {
   const cam = camera.value;
   if (!(cam instanceof PerspectiveCamera)) return;
 
+  updateViewStretch(cam);
+  if (
+    framedPortrait !== null &&
+    framedPortrait !== cam.aspect < 1 &&
+    sized(cam) &&
+    !flight.active &&
+    !leaving &&
+    !entering
+  ) {
+    flyTo(focused.value);
+  }
+
   move(cam, delta);
   crossFrame(delta);
 
@@ -1417,6 +1497,13 @@ onBeforeRender(({ delta, elapsed }) => {
   if (element) {
     resolution.set(element.clientWidth, element.clientHeight);
     for (const material of lineMaterials) material.resolution.copy(resolution);
+    pixelScale = Math.min(
+      Math.max(
+        Math.min(element.clientWidth, element.clientHeight) / SMALL_SCREEN_SIDE,
+        SMALL_SCREEN_SCALE,
+      ),
+      1,
+    );
   }
 
   const motion = !motionQuery?.matches;
@@ -1494,7 +1581,10 @@ onBeforeRender(({ delta, elapsed }) => {
   // they meet on screen long before their centres do: what counts is the gap
   // between the two as drawn.
   const starDrawn = star
-    ? Math.max((star.radius ?? 0) / starPixel, MIN_PIXELS.star / 2)
+    ? Math.max(
+        (star.radius ?? 0) / starPixel,
+        (MIN_PIXELS.star * pixelScale) / 2,
+      )
     : 0;
   const clearOfStar = (entry: StarmapItem) => {
     if (!star || entry.key === star.key) return 1;
