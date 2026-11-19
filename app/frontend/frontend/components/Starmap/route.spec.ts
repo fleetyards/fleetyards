@@ -68,6 +68,7 @@ describe("legsInSystem", () => {
         spool: 0,
         travel: 0,
         fuel: 0,
+        refuel: false,
       },
       { kind: "tunnel", from: b, to: gate },
       {
@@ -79,6 +80,7 @@ describe("legsInSystem", () => {
         spool: 0,
         travel: 0,
         fuel: 0,
+        refuel: false,
       },
     ],
     distance: 0,

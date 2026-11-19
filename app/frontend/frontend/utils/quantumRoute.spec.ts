@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  LocationAmenityEnum,
   LocationKindEnum,
   type ComponentQuantumDrive,
   type LocationStarmapPlace,
@@ -247,6 +248,59 @@ describe("planRoute", () => {
     expect(plan(5).fuel).toBeCloseTo(0.1);
     expect(plan(5).exceedsTank).toBe(false);
     expect(plan(60).exceedsTank).toBe(true);
+  });
+
+  describe("on a tank too small for one jump", () => {
+    const a = place({ id: "a", position: [0, 5 * GM, 0] });
+    const b = place({ id: "b", position: [40 * GM, 5 * GM, 0] });
+    const station = (amenities: LocationAmenityEnum[]) =>
+      place({ id: "station", position: [20 * GM, 6 * GM, 0], amenities });
+    // 40 Gm burns 0.2 SCU at 5 mSCU/Gm; half of it fits the tank.
+    const plan = (stop: LocationStarmapPlace) =>
+      planRoute({
+        systems: [{ id: "s", places: [a, b, stop] }],
+        drive: { ...drive(), tankSize: 0.15 },
+        from: "a",
+        to: "b",
+      })!;
+
+    it("stops to refuel where vehicle services are", () => {
+      const route = plan(station([LocationAmenityEnum.VEHICLE_SERVICES]));
+
+      expect(
+        route.legs.map((leg) => [
+          leg.to.id,
+          leg.kind === "quantum" && leg.refuel,
+        ]),
+      ).toEqual([
+        ["station", true],
+        ["b", false],
+      ]);
+      expect(route.exceedsTank).toBe(false);
+    });
+
+    it("does not count on a stop without them", () => {
+      const route = plan(station([LocationAmenityEnum.CLINIC]));
+
+      expect(route.legs.map((leg) => leg.to.id)).toEqual(["b"]);
+      expect(route.exceedsTank).toBe(true);
+    });
+
+    it("does not stop to refuel when the tank lasts", () => {
+      const route = planRoute({
+        systems: [
+          {
+            id: "s",
+            places: [a, b, station([LocationAmenityEnum.VEHICLE_SERVICES])],
+          },
+        ],
+        drive: { ...drive(), tankSize: 1 },
+        from: "a",
+        to: "b",
+      })!;
+
+      expect(route.legs.map((leg) => leg.to.id)).toEqual(["b"]);
+    });
   });
 
   it("does not flag a tank whose size is unknown", () => {

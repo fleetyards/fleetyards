@@ -1,4 +1,5 @@
 import {
+  LocationAmenityEnum,
   LocationKindEnum,
   type ComponentQuantumDrive,
   type LocationStarmapPlace,
@@ -17,6 +18,10 @@ const SURFACE_FACTOR = 1.08;
 // A clinic inside a station is the station as far as a jump goes: places this
 // close are one stop, kept as the endpoint, the body or whichever comes first.
 const SAME_STOP_METRES = 20_000;
+
+// Refuelling is not timed; this only keeps a route from stopping to refuel
+// where it has fuel enough to go on.
+const REFUEL_COST = 1e-3;
 
 const BODY_KINDS = new Set<LocationKindEnum>([
   LocationKindEnum.STAR,
@@ -54,6 +59,8 @@ export interface QuantumLeg {
   travel: number;
   // SCU.
   fuel: number;
+  // The tank is filled at its end before the next jump.
+  refuel: boolean;
 }
 
 export interface TunnelLeg {
@@ -70,6 +77,8 @@ export interface QuantumRoute {
   // Seconds, including the cooldown between consecutive jumps.
   time: number;
   fuel: number;
+  // No chain of jumps reaches the destination within the tank, refuelling
+  // where vehicle services are: the route shown ignores the fuel.
   exceedsTank: boolean;
 }
 
@@ -86,7 +95,22 @@ interface Node {
   systemId: string;
   // The body it stands on, for an outpost or a city.
   host: string | null;
+  // Vehicle services are here, or at a place it stands for.
+  refuel: boolean;
 }
+
+interface Label {
+  node: Node;
+  cost: number;
+  // SCU burnt since the tank was last filled.
+  fuel: number;
+  leg: RouteLeg | null;
+  previous: Label | null;
+  open: boolean;
+}
+
+const servicesShips = (place: LocationStarmapPlace) =>
+  !!place.amenities?.includes(LocationAmenityEnum.VEHICLE_SERVICES);
 
 const subtract = (a: Vector, b: Vector) => a.map((value, i) => value - b[i]);
 const dot = (a: Vector, b: Vector) =>
@@ -202,6 +226,7 @@ const quantumLeg = (
     spool: drive.typeData.spoolUpTime || 0,
     travel,
     fuel: legFuel(drive, distance),
+    refuel: false,
   };
 };
 
@@ -254,26 +279,29 @@ export const planRoute = ({
       .sort(
         (a, b) =>
           Number(pinned(b)) - Number(pinned(a)) ||
-          Number(isBody(b)) - Number(isBody(a)),
+          Number(isBody(b)) - Number(isBody(a)) ||
+          Number(servicesShips(b)) - Number(servicesShips(a)),
       );
 
     const systemNodes: Node[] = [];
     candidates.forEach((place) => {
-      const sameStop =
-        !pinned(place) &&
-        systemNodes.some(
-          (node) =>
-            distanceBetween(node.place.position, place.position) <
-            SAME_STOP_METRES,
-        );
+      const sameStop = systemNodes.find(
+        (node) =>
+          distanceBetween(node.place.position, place.position) <
+          SAME_STOP_METRES,
+      );
 
-      if (!sameStop) {
-        systemNodes.push({
-          place,
-          systemId: system.id,
-          host: hostOf(place, bodies),
-        });
+      if (sameStop && !pinned(place)) {
+        sameStop.refuel ||= servicesShips(place);
+        return;
       }
+
+      systemNodes.push({
+        place,
+        systemId: system.id,
+        host: hostOf(place, bodies),
+        refuel: servicesShips(place),
+      });
     });
 
     systemNodes.forEach((node) => nodes.set(node.place.id, node));
@@ -325,87 +353,133 @@ export const planRoute = ({
     return estimates.get(id) as number;
   };
 
-  const cost = new Map<string, number>([[from, 0]]);
-  const via = new Map<string, RouteLeg>();
-  const done = new Set<string>();
+  const tank = drive.tankSize || null;
 
-  // The estimate never overshoots but is not consistent across a tunnel, so a
-  // place already settled is reopened when a cheaper way to it turns up.
-  const relax = (leg: RouteLeg, base: number) => {
-    const next = base + legCost(leg, drive);
+  const search = (limit: number | null) => {
+    const labels = new Map<string, Label[]>();
+    const open: Label[] = [];
 
-    if (next < (cost.get(leg.to.id) ?? Infinity)) {
-      cost.set(leg.to.id, next);
-      via.set(leg.to.id, leg);
-      done.delete(leg.to.id);
+    // A label is kept unless another at the same place got there no later
+    // with no more fuel burnt; without a tank to fill, time alone decides.
+    const add = (label: Label) => {
+      const here = labels.get(label.node.place.id) || [];
+      const beaten = (a: Label, b: Label) =>
+        a.cost <= b.cost && (limit === null || a.fuel <= b.fuel);
+
+      if (here.some((other) => beaten(other, label))) return;
+
+      here.forEach((other) => {
+        if (beaten(label, other)) other.open = false;
+      });
+      labels.set(label.node.place.id, [
+        ...here.filter((other) => !beaten(label, other)),
+        label,
+      ]);
+      open.push(label);
+    };
+
+    const arrive = (from: Label, leg: RouteLeg, fuel: number) => {
+      const node = nodes.get(leg.to.id) as Node;
+      const cost = from.cost + legCost(leg, drive);
+      const burnt = from.fuel + fuel;
+
+      if (limit !== null && burnt > limit) return;
+
+      add({ node, cost, fuel: burnt, leg, previous: from, open: true });
+
+      if (limit !== null && node.refuel && leg.kind === "quantum") {
+        add({
+          node,
+          cost: cost + REFUEL_COST,
+          fuel: 0,
+          leg: { ...leg, refuel: true },
+          previous: from,
+          open: true,
+        });
+      }
+    };
+
+    add({
+      node: nodes.get(from) as Node,
+      cost: 0,
+      fuel: 0,
+      leg: null,
+      previous: null,
+      open: true,
+    });
+
+    // Dense graph: every destination can see most others, so a linear scan
+    // for the most promising open label beats a heap.
+    for (;;) {
+      let current: Label | null = null;
+      let rank = Infinity;
+
+      open.forEach((label) => {
+        const ranked = label.cost + estimateOf(label.node.place.id);
+
+        if (label.open && ranked < rank) {
+          rank = ranked;
+          current = label;
+        }
+      });
+
+      if (current === null) return null;
+
+      const label: Label = current;
+      label.open = false;
+
+      if (label.node.place.id === to) return label;
+
+      const node = label.node;
+      const bodies = bodiesBySystem.get(node.systemId) || [];
+
+      (nodesBySystem.get(node.systemId) || []).forEach((next) => {
+        if (next === node || next.place.id === from) return;
+        if (!clearsAll(node, next, bodies)) return;
+
+        const leg = quantumLeg(node, next, drive);
+
+        if (leg) arrive(label, leg, leg.fuel);
+      });
+
+      (tunnelsFrom.get(node.place.id) || []).forEach((targetId) => {
+        const exit = nodes.get(targetId);
+
+        if (exit && targetId !== from) {
+          arrive(
+            label,
+            { kind: "tunnel", from: node.place, to: exit.place },
+            0,
+          );
+        }
+      });
+
+      for (let index = open.length - 1; index >= 0; index -= 1) {
+        if (!open[index].open) open.splice(index, 1);
+      }
     }
   };
 
-  // Dense graph: every destination can see most others, so a linear scan for
-  // the cheapest open node beats a heap.
-  for (;;) {
-    let current: string | null = null;
-    let best = Infinity;
-    let rank = Infinity;
+  const withinTank = tank === null ? null : search(tank);
+  const found = withinTank ?? search(null);
 
-    cost.forEach((value, id) => {
-      const ranked = value + estimateOf(id);
-
-      if (!done.has(id) && ranked < rank) {
-        rank = ranked;
-        best = value;
-        current = id;
-      }
-    });
-
-    if (current === null || current === to) {
-      break;
-    }
-
-    done.add(current);
-    const node = nodes.get(current) as Node;
-    const bodies = bodiesBySystem.get(node.systemId) || [];
-
-    (nodesBySystem.get(node.systemId) || []).forEach((next) => {
-      if (next === node || next.place.id === from) {
-        return;
-      }
-
-      if (!clearsAll(node, next, bodies)) {
-        return;
-      }
-
-      const leg = quantumLeg(node, next, drive);
-
-      if (leg) {
-        relax(leg, best);
-      }
-    });
-
-    (tunnelsFrom.get(current) || []).forEach((targetId) => {
-      const exit = nodes.get(targetId);
-
-      if (exit && targetId !== from) {
-        relax({ kind: "tunnel", from: node.place, to: exit.place }, best);
-      }
-    });
-  }
-
-  if (!via.has(to) && from !== to) {
+  if (!found) {
     return null;
   }
 
   const legs: RouteLeg[] = [];
-  for (let id = to; id !== from;) {
-    const leg = via.get(id) as RouteLeg;
-    legs.unshift(leg);
-    id = leg.from.id;
+  for (let label: Label | null = found; label?.leg; label = label.previous) {
+    legs.unshift(label.leg);
   }
 
-  return summarise(legs, drive);
+  return summarise(legs, drive, tank !== null && !withinTank);
 };
 
-const summarise = (legs: RouteLeg[], drive: RouteDrive): QuantumRoute => {
+const summarise = (
+  legs: RouteLeg[],
+  drive: RouteDrive,
+  exceedsTank: boolean,
+): QuantumRoute => {
   const jumps = legs.filter((leg): leg is QuantumLeg => leg.kind === "quantum");
   const fuel = jumps.reduce((sum, leg) => sum + leg.fuel, 0);
   const cooldowns =
@@ -417,6 +491,6 @@ const summarise = (legs: RouteLeg[], drive: RouteDrive): QuantumRoute => {
     time:
       jumps.reduce((sum, leg) => sum + leg.spool + leg.travel, 0) + cooldowns,
     fuel,
-    exceedsTank: !!drive.tankSize && fuel > drive.tankSize,
+    exceedsTank,
   };
 };
