@@ -21,16 +21,24 @@ module Admin
         end
 
         def resolve
-          @feedback.resolved_by = current_admin_user
-          transition(:resolve)
+          transition(:resolve) { @feedback.resolved_by = current_admin_user }
         end
 
         def reopen
           transition(:reopen)
         end
 
+        # Under the lock, so two admins acting at once do not both pass the
+        # state check and leave the second one's name on it.
         private def transition(event)
-          if @feedback.public_send(event) && @feedback.save
+          done = @feedback.with_lock do
+            next false unless @feedback.public_send(:"may_#{event}?")
+
+            yield if block_given?
+            @feedback.public_send(event) && @feedback.save
+          end
+
+          if done
             render :show
           else
             render json: ValidationError.new("feedback.#{event}", errors: @feedback.errors), status: :bad_request
