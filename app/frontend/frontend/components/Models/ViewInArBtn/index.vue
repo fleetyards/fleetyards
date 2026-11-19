@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -195,5 +196,6 @@ const open = () => {
   >
     <i class="fa-light fa-cube" />
     {{ t("labels.viewInAr") }}
+    <BetaBadge :feature="FeatureFlagName.HOLO_AR" />
   </Btn>
 </template>

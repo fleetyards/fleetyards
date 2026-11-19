@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import type { FeatureFlagName } from "@/services/fyApi";
 import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -15,6 +17,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   title: string;
+  // The flag the panel's feature sits behind, which marks the panel as beta.
+  feature?: FeatureFlagName | FeatureFlagName[];
   // The first answer is still out: the panel stands in its place, loading, and
   // says nothing yet rather than that it has nothing.
   pending?: boolean;
@@ -63,6 +67,7 @@ const { t } = useI18n();
   >
     <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ title }}
+      <BetaBadge v-if="feature" :feature="feature" />
       <template v-if="more || $slots.actions" #actions>
         <slot name="actions" />
         <router-link v-if="more" :to="more" class="dashboard-panel__more">

@@ -16,6 +16,7 @@ import { useContractReward } from "@/frontend/composables/useContractReward";
 import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  FeatureFlagName,
   FleetContractStateEnum,
   useFleetContracts,
   type Fleet,
@@ -121,6 +122,7 @@ const groups = computed(() =>
 <template>
   <DashboardPanel
     :title="t('fleetDashboard.contracts.title')"
+    :feature="FeatureFlagName.FLEET_CONTRACTS"
     :pending="mineLoading || openLoading"
     :fetching="mineFetching || openFetching"
     :failed="mineMissing || openMissing"

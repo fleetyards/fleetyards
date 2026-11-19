@@ -20,13 +20,19 @@ import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
 import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
 import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
-import { type Vehicle, useVehicleLoadoutSlots } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type Vehicle,
+  useVehicleLoadoutSlots,
+} from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -112,6 +118,15 @@ const {
   loadoutHoloShown,
   toggleLoadoutHolo,
 } = useLoadoutHolo(() => props.vehicle.model.slug, holoVisible, texturedHolo);
+
+const holoBetaFeatures = computed(() =>
+  shownFeatures({
+    [FeatureFlagName.HOLO_TEXTURED]:
+      holoVisible.value && texturedHoloAvailable.value,
+    [FeatureFlagName.LOADOUT_PREVIEW]:
+      holoVisible.value && loadoutHoloAvailable.value,
+  }),
+);
 
 const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
 
@@ -354,6 +369,10 @@ const openImageModal = () =>
         <div class="vehicle-hero__links">
           <!-- The ship page's pair: the switch, and beside it while the model
                shows, the full-screen viewer. -->
+          <BetaBadge
+            v-if="holoBetaFeatures.length"
+            :feature="holoBetaFeatures"
+          />
           <BtnGroup v-if="holoModel">
             <Btn
               v-if="holoVisible"

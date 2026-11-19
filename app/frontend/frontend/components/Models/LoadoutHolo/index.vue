@@ -12,6 +12,8 @@ import {
   useModelLoadoutSlots,
 } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { filedCategory } from "@/frontend/composables/useComponentFitting";
 import {
   builtInHighlights,
@@ -174,6 +176,21 @@ const holoModel = computed(() => {
   };
 });
 
+const betaFeatures = computed(() => {
+  const model = holoModel.value;
+
+  return shownFeatures({
+    [FeatureFlagName.HOLO_SERVICING_AREAS]:
+      servicingAreasEnabled.value && !!model?.boxes.length,
+    [FeatureFlagName.HOLO_CARGO_GRIDS]:
+      cargoGridsEnabled.value && !!model?.cargoGrids.length,
+    [FeatureFlagName.HOLO_DOOR_HIGHLIGHT]:
+      doorHighlightEnabled.value && !!model?.doors.length,
+    [FeatureFlagName.HOLO_DOOR_ANIMATION]:
+      doorAnimationEnabled.value && !!model?.doors.length,
+  });
+});
+
 const {
   pointedArea,
   pointedBuiltIn,
@@ -253,6 +270,7 @@ const doorsLabel = computed(() =>
     @unavailable="emit('unavailable')"
   >
     <template #actions>
+      <BetaBadge v-if="betaFeatures.length" :feature="betaFeatures" />
       <Btn
         v-if="holoModel.boxes.length"
         v-tooltip="servicingAreasLabel"

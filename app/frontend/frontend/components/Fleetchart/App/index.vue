@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
 import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
 import FleetchartCanvas from "@/frontend/components/Fleetchart/Canvas/index.vue";
@@ -381,6 +382,7 @@ const closeFleetchart = async () => {
               {{ t("labels.fleetchartApp.layout") }}:
             </template>
             {{ t(`labels.fleetchartApp.layoutOptions.${layout}`) }}
+            <BetaBadge :feature="FeatureFlagName.FLEETCHART_LAYOUTS" />
           </template>
           <Btn
             v-for="option in layoutOptions"

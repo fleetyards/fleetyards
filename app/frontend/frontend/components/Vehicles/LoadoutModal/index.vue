@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 import { useForm } from "vee-validate";
@@ -68,6 +70,7 @@ import {
 } from "@/frontend/composables/useComponentFitting";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FeatureFlagName,
   type Vehicle,
   type VehicleLoadout,
   type VehicleLoadoutItemCraftedInput,
@@ -413,6 +416,17 @@ const servicingAreasToggleLabel = computed(() =>
 
 // The cargo grids and doors the holo has, offered once it says so.
 const overlays = ref({ cargoGrids: false, doors: false });
+
+// The overlay toggles are icon buttons, so the toolbar carries one pill for
+// them and the preview they sit on.
+const loadoutHoloBetaFeatures = computed(() => [
+  FeatureFlagName.LOADOUT_PREVIEW,
+  ...shownFeatures({
+    [FeatureFlagName.HOLO_SERVICING_AREAS]: servicingAreas.value.length > 0,
+    [FeatureFlagName.HOLO_CARGO_GRIDS]: overlays.value.cargoGrids,
+    [FeatureFlagName.HOLO_DOOR_ANIMATION]: overlays.value.doors,
+  }),
+]);
 const cargoGridsShown = ref(false);
 const doorsOpen = ref(false);
 
@@ -1621,6 +1635,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @overlays="overlays = $event"
           >
             <template #actions>
+              <BetaBadge :feature="loadoutHoloBetaFeatures" />
               <Btn
                 v-if="servicingAreas.length"
                 :aria-label="servicingAreasToggleLabel"

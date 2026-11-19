@@ -61,6 +61,8 @@ import {
 import { useClampedText } from "@/shared/composables/useClampedText";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import {
   isLowPowerDevice,
   useLowPowerDevice,
@@ -332,6 +334,15 @@ const {
   toggleLoadoutHolo,
 } = useLoadoutHolo(() => props.model.slug, holoOpen, texturedHolo);
 
+const holoBetaFeatures = computed(() =>
+  shownFeatures({
+    [FeatureFlagName.HOLO_TEXTURED]:
+      holoOpen.value && texturedHoloAvailable.value,
+    [FeatureFlagName.LOADOUT_PREVIEW]:
+      holoOpen.value && loadoutHoloAvailable.value,
+  }),
+);
+
 const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
 
 // The side preview cannot ask before loading a holo too large for the device,
@@ -387,6 +398,10 @@ const adiMap = computed(() => {
               v-if="holoStates.length && (holoAvailable || adiMap)"
               class="image-toolbar"
             >
+              <BetaBadge
+                v-if="holoBetaFeatures.length"
+                :feature="holoBetaFeatures"
+              />
               <BtnGroup>
                 <Btn
                   v-if="holoOpen && loadoutHoloShown"
@@ -419,6 +434,10 @@ const adiMap = computed(() => {
                   @click="toggleHoloviewer"
                 >
                   {{ t("labels.3dView") }}
+                  <BetaBadge
+                    v-if="mobile"
+                    :feature="FeatureFlagName.HOLO_PHONE"
+                  />
                 </Btn>
 
                 <Btn

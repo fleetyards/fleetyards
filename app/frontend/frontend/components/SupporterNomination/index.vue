@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { useQueryClient } from "@tanstack/vue-query";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -210,6 +211,7 @@ const applyNomination = async (
   <div v-if="hasFleets" class="supporter-nomination" data-test="nomination">
     <div class="supporter-nomination__label">
       {{ t("labels.account.supporterNomination.label") }}
+      <BetaBadge :feature="FeatureFlagName.FLEET_SUBSCRIPTIONS" />
     </div>
 
     <div class="row">

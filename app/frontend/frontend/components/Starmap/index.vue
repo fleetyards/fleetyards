@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls } from "@tresjs/cientos";
 import KindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
@@ -16,6 +17,7 @@ import { useQueries } from "@tanstack/vue-query";
 import { refDebounced } from "@vueuse/core";
 import LocationStatsCard from "@/frontend/components/StatsCard/Location/index.vue";
 import {
+  FeatureFlagName,
   LocationKindEnum,
   getLocationTreeQueryOptions,
   useLocationJumpPoints,
@@ -644,7 +646,10 @@ watch(
                     </span>
                   </template>
                 </nav>
-                <h1 class="starmap__title">{{ title }}</h1>
+                <h1 class="starmap__title">
+                  {{ title }}
+                  <BetaBadge :feature="FeatureFlagName.STARMAP" />
+                </h1>
               </div>
               <button
                 type="button"
