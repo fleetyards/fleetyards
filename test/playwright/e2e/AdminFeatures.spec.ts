@@ -71,7 +71,10 @@ test.describe("Admin Features", () => {
   test("Toggles user self-service", async ({ page, notification }) => {
     await openFirstFeature(page);
 
-    await page.getByTestId("toggle-self-service").click();
+    await page
+      .getByTestId("toggle-self-service")
+      .locator("button.base-toggle")
+      .click();
 
     await notification.success("updated");
   });
@@ -79,7 +82,10 @@ test.describe("Admin Features", () => {
   test("Toggles fleet self-service", async ({ page, notification }) => {
     await openFirstFeature(page);
 
-    await page.getByTestId("toggle-fleet-self-service").click();
+    await page
+      .getByTestId("toggle-fleet-self-service")
+      .locator("button.base-toggle")
+      .click();
 
     await notification.success("updated");
   });
