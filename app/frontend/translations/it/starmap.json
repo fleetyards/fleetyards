@@ -35,6 +35,7 @@
         "scu": "%{value} SCU",
         "exceedsTank": "La rotta consuma %{needed} di carburante quantico; il serbatoio ne contiene %{tank}.",
         "tunnel": "Tunnel di salto",
+        "missingLoadout": "Questa configurazione non è tua, quindi la rotta usa il motore di serie della nave.",
         "note": "I tempi includono l'avvio di ogni salto e il raffreddamento tra un salto e l'altro. Ogni salto aggira stelle, pianeti e lune sul suo percorso."
       },
       "panel": {

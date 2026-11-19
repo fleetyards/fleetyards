@@ -52,7 +52,7 @@ export const useRouteDrive = ({
       { query: { enabled: () => !!slug() } },
     );
 
-  const { data: hangar } = useHangar(
+  const { data: hangar, isLoading: hangarLoading } = useHangar(
     () => ({ q: { modelSlugIn: [slug()] }, perPage: "100" }),
     {
       query: {
@@ -112,10 +112,27 @@ export const useRouteDrive = ({
       enabled: () => !!selected.value,
     });
 
+  // A loadout named in a shared link is looked for among the viewer's own
+  // before any figure is shown: the stock drive in the meantime would read as
+  // the loadout's.
+  const loadoutsLoading = computed(
+    () =>
+      !!toValue(loadoutId) &&
+      (hangarLoading.value ||
+        loadoutResults.value.some((result) => result.isLoading)),
+  );
+
+  // Named, but not one of the viewer's: the route falls back to the stock
+  // drive and says so.
+  const missingLoadout = computed(
+    () => !!toValue(loadoutId) && !loadoutsLoading.value && !selected.value,
+  );
+
   const loading = computed(
     () =>
       modelLoading.value ||
       hardpointsLoading.value ||
+      loadoutsLoading.value ||
       (!!selected.value && (slotsLoading.value || fittingLoading.value)),
   );
 
@@ -134,5 +151,5 @@ export const useRouteDrive = ({
     };
   });
 
-  return { model, drive, loadoutOptions, loading };
+  return { model, drive, loadoutOptions, missingLoadout, loading };
 };

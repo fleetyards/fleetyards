@@ -24,6 +24,8 @@ type Props = {
   ship: string | null;
   loadout: string | null;
   loadoutOptions: RouteLoadoutOption[];
+  // The loadout in the address is not one of the viewer's.
+  missingLoadout: boolean;
   route: QuantumRoute | null;
   // A ship is picked and its drive is known.
   hasDrive: boolean;
@@ -78,7 +80,7 @@ const shipValue = computed({
 });
 
 const driveValue = computed({
-  get: () => props.loadout ?? STOCK,
+  get: () => (props.loadout && !props.missingLoadout ? props.loadout : STOCK),
   set: (value) =>
     emit("update:loadout", !value || value === STOCK ? null : String(value)),
 });
@@ -130,6 +132,14 @@ const status = computed(() => {
       :options="driveOptions"
       unsorted
     />
+
+    <Alert
+      v-if="ship && missingLoadout"
+      :variant="AlertVariantsEnum.NEUTRAL"
+      data-test="starmap-route-missing-loadout"
+    >
+      {{ t("starmap.route.missingLoadout") }}
+    </Alert>
 
     <div class="starmap-route__ends">
       <div class="starmap-route__end">

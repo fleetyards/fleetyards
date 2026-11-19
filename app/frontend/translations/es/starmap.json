@@ -35,6 +35,7 @@
         "scu": "%{value} SCU",
         "exceedsTank": "La ruta consume %{needed} de combustible cuántico; el depósito admite %{tank}.",
         "tunnel": "Túnel de salto",
+        "missingLoadout": "Esa configuración no es tuya, así que la ruta usa el motor de serie de la nave.",
         "note": "Los tiempos incluyen la carga de cada salto y el enfriamiento entre saltos. Cada salto rodea las estrellas, planetas y lunas que tenga en medio."
       },
       "panel": {

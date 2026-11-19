@@ -35,6 +35,7 @@
         "scu": "%{value} SCU",
         "exceedsTank": "The route burns %{needed} of quantum fuel; the tank holds %{tank}.",
         "tunnel": "Jump tunnel",
+        "missingLoadout": "That loadout is not one of yours, so the route uses the ship's stock drive.",
         "note": "Times include each jump's spool-up and the cooldown between jumps. Every jump goes around the stars, planets and moons in its way."
       },
       "panel": {

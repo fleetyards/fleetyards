@@ -35,6 +35,7 @@
         "scu": "%{value} SCU",
         "exceedsTank": "L'itinéraire consomme %{needed} de carburant quantique ; le réservoir en contient %{tank}.",
         "tunnel": "Tunnel de saut",
+        "missingLoadout": "Cette configuration ne vous appartient pas, l'itinéraire utilise donc le propulseur d'origine du vaisseau.",
         "note": "Les durées comprennent la mise en route de chaque saut et le refroidissement entre deux sauts. Chaque saut contourne les étoiles, planètes et lunes sur son chemin."
       },
       "panel": {

@@ -35,6 +35,7 @@
         "scu": "%{value} SCU",
         "exceedsTank": "Die Route verbraucht %{needed} Quantentreibstoff, der Tank fasst %{tank}.",
         "tunnel": "Sprungtunnel",
+        "missingLoadout": "Diese Ausrüstung gehört nicht zu deinen, daher nutzt die Route den Serienantrieb des Schiffs.",
         "note": "Die Zeiten enthalten das Hochfahren vor jedem Sprung und die Abkühlzeit zwischen den Sprüngen. Jeder Sprung führt um Sterne, Planeten und Monde auf seinem Weg herum."
       },
       "panel": {

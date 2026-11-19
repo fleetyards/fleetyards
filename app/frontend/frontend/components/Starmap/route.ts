@@ -144,6 +144,7 @@ export const useStarmapRoute = ({
     model,
     drive,
     loadoutOptions,
+    missingLoadout,
     loading: driveLoading,
   } = useRouteDrive({
     modelSlug: () => toValue(ship) ?? undefined,
@@ -172,6 +173,7 @@ export const useStarmapRoute = ({
     drive,
     driveLoading,
     loadoutOptions,
+    missingLoadout,
     route,
   };
 };
