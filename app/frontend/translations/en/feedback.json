@@ -19,10 +19,45 @@
         "search": "Search messages",
         "resolve": "Mark as resolved",
         "reopen": "Reopen",
-        "states": {
-          "open": "Open",
-          "resolved": "Resolved"
-        }
+        "reply": "Send reply",
+        "replyLabel": "Reply to the user",
+        "replyHint": "The user is notified and sees the reply as from Fleetyards.",
+        "conversation": "Conversation",
+        "view": "Open conversation"
+      },
+      "states": {
+        "open": "Open",
+        "resolved": "Resolved"
+      },
+      "mine": {
+        "empty": "You have not sent any feedback yet.",
+        "message": "Message",
+        "state": "Status",
+        "replies": "Replies",
+        "sentAt": "Sent at",
+        "conversation": "Conversation",
+        "you": "You",
+        "fleetyards": "Fleetyards",
+        "reply": "Send reply",
+        "replyLabel": "Your reply",
+        "replySent": "Your reply was sent.",
+        "replyFailed": "Your reply could not be sent.",
+        "back": "All feedback"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "My feedback"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "My feedback"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "My feedback"
       }
     }
   }

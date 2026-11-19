@@ -19,10 +19,45 @@
         "search": "Nachrichten durchsuchen",
         "resolve": "Als erledigt markieren",
         "reopen": "Wieder öffnen",
-        "states": {
-          "open": "Offen",
-          "resolved": "Erledigt"
-        }
+        "reply": "Antwort senden",
+        "replyLabel": "Dem Benutzer antworten",
+        "replyHint": "Der Benutzer wird benachrichtigt und sieht die Antwort als von Fleetyards.",
+        "conversation": "Unterhaltung",
+        "view": "Unterhaltung öffnen"
+      },
+      "states": {
+        "open": "Offen",
+        "resolved": "Erledigt"
+      },
+      "mine": {
+        "empty": "Du hast noch kein Feedback gesendet.",
+        "message": "Nachricht",
+        "state": "Status",
+        "replies": "Antworten",
+        "sentAt": "Gesendet am",
+        "conversation": "Unterhaltung",
+        "you": "Du",
+        "fleetyards": "Fleetyards",
+        "reply": "Antwort senden",
+        "replyLabel": "Deine Antwort",
+        "replySent": "Deine Antwort wurde gesendet.",
+        "replyFailed": "Deine Antwort konnte nicht gesendet werden.",
+        "back": "Alle Feedbacks"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "Mein Feedback"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "Mein Feedback"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "Mein Feedback"
       }
     }
   }

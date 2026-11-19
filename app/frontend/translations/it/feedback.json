@@ -19,10 +19,45 @@
         "search": "Cerca nei messaggi",
         "resolve": "Segna come risolto",
         "reopen": "Riapri",
-        "states": {
-          "open": "Aperto",
-          "resolved": "Risolto"
-        }
+        "reply": "Invia risposta",
+        "replyLabel": "Rispondi all'utente",
+        "replyHint": "L'utente riceve una notifica e vede la risposta come da Fleetyards.",
+        "conversation": "Conversazione",
+        "view": "Apri conversazione"
+      },
+      "states": {
+        "open": "Aperto",
+        "resolved": "Risolto"
+      },
+      "mine": {
+        "empty": "Non hai ancora inviato alcun feedback.",
+        "message": "Messaggio",
+        "state": "Stato",
+        "replies": "Risposte",
+        "sentAt": "Inviato il",
+        "conversation": "Conversazione",
+        "you": "Tu",
+        "fleetyards": "Fleetyards",
+        "reply": "Invia risposta",
+        "replyLabel": "La tua risposta",
+        "replySent": "La tua risposta è stata inviata.",
+        "replyFailed": "Impossibile inviare la tua risposta.",
+        "back": "Tutti i feedback"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "Il mio feedback"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "Il mio feedback"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "Il mio feedback"
       }
     }
   }

@@ -43,6 +43,38 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "feedback/",
+    component: () => import("@/frontend/pages/settings/feedback.vue"),
+    meta: {
+      title: "settings.feedback",
+      needsAuthentication: true,
+    },
+    redirect: {
+      name: "settings-feedback",
+    },
+    children: [
+      {
+        path: "",
+        name: "settings-feedback",
+        component: () => import("@/frontend/pages/settings/feedback/index.vue"),
+        meta: {
+          title: "settings.feedback",
+          needsAuthentication: true,
+        },
+      },
+      {
+        path: ":id/",
+        name: "settings-feedback-show",
+        component: () => import("@/frontend/pages/settings/feedback/[id].vue"),
+        meta: {
+          title: "settings.feedback",
+          needsAuthentication: true,
+          activeRoute: "settings-feedback",
+        },
+      },
+    ],
+  },
+  {
     path: "calendar/",
     name: "settings-calendar",
     component: () => import("@/frontend/pages/settings/calendar.vue"),
