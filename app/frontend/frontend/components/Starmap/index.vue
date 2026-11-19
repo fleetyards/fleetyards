@@ -1144,14 +1144,15 @@ $bottom: var(--starmap-bottom);
     );
   }
 
-  .starmap--card .starmap__column {
-    bottom: calc($bottom + #{$gap + $card-height-mobile});
+  // The controls stand where it would be.
+  .starmap__footnote {
+    display: none;
   }
 }
 
 @media (width <= 767px) {
-  .starmap__footnote {
-    display: none;
+  .starmap--card .starmap__column {
+    bottom: calc($bottom + #{$gap + $card-height-mobile});
   }
 
   .starmap__column {
@@ -1195,6 +1196,13 @@ $bottom: var(--starmap-bottom);
       margin-top: 2px;
       font-size: 12.5px;
     }
+  }
+}
+
+// Too short for the card to stay below the control column.
+@media (width <= 767px) and (height <= 560px) {
+  .starmap__card {
+    right: calc(#{$gap * 2 + $controls-width});
   }
 }
 </style>
