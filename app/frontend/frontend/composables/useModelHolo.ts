@@ -59,9 +59,24 @@ export const useModelHolo = (
     },
   });
 
+  // The lite export a full one falls back to when it will not decode: the
+  // same pose, smaller enough to fit the decoder.
+  const texturedHoloFallback = computed(() => {
+    if (!texturedHoloExport.value || texturedHoloExport.value.lite) return;
+
+    const lite = modelStateTexturedHolo(toValue(model), toValue(state), {
+      lite: true,
+    });
+
+    return lite?.lite ? lite : undefined;
+  });
+
   // Each export has an atlas of its own, so only its own maps fit it.
-  const paintMaps = (paint: ModelPaint) =>
-    texturedHoloExport.value?.lite
+  const paintMaps = (
+    paint: ModelPaint,
+    lite = texturedHoloExport.value?.lite,
+  ) =>
+    lite
       ? {
           base: paint.media.holoTextureLite,
           orm: paint.media.holoTextureOrmLite,
@@ -75,10 +90,10 @@ export const useModelHolo = (
 
   // A variant whose own colours are a livery of its base ship's wears it where
   // no paint is picked.
-  const liveryMaps = computed(() => {
+  const liveryMaps = (lite = texturedHoloExport.value?.lite) => {
     const { media } = toValue(model);
 
-    return texturedHoloExport.value?.lite
+    return lite
       ? {
           base: media.holoTextureLite?.url,
           orm: media.holoTextureOrmLite?.url,
@@ -89,7 +104,7 @@ export const useModelHolo = (
           orm: media.holoTextureOrm?.url,
           stencil: media.holoTextureStencil?.url,
         };
-  });
+  };
 
   const holoPaints = computed(() =>
     (paints.value ?? []).filter((paint) => !!paintMaps(paint).base),
@@ -115,11 +130,18 @@ export const useModelHolo = (
       return;
     }
 
-    const maps = textured
-      ? holoPaint.value
-        ? paintMaps(holoPaint.value)
-        : liveryMaps.value
-      : undefined;
+    const mapsFor = (lite?: boolean) =>
+      holoPaint.value ? paintMaps(holoPaint.value, lite) : liveryMaps(lite);
+
+    const maps = textured ? mapsFor() : undefined;
+
+    const fallbackMaps = textured ? mapsFor(true) : undefined;
+    // A picked paint the lite atlas has no maps for would quietly come back
+    // in the ship's own colours, under a picker still naming the paint.
+    const fallbackFile =
+      textured && (!holoPaint.value || fallbackMaps?.base)
+        ? texturedHoloFallback.value?.file
+        : undefined;
 
     return {
       path,
@@ -129,6 +151,15 @@ export const useModelHolo = (
       paint: maps?.base || undefined,
       paintOrm: maps?.orm || undefined,
       paintStencil: maps?.stencil || undefined,
+      fallback: fallbackFile
+        ? {
+            path: fallbackFile.url,
+            size: fallbackFile.size,
+            paint: fallbackMaps?.base || undefined,
+            paintOrm: fallbackMaps?.orm || undefined,
+            paintStencil: fallbackMaps?.stencil || undefined,
+          }
+        : undefined,
     };
   });
 

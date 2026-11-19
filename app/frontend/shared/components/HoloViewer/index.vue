@@ -41,6 +41,8 @@ import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+import { dracoErrorMessage } from "@/shared/components/HoloViewer/dracoLoader";
+import { reportError } from "@/shared/plugins/Appsignal";
 import {
   clearFrame,
   type HoloFrameInsets,
@@ -110,7 +112,15 @@ export type HoloModel = {
   frameMounts?: boolean;
   // A rigged body: worn pieces bound to its skeleton and posed by a clip.
   rig?: HoloRig;
+  // Drawn in its place when it does not load: the lite export of a textured
+  // holo too large to decode, with the paint maps that fit that export's atlas.
+  fallback?: HoloModelFallback;
 };
+
+export type HoloModelFallback = Pick<
+  HoloModel,
+  "path" | "size" | "paint" | "paintOrm" | "paintStencil"
+>;
 
 type Props = {
   models: HoloModel[];
@@ -193,7 +203,8 @@ const props = withDefaults(defineProps<Props>(), {
 // a picture to show instead can switch to it.
 // `loaded` once a model is on screen, for a caller holding a picture until then.
 const emit = defineEmits<{
-  unavailable: [failed?: string];
+  // By the path of the model that failed, as the caller gave it.
+  unavailable: [path?: string];
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
@@ -979,9 +990,42 @@ const handleRenderError = (error: Error) => {
   webglSupported.value = false;
 };
 
-const handleModelError = (error: unknown) => {
+// The holos that did not load, by path: those with a fallback are drawn by it.
+const failedPaths = ref<string[]>([]);
+
+const shownModels = computed(() =>
+  props.models.map((model) =>
+    model.fallback && failedPaths.value.includes(model.path)
+      ? { ...model, ...model.fallback, fallback: undefined }
+      : model,
+  ),
+);
+
+// `model` as the caller gave it, so a failed fallback is reported by the path
+// the caller knows; `shown` is the file that failed.
+const handleModelError = (
+  model: HoloModel,
+  shown: HoloModel,
+  error: unknown,
+) => {
+  // A decoder abort never reaches the error handler, and is the one failure
+  // that says something about the export rather than the connection.
+  const decoderError = dracoErrorMessage(error);
+  if (decoderError) {
+    reportError(
+      new Error(`Holo could not be decoded: ${decoderError} (${shown.path})`),
+      "HoloViewer#decode",
+    );
+  }
+
+  if (model.fallback && !failedPaths.value.includes(model.path)) {
+    failedPaths.value = [...failedPaths.value, model.path];
+    progress.value = 0;
+    return;
+  }
+
   loading.value = false;
-  emit("unavailable", typeof error === "string" ? error : undefined);
+  emit("unavailable", model.path);
 
   console.error(error);
 
@@ -1212,7 +1256,7 @@ defineExpose({
       />
       <Suspense>
         <Model
-          v-for="model in models"
+          v-for="(model, index) in shownModels"
           :key="model.path"
           :model="model"
           :color="modelColor"
@@ -1221,9 +1265,9 @@ defineExpose({
           :hologram="hologram"
           :pickable="pickable"
           :fullscreen="internalFullscreen"
-          :offsetModel="models[models.indexOf(model) - 1]"
+          :offsetModel="shownModels[shownModels.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
-          @error="handleModelError"
+          @error="handleModelError(models[index], model, $event)"
           @progress="handleModelProgress"
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
