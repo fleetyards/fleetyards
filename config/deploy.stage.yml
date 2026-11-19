@@ -48,7 +48,7 @@ env:
     CABLE_ENDPOINT: "wss://fleetyards.dev/cable"
     # Uploads are written to both stores while they move to Bunny; this one is
     # read from. Flipping it to bunny is the switch, flipping back the rollback.
-    STORAGE_PRIMARY: hetzner
+    STORAGE_PRIMARY: bunny
     BUNNY_S3__ENDPOINT: https://de-s3.storage.bunnycdn.com
     BUNNY_S3__BUCKET: fltyrd-stage-uploads
     BUNNY_S3__REGION: de
