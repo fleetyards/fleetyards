@@ -4072,7 +4072,8 @@
           "unplaced_foci": "Unplaced Focus Wording",
           "import_run": "Import",
           "oauth_application_review": "OAuth Application Review",
-          "inventory_transfer_reports": "Reported Inventory Transfers"
+          "inventory_transfer_reports": "Reported Inventory Transfers",
+          "feedback": "Feedback"
         }
       },
       "optional": "optional",

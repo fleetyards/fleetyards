@@ -2,6 +2,10 @@
 zh-TW:
   activerecord:
     attributes:
+      feedback:
+        message: "訊息"
+        feature_name: "功能"
+        page_path: "頁面"
       character_face:
         file: "檔案"
       outfit:

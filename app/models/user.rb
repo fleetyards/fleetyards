@@ -150,6 +150,7 @@ class User < ApplicationRecord
   has_many :hangar_pledge_items, dependent: :delete_all
   has_many :hangar_plans, dependent: :destroy
   has_many :fleetchart_layouts, dependent: :destroy
+  has_many :feedbacks, dependent: :destroy
   has_many :outfits, dependent: :destroy
   has_many :character_faces, dependent: :destroy
   has_many :carts, dependent: :delete_all

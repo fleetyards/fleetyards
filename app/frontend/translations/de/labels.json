@@ -4058,7 +4058,8 @@
           "unplaced_foci": "Nicht zuordenbarer Fokus",
           "import_run": "Importieren",
           "oauth_application_review": "OAuth-App-Prüfung",
-          "inventory_transfer_reports": "Gemeldete Inventar-Transfers"
+          "inventory_transfer_reports": "Gemeldete Inventar-Transfers",
+          "feedback": "Feedback"
         }
       },
       "optional": "optional",

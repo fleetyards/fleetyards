@@ -4058,7 +4058,8 @@
           "unplaced_foci": "Enfoque sin asignar",
           "import_run": "Importación",
           "oauth_application_review": "Revisión de aplicación OAuth",
-          "inventory_transfer_reports": "Transferencias de inventario denunciadas"
+          "inventory_transfer_reports": "Transferencias de inventario denunciadas",
+          "feedback": "Comentarios"
         }
       },
       "optional": "opcional",

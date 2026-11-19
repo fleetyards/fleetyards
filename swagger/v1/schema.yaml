@@ -1370,6 +1370,41 @@ paths:
                 "$ref": "#/components/schemas/FeatureNamesList"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/feedback":
+    post:
+      summary: Send feedback
+      tags:
+      - Feedback
+      operationId: createFeedback
+      security:
+      - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeedbackInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/blueprints/materials":
     get:
       summary: Blueprint materials filter
@@ -31643,6 +31678,51 @@ components:
       items:
         type: string
       title: FeatureNamesList
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        featureName:
+          type:
+          - string
+          - 'null'
+        pagePath:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - message
+      - createdAt
+      title: Feedback
+    FeedbackInput:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        featureName:
+          type:
+          - string
+          - 'null'
+        pagePath:
+          type:
+          - string
+          - 'null'
+          maxLength: 2048
+      additionalProperties: false
+      required:
+      - message
+      title: FeedbackInput
     FieldError:
       type: object
       properties:

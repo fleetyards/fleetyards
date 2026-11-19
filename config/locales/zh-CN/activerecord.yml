@@ -2,6 +2,10 @@
 zh-CN:
   activerecord:
     attributes:
+      feedback:
+        message: "消息"
+        feature_name: "功能"
+        page_path: "页面"
       character_face:
         file: "文件"
       outfit:

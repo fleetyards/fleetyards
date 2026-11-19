@@ -4058,7 +4058,8 @@
           "unplaced_foci": "Spécialisation non reconnue",
           "import_run": "Import",
           "oauth_application_review": "Examen d'application OAuth",
-          "inventory_transfer_reports": "Transferts d'inventaire signalés"
+          "inventory_transfer_reports": "Transferts d'inventaire signalés",
+          "feedback": "Retours"
         }
       },
       "optional": "facultatif",
