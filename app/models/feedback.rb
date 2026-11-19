@@ -48,7 +48,7 @@ class Feedback < ApplicationRecord
       title: "#{waiting} open #{"feedback message".pluralize(waiting)}",
       body: "Most recent from #{user.username}#{" about #{feature_name}" if feature_name}",
       severity: :info,
-      link: "/feedback?q[aasm_state_eq]=open",
+      link: "/feedback?aasmStateEq=open",
       record: self,
       dedupe_key: "feedback"
     )
