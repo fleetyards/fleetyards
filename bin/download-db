@@ -71,9 +71,31 @@ acquire_lock() {
   echo $$ > "$LOCK_DIR/pid"
 }
 
+# Object storage can slow a single connection to a few hundred KB/s while
+# parallel ranged reads still fill the line, so the aws CLI's multipart
+# download goes first. Either way the dump lands beside the old one and only
+# replaces it once complete: s3cmd's --force empties the target before it
+# starts, and a failed run would otherwise leave nothing behind.
 download_dump() {
+  local partial="$DUMP_FILE.part"
+
   echo "Downloading $LATEST..."
-  $S3CMD get --force "$LATEST" "$DUMP_FILE"
+  rm -f "$partial"
+
+  if command -v aws > /dev/null 2>&1; then
+    AWS_ACCESS_KEY_ID="$S3_ACCESS_KEY" \
+      AWS_SECRET_ACCESS_KEY="$S3_SECRET_KEY" \
+      AWS_DEFAULT_REGION="fsn1" \
+      AWS_CONFIG_FILE=/dev/null \
+      AWS_REQUEST_CHECKSUM_CALCULATION=when_required \
+      AWS_RESPONSE_CHECKSUM_VALIDATION=when_required \
+      aws s3 cp --endpoint-url "https://$S3_ENDPOINT" "$LATEST" "$partial"
+  else
+    echo "  (install the aws CLI for a parallel download)"
+    $S3CMD get "$LATEST" "$partial"
+  fi
+
+  mv "$partial" "$DUMP_FILE"
 }
 
 dump_is_readable() {
