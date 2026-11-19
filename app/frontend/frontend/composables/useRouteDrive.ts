@@ -52,15 +52,16 @@ export const useRouteDrive = ({
       { query: { enabled: () => !!slug() } },
     );
 
-  const { data: hangar, isLoading: hangarLoading } = useHangar(
-    () => ({ q: { modelSlugIn: [slug()] }, perPage: "100" }),
-    {
-      query: {
-        enabled: () => isAuthenticated.value && !!slug(),
-        retry: false,
-      },
+  const {
+    data: hangar,
+    isLoading: hangarLoading,
+    isError: hangarFailed,
+  } = useHangar(() => ({ q: { modelSlugIn: [slug()] }, perPage: "100" }), {
+    query: {
+      enabled: () => isAuthenticated.value && !!slug(),
+      retry: false,
     },
-  );
+  });
 
   const vehicles = computed(() => (slug() ? (hangar.value?.items ?? []) : []));
 
@@ -122,10 +123,17 @@ export const useRouteDrive = ({
         loadoutResults.value.some((result) => result.isLoading)),
   );
 
-  // Named, but not one of the viewer's: the route falls back to the stock
-  // drive and says so.
+  // Named, but not one of the viewer's, or theirs could not be read: the
+  // route falls back to the stock drive and says which.
   const missingLoadout = computed(
     () => !!toValue(loadoutId) && !loadoutsLoading.value && !selected.value,
+  );
+
+  const loadoutsFailed = computed(
+    () =>
+      missingLoadout.value &&
+      (hangarFailed.value ||
+        loadoutResults.value.some((result) => result.isError)),
   );
 
   const loading = computed(
@@ -151,5 +159,12 @@ export const useRouteDrive = ({
     };
   });
 
-  return { model, drive, loadoutOptions, missingLoadout, loading };
+  return {
+    model,
+    drive,
+    loadoutOptions,
+    missingLoadout,
+    loadoutsFailed,
+    loading,
+  };
 };

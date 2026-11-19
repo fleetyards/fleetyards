@@ -37,6 +37,7 @@
         "tunnel": "Jump tunnel",
         "refuel": "Refuel here",
         "missingLoadout": "That loadout is not one of yours, so the route uses the ship's stock drive.",
+        "loadoutsFailed": "Your loadouts could not be loaded, so the route uses the ship's stock drive.",
         "note": "Times include each jump's spool-up and the cooldown between jumps, not refuelling. Every jump goes around the stars, planets and moons in its way, and the tank is refilled where vehicle services are when it would not last."
       },
       "panel": {

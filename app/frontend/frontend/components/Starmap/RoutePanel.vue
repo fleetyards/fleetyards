@@ -24,8 +24,10 @@ type Props = {
   ship: string | null;
   loadout: string | null;
   loadoutOptions: RouteLoadoutOption[];
-  // The loadout in the address is not one of the viewer's.
+  // The loadout in the address is not one of the viewer's, or the viewer's
+  // loadouts could not be loaded.
   missingLoadout: boolean;
+  loadoutsFailed: boolean;
   route: QuantumRoute | null;
   // A ship is picked and its drive is known.
   hasDrive: boolean;
@@ -146,7 +148,13 @@ const status = computed(() => {
       :variant="AlertVariantsEnum.NEUTRAL"
       data-test="starmap-route-missing-loadout"
     >
-      {{ t("starmap.route.missingLoadout") }}
+      {{
+        t(
+          loadoutsFailed
+            ? "starmap.route.loadoutsFailed"
+            : "starmap.route.missingLoadout",
+        )
+      }}
     </Alert>
 
     <div class="starmap-route__ends">

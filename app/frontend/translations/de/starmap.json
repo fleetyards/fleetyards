@@ -37,6 +37,7 @@
         "tunnel": "Sprungtunnel",
         "refuel": "Hier tanken",
         "missingLoadout": "Diese Ausrüstung gehört nicht zu deinen, daher nutzt die Route den Serienantrieb des Schiffs.",
+        "loadoutsFailed": "Deine Ausrüstungen konnten nicht geladen werden, daher nutzt die Route den Serienantrieb des Schiffs.",
         "note": "Die Zeiten enthalten das Hochfahren vor jedem Sprung und die Abkühlzeit zwischen den Sprüngen, aber nicht das Tanken. Jeder Sprung führt um Sterne, Planeten und Monde auf seinem Weg herum, und wo der Tank nicht reicht, wird an Orten mit Fahrzeugservice nachgetankt."
       },
       "panel": {

@@ -247,6 +247,7 @@ const {
   driveLoading: routeDriveLoading,
   loadoutOptions: routeLoadoutOptions,
   missingLoadout: routeMissingLoadout,
+  loadoutsFailed: routeLoadoutsFailed,
   route: plannedRoute,
 } = useStarmapRoute({
   enabled: planning,
@@ -691,6 +692,7 @@ watch(
               :loadout="routeLoadout"
               :loadout-options="routeLoadoutOptions"
               :missing-loadout="routeMissingLoadout"
+              :loadouts-failed="routeLoadoutsFailed"
               :route="plannedRoute"
               :has-drive="!!routeDrive"
               :loading="routePlacesLoading || routeDriveLoading"
