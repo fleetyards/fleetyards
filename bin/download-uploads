@@ -16,15 +16,19 @@ S3_ENDPOINT="de-s3.storage.bunnycdn.com"
 LOCAL_ROOT="./storage"
 STAGE_ROOT="./tmp/s3_stage"
 # Every object costs a round trip, so throughput comes from concurrency rather
-# than bandwidth: batching amortizes s3cmd startup, workers hide the latency.
-PARALLEL="${PARALLEL:-8}"
-BATCH_SIZE="${BATCH_SIZE:-200}"
+# than bandwidth.
+TRANSFERS="${TRANSFERS:-16}"
 
 DB_PORT="${DB_PORT:-8271}"
 DB_NAME="${DB_NAME:-fleetyards_dev${WORKTREE_SUFFIX:-}}"
 DB_USER="${DB_USER:-root}"
 
-# Credentials travel through the environment, where s3cmd picks them up on its
+if ! command -v rclone > /dev/null; then
+  echo "ERROR: rclone is not installed (brew install rclone)."
+  exit 1
+fi
+
+# Credentials travel through the environment, where rclone picks them up on its
 # own. Passing them as flags would expose them to any local `ps`.
 if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
   AWS_ACCESS_KEY_ID=$(op read "op://Fleetyards/BUNNY_UPLOADS_LIVE/config/zone_name")
@@ -32,9 +36,13 @@ if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
   export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 fi
 
-s3() {
-  s3cmd --host="$S3_ENDPOINT" --host-bucket="%(bucket)s.$S3_ENDPOINT" "$@"
-}
+export RCLONE_CONFIG=""
+export RCLONE_CONFIG_UPLOADS_TYPE=s3
+export RCLONE_CONFIG_UPLOADS_PROVIDER=Other
+export RCLONE_CONFIG_UPLOADS_ENV_AUTH=true
+export RCLONE_CONFIG_UPLOADS_ENDPOINT="https://$S3_ENDPOINT"
+export RCLONE_CONFIG_UPLOADS_REGION=de
+REMOTE="uploads:$S3_BUCKET"
 
 # The bucket is flat while Active Storage's disk service nests by key prefix.
 target_path_for() {
@@ -50,54 +58,6 @@ human_size() {
   }'
 }
 
-# Worker mode: fetch one batch of keys, then file them into the disk layout.
-# Re-invoked through xargs, one process per batch. Prints each stored key so the
-# parent can count progress.
-if [ "${1:-}" = "--fetch-batch" ]; then
-  shift
-
-  mkdir -p "$STAGE_ROOT"
-  stage=$(mktemp -d "$STAGE_ROOT/batch.XXXXXX") || exit 1
-  s3cmd_log=$(mktemp)
-  trap 'rm -rf "$stage" "$s3cmd_log"' EXIT
-
-  sources=()
-  for key in "$@"; do
-    sources+=("s3://$S3_BUCKET/$key")
-  done
-
-  # Kept rather than discarded: without it a failed batch reports only which
-  # keys are missing, not why (throttling, auth, a vanished object).
-  s3 get --force --quiet "${sources[@]}" "$stage/" > "$s3cmd_log" 2>&1
-
-  status=0
-  for key in "$@"; do
-    if [ ! -f "$stage/$key" ]; then
-      echo "WARN: failed to download $key" >&2
-      status=1
-      continue
-    fi
-
-    target=$(target_path_for "$key")
-    mkdir -p "$(dirname "$target")"
-
-    if mv -f "$stage/$key" "$target"; then
-      echo "$key"
-    else
-      echo "WARN: could not store $key" >&2
-      status=1
-    fi
-  done
-
-  if [ "$status" != "0" ]; then
-    reason=$(grep -aE "^(ERROR|WARNING)" "$s3cmd_log" | sort -u | head -3)
-    [ -n "$reason" ] || reason=$(tail -3 "$s3cmd_log")
-    [ -n "$reason" ] && printf 'WARN: s3cmd reported for this batch:\n%s\n' "$reason" >&2
-  fi
-
-  exit $status
-fi
-
 mkdir -p "$LOCAL_ROOT" "$STAGE_ROOT"
 
 REMOTE_LIST=$(mktemp)
@@ -109,18 +69,14 @@ trap 'rm -f "$REMOTE_LIST" "$PENDING" "$REMOTE_KEYS" "$LOCAL_KEYS" "$DB_KEYS"' E
 trap 'echo ""; echo "Interrupted — re-run to resume where this left off."; exit 130' INT
 
 echo "Listing s3://$S3_BUCKET..."
-s3 ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
-  $1 != "DIR" && $4 ~ "^s3://" bucket "/" {
-    key = substr($4, length("s3://" bucket "/") + 1)
-    if (key != "") print $3 "\t" key
-  }
-' > "$REMOTE_LIST"
-list_status=${PIPESTATUS[0]}
+# Top level only: blobs sit at the root, overlay exports in folders.
+rclone lsf "$REMOTE" --files-only --format sp --separator $'\t' > "$REMOTE_LIST"
+list_status=$?
 
 # A listing cut short by a failed request would read as most of storage/ having
 # left the bucket, and the cleanup below would delete it.
 if [ "$list_status" != "0" ]; then
-  echo "ERROR: listing s3://$S3_BUCKET/ failed (s3cmd exited $list_status)"
+  echo "ERROR: listing s3://$S3_BUCKET/ failed (rclone exited $list_status)"
   exit 1
 fi
 
@@ -221,21 +177,39 @@ if [ "$pending_count" = "0" ]; then
 fi
 
 echo ""
-echo "Downloading in batches of $BATCH_SIZE across $PARALLEL workers..."
+echo "Downloading with $TRANSFERS parallel transfers..."
 
-xargs -n "$BATCH_SIZE" -P "$PARALLEL" "$0" --fetch-batch < "$PENDING" |
-  awk -v total="$pending_count" '
-    { stored++; if (stored % 50 == 0) { printf "\r  Stored %d/%d objects...", stored, total; fflush() } }
-    END { printf "\r  Stored %d/%d objects.   \n", stored, total }
-  '
-fetch_status=${PIPESTATUS[0]}
+# One process keeps its connections open. A process per batch opened a new one
+# for every object and ran the Mac out of local ports. Files land flat in the
+# stage first; one left there by an interrupted run is not fetched again.
+rclone copy "$REMOTE" "$STAGE_ROOT" --files-from-raw "$PENDING" --no-traverse \
+  --transfers "$TRANSFERS" --checkers "$TRANSFERS" --retries 3 \
+  --stats 10s --stats-one-line --stats-log-level NOTICE
+fetch_status=$?
 
-rm -rf "$STAGE_ROOT"
+stored=0
+missing=0
+
+while IFS= read -r key; do
+  if [ ! -f "$STAGE_ROOT/$key" ]; then
+    missing=$((missing + 1))
+    [ "$missing" -le 10 ] && echo "WARN: failed to download $key" >&2
+    continue
+  fi
+
+  target=$(target_path_for "$key")
+  mkdir -p "$(dirname "$target")"
+  mv -f "$STAGE_ROOT/$key" "$target" && stored=$((stored + 1))
+done < "$PENDING"
+
+echo "  Stored $stored/$pending_count objects."
 
 echo ""
-if [ "$fetch_status" != "0" ]; then
-  echo "Some objects could not be downloaded — re-run to retry just those."
+if [ "$missing" != "0" ] || [ "$fetch_status" != "0" ]; then
+  echo "$missing objects could not be downloaded (rclone exited $fetch_status) — re-run to retry just those."
   exit 1
 fi
+
+rm -rf "$STAGE_ROOT"
 
 echo "Done! Uploads are in sync."
