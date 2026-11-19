@@ -19,6 +19,10 @@ module ScData
       # place without one is under its parent's.
       JURISDICTIONS_PATH = "lawsystem/jurisdictions"
       TYPES_FILE = "starmap/starmapobjecttypes.records.xml"
+
+      # What a place's starmap entry says it offers: vehicle services, a clinic,
+      # a refinery.
+      AMENITY_TYPES_FILE = "starmapamenitytypes/starmapamenitytypes.records.xml"
       TAGS_FILE = "TagDatabase/tagdatabase.tagdatabase.records.xml"
       TEMPLATES_PATH = "missiondata/pu_locations/templates"
 
@@ -325,6 +329,7 @@ module ScData
           shown_with_parent_only: record ? record[:parent_only] : false,
           always_shown: record ? record[:permanent] : false,
           quantum_travel_destination: record ? record[:quantum_travel] : false,
+          amenities: record ? record[:amenities] : [],
           mission_template_refs: template_refs.to_a.sort,
           facilities: place[:facilities],
           position: placement_of(place)&.dig(:position),
@@ -953,7 +958,8 @@ module ScData
             parent_only: values["onlyShowWhenParentSelected"] == "1",
             permanent: values["overridePermanent"] == "True",
             quantum_travel: type[:quantum_travel] || false,
-            jurisdiction: value_or_nil(values["jurisdiction"])
+            jurisdiction: value_or_nil(values["jurisdiction"]),
+            amenities: amenities_of(values)
           }
         end
       end
@@ -1004,6 +1010,29 @@ module ScData
           end
 
           {kind: match[:kind].parameterize(separator: "_"), items:} if items.any?
+        end
+      end
+
+      private def amenities_of(values)
+        Array.wrap(values.dig("amenities", "Reference"))
+          .filter_map { |reference| amenity_types[value_or_nil(reference["value"])] if reference.is_a?(Hash) }
+          .uniq
+          .sort_by { |amenity| ::Location::AMENITIES.index(amenity) }
+      end
+
+      # Each amenity by the name the game gives it. One the app does not know is
+      # left out, and logged, until it is given a place in `Location::AMENITIES`.
+      private def amenity_types
+        @amenity_types ||= records_in(AMENITY_TYPES_FILE).each_with_object({}) do |(key, values), all|
+          next unless key.start_with?("StarMapAmenityTypeEntry.") && values.is_a?(Hash)
+
+          amenity = values["name"].to_s.parameterize(separator: "_")
+
+          if ::Location::AMENITIES.include?(amenity)
+            all[values["__ref"]] = amenity
+          else
+            Rails.logger.warn("starmap: unknown amenity #{values["name"].inspect}")
+          end
         end
       end
 

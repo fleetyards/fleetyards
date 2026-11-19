@@ -503,6 +503,15 @@ module ScData
         assert_nil location("StantonStar")[:jurisdiction]
       end
 
+      test "#locations reads what the starmap lists a place as offering, in the app's order" do
+        amenity_types("Vehicle Services", "Clinic", "Hangar L", "Spa Day")
+        stanton
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1", amenities: ["Clinic", "Vehicle Services", "Spa Day", "Hangar L"])
+
+        assert_equal %w[vehicle_services clinic hangar_l], location("Stanton1_L1")[:amenities]
+        assert_equal [], location("Stanton1")[:amenities]
+      end
+
       test "#locations has no positions for an export without placements" do
         stanton
 
@@ -608,7 +617,7 @@ module ScData
         place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar")
       end
 
-      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil, jurisdiction: nil)
+      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil, jurisdiction: nil, amenities: [])
         ref = ref_for(key)
         name_key = "loc_#{key.downcase}"
         @translations[name_key] = name if name
@@ -627,7 +636,23 @@ module ScData
           jurisdiction: jurisdiction ? ref_for("jurisdiction_#{jurisdiction}") : nil
         }.compact
 
-        write("starmap/pu/#{key.downcase}", "StarMapObject", key, ref, attributes)
+        references = amenities.map { |amenity| %(<Reference value="#{amenity_ref(amenity)}" />) }.join
+        body = %(<StarMapObjectLocationParams setEntityLocationOnEnter="1" /><amenities>#{references}</amenities>)
+
+        write("starmap/pu/#{key.downcase}", "StarMapObject", key, ref, attributes, body:)
+      end
+
+      private def amenity_types(*names)
+        records = names.map do |name|
+          ref = amenity_ref(name)
+          %(<StarMapAmenityTypeEntry.#{ref} name="#{name}" __type="StarMapAmenityTypeEntry" __ref="#{ref}" />)
+        end
+
+        write_file("starmapamenitytypes/starmapamenitytypes.records.xml", "<Records>#{records.join}</Records>")
+      end
+
+      private def amenity_ref(name)
+        @refs["amenity:#{name}"] ||= Digest::UUID.uuid_v5(Digest::UUID::DNS_NAMESPACE, "amenity-#{name}")
       end
 
       private def jurisdiction(key, name, parent: nil, defers: false, laws: false)
