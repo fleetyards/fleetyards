@@ -40,7 +40,12 @@ import { Html } from "@tresjs/cientos";
 import StarmapLabel from "./Label.vue";
 import { sun, surfaceTexture, type StarmapSun } from "./bodies";
 import { disposeMarkers, markerOf, markerTexture } from "./icons";
-import type { StarmapItem, StarmapRole, StarmapScene } from "./layout";
+import type {
+  StarmapItem,
+  StarmapRole,
+  StarmapScene,
+  StarmapVector,
+} from "./layout";
 
 type Props = {
   scene: StarmapScene;
@@ -56,6 +61,9 @@ type Props = {
   // The next system is loading: what is shown fades, so the old system's
   // bodies are not seen under the new system's name.
   waiting?: boolean;
+  // The jumps of a planned route within this system, each from one point to
+  // the next, in scene units.
+  route?: [StarmapVector, StarmapVector][];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -63,6 +71,7 @@ const props = withDefaults(defineProps<Props>(), {
   showOrbits: true,
   cameFrom: null,
   waiting: false,
+  route: () => [],
 });
 
 const emit = defineEmits<{
@@ -180,6 +189,44 @@ const selection = (() => {
   return ring;
 })();
 world.add(selection);
+
+// A planned route in the accent, like the selection ring: drawn over the
+// bodies, since it runs around them and its ends sit on them.
+const routeGroup = new Group();
+routeGroup.renderOrder = 2;
+world.add(routeGroup);
+const routeMaterials: LineMaterial[] = [];
+
+const disposeRoute = () => {
+  routeGroup.traverse((object) => {
+    if (object instanceof Line2) object.geometry.dispose();
+  });
+  for (const material of routeMaterials) material.dispose();
+  routeMaterials.length = 0;
+  routeGroup.clear();
+};
+
+watch(
+  () => props.route,
+  (legs) => {
+    disposeRoute();
+
+    for (const [from, to] of legs) {
+      const geometry = new LineGeometry();
+      geometry.setPositions([...from, ...to]);
+
+      const material = new LineMaterial({ color: 0x428bca, linewidth: 2.5 });
+      material.depthTest = false;
+      material.depthWrite = false;
+      routeMaterials.push(material);
+
+      const object = new Line2(geometry, material);
+      object.renderOrder = 2;
+      routeGroup.add(object);
+    }
+  },
+  { immediate: true },
+);
 
 // The stars behind everything, carried with the camera so the sky never comes
 // closer. Built the way a night sky looks: most stars at the edge of seeing,
@@ -1417,6 +1464,9 @@ onBeforeRender(({ delta, elapsed }) => {
   if (element) {
     resolution.set(element.clientWidth, element.clientHeight);
     for (const material of lineMaterials) material.resolution.copy(resolution);
+    for (const material of routeMaterials) {
+      material.resolution.copy(resolution);
+    }
   }
 
   const motion = !motionQuery?.matches;
@@ -1593,6 +1643,8 @@ onBeforeRender(({ delta, elapsed }) => {
   for (const link of linkLines) {
     lineColor(link.base * curtain.value, link.material.color);
   }
+
+  routeGroup.visible = curtain.value > 0.5;
 
   // The ring sits around the focused thing at the size it is drawn.
   const selected = props.focusKey ? meshes.get(props.focusKey) : undefined;
@@ -1855,6 +1907,7 @@ const { off: stopBinding } = onBeforeRender(() => {
 onBeforeUnmount(() => {
   selection.geometry.dispose();
   selectionMaterial.dispose();
+  disposeRoute();
   starField.traverse((object) => {
     if (object instanceof Points) {
       object.geometry.dispose();
