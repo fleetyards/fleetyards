@@ -79,6 +79,19 @@ module Maintenance
       assert_equal "application/octet-stream", @holo.reload.content_type
     end
 
+    test "#process skips a store the object never reached" do
+      present = stub_client
+      missing = stub_client(missing: true)
+      @holo.stubs(:service).returns(MirrorStore.new(s3_store("bunny", missing), [s3_store("hetzner", present)]))
+
+      output = capture_io { real_run.process(@holo) }.first
+
+      assert_includes output, "bunny: #{@holo.key} is not there, skipped"
+      assert_includes output, "hetzner: #{@holo.key} retyped"
+      assert_empty(missing.api_requests.select { |request| request[:operation_name] == :copy_object })
+      assert_equal "model/gltf-binary", @holo.reload.content_type
+    end
+
     test "#process retypes a blob on a store without objects of its own" do
       capture_io { real_run.process(@json_holo) }
 
@@ -95,16 +108,18 @@ module Maintenance
       ::Maintenance::RetypeGltfBlobsTask.new.tap { |task| task.dry_run = false }
     end
 
-    # Answers the first head with the object as uploaded and every later one
-    # with what the store serves after the copy.
-    private def stub_client(served: "model/gltf-binary")
-      heads = [
-        {content_type: "application/octet-stream", content_disposition: "inline", cache_control: "max-age=1",
-         metadata: {"identified" => "true"}},
-        {content_type: served}
-      ]
+    # Answers the load with the object as uploaded and every later head with
+    # what the store serves after the copy.
+    private def stub_client(served: "model/gltf-binary", missing: false)
+      uploaded = {content_type: "application/octet-stream", content_disposition: "inline",
+                  cache_control: "max-age=1", metadata: {"identified" => "true"}}
+      heads = [uploaded, {content_type: served}]
       Aws::S3::Client.new(stub_responses: true).tap do |client|
-        client.stub_responses(:head_object, ->(_context) { (heads.size > 1) ? heads.shift : heads.first })
+        client.stub_responses(:head_object, if missing
+          "NotFound"
+        else
+          ->(_context) { (heads.size > 1) ? heads.shift : heads.first }
+        end)
         client.stub_responses(:copy_object, {copy_object_result: {etag: "\"etag\""}})
       end
     end

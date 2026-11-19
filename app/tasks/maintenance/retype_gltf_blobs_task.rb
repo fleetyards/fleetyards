@@ -50,8 +50,16 @@ module Maintenance
       services.select { |candidate| candidate.respond_to?(:bucket) }
     end
 
+    # A store the object never reached (a mirror that failed or came later)
+    # has nothing to retype, and must not stop the run.
     private def retype_object(service, key, content_type)
-      object = service.bucket.object(key).load
+      object = service.bucket.object(key)
+      begin
+        object.load
+      rescue Aws::S3::Errors::NotFound
+        puts "  #{service.name}: #{key} is not there, skipped"
+        return
+      end
 
       object.copy_from(
         object,
@@ -64,7 +72,10 @@ module Maintenance
       )
 
       served = service.bucket.object(key).content_type
-      return if served == content_type
+      if served == content_type
+        puts "  #{service.name}: #{key} retyped"
+        return
+      end
 
       raise "#{service.name}: #{key} is still served as #{served.inspect} after the copy"
     end
