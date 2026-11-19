@@ -19492,6 +19492,73 @@ components:
       - createdAt
       - updatedAt
       title: Location
+    LocationAmenityEnum:
+      type: string
+      enum:
+      - vehicle_services
+      - docking
+      - refinery
+      - garage
+      - hospital
+      - clinic
+      - hangar_s
+      - hangar_m
+      - hangar_l
+      - hangar_xl
+      - landing_pad_s
+      - landing_pad_m
+      - landing_pad_l
+      - landing_pad_xl
+      - buy_weapons
+      - buy_ship_items_and_weapons
+      - buy_armor
+      - buy_clothing
+      - buy_vehicles
+      - rent_vehicles
+      - buy_and_rent_vehicles
+      - food_court
+      - commodity_trading_freight_elevator
+      - commodity_trading_loading_dock
+      - freight_elevator
+      - notice_board
+      - career_board_academy_of_sciences
+      - career_board_interstellar_transport_guild
+      - career_board_mercenary_guild
+      - career_board_united_resource_workers
+      - special_event
+      x-enumNames:
+      - VEHICLE_SERVICES
+      - DOCKING
+      - REFINERY
+      - GARAGE
+      - HOSPITAL
+      - CLINIC
+      - HANGAR_S
+      - HANGAR_M
+      - HANGAR_L
+      - HANGAR_XL
+      - LANDING_PAD_S
+      - LANDING_PAD_M
+      - LANDING_PAD_L
+      - LANDING_PAD_XL
+      - BUY_WEAPONS
+      - BUY_SHIP_ITEMS_AND_WEAPONS
+      - BUY_ARMOR
+      - BUY_CLOTHING
+      - BUY_VEHICLES
+      - RENT_VEHICLES
+      - BUY_AND_RENT_VEHICLES
+      - FOOD_COURT
+      - COMMODITY_TRADING_FREIGHT_ELEVATOR
+      - COMMODITY_TRADING_LOADING_DOCK
+      - FREIGHT_ELEVATOR
+      - NOTICE_BOARD
+      - CAREER_BOARD_ACADEMY_OF_SCIENCES
+      - CAREER_BOARD_INTERSTELLAR_TRANSPORT_GUILD
+      - CAREER_BOARD_MERCENARY_GUILD
+      - CAREER_BOARD_UNITED_RESOURCE_WORKERS
+      - SPECIAL_EVENT
+      title: LocationAmenityEnum
     LocationInput:
       type: object
       properties:
