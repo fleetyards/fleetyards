@@ -192,6 +192,7 @@ components:
       - import_run
       - oauth_application_review
       - inventory_transfer_reports
+      - feedback
       x-enumNames:
       - PAINTS_IMPORT
       - MODULES_IMPORT
@@ -213,6 +214,7 @@ components:
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
       - INVENTORY_TRANSFER_REPORTS
+      - FEEDBACK
     AdminNotificationsSettledMessage:
       type: object
       properties:
