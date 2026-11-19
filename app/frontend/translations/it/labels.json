@@ -200,10 +200,63 @@
       "groups": "Gruppi",
       "classifications": "Classificazioni",
       "features": {
+        "onFor": "Attivo per",
+        "everyone": "Tutti",
+        "nobody": "Nessuno",
+        "openToEveryone": "Apri a tutti",
+        "turnOff": "Disattiva",
+        "turnOffQuestion": "Rimuovere tutte le regole?",
+        "filter": "Filtra flag",
+        "usersTab": "Utenti · %{count}",
+        "fleetsTab": "Flotte · %{count}",
+        "historyShowAll": "Mostra altri %{count}",
+        "summary": {
+          "percentOfUsers": "%{percent}% degli utenti",
+          "percentOfRequests": "%{percent}% delle richieste",
+          "users": {
+            "one": "%{count} utente",
+            "other": "%{count} utenti"
+          },
+          "fleets": {
+            "one": "%{count} flotta",
+            "other": "%{count} flotte"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "Gruppi",
+            "hint": "Tutti i membri di un gruppo scelto lo ricevono."
+          },
+          "percentageOfActors": {
+            "label": "Quota di utenti",
+            "hint": "Aumentandola restano dentro gli stessi utenti."
+          },
+          "percentageOfTime": {
+            "label": "Quota di richieste",
+            "hint": "Casuale a ogni controllo, quindi un utente passa tra attivo e disattivo."
+          },
+          "optIn": {
+            "label": "Attivazione autonoma",
+            "hint": "Permette alle persone di attivarlo da sole.",
+            "userInfo": "In Impostazioni › Funzionalità.",
+            "fleetInfo": "Nelle impostazioni della flotta, per i suoi amministratori."
+          }
+        },
+        "columns": {
+          "state": "Stato",
+          "flag": "Flag",
+          "lastChange": "Ultima modifica"
+        },
         "stateOn": "Abilitato",
         "stateOff": "Disabilitato",
         "stateConditional": "Condizionale",
-        "openFor": "Aperto da %{days} giorni",
+        "openFor": {
+          "zero": "Aperto da oggi",
+          "one": "Aperto da %{count} giorno",
+          "other": "Aperto da %{count} giorni"
+        },
+        "emptyRegistry": "Nessun flag è registrato.",
+        "loadError": "Impossibile caricare i feature flag.",
         "historyEmpty": "Non è ancora stato registrato nulla per questa funzionalità.",
         "historyBy": "da %{actor}",
         "sources": {
@@ -214,15 +267,11 @@
           "backfill": "Recuperato"
         },
         "selfService": "Self-service",
-        "actors": "Attori",
         "groups": "Gruppi",
-        "noGroups": "Nessun gruppo abilitato per questa funzione.",
         "noActors": "Nessun attore individuale abilitato per questa funzione.",
         "user": "Utente",
         "fleet": "Flotta",
         "actorType": "Tipo di attore",
-        "percentageOfActors": "degli attori",
-        "percentageOfTime": "del tempo",
         "currentState": "Stato attuale",
         "toggle": "Attiva/Disattiva",
         "permanent": "Permanente",
@@ -247,8 +296,6 @@
         "managedFeatureFleet": "Questa funzionalità è stata attivata per questa flotta e non può essere modificata qui.",
         "selfServiceUser": "Gli utenti possono attivarla",
         "selfServiceFleet": "Gli amministratori della flotta possono attivarla",
-        "globalHint": "Attiva, la funzionalità è aperta a tutti. Disattiva, cancella ogni regola, compresi utenti, flotte e gruppi qui sotto.",
-        "selfServiceHint": "Chi può attivare questa funzionalità da sé.",
         "lastChanged": "Ultima modifica: %{date}",
         "filterUsers": "Filtra per nome utente",
         "filterFleets": "Filtra per nome o SID",

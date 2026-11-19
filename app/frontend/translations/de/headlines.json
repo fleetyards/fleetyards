@@ -179,18 +179,11 @@
         "features": {
           "index": "Feature-Flags",
           "show": "Funktionsdetails",
-          "globalState": "Globaler Status",
-          "groups": "Gruppen",
+          "rollout": "Rollout",
+          "usersAndFleets": "Benutzer und Flotten",
           "actors": "Akteure",
-          "selfService": "Self-Service",
-          "percentageOfActors": "Prozent der Akteure",
-          "percentageOfTime": "Prozent der Zeit",
           "addActor": "Akteur hinzufügen",
-          "history": "Verlauf",
-          "addUser": "Für einen Benutzer aktivieren",
-          "addFleet": "Für eine Flotte aktivieren",
-          "enabledUsers": "Aktivierte Benutzer",
-          "enabledFleets": "Aktivierte Flotten"
+          "history": "Verlauf"
         },
         "rsiApiStatus": {
           "index": "RSI-API-Status"

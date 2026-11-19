@@ -6,40 +6,19 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import TabNavView from "@/shared/components/TabNavView/index.vue";
-import {
-  useAdminFeatures,
-  getAdminFeaturesQueryKey,
-  enableAdminFeature,
-  disableAdminFeature,
-  type Feature,
-} from "@/services/fyAdminApi";
-import { useQueryClient } from "@tanstack/vue-query";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import { useAdminFeatures, type Feature } from "@/services/fyAdminApi";
 import { useFeatureState } from "@/admin/composables/useFeatureState";
 
-const { t } = useI18n();
-const { stateVariant, stateLabel } = useFeatureState();
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { t, l, timeDistance } = useI18n();
+const { stateVariant, stateLabel, summaryParts, daysOpen } = useFeatureState();
 
-const { data: features, isLoading } = useAdminFeatures();
-const queryClient = useQueryClient();
-const invalidateFeatures = () =>
-  queryClient.invalidateQueries({ queryKey: getAdminFeaturesQueryKey() });
-
-interface FeatureItem extends Feature {
-  id: string;
-}
-
-const featureItems = computed<FeatureItem[]>(() => {
-  if (!features.value) return [];
-  return features.value.map((f) => ({ ...f, id: f.name }));
-});
+const { data: features, isLoading, isError } = useAdminFeatures();
 
 const tabs = ["all", "rollout", "permanent"] as const;
 
@@ -58,180 +37,310 @@ const activeTab = computed<FeatureTab>(() => {
   return isFeatureTab(fromQuery) ? fromQuery : "all";
 });
 
-const setActiveTab = (tab: string) => {
+const setActiveTab = (tab: FeatureTab) => {
   void router.replace({
     query: { ...route.query, tab: tab === "all" ? undefined : tab },
   });
 };
 
-const tabItems = computed(() =>
-  tabs.map((tab) => ({ id: tab, label: t(`labels.features.tabs.${tab}`) })),
-);
-
-const visibleFeatureItems = computed<FeatureItem[]>(() => {
-  switch (activeTab.value) {
+const inTab = (feature: Feature, tab: FeatureTab) => {
+  switch (tab) {
     case "permanent":
-      return featureItems.value.filter((item) => item.permanent);
+      return feature.permanent;
     case "rollout":
-      return featureItems.value.filter((item) => !item.permanent);
+      return !feature.permanent;
     default:
-      return featureItems.value;
+      return true;
   }
+};
+
+const tabCount = (tab: FeatureTab) =>
+  (features.value ?? []).filter((feature) => inTab(feature, tab)).length;
+
+const filter = ref<string>();
+
+const visibleFeatures = computed(() => {
+  const needle = filter.value?.trim().toLowerCase();
+
+  return (features.value ?? []).filter(
+    (feature) =>
+      inTab(feature, activeTab.value) &&
+      (!needle || feature.name.toLowerCase().includes(needle)),
+  );
 });
 
-const toggleFeature = async (feature: FeatureItem) => {
-  try {
-    if (feature.state === "on") {
-      await disableAdminFeature(feature.name);
-    } else {
-      await enableAdminFeature(feature.name);
-    }
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.updated") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
+const kind = (feature: Feature) => {
+  const label = feature.permanent
+    ? t("labels.features.permanent")
+    : t("labels.features.tabs.rollout");
+  const days = feature.state === "on" ? daysOpen(feature) : null;
+
+  return days === null
+    ? label
+    : `${label} · ${t("labels.features.openFor", { count: days })}`;
 };
 
-// Whole days open, which is what the removal decision is made on. The date
-// itself is in the history panel for anyone who wants it.
-const daysOpen = (fullyOnSince?: string | null) => {
-  if (!fullyOnSince) return null;
+const onFor = (feature: Feature) => {
+  const parts = summaryParts(feature);
 
-  return Math.floor(
-    (Date.now() - new Date(fullyOnSince).getTime()) / (1000 * 60 * 60 * 24),
-  );
+  if (!parts.length) return t("labels.features.nobody");
+
+  return parts.map((part) => part.label).join(" · ");
 };
+
+const emptyText = computed(() => {
+  if (isError.value) return t("labels.features.loadError");
+  if (!features.value?.length) return t("labels.features.emptyRegistry");
+
+  return t("labels.features.noMatches");
+});
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
+  <div class="features-page">
+    <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
 
-  <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
+    <p class="features-page__hint">{{ t("labels.features.registryHint") }}</p>
 
-  <TabNavView
-    :anchors="tabItems"
-    :active-key="activeTab"
-    @update:active-key="setActiveTab"
-  >
-    <template #content>
-      <InlineEditableList
-        empty-name="features"
-        :loading="isLoading"
-        :items="visibleFeatureItems"
-        hide-destroy
-        hide-edit
+    <div class="features-page__toolbar">
+      <FormInput
+        v-model="filter"
+        name="features-filter"
+        :label="t('labels.features.filter')"
+        :placeholder="t('labels.features.filter')"
+        no-label
+        inline
+        standalone
+        clearable
+        class="features-page__filter"
+        data-test="features-filter"
+      />
+      <div class="features-page__tabs">
+        <BtnGroup segmented block>
+          <Btn
+            v-for="tab in tabs"
+            :key="tab"
+            :active="activeTab === tab"
+            :data-test="`features-tab-${tab}`"
+            @click="setActiveTab(tab)"
+          >
+            {{ t(`labels.features.tabs.${tab}`) }}
+            <span class="features-page__count">· {{ tabCount(tab) }}</span>
+          </Btn>
+        </BtnGroup>
+      </div>
+    </div>
+
+    <Loader v-if="isLoading" />
+
+    <p
+      v-else-if="!visibleFeatures.length"
+      class="features-page__empty"
+      data-test="features-empty"
+    >
+      {{ emptyText }}
+    </p>
+
+    <div v-else class="features-table">
+      <!-- Column labels for sighted readers only: each row is a link whose
+           text already reads in order, and table roles on a link would hide
+           that it is one. -->
+      <div class="features-table__head" aria-hidden="true">
+        <span>{{ t("labels.features.columns.state") }}</span>
+        <span>{{ t("labels.features.columns.flag") }}</span>
+        <span>{{ t("labels.features.onFor") }}</span>
+        <span>{{ t("labels.features.columns.lastChange") }}</span>
+      </div>
+
+      <ul
+        class="features-table__rows"
+        :aria-label="t('headlines.admin.features.index')"
       >
-        <template #display="{ item }">
-          <div class="feature-row">
-            <BasePill
-              :variant="stateVariant(item.state)"
-              uppercase
-              margin-right
-            >
-              {{ stateLabel(item.state) }}
-            </BasePill>
-            <router-link
-              :to="{ name: 'admin-feature', params: { name: item.name } }"
-              class="feature-name"
-              data-test="feature-name"
-            >
-              {{ item.name }}
-            </router-link>
-            <BasePill v-if="item.permanent" margin-right>
-              {{ t("labels.features.permanent") }}
-            </BasePill>
-            <BasePill v-if="item.selfServiceUser" margin-right>
-              {{ t("labels.features.selfServiceUser") }}
-            </BasePill>
-            <BasePill v-if="item.selfServiceFleet" margin-right>
-              {{ t("labels.features.selfServiceFleet") }}
-            </BasePill>
-            <BasePill v-if="item.percentageOfActors > 0" margin-right>
-              {{ item.percentageOfActors }}%
-              {{ t("labels.features.percentageOfActors") }}
-            </BasePill>
-            <BasePill v-if="item.percentageOfTime > 0" margin-right>
-              {{ item.percentageOfTime }}%
-              {{ t("labels.features.percentageOfTime") }}
-            </BasePill>
-            <BasePill v-if="item.groups.length > 0" margin-right>
-              {{ item.groups.join(", ") }}
-            </BasePill>
-            <BasePill v-if="item.actors.length > 0" margin-right>
-              {{ item.actors.length }} {{ t("labels.features.actors") }}
-            </BasePill>
-            <BasePill
-              v-if="item.fullyOnSince && !item.permanent"
-              margin-right
-              data-test="feature-open-for"
-            >
-              {{
-                t("labels.features.openFor", {
-                  days: daysOpen(item.fullyOnSince),
-                })
-              }}
-            </BasePill>
-          </div>
-        </template>
-
-        <template #actions="{ item, mobile }">
-          <BtnDropdown v-if="mobile" data-test="feature-actions">
-            <Btn
-              :to="{ name: 'admin-feature', params: { name: item.name } }"
-              data-test="edit-feature"
-            >
-              <i class="fa-duotone fa-pencil" />
-              <span>{{ t("actions.edit") }}</span>
-            </Btn>
-            <Btn data-test="toggle-feature" @click="toggleFeature(item)">
-              <i
-                class="fa-duotone fa-power-off"
-                :class="item.state === 'on' ? 'text-success' : 'text-muted'"
-              />
-              <span>{{ t("labels.features.toggle") }}</span>
-            </Btn>
-          </BtnDropdown>
-          <template v-else>
-            <Btn
-              v-tooltip="t('actions.edit')"
-              :to="{ name: 'admin-feature', params: { name: item.name } }"
-              :variant="BtnVariantsEnum.GHOST"
-              :aria-label="`${t('actions.edit')} ${item.name}`"
-              data-test="edit-feature"
-            >
-              <i class="fa-duotone fa-pencil" />
-            </Btn>
-            <Btn
-              v-tooltip="t('labels.features.toggle')"
-              data-test="toggle-feature"
-              @click="toggleFeature(item)"
-              :variant="BtnVariantsEnum.GHOST"
-            >
-              <i
-                class="fa-duotone fa-power-off"
-                :class="item.state === 'on' ? 'text-success' : 'text-muted'"
-              />
-            </Btn>
-          </template>
-        </template>
-      </InlineEditableList>
-    </template>
-  </TabNavView>
+        <li v-for="feature in visibleFeatures" :key="feature.name">
+          <router-link
+            :to="{ name: 'admin-feature', params: { name: feature.name } }"
+            class="features-table__row"
+            data-test="feature-row"
+          >
+            <span>
+              <BasePill :variant="stateVariant(feature.state)" uppercase>
+                {{ stateLabel(feature.state) }}
+              </BasePill>
+            </span>
+            <span class="features-table__flag">
+              <span class="features-table__name" data-test="feature-name">
+                {{ feature.name }}
+              </span>
+              <span class="features-table__kind" data-test="feature-kind">
+                {{ kind(feature) }}
+              </span>
+            </span>
+            <span class="features-table__on-for" data-test="feature-on-for">
+              {{ onFor(feature) }}
+            </span>
+            <span class="features-table__changed">
+              <time
+                v-if="feature.lastChangedAt"
+                :datetime="feature.lastChangedAt"
+                :title="l(feature.lastChangedAt)"
+              >
+                {{ timeDistance(feature.lastChangedAt) }}
+              </time>
+              <template v-if="feature.lastChangedBy">
+                · {{ feature.lastChangedBy }}
+              </template>
+            </span>
+            <i
+              class="fa-light fa-chevron-right features-table__chevron"
+              aria-hidden="true"
+            />
+          </router-link>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-// A feature can carry eight pills; on one line they ran off a phone's edge.
-.feature-row {
+.features-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.features-page__hint,
+.features-page__empty {
+  margin: 0;
+  color: var(--color-text-dim);
+}
+
+.features-page__toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  row-gap: 6px;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.features-page__filter {
+  flex: 0 1 22rem;
+  min-width: 14rem;
+}
+
+.features-page__tabs {
+  flex: 1 1 100%;
+
+  @media (min-width: $desktop-breakpoint) {
+    flex: 0 0 auto;
+  }
+}
+
+// Three segments with counts do not fit a phone; the list below counts itself.
+.features-page__count {
+  display: none;
+
+  @media (min-width: $desktop-breakpoint) {
+    display: inline;
+  }
+}
+
+.features-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.features-table__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.features-table__head,
+.features-table__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  align-items: center;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-template-columns: 130px minmax(0, 1.1fr) minmax(0, 2fr) 170px 1rem;
+  }
+}
+
+.features-table__head {
+  display: none;
+  padding: 0 1.125rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+
+  @media (min-width: $desktop-breakpoint) {
+    display: grid;
+  }
+}
+
+.features-table__row {
+  min-height: 56px;
+  padding: 0.5rem 1.125rem;
+  color: var(--color-text);
+  text-decoration: none;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 12px;
+  transition: background-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+    background: var(--color-control-hover);
+  }
+
+  > * {
+    grid-column: 1 / -1;
+
+    @media (min-width: $desktop-breakpoint) {
+      grid-column: auto;
+    }
+  }
+}
+
+.features-table__flag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
   min-width: 0;
 }
 
-.feature-name {
+.features-table__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: 600;
-  margin-right: 0.5rem;
+  color: var(--color-lifted);
+}
+
+.features-table__kind,
+.features-table__changed {
+  font-size: 13px;
+  color: var(--color-text-dim);
+}
+
+.features-table__on-for {
+  font-size: 14px;
+}
+
+.features-table__chevron {
+  display: none;
+  color: var(--color-text-dim);
+
+  @media (min-width: $desktop-breakpoint) {
+    display: block;
+  }
 }
 </style>

@@ -18,6 +18,21 @@ import {
 
 export type FeatureActorType = "User" | "Fleet";
 
+// Writes in flight per flag, shared by every caller: the detail page's header,
+// rollout and actor panels each hold their own actions, and a turn-off must not
+// race a group change made a moment earlier in another panel.
+const pending = reactive(new Map<string, number>());
+
+const track = (name: string, delta: 1 | -1) => {
+  const next = (pending.get(name) ?? 0) + delta;
+
+  if (next > 0) {
+    pending.set(name, next);
+  } else {
+    pending.delete(name);
+  }
+};
+
 // Every gate change for one flag, each reporting itself and refreshing the
 // list, the flag and its history at once: they share the `features` key prefix.
 export const useFeatureActions = (name: MaybeRefOrGetter<string>) => {
@@ -25,10 +40,14 @@ export const useFeatureActions = (name: MaybeRefOrGetter<string>) => {
   const { displaySuccess, displayAlert } = useAppNotifications();
   const queryClient = useQueryClient();
 
-  const busy = ref(false);
+  const feature = () => toValue(name);
+
+  const busy = computed(() => pending.has(feature()));
 
   const run = async (action: () => Promise<unknown>, message: string) => {
-    busy.value = true;
+    const flag = feature();
+
+    track(flag, 1);
 
     try {
       await action();
@@ -41,11 +60,9 @@ export const useFeatureActions = (name: MaybeRefOrGetter<string>) => {
       displayAlert({ text: t("messages.features.error") });
       return false;
     } finally {
-      busy.value = false;
+      track(flag, -1);
     }
   };
-
-  const feature = () => toValue(name);
 
   return {
     busy,

@@ -19,6 +19,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
     l: (value: string) => value,
+    timeDistance: (value: string) => value,
   }),
 }));
 
@@ -40,11 +41,16 @@ function change(overrides: Partial<FeatureChange> = {}): FeatureChange {
   };
 }
 
-const mountHistory = () =>
+const mountHistory = (limit?: number) =>
   mount(FeatureHistory, {
-    props: { name: "friends" },
+    props: { name: "friends", limit },
     global: {
-      stubs: { BasePill: { template: "<span><slot /></span>" } },
+      stubs: {
+        Btn: {
+          emits: ["click"],
+          template: "<button @click=\"$emit('click')\"><slot /></button>",
+        },
+      },
     },
   });
 
@@ -96,5 +102,32 @@ describe("FeatureHistory", () => {
 
     expect(wrapper.find(ROW).text()).toContain("labels.features.sources.sync");
     expect(wrapper.find(ROW).text()).not.toContain("labels.features.historyBy");
+  });
+
+  it("shows only the latest rows until asked for the rest", async () => {
+    changes.value = Array.from({ length: 8 }, (_, index) =>
+      change({ id: String(index) }),
+    );
+
+    const wrapper = mountHistory(5);
+
+    expect(wrapper.findAll(ROW)).toHaveLength(5);
+
+    await wrapper.find('[data-test="feature-history-more"]').trigger("click");
+
+    expect(wrapper.findAll(ROW)).toHaveLength(8);
+    expect(wrapper.find('[data-test="feature-history-more"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("offers no more when everything fits", () => {
+    changes.value = [change()];
+
+    const wrapper = mountHistory(5);
+
+    expect(wrapper.find('[data-test="feature-history-more"]').exists()).toBe(
+      false,
+    );
   });
 });
