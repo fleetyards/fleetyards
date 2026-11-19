@@ -89,14 +89,14 @@ const remove = (actor: FeatureActor) =>
           >
             <Btn
               :active="kind === 'User'"
-              data-test="feature-actors-users"
+              data-test="feature-actors-tab-users"
               @click="kind = 'User'"
             >
               {{ t("labels.features.usersTab", { count: users.length }) }}
             </Btn>
             <Btn
               :active="kind === 'Fleet'"
-              data-test="feature-actors-fleets"
+              data-test="feature-actors-tab-fleets"
               @click="kind = 'Fleet'"
             >
               {{ t("labels.features.fleetsTab", { count: fleets.length }) }}

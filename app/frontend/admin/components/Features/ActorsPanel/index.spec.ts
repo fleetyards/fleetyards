@@ -73,7 +73,9 @@ const mountPanel = () => {
   });
 
   const pick = async (fid: string) => {
-    await wrapper.find('[data-test="feature-actors-fleets"]').trigger("click");
+    await wrapper
+      .find('[data-test="feature-actors-tab-fleets"]')
+      .trigger("click");
     wrapper
       .findComponent({ name: "FleetSelect" })
       .vm.$emit("update:modelValue", fid);
