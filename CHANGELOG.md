@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.62.0](https://github.com/fleetyards/fleetyards/compare/v9.61.0...v9.62.0) (2026-11-19)
+
+
+### Features
+
+* **deploy:** read stage uploads from Bunny, mirror to Hetzner ([48464cc](https://github.com/fleetyards/fleetyards/commit/48464cc9080fb67f587c36d39267325730ec08c0))
+* **starmap:** plan quantum routes with a ship's stock or loadout drive ([#6426](https://github.com/fleetyards/fleetyards/issues/6426)) ([4fe8e55](https://github.com/fleetyards/fleetyards/commit/4fe8e5529f04038a4d575653052f4fc804f93629))
+* **uploads:** download local uploads from the Bunny storage zone ([76a505d](https://github.com/fleetyards/fleetyards/commit/76a505d6e54b42bbfde5535a50bd8dea628e9e57))
+
+
+### Bug Fixes
+
+* **holo:** fall back to the lite textured holo when Draco aborts ([#6425](https://github.com/fleetyards/fleetyards/issues/6425)) ([b04e1d2](https://github.com/fleetyards/fleetyards/commit/b04e1d272cb0ebdd1e6f9ea63919ab8d11326b72))
+* **uploads:** serve glTF holos as model/gltf-binary so the CDN compresses them ([#6428](https://github.com/fleetyards/fleetyards/issues/6428)) ([7246d03](https://github.com/fleetyards/fleetyards/commit/7246d03520b89695a820f381a2f4d51476c6654e))
+* **uploads:** stop sending an unsigned x-amz-acl header on direct uploads ([84d4272](https://github.com/fleetyards/fleetyards/commit/84d427254f37029d8bd494f8f82beb9312b48b8b))
+
 ## [9.61.0](https://github.com/fleetyards/fleetyards/compare/v9.60.0...v9.61.0) (2026-11-19)
 
 
