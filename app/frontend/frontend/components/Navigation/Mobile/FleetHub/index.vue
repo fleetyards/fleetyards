@@ -18,8 +18,10 @@ import {
   useMyFleets as useMyFleetsQuery,
   useFleetInvites as useFleetInvitesQuery,
   FleetMembershipStatusEnum,
+  FeatureFlagName,
   type Fleet,
 } from "@/services/fyApi";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 
 type HubFleet = Pick<
   Fleet,
@@ -75,6 +77,7 @@ type Tile = {
   label: string;
   icon: string | Glyph;
   active: boolean;
+  feature?: FeatureFlagName;
 };
 
 const routeName = computed(() => String(route.name));
@@ -123,6 +126,7 @@ const tiles = computed<Tile[]>(() => {
       key: "logistics",
       to: { name: "fleet-logistics", params },
       label: t("nav.fleets.logistics.index"),
+      feature: FeatureFlagName.FLEET_LOGISTICS,
       icon: "fa-duotone fa-boxes-stacked",
       active: logisticsNavActive.value,
     },
@@ -137,6 +141,7 @@ const tiles = computed<Tile[]>(() => {
       key: "contracts",
       to: { name: "fleet-contracts", params },
       label: t("nav.fleets.contracts.index"),
+      feature: FeatureFlagName.FLEET_CONTRACTS,
       icon: "fa-duotone fa-clipboard-list",
       active: contractsNavActive.value,
     },
@@ -153,6 +158,7 @@ const tiles = computed<Tile[]>(() => {
             ? "fa-duotone fa-flag-checkered"
             : "fa-duotone fa-calendar-day",
         active: eventsNavActive.value,
+        feature: FeatureFlagName.FLEET_MISSION_BUILDER,
       },
     showStatsNav.value && {
       key: "stats",
@@ -327,6 +333,7 @@ onBeforeUnmount(() => {
                 aria-hidden="true"
               />
               <span class="fleet-hub__label">{{ tile.label }}</span>
+              <BetaBadge v-if="tile.feature" :feature="tile.feature" />
             </router-link>
           </li>
         </ul>

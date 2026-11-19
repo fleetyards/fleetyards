@@ -21,6 +21,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/shared/stores/nav";
+import type { FeatureFlagName } from "@/services/fyApi";
 
 type Props = {
   to?: RouterLinkProps["to"];
@@ -39,6 +40,8 @@ type Props = {
   submenuActive?: boolean;
   submenuDirection?: string;
   badge?: number;
+  // The flag the row's destination sits behind, which marks the row as beta.
+  feature?: FeatureFlagName | FeatureFlagName[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -56,6 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   submenuActive: false,
   submenuDirection: "down",
   badge: 0,
+  feature: undefined,
 });
 
 const open = ref(false);
@@ -820,6 +824,7 @@ const toggleMenu = () => {
           :avatar="avatar"
           :slim="slim"
           :badge="badge"
+          :feature="feature"
         />
         <!-- The one mark that tells a section from a page, so it has to survive
              the rail collapsing -- where it shrinks to a caret against the
@@ -891,6 +896,7 @@ const toggleMenu = () => {
           :avatar="avatar"
           :slim="slim"
           :badge="badge"
+          :feature="feature"
         />
       </slot>
     </button>
@@ -924,6 +930,7 @@ const toggleMenu = () => {
             :avatar="avatar"
             :slim="slim"
             :badge="badge"
+            :feature="feature"
           />
         </slot>
       </a>
@@ -946,6 +953,7 @@ const toggleMenu = () => {
           :avatar="avatar"
           :slim="slim"
           :badge="badge"
+          :feature="feature"
         />
       </slot>
     </a>
@@ -966,6 +974,7 @@ const toggleMenu = () => {
           :avatar="avatar"
           :slim="slim"
           :badge="badge"
+          :feature="feature"
         />
       </slot>
     </span>

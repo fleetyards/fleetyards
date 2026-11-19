@@ -43,5 +43,6 @@ const active = computed(() =>
     :label="t(entry.labelKey)"
     :icon="entry.icon"
     :active="active"
+    :feature="entry.featureFlag"
   />
 </template>
