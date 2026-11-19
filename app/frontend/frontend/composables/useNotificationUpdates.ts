@@ -8,6 +8,19 @@ import {
   type Notifications,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { NotificationTypeEnum } from "@/services/fyApi";
+import type { UserNotificationsData } from "@/services/fyCable/channels/UserNotificationsChannel";
+
+// A reply to the conversation the reader has open is already on the page, so a
+// toast would only repeat it, and it counts as read.
+export const replyShownOnPage = (
+  message: UserNotificationsData,
+  path: string,
+) =>
+  "notificationType" in message &&
+  message.notificationType === NotificationTypeEnum.FEEDBACK_REPLY &&
+  !!message.link &&
+  message.link === path;
 
 // No subscription of its own: `useUpdates` already listens on
 // UserNotificationsChannel for the toast and calls in here, so the center and

@@ -5,6 +5,7 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   notificationToastTag,
+  replyShownOnPage,
   useNotificationInvalidation,
   useNotificationToasts,
 } from "@/frontend/composables/useNotificationUpdates";
@@ -34,7 +35,10 @@ import { type AnnouncementMessage } from "@/services/fyCable/models/Announcement
 import { type AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
-import { useSyncRsiHangarStatus } from "@/services/fyApi";
+import {
+  useReadBulkNotifications,
+  useSyncRsiHangarStatus,
+} from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
@@ -125,7 +129,11 @@ export const useUpdates = () => {
 
   const { dismiss: dismissNotificationToasts } = useNotificationToasts();
 
-  const followMovedFleet = useMovedFleetRedirect(useRouter(), useRoute());
+  const route = useRoute();
+
+  const followMovedFleet = useMovedFleetRedirect(useRouter(), route);
+
+  const readNotifications = useReadBulkNotifications();
 
   // A notification is a record, so its fields have to be mapped onto the toast.
   // The toast is also the way into the center it was just filed in — unlike the
@@ -146,6 +154,14 @@ export const useUpdates = () => {
     invalidateFidClaims(message);
     invalidateMyFleets(message);
     void followMovedFleet(message);
+
+    if (replyShownOnPage(message, route.path)) {
+      void readNotifications
+        .mutateAsync({ data: { ids: [message.id] } })
+        .then(invalidateNotifications);
+
+      return;
+    }
 
     displayMessage({
       text: message.title,

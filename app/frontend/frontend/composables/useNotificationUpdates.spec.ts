@@ -3,9 +3,14 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { createPinia, setActivePinia } from "pinia";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { getMyFleetsQueryKey, type Notification } from "@/services/fyApi";
+import {
+  getMyFleetsQueryKey,
+  NotificationTypeEnum,
+  type Notification,
+} from "@/services/fyApi";
 import {
   notificationToastTag,
+  replyShownOnPage,
   useNotificationInvalidation,
   useNotificationToasts,
 } from "./useNotificationUpdates";
@@ -77,5 +82,33 @@ describe("useNotificationInvalidation", () => {
     );
 
     expect(invalidateQueries).not.toHaveBeenCalled();
+  });
+});
+
+describe("replyShownOnPage", () => {
+  const reply = {
+    id: "n1",
+    notificationType: NotificationTypeEnum.FEEDBACK_REPLY,
+    title: "Fleetyards replied to your feedback",
+    link: "/settings/feedback/f1/",
+  } as Notification;
+
+  it("is true on the conversation the reply belongs to", () => {
+    expect(replyShownOnPage(reply, "/settings/feedback/f1/")).toBe(true);
+  });
+
+  it("is false on any other page", () => {
+    expect(replyShownOnPage(reply, "/settings/feedback/f2/")).toBe(false);
+    expect(replyShownOnPage(reply, "/hangar/")).toBe(false);
+  });
+
+  it("leaves other notification types alone on their own page", () => {
+    const sync = {
+      ...reply,
+      notificationType: NotificationTypeEnum.HANGAR_SYNC_FINISHED,
+      link: "/hangar/",
+    } as Notification;
+
+    expect(replyShownOnPage(sync, "/hangar/")).toBe(false);
   });
 });
