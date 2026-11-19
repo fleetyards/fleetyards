@@ -2,7 +2,8 @@
   "de": {
     "betaBadge": {
       "label": "Beta",
-      "hint": "Diese Funktion ist in der Beta. Sie kann sich noch ändern, Feedback ist willkommen."
+      "hint": "Diese Funktion ist in der Beta. Sie kann sich noch ändern, Feedback ist willkommen.",
+      "hintFeedback": "Diese Funktion ist in der Beta. Sie kann sich noch ändern. Klicke, um Feedback zu senden."
     }
   }
 }

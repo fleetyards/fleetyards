@@ -1,0 +1,14 @@
+{
+  "en": {
+    "feedback": {
+      "title": "Send feedback",
+      "menu": "Send feedback",
+      "intro": "Tell me what works, what does not, and what you are missing. Only the Fleetyards admins read it.",
+      "feature": "Beta feature (optional)",
+      "message": "Your feedback",
+      "send": "Send",
+      "sent": "Thanks, your feedback was sent.",
+      "failed": "Your feedback could not be sent."
+    }
+  }
+}

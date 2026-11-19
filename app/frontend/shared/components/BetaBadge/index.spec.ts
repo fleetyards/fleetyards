@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { FeatureFlagName } from "@/services/fyApi";
+import { ref, type Plugin } from "vue";
+import { OPEN_FEEDBACK } from "@/shared/utils/BetaFeatures";
 import Component from "./index.vue";
 
 vi.mock("@/services/fyApi", async (importOriginal) => {
@@ -50,5 +52,40 @@ describe("BetaBadge", () => {
 
     expect(element.exists()).toBe(true);
     expect(element.attributes("tabindex")).toBeUndefined();
+  });
+
+  describe("where feedback can be sent", () => {
+    const withFeedback = (
+      open: (feature?: FeatureFlagName) => void,
+    ): Plugin => ({
+      install: (app) => app.provide(OPEN_FEEDBACK, ref(open)),
+    });
+
+    it("opens the form for the beta flag of the gate", async () => {
+      const open = vi.fn();
+      const wrapper = await mountWithDefaults(Component, {
+        props: {
+          feature: [FeatureFlagName.STARMAP, FeatureFlagName.HANGAR_PLANNER],
+        },
+        plugins: [withFeedback(open)],
+      });
+      const element = wrapper.find('[data-test="beta-badge"]');
+
+      expect(element.element.tagName).toBe("BUTTON");
+      await element.trigger("click");
+
+      expect(open).toHaveBeenCalledWith(FeatureFlagName.HANGAR_PLANNER);
+    });
+
+    it("leaves a pill inside a control to the control", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { feature: FeatureFlagName.DRESSING_ROOM, inControl: true },
+        plugins: [withFeedback(vi.fn())],
+      });
+
+      expect(wrapper.find('[data-test="beta-badge"]').element.tagName).toBe(
+        "SPAN",
+      );
+    });
   });
 });

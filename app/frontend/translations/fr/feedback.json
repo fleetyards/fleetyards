@@ -1,0 +1,14 @@
+{
+  "fr": {
+    "feedback": {
+      "title": "Envoyer un retour",
+      "menu": "Envoyer un retour",
+      "intro": "Dites-moi ce qui fonctionne, ce qui ne fonctionne pas et ce qui vous manque. Seuls les administrateurs de Fleetyards le lisent.",
+      "feature": "Fonctionnalité bêta (facultatif)",
+      "message": "Votre retour",
+      "send": "Envoyer",
+      "sent": "Merci, votre retour a été envoyé.",
+      "failed": "Votre retour n'a pas pu être envoyé."
+    }
+  }
+}

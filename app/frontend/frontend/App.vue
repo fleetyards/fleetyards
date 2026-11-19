@@ -33,6 +33,7 @@ import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { pageKey as routePageKey } from "@/frontend/utils/pageKey";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeedback } from "@/frontend/composables/useFeedback";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -170,6 +171,8 @@ const maybeCountVisit = () => {
 const route = useRoute();
 
 const comlink = useComlink();
+
+useFeedback().provideFeedback();
 
 // The address names the modal that is open -- a link, a login coming back, or
 // a button that wrote it there. The modal is the app's, so it is put up here

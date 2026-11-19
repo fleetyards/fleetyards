@@ -1,0 +1,14 @@
+{
+  "it": {
+    "feedback": {
+      "title": "Invia feedback",
+      "menu": "Invia feedback",
+      "intro": "Dimmi cosa funziona, cosa no e cosa ti manca. Lo leggono solo gli amministratori di Fleetyards.",
+      "feature": "Funzionalità beta (facoltativa)",
+      "message": "Il tuo feedback",
+      "send": "Invia",
+      "sent": "Grazie, il tuo feedback è stato inviato.",
+      "failed": "Impossibile inviare il tuo feedback."
+    }
+  }
+}
