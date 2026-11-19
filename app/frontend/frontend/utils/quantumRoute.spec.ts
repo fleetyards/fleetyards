@@ -268,13 +268,10 @@ describe("planRoute", () => {
       const route = plan(station([LocationAmenityEnum.VEHICLE_SERVICES]));
 
       expect(
-        route.legs.map((leg) => [
-          leg.to.id,
-          leg.kind === "quantum" && leg.refuel,
-        ]),
+        route.legs.map((leg) => [leg.to.id, leg.refuelAt?.id ?? null]),
       ).toEqual([
-        ["station", true],
-        ["b", false],
+        ["station", "station"],
+        ["b", null],
       ]);
       expect(route.exceedsTank).toBe(false);
     });
@@ -284,6 +281,73 @@ describe("planRoute", () => {
 
       expect(route.legs.map((leg) => leg.to.id)).toEqual(["b"]);
       expect(route.exceedsTank).toBe(true);
+    });
+
+    it("names the place with the services when it stands within another", () => {
+      const gate = place({
+        id: "gate",
+        kind: LocationKindEnum.JUMP_POINT,
+        position: [20 * GM, 6 * GM, 0],
+        quantumTravelDestination: false,
+      });
+      const gateway = place({
+        id: "gateway",
+        position: [20 * GM, 6 * GM + 5000, 0],
+        amenities: [LocationAmenityEnum.VEHICLE_SERVICES],
+      });
+
+      const route = planRoute({
+        systems: [{ id: "s", places: [a, b, gate, gateway] }],
+        tunnels: [{ from: "gate", to: "elsewhere" }],
+        drive: { ...drive(), tankSize: 0.15 },
+        from: "a",
+        to: "b",
+      })!;
+
+      expect(
+        route.legs.map((leg) => [leg.to.id, leg.refuelAt?.id ?? null]),
+      ).toEqual([
+        ["gate", "gateway"],
+        ["b", null],
+      ]);
+    });
+
+    it("refuels on arriving through a tunnel", () => {
+      const start = place({ id: "start", position: [0, 0, 0] });
+      const out = place({
+        id: "out",
+        kind: LocationKindEnum.JUMP_POINT,
+        position: [10 * GM, 0, 0],
+        quantumTravelDestination: false,
+      });
+      const entry = place({
+        id: "entry",
+        kind: LocationKindEnum.JUMP_POINT,
+        position: [0, 0, 0],
+        quantumTravelDestination: false,
+        amenities: [LocationAmenityEnum.VEHICLE_SERVICES],
+      });
+      const end = place({ id: "end", position: [25 * GM, 0, 0] });
+
+      const route = planRoute({
+        systems: [
+          { id: "one", places: [start, out] },
+          { id: "two", places: [entry, end] },
+        ],
+        tunnels: [{ from: "out", to: "entry" }],
+        drive: { ...drive(), tankSize: 0.15 },
+        from: "start",
+        to: "end",
+      })!;
+
+      expect(
+        route.legs.map((leg) => [leg.to.id, leg.refuelAt?.id ?? null]),
+      ).toEqual([
+        ["out", null],
+        ["entry", "entry"],
+        ["end", null],
+      ]);
+      expect(route.exceedsTank).toBe(false);
     });
 
     it("does not stop to refuel when the tank lasts", () => {

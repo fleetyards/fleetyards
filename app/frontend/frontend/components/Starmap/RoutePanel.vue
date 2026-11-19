@@ -261,16 +261,21 @@ const status = computed(() => {
             {{ toTime(leg.spool + leg.travel) }} ·
             {{ formatFuel(leg.fuel) }}
           </span>
+
+          <span v-else class="starmap-route__meta">
+            {{ t("starmap.route.tunnel") }}
+          </span>
           <span
-            v-if="leg.kind === 'quantum' && leg.refuel"
+            v-if="leg.refuelAt"
             class="starmap-route__refuel"
             data-test="starmap-route-refuel"
           >
             <i class="fa-light fa-gas-pump" aria-hidden="true" />
-            {{ t("starmap.route.refuel") }}
-          </span>
-          <span v-else class="starmap-route__meta">
-            {{ t("starmap.route.tunnel") }}
+            {{
+              t("starmap.route.refuel", {
+                name: leg.refuelAt.name || leg.refuelAt.slug,
+              })
+            }}
           </span>
         </li>
       </ol>

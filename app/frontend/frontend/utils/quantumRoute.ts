@@ -59,14 +59,15 @@ export interface QuantumLeg {
   travel: number;
   // SCU.
   fuel: number;
-  // The tank is filled at its end before the next jump.
-  refuel: boolean;
+  // Where the tank is filled at its end before the next jump.
+  refuelAt: LocationStarmapPlace | null;
 }
 
 export interface TunnelLeg {
   kind: "tunnel";
   from: LocationStarmapPlace;
   to: LocationStarmapPlace;
+  refuelAt: LocationStarmapPlace | null;
 }
 
 export type RouteLeg = QuantumLeg | TunnelLeg;
@@ -95,8 +96,8 @@ interface Node {
   systemId: string;
   // The body it stands on, for an outpost or a city.
   host: string | null;
-  // Vehicle services are here, or at a place it stands for.
-  refuel: boolean;
+  // Where vehicle services are: here, or at a place it stands for.
+  refuelAt: LocationStarmapPlace | null;
 }
 
 interface Label {
@@ -226,7 +227,7 @@ const quantumLeg = (
     spool: drive.typeData.spoolUpTime || 0,
     travel,
     fuel: legFuel(drive, distance),
-    refuel: false,
+    refuelAt: null,
   };
 };
 
@@ -292,7 +293,7 @@ export const planRoute = ({
       );
 
       if (sameStop && !pinned(place)) {
-        sameStop.refuel ||= servicesShips(place);
+        sameStop.refuelAt ??= servicesShips(place) ? place : null;
         return;
       }
 
@@ -300,7 +301,7 @@ export const planRoute = ({
         place,
         systemId: system.id,
         host: hostOf(place, bodies),
-        refuel: servicesShips(place),
+        refuelAt: servicesShips(place) ? place : null,
       });
     });
 
@@ -387,12 +388,12 @@ export const planRoute = ({
 
       add({ node, cost, fuel: burnt, leg, previous: from, open: true });
 
-      if (limit !== null && node.refuel && leg.kind === "quantum") {
+      if (limit !== null && node.refuelAt) {
         add({
           node,
           cost: cost + REFUEL_COST,
           fuel: 0,
-          leg: { ...leg, refuel: true },
+          leg: { ...leg, refuelAt: node.refuelAt },
           previous: from,
           open: true,
         });
@@ -448,7 +449,12 @@ export const planRoute = ({
         if (exit && targetId !== from) {
           arrive(
             label,
-            { kind: "tunnel", from: node.place, to: exit.place },
+            {
+              kind: "tunnel",
+              from: node.place,
+              to: exit.place,
+              refuelAt: null,
+            },
             0,
           );
         }
