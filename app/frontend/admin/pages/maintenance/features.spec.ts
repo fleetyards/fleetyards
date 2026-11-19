@@ -34,9 +34,15 @@ const api = vi.hoisted(() => ({
   disableAdminFeature: vi.fn(),
 }));
 
+const loadFailed = vi.hoisted(() => ({ value: false }));
+
 vi.mock("@/services/fyAdminApi", () => ({
   ...api,
-  useAdminFeatures: () => ({ data: features, isLoading: ref(false) }),
+  useAdminFeatures: () => ({
+    data: features,
+    isLoading: ref(false),
+    isError: computed(() => loadFailed.value),
+  }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -109,6 +115,7 @@ describe("AdminFeaturesPage", () => {
       feature({ name: "oauth-discord", permanent: true }),
       feature({ name: "fleet_tours" }),
     ];
+    loadFailed.value = false;
     api.enableAdminFeature.mockReset();
     api.disableAdminFeature.mockReset();
   });
@@ -255,5 +262,34 @@ describe("AdminFeaturesPage", () => {
     await flushPromises();
 
     expect(router.currentRoute.value.query.tab).toBeUndefined();
+  });
+
+  describe("with nothing to show", () => {
+    const EMPTY = '[data-test="features-empty"]';
+
+    it("blames the filter when it hides every flag", async () => {
+      const { wrapper } = await mountPage();
+
+      await wrapper.find("input").setValue("nothing-like-this");
+
+      expect(wrapper.find(EMPTY).text()).toBe("labels.features.noMatches");
+    });
+
+    it("says the registry is empty when it is", async () => {
+      features.value = [];
+
+      const { wrapper } = await mountPage();
+
+      expect(wrapper.find(EMPTY).text()).toBe("labels.features.emptyRegistry");
+    });
+
+    it("says the load failed rather than that nothing matched", async () => {
+      features.value = undefined;
+      loadFailed.value = true;
+
+      const { wrapper } = await mountPage();
+
+      expect(wrapper.find(EMPTY).text()).toBe("labels.features.loadError");
+    });
   });
 });

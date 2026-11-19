@@ -18,7 +18,7 @@ import { useFeatureState } from "@/admin/composables/useFeatureState";
 const { t, l, timeDistance } = useI18n();
 const { stateVariant, stateLabel, summaryParts, daysOpen } = useFeatureState();
 
-const { data: features, isLoading } = useAdminFeatures();
+const { data: features, isLoading, isError } = useAdminFeatures();
 
 const tabs = ["all", "rollout", "permanent"] as const;
 
@@ -81,12 +81,19 @@ const kind = (feature: Feature) => {
 };
 
 const onFor = (feature: Feature) => {
-  if (feature.state === "off") return t("labels.features.nobody");
+  const parts = summaryParts(feature);
 
-  return summaryParts(feature)
-    .map((part) => part.label)
-    .join(" · ");
+  if (!parts.length) return t("labels.features.nobody");
+
+  return parts.map((part) => part.label).join(" · ");
 };
+
+const emptyText = computed(() => {
+  if (isError.value) return t("labels.features.loadError");
+  if (!features.value?.length) return t("labels.features.emptyRegistry");
+
+  return t("labels.features.noMatches");
+});
 </script>
 
 <template>
@@ -131,71 +138,65 @@ const onFor = (feature: Feature) => {
       class="features-page__empty"
       data-test="features-empty"
     >
-      {{ t("labels.features.noMatches") }}
+      {{ emptyText }}
     </p>
 
-    <div
-      v-else
-      class="features-table"
-      role="table"
-      :aria-label="t('headlines.admin.features.index')"
-    >
-      <div class="features-table__head" role="row">
-        <span role="columnheader">{{
-          t("labels.features.columns.state")
-        }}</span>
-        <span role="columnheader">{{ t("labels.features.columns.flag") }}</span>
-        <span role="columnheader">{{ t("labels.features.onFor") }}</span>
-        <span role="columnheader">
-          {{ t("labels.features.columns.lastChange") }}
-        </span>
+    <div v-else class="features-table">
+      <!-- Column labels for sighted readers only: each row is a link whose
+           text already reads in order, and table roles on a link would hide
+           that it is one. -->
+      <div class="features-table__head" aria-hidden="true">
+        <span>{{ t("labels.features.columns.state") }}</span>
+        <span>{{ t("labels.features.columns.flag") }}</span>
+        <span>{{ t("labels.features.onFor") }}</span>
+        <span>{{ t("labels.features.columns.lastChange") }}</span>
       </div>
 
-      <router-link
-        v-for="feature in visibleFeatures"
-        :key="feature.name"
-        :to="{ name: 'admin-feature', params: { name: feature.name } }"
-        class="features-table__row"
-        role="row"
-        data-test="feature-row"
+      <ul
+        class="features-table__rows"
+        :aria-label="t('headlines.admin.features.index')"
       >
-        <span role="cell">
-          <BasePill :variant="stateVariant(feature.state)" uppercase>
-            {{ stateLabel(feature.state) }}
-          </BasePill>
-        </span>
-        <span role="cell" class="features-table__flag">
-          <span class="features-table__name" data-test="feature-name">
-            {{ feature.name }}
-          </span>
-          <span class="features-table__kind" data-test="feature-kind">
-            {{ kind(feature) }}
-          </span>
-        </span>
-        <span
-          role="cell"
-          class="features-table__on-for"
-          data-test="feature-on-for"
-        >
-          {{ onFor(feature) }}
-        </span>
-        <span role="cell" class="features-table__changed">
-          <time
-            v-if="feature.lastChangedAt"
-            :datetime="feature.lastChangedAt"
-            :title="l(feature.lastChangedAt)"
+        <li v-for="feature in visibleFeatures" :key="feature.name">
+          <router-link
+            :to="{ name: 'admin-feature', params: { name: feature.name } }"
+            class="features-table__row"
+            data-test="feature-row"
           >
-            {{ timeDistance(feature.lastChangedAt) }}
-          </time>
-          <template v-if="feature.lastChangedBy">
-            · {{ feature.lastChangedBy }}
-          </template>
-        </span>
-        <i
-          class="fa-light fa-chevron-right features-table__chevron"
-          aria-hidden="true"
-        />
-      </router-link>
+            <span>
+              <BasePill :variant="stateVariant(feature.state)" uppercase>
+                {{ stateLabel(feature.state) }}
+              </BasePill>
+            </span>
+            <span class="features-table__flag">
+              <span class="features-table__name" data-test="feature-name">
+                {{ feature.name }}
+              </span>
+              <span class="features-table__kind" data-test="feature-kind">
+                {{ kind(feature) }}
+              </span>
+            </span>
+            <span class="features-table__on-for" data-test="feature-on-for">
+              {{ onFor(feature) }}
+            </span>
+            <span class="features-table__changed">
+              <time
+                v-if="feature.lastChangedAt"
+                :datetime="feature.lastChangedAt"
+                :title="l(feature.lastChangedAt)"
+              >
+                {{ timeDistance(feature.lastChangedAt) }}
+              </time>
+              <template v-if="feature.lastChangedBy">
+                · {{ feature.lastChangedBy }}
+              </template>
+            </span>
+            <i
+              class="fa-light fa-chevron-right features-table__chevron"
+              aria-hidden="true"
+            />
+          </router-link>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -247,6 +248,15 @@ const onFor = (feature: Feature) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.features-table__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .features-table__head,
