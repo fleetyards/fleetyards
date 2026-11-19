@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.60.0](https://github.com/fleetyards/fleetyards/compare/v9.59.0...v9.60.0) (2026-11-19)
+
+
+### Features
+
+* **docks:** label berths by what they are built for ([#6408](https://github.com/fleetyards/fleetyards/issues/6408)) ([184c87d](https://github.com/fleetyards/fleetyards/commit/184c87d1f729b55ea40a3b92c958f7dfc3c1469f))
+* **hangar-planner:** add the buy list to the RSI cart ([#6412](https://github.com/fleetyards/fleetyards/issues/6412)) ([bde295b](https://github.com/fleetyards/fleetyards/commit/bde295bfac0527154d64d9ea9d4ffa152a7901b4))
+
+
+### Bug Fixes
+
+* **docks:** call German berths Pad and Stellplatz ([#6415](https://github.com/fleetyards/fleetyards/issues/6415)) ([43d7223](https://github.com/fleetyards/fleetyards/commit/43d7223989585241041c0959c95fc9fa2e136c59))
+* **fleets:** drop the premium nav tabs a fleet has not subscribed ([#6406](https://github.com/fleetyards/fleetyards/issues/6406)) ([d496036](https://github.com/fleetyards/fleetyards/commit/d49603608efb3a6f34ca13b8ba6f6102813ffaec))
+* **hangar-plans:** take bought ships and held upgrades into the plan on update ([#6413](https://github.com/fleetyards/fleetyards/issues/6413)) ([2219933](https://github.com/fleetyards/fleetyards/commit/22199339fd324c13d2b9c8be619cfef5a7bdb606))
+* **imports:** stop reporting paints and commodities nothing can resolve ([#6405](https://github.com/fleetyards/fleetyards/issues/6405)) ([4bc392c](https://github.com/fleetyards/fleetyards/commit/4bc392c1998aae568fb43b4e9f1301cb5e47ba67))
+
+
+### Refactorings
+
+* **models:** drop the string focus column ([#6407](https://github.com/fleetyards/fleetyards/issues/6407)) ([0f3ee70](https://github.com/fleetyards/fleetyards/commit/0f3ee70e226d48c02df64ee8e12c2bc39ff1cd74))
+
+
+### Chores
+
+* **deps:** bump puma from 8.1.0 to 8.1.1 ([#6417](https://github.com/fleetyards/fleetyards/issues/6417)) ([b8e9940](https://github.com/fleetyards/fleetyards/commit/b8e99406e8ae0e75ab22afd0383f014e9aa29e8a))
+* **sc_data:** bump ptu to 5.0.0-ptu.13228337 ([#6416](https://github.com/fleetyards/fleetyards/issues/6416)) ([d2a81cd](https://github.com/fleetyards/fleetyards/commit/d2a81cda172d640510cd289b4b27d2335d6bc77f))
+
 ## [9.59.0](https://github.com/fleetyards/fleetyards/compare/v9.58.0...v9.59.0) (2026-11-18)
 
 
