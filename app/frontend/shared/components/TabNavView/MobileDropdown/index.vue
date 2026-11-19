@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import {
   type RouteLocationRaw,
   type RouteRecordName,
@@ -243,6 +244,11 @@ onUnmounted(() => {
           <span v-if="badgeFor(routeName(item))" class="tabs-badge">
             {{ badgeFor(routeName(item)) }}
           </span>
+          <BetaBadge
+            v-if="item.meta?.feature"
+            :feature="item.meta.feature"
+            in-control
+          />
         </li>
         <li
           v-for="link in props.links"

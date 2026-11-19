@@ -8,7 +8,7 @@ export default {
 import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { useHangarPlans } from "@/services/fyApi";
+import { FeatureFlagName, useHangarPlans } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, l } = useI18n();
@@ -30,6 +30,7 @@ const plan = computed(() => plans.value[0]);
 <template>
   <DashboardPanel
     :title="t('home.dashboard.plan.title')"
+    :feature="FeatureFlagName.HANGAR_PLANNER"
     :pending="isLoading"
     :fetching="isFetching"
     :failed="isLoadingError"

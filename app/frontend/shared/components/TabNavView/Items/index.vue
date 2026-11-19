@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
@@ -87,6 +88,11 @@ const { isActive } = useActiveTab(filteredRoutes);
         <span v-if="badgeFor(routeName(item))" class="tabs-badge">
           {{ badgeFor(routeName(item)) }}
         </span>
+        <BetaBadge
+          v-if="item.meta?.feature"
+          :feature="item.meta.feature"
+          in-control
+        />
       </a>
     </li>
   </router-link>

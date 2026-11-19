@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 import { useForm } from "vee-validate";
@@ -68,6 +69,7 @@ import {
 } from "@/frontend/composables/useComponentFitting";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
+  FeatureFlagName,
   type Vehicle,
   type VehicleLoadout,
   type VehicleLoadoutItemCraftedInput,
@@ -1631,6 +1633,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="servicingAreasShown = !servicingAreasShown"
               >
                 <i class="fa-light fa-screwdriver-wrench" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_SERVICING_AREAS"
+                  in-control
+                  compact
+                />
               </Btn>
               <Btn
                 v-if="overlays.cargoGrids"
@@ -1642,6 +1649,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="cargoGridsShown = !cargoGridsShown"
               >
                 <i class="fa-light fa-boxes-stacked" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_CARGO_GRIDS"
+                  in-control
+                  compact
+                />
               </Btn>
               <Btn
                 v-if="overlays.doors"
@@ -1653,6 +1665,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="doorsOpen = !doorsOpen"
               >
                 <i class="fa-light fa-arrows-left-right" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_DOOR_ANIMATION"
+                  in-control
+                  compact
+                />
               </Btn>
             </template>
           </LoadoutPreview>

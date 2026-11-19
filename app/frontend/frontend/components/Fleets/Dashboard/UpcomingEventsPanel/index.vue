@@ -16,6 +16,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useEventPlanner } from "@/frontend/composables/useEventPlanner";
 import {
+  FeatureFlagName,
   FleetEventStatusEnum,
   useFleetCalendar,
   type Fleet,
@@ -88,6 +89,7 @@ const planEvent = () =>
 <template>
   <DashboardPanel
     :title="t('fleetDashboard.events.title')"
+    :feature="FeatureFlagName.FLEET_MISSION_BUILDER"
     :pending="isLoading"
     :fetching="isFetching"
     :failed="isLoadingError"

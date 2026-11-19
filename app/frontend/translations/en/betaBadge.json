@@ -1,0 +1,8 @@
+{
+  "en": {
+    "betaBadge": {
+      "label": "Beta",
+      "hint": "This feature is in beta. It may still change, and feedback is welcome."
+    }
+  }
+}

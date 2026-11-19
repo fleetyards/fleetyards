@@ -20,13 +20,18 @@ import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
 import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
 import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
-import { type Vehicle, useVehicleLoadoutSlots } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type Vehicle,
+  useVehicleLoadoutSlots,
+} from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -383,6 +388,11 @@ const openImageModal = () =>
               @click="toggleTexturedHolo"
             >
               <i class="fa-duotone fa-palette" />
+              <BetaBadge
+                :feature="FeatureFlagName.HOLO_TEXTURED"
+                in-control
+                compact
+              />
             </Btn>
             <BtnDropdown
               v-if="
@@ -422,6 +432,11 @@ const openImageModal = () =>
               @click="toggleLoadoutHolo"
             >
               <i class="fa-duotone fa-crosshairs" />
+              <BetaBadge
+                :feature="FeatureFlagName.LOADOUT_PREVIEW"
+                in-control
+                compact
+              />
             </Btn>
           </BtnGroup>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">

@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useRoute } from "vue-router";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import { useQueryClient } from "@tanstack/vue-query";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -204,12 +206,23 @@ const applyNomination = async (
     pending.value = pending.value.filter((id) => id !== contribution.id);
   }
 };
+
+// A page gated by the same flag already carries the pill beside its title.
+const route = useRoute();
+
+const onSubscriptionsPage = computed(() =>
+  [route.meta.feature].flat().includes(FeatureFlagName.FLEET_SUBSCRIPTIONS),
+);
 </script>
 
 <template>
   <div v-if="hasFleets" class="supporter-nomination" data-test="nomination">
     <div class="supporter-nomination__label">
       {{ t("labels.account.supporterNomination.label") }}
+      <BetaBadge
+        v-if="!onSubscriptionsPage"
+        :feature="FeatureFlagName.FLEET_SUBSCRIPTIONS"
+      />
     </div>
 
     <div class="row">

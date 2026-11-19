@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import {
   hangarGroupLabels,
   useShipFilterSummary,
@@ -539,6 +540,7 @@ const { activeFilters } = useShipFilterSummary(() =>
     >
       <i class="fa-duotone fa-compass-drafting" />
       {{ t("nav.hangar.plans") }}
+      <BetaBadge :feature="FeatureFlagName.HANGAR_PLANNER" in-control />
     </Btn>
 
     <Btn
@@ -609,6 +611,7 @@ const { activeFilters } = useShipFilterSummary(() =>
             <Btn v-if="plannerEnabled" :to="{ name: 'hangar-plans' }">
               <i class="fa-duotone fa-compass-drafting" />
               <span>{{ t("nav.hangar.plans") }}</span>
+              <BetaBadge :feature="FeatureFlagName.HANGAR_PLANNER" in-control />
             </Btn>
 
             <Btn data-test="fleetchart-link" @click="toggleFleetchart">

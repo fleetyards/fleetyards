@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -497,6 +498,7 @@ const crumbs = computed<Crumb[]>(() => [
       >
         <i class="fa-duotone fa-coins" />
         {{ t("actions.fleets.contracts.payouts") }}
+        <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" in-control />
       </Btn>
       <ShareBtn
         v-if="canShare && contract"

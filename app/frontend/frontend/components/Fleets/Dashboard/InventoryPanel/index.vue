@@ -14,6 +14,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  FeatureFlagName,
   FleetActivityCategoryEnum,
   useFleetActivity,
   type Fleet,
@@ -72,6 +73,7 @@ watch(
 <template>
   <DashboardPanel
     :title="t('fleetDashboard.inventory.title')"
+    :feature="FeatureFlagName.FLEET_LOGISTICS"
     :pending="isLoading"
     :fetching="isFetching"
     :failed="isLoadingError"

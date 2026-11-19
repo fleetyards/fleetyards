@@ -61,6 +61,7 @@ import {
 import { useClampedText } from "@/shared/composables/useClampedText";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import {
   isLowPowerDevice,
   useLowPowerDevice,
@@ -419,6 +420,11 @@ const adiMap = computed(() => {
                   @click="toggleHoloviewer"
                 >
                   {{ t("labels.3dView") }}
+                  <BetaBadge
+                    v-if="mobile"
+                    :feature="FeatureFlagName.HOLO_PHONE"
+                    in-control
+                  />
                 </Btn>
 
                 <Btn
@@ -430,6 +436,11 @@ const adiMap = computed(() => {
                   @click="toggleTexturedHolo"
                 >
                   <i class="fa-duotone fa-palette" />
+                  <BetaBadge
+                    :feature="FeatureFlagName.HOLO_TEXTURED"
+                    in-control
+                    compact
+                  />
                 </Btn>
 
                 <Btn
@@ -442,6 +453,11 @@ const adiMap = computed(() => {
                   @click="toggleLoadoutHolo"
                 >
                   <i class="fa-duotone fa-crosshairs" />
+                  <BetaBadge
+                    :feature="FeatureFlagName.LOADOUT_PREVIEW"
+                    in-control
+                    compact
+                  />
                 </Btn>
 
                 <BtnDropdown

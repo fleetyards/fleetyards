@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import PageActions from "@/shared/components/PageActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -22,6 +23,7 @@ import EventPanel from "@/frontend/components/Fleets/Events/EventPanel/index.vue
 import EventsTable from "@/frontend/components/Fleets/Events/EventsTable/index.vue";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import {
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetEvent,
@@ -338,6 +340,7 @@ const openDisplayOptionsModal = () => {
     >
       <i class="fa-light fa-coins" />
       <span>{{ t("actions.fleets.tours.viewTours") }}</span>
+      <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" in-control />
     </Btn>
     <Btn
       v-if="canCreate"

@@ -16,6 +16,7 @@ import {
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { useMobile } from "@/shared/composables/useMobile";
+import { FeatureFlagName } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -172,6 +173,7 @@ onMounted(() => {
             params: { slug: currentFleet.slug },
           }"
           :label="t('nav.fleets.logistics.index')"
+          :feature="FeatureFlagName.FLEET_LOGISTICS"
           :active="logisticsNavActive"
           icon="fa-duotone fa-boxes-stacked"
         />
@@ -196,6 +198,7 @@ onMounted(() => {
         params: { slug: currentFleet.slug },
       }"
       :label="t('nav.fleets.contracts.index')"
+      :feature="FeatureFlagName.FLEET_CONTRACTS"
       :active="contractsNavActive"
       icon="fa-duotone fa-clipboard-list"
     />
@@ -211,6 +214,7 @@ onMounted(() => {
         params: { slug: currentFleet.slug },
       }"
       :label="eventsNavLabel"
+      :feature="FeatureFlagName.FLEET_MISSION_BUILDER"
       :active="eventsNavActive"
       icon="fa-duotone fa-calendar-day"
     />

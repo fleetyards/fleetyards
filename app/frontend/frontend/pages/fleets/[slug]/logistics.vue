@@ -13,6 +13,7 @@ import {
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useFleetSubscription } from "@/frontend/composables/useFleetSubscription";
 import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
+import { providePageFeature } from "@/shared/utils/BetaFeatures";
 
 type Props = {
   fleet: Fleet;
@@ -22,6 +23,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { isFleetFeatureEnabled } = useFeatures();
+
+providePageFeature(FeatureFlagName.FLEET_LOGISTICS);
 
 // Whole-page rather than inside the list: the filters, the toolbar and
 // the create button all belong to a feature this fleet does not have, and

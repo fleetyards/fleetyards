@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SystemLanes from "@/frontend/components/Locations/SystemLanes/index.vue";
@@ -53,6 +54,7 @@ const PLACEHOLDERS = 4;
       >
         <i class="fa-light fa-galaxy" aria-hidden="true" />
         {{ t("nav.starmap") }}
+        <BetaBadge :feature="FeatureFlagName.STARMAP" in-control />
       </Btn>
       <Btn :to="{ name: 'locations-places' }" data-test="locations-places-link">
         <i class="fa-light fa-list" aria-hidden="true" />

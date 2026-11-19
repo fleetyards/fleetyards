@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { type Glyph, isGlyph } from "@/shared/components/DuotoneGlyph/glyph";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import type { FeatureFlagName } from "@/services/fyApi";
 
 type Props = {
   label?: string;
@@ -15,6 +17,7 @@ type Props = {
   slim?: boolean;
   avatar?: boolean;
   badge?: number;
+  feature?: FeatureFlagName | FeatureFlagName[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   slim: false,
   avatar: false,
   badge: 0,
+  feature: undefined,
 });
 
 const firstLetter = computed(() => {
@@ -76,6 +80,7 @@ const badgeLabel = computed(() => {
       {{ label }}
     </span>
     <span v-else class="sr-only">{{ label }}</span>
+    <BetaBadge v-if="feature && !slim" :feature="feature" in-control />
     <span v-if="badgeLabel && !slim" class="nav-item-badge">
       {{ badgeLabel }}
     </span>

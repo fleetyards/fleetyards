@@ -8,7 +8,8 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import HoloViewerModal from "@/shared/components/HoloViewer/Modal/index.vue";
-import { type Model } from "@/services/fyApi";
+import { FeatureFlagName, type Model } from "@/services/fyApi";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
   type ModelStateEnum,
@@ -108,6 +109,11 @@ const holoUnavailable = () => {
         @click="toggleTexturedHolo"
       >
         <i class="fa-duotone fa-palette" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_TEXTURED"
+          in-control
+          compact
+        />
       </Btn>
       <BtnDropdown
         v-if="texturedHoloAvailable && texturedHolo && holoPaints.length"
