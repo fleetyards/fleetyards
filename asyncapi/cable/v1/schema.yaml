@@ -4705,6 +4705,7 @@ components:
       - supporter_coverage_ending
       - supporter_coverage_ended
       - announcement
+      - feedback_reply
       x-enumNames:
       - MODEL_ON_SALE
       - NEW_MODEL
@@ -4765,6 +4766,7 @@ components:
       - SUPPORTER_COVERAGE_ENDING
       - SUPPORTER_COVERAGE_ENDED
       - ANNOUNCEMENT
+      - FEEDBACK_REPLY
     NotificationsWithdrawnMessage:
       type: object
       properties:

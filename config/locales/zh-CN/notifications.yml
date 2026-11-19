@@ -72,6 +72,8 @@ zh-CN:
       title: "你的捐赠权益将于 %{date} 结束"
       body: "你的一次性捐赠所带来的支持者权益（例如额外的铭牌样式）将于 %{date} 结束。别错过——改为每月捐赠即可继续保留。"
       body_with_fleet: "你的一次性捐赠所带来的支持者权益（例如额外的铭牌样式）将于 %{date} 结束，%{fleet} 的舰队功能将于 %{fleet_date} 结束。别错过——改为每月捐赠即可继续保留。"
+    feedback_reply:
+      title: "Fleetyards 回复了你的反馈"
     supporter_coverage_ended:
       title: "你的支持者权益已结束"
       body: "感谢你支持 Fleetyards！你的捐赠所带来的支持者权益（例如额外的铭牌样式）已于 %{date} 结束。已选择的铭牌样式将保留。再次捐赠——或改为每月捐赠——即可恢复这些权益。"

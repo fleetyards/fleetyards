@@ -10,6 +10,8 @@ class Feedback < ApplicationRecord
   belongs_to :user
   belongs_to :resolved_by, class_name: "AdminUser", optional: true
 
+  has_many :replies, -> { order(:created_at) }, class_name: "FeedbackReply", dependent: :delete_all, inverse_of: :feedback
+
   validates :message, presence: true, length: {maximum: MESSAGE_MAX_LENGTH}
   validates :page_path, length: {maximum: 2048}
   # Only when it is set: a flag that graduates leaves the registry, and its old

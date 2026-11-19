@@ -18,11 +18,13 @@ module Admin
             username: {type: [:string, :null]},
             resolvedAt: {type: [:string, :null], format: "date-time"},
             resolvedByName: {type: [:string, :null]},
+            repliesCount: {type: :integer},
+            replies: {type: :array, items: ::Admin::V1::Schemas::FeedbackReply},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id message state userId createdAt updatedAt]
+          required: %w[id message state userId repliesCount createdAt updatedAt]
         })
       end
     end

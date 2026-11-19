@@ -155,8 +155,10 @@ es:
       destroy: No se pudo eliminar la entrada de inventario.
     feedbacks:
       create: "No se pudo enviar el comentario"
+      reply: "No se pudo enviar la respuesta"
     feedback:
       resolve: "No se pudo resolver el comentario"
+      reply: "No se pudo enviar la respuesta"
       reopen: "No se pudo reabrir el comentario"
     fleetchart_layouts:
       create: "No se pudo guardar la disposición"

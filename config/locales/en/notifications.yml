@@ -67,6 +67,8 @@ en:
       title: "Your donation perks end on %{date}"
       body: "Your one-time donation's supporter perks, like the extra plaque styles, end on %{date}. Don't lose them — switch to a monthly donation to keep them."
       body_with_fleet: "Your one-time donation's supporter perks, like the extra plaque styles, end on %{date}, and %{fleet}'s fleet features on %{fleet_date}. Don't lose them — switch to a monthly donation to keep them."
+    feedback_reply:
+      title: "Fleetyards replied to your feedback"
     supporter_coverage_ended:
       title: "Your supporter perks have ended"
       body: "Thank you for supporting Fleetyards! Your donation's supporter perks, like the extra plaque styles, ended on %{date}. Plaque styles you already picked stay. Donate again — or monthly — to get the perks back."

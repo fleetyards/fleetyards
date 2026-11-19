@@ -2778,6 +2778,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/feedback/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Feedback with its replies
+      tags:
+      - Feedback
+      operationId: feedback
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/feedback/{id}/reopen":
     parameters:
     - name: id
@@ -2794,6 +2829,51 @@ paths:
       operationId: reopenFeedback
       responses:
         '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/feedback/{id}/replies":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Reply to feedback
+      tags:
+      - Feedback
+      operationId: replyToFeedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeedbackReplyInput"
+      responses:
+        '201':
           description: successful
           content:
             application/json:
@@ -16888,6 +16968,12 @@ components:
           type:
           - string
           - 'null'
+        repliesCount:
+          type: integer
+        replies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeedbackReply"
         createdAt:
           type: string
           format: date-time
@@ -16900,6 +16986,7 @@ components:
       - message
       - state
       - userId
+      - repliesCount
       - createdAt
       - updatedAt
       title: Feedback
@@ -16917,6 +17004,41 @@ components:
       additionalProperties: false
       example: {}
       title: FeedbackQuery
+    FeedbackReply:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        fromAdmin:
+          type: boolean
+        adminName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - body
+      - fromAdmin
+      - createdAt
+      title: FeedbackReply
+    FeedbackReplyInput:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+      additionalProperties: false
+      required:
+      - body
+      title: FeedbackReplyInput
     FeedbackStateEnum:
       type: string
       enum:

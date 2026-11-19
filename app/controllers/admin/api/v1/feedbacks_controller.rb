@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FeedbacksController < ::Admin::Api::BaseController
-        before_action :set_feedback, only: %i[resolve reopen]
+        before_action :set_feedback, only: %i[show resolve reopen reply]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.base"))
@@ -13,11 +13,14 @@ module Admin
         def index
           authorize! with: ::Admin::FeedbackPolicy
 
-          @feedbacks = Feedback.includes(:user, :resolved_by)
+          @feedbacks = Feedback.includes(:user, :resolved_by, :replies)
             .ransack(feedback_query_params).result
             .order(created_at: :desc)
             .page(page_params)
             .per(per_page(Feedback))
+        end
+
+        def show
         end
 
         def resolve
@@ -26,6 +29,17 @@ module Admin
 
         def reopen
           transition(:reopen)
+        end
+
+        def reply
+          @reply = @feedback.replies.new(body: params[:body], from_admin: true, admin_user: current_admin_user)
+
+          if @reply.save
+            @feedback.reload
+            render :show, status: :created
+          else
+            render json: ValidationError.new("feedback.reply", errors: @reply.errors), status: :bad_request
+          end
         end
 
         # Under the lock, so two admins acting at once do not both pass the
@@ -46,7 +60,7 @@ module Admin
         end
 
         private def set_feedback
-          @feedback = Feedback.find(params[:id])
+          @feedback = Feedback.includes(:user, :resolved_by, replies: :admin_user).find(params[:id])
           authorize! @feedback, with: ::Admin::FeedbackPolicy
         end
 

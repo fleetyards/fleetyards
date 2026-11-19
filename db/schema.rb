@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_230000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -812,6 +812,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_200000) do
     t.boolean "self_service_user", default: false, null: false
     t.boolean "self_service_fleet", default: false, null: false
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
+  end
+
+  create_table "feedback_replies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "feedback_id", null: false
+    t.boolean "from_admin", default: false, null: false
+    t.uuid "admin_user_id"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_feedback_replies_on_admin_user_id"
+    t.index ["feedback_id"], name: "index_feedback_replies_on_feedback_id"
   end
 
   create_table "feedbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3566,6 +3577,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_200000) do
   add_foreign_key "faction_ladders", "faction_builds", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
+  add_foreign_key "feedback_replies", "admin_users", on_delete: :nullify
+  add_foreign_key "feedback_replies", "feedbacks", on_delete: :cascade
   add_foreign_key "feedbacks", "admin_users", column: "resolved_by_id", on_delete: :nullify
   add_foreign_key "feedbacks", "users", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade

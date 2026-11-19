@@ -31,6 +31,78 @@ class Api::V1::FeedbacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/feedback" do
+    get("Your feedback") do
+      operationId "feedbacks"
+      tags "Feedback"
+      produces "application/json"
+      security [{SessionCookie: []}]
+
+      parameter "$ref": "#/components/parameters/PageParameter"
+
+      response(200, "successful") do
+        schema ::V1::Schemas::Feedbacks::FeedbackList
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/feedback/{id}" do
+    parameter name: "id", in: :path, description: "Feedback id", schema: {type: :string, format: :uuid}
+
+    get("Feedback with its replies") do
+      operationId "feedback"
+      tags "Feedback"
+      produces "application/json"
+      security [{SessionCookie: []}]
+
+      response(200, "successful") do
+        schema ::V1::Schemas::Feedbacks::Feedback
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/feedback/{id}/replies" do
+    parameter name: "id", in: :path, description: "Feedback id", schema: {type: :string, format: :uuid}
+
+    post("Reply to feedback") do
+      operationId "replyToFeedback"
+      tags "Feedback"
+      consumes "application/json"
+      produces "application/json"
+      security [{SessionCookie: []}]
+
+      request_body required: true, schema: ::V1::Schemas::Inputs::FeedbackReplyInput
+
+      response(201, "successful") do
+        schema ::V1::Schemas::Feedbacks::Feedback
+      end
+
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   setup do
     @user = create(:user)
   end
@@ -84,5 +156,58 @@ class Api::V1::FeedbacksTest < ActionDispatch::IntegrationTest
     post "/api/v1/feedback", params: {message: "Hello"}, as: :json
 
     assert_response :unauthorized
+  end
+
+  test "GET /feedback lists only your own feedback" do
+    mine = create(:feedback, user: @user)
+    create(:feedback)
+    sign_in @user
+
+    get "/api/v1/feedback"
+
+    assert_response :ok
+    assert_equal [mine.id], response.parsed_body["items"].pluck("id")
+    assert_equal "open", response.parsed_body["items"].first["state"]
+  end
+
+  test "GET /feedback/:id shows the conversation" do
+    feedback = create(:feedback, user: @user)
+    create(:feedback_reply, feedback:, from_admin: true, body: "Which hangar size?")
+    sign_in @user
+
+    get "/api/v1/feedback/#{feedback.id}"
+
+    assert_response :ok
+    reply = response.parsed_body["replies"].sole
+    assert_equal "Which hangar size?", reply["body"]
+    assert reply["fromAdmin"]
+  end
+
+  test "GET /feedback/:id hides other users' feedback" do
+    sign_in @user
+
+    get "/api/v1/feedback/#{create(:feedback).id}"
+
+    assert_response :not_found
+  end
+
+  test "POST /feedback/:id/replies answers as the user" do
+    feedback = create(:feedback, user: @user)
+    sign_in @user
+
+    post "/api/v1/feedback/#{feedback.id}/replies", params: {body: "About 40 ships"}, as: :json
+
+    assert_response :created
+    reply = feedback.replies.sole
+    assert_not reply.from_admin
+    assert_equal "About 40 ships", reply.body
+  end
+
+  test "POST /feedback/:id/replies refuses someone else's feedback" do
+    sign_in @user
+
+    post "/api/v1/feedback/#{create(:feedback).id}/replies", params: {body: "Hi"}, as: :json
+
+    assert_response :not_found
   end
 end

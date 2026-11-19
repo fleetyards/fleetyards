@@ -159,8 +159,10 @@ de:
       destroy: Inventareintrag konnte nicht gelöscht werden.
     feedbacks:
       create: "Das Feedback konnte nicht gesendet werden"
+      reply: "Die Antwort konnte nicht gesendet werden"
     feedback:
       resolve: "Das Feedback konnte nicht erledigt werden"
+      reply: "Die Antwort konnte nicht gesendet werden"
       reopen: "Das Feedback konnte nicht wieder geöffnet werden"
     fleetchart_layouts:
       create: "Das Layout konnte nicht gespeichert werden"

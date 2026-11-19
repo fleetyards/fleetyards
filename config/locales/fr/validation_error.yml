@@ -152,8 +152,10 @@ fr:
       destroy: L'entrée d'inventaire n'a pas pu être détruite.
     feedbacks:
       create: "Impossible d'envoyer le retour"
+      reply: "Impossible d'envoyer la réponse"
     feedback:
       resolve: "Impossible de traiter le retour"
+      reply: "Impossible d'envoyer la réponse"
       reopen: "Impossible de rouvrir le retour"
     fleetchart_layouts:
       create: "Impossible d'enregistrer la disposition"

@@ -72,6 +72,8 @@ fr:
       title: "Les avantages de ton don prennent fin le %{date}"
       body: "Les avantages de soutien de ton don ponctuel, comme les styles de plaque supplémentaires, prennent fin le %{date}. Ne les perds pas : passe à un don mensuel pour les garder."
       body_with_fleet: "Les avantages de soutien de ton don ponctuel, comme les styles de plaque supplémentaires, prennent fin le %{date}, et les fonctionnalités de flotte de %{fleet} le %{fleet_date}. Ne les perds pas : passe à un don mensuel pour les garder."
+    feedback_reply:
+      title: "Fleetyards a répondu à votre retour"
     supporter_coverage_ended:
       title: "Tes avantages de soutien ont pris fin"
       body: "Merci d'avoir soutenu Fleetyards ! Les avantages de soutien de ton don, comme les styles de plaque supplémentaires, ont pris fin le %{date}. Les styles de plaque déjà choisis restent. Fais un nouveau don — ou un don mensuel — pour les retrouver."

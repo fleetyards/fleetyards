@@ -30,6 +30,57 @@ class Admin::Api::V1::FeedbacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/feedback/{id}" do
+    parameter name: "id", in: :path, description: "Feedback id", schema: {type: :string, format: :uuid}
+
+    get("Feedback with its replies") do
+      operationId "feedback"
+      tags "Feedback"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Feedback
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/feedback/{id}/replies" do
+    parameter name: "id", in: :path, description: "Feedback id", schema: {type: :string, format: :uuid}
+
+    post("Reply to feedback") do
+      operationId "replyToFeedback"
+      tags "Feedback"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::FeedbackReplyInput
+
+      response(201, "successful") do
+        schema ::Admin::V1::Schemas::Feedback
+      end
+
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   api_path "/feedback/{id}/resolve" do
     parameter name: "id", in: :path, description: "Feedback id", schema: {type: :string, format: :uuid}
 
@@ -161,5 +212,40 @@ class Admin::Api::V1::FeedbacksTest < ActionDispatch::IntegrationTest
     put "/admin/api/v1/feedback/#{SecureRandom.uuid}/resolve"
 
     assert_response :not_found
+  end
+
+  test "GET /feedback/:id shows the conversation with who answered" do
+    feedback = create(:feedback)
+    create(:feedback_reply, feedback:, from_admin: true, admin_user: @admin, body: "Which ship?")
+    create(:feedback_reply, feedback:, body: "The Carrack")
+    sign_in @admin
+
+    get "/admin/api/v1/feedback/#{feedback.id}"
+
+    assert_response :ok
+    assert_equal ["Which ship?", "The Carrack"], response.parsed_body["replies"].pluck("body")
+    assert_equal @admin.username, response.parsed_body["replies"].first["adminName"]
+  end
+
+  test "POST /feedback/:id/replies answers the user and notifies them" do
+    feedback = create(:feedback)
+    sign_in @admin
+
+    assert_difference -> { Notification.where(user: feedback.user, notification_type: "feedback_reply").count }, 1 do
+      post "/admin/api/v1/feedback/#{feedback.id}/replies", params: {body: "Which ship?"}, as: :json
+    end
+
+    assert_response :created
+    reply = feedback.replies.sole
+    assert reply.from_admin
+    assert_equal @admin, reply.admin_user
+  end
+
+  test "POST /feedback/:id/replies refuses an empty reply" do
+    sign_in @admin
+
+    post "/admin/api/v1/feedback/#{create(:feedback).id}/replies", params: {body: ""}, as: :json
+
+    assert_response :bad_request
   end
 end

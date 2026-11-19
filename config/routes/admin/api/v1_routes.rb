@@ -255,10 +255,11 @@ v1_admin_api_routes = lambda do
 
   resources :fleet_subscriptions, path: "fleet-subscriptions", only: %i[index show create update destroy]
 
-  resources :feedbacks, path: "feedback", only: %i[index] do
+  resources :feedbacks, path: "feedback", only: %i[index show] do
     member do
       put :resolve
       put :reopen
+      post :reply, path: "replies"
     end
   end
 

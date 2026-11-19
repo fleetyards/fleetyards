@@ -13,10 +13,14 @@ module V1
             message: {type: :string},
             featureName: {type: [:string, :null]},
             pagePath: {type: [:string, :null]},
-            createdAt: {type: :string, format: "date-time"}
+            state: ::V1::Schemas::Enums::FeedbackStateEnum,
+            repliesCount: {type: :integer},
+            replies: {type: :array, items: ::V1::Schemas::Feedbacks::FeedbackReply},
+            createdAt: {type: :string, format: "date-time"},
+            updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id message createdAt]
+          required: %w[id message state repliesCount createdAt updatedAt]
         })
       end
     end

@@ -9,4 +9,5 @@ json.user_id feedback.user_id
 json.username feedback.user&.username
 json.resolved_at feedback.resolved_at&.utc&.iso8601
 json.resolved_by_name feedback.resolved_by&.username
+json.replies_count feedback.replies.size
 json.partial! "api/shared/dates", record: feedback

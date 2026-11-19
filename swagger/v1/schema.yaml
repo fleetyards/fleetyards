@@ -1403,8 +1403,118 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Your feedback
+      tags:
+      - Feedback
+      operationId: feedbacks
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FeedbackList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/feedback/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    get:
+      summary: Feedback with its replies
+      tags:
+      - Feedback
+      operationId: feedback
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/feedback/{id}/replies":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Reply to feedback
+      tags:
+      - Feedback
+      operationId: replyToFeedback
+      security:
+      - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeedbackReplyInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/filters/blueprints/materials":
     get:
       summary: Blueprint materials filter
@@ -31694,14 +31804,28 @@ components:
           type:
           - string
           - 'null'
+        state:
+          "$ref": "#/components/schemas/FeedbackStateEnum"
+        repliesCount:
+          type: integer
+        replies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeedbackReply"
         createdAt:
+          type: string
+          format: date-time
+        updatedAt:
           type: string
           format: date-time
       additionalProperties: false
       required:
       - id
       - message
+      - state
+      - repliesCount
       - createdAt
+      - updatedAt
       title: Feedback
     FeedbackInput:
       type: object
@@ -31723,6 +31847,60 @@ components:
       required:
       - message
       title: FeedbackInput
+    FeedbackList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Feedback"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FeedbackList
+    FeedbackReply:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        fromAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - body
+      - fromAdmin
+      - createdAt
+      title: FeedbackReply
+    FeedbackReplyInput:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+      additionalProperties: false
+      required:
+      - body
+      title: FeedbackReplyInput
+    FeedbackStateEnum:
+      type: string
+      enum:
+      - open
+      - resolved
+      x-enumNames:
+      - OPEN
+      - RESOLVED
+      title: FeedbackStateEnum
     FieldError:
       type: object
       properties:
@@ -49351,6 +49529,7 @@ components:
       - supporter_coverage_ending
       - supporter_coverage_ended
       - announcement
+      - feedback_reply
       x-enumNames:
       - MODEL_ON_SALE
       - NEW_MODEL
@@ -49411,6 +49590,7 @@ components:
       - SUPPORTER_COVERAGE_ENDING
       - SUPPORTER_COVERAGE_ENDED
       - ANNOUNCEMENT
+      - FEEDBACK_REPLY
       title: NotificationTypeEnum
     NotificationUnreadCount:
       type: object

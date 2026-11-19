@@ -151,8 +151,10 @@ zh-TW:
       destroy: 無法刪除庫存記錄。
     feedbacks:
       create: "無法傳送意見回饋"
+      reply: "無法傳送回覆"
     feedback:
       resolve: "無法處理意見回饋"
+      reply: "無法傳送回覆"
       reopen: "無法重新開啟意見回饋"
     fleetchart_layouts:
       create: "無法儲存版面配置"

@@ -26,7 +26,11 @@ v1_api_routes = lambda do
 
   resources :markdown_images, path: "markdown-images", only: %i[create show]
 
-  resources :feedbacks, path: "feedback", only: %i[create]
+  resources :feedbacks, path: "feedback", only: %i[index show create] do
+    member do
+      post :reply, path: "replies"
+    end
+  end
 
   get "catalogue/lookup", to: "catalogue#lookup"
   get "catalogue/search", to: "catalogue#search"
