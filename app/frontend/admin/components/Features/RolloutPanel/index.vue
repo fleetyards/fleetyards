@@ -134,6 +134,7 @@ const toggleGroup = (group: string) =>
 .feature-rollout__toggles {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.875rem;
 }
 </style>
