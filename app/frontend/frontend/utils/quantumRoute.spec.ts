@@ -249,6 +249,20 @@ describe("planRoute", () => {
     expect(plan(60).exceedsTank).toBe(true);
   });
 
+  it("does not flag a tank whose size is unknown", () => {
+    const a = place({ id: "a", position: [0, 5 * GM, 0] });
+    const b = place({ id: "b", position: [20 * GM, 5 * GM, 0] });
+
+    const route = planRoute({
+      systems: [{ id: "s", places: [planet, a, b] }],
+      drive: { ...drive({ quantumFuelConsumption: 60 }), tankSize: 0 },
+      from: "a",
+      to: "b",
+    });
+
+    expect(route?.exceedsTank).toBe(false);
+  });
+
   it("finds the faster way out and back through the tunnels", () => {
     const a = place({ id: "a", position: [0, 0, 0] });
     const b = place({ id: "b", position: [400 * GM, 0, 0] });

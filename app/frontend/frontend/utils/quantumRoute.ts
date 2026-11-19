@@ -417,6 +417,6 @@ const summarise = (legs: RouteLeg[], drive: RouteDrive): QuantumRoute => {
     time:
       jumps.reduce((sum, leg) => sum + leg.spool + leg.travel, 0) + cooldowns,
     fuel,
-    exceedsTank: drive.tankSize !== null && fuel > drive.tankSize,
+    exceedsTank: !!drive.tankSize && fuel > drive.tankSize,
   };
 };
