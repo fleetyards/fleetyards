@@ -63,7 +63,8 @@ class Notification < ApplicationRecord
     raffle_email_missing: "raffle_email_missing",
     supporter_coverage_ending: "supporter_coverage_ending",
     supporter_coverage_ended: "supporter_coverage_ended",
-    announcement: "announcement"
+    announcement: "announcement",
+    feedback_reply: "feedback_reply"
   }
 
   TYPES = {
@@ -436,6 +437,12 @@ class Notification < ApplicationRecord
     # after the perks are gone.
     supporter_coverage_ending: {
       retention: 14.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    feedback_reply: {
+      retention: 90.days,
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}

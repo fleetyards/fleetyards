@@ -255,6 +255,14 @@ v1_admin_api_routes = lambda do
 
   resources :fleet_subscriptions, path: "fleet-subscriptions", only: %i[index show create update destroy]
 
+  resources :feedbacks, path: "feedback", only: %i[index show] do
+    member do
+      put :resolve
+      put :reopen
+      post :reply, path: "replies"
+    end
+  end
+
   resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy] do
     collection do
       put "reject-bulk", to: "oauth_applications#reject_bulk"

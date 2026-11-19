@@ -1,0 +1,64 @@
+{
+  "zh-TW": {
+    "feedback": {
+      "title": "傳送意見回饋",
+      "menu": "傳送意見回饋",
+      "intro": "告訴我哪些好用、哪些不好用，以及你還缺少什麼。只有 Fleetyards 管理員會閱讀。",
+      "feature": "測試功能（選填）",
+      "message": "你的意見回饋",
+      "send": "傳送",
+      "sent": "謝謝，你的意見回饋已傳送。",
+      "failed": "無法傳送你的意見回饋。",
+      "admin": {
+        "message": "訊息",
+        "feature": "功能",
+        "state": "狀態",
+        "user": "使用者",
+        "sentAt": "傳送時間",
+        "general": "一般",
+        "search": "搜尋訊息",
+        "resolve": "標記為已處理",
+        "reopen": "重新開啟",
+        "reply": "傳送回覆",
+        "replyLabel": "回覆使用者",
+        "replyHint": "使用者會收到通知，並看到回覆來自 Fleetyards。",
+        "conversation": "對話",
+        "view": "開啟對話"
+      },
+      "states": {
+        "open": "待處理",
+        "resolved": "已處理"
+      },
+      "mine": {
+        "empty": "你還沒有傳送過任何意見回饋。",
+        "message": "訊息",
+        "state": "狀態",
+        "replies": "回覆",
+        "sentAt": "傳送時間",
+        "conversation": "對話",
+        "you": "你",
+        "fleetyards": "Fleetyards",
+        "reply": "傳送回覆",
+        "replyLabel": "你的回覆",
+        "replySent": "你的回覆已傳送。",
+        "replyFailed": "無法傳送你的回覆。",
+        "back": "全部意見回饋"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "我的意見回饋"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "我的意見回饋"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "我的意見回饋"
+      }
+    }
+  }
+}

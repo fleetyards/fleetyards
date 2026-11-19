@@ -3766,6 +3766,7 @@
             "game_events": "Eventi di gioco",
             "homepage": "Pagina iniziale",
             "oauth_applications": "Applicazioni OAuth",
+            "feedback": "Feedback",
             "maintenance": "Manutenzione",
             "imports": "Importazioni",
             "features": "Funzionalità",
@@ -4058,7 +4059,8 @@
           "unplaced_foci": "Specializzazione non riconosciuta",
           "import_run": "Importazione",
           "oauth_application_review": "Revisione applicazione OAuth",
-          "inventory_transfer_reports": "Trasferimenti di inventario segnalati"
+          "inventory_transfer_reports": "Trasferimenti di inventario segnalati",
+          "feedback": "Feedback"
         }
       },
       "optional": "facoltativo",
@@ -4067,6 +4069,7 @@
         "openHangar": "Apri l'hangar",
         "openModel": "Mostra la nave",
         "openInvite": "Vedi l'invito",
+        "openFeedback": "Vedi conversazione",
         "reviewRequest": "Esamina la richiesta",
         "openMembers": "Mostra i membri",
         "openFleet": "Apri la flotta",
@@ -4152,6 +4155,7 @@
         "fleet_subscription_ended": "Funzioni di flotta perse",
         "supporter_coverage_ending": "Vantaggi da sostenitore in scadenza",
         "supporter_coverage_ended": "Vantaggi da sostenitore terminati",
+        "feedback_reply": "Risposta al tuo feedback",
         "fleet_fid_claim_opened": "ID flotta rivendicato",
         "fleet_fid_claim_completed": "ID flotta trasferito",
         "fleet_fid_claim_cancelled": "Rivendicazione dell’ID flotta terminata",

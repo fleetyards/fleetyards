@@ -6,7 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { isBetaFeature } from "@/shared/utils/BetaFeatures";
+import {
+  betaFeatureOf,
+  isBetaFeature,
+  OPEN_FEEDBACK,
+} from "@/shared/utils/BetaFeatures";
 import {
   type FeatureFlagName,
   useBetaFeatures as useBetaFeaturesQuery,
@@ -38,6 +42,20 @@ const visible = computed(() =>
 );
 
 const hintId = useId();
+
+const openFeedback = inject(OPEN_FEEDBACK, undefined);
+
+const feedback = computed(() =>
+  props.inControl ? undefined : openFeedback?.value,
+);
+
+const hint = computed(() =>
+  feedback.value ? t("betaBadge.hintFeedback") : t("betaBadge.hint"),
+);
+
+const sendFeedback = () => {
+  feedback.value?.(betaFeatureOf(props.feature, betaFeatures.value));
+};
 </script>
 <template>
   <!--
@@ -60,23 +78,37 @@ const hintId = useId();
       {{ t("betaBadge.label") }}
     </span>
     <!--
-      Focusable so the explanation is not mouse-only: the tooltip opens on
-      keyboard focus as well as hover. The hint is a description rather than
-      the label, so it stays out of the name of a heading the pill sits in.
+      The hint is a description rather than the label, so it stays out of the
+      name of a heading the pill sits in.
     -->
-    <template v-else>
-      <span
-        v-tooltip="{ content: t('betaBadge.hint'), multiline: true }"
-        class="beta-badge beta-badge--hint"
-        :class="{ 'beta-badge--compact': compact }"
-        tabindex="0"
-        :aria-describedby="hintId"
-        data-test="beta-badge"
-      >
-        {{ t("betaBadge.label") }}
-      </span>
-      <span :id="hintId" hidden>{{ t("betaBadge.hint") }}</span>
-    </template>
+    <button
+      v-else-if="feedback"
+      v-tooltip="{ content: hint, multiline: true }"
+      type="button"
+      class="beta-badge beta-badge--action"
+      :class="{ 'beta-badge--compact': compact }"
+      :aria-describedby="hintId"
+      data-test="beta-badge"
+      @click="sendFeedback"
+    >
+      {{ t("betaBadge.label") }}
+    </button>
+    <!--
+      Focusable so the explanation is not mouse-only: the tooltip opens on
+      keyboard focus as well as hover.
+    -->
+    <span
+      v-else
+      v-tooltip="{ content: hint, multiline: true }"
+      class="beta-badge beta-badge--hint"
+      :class="{ 'beta-badge--compact': compact }"
+      tabindex="0"
+      :aria-describedby="hintId"
+      data-test="beta-badge"
+    >
+      {{ t("betaBadge.label") }}
+    </span>
+    <span v-if="!inControl" :id="hintId" hidden>{{ hint }}</span>
   </span>
   <slot v-else />
 </template>
@@ -115,6 +147,20 @@ const hintId = useId();
 
 .beta-badge--hint {
   cursor: help;
+}
+
+.beta-badge--action {
+  margin: 0;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: color-mix(
+      in srgb,
+      var(--color-warning, #fa6800) 30%,
+      transparent
+    );
+  }
 }
 
 .beta-badge--compact {

@@ -171,6 +171,9 @@
           "new": "New Admin",
           "edit": "Edit Admin"
         },
+        "feedback": {
+          "index": "Feedback"
+        },
         "oauthApplications": {
           "index": "OAuth Applications",
           "new": "New OAuth Application",

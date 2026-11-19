@@ -193,6 +193,13 @@ en:
       create: Inventory entry could not be created.
       update: Inventory entry could not be updated.
       destroy: Inventory entry could not be destroyed.
+    feedbacks:
+      create: "Could not send the feedback"
+      reply: "Could not send the reply"
+    feedback:
+      resolve: "Could not resolve the feedback"
+      reply: "Could not send the reply"
+      reopen: "Could not reopen the feedback"
     fleetchart_layouts:
       create: "Could not save the layout"
       update: "Could not update the layout"

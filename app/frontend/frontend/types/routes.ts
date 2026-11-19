@@ -66,6 +66,7 @@ type FrontendSimpleRoutes =
   | "settings-two-factor-backup-codes"
   | "settings-oauth-applications"
   | "settings-oauth-application-create"
+  | "settings-feedback"
   // Tools
   | "tools"
   | "travel-times"
@@ -116,6 +117,7 @@ export type FrontendRouteLocation =
   | ParamRoute<"confirm", TokenParams>
   // Settings (id)
   | ParamRoute<"settings-oauth-application", IdParams>
-  | ParamRoute<"settings-oauth-application-edit", IdParams>;
+  | ParamRoute<"settings-oauth-application-edit", IdParams>
+  | ParamRoute<"settings-feedback-show", IdParams>;
 
 export type FrontendRouteName = FrontendRouteLocation["name"];

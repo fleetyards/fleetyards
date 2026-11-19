@@ -72,6 +72,8 @@ it:
       title: "I vantaggi della tua donazione terminano il %{date}"
       body: "I vantaggi da sostenitore della tua donazione singola, come gli stili di targa aggiuntivi, terminano il %{date}. Non perderli: passa a una donazione mensile per mantenerli."
       body_with_fleet: "I vantaggi da sostenitore della tua donazione singola, come gli stili di targa aggiuntivi, terminano il %{date} e le funzioni di flotta di %{fleet} il %{fleet_date}. Non perderli: passa a una donazione mensile per mantenerli."
+    feedback_reply:
+      title: "Fleetyards ha risposto al tuo feedback"
     supporter_coverage_ended:
       title: "I tuoi vantaggi da sostenitore sono terminati"
       body: "Grazie per aver sostenuto Fleetyards! I vantaggi da sostenitore della tua donazione, come gli stili di targa aggiuntivi, sono terminati il %{date}. Gli stili di targa già scelti restano. Dona di nuovo — o ogni mese — per riaverli."

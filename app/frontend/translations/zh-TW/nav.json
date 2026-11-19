@@ -329,6 +329,9 @@
         "admins": {
           "index": "管理員"
         },
+        "feedback": {
+          "index": "意見回饋"
+        },
         "oauthApplications": {
           "index": "OAuth 應用"
         },

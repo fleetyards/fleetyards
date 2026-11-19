@@ -2,6 +2,10 @@
 de:
   activerecord:
     attributes:
+      feedback:
+        message: "Nachricht"
+        feature_name: "Funktion"
+        page_path: "Seite"
       character_face:
         file: "Datei"
       outfit:

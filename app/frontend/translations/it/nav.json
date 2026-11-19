@@ -329,6 +329,9 @@
         "admins": {
           "index": "Amministratori"
         },
+        "feedback": {
+          "index": "Feedback"
+        },
         "oauthApplications": {
           "index": "App OAuth"
         },

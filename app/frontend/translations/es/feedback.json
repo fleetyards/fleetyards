@@ -1,0 +1,64 @@
+{
+  "es": {
+    "feedback": {
+      "title": "Enviar comentarios",
+      "menu": "Enviar comentarios",
+      "intro": "Cuéntame qué funciona, qué no y qué echas en falta. Solo lo leen los administradores de Fleetyards.",
+      "feature": "Función beta (opcional)",
+      "message": "Tus comentarios",
+      "send": "Enviar",
+      "sent": "Gracias, tus comentarios se han enviado.",
+      "failed": "No se pudieron enviar tus comentarios.",
+      "admin": {
+        "message": "Mensaje",
+        "feature": "Función",
+        "state": "Estado",
+        "user": "Usuario",
+        "sentAt": "Enviado el",
+        "general": "General",
+        "search": "Buscar mensajes",
+        "resolve": "Marcar como resuelto",
+        "reopen": "Reabrir",
+        "reply": "Enviar respuesta",
+        "replyLabel": "Responder al usuario",
+        "replyHint": "El usuario recibe una notificación y ve la respuesta como de Fleetyards.",
+        "conversation": "Conversación",
+        "view": "Abrir conversación"
+      },
+      "states": {
+        "open": "Abierto",
+        "resolved": "Resuelto"
+      },
+      "mine": {
+        "empty": "Todavía no has enviado ningún comentario.",
+        "message": "Mensaje",
+        "state": "Estado",
+        "replies": "Respuestas",
+        "sentAt": "Enviado el",
+        "conversation": "Conversación",
+        "you": "Tú",
+        "fleetyards": "Fleetyards",
+        "reply": "Enviar respuesta",
+        "replyLabel": "Tu respuesta",
+        "replySent": "Tu respuesta se ha enviado.",
+        "replyFailed": "No se pudo enviar tu respuesta.",
+        "back": "Todos los comentarios"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "Mis comentarios"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "Mis comentarios"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "Mis comentarios"
+      }
+    }
+  }
+}

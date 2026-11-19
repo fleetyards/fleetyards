@@ -345,6 +345,9 @@
           "inventory": "舰队库存",
           "inventoryItem": "库存条目"
         },
+        "feedback": {
+          "index": "反馈"
+        },
         "oauthApplications": {
           "index": "OAuth 应用",
           "new": "新建 OAuth 应用",

@@ -2744,6 +2744,198 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/feedback":
+    get:
+      summary: Feedback list
+      tags:
+      - Feedback
+      operationId: feedbacks
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FeedbackQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedbacks"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/feedback/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Feedback with its replies
+      tags:
+      - Feedback
+      operationId: feedback
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/feedback/{id}/reopen":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reopen feedback
+      tags:
+      - Feedback
+      operationId: reopenFeedback
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/feedback/{id}/replies":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Reply to feedback
+      tags:
+      - Feedback
+      operationId: replyToFeedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeedbackReplyInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/feedback/{id}/resolve":
+    parameters:
+    - name: id
+      in: path
+      description: Feedback id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Resolve feedback
+      tags:
+      - Feedback
+      operationId: resolveFeedback
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feedback"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleet-fid-claims":
     get:
       summary: Open FID claims
@@ -11526,6 +11718,7 @@ components:
       - import_run
       - oauth_application_review
       - inventory_transfer_reports
+      - feedback
       x-enumNames:
       - PAINTS_IMPORT
       - MODULES_IMPORT
@@ -11547,6 +11740,7 @@ components:
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
       - INVENTORY_TRANSFER_REPORTS
+      - FEEDBACK
       title: AdminNotificationTypeEnum
     AdminNotificationUnreadCount:
       type: object
@@ -11750,6 +11944,7 @@ components:
       - users
       - supporters
       - raffles
+      - feedback
       - admins
       - announcements
       - game_events
@@ -11788,6 +11983,7 @@ components:
       - USERS
       - SUPPORTERS
       - RAFFLES
+      - FEEDBACK
       - ADMINS
       - ANNOUNCEMENTS
       - GAME_EVENTS
@@ -12709,10 +12905,12 @@ components:
       type: string
       enum:
       - AdminAnnouncementsChannel
+      - AdminFeedbackChannel
       - AdminModelMediaChannel
       - AdminNotificationsChannel
       - AdminPresenceChannel
       - AppVersionChannel
+      - FeedbackChannel
       - FleetInventoryChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
@@ -12733,10 +12931,12 @@ components:
       - WishlistDestroyChannel
       x-enumNames:
       - ADMIN_ANNOUNCEMENTS_CHANNEL
+      - ADMIN_FEEDBACK_CHANNEL
       - ADMIN_MODEL_MEDIA_CHANNEL
       - ADMIN_NOTIFICATIONS_CHANNEL
       - ADMIN_PRESENCE_CHANNEL
       - APP_VERSION_CHANNEL
+      - FEEDBACK_CHANNEL
       - FLEET_INVENTORY_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL
@@ -16738,6 +16938,134 @@ components:
       items:
         "$ref": "#/components/schemas/Feature"
       title: FeaturesList
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        featureName:
+          type:
+          - string
+          - 'null'
+        pagePath:
+          type:
+          - string
+          - 'null'
+        state:
+          "$ref": "#/components/schemas/FeedbackStateEnum"
+        userId:
+          type: string
+          format: uuid
+        username:
+          type:
+          - string
+          - 'null'
+        resolvedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        resolvedByName:
+          type:
+          - string
+          - 'null'
+        repliesCount:
+          type: integer
+        replies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeedbackReply"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - message
+      - state
+      - userId
+      - repliesCount
+      - createdAt
+      - updatedAt
+      title: Feedback
+    FeedbackQuery:
+      type: object
+      properties:
+        aasmStateEq:
+          "$ref": "#/components/schemas/FeedbackStateEnum"
+        featureNameEq:
+          type: string
+        featureNamePresent:
+          type: boolean
+        messageCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: FeedbackQuery
+    FeedbackReply:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        fromAdmin:
+          type: boolean
+        adminName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - body
+      - fromAdmin
+      - createdAt
+      title: FeedbackReply
+    FeedbackReplyInput:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+      additionalProperties: false
+      required:
+      - body
+      title: FeedbackReplyInput
+    FeedbackStateEnum:
+      type: string
+      enum:
+      - open
+      - resolved
+      x-enumNames:
+      - OPEN
+      - RESOLVED
+      title: FeedbackStateEnum
+    Feedbacks:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Feedback"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Feedbacks
     FieldError:
       type: object
       properties:

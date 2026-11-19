@@ -1,0 +1,64 @@
+{
+  "fr": {
+    "feedback": {
+      "title": "Envoyer un retour",
+      "menu": "Envoyer un retour",
+      "intro": "Dites-moi ce qui fonctionne, ce qui ne fonctionne pas et ce qui vous manque. Seuls les administrateurs de Fleetyards le lisent.",
+      "feature": "Fonctionnalité bêta (facultatif)",
+      "message": "Votre retour",
+      "send": "Envoyer",
+      "sent": "Merci, votre retour a été envoyé.",
+      "failed": "Votre retour n'a pas pu être envoyé.",
+      "admin": {
+        "message": "Message",
+        "feature": "Fonctionnalité",
+        "state": "Statut",
+        "user": "Utilisateur",
+        "sentAt": "Envoyé le",
+        "general": "Général",
+        "search": "Rechercher dans les messages",
+        "resolve": "Marquer comme traité",
+        "reopen": "Rouvrir",
+        "reply": "Envoyer la réponse",
+        "replyLabel": "Répondre à l'utilisateur",
+        "replyHint": "L'utilisateur est notifié et voit la réponse comme venant de Fleetyards.",
+        "conversation": "Conversation",
+        "view": "Ouvrir la conversation"
+      },
+      "states": {
+        "open": "Ouvert",
+        "resolved": "Traité"
+      },
+      "mine": {
+        "empty": "Vous n'avez encore envoyé aucun retour.",
+        "message": "Message",
+        "state": "Statut",
+        "replies": "Réponses",
+        "sentAt": "Envoyé le",
+        "conversation": "Conversation",
+        "you": "Vous",
+        "fleetyards": "Fleetyards",
+        "reply": "Envoyer la réponse",
+        "replyLabel": "Votre réponse",
+        "replySent": "Votre réponse a été envoyée.",
+        "replyFailed": "Votre réponse n'a pas pu être envoyée.",
+        "back": "Tous les retours"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "Mes retours"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "Mes retours"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "Mes retours"
+      }
+    }
+  }
+}

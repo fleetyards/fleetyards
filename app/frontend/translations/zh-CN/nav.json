@@ -329,6 +329,9 @@
         "admins": {
           "index": "管理员"
         },
+        "feedback": {
+          "index": "反馈"
+        },
         "oauthApplications": {
           "index": "OAuth 应用"
         },

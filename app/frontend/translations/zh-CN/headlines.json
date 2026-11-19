@@ -169,6 +169,9 @@
           "new": "新管理员",
           "edit": "编辑管理员"
         },
+        "feedback": {
+          "index": "反馈"
+        },
         "oauthApplications": {
           "index": "OAuth 应用",
           "new": "新建 OAuth 应用",

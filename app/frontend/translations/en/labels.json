@@ -3780,6 +3780,7 @@
             "game_events": "Game events",
             "homepage": "Homepage",
             "oauth_applications": "OAuth Applications",
+            "feedback": "Feedback",
             "maintenance": "Maintenance",
             "imports": "Imports",
             "features": "Features",
@@ -4072,7 +4073,8 @@
           "unplaced_foci": "Unplaced Focus Wording",
           "import_run": "Import",
           "oauth_application_review": "OAuth Application Review",
-          "inventory_transfer_reports": "Reported Inventory Transfers"
+          "inventory_transfer_reports": "Reported Inventory Transfers",
+          "feedback": "Feedback"
         }
       },
       "optional": "optional",
@@ -4081,6 +4083,7 @@
         "openHangar": "Open hangar",
         "openModel": "Show ship",
         "openInvite": "View invite",
+        "openFeedback": "View conversation",
         "reviewRequest": "Review request",
         "openMembers": "Show members",
         "openFleet": "Open fleet",
@@ -4166,6 +4169,7 @@
         "fleet_subscription_ended": "Fleet features lost",
         "supporter_coverage_ending": "Supporter perks ending soon",
         "supporter_coverage_ended": "Supporter perks ended",
+        "feedback_reply": "Reply to your feedback",
         "fleet_fid_claim_opened": "Fleet ID claimed",
         "fleet_fid_claim_completed": "Fleet ID moved",
         "fleet_fid_claim_cancelled": "Fleet ID claim ended",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_233000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -812,6 +812,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_150000) do
     t.boolean "self_service_user", default: false, null: false
     t.boolean "self_service_fleet", default: false, null: false
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
+  end
+
+  create_table "feedback_replies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "feedback_id", null: false
+    t.boolean "from_admin", default: false, null: false
+    t.uuid "admin_user_id"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_feedback_replies_on_admin_user_id"
+    t.index ["feedback_id"], name: "index_feedback_replies_on_feedback_id"
+  end
+
+  create_table "feedbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.text "message", null: false
+    t.string "feature_name"
+    t.string "page_path"
+    t.string "aasm_state", default: "open", null: false
+    t.uuid "resolved_by_id"
+    t.datetime "resolved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "replies_count", default: 0, null: false
+    t.index ["created_at"], name: "index_feedbacks_on_created_at"
+    t.index ["feature_name"], name: "index_feedbacks_on_feature_name"
+    t.index ["resolved_by_id"], name: "index_feedbacks_on_resolved_by_id"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "fleet_alliances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3550,6 +3578,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_150000) do
   add_foreign_key "faction_ladders", "faction_builds", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
+  add_foreign_key "feedback_replies", "admin_users", on_delete: :nullify
+  add_foreign_key "feedback_replies", "feedbacks", on_delete: :cascade
+  add_foreign_key "feedbacks", "admin_users", column: "resolved_by_id", on_delete: :nullify
+  add_foreign_key "feedbacks", "users", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
   add_foreign_key "fleet_announcements", "fleets"

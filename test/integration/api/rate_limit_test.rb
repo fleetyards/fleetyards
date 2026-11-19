@@ -126,4 +126,16 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     get blob_path
     assert_response :too_many_requests
   end
+
+  test "feedback has a budget of its own per account" do
+    Rack::Attack.throttles["feedback"].stubs(:limit).returns(1)
+    Rack::Attack.throttles["api"].stubs(:limit).returns(100)
+    sign_in create(:user)
+
+    post "/api/v1/feedback", params: {message: "One"}, as: :json
+    assert_response :created
+
+    post "/api/v1/feedback", params: {message: "Two"}, as: :json
+    assert_response :too_many_requests
+  end
 end

@@ -91,6 +91,7 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   // The one type whose link an admin writes by hand, so there is nothing more
   // specific to promise than what the generic fallback already says.
   announcement: "open",
+  feedback_reply: "openFeedback",
 };
 
 const ACTION_ICONS: Record<string, Icon> = {
@@ -111,6 +112,7 @@ const ACTION_ICONS: Record<string, Icon> = {
   openPayouts: "fa-duotone fa-coins",
   openRoster: "fa-duotone fa-list-check",
   addToCalendar: "fa-duotone fa-calendar-plus",
+  openFeedback: "fa-duotone fa-comment-lines",
   open: "fa-duotone fa-arrow-up-right-from-square",
 };
 

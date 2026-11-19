@@ -12,6 +12,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useNavContextStore } from "@/frontend/stores/navContext";
 import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
+import { useFeedback } from "@/frontend/composables/useFeedback";
 import {
   useCart,
   useNotificationsUnreadCount as useNotificationsUnreadCountQuery,
@@ -39,6 +40,8 @@ const route = useRoute();
 const sessionStore = useSessionStore();
 
 const { currentUser } = storeToRefs(sessionStore);
+
+const { openFeedback } = useFeedback();
 
 // The cable subscription in `useUpdates` invalidates this on every arriving
 // notification; the interval only covers what expired or was read elsewhere.
@@ -153,6 +156,12 @@ const logout = () => {
       :label="t('nav.installApp')"
       icon="fa-light fa-mobile-screen"
       data-test="install-app"
+    />
+    <NavMenuItem
+      :action="() => openFeedback()"
+      :label="t('feedback.menu')"
+      icon="fa-light fa-comment-lines"
+      data-test="nav-feedback"
     />
     <NavMenuItem divider />
     <NavMenuItem

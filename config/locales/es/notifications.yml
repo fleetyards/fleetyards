@@ -72,6 +72,8 @@ es:
       title: "Las ventajas de tu donación terminan el %{date}"
       body: "Las ventajas de colaborador de tu donación única, como los estilos de placa adicionales, terminan el %{date}. No las pierdas: cámbiate a una donación mensual para conservarlas."
       body_with_fleet: "Las ventajas de colaborador de tu donación única, como los estilos de placa adicionales, terminan el %{date} y las funciones de flota de %{fleet}, el %{fleet_date}. No las pierdas: cámbiate a una donación mensual para conservarlas."
+    feedback_reply:
+      title: "Fleetyards ha respondido a tus comentarios"
     supporter_coverage_ended:
       title: "Tus ventajas de colaborador han terminado"
       body: "¡Gracias por apoyar Fleetyards! Las ventajas de colaborador de tu donación, como los estilos de placa adicionales, terminaron el %{date}. Los estilos de placa que ya elegiste se mantienen. Vuelve a donar — o hazlo cada mes — para recuperarlas."

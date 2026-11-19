@@ -1,0 +1,64 @@
+{
+  "zh-CN": {
+    "feedback": {
+      "title": "发送反馈",
+      "menu": "发送反馈",
+      "intro": "告诉我哪些好用、哪些不好用，以及你还缺少什么。只有 Fleetyards 管理员会阅读。",
+      "feature": "测试功能（可选）",
+      "message": "你的反馈",
+      "send": "发送",
+      "sent": "谢谢，你的反馈已发送。",
+      "failed": "无法发送你的反馈。",
+      "admin": {
+        "message": "消息",
+        "feature": "功能",
+        "state": "状态",
+        "user": "用户",
+        "sentAt": "发送时间",
+        "general": "通用",
+        "search": "搜索消息",
+        "resolve": "标记为已处理",
+        "reopen": "重新打开",
+        "reply": "发送回复",
+        "replyLabel": "回复用户",
+        "replyHint": "用户会收到通知，并看到回复来自 Fleetyards。",
+        "conversation": "对话",
+        "view": "打开对话"
+      },
+      "states": {
+        "open": "待处理",
+        "resolved": "已处理"
+      },
+      "mine": {
+        "empty": "你还没有发送过任何反馈。",
+        "message": "消息",
+        "state": "状态",
+        "replies": "回复",
+        "sentAt": "发送时间",
+        "conversation": "对话",
+        "you": "你",
+        "fleetyards": "Fleetyards",
+        "reply": "发送回复",
+        "replyLabel": "你的回复",
+        "replySent": "你的回复已发送。",
+        "replyFailed": "无法发送你的回复。",
+        "back": "全部反馈"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "我的反馈"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "我的反馈"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "我的反馈"
+      }
+    }
+  }
+}

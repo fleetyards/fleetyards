@@ -345,6 +345,9 @@
           "inventory": "艦隊庫存",
           "inventoryItem": "庫存記錄"
         },
+        "feedback": {
+          "index": "意見回饋"
+        },
         "oauthApplications": {
           "index": "OAuth 應用程式",
           "new": "新增 OAuth 應用程式",

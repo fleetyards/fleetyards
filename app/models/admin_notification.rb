@@ -24,7 +24,8 @@ class AdminNotification < ApplicationRecord
     unplaced_foci: "unplaced_foci",
     import_run: "import_run",
     oauth_application_review: "oauth_application_review",
-    inventory_transfer_reports: "inventory_transfer_reports"
+    inventory_transfer_reports: "inventory_transfer_reports",
+    feedback: "feedback"
   }
 
   enum :severity, {
@@ -147,6 +148,11 @@ class AdminNotification < ApplicationRecord
       # nobody can open. It gets one when the review page lands.
       access: [:users],
       icon: "fa-duotone fa-flag"
+    },
+    feedback: {
+      retention: 90.days,
+      access: [:feedback],
+      icon: "fa-duotone fa-comment-lines"
     }
   }.freeze
 

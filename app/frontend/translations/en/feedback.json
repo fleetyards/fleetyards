@@ -1,0 +1,64 @@
+{
+  "en": {
+    "feedback": {
+      "title": "Send feedback",
+      "menu": "Send feedback",
+      "intro": "Tell me what works, what does not, and what you are missing. Only the Fleetyards admins read it.",
+      "feature": "Beta feature (optional)",
+      "message": "Your feedback",
+      "send": "Send",
+      "sent": "Thanks, your feedback was sent.",
+      "failed": "Your feedback could not be sent.",
+      "admin": {
+        "message": "Message",
+        "feature": "Feature",
+        "state": "Status",
+        "user": "User",
+        "sentAt": "Sent at",
+        "general": "General",
+        "search": "Search messages",
+        "resolve": "Mark as resolved",
+        "reopen": "Reopen",
+        "reply": "Send reply",
+        "replyLabel": "Reply to the user",
+        "replyHint": "The user is notified and sees the reply as from Fleetyards.",
+        "conversation": "Conversation",
+        "view": "Open conversation"
+      },
+      "states": {
+        "open": "Open",
+        "resolved": "Resolved"
+      },
+      "mine": {
+        "empty": "You have not sent any feedback yet.",
+        "message": "Message",
+        "state": "Status",
+        "replies": "Replies",
+        "sentAt": "Sent at",
+        "conversation": "Conversation",
+        "you": "You",
+        "fleetyards": "Fleetyards",
+        "reply": "Send reply",
+        "replyLabel": "Your reply",
+        "replySent": "Your reply was sent.",
+        "replyFailed": "Your reply could not be sent.",
+        "back": "All feedback"
+      }
+    },
+    "nav": {
+      "settings": {
+        "feedback": "My feedback"
+      }
+    },
+    "title": {
+      "settings": {
+        "feedback": "My feedback"
+      }
+    },
+    "headlines": {
+      "settings": {
+        "feedback": "My feedback"
+      }
+    }
+  }
+}

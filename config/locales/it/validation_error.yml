@@ -150,6 +150,13 @@ it:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.
       destroy: Impossibile eliminare la voce di inventario.
+    feedbacks:
+      create: "Impossibile inviare il feedback"
+      reply: "Impossibile inviare la risposta"
+    feedback:
+      resolve: "Impossibile risolvere il feedback"
+      reply: "Impossibile inviare la risposta"
+      reopen: "Impossibile riaprire il feedback"
     fleetchart_layouts:
       create: "Impossibile salvare la disposizione"
       update: "Impossibile aggiornare la disposizione"
