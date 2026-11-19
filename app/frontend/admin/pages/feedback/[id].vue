@@ -21,6 +21,11 @@ import { featureLabel } from "@/shared/utils/BetaFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { ApiError } from "@/shared/types/api-error";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import {
+  AdminFeedbackChannel,
+  type AdminFeedbackData,
+} from "@/services/fyCableAdmin/channels/AdminFeedbackChannel";
 import {
   FeedbackStateEnum,
   getFeedbackQueryKey,
@@ -86,6 +91,23 @@ const send = async (body: string) => {
       throw error;
     });
 };
+
+// Replies from the other side arrive while the page is open. Nothing is
+// replayed after a dropped socket, so a reconnect fetches the conversation.
+useSubscription({
+  channel: AdminFeedbackChannel,
+  received: (data: AdminFeedbackData) => {
+    if (data.id !== id.value) return;
+
+    queryClient.setQueryData(getFeedbackQueryKey(id), data);
+    void queryClient.invalidateQueries({ queryKey: getFeedbacksQueryKey() });
+  },
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      void queryClient.invalidateQueries({ queryKey: getFeedbackQueryKey(id) });
+    }
+  },
+});
 </script>
 
 <template>
