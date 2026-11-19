@@ -2,11 +2,11 @@ import { type Feature } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
-export type FeatureSummaryPart = {
+export interface FeatureSummaryPart {
   key: string;
   icon: string;
   label: string;
-};
+}
 
 const DAY_MS = 1000 * 60 * 60 * 24;
 

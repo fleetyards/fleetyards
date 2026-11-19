@@ -20,9 +20,9 @@ import {
   type FeatureActorType,
 } from "@/admin/composables/useFeatureActions";
 
-type Props = {
+interface Props {
   feature: Feature;
-};
+}
 
 const props = defineProps<Props>();
 

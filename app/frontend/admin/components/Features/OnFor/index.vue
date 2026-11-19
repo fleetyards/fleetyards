@@ -11,9 +11,9 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatureState } from "@/admin/composables/useFeatureState";
 
-type Props = {
+interface Props {
   feature: Feature;
-};
+}
 
 const props = defineProps<Props>();
 

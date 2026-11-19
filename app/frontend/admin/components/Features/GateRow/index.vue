@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-type Props = {
+interface Props {
   label: string;
   hint: string;
-};
+}
 
 defineProps<Props>();
 </script>

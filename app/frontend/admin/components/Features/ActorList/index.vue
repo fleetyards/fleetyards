@@ -11,12 +11,12 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   actors: FeatureActor[];
   name: string;
   filterLabel: string;
   emptyText: string;
-};
+}
 
 const props = defineProps<Props>();
 

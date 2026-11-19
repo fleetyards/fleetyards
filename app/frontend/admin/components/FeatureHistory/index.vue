@@ -11,12 +11,12 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useAdminFeatureHistory } from "@/services/fyAdminApi";
 import { useFeatureState } from "@/admin/composables/useFeatureState";
 
-type Props = {
+interface Props {
   name: string;
   // Rows shown before "show all". The API caps the history, so the rest
   // expands in place instead of paging.
   limit?: number;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   limit: undefined,

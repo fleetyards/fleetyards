@@ -17,9 +17,9 @@ import PercentageGate from "@/admin/components/Features/PercentageGate/index.vue
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatureActions } from "@/admin/composables/useFeatureActions";
 
-type Props = {
+interface Props {
   feature: Feature;
-};
+}
 
 const props = defineProps<Props>();
 
