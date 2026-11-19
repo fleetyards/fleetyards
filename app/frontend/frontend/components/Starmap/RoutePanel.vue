@@ -46,7 +46,7 @@ const emit = defineEmits<{
   "update:loadout": [id: string | null];
 }>();
 
-const { t, toNumber, currentLocale } = useI18n();
+const { t, toNumber } = useI18n();
 
 const STOCK = "stock";
 
@@ -106,14 +106,21 @@ const formatLength = (metres: number) =>
     ? t("starmap.units.gm", { value: toNumber(metres / 1e9) })
     : t("starmap.units.km", { value: toNumber(metres / 1e3) });
 
-// A leg burns a few hundredths of an SCU: the default single decimal would
-// read every one of them as zero.
-const formatFuel = (scu: number) =>
-  t("starmap.route.scu", {
-    value: new Intl.NumberFormat(currentLocale(), {
-      maximumFractionDigits: 3,
-    }).format(scu),
+// A leg burns a few hundredths of an SCU: the app's single decimal would read
+// every one of them as zero, so three are kept, with the app's separators.
+const formatFuel = (scu: number) => {
+  const [whole, fraction] = scu
+    .toFixed(3)
+    .replace(/\.?0+$/, "")
+    .split(".");
+  const separator = t("number.format.separator") || ",";
+
+  return t("starmap.route.scu", {
+    value: `${Number(whole) ? toNumber(Number(whole)) : "0"}${
+      fraction ? separator + fraction : ""
+    }`,
   });
+};
 
 const status = computed(() => {
   if (!props.ship) return t("starmap.route.pickShip");
