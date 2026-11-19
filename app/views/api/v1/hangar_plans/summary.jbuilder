@@ -44,4 +44,13 @@ json.purchases @summary.purchases do |purchase|
   json.token_count purchase.token_count
   json.slot_ids purchase.slot_ids
   json.not_on_sale purchase.not_on_sale
+  # A buy-back's pledge id is the owner's, so a shared plan offers no cart.
+  json.cart_items(@public_view ? [] : purchase.cart_items) do |item|
+    json.kind item.kind
+    json.sku_id item.sku_id
+    json.from_ship_id item.from_ship_id
+    json.to_ship_id item.to_ship_id
+    json.to_sku_id item.to_sku_id
+    json.pledge_id item.pledge_id
+  end
 end

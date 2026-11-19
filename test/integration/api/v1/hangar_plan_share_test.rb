@@ -123,10 +123,16 @@ class Api::V1::HangarPlanShareTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET a shared plan's summary" do
+  test "GET a shared plan's summary offers no cart, since a buy-back's pledge is the owner's" do
+    model = create(:model, rsi_id: 56)
+    candidate = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model:)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: create(:buyback_pledge, user: @user),
+      start_model: model)
     @plan.share!
 
-    assert_api_response :get, 200, api_path: "/public/hangar-plans/{token}/summary", path_params: {token: @plan.share_token}
+    assert_api_response :get, 200, api_path: "/public/hangar-plans/{token}/summary", path_params: {token: @plan.share_token} do
+      assert_equal [], parsed_body.dig("purchases", 0, "cartItems")
+    end
   end
 
   test "GET an unknown link is not found" do

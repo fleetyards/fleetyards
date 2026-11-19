@@ -185,6 +185,21 @@ module Loaders
       assert_includes notification.body, "- **Carrack**: store: ccu_on_sale, on_sale"
     end
 
+    test "#perform names the ships on sale that no cart can take on their own" do
+      model = create(:model, name: "Aurora Mk I MR")
+
+      Rsi::ModelsLoader.any_instance.stubs(:all).returns(nil)
+      Rsi::PledgeStoreLoader.any_instance.stubs(:without_standalone).returns([model])
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(
+        admin_user: @admin_user, notification_type: "ship_matrix_import"
+      )
+
+      assert_includes notification.body, "### On sale without a standalone ship\n\n- **Aurora Mk I MR**"
+    end
+
     test "#perform names a store move beside what the matrix changed" do
       model = create(:model, name: "Idris P", mass: 40_000, rsi_mass: 40_000, cargo: 100)
 
@@ -246,7 +261,11 @@ module Loaders
         import_class: Imports::ModelsImport,
         loader_class: Rsi::ModelsLoader,
         loader_method: :all,
-        before_perform: -> { Rsi::ModelsLoader.new.stubs(:store_changes).returns({}) }
+        before_perform: -> {
+          loader = Rsi::ModelsLoader.new
+          loader.stubs(:store_changes).returns({})
+          loader.stubs(:without_standalone).returns([])
+        }
       )
     end
 
