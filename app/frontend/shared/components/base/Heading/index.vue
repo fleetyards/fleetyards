@@ -5,7 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { routeLocationKey } from "vue-router";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import BetaBadge from "@/shared/components/BetaBadge/index.vue";
+import { PAGE_FEATURE, isBetaFeature } from "@/shared/utils/BetaFeatures";
+import type { FeatureFlagName } from "@/services/fyApi";
 import {
   HeadingLevelEnum,
   HeadingSizeEnum,
@@ -26,6 +30,9 @@ type Props = {
   mb?: boolean;
   mt?: boolean;
   inlineSubHeading?: boolean;
+  // For a page whose route does not carry its flag in `meta.feature`, because
+  // a wrapper component gates it instead.
+  feature?: FeatureFlagName | FeatureFlagName[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   mb: false,
   mt: false,
   inlineSubHeading: false,
+  feature: undefined,
 });
 
 const cssClasses = computed(() => {
@@ -69,6 +77,24 @@ const cssClasses = computed(() => {
   };
 });
 
+// Injected rather than useRoute() so a heading rendered without a router, in a
+// spec or a modal mounted on its own, stays quiet instead of warning.
+const route = inject(routeLocationKey, null);
+
+const pageFeature = inject(PAGE_FEATURE, undefined);
+
+// A page behind a beta flag says so next to its title. Only the page's own
+// hero h1 carries it, never a section heading further down.
+const betaFeature = computed(() => {
+  if (!props.hero || props.hidden || props.level !== HeadingLevelEnum.H1) {
+    return undefined;
+  }
+
+  const feature = props.feature ?? pageFeature ?? route?.meta.feature;
+
+  return isBetaFeature(feature) ? feature : undefined;
+});
+
 const slots = defineSlots<{
   default?: () => unknown;
   subHeading?: () => unknown;
@@ -77,7 +103,11 @@ const slots = defineSlots<{
 
 <template>
   <component :is="level" :class="cssClasses" class="font-normal flex gap-2">
-    <slot name="default" />
+    <span v-if="betaFeature" class="heading__beta">
+      <slot name="default" />
+      <BetaBadge :feature="betaFeature" />
+    </span>
+    <slot v-else name="default" />
     <HeadingSmall v-if="slots.subHeading">
       <slot name="subHeading" />
     </HeadingSmall>
@@ -86,4 +116,11 @@ const slots = defineSlots<{
 
 <style lang="scss" scoped>
 @import "index";
+
+.heading__beta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
 </style>
