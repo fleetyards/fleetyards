@@ -107,6 +107,16 @@ module ScData
         assert_nil Location.find_by!(sc_key: "Stanton1_Lorville").facilities
       end
 
+      test "#all loads what the starmap lists a place as offering as a fact of the build" do
+        loader.all
+
+        lorville = Location.find_by!(sc_key: "Stanton1_Lorville")
+
+        assert_equal %w[vehicle_services hospital], lorville.amenities
+        assert_equal lorville.amenities, lorville.builds.sole.amenities
+        assert_equal [], Location.find_by!(sc_key: "Stanton1").amenities
+      end
+
       test "#all nests a place where it is and keeps the game's map parent beside it" do
         loader.all
 

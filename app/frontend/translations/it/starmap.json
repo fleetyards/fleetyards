@@ -16,9 +16,36 @@
       "search": "Trova un luogo",
       "noMatches": "Nessun luogo ha questo nome.",
       "reframe": "Ricentra",
+      "route": {
+        "ship": "Nave",
+        "drive": "Motore quantico",
+        "stockDrive": "Motore di serie",
+        "from": "Da",
+        "to": "A",
+        "swap": "Scambia partenza e destinazione",
+        "useFocused": "Usa %{name}",
+        "pickShip": "Scegli una nave per pianificare una rotta con il suo motore quantico.",
+        "loading": "Caricamento della nave e dei sistemi…",
+        "noDrive": "Questa nave non ha un motore quantico.",
+        "pickEnds": "Scegli dove inizia e finisce la rotta.",
+        "noRoute": "Nessuna sequenza di salti quantici collega questi luoghi.",
+        "distance": "Distanza",
+        "time": "Tempo",
+        "fuel": "Carburante",
+        "scu": "%{value} SCU",
+        "exceedsTank": "Nessuna sequenza di salti ci arriva con un pieno, nemmeno rifornendosi dove ci sono servizi per veicoli: la rotta consuma %{needed} di carburante quantico e il serbatoio ne contiene %{tank}.",
+        "tunnel": "Tunnel di salto",
+        "refuel": "Fai rifornimento a %{name}",
+        "missingLoadout": "Questa configurazione non è tua, quindi la rotta usa il motore di serie della nave.",
+        "loadoutsFailed": "Non è stato possibile caricare le tue configurazioni, quindi la rotta usa il motore di serie della nave.",
+        "note": "I tempi includono l'avvio di ogni salto e il raffreddamento tra un salto e l'altro, non il rifornimento. Ogni salto aggira stelle, pianeti e lune sul suo percorso, e il serbatoio si riempie dove ci sono servizi per veicoli quando non basterebbe."
+      },
       "panel": {
         "show": "Mostra l'elenco dei luoghi",
-        "hide": "Nascondi l'elenco dei luoghi"
+        "hide": "Nascondi l'elenco dei luoghi",
+        "tabs": "Sezioni del pannello",
+        "places": "Luoghi",
+        "route": "Rotta"
       },
       "units": {
         "gm": "%{value} Gm",

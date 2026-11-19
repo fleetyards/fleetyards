@@ -21,6 +21,7 @@ const place = (
   shownWithParentOnly: false,
   alwaysShown: false,
   quantumTravelDestination: true,
+  amenities: [],
   lagrangePoint: false,
   gateway: false,
   color: null,

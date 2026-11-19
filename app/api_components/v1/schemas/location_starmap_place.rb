@@ -24,6 +24,9 @@ module V1
           shownWithParentOnly: {type: :boolean},
           alwaysShown: {type: :boolean},
           quantumTravelDestination: {type: :boolean},
+          # What the game's starmap lists the place as offering: where vehicle
+          # services are, a ship can refuel.
+          amenities: {type: :array, items: ::Shared::V1::Schemas::Enums::LocationAmenityEnum},
           lagrangePoint: {type: :boolean},
           gateway: {type: :boolean},
           color: {type: [:string, :null]},
@@ -47,7 +50,7 @@ module V1
         additionalProperties: false,
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
-          shownWithParentOnly alwaysShown quantumTravelDestination lagrangePoint
+          shownWithParentOnly alwaysShown quantumTravelDestination amenities lagrangePoint
           gateway color unstable bodyType docking texture elevation clouds ground
         ]
       })

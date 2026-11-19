@@ -70,7 +70,8 @@ module ScData
           position: item["position"],
           radius: item["radius"],
           jurisdiction: item["jurisdiction"],
-          lawful: item["lawful"]
+          lawful: item["lawful"],
+          amenities: Array.wrap(item["amenities"])
         }
       end
 

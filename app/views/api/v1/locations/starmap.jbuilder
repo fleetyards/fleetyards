@@ -18,6 +18,7 @@ json.places @places do |place|
   json.shown_with_parent_only location.shown_with_parent_only
   json.always_shown location.always_shown
   json.quantum_travel_destination location.quantum_travel_destination
+  json.amenities location.amenities
   json.lagrange_point place.lagrange_point
   json.gateway place.gateway
   json.color location.drawn_color

@@ -14,10 +14,10 @@ import {
 import { CONTAINER_DEFS } from "@/frontend/components/CargoGridViewer/constants";
 import { useLoadoutLines } from "@/frontend/components/Compare/sections/lines";
 import { useI18n } from "@/shared/composables/useI18n";
+import { findQuantumDrive } from "@/frontend/utils/quantumDrive";
 import { fociText } from "@/shared/utils/Foci";
 import {
   HardpointCategoryEnum,
-  type ComponentQuantumDrive,
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
@@ -354,27 +354,6 @@ export const useModelSections = (
   );
 
   // ── Fuel & quantum ──────────────────────────────────────────────────────────
-  const findQuantumDrive = (
-    hardpoints: Hardpoint[] | undefined,
-  ): ComponentQuantumDrive | undefined => {
-    for (const hardpoint of hardpoints || []) {
-      if (
-        hardpoint.category === HardpointCategoryEnum.QUANTUMDRIVE &&
-        hardpoint.component?.typeData
-      ) {
-        return hardpoint.component.typeData as ComponentQuantumDrive;
-      }
-
-      const nested = findQuantumDrive(hardpoint.hardpoints);
-
-      if (nested) {
-        return nested;
-      }
-    }
-
-    return undefined;
-  };
-
   // Max jump range on a full tank: quantum fuel (SCU) × 1000 / the drive's per-Gm
   // consumption (mSCU/Gm). Matches erkul.games and spviewer.eu.
   const quantumRange = (model: Model) => {

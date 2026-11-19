@@ -16,6 +16,19 @@ class Location < ApplicationRecord
     anomaly jump_point point_of_interest nav_point other
   ].freeze
 
+  # What the game's starmap lists a place as offering, as it names them.
+  # Vehicle services are where a ship is refuelled, repaired and restocked.
+  AMENITIES = %w[
+    vehicle_services docking refinery garage hospital clinic
+    hangar_s hangar_m hangar_l hangar_xl
+    landing_pad_s landing_pad_m landing_pad_l landing_pad_xl
+    buy_weapons buy_ship_items_and_weapons buy_armor buy_clothing
+    buy_vehicles rent_vehicles buy_and_rent_vehicles food_court
+    commodity_trading_freight_elevator commodity_trading_loading_dock freight_elevator
+    notice_board career_board_academy_of_sciences career_board_interstellar_transport_guild
+    career_board_mercenary_guild career_board_united_resource_workers special_event
+  ].freeze
+
   belongs_to :parent, class_name: "Location", optional: true, inverse_of: :children
   belongs_to :map_parent, class_name: "Location", optional: true
   belongs_to :system, class_name: "Location", optional: true

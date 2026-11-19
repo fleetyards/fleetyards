@@ -16,9 +16,36 @@
       "search": "Trouver un lieu",
       "noMatches": "Aucun lieu ne porte ce nom.",
       "reframe": "Recentrer",
+      "route": {
+        "ship": "Vaisseau",
+        "drive": "Propulseur quantique",
+        "stockDrive": "Propulseur d'origine",
+        "from": "Départ",
+        "to": "Arrivée",
+        "swap": "Inverser départ et arrivée",
+        "useFocused": "Utiliser %{name}",
+        "pickShip": "Choisissez un vaisseau pour planifier un itinéraire avec son propulseur quantique.",
+        "loading": "Chargement du vaisseau et des systèmes…",
+        "noDrive": "Ce vaisseau n'a pas de propulseur quantique.",
+        "pickEnds": "Choisissez le départ et l'arrivée de l'itinéraire.",
+        "noRoute": "Aucune suite de sauts quantiques ne relie ces lieux.",
+        "distance": "Distance",
+        "time": "Durée",
+        "fuel": "Carburant",
+        "scu": "%{value} SCU",
+        "exceedsTank": "Aucune suite de sauts n'y arrive avec un plein, même en faisant le plein là où il y a des services aux véhicules : l'itinéraire consomme %{needed} de carburant quantique et le réservoir en contient %{tank}.",
+        "tunnel": "Tunnel de saut",
+        "refuel": "Faire le plein à %{name}",
+        "missingLoadout": "Cette configuration ne vous appartient pas, l'itinéraire utilise donc le propulseur d'origine du vaisseau.",
+        "loadoutsFailed": "Vos configurations n'ont pas pu être chargées, l'itinéraire utilise donc le propulseur d'origine du vaisseau.",
+        "note": "Les durées comprennent la mise en route de chaque saut et le refroidissement entre deux sauts, pas le plein. Chaque saut contourne les étoiles, planètes et lunes sur son chemin, et le plein est refait là où il y a des services aux véhicules quand le réservoir ne suffirait pas."
+      },
       "panel": {
         "show": "Afficher la liste des lieux",
-        "hide": "Masquer la liste des lieux"
+        "hide": "Masquer la liste des lieux",
+        "tabs": "Sections du panneau",
+        "places": "Lieux",
+        "route": "Itinéraire"
       },
       "units": {
         "gm": "%{value} Gm",

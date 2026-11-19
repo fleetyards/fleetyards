@@ -59,6 +59,17 @@ class Api::V1::LocationsStarmapTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/starmap lists what a place offers" do
+    @gateway.builds.sole.update!(amenities: %w[vehicle_services docking])
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      places = parsed_body["places"].index_by { |place| place["name"] }
+
+      assert_equal %w[vehicle_services docking], places.dig("Pyro Gateway", "amenities")
+      assert_equal [], places.dig("Hurston", "amenities")
+    end
+  end
+
   test "GET /locations/{slug}/starmap carries how a body is drawn" do
     @hurston.update!(color: "#9c846e", body_type: "gas_giant")
     @hurston.builds.sole.update!(body_type: "gas_giant")

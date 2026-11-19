@@ -16,9 +16,36 @@
       "search": "尋找地點",
       "noMatches": "沒有叫這個名字的地點。",
       "reframe": "重新置中",
+      "route": {
+        "ship": "艦船",
+        "drive": "量子引擎",
+        "stockDrive": "原廠引擎",
+        "from": "起點",
+        "to": "終點",
+        "swap": "交換起點和終點",
+        "useFocused": "使用 %{name}",
+        "pickShip": "選擇一艘艦船，用它的量子引擎規劃航線。",
+        "loading": "正在載入艦船和星系…",
+        "noDrive": "這艘艦船沒有量子引擎。",
+        "pickEnds": "選擇航線的起點和終點。",
+        "noRoute": "沒有一串量子躍遷能連接這兩個地點。",
+        "distance": "距離",
+        "time": "時間",
+        "fuel": "燃料",
+        "scu": "%{value} SCU",
+        "exceedsTank": "即使在有載具服務的地方加油，也沒有一串躍遷能用一箱燃料到達：這條航線消耗 %{needed} 量子燃料，油箱只能裝 %{tank}。",
+        "tunnel": "跳躍隧道",
+        "refuel": "在 %{name} 加油",
+        "missingLoadout": "該配置不屬於你，因此航線使用艦船的原廠引擎。",
+        "loadoutsFailed": "無法載入你的配置，因此航線使用艦船的原廠引擎。",
+        "note": "時間包含每次躍遷的啟動和躍遷之間的冷卻，不含加油。每次躍遷都會繞開途中的恆星、行星和衛星；燃料不夠時，會在有載具服務的地方加滿。"
+      },
       "panel": {
         "show": "顯示地點列表",
-        "hide": "隱藏地點列表"
+        "hide": "隱藏地點列表",
+        "tabs": "面板分區",
+        "places": "地點",
+        "route": "航線"
       },
       "units": {
         "gm": "%{value} Gm",

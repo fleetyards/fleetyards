@@ -16,9 +16,36 @@
       "search": "Find a place",
       "noMatches": "Nothing here goes by that name.",
       "reframe": "Recentre",
+      "route": {
+        "ship": "Ship",
+        "drive": "Quantum drive",
+        "stockDrive": "Stock drive",
+        "from": "From",
+        "to": "To",
+        "swap": "Swap start and destination",
+        "useFocused": "Use %{name}",
+        "pickShip": "Pick a ship to plan a route with its quantum drive.",
+        "loading": "Loading the ship and the systems…",
+        "noDrive": "This ship has no quantum drive.",
+        "pickEnds": "Pick where the route starts and ends.",
+        "noRoute": "No chain of quantum jumps connects these places.",
+        "distance": "Distance",
+        "time": "Time",
+        "fuel": "Fuel",
+        "scu": "%{value} SCU",
+        "exceedsTank": "No chain of jumps gets there on one tank, even refuelling where vehicle services are: the route burns %{needed} of quantum fuel and the tank holds %{tank}.",
+        "tunnel": "Jump tunnel",
+        "refuel": "Refuel at %{name}",
+        "missingLoadout": "That loadout is not one of yours, so the route uses the ship's stock drive.",
+        "loadoutsFailed": "Your loadouts could not be loaded, so the route uses the ship's stock drive.",
+        "note": "Times include each jump's spool-up and the cooldown between jumps, not refuelling. Every jump goes around the stars, planets and moons in its way, and the tank is refilled where vehicle services are when it would not last."
+      },
       "panel": {
         "show": "Show the place list",
-        "hide": "Hide the place list"
+        "hide": "Hide the place list",
+        "tabs": "Panel sections",
+        "places": "Places",
+        "route": "Route"
       },
       "units": {
         "gm": "%{value} Gm",
