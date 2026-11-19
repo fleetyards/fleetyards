@@ -12,7 +12,12 @@ class Feedback < ApplicationRecord
 
   validates :message, presence: true, length: {maximum: MESSAGE_MAX_LENGTH}
   validates :page_path, length: {maximum: 2048}
-  validates :feature_name, inclusion: {in: ->(_) { FeatureFlags::Registry.current.names }}, allow_nil: true
+  # Only when it is set: a flag that graduates leaves the registry, and its old
+  # feedback still has to be resolvable.
+  validates :feature_name, inclusion: {in: ->(_) { FeatureFlags::Registry.current.names }},
+    allow_nil: true, if: :feature_name_changed?
+
+  normalizes :feature_name, :page_path, with: ->(value) { value.presence }
 
   after_create_commit :notify_admins
 
@@ -38,19 +43,23 @@ class Feedback < ApplicationRecord
     %w[user]
   end
 
-  # One row for the open queue rather than one per message, so a busy day
-  # updates a count instead of filling every admin's inbox.
+  # One row rather than one per message, so a busy day rewrites it instead of
+  # filling every admin's inbox. It names no count: resolving does not touch
+  # it, so a count would go stale.
+  #
+  # The feedback is saved by then, so a failure here must not answer the
+  # request with an error that invites sending it again.
   private def notify_admins
-    waiting = self.class.open.count
-
     AdminNotification.notify!(
       type: :feedback,
-      title: "#{waiting} open #{"feedback message".pluralize(waiting)}",
+      title: "New feedback",
       body: "Most recent from #{user.username}#{" about #{feature_name}" if feature_name}",
       severity: :info,
       link: "/feedback?aasmStateEq=open",
       record: self,
       dedupe_key: "feedback"
     )
+  rescue => e
+    Appsignal.report_error(e)
   end
 end

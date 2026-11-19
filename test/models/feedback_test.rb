@@ -12,7 +12,7 @@ class FeedbackTest < ActiveSupport::TestCase
 
     rows = AdminNotification.where(notification_type: "feedback")
     assert_equal [reader.id], rows.pluck(:admin_user_id)
-    assert_equal "2 open feedback messages", rows.first.title
+    assert_equal "New feedback", rows.first.title
     assert_empty AdminNotification.where(admin_user: other)
   end
 
@@ -40,5 +40,26 @@ class FeedbackTest < ActiveSupport::TestCase
     assert feedback.reload.open?
     assert_nil feedback.resolved_by_id
     assert_nil feedback.resolved_at
+  end
+
+  test "feedback about a flag that has left the registry can still be resolved" do
+    feedback = create(:feedback, feature_name: FeatureFlags::Registry.current.names.first)
+    feedback.update_column(:feature_name, "graduated-flag")
+
+    assert feedback.reload.resolve!
+  end
+
+  test "a blank feature or page is stored as none" do
+    feedback = create(:feedback, feature_name: "", page_path: "")
+
+    assert_nil feedback.feature_name
+    assert_nil feedback.page_path
+  end
+
+  test "a failing admin notification does not fail the feedback" do
+    AdminNotification.stubs(:notify!).raises(ActiveRecord::LockWaitTimeout)
+    Appsignal.expects(:report_error)
+
+    assert create(:feedback).persisted?
   end
 end
