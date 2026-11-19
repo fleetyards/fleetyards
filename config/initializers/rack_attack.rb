@@ -74,6 +74,14 @@ Rack::Attack.throttle("oauth-application-registration", limit: 5, period: 1.hour
   end
 end
 
+# Every message lands in an admin's queue and rewrites their notification, and
+# the blanket API throttle above would let one account post thousands an hour.
+Rack::Attack.throttle("feedback", limit: 20, period: 1.hour) do |req|
+  if req.post? && req.path.match?(%r{^(/api)?/v\d+/feedback/?$})
+    account_bucket.call(req) || client_ip.call(req)
+  end
+end
+
 # Ko-fi posts one request per payment, which at any plausible volume is a
 # handful a day. The endpoint is unauthenticated by nature -- the token is in
 # the body, so a wrong one still costs a JSON parse -- and this caps what that
