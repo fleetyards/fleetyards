@@ -81,3 +81,48 @@ it:
       url: URL
     tax_excluded: IVA esclusa
     unknown: Sconosciuto
+    dock_capacity:
+      ship:
+        extra_extra_small:
+          one: "%{count} piattaforma snub"
+          other: "%{count} piattaforme snub"
+        extra_small:
+          one: "%{count} piattaforma molto piccola"
+          other: "%{count} piattaforme molto piccole"
+        small:
+          one: "%{count} piattaforma piccola"
+          other: "%{count} piattaforme piccole"
+        medium:
+          one: "%{count} piattaforma media"
+          other: "%{count} piattaforme medie"
+        large:
+          one: "%{count} piattaforma grande"
+          other: "%{count} piattaforme grandi"
+        extra_large:
+          one: "%{count} piattaforma molto grande"
+          other: "%{count} piattaforme molto grandi"
+        capital:
+          one: "%{count} piattaforma capitale"
+          other: "%{count} piattaforme capitali"
+      vehicle:
+        extra_extra_small:
+          one: "%{count} posto veicolo minuscolo"
+          other: "%{count} posti veicolo minuscoli"
+        extra_small:
+          one: "%{count} posto veicolo molto piccolo"
+          other: "%{count} posti veicolo molto piccoli"
+        small:
+          one: "%{count} posto veicolo piccolo"
+          other: "%{count} posti veicolo piccoli"
+        medium:
+          one: "%{count} posto veicolo medio"
+          other: "%{count} posti veicolo medi"
+        large:
+          one: "%{count} posto veicolo grande"
+          other: "%{count} posti veicolo grandi"
+        extra_large:
+          one: "%{count} posto veicolo molto grande"
+          other: "%{count} posti veicolo molto grandi"
+        extra_extra_large:
+          one: "%{count} posto veicolo enorme"
+          other: "%{count} posti veicolo enormi"

@@ -25,7 +25,7 @@ module Uex
     # Our commodities UEX has no row for: mission crates, harvestables, creature
     # parts and event items it does not trade. Left out of the unmapped report
     # so that report only shows what is new. The name match still runs over
-    # them, so one UEX starts listing maps itself.
+    # them, so one that UEX starts listing maps itself.
     UNTRACKED = %w[
       items_commodities_amiantpod
       items_commodities_ammocrate

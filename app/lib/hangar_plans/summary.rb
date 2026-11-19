@@ -14,7 +14,15 @@ module HangarPlans
     Issue = Data.define(:kind, :name, :slot_id)
     # One line of the buy list: the same purchase made for several slots, with
     # what all of them cost together and how many of them a buy-back token pays.
-    Purchase = Data.define(:kind, :from_model, :model, :name, :price, :quantity, :token_count, :slot_ids, :not_on_sale)
+    Purchase = Data.define(:kind, :from_model, :model, :name, :price, :quantity, :token_count, :slot_ids, :not_on_sale, :cart_items)
+    # What RSI's cart takes for one unit: a store SKU, an upgrade (from the
+    # store, or bought back when it names a pledge) or a bought-back pledge.
+    CartItem = Data.define(:kind, :sku_id, :from_ship_id, :to_ship_id, :to_sku_id, :pledge_id) do
+      def initialize(kind:, sku_id: nil, from_ship_id: nil, to_ship_id: nil, to_sku_id: nil, pledge_id: nil)
+        super
+      end
+    end
+    CART_ITEM_KINDS = %w[sku upgrade buyback].freeze
 
     PURCHASE_KINDS = %w[ccu buyback ship ingame extra].freeze
     START_PURCHASE_KINDS = {"store" => "ship", "buyback" => "buyback", "melted" => "buyback", "ingame" => "ingame"}.freeze
@@ -99,8 +107,9 @@ module HangarPlans
         lines = {}
         decided_routes.each do |slot, candidate, acquisition|
           route_parts(acquisition, candidate).select { |part| part[:kind] }.each do |part|
-            line = lines[part[:key]] ||= {**part.except(:key, :record, :price), prices: [], token_count: 0, slot_ids: []}
+            line = lines[part[:key]] ||= {**part.except(:key, :record, :price, :cart), prices: [], token_count: 0, slot_ids: [], cart_items: []}
             line[:prices] << part[:price]
+            line[:cart_items] << part[:cart] if part[:cart] && !part[:not_on_sale]
             line[:token_count] += 1 if tokened_buybacks.include?(part[:record])
             line[:slot_ids] << slot.id unless line[:slot_ids].include?(slot.id)
           end
@@ -108,6 +117,8 @@ module HangarPlans
 
         lines.values.sort_by.with_index { |line, index| [PURCHASE_KINDS.index(line[:kind]), index] }.map do |line|
           prices = line.delete(:prices)
+          # Every unit or none: a cart holding part of a line would read as done.
+          line[:cart_items] = [] if line[:cart_items].size != prices.size
           Purchase.new(**line, quantity: prices.size, price: (prices.sum if prices.none?(&:nil?)))
         end
       end
@@ -128,7 +139,7 @@ module HangarPlans
       parts = [{
         key: [start_kind, nil, start_model.id], kind: start_kind, from_model: nil, model: start_model,
         name: start_model.name, record: acquisition, price: snapshot ? acquisition.snapshot_price : acquisition.price,
-        not_on_sale: start_kind == "ship" && !start_model.on_sale
+        not_on_sale: start_kind == "ship" && !start_model.on_sale, cart: start_cart_item(acquisition)
       }]
 
       acquisition.upgrade_steps.each do |step|
@@ -136,7 +147,8 @@ module HangarPlans
         parts << {
           key: [kind, step.origin_model.id, step.target_model.id], kind:, from_model: step.origin_model,
           model: step.target_model, name: "#{step.origin_model.name} → #{step.target_model.name}", record: step,
-          price: snapshot ? step.snapshot_price : step.price, not_on_sale: kind == "ccu" && !step.target_model.on_sale
+          price: snapshot ? step.snapshot_price : step.price, not_on_sale: kind == "ccu" && !step.target_model.on_sale,
+          cart: step_cart_item(step)
         }
       end
 
@@ -151,6 +163,35 @@ module HangarPlans
       end
 
       parts
+    end
+
+    # A melted ship has no buy-back pledge until it is melted, and one earned
+    # in game is not sold for money at all.
+    private def start_cart_item(acquisition)
+      case acquisition.start_kind
+      when "store"
+        sku_id = acquisition.start_model.rsi_standalone_sku_id
+        CartItem.new(kind: "sku", sku_id:) if sku_id
+      when "buyback"
+        pledge_id = acquisition.buyback_pledge&.rsi_pledge_id
+        CartItem.new(kind: "buyback", pledge_id:) if pledge_id
+      end
+    end
+
+    private def step_cart_item(step)
+      case step.source_kind
+      when "store"
+        ids = [step.origin_model.rsi_id, step.target_model.rsi_id, step.target_model.rsi_upgrade_sku_id]
+        return if ids.any?(&:nil?)
+
+        CartItem.new(kind: "upgrade", from_ship_id: ids[0], to_ship_id: ids[1], to_sku_id: ids[2])
+      when "buyback"
+        pledge = step.buyback_pledge
+        ids = [pledge&.upgrade_from_ship_id, pledge&.upgrade_to_ship_id, pledge&.upgrade_to_sku_id]
+        return if ids.any?(&:nil?)
+
+        CartItem.new(kind: "upgrade", from_ship_id: ids[0], to_ship_id: ids[1], to_sku_id: ids[2], pledge_id: pledge.rsi_pledge_id)
+      end
     end
 
     private def extras_of(candidate)

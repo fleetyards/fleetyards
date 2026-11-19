@@ -40,6 +40,10 @@ module Rsi
       pledge_store_loader.changed_fields
     end
 
+    def without_standalone
+      pledge_store_loader.without_standalone
+    end
+
     def sync_model(data)
       model_for_paint = find_model_for_paint(data)
       model = if model_for_paint.present?

@@ -721,8 +721,13 @@ watch(
           </button>
         </div>
 
-        <Teleport defer to="#header-right">
-          <div class="starmap__controls">
+        <!-- A phone's header has room for its search and nothing beside it,
+             so there the controls stand down the map's edge instead. -->
+        <Teleport defer to="#header-right" :disabled="mobile">
+          <div
+            class="starmap__controls"
+            :class="{ 'starmap__controls--on-map': mobile }"
+          >
             <div
               class="starmap__group"
               role="group"
@@ -873,8 +878,15 @@ $inset: var(--fullscreen-header-height, 0px);
 $gap: 16px;
 $rail: 300px;
 $card-height: 96px;
+$card-height-mobile: 120px;
+// The control column down a phone's map: one icon button in its group's frame.
+$controls-width: 48px;
+// What sits at the map's bottom clears the navigation a phone floats over it.
+$bottom: var(--starmap-bottom);
 
 .starmap {
+  --starmap-bottom: #{$gap};
+
   position: relative;
   display: flex;
   flex: 1;
@@ -949,7 +961,7 @@ $card-height: 96px;
     position: absolute;
     z-index: $overlay;
     top: calc($inset + $gap);
-    bottom: $gap;
+    bottom: $bottom;
     transition: bottom 0.2s ease;
     left: $gap;
     display: flex;
@@ -1054,10 +1066,22 @@ $card-height: 96px;
   &__controls {
     display: flex;
     gap: 8px;
+
+    &--on-map {
+      position: absolute;
+      z-index: $overlay;
+      top: calc($inset + $gap);
+      right: $gap;
+      flex-direction: column;
+
+      .starmap__group {
+        flex-direction: column;
+      }
+    }
   }
 
   &--card &__column {
-    bottom: calc($gap * 2 + #{$card-height});
+    bottom: calc($bottom + #{$gap + $card-height});
   }
 
   &__tabs {
@@ -1143,7 +1167,7 @@ $card-height: 96px;
 
   // The card of what is focused: wide and low, at the bottom left.
   &__card {
-    bottom: $gap;
+    bottom: $bottom;
     left: $gap;
     display: flex;
     align-items: center;
@@ -1248,7 +1272,7 @@ $card-height: 96px;
     position: absolute;
     z-index: $overlay - 1;
     right: $gap;
-    bottom: calc($gap + 24px);
+    bottom: calc($bottom + 24px);
     max-width: 420px;
     margin: 0;
     font-size: 0.71875rem;
@@ -1275,14 +1299,73 @@ $card-height: 96px;
   }
 }
 
-@media (width <= 767px) {
+@media (max-width: $desktop-breakpoint) {
+  .starmap {
+    --starmap-bottom: calc(
+      #{$navigation-mobile-height + $navigation-mobile-bottom-offset + 12px} +
+        env(safe-area-inset-bottom)
+    );
+  }
+
+  // The controls stand where it would be.
   .starmap__footnote {
     display: none;
   }
+}
+
+@media (width <= 767px) {
+  .starmap--card .starmap__column {
+    bottom: calc($bottom + #{$gap + $card-height-mobile});
+  }
 
   .starmap__column {
+    right: calc(#{$gap * 2 + $controls-width});
+    width: auto;
+  }
+
+  // Low and full width: the map above it is the point, not the card.
+  .starmap__card {
     right: $gap;
     width: auto;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .starmap__card-globe,
+  .starmap__card-glyph {
+    width: 36px;
+  }
+
+  .starmap__card-globe {
+    height: 36px;
+  }
+
+  .starmap__card-glyph {
+    font-size: 26px;
+  }
+
+  .starmap__card-body {
+    gap: 8px;
+  }
+
+  .starmap__card-name {
+    font-size: 17px;
+  }
+
+  .starmap__facts {
+    gap: 6px 16px;
+
+    dd {
+      margin-top: 2px;
+      font-size: 12.5px;
+    }
+  }
+}
+
+// Too short for the card to stay below the control column.
+@media (width <= 767px) and (height <= 560px) {
+  .starmap__card {
+    right: calc(#{$gap * 2 + $controls-width});
   }
 }
 </style>

@@ -17,6 +17,9 @@ json.carried_by @model.carried_by_with_docks do |entry|
   access_label = entry[:dock].access_label
   json.access_label access_label if access_label.present?
 
+  capacity_label = entry[:dock].display_capacity&.display_label
+  json.capacity_label capacity_label if capacity_label.present?
+
   # Present only for a berth a module brings, which is what makes the carrier
   # conditional rather than a fixture.
   module_name = entry[:dock].model_module_name

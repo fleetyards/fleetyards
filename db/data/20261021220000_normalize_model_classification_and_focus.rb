@@ -43,6 +43,16 @@ class NormalizeModelClassificationAndFocus < ActiveRecord::Migration[8.1]
     TABLES.each do |table|
       touch = (table == "models") ? ", updated_at = NOW()" : ""
 
+      # The string focus has since been dropped; where it is gone there is
+      # nothing of it left to normalise.
+      unless column_exists?(table, :focus)
+        execute <<~SQL.squish
+          UPDATE #{table} SET classification = #{normalized}#{touch}
+          WHERE classification IS DISTINCT FROM #{normalized}
+        SQL
+        next
+      end
+
       execute <<~SQL.squish
         UPDATE #{table} SET classification = #{normalized}, focus = #{focus}#{touch}
         WHERE classification IS DISTINCT FROM #{normalized} OR focus IS DISTINCT FROM #{focus}

@@ -200,6 +200,22 @@
         "usesToken": {
           "one": "%{count} paid with a buy-back token",
           "other": "%{count} paid with buy-back tokens"
+        },
+        "cart": {
+          "add": "Add to RSI cart",
+          "addAll": "Add all to RSI cart",
+          "addUnit": "Add #%{number} to RSI cart",
+          "added": "In your RSI cart",
+          "buybackAlone": "A buy-back replaces everything in your RSI cart, so each one goes in on its own.",
+          "open": "Open your RSI cart",
+          "noSession": "Sign in on robertsspaceindustries.com, then try again.",
+          "failure": "The Sync extension could not reach the RSI cart.",
+          "errors": {
+            "unavailable": "RSI does not sell this right now.",
+            "buybackInvalid": "RSI no longer offers this buy-back.",
+            "buybackNotAlone": "A buy-back is in your RSI cart. Buy it or remove it first.",
+            "failed": "RSI did not take it."
+          }
         }
       },
       "comparison": {
@@ -319,6 +335,8 @@
           "other": "%{count} ships are now other models."
         },
         "added": "New in your hangar: %{ships}",
+        "arrived": "Now in your hangar as planned: %{ships}",
+        "heldUpgrades": "Upgrades now in your hangar, no longer to buy: %{upgrades}",
         "prices": "Prices changed: %{before} when planned, %{now} today.",
         "rebase": "Update from hangar"
       },

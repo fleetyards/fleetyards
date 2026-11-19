@@ -89,6 +89,53 @@ class DockCapacityTest < ActiveSupport::TestCase
     assert_equal "Medium (M)", entry.size_label
   end
 
+  test "the label counts the flagged entry's class" do
+    dock = create(:dock, ship_size: :small)
+    create(:dock_capacity, dock:, ladder: :ship, size: "large", quantity: 1)
+    create(:dock_capacity, dock:, ladder: :ship, size: "medium", quantity: 2, display: true)
+
+    assert_equal "2 medium pads", dock.reload.display_label
+  end
+
+  test "a single entry reads in the singular" do
+    entry = build(:dock_capacity, ladder: :vehicle, size: "large", quantity: 1)
+
+    assert_equal "1 large vehicle bay", entry.display_label
+  end
+
+  test "the label follows the reader's locale" do
+    entry = build(:dock_capacity, ladder: :ship, size: "medium", quantity: 2)
+
+    I18n.with_locale(:de) do
+      assert_equal "2 mittelgroße Pads", entry.display_label
+    end
+  end
+
+  # Read from the backend rather than through `I18n.t`, which would fall back
+  # to English and hide a missing locale.
+  test "every class on both ladders has a label in every locale" do
+    translations = I18n.backend.translations(do_init: true)
+
+    DockCapacity::LADDER_CLASSES.each do |ladder, sizes|
+      sizes.each do |size|
+        I18n.available_locales.each do |locale|
+          forms = translations.dig(locale, :labels, :dock_capacity, ladder.to_sym, size.to_sym)
+
+          assert forms&.key?(:one) && forms.key?(:other), "#{locale} has no label for #{ladder} #{size}"
+        end
+      end
+    end
+  end
+
+  # A class says nothing about how many, so an undescribed berth keeps the
+  # pad class it always showed instead of claiming a count.
+  test "a dock without a flagged entry reads as its pad class" do
+    dock = create(:dock, ship_size: :small)
+    create(:dock_capacity, dock:, ladder: :ship, size: "medium", quantity: 2)
+
+    assert_equal "Small (S)", dock.reload.display_label
+  end
+
   # `Model.vehicle_size_filters` humanizes the curated ladder, so this matches
   # what the filter already shows rather than inventing a second wording.
   test "a vehicle class reads as the filter shows it" do

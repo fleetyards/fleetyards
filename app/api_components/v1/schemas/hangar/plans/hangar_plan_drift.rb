@@ -14,12 +14,14 @@ module V1
               missingSources: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanSourceIssue},
               changedSources: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanSourceIssue},
               newVehicles: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanNewVehicle},
+              arrivals: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanArrival},
+              heldUpgrades: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanHeldUpgrade},
               previousTotal: {type: :number, description: "Net cost of the decided routes as priced when planned"},
               currentTotal: {type: :number, description: "Net cost of the decided routes at today's prices"},
               drifted: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[basedOnAt missingSources changedSources newVehicles previousTotal currentTotal drifted]
+            required: %w[basedOnAt missingSources changedSources newVehicles arrivals heldUpgrades previousTotal currentTotal drifted]
           })
         end
       end

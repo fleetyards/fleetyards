@@ -200,10 +200,63 @@
       "groups": "Groupes",
       "classifications": "Classifications",
       "features": {
+        "onFor": "Actif pour",
+        "everyone": "Tout le monde",
+        "nobody": "Personne",
+        "openToEveryone": "Ouvrir à tous",
+        "turnOff": "Désactiver",
+        "turnOffQuestion": "Supprimer toutes les règles ?",
+        "filter": "Filtrer les flags",
+        "usersTab": "Utilisateurs · %{count}",
+        "fleetsTab": "Flottes · %{count}",
+        "historyShowAll": "Afficher %{count} de plus",
+        "summary": {
+          "percentOfUsers": "%{percent} % des utilisateurs",
+          "percentOfRequests": "%{percent} % des requêtes",
+          "users": {
+            "one": "%{count} utilisateur",
+            "other": "%{count} utilisateurs"
+          },
+          "fleets": {
+            "one": "%{count} flotte",
+            "other": "%{count} flottes"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "Groupes",
+            "hint": "Tous les membres d'un groupe choisi l'obtiennent."
+          },
+          "percentageOfActors": {
+            "label": "Part des utilisateurs",
+            "hint": "Les mêmes utilisateurs restent inclus quand vous l'augmentez."
+          },
+          "percentageOfTime": {
+            "label": "Part des requêtes",
+            "hint": "Aléatoire à chaque vérification : un utilisateur alterne entre activé et désactivé."
+          },
+          "optIn": {
+            "label": "Activation libre",
+            "hint": "Permet à chacun de l'activer soi-même.",
+            "userInfo": "Dans Paramètres › Fonctionnalités.",
+            "fleetInfo": "Dans les paramètres de la flotte, pour ses administrateurs."
+          }
+        },
+        "columns": {
+          "state": "État",
+          "flag": "Flag",
+          "lastChange": "Dernière modification"
+        },
         "stateOn": "Activé",
         "stateOff": "Désactivé",
         "stateConditional": "Conditionnel",
-        "openFor": "Ouvert depuis %{days} jours",
+        "openFor": {
+          "zero": "Ouvert depuis aujourd'hui",
+          "one": "Ouvert depuis %{count} jour",
+          "other": "Ouvert depuis %{count} jours"
+        },
+        "emptyRegistry": "Aucun flag n'est enregistré.",
+        "loadError": "Impossible de charger les feature flags.",
         "historyEmpty": "Rien n'a encore été enregistré pour cette fonctionnalité.",
         "historyBy": "par %{actor}",
         "sources": {
@@ -214,15 +267,11 @@
           "backfill": "Rétro-rempli"
         },
         "selfService": "Libre-service",
-        "actors": "Acteurs",
         "groups": "Groupes",
-        "noGroups": "Aucun groupe activé pour cette fonctionnalité.",
         "noActors": "Aucun acteur individuel activé pour cette fonctionnalité.",
         "user": "Utilisateur",
         "fleet": "Flotte",
         "actorType": "Type d'acteur",
-        "percentageOfActors": "des acteurs",
-        "percentageOfTime": "du temps",
         "currentState": "État actuel",
         "toggle": "Basculer",
         "permanent": "Permanent",
@@ -247,8 +296,6 @@
         "managedFeatureFleet": "Cette fonctionnalité a été activée pour cette flotte et ne peut pas être modifiée ici.",
         "selfServiceUser": "Les utilisateurs peuvent basculer",
         "selfServiceFleet": "Les admins de flotte peuvent basculer",
-        "globalHint": "Activée, la fonctionnalité est ouverte à tous. Désactivée, toutes les règles sont effacées, y compris les utilisateurs, flottes et groupes ci-dessous.",
-        "selfServiceHint": "Qui peut activer cette fonctionnalité soi-même.",
         "lastChanged": "Dernière modification : %{date}",
         "filterUsers": "Filtrer par nom d'utilisateur",
         "filterFleets": "Filtrer par nom ou SID",

@@ -83,3 +83,48 @@ en:
     unknown: Unknown
     mission_ship:
       placeholder: Unspecified Ship
+    dock_capacity:
+      ship:
+        extra_extra_small:
+          one: "%{count} snub pad"
+          other: "%{count} snub pads"
+        extra_small:
+          one: "%{count} extra small pad"
+          other: "%{count} extra small pads"
+        small:
+          one: "%{count} small pad"
+          other: "%{count} small pads"
+        medium:
+          one: "%{count} medium pad"
+          other: "%{count} medium pads"
+        large:
+          one: "%{count} large pad"
+          other: "%{count} large pads"
+        extra_large:
+          one: "%{count} extra large pad"
+          other: "%{count} extra large pads"
+        capital:
+          one: "%{count} capital pad"
+          other: "%{count} capital pads"
+      vehicle:
+        extra_extra_small:
+          one: "%{count} extra extra small vehicle bay"
+          other: "%{count} extra extra small vehicle bays"
+        extra_small:
+          one: "%{count} extra small vehicle bay"
+          other: "%{count} extra small vehicle bays"
+        small:
+          one: "%{count} small vehicle bay"
+          other: "%{count} small vehicle bays"
+        medium:
+          one: "%{count} medium vehicle bay"
+          other: "%{count} medium vehicle bays"
+        large:
+          one: "%{count} large vehicle bay"
+          other: "%{count} large vehicle bays"
+        extra_large:
+          one: "%{count} extra large vehicle bay"
+          other: "%{count} extra large vehicle bays"
+        extra_extra_large:
+          one: "%{count} extra extra large vehicle bay"
+          other: "%{count} extra extra large vehicle bays"

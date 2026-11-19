@@ -82,7 +82,7 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     @carrack.update_columns(pledge_price: 650)
 
     bought = travel 1.minute do
-      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan).rebase! }
+      create(:vehicle, user: @user, model: @gladius).tap { HangarPlans::Drift.new(@plan).rebase! }
     end
 
     @plan.reload
@@ -241,5 +241,111 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     HangarPlans::Drift.new(@plan.reload).rebase!
 
     assert_equal "keep", @plan.vehicle_marks.find_by(vehicle_id: hidden.id).mark
+  end
+
+  test "a rebase takes a ship bought back as the route's start while the buy-back list still names it" do
+    pledge = create(:buyback_pledge, user: @user, name: "Standalone Ship - Carrack")
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+
+    bought = travel 1.minute do
+      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan.reload).rebase! }
+    end
+
+    route.reload
+    assert_equal ["owned", bought, nil], [route.start_kind, route.source_vehicle, route.buyback_pledge]
+    assert_not @plan.reload.vehicle_marks.exists?(vehicle_id: bought.id)
+    assert_not HangarPlans::Drift.new(@plan).drifted?
+  end
+
+  test "a ship bought for a route is listed as carried out rather than as new" do
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store")
+
+    travel 1.minute do
+      bought = create(:vehicle, user: @user, model: @carrack)
+      drift = HangarPlans::Drift.new(@plan.reload)
+
+      assert_equal [[route.id, bought.id]], drift.progress.arrivals.map { |arrival| [arrival.acquisition.id, arrival.vehicle.id] }
+      assert_empty drift.new_vehicles
+      assert_predicate drift, :drifted?
+    end
+  end
+
+  test "a rebase takes a ship waiting for a decision that arrived after the route was planned" do
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store")
+    bought = travel(1.minute) { create(:vehicle, user: @user, model: @carrack) }
+    travel(2.minutes) { HangarPlanVehicleMark.write(@plan, [bought], "pending") }
+    @plan.update!(based_on_vehicle_ids: @plan.live_vehicles.pluck(:id))
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_equal ["owned", bought], [route.reload.start_kind, route.source_vehicle]
+  end
+
+  test "a rebase leaves a route to buy alone for a ship that was there before it" do
+    waiting = create(:vehicle, user: @user, model: @carrack)
+    HangarPlanVehicleMark.write(@plan, [waiting], "pending")
+    @plan.update!(based_on_vehicle_ids: @plan.live_vehicles.pluck(:id))
+    candidate = travel(1.minute) { @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack) }
+    route = travel(1.minute) { @plan.acquisitions.create!(candidate:, start_kind: "store") }
+
+    travel(2.minutes) { HangarPlans::Drift.new(@plan.reload).rebase! }
+
+    assert_equal "store", route.reload.start_kind
+  end
+
+  test "a rebase takes an upgrade to buy from the hangar once the user holds it" do
+    cutlass = create(:model, name: "Cutlass", pledge_price: 100)
+    candidate = @plan.slots.create!(label: "Hauler").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.build(candidate:, start_kind: "store", start_model: @gladius)
+    first = route.upgrade_steps.build(source_kind: "store", origin_model: @gladius, target_model: cutlass, position: 0)
+    second = route.upgrade_steps.build(source_kind: "store", origin_model: cutlass, target_model: @carrack, position: 1)
+    route.save!
+    held = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Cutlass to Carrack")
+
+    drift = HangarPlans::Drift.new(@plan.reload)
+
+    assert_equal [[second.id, held.id]], drift.progress.held_upgrades.map { |upgrade| [upgrade.step.id, upgrade.item.id] }
+    assert_predicate drift, :drifted?
+
+    drift.rebase!
+
+    assert_equal ["store", nil], first.reload.slice(:source_kind, :hangar_pledge_item_id).values
+    assert_equal ["owned_ccu", held.id, 0], second.reload.slice(:source_kind, :hangar_pledge_item_id, :price_snapshot).values
+    assert_not HangarPlans::Drift.new(@plan.reload).drifted?
+  end
+
+  test "a held upgrade pays for as many steps as the user holds of it" do
+    held = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Gladius to Carrack", quantity: 1)
+    steps = 2.times.map do |index|
+      candidate = @plan.slots.create!(label: "Explorer #{index}").candidates.create!(model: @carrack)
+      route = @plan.acquisitions.build(candidate:, start_kind: "store", start_model: @gladius)
+      route.upgrade_steps.build(source_kind: "store", origin_model: @gladius, target_model: @carrack, position: 0)
+      route.save!
+      route.upgrade_steps.first
+    end
+
+    HangarPlans::Drift.new(@plan.reload).rebase!
+
+    assert_equal [["owned_ccu", held.id], ["store", nil]], steps.map { |step| step.reload.slice(:source_kind, :hangar_pledge_item_id).values }
+  end
+
+  test "an upgrade bought back is taken from the hangar rather than flagged as gone" do
+    pledge = create(:buyback_pledge, user: @user, kind: "upgrade", name: "Upgrade - Gladius to Carrack")
+    candidate = @plan.slots.create!(label: "Explorer").candidates.create!(model: @carrack)
+    route = @plan.acquisitions.build(candidate:, start_kind: "owned", source_vehicle: @kept)
+    step = route.upgrade_steps.build(source_kind: "buyback", buyback_pledge: pledge, origin_model: @gladius, target_model: @carrack, position: 0)
+    @plan.acquisitions.where(source_vehicle: @kept).where.not(id: route.id).destroy_all
+    route.save!
+    pledge.destroy!
+    create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Gladius to Carrack")
+
+    drift = HangarPlans::Drift.new(@plan.reload)
+
+    assert_empty drift.missing_sources
+    drift.rebase!
+    assert_equal "owned_ccu", step.reload.source_kind
   end
 end

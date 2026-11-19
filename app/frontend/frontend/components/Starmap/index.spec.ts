@@ -4,6 +4,13 @@ const webglAvailable = vi.hoisted(() => vi.fn(() => true));
 
 vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable }));
 
+const mobile = await vi.hoisted(async () => {
+  const { ref } = await import("vue");
+  return ref(false);
+});
+
+vi.mock("@/shared/composables/useMobile", () => ({ useMobile: () => mobile }));
+
 vi.mock("@tresjs/core", () => ({
   TresCanvas: { template: "<div data-test='canvas'><slot /></div>" },
   useLoop: () => ({ onBeforeRender: () => ({ off: () => undefined }) }),
@@ -26,6 +33,7 @@ const mount = () => mountWithDefaults<typeof Starmap>(Starmap, {});
 describe("Starmap", () => {
   // The map's view controls go into the app's header.
   beforeEach(() => {
+    mobile.value = false;
     webglAvailable.mockReturnValue(true);
     document.body.innerHTML = '<div id="header-right"></div>';
   });
@@ -39,6 +47,15 @@ describe("Starmap", () => {
     expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
     expect(inHeader("[data-test='starmap-reset']")).not.toBeNull();
     expect(wrapper.find("[data-test='webgl-fallback']").exists()).toBe(false);
+  });
+
+  it("keeps the controls on the map where a phone's header has no room", async () => {
+    mobile.value = true;
+
+    const wrapper = await mount();
+
+    expect(inHeader("[data-test='starmap-reset']")).toBeNull();
+    expect(wrapper.find("[data-test='starmap-reset']").exists()).toBe(true);
   });
 
   it("starts at the systems, with nothing selected", async () => {

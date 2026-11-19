@@ -179,18 +179,11 @@
         "features": {
           "index": "Flag funzionalità",
           "show": "Dettagli funzionalità",
-          "globalState": "Stato globale",
-          "groups": "Gruppi",
+          "rollout": "Rilascio",
+          "usersAndFleets": "Utenti e flotte",
           "actors": "Attori",
-          "selfService": "Self-service",
-          "percentageOfActors": "Percentuale degli attori",
-          "percentageOfTime": "Percentuale di tempo",
           "addActor": "Aggiungi attore",
-          "history": "Cronologia",
-          "addUser": "Abilita per un utente",
-          "addFleet": "Abilita per una flotta",
-          "enabledUsers": "Utenti abilitati",
-          "enabledFleets": "Flotte abilitate"
+          "history": "Cronologia"
         },
         "rsiApiStatus": {
           "index": "Stato API RSI"

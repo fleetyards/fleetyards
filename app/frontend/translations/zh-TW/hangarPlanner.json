@@ -200,6 +200,22 @@
         "usesToken": {
           "one": "%{count} 項使用回購代幣支付",
           "other": "%{count} 項使用回購代幣支付"
+        },
+        "cart": {
+          "add": "加入 RSI 購物車",
+          "addAll": "全部加入 RSI 購物車",
+          "addUnit": "將第 %{number} 項加入 RSI 購物車",
+          "added": "已在 RSI 購物車中",
+          "buybackAlone": "回購會取代 RSI 購物車中的所有內容，因此每項回購都需單獨加入。",
+          "open": "開啟 RSI 購物車",
+          "noSession": "請先登入 robertsspaceindustries.com，然後再試一次。",
+          "failure": "Sync 擴充功能無法連接 RSI 購物車。",
+          "errors": {
+            "unavailable": "RSI 目前不販售此項。",
+            "buybackInvalid": "RSI 已不再提供此回購。",
+            "buybackNotAlone": "RSI 購物車中已有回購，請先購買或移除。",
+            "failed": "RSI 未接受此項。"
+          }
         }
       },
       "comparison": {
@@ -319,6 +335,8 @@
           "other": "%{count} 艘飛船現在是其他型號。"
         },
         "added": "你的機庫新增：%{ships}",
+        "arrived": "已按計畫進入你的機庫：%{ships}",
+        "heldUpgrades": "升級已在你的機庫中，無需再購買：%{upgrades}",
         "prices": "價格已變動：規劃時為 %{before}，今天為 %{now}。",
         "rebase": "從機庫更新"
       },

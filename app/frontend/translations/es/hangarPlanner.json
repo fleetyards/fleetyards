@@ -200,6 +200,22 @@
         "usesToken": {
           "one": "%{count} pagada con una ficha de recompra",
           "other": "%{count} pagadas con fichas de recompra"
+        },
+        "cart": {
+          "add": "Añadir al carrito de RSI",
+          "addAll": "Añadir todo al carrito de RSI",
+          "addUnit": "Añadir n.º %{number} al carrito de RSI",
+          "added": "En tu carrito de RSI",
+          "buybackAlone": "Una recompra sustituye todo lo que hay en tu carrito de RSI, así que cada una entra por separado.",
+          "open": "Abrir tu carrito de RSI",
+          "noSession": "Inicia sesión en robertsspaceindustries.com y vuelve a intentarlo.",
+          "failure": "La extensión Sync no pudo acceder al carrito de RSI.",
+          "errors": {
+            "unavailable": "RSI no vende esto ahora mismo.",
+            "buybackInvalid": "RSI ya no ofrece esta recompra.",
+            "buybackNotAlone": "Hay una recompra en tu carrito de RSI. Cómprala o quítala primero.",
+            "failed": "RSI no lo aceptó."
+          }
         }
       },
       "comparison": {
@@ -319,6 +335,8 @@
           "other": "%{count} naves son ahora otros modelos."
         },
         "added": "Nuevo en tu hangar: %{ships}",
+        "arrived": "Ya en tu hangar según lo planeado: %{ships}",
+        "heldUpgrades": "Mejoras ya en tu hangar, ya no hay que comprarlas: %{upgrades}",
         "prices": "Los precios han cambiado: %{before} al planificar, %{now} hoy.",
         "rebase": "Actualizar desde el hangar"
       },

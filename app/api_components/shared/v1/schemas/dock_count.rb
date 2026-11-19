@@ -19,10 +19,14 @@ module Shared
             # FeatureFlagName is referenced by nothing.
             size: {type: :string},
             type: {type: :string},
-            typeLabel: {type: :string}
+            typeLabel: {type: :string},
+            # What the berth is built for, in the reader's locale: "2 medium
+            # pads" from the entry an admin flagged for display, or the pad
+            # class alone until one is flagged.
+            label: {type: :string}
           },
           additionalProperties: false,
-          required: %w[size count type typeLabel]
+          required: %w[size count type typeLabel label]
         })
       end
     end

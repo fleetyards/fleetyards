@@ -181,18 +181,11 @@
         "features": {
           "index": "Feature Flags",
           "show": "Feature Details",
-          "globalState": "Global State",
-          "groups": "Groups",
+          "rollout": "Rollout",
+          "usersAndFleets": "Users and fleets",
           "actors": "Actors",
-          "selfService": "Self-Service",
-          "percentageOfActors": "Percentage of Actors",
-          "percentageOfTime": "Percentage of Time",
           "addActor": "Add Actor",
-          "history": "History",
-          "addUser": "Enable for a user",
-          "addFleet": "Enable for a fleet",
-          "enabledUsers": "Enabled users",
-          "enabledFleets": "Enabled fleets"
+          "history": "History"
         },
         "rsiApiStatus": {
           "index": "RSI API Status"

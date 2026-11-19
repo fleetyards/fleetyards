@@ -26,7 +26,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
-import FleetsTab from "./fleets.vue";
+import ActorsPanel from "./index.vue";
 
 const feature: Feature = {
   name: "fleet_tours",
@@ -44,11 +44,11 @@ const feature: Feature = {
   lastChangedSource: null,
 };
 
-const mountTab = () => {
+const mountPanel = () => {
   const queryClient = new QueryClient();
   const invalidate = vi.spyOn(queryClient, "invalidateQueries");
 
-  const wrapper = mount(FleetsTab, {
+  const wrapper = mount(ActorsPanel, {
     props: { feature },
     global: {
       plugins: [[VueQueryPlugin, { queryClient }]],
@@ -59,6 +59,9 @@ const mountTab = () => {
           emits: ["update:modelValue"],
           template: "<div />",
         },
+        UserSelect: true,
+        ActorList: true,
+        BtnGroup: { template: "<div><slot /></div>" },
         Btn: {
           props: ["disabled"],
           emits: ["click"],
@@ -70,6 +73,9 @@ const mountTab = () => {
   });
 
   const pick = async (fid: string) => {
+    await wrapper
+      .find('[data-test="feature-actors-tab-fleets"]')
+      .trigger("click");
     wrapper
       .findComponent({ name: "FleetSelect" })
       .vm.$emit("update:modelValue", fid);
@@ -81,7 +87,7 @@ const mountTab = () => {
   return { wrapper, pick, addButton, invalidate };
 };
 
-describe("the feature's Fleets tab", () => {
+describe("FeatureActorsPanel on fleets", () => {
   beforeEach(() => {
     api.enableAdminFeatureActor.mockReset().mockResolvedValue({});
     notifications.displaySuccess.mockReset();
@@ -89,7 +95,7 @@ describe("the feature's Fleets tab", () => {
   });
 
   it("adds the picked fleet by its SID, refreshes and clears the picker", async () => {
-    const { wrapper, pick, addButton, invalidate } = mountTab();
+    const { wrapper, pick, addButton, invalidate } = mountPanel();
 
     await pick("NEWFLEET");
     await addButton().trigger("click");
@@ -107,7 +113,7 @@ describe("the feature's Fleets tab", () => {
   });
 
   it("will not add a fleet that already has the feature", async () => {
-    const { wrapper, pick, addButton } = mountTab();
+    const { wrapper, pick, addButton } = mountPanel();
 
     await pick("Test100");
 
@@ -119,7 +125,7 @@ describe("the feature's Fleets tab", () => {
 
   it("keeps the pick and says so when the add fails", async () => {
     api.enableAdminFeatureActor.mockRejectedValue(new Error("nope"));
-    const { wrapper, pick, addButton } = mountTab();
+    const { wrapper, pick, addButton } = mountPanel();
 
     await pick("NEWFLEET");
     await addButton().trigger("click");

@@ -447,6 +447,78 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_empty HangarPlans::Summary.new(@plan).purchases
   end
 
+  test "the buy list says what RSI's cart takes for each unit" do
+    @cutlass.update!(rsi_id: 56, rsi_standalone_sku_id: 1056)
+    @carrack.update!(rsi_id: 62, rsi_upgrade_sku_id: 2062)
+    @constellation.update!(rsi_id: 45)
+
+    route = @plan.acquisitions.new(candidate: decided_slot(@carrack), start_kind: "store", start_model: @cutlass)
+    route.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)
+    route.save!
+
+    pledge = create(:buyback_pledge, user: @user)
+    @plan.acquisitions.create!(candidate: decided_slot(@constellation), start_kind: "buyback", buyback_pledge: pledge,
+      start_model: @constellation)
+
+    purchases = HangarPlans::Summary.new(@plan).purchases.index_by(&:kind)
+
+    assert_equal [HangarPlans::Summary::CartItem.new(kind: "upgrade", from_ship_id: 56, to_ship_id: 62, to_sku_id: 2062)],
+      purchases["ccu"].cart_items
+    assert_equal [HangarPlans::Summary::CartItem.new(kind: "sku", sku_id: 1056)], purchases["ship"].cart_items
+    assert_equal [HangarPlans::Summary::CartItem.new(kind: "buyback", pledge_id: pledge.rsi_pledge_id)],
+      purchases["buyback"].cart_items
+  end
+
+  test "a bought-back upgrade goes into the cart as an upgrade naming its pledge" do
+    @cutlass.update!(rsi_id: 56)
+    @carrack.update!(rsi_id: 62)
+    pledge = create(:buyback_pledge, user: @user, kind: "upgrade", name: "Upgrade - Cutlass Black to Carrack",
+      upgrade_from_ship_id: 56, upgrade_to_ship_id: 62, upgrade_to_sku_id: 2062)
+    route = @plan.acquisitions.new(candidate: decided_slot(@carrack), start_kind: "owned",
+      source_vehicle: create(:vehicle, user: @user, model: @cutlass))
+    route.upgrade_steps.build(source_kind: "buyback", buyback_pledge: pledge, origin_model: @cutlass, target_model: @carrack,
+      position: 0)
+    route.save!
+
+    purchase = HangarPlans::Summary.new(@plan).purchases.sole
+
+    assert_equal [HangarPlans::Summary::CartItem.new(kind: "upgrade", from_ship_id: 56, to_ship_id: 62, to_sku_id: 2062,
+      pledge_id: pledge.rsi_pledge_id)], purchase.cart_items
+  end
+
+  test "a unit RSI's cart cannot take is left out of the cart items" do
+    @plan.acquisitions.create!(candidate: decided_slot(@carrack), start_kind: "store", start_model: @carrack)
+    @plan.acquisitions.create!(candidate: decided_slot(@cutlass), start_kind: "ingame", start_model: @cutlass)
+
+    assert(HangarPlans::Summary.new(@plan).purchases.all? { |purchase| purchase.cart_items.empty? })
+  end
+
+  test "a line offers the cart for every unit or for none" do
+    @carrack.update!(rsi_id: 62)
+    @cutlass.update!(rsi_id: 56)
+    [20_062, nil].each do |sku|
+      pledge = create(:buyback_pledge, user: @user, kind: "upgrade", upgrade_from_ship_id: 56, upgrade_to_ship_id: 62,
+        upgrade_to_sku_id: sku)
+      route = @plan.acquisitions.new(candidate: decided_slot(@carrack), start_kind: "owned",
+        source_vehicle: create(:vehicle, user: @user, model: @cutlass))
+      route.upgrade_steps.build(source_kind: "buyback", buyback_pledge: pledge, origin_model: @cutlass, target_model: @carrack,
+        position: 0)
+      route.save!
+    end
+
+    purchase = HangarPlans::Summary.new(@plan).purchases.sole
+
+    assert_equal 2, purchase.quantity
+    assert_empty purchase.cart_items
+  end
+
+  test "a ship off sale offers no cart" do
+    @carrack.update!(rsi_standalone_sku_id: 1062, on_sale: false)
+    @plan.acquisitions.create!(candidate: decided_slot(@carrack), start_kind: "store", start_model: @carrack)
+
+    assert_empty HangarPlans::Summary.new(@plan).purchases.sole.cart_items
+  end
+
   private def decided_slot(model)
     slot = create(:hangar_plan_slot, hangar_plan: @plan)
     create(:hangar_plan_candidate, slot:, model:)

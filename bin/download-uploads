@@ -10,8 +10,8 @@ if [ -f .env.local ]; then
   set +a
 fi
 
-S3_BUCKET="fltyrd-live-storage"
-S3_ENDPOINT="fsn1.your-objectstorage.com"
+S3_BUCKET="fltyrd-live-uploads"
+S3_ENDPOINT="de-s3.storage.bunnycdn.com"
 
 LOCAL_ROOT="./storage"
 STAGE_ROOT="./tmp/s3_stage"
@@ -27,8 +27,8 @@ DB_USER="${DB_USER:-root}"
 # Credentials travel through the environment, where s3cmd picks them up on its
 # own. Passing them as flags would expose them to any local `ps`.
 if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
-  AWS_ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
-  AWS_SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+  AWS_ACCESS_KEY_ID=$(op read "op://Fleetyards/BUNNY_UPLOADS_LIVE/config/zone_name")
+  AWS_SECRET_ACCESS_KEY=$(op read "op://Fleetyards/BUNNY_UPLOADS_LIVE/password")
   export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 fi
 

@@ -22,7 +22,11 @@ class MapModelFocusToFoci < ActiveRecord::Migration[8.1]
   }.freeze
 
   def up
-    select_rows("SELECT id, slug, focus, rsi_focus FROM models").each do |id, slug, focus, rsi_focus|
+    # The string focus has since been dropped. Where it is gone, the ship
+    # matrix's wording is all there is to read.
+    stored_focus = column_exists?(:models, :focus) ? "focus" : "NULL"
+
+    select_rows("SELECT id, slug, #{stored_focus}, rsi_focus FROM models").each do |id, slug, focus, rsi_focus|
       stored = ::Models::FocusMapping.call(focus)
       rsi = ::Models::FocusMapping.call(rsi_focus)
 
@@ -42,6 +46,8 @@ class MapModelFocusToFoci < ActiveRecord::Migration[8.1]
     end
 
     %w[fleet_event_ships mission_ships].each do |table|
+      next unless column_exists?(table, :focus)
+
       select_rows("SELECT id, focus FROM #{table} WHERE focus IS NOT NULL").each do |id, focus|
         foci = ::Models::FocusMapping.call(focus).foci
 

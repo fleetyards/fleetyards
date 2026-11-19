@@ -75,6 +75,24 @@ const onRebase = async () => {
           })
         }}
       </li>
+      <li v-if="drift.arrivals.length">
+        {{
+          t("hangarPlanner.drift.arrived", {
+            ships: drift.arrivals
+              .map((arrival) => arrival.name || arrival.model.name)
+              .join(", "),
+          })
+        }}
+      </li>
+      <li v-if="drift.heldUpgrades.length">
+        {{
+          t("hangarPlanner.drift.heldUpgrades", {
+            upgrades: drift.heldUpgrades
+              .map((held) => `${held.fromModel.name} → ${held.toModel.name}`)
+              .join(", "),
+          })
+        }}
+      </li>
       <li v-if="priceChanged">
         {{
           t("hangarPlanner.drift.prices", {
