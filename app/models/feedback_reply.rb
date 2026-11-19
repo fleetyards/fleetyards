@@ -12,6 +12,7 @@ class FeedbackReply < ApplicationRecord
 
   private def notify_other_side
     from_admin? ? notify_user : notify_admins
+    feedback.reload.broadcast_change
   end
 
   private def notify_user

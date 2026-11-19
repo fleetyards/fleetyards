@@ -18,6 +18,17 @@ channels:
     messages:
       Announcement:
         "$ref": "#/components/messages/Announcement"
+  AdminFeedback:
+    address: admin_feedback:{admin_user_gid}
+    x-actioncable-channel: AdminFeedbackChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      Feedback:
+        "$ref": "#/components/messages/Feedback"
   AdminModelMedia:
     address: admin_model_media:{admin_user_gid}
     x-actioncable-channel: AdminModelMediaChannel
@@ -72,6 +83,13 @@ operations:
     messages:
     - "$ref": "#/channels/AdminAnnouncements/messages/Announcement"
     summary: An announcement's send made progress
+  receiveAdminFeedbackUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/AdminFeedback"
+    messages:
+    - "$ref": "#/channels/AdminFeedback/messages/Feedback"
+    summary: A feedback conversation changed
   receiveAdminModelMedia:
     action: receive
     channel:
@@ -405,6 +423,92 @@ components:
       - PUBLISHING
       - PUBLISHED
       - FAILED
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        featureName:
+          type:
+          - string
+          - 'null'
+        pagePath:
+          type:
+          - string
+          - 'null'
+        state:
+          "$ref": "#/components/schemas/FeedbackStateEnum"
+        userId:
+          type: string
+          format: uuid
+        username:
+          type:
+          - string
+          - 'null'
+        resolvedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        resolvedByName:
+          type:
+          - string
+          - 'null'
+        repliesCount:
+          type: integer
+        replies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeedbackReply"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - message
+      - state
+      - userId
+      - repliesCount
+      - createdAt
+      - updatedAt
+    FeedbackReply:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        fromAdmin:
+          type: boolean
+        adminName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - body
+      - fromAdmin
+      - createdAt
+    FeedbackStateEnum:
+      type: string
+      enum:
+      - open
+      - resolved
+      x-enumNames:
+      - OPEN
+      - RESOLVED
     Import:
       type: object
       properties:
@@ -557,6 +661,9 @@ components:
     Announcement:
       payload:
         "$ref": "#/components/schemas/Announcement"
+    Feedback:
+      payload:
+        "$ref": "#/components/schemas/Feedback"
     Import:
       payload:
         "$ref": "#/components/schemas/Import"

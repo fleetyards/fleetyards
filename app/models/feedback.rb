@@ -22,6 +22,7 @@ class Feedback < ApplicationRecord
   normalizes :feature_name, :page_path, with: ->(value) { value.presence }
 
   after_create_commit :notify_admins
+  after_update_commit :broadcast_change, if: :saved_change_to_aasm_state?
 
   aasm timestamps: true, whiny_transitions: false do
     state :open, initial: true
@@ -43,6 +44,29 @@ class Feedback < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[user]
+  end
+
+  # The payload each side's REST endpoint serves, so a page can take it as is.
+  # A socket that is not there must not undo what was just committed.
+  def broadcast_change
+    FeedbackChannel.broadcast_to(user, render_payload("api/v1/feedbacks/show"))
+
+    admin_payload = render_payload("admin/api/v1/feedbacks/show")
+    AdminUser.find_each do |admin_user|
+      next unless admin_user.has_access?(["feedback"])
+
+      AdminFeedbackChannel.broadcast_to(admin_user, admin_payload)
+    end
+  rescue => e
+    Rails.logger.error("Feedback broadcast failed for #{id}: #{e.message}")
+  end
+
+  private def render_payload(template)
+    JSON.parse(
+      ApplicationController.renderer.render(
+        template:, assigns: {feedback: self}, formats: [:json], handlers: [:jbuilder]
+      )
+    )
   end
 
   # One row rather than one per message, so a busy day rewrites it instead of

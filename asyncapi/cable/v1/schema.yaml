@@ -13,6 +13,16 @@ channels:
     messages:
       AppVersionMessage:
         "$ref": "#/components/messages/AppVersionMessage"
+  Feedback:
+    address: feedback:{user_gid}
+    x-actioncable-channel: FeedbackChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Feedback:
+        "$ref": "#/components/messages/Feedback"
   FleetInventory:
     address: fleet_inventory:{user_gid}
     x-actioncable-channel: FleetInventoryChannel
@@ -196,6 +206,13 @@ operations:
     messages:
     - "$ref": "#/channels/AppVersion/messages/AppVersionMessage"
     summary: A new application version was deployed
+  receiveFeedbackUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/Feedback"
+    messages:
+    - "$ref": "#/channels/Feedback/messages/Feedback"
+    summary: A conversation about the user's feedback changed
   receiveFleetInventoryUpdate:
     action: receive
     channel:
@@ -2157,6 +2174,71 @@ components:
       additionalProperties: false
       required:
       - capacity
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        featureName:
+          type:
+          - string
+          - 'null'
+        pagePath:
+          type:
+          - string
+          - 'null'
+        state:
+          "$ref": "#/components/schemas/FeedbackStateEnum"
+        repliesCount:
+          type: integer
+        replies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FeedbackReply"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - message
+      - state
+      - repliesCount
+      - createdAt
+      - updatedAt
+    FeedbackReply:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        fromAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - body
+      - fromAdmin
+      - createdAt
+    FeedbackStateEnum:
+      type: string
+      enum:
+      - open
+      - resolved
+      x-enumNames:
+      - OPEN
+      - RESOLVED
     Fleet:
       type: object
       properties:
@@ -6003,6 +6085,9 @@ components:
     AppVersionMessage:
       payload:
         "$ref": "#/components/schemas/AppVersionMessage"
+    Feedback:
+      payload:
+        "$ref": "#/components/schemas/Feedback"
     FleetInventoryChangedMessage:
       payload:
         "$ref": "#/components/schemas/FleetInventoryChangedMessage"

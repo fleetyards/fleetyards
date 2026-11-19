@@ -27703,10 +27703,12 @@ components:
       type: string
       enum:
       - AdminAnnouncementsChannel
+      - AdminFeedbackChannel
       - AdminModelMediaChannel
       - AdminNotificationsChannel
       - AdminPresenceChannel
       - AppVersionChannel
+      - FeedbackChannel
       - FleetInventoryChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
@@ -27727,10 +27729,12 @@ components:
       - WishlistDestroyChannel
       x-enumNames:
       - ADMIN_ANNOUNCEMENTS_CHANNEL
+      - ADMIN_FEEDBACK_CHANNEL
       - ADMIN_MODEL_MEDIA_CHANNEL
       - ADMIN_NOTIFICATIONS_CHANNEL
       - ADMIN_PRESENCE_CHANNEL
       - APP_VERSION_CHANNEL
+      - FEEDBACK_CHANNEL
       - FLEET_INVENTORY_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL
