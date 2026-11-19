@@ -44,8 +44,9 @@ The admin feature flag list and detail pages match the approved design: one deta
 ## Discovery Log
 
 - **2026-11-19** History API returns at most 50 changes, so "full history" expands in place instead of a separate page. A history row's `thing` for an actor is the Flipper id, not a name, so rows keep their current wording.
+- **2026-11-19** Phone: three tab labels with counts do not fit a 390px segmented control; counts hide below the desktop breakpoint.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
