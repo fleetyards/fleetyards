@@ -200,6 +200,53 @@
       "groups": "Groups",
       "classifications": "Classifications",
       "features": {
+        "onFor": "On for",
+        "everyone": "Everyone",
+        "nobody": "Nobody",
+        "openToEveryone": "Open to everyone",
+        "turnOff": "Turn off",
+        "turnOffQuestion": "Clear every gate?",
+        "filter": "Filter flags",
+        "usersTab": "Users · %{count}",
+        "fleetsTab": "Fleets · %{count}",
+        "historyShowAll": "Show %{count} more",
+        "summary": {
+          "percentOfUsers": "%{percent}% of users",
+          "percentOfRequests": "%{percent}% of requests",
+          "users": {
+            "one": "%{count} user",
+            "other": "%{count} users"
+          },
+          "fleets": {
+            "one": "%{count} fleet",
+            "other": "%{count} fleets"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "Groups",
+            "hint": "Everyone in a picked group gets it."
+          },
+          "percentageOfActors": {
+            "label": "Share of users",
+            "hint": "The same users stay in as you raise it."
+          },
+          "percentageOfTime": {
+            "label": "Share of requests",
+            "hint": "Random on every check, so one user flips between on and off."
+          },
+          "optIn": {
+            "label": "Opt-in",
+            "hint": "Lets people switch it on for themselves.",
+            "userInfo": "Shown under Settings › Features.",
+            "fleetInfo": "Shown in the fleet's settings, for its admins."
+          }
+        },
+        "columns": {
+          "state": "State",
+          "flag": "Flag",
+          "lastChange": "Last change"
+        },
         "stateOn": "Enabled",
         "stateOff": "Disabled",
         "stateConditional": "Conditional",
@@ -214,15 +261,11 @@
           "backfill": "Backfilled"
         },
         "selfService": "Self-service",
-        "actors": "Actors",
         "groups": "Groups",
-        "noGroups": "No groups enabled for this feature.",
         "noActors": "No individual actors enabled for this feature.",
         "user": "User",
         "fleet": "Fleet",
         "actorType": "Actor Type",
-        "percentageOfActors": "of actors",
-        "percentageOfTime": "of time",
         "currentState": "Current State",
         "toggle": "Toggle",
         "permanent": "Permanent",
@@ -247,8 +290,6 @@
         "managedFeatureFleet": "This feature was enabled for this fleet and cannot be changed here.",
         "selfServiceUser": "Users can toggle",
         "selfServiceFleet": "Fleet admins can toggle",
-        "globalHint": "On opens the feature to everyone. Off clears every gate, the users, fleets and groups below included.",
-        "selfServiceHint": "Who may switch this feature on for themselves.",
         "lastChanged": "Last changed %{date}",
         "filterUsers": "Filter by username",
         "filterFleets": "Filter by name or SID",

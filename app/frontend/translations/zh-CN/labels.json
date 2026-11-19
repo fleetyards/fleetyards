@@ -200,6 +200,53 @@
       "groups": "分组",
       "classifications": "分类",
       "features": {
+        "onFor": "已开启对象",
+        "everyone": "所有人",
+        "nobody": "无人",
+        "openToEveryone": "对所有人开放",
+        "turnOff": "关闭",
+        "turnOffQuestion": "清除所有规则？",
+        "filter": "筛选开关",
+        "usersTab": "用户 · %{count}",
+        "fleetsTab": "舰队 · %{count}",
+        "historyShowAll": "再显示 %{count} 条",
+        "summary": {
+          "percentOfUsers": "%{percent}% 的用户",
+          "percentOfRequests": "%{percent}% 的请求",
+          "users": {
+            "one": "%{count} 位用户",
+            "other": "%{count} 位用户"
+          },
+          "fleets": {
+            "one": "%{count} 个舰队",
+            "other": "%{count} 个舰队"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "群组",
+            "hint": "所选群组中的每个人都会获得。"
+          },
+          "percentageOfActors": {
+            "label": "用户比例",
+            "hint": "调高时，原有用户保持不变。"
+          },
+          "percentageOfTime": {
+            "label": "请求比例",
+            "hint": "每次检查随机决定，因此同一用户会在开和关之间切换。"
+          },
+          "optIn": {
+            "label": "自主开启",
+            "hint": "允许用户自行开启。",
+            "userInfo": "位于 设置 › 功能。",
+            "fleetInfo": "位于舰队设置中，供舰队管理员使用。"
+          }
+        },
+        "columns": {
+          "state": "状态",
+          "flag": "开关",
+          "lastChange": "最近更改"
+        },
         "stateOn": "已启用",
         "stateOff": "已禁用",
         "stateConditional": "有条件",
@@ -214,15 +261,11 @@
           "backfill": "回填"
         },
         "selfService": "自助服务",
-        "actors": "角色",
         "groups": "群组",
-        "noGroups": "此功能没有启用的群组。",
         "noActors": "此功能没有启用的个人角色。",
         "user": "用户",
         "fleet": "舰队",
         "actorType": "角色类型",
-        "percentageOfActors": "的角色",
-        "percentageOfTime": "的时间",
         "currentState": "当前状态",
         "toggle": "切换",
         "permanent": "长期",
@@ -247,8 +290,6 @@
         "managedFeatureFleet": "此功能已为该舰队启用，无法在此处更改。",
         "selfServiceUser": "用户可自行切换",
         "selfServiceFleet": "舰队管理员可切换",
-        "globalHint": "开启后对所有人开放此功能。关闭会清除所有规则，包括下方的用户、舰队和分组。",
-        "selfServiceHint": "谁可以自行开启此功能。",
         "lastChanged": "最后修改于 %{date}",
         "filterUsers": "按用户名筛选",
         "filterFleets": "按名称或 SID 筛选",

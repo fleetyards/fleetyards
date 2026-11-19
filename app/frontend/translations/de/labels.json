@@ -200,6 +200,53 @@
       "groups": "Gruppen",
       "classifications": "Klassifizierungen",
       "features": {
+        "onFor": "Aktiv für",
+        "everyone": "Alle",
+        "nobody": "Niemand",
+        "openToEveryone": "Für alle freischalten",
+        "turnOff": "Ausschalten",
+        "turnOffQuestion": "Alle Freigaben entfernen?",
+        "filter": "Flags filtern",
+        "usersTab": "Benutzer · %{count}",
+        "fleetsTab": "Flotten · %{count}",
+        "historyShowAll": "%{count} weitere anzeigen",
+        "summary": {
+          "percentOfUsers": "%{percent} % der Benutzer",
+          "percentOfRequests": "%{percent} % der Anfragen",
+          "users": {
+            "one": "%{count} Benutzer",
+            "other": "%{count} Benutzer"
+          },
+          "fleets": {
+            "one": "%{count} Flotte",
+            "other": "%{count} Flotten"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "Gruppen",
+            "hint": "Alle in einer gewählten Gruppe bekommen es."
+          },
+          "percentageOfActors": {
+            "label": "Anteil der Benutzer",
+            "hint": "Beim Erhöhen bleiben dieselben Benutzer dabei."
+          },
+          "percentageOfTime": {
+            "label": "Anteil der Anfragen",
+            "hint": "Bei jeder Prüfung zufällig, ein Benutzer wechselt also zwischen an und aus."
+          },
+          "optIn": {
+            "label": "Selbst aktivieren",
+            "hint": "Lässt Nutzer es selbst einschalten.",
+            "userInfo": "Unter Einstellungen › Features.",
+            "fleetInfo": "In den Flotteneinstellungen, für deren Admins."
+          }
+        },
+        "columns": {
+          "state": "Status",
+          "flag": "Flag",
+          "lastChange": "Letzte Änderung"
+        },
         "stateOn": "Aktiviert",
         "stateOff": "Deaktiviert",
         "stateConditional": "Bedingt",
@@ -214,15 +261,11 @@
           "backfill": "Nachgetragen"
         },
         "selfService": "Self-Service",
-        "actors": "Akteure",
         "groups": "Gruppen",
-        "noGroups": "Keine Gruppen für diese Funktion aktiviert.",
         "noActors": "Keine einzelnen Akteure für diese Funktion aktiviert.",
         "user": "Benutzer",
         "fleet": "Flotte",
         "actorType": "Akteurtyp",
-        "percentageOfActors": "der Akteure",
-        "percentageOfTime": "der Zeit",
         "currentState": "Aktueller Status",
         "toggle": "Umschalten",
         "permanent": "Dauerhaft",
@@ -247,8 +290,6 @@
         "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden.",
         "selfServiceUser": "Benutzer können umschalten",
         "selfServiceFleet": "Flotten-Admins können umschalten",
-        "globalHint": "Ein öffnet die Funktion für alle. Aus entfernt jede Freigabe, auch die Benutzer, Flotten und Gruppen weiter unten.",
-        "selfServiceHint": "Wer diese Funktion selbst einschalten darf.",
         "lastChanged": "Zuletzt geändert %{date}",
         "filterUsers": "Nach Benutzername filtern",
         "filterFleets": "Nach Name oder SID filtern",

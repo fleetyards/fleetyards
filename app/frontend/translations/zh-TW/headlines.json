@@ -179,18 +179,11 @@
         "features": {
           "index": "功能標誌",
           "show": "功能詳情",
-          "globalState": "全域狀態",
-          "groups": "群組",
+          "rollout": "發布",
+          "usersAndFleets": "使用者和艦隊",
           "actors": "角色",
-          "selfService": "自助服務",
-          "percentageOfActors": "角色百分比",
-          "percentageOfTime": "時間百分比",
           "addActor": "新增角色",
-          "history": "變更歷史",
-          "addUser": "為使用者啟用",
-          "addFleet": "為艦隊啟用",
-          "enabledUsers": "已啟用的使用者",
-          "enabledFleets": "已啟用的艦隊"
+          "history": "變更歷史"
         },
         "rsiApiStatus": {
           "index": "RSI API 狀態"

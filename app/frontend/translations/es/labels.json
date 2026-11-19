@@ -200,6 +200,53 @@
       "groups": "Grupos",
       "classifications": "Clasificaciones",
       "features": {
+        "onFor": "Activo para",
+        "everyone": "Todos",
+        "nobody": "Nadie",
+        "openToEveryone": "Abrir a todos",
+        "turnOff": "Desactivar",
+        "turnOffQuestion": "¿Quitar todas las reglas?",
+        "filter": "Filtrar flags",
+        "usersTab": "Usuarios · %{count}",
+        "fleetsTab": "Flotas · %{count}",
+        "historyShowAll": "Mostrar %{count} más",
+        "summary": {
+          "percentOfUsers": "%{percent} % de los usuarios",
+          "percentOfRequests": "%{percent} % de las solicitudes",
+          "users": {
+            "one": "%{count} usuario",
+            "other": "%{count} usuarios"
+          },
+          "fleets": {
+            "one": "%{count} flota",
+            "other": "%{count} flotas"
+          }
+        },
+        "gates": {
+          "groups": {
+            "label": "Grupos",
+            "hint": "Todos en un grupo elegido lo reciben."
+          },
+          "percentageOfActors": {
+            "label": "Porcentaje de usuarios",
+            "hint": "Los mismos usuarios siguen dentro al subirlo."
+          },
+          "percentageOfTime": {
+            "label": "Porcentaje de solicitudes",
+            "hint": "Aleatorio en cada comprobación, así que un usuario alterna entre activado y desactivado."
+          },
+          "optIn": {
+            "label": "Activación propia",
+            "hint": "Permite que cada uno lo active por sí mismo.",
+            "userInfo": "En Ajustes › Funciones.",
+            "fleetInfo": "En los ajustes de la flota, para sus administradores."
+          }
+        },
+        "columns": {
+          "state": "Estado",
+          "flag": "Flag",
+          "lastChange": "Último cambio"
+        },
         "stateOn": "Habilitado",
         "stateOff": "Deshabilitado",
         "stateConditional": "Condicional",
@@ -214,15 +261,11 @@
           "backfill": "Rellenado"
         },
         "selfService": "Autoservicio",
-        "actors": "Actores",
         "groups": "Grupos",
-        "noGroups": "No hay grupos habilitados para esta función.",
         "noActors": "No hay actores individuales habilitados para esta función.",
         "user": "Usuario",
         "fleet": "Flota",
         "actorType": "Tipo de actor",
-        "percentageOfActors": "de actores",
-        "percentageOfTime": "del tiempo",
         "currentState": "Estado actual",
         "toggle": "Alternar",
         "permanent": "Permanente",
@@ -247,8 +290,6 @@
         "managedFeatureFleet": "Esta función se activó para esta flota y no se puede cambiar aquí.",
         "selfServiceUser": "Los usuarios pueden alternar",
         "selfServiceFleet": "Los admins de flota pueden alternar",
-        "globalHint": "Activada, la función queda abierta para todos. Desactivada, se borran todas las reglas, incluidos los usuarios, flotas y grupos de abajo.",
-        "selfServiceHint": "Quién puede activar esta función por su cuenta.",
         "lastChanged": "Último cambio: %{date}",
         "filterUsers": "Filtrar por nombre de usuario",
         "filterFleets": "Filtrar por nombre o SID",
