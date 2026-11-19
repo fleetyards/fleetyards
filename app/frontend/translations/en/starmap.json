@@ -16,9 +16,33 @@
       "search": "Find a place",
       "noMatches": "Nothing here goes by that name.",
       "reframe": "Recentre",
+      "route": {
+        "ship": "Ship",
+        "drive": "Quantum drive",
+        "stockDrive": "Stock drive",
+        "from": "From",
+        "to": "To",
+        "swap": "Swap start and destination",
+        "useFocused": "Use %{name}",
+        "pickShip": "Pick a ship to plan a route with its quantum drive.",
+        "loading": "Loading the ship and the systems…",
+        "noDrive": "This ship has no quantum drive.",
+        "pickEnds": "Pick where the route starts and ends.",
+        "noRoute": "No chain of quantum jumps connects these places.",
+        "distance": "Distance",
+        "time": "Time",
+        "fuel": "Fuel",
+        "scu": "%{value} SCU",
+        "exceedsTank": "The route burns %{needed} of quantum fuel; the tank holds %{tank}.",
+        "tunnel": "Jump tunnel",
+        "note": "Times include each jump's spool-up and the cooldown between jumps. Every jump goes around the stars, planets and moons in its way."
+      },
       "panel": {
         "show": "Show the place list",
-        "hide": "Hide the place list"
+        "hide": "Hide the place list",
+        "tabs": "Panel sections",
+        "places": "Places",
+        "route": "Route"
       },
       "units": {
         "gm": "%{value} Gm",

@@ -16,9 +16,33 @@
       "search": "Buscar un lugar",
       "noMatches": "Ningún lugar se llama así.",
       "reframe": "Recentrar",
+      "route": {
+        "ship": "Nave",
+        "drive": "Motor cuántico",
+        "stockDrive": "Motor de serie",
+        "from": "Desde",
+        "to": "Hasta",
+        "swap": "Intercambiar origen y destino",
+        "useFocused": "Usar %{name}",
+        "pickShip": "Elige una nave para planificar una ruta con su motor cuántico.",
+        "loading": "Cargando la nave y los sistemas…",
+        "noDrive": "Esta nave no tiene motor cuántico.",
+        "pickEnds": "Elige dónde empieza y termina la ruta.",
+        "noRoute": "Ninguna cadena de saltos cuánticos une estos lugares.",
+        "distance": "Distancia",
+        "time": "Tiempo",
+        "fuel": "Combustible",
+        "scu": "%{value} SCU",
+        "exceedsTank": "La ruta consume %{needed} de combustible cuántico; el depósito admite %{tank}.",
+        "tunnel": "Túnel de salto",
+        "note": "Los tiempos incluyen la carga de cada salto y el enfriamiento entre saltos. Cada salto rodea las estrellas, planetas y lunas que tenga en medio."
+      },
       "panel": {
         "show": "Mostrar la lista de lugares",
-        "hide": "Ocultar la lista de lugares"
+        "hide": "Ocultar la lista de lugares",
+        "tabs": "Secciones del panel",
+        "places": "Lugares",
+        "route": "Ruta"
       },
       "units": {
         "gm": "%{value} Gm",

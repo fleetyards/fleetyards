@@ -16,9 +16,33 @@
       "search": "Trouver un lieu",
       "noMatches": "Aucun lieu ne porte ce nom.",
       "reframe": "Recentrer",
+      "route": {
+        "ship": "Vaisseau",
+        "drive": "Propulseur quantique",
+        "stockDrive": "Propulseur d'origine",
+        "from": "Départ",
+        "to": "Arrivée",
+        "swap": "Inverser départ et arrivée",
+        "useFocused": "Utiliser %{name}",
+        "pickShip": "Choisissez un vaisseau pour planifier un itinéraire avec son propulseur quantique.",
+        "loading": "Chargement du vaisseau et des systèmes…",
+        "noDrive": "Ce vaisseau n'a pas de propulseur quantique.",
+        "pickEnds": "Choisissez le départ et l'arrivée de l'itinéraire.",
+        "noRoute": "Aucune suite de sauts quantiques ne relie ces lieux.",
+        "distance": "Distance",
+        "time": "Durée",
+        "fuel": "Carburant",
+        "scu": "%{value} SCU",
+        "exceedsTank": "L'itinéraire consomme %{needed} de carburant quantique ; le réservoir en contient %{tank}.",
+        "tunnel": "Tunnel de saut",
+        "note": "Les durées comprennent la mise en route de chaque saut et le refroidissement entre deux sauts. Chaque saut contourne les étoiles, planètes et lunes sur son chemin."
+      },
       "panel": {
         "show": "Afficher la liste des lieux",
-        "hide": "Masquer la liste des lieux"
+        "hide": "Masquer la liste des lieux",
+        "tabs": "Sections du panneau",
+        "places": "Lieux",
+        "route": "Itinéraire"
       },
       "units": {
         "gm": "%{value} Gm",

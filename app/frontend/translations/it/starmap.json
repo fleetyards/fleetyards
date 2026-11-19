@@ -16,9 +16,33 @@
       "search": "Trova un luogo",
       "noMatches": "Nessun luogo ha questo nome.",
       "reframe": "Ricentra",
+      "route": {
+        "ship": "Nave",
+        "drive": "Motore quantico",
+        "stockDrive": "Motore di serie",
+        "from": "Da",
+        "to": "A",
+        "swap": "Scambia partenza e destinazione",
+        "useFocused": "Usa %{name}",
+        "pickShip": "Scegli una nave per pianificare una rotta con il suo motore quantico.",
+        "loading": "Caricamento della nave e dei sistemi…",
+        "noDrive": "Questa nave non ha un motore quantico.",
+        "pickEnds": "Scegli dove inizia e finisce la rotta.",
+        "noRoute": "Nessuna sequenza di salti quantici collega questi luoghi.",
+        "distance": "Distanza",
+        "time": "Tempo",
+        "fuel": "Carburante",
+        "scu": "%{value} SCU",
+        "exceedsTank": "La rotta consuma %{needed} di carburante quantico; il serbatoio ne contiene %{tank}.",
+        "tunnel": "Tunnel di salto",
+        "note": "I tempi includono l'avvio di ogni salto e il raffreddamento tra un salto e l'altro. Ogni salto aggira stelle, pianeti e lune sul suo percorso."
+      },
       "panel": {
         "show": "Mostra l'elenco dei luoghi",
-        "hide": "Nascondi l'elenco dei luoghi"
+        "hide": "Nascondi l'elenco dei luoghi",
+        "tabs": "Sezioni del pannello",
+        "places": "Luoghi",
+        "route": "Rotta"
       },
       "units": {
         "gm": "%{value} Gm",

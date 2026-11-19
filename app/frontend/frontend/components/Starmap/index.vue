@@ -25,6 +25,8 @@ import {
 } from "@/services/fyApi";
 import StarmapScene from "./Scene.vue";
 import StarmapPanel from "./Panel.vue";
+import StarmapRoutePanel from "./RoutePanel.vue";
+import { legsInSystem, useStarmapRoute } from "./route";
 import Skybox from "@/shared/components/HoloViewer/Skybox/index.vue";
 import nyxSky from "@/images/skyboxes/nyx_sky_4k.webp";
 import pyroSky from "@/images/skyboxes/pyro_sky_4k.webp";
@@ -61,16 +63,53 @@ const focusSlug = computed(() =>
   systemSlug.value ? queryValue(route.query.focus) : null,
 );
 
+// A planned route stays in the address as the map moves underneath it.
+const ROUTE_KEYS = ["from", "to", "ship", "loadout"] as const;
+type RouteKey = (typeof ROUTE_KEYS)[number];
+
+const routeQuery = () => {
+  const query: Record<string, string> = {};
+  for (const key of ROUTE_KEYS) {
+    const value = queryValue(route.query[key]);
+    if (value) query[key] = value;
+  }
+  return query;
+};
+
 const navigate = (
   system: string | null,
   focus: string | null = null,
   { replace = false }: { replace?: boolean } = {},
 ) => {
-  const query: Record<string, string> = {};
+  const query: Record<string, string> = routeQuery();
   if (system) query.system = system;
   if (system && focus) query.focus = focus;
 
   void (replace ? router.replace({ query }) : router.push({ query }));
+};
+
+const routeParam = (key: RouteKey) =>
+  computed(() => queryValue(route.query[key]));
+
+const routeFrom = routeParam("from");
+const routeTo = routeParam("to");
+const routeShip = routeParam("ship");
+const routeLoadout = routeParam("loadout");
+
+const setRouteParam = (key: RouteKey, value: string | null) => {
+  const query: Record<string, string> = {};
+  for (const [name, entry] of Object.entries(route.query)) {
+    const text = queryValue(entry);
+    if (text) query[name] = text;
+  }
+
+  if (value) query[key] = value;
+  else delete query[key];
+
+  // Another ship has other loadouts.
+  if (key === "ship") delete query.loadout;
+
+  void router.replace({ query });
 };
 
 const { data: systems, isLoading: systemsLoading } = useLocations({
@@ -182,6 +221,45 @@ const BACKDROPS: Record<string, { src: string; opacity: number }> = {
 const backdrop = computed(() => {
   const name = openedStarmap.value?.system.slug.split("-")[0];
   return systemSlug.value && name ? BACKDROPS[name] : undefined;
+});
+
+const railTab = ref<"places" | "route">(
+  routeFrom.value || routeTo.value || routeShip.value ? "route" : "places",
+);
+
+const planning = computed(
+  () =>
+    railTab.value === "route" ||
+    !!(routeFrom.value && routeTo.value && routeShip.value),
+);
+
+const {
+  options: routeOptions,
+  routeSystems,
+  placesLoading: routePlacesLoading,
+  model: routeModel,
+  drive: routeDrive,
+  driveLoading: routeDriveLoading,
+  loadoutOptions: routeLoadoutOptions,
+  route: plannedRoute,
+} = useStarmapRoute({
+  enabled: planning,
+  systems: () => systems.value?.items ?? [],
+  jumpPoints: () => jumpPoints.value ?? [],
+  from: routeFrom,
+  to: routeTo,
+  ship: routeShip,
+  loadout: routeLoadout,
+});
+
+const sceneRoute = computed(() => {
+  const opened = openedStarmap.value?.system.id;
+  if (!opened || scene.value?.kind !== "system") return [];
+
+  return legsInSystem(
+    plannedRoute.value,
+    routeSystems.value.find((system) => system.id === opened),
+  );
 });
 
 const empty = computed(
@@ -496,6 +574,7 @@ watch(
           :focus-key="focusKey"
           :show-labels="showLabels"
           :show-orbits="showOrbits"
+          :route="sceneRoute"
           @focus="onFocus"
           @enter="enter"
           @release="release"
@@ -571,10 +650,53 @@ watch(
               </button>
             </div>
 
+            <div
+              class="starmap__group starmap__tabs"
+              role="tablist"
+              :aria-label="t('starmap.panel.tabs')"
+            >
+              <button
+                v-for="tab in ['places', 'route'] as const"
+                :key="tab"
+                type="button"
+                role="tab"
+                class="starmap__tab"
+                :class="{ 'starmap__tab--on': railTab === tab }"
+                :aria-selected="railTab === tab"
+                :data-test="`starmap-tab-${tab}`"
+                @click="railTab = tab"
+              >
+                {{ t(`starmap.panel.${tab}`) }}
+              </button>
+            </div>
+
             <StarmapPanel
+              v-if="railTab === 'places'"
               :items="scene?.items ?? []"
               :focus-key="focusKey"
               @focus="onFocus"
+            />
+            <StarmapRoutePanel
+              v-else
+              :options="routeOptions"
+              :from="routeFrom"
+              :to="routeTo"
+              :ship="routeShip"
+              :loadout="routeLoadout"
+              :loadout-options="routeLoadoutOptions"
+              :route="plannedRoute"
+              :has-drive="!!routeDrive"
+              :loading="routePlacesLoading || routeDriveLoading"
+              :tank-size="routeModel?.metrics?.quantumFuelTankSize ?? null"
+              :focused="
+                focused && focused.role !== 'system'
+                  ? { slug: focused.slug, name: focused.name }
+                  : null
+              "
+              @update:from="setRouteParam('from', $event)"
+              @update:to="setRouteParam('to', $event)"
+              @update:ship="setRouteParam('ship', $event)"
+              @update:loadout="setRouteParam('loadout', $event)"
             />
           </aside>
           <button
@@ -927,6 +1049,38 @@ $card-height: 96px;
 
   &--card &__column {
     bottom: calc($gap * 2 + #{$card-height});
+  }
+
+  &__tabs {
+    flex-shrink: 0;
+  }
+
+  &__tab {
+    flex: 1;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-control-inner);
+    background: transparent;
+    color: var(--color-text);
+    font-size: 0.84375rem;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-control-hover);
+      color: var(--color-lifted);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+
+    &--on,
+    &--on:hover {
+      background: rgb(66 139 202 / 22%);
+      color: #fff;
+    }
   }
 
   // As the holo viewer's: a dark group of icon buttons on one frame.

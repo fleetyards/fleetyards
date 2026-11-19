@@ -16,9 +16,33 @@
       "search": "Ort finden",
       "noMatches": "Kein Ort trägt diesen Namen.",
       "reframe": "Zentrieren",
+      "route": {
+        "ship": "Schiff",
+        "drive": "Quantenantrieb",
+        "stockDrive": "Serienantrieb",
+        "from": "Von",
+        "to": "Nach",
+        "swap": "Start und Ziel tauschen",
+        "useFocused": "%{name} verwenden",
+        "pickShip": "Wähle ein Schiff, um eine Route mit seinem Quantenantrieb zu planen.",
+        "loading": "Schiff und Systeme werden geladen…",
+        "noDrive": "Dieses Schiff hat keinen Quantenantrieb.",
+        "pickEnds": "Wähle Start und Ziel der Route.",
+        "noRoute": "Keine Folge von Quantensprüngen verbindet diese Orte.",
+        "distance": "Strecke",
+        "time": "Zeit",
+        "fuel": "Treibstoff",
+        "scu": "%{value} SCU",
+        "exceedsTank": "Die Route verbraucht %{needed} Quantentreibstoff, der Tank fasst %{tank}.",
+        "tunnel": "Sprungtunnel",
+        "note": "Die Zeiten enthalten das Hochfahren vor jedem Sprung und die Abkühlzeit zwischen den Sprüngen. Jeder Sprung führt um Sterne, Planeten und Monde auf seinem Weg herum."
+      },
       "panel": {
         "show": "Ortsliste einblenden",
-        "hide": "Ortsliste ausblenden"
+        "hide": "Ortsliste ausblenden",
+        "tabs": "Bereiche der Seitenleiste",
+        "places": "Orte",
+        "route": "Route"
       },
       "units": {
         "gm": "%{value} Gm",
