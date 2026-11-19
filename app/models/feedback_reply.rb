@@ -3,7 +3,7 @@
 class FeedbackReply < ApplicationRecord
   BODY_MAX_LENGTH = Feedback::MESSAGE_MAX_LENGTH
 
-  belongs_to :feedback, touch: true
+  belongs_to :feedback, touch: true, counter_cache: :replies_count
   belongs_to :admin_user, optional: true
 
   validates :body, presence: true, length: {maximum: BODY_MAX_LENGTH}
@@ -11,8 +11,24 @@ class FeedbackReply < ApplicationRecord
   after_create_commit :notify_other_side
 
   private def notify_other_side
-    from_admin? ? notify_user : notify_admins
+    if from_admin?
+      notify_user
+    else
+      notify_admins
+      # Reopening broadcasts the conversation itself.
+      return if reopen_feedback
+    end
+
     feedback.reload.broadcast_change
+  end
+
+  # A resolved conversation the user answers is no longer settled. Under the
+  # lock the admin transitions take, so it cannot cross an admin resolving it.
+  private def reopen_feedback
+    feedback.with_lock { feedback.resolved? && feedback.reopen! }
+  rescue => e
+    Appsignal.report_error(e)
+    false
   end
 
   private def notify_user
@@ -32,10 +48,7 @@ class FeedbackReply < ApplicationRecord
     Appsignal.report_error(e)
   end
 
-  # A resolved conversation the user answers is no longer settled.
   private def notify_admins
-    feedback.reopen! if feedback.resolved?
-
     AdminNotification.notify!(
       type: :feedback,
       title: "New feedback",

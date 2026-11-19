@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_230000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_233000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -835,6 +835,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_230000) do
     t.datetime "resolved_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "replies_count", default: 0, null: false
     t.index ["created_at"], name: "index_feedbacks_on_created_at"
     t.index ["feature_name"], name: "index_feedbacks_on_feature_name"
     t.index ["resolved_by_id"], name: "index_feedbacks_on_resolved_by_id"

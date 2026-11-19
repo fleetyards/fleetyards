@@ -36,4 +36,16 @@ class FeedbackChannelTest < AsyncapiTestCase
 
     assert_equal "resolved", payloads.last["state"]
   end
+
+  test "a user answer that reopens resolved feedback broadcasts once" do
+    feedback = create(:feedback, :resolved)
+
+    payloads = assert_asyncapi_broadcast(params: {user_gid: feedback.user.to_gid_param}) do
+      create(:feedback_reply, feedback:, body: "Still slow")
+    end
+
+    assert_equal 1, payloads.size
+    assert_equal "open", payloads.first["state"]
+    assert_equal 1, payloads.first["repliesCount"]
+  end
 end

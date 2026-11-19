@@ -40,4 +40,24 @@ class FeedbackReplyTest < ActiveSupport::TestCase
 
     assert feedback.reload.resolved?
   end
+
+  test "counts the replies on the feedback" do
+    feedback = create(:feedback)
+
+    create_list(:feedback_reply, 2, feedback:)
+
+    assert_equal 2, feedback.reload.replies_count
+  end
+
+  test "admins still hear about the answer when reopening fails" do
+    create(:admin_user, resource_access: [:feedback])
+    feedback = create(:feedback, :resolved)
+    AdminNotification.delete_all
+    Feedback.any_instance.stubs(:reopen!).raises(ActiveRecord::LockWaitTimeout)
+    Appsignal.expects(:report_error)
+
+    create(:feedback_reply, feedback:, body: "Still slow")
+
+    assert AdminNotification.where(notification_type: "feedback").exists?
+  end
 end

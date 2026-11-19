@@ -13,7 +13,6 @@ module Api
         authorize! with: FeedbackPolicy
 
         @feedbacks = authorized_scope(Feedback.all, with: FeedbackPolicy)
-          .includes(:replies)
           .order(updated_at: :desc)
           .page(page_params)
           .per(per_page(Feedback))

@@ -13,7 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::FeedbackPolicy
 
-          @feedbacks = Feedback.includes(:user, :resolved_by, :replies)
+          @feedbacks = Feedback.includes(:user, :resolved_by)
             .ransack(feedback_query_params).result
             .order(created_at: :desc)
             .page(page_params)
