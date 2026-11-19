@@ -203,7 +203,8 @@ const props = withDefaults(defineProps<Props>(), {
 // a picture to show instead can switch to it.
 // `loaded` once a model is on screen, for a caller holding a picture until then.
 const emit = defineEmits<{
-  unavailable: [failed?: string];
+  // By the path of the model that failed, as the caller gave it.
+  unavailable: [path?: string];
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
