@@ -26452,53 +26452,6 @@ components:
       required:
       - meta
       title: BaseList
-    BetaFeatureFlagName:
-      type: string
-      enum:
-      - dressing_room
-      - fleet_contracts
-      - fleet_logistics
-      - fleet_mission_builder
-      - fleet_squadron_flights
-      - fleet_subscriptions
-      - fleet_tours
-      - fleetchart_layouts
-      - hangar_planner
-      - holo_ar
-      - holo_cargo_grids
-      - holo_door_animation
-      - holo_door_highlight
-      - holo_phone
-      - holo_servicing_areas
-      - holo_textured
-      - homepage_dashboard
-      - item_holo_textured
-      - loadout_preview
-      - paint_booth
-      - starmap
-      x-enumNames:
-      - DRESSING_ROOM
-      - FLEET_CONTRACTS
-      - FLEET_LOGISTICS
-      - FLEET_MISSION_BUILDER
-      - FLEET_SQUADRON_FLIGHTS
-      - FLEET_SUBSCRIPTIONS
-      - FLEET_TOURS
-      - FLEETCHART_LAYOUTS
-      - HANGAR_PLANNER
-      - HOLO_AR
-      - HOLO_CARGO_GRIDS
-      - HOLO_DOOR_ANIMATION
-      - HOLO_DOOR_HIGHLIGHT
-      - HOLO_PHONE
-      - HOLO_SERVICING_AREAS
-      - HOLO_TEXTURED
-      - HOMEPAGE_DASHBOARD
-      - ITEM_HOLO_TEXTURED
-      - LOADOUT_PREVIEW
-      - PAINT_BOOTH
-      - STARMAP
-      title: BetaFeatureFlagName
     Blueprint:
       type: object
       properties:
