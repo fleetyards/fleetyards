@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.61.0](https://github.com/fleetyards/fleetyards/compare/v9.60.0...v9.61.0) (2026-11-19)
+
+
+### Features
+
+* **admin:** redesign the feature flag pages ([#6422](https://github.com/fleetyards/fleetyards/issues/6422)) ([8df78e9](https://github.com/fleetyards/fleetyards/commit/8df78e9c228fcfd90a8208074dcc2c63b1f3d017))
+* **deploy:** read live uploads from Bunny, mirror to Hetzner ([#6419](https://github.com/fleetyards/fleetyards/issues/6419)) ([310d350](https://github.com/fleetyards/fleetyards/commit/310d350fc6dd1ddd69d30952235a2f9e06ce1b1d))
+
+
+### Bug Fixes
+
+* **download-db:** download the dump in parallel and keep the old one ([#6421](https://github.com/fleetyards/fleetyards/issues/6421)) ([9943f53](https://github.com/fleetyards/fleetyards/commit/9943f531ae32e25847aea205168b07ff13776a48))
+* **starmap:** scale bodies and lay out controls for phones ([#6418](https://github.com/fleetyards/fleetyards/issues/6418)) ([1892964](https://github.com/fleetyards/fleetyards/commit/189296449de54bb2591abd85fda44fd55c4360db))
+
 ## [9.60.0](https://github.com/fleetyards/fleetyards/compare/v9.59.0...v9.60.0) (2026-11-19)
 
 
