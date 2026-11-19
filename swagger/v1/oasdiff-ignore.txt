@@ -4478,3 +4478,10 @@ PUT /hangar/fleetchart-layouts/{id} added the new `nyx` enum value to the `backg
 DELETE /hangar/fleetchart-layouts/{id}/share added the new `nyx` enum value to the `background` response property for the response status `200`
 PUT /hangar/fleetchart-layouts/{id}/share added the new `nyx` enum value to the `background` response property for the response status `200`
 GET /public/fleetchart-layouts/{token} added the new `nyx` enum value to the `background` response property for the response status `200`
+GET /notification-preferences added the new `feedback_reply` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `feedback_reply` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
