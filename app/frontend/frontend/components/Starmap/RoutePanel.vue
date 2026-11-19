@@ -85,6 +85,14 @@ const driveValue = computed({
     emit("update:loadout", !value || value === STOCK ? null : String(value)),
 });
 
+// Only a place a route can start or end at is offered from the map.
+const focusedOption = computed(() =>
+  props.focused &&
+  props.options.some((option) => option.place.slug === props.focused?.slug)
+    ? props.focused
+    : null,
+);
+
 const swap = () => {
   const { from, to } = props;
   emit("update:from", to);
@@ -152,13 +160,13 @@ const status = computed(() => {
           nullable
         />
         <button
-          v-if="focused && focused.slug !== from"
+          v-if="focusedOption && focusedOption.slug !== from"
           type="button"
           class="starmap-route__use"
           data-test="starmap-route-from-focused"
-          @click="emit('update:from', focused.slug)"
+          @click="emit('update:from', focusedOption.slug)"
         >
-          {{ t("starmap.route.useFocused", { name: focused.name }) }}
+          {{ t("starmap.route.useFocused", { name: focusedOption.name }) }}
         </button>
       </div>
 
@@ -182,13 +190,13 @@ const status = computed(() => {
           nullable
         />
         <button
-          v-if="focused && focused.slug !== to"
+          v-if="focusedOption && focusedOption.slug !== to"
           type="button"
           class="starmap-route__use"
           data-test="starmap-route-to-focused"
-          @click="emit('update:to', focused.slug)"
+          @click="emit('update:to', focusedOption.slug)"
         >
-          {{ t("starmap.route.useFocused", { name: focused.name }) }}
+          {{ t("starmap.route.useFocused", { name: focusedOption.name }) }}
         </button>
       </div>
     </div>
