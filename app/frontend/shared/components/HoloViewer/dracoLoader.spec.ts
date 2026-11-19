@@ -93,6 +93,43 @@ describe("sharedDracoLoader", () => {
     expect(dispose).toHaveBeenCalledOnce();
   });
 
+  it("sends a decode on a retired loader to the fresh one at once", async () => {
+    const sharedDracoLoader = await load();
+    const other = deferred();
+    decode.mockReturnValueOnce(other.promise).mockRejectedValueOnce(abort);
+
+    const old = sharedDracoLoader();
+    const running = old.decodeGeometry(new ArrayBuffer(0), taskConfig);
+    await expect(
+      old.decodeGeometry(new ArrayBuffer(0), taskConfig),
+    ).rejects.toBe(abort);
+
+    decode.mockResolvedValueOnce(new BufferGeometry());
+    await old.decodeGeometry(new ArrayBuffer(0), taskConfig);
+
+    expect(decode.mock.contexts.at(-1)).toBe(sharedDracoLoader());
+    expect(dispose).not.toHaveBeenCalled();
+
+    other.resolve(new BufferGeometry());
+    await running;
+    expect(dispose).toHaveBeenCalledOnce();
+  });
+
+  it("still disposes once a decode threw before it began", async () => {
+    const sharedDracoLoader = await load();
+    decode.mockImplementationOnce(() => {
+      throw new Error("Unable to re-decode a buffer with different settings.");
+    });
+
+    const loader = sharedDracoLoader();
+    await expect(
+      loader.decodeGeometry(new ArrayBuffer(0), taskConfig),
+    ).rejects.toThrow("re-decode");
+
+    expect(dispose).toHaveBeenCalledOnce();
+    expect(sharedDracoLoader()).not.toBe(loader);
+  });
+
   it("sends a decode on a disposed loader to the fresh one", async () => {
     const sharedDracoLoader = await load();
     decode.mockRejectedValueOnce(abort);

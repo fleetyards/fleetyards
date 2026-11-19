@@ -25,15 +25,18 @@ class RecyclingDracoLoader extends DRACOLoader {
     buffer: ArrayBuffer,
     taskConfig: object,
   ): Promise<BufferGeometry> {
-    // A GLTFLoader set up before the failure still holds this one.
-    if (this.disposed) {
+    // A GLTFLoader set up before the failure still holds this one, and its
+    // workers are the aborted ones.
+    if (this.retired) {
       return sharedDracoLoader().decodeGeometry(buffer, taskConfig);
     }
 
     this.pending++;
 
-    return baseDecodeGeometry()
-      .call(this, buffer, taskConfig)
+    // The base method can throw before it returns a promise.
+    return new Promise<BufferGeometry>((resolve) =>
+      resolve(baseDecodeGeometry().call(this, buffer, taskConfig)),
+    )
       .catch((error: unknown) => {
         this.retire();
         throw error;
