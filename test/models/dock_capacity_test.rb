@@ -107,7 +107,7 @@ class DockCapacityTest < ActiveSupport::TestCase
     entry = build(:dock_capacity, ladder: :ship, size: "medium", quantity: 2)
 
     I18n.with_locale(:de) do
-      assert_equal "2 mittelgroße Landeplätze", entry.display_label
+      assert_equal "2 mittelgroße Pads", entry.display_label
     end
   end
 
