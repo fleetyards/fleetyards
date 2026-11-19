@@ -102,10 +102,9 @@ const slots = defineSlots<{
 
 <template>
   <component :is="level" :class="cssClasses" class="font-normal flex gap-2">
-    <span v-if="pageFlag" class="heading__beta">
+    <BetaBadge v-if="pageFlag" :feature="pageFlag">
       <slot name="default" />
-      <BetaBadge :feature="pageFlag" />
-    </span>
+    </BetaBadge>
     <slot v-else name="default" />
     <HeadingSmall v-if="slots.subHeading">
       <slot name="subHeading" />
@@ -115,11 +114,4 @@ const slots = defineSlots<{
 
 <style lang="scss" scoped>
 @import "index";
-
-.heading__beta {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
 </style>

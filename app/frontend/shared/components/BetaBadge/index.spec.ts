@@ -20,19 +20,22 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   };
 });
 
-const badge = async (feature: FeatureFlagName | FeatureFlagName[]) => {
-  const wrapper = await mountWithDefaults(Component, { props: { feature } });
+const mount = (feature: FeatureFlagName | FeatureFlagName[]) =>
+  mountWithDefaults(Component, { props: { feature } });
 
-  return wrapper.find('[data-test="beta-badge"]');
-};
+const badge = async (feature: FeatureFlagName | FeatureFlagName[]) =>
+  (await mount(feature)).find('[data-test="beta-badge"]');
 
 describe("BetaBadge", () => {
   it("shows for a flag users or fleets can switch on, with the hint as its label", async () => {
-    const element = await badge(FeatureFlagName.DRESSING_ROOM);
+    const wrapper = await mount(FeatureFlagName.DRESSING_ROOM);
+    const element = wrapper.find('[data-test="beta-badge"]');
 
     expect(element.exists()).toBe(true);
     expect(element.text()).toBe("Beta");
-    expect(element.attributes("aria-label")).toContain("feedback");
+    expect(
+      wrapper.find(`#${element.attributes("aria-describedby")}`).text(),
+    ).toContain("feedback");
   });
 
   it("stays out for a flag nobody can switch on themselves", async () => {

@@ -14,8 +14,7 @@ import {
 
 type Props = {
   feature: FeatureFlagName | FeatureFlagName[];
-  // Inside a button or link, which takes the focus and owns the tooltip: a
-  // focusable pill in there would be a control nested in a control.
+  // Inside a button or link, which takes the focus.
   inControl?: boolean;
   // Sized to sit beside the icon of an icon-only button.
   compact?: boolean;
@@ -37,35 +36,59 @@ const { data: betaFeatures } = useBetaFeaturesQuery({
 const visible = computed(() =>
   isBetaFeature(props.feature, betaFeatures.value),
 );
-</script>
 
+const hintId = useId();
+</script>
 <template>
   <!--
-    Focusable so the explanation is not mouse-only: the tooltip opens on
-    keyboard focus as well as hover.
+    With a slot, the pill follows what it marks on one wrapping line, and what
+    it marks renders unwrapped when the flag is not beta.
   -->
-  <span
-    v-if="visible && inControl"
-    class="beta-badge"
-    :class="{ 'beta-badge--compact': compact }"
-    data-test="beta-badge"
-  >
-    {{ t("betaBadge.label") }}
+  <span v-if="visible" class="beta-badge-around">
+    <slot />
+    <!--
+      Inside a button or link, which takes the focus, a focusable pill would be
+      a control nested in a control, so there it explains on hover only.
+    -->
+    <span
+      v-if="inControl"
+      v-tooltip="{ content: t('betaBadge.hint'), multiline: true }"
+      class="beta-badge"
+      :class="{ 'beta-badge--compact': compact }"
+      data-test="beta-badge"
+    >
+      {{ t("betaBadge.label") }}
+    </span>
+    <!--
+      Focusable so the explanation is not mouse-only: the tooltip opens on
+      keyboard focus as well as hover. The hint is a description rather than
+      the label, so it stays out of the name of a heading the pill sits in.
+    -->
+    <template v-else>
+      <span
+        v-tooltip="{ content: t('betaBadge.hint'), multiline: true }"
+        class="beta-badge beta-badge--hint"
+        :class="{ 'beta-badge--compact': compact }"
+        tabindex="0"
+        :aria-describedby="hintId"
+        data-test="beta-badge"
+      >
+        {{ t("betaBadge.label") }}
+      </span>
+      <span :id="hintId" hidden>{{ t("betaBadge.hint") }}</span>
+    </template>
   </span>
-  <span
-    v-else-if="visible"
-    v-tooltip="{ content: t('betaBadge.hint'), multiline: true }"
-    class="beta-badge beta-badge--hint"
-    :class="{ 'beta-badge--compact': compact }"
-    tabindex="0"
-    :aria-label="t('betaBadge.hint')"
-    data-test="beta-badge"
-  >
-    {{ t("betaBadge.label") }}
-  </span>
+  <slot v-else />
 </template>
 
 <style lang="scss" scoped>
+.beta-badge-around {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .beta-badge {
   display: inline-flex;
   flex-shrink: 0;

@@ -78,6 +78,22 @@ describe("Heading", () => {
     expect(hasBadge(await mount({ hero: true }))).toBe(false);
   });
 
+  it("keeps the title unwrapped on a flagged page that is not beta", async () => {
+    const wrapper = await mount({ hero: true }, FeatureFlagName.STARMAP);
+
+    expect(wrapper.find(".beta-badge-around").exists()).toBe(false);
+  });
+
+  it("describes the pill with the hint instead of naming the heading after it", async () => {
+    const wrapper = await mount({ hero: true }, FeatureFlagName.HANGAR_PLANNER);
+    const pill = wrapper.find('[data-test="beta-badge"]');
+
+    expect(pill.attributes("aria-label")).toBeUndefined();
+    expect(
+      wrapper.find(`#${pill.attributes("aria-describedby")}`).text(),
+    ).toContain("feedback");
+  });
+
   it("takes the flag from its prop", async () => {
     expect(
       hasBadge(
