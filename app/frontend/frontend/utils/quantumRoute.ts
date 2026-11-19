@@ -293,22 +293,29 @@ export const planRoute = ({
   });
 
   const target = nodes.get(to) as Node;
-  const targetTunnels = (nodesBySystem.get(target.systemId) || []).filter(
-    (node) => tunnelEnds.has(node.place.id),
-  ).length;
+  const jumpTime = (a: Node, b: Node) =>
+    driveTravelTime(
+      drive.typeData,
+      distanceBetween(a.place.position, b.place.position) / 1000,
+    ) || 0;
 
-  // A* towards the destination: no chain of jumps beats the straight line,
-  // since the drive covers one long jump faster than the same distance in
-  // parts. Leaving the destination's system through one tunnel and coming
-  // back through another escapes that bound, so with two or more tunnels the
-  // search falls back to plain Dijkstra.
+  // A* towards the destination. Within its system no chain of jumps beats the
+  // straight line, since the drive covers one long jump faster than the same
+  // distance in parts. A route that leaves the system comes back through one
+  // of its tunnel ends and jumps on from there, so the closest of those bounds
+  // it too.
+  const viaTunnel = Math.min(
+    Infinity,
+    ...(nodesBySystem.get(target.systemId) || [])
+      .filter((node) => tunnelEnds.has(node.place.id))
+      .map((node) => jumpTime(node, target)),
+  );
   const estimate = (node: Node) =>
-    node.systemId !== target.systemId || targetTunnels > 1
-      ? 0
-      : driveTravelTime(
-          drive.typeData,
-          distanceBetween(node.place.position, target.place.position) / 1000,
-        ) || 0;
+    node.systemId === target.systemId
+      ? Math.min(jumpTime(node, target), viaTunnel)
+      : Number.isFinite(viaTunnel)
+        ? viaTunnel
+        : 0;
   const estimates = new Map<string, number>();
   const estimateOf = (id: string) => {
     if (!estimates.has(id)) {
@@ -322,12 +329,15 @@ export const planRoute = ({
   const via = new Map<string, RouteLeg>();
   const done = new Set<string>();
 
+  // The estimate never overshoots but is not consistent across a tunnel, so a
+  // place already settled is reopened when a cheaper way to it turns up.
   const relax = (leg: RouteLeg, base: number) => {
     const next = base + legCost(leg, drive);
 
     if (next < (cost.get(leg.to.id) ?? Infinity)) {
       cost.set(leg.to.id, next);
       via.set(leg.to.id, leg);
+      done.delete(leg.to.id);
     }
   };
 
@@ -357,7 +367,7 @@ export const planRoute = ({
     const bodies = bodiesBySystem.get(node.systemId) || [];
 
     (nodesBySystem.get(node.systemId) || []).forEach((next) => {
-      if (done.has(next.place.id) || next === node) {
+      if (next === node || next.place.id === from) {
         return;
       }
 
@@ -375,7 +385,7 @@ export const planRoute = ({
     (tunnelsFrom.get(current) || []).forEach((targetId) => {
       const exit = nodes.get(targetId);
 
-      if (exit && !done.has(targetId)) {
+      if (exit && targetId !== from) {
         relax({ kind: "tunnel", from: node.place, to: exit.place }, best);
       }
     });

@@ -249,6 +249,57 @@ describe("planRoute", () => {
     expect(plan(60).exceedsTank).toBe(true);
   });
 
+  it("finds the faster way out and back through the tunnels", () => {
+    const a = place({ id: "a", position: [0, 0, 0] });
+    const b = place({ id: "b", position: [400 * GM, 0, 0] });
+    const nearA = place({
+      id: "near-a",
+      kind: LocationKindEnum.JUMP_POINT,
+      position: [1 * GM, 0, 0],
+      quantumTravelDestination: false,
+    });
+    const nearB = place({
+      id: "near-b",
+      kind: LocationKindEnum.JUMP_POINT,
+      position: [399 * GM, 0, 0],
+      quantumTravelDestination: false,
+    });
+    const otherIn = place({
+      id: "other-in",
+      kind: LocationKindEnum.JUMP_POINT,
+      position: [0, 0, 0],
+      quantumTravelDestination: false,
+    });
+    const otherOut = place({
+      id: "other-out",
+      kind: LocationKindEnum.JUMP_POINT,
+      position: [1 * GM, 0, 0],
+      quantumTravelDestination: false,
+    });
+
+    const route = planRoute({
+      systems: [
+        { id: "one", places: [a, b, nearA, nearB] },
+        { id: "two", places: [otherIn, otherOut] },
+      ],
+      tunnels: [
+        { from: "near-a", to: "other-in" },
+        { from: "other-out", to: "near-b" },
+      ],
+      drive: drive(),
+      from: "a",
+      to: "b",
+    })!;
+
+    expect(route.legs.map((leg) => leg.to.id)).toEqual([
+      "near-a",
+      "other-in",
+      "other-out",
+      "near-b",
+      "b",
+    ]);
+  });
+
   it("crosses into another system through a tunnel", () => {
     const a = place({ id: "a", position: [0, 5 * GM, 0] });
     const gate = place({
