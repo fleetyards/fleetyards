@@ -45,6 +45,10 @@ export const useFeatureState = () => {
   // Who gets the flag right now, one part per open gate. A flag that is on
   // for everyone ignores its other gates, so they are left out.
   const summaryParts = (feature: Feature): FeatureSummaryPart[] => {
+    // Off means every gate is cleared; the opt-in settings survive that but
+    // give nobody the flag until someone opts in.
+    if (feature.state === "off") return [];
+
     if (feature.state === "on") {
       return [
         {

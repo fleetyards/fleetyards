@@ -69,6 +69,19 @@ describe("useFeatureState", () => {
     expect(summaryParts(feature({ state: "off" }))).toEqual([]);
   });
 
+  // Opting in survives turning a flag off, but nobody has it until they do.
+  it("leaves the opt-in settings out for a flag that is off", () => {
+    expect(
+      summaryParts(
+        feature({
+          state: "off",
+          selfServiceUser: true,
+          selfServiceFleet: true,
+        }),
+      ),
+    ).toEqual([]);
+  });
+
   it("counts whole days open", () => {
     const twoDaysAgo = new Date(Date.now() - 2.5 * 86_400_000).toISOString();
 
