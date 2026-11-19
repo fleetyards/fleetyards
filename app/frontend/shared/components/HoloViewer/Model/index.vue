@@ -757,16 +757,16 @@ DefaultLoadingManager.onProgress = (_item, loaded, total) => {
   emit("progress", loaded, total);
 };
 
-DefaultLoadingManager.onError = (error) => {
-  emit("error", error);
-  console.error("Error loading GLTF model", error);
-};
-
+// The loader's own rejection, not the default manager's: that one is shared by
+// every model on the canvas and names a URL, not what went wrong.
 const { state } = useLoader(GLTFLoader, props.model.path, {
   extensions: (loader) => {
     if (loader instanceof GLTFLoader) {
       prepareGltfLoader(loader);
     }
+  },
+  asyncOptions: {
+    onError: (error) => emit("error", error),
   },
 });
 

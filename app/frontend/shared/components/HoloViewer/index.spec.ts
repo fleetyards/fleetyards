@@ -19,7 +19,22 @@ vi.mock("@tresjs/cientos", () => ({
   Stars: { template: "<div />" },
 }));
 
-vi.mock("./Model/index.vue", () => ({ default: { template: "<div />" } }));
+vi.mock("./Model/index.vue", () => ({
+  default: {
+    name: "HoloModel",
+    props: ["model"],
+    emits: ["error"],
+    template: "<div data-test='model' />",
+  },
+}));
+
+vi.mock("./RoomLighting/index.vue", () => ({
+  default: { template: "<div />" },
+}));
+
+const reportError = vi.hoisted(() => vi.fn());
+
+vi.mock("@/shared/plugins/Appsignal", () => ({ reportError }));
 
 const { default: HoloViewer } = await import("./index.vue");
 
@@ -192,5 +207,105 @@ describe("HoloViewer", () => {
     expect(camera.attributes()).toEqual(
       expect.objectContaining({ fov: "35", near: expect.any(String) }),
     );
+  });
+
+  describe("a holo that does not load", () => {
+    const decoderAbort = {
+      type: "error",
+      error: "Aborted(). Build with -sASSERTIONS for more info.",
+    };
+
+    const full = {
+      path: "/textured.glb",
+      length: 20,
+      size: MB,
+      textured: true,
+      paint: "/paint.webp",
+      fallback: { path: "/textured_lite.glb", paint: "/paint_lite.webp" },
+    };
+
+    const shownPaths = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+      wrapper
+        .findAllComponents({ name: "HoloModel" })
+        .map((model) => (model.props("model") as { path: string }).path);
+
+    const failModel = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
+      wrapper
+        .findComponent({ name: "HoloModel" })
+        .vm.$emit("error", decoderAbort);
+      await wrapper.vm.$nextTick();
+    };
+
+    beforeEach(() => {
+      setViewport(false);
+      reportError.mockClear();
+    });
+
+    it("draws its fallback with the fallback's paint, quietly", async () => {
+      const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: { models: [full] },
+      });
+
+      await failModel(wrapper);
+
+      const shown = wrapper.findComponent({ name: "HoloModel" });
+      expect(shownPaths(wrapper)).toEqual(["/textured_lite.glb"]);
+      expect(shown.props("model")).toMatchObject({
+        textured: true,
+        paint: "/paint_lite.webp",
+      });
+      expect(wrapper.emitted("unavailable")).toBeUndefined();
+    });
+
+    it("reports a decoder abort with the file it failed on", async () => {
+      const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: { models: [full] },
+      });
+
+      await failModel(wrapper);
+
+      expect(reportError).toHaveBeenCalledOnce();
+      expect(String(reportError.mock.calls[0][0])).toContain(
+        "for more info. (/textured.glb)",
+      );
+    });
+
+    it("gives up by the caller's path once the fallback fails too", async () => {
+      const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: { models: [full] },
+      });
+
+      await failModel(wrapper);
+      await failModel(wrapper);
+
+      expect(wrapper.emitted("unavailable")).toEqual([["/textured.glb"]]);
+      expect(String(reportError.mock.calls[1][0])).toContain(
+        "(/textured_lite.glb)",
+      );
+    });
+
+    it("gives up straight away without a fallback", async () => {
+      const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: { models: [{ path: "/holo.glb", length: 20, size: MB }] },
+      });
+
+      await failModel(wrapper);
+
+      expect(wrapper.emitted("unavailable")).toEqual([["/holo.glb"]]);
+    });
+
+    it("does not report a download that failed", async () => {
+      const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: { models: [full] },
+      });
+
+      wrapper
+        .findComponent({ name: "HoloModel" })
+        .vm.$emit("error", new ProgressEvent("error"));
+      await wrapper.vm.$nextTick();
+
+      expect(reportError).not.toHaveBeenCalled();
+      expect(shownPaths(wrapper)).toEqual(["/textured_lite.glb"]);
+    });
   });
 });
