@@ -6,11 +6,7 @@ Working plan for #6411. Decisions live in the issue body. Deleted before the PR 
 On `/starmap`, pick a ship (stock drive or a loadout's drive), a start and a destination, and see the fastest unobstructed quantum route drawn on the map with per-leg distance, time and fuel.
 
 ## Open questions
-- **Refuel stops:** the location data has no quantum-refuel service. Either look for landing services on locations in the game files (a parser change), or ship without refuel stops and only flag routes that need more fuel than the tank holds.
-- **Calibration time:** `calibrationRate` and `min/maxCalibrationRequirement` exist, but nothing computes a time from them yet. Either include calibration in each leg's time, or count spool only.
-- **`jumpRange` unit:** it is shown only as a list column, with no unit. Verify it against a known drive before using it as an edge limit.
-- **Body margin:** how far a leg must stay clear of a body's surface. The game's own obstruction check uses a margin we don't have, so start with a fixed fraction of the radius (or atmosphere height) and tune it against known routes.
-- **Ship picker scope:** any model with the stock drive, plus the signed-in user's hangar vehicles and their loadouts. Signed-out users get stock drives only.
+- **Refuel stops:** the location data has no quantum-refuel service. Today a route that needs more than one tank is flagged; adding refuel stops needs station landing services parsed from the game files.
 
 ## What changed
 
@@ -68,7 +64,6 @@ On `/starmap`, pick a ship (stock drive or a loadout's drive), a start and a des
 
 - [ ] **Drive choice**: a ship's stock drive and a `fleetyards` loadout's drive both produce a route. A `link` loadout falls back to the stock drive and shows that it did.
 - [ ] **Unobstructed**: no leg of a returned route passes within radius + margin of a star, planet or moon.
-- [ ] **Range**: every leg stays within the drive's `jumpRange`.
 - [ ] **Leg figures**: each leg lists distance, time and fuel, and the totals match the sum of the legs.
 - [ ] **Fuel**: a route that needs more fuel than the tank holds is flagged.
 - [ ] **Cross-system**: a route into another system goes through a jump tunnel.
@@ -94,11 +89,12 @@ On `/starmap`, pick a ship (stock drive or a loadout's drive), a start and a des
 
 ## Discovery Log
 
+- **2026-11-19** Live data: `jumpRange` is the float maximum on every drive; calibration is near-identical across drives; in Stanton every outpost, station and body is a quantum destination; surface places sit at 0.99–1.05 radii, the closest stations at 1.1. A* with the straight-line jump time as the estimate brings a Stanton plan from ~300 ms to ~10 ms. Link-kind loadouts are not offered as drives rather than falling back.
 - **2026-11-19** Initial research and plan creation. `quantumTravelDestination` is not used anywhere in the starmap code yet. Inside a system, `links` is empty; jump points are places with `kind === JUMP_POINT`. No endpoint returns all of a user's loadouts; each hangar vehicle carries its `active_loadout`.
 
 ## Progress
-- [ ] Phase 1 — Route maths
-- [ ] Phase 2 — Drive sources
-- [ ] Phase 3 — Across systems
-- [ ] Phase 4 — Starmap UI
+- [x] Phase 1 — Route maths
+- [x] Phase 2 — Drive sources
+- [x] Phase 3 — Across systems
+- [x] Phase 4 — Starmap UI
 - [ ] Phase 5 — Verify
