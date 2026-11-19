@@ -15,6 +15,20 @@ module Api
           Flipper.enabled?(feature.name, current_resource_owner) ? feature.to_s : nil
         end
       end
+
+      # The flags a user or a fleet can switch on for themselves, which the
+      # frontend marks as beta wherever their features show. Whether a flag
+      # has a self-service toggle is set in /admin/features, so this is read
+      # at runtime rather than generated from the registry.
+      def beta
+        @features = FeatureSetting.user_toggleable
+          .or(FeatureSetting.fleet_toggleable)
+          .where(feature_name: FeatureFlags::Registry.current.names)
+          .order(:feature_name)
+          .pluck(:feature_name)
+
+        render :show
+      end
     end
   end
 end

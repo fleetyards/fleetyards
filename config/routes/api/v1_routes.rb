@@ -8,6 +8,7 @@ v1_api_routes = lambda do
   get "sc-data/compare", to: "sc_data#compare"
   get "sc-data/patch-summary", to: "sc_data#patch_summary"
 
+  get "features/beta", to: "features#beta"
   resource :features, only: %i[show]
 
   resources :user_features, path: "user-features", only: %i[index] do

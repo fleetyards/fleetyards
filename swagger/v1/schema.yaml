@@ -1355,6 +1355,21 @@ paths:
                 "$ref": "#/components/schemas/FeatureNamesList"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/features/beta":
+    get:
+      summary: Feature Flags Users or Fleets Can Toggle
+      tags:
+      - Features
+      operationId: betaFeatures
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FeatureNamesList"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/filters/blueprints/materials":
     get:
       summary: Blueprint materials filter
