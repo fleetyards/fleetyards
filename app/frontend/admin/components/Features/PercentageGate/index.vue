@@ -10,12 +10,12 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   name: string;
   label: string;
   value: number;
   loading?: boolean;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
@@ -29,7 +29,9 @@ const { t } = useI18n();
 
 // Slider and input only move a draft. A slider that saved on release sent a
 // change for every accidental drag; nothing reaches the flag before Apply.
-const draft = ref(props.value);
+// An emptied field stays empty rather than reading as 0%: clearing it to type
+// a new value must not arm Apply with "nobody".
+const draft = ref<number | null>(props.value);
 
 watch(
   () => props.value,
@@ -38,20 +40,30 @@ watch(
   },
 );
 
-const clamp = (value: number) =>
-  Math.min(100, Math.max(0, Math.round(Number.isFinite(value) ? value : 0)));
+const clamp = (value: number) => Math.min(100, Math.max(0, Math.round(value)));
+
+const sliderValue = computed({
+  get: () => draft.value ?? 0,
+  set: (value: number) => {
+    draft.value = clamp(value);
+  },
+});
 
 const inputValue = computed({
   get: () => draft.value,
   set: (value: string | number | null | undefined) => {
-    draft.value = clamp(Number(value));
+    const parsed = value === "" || value == null ? NaN : Number(value);
+
+    draft.value = Number.isFinite(parsed) ? clamp(parsed) : null;
   },
 });
 
-const changed = computed(() => draft.value !== props.value);
+const changed = computed(
+  () => draft.value !== null && draft.value !== props.value,
+);
 
 const apply = () => {
-  if (!changed.value) return;
+  if (!changed.value || draft.value === null) return;
 
   emit("apply", draft.value);
 };
@@ -60,7 +72,7 @@ const apply = () => {
 <template>
   <div class="feature-percentage-gate" :data-test="`percentage-gate-${name}`">
     <Slider
-      v-model="draft"
+      v-model="sliderValue"
       class="feature-percentage-gate__slider"
       :min="0"
       :max="100"

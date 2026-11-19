@@ -93,4 +93,19 @@ describe("FeaturePercentageGate", () => {
       50,
     );
   });
+
+  it("keeps Apply disabled while the field is empty", async () => {
+    const wrapper = mountGate();
+
+    wrapper
+      .findComponent({ name: "FormInput" })
+      .vm.$emit("update:modelValue", "");
+    await nextTick();
+
+    expect(wrapper.find(APPLY).attributes("disabled")).toBeDefined();
+
+    await wrapper.find(APPLY).trigger("click");
+
+    expect(wrapper.emitted("apply")).toBeUndefined();
+  });
 });
