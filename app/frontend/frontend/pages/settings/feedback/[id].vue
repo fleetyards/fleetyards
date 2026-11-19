@@ -27,14 +27,13 @@ import {
   type FeedbackData,
 } from "@/services/fyCable/channels/FeedbackChannel";
 import {
+  FeedbackLimits,
   FeedbackStateEnum,
   getFeedbackQueryKey,
   getFeedbacksQueryKey,
   useFeedback,
   useReplyToFeedback,
 } from "@/services/fyApi";
-
-const MESSAGE_MAX_LENGTH = 5000;
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -136,7 +135,7 @@ useSubscription({
     <FeedbackReplyForm
       :label="t('feedback.mine.replyLabel')"
       :submit-label="t('feedback.mine.reply')"
-      :maxlength="MESSAGE_MAX_LENGTH"
+      :maxlength="FeedbackLimits.MESSAGE_MAX_LENGTH"
       :send="send"
     />
   </div>

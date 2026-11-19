@@ -31851,6 +31851,13 @@ components:
       required:
       - message
       title: FeedbackInput
+    FeedbackLimits:
+      type: integer
+      enum:
+      - 5000
+      x-enumNames:
+      - MESSAGE_MAX_LENGTH
+      title: FeedbackLimits
     FeedbackList:
       type: object
       properties:

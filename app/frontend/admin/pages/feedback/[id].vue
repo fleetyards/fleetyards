@@ -34,8 +34,7 @@ import {
   useFeedback,
   useReplyToFeedback,
 } from "@/services/fyAdminApi";
-
-const MESSAGE_MAX_LENGTH = 5000;
+import { FeedbackLimits } from "@/services/fyApi";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -146,7 +145,7 @@ useSubscription({
       :label="t('feedback.admin.replyLabel')"
       :submit-label="t('feedback.admin.reply')"
       :hint="t('feedback.admin.replyHint')"
-      :maxlength="MESSAGE_MAX_LENGTH"
+      :maxlength="FeedbackLimits.MESSAGE_MAX_LENGTH"
       :send="send"
     />
   </div>

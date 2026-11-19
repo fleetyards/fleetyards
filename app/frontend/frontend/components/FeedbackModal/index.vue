@@ -17,6 +17,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { featureLabel } from "@/shared/utils/BetaFeatures";
 import {
+  FeedbackLimits,
   type FeatureFlagName,
   useBetaFeatures as useBetaFeaturesQuery,
   useCreateFeedback as useCreateFeedbackMutation,
@@ -32,8 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   feature: undefined,
   pagePath: undefined,
 });
-
-const MESSAGE_MAX_LENGTH = 5000;
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -106,7 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-bind="messageProps"
         rules="required"
         :label="t('feedback.message')"
-        :maxlength="MESSAGE_MAX_LENGTH"
+        :maxlength="FeedbackLimits.MESSAGE_MAX_LENGTH"
         autofocus
         data-test="feedback-message"
       />
