@@ -46,9 +46,16 @@ export const calculateTravelTime = (
 export const quantumDriveTravelTime = (
   quantumDrive: Component,
   distanceInMkm: number,
-): number | undefined => {
-  const typeData = quantumDrive.typeData as ComponentQuantumDrive | undefined;
+): number | undefined =>
+  driveTravelTime(
+    quantumDrive.typeData as ComponentQuantumDrive | undefined,
+    distanceInMkm * KM_PER_MKM,
+  );
 
+export const driveTravelTime = (
+  typeData: ComponentQuantumDrive | undefined,
+  distanceInKm: number,
+): number | undefined => {
   if (!typeData?.driveSpeed) {
     return undefined;
   }
@@ -57,7 +64,7 @@ export const quantumDriveTravelTime = (
     (typeData.stageOneAccelRate || 0) / 1000,
     (typeData.stageTwoAccelRate || 0) / 1000,
     typeData.driveSpeed / 1000,
-    distanceInMkm * KM_PER_MKM,
+    distanceInKm,
   );
 };
 
