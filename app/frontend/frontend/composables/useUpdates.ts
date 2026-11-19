@@ -156,9 +156,12 @@ export const useUpdates = () => {
     void followMovedFleet(message);
 
     if (replyShownOnPage(message, route.path)) {
-      void readNotifications
-        .mutateAsync({ data: { ids: [message.id] } })
-        .then(invalidateNotifications);
+      // A failed read leaves it unread in the center, which is where the
+      // reader would find it anyway.
+      readNotifications.mutate(
+        { data: { ids: [message.id] } },
+        { onSuccess: invalidateNotifications },
+      );
 
       return;
     }
