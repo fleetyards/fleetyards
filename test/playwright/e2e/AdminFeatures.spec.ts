@@ -4,11 +4,7 @@ import { test, expect } from "../support/commands";
 const openFirstFeature = async (page: import("@playwright/test").Page) => {
   await page.goto("/admin/features/");
   await page.waitForLoadState("networkidle");
-  await page
-    .getByTestId("list-group-item")
-    .first()
-    .getByTestId("edit-feature")
-    .click();
+  await page.getByTestId("feature-row").first().click();
   await expect(page.getByTestId("feature-heading")).toBeVisible();
 };
 
@@ -34,82 +30,54 @@ test.describe("Admin Features", () => {
     await expect(page.locator("h1")).toBeVisible();
   });
 
-  test("Shows feature flags list", async ({ page }) => {
+  test("Shows each flag with its state and who has it", async ({ page }) => {
     await page.goto("/admin/features/");
 
-    // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
+    const row = page.getByTestId("feature-row").first();
 
-    // Feature names should be visible
-    await expect(page.getByTestId("feature-name").first()).toBeVisible();
+    await expect(row.getByTestId("feature-name")).toBeVisible();
+    await expect(row.getByTestId("pill")).toBeVisible();
+    await expect(row.getByTestId("feature-on-for")).toBeVisible();
   });
 
-  test("Shows feature state pills", async ({ page }) => {
+  test("Filters the list by name", async ({ page }) => {
     await page.goto("/admin/features/");
-
-    // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
-    // State pills (on/off/conditional) should be present
-    const pills = page.getByTestId("pill");
-    await expect(pills.first()).toBeVisible();
-  });
+    await page.locator("input[name='features-filter']").fill("holo_ar");
 
-  test("Toggles a feature on", async ({ page, notification }) => {
-    await page.goto("/admin/features/");
-
-    // Wait for feature list to load from API
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
-
-    // Find a toggle button and click it
-    const toggleBtn = page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("toggle-feature");
-    await toggleBtn.click();
-
-    // Should show success notification
-    await notification.success("updated");
+    await expect(page.getByTestId("feature-row")).toHaveCount(1);
+    await expect(page.getByTestId("feature-name")).toHaveText("holo_ar");
   });
 
   test("Opens a feature's own page from the list", async ({ page }) => {
-    await page.goto("/admin/features/");
-
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
-
-    await page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("edit-feature")
-      .click();
+    await openFirstFeature(page);
 
     await expect(page).toHaveURL(/\/admin\/features\/[^/]+\/$/);
-    await expect(page.getByTestId("feature-heading")).toBeVisible();
-    await expect(page.getByTestId("feature-global")).toBeVisible();
+    await expect(page.getByTestId("feature-on-for")).toBeVisible();
+    await expect(page.getByTestId("feature-history")).toBeVisible();
   });
 
-  test("Toggles user self-service on the users tab", async ({
-    page,
-    notification,
-  }) => {
+  test("Opens a feature to everyone", async ({ page, notification }) => {
     await openFirstFeature(page);
-    await page.goto(`${page.url()}users/`);
+
+    await page.getByTestId("feature-enable").click();
+
+    await notification.success("updated");
+    await expect(page.getByTestId("feature-enable")).toBeHidden();
+  });
+
+  test("Toggles user self-service", async ({ page, notification }) => {
+    await openFirstFeature(page);
 
     await page.getByTestId("toggle-self-service").click();
 
     await notification.success("updated");
   });
 
-  test("Toggles fleet self-service on the fleets tab", async ({
-    page,
-    notification,
-  }) => {
+  test("Toggles fleet self-service", async ({ page, notification }) => {
     await openFirstFeature(page);
-    await page.goto(`${page.url()}fleets/`);
 
     await page.getByTestId("toggle-fleet-self-service").click();
 
@@ -119,17 +87,26 @@ test.describe("Admin Features", () => {
   test("Adds a group to a feature", async ({ page, notification }) => {
     await openFirstFeature(page);
 
-    await page.getByTestId("add-group-testers").click();
+    await page.getByTestId("feature-group-testers").getByRole("button").click();
 
     await notification.success("added");
   });
 
-  test("Adds a fleet through the picker on the fleets tab", async ({
+  test("Applies a share of users only on Apply", async ({
     page,
     notification,
   }) => {
     await openFirstFeature(page);
-    await page.goto(`${page.url()}fleets/`);
+
+    await page.locator("input[name='feature-actors']").fill("10");
+    await page.getByTestId("percentage-apply-actors").click();
+
+    await notification.success("updated");
+  });
+
+  test("Adds a fleet through the picker", async ({ page, notification }) => {
+    await openFirstFeature(page);
+    await page.getByTestId("feature-actors-tab-fleets").click();
 
     const picker = page.getByTestId("base-select-feature-fleet");
     await picker.getByTestId("base-select-title").click();
