@@ -12,6 +12,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import FeedbackConversation, {
   type ConversationEntry,
 } from "@/shared/components/FeedbackConversation/index.vue";
@@ -149,6 +150,8 @@ useSubscription({
       :send="send"
     />
   </div>
+
+  <Empty v-else variant="box" hide-actions />
 </template>
 
 <style lang="scss" scoped>

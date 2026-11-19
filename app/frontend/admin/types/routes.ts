@@ -36,7 +36,6 @@ type AdminSimpleRoutes =
   // OAuth Applications
   | "admin-oauth-applications"
   | "admin-feedback"
-  | "admin-feedback-show"
   | "admin-oauth-application-create"
   // Maintenance
   | "pghero"
@@ -49,6 +48,7 @@ export type AdminRouteLocation =
   | SimpleRoute<AdminSimpleRoutes>
   // Models (id)
   | ParamRoute<"admin-model-edit", IdParams>
+  | ParamRoute<"admin-feedback-show", IdParams>
   | ParamRoute<"admin-model-edit-metrics", IdParams>
   | ParamRoute<"admin-model-edit-cargo-and-fuel", IdParams>
   | ParamRoute<"admin-model-edit-cargo-holds", IdParams>
