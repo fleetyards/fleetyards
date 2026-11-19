@@ -13,6 +13,7 @@ import type { ApiError } from "@/shared/types/api-error";
 import {
   type Feedback,
   FeedbackStateEnum,
+  getFeedbackQueryKey,
   getFeedbacksQueryKey,
   useReopenFeedback,
   useResolveFeedback,
@@ -48,9 +49,10 @@ const toggle = async () => {
 
   await mutation
     .mutateAsync({ id: props.feedback.id })
-    .then(() =>
-      queryClient.invalidateQueries({ queryKey: getFeedbacksQueryKey() }),
-    )
+    .then((updated) => {
+      queryClient.setQueryData(getFeedbackQueryKey(props.feedback.id), updated);
+      void queryClient.invalidateQueries({ queryKey: getFeedbacksQueryKey() });
+    })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });
     });

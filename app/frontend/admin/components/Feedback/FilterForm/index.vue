@@ -32,7 +32,7 @@ const form = ref<FeedbackQuery>(prefillFormValues());
 
 const stateOptions = Object.values(FeedbackStateEnum).map((state) => ({
   value: state,
-  label: t(`feedback.admin.states.${state}`),
+  label: t(`feedback.states.${state}`),
 }));
 
 const featureOptions = Object.values(FeatureFlagName)

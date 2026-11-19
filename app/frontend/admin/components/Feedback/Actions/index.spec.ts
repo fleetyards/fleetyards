@@ -27,6 +27,7 @@ const feedback = (state: FeedbackStateEnum): Feedback => ({
   message: "Dragging is slow",
   state,
   userId: "0b5f9c8e-1d2a-4c3b-8e4f-5a6b7c8d9e0f",
+  repliesCount: 0,
   createdAt: "2026-11-19T12:00:00Z",
   updatedAt: "2026-11-19T12:00:00Z",
 });

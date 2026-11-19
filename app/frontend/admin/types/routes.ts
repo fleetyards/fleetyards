@@ -36,6 +36,7 @@ type AdminSimpleRoutes =
   // OAuth Applications
   | "admin-oauth-applications"
   | "admin-feedback"
+  | "admin-feedback-show"
   | "admin-oauth-application-create"
   // Maintenance
   | "pghero"

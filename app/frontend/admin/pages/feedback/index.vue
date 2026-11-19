@@ -43,6 +43,7 @@ const columns: BaseTableCol<Feedback>[] = [
   { name: "message", label: t("feedback.admin.message") },
   { name: "featureName", label: t("feedback.admin.feature") },
   { name: "state", label: t("feedback.admin.state") },
+  { name: "repliesCount", label: t("feedback.mine.replies"), mobile: false },
   { name: "username", label: t("feedback.admin.user"), mobile: false },
   { name: "createdAt", label: t("feedback.admin.sentAt"), mobile: false },
 ];
@@ -82,7 +83,12 @@ const columns: BaseTableCol<Feedback>[] = [
         data-test="feedback-list"
       >
         <template #col-message="{ record }">
-          <p class="feedback-message">{{ record.message }}</p>
+          <router-link
+            :to="{ name: 'admin-feedback-show', params: { id: record.id } }"
+            class="feedback-message"
+          >
+            {{ record.message }}
+          </router-link>
           <small v-if="record.pagePath" class="feedback-page">
             {{ record.pagePath }}
           </small>
@@ -103,8 +109,11 @@ const columns: BaseTableCol<Feedback>[] = [
             "
             uppercase
           >
-            {{ t(`feedback.admin.states.${record.state}`) }}
+            {{ t(`feedback.states.${record.state}`) }}
           </BasePill>
+        </template>
+        <template #col-repliesCount="{ record }">
+          {{ record.repliesCount }}
         </template>
         <template #col-username="{ record }">
           {{ record.username || "-" }}
@@ -136,11 +145,12 @@ const columns: BaseTableCol<Feedback>[] = [
 
 <style lang="scss" scoped>
 .feedback-message {
-  margin: 0;
+  display: block;
   white-space: pre-wrap;
 }
 
 .feedback-page {
-  color: var(--color-text-dim, #959595);
+  display: block;
+  color: var(--color-text-dim);
 }
 </style>
