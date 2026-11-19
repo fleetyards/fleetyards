@@ -110,6 +110,61 @@ interface Label {
   open: boolean;
 }
 
+// The open labels, the most promising first. A label closed after it was
+// pushed is skipped when it comes up rather than looked for.
+class LabelHeap {
+  private items: Label[] = [];
+
+  constructor(private rank: (label: Label) => number) {}
+
+  push(label: Label) {
+    const items = this.items;
+    items.push(label);
+
+    for (let index = items.length - 1; index > 0;) {
+      const parent = (index - 1) >> 1;
+      if (this.rank(items[parent]) <= this.rank(items[index])) break;
+      [items[parent], items[index]] = [items[index], items[parent]];
+      index = parent;
+    }
+  }
+
+  pop(): Label | undefined {
+    const items = this.items;
+    const top = items[0];
+    const last = items.pop();
+
+    if (items.length && last) {
+      items[0] = last;
+
+      for (let index = 0; ;) {
+        const left = index * 2 + 1;
+        const right = left + 1;
+        let smallest = index;
+
+        if (
+          left < items.length &&
+          this.rank(items[left]) < this.rank(items[smallest])
+        ) {
+          smallest = left;
+        }
+        if (
+          right < items.length &&
+          this.rank(items[right]) < this.rank(items[smallest])
+        ) {
+          smallest = right;
+        }
+        if (smallest === index) break;
+
+        [items[smallest], items[index]] = [items[index], items[smallest]];
+        index = smallest;
+      }
+    }
+
+    return top;
+  }
+}
+
 const servicesShips = (place: LocationStarmapPlace) =>
   !!place.amenities?.includes(LocationAmenityEnum.VEHICLE_SERVICES);
 
@@ -356,9 +411,27 @@ export const planRoute = ({
 
   const tank = drive.tankSize || null;
 
+  // The same pair of places is weighed once, however many ways reach it.
+  const legs = new Map<string, QuantumLeg | null>();
+  const legBetween = (node: Node, next: Node) => {
+    const key = `${node.place.id}>${next.place.id}`;
+
+    if (!legs.has(key)) {
+      const bodies = bodiesBySystem.get(node.systemId) || [];
+      legs.set(
+        key,
+        clearsAll(node, next, bodies) ? quantumLeg(node, next, drive) : null,
+      );
+    }
+
+    return legs.get(key) as QuantumLeg | null;
+  };
+
   const search = (limit: number | null) => {
     const labels = new Map<string, Label[]>();
-    const open: Label[] = [];
+    const open = new LabelHeap(
+      (label) => label.cost + estimateOf(label.node.place.id),
+    );
 
     // A label is kept unless another at the same place got there no later
     // with no more fuel burnt; without a tank to fill, time alone decides.
@@ -409,36 +482,22 @@ export const planRoute = ({
       open: true,
     });
 
-    // Dense graph: every destination can see most others, so a linear scan
-    // for the most promising open label beats a heap.
     for (;;) {
-      let current: Label | null = null;
-      let rank = Infinity;
+      const label = open.pop();
 
-      open.forEach((label) => {
-        const ranked = label.cost + estimateOf(label.node.place.id);
+      if (!label) return null;
+      if (!label.open) continue;
 
-        if (label.open && ranked < rank) {
-          rank = ranked;
-          current = label;
-        }
-      });
-
-      if (current === null) return null;
-
-      const label: Label = current;
       label.open = false;
 
       if (label.node.place.id === to) return label;
 
       const node = label.node;
-      const bodies = bodiesBySystem.get(node.systemId) || [];
 
       (nodesBySystem.get(node.systemId) || []).forEach((next) => {
         if (next === node || next.place.id === from) return;
-        if (!clearsAll(node, next, bodies)) return;
 
-        const leg = quantumLeg(node, next, drive);
+        const leg = legBetween(node, next);
 
         if (leg) arrive(label, leg, leg.fuel);
       });
@@ -459,26 +518,66 @@ export const planRoute = ({
           );
         }
       });
-
-      for (let index = open.length - 1; index >= 0; index -= 1) {
-        if (!open[index].open) open.splice(index, 1);
-      }
     }
   };
 
-  const withinTank = tank === null ? null : search(tank);
-  const found = withinTank ?? search(null);
+  // The fastest route regardless of fuel is the answer whenever it fits the
+  // tank; only one that does not needs the slower search through refuels.
+  const fastest = search(null);
 
-  if (!found) {
+  if (!fastest) {
     return null;
   }
 
-  const legs: RouteLeg[] = [];
+  // Whether the destination can be reached at all, refuelling on the way: the
+  // least fuel burnt since the last refill, per place. Settles a route that
+  // cannot be flown without searching every way through the refuels for it.
+  const reachable = (limit: number) => {
+    const burnt = new Map<string, number>([[from, 0]]);
+    const settled = new Set<string>();
+
+    for (;;) {
+      let current: string | null = null;
+      let least = Infinity;
+
+      burnt.forEach((value, id) => {
+        if (!settled.has(id) && value < least) {
+          least = value;
+          current = id;
+        }
+      });
+
+      if (current === null) return false;
+      if (current === to) return true;
+
+      settled.add(current);
+      const node = nodes.get(current) as Node;
+      const start = node.refuelAt && current !== from ? 0 : least;
+      const reach = (id: string, fuel: number) => {
+        if (fuel <= limit && fuel < (burnt.get(id) ?? Infinity)) {
+          burnt.set(id, fuel);
+        }
+      };
+
+      (nodesBySystem.get(node.systemId) || []).forEach((next) => {
+        const leg = next === node ? null : legBetween(node, next);
+        if (leg) reach(next.place.id, start + leg.fuel);
+      });
+      (tunnelsFrom.get(current) || []).forEach((id) => {
+        if (nodes.has(id)) reach(id, start);
+      });
+    }
+  };
+
+  const fits = tank === null || fastest.fuel <= tank;
+  const found = fits || !reachable(tank) ? fastest : (search(tank) ?? fastest);
+
+  const route: RouteLeg[] = [];
   for (let label: Label | null = found; label?.leg; label = label.previous) {
-    legs.unshift(label.leg);
+    route.unshift(label.leg);
   }
 
-  return summarise(legs, drive, tank !== null && !withinTank);
+  return summarise(route, drive, !fits && found === fastest);
 };
 
 const summarise = (
