@@ -8,7 +8,22 @@
       "message": "Il tuo feedback",
       "send": "Invia",
       "sent": "Grazie, il tuo feedback è stato inviato.",
-      "failed": "Impossibile inviare il tuo feedback."
+      "failed": "Impossibile inviare il tuo feedback.",
+      "admin": {
+        "message": "Messaggio",
+        "feature": "Funzionalità",
+        "state": "Stato",
+        "user": "Utente",
+        "sentAt": "Inviato il",
+        "general": "Generale",
+        "search": "Cerca nei messaggi",
+        "resolve": "Segna come risolto",
+        "reopen": "Riapri",
+        "states": {
+          "open": "Aperto",
+          "resolved": "Risolto"
+        }
+      }
     }
   }
 }

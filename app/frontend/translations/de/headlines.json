@@ -169,6 +169,9 @@
           "new": "Neuer Administrator",
           "edit": "Administrator bearbeiten"
         },
+        "feedback": {
+          "index": "Feedback"
+        },
         "oauthApplications": {
           "index": "OAuth-Anwendungen",
           "new": "Neue OAuth-Anwendung",

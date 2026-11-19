@@ -8,7 +8,22 @@
       "message": "Tus comentarios",
       "send": "Enviar",
       "sent": "Gracias, tus comentarios se han enviado.",
-      "failed": "No se pudieron enviar tus comentarios."
+      "failed": "No se pudieron enviar tus comentarios.",
+      "admin": {
+        "message": "Mensaje",
+        "feature": "Función",
+        "state": "Estado",
+        "user": "Usuario",
+        "sentAt": "Enviado el",
+        "general": "General",
+        "search": "Buscar mensajes",
+        "resolve": "Marcar como resuelto",
+        "reopen": "Reabrir",
+        "states": {
+          "open": "Abierto",
+          "resolved": "Resuelto"
+        }
+      }
     }
   }
 }

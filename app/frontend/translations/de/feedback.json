@@ -8,7 +8,22 @@
       "message": "Dein Feedback",
       "send": "Senden",
       "sent": "Danke, dein Feedback wurde gesendet.",
-      "failed": "Dein Feedback konnte nicht gesendet werden."
+      "failed": "Dein Feedback konnte nicht gesendet werden.",
+      "admin": {
+        "message": "Nachricht",
+        "feature": "Funktion",
+        "state": "Status",
+        "user": "Benutzer",
+        "sentAt": "Gesendet am",
+        "general": "Allgemein",
+        "search": "Nachrichten durchsuchen",
+        "resolve": "Als erledigt markieren",
+        "reopen": "Wieder öffnen",
+        "states": {
+          "open": "Offen",
+          "resolved": "Erledigt"
+        }
+      }
     }
   }
 }

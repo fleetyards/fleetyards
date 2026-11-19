@@ -345,6 +345,9 @@
           "inventory": "Fleet Inventory",
           "inventoryItem": "Inventory Entry"
         },
+        "feedback": {
+          "index": "Feedback"
+        },
         "oauthApplications": {
           "index": "OAuth Applications",
           "new": "New OAuth Application",

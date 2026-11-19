@@ -8,7 +8,22 @@
       "message": "Your feedback",
       "send": "Send",
       "sent": "Thanks, your feedback was sent.",
-      "failed": "Your feedback could not be sent."
+      "failed": "Your feedback could not be sent.",
+      "admin": {
+        "message": "Message",
+        "feature": "Feature",
+        "state": "Status",
+        "user": "User",
+        "sentAt": "Sent at",
+        "general": "General",
+        "search": "Search messages",
+        "resolve": "Mark as resolved",
+        "reopen": "Reopen",
+        "states": {
+          "open": "Open",
+          "resolved": "Resolved"
+        }
+      }
     }
   }
 }

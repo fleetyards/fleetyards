@@ -287,6 +287,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/feedback/",
+    name: "admin-feedback",
+    component: () => import("@/admin/pages/feedback/index.vue"),
+    meta: {
+      title: "admin.feedback.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-comment-lines",
+      access: ["feedback"],
+    },
+  },
+  {
     path: "/oauth-applications/",
     component: () => import("@/admin/pages/oauth-applications.vue"),
     children: oauthApplicationsRoutes,

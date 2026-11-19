@@ -345,6 +345,9 @@
           "inventory": "Inventaire de la flotte",
           "inventoryItem": "Entrée d'inventaire"
         },
+        "feedback": {
+          "index": "Retours"
+        },
         "oauthApplications": {
           "index": "Applications OAuth",
           "new": "Nouvelle application OAuth",

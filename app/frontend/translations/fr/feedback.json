@@ -8,7 +8,22 @@
       "message": "Votre retour",
       "send": "Envoyer",
       "sent": "Merci, votre retour a été envoyé.",
-      "failed": "Votre retour n'a pas pu être envoyé."
+      "failed": "Votre retour n'a pas pu être envoyé.",
+      "admin": {
+        "message": "Message",
+        "feature": "Fonctionnalité",
+        "state": "Statut",
+        "user": "Utilisateur",
+        "sentAt": "Envoyé le",
+        "general": "Général",
+        "search": "Rechercher dans les messages",
+        "resolve": "Marquer comme traité",
+        "reopen": "Rouvrir",
+        "states": {
+          "open": "Ouvert",
+          "resolved": "Traité"
+        }
+      }
     }
   }
 }

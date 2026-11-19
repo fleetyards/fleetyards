@@ -8,7 +8,22 @@
       "message": "你的意見回饋",
       "send": "傳送",
       "sent": "謝謝，你的意見回饋已傳送。",
-      "failed": "無法傳送你的意見回饋。"
+      "failed": "無法傳送你的意見回饋。",
+      "admin": {
+        "message": "訊息",
+        "feature": "功能",
+        "state": "狀態",
+        "user": "使用者",
+        "sentAt": "傳送時間",
+        "general": "一般",
+        "search": "搜尋訊息",
+        "resolve": "標記為已處理",
+        "reopen": "重新開啟",
+        "states": {
+          "open": "待處理",
+          "resolved": "已處理"
+        }
+      }
     }
   }
 }

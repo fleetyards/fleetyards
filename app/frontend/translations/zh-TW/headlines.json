@@ -169,6 +169,9 @@
           "new": "新管理員",
           "edit": "編輯管理員"
         },
+        "feedback": {
+          "index": "意見回饋"
+        },
         "oauthApplications": {
           "index": "OAuth 應用程式",
           "new": "新增 OAuth 應用程式",
