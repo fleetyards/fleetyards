@@ -88,7 +88,11 @@ const { isActive } = useActiveTab(filteredRoutes);
         <span v-if="badgeFor(routeName(item))" class="tabs-badge">
           {{ badgeFor(routeName(item)) }}
         </span>
-        <BetaBadge v-if="item.meta?.feature" :feature="item.meta.feature" />
+        <BetaBadge
+          v-if="item.meta?.feature"
+          :feature="item.meta.feature"
+          in-control
+        />
       </a>
     </li>
   </router-link>

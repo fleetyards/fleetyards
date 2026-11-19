@@ -14,13 +14,6 @@ export const isBetaFeature = (
   return [feature].flat().some((entry) => BETA_FEATURES.has(entry));
 };
 
-// The flags of the controls a toolbar is showing, for the one pill that
-// stands in for icon buttons too small to carry one each.
-export const shownFeatures = (
-  shown: Partial<Record<FeatureFlagName, boolean>>,
-): FeatureFlagName[] =>
-  (Object.keys(shown) as FeatureFlagName[]).filter((feature) => shown[feature]);
-
 // A section gated by a wrapper component rather than by its routes' meta
 // provides its flag, so the page headings below it can still show the pill.
 export const PAGE_FEATURE: InjectionKey<FeatureFlagName> =

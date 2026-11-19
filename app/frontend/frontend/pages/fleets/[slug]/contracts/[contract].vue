@@ -498,7 +498,7 @@ const crumbs = computed<Crumb[]>(() => [
       >
         <i class="fa-duotone fa-coins" />
         {{ t("actions.fleets.contracts.payouts") }}
-        <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" />
+        <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" in-control />
       </Btn>
       <ShareBtn
         v-if="canShare && contract"

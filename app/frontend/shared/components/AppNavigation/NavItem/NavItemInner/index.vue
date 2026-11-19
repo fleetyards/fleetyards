@@ -80,7 +80,7 @@ const badgeLabel = computed(() => {
       {{ label }}
     </span>
     <span v-else class="sr-only">{{ label }}</span>
-    <BetaBadge v-if="feature && !slim" :feature="feature" />
+    <BetaBadge v-if="feature && !slim" :feature="feature" in-control />
     <span v-if="badgeLabel && !slim" class="nav-item-badge">
       {{ badgeLabel }}
     </span>

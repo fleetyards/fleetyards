@@ -382,7 +382,10 @@ const closeFleetchart = async () => {
               {{ t("labels.fleetchartApp.layout") }}:
             </template>
             {{ t(`labels.fleetchartApp.layoutOptions.${layout}`) }}
-            <BetaBadge :feature="FeatureFlagName.FLEETCHART_LAYOUTS" />
+            <BetaBadge
+              :feature="FeatureFlagName.FLEETCHART_LAYOUTS"
+              in-control
+            />
           </template>
           <Btn
             v-for="option in layoutOptions"

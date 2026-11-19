@@ -244,7 +244,11 @@ onUnmounted(() => {
           <span v-if="badgeFor(routeName(item))" class="tabs-badge">
             {{ badgeFor(routeName(item)) }}
           </span>
-          <BetaBadge v-if="item.meta?.feature" :feature="item.meta.feature" />
+          <BetaBadge
+            v-if="item.meta?.feature"
+            :feature="item.meta.feature"
+            in-control
+          />
         </li>
         <li
           v-for="link in props.links"

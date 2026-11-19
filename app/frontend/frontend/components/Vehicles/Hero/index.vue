@@ -21,7 +21,6 @@ import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
 import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
-import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -118,15 +117,6 @@ const {
   loadoutHoloShown,
   toggleLoadoutHolo,
 } = useLoadoutHolo(() => props.vehicle.model.slug, holoVisible, texturedHolo);
-
-const holoBetaFeatures = computed(() =>
-  shownFeatures({
-    [FeatureFlagName.HOLO_TEXTURED]:
-      holoVisible.value && texturedHoloAvailable.value,
-    [FeatureFlagName.LOADOUT_PREVIEW]:
-      holoVisible.value && loadoutHoloAvailable.value,
-  }),
-);
 
 const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
 
@@ -369,10 +359,6 @@ const openImageModal = () =>
         <div class="vehicle-hero__links">
           <!-- The ship page's pair: the switch, and beside it while the model
                shows, the full-screen viewer. -->
-          <BetaBadge
-            v-if="holoBetaFeatures.length"
-            :feature="holoBetaFeatures"
-          />
           <BtnGroup v-if="holoModel">
             <Btn
               v-if="holoVisible"
@@ -402,6 +388,11 @@ const openImageModal = () =>
               @click="toggleTexturedHolo"
             >
               <i class="fa-duotone fa-palette" />
+              <BetaBadge
+                :feature="FeatureFlagName.HOLO_TEXTURED"
+                in-control
+                compact
+              />
             </Btn>
             <BtnDropdown
               v-if="
@@ -441,6 +432,11 @@ const openImageModal = () =>
               @click="toggleLoadoutHolo"
             >
               <i class="fa-duotone fa-crosshairs" />
+              <BetaBadge
+                :feature="FeatureFlagName.LOADOUT_PREVIEW"
+                in-control
+                compact
+              />
             </Btn>
           </BtnGroup>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">

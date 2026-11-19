@@ -196,6 +196,6 @@ const open = () => {
   >
     <i class="fa-light fa-cube" />
     {{ t("labels.viewInAr") }}
-    <BetaBadge :feature="FeatureFlagName.HOLO_AR" />
+    <BetaBadge :feature="FeatureFlagName.HOLO_AR" in-control />
   </Btn>
 </template>

@@ -552,7 +552,7 @@ const crumbs = computed<Crumb[]>(() => [
       >
         <i class="fa-light fa-coins" />
         <span>{{ t("nav.fleets.events.payouts") }}</span>
-        <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" />
+        <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" in-control />
       </Btn>
       <ShareBtn
         :url="shareUrl"

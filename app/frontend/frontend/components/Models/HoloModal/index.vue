@@ -100,10 +100,6 @@ const holoUnavailable = () => {
       </BtnGroup>
     </template>
     <template #controls>
-      <BetaBadge
-        v-if="texturedHoloAvailable"
-        :feature="FeatureFlagName.HOLO_TEXTURED"
-      />
       <Btn
         v-if="texturedHoloAvailable"
         :active="texturedHolo"
@@ -113,6 +109,11 @@ const holoUnavailable = () => {
         @click="toggleTexturedHolo"
       >
         <i class="fa-duotone fa-palette" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_TEXTURED"
+          in-control
+          compact
+        />
       </Btn>
       <BtnDropdown
         v-if="texturedHoloAvailable && texturedHolo && holoPaints.length"

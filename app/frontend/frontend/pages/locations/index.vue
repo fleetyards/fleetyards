@@ -54,7 +54,7 @@ const PLACEHOLDERS = 4;
       >
         <i class="fa-light fa-galaxy" aria-hidden="true" />
         {{ t("nav.starmap") }}
-        <BetaBadge :feature="FeatureFlagName.STARMAP" />
+        <BetaBadge :feature="FeatureFlagName.STARMAP" in-control />
       </Btn>
       <Btn :to="{ name: 'locations-places' }" data-test="locations-places-link">
         <i class="fa-light fa-list" aria-hidden="true" />

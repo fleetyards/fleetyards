@@ -340,7 +340,7 @@ const openDisplayOptionsModal = () => {
     >
       <i class="fa-light fa-coins" />
       <span>{{ t("actions.fleets.tours.viewTours") }}</span>
-      <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" />
+      <BetaBadge :feature="FeatureFlagName.FLEET_TOURS" in-control />
     </Btn>
     <Btn
       v-if="canCreate"

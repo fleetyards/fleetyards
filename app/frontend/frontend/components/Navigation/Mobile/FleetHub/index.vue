@@ -333,7 +333,11 @@ onBeforeUnmount(() => {
                 aria-hidden="true"
               />
               <span class="fleet-hub__label">{{ tile.label }}</span>
-              <BetaBadge v-if="tile.feature" :feature="tile.feature" />
+              <BetaBadge
+                v-if="tile.feature"
+                :feature="tile.feature"
+                in-control
+              />
             </router-link>
           </li>
         </ul>

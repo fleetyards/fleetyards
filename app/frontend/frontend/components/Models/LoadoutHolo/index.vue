@@ -13,7 +13,6 @@ import {
 } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
-import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { filedCategory } from "@/frontend/composables/useComponentFitting";
 import {
   builtInHighlights,
@@ -176,21 +175,6 @@ const holoModel = computed(() => {
   };
 });
 
-const betaFeatures = computed(() => {
-  const model = holoModel.value;
-
-  return shownFeatures({
-    [FeatureFlagName.HOLO_SERVICING_AREAS]:
-      servicingAreasEnabled.value && !!model?.boxes.length,
-    [FeatureFlagName.HOLO_CARGO_GRIDS]:
-      cargoGridsEnabled.value && !!model?.cargoGrids.length,
-    [FeatureFlagName.HOLO_DOOR_HIGHLIGHT]:
-      doorHighlightEnabled.value && !!model?.doors.length,
-    [FeatureFlagName.HOLO_DOOR_ANIMATION]:
-      doorAnimationEnabled.value && !!model?.doors.length,
-  });
-});
-
 const {
   pointedArea,
   pointedBuiltIn,
@@ -270,7 +254,6 @@ const doorsLabel = computed(() =>
     @unavailable="emit('unavailable')"
   >
     <template #actions>
-      <BetaBadge v-if="betaFeatures.length" :feature="betaFeatures" />
       <Btn
         v-if="holoModel.boxes.length"
         v-tooltip="servicingAreasLabel"
@@ -281,6 +264,11 @@ const doorsLabel = computed(() =>
         @click="servicingAreasShown = !servicingAreasShown"
       >
         <i class="fa-light fa-screwdriver-wrench" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_SERVICING_AREAS"
+          in-control
+          compact
+        />
       </Btn>
       <Btn
         v-if="holoModel.cargoGrids.length"
@@ -292,6 +280,11 @@ const doorsLabel = computed(() =>
         @click="cargoGridsShown = !cargoGridsShown"
       >
         <i class="fa-light fa-boxes-stacked" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_CARGO_GRIDS"
+          in-control
+          compact
+        />
       </Btn>
       <Btn
         v-if="doorHighlightEnabled && holoModel.doors.length"
@@ -303,6 +296,11 @@ const doorsLabel = computed(() =>
         @click="doorsMarked = !doorsMarked"
       >
         <i class="fa-light fa-door-closed" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_DOOR_HIGHLIGHT"
+          in-control
+          compact
+        />
       </Btn>
       <Btn
         v-if="doorAnimationEnabled && holoModel.doors.length"
@@ -314,6 +312,11 @@ const doorsLabel = computed(() =>
         @click="doorsOpen = !doorsOpen"
       >
         <i class="fa-light fa-arrows-left-right" />
+        <BetaBadge
+          :feature="FeatureFlagName.HOLO_DOOR_ANIMATION"
+          in-control
+          compact
+        />
       </Btn>
     </template>
     <LoadoutHoloCard

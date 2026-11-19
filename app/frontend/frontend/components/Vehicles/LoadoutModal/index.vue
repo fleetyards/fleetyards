@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
-import { shownFeatures } from "@/shared/utils/BetaFeatures";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 import { useForm } from "vee-validate";
@@ -416,17 +415,6 @@ const servicingAreasToggleLabel = computed(() =>
 
 // The cargo grids and doors the holo has, offered once it says so.
 const overlays = ref({ cargoGrids: false, doors: false });
-
-// The overlay toggles are icon buttons, so the toolbar carries one pill for
-// them and the preview they sit on.
-const loadoutHoloBetaFeatures = computed(() => [
-  FeatureFlagName.LOADOUT_PREVIEW,
-  ...shownFeatures({
-    [FeatureFlagName.HOLO_SERVICING_AREAS]: servicingAreas.value.length > 0,
-    [FeatureFlagName.HOLO_CARGO_GRIDS]: overlays.value.cargoGrids,
-    [FeatureFlagName.HOLO_DOOR_ANIMATION]: overlays.value.doors,
-  }),
-]);
 const cargoGridsShown = ref(false);
 const doorsOpen = ref(false);
 
@@ -1635,7 +1623,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             @overlays="overlays = $event"
           >
             <template #actions>
-              <BetaBadge :feature="loadoutHoloBetaFeatures" />
               <Btn
                 v-if="servicingAreas.length"
                 :aria-label="servicingAreasToggleLabel"
@@ -1646,6 +1633,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="servicingAreasShown = !servicingAreasShown"
               >
                 <i class="fa-light fa-screwdriver-wrench" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_SERVICING_AREAS"
+                  in-control
+                  compact
+                />
               </Btn>
               <Btn
                 v-if="overlays.cargoGrids"
@@ -1657,6 +1649,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="cargoGridsShown = !cargoGridsShown"
               >
                 <i class="fa-light fa-boxes-stacked" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_CARGO_GRIDS"
+                  in-control
+                  compact
+                />
               </Btn>
               <Btn
                 v-if="overlays.doors"
@@ -1668,6 +1665,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                 @click="doorsOpen = !doorsOpen"
               >
                 <i class="fa-light fa-arrows-left-right" />
+                <BetaBadge
+                  :feature="FeatureFlagName.HOLO_DOOR_ANIMATION"
+                  in-control
+                  compact
+                />
               </Btn>
             </template>
           </LoadoutPreview>
