@@ -227,6 +227,11 @@ const railTab = ref<"places" | "route">(
   routeFrom.value || routeTo.value || routeShip.value ? "route" : "places",
 );
 
+// A route arriving in the address, by a link or the back button, is shown.
+watch([routeFrom, routeTo, routeShip], (params) => {
+  if (params.some(Boolean)) railTab.value = "route";
+});
+
 const planning = computed(
   () =>
     railTab.value === "route" ||
