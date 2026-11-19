@@ -250,7 +250,13 @@
         "stateOn": "已啟用",
         "stateOff": "已停用",
         "stateConditional": "有條件",
-        "openFor": "已開放 %{days} 天",
+        "openFor": {
+          "zero": "今天開放",
+          "one": "已開放 %{count} 天",
+          "other": "已開放 %{count} 天"
+        },
+        "emptyRegistry": "沒有已註冊的開關。",
+        "loadError": "無法載入功能開關。",
         "historyEmpty": "尚未記錄此功能的任何變更。",
         "historyBy": "由 %{actor}",
         "sources": {

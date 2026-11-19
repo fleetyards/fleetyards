@@ -80,7 +80,7 @@ const crumbs = computed<Crumb[]>(() => [
             </Heading>
             <p class="feature-page__meta" data-test="feature-last-changed">
               <template v-if="openDays !== null">
-                {{ t("labels.features.openFor", { days: openDays }) }} ·
+                {{ t("labels.features.openFor", { count: openDays }) }} ·
               </template>
               <template v-if="feature.lastChangedAt">
                 <time

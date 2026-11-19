@@ -250,7 +250,13 @@
         "stateOn": "Aktiviert",
         "stateOff": "Deaktiviert",
         "stateConditional": "Bedingt",
-        "openFor": "Seit %{days} Tagen offen",
+        "openFor": {
+          "zero": "Seit heute offen",
+          "one": "Seit %{count} Tag offen",
+          "other": "Seit %{count} Tagen offen"
+        },
+        "emptyRegistry": "Es sind keine Flags registriert.",
+        "loadError": "Die Feature Flags konnten nicht geladen werden.",
         "historyEmpty": "Für dieses Feature wurde noch nichts aufgezeichnet.",
         "historyBy": "von %{actor}",
         "sources": {

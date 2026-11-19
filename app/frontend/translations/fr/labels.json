@@ -250,7 +250,13 @@
         "stateOn": "Activé",
         "stateOff": "Désactivé",
         "stateConditional": "Conditionnel",
-        "openFor": "Ouvert depuis %{days} jours",
+        "openFor": {
+          "zero": "Ouvert depuis aujourd'hui",
+          "one": "Ouvert depuis %{count} jour",
+          "other": "Ouvert depuis %{count} jours"
+        },
+        "emptyRegistry": "Aucun flag n'est enregistré.",
+        "loadError": "Impossible de charger les feature flags.",
         "historyEmpty": "Rien n'a encore été enregistré pour cette fonctionnalité.",
         "historyBy": "par %{actor}",
         "sources": {

@@ -250,7 +250,13 @@
         "stateOn": "Enabled",
         "stateOff": "Disabled",
         "stateConditional": "Conditional",
-        "openFor": "Open for %{days} days",
+        "openFor": {
+          "zero": "Open since today",
+          "one": "Open for %{count} day",
+          "other": "Open for %{count} days"
+        },
+        "emptyRegistry": "No flags are registered.",
+        "loadError": "Could not load the feature flags.",
         "historyEmpty": "Nothing recorded for this feature yet.",
         "historyBy": "by %{actor}",
         "sources": {

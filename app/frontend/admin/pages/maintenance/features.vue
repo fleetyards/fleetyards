@@ -77,7 +77,7 @@ const kind = (feature: Feature) => {
 
   return days === null
     ? label
-    : `${label} · ${t("labels.features.openFor", { days })}`;
+    : `${label} · ${t("labels.features.openFor", { count: days })}`;
 };
 
 const onFor = (feature: Feature) => {

@@ -250,7 +250,13 @@
         "stateOn": "Habilitado",
         "stateOff": "Deshabilitado",
         "stateConditional": "Condicional",
-        "openFor": "Abierto desde hace %{days} días",
+        "openFor": {
+          "zero": "Abierto desde hoy",
+          "one": "Abierto desde hace %{count} día",
+          "other": "Abierto desde hace %{count} días"
+        },
+        "emptyRegistry": "No hay flags registrados.",
+        "loadError": "No se pudieron cargar los feature flags.",
         "historyEmpty": "Todavía no se ha registrado nada para esta función.",
         "historyBy": "por %{actor}",
         "sources": {
