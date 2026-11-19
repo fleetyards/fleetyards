@@ -103,6 +103,7 @@ const toggleGroup = (group: string) =>
         <div class="feature-rollout__toggles">
           <Toggle
             :active="feature.selfServiceUser"
+            :loading="actions.busy.value"
             :label="t('labels.features.selfServiceUser')"
             :info="t('labels.features.gates.optIn.userInfo')"
             data-test="toggle-self-service"
@@ -110,6 +111,7 @@ const toggleGroup = (group: string) =>
           />
           <Toggle
             :active="feature.selfServiceFleet"
+            :loading="actions.busy.value"
             :label="t('labels.features.selfServiceFleet')"
             :info="t('labels.features.gates.optIn.fleetInfo')"
             data-test="toggle-fleet-self-service"
