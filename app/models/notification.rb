@@ -445,7 +445,7 @@ class Notification < ApplicationRecord
       retention: 90.days,
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
-      preference_defaults: {app: true, mail: true, push: false}
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     # Mailed by default: an ended pledge or a lapsed Ko-fi subscription gets no
     # reminder beforehand, so for those donors this is the only word they get.
