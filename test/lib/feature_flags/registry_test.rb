@@ -36,6 +36,15 @@ module FeatureFlags
       assert_not_predicate definitions.first, :permanent?
     end
 
+    test "beta_names leaves out permanent flags" do
+      names = registry(
+        "rollout" => {"description" => "Rollout"},
+        "gate" => {"description" => "Gate", "permanent" => true}
+      ).beta_names
+
+      assert_equal %w[rollout], names
+    end
+
     test "fetch finds a definition by name" do
       assert_equal "Does a thing", registry("my_flag" => {"description" => "Does a thing"}).fetch(:my_flag).description
       assert_nil registry("my_flag" => {"description" => "x"}).fetch("nope")

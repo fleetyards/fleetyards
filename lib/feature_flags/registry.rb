@@ -62,6 +62,12 @@ module FeatureFlags
       definitions.map(&:name)
     end
 
+    # Flags still being rolled out, which the frontend marks as beta. A
+    # permanent flag gates infrastructure rather than a feature under test.
+    def beta_names
+      definitions.reject(&:permanent?).map(&:name)
+    end
+
     def fetch(name)
       definitions.find { |definition| definition.name == name.to_s }
     end
