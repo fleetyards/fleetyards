@@ -6,7 +6,7 @@ Working plan for #6411. Decisions live in the issue body. Deleted before the PR 
 On `/starmap`, pick a ship (stock drive or a loadout's drive), a start and a destination, and see the fastest unobstructed quantum route drawn on the map with per-leg distance, time and fuel.
 
 ## Open questions
-- **Refuel stops:** the location data has no quantum-refuel service. Today a route that needs more than one tank is flagged; adding refuel stops needs station landing services parsed from the game files.
+- None. A re-parse of live and PTU is needed after merge for amenities to reach the data.
 
 ## What changed
 
@@ -85,10 +85,11 @@ On `/starmap`, pick a ship (stock drive or a loadout's drive), a start and a des
 | `app/api_components/v1/schemas/location_starmap_place.rb` | Place position/radius contract |
 
 ## Not in scope (deferred)
-- **Refuel stops**: blocked on location refuel data (see open questions). Becomes its own issue before the PR merges if it is not built here.
+- None.
 
 ## Discovery Log
 
+- **2026-11-19** Refuel stops: starmap records list amenities (`starmapamenitytypes`); stations, rest stops and gateways carry "Vehicle Services". Imported onto locations and used as refuel stops; a label search keeps fuel burnt since the last refill.
 - **2026-11-19** Live data: `jumpRange` is the float maximum on every drive; calibration is near-identical across drives; in Stanton every outpost, station and body is a quantum destination; surface places sit at 0.99–1.05 radii, the closest stations at 1.1. A* with the straight-line jump time as the estimate brings a Stanton plan from ~300 ms to ~10 ms. Link-kind loadouts are not offered as drives rather than falling back.
 - **2026-11-19** Initial research and plan creation. `quantumTravelDestination` is not used anywhere in the starmap code yet. Inside a system, `links` is empty; jump points are places with `kind === JUMP_POINT`. No endpoint returns all of a user's loadouts; each hangar vehicle carries its `active_loadout`.
 
