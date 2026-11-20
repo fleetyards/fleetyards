@@ -44888,7 +44888,7 @@ components:
           - 'null'
         armistice:
           "$ref": "#/components/schemas/NullableLocationArmisticeEnum"
-        restrictedAreas:
+        trespassAreas:
           type:
           - boolean
           - 'null'
@@ -45494,6 +45494,23 @@ components:
           type: boolean
         bodyType:
           "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        armisticeSphere:
+          anyOf:
+          - type: object
+            properties:
+              position:
+                type: array
+                items:
+                  type: number
+                minItems: 3
+                maxItems: 3
+              radius:
+                type: number
+            additionalProperties: false
+            required:
+            - position
+            - radius
+          - type: 'null'
         docking:
           type: boolean
         texture:
@@ -45532,6 +45549,7 @@ components:
       - color
       - unstable
       - bodyType
+      - armisticeSphere
       - docking
       - texture
       - elevation

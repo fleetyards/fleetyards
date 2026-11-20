@@ -61,11 +61,10 @@ module V1
           jurisdiction: {type: [:string, :null]},
           lawful: {type: [:boolean, :null]},
           # Whether the place is an armistice zone as a whole or only in parts,
-          # and whether it has areas a visitor on foot must keep out of. Null
-          # for a star, planet or moon, and for a build from before zones were
-          # read.
+          # and whether it has areas where being is trespassing. Null for a
+          # star, planet or moon, and for a build from before zones were read.
           armistice: ::V1::Schemas::Enums::NullableLocationArmisticeEnum,
-          restrictedAreas: {type: [:boolean, :null]},
+          trespassAreas: {type: [:boolean, :null]},
 
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}

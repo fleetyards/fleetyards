@@ -77,4 +77,4 @@ json.shops_count @location.shops.size
 json.jurisdiction @location.jurisdiction
 json.lawful @location.lawful
 json.armistice @location.armistice
-json.restricted_areas @location.restricted_areas
+json.trespass_areas @location.trespass_areas

@@ -9,7 +9,7 @@ class LocationBuild < ApplicationRecord
   FACTS = %i[
     name description resources kind body_type game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
-    facilities position radius jurisdiction lawful armistice restricted_areas amenities
+    facilities position radius jurisdiction lawful armistice armistice_sphere trespass_areas amenities
   ].freeze
 
   READ_THROUGH = FACTS
