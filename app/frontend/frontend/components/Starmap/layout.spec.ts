@@ -27,6 +27,7 @@ const place = (
   color: null,
   unstable: false,
   bodyType: null,
+  armisticeSphere: null,
   docking: false,
   texture: null,
   elevation: null,
@@ -128,6 +129,28 @@ describe("systemScene", () => {
     expect(find("lorville").position[0]).toBeCloseTo(
       (HURSTON + 1_000_000) / UNIT,
     );
+  });
+
+  it("carries a place's armistice sphere into the scene, at its own centre", () => {
+    const world = systemScene([
+      ...places.filter((entry) => entry !== lorville),
+      {
+        ...lorville,
+        armisticeSphere: {
+          position: [HURSTON + 1_000_000, 30_000, 0],
+          radius: 40_000,
+        },
+      },
+    ]);
+    const armistice = world.items.find(
+      (item) => item.key === "lorville",
+    )!.armistice!;
+
+    expect(armistice.position).toEqual(
+      toScene([HURSTON + 1_000_000, 30_000, 0], [0, 0, 0], UNIT),
+    );
+    expect(armistice.radius).toBeCloseTo(0.04);
+    expect(find("everus-harbor").armistice).toBeNull();
   });
 
   it("anchors every place to the body it belongs to", () => {
