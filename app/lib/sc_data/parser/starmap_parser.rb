@@ -39,6 +39,21 @@ module ScData
       MATERIALS_FILE = "derived/starmap_materials.json"
       TEXTURES_FOLDER = "starmap_materials"
 
+      # The armistice and restricted-area entities in the object containers,
+      # each hung under the nearest starmap record. Written by the exporter.
+      ZONES_FILE = "derived/zones.json"
+      ARMISTICE_VALUES = %w[whole partial].freeze
+
+      # An armistice zone counts only where it turns something off: the NPC
+      # hangar module on every mining base carries one that turns off nothing.
+      ARMISTICE_FLAGS = %w[noFPSWeapons noShipWeapons noTractorBeam].freeze
+
+      # A restricted area is one that keeps people on foot out. Most of the
+      # rest are hangar and pad no-park volumes for vehicles, and the NPC
+      # hangar module's volume goes with its empty armistice zone.
+      RESTRICTED_STATE = "Disallow"
+      NPC_HANGAR_LAYER = /\Anpc_hangar_/
+
       # The placement's `size` is a radius only for these: Hurston's is its
       # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
       # cluster it measures something else.
@@ -215,6 +230,8 @@ module ScData
             # The system and the law of the record-backed place it hangs from.
             system_key: system_of(placed_under, places),
             **jurisdiction_facts(places[placed_under], places),
+            armistice: nil,
+            restricted_areas: nil,
             shown_on_starmap: true,
             shown_with_parent_only: false,
             always_shown: false,
@@ -299,6 +316,62 @@ module ScData
         end
       end
 
+      # Whether the place is an armistice zone as a whole or only in parts, and
+      # whether it has areas a visitor on foot must keep out of.
+      #
+      # "Whole" means a zone holds the place's own position. That is only said
+      # of armistice: the restricted areas that hold a city's position are a
+      # block of it, not the city.
+      #
+      # A star, planet or moon has neither: the zones hung under it belong to
+      # sites without a record of their own, and a sphere around its centre
+      # only covers its interior.
+      private def zone_facts(place)
+        return {armistice: nil, restricted_areas: nil} if zones_by_record.nil? || BROAD_KINDS.include?(place[:kind])
+
+        found = Array.wrap(place[:refs]).flat_map { |ref| zones_by_record[ref] || [] }
+        armistice = found.select { |zone| armistice_zone?(zone) }
+
+        {
+          armistice: if armistice.any? { |zone| zone["containsParent"] }
+                       "whole"
+                     elsif armistice.any?
+                       "partial"
+                     end,
+          restricted_areas: found.any? { |zone| restricted_zone?(zone) }
+        }
+      end
+
+      private def armistice_zone?(zone)
+        zone["kind"] == "armistice" && ARMISTICE_FLAGS.any? { |flag| truthy?(zone.dig("params", flag)) }
+      end
+
+      private def restricted_zone?(zone)
+        params = zone["params"] || {}
+
+        zone["kind"] == "restricted" &&
+          params["state"] == RESTRICTED_STATE &&
+          truthy?(params["affectActorsOnFoot"]) &&
+          !NPC_HANGAR_LAYER.match?(zone["layer"].to_s)
+      end
+
+      private def truthy?(value)
+        [true, 1, "1", "true"].include?(value)
+      end
+
+      # Grouped by each zone's own record rather than the file's `byRecord`:
+      # a zone's id is its entity's id inside the module it comes from, so a
+      # module placed many times repeats it, and an id alone cannot say which
+      # copy is meant. Nil for an export from before the file existed.
+      private def zones_by_record
+        return @zones_by_record if defined?(@zones_by_record)
+
+        file = "#{base_path}/#{ZONES_FILE}"
+        @zones_by_record = if File.exist?(file)
+          Array.wrap(JSON.parse(File.read(file))["zones"]).group_by { |zone| zone["record"] }
+        end
+      end
+
       private def starmap_objects
         @starmap_objects ||= begin
           file = "#{base_path}/#{PLACEMENTS_FILE}"
@@ -335,6 +408,7 @@ module ScData
           position: placement_of(place)&.dig(:position),
           radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
           **jurisdiction_facts(place, places),
+          **zone_facts(place),
           starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
           starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
           starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind])),

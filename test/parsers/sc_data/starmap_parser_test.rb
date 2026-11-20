@@ -570,6 +570,78 @@ module ScData
         assert_nil location("Stanton1")[:starmap_texture]
       end
 
+      test "#locations says whether a place is an armistice zone as a whole or in parts" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        place("Stanton1_Outpost", "Outpost", type: "Outpost", parent: "Stanton1")
+        place("Stanton1_Mine", "Mining Base", type: "Outpost", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", contains: true, params: {noFPSWeapons: 1}),
+          area_zone("Stanton1_L1", "armistice", params: {noFPSWeapons: 1, noTractorBeam: "1"}),
+          area_zone("Stanton1_Mine", "armistice", contains: true, params: {noFPSWeapons: 0, noShipWeapons: 0}),
+          area_zone("Stanton1", "armistice", contains: true, params: {noFPSWeapons: 1})
+        )
+
+        assert_equal "whole", location("Stanton1_Lorville")[:armistice]
+        assert_equal "partial", location("Stanton1_L1")[:armistice]
+        assert_nil location("Stanton1_Outpost")[:armistice]
+        assert_nil location("Stanton1_Mine")[:armistice]
+        assert_nil location("Stanton1")[:armistice]
+      end
+
+      test "#locations marks restricted areas only where they keep people on foot out" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        place("Stanton1_Mine", "Mining Base", type: "Outpost", parent: "Stanton1")
+        foot = {state: "Disallow", affectActorsOnFoot: 1, affectShips: 1}
+        area_zones(
+          area_zone("Stanton1_Lorville", "restricted", params: foot, layer: "lorville.soc"),
+          area_zone("Stanton1_L1", "restricted", params: {state: "Disallow", affectActorsOnFoot: 0, affectGroundVehicles: 1}),
+          area_zone("Stanton1_L1", "restricted", params: foot.merge(state: "Despawn")),
+          area_zone("Stanton1_Mine", "restricted", params: foot, layer: "npc_hangar_lrgfrnt_001.soc"),
+          area_zone("Stanton1", "restricted", contains: true, params: foot)
+        )
+
+        assert location("Stanton1_Lorville")[:restricted_areas]
+        assert_equal false, location("Stanton1_L1")[:restricted_areas]
+        assert_equal false, location("Stanton1_Mine")[:restricted_areas]
+        assert_nil location("Stanton1")[:restricted_areas]
+      end
+
+      test "#locations reads zones by each zone's record, whatever its id" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", id: "shared", contains: true, params: {noFPSWeapons: 1}),
+          area_zone("Stanton1_L1", "armistice", id: "shared", params: {noFPSWeapons: 1})
+        )
+
+        assert_equal "whole", location("Stanton1_Lorville")[:armistice]
+        assert_equal "partial", location("Stanton1_L1")[:armistice]
+      end
+
+      test "#locations knows nothing of zones for an export without them" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+
+        assert_nil location("Stanton1_Lorville")[:armistice]
+        assert_nil location("Stanton1_Lorville")[:restricted_areas]
+      end
+
+      private def area_zones(*zones)
+        target = "#{@raw_path}/derived/zones.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({zones:, byRecord: {}}))
+      end
+
+      private def area_zone(record_key, kind, params:, contains: false, id: SecureRandom.uuid, layer: "zone.soc")
+        {id:, kind:, layer:, params:, record: ref_for(record_key), containsParent: contains, areas: []}
+      end
+
       private def starmap_materials(materials, bodies: {})
         target = "#{@raw_path}/derived/starmap_materials.json"
 
