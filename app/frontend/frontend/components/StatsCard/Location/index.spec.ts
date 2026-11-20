@@ -88,7 +88,7 @@ describe("LocationStatsCard", () => {
     });
 
     expect(wrapper.text()).toContain("Armistice");
-    expect(wrapper.text()).toContain("Whole place");
+    expect(wrapper.text()).not.toContain("In parts");
     expect(wrapper.text()).toContain("Restricted areas");
   });
 

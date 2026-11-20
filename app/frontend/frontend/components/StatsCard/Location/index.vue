@@ -182,7 +182,7 @@ const badges = computed<StatsCardBadge[]>(() => {
       label: t("labels.location.armistice"),
       value:
         location.armistice === NullableLocationArmisticeEnum.WHOLE
-          ? t("labels.location.armisticeWhole")
+          ? yesNo(true)
           : t("labels.location.armisticePartial"),
     });
   }
