@@ -15,7 +15,11 @@ import {
   type StatsCardStatus,
 } from "@/frontend/components/StatsCard/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Location, LocationKindEnum } from "@/services/fyApi";
+import {
+  type Location,
+  LocationKindEnum,
+  NullableLocationArmisticeEnum,
+} from "@/services/fyApi";
 
 type Props = {
   location?: Location;
@@ -168,6 +172,26 @@ const badges = computed<StatsCardBadge[]>(() => {
       key: "places",
       label: t("labels.location.places"),
       value: String(location.childrenCount),
+    });
+  }
+
+  // Whether weapons are off there, and whether parts of it are trespassing.
+  if (location.armistice) {
+    list.push({
+      key: "armistice",
+      label: t("labels.location.armistice"),
+      value:
+        location.armistice === NullableLocationArmisticeEnum.WHOLE
+          ? yesNo(true)
+          : t("labels.location.armisticePartial"),
+    });
+  }
+
+  if (location.trespassAreas) {
+    list.push({
+      key: "trespass",
+      label: t("labels.location.trespassAreas"),
+      value: yesNo(true),
     });
   }
 

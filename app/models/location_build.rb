@@ -9,10 +9,13 @@ class LocationBuild < ApplicationRecord
   FACTS = %i[
     name description resources kind body_type game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
-    facilities position radius jurisdiction lawful amenities
+    facilities position radius jurisdiction lawful armistice armistice_sphere trespass_areas amenities
   ].freeze
 
   READ_THROUGH = FACTS
+
+  # Whether a place is an armistice zone as a whole or only in parts.
+  ARMISTICE_VALUES = %w[whole partial].freeze
 
   FILTERABLE = %i[
     name kind
@@ -20,6 +23,7 @@ class LocationBuild < ApplicationRecord
   ].freeze
 
   validates :environment, presence: true
+  validates :armistice, inclusion: {in: ARMISTICE_VALUES}, allow_nil: true
   validates :version, presence: true
   validates :location_id, uniqueness: {scope: [:environment, :version]}
 

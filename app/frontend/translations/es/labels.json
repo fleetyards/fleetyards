@@ -120,6 +120,9 @@
         "jurisdiction": "Jurisdicción",
         "lawful": "Legal",
         "unlawful": "Sin ley",
+        "armistice": "Armisticio",
+        "armisticePartial": "En partes",
+        "trespassAreas": "Zonas prohibidas",
         "freightElevator": "Montacargas",
         "maxContainer": "Contenedor más grande",
         "kinds": {

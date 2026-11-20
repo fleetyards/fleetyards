@@ -570,6 +570,121 @@ module ScData
         assert_nil location("Stanton1")[:starmap_texture]
       end
 
+      test "#locations says whether a place is an armistice zone as a whole or in parts" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        place("Stanton1_Outpost", "Outpost", type: "Outpost", parent: "Stanton1")
+        place("Stanton1_Mine", "Mining Base", type: "Outpost", parent: "Stanton1")
+        place("Stanton1_Clinic", "Clinic", type: "Outpost", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", contains: true, flags: ["noFPSWeapons"]),
+          area_zone("Stanton1_Clinic", "armistice", contains: 0, flags: ["noFPSWeapons"]),
+          area_zone("Stanton1_L1", "armistice", flags: ["noFPSWeapons", "noTractorBeam"]),
+          area_zone("Stanton1_Mine", "armistice", contains: true, flags: []),
+          area_zone("Stanton1", "armistice", contains: true, flags: ["noFPSWeapons"])
+        )
+
+        assert_equal "whole", location("Stanton1_Lorville")[:armistice]
+        assert_equal "partial", location("Stanton1_L1")[:armistice]
+        assert_equal "partial", location("Stanton1_Clinic")[:armistice]
+        assert_nil location("Stanton1_Outpost")[:armistice]
+        assert_nil location("Stanton1_Mine")[:armistice]
+        assert_nil location("Stanton1")[:armistice]
+      end
+
+      test "#locations gives a whole-place armistice the widest sphere around it" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        place("QV_Station", "QV Station", type: "Manmade", parent: "Stanton1")
+        placements([
+          placement("Stanton1_Lorville", [10, 0, 0]),
+          placement("Stanton1_L1", [20, 0, 0]),
+          placement("QV_Station", [1, 2, 3]),
+          placement("QV_Station", [4, 5, 6])
+        ])
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", contains: true, areas: [sphere([40, 0, 0], 40_000), sphere([10, 0, 0], 500), sphere([1_000_000_000, 0, 0], 90_000)]),
+          area_zone("Stanton1_Lorville", "armistice", contains: true, areas: [box([10, 0, 0])]),
+          area_zone("Stanton1_L1", "armistice", areas: [sphere([20, 0, 0], 12_000)]),
+          area_zone("QV_Station", "armistice", contains: true, areas: [sphere([1, 2, 3], 1_000)])
+        )
+
+        assert_equal({position: [40.0, 0.0, 0.0], radius: 40_000.0}, location("Stanton1_Lorville")[:armistice_sphere])
+        assert_nil location("Stanton1_L1")[:armistice_sphere]
+        assert_nil location("QV_Station")[:armistice_sphere]
+      end
+
+      test "#locations reads an armistice's switches from its params in an export without flags" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_Mine", "Mining Base", type: "Outpost", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", contains: true).except(:flags).merge(params: {noFPSWeapons: 1}),
+          area_zone("Stanton1_Mine", "armistice", contains: true).except(:flags).merge(params: {noFPSWeapons: 0})
+        )
+
+        assert_equal "whole", location("Stanton1_Lorville")[:armistice]
+        assert_nil location("Stanton1_Mine")[:armistice]
+      end
+
+      test "#locations takes each zone for the record it names, not by its id" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "armistice", contains: true).merge(id: "shared"),
+          area_zone("Stanton1_L1", "armistice").merge(id: "shared")
+        )
+
+        assert_equal "whole", location("Stanton1_Lorville")[:armistice]
+        assert_equal "partial", location("Stanton1_L1")[:armistice]
+      end
+
+      test "#locations marks trespass areas by the game's trespass entities" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
+        area_zones(
+          area_zone("Stanton1_Lorville", "trespass"),
+          area_zone("Stanton1_L1", "restricted"),
+          area_zone("Stanton1", "trespass")
+        )
+
+        assert location("Stanton1_Lorville")[:trespass_areas]
+        assert_equal false, location("Stanton1_L1")[:trespass_areas]
+        assert_nil location("Stanton1")[:trespass_areas]
+      end
+
+      test "#locations knows nothing of zones for an export without them" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+
+        assert_nil location("Stanton1_Lorville")[:armistice]
+        assert_nil location("Stanton1_Lorville")[:armistice_sphere]
+        assert_nil location("Stanton1_Lorville")[:trespass_areas]
+      end
+
+      private def area_zones(*zones)
+        target = "#{@raw_path}/derived/zones.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({zones:, byRecord: {}}))
+      end
+
+      private def area_zone(record_key, kind, contains: false, flags: ["noFPSWeapons"], areas: [])
+        {id: SecureRandom.uuid, kind:, flags: (flags if kind == "armistice"), record: ref_for(record_key), containsParent: contains, areas:}
+      end
+
+      private def sphere(pos, radius)
+        {pos:, rot: [1, 0, 0, 0], shape: {type: "Sphere", radius:}}
+      end
+
+      private def box(pos)
+        {pos:, rot: [1, 0, 0, 0], shape: {type: "Box", size: [1, 1, 1]}}
+      end
+
       private def starmap_materials(materials, bodies: {})
         target = "#{@raw_path}/derived/starmap_materials.json"
 

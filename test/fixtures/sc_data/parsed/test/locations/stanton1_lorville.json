@@ -15,6 +15,9 @@
   "always_shown": false,
   "quantum_travel_destination": true,
   "amenities": ["vehicle_services", "hospital"],
+  "armistice": "whole",
+  "armistice_sphere": {"position": [12850289541.5, -163921.25, -570381.0], "radius": 40000.0},
+  "trespass_areas": true,
   "mission_template_refs": [
     "0177a69d-e585-4360-9e58-f123558873cb",
     "0a3dd7b8-bef4-424b-9127-0bf225c7cd1f",

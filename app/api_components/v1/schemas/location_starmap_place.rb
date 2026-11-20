@@ -32,6 +32,23 @@ module V1
           color: {type: [:string, :null]},
           unstable: {type: :boolean},
           bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
+          # The sphere of the armistice zone the whole place is in, in metres
+          # in system space. Its centre is not the place's position. Null where
+          # the place has none.
+          armisticeSphere: {
+            anyOf: [
+              {
+                type: :object,
+                properties: {
+                  position: {type: :array, items: {type: :number}, minItems: 3, maxItems: 3},
+                  radius: {type: :number}
+                },
+                additionalProperties: false,
+                required: %w[position radius]
+              },
+              {type: :null}
+            ]
+          },
           # Whether a ship can dock or land there, by the hangars and pads it has.
           docking: {type: :boolean},
           # The surface the game's own starmap wraps a body in: equirectangular,
@@ -51,7 +68,7 @@ module V1
         required: %w[
           id name slug kind parentName parentId position radius shownOnStarmap
           shownWithParentOnly alwaysShown quantumTravelDestination amenities lagrangePoint
-          gateway color unstable bodyType docking texture elevation clouds ground
+          gateway color unstable bodyType armisticeSphere docking texture elevation clouds ground
         ]
       })
     end

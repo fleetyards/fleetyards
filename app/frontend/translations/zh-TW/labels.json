@@ -120,6 +120,9 @@
         "jurisdiction": "管轄方",
         "lawful": "合法區域",
         "unlawful": "無法區域",
+        "armistice": "停戰區",
+        "armisticePartial": "部分區域",
+        "trespassAreas": "禁入區",
         "freightElevator": "貨運電梯",
         "maxContainer": "最大貨櫃",
         "kinds": {

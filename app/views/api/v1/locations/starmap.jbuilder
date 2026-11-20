@@ -24,6 +24,7 @@ json.places @places do |place|
   json.color location.drawn_color
   json.unstable location.flare_star?
   json.body_type location.body_type
+  json.armistice_sphere location.armistice_sphere
   # Whether a ship can dock or land there: a rest stop rather than a comm
   # array, which the map keeps in view the longest.
   facilities = location.facilities || {}

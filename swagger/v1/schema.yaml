@@ -44886,6 +44886,12 @@ components:
           type:
           - boolean
           - 'null'
+        armistice:
+          "$ref": "#/components/schemas/NullableLocationArmisticeEnum"
+        trespassAreas:
+          type:
+          - boolean
+          - 'null'
         createdAt:
           type: string
           format: date-time
@@ -45488,6 +45494,23 @@ components:
           type: boolean
         bodyType:
           "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        armisticeSphere:
+          anyOf:
+          - type: object
+            properties:
+              position:
+                type: array
+                items:
+                  type: number
+                minItems: 3
+                maxItems: 3
+              radius:
+                type: number
+            additionalProperties: false
+            required:
+            - position
+            - radius
+          - type: 'null'
         docking:
           type: boolean
         texture:
@@ -45526,6 +45549,7 @@ components:
       - color
       - unstable
       - bodyType
+      - armisticeSphere
       - docking
       - texture
       - elevation
@@ -50263,6 +50287,19 @@ components:
       - 30_DAYS
       - 'NULL'
       title: NullableItemPriceTimeRangeEnum
+    NullableLocationArmisticeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - whole
+      - partial
+      -
+      x-enumNames:
+      - WHOLE
+      - PARTIAL
+      - 'NULL'
+      title: NullableLocationArmisticeEnum
     NullableLocationBodyTypeEnum:
       type:
       - string

@@ -59,6 +59,14 @@ export interface StarmapItem {
   minor: boolean;
   realRadius: number | null;
   parentName: string | null;
+  // The armistice zone the whole place is in, where it has one: its own
+  // centre, which is not the place's, and its radius.
+  armistice: StarmapSphere | null;
+}
+
+export interface StarmapSphere {
+  position: StarmapVector;
+  radius: number;
 }
 
 export interface StarmapLink {
@@ -364,6 +372,7 @@ export const systemsScene = (
       anchor: null,
       distance: null,
       realRadius: null,
+      armistice: null,
       parentName: null,
     };
   });
@@ -490,6 +499,12 @@ export const systemScene = (places: LocationStarmapPlace[]): StarmapScene => {
       distance: anchor ? gap(place.position, anchor.position) : null,
       realRadius: place.radius,
       parentName: place.parentName,
+      armistice: place.armisticeSphere
+        ? {
+            position: toScene(place.armisticeSphere.position, origin, UNIT),
+            radius: place.armisticeSphere.radius / UNIT,
+          }
+        : null,
     };
   });
 

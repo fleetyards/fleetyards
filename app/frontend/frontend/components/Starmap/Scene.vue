@@ -648,6 +648,54 @@ const wrapInClouds = (material: MeshLambertMaterial, url: string) => {
   image.src = url;
 };
 
+// The armistice zone around a place that is one as a whole, by the place's
+// key: a faint shell at its true size, brighter towards its edge so the edge
+// reads against the ground it stands in. It shows as its place does, and not
+// from inside, where there is no edge to see.
+const armisticeShells = new Map<string, Mesh>();
+const ARMISTICE_COLOR = "#5cb85c";
+const ARMISTICE_FILL = 0.14;
+const ARMISTICE_RIM = 0.8;
+
+const armisticeMaterial = () => {
+  const material = new MeshBasicMaterial({
+    color: new Color(ARMISTICE_COLOR),
+    transparent: true,
+    depthWrite: false,
+  });
+
+  material.onBeforeCompile = (shader) => {
+    shader.uniforms.rim = { value: ARMISTICE_RIM };
+    shader.uniforms.fill = { value: ARMISTICE_FILL };
+
+    shader.vertexShader = shader.vertexShader
+      .replace(
+        "void main() {",
+        "varying vec3 vRimNormal;\nvarying vec3 vRimView;\nvoid main() {",
+      )
+      .replace(
+        "#include <project_vertex>",
+        `#include <project_vertex>
+        vRimNormal = normalize(normalMatrix * normal);
+        vRimView = normalize(-mvPosition.xyz);`,
+      );
+
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        "void main() {",
+        "uniform float rim;\nuniform float fill;\nvarying vec3 vRimNormal;\nvarying vec3 vRimView;\nvoid main() {",
+      )
+      .replace(
+        "#include <opaque_fragment>",
+        `float edge = 1.0 - abs(dot(normalize(vRimNormal), normalize(vRimView)));
+        diffuseColor.a *= fill + rim * pow(edge, 2.0);
+        #include <opaque_fragment>`,
+      );
+  };
+
+  return material;
+};
+
 // A body's cloud layer, by the body's key. The game's surfaces have their
 // clouds painted in -- Bloom's in coarse blocks -- so the layer drifts to and
 // fro over them rather than round the body, which would uncover them.
@@ -659,6 +707,7 @@ let cloudTime = 0;
 const disposeBodies = () => {
   generation += 1;
   cloudShells.clear();
+  armisticeShells.clear();
   gameSurfaces.clear();
   bodies.traverse((object) => {
     // A marker's texture is shared across scenes; only its material is its own.
@@ -767,6 +816,16 @@ const build = (scene: StarmapScene) => {
       marker.position.set(...entry.position);
       bodies.add(marker);
       meshes.set(entry.key, marker);
+
+      if (entry.armistice) {
+        const shell = new Mesh(sphere, armisticeMaterial());
+        shell.position.set(...entry.armistice.position);
+        shell.scale.setScalar(entry.armistice.radius);
+        shell.renderOrder = 1;
+        shell.visible = false;
+        armisticeShells.set(entry.key, shell);
+        bodies.add(shell);
+      }
       continue;
     } else {
       material = new MeshBasicMaterial({
@@ -1674,6 +1733,9 @@ onBeforeRender(({ delta, elapsed }) => {
     const away = cameraWorld.distanceTo(point);
 
     if (mesh instanceof Sprite) {
+      const shell = armisticeShells.get(entry.key);
+      if (shell) shell.visible = false;
+
       if (fade > 0.02 && coveredByBody(entry, cam, away)) {
         fades.set(entry.key, 0);
         mesh.visible = false;
@@ -1682,6 +1744,12 @@ onBeforeRender(({ delta, elapsed }) => {
 
       mesh.visible = fade > 0.02 && !occluded(point);
       if (!mesh.visible) continue;
+
+      if (shell) {
+        shell.visible =
+          cameraWorld.distanceTo(shell.position) > shell.scale.x * 1.02;
+        (shell.material as MeshBasicMaterial).opacity = fade;
+      }
 
       mesh.material.opacity = fade;
       mesh.scale.setScalar(

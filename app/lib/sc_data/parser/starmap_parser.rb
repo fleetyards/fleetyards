@@ -39,6 +39,11 @@ module ScData
       MATERIALS_FILE = "derived/starmap_materials.json"
       TEXTURES_FOLDER = "starmap_materials"
 
+      # The armistice, trespass and restricted-area entities in the object
+      # containers, each hung under the nearest starmap record. Written by the
+      # exporter.
+      ZONES_FILE = "derived/zones.json"
+
       # The placement's `size` is a radius only for these: Hurston's is its
       # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
       # cluster it measures something else.
@@ -215,6 +220,9 @@ module ScData
             # The system and the law of the record-backed place it hangs from.
             system_key: system_of(placed_under, places),
             **jurisdiction_facts(places[placed_under], places),
+            armistice: nil,
+            armistice_sphere: nil,
+            trespass_areas: nil,
             shown_on_starmap: true,
             shown_with_parent_only: false,
             always_shown: false,
@@ -299,6 +307,86 @@ module ScData
         end
       end
 
+      # Whether the place is an armistice zone as a whole or only in parts,
+      # the sphere of a whole-place one, and whether it has areas where being
+      # is trespassing.
+      #
+      # "Whole" means a zone holds the place's own position. A trespass area
+      # is a block of a city or a facility's perimeter, never the place.
+      #
+      # A star, planet or moon has none of them: the zones hung under it belong
+      # to sites without a record of their own.
+      private def zone_facts(place)
+        if zones_by_record.nil? || BROAD_KINDS.include?(place[:kind])
+          return {armistice: nil, armistice_sphere: nil, trespass_areas: nil}
+        end
+
+        found = Array.wrap(place[:refs]).flat_map { |ref| zones_by_record[ref] || [] }
+        armistice = found.select { |zone| armistice_zone?(zone) }
+        whole = armistice.select { |zone| truthy?(zone["containsParent"]) }
+
+        {
+          armistice: if whole.any?
+                       "whole"
+                     elsif armistice.any?
+                       "partial"
+                     end,
+          armistice_sphere: armistice_sphere(place, whole),
+          trespass_areas: found.any? { |zone| zone["kind"] == "trespass" }
+        }
+      end
+
+      # An armistice zone counts only where it turns something off: the NPC
+      # hangar module on every mining base carries one that turns off nothing.
+      # Exports before the `flags` list name the same switches in `params`.
+      ARMISTICE_PARAMS = %w[noFPSWeapons noShipWeapons noTractorBeam].freeze
+
+      private def armistice_zone?(zone)
+        return false unless zone["kind"] == "armistice"
+        return Array.wrap(zone["flags"]).any? if zone.key?("flags")
+
+        ARMISTICE_PARAMS.any? { |flag| truthy?(zone.dig("params", flag)) }
+      end
+
+      # The widest sphere of the zones that hold the place, in metres in the
+      # system's frame. Its centre is not the place's: Lorville's is 33 km off
+      # the city. Only around the copy of the place the map draws, and only a
+      # sphere that holds it: a record placed many times has a sphere around
+      # each copy.
+      private def armistice_sphere(place, zones)
+        ref = Array.wrap(place[:refs]).find { |candidate| placements.key?(candidate) }
+        return if ref.nil?
+
+        at = placements[ref][:position]
+
+        zones
+          .select { |zone| zone["record"] == ref }
+          .flat_map { |zone| Array.wrap(zone["areas"]) }
+          .select { |area| area.dig("shape", "type") == "Sphere" && area["pos"].is_a?(Array) }
+          .map { |area| {position: area["pos"].map(&:to_f), radius: area.dig("shape", "radius").to_f} }
+          .select { |sphere| distance(sphere[:position], at) <= sphere[:radius] }
+          .max_by { |sphere| sphere[:radius] }
+      end
+
+      private def distance(from, to)
+        Math.sqrt(from.zip(to).sum { |a, b| (a - b)**2 })
+      end
+
+      private def truthy?(value)
+        [true, 1, "1", "true"].include?(value)
+      end
+
+      # Each zone names the record it hangs under. Nil for an export from
+      # before the file existed.
+      private def zones_by_record
+        return @zones_by_record if defined?(@zones_by_record)
+
+        file = "#{base_path}/#{ZONES_FILE}"
+        @zones_by_record = if File.exist?(file)
+          Array.wrap(JSON.parse(File.read(file))["zones"]).group_by { |zone| zone["record"] }
+        end
+      end
+
       private def starmap_objects
         @starmap_objects ||= begin
           file = "#{base_path}/#{PLACEMENTS_FILE}"
@@ -335,6 +423,7 @@ module ScData
           position: placement_of(place)&.dig(:position),
           radius: (placement_of(place)&.dig(:radius) if BODY_KINDS.include?(place[:kind])),
           **jurisdiction_facts(place, places),
+          **zone_facts(place),
           starmap_texture: (starmap_map(place, surfaces) if BODY_KINDS.include?(place[:kind])),
           starmap_elevation: (starmap_map(place, terrain_maps["elevation"]) if BODY_KINDS.include?(place[:kind])),
           starmap_clouds: (starmap_map(place, terrain_maps["clouds"]) if BODY_KINDS.include?(place[:kind])),
