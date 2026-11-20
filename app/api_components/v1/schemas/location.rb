@@ -64,7 +64,7 @@ module V1
           # and whether it has areas a visitor on foot must keep out of. Null
           # for a star, planet or moon, and for a build from before zones were
           # read.
-          armistice: ::Shared::V1::Schemas::Enums::NullableLocationArmisticeEnum,
+          armistice: ::V1::Schemas::Enums::NullableLocationArmisticeEnum,
           restrictedAreas: {type: [:boolean, :null]},
 
           createdAt: {type: :string, format: "date-time"},
