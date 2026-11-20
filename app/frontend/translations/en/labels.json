@@ -120,6 +120,10 @@
         "jurisdiction": "Jurisdiction",
         "lawful": "Lawful",
         "unlawful": "Unlawful",
+        "armistice": "Armistice",
+        "armisticeWhole": "Whole place",
+        "armisticePartial": "In parts",
+        "restrictedAreas": "Restricted areas",
         "freightElevator": "Freight elevator",
         "maxContainer": "Largest container",
         "kinds": {

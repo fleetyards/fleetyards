@@ -120,6 +120,10 @@
         "jurisdiction": "Zuständigkeit",
         "lawful": "Rechtsgebiet",
         "unlawful": "Gesetzlos",
+        "armistice": "Waffenstillstand",
+        "armisticeWhole": "Ganzer Ort",
+        "armisticePartial": "Teilweise",
+        "restrictedAreas": "Sperrgebiete",
         "freightElevator": "Frachtaufzug",
         "maxContainer": "Größter Container",
         "kinds": {

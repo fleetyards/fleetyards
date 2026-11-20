@@ -15,7 +15,11 @@ import {
   type StatsCardStatus,
 } from "@/frontend/components/StatsCard/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Location, LocationKindEnum } from "@/services/fyApi";
+import {
+  type Location,
+  LocationKindEnum,
+  NullableLocationArmisticeEnum,
+} from "@/services/fyApi";
 
 type Props = {
   location?: Location;
@@ -168,6 +172,26 @@ const badges = computed<StatsCardBadge[]>(() => {
       key: "places",
       label: t("labels.location.places"),
       value: String(location.childrenCount),
+    });
+  }
+
+  // Whether weapons are off there, and where a visitor on foot must keep out.
+  if (location.armistice) {
+    list.push({
+      key: "armistice",
+      label: t("labels.location.armistice"),
+      value:
+        location.armistice === NullableLocationArmisticeEnum.WHOLE
+          ? t("labels.location.armisticeWhole")
+          : t("labels.location.armisticePartial"),
+    });
+  }
+
+  if (location.restrictedAreas) {
+    list.push({
+      key: "restricted",
+      label: t("labels.location.restrictedAreas"),
+      value: yesNo(true),
     });
   }
 

@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { LocationKindEnum, type Location } from "@/services/fyApi";
+import {
+  LocationKindEnum,
+  NullableLocationArmisticeEnum,
+  type Location,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
 const router = async () => {
@@ -69,6 +73,49 @@ describe("LocationStatsCard", () => {
     expect(wrapper.text()).not.toContain("Stanton ·");
     expect(wrapper.text()).toContain("Hurston Dynamics' company town.");
     expect(wrapper.text()).toContain("4");
+  });
+
+  it("says whether the place is an armistice zone and has restricted areas", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        location: {
+          ...lorville,
+          armistice: NullableLocationArmisticeEnum.WHOLE,
+          restrictedAreas: true,
+        },
+      },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.text()).toContain("Armistice");
+    expect(wrapper.text()).toContain("Whole place");
+    expect(wrapper.text()).toContain("Restricted areas");
+  });
+
+  it("names an armistice in parts, and leaves out what the place lacks", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        location: {
+          ...lorville,
+          armistice: NullableLocationArmisticeEnum.PARTIAL,
+          restrictedAreas: false,
+        },
+      },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.text()).toContain("In parts");
+    expect(wrapper.text()).not.toContain("Restricted areas");
+  });
+
+  it("shows no zones for a place without them", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { location: lorville },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.text()).not.toContain("Armistice");
+    expect(wrapper.text()).not.toContain("Restricted areas");
   });
 
   it("shows a system's kind glyph in the card's icon box", async () => {
