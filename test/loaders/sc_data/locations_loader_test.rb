@@ -117,6 +117,18 @@ module ScData
         assert_equal [], Location.find_by!(sc_key: "Stanton1").amenities
       end
 
+      test "#all loads a place's armistice and restricted areas as facts of the build" do
+        loader.all
+
+        lorville = Location.find_by!(sc_key: "Stanton1_Lorville")
+
+        assert_equal "whole", lorville.armistice
+        assert lorville.restricted_areas
+        assert_equal "whole", lorville.builds.sole.armistice
+        assert_nil Location.find_by!(sc_key: "Stanton1").armistice
+        assert_nil Location.find_by!(sc_key: "Stanton1").restricted_areas
+      end
+
       test "#all nests a place where it is and keeps the game's map parent beside it" do
         loader.all
 

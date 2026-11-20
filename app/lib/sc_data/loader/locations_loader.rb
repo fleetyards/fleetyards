@@ -71,6 +71,8 @@ module ScData
           radius: item["radius"],
           jurisdiction: item["jurisdiction"],
           lawful: item["lawful"],
+          armistice: item["armistice"],
+          restricted_areas: item["restricted_areas"],
           amenities: Array.wrap(item["amenities"])
         }
       end

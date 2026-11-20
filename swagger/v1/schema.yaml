@@ -44886,6 +44886,12 @@ components:
           type:
           - boolean
           - 'null'
+        armistice:
+          "$ref": "#/components/schemas/NullableLocationArmisticeEnum"
+        restrictedAreas:
+          type:
+          - boolean
+          - 'null'
         createdAt:
           type: string
           format: date-time
@@ -50263,6 +50269,19 @@ components:
       - 30_DAYS
       - 'NULL'
       title: NullableItemPriceTimeRangeEnum
+    NullableLocationArmisticeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - whole
+      - partial
+      -
+      x-enumNames:
+      - WHOLE
+      - PARTIAL
+      - 'NULL'
+      title: NullableLocationArmisticeEnum
     NullableLocationBodyTypeEnum:
       type:
       - string
