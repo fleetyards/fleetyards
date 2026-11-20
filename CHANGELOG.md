@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.63.0](https://github.com/fleetyards/fleetyards/compare/v9.62.0...v9.63.0) (2026-11-20)
+
+
+### Features
+
+* **features:** mark features users or fleets can switch on as beta ([#6430](https://github.com/fleetyards/fleetyards/issues/6430)) ([d05ef90](https://github.com/fleetyards/fleetyards/commit/d05ef90cbf1d318814269660de71328b8075ebcd))
+* **feedback:** feedback form for beta features, handled in the admin app ([#6433](https://github.com/fleetyards/fleetyards/issues/6433)) ([b565078](https://github.com/fleetyards/fleetyards/commit/b565078307c2c57c1dd86b24b93b2c2ad23dc4b2))
+* **images:** replace the fallback store image with a planet horizon ([aa44163](https://github.com/fleetyards/fleetyards/commit/aa441631cc169005d454b5c36ce23783df8cb428))
+
+
+### Bug Fixes
+
+* **nav:** align the switcher logo with the nav row icons ([64728fb](https://github.com/fleetyards/fleetyards/commit/64728fb7b8d143632df1656ea0a345f8f1edd1e7))
+* **nav:** keep the switcher and avatar on the icon line in both rail widths ([6151f5e](https://github.com/fleetyards/fleetyards/commit/6151f5e0dc53a9c0c39c12e34b29b383c994803f))
+* **uploads:** download local uploads with rclone ([88a3689](https://github.com/fleetyards/fleetyards/commit/88a36891c2faaf18249fec5c197b13b3d7a15869))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/parser from 8.72.2 to 8.73.0 ([#6435](https://github.com/fleetyards/fleetyards/issues/6435)) ([de6c274](https://github.com/fleetyards/fleetyards/commit/de6c2741be12344846c5204ff713083d70d311dc))
+* **deps:** bump puma from 8.1.1 to 8.1.2 ([#6434](https://github.com/fleetyards/fleetyards/issues/6434)) ([262cb7a](https://github.com/fleetyards/fleetyards/commit/262cb7a55cd0e89c11b59d15c12c85333774645b))
+* **deps:** update Ruby from 4.0.9 to 4.0.10 ([#6438](https://github.com/fleetyards/fleetyards/issues/6438)) ([467443c](https://github.com/fleetyards/fleetyards/commit/467443c5414e2dfe673701b83be1f653b713e043))
+* **sc_data:** bump ptu to 5.0.0-ptu.13238477 ([#6437](https://github.com/fleetyards/fleetyards/issues/6437)) ([c14df46](https://github.com/fleetyards/fleetyards/commit/c14df468495ab4b54b178db25a2d3f60655889f5))
+
 ## [9.62.0](https://github.com/fleetyards/fleetyards/compare/v9.61.0...v9.62.0) (2026-11-19)
 
 
