@@ -123,7 +123,7 @@ module ScData
         lorville = Location.find_by!(sc_key: "Stanton1_Lorville")
 
         assert_equal "whole", lorville.armistice
-        assert_equal({"position" => [12_850_140_290.9, -744_909.0, 542_772.2], "radius" => 40_000.0}, lorville.armistice_sphere)
+        assert_equal({"position" => [12_850_289_541.5, -163_921.25, -570_381.0], "radius" => 40_000.0}, lorville.armistice_sphere)
         assert lorville.trespass_areas
         assert_equal "whole", lorville.builds.sole.armistice
         assert_nil Location.find_by!(sc_key: "Stanton1").armistice

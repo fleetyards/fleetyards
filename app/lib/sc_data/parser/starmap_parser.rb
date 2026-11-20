@@ -331,27 +331,45 @@ module ScData
                      elsif armistice.any?
                        "partial"
                      end,
-          armistice_sphere: (armistice_sphere(whole) if placement_of(place)),
+          armistice_sphere: armistice_sphere(place, whole),
           trespass_areas: found.any? { |zone| zone["kind"] == "trespass" }
         }
       end
 
       # An armistice zone counts only where it turns something off: the NPC
       # hangar module on every mining base carries one that turns off nothing.
+      # Exports before the `flags` list name the same switches in `params`.
+      ARMISTICE_PARAMS = %w[noFPSWeapons noShipWeapons noTractorBeam].freeze
+
       private def armistice_zone?(zone)
-        zone["kind"] == "armistice" && Array.wrap(zone["flags"]).any?
+        return false unless zone["kind"] == "armistice"
+        return Array.wrap(zone["flags"]).any? if zone.key?("flags")
+
+        ARMISTICE_PARAMS.any? { |flag| truthy?(zone.dig("params", flag)) }
       end
 
       # The widest sphere of the zones that hold the place, in metres in the
       # system's frame. Its centre is not the place's: Lorville's is 33 km off
-      # the city. Only for a place placed once, as a record placed many times
-      # has a sphere around each copy.
-      private def armistice_sphere(zones)
+      # the city. Only around the copy of the place the map draws, and only a
+      # sphere that holds it: a record placed many times has a sphere around
+      # each copy.
+      private def armistice_sphere(place, zones)
+        ref = Array.wrap(place[:refs]).find { |candidate| placements.key?(candidate) }
+        return if ref.nil?
+
+        at = placements[ref][:position]
+
         zones
+          .select { |zone| zone["record"] == ref }
           .flat_map { |zone| Array.wrap(zone["areas"]) }
           .select { |area| area.dig("shape", "type") == "Sphere" && area["pos"].is_a?(Array) }
-          .max_by { |area| area.dig("shape", "radius").to_f }
-          &.then { |area| {position: area["pos"].map(&:to_f), radius: area.dig("shape", "radius").to_f} }
+          .map { |area| {position: area["pos"].map(&:to_f), radius: area.dig("shape", "radius").to_f} }
+          .select { |sphere| distance(sphere[:position], at) <= sphere[:radius] }
+          .max_by { |sphere| sphere[:radius] }
+      end
+
+      private def distance(from, to)
+        Math.sqrt(from.zip(to).sum { |a, b| (a - b)**2 })
       end
 
       private def truthy?(value)
