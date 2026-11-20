@@ -667,7 +667,6 @@ const armisticeMaterial = () => {
   material.onBeforeCompile = (shader) => {
     shader.uniforms.rim = { value: ARMISTICE_RIM };
     shader.uniforms.fill = { value: ARMISTICE_FILL };
-    material.userData.shader = shader;
 
     shader.vertexShader = shader.vertexShader
       .replace(
@@ -1735,12 +1734,7 @@ onBeforeRender(({ delta, elapsed }) => {
 
     if (mesh instanceof Sprite) {
       const shell = armisticeShells.get(entry.key);
-      if (shell) {
-        const inside =
-          cameraWorld.distanceTo(shell.position) < shell.scale.x * 1.02;
-        shell.visible = fade > 0.02 && !inside;
-        (shell.material as MeshBasicMaterial).opacity = fade;
-      }
+      if (shell) shell.visible = false;
 
       if (fade > 0.02 && coveredByBody(entry, cam, away)) {
         fades.set(entry.key, 0);
@@ -1750,6 +1744,12 @@ onBeforeRender(({ delta, elapsed }) => {
 
       mesh.visible = fade > 0.02 && !occluded(point);
       if (!mesh.visible) continue;
+
+      if (shell) {
+        shell.visible =
+          cameraWorld.distanceTo(shell.position) > shell.scale.x * 1.02;
+        (shell.material as MeshBasicMaterial).opacity = fade;
+      }
 
       mesh.material.opacity = fade;
       mesh.scale.setScalar(
