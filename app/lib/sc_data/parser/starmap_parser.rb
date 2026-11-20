@@ -39,19 +39,10 @@ module ScData
       MATERIALS_FILE = "derived/starmap_materials.json"
       TEXTURES_FOLDER = "starmap_materials"
 
-      # The armistice and restricted-area entities in the object containers,
-      # each hung under the nearest starmap record. Written by the exporter.
+      # The armistice, trespass and restricted-area entities in the object
+      # containers, each hung under the nearest starmap record. Written by the
+      # exporter.
       ZONES_FILE = "derived/zones.json"
-
-      # An armistice zone counts only where it turns something off: the NPC
-      # hangar module on every mining base carries one that turns off nothing.
-      ARMISTICE_FLAGS = %w[noFPSWeapons noShipWeapons noTractorBeam].freeze
-
-      # A restricted area is one that keeps people on foot out. Most of the
-      # rest are hangar and pad no-park volumes for vehicles, and the NPC
-      # hangar module's volume goes with its empty armistice zone.
-      RESTRICTED_STATE = "Disallow"
-      NPC_HANGAR_LAYER = /\Anpc_hangar_/
 
       # The placement's `size` is a radius only for these: Hurston's is its
       # 1,000 km, the Stanton star's 696,000 km. On a station or an asteroid
@@ -230,7 +221,8 @@ module ScData
             system_key: system_of(placed_under, places),
             **jurisdiction_facts(places[placed_under], places),
             armistice: nil,
-            restricted_areas: nil,
+            armistice_sphere: nil,
+            trespass_areas: nil,
             shown_on_starmap: true,
             shown_with_parent_only: false,
             always_shown: false,
@@ -315,53 +307,59 @@ module ScData
         end
       end
 
-      # Whether the place is an armistice zone as a whole or only in parts, and
-      # whether it has areas a visitor on foot must keep out of.
+      # Whether the place is an armistice zone as a whole or only in parts,
+      # the sphere of a whole-place one, and whether it has areas where being
+      # is trespassing.
       #
-      # "Whole" means a zone holds the place's own position. That is only said
-      # of armistice: the restricted areas that hold a city's position are a
-      # block of it, not the city.
+      # "Whole" means a zone holds the place's own position. A trespass area
+      # is a block of a city or a facility's perimeter, never the place.
       #
-      # A star, planet or moon has neither: the zones hung under it belong to
-      # sites without a record of their own, and a sphere around its centre
-      # only covers its interior.
+      # A star, planet or moon has none of them: the zones hung under it belong
+      # to sites without a record of their own.
       private def zone_facts(place)
-        return {armistice: nil, restricted_areas: nil} if zones_by_record.nil? || BROAD_KINDS.include?(place[:kind])
+        if zones_by_record.nil? || BROAD_KINDS.include?(place[:kind])
+          return {armistice: nil, armistice_sphere: nil, trespass_areas: nil}
+        end
 
         found = Array.wrap(place[:refs]).flat_map { |ref| zones_by_record[ref] || [] }
         armistice = found.select { |zone| armistice_zone?(zone) }
+        whole = armistice.select { |zone| truthy?(zone["containsParent"]) }
 
         {
-          armistice: if armistice.any? { |zone| truthy?(zone["containsParent"]) }
+          armistice: if whole.any?
                        "whole"
                      elsif armistice.any?
                        "partial"
                      end,
-          restricted_areas: found.any? { |zone| restricted_zone?(zone) }
+          armistice_sphere: (armistice_sphere(whole) if placement_of(place)),
+          trespass_areas: found.any? { |zone| zone["kind"] == "trespass" }
         }
       end
 
+      # An armistice zone counts only where it turns something off: the NPC
+      # hangar module on every mining base carries one that turns off nothing.
       private def armistice_zone?(zone)
-        zone["kind"] == "armistice" && ARMISTICE_FLAGS.any? { |flag| truthy?(zone.dig("params", flag)) }
+        zone["kind"] == "armistice" && Array.wrap(zone["flags"]).any?
       end
 
-      private def restricted_zone?(zone)
-        params = zone["params"] || {}
-
-        zone["kind"] == "restricted" &&
-          params["state"] == RESTRICTED_STATE &&
-          truthy?(params["affectActorsOnFoot"]) &&
-          !NPC_HANGAR_LAYER.match?(zone["layer"].to_s)
+      # The widest sphere of the zones that hold the place, in metres in the
+      # system's frame. Its centre is not the place's: Lorville's is 33 km off
+      # the city. Only for a place placed once, as a record placed many times
+      # has a sphere around each copy.
+      private def armistice_sphere(zones)
+        zones
+          .flat_map { |zone| Array.wrap(zone["areas"]) }
+          .select { |area| area.dig("shape", "type") == "Sphere" && area["pos"].is_a?(Array) }
+          .max_by { |area| area.dig("shape", "radius").to_f }
+          &.then { |area| {position: area["pos"].map(&:to_f), radius: area.dig("shape", "radius").to_f} }
       end
 
       private def truthy?(value)
         [true, 1, "1", "true"].include?(value)
       end
 
-      # Grouped by each zone's own record rather than the file's `byRecord`:
-      # a zone's id is its entity's id inside the module it comes from, so a
-      # module placed many times repeats it, and an id alone cannot say which
-      # copy is meant. Nil for an export from before the file existed.
+      # Each zone names the record it hangs under. Nil for an export from
+      # before the file existed.
       private def zones_by_record
         return @zones_by_record if defined?(@zones_by_record)
 
