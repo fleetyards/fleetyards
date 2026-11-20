@@ -32,6 +32,7 @@ import {
   type GameMission,
   type Location,
   LocationKindEnum,
+  NullableLocationArmisticeEnum,
   type Model,
   type UserPublic,
 } from "@/services/fyApi";
@@ -243,6 +244,10 @@ const demoLocation = {
   quantumTravelDestination: true,
   childrenCount: 4,
   retired: false,
+  lawful: true,
+  jurisdiction: "Hurston Dynamics",
+  armistice: NullableLocationArmisticeEnum.WHOLE,
+  restrictedAreas: true,
   image: { url: storeImage, mediumUrl: storeImage },
   ancestors: [
     {
@@ -324,9 +329,42 @@ const demoUnverifiedMember = {
   squadrons: [],
 } as unknown as FleetMember;
 
+// An armistice only inside, under no law.
+const demoStation = {
+  ...demoLocation,
+  id: "demo-station",
+  name: "Ruin Station",
+  slug: "ruin-station",
+  kind: LocationKindEnum.STATION,
+  image: undefined,
+  description: "A gutted station the gangs of Pyro hold.",
+  lawful: false,
+  jurisdiction: "Unclaimed Space",
+  armistice: NullableLocationArmisticeEnum.PARTIAL,
+  restrictedAreas: false,
+  ancestors: [
+    {
+      id: "demo-pyro-system",
+      name: "Pyro System",
+      slug: "pyro-system",
+      kind: LocationKindEnum.SYSTEM,
+      parentName: null,
+    },
+    {
+      id: "demo-bloom",
+      name: "Bloom",
+      slug: "bloom",
+      kind: LocationKindEnum.PLANET,
+      parentName: "Pyro",
+    },
+  ],
+} as unknown as Location;
+
 // A planet is drawn as its turning globe, a star as its sun.
 const demoPlanet = {
   ...demoLocation,
+  armistice: null,
+  restrictedAreas: null,
   id: "demo-planet",
   name: "Hurston",
   slug: "hurston",
@@ -502,6 +540,16 @@ const demoStar = {
         <CatalogueItemPopover
           :item="{ type: 'Location', slug: 'lorville', name: 'Lorville' }"
           :record="demoLocation"
+        />
+      </span>
+      <span data-test="popover-demo-station">
+        <CatalogueItemPopover
+          :item="{
+            type: 'Location',
+            slug: 'ruin-station',
+            name: 'Ruin Station',
+          }"
+          :record="demoStation"
         />
       </span>
       <span data-test="popover-demo-planet">
