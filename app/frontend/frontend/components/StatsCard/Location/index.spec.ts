@@ -75,13 +75,13 @@ describe("LocationStatsCard", () => {
     expect(wrapper.text()).toContain("4");
   });
 
-  it("says whether the place is an armistice zone and has restricted areas", async () => {
+  it("says whether the place is an armistice zone and has trespass areas", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         location: {
           ...lorville,
           armistice: NullableLocationArmisticeEnum.WHOLE,
-          restrictedAreas: true,
+          trespassAreas: true,
         },
       },
       plugins: [await router()],
@@ -89,7 +89,7 @@ describe("LocationStatsCard", () => {
 
     expect(wrapper.text()).toContain("Armistice");
     expect(wrapper.text()).not.toContain("In parts");
-    expect(wrapper.text()).toContain("Restricted areas");
+    expect(wrapper.text()).toContain("Trespass areas");
   });
 
   it("names an armistice in parts, and leaves out what the place lacks", async () => {
@@ -98,14 +98,14 @@ describe("LocationStatsCard", () => {
         location: {
           ...lorville,
           armistice: NullableLocationArmisticeEnum.PARTIAL,
-          restrictedAreas: false,
+          trespassAreas: false,
         },
       },
       plugins: [await router()],
     });
 
     expect(wrapper.text()).toContain("In parts");
-    expect(wrapper.text()).not.toContain("Restricted areas");
+    expect(wrapper.text()).not.toContain("Trespass areas");
   });
 
   it("shows no zones for a place without them", async () => {
@@ -115,7 +115,7 @@ describe("LocationStatsCard", () => {
     });
 
     expect(wrapper.text()).not.toContain("Armistice");
-    expect(wrapper.text()).not.toContain("Restricted areas");
+    expect(wrapper.text()).not.toContain("Trespass areas");
   });
 
   it("shows a system's kind glyph in the card's icon box", async () => {

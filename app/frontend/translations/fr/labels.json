@@ -122,7 +122,7 @@
         "unlawful": "Sans loi",
         "armistice": "Armistice",
         "armisticePartial": "En partie",
-        "restrictedAreas": "Zones interdites",
+        "trespassAreas": "Zones interdites",
         "freightElevator": "Monte-charge",
         "maxContainer": "Plus grand conteneur",
         "kinds": {

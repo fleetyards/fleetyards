@@ -175,7 +175,7 @@ const badges = computed<StatsCardBadge[]>(() => {
     });
   }
 
-  // Whether weapons are off there, and where a visitor on foot must keep out.
+  // Whether weapons are off there, and whether parts of it are trespassing.
   if (location.armistice) {
     list.push({
       key: "armistice",
@@ -187,10 +187,10 @@ const badges = computed<StatsCardBadge[]>(() => {
     });
   }
 
-  if (location.restrictedAreas) {
+  if (location.trespassAreas) {
     list.push({
-      key: "restricted",
-      label: t("labels.location.restrictedAreas"),
+      key: "trespass",
+      label: t("labels.location.trespassAreas"),
       value: yesNo(true),
     });
   }

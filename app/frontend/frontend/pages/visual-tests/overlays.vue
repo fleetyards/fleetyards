@@ -247,7 +247,7 @@ const demoLocation = {
   lawful: true,
   jurisdiction: "Hurston Dynamics",
   armistice: NullableLocationArmisticeEnum.WHOLE,
-  restrictedAreas: true,
+  trespassAreas: true,
   image: { url: storeImage, mediumUrl: storeImage },
   ancestors: [
     {
@@ -341,7 +341,7 @@ const demoStation = {
   lawful: false,
   jurisdiction: "Unclaimed Space",
   armistice: NullableLocationArmisticeEnum.PARTIAL,
-  restrictedAreas: false,
+  trespassAreas: false,
   ancestors: [
     {
       id: "demo-pyro-system",
@@ -364,7 +364,7 @@ const demoStation = {
 const demoPlanet = {
   ...demoLocation,
   armistice: null,
-  restrictedAreas: null,
+  trespassAreas: null,
   id: "demo-planet",
   name: "Hurston",
   slug: "hurston",

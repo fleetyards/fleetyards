@@ -122,7 +122,7 @@
         "unlawful": "Unlawful",
         "armistice": "Armistice",
         "armisticePartial": "In parts",
-        "restrictedAreas": "Restricted areas",
+        "trespassAreas": "Trespass areas",
         "freightElevator": "Freight elevator",
         "maxContainer": "Largest container",
         "kinds": {

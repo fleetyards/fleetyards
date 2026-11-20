@@ -122,7 +122,7 @@
         "unlawful": "無法區域",
         "armistice": "停戰區",
         "armisticePartial": "部分區域",
-        "restrictedAreas": "禁區",
+        "trespassAreas": "禁入區",
         "freightElevator": "貨運電梯",
         "maxContainer": "最大貨櫃",
         "kinds": {
