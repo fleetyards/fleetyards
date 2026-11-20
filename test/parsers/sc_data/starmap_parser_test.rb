@@ -576,8 +576,10 @@ module ScData
         place("Stanton1_L1", "HUR-L1", type: "Manmade", parent: "Stanton1")
         place("Stanton1_Outpost", "Outpost", type: "Outpost", parent: "Stanton1")
         place("Stanton1_Mine", "Mining Base", type: "Outpost", parent: "Stanton1")
+        place("Stanton1_Clinic", "Clinic", type: "Outpost", parent: "Stanton1")
         area_zones(
           area_zone("Stanton1_Lorville", "armistice", contains: true, params: {noFPSWeapons: 1}),
+          area_zone("Stanton1_Clinic", "armistice", contains: 0, params: {noFPSWeapons: 1}),
           area_zone("Stanton1_L1", "armistice", params: {noFPSWeapons: 1, noTractorBeam: "1"}),
           area_zone("Stanton1_Mine", "armistice", contains: true, params: {noFPSWeapons: 0, noShipWeapons: 0}),
           area_zone("Stanton1", "armistice", contains: true, params: {noFPSWeapons: 1})
@@ -585,6 +587,7 @@ module ScData
 
         assert_equal "whole", location("Stanton1_Lorville")[:armistice]
         assert_equal "partial", location("Stanton1_L1")[:armistice]
+        assert_equal "partial", location("Stanton1_Clinic")[:armistice]
         assert_nil location("Stanton1_Outpost")[:armistice]
         assert_nil location("Stanton1_Mine")[:armistice]
         assert_nil location("Stanton1")[:armistice]

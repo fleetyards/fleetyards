@@ -42,7 +42,6 @@ module ScData
       # The armistice and restricted-area entities in the object containers,
       # each hung under the nearest starmap record. Written by the exporter.
       ZONES_FILE = "derived/zones.json"
-      ARMISTICE_VALUES = %w[whole partial].freeze
 
       # An armistice zone counts only where it turns something off: the NPC
       # hangar module on every mining base carries one that turns off nothing.
@@ -333,7 +332,7 @@ module ScData
         armistice = found.select { |zone| armistice_zone?(zone) }
 
         {
-          armistice: if armistice.any? { |zone| zone["containsParent"] }
+          armistice: if armistice.any? { |zone| truthy?(zone["containsParent"]) }
                        "whole"
                      elsif armistice.any?
                        "partial"
