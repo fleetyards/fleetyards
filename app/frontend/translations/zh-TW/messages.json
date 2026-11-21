@@ -904,6 +904,10 @@
             "failure": "無法清空貨物。"
           }
         },
+        "handover": {
+          "success": "庫存已移交。",
+          "failure": "無法移交庫存。"
+        },
         "transfer": {
           "needsAnswer": "對方需要先接受。庫存現在即離開你的倉庫，若被拒絕則會退回。",
           "create": {

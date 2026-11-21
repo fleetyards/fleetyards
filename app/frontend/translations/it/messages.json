@@ -910,6 +910,10 @@
             "failure": "Impossibile svuotare il carico."
           }
         },
+        "handover": {
+          "success": "Scorte consegnate.",
+          "failure": "Impossibile consegnare le scorte."
+        },
         "transfer": {
           "needsAnswer": "Devono accettarlo prima che arrivi. Le scorte lasciano il tuo inventario ora e tornano se rifiutano.",
           "create": {

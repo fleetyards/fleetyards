@@ -460,6 +460,7 @@
         "viewCargoGrid": "Voir la grille de cargaison",
         "sendTransfer": "Envoyer",
         "moveStock": "Déplacer",
+        "handover": "Remettre",
         "transfer": "Transférer",
         "acceptTransfer": "Accepter",
         "declineTransfer": "Refuser",

@@ -18,6 +18,10 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type InventoryCraftedRef, type MediaFile } from "@/services/fyApi";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import { lotKey } from "@/frontend/composables/useStockLots";
+import {
+  holderValue,
+  useStockHolders,
+} from "@/frontend/composables/useStockHolders";
 import type {
   InventoryLedgerRecord,
   InventoryStockRecord,
@@ -31,6 +35,8 @@ type Props = {
   logLoading?: boolean;
   showInventory?: boolean;
   showMember?: boolean;
+  // Who carries the stock: a column on both tables, for a fleet inventory.
+  showHolders?: boolean;
   showAddedBy?: boolean;
   showNotes?: boolean;
   // Off where every row is the one item the page already pictures.
@@ -44,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
   logLoading: false,
   showInventory: false,
   showMember: false,
+  showHolders: false,
   showAddedBy: false,
   showNotes: false,
   showImage: true,
@@ -53,6 +60,8 @@ const props = withDefaults(defineProps<Props>(), {
 const { t, l } = useI18n();
 
 const mobile = useMobile();
+
+const { holderName } = useStockHolders();
 
 // The recipe and the grade in each slot, in slot order.
 const craftedSummary = (crafted: InventoryCraftedRef) =>
@@ -124,6 +133,17 @@ const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
     width: "140px",
     alignment: BaseTableColAlignmentEnum.RIGHT,
   },
+  ...(props.showHolders
+    ? [
+        {
+          name: "holders",
+          label: t("labels.logistics.holder"),
+          sortable: false,
+          width: "260px",
+          mobile: false,
+        },
+      ]
+    : []),
 ]);
 
 const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
@@ -182,6 +202,17 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         {
           name: "member",
           label: t("labels.logistics.member"),
+          sortable: false,
+          width: "120px",
+          mobile: false,
+        },
+      ]
+    : []),
+  ...(props.showHolders
+    ? [
+        {
+          name: "holder",
+          label: t("labels.logistics.holder"),
           sortable: false,
           width: "120px",
           mobile: false,
@@ -320,6 +351,20 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       {{ record.netQuantity }}
       {{ t(`labels.logistics.units.${record.unit}`) }}
     </template>
+    <template #col-holders="{ record }">
+      <span class="ledger-holders">
+        <span
+          v-for="share in record.holders"
+          :key="holderValue(share)"
+          class="ledger-holder"
+          :class="{ 'ledger-holder--unassigned': !share.holder }"
+          :data-test="`ledger-holder-${holderValue(share)}`"
+        >
+          {{ holderName(share) }}
+          <span class="ledger-holder-amount">{{ share.netQuantity }}</span>
+        </span>
+      </span>
+    </template>
     <template v-if="$slots['stock-actions']" #actions="{ record }">
       <slot name="stock-actions" :record="record" />
     </template>
@@ -435,6 +480,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     <template #col-member="{ record }">
       <slot name="member" :record="record" />
     </template>
+    <template #col-holder="{ record }">
+      <slot name="holder" :record="record" />
+    </template>
     <template #col-addedBy="{ record }">
       <slot name="addedBy" :record="record" />
     </template>
@@ -473,6 +521,26 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     padding-right: 0.3rem;
     content: "·";
   }
+}
+
+.ledger-holders {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.ledger-holder {
+  white-space: nowrap;
+}
+
+.ledger-holder--unassigned {
+  color: var(--color-muted);
+}
+
+.ledger-holder-amount {
+  margin-left: 0.25rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 
 .ledger-date {

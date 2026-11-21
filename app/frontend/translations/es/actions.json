@@ -460,6 +460,7 @@
         "viewCargoGrid": "Ver cuadrícula de carga",
         "sendTransfer": "Enviar",
         "moveStock": "Mover",
+        "handover": "Entregar",
         "transfer": "Transferir",
         "acceptTransfer": "Aceptar",
         "declineTransfer": "Rechazar",

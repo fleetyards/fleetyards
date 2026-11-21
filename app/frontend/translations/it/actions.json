@@ -460,6 +460,7 @@
         "viewCargoGrid": "Vedi griglia di carico",
         "sendTransfer": "Invia",
         "moveStock": "Sposta",
+        "handover": "Consegna",
         "transfer": "Trasferisci",
         "acceptTransfer": "Accetta",
         "declineTransfer": "Rifiuta",

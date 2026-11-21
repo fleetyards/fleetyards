@@ -2,7 +2,11 @@ import type { Ref } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { type CraftedPart } from "@/frontend/composables/craftedComponent";
-import { type FilterOption, type InventoryCraftedRef } from "@/services/fyApi";
+import {
+  type FilterOption,
+  type FleetInventoryStockHolder,
+  type InventoryCraftedRef,
+} from "@/services/fyApi";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 
 // One lot of a position: a quality grade, or a crafted part with the grades it
@@ -16,6 +20,7 @@ export type StockLot = {
   quality?: number | null;
   item?: { id: string; type: PickedItem["type"] } | null;
   crafted?: InventoryCraftedRef;
+  holders?: FleetInventoryStockHolder[];
 };
 
 // Stable across a refetch, unlike an index: the position, the grade and what

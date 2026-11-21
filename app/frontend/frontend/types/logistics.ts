@@ -1,4 +1,8 @@
-import type { InventoryCraftedRef, MediaFile } from "@/services/fyApi";
+import type {
+  FleetInventoryStockHolder,
+  InventoryCraftedRef,
+  MediaFile,
+} from "@/services/fyApi";
 export type InventoryReference = {
   name?: string;
   slug?: string;
@@ -44,6 +48,9 @@ export type InventoryStockRecord = {
   image?: MediaFile | null;
   // A crafted lot: the recipe and the grades it was made from.
   crafted?: InventoryCraftedRef;
+  // Who carries the row, on a fleet inventory: largest share first, the
+  // unassigned share (a null holder) last.
+  holders?: FleetInventoryStockHolder[];
 };
 
 export type InventoryVehicleReference = {

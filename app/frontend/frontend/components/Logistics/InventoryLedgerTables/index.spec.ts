@@ -158,4 +158,45 @@ describe("InventoryLedgerTables", () => {
     expect(popover.text()).not.toContain("AbsoluteZero");
     expect(popover.props("crafted")).toEqual(crafted);
   });
+
+  it("names who carries each share of a lot, the unassigned share muted", async () => {
+    const subject = await mount({
+      activeTab: "stock",
+      stockRecords: [
+        {
+          ...stockRow,
+          holders: [
+            { holder: { id: "alice", username: "alice" }, netQuantity: 5 },
+            { holder: null, netQuantity: 2 },
+          ],
+        },
+      ],
+      logRecords: [],
+      showHolders: true,
+    });
+
+    expect(subject.find('[data-test="ledger-holder-alice"]').text()).toContain(
+      "alice",
+    );
+
+    const unassigned = subject.find('[data-test="ledger-holder-unassigned"]');
+
+    expect(unassigned.classes()).toContain("ledger-holder--unassigned");
+    expect(unassigned.text()).toContain("2");
+  });
+
+  it("leaves the holder column off unless asked", async () => {
+    const subject = await mount({
+      activeTab: "stock",
+      stockRecords: [
+        {
+          ...stockRow,
+          holders: [{ holder: null, netQuantity: 1 }],
+        },
+      ],
+      logRecords: [],
+    });
+
+    expect(subject.find('[data-test^="ledger-holder-"]').exists()).toBe(false);
+  });
 });

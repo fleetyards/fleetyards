@@ -536,6 +536,7 @@
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
         "editStockItem": "Edit Item",
+        "handover": "Remettre %{name}",
         "transfer": "Transférer du stock",
         "transfers": "Transferts",
         "acceptTransfer": "Accepter le transfert",

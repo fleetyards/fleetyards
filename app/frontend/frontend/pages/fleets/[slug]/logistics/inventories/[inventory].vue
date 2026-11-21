@@ -64,12 +64,19 @@ const {
   ...asyncInventoryStatus
 } = useFleetInventory(fleetSlug, inventorySlug);
 
+// Only what the reader carries, to hold the list against their own cargo.
+const heldByMe = ref(false);
+
 // Stock view (aggregated)
 const {
   data: stockData,
   isLoading: stockLoading,
   refetch: refetchStock,
-} = useFleetInventoryStock(fleetSlug, inventorySlug);
+} = useFleetInventoryStock(
+  fleetSlug,
+  inventorySlug,
+  computed(() => (heldByMe.value ? { heldByMe: true } : {})),
+);
 
 const { stockRecords } = useInventoryStockList(stockData);
 
@@ -194,6 +201,20 @@ const openWithdrawModal = () => {
       fleet: props.fleet,
       inventory: inventory.value,
       initialEntryType: "withdrawal",
+    },
+  });
+};
+
+const openHandoverModal = (lot: InventoryStockRecord) => {
+  if (!inventory.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Logistics/HandoverModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      inventory: inventory.value,
+      lot,
     },
   });
 };
@@ -383,6 +404,16 @@ const crumbs = computed<Crumb[]>(() => [
                 {{ t("labels.logistics.logView") }}
               </Btn>
             </BtnGroup>
+            <Btn
+              v-if="activeTab === 'stock'"
+              :active="heldByMe"
+              mobile-icon-only
+              data-test="stock-held-by-me"
+              @click="heldByMe = !heldByMe"
+            >
+              <i class="fa-duotone fa-user" />
+              {{ t("labels.logistics.heldByMe") }}
+            </Btn>
           </template>
 
           <template #default>
@@ -393,11 +424,22 @@ const crumbs = computed<Crumb[]>(() => [
               :stock-loading="stockLoading"
               :log-loading="logLoading"
               show-member
+              show-holders
               show-added-by
               show-notes
               :stock-selectable="canManageInventory"
             >
               <template v-if="canManageInventory" #stock-actions="{ record }">
+                <Btn
+                  v-if="(record as InventoryStockRecord).holders?.length"
+                  :size="BtnSizesEnum.SM"
+                  :aria-label="t('actions.logistics.handover')"
+                  :title="t('actions.logistics.handover')"
+                  :data-test="`stock-handover-${record.slug}`"
+                  @click="openHandoverModal(record as InventoryStockRecord)"
+                >
+                  <i class="fa-duotone fa-hand-holding-box" />
+                </Btn>
                 <Btn
                   :size="BtnSizesEnum.SM"
                   :aria-label="t('actions.logistics.transfer')"
@@ -450,6 +492,18 @@ const crumbs = computed<Crumb[]>(() => [
                       .member as unknown as FleetMember
                   "
                 />
+              </template>
+              <template #holder="{ record }">
+                <MemberName
+                  v-if="(record as FleetInventoryItem).holder"
+                  :member="
+                    (record as FleetInventoryItem)
+                      .holder as unknown as FleetMember
+                  "
+                />
+                <span v-else class="text-muted">
+                  {{ t("labels.logistics.unassigned") }}
+                </span>
               </template>
               <template #addedBy="{ record }">
                 <MemberName
