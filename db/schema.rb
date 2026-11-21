@@ -1220,8 +1220,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_150000) do
     t.uuid "holder_id"
     t.index ["crafted_blueprint_id"], name: "index_fleet_inventory_items_on_crafted_blueprint_id"
     t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
-    t.index ["fleet_inventory_position_id", "holder_id"], name: "index_fleet_inventory_items_on_position_and_holder"
     t.index ["fleet_inventory_position_id"], name: "index_fleet_inventory_items_on_fleet_inventory_position_id"
+    t.index ["holder_id"], name: "index_fleet_inventory_items_on_holder_id"
     t.index ["inventory_transfer_id"], name: "index_fleet_inventory_items_on_inventory_transfer_id"
     t.index ["member_id"], name: "index_fleet_inventory_items_on_member_id"
   end
