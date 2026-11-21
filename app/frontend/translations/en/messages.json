@@ -914,6 +914,10 @@
             "failure": "Could not clear the cargo."
           }
         },
+        "handover": {
+          "success": "Stock handed over.",
+          "failure": "Could not hand over the stock."
+        },
         "transfer": {
           "needsAnswer": "They have to accept this before it arrives. The stock leaves your inventory now and comes back if they decline.",
           "create": {

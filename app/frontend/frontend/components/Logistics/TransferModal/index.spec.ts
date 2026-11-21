@@ -350,6 +350,89 @@ describe("TransferModal", () => {
 // `Contracts::Progress` counts what a transfer naming the contract delivered,
 // not what landed in the inventory -- so a delivery that cannot name one never
 // moves the bar, however exactly it matches the line.
+describe("TransferModal from a fleet inventory with holders", () => {
+  const alice = { id: "alice", username: "alice" };
+  const held = () => [
+    position({
+      netQuantity: 96,
+      holders: [
+        { holder: alice, netQuantity: 70 },
+        { holder: null, netQuantity: 26 },
+      ],
+    }),
+  ];
+
+  const sourceHolderPicker = () =>
+    wrapper!
+      .findAllComponents({ name: "BaseSelect" })
+      .find(
+        (component) =>
+          component.attributes("data-test") === "transfer-source-holder",
+      );
+
+  it("ships from the largest share by default, up to what it holds", async () => {
+    const { onSend } = await build(held());
+
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sourceHolderId: "alice",
+        lines: [{ positionId: "pos-1", quantity: 70 }],
+      }),
+    );
+  });
+
+  it("ships the unassigned share as a null holder", async () => {
+    const { onSend } = await build(held());
+
+    await sourceHolderPicker()?.vm.$emit("update:modelValue", "unassigned");
+    await flushPromises();
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sourceHolderId: null,
+        lines: [{ positionId: "pos-1", quantity: 26 }],
+      }),
+    );
+  });
+
+  it("keeps a chosen row the holder carries none of, at zero", async () => {
+    await build([
+      ...held(),
+      position({
+        id: "pos-2",
+        slug: "medpen--consumable--units",
+        name: "Medpen",
+        unit: "units",
+        netQuantity: 4,
+        holders: [{ holder: { id: "bob", username: "bob" }, netQuantity: 4 }],
+      }),
+    ]);
+
+    const line = wrapper!.find(
+      '[data-test="transfer-line-medpen--consumable--units"]',
+    );
+
+    expect(line.exists()).toBe(true);
+    expect(line.find(".transfer-line-max").text()).toBe("/ 0");
+  });
+
+  it("asks nothing about holders for stock that has none", async () => {
+    const { onSend } = await build([position()]);
+
+    expect(sourceHolderPicker()).toBeUndefined();
+
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend.mock.calls[0][0]).not.toHaveProperty("sourceHolderId");
+  });
+});
+
 describe("TransferModal towards a contract", () => {
   afterEach(() => {
     openContracts.value = [];

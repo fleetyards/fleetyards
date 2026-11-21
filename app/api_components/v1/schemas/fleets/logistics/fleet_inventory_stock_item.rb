@@ -29,7 +29,10 @@ module V1
               image: ::Shared::V1::Schemas::MediaFile,
               # Present on a crafted part only.
               crafted: ::V1::Schemas::InventoryCraftedRef,
-              inventory: ::V1::Schemas::InventoryRef
+              inventory: ::V1::Schemas::InventoryRef,
+              # Who carries the lot, largest share first, the unassigned share
+              # last.
+              holders: {type: :array, items: ::V1::Schemas::Fleets::Logistics::FleetInventoryStockHolder}
             },
             required: %w[id name category unit netQuantity]
           })

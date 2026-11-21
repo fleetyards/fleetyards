@@ -71,7 +71,7 @@ class InventoryItemCsvImporter
         quantity: quantity,
         unit: unit,
         notes: row["notes"]&.strip
-      }.merge(inventory.ledger_attributes_for(user))
+      }.merge(inventory.ledger_attributes_for(user), inventory.holder_attributes_for(user))
     )
 
     if item.save

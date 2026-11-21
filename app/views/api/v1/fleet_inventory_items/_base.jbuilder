@@ -78,6 +78,15 @@ else
   json.member nil
 end
 
+if fleet_inventory_item.holder.present?
+  json.holder do
+    json.id fleet_inventory_item.holder.id
+    json.username fleet_inventory_item.holder.username
+  end
+else
+  json.holder nil
+end
+
 if fleet_inventory_item.added_by_user.present?
   json.added_by do
     json.id fleet_inventory_item.added_by_user.id

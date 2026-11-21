@@ -460,6 +460,7 @@
         "viewCargoGrid": "查看货物网格",
         "sendTransfer": "发送",
         "moveStock": "移动",
+        "handover": "移交",
         "transfer": "转移",
         "acceptTransfer": "接受",
         "declineTransfer": "拒绝",

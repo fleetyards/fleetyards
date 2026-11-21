@@ -25,7 +25,7 @@ module Api
       def index
         authorize! with: FleetInventoryItemPolicy, context: {fleet: @fleet}
 
-        scope = @fleet_inventory.fleet_inventory_items.preload(:crafted_blueprint, item: %i[build last_build])
+        scope = @fleet_inventory.fleet_inventory_items.preload(:crafted_blueprint, :holder, item: %i[build last_build])
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :position_id_eq, :s)
         normalize_sort_params(query_params)
@@ -40,6 +40,7 @@ module Api
       def create
         @fleet_inventory_item = @fleet_inventory.fleet_inventory_items.new(fleet_inventory_item_params)
         @fleet_inventory_item.added_by = current_resource_owner.id
+        @fleet_inventory_item.holder_id = default_holder_id unless fleet_inventory_item_params.key?(:holder_id)
 
         authorize! @fleet_inventory_item, context: {fleet: @fleet}
 
@@ -77,6 +78,21 @@ module Api
         result = importer.call
 
         render json: result, status: :ok
+      end
+
+      # A deposit is carried by the member it is for, else by whoever made it,
+      # unless the request says otherwise; a holder sent as null is the
+      # unassigned share. A member who has left cannot carry anything, so a
+      # deposit recorded for one falls to the caller. A withdrawal left unsaid
+      # comes out of the unassigned share, as every withdrawal did before stock
+      # had holders.
+      private def default_holder_id
+        return unless @fleet_inventory_item.deposit?
+
+        member_id = @fleet_inventory_item.member_id
+        return member_id if member_id.present? && @fleet.fleet_memberships.kept.accepted.exists?(user_id: member_id)
+
+        current_resource_owner.id
       end
 
       private def fleet_inventory_item_params

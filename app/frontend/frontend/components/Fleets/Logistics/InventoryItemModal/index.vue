@@ -48,6 +48,13 @@ import {
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
+import { useSessionStore } from "@/frontend/stores/session";
+import {
+  UNASSIGNED,
+  holderIdFor,
+  holderValue,
+  useStockHolders,
+} from "@/frontend/composables/useStockHolders";
 
 type StockItem = StockLot;
 
@@ -63,6 +70,9 @@ const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
+const sessionStore = useSessionStore();
+const currentUser = computed(() => sessionStore.currentUser);
+const { holderName } = useStockHolders();
 
 const submitting = ref(false);
 const entryType = ref<"deposit" | "withdrawal">(
@@ -121,6 +131,8 @@ const initialValues = {
   unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
   quality: undefined as number | undefined,
   memberId: undefined as string | undefined,
+  // A deposit is carried by whoever records it until they say otherwise.
+  holderId: (currentUser.value?.id ?? UNASSIGNED) as string | undefined,
   image: undefined as string | undefined,
   notes: "",
 };
@@ -183,6 +195,7 @@ const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [memberId] = defineField("memberId");
+const [holderId] = defineField("holderId");
 const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
 
@@ -242,6 +255,10 @@ watch(selectedExistingItem, (val) => {
 watch(entryType, (val) => {
   if (val === "withdrawal") {
     void loadStockItems();
+    setFieldValue("holderId", undefined);
+  } else {
+    setFieldValue("holderId", currentUser.value?.id ?? UNASSIGNED);
+    holderTouched.value = false;
   }
   selectedStockItem.value = undefined;
   selectedPosition.value = undefined;
@@ -275,21 +292,105 @@ const withdrawnQuality = computed(
   () => lotAt(selectedStockItem.value)?.quality ?? null,
 );
 
+// A withdrawal comes out of one holder's share of the lot, so what it may
+// take is that share rather than the lot's total.
+const selectedLotHolders = computed(
+  () => lotAt(selectedStockItem.value)?.holders ?? [],
+);
+
+const withdrawalHolderOptions = computed<FilterOption[]>(() =>
+  selectedLotHolders.value.map((share) => ({
+    value: holderValue(share),
+    label: `${holderName(share)} · ${share.netQuantity} ${t(`labels.logistics.units.${unit.value}`)}`,
+  })),
+);
+
 const selectedStockMax = computed(() => {
-  return lotAt(selectedStockItem.value)?.netQuantity;
+  const lot = lotAt(selectedStockItem.value);
+  if (!lot) return undefined;
+  if (!lot.holders) return lot.netQuantity;
+
+  return lot.holders.find((share) => holderValue(share) === holderId.value)
+    ?.netQuantity;
 });
+
+// Picking a lot hands the withdrawal to whoever carries most of it -- the
+// first share, as the API sorts them.
+watch(selectedStockItem, () => {
+  if (isDeposit.value) return;
+
+  setFieldValue(
+    "holderId",
+    selectedLotHolders.value[0]
+      ? holderValue(selectedLotHolders.value[0])
+      : undefined,
+  );
+});
+
+// Members seen in either picker, so the holder select can label one the
+// member select chose.
+const knownMembers = new Map<string, string>();
+
+const holderTouched = ref(false);
+
+// The member a deposit is for carries it, unless someone picked a holder.
+watch(memberId, (value) => {
+  if (!isDeposit.value || holderTouched.value || !value) return;
+
+  setFieldValue("holderId", value);
+});
+
+const fetchHolders = (params: BaseSelectParams<FilterOption>) => {
+  return fetchFleetMembers(props.fleet.slug, {
+    q: { usernameCont: params.search || undefined, stateIn: ["accepted"] },
+  });
+};
+
+const formatHolders = (response: { items: FleetMember[] }) => {
+  const members = (response.items || []).map((m) => {
+    knownMembers.set(m.userId || "", m.username);
+
+    return { label: m.username, value: m.userId || "" };
+  });
+
+  const pinned: FilterOption[] = [
+    { label: t("labels.logistics.unassigned"), value: UNASSIGNED },
+  ];
+
+  if (currentUser.value?.id) {
+    pinned.push({
+      label: currentUser.value.username,
+      value: currentUser.value.id,
+    });
+  }
+
+  const chosen = holderId.value;
+
+  if (chosen && !pinned.some((option) => option.value === chosen)) {
+    const username = knownMembers.get(chosen);
+    if (username) pinned.push({ label: username, value: chosen });
+  }
+
+  return [
+    ...pinned,
+    ...members.filter(
+      (member) => !pinned.some((option) => option.value === member.value),
+    ),
+  ];
+};
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
-    q: { usernameCont: params.search || undefined },
+    q: { usernameCont: params.search || undefined, stateIn: ["accepted"] },
   });
 };
 
 const formatMembers = (response: { items: FleetMember[] }) => {
-  return (response.items || []).map((m) => ({
-    label: m.username,
-    value: m.userId || "",
-  }));
+  return (response.items || []).map((m) => {
+    knownMembers.set(m.userId || "", m.username);
+
+    return { label: m.username, value: m.userId || "" };
+  });
 };
 
 const createMutation = useCreateFleetInventoryItem();
@@ -330,6 +431,7 @@ const onSubmit = handleSubmit(async (values) => {
             : undefined
           : withdrawnQuality.value,
         memberId: values.memberId || undefined,
+        holderId: holderIdFor(values.holderId),
         image: values.image || undefined,
         notes: values.notes || undefined,
         itemType: pickedItem.value?.type,
@@ -417,6 +519,16 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="true"
         />
 
+        <BaseSelect
+          v-if="withdrawalHolderOptions.length"
+          v-model="holderId"
+          :options="withdrawalHolderOptions"
+          :label="t('labels.logistics.holder')"
+          name="holderId"
+          :searchable="false"
+          data-test="withdrawal-holder"
+        />
+
         <p v-if="selectedStockMax !== undefined" class="text-muted">
           {{ t("labels.logistics.currentStock") }}:
           {{ selectedStockMax }}
@@ -447,6 +559,17 @@ const onSubmit = handleSubmit(async (values) => {
           @open="showPicker(true)"
           @clear="clearItem"
           @craft="openCrafting"
+        />
+
+        <BaseSelect
+          v-model="holderId"
+          :query-fn="fetchHolders"
+          :query-response-formatter="formatHolders"
+          :label="t('labels.logistics.holder')"
+          name="holderId"
+          :searchable="true"
+          data-test="deposit-holder"
+          @update:model-value="holderTouched = true"
         />
       </template>
 

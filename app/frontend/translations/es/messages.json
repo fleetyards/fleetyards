@@ -904,6 +904,10 @@
             "failure": "No se pudo vaciar la carga."
           }
         },
+        "handover": {
+          "success": "Existencias entregadas.",
+          "failure": "No se pudieron entregar las existencias."
+        },
         "transfer": {
           "needsAnswer": "Deben aceptarlo antes de que llegue. Las existencias salen de tu inventario ahora y vuelven si lo rechazan.",
           "create": {

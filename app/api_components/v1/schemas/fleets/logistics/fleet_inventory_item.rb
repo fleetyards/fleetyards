@@ -28,6 +28,8 @@ module V1
               crafted: ::V1::Schemas::InventoryCraftedRef,
               inventory: ::V1::Schemas::InventoryRef,
               member: ::V1::Schemas::UserRef,
+              # Who carries this share in game; null is the unassigned share.
+              holder: ::V1::Schemas::UserRef,
               addedBy: ::V1::Schemas::UserRef,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

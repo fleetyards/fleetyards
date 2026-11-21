@@ -460,6 +460,7 @@
         "viewCargoGrid": "檢視貨艙網格",
         "sendTransfer": "傳送",
         "moveStock": "移動",
+        "handover": "移交",
         "transfer": "轉移",
         "acceptTransfer": "接受",
         "declineTransfer": "拒絕",

@@ -908,6 +908,10 @@
             "failure": "Impossible de vider la cargaison."
           }
         },
+        "handover": {
+          "success": "Stock remis.",
+          "failure": "Impossible de remettre le stock."
+        },
         "transfer": {
           "needsAnswer": "Le destinataire doit accepter avant réception. Le stock quitte votre inventaire maintenant et revient s'il refuse.",
           "create": {

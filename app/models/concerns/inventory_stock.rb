@@ -85,6 +85,13 @@ module InventoryStock
     {}
   end
 
+  # Who carries a deposit someone typed in or imported themselves. Kept apart
+  # from `ledger_attributes_for`, which a transfer writes with too: goods
+  # arriving from elsewhere are carried by nobody until someone takes them.
+  def holder_attributes_for(_user)
+    {}
+  end
+
   NET_QUANTITY = "SUM(CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END)"
 
   CRAFTED_COLUMNS = %w[crafted_blueprint_id crafted_qualities].freeze
@@ -101,8 +108,12 @@ module InventoryStock
   # A crafted part is held apart from the same part bought or looted, and from
   # one crafted with other material, the way a grade of ore is held apart from
   # the next: what it is worth depends on what went into it.
-  def current_stock
+  #
+  # `filters` narrows the entries before they are summed -- one holder's share,
+  # say -- so the rows are that share's lots rather than the inventory's.
+  def current_stock(**filters)
     position_scope
+      .where(filters)
       .select(
         position_columns, "quality", *CRAFTED_COLUMNS, "#{NET_QUANTITY} AS net_quantity", *agreed_item_columns
       )

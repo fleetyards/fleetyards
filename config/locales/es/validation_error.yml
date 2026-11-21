@@ -153,6 +153,7 @@ es:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.
       destroy: No se pudo eliminar la entrada de inventario.
+      handover: "No se pudieron entregar las existencias."
     feedbacks:
       create: "No se pudo enviar el comentario"
       reply: "No se pudo enviar la respuesta"

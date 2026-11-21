@@ -31,6 +31,11 @@ import { type FleetMember, fleetMembers } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { FRIENDS_GROUP } from "@/frontend/composables/useTransferTargets";
+import {
+  holderIdFor,
+  shareOf,
+  useStockHolders,
+} from "@/frontend/composables/useStockHolders";
 import type {
   TransferSource,
   TransferTargetKind,
@@ -66,6 +71,27 @@ const sessionStore = useSessionStore();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
+const { holderOptions } = useStockHolders();
+
+// A fleet inventory's stock is split between the members carrying it, and a
+// shipment leaves from one of them.
+const sourceHolderOptions = computed(() => {
+  const units = new Set(props.positions.map((position) => position.unit));
+
+  return holderOptions(
+    props.positions,
+    units.size === 1 ? props.positions[0]?.unit : undefined,
+  );
+});
+
+const hasHolders = computed(() =>
+  props.positions.some((position) => position.holders !== undefined),
+);
+
+const sourceHolder = ref<string | undefined>(
+  sourceHolderOptions.value[0]?.value as string | undefined,
+);
+
 const submitting = ref(false);
 const note = ref("");
 const targetValue = ref<string | undefined>();
@@ -94,9 +120,23 @@ const movable = computed(() => {
     byPosition.set(position.id, { ...position });
   });
 
-  return [...byPosition.values()].filter(
+  const holding = [...byPosition.values()].filter(
     (position) => Number(position.netQuantity) > 0,
   );
+
+  // What can leave is the chosen holder's share of the position, not all of
+  // it. A row they carry none of stays on the list at zero rather than
+  // dropping out, so a selection never shrinks without the reader seeing it.
+  if (hasHolders.value && sourceHolder.value) {
+    holding.forEach((position) => {
+      position.netQuantity = shareOf(
+        props.positions.filter((row) => row.id === position.id),
+        sourceHolder.value as string,
+      );
+    });
+  }
+
+  return holding;
 });
 
 // Trimming a bulk selection is removing a line, not unticking a box: the
@@ -104,6 +144,11 @@ const movable = computed(() => {
 // say otherwise.
 const removed = ref<Set<string>>(new Set());
 const quantities = ref<Record<string, string>>({});
+
+// Another holder is another set of amounts, so the lines start over.
+watch(sourceHolder, () => {
+  quantities.value = {};
+});
 
 // Every line starts at its whole quantity: the reader picked these rows to move
 // them, and moving all of it is the common case.
@@ -355,6 +400,7 @@ const remove = (position: InventoryStockPosition) => {
 };
 
 const transferState = computed(() => ({
+  sourceHolder: sourceHolder.value,
   targetKind: targetKind.value,
   memberFleet: memberFleet.value,
   targetValue: targetValue.value,
@@ -375,6 +421,9 @@ const onSubmit = async () => {
   try {
     await props.onSend({
       sourceInventoryId: props.source.id,
+      ...(hasHolders.value
+        ? { sourceHolderId: holderIdFor(sourceHolder.value) }
+        : {}),
       lines: chosen.value.map((position) => ({
         positionId: position.id,
         quantity: quantityFor(position),
@@ -406,6 +455,16 @@ const onSubmit = async () => {
 <template>
   <Modal :title="t('headlines.logistics.transfer')">
     <form id="transfer-form" @submit.prevent="onSubmit">
+      <BaseSelect
+        v-if="hasHolders && sourceHolderOptions.length"
+        v-model="sourceHolder"
+        name="sourceHolder"
+        :options="sourceHolderOptions"
+        :searchable="false"
+        :label="t('labels.logistics.sourceHolder')"
+        data-test="transfer-source-holder"
+      />
+
       <BaseSelect
         v-if="kindOptions.length > 1"
         v-model="targetKind"

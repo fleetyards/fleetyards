@@ -460,6 +460,7 @@
         "viewCargoGrid": "View Cargo Grid",
         "sendTransfer": "Send",
         "moveStock": "Move",
+        "handover": "Hand over",
         "transfer": "Transfer",
         "acceptTransfer": "Accept",
         "declineTransfer": "Decline",

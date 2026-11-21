@@ -910,6 +910,10 @@
             "failure": "Fracht konnte nicht geleert werden."
           }
         },
+        "handover": {
+          "success": "Bestand übergeben.",
+          "failure": "Der Bestand konnte nicht übergeben werden."
+        },
         "transfer": {
           "needsAnswer": "Sie müssen dies annehmen, bevor es ankommt. Der Bestand verlässt dein Inventar jetzt und kommt zurück, wenn sie ablehnen.",
           "create": {

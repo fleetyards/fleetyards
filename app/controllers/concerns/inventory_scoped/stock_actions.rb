@@ -10,7 +10,7 @@ module InventoryScoped
     def index
       authorize_stock!(:show?)
 
-      @stock = inventory.persisted? ? inventory.current_stock : []
+      @stock = inventory.persisted? ? inventory.current_stock(**stock_filters) : []
     end
 
     def show
@@ -38,6 +38,10 @@ module InventoryScoped
       authorize_stock!(:destroy?)
 
       inventory.destroy_stock_item(@stock_item)
+    end
+
+    private def stock_filters
+      {}
     end
 
     private def authorize_stock!(rule)

@@ -13,6 +13,8 @@ class Api::V1::FleetsInventoryStockIndexTest < ActionDispatch::IntegrationTest
 
     get("Fleet Inventory Stock") do
       operationId "fleetInventoryStock"
+      parameter name: "heldByMe", in: :query, schema: {type: :boolean}, required: false,
+        description: "Only the caller's own share"
       tags "FleetInventoryStock"
       produces "application/json"
 
@@ -72,5 +74,38 @@ class Api::V1::FleetsInventoryStockIndexTest < ActionDispatch::IntegrationTest
     get "/api/v1/fleets/#{@fleet.slug}/inventories/#{closed.slug}/stock"
 
     assert_response :not_found
+  end
+
+  test "GET /inventories/:slug/stock breaks every lot down by holder" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "aUEC", category: :other, unit: :units,
+      quantity: 5_000, holder: @member)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "aUEC", category: :other, unit: :units,
+      quantity: 2_000, holder: @admin)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "aUEC", category: :other, unit: :units,
+      quantity: 500)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug} do
+      auec = parsed_body.find { |row| row["name"] == "aUEC" }
+
+      assert_equal 7_500.0, auec["netQuantity"]
+      assert_equal [[@member.username, 5_000.0], [@admin.username, 2_000.0], [nil, 500.0]],
+        auec["holders"].map { |share| [share.dig("holder", "username"), share["netQuantity"]] }
+    end
+  end
+
+  test "GET /inventories/:slug/stock?heldByMe=true lists the caller's share only" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "aUEC", category: :other, unit: :units,
+      quantity: 5_000, holder: @member)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "aUEC", category: :other, unit: :units,
+      quantity: 2_000, holder: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      params: {heldByMe: true} do
+      assert_equal [["aUEC", 2_000.0]], parsed_body.map { |row| [row["name"], row["netQuantity"]] }
+      assert_equal [@admin.username], parsed_body.first["holders"].map { |share| share.dig("holder", "username") }
+    end
   end
 end

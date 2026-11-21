@@ -150,6 +150,7 @@ fr:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.
       destroy: L'entrée d'inventaire n'a pas pu être détruite.
+      handover: "Impossible de remettre le stock."
     feedbacks:
       create: "Impossible d'envoyer le retour"
       reply: "Impossible d'envoyer la réponse"

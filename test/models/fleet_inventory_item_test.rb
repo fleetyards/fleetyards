@@ -20,7 +20,7 @@ class FleetInventoryItemTest < ActiveSupport::TestCase
       fleet_inventory: @inventory, name: "Quantanium", quantity: 11, unit: :scu)
 
     assert_not withdrawal.valid?
-    assert_includes withdrawal.errors[:quantity].join, "exceeds current stock"
+    assert_includes withdrawal.errors[:quantity].join, "exceeds the unassigned stock"
   end
 
   test "allows a withdrawal within current stock" do

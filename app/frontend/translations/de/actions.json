@@ -460,6 +460,7 @@
         "viewCargoGrid": "Frachtraster ansehen",
         "sendTransfer": "Senden",
         "moveStock": "Verschieben",
+        "handover": "Übergeben",
         "transfer": "Transfer",
         "acceptTransfer": "Annehmen",
         "declineTransfer": "Ablehnen",
