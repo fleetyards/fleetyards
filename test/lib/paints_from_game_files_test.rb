@@ -57,6 +57,43 @@ class PaintsFromGameFilesTest < ActiveSupport::TestCase
     assert_equal ["Hazard"], cargo.paints.pluck(:name)
   end
 
+  test "#run skips the livery a variant comes in" do
+    alpha = ship("Mustang Alpha", "Paint_Mustang")
+    gamma = ship("Mustang Gamma", "Paint_Mustang")
+    livery("Mustang Gamma Livery", "Paint_Mustang")
+    livery("Mustang Polar Livery", "Paint_Mustang")
+
+    create_paints
+
+    assert_equal ["Polar"], alpha.paints.pluck(:name)
+    assert_equal ["Polar"], gamma.paints.pluck(:name)
+  end
+
+  test "#run skips the livery a variant comes in when the game names the variant its own way" do
+    gladius = ship("Gladius", "Paint_Gladius")
+    ship("Pirate Gladius", "Paint_Gladius")
+    m2 = ship("M2 Hercules", "Paint_Hercules", sc_key: "crus_starlifter_m2")
+    a2 = ship("A2 Hercules", "Paint_Hercules", sc_key: "crus_starlifter_a2")
+    livery("Gladius Pirate Livery", "Paint_Gladius")
+    livery("Hercules Starlifter M2 Livery", "Paint_Hercules")
+
+    create_paints
+
+    assert_empty gladius.paints
+    assert_empty m2.paints
+    assert_empty a2.paints
+  end
+
+  test "#run skips the livery of a variant whose own paint port is missing" do
+    alpha = ship("Mustang Alpha", "Paint_Mustang")
+    create(:model, name: "Mustang Gamma")
+    livery("Mustang Gamma Livery", "Paint_Mustang")
+
+    create_paints
+
+    assert_empty alpha.paints
+  end
+
   test "#run leaves a ship that already has the paint alone" do
     galaxy = ship("Galaxy", "Paint_Galaxy")
     create(:model_paint, model: galaxy, name: "Protector")

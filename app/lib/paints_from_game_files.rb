@@ -57,6 +57,8 @@ class PaintsFromGameFiles
       (required - Array(port.port_tags)).empty? && (Array(port.required_tags) - tags).empty?
     }.map(&:parent).uniq
 
+    return if stock_livery?(component, models)
+
     models.each do |model|
       name = paint_name(component.name, model)
       next if name.blank?
@@ -68,6 +70,23 @@ class PaintsFromGameFiles
     end
   end
 
+  # "Mustang Gamma Livery" is the look the Gamma leaves the factory in, not a
+  # paint anyone can buy or earn, yet it fits every Mustang's port all the same.
+  # The game may name the variant its own way ("Gladius Pirate" for the Pirate
+  # Edition), so a livery whose every word belongs to one ship it fits counts
+  # too, and so does one named for a ship whose port is missing from the build.
+  private def stock_livery?(component, models)
+    words = livery_words(component.name).map { |word| PaintComponentMatcher.normalize(word) }.compact_blank
+    return false if words.empty?
+
+    catalogue_names.include?(words.join) ||
+      models.any? { |model| (words - ship_words(model)).empty? }
+  end
+
+  private def catalogue_names
+    @catalogue_names ||= Model.pluck(:name).map { |name| PaintComponentMatcher.normalize(name) }.to_set
+  end
+
   # The game opens with the ship as it names it, which is not always the
   # model's name: "C8 Pisces" for the C8R, "Vanguard" for the Vanguard
   # Hoplite, "Hercules Starlifter" for the C2, which only its game key spells
@@ -75,14 +94,8 @@ class PaintsFromGameFiles
   # model's name, slug or game key, keeping at least one; a name whose first
   # word reads as no part of the model is left alone rather than guessed at.
   private def paint_name(component_name, model)
-    words = component_name
-      .sub(PaintComponentMatcher::PARENTHETICAL, "")
-      .sub(PaintComponentMatcher::LIVERY_SUFFIX, "")
-      .split
-
-    ship_words = "#{model.name} #{model.slug} #{model.sc_key}".split(/[^A-Za-z0-9]+/)
-      .map { |word| PaintComponentMatcher.normalize(word) }
-      .compact_blank
+    words = livery_words(component_name)
+    ship_words = ship_words(model)
 
     count = 0
     count += 1 while count < words.size - 1 && ship_word?(words[count], ship_words)
@@ -94,6 +107,19 @@ class PaintsFromGameFiles
     rest = rest.drop(1) if rest.first.casecmp?("series") && rest.size > 1
 
     store_spelling(rest.join(" "))
+  end
+
+  private def livery_words(component_name)
+    component_name
+      .sub(PaintComponentMatcher::PARENTHETICAL, "")
+      .sub(PaintComponentMatcher::LIVERY_SUFFIX, "")
+      .split
+  end
+
+  private def ship_words(model)
+    "#{model.name} #{model.slug} #{model.sc_key}".split(/[^A-Za-z0-9]+/)
+      .map { |word| PaintComponentMatcher.normalize(word) }
+      .compact_blank
   end
 
   # A word inside a ship word counts too, so "Star Fighter" reads as
