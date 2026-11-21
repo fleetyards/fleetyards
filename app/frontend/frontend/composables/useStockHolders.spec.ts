@@ -43,9 +43,11 @@ describe("useStockHolders", () => {
   it("lists each holder once, largest first, the unassigned share last", () => {
     const { holderOptions } = useStockHolders();
 
-    expect(holderOptions(rows, "units").map((option) => option.value)).toEqual(
-      ["alice", "bob", UNASSIGNED],
-    );
+    expect(holderOptions(rows, "units").map((option) => option.value)).toEqual([
+      "alice",
+      "bob",
+      UNASSIGNED,
+    ]);
     expect(holderOptions(rows, "units")[0].label).toBe(
       "alice · 14 labels.logistics.units.units",
     );

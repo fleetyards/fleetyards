@@ -358,7 +358,10 @@ const formatHolders = (response: { items: FleetMember[] }) => {
   ];
 
   if (currentUser.value?.id) {
-    pinned.push({ label: currentUser.value.username, value: currentUser.value.id });
+    pinned.push({
+      label: currentUser.value.username,
+      value: currentUser.value.id,
+    });
   }
 
   const chosen = holderId.value;
