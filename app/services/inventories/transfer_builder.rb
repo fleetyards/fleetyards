@@ -263,14 +263,20 @@ module Inventories
       @resolved_source_holder_id.first
     end
 
+    # Summed per position, since a request may name one more than once, and
+    # keyed by the stored id rather than the one the request spelled.
     private def actor_covers_lines?
       held = @source.current_stock(holder_id: @actor.id).group_by(&:position_id)
         .transform_values { |rows| rows.sum { |row| row.net_quantity.to_d } }
 
-      @requested_lines.all? do |line|
+      requested = @requested_lines.each_with_object(Hash.new(0)) do |line, totals|
         attributes = (line.respond_to?(:to_unsafe_h) ? line.to_unsafe_h : line).symbolize_keys
-        attributes[:quantity].to_d <= held.fetch(attributes[:position_id], 0)
+        position = @source.positions.find_by(id: attributes[:position_id])
+
+        totals[position&.id] += attributes[:quantity].to_d
       end
+
+      requested.all? { |position_id, quantity| position_id && quantity <= held.fetch(position_id, 0) }
     end
 
     private def resolve_line(line)
