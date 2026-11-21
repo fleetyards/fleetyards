@@ -19,8 +19,12 @@ module Api
 
         inventory_ids = visible_fleet_inventories.pluck(:id)
 
-        @stock = FleetInventoryItem
-          .where(fleet_inventory_id: inventory_ids)
+        entries = FleetInventoryItem.where(fleet_inventory_id: inventory_ids)
+        entries = entries.where(holder_id: current_resource_owner.id) if held_by_me?
+
+        @holder_balances = InventoryHolderBalances.new(entries)
+
+        @stock = entries
           .joins(:fleet_inventory, :fleet_inventory_position)
           .select(
             "fleet_inventory_positions.id AS fleet_inventory_position_id",
@@ -60,6 +64,11 @@ module Api
           .order("fleet_inventory_positions.name")
 
         render "api/v1/fleet_inventory_stock/index"
+      end
+
+      # The caller's own share only, across every inventory they can see.
+      private def held_by_me?
+        ActiveModel::Type::Boolean.new.cast(params[:heldByMe] || params[:held_by_me]) || false
       end
 
       private def set_fleet

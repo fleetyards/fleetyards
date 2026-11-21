@@ -12,6 +12,8 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
 
     get("Fleet All Inventory Stock") do
       operationId "fleetAllInventoryStock"
+      parameter name: "heldByMe", in: :query, schema: {type: :boolean}, required: false,
+        description: "Only the caller's own share"
       tags "FleetInventoryStock"
       produces "application/json"
 
@@ -136,6 +138,36 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_includes parsed_body.map { |entry| entry["name"] }, "Quantum Cores"
+    end
+  end
+
+  test "GET inventory-stock breaks every position down by holder" do
+    depot = create(:fleet_inventory, fleet: @fleet, name: "Treasury")
+    [[@member, 5_000, 600], [@member, 1_000, 0], [@admin, 2_000, 0], [nil, 500, 0]].each do |holder, quantity, quality|
+      create(:fleet_inventory_item, fleet_inventory: depot, name: "aUEC", category: :other, unit: :units,
+        quantity:, quality:, holder:)
+    end
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      auec = parsed_body.find { |row| row["name"] == "aUEC" }
+
+      assert_equal 8_500.0, auec["netQuantity"]
+      assert_equal [[@member.username, 6_000.0], [@admin.username, 2_000.0], [nil, 500.0]],
+        auec["holders"].map { |share| [share.dig("holder", "username"), share["netQuantity"]] }
+    end
+  end
+
+  test "GET inventory-stock?heldByMe=true lists the caller's share only" do
+    depot = create(:fleet_inventory, fleet: @fleet, name: "Treasury")
+    create(:fleet_inventory_item, fleet_inventory: depot, name: "aUEC", category: :other, unit: :units,
+      quantity: 2_000, holder: @admin)
+    create(:fleet_inventory_item, fleet_inventory: depot, name: "aUEC", category: :other, unit: :units,
+      quantity: 5_000, holder: @member)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {heldByMe: true} do
+      assert_equal [["aUEC", 2_000.0]], parsed_body.map { |row| [row["name"], row["netQuantity"]] }
     end
   end
 end

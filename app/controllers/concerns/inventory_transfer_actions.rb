@@ -79,7 +79,7 @@ module InventoryTransferActions
       recipient: find_recipient,
       note: transfer_params[:note],
       contract:,
-      source_holder_id: transfer_params[:source_holder_id]
+      **transfer_params.slice(:source_holder_id).to_h.symbolize_keys
     )
 
     unless builder.call

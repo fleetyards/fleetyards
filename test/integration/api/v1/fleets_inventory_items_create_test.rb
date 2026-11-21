@@ -156,4 +156,37 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       assert_equal @admin.id, parsed_body.dig("holder", "id")
     end
   end
+
+  test "POST /inventories/:slug/items withdraws from the caller's share when no holder is named" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Quantanium", quantity: 100, holder: @admin)
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(entryType: "withdrawal", quantity: 40) do
+      assert_equal @admin.id, parsed_body.dig("holder", "id")
+    end
+  end
+
+  test "POST /inventories/:slug/items withdraws unassigned stock when the caller's share falls short" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Quantanium", quantity: 10, holder: @admin)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Quantanium", quantity: 100, holder: nil)
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(entryType: "withdrawal", quantity: 40) do
+      assert_nil parsed_body["holder"]
+    end
+  end
+
+  test "POST /inventories/:slug/items keeps an explicit null holder on a withdrawal" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Quantanium", quantity: 100, holder: @admin)
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}/items",
+      params: item_body(entryType: "withdrawal", quantity: 40, holderId: nil), as: :json
+
+    assert_response :bad_request
+  end
 end

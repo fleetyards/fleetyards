@@ -42,6 +42,48 @@ module Inventories
       assert_equal [nil], builder.transfer.dispatched_entries.pluck(:holder_id)
     end
 
+    test "a shipment without a holder leaves from the actor's share when it covers every line" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 8, holder: @officer)
+
+      builder = send_to_user(8)
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [@officer.id], builder.transfer.dispatched_entries.pluck(:holder_id)
+    end
+
+    test "a position named twice is covered by the actor only if its lines add up" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 4, holder: @officer)
+
+      builder = TransferBuilder.new(source: @depot, actor: @officer, recipient: @user,
+        lines: [{position_id: @entry.position.id, quantity: 3}, {position_id: @entry.position.id, quantity: 2}])
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [nil], builder.transfer.dispatched_entries.pluck(:holder_id).uniq
+    end
+
+    test "a position id in capitals still finds the actor's share" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 8, holder: @officer)
+
+      builder = TransferBuilder.new(source: @depot, actor: @officer, recipient: @user,
+        lines: [{position_id: @entry.position.id.upcase, quantity: 8}])
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [@officer.id], builder.transfer.dispatched_entries.pluck(:holder_id)
+    end
+
+    test "a null holder ships the unassigned share even when the actor holds enough" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 8, holder: @officer)
+
+      builder = send_to_user(5, source_holder_id: nil)
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [nil], builder.transfer.dispatched_entries.pluck(:holder_id)
+    end
+
     test "a refused shipment goes back to the holder it left" do
       builder = send_to_user(15, source_holder_id: @alice.id)
       builder.call

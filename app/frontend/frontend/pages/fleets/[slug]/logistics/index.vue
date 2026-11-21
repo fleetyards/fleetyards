@@ -101,12 +101,18 @@ const queryParams = computed(() => ({
   q: getQuery(),
 }));
 
+// Only what the reader carries, across every inventory they can see.
+const heldByMe = ref(false);
+
 // Stock view
 const {
   data: stockData,
   isLoading: stockLoading,
   refetch: refetchStock,
-} = useFleetAllInventoryStock(fleetSlug);
+} = useFleetAllInventoryStock(
+  fleetSlug,
+  computed(() => (heldByMe.value ? { heldByMe: true } : {})),
+);
 
 const { stockRecords } = useInventoryStockList(stockData);
 
@@ -289,6 +295,16 @@ const crumbs = computed<Crumb[]>(() => [
           {{ t("labels.logistics.logView") }}
         </Btn>
       </BtnGroup>
+      <Btn
+        v-if="activeTab === 'stock'"
+        :active="heldByMe"
+        mobile-icon-only
+        data-test="stock-held-by-me"
+        @click="heldByMe = !heldByMe"
+      >
+        <i class="fa-duotone fa-user" />
+        {{ t("labels.logistics.heldByMe") }}
+      </Btn>
     </template>
 
     <template #default>
@@ -300,6 +316,7 @@ const crumbs = computed<Crumb[]>(() => [
         :log-loading="logLoading"
         show-inventory
         show-member
+        show-holders
       >
         <template #stock-name="{ record }">
           <router-link
@@ -318,6 +335,17 @@ const crumbs = computed<Crumb[]>(() => [
             {{ record.name }}
           </router-link>
           <template v-else>{{ record.name }}</template>
+        </template>
+        <template #holder="{ record }">
+          <MemberName
+            v-if="(record as FleetInventoryItem).holder"
+            :member="
+              (record as FleetInventoryItem).holder as unknown as FleetMember
+            "
+          />
+          <span v-else class="text-muted">
+            {{ t("labels.logistics.unassigned") }}
+          </span>
         </template>
         <template #member="{ record }">
           <MemberName
