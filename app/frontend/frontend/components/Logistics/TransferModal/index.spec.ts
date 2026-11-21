@@ -400,6 +400,27 @@ describe("TransferModal from a fleet inventory with holders", () => {
     );
   });
 
+  it("keeps a chosen row the holder carries none of, at zero", async () => {
+    await build([
+      ...held(),
+      position({
+        id: "pos-2",
+        slug: "medpen--consumable--units",
+        name: "Medpen",
+        unit: "units",
+        netQuantity: 4,
+        holders: [{ holder: { id: "bob", username: "bob" }, netQuantity: 4 }],
+      }),
+    ]);
+
+    const line = wrapper!.find(
+      '[data-test="transfer-line-medpen--consumable--units"]',
+    );
+
+    expect(line.exists()).toBe(true);
+    expect(line.find(".transfer-line-max").text()).toBe("/ 0");
+  });
+
   it("asks nothing about holders for stock that has none", async () => {
     const { onSend } = await build([position()]);
 

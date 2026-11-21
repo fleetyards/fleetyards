@@ -120,19 +120,23 @@ const movable = computed(() => {
     byPosition.set(position.id, { ...position });
   });
 
-  // What can leave is the chosen holder's share of the position, not all of it.
+  const holding = [...byPosition.values()].filter(
+    (position) => Number(position.netQuantity) > 0,
+  );
+
+  // What can leave is the chosen holder's share of the position, not all of
+  // it. A row they carry none of stays on the list at zero rather than
+  // dropping out, so a selection never shrinks without the reader seeing it.
   if (hasHolders.value && sourceHolder.value) {
-    byPosition.forEach((position, id) => {
+    holding.forEach((position) => {
       position.netQuantity = shareOf(
-        props.positions.filter((row) => row.id === id),
+        props.positions.filter((row) => row.id === position.id),
         sourceHolder.value as string,
       );
     });
   }
 
-  return [...byPosition.values()].filter(
-    (position) => Number(position.netQuantity) > 0,
-  );
+  return holding;
 });
 
 // Trimming a bulk selection is removing a line, not unticking a box: the
