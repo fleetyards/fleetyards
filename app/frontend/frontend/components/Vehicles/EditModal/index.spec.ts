@@ -265,9 +265,6 @@ describe("VehicleEditModal", () => {
     expect(wrapper.find('input[name="saleNotify"]').exists()).toBe(true);
     expect(wrapper.find('input[name="public"]').exists()).toBe(false);
     expect(wrapper.find('input[name="nameVisible"]').exists()).toBe(false);
-    expect(
-      wrapper.find('input[name="logEntriesPublicByDefault"]').exists(),
-    ).toBe(false);
     expect(wrapper.find('input[name="flagship"]').exists()).toBe(false);
   });
 

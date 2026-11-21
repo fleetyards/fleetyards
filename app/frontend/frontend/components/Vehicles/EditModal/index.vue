@@ -64,7 +64,6 @@ const savedValues = (): VehicleEditValues => ({
   public: props.vehicle.public,
   nameVisible: props.vehicle.nameVisible,
   saleNotify: props.vehicle.saleNotify,
-  logEntriesPublicByDefault: props.vehicle.logEntriesPublicByDefault,
   name: props.vehicle.name,
   serial: props.vehicle.serial,
   alternativeNames: [...props.vehicle.alternativeNames],
@@ -314,12 +313,7 @@ const vehicleName = computed(
               : t('labels.vehicleEdit.tabs.visibility')
           "
           :icon="wishlist ? 'fa-duotone fa-bell' : 'fa-duotone fa-eye'"
-          :fields="[
-            'public',
-            'nameVisible',
-            'saleNotify',
-            'logEntriesPublicByDefault',
-          ]"
+          :fields="['public', 'nameVisible', 'saleNotify']"
         >
           <Visibility :wishlist="wishlist" />
         </FormTab>
