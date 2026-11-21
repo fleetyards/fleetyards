@@ -13412,6 +13412,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
     parameters:
@@ -13445,6 +13451,12 @@ paths:
                 "$ref": "#/components/schemas/BlueprintLogMatchList"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -31892,6 +31904,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - blueprint_log_import
       - dressing_room
       - fleet_contracts
       - fleet_logistics
@@ -31922,6 +31935,7 @@ components:
       - paint_booth
       - starmap
       x-enumNames:
+      - BLUEPRINT_LOG_IMPORT
       - DRESSING_ROOM
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS

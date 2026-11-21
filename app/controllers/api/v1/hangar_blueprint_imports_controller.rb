@@ -10,6 +10,9 @@ module Api
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?
 
+      # After the doorkeeper check, so an unauthenticated request still gets a 401.
+      before_action :check_blueprint_log_import_feature
+
       # A read the review step is built from, so nothing is written until the
       # user has seen what each name resolves to.
       def match
@@ -32,6 +35,12 @@ module Api
           unchanged: import.unchanged_count,
           importId: import.id
         }
+      end
+
+      private def check_blueprint_log_import_feature
+        return if feature_enabled?("blueprint_log_import")
+
+        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
 
       private def match_params

@@ -9,10 +9,14 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 
 const { t } = useI18n();
 
 const comlink = useComlink();
+
+const { isFeatureEnabled } = useFeatures();
 
 const openModal = () => {
   comlink.emit("open-modal", {
@@ -24,6 +28,7 @@ const openModal = () => {
 
 <template>
   <Btn
+    v-if="isFeatureEnabled(FeatureFlagName.BLUEPRINT_LOG_IMPORT)"
     :size="BtnSizesEnum.SM"
     data-test="open-blueprint-log-import"
     @click="openModal"
