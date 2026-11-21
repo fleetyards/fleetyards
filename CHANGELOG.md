@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.64.0](https://github.com/fleetyards/fleetyards/compare/v9.63.0...v9.64.0) (2026-11-21)
+
+
+### Features
+
+* **blueprints:** import received blueprints from game logs ([#6450](https://github.com/fleetyards/fleetyards/issues/6450)) ([1bc618e](https://github.com/fleetyards/fleetyards/commit/1bc618ee72b650684b7314b7d884ce992b977713))
+* **hangar:** account setting for whether new ships start public ([#6445](https://github.com/fleetyards/fleetyards/issues/6445)) ([a7aae37](https://github.com/fleetyards/fleetyards/commit/a7aae3782a2ddd9c183ab7cacea8103bc6714db0))
+* **locations:** armistice and restricted areas on the location card ([#6440](https://github.com/fleetyards/fleetyards/issues/6440)) ([f21e57d](https://github.com/fleetyards/fleetyards/commit/f21e57daf251a7f38a030b2797fde36a178aa9e5))
+* **logistics:** holders on the fleet-wide stock view, and a fallback when no holder is named ([#6454](https://github.com/fleetyards/fleetyards/issues/6454)) ([1112048](https://github.com/fleetyards/fleetyards/commit/1112048c1bb9976c3bdfb8af73a6fec99fd97aa9))
+* **logistics:** track which member holds fleet inventory stock ([#6451](https://github.com/fleetyards/fleetyards/issues/6451)) ([a0a2dd6](https://github.com/fleetyards/fleetyards/commit/a0a2dd697994fcca9c0b18ba98bf36dc85467034))
+
+
+### Bug Fixes
+
+* **models:** reload ships without an rsi_id and refresh the page after a reload ([#6449](https://github.com/fleetyards/fleetyards/issues/6449)) ([e3b3d13](https://github.com/fleetyards/fleetyards/commit/e3b3d138adf3b8abaabafa936be2455e5a159796))
+* **paints:** skip variant stock liveries and add the Starkitten to the Dragonfly series ([#6442](https://github.com/fleetyards/fleetyards/issues/6442)) ([1338dab](https://github.com/fleetyards/fleetyards/commit/1338dab0b09ccf7bfdab217867035e79f444ebcf))
+* **vehicles:** keep the log entry default out of the visibility settings ([#6446](https://github.com/fleetyards/fleetyards/issues/6446)) ([7f84cfc](https://github.com/fleetyards/fleetyards/commit/7f84cfc35682ef1841befe5e6a5d3ddf86d2c8a8))
+
 ## [9.63.0](https://github.com/fleetyards/fleetyards/compare/v9.62.0...v9.63.0) (2026-11-20)
 
 
