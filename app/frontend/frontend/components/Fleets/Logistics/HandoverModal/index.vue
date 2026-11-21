@@ -85,7 +85,7 @@ watch(
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
   fetchFleetMembers(props.fleet.slug, {
-    q: { usernameCont: params.search || undefined },
+    q: { usernameCont: params.search || undefined, stateIn: ["accepted"] },
   });
 
 // The unassigned share is a place stock can go as well as come from, and the

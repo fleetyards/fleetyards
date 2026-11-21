@@ -342,7 +342,7 @@ watch(memberId, (value) => {
 
 const fetchHolders = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
-    q: { usernameCont: params.search || undefined },
+    q: { usernameCont: params.search || undefined, stateIn: ["accepted"] },
   });
 };
 
@@ -378,7 +378,7 @@ const formatHolders = (response: { items: FleetMember[] }) => {
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
-    q: { usernameCont: params.search || undefined },
+    q: { usernameCont: params.search || undefined, stateIn: ["accepted"] },
   });
 };
 
