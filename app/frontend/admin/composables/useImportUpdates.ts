@@ -1,5 +1,5 @@
 import { computed, watch, type Ref } from "vue";
-import { useQueryClient } from "@tanstack/vue-query";
+import { type QueryClient, useQueryClient } from "@tanstack/vue-query";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import {
   ImportsChannel,
@@ -11,8 +11,30 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Import,
   ImportStatusEnum,
+  ImportTypeEnum,
+  getModelsQueryKey,
   useImports,
 } from "@/services/fyAdminApi";
+
+// A reload is queued, not run, so the page that started it has already
+// refetched by the time the job writes anything.
+const MODEL_IMPORT_TYPES: string[] = [
+  ImportTypeEnum.IMPORTS_MODEL_IMPORT,
+  ImportTypeEnum.IMPORTS_MODELS_IMPORT,
+  ImportTypeEnum.IMPORTS_SC_DATA_MODEL_IMPORT,
+  ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT,
+];
+
+export const refreshImportedRecords = (
+  queryClient: QueryClient,
+  importData: Import,
+) => {
+  if (importData.status !== ImportStatusEnum.FINISHED) return;
+
+  if (MODEL_IMPORT_TYPES.includes(importData.type)) {
+    void queryClient.invalidateQueries({ queryKey: getModelsQueryKey() });
+  }
+};
 
 const formatImportLabel = (importData: Import): string => {
   return importData.type
@@ -40,6 +62,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
     }
 
     void queryClient.invalidateQueries({ queryKey: ["imports"] });
+    refreshImportedRecords(queryClient, importData);
 
     const label = formatImportLabel(importData);
 
