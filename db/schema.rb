@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1217,8 +1217,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_130000) do
     t.uuid "inventory_transfer_id"
     t.uuid "crafted_blueprint_id"
     t.jsonb "crafted_qualities"
+    t.uuid "holder_id"
     t.index ["crafted_blueprint_id"], name: "index_fleet_inventory_items_on_crafted_blueprint_id"
     t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
+    t.index ["fleet_inventory_position_id", "holder_id"], name: "index_fleet_inventory_items_on_position_and_holder"
     t.index ["fleet_inventory_position_id"], name: "index_fleet_inventory_items_on_fleet_inventory_position_id"
     t.index ["inventory_transfer_id"], name: "index_fleet_inventory_items_on_inventory_transfer_id"
     t.index ["member_id"], name: "index_fleet_inventory_items_on_member_id"
@@ -3645,6 +3647,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_130000) do
   add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
   add_foreign_key "fleet_inventory_items", "inventory_transfers", on_delete: :nullify
   add_foreign_key "fleet_inventory_items", "users", column: "added_by"
+  add_foreign_key "fleet_inventory_items", "users", column: "holder_id", on_delete: :nullify
   add_foreign_key "fleet_inventory_items", "users", column: "member_id"
   add_foreign_key "fleet_inventory_positions", "fleet_inventories", on_delete: :cascade
   add_foreign_key "fleet_memberships", "fleet_roles"

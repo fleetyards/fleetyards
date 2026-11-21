@@ -13,14 +13,43 @@ class FleetInventoryItem < ApplicationRecord
   belongs_to :added_by_user, class_name: "User", foreign_key: :added_by, optional: true
   belongs_to :member, class_name: "User", optional: true
 
+  # Which member is carrying this share of the stock in game. Blank is the
+  # unassigned share. A withdrawal comes out of its holder's share, so the
+  # holders of a position always add up to its total.
+  belongs_to :holder, class_name: "User", optional: true
+
+  # A deposit only: a withdrawal names whoever the stock is coming from, and
+  # that may well be someone who has since left the fleet and is handing it
+  # back. Checked on change, so an entry naming a former member stays editable.
+  validate :holder_belongs_to_fleet, if: -> { deposit? && holder_id.present? && will_save_change_to_holder_id? }
+
   after_create_commit :notify_inventory_entry, unless: :from_transfer?
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id]
+    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id holder_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)
     %w[fleet_inventory item]
+  end
+
+  private def balance_conditions
+    {holder_id:}
+  end
+
+  private def stock_shortfall_message(current)
+    return "exceeds the unassigned stock (#{current})" if holder.nil?
+
+    "exceeds what #{holder.username} holds (#{current})"
+  end
+
+  # A transfer returning goods puts them back with whoever sent them, member
+  # or not -- the fleet is only undoing its own withdrawal.
+  private def holder_belongs_to_fleet
+    return if from_transfer?
+    return if fleet_inventory&.fleet&.fleet_memberships&.kept&.exists?(user_id: holder_id, aasm_state: "accepted")
+
+    errors.add(:holder_id, :not_a_member)
   end
 
   private def notify_inventory_entry

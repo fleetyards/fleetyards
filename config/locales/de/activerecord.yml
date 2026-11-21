@@ -558,6 +558,10 @@ de:
           attributes:
             managed_by:
               not_a_member: muss ein bestätigtes Mitglied dieser Flotte sein
+        fleet_inventory_item:
+          attributes:
+            holder_id:
+              not_a_member: muss ein bestätigtes Mitglied dieser Flotte sein
         fleet_notification_setting:
           not_a_discord_id: "muss die numerische ID sein, die Discord mit „ID kopieren“ kopiert, kein Name"
           everyone_role: "ist @everyone, das jedes Mitglied des Servers hat"

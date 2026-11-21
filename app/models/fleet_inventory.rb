@@ -117,6 +117,10 @@ class FleetInventory < ApplicationRecord
     {added_by: user&.id}
   end
 
+  def holder_attributes_for(user)
+    {holder_id: user&.id}
+  end
+
   # Pending invites, open requests and declined applicants all live in the same
   # table as the roster, so an unfiltered member list offers people who never
   # joined. The picker asks for accepted memberships; this keeps a request that

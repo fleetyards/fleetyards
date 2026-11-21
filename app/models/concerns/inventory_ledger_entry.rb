@@ -288,8 +288,8 @@ module InventoryLedgerEntry
 
     delegate :units_for_category, to: ::InventoryLedgerEntry
 
-    def net_quantity_for(inventory_id, name, category, unit)
-      where(inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit)
+    def net_quantity_for(inventory_id, name, category, unit, **conditions)
+      where(inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit, **conditions)
         .sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
     end
   end
@@ -466,6 +466,16 @@ module InventoryLedgerEntry
     errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")
   end
 
+  # Narrows the stock a withdrawal is checked against to the share it is drawn
+  # from. A ledger whose stock is one pool narrows nothing.
+  private def balance_conditions
+    {}
+  end
+
+  private def stock_shortfall_message(current)
+    "exceeds current stock (#{current})"
+  end
+
   private def withdrawal_does_not_exceed_stock
     # Stock is derived from the entries rather than stored, so two withdrawals
     # racing each other would both read the same balance and both pass. Taking
@@ -473,10 +483,10 @@ module InventoryLedgerEntry
     # the second one wait and re-read what the first left behind.
     inventory&.lock! if inventory&.persisted?
 
-    current = self.class.net_quantity_for(inventory_id, name, category, unit)
+    current = self.class.net_quantity_for(inventory_id, name, category, unit, **balance_conditions)
 
     if quantity > current
-      errors.add(:quantity, :insufficient_stock, message: "exceeds current stock (#{current})")
+      errors.add(:quantity, :insufficient_stock, message: stock_shortfall_message(current))
       return
     end
 
@@ -490,7 +500,7 @@ module InventoryLedgerEntry
   private def crafted_withdrawal_does_not_exceed_lot
     lot = self.class.where(
       self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
-      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id
+      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id, **balance_conditions
     )
     lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
     current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")

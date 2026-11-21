@@ -91,4 +91,57 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: item_body
   end
+
+  test "POST /inventories/:slug/items has the caller carry a deposit by default" do
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body do
+      assert_equal @admin.id, parsed_body.dig("holder", "id")
+    end
+  end
+
+  test "POST /inventories/:slug/items has the member a deposit is for carry it by default" do
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(memberId: @member.id) do
+      assert_equal @member.id, parsed_body.dig("holder", "id")
+    end
+  end
+
+  test "POST /inventories/:slug/items leaves a deposit unassigned when the holder is null" do
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(holderId: nil) do
+      assert_nil parsed_body["holder"]
+    end
+  end
+
+  test "POST /inventories/:slug/items refuses a holder outside the fleet" do
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}/items",
+      params: item_body(holderId: create(:user).id), as: :json
+
+    assert_response :bad_request
+  end
+
+  test "POST /inventories/:slug/items withdraws from the named holder" do
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Quantanium", quantity: 100, holder: @member)
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}/items",
+      params: item_body(entryType: "withdrawal", quantity: 40), as: :json
+
+    assert_response :bad_request
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(entryType: "withdrawal", quantity: 40, holderId: @member.id)
+  end
 end

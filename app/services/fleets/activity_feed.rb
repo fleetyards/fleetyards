@@ -127,7 +127,7 @@ module Fleets
         inventory = inventories[item.fleet_inventory_id]
         entry(item.withdrawal? ? "inventory_item_withdrawn" : "inventory_item_deposited", item, item.created_at,
           actor: item.added_by_user, inventory:,
-          involves_viewer: inventory.managed_by == @user.id || [item.added_by, item.member_id].include?(@user.id))
+          involves_viewer: inventory.managed_by == @user.id || [item.added_by, item.member_id, item.holder_id].include?(@user.id))
       end
 
       transfer_entries + item_entries

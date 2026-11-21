@@ -16,6 +16,10 @@ module V1
             entryType: ::V1::Schemas::Enums::InventoryEntryTypeEnum,
             quality: {type: [:integer, :null], minimum: 0, maximum: 1000},
             memberId: {type: [:string, :null], format: :uuid},
+            # Who carries it. Left out on a deposit, the member it is for, else
+            # the caller; null is the unassigned share. A withdrawal comes out of
+            # the named holder's share.
+            holderId: {type: [:string, :null], format: :uuid},
             image: {type: [:string, :null]},
             notes: {type: [:string, :null]},
             itemType: ::V1::Schemas::Enums::NullableInventoryItemTypeEnum,

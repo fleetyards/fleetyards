@@ -85,6 +85,13 @@ module InventoryStock
     {}
   end
 
+  # Who carries a deposit someone typed in or imported themselves. Kept apart
+  # from `ledger_attributes_for`, which a transfer writes with too: goods
+  # arriving from elsewhere are carried by nobody until someone takes them.
+  def holder_attributes_for(_user)
+    {}
+  end
+
   NET_QUANTITY = "SUM(CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END)"
 
   CRAFTED_COLUMNS = %w[crafted_blueprint_id crafted_qualities].freeze

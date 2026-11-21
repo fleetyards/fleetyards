@@ -593,6 +593,10 @@ en:
           attributes:
             managed_by:
               not_a_member: must be an accepted member of this fleet
+        fleet_inventory_item:
+          attributes:
+            holder_id:
+              not_a_member: must be an accepted member of this fleet
         fleet_notification_setting:
           not_a_discord_id: "must be the numeric ID Discord copies with \"Copy ID\", not a name"
           everyone_role: "is @everyone, which every member of the server holds"

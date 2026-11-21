@@ -21,7 +21,7 @@ module Fleets
     INVENTORY_COLUMNS = %w[description location visibility managed_by slug].freeze
 
     INVENTORY_ITEM_COLUMNS = %w[
-      item_type item_id quantity name notes added_by member_id category entry_type quality unit
+      item_type item_id quantity name notes added_by member_id holder_id category entry_type quality unit
       crafted_blueprint_id crafted_qualities
     ].freeze
 
