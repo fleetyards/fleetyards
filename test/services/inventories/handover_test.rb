@@ -69,6 +69,13 @@ module Inventories
       end
     end
 
+    test "refuses a hand-over without an amount" do
+      result = handover(from_holder_id: @alice.id, to_holder_id: @bob.id)
+
+      assert_not result.call
+      assert_includes result.errors.details[:quantity].pluck(:error), :greater_than
+    end
+
     test "refuses handing a share to the one already holding it" do
       result = handover(from_holder_id: @alice.id, to_holder_id: @alice.id, quantity: 10)
 

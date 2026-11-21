@@ -157,6 +157,7 @@ de:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.
       destroy: Inventareintrag konnte nicht gelöscht werden.
+      handover: "Der Bestand konnte nicht übergeben werden."
     feedbacks:
       create: "Das Feedback konnte nicht gesendet werden"
       reply: "Die Antwort konnte nicht gesendet werden"

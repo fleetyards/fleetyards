@@ -98,4 +98,14 @@ class Api::V1::FleetsInventoryStockHandoverTest < ActionDispatch::IntegrationTes
     assert_api_response :post, 401, path_params: @path_params,
       body: {fromHolderId: @carrier.id, toHolderId: @member.id, quantity: 1}
   end
+
+  test "POST handover without an amount is a validation error" do
+    sign_in @admin
+
+    post "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}/stock/#{@path_params[:slug]}/handover",
+      params: {fromHolderId: @carrier.id, toHolderId: @member.id}, as: :json
+
+    assert_response :bad_request
+    assert_not_includes response.body, "Translation missing"
+  end
 end

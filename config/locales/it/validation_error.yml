@@ -150,6 +150,7 @@ it:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.
       destroy: Impossibile eliminare la voce di inventario.
+      handover: "Impossibile consegnare le scorte."
     feedbacks:
       create: "Impossibile inviare il feedback"
       reply: "Impossibile inviare la risposta"

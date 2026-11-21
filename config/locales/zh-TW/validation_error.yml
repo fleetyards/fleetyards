@@ -149,6 +149,7 @@ zh-TW:
       create: 無法建立庫存記錄。
       update: 無法更新庫存記錄。
       destroy: 無法刪除庫存記錄。
+      handover: "無法移交庫存。"
     feedbacks:
       create: "無法傳送意見回饋"
       reply: "無法傳送回覆"

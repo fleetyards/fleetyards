@@ -13,12 +13,12 @@ module Inventories
 
     attr_reader :quantity, :from_holder_id, :to_holder_id
 
-    def initialize(inventory:, stock_item:, actor:, quantity:, from_holder_id: nil, to_holder_id: nil,
+    def initialize(inventory:, stock_item:, actor:, quantity: nil, from_holder_id: nil, to_holder_id: nil,
       quality: nil, crafted_blueprint_id: nil, crafted_qualities: nil)
       @inventory = inventory
       @stock_item = stock_item
       @actor = actor
-      @quantity = quantity.to_d
+      @quantity = quantity.to_d if quantity.present?
       @from_holder_id = from_holder_id.presence
       @to_holder_id = to_holder_id.presence
       @quality = quality
@@ -27,6 +27,11 @@ module Inventories
     end
 
     def call
+      if quantity.nil? || quantity <= 0
+        errors.add(:quantity, :greater_than, count: 0)
+        return false
+      end
+
       if from_holder_id == to_holder_id
         errors.add(:to_holder_id, :same_holder, message: "must be someone other than the current holder")
         return false
