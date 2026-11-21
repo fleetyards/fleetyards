@@ -43,6 +43,14 @@ describe("parseReceiptLine", () => {
     ).toBeNull();
   });
 
+  it("drops a name a truncated line ran on into", () => {
+    expect(
+      parseReceiptLine(
+        `<x> [Notice] <SHUDEvent_OnNotification> Added notification "Received Blueprint: ${"x".repeat(300)}`,
+      ),
+    ).toBeNull();
+  });
+
   it("ignores the name outside a notification", () => {
     expect(
       parseReceiptLine("<x> [Notice] chat: Received Blueprint: Fake: "),

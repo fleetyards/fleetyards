@@ -26,7 +26,14 @@ const QUEUE_SUFFIX = /"\s*\[\d+\]\s*to queue/;
 // the persistent universe's own logs are imported.
 export const IMPORTABLE_CHANNELS = ["LIVE", "HOTFIX"];
 
-const HEADER_BYTES = 4096;
+// The executable line follows a preamble of system details whose length
+// varies by machine, so the header is read generously.
+const HEADER_BYTES = 65536;
+
+// What the API accepts; a truncated line from a crashed session would
+// otherwise run to the end of the line and fail the whole request.
+export const MAX_NAME_LENGTH = 255;
+export const MAX_NAMES = 5000;
 
 export const parseReceiptLine = (line: string): BlueprintReceipt | null => {
   if (!line.includes(NOTIFICATION)) return null;
@@ -44,7 +51,7 @@ export const parseReceiptLine = (line: string): BlueprintReceipt | null => {
     .replace(/:\s*$/, "")
     .trim();
 
-  if (!name) return null;
+  if (!name || name.length > MAX_NAME_LENGTH) return null;
 
   const receivedAt = TIMESTAMP.exec(line)?.[1];
 
@@ -142,5 +149,5 @@ export const uniqueNames = (receipts: BlueprintReceipt[]): string[] => {
     if (!seen.has(key)) seen.set(key, name);
   });
 
-  return [...seen.values()];
+  return [...seen.values()].slice(0, MAX_NAMES);
 };
