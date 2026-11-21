@@ -43624,6 +43624,10 @@ components:
           type: array
           items:
             type: string
+        missingBlueprints:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       title: ImportDetails
     ImportInput:

@@ -73,7 +73,7 @@ module Imports
       {
         imported: Array(output&.dig("imported_names")),
         unchanged: Array(output&.dig("unchanged_names")),
-        missing: Array(output&.dig("missing_names"))
+        missing_blueprints: Array(output&.dig("missing_names"))
       }.reject { |_key, names| names.empty? }
     end
 

@@ -128,7 +128,7 @@ class Api::V1::HangarBlueprintImportsTest < ActionDispatch::IntegrationTest
       assert_predicate import, :finished?
       assert_equal @user, import.user
       assert_equal(
-        {imported: ["5CA 'Akura'", "Argus Helmet Black/Silver"], unchanged: ["Custodian \"Desert Shadow\" SMG"], missing: ["Nothing Like It"]},
+        {imported: ["5CA 'Akura'", "Argus Helmet Black/Silver"], unchanged: ["Custodian \"Desert Shadow\" SMG"], missing_blueprints: ["Nothing Like It"]},
         import.result_details
       )
     end
