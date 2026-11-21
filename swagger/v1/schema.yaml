@@ -6477,6 +6477,13 @@ paths:
       tags:
       - FleetInventoryStock
       operationId: fleetInventoryStock
+      parameters:
+      - name: heldByMe
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: Only the caller's own share
       security:
       - SessionCookie: []
       - Oauth2:
@@ -6641,6 +6648,77 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug}/handover":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+    post:
+      summary: Hand Over Fleet Inventory Stock
+      tags:
+      - FleetInventoryStock
+      operationId: handOverFleetInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryHandoverInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/inventories/{slug}":
     parameters:
     - name: fleetSlug
@@ -35155,6 +35233,45 @@ components:
       - name
       additionalProperties: false
       title: FleetInventoryCreateInput
+    FleetInventoryHandoverInput:
+      type: object
+      properties:
+        quantity:
+          type: number
+          exclusiveMinimum: 0
+        fromHolderId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        toHolderId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quality:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          maximum: 1000
+        craftedBlueprintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        craftedQualities:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
+      required:
+      - quantity
+      additionalProperties: false
+      title: FleetInventoryHandoverInput
     FleetInventoryItem:
       type: object
       properties:
@@ -35201,6 +35318,8 @@ components:
           "$ref": "#/components/schemas/InventoryRef"
         member:
           "$ref": "#/components/schemas/UserRef"
+        holder:
+          "$ref": "#/components/schemas/UserRef"
         addedBy:
           "$ref": "#/components/schemas/UserRef"
         createdAt:
@@ -35240,6 +35359,11 @@ components:
           minimum: 0
           maximum: 1000
         memberId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        holderId:
           type:
           - string
           - 'null'
@@ -35361,6 +35485,20 @@ components:
       additionalProperties: false
       example: {}
       title: FleetInventoryQuery
+    FleetInventoryStockHolder:
+      type: object
+      properties:
+        holder:
+          anyOf:
+          - "$ref": "#/components/schemas/UserRefRequired"
+          - type: 'null'
+        netQuantity:
+          type: number
+      additionalProperties: false
+      required:
+      - holder
+      - netQuantity
+      title: FleetInventoryStockHolder
     FleetInventoryStockItem:
       type: object
       properties:
@@ -35391,6 +35529,10 @@ components:
           "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
+        holders:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventoryStockHolder"
       required:
       - id
       - name
@@ -44011,6 +44153,10 @@ components:
               type: boolean
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
+        holders:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventoryStockHolder"
       additionalProperties: false
       required:
       - id
@@ -44176,6 +44322,11 @@ components:
       properties:
         sourceInventoryId:
           type: string
+          format: uuid
+        sourceHolderId:
+          type:
+          - string
+          - 'null'
           format: uuid
         lines:
           type: array
