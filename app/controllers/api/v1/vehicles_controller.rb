@@ -16,7 +16,7 @@ module Api
 
       def create
         @vehicle = Vehicle.new(
-          vehicle_params.merge(public: true)
+          {public: current_resource_owner.new_vehicles_public}.merge(vehicle_params)
         )
         authorize! @vehicle
 
@@ -34,7 +34,7 @@ module Api
 
         Vehicle.transaction do
           (vehicle_create_bulk_params[:vehicles] || []).each do |vehicle_params|
-            new_vehicle = current_resource_owner.vehicles.new(vehicle_params)
+            new_vehicle = current_resource_owner.vehicles.new(vehicle_params.merge(public: current_resource_owner.new_vehicles_public))
 
             errors << new_vehicle.errors unless new_vehicle.save
           end

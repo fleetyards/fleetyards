@@ -38,6 +38,7 @@ module V1
           friendsHangarStats: {type: :boolean},
           friendsWishlist: {type: :boolean},
           hideOwner: {type: :boolean},
+          newVehiclesPublic: {type: :boolean},
           tracking: {type: :boolean},
           showOnlineStatus: {type: :boolean},
           supporter: {type: :boolean},
@@ -63,7 +64,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
+          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner newVehiclesPublic tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

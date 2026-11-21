@@ -238,6 +238,17 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     assert_nil user.reload.supporter_listed
   end
 
+  test "PUT /users/me sets whether new ships start in the public hangar" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {newVehiclesPublic: false} do
+      assert_equal false, parsed_body["newVehiclesPublic"]
+    end
+
+    assert_not user.reload.new_vehicles_public
+  end
+
   test "PUT /users/me returns 401 when not signed in" do
     assert_api_response :put, 401, body: {discord: "x"}
   end
