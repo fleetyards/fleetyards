@@ -44,15 +44,17 @@ module Imports
       now = Time.current
 
       UserBlueprint.transaction do
-        UserBlueprint.wanted.where(user_id:, blueprint_id: promoted.map(&:first))
-          .update_all(wanted: false, created_at: now, updated_at: now)
-
         if added.any?
           UserBlueprint.insert_all(
             added.map { |id, _name| {user_id:, blueprint_id: id, wanted: false, created_at: now, updated_at: now} },
             unique_by: %i[user_id blueprint_id]
           )
         end
+
+        # After the insert, and over the added ones too: a want landing between
+        # the read above and the insert leaves a wanted row the insert skips.
+        UserBlueprint.wanted.where(user_id:, blueprint_id: (added + promoted).map(&:first))
+          .update_all(wanted: false, created_at: now, updated_at: now)
       end
 
       {
