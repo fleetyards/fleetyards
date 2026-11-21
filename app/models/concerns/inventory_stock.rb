@@ -108,8 +108,12 @@ module InventoryStock
   # A crafted part is held apart from the same part bought or looted, and from
   # one crafted with other material, the way a grade of ore is held apart from
   # the next: what it is worth depends on what went into it.
-  def current_stock
+  #
+  # `filters` narrows the entries before they are summed -- one holder's share,
+  # say -- so the rows are that share's lots rather than the inventory's.
+  def current_stock(**filters)
     position_scope
+      .where(filters)
       .select(
         position_columns, "quality", *CRAFTED_COLUMNS, "#{NET_QUANTITY} AS net_quantity", *agreed_item_columns
       )

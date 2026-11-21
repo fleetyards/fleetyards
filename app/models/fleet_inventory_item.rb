@@ -23,7 +23,11 @@ class FleetInventoryItem < ApplicationRecord
   # back. Checked on change, so an entry naming a former member stays editable.
   validate :holder_belongs_to_fleet, if: -> { deposit? && holder_id.present? && will_save_change_to_holder_id? }
 
-  after_create_commit :notify_inventory_entry, unless: :from_transfer?
+  # Set on the two entries a hand-over writes. Nothing arrives that the
+  # managers need telling about: the stock only changed hands.
+  attr_accessor :handover
+
+  after_create_commit :notify_inventory_entry, unless: -> { from_transfer? || handover }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id holder_id]

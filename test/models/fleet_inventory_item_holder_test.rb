@@ -72,4 +72,14 @@ class FleetInventoryItemHolderTest < ActiveSupport::TestCase
 
     assert_predicate withdrawal(@alice, 100), :valid?
   end
+
+  test "a hand-over entry sends no notification" do
+    admin = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: admin, fleet_role: @fleet.fleet_roles.ranked.first,
+      aasm_state: :accepted)
+
+    assert_no_difference "Notification.where(user: admin).count" do
+      deposit(@alice, 10, handover: true)
+    end
+  end
 end

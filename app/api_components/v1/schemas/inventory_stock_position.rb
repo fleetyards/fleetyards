@@ -38,7 +38,10 @@ module V1
               available: {type: :boolean}
             }
           },
-          inventory: ::V1::Schemas::InventoryRef
+          inventory: ::V1::Schemas::InventoryRef,
+          # Who carries the position, largest share first, the unassigned share
+          # last. Fleet inventories only.
+          holders: {type: :array, items: ::V1::Schemas::Fleets::Logistics::FleetInventoryStockHolder}
         },
         additionalProperties: false,
         required: %w[id slug name category unit netQuantity entriesCount]

@@ -46,6 +46,11 @@ if position.respond_to?(:has_attribute?) && position.has_attribute?(:crafted_blu
   json.partial! "api/v1/shared/inventory_crafted", blueprint:, qualities: position.crafted_qualities
 end
 
+# Who carries the lot, where the inventory's stock has holders.
+if (holder_balances = local_assigns[:holder_balances])
+  json.partial! "api/v1/shared/stock_holders", shares: holder_balances.for_lot(position)
+end
+
 if position.respond_to?(:inventory_name) && position.inventory_name.present?
   json.inventory do
     json.name position.inventory_name

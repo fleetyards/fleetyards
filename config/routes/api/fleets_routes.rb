@@ -134,6 +134,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get "stock/:slug", to: "fleet_inventory_stock#show", as: "stock_item"
     patch "stock/:slug", to: "fleet_inventory_stock#update"
     delete "stock/:slug", to: "fleet_inventory_stock#destroy"
+    post "stock/:slug/handover", to: "fleet_inventory_stock#handover", as: "stock_item_handover"
   end
 
   resources :fleet_shopping_lists, path: "shopping-lists", only: %i[index show create update destroy] do
