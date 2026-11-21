@@ -97,4 +97,16 @@ describe("i18nHelpers", () => {
       "29 September 2026 at 12:00 UTC",
     );
   });
+
+  it("groups a ledger quantity, keeping its decimals and its zero", () => {
+    const i18n = new I18n(translations);
+    i18n.locale = "en";
+    const { toQuantity } = i18nHelpers(i18n);
+
+    expect(toQuantity(5_900_000)).toBe("5\u202F900\u202F000");
+    expect(toQuantity("250.55")).toBe("250,55");
+    expect(toQuantity(12)).toBe("12");
+    expect(toQuantity(0)).toBe("0");
+    expect(toQuantity(undefined)).toBe("-");
+  });
 });

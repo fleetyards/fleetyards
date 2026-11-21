@@ -73,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
   item: undefined,
 });
 
-const { t } = useI18n();
+const { t, toQuantity } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
@@ -492,7 +492,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <p v-if="selectedStockMax !== undefined" class="text-muted">
           {{ t("labels.logistics.currentStock") }}:
-          {{ selectedStockMax }}
+          {{ toQuantity(selectedStockMax) }}
           {{ t(`labels.logistics.units.${unit}`) }}
         </p>
       </template>

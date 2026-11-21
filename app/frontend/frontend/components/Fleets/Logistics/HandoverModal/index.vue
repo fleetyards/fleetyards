@@ -44,7 +44,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, toQuantity } = useI18n();
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const { holderName } = useStockHolders();
@@ -63,7 +63,7 @@ const unitLabel = computed(() => t(`labels.logistics.units.${props.lot.unit}`));
 const fromOptions = computed<FilterOption[]>(() =>
   shares.value.map((share) => ({
     value: holderValue(share),
-    label: `${holderName(share)} · ${share.netQuantity} ${unitLabel.value}`,
+    label: `${holderName(share)} · ${toQuantity(share.netQuantity)} ${unitLabel.value}`,
   })),
 );
 

@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ edit: [] }>();
 
-const { t } = useI18n();
+const { t, toQuantity } = useI18n();
 
 const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
@@ -87,6 +87,17 @@ const cargoCapacity = computed(
   () =>
     (props.inventory.vehicle?.model?.cargo ?? 0) +
     (props.inventory.vehicle?.model?.personalInventory ?? 0),
+);
+
+// What the hold carries, against what it can carry where that is known.
+const scuLabel = computed(() =>
+  [
+    toQuantity(totalScu.value),
+    cargoCapacity.value > 0 ? `/ ${toQuantity(cargoCapacity.value)}` : null,
+    t("labels.logistics.units.scu"),
+  ]
+    .filter(Boolean)
+    .join(" "),
 );
 
 const overCapacity = computed(
@@ -181,9 +192,7 @@ const { image } = useInventoryImage(() => props.inventory);
             class="inventory-panel-count-unit"
             :class="{ 'inventory-panel-count-over': overCapacity }"
           >
-            {{ totalScu }}
-            <template v-if="cargoCapacity > 0">/ {{ cargoCapacity }}</template>
-            SCU
+            {{ scuLabel }}
           </span>
           <span
             v-if="totalScu > 0 && totalUnits > 0"
@@ -191,7 +200,8 @@ const { image } = useInventoryImage(() => props.inventory);
             >|</span
           >
           <span v-if="totalUnits > 0" class="inventory-panel-count-unit">
-            {{ totalUnits }} Units
+            {{ toQuantity(totalUnits) }}
+            {{ t("labels.logistics.units.units") }}
           </span>
         </template>
       </div>

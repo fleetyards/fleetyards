@@ -57,7 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   stockSelectable: false,
 });
 
-const { t, l } = useI18n();
+const { t, l, toQuantity } = useI18n();
 
 const mobile = useMobile();
 
@@ -348,7 +348,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       </template>
     </template>
     <template #col-netQuantity="{ record }">
-      {{ record.netQuantity }}
+      {{ toQuantity(record.netQuantity) }}
       {{ t(`labels.logistics.units.${record.unit}`) }}
     </template>
     <template #col-holders="{ record }">
@@ -361,7 +361,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
           :data-test="`ledger-holder-${holderValue(share)}`"
         >
           {{ holderName(share) }}
-          <span class="ledger-holder-amount">{{ share.netQuantity }}</span>
+          <span class="ledger-holder-amount">{{
+            toQuantity(share.netQuantity)
+          }}</span>
         </span>
       </span>
     </template>
@@ -474,7 +476,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       </template>
     </template>
     <template #col-quantity="{ record }">
-      {{ record.quantity }}
+      {{ toQuantity(record.quantity) }}
       {{ t(`labels.logistics.units.${record.unit}`) }}
     </template>
     <template #col-member="{ record }">

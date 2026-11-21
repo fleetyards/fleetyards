@@ -18,7 +18,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, l, toNumber } = useI18n();
+const { t, l, toQuantity } = useI18n();
 
 const quality = computed(() => {
   const { qualityMin, qualityMax } = props.stockItem;
@@ -44,7 +44,7 @@ const quality = computed(() => {
               {{ t("labels.logistics.inStock") }}
             </div>
             <div class="metrics-card__tile__value">
-              {{ toNumber(stockItem.netQuantity, "integer") }}
+              {{ toQuantity(stockItem.netQuantity) }}
               <span class="metrics-card__tile__unit">
                 {{ t(`labels.logistics.units.${stockItem.unit}`) }}
               </span>
