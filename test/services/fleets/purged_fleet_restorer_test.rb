@@ -163,4 +163,20 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
       Fleets::PurgedFleetRestorer.new(SecureRandom.uuid).call
     end
   end
+
+  test "restores an entry whose holder has since deleted their account" do
+    holder = create(:user)
+    fleet = create(:fleet, created_by: @creator.id)
+    inventory = fleet.fleet_inventories.create!(name: "Main Hangar", visibility: :members_only)
+    # Carried by someone who has since left the fleet, as well as their account.
+    inventory.fleet_inventory_items.create!(name: "Quantum Fuel", quantity: 5).update_column(:holder_id, holder.id)
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy
+    holder.reload.destroy!
+
+    restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_nil restored.fleet_inventories.first.fleet_inventory_items.sole.holder_id
+  end
 end

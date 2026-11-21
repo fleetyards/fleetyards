@@ -178,6 +178,9 @@ module Fleets
 
           record = inventory.fleet_inventory_items.new
           record.assign_attributes(item.attributes.slice(*INVENTORY_ITEM_COLUMNS))
+          # A holder who has since deleted their account was nulled on the live
+          # rows by the foreign key, but the version still names them.
+          record.holder_id = nil if record.holder_id && !User.exists?(record.holder_id)
           record.save!(validate: false)
         end
     end
