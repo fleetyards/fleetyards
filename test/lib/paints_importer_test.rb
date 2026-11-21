@@ -159,6 +159,17 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["Aquamarine"], assault.paints.pluck(:name)
   end
 
+  test "#run imports a Dragonfly paint into the Starkitten Edition as well" do
+    black = create(:model, name: "Dragonfly Black")
+    starkitten = create(:model, name: "Dragonfly Starkitten Edition")
+    hangar_sync("Dragonfly - Coalfire Paint")
+
+    PaintsImporter.new.run
+
+    assert_equal ["Coalfire"], black.paints.pluck(:name)
+    assert_equal ["Coalfire"], starkitten.paints.pluck(:name)
+  end
+
   test "#run imports a series paint into the models that are still missing it" do
     aurora_cl = create(:model, name: "Aurora Mk I CL")
     aurora_es = create(:model, name: "Aurora Mk I ES")
