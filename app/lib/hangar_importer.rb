@@ -81,7 +81,8 @@ class HangarImporter
           flagship: item[:flagship] || false,
           wanted: item[:wanted] || false,
           bought_via: item[:bought_via] || :pledge_store,
-          public: item[:public] || false,
+          # Our own export always says; another tool's file does not.
+          public: item[:public].nil? ? new_vehicles_public : item[:public],
           name_visible: item[:name_visible] || false,
           sale_notify: item[:sale_notify] || false,
           hangar_group_ids: hangar_group_ids_for(item),
@@ -392,6 +393,12 @@ class HangarImporter
       "Carrack Expedition w/C8X" => "Carrack Expedition",
       "Dragonfly Star Kitten" => "Dragonfly Starkitten Edition"
     }
+  end
+
+  private def new_vehicles_public
+    return @new_vehicles_public if defined?(@new_vehicles_public)
+
+    @new_vehicles_public = User.where(id: @import.user_id).pick(:new_vehicles_public)
   end
 
   private def normalize(name)

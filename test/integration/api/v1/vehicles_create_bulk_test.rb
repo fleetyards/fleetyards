@@ -64,6 +64,15 @@ class Api::V1::VehiclesCreateBulkTest < ActionDispatch::IntegrationTest
     assert_not_predicate @user.vehicles.find_by!(model:), :public?
   end
 
+  test "POST /vehicles/bulk leaves new wishlist entries hidden whatever the hangar default" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :post, 204, body: {vehicles: [{modelId: model.id, wanted: true}]}
+
+    assert_not_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
   # The picker used to offer these, which is where the reported 400s came from.
   test "POST /vehicles/bulk returns 400 for a model a player cannot own" do
     model = create(:model, player_ownable: false)

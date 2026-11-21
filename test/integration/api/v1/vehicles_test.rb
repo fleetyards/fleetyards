@@ -193,6 +193,16 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_not_predicate @user.vehicles.find_by!(model:), :public?
   end
 
+  test "POST /vehicles leaves a new wishlist entry public whatever the hangar default" do
+    model = create(:model)
+    @user.update!(new_vehicles_public: false)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {modelId: model.id, wanted: true}
+
+    assert_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
   test "POST /vehicles takes an explicit visibility over the owner's default" do
     model = create(:model)
     sign_in @user

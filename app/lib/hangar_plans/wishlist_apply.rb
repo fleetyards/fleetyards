@@ -34,7 +34,7 @@ module HangarPlans
           had[candidate.model_id] = had.fetch(candidate.model_id, 0) - covered
 
           (needed - covered).times do
-            vehicle = plan.user.vehicles.new(model: candidate.model, wanted: true, public: plan.user.new_vehicles_public)
+            vehicle = plan.user.vehicles.new(model: candidate.model, wanted: true)
             if vehicle.save
               added += 1
             else

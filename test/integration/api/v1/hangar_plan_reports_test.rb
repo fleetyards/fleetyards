@@ -281,14 +281,6 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT add-to-wishlist gives the wished-for ships the owner's visibility for new ships" do
-    @user.update!(new_vehicles_public: false)
-
-    assert_api_response :put, 200, api_path: "/hangar/plans/{id}/add-to-wishlist", path_params: {id: @plan.id}
-
-    assert_equal [false], @user.vehicles.wanted.where(model: @carrack).distinct.pluck(:public)
-  end
-
   test "PUT add-to-wishlist a second time adds nothing" do
     HangarPlans::WishlistApply.new(@plan).run
 
