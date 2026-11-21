@@ -370,7 +370,10 @@
           "other": "%{count} PTU or preview logs skipped."
         },
         "ambiguous": "These names belong to more than one blueprint. Tick the ones you have.",
-        "done": "%{imported} blueprints marked as owned, %{unchanged} were already owned."
+        "alreadyOwned": {
+          "one": "%{count} was already owned.",
+          "other": "%{count} were already owned."
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "You have this blueprint.",

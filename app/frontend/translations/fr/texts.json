@@ -369,7 +369,10 @@
           "other": "%{count} logs PTU ou preview ignorés."
         },
         "ambiguous": "Ces noms correspondent à plusieurs plans. Cochez ceux que vous possédez.",
-        "done": "%{imported} plans marqués comme possédés, %{unchanged} l'étaient déjà."
+        "alreadyOwned": {
+          "one": "%{count} était déjà possédé.",
+          "other": "%{count} étaient déjà possédés."
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "Vous avez ce plan.",

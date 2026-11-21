@@ -369,7 +369,10 @@
           "other": "%{count} log PTU o preview saltati."
         },
         "ambiguous": "Questi nomi appartengono a più di un progetto. Spunta quelli che possiedi.",
-        "done": "%{imported} progetti segnati come posseduti, %{unchanged} lo erano già."
+        "alreadyOwned": {
+          "one": "%{count} era già posseduto.",
+          "other": "%{count} erano già posseduti."
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "Hai questo progetto.",

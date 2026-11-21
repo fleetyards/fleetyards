@@ -369,7 +369,10 @@
           "other": "已跳过 %{count} 个 PTU 或预览版日志。"
         },
         "ambiguous": "这些名称对应多个蓝图。请勾选你拥有的那些。",
-        "done": "已将 %{imported} 个蓝图标记为已拥有，%{unchanged} 个此前已拥有。"
+        "alreadyOwned": {
+          "one": "%{count} 个此前已拥有。",
+          "other": "%{count} 个此前已拥有。"
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "你拥有这张蓝图。",

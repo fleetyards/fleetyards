@@ -369,7 +369,10 @@
           "other": "已略過 %{count} 個 PTU 或預覽版日誌。"
         },
         "ambiguous": "這些名稱對應多個藍圖。請勾選你擁有的那些。",
-        "done": "已將 %{imported} 個藍圖標記為已擁有，%{unchanged} 個先前已擁有。"
+        "alreadyOwned": {
+          "one": "%{count} 個先前已擁有。",
+          "other": "%{count} 個先前已擁有。"
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "你擁有這張藍圖。",

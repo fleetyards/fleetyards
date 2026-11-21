@@ -367,11 +367,15 @@ const close = () => comlink.emit("close-modal");
       class="blueprint-log-import"
       data-test="blueprint-log-import-done"
     >
-      <p>
+      <p class="blueprint-log-import__result">
         {{
-          t("texts.blueprintLogImport.done", {
-            imported: result.imported,
-            unchanged: result.unchanged,
+          t("messages.blueprintLogImport.success", { count: result.imported })
+        }}
+      </p>
+      <p v-if="result.unchanged" class="blueprint-log-import__hint">
+        {{
+          t("texts.blueprintLogImport.alreadyOwned", {
+            count: result.unchanged,
           })
         }}
       </p>
@@ -380,7 +384,7 @@ const close = () => comlink.emit("close-modal");
       </RouterLink>
     </div>
 
-    <template #footer>
+    <template v-if="step !== 'pick' && step !== 'reading'" #footer>
       <template v-if="step === 'review' || step === 'importing'">
         <Btn :variant="BtnVariantsEnum.BARE" @click="reset">
           {{ t("actions.blueprintLogImport.startOver") }}
@@ -453,6 +457,10 @@ const close = () => comlink.emit("close-modal");
   &__hint {
     font-size: 0.9em;
     opacity: 0.75;
+  }
+
+  &__result {
+    font-size: 1.1em;
   }
 
   &__section {

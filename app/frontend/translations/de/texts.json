@@ -370,7 +370,10 @@
           "other": "%{count} PTU- oder Preview-Logs übersprungen."
         },
         "ambiguous": "Diese Namen gehören zu mehr als einem Blueprint. Wähle die aus, die du hast.",
-        "done": "%{imported} Blueprints als besessen markiert, %{unchanged} waren bereits vorhanden."
+        "alreadyOwned": {
+          "one": "%{count} war bereits vorhanden.",
+          "other": "%{count} waren bereits vorhanden."
+        }
       },
       "blueprintAddToHangar": {
         "ownHint": "Du hast diese Blaupause.",
