@@ -36,6 +36,22 @@ module Rsi
       cleanup_variants
     end
 
+    # A model without an rsi_id is reloaded through the entry the full run
+    # would adopt it from, so a game-file ship links up on its own reload.
+    def one_for(model)
+      model_data = load_data.find do |data|
+        model.rsi_id.present? ? data["id"].to_s == model.rsi_id.to_s : matrix_entry_for?(model, data)
+      end
+
+      return false if model_data.blank? || blocked(model_data["id"])
+
+      sync_model(model_data)
+
+      cleanup_variants
+
+      true
+    end
+
     def store_changes
       pledge_store_loader.changed_fields
     end
@@ -74,10 +90,26 @@ module Rsi
         model.foci == ::Model.normalize_value_for(:foci, ::Models::FocusMapping.call(model.rsi_focus).foci)
     end
 
+    private def existing_model_for(data)
+      Model.find_by(rsi_id: data["id"]) ||
+        Model.find_by(rsi_id: nil, name: strip_name(data["name"])) ||
+        unlisted_model_for(data)
+    end
+
+    # The name check only narrows the matrix down before the lookup the full run
+    # uses decides, which keeps its rules on ambiguity and other manufacturers.
+    private def matrix_entry_for?(model, data)
+      return false if paint?(data)
+
+      prefixes = model.manufacturer&.name_prefixes || []
+      named_alike = strip_name(data["name"].to_s) == model.name ||
+        comparable_name(data["name"], prefixes) == comparable_name(model.name, prefixes)
+
+      named_alike && existing_model_for(data) == model
+    end
+
     private def create_or_update_model(data)
-      model = Model.find_by(rsi_id: data["id"])
-      model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
-      model = unlisted_model_for(data) if model.blank?
+      model = existing_model_for(data)
       if model.blank?
         model = Model.create!(
           rsi_id: data["id"],

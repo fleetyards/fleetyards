@@ -394,5 +394,52 @@ module Rsi
       assert_nil first.reload.rsi_id
       assert_nil second.reload.rsi_id
     end
+
+    test "#one_for reloads a model by its rsi_id" do
+      model = create(:model, name: "Something Else", rsi_id: 7, description: nil)
+
+      assert @loader.one_for(model)
+
+      assert_predicate model.reload.description, :present?
+    end
+
+    test "#one_for adopts a model without an rsi_id the way the full run does" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "F7CM Super HORNET Mk I", rsi_id: nil, manufacturer:)
+
+      assert_no_difference -> { Model.count } do
+        assert @loader.one_for(model)
+      end
+
+      assert_equal 15, model.reload.rsi_id
+    end
+
+    test "#one_for adopts a model without an rsi_id by its exact name" do
+      model = create(:model, name: "F7C-M Super Hornet Mk I", rsi_id: nil)
+
+      assert @loader.one_for(model)
+
+      assert_equal 15, model.reload.rsi_id
+    end
+
+    test "#one_for leaves an ambiguous model without an rsi_id alone" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      first = create(:model, name: "F7CM Super Hornet Mk I", rsi_id: nil, manufacturer:)
+      create(:model, name: "F7C M Super Hornet Mk I", rsi_id: nil, manufacturer:)
+
+      assert_no_difference -> { Model.count } do
+        assert_not @loader.one_for(first)
+      end
+
+      assert_nil first.reload.rsi_id
+    end
+
+    test "#one_for reports a model the matrix does not list" do
+      model = create(:model, name: "Nowhere On The Matrix", rsi_id: nil)
+
+      assert_no_difference -> { Model.count } do
+        assert_not @loader.one_for(model)
+      end
+    end
   end
 end

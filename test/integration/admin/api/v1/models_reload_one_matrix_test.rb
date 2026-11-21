@@ -38,8 +38,8 @@ class Admin::Api::V1::ModelsReloadOneMatrixTest < ActionDispatch::IntegrationTes
   end
 
   test "PUT /models/:id/reload-one-matrix enqueues the loader" do
-    model = create(:model)
-    Loaders::ModelJob.stubs(:perform_async)
+    model = create(:model, rsi_id: nil)
+    Loaders::ModelJob.expects(:perform_async).with(model.id)
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: model.id}, body: {}
