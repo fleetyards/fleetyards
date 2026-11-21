@@ -80,14 +80,19 @@ module Api
         render json: result, status: :ok
       end
 
-      # A deposit is carried by whoever made it, unless the request says
-      # otherwise; a holder sent as null is the unassigned share. A withdrawal
-      # left unsaid comes out of the unassigned share, as every withdrawal did
-      # before stock had holders.
+      # A deposit is carried by the member it is for, else by whoever made it,
+      # unless the request says otherwise; a holder sent as null is the
+      # unassigned share. A member who has left cannot carry anything, so a
+      # deposit recorded for one falls to the caller. A withdrawal left unsaid
+      # comes out of the unassigned share, as every withdrawal did before stock
+      # had holders.
       private def default_holder_id
         return unless @fleet_inventory_item.deposit?
 
-        @fleet_inventory_item.member_id.presence || current_resource_owner.id
+        member_id = @fleet_inventory_item.member_id
+        return member_id if member_id.present? && @fleet.fleet_memberships.kept.accepted.exists?(user_id: member_id)
+
+        current_resource_owner.id
       end
 
       private def fleet_inventory_item_params

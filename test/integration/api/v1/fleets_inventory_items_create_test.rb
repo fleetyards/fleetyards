@@ -144,4 +144,16 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
       body: item_body(entryType: "withdrawal", quantity: 40, holderId: @member.id)
   end
+
+  test "POST /inventories/:slug/items has the caller carry a deposit for a member who left" do
+    former = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: former, aasm_state: :declined)
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body(memberId: former.id) do
+      assert_equal @admin.id, parsed_body.dig("holder", "id")
+    end
+  end
 end
