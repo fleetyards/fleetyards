@@ -35,9 +35,15 @@ const RUNNING_STATES: ImportStatusEnum[] = [
 
 const isRunning = (item: Import) => RUNNING_STATES.includes(item.status);
 
-// A buy-back sync runs inside one request, with nothing to stop part way.
+// A buy-back sync and a blueprint log import run inside one request, with
+// nothing to stop part way.
+const IN_REQUEST_TYPES: ImportTypeEnum[] = [
+  ImportTypeEnum.IMPORTS_BUYBACK_SYNC,
+  ImportTypeEnum.IMPORTS_BLUEPRINT_LOG_IMPORT,
+];
+
 const isCancellable = (item: Import) =>
-  isRunning(item) && item.type !== ImportTypeEnum.IMPORTS_BUYBACK_SYNC;
+  isRunning(item) && !IN_REQUEST_TYPES.includes(item.type);
 
 const { perPage, page, updatePerPage } = usePagination();
 

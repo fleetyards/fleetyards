@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "The ship is in your hangar, but its plaque could not be saved. Try again to put it on.",
         "replaceConfirm": "This ship already has a plaque. Replace it?"
       },
+      "blueprintLogImport": {
+        "noLogs": "No .log files found. Choose your Star Citizen LIVE folder or the logs inside it.",
+        "failure": "The game logs could not be imported.",
+        "success": {
+          "one": "%{count} blueprint marked as owned",
+          "other": "%{count} blueprints marked as owned"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} is marked as owned" },
         "unown": { "success": "%{blueprint} is no longer marked as owned" },

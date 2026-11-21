@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "舰船已加入你的机库，但无法保存其铭牌。请重试以放上铭牌。",
         "replaceConfirm": "这艘舰船已有铭牌。要替换吗？"
       },
+      "blueprintLogImport": {
+        "noLogs": "未找到 .log 文件。请选择 Star Citizen 的 LIVE 文件夹或其中的日志。",
+        "failure": "无法导入游戏日志。",
+        "success": {
+          "one": "已将 %{count} 个蓝图标记为已拥有",
+          "other": "已将 %{count} 个蓝图标记为已拥有"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} 已标记为已拥有" },
         "unown": { "success": "%{blueprint} 不再标记为已拥有" },

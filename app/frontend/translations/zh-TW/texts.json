@@ -352,6 +352,28 @@
         "finished": "你的可回購承諾與 RSI 清單一致。",
         "keepsRunning": "關閉此視窗後它仍會繼續執行。請保持分頁開啟，直到完成。"
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen 會記錄你獲得的每一個藍圖。拖入 LIVE 資料夾即可將它們標記為已擁有；Game.log 與 logbackups 資料夾都會被讀取。",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "將 LIVE 資料夾或日誌檔案拖到這裡",
+        "privacy": "日誌在你的瀏覽器中讀取，只有藍圖名稱會傳送到 Fleetyards。",
+        "limits": "只能找到遊戲仍保留的日誌中獲得的藍圖。PTU 日誌會被略過。",
+        "reading": "正在讀取日誌 %{read} / %{total}…",
+        "nothingFound": "這些日誌中沒有找到獲得的藍圖。",
+        "found": {
+          "one": "在你的日誌中找到 %{count} 個藍圖。",
+          "other": "在你的日誌中找到 %{count} 個藍圖。"
+        },
+        "skippedFiles": {
+          "one": "已略過 %{count} 個 PTU 或預覽版日誌。",
+          "other": "已略過 %{count} 個 PTU 或預覽版日誌。"
+        },
+        "ambiguous": "這些名稱對應多個藍圖。請勾選你擁有的那些。",
+        "alreadyOwned": {
+          "one": "%{count} 個先前已擁有。",
+          "other": "%{count} 個先前已擁有。"
+        }
+      },
       "blueprintAddToHangar": {
         "ownHint": "你擁有這張藍圖。",
         "wishlistHint": "你想取得這張藍圖。",

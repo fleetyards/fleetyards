@@ -353,6 +353,28 @@
         "finished": "Your buy-back pledges match your RSI list.",
         "keepsRunning": "It keeps running if you close this window. Keep the tab open until it finishes."
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen logs every blueprint you receive. Drop your LIVE folder to mark them as owned; Game.log and the logbackups folder are both read.",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "Drop the LIVE folder or log files here",
+        "privacy": "Your logs are read in your browser. Only blueprint names are sent to Fleetyards.",
+        "limits": "Only blueprints received in logs the game still keeps can be found. PTU logs are skipped.",
+        "reading": "Reading log %{read} of %{total}…",
+        "nothingFound": "No received blueprints were found in these logs.",
+        "found": {
+          "one": "%{count} blueprint found in your logs.",
+          "other": "%{count} blueprints found in your logs."
+        },
+        "skippedFiles": {
+          "one": "%{count} PTU or preview log skipped.",
+          "other": "%{count} PTU or preview logs skipped."
+        },
+        "ambiguous": "These names belong to more than one blueprint. Tick the ones you have.",
+        "alreadyOwned": {
+          "one": "%{count} was already owned.",
+          "other": "%{count} were already owned."
+        }
+      },
       "blueprintAddToHangar": {
         "ownHint": "You have this blueprint.",
         "wishlistHint": "You want to get this blueprint.",

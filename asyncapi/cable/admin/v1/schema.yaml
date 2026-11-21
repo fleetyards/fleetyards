@@ -586,6 +586,7 @@ components:
       - Imports::HangarSync
       - Imports::HangarImport
       - Imports::BuybackSync
+      - Imports::BlueprintLogImport
       - Imports::ModulesImport
       - Imports::PaintsImport
       - Imports::LoanersImport
@@ -602,6 +603,7 @@ components:
       - IMPORTS_HANGAR_SYNC
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_BUYBACK_SYNC
+      - IMPORTS_BLUEPRINT_LOG_IMPORT
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
       - IMPORTS_LOANERS_IMPORT

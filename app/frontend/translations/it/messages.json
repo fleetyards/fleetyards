@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "La nave è nel tuo hangar, ma non è stato possibile salvarne la targa. Riprova per applicarla.",
         "replaceConfirm": "Questa nave ha già una targa. Sostituirla?"
       },
+      "blueprintLogImport": {
+        "noLogs": "Nessun file .log trovato. Scegli la cartella LIVE di Star Citizen o i log al suo interno.",
+        "failure": "Non è stato possibile importare i log di gioco.",
+        "success": {
+          "one": "%{count} progetto segnato come posseduto",
+          "other": "%{count} progetti segnati come posseduti"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} è contrassegnato come posseduto" },
         "unown": {

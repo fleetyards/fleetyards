@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "Le vaisseau est dans ton hangar, mais sa plaque n'a pas pu être enregistrée. Réessaie pour la poser.",
         "replaceConfirm": "Ce vaisseau a déjà une plaque. La remplacer ?"
       },
+      "blueprintLogImport": {
+        "noLogs": "Aucun fichier .log trouvé. Choisissez votre dossier LIVE de Star Citizen ou les logs qu'il contient.",
+        "failure": "Les logs du jeu n'ont pas pu être importés.",
+        "success": {
+          "one": "%{count} plan marqué comme possédé",
+          "other": "%{count} plans marqués comme possédés"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} est marqué comme possédé" },
         "unown": { "success": "%{blueprint} n'est plus marqué comme possédé" },

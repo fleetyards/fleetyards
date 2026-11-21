@@ -352,7 +352,8 @@
         "types": {
           "Imports::HangarImport": "机库导入",
           "Imports::HangarSync": "RSI 机库同步",
-          "Imports::BuybackSync": "RSI 回购同步"
+          "Imports::BuybackSync": "RSI 回购同步",
+          "Imports::BlueprintLogImport": "来自游戏日志的蓝图"
         },
         "summary": {
           "imported": "已导入",
@@ -374,7 +375,8 @@
           "unchanged": "保持不变",
           "missing": "未找到的舰船",
           "missingComponents": "未找到的组件",
-          "missingUpgrades": "未找到的升级"
+          "missingUpgrades": "未找到的升级",
+          "missingBlueprints": "未找到的蓝图"
         },
         "noDetails": "本次运行未记录详情。"
       },
@@ -4973,6 +4975,12 @@
         },
         "requested": "请求已发送",
         "friend": "已是好友"
+      },
+      "blueprintLogImport": {
+        "fresh": "新蓝图",
+        "ambiguous": "选择正确的蓝图",
+        "owned": "已拥有",
+        "unmatched": "目录中未找到"
       },
       "blueprint": {
         "anyGrade": "任意品质",

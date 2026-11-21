@@ -133,3 +133,6 @@ fleetchart_layouts:
 
 starmap:
   description: "Starmap — the in-game systems in 3D at /starmap, from the positions the game files give every place"
+
+blueprint_log_import:
+  description: "Blueprint log import — mark the blueprints received in game as owned by dropping the Star Citizen LIVE folder on the hangar blueprints page"

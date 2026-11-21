@@ -16,6 +16,8 @@ resource :hangar, only: %i[show destroy] do
   delete "buybacks/:id", to: "hangar_buybacks#destroy"
   get "pledge-items", to: "hangar_pledge_items#index"
   get "blueprint-missions", to: "hangar_blueprint_missions#index"
+  put "blueprint-imports/match", to: "hangar_blueprint_imports#match"
+  put "blueprint-imports", to: "hangar_blueprint_imports#create"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 

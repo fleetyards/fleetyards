@@ -145,6 +145,17 @@
       "showStatusColor": "Show Status as Color",
       "hideStatusColor": "Hide Status as Color",
       "addToHangar": "Add to Hangar",
+      "blueprintLogImport": {
+        "open": "Import from game logs",
+        "chooseFolder": "Choose LIVE folder",
+        "chooseFiles": "Choose log files",
+        "import": {
+          "one": "Import %{count} blueprint",
+          "other": "Import %{count} blueprints"
+        },
+        "startOver": "Start over",
+        "showImport": "Show import details"
+      },
       "blueprint": {
         "addToAssets": "Add to Assets",
         "apply": "Apply",

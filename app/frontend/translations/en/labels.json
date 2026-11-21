@@ -352,7 +352,8 @@
         "types": {
           "Imports::HangarImport": "Hangar Import",
           "Imports::HangarSync": "RSI Hangar Sync",
-          "Imports::BuybackSync": "RSI Buy-back Sync"
+          "Imports::BuybackSync": "RSI Buy-back Sync",
+          "Imports::BlueprintLogImport": "Blueprints from Game Logs"
         },
         "summary": {
           "imported": "Imported",
@@ -374,7 +375,8 @@
           "unchanged": "Left unchanged",
           "missing": "Ships not found",
           "missingComponents": "Components not found",
-          "missingUpgrades": "Upgrades not found"
+          "missingUpgrades": "Upgrades not found",
+          "missingBlueprints": "Blueprints not found"
         },
         "noDetails": "This run recorded no details."
       },
@@ -4990,6 +4992,12 @@
         },
         "requested": "Request sent",
         "friend": "Friends"
+      },
+      "blueprintLogImport": {
+        "fresh": "New",
+        "ambiguous": "Pick the right blueprint",
+        "owned": "Already owned",
+        "unmatched": "Not found in the catalogue"
       },
       "blueprint": {
         "anyGrade": "Any grade",

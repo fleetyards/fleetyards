@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "Das Schiff ist in deinem Hangar, aber seine Plakette konnte nicht gespeichert werden. Versuche es erneut, um sie anzubringen.",
         "replaceConfirm": "Dieses Schiff hat bereits eine Plakette. Ersetzen?"
       },
+      "blueprintLogImport": {
+        "noLogs": "Keine .log-Dateien gefunden. Wähle deinen Star Citizen LIVE-Ordner oder die Logs darin.",
+        "failure": "Die Spiel-Logs konnten nicht importiert werden.",
+        "success": {
+          "one": "%{count} Blueprint als besessen markiert",
+          "other": "%{count} Blueprints als besessen markiert"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} ist als vorhanden markiert" },
         "unown": {

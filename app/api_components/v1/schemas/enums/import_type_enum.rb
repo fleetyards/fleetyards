@@ -9,7 +9,7 @@ module V1
       class ImportTypeEnum
         include OpenapiRuby::Components::Base
 
-        TYPES = %w[Imports::HangarImport Imports::HangarSync Imports::BuybackSync].freeze
+        TYPES = %w[Imports::HangarImport Imports::HangarSync Imports::BuybackSync Imports::BlueprintLogImport].freeze
 
         schema({
           type: :string,
