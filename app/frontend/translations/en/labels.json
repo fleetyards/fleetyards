@@ -2713,6 +2713,8 @@
         "publicHangarStats": "Public Hangar Stats enabled",
         "publicWishlist": "Public Wishlist enabled",
         "hideOwner": "Hide Ownership for Fleets",
+        "newVehiclesPublic": "Show new ships in my public hangar",
+        "newVehiclesPublicDescription": "Applies to ships you add yourself and ships the RSI hangar sync brings in. Ships already in your hangar keep their own setting.",
         "tracking": "Allow anonymous usage analytics",
         "showOnlineStatus": "Show when I am online",
         "supporterListed": "Supporters page",

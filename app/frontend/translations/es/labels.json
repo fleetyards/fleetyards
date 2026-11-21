@@ -2713,6 +2713,8 @@
         "publicHangarStats": "Estadísticas de hangar público habilitadas",
         "publicWishlist": "Lista de deseos pública habilitada",
         "hideOwner": "Ocultar propiedad para flotas",
+        "newVehiclesPublic": "Mostrar las naves nuevas en mi hangar público",
+        "newVehiclesPublicDescription": "Se aplica a las naves que añades tú mismo y a las que trae la sincronización del hangar de RSI. Las naves que ya están en tu hangar conservan su propia configuración.",
         "tracking": "Permitir analíticas de uso anónimas",
         "showOnlineStatus": "Mostrar cuándo estoy en línea",
         "supporterListed": "Página de colaboradores",

@@ -38,6 +38,7 @@ const initialValues = ref<UserUpdateInput>({
   friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
   friendsWishlist: sessionStore.currentUser?.friendsWishlist,
   hideOwner: sessionStore.currentUser?.hideOwner,
+  newVehiclesPublic: sessionStore.currentUser?.newVehiclesPublic,
   hangarDefaultSort: sessionStore.currentUser?.hangarDefaultSort ?? null,
 });
 
@@ -51,6 +52,7 @@ const setupForm = () => {
     friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
     friendsWishlist: sessionStore.currentUser?.friendsWishlist,
     hideOwner: sessionStore.currentUser?.hideOwner,
+    newVehiclesPublic: sessionStore.currentUser?.newVehiclesPublic,
     hangarDefaultSort: sessionStore.currentUser?.hangarDefaultSort ?? null,
   };
 };
@@ -86,6 +88,8 @@ const [friendsHangarStats, friendsHangarStatsProps] =
   defineField("friendsHangarStats");
 const [friendsWishlist, friendsWishlistProps] = defineField("friendsWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
+const [newVehiclesPublic, newVehiclesPublicProps] =
+  defineField("newVehiclesPublic");
 const [hangarDefaultSort, hangarDefaultSortProps] =
   defineField("hangarDefaultSort");
 
@@ -213,6 +217,16 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="false"
           :nullable="false"
           unsorted
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="newVehiclesPublic"
+          name="newVehiclesPublic"
+          v-bind="newVehiclesPublicProps"
+          :label="t('labels.user.newVehiclesPublic')"
+          align-with-fields
+          :description="t('labels.user.newVehiclesPublicDescription')"
         />
       </div>
     </div>
