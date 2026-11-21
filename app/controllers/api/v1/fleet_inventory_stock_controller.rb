@@ -66,7 +66,7 @@ module Api
       end
 
       private def set_holder_balances
-        @holder_balances = InventoryHolderBalances.new(inventory, **stock_filters)
+        @holder_balances = InventoryHolderBalances.new(inventory.fleet_inventory_items, **stock_filters)
       end
 
       private def validation_error_scope

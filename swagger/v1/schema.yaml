@@ -6904,6 +6904,13 @@ paths:
       tags:
       - FleetInventoryStock
       operationId: fleetAllInventoryStock
+      parameters:
+      - name: heldByMe
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: Only the caller's own share
       security:
       - SessionCookie: []
       - Oauth2:

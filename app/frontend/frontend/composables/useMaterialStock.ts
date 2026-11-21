@@ -129,7 +129,7 @@ export const useMaterialStock = () => {
   const fleetStock = useQueries({
     queries: computed(() =>
       fleetList.value.map((fleet) =>
-        getFleetAllInventoryStockQueryOptions(fleet.slug, {
+        getFleetAllInventoryStockQueryOptions(fleet.slug, undefined, {
           query: { enabled: fleetEnabled, retry: false },
         }),
       ),
