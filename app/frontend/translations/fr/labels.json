@@ -2714,7 +2714,7 @@
         "publicWishlist": "Liste de souhaits publique activée",
         "hideOwner": "Masquer la propriété pour les flottes",
         "newVehiclesPublic": "Afficher les nouveaux vaisseaux dans mon hangar public",
-        "newVehiclesPublicDescription": "S'applique aux vaisseaux que vous ajoutez vous-même et à ceux importés par la synchronisation du hangar RSI. Les vaisseaux déjà présents dans votre hangar conservent leur propre réglage.",
+        "newVehiclesPublicDescription": "S'applique aux vaisseaux que vous ajoutez à votre hangar, à la main, par import ou via la synchronisation du hangar RSI. Les vaisseaux déjà présents dans votre hangar conservent leur propre réglage.",
         "tracking": "Autoriser l'analyse d'utilisation anonyme",
         "showOnlineStatus": "Afficher quand je suis en ligne",
         "supporterListed": "Page des soutiens",

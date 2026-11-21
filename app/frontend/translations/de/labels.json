@@ -2714,7 +2714,7 @@
         "publicWishlist": "Öffentliche Wunschliste aktiviert",
         "hideOwner": "Besitz für Flotten verbergen",
         "newVehiclesPublic": "Neue Schiffe in meinem öffentlichen Hangar zeigen",
-        "newVehiclesPublicDescription": "Gilt für Schiffe, die du selbst hinzufügst, und für Schiffe aus dem RSI-Hangar-Sync. Schiffe, die schon in deinem Hangar sind, behalten ihre eigene Einstellung.",
+        "newVehiclesPublicDescription": "Gilt für Schiffe, die du deinem Hangar hinzufügst – von Hand, per Import oder über den RSI-Hangar-Sync. Schiffe, die schon in deinem Hangar sind, behalten ihre eigene Einstellung.",
         "tracking": "Anonyme Nutzungsstatistik erlauben",
         "showOnlineStatus": "Anzeigen, wenn ich online bin",
         "supporterListed": "Unterstützerseite",
