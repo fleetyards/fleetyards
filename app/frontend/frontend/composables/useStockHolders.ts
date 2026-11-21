@@ -27,7 +27,7 @@ export const shareOf = (
   );
 
 export const useStockHolders = () => {
-  const { t } = useI18n();
+  const { t, toQuantity } = useI18n();
 
   const holderName = (share: Pick<FleetInventoryStockHolder, "holder">) =>
     share.holder?.username ?? t("labels.logistics.unassigned");
@@ -58,7 +58,7 @@ export const useStockHolders = () => {
       .map(({ value, share, total }) => ({
         value,
         label: unit
-          ? `${holderName(share)} · ${total} ${t(`labels.logistics.units.${unit}`)}`
+          ? `${holderName(share)} · ${toQuantity(total)} ${t(`labels.logistics.units.${unit}`)}`
           : holderName(share),
       }));
   };

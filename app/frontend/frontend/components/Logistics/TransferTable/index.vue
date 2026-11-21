@@ -43,7 +43,7 @@ const emit = defineEmits<{
   report: [InventoryTransfer];
 }>();
 
-const { t, l } = useI18n();
+const { t, l, toQuantity } = useI18n();
 
 // Waiting is the only state that asks anything of the reader; the rest are
 // history, which is what the neutral variant is for.
@@ -167,7 +167,7 @@ const canCancel = (transfer: InventoryTransfer) =>
           >
             <span class="transfer-contents-name">{{ line.name }}</span>
             <span class="transfer-contents-amount">
-              {{ line.quantity }}
+              {{ toQuantity(line.quantity) }}
               {{ t(`labels.logistics.units.${line.unit}`) }}
             </span>
           </li>

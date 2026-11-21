@@ -61,7 +61,7 @@ export const lotEntry = (
  * several is several rows.
  */
 export const useStockLots = (lots: Ref<StockLot[]>) => {
-  const { t } = useI18n();
+  const { t, toQuantity } = useI18n();
 
   // What tells two lots of one position apart in a list of names.
   const lotLabel = (lot: StockLot) => {
@@ -80,7 +80,7 @@ export const useStockLots = (lots: Ref<StockLot[]>) => {
       label: [
         lot.name,
         lotLabel(lot),
-        `${lot.netQuantity} ${t(`labels.logistics.units.${lot.unit}`)}`,
+        `${toQuantity(lot.netQuantity)} ${t(`labels.logistics.units.${lot.unit}`)}`,
       ]
         .filter(Boolean)
         .join(" · "),

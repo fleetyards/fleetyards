@@ -7,7 +7,10 @@ import {
 } from "./useStockLots";
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    toQuantity: (value: number) => String(value),
+  }),
 }));
 
 const lot = (overrides: Partial<StockLot> = {}): StockLot => ({

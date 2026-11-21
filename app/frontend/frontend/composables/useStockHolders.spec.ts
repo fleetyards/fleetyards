@@ -7,7 +7,10 @@ import {
 } from "./useStockHolders";
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    toQuantity: (value: number) => String(value),
+  }),
 }));
 
 const alice = { id: "alice", username: "alice" };

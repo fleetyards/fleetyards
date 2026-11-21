@@ -48,7 +48,9 @@ end
 
 # Who carries the lot, where the inventory's stock has holders.
 if (holder_balances = local_assigns[:holder_balances])
-  json.partial! "api/v1/shared/stock_holders", shares: holder_balances.for_lot(position)
+  shares = position.respond_to?(:quality_min) ? holder_balances.for_position(position.position_id) : holder_balances.for_lot(position)
+
+  json.partial! "api/v1/shared/stock_holders", shares:
 end
 
 if position.respond_to?(:inventory_name) && position.inventory_name.present?

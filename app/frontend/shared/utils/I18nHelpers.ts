@@ -112,6 +112,25 @@ export const i18nHelpers = (i18n: I18n) => {
     return i18n.t(`number.${units}`, { count } as { count: number });
   };
 
+  // An amount from a ledger: every decimal it was recorded with -- two at most
+  // -- and zero as a number rather than "not available", grouped the way
+  // `toNumber` groups a stat.
+  const toQuantity = (value?: number | string | null) => {
+    if (value == null || value === "" || !Number.isFinite(Number(value))) {
+      return "-";
+    }
+
+    const separator = i18n.t("number.format.separator") || ",";
+    const delimiter = i18n.t("number.format.delimiter") || ".";
+
+    const [integer, decimal] = i18n.l("number", Number(value)).split(separator);
+    const stripped = decimal?.replace(/0+$/, "");
+
+    return (
+      stripped ? `${integer}${separator}${stripped}` : integer
+    ).replaceAll(delimiter, "\u202F");
+  };
+
   const toDollar = (value?: number) => {
     if (!value) {
       return "-";
@@ -158,6 +177,7 @@ export const i18nHelpers = (i18n: I18n) => {
     lUtc,
     timeDistance,
     toNumber,
+    toQuantity,
     toDollar,
     toAu,
     toUEC,

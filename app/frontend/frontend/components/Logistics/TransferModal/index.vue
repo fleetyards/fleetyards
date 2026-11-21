@@ -66,7 +66,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, toQuantity } = useI18n();
 const sessionStore = useSessionStore();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
@@ -574,7 +574,7 @@ const onSubmit = async () => {
               {{ t(`labels.logistics.units.${position.unit}`) }}
             </span>
             <span class="transfer-line-max">
-              / {{ position.netQuantity }}
+              / {{ toQuantity(position.netQuantity) }}
             </span>
 
             <Btn

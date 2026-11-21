@@ -18,10 +18,14 @@ module Inventories
     # never reached them.
     attr_reader :transfer, :refusal, :quantity
 
+    # Whose share of a fleet inventory a shipment leaves from when the request
+    # does not say -- see `source_holder_id`.
+    UNNAMED = Object.new.freeze
+
     def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil, contract: nil,
-      source_holder_id: nil)
+      source_holder_id: UNNAMED)
       @source = source
-      @source_holder_id = source_holder_id.presence
+      @source_holder_id = source_holder_id.equal?(UNNAMED) ? UNNAMED : source_holder_id.presence
       @actor = actor
       @requested_lines = Array(lines)
       @destination = destination
@@ -244,9 +248,35 @@ module Inventories
     end
 
     # A fleet's stock is split between the members carrying it, and a shipment
-    # leaves from one of them -- the unassigned share when nobody is named.
+    # leaves from one of them.
     private def holder_filter
-      @source.is_a?(::FleetInventory) ? {holder_id: @source_holder_id} : {}
+      @source.is_a?(::FleetInventory) ? {holder_id: source_holder_id} : {}
+    end
+
+    # Named, or null for the unassigned share. Left out, the actor's own share
+    # when it covers every line, else the unassigned share -- so a client that
+    # knows nothing of holders can still ship what it deposited itself.
+    private def source_holder_id
+      return @source_holder_id unless @source_holder_id.equal?(UNNAMED)
+
+      @resolved_source_holder_id ||= [actor_covers_lines? ? @actor.id : nil]
+      @resolved_source_holder_id.first
+    end
+
+    # Summed per position, since a request may name one more than once, and
+    # keyed by the stored id rather than the one the request spelled.
+    private def actor_covers_lines?
+      held = @source.current_stock(holder_id: @actor.id).group_by(&:position_id)
+        .transform_values { |rows| rows.sum { |row| row.net_quantity.to_d } }
+
+      requested = @requested_lines.each_with_object(Hash.new(0)) do |line, totals|
+        attributes = (line.respond_to?(:to_unsafe_h) ? line.to_unsafe_h : line).symbolize_keys
+        position = @source.positions.find_by(id: attributes[:position_id])
+
+        totals[position&.id] += attributes[:quantity].to_d
+      end
+
+      requested.all? { |position_id, quantity| position_id && quantity <= held.fetch(position_id, 0) }
     end
 
     private def resolve_line(line)

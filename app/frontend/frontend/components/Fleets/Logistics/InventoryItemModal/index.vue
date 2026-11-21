@@ -66,7 +66,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, toQuantity } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
@@ -301,7 +301,7 @@ const selectedLotHolders = computed(
 const withdrawalHolderOptions = computed<FilterOption[]>(() =>
   selectedLotHolders.value.map((share) => ({
     value: holderValue(share),
-    label: `${holderName(share)} · ${share.netQuantity} ${t(`labels.logistics.units.${unit.value}`)}`,
+    label: `${holderName(share)} · ${toQuantity(share.netQuantity)} ${t(`labels.logistics.units.${unit.value}`)}`,
   })),
 );
 
@@ -531,7 +531,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <p v-if="selectedStockMax !== undefined" class="text-muted">
           {{ t("labels.logistics.currentStock") }}:
-          {{ selectedStockMax }}
+          {{ toQuantity(selectedStockMax) }}
           {{ t(`labels.logistics.units.${unit}`) }}
         </p>
       </template>

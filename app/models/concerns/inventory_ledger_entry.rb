@@ -497,6 +497,17 @@ module InventoryLedgerEntry
     withdrawal_does_not_exceed_lot if crafted? || lots_held_apart?
   end
 
+  # The entries of the lot this one belongs to: its position, its grade, and
+  # for a crafted part the recipe and grades it was made from.
+  private def lot_entries
+    lot = self.class.where(
+      self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
+      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id
+    )
+
+    crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
+  end
+
   # Whether every grade is checked as a lot of its own, not only a crafted
   # part. A ledger whose stock is one pool per position does not.
   private def lots_held_apart?
@@ -508,12 +519,7 @@ module InventoryLedgerEntry
   # Matched on everything `current_stock` groups a lot by, the grade column
   # included.
   private def withdrawal_does_not_exceed_lot
-    lot = self.class.where(
-      self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
-      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id, **balance_conditions
-    )
-    lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
-    current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
+    current = lot_entries.where(balance_conditions).sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
 
     return if quantity <= current
 

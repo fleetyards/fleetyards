@@ -19,7 +19,7 @@ module Inventories
     end
 
     def shares
-      InventoryHolderBalances.new(@inventory).for_position(@entry.position.id)
+      InventoryHolderBalances.new(@inventory.fleet_inventory_items).for_position(@entry.position.id)
         .to_h { |share| [share.holder&.id, share.net_quantity.to_f] }
     end
 

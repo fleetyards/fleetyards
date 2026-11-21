@@ -29,6 +29,12 @@ class FleetInventoryItem < ApplicationRecord
 
   after_create_commit :notify_inventory_entry, unless: -> { from_transfer? || handover }
 
+  # How much of this entry's lot the given holder carries; nil is the
+  # unassigned share.
+  def lot_held_by(holder_id)
+    lot_entries.where(holder_id:).sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id holder_id]
   end

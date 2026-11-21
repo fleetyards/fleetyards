@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Each holder's share of a fleet inventory's stock, per lot and per position.
+# Each holder's share of fleet stock, per lot and per position -- of one
+# inventory, or of every inventory a member can see.
 #
 # One grouped query over the ledger and one for the holders' names, whatever
 # the size of the stock list. A lot is keyed the way `current_stock` groups
@@ -10,9 +11,8 @@ class InventoryHolderBalances
 
   LOT_COLUMNS = %i[fleet_inventory_position_id quality crafted_blueprint_id crafted_qualities].freeze
 
-  def initialize(inventory, holder_id: :any)
-    scope = inventory.fleet_inventory_items
-    scope = scope.where(holder_id:) unless holder_id == :any
+  def initialize(entries, holder_id: :any)
+    scope = (holder_id == :any) ? entries : entries.where(holder_id:)
 
     @rows = scope
       .group(*LOT_COLUMNS, :holder_id)
