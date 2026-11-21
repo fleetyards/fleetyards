@@ -18,7 +18,6 @@ export type VehicleEditValues = Pick<
   | "public"
   | "nameVisible"
   | "saleNotify"
-  | "logEntriesPublicByDefault"
   | "name"
   | "serial"
   | "alternativeNames"

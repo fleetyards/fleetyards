@@ -31,20 +31,10 @@ type Setting = {
 // something for it.
 const settings = computed<Setting[]>(() =>
   props.vehicle.wanted
-    ? [
-        { key: "saleNotify", label: t("labels.vehicle.saleNotify") },
-        {
-          key: "logEntriesPublicByDefault",
-          label: t("labels.vehicleLog.publicByDefault"),
-        },
-      ]
+    ? [{ key: "saleNotify", label: t("labels.vehicle.saleNotify") }]
     : [
         { key: "public", label: t("labels.vehicleOverview.showPublic") },
         { key: "nameVisible", label: t("labels.vehicleOverview.showName") },
-        {
-          key: "logEntriesPublicByDefault",
-          label: t("labels.vehicleLog.publicByDefault"),
-        },
       ],
 );
 

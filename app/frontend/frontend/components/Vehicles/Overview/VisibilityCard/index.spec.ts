@@ -27,6 +27,11 @@ describe("VehicleOverviewVisibilityCard", () => {
     expect(
       wrapper.find('[data-test="vehicle-setting-nameVisible"]').text(),
     ).toBe("Disabled");
+    expect(
+      wrapper
+        .find('[data-test="vehicle-setting-logEntriesPublicByDefault"]')
+        .exists(),
+    ).toBe(false);
     expect(wrapper.find('input[type="checkbox"]').exists()).toBe(false);
     await wrapper
       .find('[data-test="vehicle-visibility-edit"]')
