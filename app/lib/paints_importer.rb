@@ -437,7 +437,7 @@ class PaintsImporter
     mxc = %w[MTC MDC]
     roc = %w[ROC ROC-DS]
     prospector = ["Prospector"]
-    dragonfly = ["Dragonfly Yellowjacket", "Dragonfly Black"]
+    dragonfly = ["Dragonfly Yellowjacket", "Dragonfly Black", "Dragonfly Starkitten Edition"]
     ares = ["Ares Ion", "Ares Inferno"]
     starfarer = ["Starfarer", "Starfarer Gemini"]
     cutter = ["Cutter", "Cutter Scout", "Cutter Rambler"]
