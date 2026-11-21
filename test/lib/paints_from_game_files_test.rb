@@ -57,6 +57,18 @@ class PaintsFromGameFilesTest < ActiveSupport::TestCase
     assert_equal ["Hazard"], cargo.paints.pluck(:name)
   end
 
+  test "#run skips the livery a variant comes in" do
+    alpha = ship("Mustang Alpha", "Paint_Mustang")
+    gamma = ship("Mustang Gamma", "Paint_Mustang")
+    livery("Mustang Gamma Livery", "Paint_Mustang")
+    livery("Mustang Polar Livery", "Paint_Mustang")
+
+    create_paints
+
+    assert_equal ["Polar"], alpha.paints.pluck(:name)
+    assert_equal ["Polar"], gamma.paints.pluck(:name)
+  end
+
   test "#run leaves a ship that already has the paint alone" do
     galaxy = ship("Galaxy", "Paint_Galaxy")
     create(:model_paint, model: galaxy, name: "Protector")

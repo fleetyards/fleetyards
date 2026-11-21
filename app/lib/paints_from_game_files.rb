@@ -57,6 +57,8 @@ class PaintsFromGameFiles
       (required - Array(port.port_tags)).empty? && (Array(port.required_tags) - tags).empty?
     }.map(&:parent).uniq
 
+    return if stock_livery?(component, models)
+
     models.each do |model|
       name = paint_name(component.name, model)
       next if name.blank?
@@ -66,6 +68,16 @@ class PaintsFromGameFiles
       ModelPaint.create!(model:, name:, component:, hidden: false, active: true)
       existing_names(model) << comparable(name)
     end
+  end
+
+  # "Mustang Gamma Livery" is the look the Gamma leaves the factory in, not a
+  # paint anyone can buy or earn, yet it fits every Mustang's port all the same.
+  private def stock_livery?(component, models)
+    subject = PaintComponentMatcher.normalize(
+      component.name.sub(PaintComponentMatcher::PARENTHETICAL, "").sub(PaintComponentMatcher::LIVERY_SUFFIX, "")
+    )
+
+    models.any? { |model| PaintComponentMatcher.normalize(model.name) == subject }
   end
 
   # The game opens with the ship as it names it, which is not always the
