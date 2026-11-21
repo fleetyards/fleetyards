@@ -352,7 +352,8 @@
         "types": {
           "Imports::HangarImport": "Hangar-Import",
           "Imports::HangarSync": "RSI-Hangar-Sync",
-          "Imports::BuybackSync": "RSI-Rückkauf-Sync"
+          "Imports::BuybackSync": "RSI-Rückkauf-Sync",
+          "Imports::BlueprintLogImport": "Blueprints aus Spiel-Logs"
         },
         "summary": {
           "imported": "Importiert",
@@ -374,7 +375,8 @@
           "unchanged": "Unverändert gelassen",
           "missing": "Schiffe nicht gefunden",
           "missingComponents": "Komponenten nicht gefunden",
-          "missingUpgrades": "Upgrades nicht gefunden"
+          "missingUpgrades": "Upgrades nicht gefunden",
+          "missingBlueprints": "Blueprints nicht gefunden"
         },
         "noDetails": "Dieser Lauf hat keine Details aufgezeichnet."
       },
@@ -4970,6 +4972,12 @@
         },
         "requested": "Anfrage gesendet",
         "friend": "Befreundet"
+      },
+      "blueprintLogImport": {
+        "fresh": "Neu",
+        "ambiguous": "Richtiges Blueprint wählen",
+        "owned": "Bereits vorhanden",
+        "unmatched": "Nicht im Katalog gefunden"
       },
       "blueprint": {
         "anyGrade": "Beliebige Qualität",

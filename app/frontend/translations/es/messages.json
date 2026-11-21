@@ -8,6 +8,14 @@
         "addedWithoutPlaque": "La nave ya está en tu hangar, pero no se pudo guardar su placa. Inténtalo de nuevo para ponérsela.",
         "replaceConfirm": "Esta nave ya tiene una placa. ¿Reemplazarla?"
       },
+      "blueprintLogImport": {
+        "noLogs": "No se encontraron archivos .log. Elige tu carpeta LIVE de Star Citizen o los logs que contiene.",
+        "failure": "No se pudieron importar los logs del juego.",
+        "success": {
+          "one": "%{count} plano marcado como propio",
+          "other": "%{count} planos marcados como propios"
+        }
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} está marcado como tuyo" },
         "unown": { "success": "%{blueprint} ya no está marcado como tuyo" },

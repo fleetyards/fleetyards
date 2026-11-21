@@ -41,6 +41,7 @@ class AdminWeeklyReportTest < ActiveSupport::TestCase
     user = create(:user)
     create(:import, :hangar_sync, user:, aasm_state: "failed")
     Imports::BuybackSync.create!(user:, aasm_state: "failed")
+    Imports::BlueprintLogImport.create!(user:, aasm_state: "failed")
     create(:import, type: "Imports::ModelsImport", aasm_state: "failed")
 
     assert_equal 1, gauge(AdminWeeklyReport.build, :ops, :failed_imports).current

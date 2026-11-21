@@ -352,6 +352,25 @@
         "finished": "I tuoi pledge riacquistabili corrispondono alla tua lista RSI.",
         "keepsRunning": "Continua anche se chiudi questa finestra. Lascia aperta la scheda finché non termina."
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen registra ogni progetto che ricevi. Trascina qui la cartella LIVE per segnarli come posseduti; vengono letti sia Game.log sia la cartella logbackups.",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "Trascina qui la cartella LIVE o i file di log",
+        "privacy": "I tuoi log vengono letti nel browser. A Fleetyards vengono inviati solo i nomi dei progetti.",
+        "limits": "Si possono trovare solo i progetti ricevuti nei log che il gioco conserva ancora. I log del PTU vengono saltati.",
+        "reading": "Lettura del log %{read} di %{total}…",
+        "nothingFound": "In questi log non è stato trovato alcun progetto ricevuto.",
+        "found": {
+          "one": "%{count} progetto trovato nei tuoi log.",
+          "other": "%{count} progetti trovati nei tuoi log."
+        },
+        "skippedFiles": {
+          "one": "%{count} log PTU o preview saltato.",
+          "other": "%{count} log PTU o preview saltati."
+        },
+        "ambiguous": "Questi nomi appartengono a più di un progetto. Spunta quelli che possiedi.",
+        "done": "%{imported} progetti segnati come posseduti, %{unchanged} lo erano già."
+      },
       "blueprintAddToHangar": {
         "ownHint": "Hai questo progetto.",
         "wishlistHint": "Vuoi ottenere questo progetto.",

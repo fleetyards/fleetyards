@@ -352,6 +352,25 @@
         "finished": "Vos pledges rachetables correspondent à votre liste RSI.",
         "keepsRunning": "Elle continue si vous fermez cette fenêtre. Gardez l'onglet ouvert jusqu'à la fin."
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen consigne chaque plan que vous recevez. Déposez votre dossier LIVE pour les marquer comme possédés ; Game.log et le dossier logbackups sont tous deux lus.",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "Déposez ici le dossier LIVE ou des fichiers log",
+        "privacy": "Vos logs sont lus dans votre navigateur. Seuls les noms des plans sont envoyés à Fleetyards.",
+        "limits": "Seuls les plans reçus dans les logs que le jeu conserve encore peuvent être trouvés. Les logs PTU sont ignorés.",
+        "reading": "Lecture du log %{read} sur %{total}…",
+        "nothingFound": "Aucun plan reçu n'a été trouvé dans ces logs.",
+        "found": {
+          "one": "%{count} plan trouvé dans vos logs.",
+          "other": "%{count} plans trouvés dans vos logs."
+        },
+        "skippedFiles": {
+          "one": "%{count} log PTU ou preview ignoré.",
+          "other": "%{count} logs PTU ou preview ignorés."
+        },
+        "ambiguous": "Ces noms correspondent à plusieurs plans. Cochez ceux que vous possédez.",
+        "done": "%{imported} plans marqués comme possédés, %{unchanged} l'étaient déjà."
+      },
       "blueprintAddToHangar": {
         "ownHint": "Vous avez ce plan.",
         "wishlistHint": "Vous voulez obtenir ce plan.",

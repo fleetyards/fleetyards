@@ -13379,6 +13379,80 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/hangar/blueprint-imports":
+    put:
+      summary: Import blueprints from the game logs
+      tags:
+      - Hangar
+      operationId: importBlueprintsFromLogs
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/BlueprintLogImportInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BlueprintLogImportResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/hangar/blueprint-imports/match":
+    put:
+      summary: Match blueprint names from the game logs
+      tags:
+      - Hangar
+      operationId: matchBlueprintLogNames
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/BlueprintLogMatchInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BlueprintLogMatchList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/blueprint-missions":
     get:
       summary: Missions that hand out a wanted blueprint
@@ -26846,6 +26920,97 @@ components:
       - EQUIPMENT
       - COMMODITY
       title: BlueprintCraftableTypeEnum
+    BlueprintLogImportInput:
+      type: object
+      properties:
+        slugs:
+          type: array
+          items:
+            type: string
+          maxItems: 5000
+          description: The blueprints to mark as owned
+        unmatchedNames:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          maxItems: 5000
+          description: Names from the logs no blueprint matched, kept with the import
+            for the record
+      additionalProperties: false
+      required:
+      - slugs
+      title: BlueprintLogImportInput
+    BlueprintLogImportResult:
+      type: object
+      properties:
+        imported:
+          type: integer
+          description: Newly marked as owned, including those taken off the wishlist
+        unchanged:
+          type: integer
+          description: Already owned before the import
+        importId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - imported
+      - unchanged
+      - importId
+      title: BlueprintLogImportResult
+    BlueprintLogMatch:
+      type: object
+      properties:
+        name:
+          type: string
+        blueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintLogMatchOption"
+      additionalProperties: false
+      required:
+      - name
+      - blueprints
+      title: BlueprintLogMatch
+    BlueprintLogMatchInput:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+            maxLength: 255
+          maxItems: 5000
+          description: Blueprint names as the game log's "Received Blueprint" notifications
+            spell them
+      additionalProperties: false
+      required:
+      - names
+      title: BlueprintLogMatchInput
+    BlueprintLogMatchList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/BlueprintLogMatch"
+      title: BlueprintLogMatchList
+    BlueprintLogMatchOption:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        owned:
+          type: boolean
+        wanted:
+          type: boolean
+      additionalProperties: false
+      required:
+      - slug
+      - name
+      - owned
+      - wanted
+      title: BlueprintLogMatchOption
     BlueprintQuery:
       type: object
       properties:
@@ -43459,6 +43624,10 @@ components:
           type: array
           items:
             type: string
+        missingBlueprints:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       title: ImportDetails
     ImportInput:
@@ -43536,10 +43705,12 @@ components:
       - Imports::HangarImport
       - Imports::HangarSync
       - Imports::BuybackSync
+      - Imports::BlueprintLogImport
       x-enumNames:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_HANGAR_SYNC
       - IMPORTS_BUYBACK_SYNC
+      - IMPORTS_BLUEPRINT_LOG_IMPORT
       title: ImportTypeEnum
     Imports:
       type: object

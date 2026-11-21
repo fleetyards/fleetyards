@@ -352,6 +352,25 @@
         "finished": "Tus pledges de recompra coinciden con tu lista de RSI.",
         "keepsRunning": "Sigue ejecutándose si cierras esta ventana. Mantén la pestaña abierta hasta que termine."
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen registra cada plano que recibes. Suelta tu carpeta LIVE para marcarlos como propios; se leen tanto Game.log como la carpeta logbackups.",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "Suelta aquí la carpeta LIVE o los archivos log",
+        "privacy": "Tus logs se leen en tu navegador. Solo los nombres de los planos se envían a Fleetyards.",
+        "limits": "Solo se pueden encontrar los planos recibidos en logs que el juego aún conserva. Los logs del PTU se omiten.",
+        "reading": "Leyendo log %{read} de %{total}…",
+        "nothingFound": "No se encontraron planos recibidos en estos logs.",
+        "found": {
+          "one": "%{count} plano encontrado en tus logs.",
+          "other": "%{count} planos encontrados en tus logs."
+        },
+        "skippedFiles": {
+          "one": "%{count} log de PTU o preview omitido.",
+          "other": "%{count} logs de PTU o preview omitidos."
+        },
+        "ambiguous": "Estos nombres pertenecen a más de un plano. Marca los que tienes.",
+        "done": "%{imported} planos marcados como propios, %{unchanged} ya lo eran."
+      },
       "blueprintAddToHangar": {
         "ownHint": "Tienes este plano.",
         "wishlistHint": "Quieres conseguir este plano.",

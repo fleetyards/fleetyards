@@ -19,7 +19,8 @@ module V1
           unchanged: {type: :array, items: {type: :string}},
           missing: {type: :array, items: {type: :string}},
           missingComponents: {type: :array, items: {type: :string}},
-          missingUpgrades: {type: :array, items: {type: :string}}
+          missingUpgrades: {type: :array, items: {type: :string}},
+          missingBlueprints: {type: :array, items: {type: :string}}
         },
         additionalProperties: false
       })

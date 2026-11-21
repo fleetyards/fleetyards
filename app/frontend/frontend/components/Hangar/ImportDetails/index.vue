@@ -32,6 +32,7 @@ const DETAIL_SECTIONS = [
   "missing",
   "missingComponents",
   "missingUpgrades",
+  "missingBlueprints",
 ] as const;
 
 const sections = computed(() => {

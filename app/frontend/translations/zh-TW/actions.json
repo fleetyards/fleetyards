@@ -145,6 +145,17 @@
       "showStatusColor": "顯示狀態顏色",
       "hideStatusColor": "隱藏狀態顏色",
       "addToHangar": "新增至機庫",
+      "blueprintLogImport": {
+        "open": "從遊戲日誌匯入",
+        "chooseFolder": "選擇 LIVE 資料夾",
+        "chooseFiles": "選擇日誌檔案",
+        "import": {
+          "one": "匯入 %{count} 個藍圖",
+          "other": "匯入 %{count} 個藍圖"
+        },
+        "startOver": "重新開始",
+        "showImport": "檢視匯入詳情"
+      },
       "blueprint": {
         "addToAssets": "新增至資產",
         "apply": "套用",
