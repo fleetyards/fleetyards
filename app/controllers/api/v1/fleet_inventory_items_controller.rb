@@ -83,16 +83,24 @@ module Api
       # A deposit is carried by the member it is for, else by whoever made it,
       # unless the request says otherwise; a holder sent as null is the
       # unassigned share. A member who has left cannot carry anything, so a
-      # deposit recorded for one falls to the caller. A withdrawal left unsaid
-      # comes out of the unassigned share, as every withdrawal did before stock
-      # had holders.
+      # deposit recorded for one falls to the caller.
+      #
+      # A withdrawal that names nobody comes out of the caller's own share when
+      # it covers the amount, else out of the unassigned share. A client that
+      # knows nothing of holders keeps working against stock it deposited
+      # itself; one that does names the holder, or sends null.
       private def default_holder_id
-        return unless @fleet_inventory_item.deposit?
+        return default_withdrawal_holder_id if @fleet_inventory_item.withdrawal?
 
         member_id = @fleet_inventory_item.member_id
         return member_id if member_id.present? && @fleet.fleet_memberships.kept.accepted.exists?(user_id: member_id)
 
         current_resource_owner.id
+      end
+
+      private def default_withdrawal_holder_id
+        caller_id = current_resource_owner.id
+        caller_id if @fleet_inventory_item.quantity.to_d <= @fleet_inventory_item.lot_held_by(caller_id)
       end
 
       private def fleet_inventory_item_params

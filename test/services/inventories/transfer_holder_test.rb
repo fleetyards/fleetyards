@@ -42,6 +42,26 @@ module Inventories
       assert_equal [nil], builder.transfer.dispatched_entries.pluck(:holder_id)
     end
 
+    test "a shipment without a holder leaves from the actor's share when it covers every line" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 8, holder: @officer)
+
+      builder = send_to_user(8)
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [@officer.id], builder.transfer.dispatched_entries.pluck(:holder_id)
+    end
+
+    test "a null holder ships the unassigned share even when the actor holds enough" do
+      create(:fleet_inventory_item, fleet_inventory: @depot, name: "Medpen", category: :consumable,
+        unit: :units, quantity: 8, holder: @officer)
+
+      builder = send_to_user(5, source_holder_id: nil)
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+      assert_equal [nil], builder.transfer.dispatched_entries.pluck(:holder_id)
+    end
+
     test "a refused shipment goes back to the holder it left" do
       builder = send_to_user(15, source_holder_id: @alice.id)
       builder.call
