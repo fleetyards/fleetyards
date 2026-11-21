@@ -2,12 +2,17 @@
 
 module Loaders
   class ModelJob < ::Loaders::BaseJob
-    def perform(rsi_id)
-      import = Imports::ModelImport.create(input: {rsi_id: rsi_id})
+    def perform(model_id)
+      model = Model.find(model_id)
+      import = Imports::ModelImport.create(input: {model_id: model.id, rsi_id: model.rsi_id})
 
       import.start!
 
-      ::Rsi::ModelsLoader.new.one(rsi_id)
+      if ::Rsi::ModelsLoader.new.one_for(model) == false
+        import.fail!
+        import.update!(info: "No ship matrix entry matches #{model.name}")
+        return
+      end
 
       import.finish!
     rescue => e

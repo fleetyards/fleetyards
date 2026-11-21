@@ -125,14 +125,14 @@ module Admin
         end
 
         def reload_one
-          Loaders::ModelJob.perform_async(@model.rsi_id)
+          Loaders::ModelJob.perform_async(@model.id)
           Loaders::ScData::ModelJob.perform_async(@model.id) if @model.sc_data_identifier.present?
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
 
         def reload_one_matrix
-          Loaders::ModelJob.perform_async(@model.rsi_id)
+          Loaders::ModelJob.perform_async(@model.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
