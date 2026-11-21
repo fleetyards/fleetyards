@@ -32,7 +32,7 @@ export const reviewMatches = (
     } else if (owned.length) {
       // Already holding one of the recipes the name can mean is the answer:
       // the log line is that one being received.
-      review.owned.push(...owned);
+      review.owned.push(owned[0]);
     } else if (match.blueprints.length > 1) {
       review.ambiguous.push(match);
     } else {
