@@ -85,10 +85,10 @@ module Api
       # unassigned share. A member who has left cannot carry anything, so a
       # deposit recorded for one falls to the caller.
       #
-      # A withdrawal that names nobody comes out of the caller's own share when
-      # it covers the amount, else out of the unassigned share. A client that
-      # knows nothing of holders keeps working against stock it deposited
-      # itself; one that does names the holder, or sends null.
+      # A withdrawal that names nobody comes out of the caller's own share of
+      # that lot -- the grade it names -- when it covers the amount, else out of
+      # the unassigned share. One that does know about holders names the
+      # holder, or sends null.
       private def default_holder_id
         return default_withdrawal_holder_id if @fleet_inventory_item.withdrawal?
 
