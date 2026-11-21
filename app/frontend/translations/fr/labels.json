@@ -352,7 +352,8 @@
         "types": {
           "Imports::HangarImport": "Import de hangar",
           "Imports::HangarSync": "Synchronisation du hangar RSI",
-          "Imports::BuybackSync": "Synchronisation des rachats RSI"
+          "Imports::BuybackSync": "Synchronisation des rachats RSI",
+          "Imports::BlueprintLogImport": "Plans depuis les logs du jeu"
         },
         "summary": {
           "imported": "Importés",
@@ -374,7 +375,8 @@
           "unchanged": "Laissés inchangés",
           "missing": "Vaisseaux introuvables",
           "missingComponents": "Composants introuvables",
-          "missingUpgrades": "Améliorations introuvables"
+          "missingUpgrades": "Améliorations introuvables",
+          "missingBlueprints": "Plans introuvables"
         },
         "noDetails": "Cette exécution n'a enregistré aucun détail."
       },
@@ -4970,6 +4972,12 @@
         },
         "requested": "Demande envoyée",
         "friend": "Amis"
+      },
+      "blueprintLogImport": {
+        "fresh": "Nouveaux",
+        "ambiguous": "Choisissez le bon plan",
+        "owned": "Déjà possédés",
+        "unmatched": "Introuvables dans le catalogue"
       },
       "blueprint": {
         "anyGrade": "Toute qualité",

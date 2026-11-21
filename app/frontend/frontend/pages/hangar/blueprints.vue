@@ -17,6 +17,7 @@ import BlueprintsList from "@/frontend/components/Blueprints/List/index.vue";
 import FilterForm from "@/frontend/components/Blueprints/FilterForm/index.vue";
 import MissionFilterForm from "@/frontend/components/Missions/FilterForm/index.vue";
 import WantedMissionsList from "@/frontend/components/Blueprints/WantedMissions/index.vue";
+import BlueprintLogImportBtn from "@/frontend/components/Blueprints/LogImport/index.vue";
 import { useBlueprintSortFields } from "@/frontend/composables/useBlueprintSortFields";
 import { useBlueprintFilters } from "@/frontend/composables/useBlueprintFilters";
 import { useMissionSortFields } from "@/frontend/composables/useMissionSortFields";
@@ -142,6 +143,10 @@ const missionSortFields = useMissionSortFields();
 
     <template #actions-left>
       <BlueprintsTabs :tabs="TABS" />
+    </template>
+
+    <template #actions-right>
+      <BlueprintLogImportBtn />
     </template>
 
     <template #pagination-top>

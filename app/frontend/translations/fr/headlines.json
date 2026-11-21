@@ -273,6 +273,7 @@
       "myVehicleAddons": "Ajouter des modules / mises à jour pour %{vehicle}",
       "myVehicleLoadouts": "Loadouts pour %{vehicle}",
       "addToHangar": "Ajoutez «%{model}» à votre Hangar",
+      "blueprintLogImport": "Importer des plans depuis les logs du jeu",
       "blueprintAddToHangar": "Ajoutez «%{blueprint}» à vos actifs",
       "impressum": "Mentions légales",
       "privacy": "Politique de confidentialité",

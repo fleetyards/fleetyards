@@ -145,6 +145,17 @@
       "showStatusColor": "Mostrar estado como color",
       "hideStatusColor": "Ocultar estado como color",
       "addToHangar": "Añadir al hangar",
+      "blueprintLogImport": {
+        "open": "Importar desde los logs del juego",
+        "chooseFolder": "Elegir carpeta LIVE",
+        "chooseFiles": "Elegir archivos log",
+        "import": {
+          "one": "Importar %{count} plano",
+          "other": "Importar %{count} planos"
+        },
+        "startOver": "Empezar de nuevo",
+        "showImport": "Ver detalles de la importación"
+      },
       "blueprint": {
         "addToAssets": "Añadir a activos",
         "apply": "Aplicar",

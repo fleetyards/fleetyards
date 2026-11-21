@@ -353,6 +353,25 @@
         "finished": "Deine Rückkauf-Pledges entsprechen deiner RSI-Liste.",
         "keepsRunning": "Es läuft weiter, wenn du dieses Fenster schließt. Lass den Tab offen, bis es fertig ist."
       },
+      "blueprintLogImport": {
+        "intro": "Star Citizen protokolliert jedes Blueprint, das du erhältst. Zieh deinen LIVE-Ordner hierher, um sie als besessen zu markieren; Game.log und der Ordner logbackups werden beide gelesen.",
+        "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
+        "drop": "LIVE-Ordner oder Log-Dateien hier ablegen",
+        "privacy": "Deine Logs werden in deinem Browser gelesen. Nur die Namen der Blueprints werden an Fleetyards gesendet.",
+        "limits": "Nur Blueprints aus Logs, die das Spiel noch aufbewahrt, können gefunden werden. PTU-Logs werden übersprungen.",
+        "reading": "Lese Log %{read} von %{total}…",
+        "nothingFound": "In diesen Logs wurden keine erhaltenen Blueprints gefunden.",
+        "found": {
+          "one": "%{count} Blueprint in deinen Logs gefunden.",
+          "other": "%{count} Blueprints in deinen Logs gefunden."
+        },
+        "skippedFiles": {
+          "one": "%{count} PTU- oder Preview-Log übersprungen.",
+          "other": "%{count} PTU- oder Preview-Logs übersprungen."
+        },
+        "ambiguous": "Diese Namen gehören zu mehr als einem Blueprint. Wähle die aus, die du hast.",
+        "done": "%{imported} Blueprints als besessen markiert, %{unchanged} waren bereits vorhanden."
+      },
       "blueprintAddToHangar": {
         "ownHint": "Du hast diese Blaupause.",
         "wishlistHint": "Du möchtest diese Blaupause bekommen.",
