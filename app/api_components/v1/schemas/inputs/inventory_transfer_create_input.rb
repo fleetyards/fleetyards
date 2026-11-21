@@ -17,6 +17,10 @@ module V1
           type: :object,
           properties: {
             sourceInventoryId: {type: :string, format: :uuid},
+            # The member whose share of a fleet inventory the goods leave from;
+            # left out or null, the unassigned share. Ignored for any other
+            # source.
+            sourceHolderId: {type: [:string, :null], format: :uuid},
             lines: {
               type: :array,
               minItems: 1,

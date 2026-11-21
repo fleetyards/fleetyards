@@ -21,9 +21,10 @@ module Inventories
       end
     end
 
-    # `member_id` is deliberately never filled. It records which member the
-    # goods physically belong to, which a transfer from outside the fleet cannot
-    # know and must not guess.
+    # `member_id` is deliberately never filled: a transfer from outside the
+    # fleet cannot know which member the goods are for and must not guess. The
+    # holder is not carried either -- goods arriving are carried by nobody until
+    # someone takes them -- except back to the source, see `return_to_source`.
     CARRIED = %i[name category unit item_type item_id crafted_blueprint_id crafted_qualities].freeze
 
     def initialize(transfer, actor:)
@@ -37,10 +38,10 @@ module Inventories
     # One withdrawal per quality grade the line is spent across, so a
     # withdrawal never lands in a grade the stock does not hold -- see
     # `TransferLine`.
-    def dispatch(lines)
+    def dispatch(lines, **holder)
       lines.flat_map do |line|
         line.allocations.map do |allocation|
-          write(@transfer.source, line.attributes_for(allocation), :withdrawal)
+          write(@transfer.source, line.attributes_for(allocation).merge(holder), :withdrawal)
         end
       end
     end
@@ -52,15 +53,21 @@ module Inventories
 
     # A refusal is a compensating deposit, not a deletion. The sender's history
     # reads -96, +96 rather than going quiet.
+    #
+    # Back into the share it left, so a refused shipment does not land in the
+    # unassigned stock of a fleet that knew exactly who had it.
     def return_to_source
-      mirror_into(@transfer.source)
+      mirror_into(@transfer.source, keep_holder: true)
     end
 
-    private def mirror_into(inventory)
+    private def mirror_into(inventory, keep_holder: false)
       raise ArgumentError, "no inventory to mirror into" if inventory.blank?
 
       @transfer.dispatched_entries.map do |entry|
-        write(inventory, carried_from(entry), :deposit)
+        attributes = carried_from(entry)
+        attributes[:holder_id] = entry.holder_id if keep_holder && entry.has_attribute?(:holder_id)
+
+        write(inventory, attributes, :deposit)
       end
     end
 

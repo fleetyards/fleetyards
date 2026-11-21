@@ -18,8 +18,10 @@ module Inventories
     # never reached them.
     attr_reader :transfer, :refusal, :quantity
 
-    def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil, contract: nil)
+    def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil, contract: nil,
+      source_holder_id: nil)
       @source = source
+      @source_holder_id = source_holder_id.presence
       @actor = actor
       @requested_lines = Array(lines)
       @destination = destination
@@ -59,7 +61,7 @@ module Inventories
           raise ::ActiveRecord::Rollback
         end
 
-        TransferExecutor.new(@transfer, actor: @actor).dispatch(lines)
+        TransferExecutor.new(@transfer, actor: @actor).dispatch(lines, **holder_filter)
 
         complete_immediately if immediate?
       end
@@ -230,7 +232,7 @@ module Inventories
     # the grades it was made from. `current_stock` is the same rollup the list
     # renders, so a line can only be spent on lots the reader can see.
     private def grades_for(position)
-      @grades ||= @source.current_stock.group_by { |row| row.position_id }
+      @grades ||= @source.current_stock(**holder_filter).group_by { |row| row.position_id }
 
       (@grades[position.id] || []).map do |row|
         lot = TransferLine::Lot.new(
@@ -239,6 +241,12 @@ module Inventories
 
         [lot, row.net_quantity]
       end
+    end
+
+    # A fleet's stock is split between the members carrying it, and a shipment
+    # leaves from one of them -- the unassigned share when nobody is named.
+    private def holder_filter
+      @source.is_a?(::FleetInventory) ? {holder_id: @source_holder_id} : {}
     end
 
     private def resolve_line(line)

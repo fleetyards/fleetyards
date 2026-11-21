@@ -78,7 +78,8 @@ module InventoryTransferActions
       destination:,
       recipient: find_recipient,
       note: transfer_params[:note],
-      contract:
+      contract:,
+      source_holder_id: transfer_params[:source_holder_id]
     )
 
     unless builder.call
@@ -236,7 +237,7 @@ module InventoryTransferActions
 
   private def transfer_params
     params.permit(:note, :inventory_id, :fleet_inventory_id, :vehicle_id,
-      :recipient_username, :recipient_fleet_slug, :source_inventory_id, :contract_id,
+      :recipient_username, :recipient_fleet_slug, :source_inventory_id, :source_holder_id, :contract_id,
       lines: [:position_id, :quantity])
   end
 
