@@ -472,6 +472,10 @@ module InventoryLedgerEntry
     {}
   end
 
+  private def lot_shortfall_message(current)
+    "exceeds the stock at this grade (#{current})"
+  end
+
   private def stock_shortfall_message(current)
     "exceeds current stock (#{current})"
   end
@@ -490,14 +494,20 @@ module InventoryLedgerEntry
       return
     end
 
-    crafted_withdrawal_does_not_exceed_lot if crafted?
+    withdrawal_does_not_exceed_lot if crafted? || lots_held_apart?
+  end
+
+  # Whether every grade is checked as a lot of its own, not only a crafted
+  # part. A ledger whose stock is one pool per position does not.
+  private def lots_held_apart?
+    false
   end
 
   # A crafted lot is stock of its own: the position holding enough does not
   # mean this lot does, and an overdrawn lot drops out of the stock unseen.
   # Matched on everything `current_stock` groups a lot by, the grade column
   # included.
-  private def crafted_withdrawal_does_not_exceed_lot
+  private def withdrawal_does_not_exceed_lot
     lot = self.class.where(
       self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
       :quality => quality, :crafted_blueprint_id => crafted_blueprint_id, **balance_conditions
@@ -507,6 +517,7 @@ module InventoryLedgerEntry
 
     return if quantity <= current
 
-    errors.add(:quantity, :insufficient_stock, message: "exceeds the crafted lot's stock (#{current})")
+    errors.add(:quantity, :insufficient_stock,
+      message: crafted? ? "exceeds the crafted lot's stock (#{current})" : lot_shortfall_message(current))
   end
 end

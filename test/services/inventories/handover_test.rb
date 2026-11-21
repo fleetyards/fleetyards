@@ -43,7 +43,7 @@ module Inventories
       assert_no_difference "FleetInventoryItem.count" do
         assert_not result.call
       end
-      assert_includes result.errors[:quantity].join, "holds of this lot (0.0)"
+      assert_includes result.errors[:quantity].join, "holds at this grade (0"
     end
 
     test "hands over into the unassigned share" do

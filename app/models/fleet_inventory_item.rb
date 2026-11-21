@@ -41,6 +41,19 @@ class FleetInventoryItem < ApplicationRecord
     {holder_id:}
   end
 
+  # A holder's share is split by grade like the stock is, so a withdrawal at
+  # a grade its holder does not carry would leave a negative lot the stock
+  # list hides, and the holders of a row would stop adding up to its total.
+  private def lots_held_apart?
+    true
+  end
+
+  private def lot_shortfall_message(current)
+    return "exceeds the unassigned stock at this grade (#{current})" if holder.nil?
+
+    "exceeds what #{holder.username} holds at this grade (#{current})"
+  end
+
   private def stock_shortfall_message(current)
     return "exceeds the unassigned stock (#{current})" if holder.nil?
 

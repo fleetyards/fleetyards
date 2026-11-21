@@ -33,39 +33,11 @@ module Inventories
       end
 
       ::ActiveRecord::Base.transaction do
-        @inventory.lock!
-
-        available = lot_balance
-
-        if quantity > available
-          errors.add(:quantity, :insufficient_stock,
-            message: "exceeds what #{from_holder_label} holds of this lot (#{available.to_f})")
-          raise ::ActiveRecord::Rollback
-        end
-
         write(:withdrawal, from_holder_id)
         write(:deposit, to_holder_id)
       end
 
       errors.empty?
-    end
-
-    # The withdrawal is checked against the position, and a crafted part
-    # against its lot, but a grade of ore is not -- and a hand-over that takes
-    # 600-grade stock out at no grade at all splits the giver's share into a
-    # negative lot the list hides and a positive one it still shows.
-    private def lot_balance
-      lot = @inventory.fleet_inventory_items.where(
-        fleet_inventory_position_id: @stock_item.position_id, holder_id: from_holder_id,
-        quality: @quality, crafted_blueprint_id: @crafted_blueprint_id
-      )
-      lot = @crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", @crafted_qualities.to_json)
-
-      lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
-    end
-
-    private def from_holder_label
-      ::User.find_by(id: from_holder_id)&.username || "the unassigned stock"
     end
 
     private def write(entry_type, holder_id)

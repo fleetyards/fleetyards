@@ -82,4 +82,15 @@ class FleetInventoryItemHolderTest < ActiveSupport::TestCase
       deposit(@alice, 10, handover: true)
     end
   end
+
+  test "a withdrawal comes out of its holder's share at that grade" do
+    deposit(@alice, 10, quality: 600)
+    deposit(nil, 10, quality: 500)
+
+    entry = withdrawal(@alice, 5, quality: 500)
+
+    assert_not entry.valid?
+    assert_includes entry.errors[:quantity].join, "exceeds what #{@alice.username} holds at this grade (0"
+    assert_predicate withdrawal(@alice, 5, quality: 600), :valid?
+  end
 end
