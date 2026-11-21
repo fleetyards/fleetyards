@@ -4485,3 +4485,6 @@ PUT /notifications/{id}/archive added the new `feedback_reply` enum value to the
 PUT /notifications/{id}/read added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `feedback_reply` enum value to the `notificationType` response property for the response status `200`
+GET /imports added the new `Imports::BlueprintLogImport` enum value to the `items/items/type` response property for the response status `200`
+GET /imports/{id} added the new `Imports::BlueprintLogImport` enum value to the `type` response property for the response status `200`
+PUT /imports/{id}/cancel added the new `Imports::BlueprintLogImport` enum value to the `type` response property for the response status `200`
