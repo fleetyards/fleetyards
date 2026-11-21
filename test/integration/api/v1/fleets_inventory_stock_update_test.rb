@@ -218,4 +218,23 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 401,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug}
   end
+
+  test "PATCH /stock/:slug lists the holders a merge brought in" do
+    alice = create(:user)
+    bob = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: alice, aasm_state: :accepted)
+    create(:fleet_membership, fleet: @fleet, user: bob, aasm_state: :accepted)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Alpha", category: :other, unit: :units,
+      quantity: 10, holder: alice)
+    create(:fleet_inventory_item, fleet_inventory: @inventory, name: "Beta", category: :other, unit: :units,
+      quantity: 5, holder: bob)
+    sign_in @admin
+
+    patch "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}/stock/alpha--other--units",
+      params: {name: "Beta"}, as: :json
+
+    assert_response :ok
+    assert_equal({alice.username => 10.0, bob.username => 5.0},
+      parsed_body["holders"].to_h { |share| [share.dig("holder", "username"), share["netQuantity"]] })
+  end
 end

@@ -22,7 +22,7 @@ module Api
       # 404 rather than a 403 that would confirm it exists.
       before_action :inventory
       before_action :set_stock_item, only: %i[show update destroy handover]
-      before_action :set_holder_balances, only: %i[index show update]
+      before_action :set_holder_balances, only: %i[index]
 
       def handover
         authorize_stock!(:create?)
@@ -36,7 +36,6 @@ module Api
         end
 
         @stock_item = inventory.stock_item(@stock_item.slug)
-        set_holder_balances
 
         render :show
       end
