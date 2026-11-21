@@ -38,6 +38,7 @@ json.friends_hangar user.friends_hangar
 json.friends_hangar_stats user.friends_hangar_stats
 json.friends_wishlist user.friends_wishlist
 json.hide_owner user.hide_owner
+json.new_vehicles_public user.new_vehicles_public
 json.tracking user.tracking
 json.show_online_status user.show_online_status
 

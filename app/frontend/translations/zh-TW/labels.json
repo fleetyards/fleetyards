@@ -2713,6 +2713,8 @@
         "publicHangarStats": "公開機庫統計已啟用",
         "publicWishlist": "公開願望清單已啟用",
         "hideOwner": "為艦隊隱藏擁有權",
+        "newVehiclesPublic": "在我的公開機庫中顯示新艦船",
+        "newVehiclesPublicDescription": "適用於你新增到機庫的艦船，無論是手動新增、匯入還是透過 RSI 機庫同步。已在機庫中的艦船保留各自的設定。",
         "tracking": "允許匿名使用分析",
         "showOnlineStatus": "顯示我的上線狀態",
         "supporterListed": "支持者頁面",

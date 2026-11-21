@@ -174,6 +174,44 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201, body: {modelId: model.id}
   end
 
+  test "POST /vehicles shows the new ship in the public hangar by default" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {modelId: model.id}
+
+    assert_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
+  test "POST /vehicles keeps the new ship hidden when the owner hides new ships" do
+    model = create(:model)
+    @user.update!(new_vehicles_public: false)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {modelId: model.id}
+
+    assert_not_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
+  test "POST /vehicles leaves a new wishlist entry public whatever the hangar default" do
+    model = create(:model)
+    @user.update!(new_vehicles_public: false)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {modelId: model.id, wanted: true}
+
+    assert_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
+  test "POST /vehicles takes an explicit visibility over the owner's default" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {modelId: model.id, public: false}
+
+    assert_not_predicate @user.vehicles.find_by!(model:), :public?
+  end
+
   test "POST /vehicles returns 401 when not signed in" do
     model = create(:model)
 

@@ -256,12 +256,14 @@ class HangarSync < HangarImporter
       .or(syncable_vehicles.where.not(rsi_pledge_id: nil))
       .order(created_at: :asc)
 
+    new_vehicles_public = User.where(id: user_id).pick(:new_vehicles_public)
+
     @ships.each_with_index do |item, index|
       break if stop_requested?(index)
 
       model_query = generate_model_query(item[:name])
       paint_query = generate_paint_query(item[:name])
-      params = default_params(user_id, item)
+      params = default_params(user_id, item, public: new_vehicles_public)
 
       model = Model.where(model_query).first
       if model.present?
@@ -780,14 +782,14 @@ class HangarSync < HangarImporter
     rows.map { |id, model_id| [id, model_id, owned.fetch(id, [])] }
   end
 
-  private def default_params(user_id, item)
+  private def default_params(user_id, item, public:)
     {
       notify: false,
       user_id:,
       name: item[:custom_name],
       wanted: false,
       bought_via: :pledge_store,
-      public: true,
+      public:,
       name_visible: false,
       sale_notify: false,
       rsi_pledge_id: item[:id],

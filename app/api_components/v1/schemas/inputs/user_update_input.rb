@@ -27,6 +27,7 @@ module V1
             friendsHangarStats: {type: :boolean},
             friendsWishlist: {type: :boolean},
             hideOwner: {type: :boolean},
+            newVehiclesPublic: {type: :boolean},
             tracking: {type: :boolean},
             showOnlineStatus: {type: :boolean},
             supporterListed: {type: [:boolean, :null]},

@@ -54138,6 +54138,8 @@ components:
           type: boolean
         hideOwner:
           type: boolean
+        newVehiclesPublic:
+          type: boolean
         tracking:
           type: boolean
         showOnlineStatus:
@@ -54205,6 +54207,7 @@ components:
       - friendsHangarStats
       - friendsWishlist
       - hideOwner
+      - newVehiclesPublic
       - tracking
       - showOnlineStatus
       - supporter
@@ -54494,6 +54497,8 @@ components:
         friendsWishlist:
           type: boolean
         hideOwner:
+          type: boolean
+        newVehiclesPublic:
           type: boolean
         tracking:
           type: boolean

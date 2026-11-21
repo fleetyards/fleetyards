@@ -92,6 +92,30 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_predicate Vehicle.find_by(user_id: @user.id), :bought_via_reward_or_loot?
   end
 
+  test "keeps the visibility a file gives a ship" do
+    import = import_for([{name: @model.name, slug: @model.slug, public: false}])
+
+    ::HangarImporter.new(import).run
+
+    assert_not_predicate Vehicle.find_by(user_id: @user.id, loaner: false, bundled: false), :public?
+  end
+
+  test "gives a ship the file says nothing about the owner's visibility for new ships" do
+    @user.update!(new_vehicles_public: true)
+    import = import_for([{name: @model.name, slug: @model.slug}])
+
+    ::HangarImporter.new(import).run
+
+    assert_predicate Vehicle.find_by(user_id: @user.id, loaner: false, bundled: false), :public?
+
+    Vehicle.where(user_id: @user.id).destroy_all
+    @user.update!(new_vehicles_public: false)
+
+    ::HangarImporter.new(import_for([{name: @model.name, slug: @model.slug}])).run
+
+    assert_not_predicate Vehicle.find_by(user_id: @user.id, loaner: false, bundled: false), :public?
+  end
+
   test "assigns the groups named in the file when no target group is set" do
     create_group("Main")
     import = import_for([{name: @model.name, slug: @model.slug, groups: ["Main"]}])

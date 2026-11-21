@@ -16,7 +16,7 @@ module Api
 
       def create
         @vehicle = Vehicle.new(
-          vehicle_params.merge(public: true)
+          vehicle_params.reverse_merge(public: new_vehicle_public?(vehicle_params, wishlist: true))
         )
         authorize! @vehicle
 
@@ -34,7 +34,7 @@ module Api
 
         Vehicle.transaction do
           (vehicle_create_bulk_params[:vehicles] || []).each do |vehicle_params|
-            new_vehicle = current_resource_owner.vehicles.new(vehicle_params)
+            new_vehicle = current_resource_owner.vehicles.new(vehicle_params.merge(public: new_vehicle_public?(vehicle_params, wishlist: false)))
 
             errors << new_vehicle.errors unless new_vehicle.save
           end
@@ -187,6 +187,15 @@ module Api
 
       private def vehicle_move_params
         params.transform_keys(&:underscore).permit(:after_id, :before_id)
+      end
+
+      # The owner's setting is about the public hangar, so it only decides for a
+      # ship added to the hangar. A wishlist entry gets the visibility the
+      # endpoint has always given it.
+      private def new_vehicle_public?(attributes, wishlist:)
+        return wishlist if ActiveModel::Type::Boolean.new.cast(attributes[:wanted])
+
+        current_resource_owner.new_vehicles_public
       end
 
       private def vehicle_create_bulk_params

@@ -1,15 +1,21 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import type { FilterOption } from "@/services/fyApi";
 
-const currentUser = ref<{ hangarDefaultSort: string | null }>({
+const currentUser = ref<{
+  hangarDefaultSort: string | null;
+  newVehiclesPublic?: boolean;
+}>({
   hangarDefaultSort: null,
 });
 
+const updateProfile = vi.fn(() => Promise.resolve());
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useUpdateProfile: () => ({ mutateAsync: vi.fn(() => Promise.resolve()) }),
+  useUpdateProfile: () => ({ mutateAsync: updateProfile }),
   useMyHangarShare: () => ({
     data: ref({ enabled: false, shareUrl: null }),
     refetch: vi.fn(),
@@ -80,5 +86,21 @@ describe("SettingsHangar", () => {
 
   it("does not clear a choice by picking it again", async () => {
     expect((await defaultSortSelect()).props("nullable")).toBe(false);
+  });
+
+  it("saves whether new ships start in the public hangar", async () => {
+    currentUser.value = { hangarDefaultSort: null, newVehiclesPublic: true };
+    const wrapper = await mount();
+    const toggle = wrapper.find('input[name="newVehiclesPublic"]');
+
+    expect((toggle.element as HTMLInputElement).checked).toBe(true);
+
+    await toggle.setValue(false);
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(updateProfile).toHaveBeenCalledWith({
+      data: expect.objectContaining({ newVehiclesPublic: false }),
+    });
   });
 });
