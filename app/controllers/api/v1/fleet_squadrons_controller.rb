@@ -60,9 +60,10 @@ module Api
       end
 
       def update
+        @fleet_squadron.assign_attributes(fleet_squadron_params)
         authorize! @fleet_squadron
 
-        if @fleet_squadron.update(fleet_squadron_params)
+        if @fleet_squadron.save
           set_viewer_rights
           set_figures
           render :show
@@ -147,7 +148,8 @@ module Api
 
         @squadron_capabilities = {
           manage_members: policy.apply(:create?),
-          manage_ranks: policy.apply(:manage_ranks?)
+          manage_ranks: policy.apply(:manage_ranks?),
+          manage_role_filter: allowed_to?(:update_role_filter?, @fleet_squadron, context: {fleet: @fleet})
         }
 
         @viewer_squadron_role = policy.actor_rank

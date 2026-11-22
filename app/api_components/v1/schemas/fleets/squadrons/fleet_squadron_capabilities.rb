@@ -11,10 +11,11 @@ module V1
             type: :object,
             properties: {
               manageMembers: {type: :boolean},
-              manageRanks: {type: :boolean}
+              manageRanks: {type: :boolean},
+              manageRoleFilter: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[manageMembers manageRanks]
+            required: %w[manageMembers manageRanks manageRoleFilter]
           })
         end
       end

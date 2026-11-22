@@ -19,6 +19,11 @@ module V1
               team: {type: :boolean},
               flightsEnabled: {type: :boolean},
               discordChannelId: {type: [:string, :null]},
+              # The lead's role filter on the ships the members give. Empty
+              # lists filter nothing.
+              classifications: {type: :array, items: {type: :string}},
+              foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
+              fociLabels: {type: :array, items: {type: :string}},
               memberCount: {type: :integer},
               # Only on a single squadron: the reader's own rank in it (absent
               # when they hold none), and what the reader may do to its roster
@@ -46,7 +51,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug team memberCount createdAt updatedAt]
+            required: %w[id name slug team classifications foci fociLabels memberCount createdAt updatedAt]
           })
         end
       end

@@ -37689,6 +37689,18 @@ components:
           type:
           - string
           - 'null'
+        classifications:
+          type: array
+          items:
+            type: string
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
         memberCount:
           type: integer
         viewerRole:
@@ -37726,6 +37738,9 @@ components:
       - name
       - slug
       - team
+      - classifications
+      - foci
+      - fociLabels
       - memberCount
       - createdAt
       - updatedAt
@@ -37737,10 +37752,13 @@ components:
           type: boolean
         manageRanks:
           type: boolean
+        manageRoleFilter:
+          type: boolean
       additionalProperties: false
       required:
       - manageMembers
       - manageRanks
+      - manageRoleFilter
       title: FleetSquadronCapabilities
     FleetSquadronCreateInput:
       type: object
@@ -37771,6 +37789,14 @@ components:
           type:
           - string
           - 'null'
+        classifications:
+          type: array
+          items:
+            type: string
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
       required:
       - name
       additionalProperties: false
@@ -38337,6 +38363,14 @@ components:
           type:
           - string
           - 'null'
+        classifications:
+          type: array
+          items:
+            type: string
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
       additionalProperties: false
       title: FleetSquadronUpdateInput
     FleetSquadronVehicle:
