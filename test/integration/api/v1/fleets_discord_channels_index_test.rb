@@ -103,6 +103,20 @@ class Api::V1::FleetsDiscordChannelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/discord-channels is open to a squadron's Leader" do
+    Discord::ApiClient.stubs(:configured?).returns(false)
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    FleetSquadronRole.setup_defaults!(@fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member),
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key: "leader"))
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal "missing_token", parsed_body["code"]
+    end
+  end
+
   test "GET /fleets/:slug/discord-channels returns 403 for a plain member" do
     sign_in @member
 
