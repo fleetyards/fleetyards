@@ -65,9 +65,7 @@ class FleetSquadronPolicy < FleetBasePolicy
   end
 
   private def role_filter_only_change?
-    record.changed.any? &&
-      (record.changed - ROLE_FILTER_ATTRIBUTES).empty? &&
-      record.attachment_changes.empty?
+    (record.changed - ROLE_FILTER_ATTRIBUTES).empty? && record.attachment_changes.empty?
   end
 
   # Only for somebody who can read the squadron at all, the way the roster

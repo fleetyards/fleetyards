@@ -177,6 +177,15 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug/squadrons/:slug lets the squadron's leader save an unchanged role filter" do
+    @squadron.update!(classifications: ["combat"])
+    sign_in squadron_ranked("co_leader")
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["combat"], foci: []}
+  end
+
   test "PUT /fleets/:slug/squadrons/:slug keeps everything but the role filter from the squadron's leader" do
     leader = squadron_ranked("leader")
     sign_in leader

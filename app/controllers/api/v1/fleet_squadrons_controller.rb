@@ -59,7 +59,10 @@ module Api
         end
       end
 
+      # Asked twice: whether the caller may edit any of it before anything is
+      # assigned, and whether they may make this change once it is.
       def update
+        authorize! @fleet_squadron, to: :update_role_filter?
         @fleet_squadron.assign_attributes(fleet_squadron_params)
         authorize! @fleet_squadron
 
