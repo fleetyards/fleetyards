@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.65.0](https://github.com/fleetyards/fleetyards/compare/v9.64.0...v9.65.0) (2026-11-22)
+
+
+### Features
+
+* **features:** add a maintainers feature flag group ([#6455](https://github.com/fleetyards/fleetyards/issues/6455)) ([7b2d641](https://github.com/fleetyards/fleetyards/commit/7b2d641851e92110e1552884b1f40fa0aa78c3f0))
+* **squadrons:** let a squadron's Leader edit their squadron ([#6460](https://github.com/fleetyards/fleetyards/issues/6460)) ([836a5db](https://github.com/fleetyards/fleetyards/commit/836a5db818d6366c9d2be20460266dcb722027d3))
+* **squadrons:** role filters set by the squadron lead ([#6457](https://github.com/fleetyards/fleetyards/issues/6457)) ([227a4b7](https://github.com/fleetyards/fleetyards/commit/227a4b73d41ca04a8416582a72005bff53d91c45))
+
+
+### Bug Fixes
+
+* **holo:** support quantized meshopt holos across ship, item and dressing room views ([#6458](https://github.com/fleetyards/fleetyards/issues/6458)) ([92e3388](https://github.com/fleetyards/fleetyards/commit/92e3388c375115dae6917015ea3132b1e7e6000c))
+* **loader:** keep the loading spinner below the mobile navigation ([fa49541](https://github.com/fleetyards/fleetyards/commit/fa49541c101c0dec18dab49f3e73034d29cea520))
+
 ## [9.64.0](https://github.com/fleetyards/fleetyards/compare/v9.63.0...v9.64.0) (2026-11-21)
 
 
