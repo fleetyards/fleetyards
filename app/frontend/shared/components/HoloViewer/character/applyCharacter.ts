@@ -22,6 +22,7 @@ import {
   type FaceWeights,
   loadFaceLibrary,
 } from "./faceLibrary";
+import { floatArray } from "../dequantize";
 import { bindToFace, faceOffsets, fitToFace } from "./headBinding";
 import {
   bakeEyes,
@@ -381,7 +382,7 @@ export const fitPieceToFace = (piece: Object3D, character: LoadedCharacter) =>
     mesh.geometry = withPositions(
       mesh.geometry,
       fitToFace(
-        position.array as Float32Array,
+        floatArray(position),
         character.library.meshes.head.base,
         character.offsets,
       ),
