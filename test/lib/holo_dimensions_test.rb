@@ -41,6 +41,16 @@ class HoloDimensionsTest < ActiveSupport::TestCase
     assert_in_delta 10.0, result.z
   end
 
+  # A meshopt export states its bounds as the quantized integers and carries
+  # the scale back to size on the node: read raw, the hull is 65534 x 3 long.
+  test "dequantizes normalized bounds" do
+    result = HoloDimensions.from_file(fixture("quantized"))
+
+    assert_in_delta 2.0, result.x, 0.001
+    assert_in_delta 1.0, result.y, 0.001
+    assert_in_delta 6.0, result.z, 0.001
+  end
+
   test "answers nothing when no accessor states its bounds" do
     assert_nil HoloDimensions.from_file(fixture("no_bounds"))
   end

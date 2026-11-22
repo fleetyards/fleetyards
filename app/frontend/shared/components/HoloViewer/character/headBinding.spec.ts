@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { faceOffsets, fitToFace, followFace } from "./headBinding";
+import { BufferAttribute, BufferGeometry } from "three";
+import { bindToFace, faceOffsets, fitToFace, followFace } from "./headBinding";
 
 describe("followFace", () => {
   it("moves each point by the weighted offsets of the head points it is bound to", () => {
@@ -72,5 +73,31 @@ describe("fitToFace", () => {
     const expected = reference(positions, protos, offsets);
 
     fitted.forEach((value, i) => expect(value).toBeCloseTo(expected[i], 7));
+  });
+});
+
+describe("bindToFace", () => {
+  // A quantized holo stores its points as normalized integers: moved as raw
+  // array values, the face's offsets landed on the integers.
+  it("moves a quantized piece's points by the face", () => {
+    const geometry = new BufferGeometry();
+    geometry.setAttribute(
+      "position",
+      new BufferAttribute(Int16Array.from([16384, 0, 0]), 3, true),
+    );
+    geometry.setAttribute(
+      "_head_idx",
+      new BufferAttribute(Uint16Array.from([0, 0, 0, 0]), 4),
+    );
+    geometry.setAttribute(
+      "_head_w",
+      new BufferAttribute(Float32Array.from([1, 0, 0, 0]), 4),
+    );
+
+    const moved = bindToFace(geometry, Float32Array.from([0.25, 0, 0]));
+    const position = moved.getAttribute("position");
+
+    expect(position.getX(0)).toBeCloseTo(0.75, 3);
+    expect(geometry.getAttribute("position").getX(0)).toBeCloseTo(0.5, 3);
   });
 });

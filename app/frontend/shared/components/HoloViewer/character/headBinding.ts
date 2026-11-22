@@ -1,4 +1,5 @@
-import type { BufferGeometry } from "three";
+import { BufferAttribute, type BufferGeometry } from "three";
+import { floatArray } from "../dequantize";
 
 // How far each head vertex moved from the protos head, which every accessory
 // is authored on: hair, brows and beard move with the face by it.
@@ -40,17 +41,18 @@ export const bindToFace = (geometry: BufferGeometry, offsets: Float32Array) => {
   if (!index || !weight || !position) return geometry;
 
   const moved = geometry.clone();
-  moved
-    .getAttribute("position")
-    .array.set(
+  moved.setAttribute(
+    "position",
+    new BufferAttribute(
       followFace(
-        position.array as Float32Array,
-        index.array,
-        weight.array,
+        floatArray(position),
+        floatArray(index),
+        floatArray(weight),
         offsets,
       ),
-    );
-  moved.getAttribute("position").needsUpdate = true;
+      3,
+    ),
+  );
   moved.computeBoundingBox();
   moved.computeBoundingSphere();
   return moved;
