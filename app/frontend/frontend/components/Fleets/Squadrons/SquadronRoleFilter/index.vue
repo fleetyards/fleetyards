@@ -41,8 +41,14 @@ const classificationLabels = computed(() => {
 });
 
 const labels = computed(() => [
-  ...classificationLabels.value,
-  ...props.squadron.fociLabels,
+  ...classificationLabels.value.map((label, index) => ({
+    key: `classification-${props.squadron.classifications[index]}`,
+    label,
+  })),
+  ...props.squadron.fociLabels.map((label, index) => ({
+    key: `focus-${props.squadron.foci[index]}`,
+    label,
+  })),
 ]);
 
 const editable = computed(
@@ -65,7 +71,7 @@ const openModal = () => {
     </span>
     <span class="squadron-role-filter__values">
       <template v-if="labels.length">
-        <Pill v-for="label in labels" :key="label">{{ label }}</Pill>
+        <Pill v-for="item in labels" :key="item.key">{{ item.label }}</Pill>
       </template>
       <span v-else class="squadron-role-filter__none">
         {{ t("labels.fleet.squadrons.roleFilterNone") }}
