@@ -1,6 +1,7 @@
 import { LoadingManager, TextureLoader } from "three";
 import type { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { dequantizeSkins } from "./dequantize";
 import { sharedDracoLoader } from "./dracoLoader";
 
@@ -12,11 +13,24 @@ const IMAGE_ELEMENT_TEXTURES = "FLEETYARDS_image_element_textures";
 
 const DEQUANTIZED_SKINS = "FLEETYARDS_dequantized_skins";
 
+let meshoptWorkers = false;
+
+// Decoded on the page, a hull of ten million points held it for as long as
+// that took; workers decode beside it, as Draco's do.
+const meshoptDecoder = () => {
+  if (!meshoptWorkers && typeof Worker !== "undefined") {
+    MeshoptDecoder.useWorkers(isLowPowerDevice() ? 1 : 4);
+    meshoptWorkers = true;
+  }
+
+  return MeshoptDecoder;
+};
+
 // Draco or meshopt, whichever the holo was exported with.
 export const prepareGltfLoader = (loader: GLTFLoader) =>
   loader
     .setDRACOLoader(sharedDracoLoader())
-    .setMeshoptDecoder(MeshoptDecoder)
+    .setMeshoptDecoder(meshoptDecoder())
     .register((parser) => {
       parser.textureLoader = new TextureLoader(parser.options.manager)
         .setCrossOrigin(parser.options.crossOrigin)
