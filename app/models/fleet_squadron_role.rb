@@ -26,6 +26,10 @@ class FleetSquadronRole < ApplicationRecord
 
   RANKS_MANAGER_KEYS = %w[leader co_leader].freeze
 
+  # Whoever a squadron puts in charge maintains it, whatever their fleet role:
+  # its name, look and channel. Which squadrons exist stays with the fleet.
+  SQUADRON_EDITOR_KEYS = %w[leader].freeze
+
   # The leadership a squadron cannot do without. A new member never starts
   # there -- each holds one person -- so neither can be the default.
   PERMANENT_KEYS = %w[leader co_leader].freeze
@@ -109,6 +113,10 @@ class FleetSquadronRole < ApplicationRecord
 
   def manages_ranks?
     RANKS_MANAGER_KEYS.include?(key)
+  end
+
+  def edits_squadron?
+    SQUADRON_EDITOR_KEYS.include?(key)
   end
 
   def leader?

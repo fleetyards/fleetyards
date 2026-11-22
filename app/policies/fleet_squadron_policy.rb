@@ -14,21 +14,27 @@ class FleetSquadronPolicy < FleetBasePolicy
   end
 
   # Reads the pending change off the record, so the controller assigns the
-  # attributes before it asks: the squadron's own Leader or Co-Leader may change
-  # its role filter and nothing else.
+  # attributes before it asks: the squadron's Leader may change all of it, its
+  # Co-Leader the role filter and nothing else.
   def update?
-    return true if edit_squadrons?
+    return true if edit?
     return false unless role_filter_only_change?
 
     update_role_filter?
   end
 
-  def update_role_filter?
-    edit_squadrons? || squadron_rank&.manages_ranks? || false
+  # Everything about the squadron: the fleet's squadron editors, and whoever
+  # the squadron itself puts in charge, whatever their fleet role.
+  def edit?
+    edit_squadrons? || squadron_rank&.edits_squadron? || false
   end
 
-  # Arranging the list is the same authority as editing what is in it: whoever
-  # may rename a squadron may say where it sits.
+  def update_role_filter?
+    edit? || squadron_rank&.manages_ranks? || false
+  end
+
+  # The order is the fleet's list, not part of any one squadron, so a rank
+  # inside a squadron does not reach it.
   def move?
     edit_squadrons?
   end
@@ -52,6 +58,7 @@ class FleetSquadronPolicy < FleetBasePolicy
 
     relation
   end
+
 
   params_filter do |params|
     params.permit(:name, :short_description, :description, :color, :team, :flights_enabled, :icon, :discord_channel_id,
