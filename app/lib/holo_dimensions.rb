@@ -4,8 +4,12 @@
 #
 # glTF carries `min`/`max` on every POSITION accessor as metadata, so the box
 # reads out of the JSON without decoding a single vertex. That matters here:
-# the exports are Draco-compressed, and decompressing them would mean a native
-# dependency for a number that is already written down.
+# the exports are Draco- or meshopt-compressed, and decompressing them would
+# mean a native dependency for a number that is already written down.
+#
+# A meshopt export is quantized as well: its positions are normalized integers
+# in a [-1, 1] box, the node carries the scale and offset back to the mesh's
+# size, and the accessor's bounds are stated as the raw integers.
 #
 # The node transforms have to be applied. A Blender export puts the scene
 # rotation on the node as a quaternion -- the Pisces carries one that swaps two
@@ -31,7 +35,7 @@ class HoloDimensions
   # `exact` is false when a node's rotation does not map axes onto axes. The box
   # is then an upper bound: transforming the eight corners of an axis-aligned box
   # gives the box around the rotated *box*, and the corners in between belong to
-  # no vertex. Settling it would need the vertex data, which is Draco-compressed.
+  # no vertex. Settling it would need the vertex data, which is compressed.
   Result = Data.define(:x, :y, :z, :exact) do
     def to_a
       [x, y, z]
@@ -153,8 +157,26 @@ class HoloDimensions
       max = accessor&.dig("max")
       next [] unless min.is_a?(Array) && max.is_a?(Array) && min.size == 3 && max.size == 3
 
+      min, max = [min, max].map { |bound| dequantize(accessor, bound) }
+
       [min[0], max[0]].product([min[1], max[1]], [min[2], max[2]])
     end
+  end
+
+  # Divisors that map a normalized integer component back onto [-1, 1] or
+  # [0, 1], by glTF component type.
+  NORMALIZED_DIVISORS = {
+    5120 => 127.0, # BYTE
+    5121 => 255.0, # UNSIGNED_BYTE
+    5122 => 32_767.0, # SHORT
+    5123 => 65_535.0 # UNSIGNED_SHORT
+  }.freeze
+
+  private def dequantize(accessor, bound)
+    divisor = NORMALIZED_DIVISORS[accessor["componentType"]] if accessor["normalized"]
+    return bound if divisor.nil?
+
+    bound.map { |value| [value.to_f / divisor, -1.0].max }
   end
 
   private def local_matrix(node)

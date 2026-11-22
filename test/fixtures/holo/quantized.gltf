@@ -1,0 +1,64 @@
+{
+  "asset": {
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_mesh_quantization"
+  ],
+  "extensionsRequired": [
+    "KHR_mesh_quantization"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "hull",
+      "mesh": 0,
+      "translation": [
+        0.5,
+        0.0,
+        -1.0
+      ],
+      "scale": [
+        3.0,
+        3.0,
+        3.0
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0
+          }
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "type": "VEC3",
+      "componentType": 5122,
+      "normalized": true,
+      "count": 8,
+      "min": [
+        -10922,
+        -5461,
+        -32767
+      ],
+      "max": [
+        10922,
+        5461,
+        32767
+      ]
+    }
+  ]
+}
