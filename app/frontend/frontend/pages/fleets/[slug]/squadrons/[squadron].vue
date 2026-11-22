@@ -57,12 +57,7 @@ const {
 } = useFleetSquadron(fleetSlug, squadronSlug);
 
 // The squadron's own answer: its Leader edits it whatever their fleet role.
-const canUpdate = computed(
-  () =>
-    squadron.value?.capabilities?.update ??
-    props.membership?.capabilities?.updateSquadrons ??
-    false,
-);
+const canUpdate = computed(() => squadron.value?.capabilities?.update ?? false);
 
 // The squadron's own answer, which counts a squadron rank as well as the
 // fleet role.
