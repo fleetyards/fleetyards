@@ -21,6 +21,10 @@ class FleetSquadronMembership < ApplicationRecord
     prefix: true,
     validate: true
 
+  scope :editing_their_squadron, -> {
+    joins(:fleet_squadron_role).where(fleet_squadron_roles: {key: FleetSquadronRole::SQUADRON_EDITOR_KEYS})
+  }
+
   validates :fleet_membership_id, uniqueness: {scope: :fleet_squadron_id}
 
   validate :membership_belongs_to_same_fleet
