@@ -13,6 +13,7 @@ if @viewer_squadron_role.present?
 end
 
 json.capabilities do
+  json.set! :update, @squadron_capabilities.fetch(:update)
   json.manage_members @squadron_capabilities.fetch(:manage_members)
   json.manage_ranks @squadron_capabilities.fetch(:manage_ranks)
   json.manage_role_filter @squadron_capabilities.fetch(:manage_role_filter)

@@ -70,6 +70,7 @@ describe("SquadronRoleFilter", () => {
 
     const editable = await mount({
       capabilities: {
+        update: false,
         manageMembers: false,
         manageRanks: false,
         manageRoleFilter: true,

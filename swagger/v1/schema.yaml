@@ -37752,6 +37752,8 @@ components:
     FleetSquadronCapabilities:
       type: object
       properties:
+        update:
+          type: boolean
         manageMembers:
           type: boolean
         manageRanks:
@@ -37760,6 +37762,7 @@ components:
           type: boolean
       additionalProperties: false
       required:
+      - update
       - manageMembers
       - manageRanks
       - manageRoleFilter

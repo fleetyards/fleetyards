@@ -10,12 +10,13 @@ module V1
           schema({
             type: :object,
             properties: {
+              update: {type: :boolean},
               manageMembers: {type: :boolean},
               manageRanks: {type: :boolean},
               manageRoleFilter: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[manageMembers manageRanks manageRoleFilter]
+            required: %w[update manageMembers manageRanks manageRoleFilter]
           })
         end
       end

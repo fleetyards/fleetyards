@@ -117,6 +117,17 @@ class Api::V1::FleetsSquadronsMoveTest < ActionDispatch::IntegrationTest
       body: {position: 0}
   end
 
+  test "PUT /fleets/:slug/squadrons/:slug/move is refused to the squadron's Leader" do
+    create(:fleet_squadron_membership, fleet_squadron: @third,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member),
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key: "leader"))
+    sign_in @member
+
+    assert_api_response :put, 403,
+      path_params: {fleetSlug: @fleet.slug, slug: @third.slug},
+      body: {position: 0}
+  end
+
   test "PUT /fleets/:slug/squadrons/:slug/move with OAuth bearer token" do
     assert_api_response :put, 204,
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),

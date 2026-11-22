@@ -101,6 +101,45 @@ class FleetSquadronPolicyTest < ActiveSupport::TestCase
     assert FleetSquadronMembershipPolicy.new(nil, user: manager, fleet: @fleet).apply(:create?)
   end
 
+  def rank(user, squadron, key)
+    FleetSquadronRole.setup_defaults!(@fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: user),
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key: key))
+  end
+
+  test "a squadron's Leader edits that squadron whatever their fleet role" do
+    rank(@member, @squadron, "leader")
+
+    assert policy_for(@member, @squadron).apply(:update?)
+    refute policy_for(@member, @other_squadron).apply(:update?)
+  end
+
+  test "leading a squadron does not reach creating, deleting or reordering squadrons" do
+    rank(@member, @squadron, "leader")
+
+    refute policy_for(@member, @fleet.fleet_squadrons.new).apply(:create?)
+    refute policy_for(@member, @squadron).apply(:destroy?)
+    refute policy_for(@member, @squadron).apply(:move?)
+  end
+
+  test "the ranks below Leader edit only the role filter" do
+    rank(@member, @squadron, "co_leader")
+
+    refute policy_for(@member, @squadron).apply(:edit?)
+    assert policy_for(@member, @squadron).apply(:update_role_filter?)
+
+    @squadron.name = "Renamed"
+    refute policy_for(@member, @squadron).apply(:update?)
+  end
+
+  test "a Leader whose role cannot read squadrons does not edit one" do
+    blind = member_with([])
+    rank(blind, @squadron, "leader")
+
+    refute policy_for(blind, @squadron).apply(:update?)
+  end
+
   test "the relation scope says so rather than answering none without a fleet" do
     assert_raises(ArgumentError) do
       FleetSquadronPolicy.new(nil, user: @admin)

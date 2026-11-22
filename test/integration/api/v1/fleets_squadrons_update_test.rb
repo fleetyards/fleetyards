@@ -186,13 +186,12 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
       body: {classifications: ["combat"], foci: []}
   end
 
-  test "PUT /fleets/:slug/squadrons/:slug keeps everything but the role filter from the squadron's leader" do
-    leader = squadron_ranked("leader")
-    sign_in leader
+  test "PUT /fleets/:slug/squadrons/:slug keeps everything but the role filter from the squadron's co-leader" do
+    sign_in squadron_ranked("co_leader")
 
     assert_api_response :put, 403,
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
-      body: {classifications: ["combat"], name: "Leader Wing"}
+      body: {classifications: ["combat"], name: "Co-Leader Wing"}
 
     assert_equal "Combat Wing", @squadron.reload.name
     assert_empty @squadron.classifications
@@ -205,6 +204,17 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 403,
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
       body: {classifications: ["combat"]}
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug lets the squadron's Leader edit it without a fleet privilege" do
+    sign_in squadron_ranked("leader")
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {name: "Leader Wing"} do
+      assert_equal "Leader Wing", parsed_body["name"]
+      assert parsed_body.dig("capabilities", "update")
+    end
   end
 
   test "PUT /fleets/:slug/squadrons/:slug returns 401 when not signed in" do
