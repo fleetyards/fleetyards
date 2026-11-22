@@ -9,7 +9,9 @@ $progress-bar-offset: -10px;
 .loader {
   position: absolute;
   left: 50%;
-  z-index: 3000;
+  // Above the page and the desktop rail (1000), below pull-to-refresh (1030)
+  // and the mobile navigation (2000): a list's spinner must not cover the bar.
+  z-index: 1020;
   width: $loader-size;
   height: $loader-size;
   margin: $loader-margin auto;
