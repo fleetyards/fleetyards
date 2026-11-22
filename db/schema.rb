@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1429,6 +1429,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_150000) do
     t.boolean "team", default: false, null: false
     t.string "discord_channel_id"
     t.boolean "flights_enabled", default: false, null: false
+    t.string "classifications", default: [], null: false, array: true
+    t.string "foci", default: [], null: false, array: true
     t.index "fleet_id, lower((name)::text)", name: "index_fleet_squadrons_on_fleet_id_and_lower_name", unique: true
     t.index ["fleet_id", "rank"], name: "index_fleet_squadrons_on_fleet_id_and_rank", unique: true
     t.index ["fleet_id", "slug"], name: "index_fleet_squadrons_on_fleet_id_and_slug", unique: true

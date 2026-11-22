@@ -9,6 +9,7 @@ import type { RouteLocationRaw } from "vue-router";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import SquadronRoleFilter from "@/frontend/components/Fleets/Squadrons/SquadronRoleFilter/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Fleet, type FleetSquadron } from "@/services/fyApi";
 
@@ -80,6 +81,10 @@ const hasText = computed(
         </router-link>
       </li>
     </ul>
+    <SquadronRoleFilter
+      :fleet-slug="props.fleet.slug"
+      :squadron="props.squadron"
+    />
     <PanelBody
       class="squadron-description-body"
       :class="{

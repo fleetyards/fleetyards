@@ -16,7 +16,9 @@ module V1
             team: {type: :boolean},
             flightsEnabled: {type: :boolean},
             discordChannelId: {type: [:string, :null]},
-            icon: {type: [:string, :null]}
+            icon: {type: [:string, :null]},
+            classifications: {type: :array, items: {type: :string}},
+            foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum}
           },
           additionalProperties: false
         })

@@ -17,6 +17,7 @@ class FleetSquadronShipRequest < ApplicationRecord
   validate :vehicle_belongs_to_the_member
   validate :vehicle_is_shared_with_the_fleet
   validate :vehicle_is_not_already_given, on: :create
+  validate :vehicle_fits_the_role, on: :create
 
   after_create_commit :notify_member
 
@@ -24,7 +25,13 @@ class FleetSquadronShipRequest < ApplicationRecord
   # request to somebody who has since left is still a row.
   scope :open, -> { joins(fleet_squadron_membership: :fleet_membership).merge(FleetMembership.kept.accepted) }
 
+  # The lead may have narrowed the role since the officer asked.
   def accept!
+    unless fleet_squadron.fits_role?(vehicle.model)
+      errors.add(:vehicle, :outside_role)
+      raise ActiveRecord::RecordInvalid, self
+    end
+
     transaction do
       fleet_squadron_membership.fleet_squadron_membership_vehicles.find_or_create_by!(vehicle:)
       destroy!
@@ -98,5 +105,13 @@ class FleetSquadronShipRequest < ApplicationRecord
       .exists?(id: vehicle_id)
 
     errors.add(:vehicle, :already_given) if given
+  end
+
+  # Accepting adds the ship to what the member gives, but the squadron's role
+  # filter would still keep it out -- a yes that changes nothing.
+  private def vehicle_fits_the_role
+    return if vehicle.blank? || fleet_squadron.blank?
+
+    errors.add(:vehicle, :outside_role) unless fleet_squadron.fits_role?(vehicle.model)
   end
 end

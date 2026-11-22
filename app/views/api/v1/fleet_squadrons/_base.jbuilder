@@ -8,6 +8,9 @@ json.color fleet_squadron.color
 json.team fleet_squadron.team
 json.flights_enabled fleet_squadron.flights_enabled
 json.discord_channel_id fleet_squadron.discord_channel_id
+json.classifications fleet_squadron.classifications
+json.foci fleet_squadron.foci
+json.foci_labels(fleet_squadron.foci.map { |key| ::Model.focus_label(key) })
 
 if fleet_squadron.icon.attached?
   json.icon do

@@ -591,6 +591,7 @@ zh-TW:
           attributes:
             vehicle:
               not_owned: "必須是該成員自己的艦船"
+              outside_role: "不符合該中隊的定位"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -607,6 +608,7 @@ zh-TW:
               not_owned: "必須是該成員自己的艦船"
               not_in_fleet: "必須已與艦隊共享"
               already_given: "已在該中隊的艦船中"
+              outside_role: "不符合該中隊的定位"
             vehicle_id:
               already_requested: "已被請求過"
         mission_ship:

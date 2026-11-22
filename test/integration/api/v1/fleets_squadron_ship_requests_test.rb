@@ -86,6 +86,10 @@ class Api::V1::FleetsSquadronShipRequestsTest < ActionDispatch::IntegrationTest
 
       response(204, "successful")
 
+      response(400, "bad request - the ship no longer fits the squadron's role") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -184,6 +188,18 @@ class Api::V1::FleetsSquadronShipRequestsTest < ActionDispatch::IntegrationTest
       body: {username: @pilot.username, vehicleId: hidden.id}
   end
 
+  test "POST refuses a ship outside the squadron's role" do
+    @vehicle.model.update!(classification: "industrial")
+    @squadron.update!(classifications: ["combat"])
+    sign_in @officer
+
+    assert_api_response :post, 400, path_params: collection_params,
+      body: {username: @pilot.username, vehicleId: @vehicle.id} do
+      codes = parsed_body["errors"].flat_map { |error| error["messages"].pluck("code") }
+      assert_includes codes, "outside_role"
+    end
+  end
+
   test "POST is not found for somebody outside the squadron" do
     sign_in @officer
 
@@ -239,6 +255,18 @@ class Api::V1::FleetsSquadronShipRequestsTest < ActionDispatch::IntegrationTest
 
     assert_equal [@vehicle.id], @row.fleet_squadron_membership_vehicles.map(&:vehicle_id)
     assert_not FleetSquadronShipRequest.exists?(request.id)
+  end
+
+  test "PUT accept refuses a ship the lead has since ruled out of the role" do
+    request = open_request
+    @vehicle.model.update!(classification: "industrial")
+    @squadron.update!(classifications: ["combat"])
+    sign_in @pilot
+
+    assert_api_response :put, 400, path_params: request_params(request)
+
+    assert_empty @row.fleet_squadron_membership_vehicles
+    assert FleetSquadronShipRequest.exists?(request.id)
   end
 
   test "PUT accept is the member's alone" do

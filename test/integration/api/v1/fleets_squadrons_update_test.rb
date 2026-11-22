@@ -138,6 +138,75 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
       body: {name: "Officer Wing"}
   end
 
+  test "PUT /fleets/:slug/squadrons/:slug sets and clears the role filter" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["Combat"], foci: ["light_fighter", "fighter"]} do
+      assert_equal ["combat"], parsed_body["classifications"]
+      assert_equal ["light_fighter", "fighter"], parsed_body["foci"]
+      assert_equal 2, parsed_body["fociLabels"].size
+    end
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: [], foci: []} do
+      assert_empty parsed_body["classifications"]
+      assert_empty parsed_body["foci"]
+    end
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug returns 400 for an unknown classification" do
+    sign_in @admin
+
+    assert_api_response :put, 400,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["spaceship"]}
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug lets the squadron's leader change the role filter" do
+    leader = squadron_ranked("leader")
+    sign_in leader
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["combat"]} do
+      assert_equal ["combat"], parsed_body["classifications"]
+      assert parsed_body.dig("capabilities", "manageRoleFilter")
+    end
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug lets the squadron's leader save an unchanged role filter" do
+    @squadron.update!(classifications: ["combat"])
+    sign_in squadron_ranked("co_leader")
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["combat"], foci: []}
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug keeps everything but the role filter from the squadron's leader" do
+    leader = squadron_ranked("leader")
+    sign_in leader
+
+    assert_api_response :put, 403,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["combat"], name: "Leader Wing"}
+
+    assert_equal "Combat Wing", @squadron.reload.name
+    assert_empty @squadron.classifications
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug keeps the role filter from a plain squadron member" do
+    member = squadron_ranked("member")
+    sign_in member
+
+    assert_api_response :put, 403,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {classifications: ["combat"]}
+  end
+
   test "PUT /fleets/:slug/squadrons/:slug returns 401 when not signed in" do
     assert_api_response :put, 401,
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
@@ -149,5 +218,13 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: {description: "Updated by token"}
+  end
+
+  def squadron_ranked(key)
+    user = create(:user)
+    membership = create(:fleet_membership, :accepted, fleet: @fleet, user:)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: membership,
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key:))
+    user
   end
 end

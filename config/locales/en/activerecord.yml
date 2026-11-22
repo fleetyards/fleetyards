@@ -626,6 +626,7 @@ en:
           attributes:
             vehicle:
               not_owned: "must be one of the member's own ships"
+              outside_role: "does not fit the squadron's role"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -642,6 +643,7 @@ en:
               not_owned: "must be one of the member's own ships"
               not_in_fleet: "must be shared with the fleet"
               already_given: "is already one the squadron gets"
+              outside_role: "does not fit the squadron's role"
             vehicle_id:
               already_requested: "has already been asked for"
         mission_slot:

@@ -307,6 +307,7 @@
           "ranks": "中队职级",
           "editMember": "编辑中队成员",
           "editRank": "编辑中队职级",
+          "editRoleFilter": "编辑定位筛选",
           "teams": "小队",
           "addMembers": "添加成员",
           "members": "成员",

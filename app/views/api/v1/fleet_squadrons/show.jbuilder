@@ -15,6 +15,7 @@ end
 json.capabilities do
   json.manage_members @squadron_capabilities.fetch(:manage_members)
   json.manage_ranks @squadron_capabilities.fetch(:manage_ranks)
+  json.manage_role_filter @squadron_capabilities.fetch(:manage_role_filter)
 end
 
 json.viewer_is_member @viewer_is_member

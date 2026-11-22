@@ -591,6 +591,7 @@ fr:
           attributes:
             vehicle:
               not_owned: "doit être l'un des vaisseaux du membre"
+              outside_role: "ne correspond pas au rôle de l'escadron"
         fleet_squadron_request:
           attributes:
             fleet_membership:
@@ -607,6 +608,7 @@ fr:
               not_owned: "doit être l'un des vaisseaux du membre"
               not_in_fleet: "doit être partagé avec la flotte"
               already_given: "fait déjà partie des vaisseaux de l'escadron"
+              outside_role: "ne correspond pas au rôle de l'escadron"
             vehicle_id:
               already_requested: "a déjà été demandé"
         mission_ship:

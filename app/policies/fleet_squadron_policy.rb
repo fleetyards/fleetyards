@@ -13,14 +13,24 @@ class FleetSquadronPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?([*FleetSquadron::MANAGE_PRIVILEGES, "fleet:squadrons:create"]) || false
   end
 
+  # Reads the pending change off the record, so the controller assigns the
+  # attributes before it asks: the squadron's own Leader or Co-Leader may change
+  # its role filter and nothing else.
   def update?
-    accepted_fleet_membership&.has_access?([*FleetSquadron::MANAGE_PRIVILEGES, "fleet:squadrons:update"]) || false
+    return true if edit_squadrons?
+    return false unless role_filter_only_change?
+
+    update_role_filter?
+  end
+
+  def update_role_filter?
+    edit_squadrons? || squadron_rank&.manages_ranks? || false
   end
 
   # Arranging the list is the same authority as editing what is in it: whoever
   # may rename a squadron may say where it sits.
   def move?
-    update?
+    edit_squadrons?
   end
 
   def destroy?
@@ -44,6 +54,30 @@ class FleetSquadronPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:name, :short_description, :description, :color, :team, :flights_enabled, :icon, :discord_channel_id)
+    params.permit(:name, :short_description, :description, :color, :team, :flights_enabled, :icon, :discord_channel_id,
+      classifications: [], foci: [])
+  end
+
+  ROLE_FILTER_ATTRIBUTES = %w[classifications foci].freeze
+
+  private def edit_squadrons?
+    accepted_fleet_membership&.has_access?([*FleetSquadron::MANAGE_PRIVILEGES, "fleet:squadrons:update"]) || false
+  end
+
+  private def role_filter_only_change?
+    (record.changed - ROLE_FILTER_ATTRIBUTES).empty? && record.attachment_changes.empty?
+  end
+
+  # Only for somebody who can read the squadron at all, the way the roster
+  # rules count a rank.
+  private def squadron_rank
+    return @squadron_rank if defined?(@squadron_rank)
+
+    @squadron_rank = if index? && record.is_a?(FleetSquadron) && record.persisted?
+      FleetSquadronMembership
+        .includes(:fleet_squadron_role)
+        .find_by(fleet_squadron_id: record.id, fleet_membership_id: accepted_fleet_membership.id)
+        &.fleet_squadron_role
+    end
   end
 end
