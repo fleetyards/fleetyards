@@ -123,9 +123,13 @@ class FleetSquadronPolicyTest < ActiveSupport::TestCase
     refute policy_for(@member, @squadron).apply(:move?)
   end
 
-  test "the ranks below Leader do not edit the squadron" do
+  test "the ranks below Leader edit only the role filter" do
     rank(@member, @squadron, "co_leader")
 
+    refute policy_for(@member, @squadron).apply(:edit?)
+    assert policy_for(@member, @squadron).apply(:update_role_filter?)
+
+    @squadron.name = "Renamed"
     refute policy_for(@member, @squadron).apply(:update?)
   end
 
