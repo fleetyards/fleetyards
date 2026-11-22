@@ -17,13 +17,12 @@ class FleetDiscordChannelPolicy < FleetBasePolicy
     ]) || leads_a_squadron?
   end
 
+  # A fleet that switched squadrons off keeps its old rank rows, and they must
+  # not go on opening the channel list.
   private def leads_a_squadron?
+    return false unless accepted_fleet_membership.fleet.squadrons_enabled?
     return false unless accepted_fleet_membership.has_access?(FleetSquadron::READ_PRIVILEGES)
 
-    FleetSquadronMembership
-      .joins(:fleet_squadron_role)
-      .where(fleet_membership: accepted_fleet_membership)
-      .where(fleet_squadron_roles: {key: FleetSquadronRole::SQUADRON_EDITOR_KEYS})
-      .exists?
+    FleetSquadronMembership.editing_their_squadron.exists?(fleet_membership: accepted_fleet_membership)
   end
 end
