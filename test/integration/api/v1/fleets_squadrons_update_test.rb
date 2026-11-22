@@ -143,10 +143,10 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
-      body: {classifications: ["Combat"], foci: ["light_fighter"]} do
+      body: {classifications: ["Combat"], foci: ["light_fighter", "fighter"]} do
       assert_equal ["combat"], parsed_body["classifications"]
-      assert_equal ["light_fighter"], parsed_body["foci"]
-      assert_equal 1, parsed_body["fociLabels"].size
+      assert_equal ["light_fighter", "fighter"], parsed_body["foci"]
+      assert_equal 2, parsed_body["fociLabels"].size
     end
 
     assert_api_response :put, 200,
