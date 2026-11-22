@@ -591,6 +591,7 @@ it:
           attributes:
             vehicle:
               not_owned: "deve essere una delle navi del membro"
+              outside_role: "non è adatta al ruolo dello squadrone"
         fleet_squadron_request:
           attributes:
             fleet_membership:

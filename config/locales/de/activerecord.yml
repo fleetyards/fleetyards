@@ -591,6 +591,7 @@ de:
           attributes:
             vehicle:
               not_owned: "muss ein eigenes Schiff des Mitglieds sein"
+              outside_role: "passt nicht zur Rolle der Staffel"
         fleet_squadron_request:
           attributes:
             fleet_membership:

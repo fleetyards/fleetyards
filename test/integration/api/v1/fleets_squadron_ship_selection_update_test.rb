@@ -68,6 +68,23 @@ class Api::V1::FleetsSquadronShipSelectionUpdateTest < ActionDispatch::Integrati
     end
   end
 
+  test "PUT my-ships refuses a new pick outside the squadron's role and keeps an earlier one" do
+    @first.model.update!(classification: "industrial")
+    @second.model.update!(classification: "industrial")
+    @row.update!(ships_filter: :picked)
+    @row.fleet_squadron_membership_vehicles.create!(vehicle: @first)
+    @squadron.update!(classifications: ["combat"])
+    sign_in @member
+
+    assert_api_response :put, 200, path_params: path_params,
+      body: {shipsFilter: "picked", vehicleIds: [@first.id]}
+
+    assert_api_response :put, 400, path_params: path_params,
+      body: {shipsFilter: "picked", vehicleIds: [@first.id, @second.id]}
+
+    assert_equal [@first.id], @row.fleet_squadron_membership_vehicles.reload.map(&:vehicle_id)
+  end
+
   test "PUT my-ships replaces the picks with the list it is given" do
     @row.update!(ships_filter: :picked)
     @row.fleet_squadron_membership_vehicles.create!(vehicle: @first)

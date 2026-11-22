@@ -626,6 +626,7 @@ en:
           attributes:
             vehicle:
               not_owned: "must be one of the member's own ships"
+              outside_role: "does not fit the squadron's role"
         fleet_squadron_request:
           attributes:
             fleet_membership:
