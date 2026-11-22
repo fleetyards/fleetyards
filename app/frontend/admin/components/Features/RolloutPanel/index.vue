@@ -27,7 +27,7 @@ const { t } = useI18n();
 
 const actions = useFeatureActions(() => props.feature.name);
 
-const KNOWN_GROUPS = ["testers", "admins"];
+const KNOWN_GROUPS = ["testers", "maintainers", "admins"];
 
 // A group enabled from the console that the admin does not offer still shows,
 // so it can be switched off here.
