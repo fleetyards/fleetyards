@@ -47,9 +47,6 @@ const router = useRouter();
 const fleetSlug = computed(() => props.fleet.slug);
 const squadronSlug = computed(() => route.params.squadron as string);
 
-const canUpdate = computed(
-  () => props.membership?.capabilities?.updateSquadrons ?? false,
-);
 const canDestroy = computed(
   () => props.membership?.capabilities?.destroySquadrons ?? false,
 );
@@ -58,6 +55,14 @@ const {
   isLoading,
   refetch: refetchSquadron,
 } = useFleetSquadron(fleetSlug, squadronSlug);
+
+// The squadron's own answer: its Leader edits it whatever their fleet role.
+const canUpdate = computed(
+  () =>
+    squadron.value?.capabilities?.update ??
+    props.membership?.capabilities?.updateSquadrons ??
+    false,
+);
 
 // The squadron's own answer, which counts a squadron rank as well as the
 // fleet role.

@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from "vue-router";
 import { FeatureFlagName } from "@/services/fyApi";
 import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
 
-const SQUADRON_READ_ACCESS = [
+export const SQUADRON_READ_ACCESS = [
   "fleet:squadrons:read",
   "fleet:squadrons:manage",
   "fleet:manage",
@@ -14,18 +14,14 @@ const SQUADRON_CREATE_ACCESS = [
   "fleet:manage",
 ];
 
-const SQUADRON_UPDATE_ACCESS = [
-  "fleet:squadrons:update",
-  "fleet:squadrons:manage",
-  "fleet:manage",
-];
-
 const SQUADRON_CREATE_ROUTES = squadronFormRoutes(
   "create",
   SQUADRON_CREATE_ACCESS,
 );
 
-const SQUADRON_EDIT_ROUTES = squadronFormRoutes("edit", SQUADRON_UPDATE_ACCESS);
+// A squadron's Leader edits it without any fleet privilege, so the route only
+// asks for the read; the edit page checks the squadron's own answer.
+const SQUADRON_EDIT_ROUTES = squadronFormRoutes("edit", SQUADRON_READ_ACCESS);
 
 export const squadronDetailRoutes: RouteRecordRaw[] = [
   {
@@ -119,7 +115,7 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
       title: "fleets.squadrons.edit",
       needsAuthentication: true,
-      access: SQUADRON_UPDATE_ACCESS,
+      access: SQUADRON_READ_ACCESS,
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },

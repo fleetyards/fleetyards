@@ -9,8 +9,10 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
 import SquadronFormShell from "@/frontend/components/Fleets/Squadrons/SquadronFormShell/index.vue";
 import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
+import { SQUADRON_READ_ACCESS } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Fleet,
@@ -37,11 +39,11 @@ const resourceAccess = computed(
   () => props.membership?.fleetRole?.resourceAccess,
 );
 
-const tabRoutes = squadronFormRoutes("edit", [
-  "fleet:squadrons:update",
-  "fleet:squadrons:manage",
-  "fleet:manage",
-]);
+// The routes ask only for the read, since a squadron's Leader edits it without
+// any fleet privilege. Whether this reader may is the squadron's own answer.
+const tabRoutes = squadronFormRoutes("edit", SQUADRON_READ_ACCESS);
+
+const canUpdate = computed(() => squadron.value?.capabilities?.update ?? false);
 
 const crumbs = computed<Crumb[]>(() => [
   {
@@ -73,7 +75,9 @@ const crumbs = computed<Crumb[]>(() => [
 
   <!-- Held until the squadron is here. A form reads its initial values once, so
        building it on a record that has not arrived opens every field empty. -->
-  <template v-if="squadron">
+  <NotAuthorized v-if="squadron && !canUpdate" />
+
+  <template v-else-if="squadron">
     <Heading hero size="hero">
       {{ t("headlines.fleets.squadrons.edit") }}
     </Heading>
