@@ -150,6 +150,7 @@ module Api
         )
 
         @squadron_capabilities = {
+          update: allowed_to?(:edit?, @fleet_squadron),
           manage_members: policy.apply(:create?),
           manage_ranks: policy.apply(:manage_ranks?),
           manage_role_filter: allowed_to?(:update_role_filter?, @fleet_squadron, context: {fleet: @fleet})

@@ -128,7 +128,7 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
-      assert_equal({"manageMembers" => true, "manageRanks" => true, "manageRoleFilter" => true}, parsed_body["capabilities"])
+      assert_equal({"update" => true, "manageMembers" => true, "manageRanks" => true, "manageRoleFilter" => true}, parsed_body["capabilities"])
       assert_nil parsed_body["viewerRole"]
     end
   end
@@ -141,7 +141,7 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
       assert_equal "officer", parsed_body.dig("viewerRole", "key")
-      assert_equal({"manageMembers" => true, "manageRanks" => false, "manageRoleFilter" => false}, parsed_body["capabilities"])
+      assert_equal({"update" => false, "manageMembers" => true, "manageRanks" => false, "manageRoleFilter" => false}, parsed_body["capabilities"])
     end
   end
 
