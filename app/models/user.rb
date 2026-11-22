@@ -376,12 +376,12 @@ class User < ApplicationRecord
   # rows it did not return.
   #
   # Only the gates that can be written as a query are read: the boolean, the
-  # actor list, and the `testers` group, which is a column. The `admins` group
-  # never matches a `User` at all. Neither percentage rollout can be expressed --
-  # one picks a fraction of actors, the other answers differently per call for
-  # the same actor -- and both admit everybody rather than nobody: offering
-  # somebody `TransferGate` may still refuse is the harmless way round, and
-  # hiding somebody who can in fact receive is not.
+  # actor list, and the `testers` and `maintainers` groups, which are columns.
+  # The `admins` group never matches a `User` at all. Neither percentage rollout
+  # can be expressed -- one picks a fraction of actors, the other answers
+  # differently per call for the same actor -- and both admit everybody rather
+  # than nobody: offering somebody `TransferGate` may still refuse is the
+  # harmless way round, and hiding somebody who can in fact receive is not.
   scope :with_feature, ->(name) {
     gates = Flipper.feature(name).gate_values
 
@@ -395,6 +395,7 @@ class User < ApplicationRecord
 
     scoped = where(id: actor_ids)
     scoped = scoped.or(where(tester: true)) if gates.groups.include?("testers")
+    scoped = scoped.or(where(maintainer: true)) if gates.groups.include?("maintainers")
     scoped
   }
 

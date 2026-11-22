@@ -27,12 +27,29 @@ class UserFeatureScopesTest < ActiveSupport::TestCase
     assert_empty User.with_feature(:hangar_planner)
   end
 
-  # `testers` is the one registered group a User can be in, and it is a column.
+  # `testers` and `maintainers` are the registered groups a User can be in, and
+  # both are columns.
   test "admits the testers group" do
     @other.update!(tester: true)
     Flipper.enable_group("hangar_planner", :testers)
 
     assert_equal [@other.id], User.with_feature(:hangar_planner).pluck(:id)
+  end
+
+  test "admits the maintainers group" do
+    @other.update!(maintainer: true)
+    Flipper.enable_group("hangar_planner", :maintainers)
+
+    assert_equal [@other.id], User.with_feature(:hangar_planner).pluck(:id)
+  end
+
+  test "admits both groups together" do
+    @user.update!(tester: true)
+    @other.update!(maintainer: true)
+    Flipper.enable_group("hangar_planner", :testers)
+    Flipper.enable_group("hangar_planner", :maintainers)
+
+    assert_equal [@user.id, @other.id].sort, User.with_feature(:hangar_planner).pluck(:id).sort
   end
 
   # Neither percentage rollout can be written as a query. Admitting everybody
