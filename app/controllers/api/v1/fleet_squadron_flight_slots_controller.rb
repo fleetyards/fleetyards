@@ -29,6 +29,7 @@ module Api
         rows = squadron_rows_by_username(entries.map { |entry| entry[:username] })
 
         MissionSlotCandidate.transaction do
+          @placed = @slot.mission_slot_candidates.pluck(:fleet_squadron_membership_id, :vehicle_id).to_set
           @slot.mission_slot_candidates.delete_all
           entries.each_with_index do |entry, index|
             row = rows[entry[:username].to_s.downcase]
@@ -55,8 +56,9 @@ module Api
       private def vehicle_given?(row, vehicle_id)
         return true if vehicle_id.blank?
 
+        placed = @placed.include?([row.id, vehicle_id])
         FleetVehicle.where(fleet_id: @fleet.id)
-          .where(vehicle_id: FleetSquadron.vehicle_ids_for(fleet_id: @fleet.id, squadron_ids: [@fleet_squadron.id])
+          .where(vehicle_id: FleetSquadron.vehicle_ids_for(fleet_id: @fleet.id, squadron_ids: [@fleet_squadron.id], role: !placed)
             .where("squadron_rows.id": row.id))
           .exists?(vehicle_id:)
       end

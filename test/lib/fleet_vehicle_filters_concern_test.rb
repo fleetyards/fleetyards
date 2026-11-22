@@ -72,6 +72,40 @@ class FleetVehicleFiltersConcernTest < ActiveSupport::TestCase
     assert_equal [@first.id, third.id].sort, squadron_vehicle_ids
   end
 
+  test "the squadron's classifications keep out ships of another class" do
+    @first.model.update!(classification: "combat")
+    @second.model.update!(classification: "industrial")
+    @squadron.update!(classifications: ["combat"])
+
+    assert_equal [@first.id], squadron_vehicle_ids
+  end
+
+  test "the squadron's foci match any ship carrying one of them, umbrellas included" do
+    @first.model.update!(foci: ["light_fighter"])
+    @second.model.update!(foci: ["mining"])
+    @squadron.update!(foci: ["fighter"])
+
+    assert_equal [@first.id], squadron_vehicle_ids
+  end
+
+  test "with classifications and foci set a ship has to match both" do
+    @first.model.update!(classification: "combat", foci: ["light_fighter"])
+    @second.model.update!(classification: "combat", foci: ["gunship"])
+    @squadron.update!(classifications: ["combat"], foci: ["fighter"])
+
+    assert_equal [@first.id], squadron_vehicle_ids
+  end
+
+  test "a loaner outside the role stays out even when its parent is in" do
+    @first.model.update!(classification: "combat")
+    loaner = create(:vehicle, :loaner, user: @member, vehicle_id: @first.id)
+    loaner.model.update!(classification: "ground")
+    @second.model.update!(classification: "industrial")
+    @squadron.update!(classifications: ["combat"])
+
+    assert_equal [@first.id], squadron_vehicle_ids
+  end
+
   test "another fleet's squadron of the same name reaches nothing here" do
     other = create(:fleet, members: [@member])
     create(:fleet_squadron, fleet: other, name: @squadron.name)

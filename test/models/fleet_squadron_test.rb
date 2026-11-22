@@ -13,6 +13,35 @@ class FleetSquadronTest < ActiveSupport::TestCase
     assert_equal "alpha-wing", squadron.slug
   end
 
+  test "normalizes the role filter to catalogue keys" do
+    squadron = create(:fleet_squadron, fleet: @fleet, classifications: ["Combat", "multi-role", "combat"], foci: ["mining", " light_fighter "])
+
+    assert_equal %w[combat multi], squadron.classifications
+    assert_equal %w[light_fighter mining], squadron.foci
+  end
+
+  test "rejects an unknown classification or focus" do
+    squadron = build(:fleet_squadron, fleet: @fleet, classifications: ["spaceship"], foci: ["napping"])
+
+    assert_not squadron.valid?
+    assert_includes squadron.errors.attribute_names, :classifications
+    assert_includes squadron.errors.attribute_names, :foci
+  end
+
+  test "fits_role? lets every model in without a filter and checks both lists with one" do
+    combat_fighter = build(:model, classification: "combat", foci: %w[light_fighter fighter])
+    combat_gunship = build(:model, classification: "combat", foci: %w[gunship])
+    squadron = build(:fleet_squadron, fleet: @fleet)
+
+    assert squadron.fits_role?(combat_gunship)
+
+    squadron.assign_attributes(classifications: ["combat"], foci: ["fighter"])
+
+    assert squadron.fits_role?(combat_fighter)
+    assert_not squadron.fits_role?(combat_gunship)
+    assert_not squadron.fits_role?(nil)
+  end
+
   test "rejects a duplicate name in the same fleet, whatever its case" do
     create(:fleet_squadron, fleet: @fleet, name: "Alpha Wing")
     duplicate = build(:fleet_squadron, fleet: @fleet, name: "alpha wing")

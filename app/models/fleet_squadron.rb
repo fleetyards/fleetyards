@@ -83,6 +83,17 @@ class FleetSquadron < ApplicationRecord
 
   validates :description, length: {maximum: 5000}, allow_blank: true
 
+  # The lead's say over which ships fit the squadron's role, on top of what the
+  # members give it. Empty lists filter nothing; with both set a ship has to
+  # match each.
+  normalizes :classifications, with: ->(values) {
+    Array(values).filter_map { |value| ::Model.normalize_value_for(:classification, value) }.uniq
+  }
+  normalizes :foci, with: ->(value) { ::Model.ordered_foci(value) }
+
+  validate :classifications_must_be_known
+  include FociList
+
   # A squadron is where somebody belongs, so belonging to two at once is the
   # exception: a member holds at most one ordinary squadron in a fleet. A team
   # is the exception made explicit -- a standing detachment, a trade wing, a
@@ -234,11 +245,18 @@ class FleetSquadron < ApplicationRecord
   #
   # A loaner follows its parent: picking a ship, or grouping it, brings the
   # loaners that come with it.
-  def self.vehicle_ids_for(fleet_id:, squadron_ids:)
+  #
+  # The squadron's role filter goes by the ship's own model, so a loaner that
+  # does not fit the role stays out even when its parent is in.
+  #
+  # `role: false` leaves the filter out, for a ship placed before the filter
+  # was tightened: it keeps its place, only new picks have to fit.
+  def self.vehicle_ids_for(fleet_id:, squadron_ids:, role: true)
     filters = FleetSquadronMembership.ships_filters
 
-    Vehicle
+    scope = Vehicle
       .joins(<<~SQL.squish)
+        INNER JOIN models squadron_models ON squadron_models.id = vehicles.model_id
         INNER JOIN fleet_memberships squadron_owners
           ON squadron_owners.user_id = vehicles.user_id
           AND squadron_owners.fleet_id = #{connection.quote(fleet_id)}
@@ -246,6 +264,8 @@ class FleetSquadron < ApplicationRecord
           AND squadron_owners.aasm_state = 'accepted'
         INNER JOIN fleet_squadron_memberships squadron_rows
           ON squadron_rows.fleet_membership_id = squadron_owners.id
+        INNER JOIN fleet_squadrons squadron_roles
+          ON squadron_roles.id = squadron_rows.fleet_squadron_id
       SQL
       .where("squadron_rows.fleet_squadron_id": squadron_ids)
       .where(<<~SQL.squish, all: filters["all"], hangar_group: filters["hangar_group"])
@@ -265,12 +285,36 @@ class FleetSquadron < ApplicationRecord
         )
       SQL
       .select(:id)
+
+    return scope unless role
+
+    scope.where(<<~SQL.squish)
+      (cardinality(squadron_roles.classifications) = 0
+        OR squadron_models.classification = ANY(squadron_roles.classifications))
+      AND (cardinality(squadron_roles.foci) = 0 OR squadron_models.foci && squadron_roles.foci)
+    SQL
   end
 
   # The accepted members' users. Empty for an empty squadron, which is what
   # keeps a `where(user_id: [])` from widening to the whole fleet.
   def member_user_ids
     accepted_fleet_memberships.pluck(:user_id).compact
+  end
+
+  def role_filtered?
+    classifications.any? || foci.any?
+  end
+
+  def fits_role?(model)
+    return true unless role_filtered?
+    return false if model.blank?
+
+    (classifications.empty? || classifications.include?(model.classification)) &&
+      (foci.empty? || foci.intersect?(model.foci))
+  end
+
+  private def classifications_must_be_known
+    errors.add(:classifications, :inclusion) if (classifications - ::Model::CLASSIFICATIONS).any?
   end
 
   private def normalize_color

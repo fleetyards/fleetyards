@@ -607,6 +607,7 @@ es:
               not_owned: "debe ser una de las naves del propio miembro"
               not_in_fleet: "debe estar compartida con la flota"
               already_given: "ya es una de las naves del escuadrón"
+              outside_role: "no encaja con el rol del escuadrón"
             vehicle_id:
               already_requested: "ya se ha solicitado"
         mission_ship:

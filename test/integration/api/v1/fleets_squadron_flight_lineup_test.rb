@@ -357,6 +357,33 @@ class Api::V1::FleetsSquadronFlightLineupTest < ActionDispatch::IntegrationTest
       body: {candidates: [{username: @pilot.username, vehicleId: vehicle.id}]}
   end
 
+  test "PUT candidates refuses a new ship outside the squadron's role" do
+    slot = create(:mission_slot, slottable: @team)
+    vehicle = create(:vehicle, user: @pilot)
+    vehicle.model.update!(classification: "industrial")
+    FleetVehicle.find_or_create_by!(fleet: @fleet, vehicle:)
+    @squadron.update!(classifications: ["combat"])
+    sign_in @officer
+
+    assert_api_response :put, 400, api_path: CANDIDATES, path_params: flight_params(id: slot.id),
+      body: {candidates: [{username: @pilot.username, vehicleId: vehicle.id}]}
+  end
+
+  test "PUT candidates keeps a ship placed before the role filter tightened" do
+    slot = create(:mission_slot, slottable: @team)
+    vehicle = create(:vehicle, user: @pilot)
+    vehicle.model.update!(classification: "industrial")
+    FleetVehicle.find_or_create_by!(fleet: @fleet, vehicle:)
+    slot.mission_slot_candidates.create!(fleet_squadron_membership: @rows[@pilot], vehicle_id: vehicle.id, position: 0)
+    @squadron.update!(classifications: ["combat"])
+    sign_in @officer
+
+    assert_api_response :put, 200, api_path: CANDIDATES, path_params: flight_params(id: slot.id),
+      body: {candidates: [{username: @pilot.username, vehicleId: vehicle.id}, {username: @wingman.username}]} do
+      assert_equal vehicle.id, parsed_body["candidates"].first.dig("vehicle", "id")
+    end
+  end
+
   test "PUT candidates is not found for somebody outside the squadron" do
     slot = create(:mission_slot, slottable: @team)
     sign_in @officer

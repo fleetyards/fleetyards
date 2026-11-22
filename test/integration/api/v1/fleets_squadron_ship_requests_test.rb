@@ -184,6 +184,18 @@ class Api::V1::FleetsSquadronShipRequestsTest < ActionDispatch::IntegrationTest
       body: {username: @pilot.username, vehicleId: hidden.id}
   end
 
+  test "POST refuses a ship outside the squadron's role" do
+    @vehicle.model.update!(classification: "industrial")
+    @squadron.update!(classifications: ["combat"])
+    sign_in @officer
+
+    assert_api_response :post, 400, path_params: collection_params,
+      body: {username: @pilot.username, vehicleId: @vehicle.id} do
+      codes = parsed_body["errors"].flat_map { |error| error["messages"].pluck("code") }
+      assert_includes codes, "outside_role"
+    end
+  end
+
   test "POST is not found for somebody outside the squadron" do
     sign_in @officer
 

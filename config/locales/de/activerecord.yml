@@ -607,6 +607,7 @@ de:
               not_owned: "muss ein eigenes Schiff des Mitglieds sein"
               not_in_fleet: "muss mit der Flotte geteilt sein"
               already_given: "gehört bereits zu den Schiffen der Staffel"
+              outside_role: "passt nicht zur Rolle der Staffel"
             vehicle_id:
               already_requested: "wurde bereits angefragt"
         mission_ship:
