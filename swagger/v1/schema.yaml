@@ -51993,6 +51993,8 @@ components:
           type:
           - string
           - 'null'
+          description: Only when the user shows their own character; otherwise the
+            outfit is worn by the game's default face
         items:
           type: array
           items:
@@ -54549,6 +54551,8 @@ components:
           - string
           - 'null'
           format: uuid
+        publicCharacterFace:
+          type: boolean
         rsiHandle:
           type: string
         rsiHandleVerified:
@@ -54660,6 +54664,7 @@ components:
       - email
       - avatarSource
       - defaultOutfitId
+      - publicCharacterFace
       - dateFormat
       - publicHangar
       - publicHangarLoaners
@@ -54943,6 +54948,10 @@ components:
           description: Signed blob id of your default outfit drawn without its helmet
         avatarSource:
           "$ref": "#/components/schemas/UserAvatarSourceEnum"
+        publicCharacterFace:
+          type: boolean
+          description: Shows your own character on your default outfit to whoever
+            can see your hangar; otherwise the game's default face
         rsiHandle:
           type:
           - string

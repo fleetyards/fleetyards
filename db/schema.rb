@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_23_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_23_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -3382,6 +3382,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_180000) do
     t.uuid "default_outfit_id"
     t.integer "avatar_source", default: 0, null: false
     t.uuid "character_avatar_outfit_id"
+    t.boolean "public_character_face", default: false, null: false
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"

@@ -22,6 +22,7 @@ json.character_avatar_bare do
 end
 json.avatar_source user.avatar_source
 json.default_outfit_id user.default_outfit_id
+json.public_character_face user.public_character_face
 
 json.rsi_handle user.rsi_handle if user.rsi_handle.present?
 json.rsi_handle_verified user.rsi_handle_verified

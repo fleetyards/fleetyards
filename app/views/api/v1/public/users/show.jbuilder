@@ -13,7 +13,9 @@ if (outfit = @user.default_outfit)
   json.character do
     json.body outfit.body
     json.held_weapon outfit.held_weapon
-    json.character_token outfit.character_face&.token
+    # The character file is downloadable by its token: shared only when the
+    # user chose to show their own character.
+    json.character_token(@user.public_character_face? ? outfit.character_face&.token : nil)
     json.items outfit.items.includes(:equipment) do |item|
       json.slot item.slot
       json.slug item.equipment.slug

@@ -19,6 +19,7 @@ module V1
           characterAvatarBare: ::Shared::V1::Schemas::MediaFile,
           avatarSource: ::V1::Schemas::Enums::UserAvatarSourceEnum,
           defaultOutfitId: {type: [:string, :null], format: :uuid},
+          publicCharacterFace: {type: :boolean},
           rsiHandle: {type: :string},
           rsiHandleVerified: {type: :boolean},
           rsiHandleVerifiedVia: ::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
@@ -69,7 +70,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email avatarSource defaultOutfitId dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner newVehiclesPublic tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
+          username email avatarSource defaultOutfitId publicCharacterFace dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner newVehiclesPublic tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

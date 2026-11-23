@@ -12,7 +12,7 @@ module V1
           properties: {
             body: ::V1::Schemas::Enums::OutfitBodyEnum,
             heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum,
-            characterToken: {type: [:string, :null]},
+            characterToken: {type: [:string, :null], description: "Only when the user shows their own character; otherwise the outfit is worn by the game's default face"},
             items: {
               type: :array,
               items: {

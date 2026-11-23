@@ -151,7 +151,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /public/users/:username carries the default outfit to open in the dressing room" do
-    user = create(:user, :public_hangar)
+    user = create(:user, :public_hangar, public_character_face: true)
     face = create(:character_face, user:)
     core = create(:worn_equipment, slot: "torso")
     outfit = create(:outfit, user:, character_face: face)
@@ -170,6 +170,16 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {username: user.username} do
       assert_nil parsed_body["character"]
+    end
+  end
+
+  test "GET /public/users/:username keeps the character to the game's default face unless the user shows their own" do
+    user = create(:user, :public_hangar)
+    outfit = create(:outfit, user:, character_face: create(:character_face, user:))
+    user.update!(default_outfit: outfit)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_nil parsed_body["character"]["characterToken"]
     end
   end
 end

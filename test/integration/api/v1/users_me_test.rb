@@ -326,6 +326,14 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /users/me chooses whether the public profile shows the user's own character" do
+    sign_in create(:user)
+
+    assert_api_response :put, 200, body: {publicCharacterFace: true} do
+      assert parsed_body["publicCharacterFace"]
+    end
+  end
+
   private def character_render(filename)
     ActiveStorage::Blob.create_and_upload!(
       io: Rails.root.join("test/fixtures/files/test.png").open, filename:, content_type: "image/png"

@@ -14,6 +14,7 @@ module V1
             characterAvatarHelmet: {type: [:string, :null], description: "Signed blob id of your default outfit drawn with its helmet"},
             characterAvatarBare: {type: [:string, :null], description: "Signed blob id of your default outfit drawn without its helmet"},
             avatarSource: ::V1::Schemas::Enums::UserAvatarSourceEnum,
+            publicCharacterFace: {type: :boolean, description: "Shows your own character on your default outfit to whoever can see your hangar; otherwise the game's default face"},
             rsiHandle: {type: [:string, :null]},
             displayName: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
             homepage: {type: [:string, :null]},
