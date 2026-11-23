@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.66.0](https://github.com/fleetyards/fleetyards/compare/v9.65.0...v9.66.0) (2026-11-23)
+
+
+### Features
+
+* **dressing-room:** default outfit with character avatars ([#6479](https://github.com/fleetyards/fleetyards/issues/6479)) ([bd0dc63](https://github.com/fleetyards/fleetyards/commit/bd0dc63e9e8c1bb2481986fecb911f088fe09a62))
+
+
+### Bug Fixes
+
+* **dressing-room:** run the collar up to the helmet's rim ([#6477](https://github.com/fleetyards/fleetyards/issues/6477)) ([a976cb3](https://github.com/fleetyards/fleetyards/commit/a976cb369cca98613b4bf31473c02e42b78f6aba))
+* **paints:** merge duplicate paints, mark owned paints on the ship page ([#6480](https://github.com/fleetyards/fleetyards/issues/6480)) ([2912d9d](https://github.com/fleetyards/fleetyards/commit/2912d9df2f9273e4bf4654bf8d0de4db64690f8b))
+* **squadrons:** flight ship picker offers only in-game ships, and a lead keeps their seat beside a ship seat ([#6461](https://github.com/fleetyards/fleetyards/issues/6461)) ([550f6a5](https://github.com/fleetyards/fleetyards/commit/550f6a5207d016bdca67fd163f87f5f7e164aa07))
+* **starmap:** hide what is behind a planet, fade the focused place behind it ([#6475](https://github.com/fleetyards/fleetyards/issues/6475)) ([c94a8f0](https://github.com/fleetyards/fleetyards/commit/c94a8f04d0630848a6fd6f5fe0afb59a1b4f23fa))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6466](https://github.com/fleetyards/fleetyards/issues/6466)) ([81329a9](https://github.com/fleetyards/fleetyards/commit/81329a9dcee6ad3c8de31e0e547cead33b1c97bf))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#6464](https://github.com/fleetyards/fleetyards/issues/6464)) ([fe98774](https://github.com/fleetyards/fleetyards/commit/fe9877472e8f880f5372b55396c920569d396f1b))
+* **deps-dev:** bump knip from 6.45.1 to 6.46.1 ([#6470](https://github.com/fleetyards/fleetyards/issues/6470)) ([13d8bf7](https://github.com/fleetyards/fleetyards/commit/13d8bf746ea30da197554a9c81ea1ccb0182463a))
+* **deps-dev:** bump msw from 3.0.6 to 3.0.7 ([#6469](https://github.com/fleetyards/fleetyards/issues/6469)) ([e4b6f82](https://github.com/fleetyards/fleetyards/commit/e4b6f822ed4158a708c0d4b61905eb88647b44ad))
+* **deps-dev:** bump vitest from 5.1.0 to 5.1.1 ([#6468](https://github.com/fleetyards/fleetyards/issues/6468)) ([0c048ca](https://github.com/fleetyards/fleetyards/commit/0c048ca4f73ee34b7080fe82364800775be5c63c))
+* **deps-dev:** bump webmock from 3.34.0 to 3.35.0 ([#6463](https://github.com/fleetyards/fleetyards/issues/6463)) ([ccd278a](https://github.com/fleetyards/fleetyards/commit/ccd278afca515b1c24e07cb8ee4d4b5a5a7388e7))
+* **deps:** bump @event-calendar/core from 5.19.0 to 5.21.0 ([#6473](https://github.com/fleetyards/fleetyards/issues/6473)) ([ba6fab0](https://github.com/fleetyards/fleetyards/commit/ba6fab089a1e00f7d2b2bb9e0f3f67e5c401a80e))
+* **deps:** bump @tanstack/vue-query from 5.107.1 to 5.108.1 ([#6467](https://github.com/fleetyards/fleetyards/issues/6467)) ([ebffdfb](https://github.com/fleetyards/fleetyards/commit/ebffdfbb9aea565e3d8738c3e1f95a249f97f710))
+* **deps:** bump @tresjs/cientos from 5.11.0 to 5.12.0 ([#6471](https://github.com/fleetyards/fleetyards/issues/6471)) ([cfaf677](https://github.com/fleetyards/fleetyards/commit/cfaf677e9dd63f80cc21c1900760da13b6920023))
+* **deps:** bump @tresjs/core from 5.11.0 to 5.12.0 ([#6472](https://github.com/fleetyards/fleetyards/issues/6472)) ([71c3b53](https://github.com/fleetyards/fleetyards/commit/71c3b5310eb03a29a7d4bc972ca4913487a6a4c7))
+* **deps:** bump aws-sdk-s3 from 1.242.0 to 1.245.0 ([#6465](https://github.com/fleetyards/fleetyards/issues/6465)) ([998168a](https://github.com/fleetyards/fleetyards/commit/998168ab0930185436d6b066496d0057b0204a92))
+* **deps:** bump swagger-ui-dist from 5.35.0 to 5.35.1 ([#6474](https://github.com/fleetyards/fleetyards/issues/6474)) ([93156ee](https://github.com/fleetyards/fleetyards/commit/93156eeb7e60504b29fcc6f14ccd32b4072c1fac))
+
 ## [9.65.0](https://github.com/fleetyards/fleetyards/compare/v9.64.0...v9.65.0) (2026-11-22)
 
 
