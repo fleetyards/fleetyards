@@ -11,6 +11,9 @@ module V1
           properties: {
             avatar: {type: [:string, :null]},
             removeAvatar: {type: :boolean},
+            characterAvatarHelmet: {type: [:string, :null], description: "Signed blob id of your default outfit drawn with its helmet"},
+            characterAvatarBare: {type: [:string, :null], description: "Signed blob id of your default outfit drawn without its helmet"},
+            avatarSource: ::V1::Schemas::Enums::UserAvatarSourceEnum,
             rsiHandle: {type: [:string, :null]},
             displayName: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
             homepage: {type: [:string, :null]},

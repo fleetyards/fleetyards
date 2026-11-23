@@ -19,11 +19,12 @@ module V1
               description: "The user's own character wearing the outfit",
               anyOf: [::V1::Schemas::DressingRoom::OutfitCharacterFace, {type: :null}]
             },
+            default: {type: :boolean, description: "The user's default outfit: the dressing room opens on it and the character avatars are drawn from it"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name items storedItems heldWeapon body characterFace createdAt updatedAt]
+          required: %w[id name items storedItems heldWeapon body characterFace default createdAt updatedAt]
         })
       end
     end

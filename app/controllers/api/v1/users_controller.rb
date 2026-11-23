@@ -120,7 +120,7 @@ module Api
         @user_params ||= begin
           permitted = params.transform_keys(&:underscore)
             .permit(
-              :avatar, :remove_avatar, :display_name, :date_format, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
+              :avatar, :remove_avatar, :character_avatar_helmet, :character_avatar_bare, :avatar_source, :display_name, :date_format, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
               :discord, :homepage, :youtube, :twitch, :public_hangar_loaners, :hangar_default_sort, :hide_owner,
               :friends_hangar, :friends_hangar_stats, :friends_wishlist,
               :location, :current_system, :current_location_id, :tracking, :show_online_status,

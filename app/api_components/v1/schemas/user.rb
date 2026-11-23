@@ -14,6 +14,11 @@ module V1
           email: {type: :string},
           unconfirmedEmail: {type: :string},
           avatar: ::Shared::V1::Schemas::MediaFile,
+          shownAvatar: ::Shared::V1::Schemas::MediaFile,
+          characterAvatarHelmet: ::Shared::V1::Schemas::MediaFile,
+          characterAvatarBare: ::Shared::V1::Schemas::MediaFile,
+          avatarSource: ::V1::Schemas::Enums::UserAvatarSourceEnum,
+          defaultOutfitId: {type: [:string, :null], format: :uuid},
           rsiHandle: {type: :string},
           rsiHandleVerified: {type: :boolean},
           rsiHandleVerifiedVia: ::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
@@ -64,7 +69,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner newVehiclesPublic tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
+          username email avatarSource defaultOutfitId dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner newVehiclesPublic tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

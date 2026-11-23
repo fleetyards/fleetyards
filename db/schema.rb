@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_22_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_23_100100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -3379,6 +3379,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_100000) do
     t.date "last_active_week"
     t.decimal "rsi_store_credit", precision: 15, scale: 2
     t.boolean "new_vehicles_public", default: true, null: false
+    t.uuid "default_outfit_id"
+    t.integer "avatar_source", default: 0, null: false
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
@@ -3386,6 +3388,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_100000) do
     t.index ["claim_key"], name: "index_users_on_claim_key", unique: true, where: "(claim_key IS NOT NULL)"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["current_location_id"], name: "index_users_on_current_location_id"
+    t.index ["default_outfit_id"], name: "index_users_on_default_outfit_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["hangar_share_token"], name: "index_users_on_hangar_share_token", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"
@@ -3817,6 +3820,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_100000) do
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
   add_foreign_key "users", "locations", column: "current_location_id", on_delete: :nullify
+  add_foreign_key "users", "outfits", column: "default_outfit_id", on_delete: :nullify
   add_foreign_key "vehicle_loadout_items", "blueprints", on_delete: :nullify
   add_foreign_key "vehicle_loadout_items", "vehicle_loadouts", on_delete: :cascade
   add_foreign_key "vehicle_loadouts", "vehicles"

@@ -928,4 +928,18 @@ class UserDisplayNameTest < ActiveSupport::TestCase
     assert_not user.valid?
     assert user.errors.added?(:display_name, :too_long, count: User::DISPLAY_NAME_LIMIT)
   end
+
+  test "shown_avatar is the chosen render while its outfit is the default, the upload otherwise" do
+    user = create(:user, :with_avatar)
+    user.character_avatar_bare.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "bare.png")
+    user.update!(avatar_source: "character_bare")
+
+    assert_equal "test.png", user.shown_avatar.filename.to_s
+
+    user.update!(default_outfit: create(:outfit, user:))
+    assert_equal "bare.png", user.shown_avatar.filename.to_s
+
+    user.update!(avatar_source: "character_helmet")
+    assert_equal "test.png", user.shown_avatar.filename.to_s
+  end
 end

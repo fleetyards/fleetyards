@@ -26,7 +26,7 @@ module Api
         authorize! with: OutfitPolicy
 
         @outfits = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(:character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(:user, :character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .order(:name)
       end
 
@@ -38,7 +38,7 @@ module Api
 
         authorize! @outfit, with: OutfitPolicy
 
-        if save_outfit
+        if save_outfit && save_default
           render :show, status: :created
         else
           render json: ValidationError.new("outfits.create", errors: @outfit.errors), status: :bad_request
@@ -48,7 +48,7 @@ module Api
       def update
         @outfit.assign_attributes(outfit_params)
 
-        if save_outfit
+        if save_outfit && save_default
           render :show
         else
           render json: ValidationError.new("outfits.update", errors: @outfit.errors), status: :bad_request
@@ -70,9 +70,24 @@ module Api
         false
       end
 
+      # Marking an outfit moves the default to it; unmarking clears it only while
+      # it is this one.
+      private def save_default
+        return true unless params.key?(:default)
+
+        user = @outfit.user
+        if ActiveModel::Type::Boolean.new.cast(params[:default])
+          user.update_columns(default_outfit_id: @outfit.id, updated_at: Time.current)
+        elsif user.default_outfit_id == @outfit.id
+          user.update_columns(default_outfit_id: nil, updated_at: Time.current)
+        end
+
+        true
+      end
+
       private def set_outfit
         @outfit = authorized_scope(Outfit.all, with: OutfitPolicy)
-          .includes(:character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
+          .includes(:user, :character_face, items: {equipment: EQUIPMENT_PRELOAD}, stored_items: {equipment: EQUIPMENT_PRELOAD})
           .find(params[:id])
 
         authorize! @outfit, to: :show?, with: OutfitPolicy

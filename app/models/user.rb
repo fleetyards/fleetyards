@@ -152,6 +152,7 @@ class User < ApplicationRecord
   has_many :fleetchart_layouts, dependent: :destroy
   has_many :feedbacks, dependent: :destroy
   has_many :outfits, dependent: :destroy
+  belongs_to :default_outfit, class_name: "Outfit", optional: true
   has_many :character_faces, dependent: :destroy
   has_many :carts, dependent: :delete_all
   has_many :raffle_entries, dependent: :nullify
@@ -277,6 +278,39 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   validates :avatar, no_vector_image: true
+
+  # Head-and-shoulders pictures of the default outfit, drawn in the browser,
+  # kept beside the uploaded avatar so the user can switch between them.
+  has_one_attached :character_avatar_helmet
+  has_one_attached :character_avatar_bare
+  validates :character_avatar_helmet, :character_avatar_bare, no_vector_image: true
+
+  enum :avatar_source, {uploaded: 0, character_helmet: 1, character_bare: 2}, prefix: :avatar_from, validate: true
+
+  AVATAR_PRELOADS = {
+    avatar_attachment: :blob,
+    character_avatar_helmet_attachment: :blob,
+    character_avatar_bare_attachment: :blob
+  }.freeze
+
+  scope :with_avatars, -> { includes(AVATAR_PRELOADS) }
+
+  # The picture shown wherever the user appears. A render only stands in while
+  # its outfit is still the default; otherwise, the upload.
+  def shown_avatar
+    render = case avatar_source
+    when "character_helmet" then character_avatar_helmet
+    when "character_bare" then character_avatar_bare
+    end
+
+    (default_outfit_id.present? && render&.attached?) ? render : avatar
+  end
+
+  # For fragments keyed on something other than the user, which would keep an
+  # avatar the user has since switched.
+  def avatar_cache_key
+    shown_avatar.attachment&.blob_id || "none"
+  end
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = [

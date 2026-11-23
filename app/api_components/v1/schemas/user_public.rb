@@ -27,6 +27,7 @@ module V1
           maintainer: {type: :boolean},
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean},
+          character: {anyOf: [::V1::Schemas::DressingRoom::PublicCharacter, {type: :null}]},
           online: {type: :boolean, description: "Only for the user's friends and fleet mates"}
         },
         additionalProperties: false,

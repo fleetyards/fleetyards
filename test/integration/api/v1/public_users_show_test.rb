@@ -149,4 +149,27 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
       assert_not parsed_body.key?("online")
     end
   end
+
+  test "GET /public/users/:username carries the default outfit to open in the dressing room" do
+    user = create(:user, :public_hangar)
+    face = create(:character_face, user:)
+    core = create(:worn_equipment, slot: "torso")
+    outfit = create(:outfit, user:, character_face: face)
+    outfit.update!(item_list: [{slot: "torso", equipment_id: core.id}])
+    user.update!(default_outfit: outfit)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      character = parsed_body["character"]
+      assert_equal face.token, character["characterToken"]
+      assert_equal [{"slot" => "torso", "slug" => core.slug}], character["items"]
+    end
+  end
+
+  test "GET /public/users/:username has no character without a default outfit" do
+    user = create(:user, :public_hangar)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_nil parsed_body["character"]
+    end
+  end
 end
