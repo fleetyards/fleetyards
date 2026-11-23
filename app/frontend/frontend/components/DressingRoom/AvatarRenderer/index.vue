@@ -30,6 +30,12 @@ const portraits: (Blob | null)[] = [];
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
 
+// A capture still running when the renderer is taken down must not report.
+let unmounted = false;
+onBeforeUnmount(() => {
+  unmounted = true;
+});
+
 const current = computed(() => props.models[index.value]);
 
 watch(
@@ -38,6 +44,7 @@ watch(
     if (!instance) return;
 
     portraits.push(await instance.capturePortrait());
+    if (unmounted) return;
 
     if (index.value + 1 < props.models.length) {
       index.value += 1;
