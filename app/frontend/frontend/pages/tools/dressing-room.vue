@@ -18,8 +18,7 @@ import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
 import StageLayout from "@/frontend/components/StageLayout/index.vue";
 import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
-import AvatarRenderer from "@/frontend/components/DressingRoom/AvatarRenderer/index.vue";
-import { useCharacterAvatarUpload } from "@/frontend/composables/useCharacterAvatarUpload";
+import { useCharacterAvatarsStore } from "@/frontend/stores/characterAvatars";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -985,11 +984,8 @@ const defaultOnFigure = computed(() => {
 // saved, and when it stands on the figure without any yet -- marked while
 // another outfit was on screen, or a drawing that failed.
 const avatarsRequested = ref(false);
-const avatarModels = ref<NonNullable<typeof model.value>[]>();
-const avatarRun = ref(0);
+const characterAvatars = useCharacterAvatarsStore();
 const avatarsTriedFor = new Set<string>();
-
-const { upload: uploadAvatars } = useCharacterAvatarUpload();
 
 const sessionStore = useSessionStore();
 
@@ -1013,7 +1009,7 @@ const avatarsMissing = computed(() => {
 
 watch(
   () =>
-    !avatarModels.value &&
+    !characterAvatars.drawing &&
     !!defaultOnFigure.value &&
     (avatarsRequested.value ||
       (avatarsMissing.value &&
@@ -1029,24 +1025,9 @@ watch(
 
     avatarsTriedFor.add(defaultOnFigure.value.id);
     avatarsRequested.value = false;
-    avatarRun.value += 1;
-    avatarModels.value = [model.value, bareModel.value];
+    characterAvatars.draw([model.value, bareModel.value]);
   },
 );
-
-const avatarsRendered = async (portraits: (Blob | null)[]) => {
-  avatarModels.value = undefined;
-
-  try {
-    if (await uploadAvatars(portraits)) {
-      displaySuccess({ text: t("dressingRoom.messages.avatarsUpdated") });
-    } else {
-      displayAlert({ text: t("dressingRoom.messages.avatarsFailed") });
-    }
-  } catch {
-    displayAlert({ text: t("dressingRoom.messages.avatarsFailed") });
-  }
-};
 
 // A visit with nothing on the figure and nothing remembered opens on the
 // default outfit, once: an emptied figure later stays empty.
@@ -1278,18 +1259,12 @@ const copyShareLink = () => {
             :active-id="activeOutfitId"
             @load="loadOutfit"
             @active="setActiveOutfit"
+            :avatars-drawing="characterAvatars.drawing"
             @default-saved="renderAvatars"
           />
         </StagePanel>
       </template>
     </StageLayout>
-    <AvatarRenderer
-      v-if="avatarModels"
-      :key="avatarRun"
-      :models="avatarModels"
-      :azimuth="HOLO_AZIMUTH"
-      @done="avatarsRendered"
-    />
   </div>
 </template>
 
