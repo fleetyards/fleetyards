@@ -4986,7 +4986,8 @@
         "fresh": "Nuevos",
         "ambiguous": "Elige el plano correcto",
         "owned": "Ya propios",
-        "unmatched": "No encontrados en el catálogo"
+        "unmatched": "No encontrados en el catálogo",
+        "skipped": "Omitido"
       },
       "blueprint": {
         "anyGrade": "Cualquier calidad",

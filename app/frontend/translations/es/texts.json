@@ -358,6 +358,11 @@
         "drop": "Suelta aquí la carpeta LIVE o los archivos log",
         "privacy": "Tus logs se leen en tu navegador. Solo los nombres de los planos se envían a Fleetyards.",
         "limits": "Solo se pueden encontrar los planos recibidos en logs que el juego aún conserva. Los logs del PTU se omiten.",
+        "filesFound": {
+          "one": "Se encontró %{count} archivo de log. Revisa la lista antes de leerlo.",
+          "other": "Se encontraron %{count} archivos de log. Revisa la lista antes de leerlos."
+        },
+        "noImportableLogs": "Ninguno de estos logs proviene de LIVE, así que no hay nada que leer.",
         "reading": "Leyendo log %{read} de %{total}…",
         "nothingFound": "No se encontraron planos recibidos en estos logs.",
         "found": {

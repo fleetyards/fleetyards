@@ -4986,7 +4986,8 @@
         "fresh": "Nouveaux",
         "ambiguous": "Choisissez le bon plan",
         "owned": "Déjà possédés",
-        "unmatched": "Introuvables dans le catalogue"
+        "unmatched": "Introuvables dans le catalogue",
+        "skipped": "Ignoré"
       },
       "blueprint": {
         "anyGrade": "Toute qualité",

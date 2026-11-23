@@ -4983,7 +4983,8 @@
         "fresh": "新藍圖",
         "ambiguous": "選擇正確的藍圖",
         "owned": "已擁有",
-        "unmatched": "目錄中找不到"
+        "unmatched": "目錄中找不到",
+        "skipped": "已略過"
       },
       "blueprint": {
         "anyGrade": "任意品質",

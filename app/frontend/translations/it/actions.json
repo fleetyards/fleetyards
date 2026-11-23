@@ -153,6 +153,11 @@
           "one": "Importa %{count} progetto",
           "other": "Importa %{count} progetti"
         },
+        "read": {
+          "zero": "Leggi i log",
+          "one": "Leggi %{count} log",
+          "other": "Leggi %{count} log"
+        },
         "startOver": "Ricomincia",
         "showImport": "Mostra dettagli importazione"
       },

@@ -4983,7 +4983,8 @@
         "fresh": "新蓝图",
         "ambiguous": "选择正确的蓝图",
         "owned": "已拥有",
-        "unmatched": "目录中未找到"
+        "unmatched": "目录中未找到",
+        "skipped": "已跳过"
       },
       "blueprint": {
         "anyGrade": "任意品质",

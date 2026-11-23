@@ -153,6 +153,11 @@
           "one": "Import %{count} blueprint",
           "other": "Import %{count} blueprints"
         },
+        "read": {
+          "zero": "Read logs",
+          "one": "Read %{count} log",
+          "other": "Read %{count} logs"
+        },
         "startOver": "Start over",
         "showImport": "Show import details"
       },

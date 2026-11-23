@@ -358,6 +358,11 @@
         "drop": "Trascina qui la cartella LIVE o i file di log",
         "privacy": "I tuoi log vengono letti nel browser. A Fleetyards vengono inviati solo i nomi dei progetti.",
         "limits": "Si possono trovare solo i progetti ricevuti nei log che il gioco conserva ancora. I log del PTU vengono saltati.",
+        "filesFound": {
+          "one": "Trovato %{count} file di log. Controlla l'elenco prima della lettura.",
+          "other": "Trovati %{count} file di log. Controlla l'elenco prima della lettura."
+        },
+        "noImportableLogs": "Nessuno di questi log proviene da LIVE, quindi non c'è nulla da leggere.",
         "reading": "Lettura del log %{read} di %{total}…",
         "nothingFound": "In questi log non è stato trovato alcun progetto ricevuto.",
         "found": {
