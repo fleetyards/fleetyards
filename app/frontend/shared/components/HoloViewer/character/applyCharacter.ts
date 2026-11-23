@@ -1,10 +1,12 @@
 import {
+  type Bone,
   Box3,
   BufferAttribute,
   type BufferGeometry,
   CanvasTexture,
   Color,
   type Material,
+  Matrix4,
   type Mesh,
   type MeshStandardMaterial,
   type Object3D,
@@ -322,47 +324,81 @@ export const dressHead = (
 // How far up the head mesh the neck runs, from its lowest point: the face
 // library's neck region tops out 6 cm up on both bodies, front and back.
 const NECK_HEIGHT = 0.06;
+// The highest a helmet's rim may sit over the neck's lowest point: the chin
+// starts about 15 cm up. A helmet that reaches no lower in some direction is
+// open there, and the face shows rather than the collar.
+const RIM_CEILING = 0.15;
 // How far the collar runs up inside the helmet, so no skin shows at its rim.
 const RIM_OVERLAP = 0.01;
 // The sectors around the neck the helmet's rim is measured in: a rim sits
 // lower at the chin than at the nape.
 const RIM_SECTORS = 32;
+// Enough of a helmet's points to find its rim.
+const RIM_SAMPLES = 20_000;
 const COLLAR = new Color("#1d2126");
 
-const meshesUnder = (root: Object3D) => {
-  const meshes: Mesh[] = [];
-  root.traverse((node) => {
-    if ((node as Mesh).isMesh) meshes.push(node as Mesh);
-  });
-  return meshes;
+// As plain numbers: a cloned scene copies its nodes' userData through JSON.
+type Rest = number[];
+
+const restOf = (bone: Object3D): Rest => [
+  ...bone.position.toArray(),
+  ...bone.quaternion.toArray(),
+  ...bone.scale.toArray(),
+];
+
+const setPose = (bone: Object3D, pose: Rest) => {
+  bone.position.fromArray(pose, 0);
+  bone.quaternion.fromArray(pose, 3);
+  bone.scale.fromArray(pose, 7);
 };
 
-// Every point of a mesh where it is drawn now, in world space. The stored
-// points of a quantized skin mean nothing on their own: its inverse bind
-// matrices carry the dequantization.
-const drawnPoints = (mesh: Mesh, each: (point: Vector3) => void) => {
+// Remembers each bone's pose as loaded, before any clip moves it, so the
+// collar is measured the same way whatever the figure is doing.
+export const keepRestPose = (root: Object3D) =>
+  root.traverse((node) => {
+    if ((node as Bone).isBone && !node.userData.rest) {
+      node.userData.rest = restOf(node);
+    }
+  });
+
+const atRestPose = <T>(root: Object3D, measure: () => T) => {
+  const posed: [Object3D, Rest][] = [];
+  root.traverse((node) => {
+    const rest = node.userData.rest as Rest | undefined;
+    if (!(node as Bone).isBone || !rest) return;
+    posed.push([node, restOf(node)]);
+    setPose(node, rest);
+  });
+  root.updateMatrixWorld(true);
+
+  try {
+    return measure();
+  } finally {
+    posed.forEach(([node, pose]) => setPose(node, pose));
+    root.updateMatrixWorld(true);
+  }
+};
+
+// Points of a mesh where it is drawn, in the frame of `frame`'s owner, every
+// `stride`th. The stored points of a quantized skin mean nothing on their
+// own: its inverse bind matrices carry the dequantization.
+const drawnPoints = (
+  mesh: Mesh,
+  frame: Matrix4,
+  each: (point: Vector3, index: number) => void,
+  stride = 1,
+) => {
   const position = mesh.geometry.getAttribute("position");
   const skinned = (mesh as SkinnedMesh).isSkinnedMesh
     ? (mesh as SkinnedMesh)
     : undefined;
+  const toFrame = new Matrix4().multiplyMatrices(frame, mesh.matrixWorld);
   const point = new Vector3();
-  for (let index = 0; index < position.count; index++) {
+  for (let index = 0; index < position.count; index += stride) {
     point.fromBufferAttribute(position, index);
     skinned?.applyBoneTransform(index, point);
-    each(point.applyMatrix4(mesh.matrixWorld));
+    each(point.applyMatrix4(toFrame), index);
   }
-};
-
-// The lowest point of the helmet in each sector around the neck's axis.
-const rimHeights = (rims: Object3D[], axis: Vector3) => {
-  const heights = new Array<number>(RIM_SECTORS).fill(Infinity);
-  rims.flatMap(meshesUnder).forEach((mesh) =>
-    drawnPoints(mesh, (point) => {
-      const sector = sectorOf(point, axis);
-      heights[sector] = Math.min(heights[sector], point.y);
-    }),
-  );
-  return heights;
 };
 
 const sectorOf = (point: Vector3, axis: Vector3) => {
@@ -373,54 +409,50 @@ const sectorOf = (point: Vector3, axis: Vector3) => {
   );
 };
 
+// The lowest point of the helmet in each sector around the neck's axis.
+const rimHeights = (rims: Mesh[], frame: Matrix4, axis: Vector3) => {
+  const heights = new Array<number>(RIM_SECTORS).fill(Infinity);
+  rims.forEach((mesh) => {
+    const count = mesh.geometry.getAttribute("position")?.count ?? 0;
+    drawnPoints(
+      mesh,
+      frame,
+      (point) => {
+        const sector = sectorOf(point, axis);
+        heights[sector] = Math.min(heights[sector], point.y);
+      },
+      Math.max(1, Math.ceil(count / RIM_SAMPLES)),
+    );
+  });
+  return heights;
+};
+
 // Under a helmet, the undersuit's collar: the head is drawn dark from the
 // neck up to the helmet's rim, so no skin shows between the rim and the core,
-// while the face above it stays as it is and shows through a visor. A helmet
-// that hides the head draws all of it as the hood. The scene is measured as
-// it stands, with the helmet bound to the body.
-export const dressNeck = (
-  scene: Object3D,
-  hood = false,
-  rims: Object3D[] = [],
-) => {
+// while the face above it stays as it is and shows through a visor or an open
+// front. A helmet that hides the head draws all of it as the hood. `rims` are
+// the helmet's meshes as drawn on the body; everything is measured in the
+// rest pose, in the scene's own frame.
+export const dressNeck = (scene: Object3D, hood = false, rims: Mesh[] = []) => {
   const names = hood ? /_(head|eyes|teeth)$/ : /_head$/;
-  const meshes = meshesUnder(scene).filter((mesh) => names.test(mesh.name));
+  const meshes: Mesh[] = [];
+  scene.traverse((node) => {
+    const mesh = node as Mesh;
+    if (mesh.isMesh && names.test(mesh.name)) meshes.push(mesh);
+  });
   if (!meshes.length) return () => {};
 
-  scene.updateMatrixWorld(true);
-  const drawn = meshes.map((mesh) => {
-    const points: number[] = [];
-    drawnPoints(mesh, (point) => points.push(point.x, point.y, point.z));
-    return points;
-  });
+  const depths = hood
+    ? meshes.map((mesh) =>
+        new Float32Array(mesh.geometry.getAttribute("position").count).fill(-1),
+      )
+    : atRestPose(scene, () => collarDepths(scene, meshes, rims));
 
-  const bounds = new Box3();
-  const point = new Vector3();
-  drawn.forEach((points) => {
-    for (let index = 0; index < points.length; index += 3) {
-      bounds.expandByPoint(point.fromArray(points, index));
-    }
-  });
-  const axis = bounds.getCenter(new Vector3());
-  const neck = bounds.min.y + NECK_HEIGHT;
-  const rim = hood ? [] : rimHeights(rims, axis);
-
-  const undo = meshes.map((mesh, meshIndex) => {
-    const points = drawn[meshIndex];
-    const depth = new Float32Array(points.length / 3);
-    for (let index = 0; index < depth.length; index++) {
-      point.fromArray(points, index * 3);
-      const top = rim[sectorOf(point, axis)];
-      const cut = Math.max(
-        neck,
-        top === undefined || top === Infinity ? -Infinity : top + RIM_OVERLAP,
-      );
-      depth[index] = hood ? -1 : point.y - cut;
-    }
-
+  const undo = meshes.map((mesh, index) => {
     const geometry = mesh.geometry;
-    const previous = geometry.getAttribute("collarDepth");
-    geometry.setAttribute("collarDepth", new BufferAttribute(depth, 1));
+    const dressed = derive(geometry.clone(), geometry);
+    dressed.setAttribute("collarDepth", new BufferAttribute(depths[index], 1));
+    mesh.geometry = dressed;
 
     const current = mesh.material as MeshStandardMaterial;
     const collared = derive(current.clone(), current);
@@ -451,12 +483,45 @@ export const dressNeck = (
     return () => {
       collared.dispose();
       if (mesh.material === collared) mesh.material = current;
-      if (previous) geometry.setAttribute("collarDepth", previous);
-      else geometry.deleteAttribute("collarDepth");
+      dressed.dispose();
+      if (mesh.geometry === dressed) mesh.geometry = geometry;
     };
   });
 
   return () => undo.forEach((step) => step());
+};
+
+// How far each head point sits above the collar's edge; below it is collar.
+const collarDepths = (scene: Object3D, meshes: Mesh[], rims: Mesh[]) => {
+  const frame = scene.matrixWorld.clone().invert();
+  const drawn = meshes.map((mesh) => {
+    const points: number[] = [];
+    drawnPoints(mesh, frame, (point) => points.push(point.x, point.y, point.z));
+    return points;
+  });
+
+  const bounds = new Box3();
+  const point = new Vector3();
+  drawn.forEach((points) => {
+    for (let index = 0; index < points.length; index += 3) {
+      bounds.expandByPoint(point.fromArray(points, index));
+    }
+  });
+  const axis = bounds.getCenter(new Vector3());
+  const neck = bounds.min.y + NECK_HEIGHT;
+  const ceiling = bounds.min.y + RIM_CEILING;
+  const rim = rimHeights(rims, frame, axis).map((height) =>
+    height <= ceiling ? height + RIM_OVERLAP : -Infinity,
+  );
+
+  return drawn.map((points) => {
+    const depth = new Float32Array(points.length / 3);
+    for (let index = 0; index < depth.length; index++) {
+      point.fromArray(points, index * 3);
+      depth[index] = point.y - Math.max(neck, rim[sectorOf(point, axis)]);
+    }
+    return depth;
+  });
 };
 
 // A hat, cap, bandana or mask worn as a rig piece, moved onto the blended

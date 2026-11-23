@@ -53,6 +53,7 @@ import {
   disposeCharacter,
   dressHead,
   dressNeck,
+  keepRestPose,
   fitPieceToFace,
   loadCharacter,
   type LoadedCharacter,
@@ -1667,6 +1668,7 @@ const applyPaintNow = async (scene: Group) => {
 };
 
 const setup = async (scene: Group, animations: AnimationClip[]) => {
+  keepRestPose(scene);
   if (props.model.textured) {
     playAnimations(scene, animations);
     if (props.model.paint) void applyPaint(scene);
