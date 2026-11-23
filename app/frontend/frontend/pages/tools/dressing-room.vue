@@ -79,6 +79,7 @@ import {
   providerNames,
   slotFit,
 } from "@/frontend/utils/dressingRoomFit";
+import { useDressingRoomStore } from "@/frontend/stores/dressingRoom";
 import {
   HOLDERS,
   type StoredSelection,
@@ -106,6 +107,17 @@ const { displayAlert, displaySuccess } = useAppNotifications();
 
 const route = useRoute();
 const router = useRouter();
+
+const dressingRoomStore = useDressingRoomStore();
+
+watch(
+  () => route.query,
+  (query) => {
+    if (route.name !== "dressing-room") return;
+
+    dressingRoomStore.lastQuery = { ...query };
+  },
+);
 
 const selection = computed<OutfitSelection>(() =>
   parseOutfitQuery(route.query),
@@ -536,11 +548,23 @@ const staticHolos = computed(
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
 
-const pinnedBackpack = computed(() =>
-  body.value && !riggedHolos.value[OutfitSlotEnum.BACKPACK]
-    ? staticHolos.value[OutfitSlotEnum.BACKPACK]
-    : undefined,
-);
+// Hung by the helper the export lists on it: hung by its holo's origin
+// instead, it sits on the back the wrong way up.
+const pinnedBackpack = computed(() => {
+  const holo =
+    body.value && !riggedHolos.value[OutfitSlotEnum.BACKPACK]
+      ? staticHolos.value[OutfitSlotEnum.BACKPACK]
+      : undefined;
+  if (!holo) return undefined;
+
+  const placed = attachment(
+    holo,
+    BACKPACK_MOUNT,
+    items.value[OutfitSlotEnum.BACKPACK]?.attachPoints,
+  );
+
+  return placed.helper ? placed : undefined;
+});
 
 const isCarriedSlot = (slot: OutfitSlotEnum) =>
   isWeaponSlot(slot) || isGearSlot(slot);
@@ -558,7 +582,11 @@ const holos = computed(
         }
         if (isCarriedSlot(slot)) return [slot, staticHolos.value[slot]];
         if (slot === OutfitSlotEnum.BACKPACK) {
-          return [slot, riggedHolos.value[slot] ?? pinnedBackpack.value];
+          return [
+            slot,
+            riggedHolos.value[slot] ??
+              (pinnedBackpack.value ? staticHolos.value[slot] : undefined),
+          ];
         }
 
         return [slot, riggedHolos.value[slot]];
@@ -633,7 +661,10 @@ const unplaced = ref<string[]>([]);
 const unplacedSlot = (slot: OutfitSlotEnum) => {
   const path = isCarriedSlot(slot)
     ? carriedPlacement(slot)?.path
-    : riggedHolos.value[slot]?.path;
+    : (riggedHolos.value[slot]?.path ??
+      (slot === OutfitSlotEnum.BACKPACK
+        ? pinnedBackpack.value?.path
+        : undefined));
 
   return !!path && unplaced.value.includes(path);
 };
@@ -644,18 +675,14 @@ const positionPending = (slot: OutfitSlotEnum) =>
     (isCarriedSlot(slot) &&
       !!staticHolos.value[slot] &&
       heldWeapon.value !== slot &&
-      !carriedPlacement(slot)));
+      !carriedPlacement(slot)) ||
+    (slot === OutfitSlotEnum.BACKPACK &&
+      !!staticHolos.value[slot] &&
+      !riggedHolos.value[slot] &&
+      !pinnedBackpack.value));
 
 const attachments = computed(() => [
-  ...(pinnedBackpack.value
-    ? [
-        attachment(
-          pinnedBackpack.value,
-          BACKPACK_MOUNT,
-          items.value[OutfitSlotEnum.BACKPACK]?.attachPoints,
-        ),
-      ]
-    : []),
+  ...(pinnedBackpack.value ? [pinnedBackpack.value] : []),
   ...[...WEAPON_SLOTS, ...GEAR_SLOTS].flatMap((slot) => {
     const placed = carriedPlacement(slot);
 
@@ -898,6 +925,19 @@ const piecesPending = computed(
     storedMissing.value,
 );
 
+const storageProblem = computed(
+  () =>
+    !wornLoading.value &&
+    HOLDERS.some(
+      (holder) =>
+        !!holderProblem(
+          wornInventory(items.value, holder),
+          stored.value[holder],
+          storedItems.value,
+        ),
+    ),
+);
+
 const storedInputs = computed<OutfitStoredItemInput[]>(() =>
   HOLDERS.flatMap((holder) =>
     (stored.value[holder] ?? []).flatMap((entry) => {
@@ -908,21 +948,6 @@ const storedInputs = computed<OutfitStoredItemInput[]>(() =>
         : [];
     }),
   ),
-);
-
-// What the API would refuse, each already marked where it is on the page.
-const saveBlocked = computed(
-  () =>
-    !wornLoading.value &&
-    (GEAR_SLOTS.some((slot) => !!selection.value[slot] && !!fitNote(slot)) ||
-      HOLDERS.some(
-        (holder) =>
-          !!holderProblem(
-            wornInventory(items.value, holder),
-            stored.value[holder],
-            storedItems.value,
-          ),
-      )),
 );
 
 const outfitItems = computed<OutfitItemInput[]>(() =>
@@ -1069,6 +1094,7 @@ const copyShareLink = () => {
             :tabs="loadoutTabs"
             :supplies="supplies"
             :supplies-hint="suppliesHint"
+            :storage-problem="storageProblem"
             :row="loadoutRow"
             @pick="openSlot"
             @fill="openFill"
@@ -1104,7 +1130,6 @@ const copyShareLink = () => {
           <Outfits
             :items="outfitItems"
             :stored-items="storedInputs"
-            :blocked="saveBlocked"
             :held-weapon="heldWeapon"
             :body="bodyKey"
             :character-face-id="ownFaceId"

@@ -31,11 +31,14 @@ type Props = {
   // Said in a supplies tab with nothing to hold; without one, and without
   // supplies, the tab is left out.
   suppliesHint?: string;
+  // Something in the storage tab does not fit where it is kept.
+  storageProblem?: boolean;
   row: (slot: OutfitSlotEnum) => Row;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   suppliesHint: undefined,
+  storageProblem: false,
 });
 
 const emit = defineEmits<{
@@ -59,16 +62,45 @@ const TAB_ICONS: Record<string, string> = {
   storage: "fa-backpack",
 };
 
-const tabLabel = (key: string) => t(`dressingRoom.groups.${key}`);
-
 const SUPPLIES = "supplies";
 const STORAGE = "storage";
+
+const hasProblem = (key: string) => {
+  if (key === STORAGE) return props.storageProblem;
+
+  const slots =
+    key === SUPPLIES
+      ? props.supplies.flatMap((kind) => kind.slots)
+      : (props.tabs.find((tab) => tab.key === key)?.slots ?? []);
+
+  return slots.some((slot) => {
+    const { selected, warning } = props.row(slot);
+
+    // An empty slot's note says why it is offered nothing; it is no problem.
+    return !!selected && !!warning;
+  });
+};
+
+const tabLabel = (key: string) => t(`dressingRoom.groups.${key}`);
+
+const tabName = (key: string) =>
+  tabProblem(key)
+    ? t("dressingRoom.tabProblem", { tab: tabLabel(key) })
+    : tabLabel(key);
 
 const tabKeys = computed(() => [
   ...props.tabs.map((tab) => tab.key),
   ...(props.supplies.length || props.suppliesHint ? [SUPPLIES] : []),
   ...(slots.storage ? [STORAGE] : []),
 ]);
+
+// A problem marked on a row may be behind another tab, so the tab carries it
+// too. Worked out once per change, not per use in the tab list.
+const problemTabs = computed(
+  () => new Set(tabKeys.value.filter((key) => hasProblem(key))),
+);
+
+const tabProblem = (key: string) => problemTabs.value.has(key);
 
 const picked = ref<string>();
 
@@ -127,8 +159,8 @@ const filled = (slots: OutfitSlotEnum[]) =>
         :aria-selected="key === active"
         :aria-controls="panelId(key)"
         :tabindex="key === active ? 0 : -1"
-        :aria-label="tabLabel(key)"
-        v-tooltip="key === active ? undefined : tabLabel(key)"
+        :aria-label="tabName(key)"
+        v-tooltip="key === active ? undefined : tabName(key)"
         :data-test="`dressing-room-tab-${key}`"
         @click="picked = key"
       >
@@ -136,6 +168,12 @@ const filled = (slots: OutfitSlotEnum[]) =>
         <span v-if="key === active" class="loadout__tab-label">
           {{ tabLabel(key) }}
         </span>
+        <i
+          v-if="tabProblem(key)"
+          class="fa-solid fa-triangle-exclamation loadout__tab-problem"
+          aria-hidden="true"
+          :data-test="`dressing-room-problem-tab-${key}`"
+        />
       </button>
     </div>
 
@@ -273,6 +311,11 @@ const filled = (slots: OutfitSlotEnum[]) =>
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.loadout__tab-problem {
+  color: $warning;
+  font-size: 0.6875rem;
 }
 
 .loadout__tab--active {

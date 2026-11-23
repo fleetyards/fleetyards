@@ -231,15 +231,33 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "POST /outfits refuses gear no worn piece has a port for" do
+  test "POST /outfits saves gear no worn piece has a port for, for the page to mark" do
     sign_in @user
-    core = create(:worn_equipment, slot: "torso", fit: worn_fit("grenade_attach_1"))
     grenade = create(:equipment, sub_type: "Grenade")
 
-    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Loose", items: [{slot: "grenade_1", equipmentId: grenade.id}]}
-    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Too many", items: [
-      {slot: "torso", equipmentId: core.id}, {slot: "grenade_2", equipmentId: grenade.id}
-    ]}
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Loose", items: [{slot: "grenade_1", equipmentId: grenade.id}]}
+  end
+
+  test "POST /outfits saves storage that does not fit what is worn, for the page to mark" do
+    sign_in @user
+    small = create(:worn_equipment, slot: "backpack", inventory: pack_inventory(capacity: 900))
+    bare = create(:worn_equipment, slot: "backpack")
+    pen = create(:equipment, equipment_type: "medical", sub_type: "MedPack", volume: 0.00018)
+    rifle = create(:equipment, sub_type: "Medium", volume: 0.001, volume_dimensions: {x: 1.2, y: 0.1, z: 0.1})
+    unmeasured = create(:equipment, volume: nil)
+
+    {
+      "Overfull" => [small, pen, 6],
+      "Long" => [small, rifle, 1],
+      "No storage" => [bare, pen, 1],
+      "Nothing worn" => [nil, pen, 1],
+      "Unmeasured" => [small, unmeasured, 1]
+    }.each do |name, (piece, item, quantity)|
+      body = {name:, items: piece ? [{slot: "backpack", equipmentId: piece.id}] : [],
+              storedItems: [{holder: "backpack", equipmentId: item.id, quantity:}]}
+
+      assert_api_response :post, 201, api_path: "/outfits", body:
+    end
   end
 
   test "POST /outfits keeps a hand tool out of the gadget slot, which takes mining gadgets" do
@@ -300,49 +318,6 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "POST /outfits refuses more than a piece holds, by volume" do
-    sign_in @user
-    pack = create(:worn_equipment, slot: "backpack", inventory: pack_inventory(capacity: 900))
-    pen = create(:equipment, equipment_type: "medical", sub_type: "MedPack", volume: 0.00018)
-
-    fits = {name: "Full", items: [{slot: "backpack", equipmentId: pack.id}], storedItems: [{holder: "backpack", equipmentId: pen.id, quantity: 5}]}
-    assert_api_response :post, 201, api_path: "/outfits", body: fits
-
-    over = {name: "Overfull", items: [{slot: "backpack", equipmentId: pack.id}], storedItems: [{holder: "backpack", equipmentId: pen.id, quantity: 6}]}
-    assert_api_response :post, 400, api_path: "/outfits", body: over
-  end
-
-  test "POST /outfits refuses an item too long for the interior, however it is turned" do
-    sign_in @user
-    pack = create(:worn_equipment, slot: "backpack", inventory: pack_inventory)
-    rifle = create(:equipment, sub_type: "Medium", volume: 0.001, volume_dimensions: {x: 1.2, y: 0.1, z: 0.1})
-    turned = create(:equipment, sub_type: "Medium", volume: 0.001, volume_dimensions: {x: 0.1, y: 0.1, z: 0.9})
-
-    worn = [{slot: "backpack", equipmentId: pack.id}]
-
-    assert_api_response :post, 400, api_path: "/outfits",
-      body: {name: "Long", items: worn, storedItems: [{holder: "backpack", equipmentId: rifle.id, quantity: 1}]}
-    assert_api_response :post, 201, api_path: "/outfits",
-      body: {name: "Turned", items: worn, storedItems: [{holder: "backpack", equipmentId: turned.id, quantity: 1}]}
-  end
-
-  test "POST /outfits refuses storage in a piece not worn, without storage, or an unmeasured item" do
-    sign_in @user
-    bare = create(:worn_equipment, slot: "backpack")
-    pack = create(:worn_equipment, slot: "backpack", inventory: pack_inventory)
-    pen = create(:equipment, volume: 0.00018)
-    unmeasured = create(:equipment, volume: nil)
-
-    stored = [{holder: "backpack", equipmentId: pen.id, quantity: 1}]
-
-    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Nothing worn", storedItems: stored}
-    assert_api_response :post, 400, api_path: "/outfits",
-      body: {name: "No storage", items: [{slot: "backpack", equipmentId: bare.id}], storedItems: stored}
-    assert_api_response :post, 400, api_path: "/outfits",
-      body: {name: "Unmeasured", items: [{slot: "backpack", equipmentId: pack.id}],
-             storedItems: [{holder: "backpack", equipmentId: unmeasured.id, quantity: 1}]}
-  end
-
   test "PUT /outfits/{id} replaces what is stored, and keeps it when it is not sent" do
     sign_in @user
     pack = create(:worn_equipment, slot: "backpack", inventory: pack_inventory)
@@ -361,16 +336,6 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
       body: {storedItems: [{holder: "backpack", equipmentId: bar.id, quantity: 1}]} do
       assert_equal [bar.name], parsed_body["storedItems"].map { |item| item.dig("equipment", "name") }
     end
-  end
-
-  test "PUT /outfits/{id} still renames an outfit a patch left with gear on a lost port" do
-    sign_in @user
-    grenade = create(:equipment, sub_type: "Grenade")
-    core = create(:worn_equipment, slot: "torso", fit: worn_fit("grenade_attach_1"))
-    @outfit.update!(item_list: [{slot: "torso", equipment_id: core.id}, {slot: "grenade_1", equipment_id: grenade.id}])
-    core.update!(fit: worn_fit)
-
-    assert_api_response :put, 200, path_params: {id: @outfit.id}, body: {name: "Renamed"}
   end
 
   test "an item that is deleted leaves the storage it was kept in" do

@@ -190,7 +190,20 @@ const accessibleName = computed(() =>
   color: inherit;
   text-align: left;
   cursor: pointer;
+}
 
+// The whole row lights up, its links with it: lit alone, the pick button
+// stops short of the links that appear beside it.
+.dressing-room__slot:not(.dressing-room__slot--tile) {
+  border-radius: 8px;
+
+  &:hover,
+  &:has(.dressing-room__slot-pick:focus-visible) {
+    background: $gray-black-hover;
+  }
+}
+
+.dressing-room__slot--tile .dressing-room__slot-pick {
   &:hover,
   &:focus-visible {
     background: $gray-black-hover;

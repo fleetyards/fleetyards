@@ -47,6 +47,7 @@
         "supplies": "Rifornimenti",
         "storage": "Spazio"
       },
+      "tabProblem": "%{tab}: da controllare",
       "hold": "Impugna",
       "bodies": {
         "male": "Maschile",
@@ -75,7 +76,6 @@
         "oxypen": "Oxypen %{number}",
         "utility": "Utilità %{number}"
       },
-      "saveBlocked": "Correggi ciò che è segnalato sopra per salvare questo outfit.",
       "storage": {
         "title": "Spazio",
         "hint": "Indossa uno zaino o un'armatura con spazio per riporre oggetti.",

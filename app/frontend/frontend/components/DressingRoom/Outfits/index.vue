@@ -41,9 +41,6 @@ type Props = {
   // A piece has not resolved yet, or no longer does: saving now would leave
   // it out.
   pending?: boolean;
-  // Something on screen the API would refuse: gear with no port, storage that
-  // does not fit.
-  blocked?: boolean;
   heldWeapon?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
   // The viewer's own character on the figure, saved with the outfit; left
@@ -55,7 +52,6 @@ const props = withDefaults(defineProps<Props>(), {
   storedItems: () => [],
   activeId: undefined,
   pending: false,
-  blocked: false,
   heldWeapon: undefined,
   body: undefined,
   characterFaceId: undefined,
@@ -128,10 +124,6 @@ const contentsChanged = computed(
     savedItemsKey(active.value) !== itemsKey(props.items) ||
     savedStoredKey(active.value) !== storedKey(props.storedItems),
 );
-
-// A patch can take a port or room away from a saved outfit. That only stands in
-// the way of saving new contents: renaming it leaves them as they were.
-const refused = computed(() => props.blocked && contentsChanged.value);
 
 const changed = computed(
   () =>
@@ -226,14 +218,10 @@ const canSave = computed(
 
 const canSaveNew = computed(
   () =>
-    canSave.value &&
-    !props.blocked &&
-    (!active.value || name.value.trim() !== active.value.name),
+    canSave.value && (!active.value || name.value.trim() !== active.value.name),
 );
 
-const canSaveChanges = computed(
-  () => canSave.value && changed.value && !refused.value,
-);
+const canSaveChanges = computed(() => canSave.value && changed.value);
 
 // Enter saves what the buttons would: the active outfit's changes, or a new
 // outfit when none is active.
@@ -272,13 +260,6 @@ const submit = () => {
         />
         <p v-if="nameTaken" class="outfits__warning">
           {{ t("dressingRoom.nameTaken") }}
-        </p>
-        <p
-          v-if="refused"
-          class="outfits__warning"
-          data-test="dressing-room-save-blocked"
-        >
-          {{ t("dressingRoom.saveBlocked") }}
         </p>
         <div class="outfits__actions">
           <Btn

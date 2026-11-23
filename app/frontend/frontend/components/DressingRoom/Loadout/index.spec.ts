@@ -60,6 +60,38 @@ describe("DressingRoomLoadout", () => {
     );
   });
 
+  it("marks a tab holding a problem with what is worn, not an empty slot's note", async () => {
+    const wrapper = await mount(
+      {
+        storageProblem: true,
+        row: (slot: OutfitSlotEnum) => ({
+          ...row(slot),
+          selected: slot !== OutfitSlotEnum.HELMET,
+          warning:
+            slot === OutfitSlotEnum.HELMET ||
+            slot === OutfitSlotEnum.PRIMARY ||
+            slot === OutfitSlotEnum.MAGAZINE_2
+              ? "No port"
+              : undefined,
+        }),
+      },
+      { storage: "<p>stored</p>" },
+    );
+
+    const marked = (key: string) =>
+      wrapper.find(`[data-test="dressing-room-problem-tab-${key}"]`).exists();
+
+    expect(marked("armour")).toBe(false);
+    expect(marked("weapons")).toBe(true);
+    expect(marked("supplies")).toBe(true);
+    expect(marked("storage")).toBe(true);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-tab-weapons"]')
+        .attributes("aria-label"),
+    ).toContain("Weapons");
+  });
+
   it("falls back to the first tab when the one open goes", async () => {
     const wrapper = await mount();
 

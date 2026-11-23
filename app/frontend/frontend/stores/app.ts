@@ -8,6 +8,7 @@ import type {
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useSearchStore } from "@/frontend/stores/search";
+import { useDressingRoomStore } from "@/frontend/stores/dressingRoom";
 import { useNavStore } from "@/shared/stores/nav";
 import { useFleetStore } from "./fleet";
 import { useHangarStore } from "./hangar";
@@ -74,6 +75,8 @@ export const useAppStore = defineStore("app", {
       publicHangarStore.$reset();
       modelsStore.$reset();
       vehicleViewStore.$reset();
+      // The last visit names the viewer's own outfit and character.
+      useDressingRoomStore().$reset();
       wishlistStore.$reset();
       publicWishlistStore.$reset();
       filtersStore.$reset();

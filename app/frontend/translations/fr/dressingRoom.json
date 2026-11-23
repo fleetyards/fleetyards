@@ -47,6 +47,7 @@
         "supplies": "Fournitures",
         "storage": "Rangement"
       },
+      "tabProblem": "%{tab} : à vérifier",
       "hold": "Tenir en main",
       "bodies": {
         "male": "Homme",
@@ -75,7 +76,6 @@
         "oxypen": "Oxypen %{number}",
         "utility": "Utilitaire %{number}"
       },
-      "saveBlocked": "Corrigez ce qui est signalé ci-dessus pour enregistrer cette tenue.",
       "storage": {
         "title": "Rangement",
         "hint": "Portez un sac à dos ou une armure avec du rangement pour emporter des objets.",
