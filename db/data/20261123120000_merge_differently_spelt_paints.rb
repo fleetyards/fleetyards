@@ -11,12 +11,6 @@ class MergeDifferentlySpeltPaints < ActiveRecord::Migration[8.1]
   disable_ddl_transaction!
 
   RENAMES = {
-    "Best in Show 2950" => "2950 Best in Show",
-    "Best in Show 2951" => "2951 Best in Show",
-    "Best in Show 2952 (Red Alert)" => "2952 Best in Show",
-    "Best in Show 2953" => "2953 Best in Show",
-    "Best in Show 2954" => "2954 Best In Show",
-    "Best In Show 2956" => "2956 Best In Show",
     "Caterpillar Best In Show Edition 2949" => "2949 Best in Show",
     "Cutlass Black Best In Show Edition 2949" => "2949 Best in Show",
     "Hammerhead Best In Show Edition 2949" => "2949 Best in Show",
@@ -50,12 +44,17 @@ class MergeDifferentlySpeltPaints < ActiveRecord::Migration[8.1]
     "Xua'cha" => "Xuā’cha"
   }.freeze
 
+  # Either order of the year and either case of "In"; all become "2952 Best in
+  # Show".
+  BEST_IN_SHOW = /\A(?:best in show (\d{4})(?: \(red alert\))?|(\d{4}) best in show)\z/i
+  BEST_IN_SHOW_SQL = '^(best in show [0-9]{4}( \(red alert\))?|[0-9]{4} best in show)$'
+
   def up
     vehicle_ids = []
 
-    misspelt_paints.group_by { |paint| [paint.model_id, RENAMES.fetch(paint.name, paint.name)] }
+    misspelt_paints.group_by { |paint| [paint.model_id, canonical(paint.name)] }
       .each do |(_model_id, name), paints|
-        next if paints.none? { |paint| RENAMES.key?(paint.name) }
+        next if paints.all? { |paint| paint.name == name }
 
         kept, *duplicates = paints.sort_by { |paint| keep_order(paint) }
         duplicates.each { |duplicate| vehicle_ids.concat(ModelPaintMerger.new(kept, duplicate).run) }
@@ -74,10 +73,17 @@ class MergeDifferentlySpeltPaints < ActiveRecord::Migration[8.1]
     raise ActiveRecord::IrreversibleMigration
   end
 
-  private def misspelt_paints
-    models = ModelPaint.where(name: RENAMES.keys).select(:model_id)
+  private def canonical(name)
+    best_in_show = BEST_IN_SHOW.match(name)
+    return "#{best_in_show[1] || best_in_show[2]} Best in Show" if best_in_show
 
-    ModelPaint.where(model_id: models, name: RENAMES.keys + RENAMES.values).to_a
+    RENAMES.fetch(name, name)
+  end
+
+  private def misspelt_paints
+    ModelPaint.where(name: RENAMES.keys + RENAMES.values)
+      .or(ModelPaint.where("name ~* ?", BEST_IN_SHOW_SQL))
+      .to_a
   end
 
   # The store's own record first, or the store import makes it again; then a

@@ -242,6 +242,18 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["2952 Best in Show"], carrack.paints.pluck(:name)
   end
 
+  test "#run gives every Best in Show year one capitalisation" do
+    f8c = create(:model, name: "F8C Lightning")
+    hangar_sync(
+      "F8C Lightning - 2954 Best In Show Paint",
+      "F8C Lightning - Best in Show 2954 Paint"
+    )
+
+    PaintsImporter.new.run
+
+    assert_equal ["2954 Best in Show"], f8c.paints.pluck(:name)
+  end
+
   test "#run files a paint's other spellings under the name the hangar uses" do
     phoenix = create(:model, name: "Constellation Mk IV Phoenix")
     hangar_sync(

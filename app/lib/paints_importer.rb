@@ -23,7 +23,6 @@ class PaintsImporter
     "Cutlass Black Best In Show Edition 2949" => "2949 Best in Show",
     "Hammerhead Best In Show Edition 2949" => "2949 Best in Show",
     "Reclaimer Best In Show Edition 2949" => "2949 Best in Show",
-    "Best in Show 2954" => "2954 Best In Show",
     "Caterpillar Pirate Edition" => "Pirate Edition",
     "Mole Carbon Edition" => "Carbon",
     "Mole Talus Edition" => "Talus",
@@ -39,9 +38,10 @@ class PaintsImporter
     "Xua'cha" => "Xuā’cha"
   }.freeze
 
-  # The hangar puts the year first ("2952 Best in Show"); older store names put
-  # it last, and 2952's carried its "Red Alert" title as well.
-  BEST_IN_SHOW_YEAR_LAST = /\A(best in show) (\d{4})(?: \(red alert\))?\z/i
+  # The hangar puts the year first ("2952 Best in Show") but capitalises "In" on
+  # some years; older store names put it last, and 2952's carried its "Red
+  # Alert" title as well. Names are matched exactly, so all of them get one form.
+  BEST_IN_SHOW = /\A(?:best in show (\d{4})(?: \(red alert\))?|(\d{4}) best in show)\z/i
 
   # A targeted run narrows down which paints it looks at to the ones the given
   # model has, not where they land: a paint the source names for a whole series
@@ -436,7 +436,8 @@ class PaintsImporter
 
     name = paint_map[name] if paint_map[name].present?
 
-    name.sub(BEST_IN_SHOW_YEAR_LAST, '\\2 \\1')
+    best_in_show = BEST_IN_SHOW.match(name)
+    best_in_show ? "#{best_in_show[1] || best_in_show[2]} Best in Show" : name
   end
 
   private def models_mapping(name)

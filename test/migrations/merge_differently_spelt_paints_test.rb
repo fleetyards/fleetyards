@@ -33,6 +33,20 @@ class MergeDifferentlySpeltPaintsTest < ActiveSupport::TestCase
     assert_equal 2, store.reload.vehicle_paints.count
   end
 
+  test "gives every Best in Show year one capitalisation" do
+    f8c = create(:model, name: "F8C Lightning")
+    current = create(:model_paint, model: f8c, name: "2954 Best In Show")
+    create(:model_paint, model: f8c, name: "Best In Show 2954")
+    spirit = create(:model, name: "C1 Spirit")
+    create(:model_paint, model: spirit, name: "2956 Best In Show")
+
+    MergeDifferentlySpeltPaints.new.up
+
+    assert_equal [current.id], f8c.reload.paints.pluck(:id)
+    assert_equal ["2954 Best in Show"], f8c.paints.pluck(:name)
+    assert_equal ["2956 Best in Show"], spirit.reload.paints.pluck(:name)
+  end
+
   test "keeps a visible paint over a hidden one" do
     reclaimer = create(:model, name: "Reclaimer")
     visible = create(:model_paint, model: reclaimer, name: "Hadinite", hidden: false)
