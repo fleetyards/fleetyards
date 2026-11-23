@@ -8,10 +8,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[show export export_hangar_link items]
+        only: %i[show export export_hangar_link items paints]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        except: %i[show export export_hangar_link items]
+        except: %i[show export export_hangar_link items paints]
 
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
@@ -195,6 +195,20 @@ module Api
           .purchased
           .pluck(:model_id)
         @models = Model.where(id: model_ids).order(name: :asc).pluck(:slug)
+      end
+
+      # A paint counts once it is recorded on one of the user's ships or
+      # resolved from one of their paint pledges, which names no ship.
+      def paints
+        authorize! to: :show?, with: ::HangarPolicy
+
+        vehicles = authorized_scope(Vehicle.all).where(loaner: false).visible.purchased
+        recorded = VehiclePaint.where(vehicle_id: vehicles.select(:id)).select(:model_paint_id)
+        pledged = HangarPledgeItemModelPaint.joins(:hangar_pledge_item)
+          .where(hangar_pledge_items: {user_id: current_resource_owner.id})
+          .select(:model_paint_id)
+
+        @paint_ids = ModelPaint.where(id: recorded).or(ModelPaint.where(id: pledged)).order(:id).pluck(:id)
       end
 
       def move_all_ingame_to_wishlist

@@ -1,6 +1,48 @@
 require "open-uri"
 
 class PaintsImporter
+  # Store, hangar and game files have each spelt these paints another way, and
+  # every spelling became a paint of its own. The current hangar name wins: it
+  # is what a synced pledge resolves by.
+  RENAMED_PAINTS = {
+    "Invictus Blue & Gold" => "Invictus Blue and Gold",
+    "2950 Invictus Blue and Gold" => "Invictus Blue and Gold",
+    "2950 Invictus Black" => "Black",
+    "2950 Invictus Light Grey" => "Light Grey",
+    "2950 Invictus Sage" => "Sage",
+    "2950 Invictus Storm Surge" => "Storm Surge",
+    "2950 Invictus Green and Gold" => "Green and Gold",
+    "2950 Invictus Light and Dark Grey" => "Light and Dark Grey",
+    "2950 Invictus Dark Green v" => "Dark Green",
+    "2951 Auspicious Red" => "Auspicious Red Ram",
+    "2952 Auspicious Red" => "Auspicious Red Monkey",
+    "2953 Auspicious Red" => "Auspicious Red Rooster",
+    "2953 Auspicious Red Rooster" => "Auspicious Red Rooster",
+    "2956 Auspicious Red Rat" => "Auspicious Red Rat",
+    "Caterpillar Best In Show Edition 2949" => "2949 Best in Show",
+    "Cutlass Black Best In Show Edition 2949" => "2949 Best in Show",
+    "Hammerhead Best In Show Edition 2949" => "2949 Best in Show",
+    "Reclaimer Best In Show Edition 2949" => "2949 Best in Show",
+    "Caterpillar Pirate Edition" => "Pirate Edition",
+    "Mole Carbon Edition" => "Carbon",
+    "Mole Talus Edition" => "Talus",
+    "Constellation Phoenix Emerald" => "Emerald",
+    "Black Heron" => "Heron Black",
+    "Orange Heron" => "Heron Orange",
+    "White Heron" => "Heron White",
+    "Skullcusher" => "Skullcrusher",
+    "Hadinite" => "Hadanite",
+    "Badlands" => "Badland",
+    "Bushwhacker" => "Bushwacker",
+    "Ch.iiing" => "Ch.iing",
+    "Xua'cha" => "Xuā’cha"
+  }.freeze
+
+  # The hangar puts the year first ("2952 Best in Show") but capitalises "In" on
+  # some years; older store names put it last, and 2952's carried its "Red
+  # Alert" title as well. Names are matched exactly, so all of them get one form.
+  BEST_IN_SHOW = /\A(?:best in show (\d{4})(?: \(red alert\))?|(\d{4}) best in show)\z/i
+
   # A targeted run narrows down which paints it looks at to the ones the given
   # model has, not where they land: a paint the source names for a whole series
   # belongs on every model of that series, whichever one triggered the run.
@@ -252,26 +294,26 @@ class PaintsImporter
       "Spirit Citizens for Prosperity Liberation" => "Citizens for Prosperity Liberation",
       "Spirit Headhunters Reaper" => "Headhunters Reaper",
       "2950 Invictus Constellation Blue and Gold" => "Invictus Blue and Gold",
-      "2950 Invictus Retaliator Midnight Blue and Gold" => "2950 Invictus Blue and Gold",
-      "Retaliator -Invictus Blue and Gold" => "2950 Invictus Blue and Gold",
+      "2950 Invictus Retaliator Midnight Blue and Gold" => "Invictus Blue and Gold",
+      "Retaliator -Invictus Blue and Gold" => "Invictus Blue and Gold",
       "2950 Invictus Constellation Dark Green" => "Dark Green",
       "2950 Invictus Dark Green" => "Dark Green",
       "Retaliator Twilight" => "Twilight",
       "Retaliator Grey" => "Grey",
-      "Red Alert" => "Best in Show 2952 (Red Alert)",
+      "Red Alert" => "2952 Best in Show",
       "Foundation Fest" => "Foundation Festival",
-      "Best in Show" => "Best in Show 2950",
+      "Best in Show" => "2950 Best in Show",
       "100 Series Deck the Hull" => "Deck the Hull",
       "100 Series IceBreak" => "IceBreak",
       "100 Series Sand Wave" => "Sand Wave",
-      "600i BIS 2951" => "Best in Show 2951",
-      "MPUV BIS 2951" => "Best in Show 2951",
+      "600i BIS 2951" => "2951 Best in Show",
+      "MPUV BIS 2951" => "2951 Best in Show",
       "Mole Lovestruck" => "Lovestruck",
       "Lovestruck s" => "Lovestruck",
       "2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
       "2954 Auspicious Red Dog" => "Auspicious Red Dog",
       "Origin X1 Scarlet" => "Scarlet",
-      "Mercury Star Runner BIS 2951" => "Best in Show 2951",
+      "Mercury Star Runner BIS 2951" => "2951 Best in Show",
       "Star Runner Silver Spark" => "Silver Spark",
       "Star Runner Equinox" => "Equinox",
       "Star Runner Blackguard" => "Blackguard",
@@ -310,7 +352,7 @@ class PaintsImporter
       "Hercules Starlifter Sylvan" => "Sylvan",
       "Hercules Starlifter Argent" => "Argent",
       "Hercules Starlifter Dryad" => "Dryad",
-      "Hercules Starlifter BIS 2951" => "Best in Show 2951",
+      "Hercules Starlifter BIS 2951" => "2951 Best in Show",
       "Hercules Invictus Blue and Gold" => "Invictus Blue and Gold",
       "Aurora SXSW 2015" => "SXSW 2015",
       "2950 Invictus Aurora Blue and Gold" => "Invictus Blue and Gold",
@@ -326,10 +368,10 @@ class PaintsImporter
       "Freelancer - Black" => "Black",
       "Freelancer - Black Paint" => "Black",
       "Freelancer - Black Paint " => "Black",
-      "600i 2953 Best in Show" => "Best in Show 2953",
-      "Corsair 2953 Best in Show" => "Best in Show 2953",
-      "Vulture 2953 Best in Show" => "Best in Show 2953",
-      "Redeemer 2953 Best in Show" => "Best in Show 2953",
+      "600i 2953 Best in Show" => "2953 Best in Show",
+      "Corsair 2953 Best in Show" => "2953 Best in Show",
+      "Vulture 2953 Best in Show" => "2953 Best in Show",
+      "Redeemer 2953 Best in Show" => "2953 Best in Show",
       "100i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
       "100i 2954 Auspicious Red Dragon" => "Auspicious Red Dragon",
       "400i 2954 Auspicious Red Dog" => "Auspicious Red Dog",
@@ -366,7 +408,7 @@ class PaintsImporter
       "Hercules Hurston" => "Hurston",
       "Hercules Timberline" => "Timberline",
       "Hercules Meridian" => "Meridian",
-      "Hercules 2951 Best in Show" => "Best in Show 2951",
+      "Hercules 2951 Best in Show" => "2951 Best in Show",
       "Hercules Sylvan" => "Sylvan",
       "Hercules Dryad" => "Dryad",
       "Hercules Argent" => "Argent",
@@ -374,10 +416,10 @@ class PaintsImporter
       "Hercules Frostbite" => "Frostbite",
       "Hercules Draco Gold" => "Draco Gold",
       "Hercules Fortuna" => "Fortuna",
-      "Mercury 2951 Best in Show" => "Best in Show 2951",
+      "Mercury 2951 Best in Show" => "2951 Best in Show",
       "Mercury Meridian" => "Meridian",
       "Mercury Fortuna" => "Fortuna",
-      "Mercury 2952 Best in Show" => "Best in Show 2952",
+      "Mercury 2952 Best in Show" => "2952 Best in Show",
       "Mercury Skyrider" => "Skyrider",
       "Mercury Polar" => "Polar",
       "Mercury Nightrunner" => "Nightrunner",
@@ -388,12 +430,14 @@ class PaintsImporter
       "MXC Cadet" => "Cadet",
       "MXC Boreal" => "Boreal",
       "MXC Baracus" => "Baracus",
-      "MXC Brushwood" => "Brushwood"
+      "MXC Brushwood" => "Brushwood",
+      **RENAMED_PAINTS
     }
 
-    return paint_map[name] if paint_map[name].present?
+    name = paint_map[name] if paint_map[name].present?
 
-    name
+    best_in_show = BEST_IN_SHOW.match(name)
+    best_in_show ? "#{best_in_show[1] || best_in_show[2]} Best in Show" : name
   end
 
   private def models_mapping(name)

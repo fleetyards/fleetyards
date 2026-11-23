@@ -133,11 +133,10 @@ class PaintsFromGameFiles
     end
   end
 
-  # The store calls every Foundation paint "Foundation Festival", puts the
-  # year after "Best in Show" where the game puts it in front, and drops the
+  # The store calls every Foundation paint "Foundation Festival" and drops the
   # year the game puts in front of its Auspicious paints.
   private def store_spelling(name)
-    spelled = name.sub(FOUNDATION, "Foundation Festival").sub(BEST_IN_SHOW, '\\2 \\1')
+    spelled = name.sub(FOUNDATION, "Foundation Festival")
 
     PaintsImporter.paint_mapping(spelled).strip
   end
@@ -172,9 +171,8 @@ class PaintsFromGameFiles
       .join(" ")
   end
 
-  # RSI's name for a paint can differ from the game's entirely -- "Red Alert"
-  # is sold as "Best in Show 2952 (Red Alert)" -- so a ship whose paint the
-  # linker already tied to this livery has it, whatever the name says.
+  # RSI's name for a paint can differ from the game's entirely, so a ship whose
+  # paint the linker already tied to this livery has it, whatever the name says.
   private def linked?(model, component)
     @linked ||= ModelPaint.where.not(component_id: nil).pluck(:model_id, :component_id).to_set
 

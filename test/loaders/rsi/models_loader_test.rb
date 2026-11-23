@@ -267,6 +267,16 @@ module Rsi
       assert_equal %w[light_fighter fighter starter], model.foci
     end
 
+    test "#names a store paint the way the hangar does" do
+      mole = create(:model, name: "MOLE")
+      data = {"id" => 202, "name" => "Mole Carbon Edition", "time_modified.unfiltered" => "2017-01-01 12:00:00", "media" => [{}]}
+
+      paint = @loader.send(:create_or_update_paint, data, mole.id)
+
+      assert_equal "Carbon", paint.reload.name
+      assert_equal "Mole Carbon Edition", paint.rsi_name
+    end
+
     test "#leaves a classification it does not recognise off the model" do
       data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
 

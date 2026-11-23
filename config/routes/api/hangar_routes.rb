@@ -1,5 +1,6 @@
 resource :hangar, only: %i[show destroy] do
   get :items
+  get :paints
   get :search, to: "hangar_search#index"
   put :import
   get :export

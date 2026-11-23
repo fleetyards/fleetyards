@@ -1478,6 +1478,7 @@
         "manufacturer": "Produttore",
         "loaners": "Navi in comodato",
         "paints": "Verniciature",
+        "paintOwned": "Posseduto",
         "modules": "Moduli",
         "bodykits": "Body kit",
         "bodykitStock": "Di serie",

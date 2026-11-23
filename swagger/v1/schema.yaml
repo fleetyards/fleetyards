@@ -15443,6 +15443,35 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/hangar/paints":
+    get:
+      summary: The paints you own
+      tags:
+      - Hangar
+      operationId: hangarPaints
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPaintsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/hangar/plans":
     get:
       summary: Hangar Plans
@@ -40701,6 +40730,12 @@ components:
       - manufacturerCount
       - missingClassifications
       title: HangarMetricsPublic
+    HangarPaintsList:
+      type: array
+      items:
+        type: string
+        format: uuid
+      title: HangarPaintsList
     HangarPlan:
       type: object
       properties:
