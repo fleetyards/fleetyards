@@ -148,6 +148,9 @@ const bodyKey = computed(() => {
 
 const poseName = computed(() => queryValue("pose"));
 
+// The figure drawn with its helmet off, by the address so a link keeps it.
+const helmetHidden = computed(() => queryValue("bare") === "1");
+
 // The character on the figure, by its token.
 const faceToken = computed(() => queryValue("face"));
 
@@ -161,6 +164,7 @@ const heldWeapon = computed(() => {
 type NavigationState = {
   outfit?: string;
   pose?: string;
+  bare?: string;
   held?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
   face?: string;
@@ -174,6 +178,7 @@ const navigate = (
   const query: NavigationState = {
     outfit: activeOutfitId.value,
     pose: poseName.value,
+    bare: helmetHidden.value ? "1" : undefined,
     held: heldWeapon.value,
     body: bodyKey.value,
     face: faceToken.value,
@@ -267,7 +272,7 @@ const openFill = (slots: OutfitSlotEnum[]) => {
 const reset = () => {
   void navigate(
     {},
-    { outfit: undefined, pose: undefined, held: undefined },
+    { outfit: undefined, pose: undefined, held: undefined, bare: undefined },
     {},
   );
 };
@@ -861,6 +866,7 @@ const model = computed(() => {
 // back, hair and all.
 const bareModel = computed(() => {
   if (!body.value) return undefined;
+  if (facePending.value && !figureDrawn.value) return undefined;
 
   const helmet = riggedHolos.value[OutfitSlotEnum.HELMET]?.path;
 
@@ -878,6 +884,18 @@ const bareModel = computed(() => {
     ),
   );
 });
+
+const helmetWorn = computed(() => !!riggedHolos.value[OutfitSlotEnum.HELMET]);
+
+const shownModel = computed(() =>
+  helmetHidden.value && helmetWorn.value ? bareModel.value : model.value,
+);
+
+const toggleHelmet = () => {
+  void navigate(selection.value, {
+    bare: helmetHidden.value ? undefined : "1",
+  });
+};
 
 // A weapon in hand is held, unless the address picks another pose.
 const pose = computed(() => {
@@ -1135,10 +1153,10 @@ const copyShareLink = () => {
       data-test="dressing-room-stage"
     >
       <HoloViewer
-        v-if="model"
+        v-if="shownModel"
         ref="viewer"
-        :key="model.path"
-        :models="[model]"
+        :key="shownModel.path"
+        :models="[shownModel]"
         :azimuth="HOLO_AZIMUTH"
         :elevation="HOLO_ELEVATION"
         :auto-rotate="false"
@@ -1190,6 +1208,26 @@ const copyShareLink = () => {
           inline
           data-test="dressing-room-pose"
         />
+        <Btn
+          v-if="body"
+          :active="helmetHidden"
+          :aria-pressed="helmetHidden"
+          :aria-label="
+            helmetHidden
+              ? t('dressingRoom.showHelmet')
+              : t('dressingRoom.hideHelmet')
+          "
+          v-tooltip="
+            helmetHidden
+              ? t('dressingRoom.showHelmet')
+              : t('dressingRoom.hideHelmet')
+          "
+          :disabled="!helmetWorn"
+          data-test="dressing-room-helmet"
+          @click="toggleHelmet"
+        >
+          <i :class="slotIcon(OutfitSlotEnum.HELMET)" />
+        </Btn>
         <Btn
           :aria-label="t('actions.reset')"
           v-tooltip="t('actions.reset')"

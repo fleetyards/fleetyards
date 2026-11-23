@@ -25,6 +25,8 @@
       "makeDefault": "Make default outfit",
       "removeDefault": "Stop using as default outfit",
       "openCharacter": "Character",
+      "hideHelmet": "Hide helmet",
+      "showHelmet": "Show helmet",
       "avatars": {
         "drawing": "Drawing your avatars…",
         "ready": "Avatars ready.",

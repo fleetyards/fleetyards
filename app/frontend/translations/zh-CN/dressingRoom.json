@@ -25,6 +25,8 @@
       "makeDefault": "设为默认装扮",
       "removeDefault": "取消默认装扮",
       "openCharacter": "角色",
+      "hideHelmet": "隐藏头盔",
+      "showHelmet": "显示头盔",
       "avatars": {
         "drawing": "正在生成你的头像…",
         "ready": "头像已就绪。",

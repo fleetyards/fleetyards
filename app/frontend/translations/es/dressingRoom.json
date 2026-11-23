@@ -25,6 +25,8 @@
       "makeDefault": "Usar como atuendo predeterminado",
       "removeDefault": "Dejar de usar como atuendo predeterminado",
       "openCharacter": "Personaje",
+      "hideHelmet": "Ocultar casco",
+      "showHelmet": "Mostrar casco",
       "avatars": {
         "drawing": "Generando tus avatares…",
         "ready": "Avatares listos.",

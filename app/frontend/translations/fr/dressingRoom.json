@@ -25,6 +25,8 @@
       "makeDefault": "Définir comme tenue par défaut",
       "removeDefault": "Ne plus utiliser comme tenue par défaut",
       "openCharacter": "Personnage",
+      "hideHelmet": "Masquer le casque",
+      "showHelmet": "Afficher le casque",
       "avatars": {
         "drawing": "Génération de vos avatars…",
         "ready": "Avatars prêts.",

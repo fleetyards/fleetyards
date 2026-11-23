@@ -25,6 +25,8 @@
       "makeDefault": "Imposta come outfit predefinito",
       "removeDefault": "Non usare più come outfit predefinito",
       "openCharacter": "Personaggio",
+      "hideHelmet": "Nascondi casco",
+      "showHelmet": "Mostra casco",
       "avatars": {
         "drawing": "Generazione dei tuoi avatar…",
         "ready": "Avatar pronti.",

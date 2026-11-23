@@ -25,6 +25,8 @@
       "makeDefault": "Als Standard-Outfit festlegen",
       "removeDefault": "Nicht mehr als Standard-Outfit verwenden",
       "openCharacter": "Charakter",
+      "hideHelmet": "Helm ausblenden",
+      "showHelmet": "Helm einblenden",
       "avatars": {
         "drawing": "Deine Avatare werden erstellt…",
         "ready": "Avatare fertig.",
