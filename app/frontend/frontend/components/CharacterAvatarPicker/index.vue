@@ -70,7 +70,11 @@ const choose = async (source: UserAvatarSourceEnum) => {
       {{ t("labels.user.avatarSource") }}
     </legend>
     <p v-if="!hasRenders" class="avatar-picker__hint">
-      {{ t("labels.user.avatarSourceHint") }}
+      {{
+        user.defaultOutfitId
+          ? t("labels.user.avatarSourcePending")
+          : t("labels.user.avatarSourceHint")
+      }}
       <router-link :to="{ name: 'dressing-room' }">
         {{ t("nav.tools.dressingRoom") }}
       </router-link>

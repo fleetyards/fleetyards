@@ -2664,6 +2664,7 @@
         "displayNameInfo": "Mostrato al posto del tuo nome utente nel tuo hangar pubblico, sulle tue targhe di dedica e negli elenchi dei membri delle flotte.",
         "avatarSource": "Avatar mostrato",
         "avatarSourceHint": "Imposta un outfit come predefinito nel camerino per generare avatar dal tuo personaggio.",
+        "avatarSourcePending": "Apri il tuo outfit predefinito nel camerino per generarne gli avatar.",
         "avatarSources": {
           "uploaded": "Caricato",
           "character_helmet": "Con casco",

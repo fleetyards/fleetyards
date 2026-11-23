@@ -2664,6 +2664,7 @@
         "displayNameInfo": "Shown instead of your username in your public hangar, on your dedication plaques and in fleet rosters.",
         "avatarSource": "Shown avatar",
         "avatarSourceHint": "Mark an outfit as your default in the dressing room to draw avatars from your character.",
+        "avatarSourcePending": "Open your default outfit in the dressing room to draw its avatars.",
         "avatarSources": {
           "uploaded": "Uploaded",
           "character_helmet": "With helmet",

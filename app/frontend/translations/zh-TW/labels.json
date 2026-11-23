@@ -2664,6 +2664,7 @@
         "displayNameInfo": "在你的公開機庫、命名銘牌和艦隊成員列表中代替使用者名稱顯示。",
         "avatarSource": "顯示的頭像",
         "avatarSourceHint": "在更衣室中將一套裝扮設為預設，即可用你的角色產生頭像。",
+        "avatarSourcePending": "在更衣室中開啟你的預設裝扮以產生其頭像。",
         "avatarSources": {
           "uploaded": "已上傳",
           "character_helmet": "戴頭盔",

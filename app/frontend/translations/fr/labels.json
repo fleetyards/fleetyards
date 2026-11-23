@@ -2664,6 +2664,7 @@
         "displayNameInfo": "Affiché à la place de ton nom d'utilisateur dans ton hangar public, sur tes plaques de dédicace et dans les listes de membres des flottes.",
         "avatarSource": "Avatar affiché",
         "avatarSourceHint": "Définissez une tenue par défaut dans le vestiaire pour générer des avatars de votre personnage.",
+        "avatarSourcePending": "Ouvrez votre tenue par défaut dans le vestiaire pour générer ses avatars.",
         "avatarSources": {
           "uploaded": "Téléversé",
           "character_helmet": "Avec casque",

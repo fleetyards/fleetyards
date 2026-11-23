@@ -2664,6 +2664,7 @@
         "displayNameInfo": "在你的公开机库、命名铭牌和舰队成员列表中代替用户名显示。",
         "avatarSource": "显示的头像",
         "avatarSourceHint": "在更衣室中将一套装扮设为默认，即可用你的角色生成头像。",
+        "avatarSourcePending": "在更衣室中打开你的默认装扮以生成其头像。",
         "avatarSources": {
           "uploaded": "已上传",
           "character_helmet": "戴头盔",

@@ -2664,6 +2664,7 @@
         "displayNameInfo": "Se muestra en lugar de tu nombre de usuario en tu hangar público, en tus placas de dedicatoria y en las listas de miembros de las flotas.",
         "avatarSource": "Avatar mostrado",
         "avatarSourceHint": "Marca un atuendo como predeterminado en el vestidor para generar avatares de tu personaje.",
+        "avatarSourcePending": "Abre tu atuendo predeterminado en el vestidor para generar sus avatares.",
         "avatarSources": {
           "uploaded": "Subido",
           "character_helmet": "Con casco",

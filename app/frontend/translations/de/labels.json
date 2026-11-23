@@ -2664,6 +2664,7 @@
         "displayNameInfo": "Wird statt deines Benutzernamens in deinem öffentlichen Hangar, auf deinen Widmungstafeln und in Flotten-Mitgliederlisten angezeigt.",
         "avatarSource": "Angezeigter Avatar",
         "avatarSourceHint": "Lege in der Umkleide ein Outfit als Standard fest, um Avatare von deinem Charakter zu erstellen.",
+        "avatarSourcePending": "Öffne dein Standard-Outfit in der Umkleide, um seine Avatare zu erstellen.",
         "avatarSources": {
           "uploaded": "Hochgeladen",
           "character_helmet": "Mit Helm",

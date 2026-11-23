@@ -82,4 +82,15 @@ describe("CharacterAvatarPicker", () => {
         .attributes("disabled"),
     ).toBeDefined();
   });
+
+  it("sends a default outfit without renders to the dressing room to be drawn", async () => {
+    const wrapper = await mount({
+      user: user({
+        characterAvatarHelmet: undefined,
+        characterAvatarBare: undefined,
+      }),
+    });
+
+    expect(wrapper.text()).toContain("Open your default outfit");
+  });
 });
