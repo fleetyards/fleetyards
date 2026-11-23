@@ -23,11 +23,13 @@ import {
   type SkinnedMesh,
   Sphere,
   Vector3,
+  type Scene,
+  type WebGLRenderer,
 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
-import { useResizeObserver, useDebounceFn } from "@vueuse/core";
+import { useResizeObserver, useDebounceFn, until } from "@vueuse/core";
 import WebglFallback from "@/shared/components/WebglFallback/index.vue";
 import { useWebglSupport } from "@/shared/composables/useWebglSupport";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
@@ -63,6 +65,10 @@ import {
   buildBackdrop,
   disposeBackdrop,
 } from "@/shared/components/HoloViewer/backdrop";
+import {
+  type PortraitOptions,
+  renderPortrait,
+} from "@/shared/components/HoloViewer/portrait";
 import type { HoloBox } from "@/shared/components/HoloViewer/boxes";
 import type { HoloCargoGrid } from "@/shared/components/HoloViewer/cargo";
 import type { HoloDoor } from "@/shared/components/HoloViewer/doors";
@@ -1056,7 +1062,49 @@ const _traverseEventObjects = (object: Mesh): Mesh => {
 //   currentModel.value = traverseEventObjects(event.object);
 // };
 
+// Long enough for a piece's fade-in to finish once everything has landed.
+const PORTRAIT_SETTLE_MS = 800;
+
+const PORTRAIT_TIMEOUT_MS = 60_000;
+
+// A head-and-shoulders picture of the figure once everything on it has
+// loaded; nothing when it never does.
+const capturePortrait = async (options: PortraitOptions = {}) => {
+  try {
+    await until(
+      () =>
+        !!framed.value &&
+        !loading.value &&
+        !busy.value &&
+        !awaitingConfirmation.value,
+    ).toBe(true, { timeout: PORTRAIT_TIMEOUT_MS, throwOnTimeout: true });
+  } catch {
+    return null;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, PORTRAIT_SETTLE_MS));
+
+  const context = (
+    canvas.value as {
+      context?: {
+        renderer?: { instance?: unknown };
+        scene?: { value?: unknown };
+      };
+    }
+  )?.context;
+  const renderer = context?.renderer?.instance as WebGLRenderer | undefined;
+  const scene = context?.scene?.value as Scene | undefined;
+  if (!renderer?.domElement || !scene || !framed.value) return null;
+
+  return renderPortrait(renderer, scene, framed.value.scene, {
+    azimuth: props.azimuth,
+    elevation: props.elevation,
+    ...options,
+  });
+};
+
 defineExpose({
+  capturePortrait,
   fullscreen: internalFullscreen,
   enableFullscreen,
   disableFullscreen,
