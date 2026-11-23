@@ -34,6 +34,7 @@ module V1
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
             modelSlugIn: {type: :array, items: {type: :string}},
+            modelInGameEq: {type: :boolean, description: "Ships whose model the current build of the game has"},
             modelNameCont: {type: :string},
             modelOrSerialCont: {type: :string, description: "A ship's model name, or its serial where the owner shows it"},
             modelNameOrModelDescriptionCont: {type: :string},

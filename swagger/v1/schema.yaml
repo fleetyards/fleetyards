@@ -2249,7 +2249,8 @@ paths:
               "$ref": "#/components/schemas/FleetEventSignupAssignInput"
       responses:
         '200':
-          description: successful
+          description: successful - the signup now in the slot; a member's seat of
+            the other kind stays, so this may be their other signup
           content:
             application/json:
               schema:
@@ -38652,6 +38653,9 @@ components:
           type: array
           items:
             type: string
+        modelInGameEq:
+          type: boolean
+          description: Ships whose model the current build of the game has
         modelNameCont:
           type: string
         modelOrSerialCont:

@@ -21,6 +21,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import {
   type Fleet,
   type Mission,
@@ -187,8 +188,10 @@ const fetchSquadronVehicleOptions = async (
     };
   }
 
+  // A flight is flown now, so a ship the game does not have yet is not offered.
   const q: Record<string, unknown> = {
     squadronSlugIn: [props.scope?.squadronSlug],
+    modelInGameEq: true,
   };
   if (params.search) q.modelNameCont = params.search;
   return fetchFleetVehicles(props.fleet.slug, {
@@ -368,11 +371,13 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit("mission-children-changed");
       comlink.emit("close-modal", true);
     })
-    .catch(() => {
+    .catch((error) => {
       displayAlert({
-        text: isEdit.value
-          ? t("messages.fleets.missionShip.update.failure")
-          : t("messages.fleets.missionShip.create.failure"),
+        text:
+          firstErrorMessageFrom(error) ||
+          (isEdit.value
+            ? t("messages.fleets.missionShip.update.failure")
+            : t("messages.fleets.missionShip.create.failure")),
       });
     })
     .finally(() => {

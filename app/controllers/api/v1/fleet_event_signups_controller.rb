@@ -188,6 +188,14 @@ module Api
         authorize! @signup, with: FleetEventSignupPolicy,
           context: {fleet_event: @signup.fleet_event}, to: :manage?
 
+        @signup = other_kind_signup || @signup
+
+        if leaving_team_seat_beside_another?
+          @signup.withdraw!
+          render :show
+          return
+        end
+
         previous_status = @signup.status
         previous_slot_id = @signup.fleet_event_slot_id
         if @signup.update_without_conflict(admin_signup_attrs)
@@ -236,6 +244,37 @@ module Api
           attrs[:status] = requested_status_for(@signup.fleet_event, @signup.fleet_event_slot, attrs[:status], current: @signup.status)
         end
         attrs
+      end
+
+      # A team seat, like the lead's, is held beside a ship seat or a place in
+      # the pool. A seated signup sent to a slot of the other kind keeps its
+      # seat: the member's signup of that kind is the one that moves, or a new
+      # one is made when they have none.
+      private def other_kind_signup
+        slot_id = params[:fleet_event_slot_id]
+        return if slot_id.blank? || @signup.fleet_event_slot_id.blank?
+
+        slot = FleetEventSlot.find_by(id: slot_id)
+        return if slot.nil? || FleetEventSignup.team_seat_slot?(slot) == @signup.team_seat
+
+        scope = @signup.fleet_event.fleet_event_signups
+          .where(fleet_membership_id: @signup.fleet_membership_id, occurrence_date: @signup.occurrence_date)
+
+        scope.where.not(status: "withdrawn").same_kind_as(slot).first ||
+          scope.new(vehicle_id: (@signup.vehicle_id unless FleetEventSignup.team_seat_slot?(slot)))
+      end
+
+      # Taken out of a team seat, a member who also holds a ship seat or waits
+      # in the pool keeps that; the team seat's signup is done, not a second
+      # one for the pool.
+      private def leaving_team_seat_beside_another?
+        return false unless params.key?(:fleet_event_slot_id) && params[:fleet_event_slot_id].blank?
+        return false unless @signup.team_seat && @signup.fleet_event_slot_id.present?
+
+        @signup.fleet_event.fleet_event_signups
+          .where(fleet_membership_id: @signup.fleet_membership_id, occurrence_date: @signup.occurrence_date, team_seat: false)
+          .where.not(status: "withdrawn")
+          .exists?
       end
 
       private def admin_signup_attrs
