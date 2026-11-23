@@ -108,7 +108,7 @@ class FleetMembership < ApplicationRecord
   ROSTER_PRELOADS = [
     :fleet,
     :fleet_role,
-    {user: [{current_location: :parent}, :omniauth_connections, {avatar_attachment: :blob}]},
+    {user: [{current_location: :parent}, :omniauth_connections, User::AVATAR_PRELOADS]},
     {fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]}
   ].freeze
 

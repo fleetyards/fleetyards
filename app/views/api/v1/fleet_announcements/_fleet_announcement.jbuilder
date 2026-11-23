@@ -10,9 +10,9 @@ if fleet_announcement.author.present?
   json.author do
     json.id fleet_announcement.author.id
     json.username fleet_announcement.author.username
-    if fleet_announcement.author.avatar.attached?
+    if fleet_announcement.author.shown_avatar.attached?
       json.avatar do
-        json.partial! "api/v1/shared/file", record: fleet_announcement.author, attr: :avatar
+        json.partial! "api/v1/shared/file", record: fleet_announcement.author, attr: :shown_avatar
       end
     end
   end

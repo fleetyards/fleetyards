@@ -74,7 +74,7 @@ json.crew_preview do
     json.id assignment.user.id
     json.username assignment.user.username
     json.avatar do
-      json.partial! "api/v1/shared/file", record: assignment.user, attr: :avatar
+      json.partial! "api/v1/shared/file", record: assignment.user, attr: :shown_avatar
     end
   end
 end

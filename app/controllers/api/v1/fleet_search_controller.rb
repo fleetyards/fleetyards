@@ -36,7 +36,7 @@ module Api
         ScopedSearch::Source.new(
           type: "FleetMembership",
           scope: @fleet.fleet_memberships.kept.accepted.joins(:user)
-            .preload(user: {avatar_attachment: :blob}, fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}})
+            .preload(user: User::AVATAR_PRELOADS, fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}})
             .order("users.username"),
           filter: :user_username_or_user_display_name_or_nickname_cont,
           columns: %w[users.username users.display_name fleet_memberships.nickname],
@@ -46,7 +46,7 @@ module Api
               name: member.user.username,
               slug: member.user.username,
               detail: member.nickname.presence,
-              image: member.user.avatar.attached? ? member.user.avatar : nil,
+              image: member.user.shown_avatar.attached? ? member.user.shown_avatar : nil,
               online: online_status_for(member.user),
               squadron: member_squadron(member)
             )

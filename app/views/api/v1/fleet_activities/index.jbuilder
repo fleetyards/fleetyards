@@ -14,9 +14,9 @@ json.items do
       json.actor do
         json.id entry.actor.id
         json.username entry.actor.username
-        if entry.actor.avatar.attached?
+        if entry.actor.shown_avatar.attached?
           json.avatar do
-            json.partial! "api/v1/shared/file", record: entry.actor, attr: :avatar
+            json.partial! "api/v1/shared/file", record: entry.actor, attr: :shown_avatar
           end
         else
           json.avatar nil

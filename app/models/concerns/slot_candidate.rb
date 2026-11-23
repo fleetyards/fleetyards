@@ -8,7 +8,7 @@ module SlotCandidate
 
   # What a rendered candidate reads: the member's name and the ship's model.
   RENDER_PRELOADS = [
-    {fleet_squadron_membership: {fleet_membership: {user: {avatar_attachment: :blob}}}},
+    {fleet_squadron_membership: {fleet_membership: {user: User::AVATAR_PRELOADS}}},
     {vehicle: :model}
   ].freeze
 

@@ -22,6 +22,6 @@ if vehicle.user.hide_owner?
   json.user_rsi_handle nil
 else
   json.username vehicle.user.username
-  json.user_avatar(vehicle.user.avatar.attached? ? rails_representation_url(vehicle.user.avatar.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small])) : nil)
+  json.user_avatar(vehicle.user.shown_avatar.attached? ? rails_representation_url(vehicle.user.shown_avatar.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small])) : nil)
   json.user_rsi_handle vehicle.user.rsi_handle
 end

@@ -18,7 +18,7 @@ module Api
           {model: [:manufacturer]},
           {vehicle_modules: :model_module},
           {vehicle_upgrades: :model_upgrade},
-          {user: {avatar_attachment: :blob}},
+          {user: User::AVATAR_PRELOADS},
           {image_attachment: :blob},
           :launch_port_location
         ].freeze

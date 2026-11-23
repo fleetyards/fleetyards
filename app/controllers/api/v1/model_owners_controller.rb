@@ -40,7 +40,7 @@ module Api
 
         @friends_total = counts.size
 
-        users = ::User.where(id: counts.keys).with_attached_avatar.index_by(&:id)
+        users = ::User.where(id: counts.keys).with_avatars.index_by(&:id)
         @friends = counts
           .sort_by { |user_id, count| [-count, users[user_id].username.downcase] }
           .first(FRIENDS_LIMIT)

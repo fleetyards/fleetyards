@@ -28,7 +28,7 @@ module Api
           result = @fleet.fleet_memberships
             .kept
             .accepted
-            .includes(:fleet_role, {user: {avatar_attachment: :blob}})
+            .includes(:fleet_role, {user: User::AVATAR_PRELOADS})
             .joins(:user)
             .order("users.username ASC")
 

@@ -30,7 +30,7 @@ module Api
 
         scope = (params[:archived] == "true") ? index_scope.archived : index_scope.not_archived
 
-        @q = scope.includes(created_by: {avatar_attachment: :blob}, fleet: {logo_attachment: :blob}).ransack(query_params)
+        @q = scope.includes(created_by: User::AVATAR_PRELOADS, fleet: {logo_attachment: :blob}).ransack(query_params)
 
         @tours = result_with_pagination(@q.result(distinct: true), per_page(Tour))
       end
@@ -205,7 +205,7 @@ module Api
       # The invite page names and pictures whoever is inviting, so the organiser
       # and their avatar come along with the lookup.
       private def invite_scope
-        Tour.active.not_archived.includes(created_by: {avatar_attachment: :blob})
+        Tour.active.not_archived.includes(created_by: User::AVATAR_PRELOADS)
       end
 
       # The invite token is only rendered for whoever may hand it out, and a
@@ -254,7 +254,7 @@ module Api
 
       private def set_tour
         @tour = tour_scope
-          .includes(created_by: {avatar_attachment: :blob}, fleet: {logo_attachment: :blob}, payout_ledger: :payout_participants)
+          .includes(created_by: User::AVATAR_PRELOADS, fleet: {logo_attachment: :blob}, payout_ledger: :payout_participants)
           .find_by!(slug: params[:slug])
       end
 

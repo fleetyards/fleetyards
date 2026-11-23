@@ -23,7 +23,7 @@ module Api
       def index
         authorize! with: TourJoinRequestPolicy, context: tour_context
 
-        @tour_join_requests = @tour.join_requests.pending.includes(user: {avatar_attachment: :blob}).order(:created_at)
+        @tour_join_requests = @tour.join_requests.pending.includes(user: User::AVATAR_PRELOADS).order(:created_at)
       end
 
       def create

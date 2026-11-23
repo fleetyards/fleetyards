@@ -14,7 +14,7 @@ json.user do
   json.id other&.id
   json.username other&.username
   json.avatar do
-    json.partial! "api/v1/shared/file", record: other, attr: :avatar
+    json.partial! "api/v1/shared/file", record: other, attr: :shown_avatar
   end
 
   # Only once both sides have agreed. A row that is still pending, or that was

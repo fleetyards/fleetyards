@@ -17,9 +17,9 @@ json.created_by do
 
   # Omitted rather than rendered empty when there is nothing attached: an
   # avatar with no name, type, size or url does not satisfy MediaFile.
-  if tour.created_by&.avatar&.attached?
+  if tour.created_by&.shown_avatar&.attached?
     json.avatar do
-      json.partial! "api/v1/shared/file", record: tour.created_by, attr: :avatar
+      json.partial! "api/v1/shared/file", record: tour.created_by, attr: :shown_avatar
     end
   end
 end
