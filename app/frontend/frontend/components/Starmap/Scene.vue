@@ -185,6 +185,7 @@ const selectionMaterial = new LineMaterial({
   linewidth: 2,
 });
 selectionMaterial.depthTest = false;
+selectionMaterial.transparent = true;
 
 const selection = (() => {
   const points: number[] = [];
@@ -368,6 +369,8 @@ const starField = (() => {
 
 // How far outside the drawn edge the ring sits, in pixels.
 const SELECTION_GAP_PIXELS = 5;
+// How strongly the focused place, and its name, show through a body in front.
+const BEHIND_OPACITY = 0.35;
 
 const origin = new Vector3();
 
@@ -1503,13 +1506,19 @@ const occluder = computed(() => {
   return bodyFor(entry);
 });
 
+// Every body that can stand between the camera and something else: a moon
+// behind its planet, or a station on a moon's far side, is out of sight
+// whichever of them is focused.
+const solids = computed(() =>
+  items.value.filter((entry) => entry.radius && entry.role !== "place"),
+);
+
 const toPoint = new Vector3();
 const closest = new Vector3();
 const fromCentre = new Vector3();
 
-const occluded = (point: Vector3) => {
-  const body = occluder.value;
-  if (!body?.radius) return false;
+const behindBody = (point: Vector3, body: StarmapItem) => {
+  if (!body.radius) return false;
 
   fromCentre.copy(cameraWorld).sub(scratchCentre.set(...body.position));
   toPoint.copy(point).sub(cameraWorld);
@@ -1519,6 +1528,12 @@ const occluded = (point: Vector3) => {
   closest.copy(fromCentre).addScaledVector(toPoint, t);
   return closest.length() < body.radius * 0.995;
 };
+
+// A body faded out of the view no longer hides what is behind it.
+const occluded = (point: Vector3) =>
+  solids.value.some(
+    (body) => (fades.get(body.key) ?? 1) > 0.02 && behindBody(point, body),
+  );
 
 const scratchCentre = new Vector3();
 
@@ -1742,16 +1757,23 @@ onBeforeRender(({ delta, elapsed }) => {
         continue;
       }
 
-      mesh.visible = fade > 0.02 && !occluded(point);
+      // What the reader is on or pointing at stays drawn when a body turns
+      // in front of it, faintly, so the eye keeps it while the camera comes
+      // round. Its name is kept the same way.
+      const hidden = occluded(point);
+      const kept =
+        hidden &&
+        (entry.key === props.focusKey || entry.key === hoverKey.value);
+      mesh.visible = fade > 0.02 && (!hidden || kept);
       if (!mesh.visible) continue;
 
-      if (shell) {
+      if (shell && !kept) {
         shell.visible =
           cameraWorld.distanceTo(shell.position) > shell.scale.x * 1.02;
         (shell.material as MeshBasicMaterial).opacity = fade;
       }
 
-      mesh.material.opacity = fade;
+      mesh.material.opacity = fade * (kept ? BEHIND_OPACITY : 1);
       mesh.scale.setScalar(
         markerOf(entry.kind).size *
           (entry.minor ? MINOR_MARKER : 1) *
@@ -1815,11 +1837,14 @@ onBeforeRender(({ delta, elapsed }) => {
     !!selectedItem &&
     selectedItem.role !== "star" &&
     selectedItem.role !== "system";
-  if (selection.visible && selected) {
+  if (selection.visible && selected && selectedItem) {
     const drawn =
       selected instanceof Sprite ? selected.scale.x / 2 : selected.scale.x;
     const pixel = perPixel * cameraWorld.distanceTo(selected.position);
 
+    selectionMaterial.opacity = occluded(point.set(...selectedItem.position))
+      ? BEHIND_OPACITY
+      : 1;
     selection.position.copy(selected.position);
     selection.quaternion.copy(cam.quaternion);
     selection.scale.setScalar(drawn + SELECTION_GAP_PIXELS * pixel);
@@ -2086,6 +2111,8 @@ const LABEL_HEIGHT = 14;
 const LABEL_CHAR_WIDTH = 6.5;
 
 const shown = shallowRef<Set<string>>(new Set());
+// The names shown although a body stands in front of what they name.
+const behind = shallowRef<Set<string>>(new Set());
 let lastSignature = "";
 
 // How much a body under the pointer grows: enough to answer the
@@ -2162,11 +2189,13 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
 
   const placed: { x: number; y: number; half: number }[] = [];
   const next = new Set<string>();
+  const nextBehind = new Set<string>();
   const perPixel = (2 * Math.tan((cam.fov * Math.PI) / 360)) / height;
 
   for (const entry of candidates) {
     point.set(...entry.position);
-    if (occluded(point) && !important(entry)) continue;
+    const hidden = occluded(point);
+    if (hidden && !important(entry)) continue;
 
     projected.copy(point).sub(origin).project(cam);
     if (projected.z > 1) continue;
@@ -2218,6 +2247,7 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     if (!overlaps || important(entry)) {
       placed.push({ x, y: labelY, half });
       next.add(entry.key);
+      if (hidden) nextBehind.add(entry.key);
 
       // Set whenever it differs from what the element shows: a label drawn
       // anew starts at its role's default.
@@ -2229,9 +2259,12 @@ const declutter = (cam: PerspectiveCamera, element: HTMLCanvasElement) => {
     }
   }
 
-  const changed =
-    next.size !== shown.value.size ||
-    [...next].some((key) => !shown.value.has(key));
+  const sameSet = (a: Set<string>, b: Set<string>) =>
+    a.size === b.size && [...a].every((key) => b.has(key));
+
+  if (!sameSet(nextBehind, behind.value)) behind.value = nextBehind;
+
+  const changed = !sameSet(next, shown.value);
 
   if (changed) {
     shown.value = next;
@@ -2277,6 +2310,7 @@ defineExpose({ reframe: () => flyTo(focused.value), zoomStep, leave });
         :role="entry.role"
         :data-starmap-label="entry.key"
         :selected="entry.key === focusKey || entry.key === hoverKey"
+        :behind="behind.has(entry.key)"
       />
     </Html>
   </primitive>

@@ -9,10 +9,12 @@ type Props = {
   name: string;
   role: string;
   selected?: boolean;
+  behind?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   selected: false,
+  behind: false,
 });
 </script>
 
@@ -21,7 +23,10 @@ withDefaults(defineProps<Props>(), {
     :class="[
       'starmap-label',
       `starmap-label--${role}`,
-      { 'starmap-label--selected': selected },
+      {
+        'starmap-label--selected': selected,
+        'starmap-label--behind': behind,
+      },
     ]"
   >
     {{ name }}
@@ -32,7 +37,10 @@ withDefaults(defineProps<Props>(), {
 // Text on the map rather than in a box: a dark halo keeps it readable over a
 // bright surface or nebula without a plate behind every name.
 .starmap-label {
+  --starmap-label-opacity: 1;
+
   display: block;
+  opacity: var(--starmap-label-opacity);
   animation: starmap-label-in 0.18s ease-out;
   transform: translateY(15px);
   font-size: 0.71875rem;
@@ -70,6 +78,13 @@ withDefaults(defineProps<Props>(), {
     color: #fff;
   }
 
+  // What it names is on the far side of a body, drawn faintly through it.
+  &--behind {
+    --starmap-label-opacity: 0.55;
+
+    font-style: italic;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
@@ -81,7 +96,7 @@ withDefaults(defineProps<Props>(), {
   }
 
   to {
-    opacity: 1;
+    opacity: var(--starmap-label-opacity);
   }
 }
 </style>
