@@ -1007,8 +1007,7 @@ const avatarsMissing = computed(() => {
 
   return (
     !!user?.defaultOutfitId &&
-    !user.characterAvatarHelmet?.url &&
-    !user.characterAvatarBare?.url
+    (!user.characterAvatarHelmet?.url || !user.characterAvatarBare?.url)
   );
 });
 
