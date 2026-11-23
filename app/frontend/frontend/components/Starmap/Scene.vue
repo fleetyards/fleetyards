@@ -1757,10 +1757,13 @@ onBeforeRender(({ delta, elapsed }) => {
         continue;
       }
 
-      // What the reader is on stays drawn when a body turns in front of it,
-      // faintly, so the eye keeps it while the camera comes round.
+      // What the reader is on or pointing at stays drawn when a body turns
+      // in front of it, faintly, so the eye keeps it while the camera comes
+      // round. Its name is kept the same way.
       const hidden = occluded(point);
-      const kept = hidden && entry.key === props.focusKey;
+      const kept =
+        hidden &&
+        (entry.key === props.focusKey || entry.key === hoverKey.value);
       mesh.visible = fade > 0.02 && (!hidden || kept);
       if (!mesh.visible) continue;
 
