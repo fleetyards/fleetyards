@@ -53,6 +53,7 @@ import {
   disposeCharacter,
   dressHead,
   dressNeck,
+  keepRestPose,
   fitPieceToFace,
   loadCharacter,
   type LoadedCharacter,
@@ -1264,13 +1265,12 @@ const attachRigNow = async (scene: Group) => {
     undressHead = dressHead(scene, character, !!props.model.textured);
   }
 
-  if (rig.collar) undressNeck = dressNeck(scene, rig.collar === "hood");
-
   const bones = bonesByName(scene);
   const next = new Group();
   next.userData.grafted = [];
   next.userData.attached = [];
   const unplaced: string[] = [];
+  const rims: Mesh[] = [];
 
   pieces.forEach((piece, index) => {
     if (!piece) return;
@@ -1283,6 +1283,7 @@ const attachRigNow = async (scene: Group) => {
     meshes.forEach((mesh) => {
       mesh.userData.textured = piece.textured;
     });
+    if (rig.pieces[index]?.rim) rims.push(...meshes);
     if (meshes.length) next.add(...meshes);
     else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
     next.userData.grafted.push(...grafted);
@@ -1318,6 +1319,10 @@ const attachRigNow = async (scene: Group) => {
   scene.add(next);
   rigRoot = next;
   rigClips = clips;
+
+  if (rig.collar) {
+    undressNeck = dressNeck(scene, rig.collar === "hood", rims);
+  }
 
   // On a painted body too: only the painted pieces keep their own materials.
   setMaterials(next);
@@ -1663,6 +1668,7 @@ const applyPaintNow = async (scene: Group) => {
 };
 
 const setup = async (scene: Group, animations: AnimationClip[]) => {
+  keepRestPose(scene);
   if (props.model.textured) {
     playAnimations(scene, animations);
     if (props.model.paint) void applyPaint(scene);

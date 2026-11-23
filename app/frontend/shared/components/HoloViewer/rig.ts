@@ -32,6 +32,8 @@ export type RigPiece = {
   // The piece whose mount it must hang from: left off when that piece's rig
   // does not carry it, rather than hung from a namesake underneath.
   from?: string;
+  // The helmet: the undersuit's collar runs up to its rim.
+  rim?: boolean;
 };
 
 // A rigid item pinned to one of the figure's bones -- a weapon in a holster or
@@ -284,6 +286,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             piece.from ?? "",
             piece.textured ? "textured" : "",
             piece.fallbackPath ?? "",
+            piece.rim ? "rim" : "",
           ].join("|"),
         ),
         // Everything that changes how a part is drawn: a helper that arrives
