@@ -65,9 +65,7 @@ const TAB_ICONS: Record<string, string> = {
 const SUPPLIES = "supplies";
 const STORAGE = "storage";
 
-// A problem marked on a row may be behind another tab, so the tab carries it
-// too.
-const tabProblem = (key: string) => {
+const hasProblem = (key: string) => {
   if (key === STORAGE) return props.storageProblem;
 
   const slots =
@@ -95,6 +93,14 @@ const tabKeys = computed(() => [
   ...(props.supplies.length || props.suppliesHint ? [SUPPLIES] : []),
   ...(slots.storage ? [STORAGE] : []),
 ]);
+
+// A problem marked on a row may be behind another tab, so the tab carries it
+// too. Worked out once per change, not per use in the tab list.
+const problemTabs = computed(
+  () => new Set(tabKeys.value.filter((key) => hasProblem(key))),
+);
+
+const tabProblem = (key: string) => problemTabs.value.has(key);
 
 const picked = ref<string>();
 
