@@ -52042,7 +52042,11 @@ components:
           type: string
         modelSlug:
           type: string
+        manufacturerName:
+          type: string
         angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:

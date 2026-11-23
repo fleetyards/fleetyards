@@ -206,6 +206,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {username: user.username} do
       assert_equal vehicle.model.slug, parsed_body["flagship"]["modelSlug"]
+      assert_equal vehicle.model.manufacturer.name, parsed_body["flagship"]["manufacturerName"]
     end
   end
 end

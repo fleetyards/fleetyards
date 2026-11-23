@@ -40,13 +40,17 @@ else
   json.character_portrait nil
 end
 
-if (flagship = @user.vehicles.public.purchased.where(flagship: true).includes(:model).first)
+if (flagship = @user.vehicles.public.purchased.where(flagship: true).includes(model: :manufacturer).first)
   json.flagship do
     json.name flagship.name if flagship.name_visible?
     json.model_name flagship.model.name
     json.model_slug flagship.model.slug
+    json.manufacturer_name flagship.model.manufacturer&.name
     json.angled_view do
       json.partial! "api/v1/shared/file", record: flagship.model, attr: :angled_view
+    end
+    json.angled_view_colored do
+      json.partial! "api/v1/shared/file", record: flagship.model, attr: :angled_view_colored
     end
   end
 else

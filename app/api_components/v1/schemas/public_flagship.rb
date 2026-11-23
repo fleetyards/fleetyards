@@ -12,7 +12,9 @@ module V1
           name: {type: :string},
           modelName: {type: :string},
           modelSlug: {type: :string},
-          angledView: ::Shared::V1::Schemas::MediaFile
+          manufacturerName: {type: :string},
+          angledView: ::Shared::V1::Schemas::MediaFile,
+          angledViewColored: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false,
         required: %w[modelName modelSlug]
