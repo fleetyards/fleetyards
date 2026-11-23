@@ -295,24 +295,35 @@ class User < ApplicationRecord
 
   scope :with_avatars, -> { includes(AVATAR_PRELOADS) }
 
-  # The picture shown wherever the user appears. A render only stands in while
-  # its outfit is still the default; otherwise, the upload.
-  def shown_avatar
-    render = case avatar_source
-    when "character_helmet" then character_avatar_helmet
-    when "character_bare" then character_avatar_bare
-    end
+  before_save :stamp_character_avatars
 
-    (default_outfit_id.present? && render&.attached?) ? render : avatar
+  # The renders of the default outfit, nothing while they were drawn from
+  # another one: they are kept, and come back if it is made the default again.
+  def current_character_avatar(name)
+    return if default_outfit_id.blank? || character_avatar_outfit_id != default_outfit_id
+
+    attachment = public_send(name)
+    attachment if attachment.attached?
   end
 
-  # The renders show the default they were drawn from: a new default starts
-  # without any until the browser draws it.
+  # The picture shown wherever the user appears: the chosen render of the
+  # default outfit, otherwise the upload.
+  def shown_avatar
+    render = case avatar_source
+    when "character_helmet" then current_character_avatar(:character_avatar_helmet)
+    when "character_bare" then current_character_avatar(:character_avatar_bare)
+    end
+
+    render || avatar
+  end
+
+  def current_character_avatar_helmet = current_character_avatar(:character_avatar_helmet)
+
+  def current_character_avatar_bare = current_character_avatar(:character_avatar_bare)
+
   def change_default_outfit(outfit)
     return if default_outfit_id == outfit&.id
 
-    character_avatar_helmet.purge_later if character_avatar_helmet.attached?
-    character_avatar_bare.purge_later if character_avatar_bare.attached?
     update_columns(default_outfit_id: outfit&.id, updated_at: Time.current)
   end
 
@@ -1339,5 +1350,12 @@ class User < ApplicationRecord
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  # Renders are drawn from the default outfit of the moment they are saved.
+  private def stamp_character_avatars
+    return unless attachment_changes.key?("character_avatar_helmet") || attachment_changes.key?("character_avatar_bare")
+
+    self.character_avatar_outfit_id = default_outfit_id
   end
 end

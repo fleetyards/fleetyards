@@ -15,10 +15,10 @@ json.shown_avatar do
   json.partial! "api/v1/shared/file", record: user, attr: :shown_avatar
 end
 json.character_avatar_helmet do
-  json.partial! "api/v1/shared/file", record: user, attr: :character_avatar_helmet
+  json.partial! "api/v1/shared/file", record: user, attr: :current_character_avatar_helmet
 end
 json.character_avatar_bare do
-  json.partial! "api/v1/shared/file", record: user, attr: :character_avatar_bare
+  json.partial! "api/v1/shared/file", record: user, attr: :current_character_avatar_bare
 end
 json.avatar_source user.avatar_source
 json.default_outfit_id user.default_outfit_id
