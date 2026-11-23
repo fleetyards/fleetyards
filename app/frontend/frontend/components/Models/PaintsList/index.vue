@@ -127,7 +127,7 @@ const isEmpty = computed(
   </ModelSection>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .model-paint-owned {
   position: absolute;
   top: 8px;
