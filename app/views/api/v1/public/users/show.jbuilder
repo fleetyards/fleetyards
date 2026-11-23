@@ -30,12 +30,11 @@ else
   json.character nil
 end
 
-# Head and shoulders of the default outfit: the face only when the user shows
-# their own character, the helmet otherwise.
-portrait = @user.public_character_face? ? :current_character_avatar_bare : :current_character_avatar_helmet
-if @user.public_send(portrait)
+# Head and shoulders of the default outfit, always with the helmet on: the
+# face stays private either way.
+if @user.current_character_avatar_helmet
   json.character_portrait do
-    json.partial! "api/v1/shared/file", record: @user, attr: portrait
+    json.partial! "api/v1/shared/file", record: @user, attr: :current_character_avatar_helmet
   end
 else
   json.character_portrait nil

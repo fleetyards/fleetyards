@@ -183,7 +183,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /public/users/:username shows the helmet portrait unless the user shows their own character" do
+  test "GET /public/users/:username shows the helmet portrait even when the user shows their own character" do
     user = create(:user, :public_hangar)
     user.update!(default_outfit: create(:outfit, user:))
     user.character_avatar_helmet.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "helmet.png")
@@ -196,7 +196,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     user.update!(public_character_face: true)
 
     assert_api_response :get, 200, path_params: {username: user.username} do
-      assert_equal "bare.png", parsed_body["characterPortrait"]["name"]
+      assert_equal "helmet.png", parsed_body["characterPortrait"]["name"]
     end
   end
 
