@@ -27,6 +27,7 @@ const mountWith = (attributes: Partial<UserPublic>) =>
     global: {
       stubs: {
         Avatar: true,
+        RsiProfileLink: true,
         Heading: { template: "<div><slot /></div>" },
         RouterLink: { props: ["to"], template: "<a><slot /></a>" },
       },
@@ -108,7 +109,9 @@ describe("HangarPublicHeading", () => {
       flagship: {
         modelName: "Carrack",
         modelSlug: "carrack",
-        angledView: { mediumUrl: "/carrack.png" },
+        manufacturerName: "Anvil Aerospace",
+        angledView: { largeUrl: "/carrack.png" },
+        angledViewColored: { largeUrl: "/carrack-colored.png" },
       },
     } as Partial<UserPublic>);
 
@@ -117,14 +120,54 @@ describe("HangarPublicHeading", () => {
         .get('[data-test="hangar-public-character"] img')
         .attributes("src"),
     ).toBe("/portrait.png");
-    expect(wrapper.get('[data-test="hangar-public-flagship"]').text()).toBe(
-      "Carrack",
+    expect(
+      wrapper.get('[data-test="hangar-public-flagship-name"]').text(),
+    ).toBe("Carrack");
+    expect(
+      wrapper.get('[data-test="hangar-public-flagship"]').text(),
+    ).toContain("Anvil Aerospace");
+    expect(wrapper.get(".hangar-public-heading__ship").attributes("src")).toBe(
+      "/carrack-colored.png",
     );
   });
 
-  it("leaves the row out with neither a portrait nor a flagship", () => {
+  it("falls back to the plain angled view and names the model under a ship name", () => {
+    const wrapper = mountWith({
+      flagship: {
+        name: "Endeavour",
+        modelName: "Carrack",
+        modelSlug: "carrack",
+        angledView: { largeUrl: "/carrack.png" },
+      },
+    } as Partial<UserPublic>);
+
+    expect(wrapper.get(".hangar-public-heading__ship").attributes("src")).toBe(
+      "/carrack.png",
+    );
     expect(
-      mountWith({}).find('[data-test="hangar-public-showcase"]').exists(),
+      wrapper.get('[data-test="hangar-public-flagship-name"]').text(),
+    ).toBe("Endeavour");
+    expect(
+      wrapper.get('[data-test="hangar-public-flagship"]').text(),
+    ).toContain("Carrack");
+  });
+
+  it("leaves the flagship out without one", () => {
+    expect(
+      mountWith({}).find('[data-test="hangar-public-flagship"]').exists(),
     ).toBe(false);
+  });
+
+  it("lists the character portrait among the profile links", () => {
+    const wrapper = mountWith({
+      discord: "discord.gg/alice",
+      characterPortrait: { smallUrl: "/portrait.png" },
+    } as Partial<UserPublic>);
+    const links = wrapper.get('[data-test="hangar-public-links"]');
+
+    expect(
+      links.get('[data-test="hangar-public-character"] img').attributes("src"),
+    ).toBe("/portrait.png");
+    expect(links.find(".fa-discord").exists()).toBe(true);
   });
 });

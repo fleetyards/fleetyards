@@ -30,8 +30,6 @@ import {
   type HangarGroupPublic,
   type UserPublic,
 } from "@/services/fyApi";
-import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
-import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -239,60 +237,8 @@ useSubscription({
 </script>
 
 <template>
-  <div class="row hangar-public">
-    <div class="col-12 col-lg-8">
-      <HangarPublicHeading :user="props.user" />
-    </div>
-
-    <div class="col-12 col-lg-4 hangar-profile-links">
-      <a
-        v-if="user.homepage"
-        v-tooltip="t('labels.homepage')"
-        :aria-label="t('labels.homepage')"
-        :href="`//${user.homepage}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-light fa-globe globe-rotate" />
-      </a>
-      <RsiProfileLink
-        v-if="user.rsiHandle"
-        :handle="user.rsiHandle"
-        :citizenid-profile-url="user.citizenidProfileUrl"
-        :verified="handleVerifiedViaProfile(user)"
-        icon-only
-      />
-      <a
-        v-if="user.discord"
-        v-tooltip="t('labels.discord')"
-        :aria-label="t('labels.discord')"
-        :href="`//${user.discord}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-brands fa-discord" />
-      </a>
-      <a
-        v-if="user.youtube"
-        v-tooltip="t('labels.youtube')"
-        :aria-label="t('labels.youtube')"
-        :href="`//${user.youtube}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-brands fa-youtube" />
-      </a>
-      <a
-        v-if="user.twitch"
-        v-tooltip="t('labels.twitch')"
-        :aria-label="t('labels.twitch')"
-        :href="`//${user.twitch}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-brands fa-twitch" />
-      </a>
-    </div>
+  <div class="hangar-public">
+    <HangarPublicHeading :user="props.user" />
   </div>
   <div class="row">
     <div class="col-12 col-lg-12">
