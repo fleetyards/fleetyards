@@ -228,4 +228,46 @@ describe("DressingRoomOutfits", () => {
 
     expect(wrapper.emitted("load")).toEqual([[heavy]]);
   });
+
+  it("marks an outfit as the default and hands it on to be drawn", async () => {
+    update.mockImplementationOnce(() =>
+      Promise.resolve({ ...heavy, default: true }),
+    );
+    const wrapper = await mount({});
+
+    await wrapper
+      .find(
+        '[data-test="dressing-room-default-outfit-1"] button, [data-test="dressing-room-default-outfit-1"]',
+      )
+      .trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: { default: true },
+    });
+    expect(wrapper.emitted("defaultSaved")?.[0]?.[0]).toMatchObject({
+      id: "outfit-1",
+      default: true,
+    });
+  });
+
+  it("unmarks the default without drawing anything", async () => {
+    outfits.value = [{ ...heavy, default: true }];
+    const wrapper = await mount({});
+
+    await wrapper
+      .find(
+        '[data-test="dressing-room-default-outfit-1"] button, [data-test="dressing-room-default-outfit-1"]',
+      )
+      .trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: { default: false },
+    });
+    expect(wrapper.emitted("defaultSaved")).toBeUndefined();
+    outfits.value = [heavy];
+  });
 });

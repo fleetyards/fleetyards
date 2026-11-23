@@ -60,6 +60,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   load: [outfit: Outfit];
   active: [id: string | undefined];
+  // The default outfit was saved or newly marked: what the avatars are drawn
+  // from has changed.
+  defaultSaved: [outfit: Outfit];
 }>();
 
 const { t } = useI18n();
@@ -173,7 +176,7 @@ const saveChanges = async () => {
   if (!active.value) return;
 
   try {
-    await updateOutfit.mutateAsync({
+    const outfit = await updateOutfit.mutateAsync({
       id: active.value.id,
       data: {
         name: name.value.trim(),
@@ -188,7 +191,24 @@ const saveChanges = async () => {
       },
     });
     await refresh();
+    if (outfit.default) emit("defaultSaved", outfit);
     displaySuccess({ text: t("dressingRoom.messages.saved") });
+  } catch {
+    displayAlert({ text: t("dressingRoom.messages.saveFailed") });
+  }
+};
+
+const sessionStore = useSessionStore();
+
+const toggleDefault = async (outfit: Outfit) => {
+  try {
+    const updated = await updateOutfit.mutateAsync({
+      id: outfit.id,
+      data: { default: !outfit.default },
+    });
+    await refresh();
+    await sessionStore.refreshUser();
+    if (updated.default) emit("defaultSaved", updated);
   } catch {
     displayAlert({ text: t("dressingRoom.messages.saveFailed") });
   }
@@ -302,6 +322,23 @@ const submit = () => {
               {{ t("dressingRoom.pieces", { count: outfit.items.length }) }}
             </span>
           </button>
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            :active="outfit.default"
+            :aria-label="
+              outfit.default
+                ? t('dressingRoom.removeDefault')
+                : t('dressingRoom.makeDefault')
+            "
+            :aria-pressed="outfit.default"
+            :data-test="`dressing-room-default-${outfit.id}`"
+            @click="toggleDefault(outfit)"
+          >
+            <i
+              :class="outfit.default ? 'fa-solid fa-star' : 'fa-light fa-star'"
+            />
+          </Btn>
           <Btn
             :size="BtnSizesEnum.SM"
             :variant="BtnVariantsEnum.BARE"

@@ -22,6 +22,9 @@
       "pose": "Pose",
       "copyLink": "Copiar enlace",
       "savedOutfits": "Atuendos guardados",
+      "makeDefault": "Usar como atuendo predeterminado",
+      "removeDefault": "Dejar de usar como atuendo predeterminado",
+      "openCharacter": "Personaje",
       "signInToSave": "Inicia sesión para guardar atuendos.",
       "outfitName": "Nombre del atuendo",
       "nameTaken": "Ya tienes un atuendo con este nombre.",
@@ -35,6 +38,8 @@
       "confirmDelete": "¿Eliminar el atuendo %{name}?",
       "messages": {
         "saved": "Atuendo guardado.",
+        "avatarsUpdated": "Avatares del personaje actualizados. Elige cuál se muestra en los ajustes de tu perfil.",
+        "avatarsFailed": "No se pudieron generar los avatares del personaje.",
         "saveFailed": "No se pudo guardar el atuendo.",
         "deleteFailed": "No se pudo eliminar el atuendo.",
         "linkCopied": "Enlace copiado.",

@@ -18,6 +18,8 @@ import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
 import StageLayout from "@/frontend/components/StageLayout/index.vue";
 import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
+import AvatarRenderer from "@/frontend/components/DressingRoom/AvatarRenderer/index.vue";
+import { useCharacterAvatarUpload } from "@/frontend/composables/useCharacterAvatarUpload";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -36,6 +38,7 @@ import {
   getEquipmentItemQueryOptions,
   useCharacterBodies,
   useCharacterFaces,
+  useOutfits,
   useSharedCharacterFace,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -784,17 +787,17 @@ const drawnFace = computed(() =>
 );
 
 // The character the address names, when it can be drawn on this body.
-const chosenCharacter = computed(() => {
+const chosenCharacterWith = (headWear: typeof wornHeadWear.value) => {
   const face = drawnFace.value;
   const resolved = face?.character as ResolvedCharacter | null;
   if (!body.value || !face || !resolved) return undefined;
 
-  return characterRig(body.value, resolved, face.token, wornHeadWear.value);
-});
+  return characterRig(body.value, resolved, face.token, headWear);
+};
 
 // Without one, the game's own default character for the body: the head the
 // customizer opens with.
-const defaultCharacter = computed(() => {
+const defaultCharacterWith = (headWear: typeof wornHeadWear.value) => {
   if (!body.value) return undefined;
 
   const fallback = body.value.defaultCharacter as ResolvedCharacter | null;
@@ -804,13 +807,16 @@ const defaultCharacter = computed(() => {
     body.value,
     fallback,
     `default:${body.value.key}`,
-    wornHeadWear.value,
+    headWear,
   );
-});
+};
 
-const character = computed(
-  () => chosenCharacter.value ?? defaultCharacter.value,
-);
+const chosenCharacter = computed(() => chosenCharacterWith(wornHeadWear.value));
+
+const characterWith = (headWear: typeof wornHeadWear.value) =>
+  chosenCharacterWith(headWear) ?? defaultCharacterWith(headWear);
+
+const character = computed(() => characterWith(wornHeadWear.value));
 
 // Once drawn, the figure stays up while another character is fetched.
 const figureDrawn = ref(false);
@@ -849,6 +855,28 @@ const model = computed(() => {
         character.value,
       )
     : outfitModel(pieces.value);
+});
+
+// The figure as it would stand with its helmet off: the head under it comes
+// back, hair and all.
+const bareModel = computed(() => {
+  if (!body.value) return undefined;
+
+  const helmet = riggedHolos.value[OutfitSlotEnum.HELMET]?.path;
+
+  return riggedOutfitModel(
+    body.value,
+    pieces.value.filter((piece) => !helmet || piece.path !== helmet),
+    pose.value,
+    attachments.value,
+    OUTFIT_SLOTS.filter(
+      (slot) => slot !== OutfitSlotEnum.HELMET && riggedHolos.value[slot],
+    ),
+    failedPaths.value,
+    characterWith(
+      wornHeadWear.value.filter((worn) => !helmet || worn.path !== helmet),
+    ),
+  );
 });
 
 // A weapon in hand is held, unless the address picks another pose.
@@ -927,6 +955,68 @@ const piecesPending = computed(
     ) ||
     storedLoading.value ||
     storedMissing.value,
+);
+
+// The default outfit saved, or newly marked: once it is on the figure, it is
+// drawn twice off screen, with and without its helmet, for the avatars.
+const avatarOutfitId = ref<string>();
+const avatarModels = ref<NonNullable<typeof model.value>[]>();
+
+const { upload: uploadAvatars } = useCharacterAvatarUpload();
+
+const renderAvatars = (outfit: Outfit) => {
+  if (activeOutfitId.value !== outfit.id) loadOutfit(outfit);
+
+  avatarOutfitId.value = outfit.id;
+};
+
+watch(
+  () =>
+    avatarOutfitId.value &&
+    activeOutfitId.value === avatarOutfitId.value &&
+    !piecesPending.value &&
+    !facePending.value &&
+    model.value &&
+    bareModel.value,
+  (ready) => {
+    if (!ready || !model.value || !bareModel.value) return;
+
+    avatarModels.value = [model.value, bareModel.value];
+    avatarOutfitId.value = undefined;
+  },
+);
+
+const avatarsRendered = async (portraits: (Blob | null)[]) => {
+  avatarModels.value = undefined;
+
+  try {
+    if (await uploadAvatars(portraits)) {
+      displaySuccess({ text: t("dressingRoom.messages.avatarsUpdated") });
+    } else {
+      displayAlert({ text: t("dressingRoom.messages.avatarsFailed") });
+    }
+  } catch {
+    displayAlert({ text: t("dressingRoom.messages.avatarsFailed") });
+  }
+};
+
+// A visit with nothing on the figure and nothing remembered opens on the
+// default outfit.
+const { data: outfits } = useOutfits({
+  query: { enabled: isAuthenticated, retry: false },
+});
+
+const openedEmpty = !Object.keys(route.query).length;
+
+watch(
+  outfits,
+  (list) => {
+    if (!openedEmpty || Object.keys(route.query).length) return;
+
+    const fallback = list?.find((outfit) => outfit.default);
+    if (fallback) loadOutfit(fallback);
+  },
+  { immediate: true },
 );
 
 const storageProblem = computed(
@@ -1141,10 +1231,17 @@ const copyShareLink = () => {
             :active-id="activeOutfitId"
             @load="loadOutfit"
             @active="setActiveOutfit"
+            @default-saved="renderAvatars"
           />
         </StagePanel>
       </template>
     </StageLayout>
+    <AvatarRenderer
+      v-if="avatarModels"
+      :models="avatarModels"
+      :azimuth="HOLO_AZIMUTH"
+      @done="avatarsRendered"
+    />
   </div>
 </template>
 

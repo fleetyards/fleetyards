@@ -22,6 +22,9 @@
       "pose": "Pose",
       "copyLink": "Link kopieren",
       "savedOutfits": "Gespeicherte Outfits",
+      "makeDefault": "Als Standard-Outfit festlegen",
+      "removeDefault": "Nicht mehr als Standard-Outfit verwenden",
+      "openCharacter": "Charakter",
       "signInToSave": "Melde dich an, um Outfits zu speichern.",
       "outfitName": "Name des Outfits",
       "nameTaken": "Du hast bereits ein Outfit mit diesem Namen.",
@@ -35,6 +38,8 @@
       "confirmDelete": "Das Outfit %{name} löschen?",
       "messages": {
         "saved": "Outfit gespeichert.",
+        "avatarsUpdated": "Charakter-Avatare aktualisiert. Welcher angezeigt wird, wählst du in deinen Profileinstellungen.",
+        "avatarsFailed": "Die Charakter-Avatare konnten nicht erstellt werden.",
         "saveFailed": "Das Outfit konnte nicht gespeichert werden.",
         "deleteFailed": "Das Outfit konnte nicht gelöscht werden.",
         "linkCopied": "Link kopiert.",

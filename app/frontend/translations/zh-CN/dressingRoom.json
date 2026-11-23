@@ -22,6 +22,9 @@
       "pose": "姿势",
       "copyLink": "复制链接",
       "savedOutfits": "已保存的装扮",
+      "makeDefault": "设为默认装扮",
+      "removeDefault": "取消默认装扮",
+      "openCharacter": "角色",
       "signInToSave": "登录后即可保存装扮。",
       "outfitName": "装扮名称",
       "nameTaken": "你已经有一套同名的装扮。",
@@ -35,6 +38,8 @@
       "confirmDelete": "删除装扮 %{name}？",
       "messages": {
         "saved": "装扮已保存。",
+        "avatarsUpdated": "角色头像已更新。可在个人资料设置中选择显示哪一个。",
+        "avatarsFailed": "无法生成角色头像。",
         "saveFailed": "无法保存装扮。",
         "deleteFailed": "无法删除装扮。",
         "linkCopied": "链接已复制。",
