@@ -40,6 +40,7 @@ module DressingRoom
       "kap_combat_light_core_01_02_01" => %w[thp_light_helmet_01_02_01 cds_combat_light_backpack_01_05_01],
       "kap_combat_light_core_02_03_01" => %w[vgl_utility_light_backpack_01_06_01]
     }.freeze
+    PAIRED = PAIRED_KEYS.values.flatten.to_set.freeze
 
     PICTURE_ORDER = %w[torso helmet legs arms backpack].freeze
 
@@ -60,9 +61,9 @@ module DressingRoom
       groups = pieces.group_by { |piece| [piece[:manufacturer_id], piece[:set_name]] }.values
       sets, strays = groups.partition { |members| (members.map { |member| member[:piece].slot }.uniq & BODY_SLOTS).size >= MIN_BODY_PIECES }
 
-      strays = strays.flatten
-      sets.each { |members| strays -= pair(members, strays) }
+      paired, strays = strays.flatten.partition { |stray| PAIRED.include?(stray[:piece].sc_key.to_s) }
       strays.sort_by { |stray| preference(stray[:piece]) }.each { |stray| adopt(stray, sets) }
+      sets.each { |members| pair(members, paired) }
 
       sets.map { |members| build_set(members) }
         .sort_by { |set| [set.manufacturer&.name.to_s.downcase, set.name.downcase] }
@@ -82,22 +83,31 @@ module DressingRoom
       slot = stray[:piece].slot
       open = sets.select { |members| members.none? { |member| member[:piece].slot == slot } }
 
+      # A set of its key that already wears the slot keeps the piece out of
+      # one its name matches.
       family = key_family(stray[:piece].sc_key)
-      homes = family ? open.select { |members| members.any? { |member| key_family(member[:piece].sc_key) == family } } : []
-      homes = open.select { |members| members.first[:set_name] == stray[:set_name] } if homes.empty?
+      kin = family ? sets.select { |members| members.any? { |member| key_family(member[:piece].sc_key) == family } } : []
+      return adopt_into(kin & open, stray) if kin.any?
+
+      homes = open.select { |members| members.first[:set_name] == stray[:set_name] }
       if homes.empty? && slot == "backpack"
         homes = open.select { |members| line_name(members.first[:set_name]) == line_name(stray[:set_name]) }
       end
 
+      adopt_into(homes, stray)
+    end
+
+    private def adopt_into(homes, stray)
       homes.first << stray if homes.one?
     end
 
+    # Only into a slot the set leaves open: its own piece comes first.
     private def pair(members, strays)
       keys = members.flat_map { |member| PAIRED_KEYS.fetch(member[:piece].sc_key.to_s, []) }
-      paired = strays.select { |stray| keys.include?(stray[:piece].sc_key.to_s) }
+      worn = members.map { |member| member[:piece].slot }
+      paired = strays.select { |stray| keys.include?(stray[:piece].sc_key.to_s) && worn.exclude?(stray[:piece].slot) }
 
       members.concat(paired)
-      paired
     end
 
     private def key_family(sc_key)
