@@ -31,6 +31,16 @@ module DressingRoom
     MODEL_CODE = /\A([^[:space:]-]+)-[^[:space:]]+/
     ARMOR_WORD = /[[:space:]]+Armor(?=[[:space:]]|\z)/
 
+    # Where a body piece's key names its slot: "kap_combat_light_helmet_02_03_01".
+    KEY_SLOT_WORD = /_(?:helmet|core|arms|legs)_/
+
+    # Pieces sold with a set that share neither its name nor its key, by the
+    # key of the set's core.
+    PAIRED_KEYS = {
+      "kap_combat_light_core_01_02_01" => %w[thp_light_helmet_01_02_01 cds_combat_light_backpack_01_05_01],
+      "kap_combat_light_core_02_03_01" => %w[vgl_utility_light_backpack_01_06_01]
+    }.freeze
+
     PICTURE_ORDER = %w[torso helmet legs arms backpack].freeze
 
     # Stand-ins the game keeps under a sold piece's name, for the loadout
@@ -39,7 +49,7 @@ module DressingRoom
 
     def self.cache_key
       [
-        "dressing-room/armor-sets/v3",
+        "dressing-room/armor-sets/v4",
         ::ScData::Source.current.served.cache_key,
         ::Equipment.maximum(:updated_at)&.utc&.to_fs(:usec),
         ::EquipmentBuild.maximum(:updated_at)&.utc&.to_fs(:usec)
@@ -50,7 +60,9 @@ module DressingRoom
       groups = pieces.group_by { |piece| [piece[:manufacturer_id], piece[:set_name]] }.values
       sets, strays = groups.partition { |members| (members.map { |member| member[:piece].slot }.uniq & BODY_SLOTS).size >= MIN_BODY_PIECES }
 
-      strays.flatten.sort_by { |stray| preference(stray[:piece]) }.each { |stray| adopt(stray, sets) }
+      strays = strays.flatten
+      sets.each { |members| strays -= pair(members, strays) }
+      strays.sort_by { |stray| preference(stray[:piece]) }.each { |stray| adopt(stray, sets) }
 
       sets.map { |members| build_set(members) }
         .sort_by { |set| [set.manufacturer&.name.to_s.downcase, set.name.downcase] }
@@ -62,16 +74,36 @@ module DressingRoom
     # lacks its slot. A backpack's name strays further: "Geist Backpack Desert"
     # goes with "Geist Armor Desert", "Arden-CL Backpack Rime" with "Arden-SL
     # Rime".
+    #
+    # The key settles it before the name does: the Epoque II helmet is named
+    # "Geist Armor Helmet Epoque", but its key is the Epoque II core's with the
+    # slot word swapped.
     private def adopt(stray, sets)
       slot = stray[:piece].slot
       open = sets.select { |members| members.none? { |member| member[:piece].slot == slot } }
 
-      homes = open.select { |members| members.first[:set_name] == stray[:set_name] }
+      family = key_family(stray[:piece].sc_key)
+      homes = family ? open.select { |members| members.any? { |member| key_family(member[:piece].sc_key) == family } } : []
+      homes = open.select { |members| members.first[:set_name] == stray[:set_name] } if homes.empty?
       if homes.empty? && slot == "backpack"
         homes = open.select { |members| line_name(members.first[:set_name]) == line_name(stray[:set_name]) }
       end
 
       homes.first << stray if homes.one?
+    end
+
+    private def pair(members, strays)
+      keys = members.flat_map { |member| PAIRED_KEYS.fetch(member[:piece].sc_key.to_s, []) }
+      paired = strays.select { |stray| keys.include?(stray[:piece].sc_key.to_s) }
+
+      members.concat(paired)
+      paired
+    end
+
+    private def key_family(sc_key)
+      family = sc_key.to_s.sub(KEY_SLOT_WORD, "_")
+
+      family unless family == sc_key.to_s
     end
 
     private def line_name(set_name)

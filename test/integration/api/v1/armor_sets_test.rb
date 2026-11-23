@@ -105,6 +105,32 @@ class Api::V1::ArmorSetsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /armor-sets gives a stray piece to the set its key belongs to over the set its name matches" do
+    %w[Core Arms Legs].zip(%i[torso arms legs]).each do |word, slot|
+      piece("Geist Armor #{word} Epoque", slot, sc_key: "kap_combat_light_#{word.downcase}_01_02_01")
+      piece("Geist Armor #{word} Epoque II", slot, sc_key: "kap_combat_light_#{word.downcase}_02_03_01")
+    end
+    piece("Geist Armor Helmet Epoque", :helmet, sc_key: "kap_combat_light_helmet_02_03_01", manufacturer: nil)
+
+    assert_api_response :get, 200 do
+      helmets = parsed_body.to_h { |set| [set["name"], set["pieces"].find { |entry| entry["slot"] == "helmet" }&.dig("name")] }
+
+      assert_equal({"Geist Armor Epoque" => nil, "Geist Armor Epoque II" => "Geist Armor Helmet Epoque"}, helmets)
+    end
+  end
+
+  test "GET /armor-sets gives a set the pieces it is sold with under another line's name" do
+    %w[Core Arms Legs].zip(%i[torso arms legs]).each do |word, slot|
+      piece("Geist Armor #{word} Epoque II", slot, sc_key: "kap_combat_light_#{word.downcase}_02_03_01")
+    end
+    piece("Chiron Backpack Epoque", :backpack, sc_key: "vgl_utility_light_backpack_01_06_01", item_type: "light_backpack",
+      manufacturer: create(:manufacturer, name: "Virgil"))
+
+    assert_api_response :get, 200 do
+      assert_equal ["Chiron Backpack Epoque"], parsed_body.first["pieces"].select { |entry| entry["slot"] == "backpack" }.pluck("name")
+    end
+  end
+
   test "GET /armor-sets gives a set the backpack its line sells with it under another model code" do
     piece("Morozov-SH Core Thule", :torso)
     piece("Morozov-SH Arms Thule", :arms)
