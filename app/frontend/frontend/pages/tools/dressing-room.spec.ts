@@ -79,6 +79,15 @@ const EQUIPMENT: Record<string, Equipment> = {
       ],
     },
   } as unknown as Equipment,
+  "hung-pack": {
+    ...piece("hung-pack", { holo: media("hung_pack.glb") }),
+    attachPoints: {
+      backpackAttach1Loc: {
+        position: [0, 0.05, -0.04],
+        rotation: [0, -1, 0, 0],
+      },
+    },
+  } as unknown as Equipment,
   "flight-suit": {
     ...piece("flight-suit", {}),
     name: "Flight Suit",
@@ -419,6 +428,29 @@ describe("ToolsDressingRoomPage", () => {
     expect(
       wrapper
         .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("hangs a backpack without a rig by the helper the export lists on it", async () => {
+    const { wrapper } = await mount({ backpack: "hung-pack" });
+
+    expect(viewerModel(wrapper).rig.attachments).toEqual([
+      expect.objectContaining({
+        path: "/hung_pack.glb",
+        bone: "backpack_attach_1_override",
+        helper: { position: [0, 0.05, -0.04], rotation: [0, -1, 0, 0] },
+      }),
+    ]);
+  });
+
+  it("leaves a backpack without a rig or a listed helper undrawn, its position pending", async () => {
+    const { wrapper } = await mount({ backpack: "pinned-pack" });
+
+    expect(viewerModel(wrapper).rig.attachments ?? []).toEqual([]);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-position-pending-backpack"]')
         .exists(),
     ).toBe(true);
   });

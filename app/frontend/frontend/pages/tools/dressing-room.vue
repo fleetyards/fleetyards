@@ -536,11 +536,23 @@ const staticHolos = computed(
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
 
-const pinnedBackpack = computed(() =>
-  body.value && !riggedHolos.value[OutfitSlotEnum.BACKPACK]
-    ? staticHolos.value[OutfitSlotEnum.BACKPACK]
-    : undefined,
-);
+// Hung by the helper the export lists on it: hung by its holo's origin
+// instead, it sits on the back the wrong way up.
+const pinnedBackpack = computed(() => {
+  const holo =
+    body.value && !riggedHolos.value[OutfitSlotEnum.BACKPACK]
+      ? staticHolos.value[OutfitSlotEnum.BACKPACK]
+      : undefined;
+  if (!holo) return undefined;
+
+  const placed = attachment(
+    holo,
+    BACKPACK_MOUNT,
+    items.value[OutfitSlotEnum.BACKPACK]?.attachPoints,
+  );
+
+  return placed.helper ? placed : undefined;
+});
 
 const isCarriedSlot = (slot: OutfitSlotEnum) =>
   isWeaponSlot(slot) || isGearSlot(slot);
@@ -558,7 +570,11 @@ const holos = computed(
         }
         if (isCarriedSlot(slot)) return [slot, staticHolos.value[slot]];
         if (slot === OutfitSlotEnum.BACKPACK) {
-          return [slot, riggedHolos.value[slot] ?? pinnedBackpack.value];
+          return [
+            slot,
+            riggedHolos.value[slot] ??
+              (pinnedBackpack.value ? staticHolos.value[slot] : undefined),
+          ];
         }
 
         return [slot, riggedHolos.value[slot]];
@@ -644,18 +660,14 @@ const positionPending = (slot: OutfitSlotEnum) =>
     (isCarriedSlot(slot) &&
       !!staticHolos.value[slot] &&
       heldWeapon.value !== slot &&
-      !carriedPlacement(slot)));
+      !carriedPlacement(slot)) ||
+    (slot === OutfitSlotEnum.BACKPACK &&
+      !!staticHolos.value[slot] &&
+      !riggedHolos.value[slot] &&
+      !pinnedBackpack.value));
 
 const attachments = computed(() => [
-  ...(pinnedBackpack.value
-    ? [
-        attachment(
-          pinnedBackpack.value,
-          BACKPACK_MOUNT,
-          items.value[OutfitSlotEnum.BACKPACK]?.attachPoints,
-        ),
-      ]
-    : []),
+  ...(pinnedBackpack.value ? [pinnedBackpack.value] : []),
   ...[...WEAPON_SLOTS, ...GEAR_SLOTS].flatMap((slot) => {
     const placed = carriedPlacement(slot);
 
