@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as tourRoutes } from "@/frontend/pages/tools/tours/routes";
 import { FeatureFlagName } from "@/services/fyApi";
+import { lastVisitGuard } from "@/frontend/stores/dressingRoom";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -52,6 +53,7 @@ export const routes: RouteRecordRaw[] = [
     path: "dressing-room/",
     name: "dressing-room",
     component: () => import("@/frontend/pages/tools/dressing-room.vue"),
+    beforeEnter: lastVisitGuard,
     meta: {
       title: "tools.dressingRoom",
       backgroundImage: "bg-room",
