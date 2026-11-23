@@ -3,6 +3,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { me } from "@/services/fyApi";
 import { useAppStore } from "./app";
 import { useSessionStore } from "./session";
+import { useDressingRoomStore } from "@/frontend/stores/dressingRoom";
 import { useVehicleViewStore } from "./vehicleView";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -36,6 +37,15 @@ describe("app store", () => {
 
     expect(sessionStore.authenticated).toBe(false);
     expect(sessionStore.currentUser).toBeUndefined();
+  });
+
+  it("forgets the dressing room's last visit, which names the viewer's outfit", () => {
+    const dressingRoomStore = useDressingRoomStore();
+    dressingRoomStore.lastQuery = { outfit: "outfit-1", face: "own-face" };
+
+    useAppStore().resetAll();
+
+    expect(dressingRoomStore.lastQuery).toBeNull();
   });
 
   it("forgets which vehicles were left in 3D", () => {
