@@ -303,7 +303,7 @@ module Rsi
       end
 
       updates[:rsi_name] = data["name"].strip
-      updates[:name] = strip_name(data["name"]) if (model_updated(paint, data) && data["name"] != paint.rsi_name) || paint.name.blank?
+      updates[:name] = PaintsImporter.paint_mapping(strip_name(data["name"])) if (model_updated(paint, data) && data["name"] != paint.rsi_name) || paint.name.blank?
 
       paint.update(updates)
 
