@@ -1478,6 +1478,7 @@
         "manufacturer": "Hersteller",
         "loaners": "Leihschiffe",
         "paints": "Lackierungen",
+        "paintOwned": "Im Besitz",
         "modules": "Module",
         "bodykits": "Bodykits",
         "bodykitStock": "Ab Werk",

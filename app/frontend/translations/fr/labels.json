@@ -1478,6 +1478,7 @@
         "manufacturer": "Fabricant",
         "loaners": "Prêts",
         "paints": "Peintures",
+        "paintOwned": "Possédé",
         "modules": "Modules",
         "bodykits": "Kits de carrosserie",
         "bodykitStock": "D'usine",

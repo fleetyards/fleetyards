@@ -19,6 +19,11 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelPaints as useModelPaintsQuery } from "@/services/fyApi";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { useHangarPaints } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 
 type Props = {
   modelSlug: string;
@@ -29,6 +34,18 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const { data: paints, ...asyncStatus } = useModelPaintsQuery(props.modelSlug);
+
+const sessionStore = useSessionStore();
+
+const { data: ownedPaintIds } = useHangarPaints({
+  query: {
+    enabled: computed(() => sessionStore.isAuthenticated),
+  },
+});
+
+const ownedIds = computed(() => new Set(ownedPaintIds.value ?? []));
+
+const owned = (paint: ModelPaint) => ownedIds.value.has(paint.id);
 
 const { supported: webpSupported } = useWebpCheck();
 
@@ -79,11 +96,23 @@ const isEmpty = computed(
             v-for="item in paints"
             :key="`paints-${item.id}`"
             class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
+            data-test="model-paint"
           >
             <Panel
               :bg-image="storeImage(item)"
               :variant="PanelVariantsEnum.SLIM"
+              :tone="
+                owned(item) ? PanelTonesEnum.SUCCESS : PanelTonesEnum.NEUTRAL
+              "
             >
+              <Pill
+                v-if="owned(item)"
+                :variant="PillVariantsEnum.SUCCESS"
+                class="model-paint-owned"
+                data-test="model-paint-owned"
+              >
+                {{ t("labels.model.paintOwned") }}
+              </Pill>
               <PanelHeading
                 :shadow="PanelHeadingShadowEnum.TOP"
                 :level="HeadingLevelEnum.H3"
@@ -97,3 +126,12 @@ const isEmpty = computed(
     </AsyncData>
   </ModelSection>
 </template>
+
+<style scoped>
+.model-paint-owned {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+}
+</style>

@@ -1478,6 +1478,7 @@
         "manufacturer": "制造商",
         "loaners": "借用船",
         "paints": "涂装",
+        "paintOwned": "已拥有",
         "modules": "模块",
         "bodykits": "车身套件",
         "bodykitStock": "出厂标配",

@@ -1478,6 +1478,7 @@
         "manufacturer": "Manufacturer",
         "loaners": "Loaners",
         "paints": "Paints",
+        "paintOwned": "Owned",
         "modules": "Modules",
         "bodykits": "Body Kits",
         "bodykitStock": "Factory fitted",
