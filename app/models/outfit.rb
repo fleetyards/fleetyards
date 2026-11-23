@@ -78,7 +78,7 @@ class Outfit < ApplicationRecord
   end
 
   private def release_default
-    user.update_columns(default_outfit_id: nil, updated_at: Time.current) if default?
+    user.change_default_outfit(nil) if default?
   end
 
   private def outfit_limit

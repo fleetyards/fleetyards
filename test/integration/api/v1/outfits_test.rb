@@ -487,4 +487,17 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}
     assert_nil @user.reload.default_outfit_id
   end
+
+  test "PUT /outfits/{id} drops the renders of the default it replaces" do
+    other = create(:outfit, user: @user, name: "Light")
+    @user.update!(default_outfit: @outfit)
+    @user.character_avatar_helmet.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "helmet.png")
+    sign_in @user
+
+    perform_enqueued_jobs do
+      assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: other.id}, body: {default: true}
+    end
+
+    assert_not @user.reload.character_avatar_helmet.attached?
+  end
 end

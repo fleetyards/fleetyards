@@ -77,9 +77,9 @@ module Api
 
         user = @outfit.user
         if ActiveModel::Type::Boolean.new.cast(params[:default])
-          user.update_columns(default_outfit_id: @outfit.id, updated_at: Time.current)
+          user.change_default_outfit(@outfit)
         elsif user.default_outfit_id == @outfit.id
-          user.update_columns(default_outfit_id: nil, updated_at: Time.current)
+          user.change_default_outfit(nil)
         end
 
         true

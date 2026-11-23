@@ -306,6 +306,16 @@ class User < ApplicationRecord
     (default_outfit_id.present? && render&.attached?) ? render : avatar
   end
 
+  # The renders show the default they were drawn from: a new default starts
+  # without any until the browser draws it.
+  def change_default_outfit(outfit)
+    return if default_outfit_id == outfit&.id
+
+    character_avatar_helmet.purge_later if character_avatar_helmet.attached?
+    character_avatar_bare.purge_later if character_avatar_bare.attached?
+    update_columns(default_outfit_id: outfit&.id, updated_at: Time.current)
+  end
+
   # For fragments keyed on something other than the user, which would keep an
   # avatar the user has since switched.
   def avatar_cache_key
