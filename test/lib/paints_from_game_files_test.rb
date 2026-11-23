@@ -128,23 +128,23 @@ class PaintsFromGameFilesTest < ActiveSupport::TestCase
     assert_equal ["Dracon", "Dracones", "Draco Gold"].sort, model.paints.pluck(:name).sort
   end
 
-  test "#run puts a Best in Show year where the store does" do
+  test "#run keeps a Best in Show year in front, as the hangar names it" do
     model = ship("F8C Lightning", "Paint_F8")
-    livery("F8C Lightning 2954 Best in Show Livery", "Paint_F8")
-
-    create_paints
-
-    assert_equal ["Best in Show 2954"], model.paints.pluck(:name)
-  end
-
-  test "#run reads either order of a Best in Show year as the same paint" do
-    model = ship("F8C Lightning", "Paint_F8")
-    create(:model_paint, model:, name: "2954 Best in Show")
     livery("F8C Lightning 2954 Best in Show Livery", "Paint_F8")
 
     create_paints
 
     assert_equal ["2954 Best in Show"], model.paints.pluck(:name)
+  end
+
+  test "#run reads either order of a Best in Show year as the same paint" do
+    model = ship("F8C Lightning", "Paint_F8")
+    create(:model_paint, model:, name: "Best in Show 2954")
+    livery("F8C Lightning 2954 Best in Show Livery", "Paint_F8")
+
+    create_paints
+
+    assert_equal ["Best in Show 2954"], model.paints.pluck(:name)
   end
 
   test "#run strips the ship the way the game names it" do

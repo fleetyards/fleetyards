@@ -229,6 +229,33 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["Dark Green", "Invictus Blue and Gold"], andromeda.paints.order(:name).pluck(:name)
   end
 
+  test "#run files the year-last Best in Show names under the hangar's year-first one" do
+    carrack = create(:model, name: "Carrack")
+    hangar_sync(
+      "Carrack - 2952 Best in Show Paint",
+      "Carrack - Red Alert Paint",
+      "Carrack - Best in Show 2952 (Red Alert) Paint"
+    )
+
+    PaintsImporter.new.run
+
+    assert_equal ["2952 Best in Show"], carrack.paints.pluck(:name)
+  end
+
+  test "#run files a paint's other spellings under the name the hangar uses" do
+    phoenix = create(:model, name: "Constellation Mk IV Phoenix")
+    hangar_sync(
+      "Constellation Mk IV - Heron Black Paint",
+      "Constellation Mk IV - Black Heron Paint",
+      "Constellation Mk IV - Auspicious Red Monkey Paint",
+      "Constellation Mk IV - 2952 Auspicious Red Paint"
+    )
+
+    PaintsImporter.new.run
+
+    assert_equal ["Auspicious Red Monkey", "Heron Black"], phoenix.paints.order(:name).pluck(:name)
+  end
+
   test "#run files the unprefixed Aurora blue paints under the Aurora Mk I" do
     aurora_mr = create(:model, name: "Aurora Mk I MR")
     hangar_sync("Aurora Electric Blue Paint", "Aurora Shocking Blue Paint")
