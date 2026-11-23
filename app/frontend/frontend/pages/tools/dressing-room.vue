@@ -67,6 +67,7 @@ import {
   outfitModel,
   outfitQuery,
   parseOutfitQuery,
+  sameOutfit,
   pieceHolo,
   riggedOutfitModel,
   riggedPieceHolo,
@@ -957,32 +958,80 @@ const piecesPending = computed(
     storedMissing.value,
 );
 
-// The default outfit saved, or newly marked: once it is on the figure, it is
-// drawn twice off screen, with and without its helmet, for the avatars.
-const avatarOutfitId = ref<string>();
+// The default outfit as saved, when it is what stands on the figure. Its
+// avatars are drawn from the figure, so an unsaved edit or another outfit on
+// screen would draw the wrong one.
+const { data: outfits } = useOutfits({
+  query: { enabled: isAuthenticated, retry: false },
+});
+
+const defaultOnFigure = computed(() => {
+  const saved = outfits.value?.find((outfit) => outfit.default);
+  if (!saved || saved.id !== activeOutfitId.value) return undefined;
+
+  const savedSelection = Object.fromEntries(
+    saved.items.map((item) => [item.slot, item.equipment.slug]),
+  );
+
+  return sameOutfit(selection.value, savedSelection) &&
+    saved.body === bodyKey.value &&
+    (saved.heldWeapon ?? undefined) === heldWeapon.value &&
+    (saved.characterFace?.token ?? undefined) === faceToken.value
+    ? saved
+    : undefined;
+});
+
+// Drawn twice off screen, with and without its helmet: when the default is
+// saved, and when it stands on the figure without any yet -- marked while
+// another outfit was on screen, or a drawing that failed.
+const avatarsRequested = ref(false);
 const avatarModels = ref<NonNullable<typeof model.value>[]>();
+const avatarRun = ref(0);
+const avatarsTriedFor = new Set<string>();
 
 const { upload: uploadAvatars } = useCharacterAvatarUpload();
 
-const renderAvatars = (outfit: Outfit) => {
-  if (activeOutfitId.value !== outfit.id) loadOutfit(outfit);
+const sessionStore = useSessionStore();
 
-  avatarOutfitId.value = outfit.id;
+const renderAvatars = (outfit: Outfit) => {
+  if (outfit.id !== activeOutfitId.value) {
+    displaySuccess({ text: t("dressingRoom.messages.openToDraw") });
+    return;
+  }
+
+  avatarsRequested.value = true;
 };
+
+const avatarsMissing = computed(() => {
+  const user = sessionStore.currentUser;
+
+  return (
+    !!user?.defaultOutfitId &&
+    !user.characterAvatarHelmet?.url &&
+    !user.characterAvatarBare?.url
+  );
+});
 
 watch(
   () =>
-    avatarOutfitId.value &&
-    activeOutfitId.value === avatarOutfitId.value &&
+    !avatarModels.value &&
+    !!defaultOnFigure.value &&
+    (avatarsRequested.value ||
+      (avatarsMissing.value &&
+        !avatarsTriedFor.has(defaultOnFigure.value.id))) &&
     !piecesPending.value &&
     !facePending.value &&
-    model.value &&
-    bareModel.value,
+    !!model.value &&
+    !!bareModel.value,
   (ready) => {
-    if (!ready || !model.value || !bareModel.value) return;
+    if (!ready || !model.value || !bareModel.value || !defaultOnFigure.value) {
+      return;
+    }
 
+    avatarsTriedFor.add(defaultOnFigure.value.id);
+    avatarsRequested.value = false;
+    avatarRun.value += 1;
     avatarModels.value = [model.value, bareModel.value];
-    avatarOutfitId.value = undefined;
   },
 );
 
@@ -1001,19 +1050,18 @@ const avatarsRendered = async (portraits: (Blob | null)[]) => {
 };
 
 // A visit with nothing on the figure and nothing remembered opens on the
-// default outfit.
-const { data: outfits } = useOutfits({
-  query: { enabled: isAuthenticated, retry: false },
-});
-
-const openedEmpty = !Object.keys(route.query).length;
+// default outfit, once: an emptied figure later stays empty.
+let defaultOpened = !!Object.keys(route.query).length;
 
 watch(
   outfits,
   (list) => {
-    if (!openedEmpty || Object.keys(route.query).length) return;
+    if (defaultOpened || !list) return;
 
-    const fallback = list?.find((outfit) => outfit.default);
+    defaultOpened = true;
+    if (Object.keys(route.query).length) return;
+
+    const fallback = list.find((outfit) => outfit.default);
     if (fallback) loadOutfit(fallback);
   },
   { immediate: true },
@@ -1238,6 +1286,7 @@ const copyShareLink = () => {
     </StageLayout>
     <AvatarRenderer
       v-if="avatarModels"
+      :key="avatarRun"
       :models="avatarModels"
       :azimuth="HOLO_AZIMUTH"
       @done="avatarsRendered"

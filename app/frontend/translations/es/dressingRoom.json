@@ -40,6 +40,7 @@
         "saved": "Atuendo guardado.",
         "avatarsUpdated": "Avatares del personaje actualizados. Elige cuál se muestra en los ajustes de tu perfil.",
         "avatarsFailed": "No se pudieron generar los avatares del personaje.",
+        "openToDraw": "Abre este atuendo para generar sus avatares.",
         "saveFailed": "No se pudo guardar el atuendo.",
         "deleteFailed": "No se pudo eliminar el atuendo.",
         "linkCopied": "Enlace copiado.",

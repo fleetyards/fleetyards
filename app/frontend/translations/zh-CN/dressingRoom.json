@@ -40,6 +40,7 @@
         "saved": "装扮已保存。",
         "avatarsUpdated": "角色头像已更新。可在个人资料设置中选择显示哪一个。",
         "avatarsFailed": "无法生成角色头像。",
+        "openToDraw": "打开这套装扮以生成其头像。",
         "saveFailed": "无法保存装扮。",
         "deleteFailed": "无法删除装扮。",
         "linkCopied": "链接已复制。",

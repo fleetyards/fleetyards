@@ -40,6 +40,7 @@
         "saved": "Tenue enregistrée.",
         "avatarsUpdated": "Avatars du personnage mis à jour. Choisissez celui qui s'affiche dans les paramètres de votre profil.",
         "avatarsFailed": "Les avatars du personnage n'ont pas pu être générés.",
+        "openToDraw": "Ouvrez cette tenue pour générer ses avatars.",
         "saveFailed": "La tenue n'a pas pu être enregistrée.",
         "deleteFailed": "La tenue n'a pas pu être supprimée.",
         "linkCopied": "Lien copié.",

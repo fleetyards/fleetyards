@@ -40,6 +40,7 @@
         "saved": "Outfit saved.",
         "avatarsUpdated": "Character avatars updated. Choose which one is shown in your profile settings.",
         "avatarsFailed": "The character avatars could not be drawn.",
+        "openToDraw": "Open this outfit to draw its avatars.",
         "saveFailed": "The outfit could not be saved.",
         "deleteFailed": "The outfit could not be deleted.",
         "linkCopied": "Link copied.",
