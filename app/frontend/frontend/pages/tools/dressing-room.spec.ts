@@ -456,6 +456,23 @@ describe("ToolsDressingRoomPage", () => {
     ).toBe(true);
   });
 
+  it("says so when the viewer leaves a pinned backpack off for want of its mount", async () => {
+    const { wrapper } = await mount({ backpack: "hung-pack" });
+    const pending = () =>
+      wrapper
+        .find('[data-test="dressing-room-position-pending-backpack"]')
+        .exists();
+
+    expect(pending()).toBe(false);
+
+    wrapper
+      .findComponent({ name: "HoloViewer" })
+      .vm.$emit("unplaced", ["/hung_pack.glb"]);
+    await flushPromises();
+
+    expect(pending()).toBe(true);
+  });
+
   it("says so when the viewer leaves a weapon off for want of its mount", async () => {
     const { wrapper } = await mount({ primary: "p4-ar-hung" });
     const pending = () =>

@@ -661,7 +661,10 @@ const unplaced = ref<string[]>([]);
 const unplacedSlot = (slot: OutfitSlotEnum) => {
   const path = isCarriedSlot(slot)
     ? carriedPlacement(slot)?.path
-    : riggedHolos.value[slot]?.path;
+    : (riggedHolos.value[slot]?.path ??
+      (slot === OutfitSlotEnum.BACKPACK
+        ? pinnedBackpack.value?.path
+        : undefined));
 
   return !!path && unplaced.value.includes(path);
 };
