@@ -218,13 +218,10 @@ const canSave = computed(
 
 const canSaveNew = computed(
   () =>
-    canSave.value &&
-    (!active.value || name.value.trim() !== active.value.name),
+    canSave.value && (!active.value || name.value.trim() !== active.value.name),
 );
 
-const canSaveChanges = computed(
-  () => canSave.value && changed.value,
-);
+const canSaveChanges = computed(() => canSave.value && changed.value);
 
 // Enter saves what the buttons would: the active outfit's changes, or a new
 // outfit when none is active.
