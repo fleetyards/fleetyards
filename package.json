@@ -39,7 +39,7 @@
     "@appsignal/javascript": "^1.6.1",
     "@appsignal/vue": "^1.1.7",
     "@date-fns/tz": "1.5.0",
-    "@event-calendar/core": "^5.19.0",
+    "@event-calendar/core": "^5.21.0",
     "@floating-ui/dom": "^1.8.0",
     "@google/model-viewer": "^4.4.0",
     "@number-flow/vue": "^0.5.2",
