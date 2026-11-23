@@ -55,7 +55,7 @@ module Api
       private def members_for(blueprints, marks)
         return {} if blueprints.empty?
 
-        memberships = sharing_memberships.includes(:user).index_by(&:user_id)
+        memberships = sharing_memberships.includes(user: User::AVATAR_PRELOADS).index_by(&:user_id)
 
         marks
           .where(blueprint_id: blueprints.map(&:id), user_id: memberships.keys)

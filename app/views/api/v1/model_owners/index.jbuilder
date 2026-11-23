@@ -12,9 +12,9 @@ json.friends do
   json.total @friends_total
   json.items @friends do |(user, count)|
     json.username user.username
-    if user.avatar.attached?
+    if user.shown_avatar.attached?
       json.avatar do
-        json.partial! "api/v1/shared/file", record: user, attr: :avatar
+        json.partial! "api/v1/shared/file", record: user, attr: :shown_avatar
       end
     end
     json.count count

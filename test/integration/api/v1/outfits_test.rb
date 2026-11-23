@@ -450,4 +450,54 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
   private def pack_inventory(capacity: 150_000)
     {"capacity" => capacity, "dimensions" => {"x" => 0.64, "y" => 1.0, "z" => 0.45}}
   end
+
+  test "PUT /outfits/{id} makes the outfit the default, and another outfit takes it over" do
+    other = create(:outfit, user: @user, name: "Light")
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}, body: {default: true} do
+      assert parsed_body["default"]
+    end
+    assert_equal @outfit.id, @user.reload.default_outfit_id
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: other.id}, body: {default: true}
+    assert_equal other.id, @user.reload.default_outfit_id
+
+    assert_api_response :get, 200, api_path: "/outfits" do
+      assert_equal({"Heavy" => false, "Light" => true}, parsed_body.to_h { |outfit| [outfit["name"], outfit["default"]] })
+    end
+  end
+
+  test "PUT /outfits/{id} unmarks only the outfit that is the default" do
+    other = create(:outfit, user: @user, name: "Light")
+    @user.update!(default_outfit: @outfit)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: other.id}, body: {default: false}
+    assert_equal @outfit.id, @user.reload.default_outfit_id
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}, body: {default: false}
+    assert_nil @user.reload.default_outfit_id
+  end
+
+  test "DELETE /outfits/{id} clears the default it was" do
+    @user.update!(default_outfit: @outfit)
+    sign_in @user
+
+    assert_api_response :delete, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}
+    assert_nil @user.reload.default_outfit_id
+  end
+
+  test "PUT /outfits/{id} keeps the renders of the default it replaces for when it comes back" do
+    other = create(:outfit, user: @user, name: "Light")
+    @user.update!(default_outfit: @outfit)
+    @user.character_avatar_helmet.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "helmet.png")
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: other.id}, body: {default: true}
+    assert_nil @user.reload.current_character_avatar(:character_avatar_helmet)
+
+    assert_api_response :put, 200, api_path: "/outfits/{id}", path_params: {id: @outfit.id}, body: {default: true}
+    assert_equal "helmet.png", @user.reload.current_character_avatar(:character_avatar_helmet).filename.to_s
+  end
 end

@@ -2663,6 +2663,14 @@
       "user": {
         "displayName": "顯示名稱",
         "displayNameInfo": "在你的公開機庫、命名銘牌和艦隊成員列表中代替使用者名稱顯示。",
+        "avatarSource": "顯示的頭像",
+        "avatarSourceHint": "在更衣室中將一套裝扮設為預設，即可用你的角色產生頭像。",
+        "avatarSourcePending": "在更衣室中開啟你的預設裝扮以產生其頭像。",
+        "avatarSources": {
+          "uploaded": "已上傳",
+          "character_helmet": "戴頭盔",
+          "character_bare": "不戴頭盔"
+        },
         "hangarDefaultSort": "預設順序",
         "hangarDefaultSortInfo": "按住艦船的拖曳柄即可重新排序。僅在自訂順序生效且未設定篩選時可用。",
         "hangarDefaultSortOptions": {
@@ -2723,6 +2731,7 @@
         "newVehiclesPublicDescription": "適用於你新增到機庫的艦船，無論是手動新增、匯入還是透過 RSI 機庫同步。已在機庫中的艦船保留各自的設定。",
         "tracking": "允許匿名使用分析",
         "showOnlineStatus": "顯示我的上線狀態",
+        "publicCharacterFace": "在預設裝扮上顯示我自己的角色",
         "supporterListed": "支持者頁面",
         "supporterListedPlatform": "依捐款時的選擇",
         "supporterListedShown": "顯示我的使用者名稱",

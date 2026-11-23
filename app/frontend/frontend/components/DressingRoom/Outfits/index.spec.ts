@@ -1,5 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
+import { createMemoryHistory, createRouter } from "vue-router";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { type Outfit } from "@/services/fyApi";
 
@@ -227,5 +228,87 @@ describe("DressingRoomOutfits", () => {
       .trigger("click");
 
     expect(wrapper.emitted("load")).toEqual([[heavy]]);
+  });
+
+  it("marks an outfit as the default and hands it on to be drawn", async () => {
+    update.mockImplementationOnce(() =>
+      Promise.resolve({ ...heavy, default: true }),
+    );
+    const wrapper = await mount({});
+
+    await wrapper
+      .find(
+        '[data-test="dressing-room-default-outfit-1"] button, [data-test="dressing-room-default-outfit-1"]',
+      )
+      .trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: { default: true },
+    });
+    expect(wrapper.emitted("defaultSaved")?.[0]?.[0]).toMatchObject({
+      id: "outfit-1",
+      default: true,
+    });
+  });
+
+  it("unmarks the default without drawing anything", async () => {
+    outfits.value = [{ ...heavy, default: true }];
+    const wrapper = await mount({});
+
+    await wrapper
+      .find(
+        '[data-test="dressing-room-default-outfit-1"] button, [data-test="dressing-room-default-outfit-1"]',
+      )
+      .trigger("click");
+    await flushPromises();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "outfit-1",
+      data: { default: false },
+    });
+    expect(wrapper.emitted("defaultSaved")).toBeUndefined();
+    outfits.value = [heavy];
+  });
+
+  it("says while the default outfit's avatars are drawn, and once they are ready", async () => {
+    outfits.value = [{ ...heavy, default: true }];
+    const drawing = await mount({ avatarsDrawing: true });
+
+    expect(
+      drawing.find('[data-test="dressing-room-avatar-status"]').text(),
+    ).toContain("Drawing your avatars");
+
+    const ready = await mountWithDefaults<typeof Outfits>(Outfits, {
+      props: { items: [] } as never,
+      plugins: [
+        createRouter({
+          history: createMemoryHistory(),
+          routes: [
+            { path: "/", name: "home", component: {} },
+            {
+              path: "/settings/profile/",
+              name: "settings-profile",
+              component: {},
+            },
+          ],
+        }),
+      ],
+      initialState: {
+        session: {
+          authenticated: true,
+          currentUser: {
+            username: "torlek",
+            characterAvatarBare: { smallUrl: "/bare.png" },
+          },
+        },
+      },
+    });
+
+    expect(
+      ready.find('[data-test="dressing-room-avatar-status"]').text(),
+    ).toContain("Avatars ready.");
+    outfits.value = [heavy];
   });
 });

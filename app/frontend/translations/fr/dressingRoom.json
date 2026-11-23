@@ -22,6 +22,16 @@
       "pose": "Pose",
       "copyLink": "Copier le lien",
       "savedOutfits": "Tenues enregistrées",
+      "makeDefault": "Définir comme tenue par défaut",
+      "removeDefault": "Ne plus utiliser comme tenue par défaut",
+      "openCharacter": "Personnage",
+      "hideHelmet": "Masquer le casque",
+      "showHelmet": "Afficher le casque",
+      "avatars": {
+        "drawing": "Génération de vos avatars…",
+        "ready": "Avatars prêts.",
+        "choose": "Choisir dans les paramètres"
+      },
       "signInToSave": "Connectez-vous pour enregistrer des tenues.",
       "outfitName": "Nom de la tenue",
       "nameTaken": "Vous avez déjà une tenue portant ce nom.",
@@ -35,6 +45,9 @@
       "confirmDelete": "Supprimer la tenue %{name} ?",
       "messages": {
         "saved": "Tenue enregistrée.",
+        "avatarsUpdated": "Avatars du personnage mis à jour. Choisissez celui qui s'affiche dans les paramètres de votre profil.",
+        "avatarsFailed": "Les avatars du personnage n'ont pas pu être générés.",
+        "openToDraw": "Ouvrez cette tenue pour générer ses avatars.",
         "saveFailed": "La tenue n'a pas pu être enregistrée.",
         "deleteFailed": "La tenue n'a pas pu être supprimée.",
         "linkCopied": "Lien copié.",

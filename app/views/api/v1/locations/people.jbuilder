@@ -7,7 +7,7 @@ json.people @people.entries do |entry|
   json.id user.id
   json.username user.username
   json.avatar do
-    json.partial! "api/v1/shared/file", record: user, attr: :avatar
+    json.partial! "api/v1/shared/file", record: user, attr: :shown_avatar
   end
 
   online = online_status_for(user)

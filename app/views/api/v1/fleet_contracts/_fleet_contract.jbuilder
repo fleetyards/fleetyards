@@ -5,7 +5,8 @@
 # does not touch the contracts that name them, and so are the places the ends
 # link to. A mission's name comes from whichever build is served, so that
 # build is in the key as well.
-json.cache! ["v8", fleet_contract,
+json.cache! ["v9", fleet_contract,
+  *fleet_contract.fleet_contract_assignments.filter_map { |assignment| assignment.user&.avatar_cache_key },
   *[fleet_contract.source_fleet_inventory, fleet_contract.destination, fleet_contract.created_by,
     fleet_contract.game_mission, fleet_contract.game_mission&.facts].compact,
   *[fleet_contract.source_fleet_inventory, fleet_contract.destination].compact.filter_map { |inventory| inventory.try(:linked_location)&.link_cache_key },

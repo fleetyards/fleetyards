@@ -425,6 +425,7 @@
         "privacySections": {
           "analytics": "使用情况分析",
           "onlineStatus": "在线状态",
+          "character": "角色",
           "supporters": "支持者页面"
         },
         "features": "功能标志",

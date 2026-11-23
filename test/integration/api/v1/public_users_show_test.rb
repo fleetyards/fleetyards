@@ -149,4 +149,64 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
       assert_not parsed_body.key?("online")
     end
   end
+
+  test "GET /public/users/:username carries the default outfit to open in the dressing room" do
+    user = create(:user, :public_hangar, public_character_face: true)
+    face = create(:character_face, user:)
+    core = create(:worn_equipment, slot: "torso")
+    outfit = create(:outfit, user:, character_face: face)
+    outfit.update!(item_list: [{slot: "torso", equipment_id: core.id}])
+    user.update!(default_outfit: outfit)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      character = parsed_body["character"]
+      assert_equal face.token, character["characterToken"]
+      assert_equal [{"slot" => "torso", "slug" => core.slug}], character["items"]
+    end
+  end
+
+  test "GET /public/users/:username has no character without a default outfit" do
+    user = create(:user, :public_hangar)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_nil parsed_body["character"]
+    end
+  end
+
+  test "GET /public/users/:username keeps the character to the game's default face unless the user shows their own" do
+    user = create(:user, :public_hangar)
+    outfit = create(:outfit, user:, character_face: create(:character_face, user:))
+    user.update!(default_outfit: outfit)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_nil parsed_body["character"]["characterToken"]
+    end
+  end
+
+  test "GET /public/users/:username shows the helmet portrait even when the user shows their own character" do
+    user = create(:user, :public_hangar)
+    user.update!(default_outfit: create(:outfit, user:))
+    user.character_avatar_helmet.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "helmet.png")
+    user.character_avatar_bare.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "bare.png")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "helmet.png", parsed_body["characterPortrait"]["name"]
+    end
+
+    user.update!(public_character_face: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "helmet.png", parsed_body["characterPortrait"]["name"]
+    end
+  end
+
+  test "GET /public/users/:username carries the public flagship" do
+    user = create(:user, :public_hangar)
+    vehicle = create(:vehicle, user:, flagship: true, public: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal vehicle.model.slug, parsed_body["flagship"]["modelSlug"]
+      assert_equal vehicle.model.manufacturer.name, parsed_body["flagship"]["manufacturerName"]
+    end
+  end
 end

@@ -307,4 +307,36 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "PUT /users/me keeps the character renders beside the upload and shows the one chosen" do
+    user = create(:user, :with_avatar)
+    user.update!(default_outfit: create(:outfit, user:))
+    helmet = character_render("helmet.png")
+    sign_in user
+
+    assert_api_response :put, 200, body: {characterAvatarHelmet: helmet.signed_id, characterAvatarBare: character_render("bare.png").signed_id} do
+      assert_equal "uploaded", parsed_body["avatarSource"]
+      assert_equal "test.png", parsed_body["shownAvatar"]["name"]
+      assert_equal "bare.png", parsed_body["characterAvatarBare"]["name"]
+    end
+
+    assert_api_response :put, 200, body: {avatarSource: "character_helmet"} do
+      assert_equal "helmet.png", parsed_body["shownAvatar"]["name"]
+      assert_equal "test.png", parsed_body["avatar"]["name"]
+    end
+  end
+
+  test "PUT /users/me chooses whether the public profile shows the user's own character" do
+    sign_in create(:user)
+
+    assert_api_response :put, 200, body: {publicCharacterFace: true} do
+      assert parsed_body["publicCharacterFace"]
+    end
+  end
+
+  private def character_render(filename)
+    ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open, filename:, content_type: "image/png"
+    )
+  end
 end

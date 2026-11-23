@@ -22,6 +22,16 @@
       "pose": "姿勢",
       "copyLink": "複製連結",
       "savedOutfits": "已儲存的裝扮",
+      "makeDefault": "設為預設裝扮",
+      "removeDefault": "取消預設裝扮",
+      "openCharacter": "角色",
+      "hideHelmet": "隱藏頭盔",
+      "showHelmet": "顯示頭盔",
+      "avatars": {
+        "drawing": "正在產生你的頭像…",
+        "ready": "頭像已就緒。",
+        "choose": "在設定中選擇"
+      },
       "signInToSave": "登入後即可儲存裝扮。",
       "outfitName": "裝扮名稱",
       "nameTaken": "你已經有一套同名的裝扮。",
@@ -35,6 +45,9 @@
       "confirmDelete": "刪除裝扮 %{name}？",
       "messages": {
         "saved": "裝扮已儲存。",
+        "avatarsUpdated": "角色頭像已更新。可在個人資料設定中選擇顯示哪一個。",
+        "avatarsFailed": "無法產生角色頭像。",
+        "openToDraw": "開啟這套裝扮以產生其頭像。",
         "saveFailed": "無法儲存裝扮。",
         "deleteFailed": "無法刪除裝扮。",
         "linkCopied": "連結已複製。",

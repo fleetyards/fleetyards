@@ -66,7 +66,7 @@ module Api
       end
 
       private def member_rows(scope)
-        sample_rows(scope.includes(:fleet_role, :inviter, user: [:omniauth_connections, {avatar_attachment: :blob}]).joins(:user))
+        sample_rows(scope.includes(:fleet_role, :inviter, user: [:omniauth_connections, User::AVATAR_PRELOADS]).joins(:user))
       end
 
       # The dashboard shows a number, not the rows, and asks for none.

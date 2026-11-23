@@ -26,7 +26,7 @@ module Api
 
         @fleet_contract_assignments = @fleet_contract.fleet_contract_assignments
           .where.not(aasm_state: %w[withdrawn removed declined])
-          .includes(:user)
+          .includes(user: User::AVATAR_PRELOADS)
           .order(:role, :created_at)
       end
 

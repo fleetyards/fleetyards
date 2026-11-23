@@ -24,6 +24,15 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useUpdateProfile: () => ({ mutateAsync }),
 }));
 
+const enabledFeatures = ref<string[]>([]);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: (feature: string) =>
+      enabledFeatures.value.includes(feature),
+  }),
+}));
+
 vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({
     get currentUser() {
@@ -112,5 +121,17 @@ describe("SettingsPrivacy", () => {
     await submit(wrapper);
 
     expect(sent().supporterListed).toBe(true);
+  });
+
+  it("keeps the own character private by default and sends the choice to show it", async () => {
+    enabledFeatures.value = ["dressing_room"];
+    const wrapper = await mount();
+    const panel = wrapper.find("[data-test='public-character-face']");
+
+    expect(panel.text()).toContain("download it");
+
+    await submit(wrapper);
+    expect(sent().publicCharacterFace).toBe(false);
+    enabledFeatures.value = [];
   });
 });

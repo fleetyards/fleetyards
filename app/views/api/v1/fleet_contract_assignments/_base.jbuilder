@@ -9,7 +9,7 @@ if fleet_contract_assignment.user.present?
     json.id fleet_contract_assignment.user.id
     json.username fleet_contract_assignment.user.username
     json.avatar do
-      json.partial! "api/v1/shared/file", record: fleet_contract_assignment.user, attr: :avatar
+      json.partial! "api/v1/shared/file", record: fleet_contract_assignment.user, attr: :shown_avatar
     end
   end
 else

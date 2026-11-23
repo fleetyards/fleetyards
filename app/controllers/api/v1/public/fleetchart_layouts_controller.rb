@@ -24,7 +24,7 @@ module Api
             # the link can reach.
             .preload(
               :model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob},
-              Vehicle::PICTURE_PRELOADS, user: {avatar_attachment: :blob}
+              Vehicle::PICTURE_PRELOADS, user: User::AVATAR_PRELOADS
             )
             .to_a
 

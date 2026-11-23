@@ -26,3 +26,122 @@
   font-size: 0.4em;
   line-height: 1;
 }
+
+.hangar-public-heading {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 15px;
+}
+
+.hangar-public-heading__identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hangar-public-heading__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.hangar-public-heading__character {
+  display: block;
+  flex: none;
+
+  img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-edge, #3a3f44);
+    border-radius: 50%;
+    object-fit: cover;
+    transition: border-color 150ms ease;
+  }
+
+  &:is(a):hover img {
+    border-color: var(--color-primary, #428bca);
+  }
+}
+
+// The ship on the header's right at about its height, its name beside it.
+.hangar-public-heading__flagship {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: flex-end;
+  gap: 16px;
+  min-width: 0;
+  margin-left: auto;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover .hangar-public-heading__flagship-name {
+    color: var(--color-primary, #428bca);
+  }
+}
+
+// Sized by height so the box is as wide as the picture's own proportions.
+.hangar-public-heading__ship {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.6));
+}
+
+.hangar-public-heading__flagship-label {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding-bottom: 8px;
+  text-align: right;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.9);
+}
+
+.hangar-public-heading__eyebrow {
+  color: var(--color-text, #c8c8c8);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hangar-public-heading__flagship-name {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--color-lifted, #eee);
+  font-family: Orbitron, sans-serif;
+  font-size: 1.375rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hangar-public-heading__flagship-sub {
+  white-space: nowrap;
+  color: var(--color-text, #c8c8c8);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 767px) {
+  .hangar-public-heading {
+    flex-direction: column;
+  }
+
+  .hangar-public-heading__ship {
+    height: 120px;
+  }
+}

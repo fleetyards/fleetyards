@@ -152,6 +152,7 @@ class User < ApplicationRecord
   has_many :fleetchart_layouts, dependent: :destroy
   has_many :feedbacks, dependent: :destroy
   has_many :outfits, dependent: :destroy
+  belongs_to :default_outfit, class_name: "Outfit", optional: true
   has_many :character_faces, dependent: :destroy
   has_many :carts, dependent: :delete_all
   has_many :raffle_entries, dependent: :nullify
@@ -277,6 +278,60 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   validates :avatar, no_vector_image: true
+
+  # Head-and-shoulders pictures of the default outfit, drawn in the browser,
+  # kept beside the uploaded avatar so the user can switch between them.
+  has_one_attached :character_avatar_helmet
+  has_one_attached :character_avatar_bare
+  validates :character_avatar_helmet, :character_avatar_bare, no_vector_image: true
+
+  enum :avatar_source, {uploaded: 0, character_helmet: 1, character_bare: 2}, prefix: :avatar_from, validate: true
+
+  AVATAR_PRELOADS = {
+    avatar_attachment: :blob,
+    character_avatar_helmet_attachment: :blob,
+    character_avatar_bare_attachment: :blob
+  }.freeze
+
+  scope :with_avatars, -> { includes(AVATAR_PRELOADS) }
+
+  before_save :stamp_character_avatars
+
+  # The renders of the default outfit, nothing while they were drawn from
+  # another one: they are kept, and come back if it is made the default again.
+  def current_character_avatar(name)
+    return if default_outfit_id.blank? || character_avatar_outfit_id != default_outfit_id
+
+    attachment = public_send(name)
+    attachment if attachment.attached?
+  end
+
+  # The picture shown wherever the user appears: the chosen render of the
+  # default outfit, otherwise the upload.
+  def shown_avatar
+    render = case avatar_source
+    when "character_helmet" then current_character_avatar(:character_avatar_helmet)
+    when "character_bare" then current_character_avatar(:character_avatar_bare)
+    end
+
+    render || avatar
+  end
+
+  def current_character_avatar_helmet = current_character_avatar(:character_avatar_helmet)
+
+  def current_character_avatar_bare = current_character_avatar(:character_avatar_bare)
+
+  def change_default_outfit(outfit)
+    return if default_outfit_id == outfit&.id
+
+    update_columns(default_outfit_id: outfit&.id, updated_at: Time.current)
+  end
+
+  # For fragments keyed on something other than the user, which would keep an
+  # avatar the user has since switched.
+  def avatar_cache_key
+    shown_avatar.attachment&.blob_id || "none"
+  end
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = [
@@ -1295,5 +1350,12 @@ class User < ApplicationRecord
 
   def to_json(*_args)
     to_jbuilder_json
+  end
+
+  # Renders are drawn from the default outfit of the moment they are saved.
+  private def stamp_character_avatars
+    return unless attachment_changes.key?("character_avatar_helmet") || attachment_changes.key?("character_avatar_bare")
+
+    self.character_avatar_outfit_id = default_outfit_id
   end
 end

@@ -51226,6 +51226,10 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/OutfitCharacterFace"
           - type: 'null'
+        default:
+          type: boolean
+          description: 'The user''s default outfit: the dressing room opens on it
+            and the character avatars are drawn from it'
         createdAt:
           type: string
           format: date-time
@@ -51241,6 +51245,7 @@ components:
       - heldWeapon
       - body
       - characterFace
+      - default
       - createdAt
       - updatedAt
       title: Outfit
@@ -51300,6 +51305,9 @@ components:
           format: uuid
           description: One of your characters, for the outfit's body; null takes it
             off
+        default:
+          type: boolean
+          description: Makes this your default outfit
       required:
       - name
       additionalProperties: false
@@ -51464,6 +51472,9 @@ components:
           format: uuid
           description: One of your characters, for the outfit's body; null takes it
             off
+        default:
+          type: boolean
+          description: Makes this your default outfit, or stops it being one
       additionalProperties: false
       title: OutfitUpdateInput
     OutfitWeaponSlotEnum:
@@ -52005,6 +52016,78 @@ components:
       - portPath
       - pips
       title: PowerPresetOverride
+    PublicCharacter:
+      type: object
+      description: The user's default outfit, enough to open it in the dressing room
+      properties:
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        characterToken:
+          type:
+          - string
+          - 'null'
+          description: Only when the user shows their own character; otherwise the
+            outfit is worn by the game's default face
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              slot:
+                "$ref": "#/components/schemas/OutfitSlotEnum"
+              slug:
+                type: string
+            additionalProperties: false
+            required:
+            - slot
+            - slug
+        storedItems:
+          type: array
+          items:
+            type: object
+            properties:
+              holder:
+                "$ref": "#/components/schemas/OutfitHolderEnum"
+              slug:
+                type: string
+              quantity:
+                type: integer
+            additionalProperties: false
+            required:
+            - holder
+            - slug
+            - quantity
+      additionalProperties: false
+      required:
+      - body
+      - heldWeapon
+      - characterToken
+      - items
+      - storedItems
+      title: PublicCharacter
+    PublicFlagship:
+      type: object
+      description: The ship the user marked as their flagship, when it is public
+      properties:
+        name:
+          type: string
+        modelName:
+          type: string
+        modelSlug:
+          type: string
+        manufacturerName:
+          type: string
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - modelName
+      - modelSlug
+      title: PublicFlagship
     PublicFleetSquadron:
       type: object
       properties:
@@ -54511,6 +54594,21 @@ components:
           type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
+        shownAvatar:
+          "$ref": "#/components/schemas/MediaFile"
+        characterAvatarHelmet:
+          "$ref": "#/components/schemas/MediaFile"
+        characterAvatarBare:
+          "$ref": "#/components/schemas/MediaFile"
+        avatarSource:
+          "$ref": "#/components/schemas/UserAvatarSourceEnum"
+        defaultOutfitId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        publicCharacterFace:
+          type: boolean
         rsiHandle:
           type: string
         rsiHandleVerified:
@@ -54620,6 +54718,9 @@ components:
       required:
       - username
       - email
+      - avatarSource
+      - defaultOutfitId
+      - publicCharacterFace
       - dateFormat
       - publicHangar
       - publicHangarLoaners
@@ -54646,6 +54747,17 @@ components:
       - createdAt
       - updatedAt
       title: User
+    UserAvatarSourceEnum:
+      type: string
+      enum:
+      - uploaded
+      - character_helmet
+      - character_bare
+      x-enumNames:
+      - UPLOADED
+      - CHARACTER_HELMET
+      - CHARACTER_BARE
+      title: UserAvatarSourceEnum
     UserCreateInput:
       type: object
       properties:
@@ -54775,6 +54887,18 @@ components:
           type: integer
         supporterRecurring:
           type: boolean
+        character:
+          anyOf:
+          - "$ref": "#/components/schemas/PublicCharacter"
+          - type: 'null'
+        characterPortrait:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        flagship:
+          anyOf:
+          - "$ref": "#/components/schemas/PublicFlagship"
+          - type: 'null'
         online:
           type: boolean
           description: Only for the user's friends and fleet mates
@@ -54876,6 +55000,22 @@ components:
           - 'null'
         removeAvatar:
           type: boolean
+        characterAvatarHelmet:
+          type:
+          - string
+          - 'null'
+          description: Signed blob id of your default outfit drawn with its helmet
+        characterAvatarBare:
+          type:
+          - string
+          - 'null'
+          description: Signed blob id of your default outfit drawn without its helmet
+        avatarSource:
+          "$ref": "#/components/schemas/UserAvatarSourceEnum"
+        publicCharacterFace:
+          type: boolean
+          description: Shows your own character on your default outfit to whoever
+            can see your hangar; otherwise the game's default face
         rsiHandle:
           type:
           - string

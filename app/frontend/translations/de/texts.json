@@ -304,6 +304,7 @@
         "privacy": {
           "tracking": "Zählt anonymisiert, welche Seiten du besuchst, ohne etwas auf deinem Gerät zu speichern. Besuche werden nach einem Monat gelöscht.",
           "onlineStatus": "Zeigt den Mitgliedern deiner Flotten und deinen Freunden einen Punkt neben deinem Namen, solange du FleetYards geöffnet hast. Deine letzte Aktivität bleibt in jedem Fall sichtbar.",
+          "character": "Dein Standard-Outfit wird in deinem öffentlichen Hangar gezeigt, getragen vom Standardgesicht des Spiels. Zeigst du stattdessen deinen eigenen Charakter, teilst du deine Charakterdatei: Jeder, der deinen Hangar sehen kann, kann sie dann herunterladen und im Charakter-Editor des Spiels laden.",
           "supporterListed": "Ob dein Benutzername — nie der Name, mit dem du bezahlt hast — auf der Unterstützerseite erscheint. Verborgene Spenden zählen trotzdem zum Ziel, und Patreon-Unterstützungen bleiben verborgen, solange du sie nicht anzeigst."
         },
         "notifications": {

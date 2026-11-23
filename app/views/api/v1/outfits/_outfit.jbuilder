@@ -17,6 +17,7 @@ json.stored_items outfit.stored_items do |item|
 end
 json.held_weapon outfit.held_weapon
 json.body outfit.body
+json.default outfit.default?
 if outfit.character_face
   json.character_face do
     json.id outfit.character_face.id

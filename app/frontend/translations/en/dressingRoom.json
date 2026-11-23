@@ -22,6 +22,16 @@
       "pose": "Pose",
       "copyLink": "Copy link",
       "savedOutfits": "Saved outfits",
+      "makeDefault": "Make default outfit",
+      "removeDefault": "Stop using as default outfit",
+      "openCharacter": "Character",
+      "hideHelmet": "Hide helmet",
+      "showHelmet": "Show helmet",
+      "avatars": {
+        "drawing": "Drawing your avatars…",
+        "ready": "Avatars ready.",
+        "choose": "Choose in settings"
+      },
       "signInToSave": "Sign in to save outfits.",
       "outfitName": "Outfit name",
       "nameTaken": "You already have an outfit with this name.",
@@ -35,6 +45,9 @@
       "confirmDelete": "Delete the outfit %{name}?",
       "messages": {
         "saved": "Outfit saved.",
+        "avatarsUpdated": "Character avatars updated. Choose which one is shown in your profile settings.",
+        "avatarsFailed": "The character avatars could not be drawn.",
+        "openToDraw": "Open this outfit to draw its avatars.",
         "saveFailed": "The outfit could not be saved.",
         "deleteFailed": "The outfit could not be deleted.",
         "linkCopied": "Link copied.",

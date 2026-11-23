@@ -18,6 +18,7 @@ import Loadout from "@/frontend/components/DressingRoom/Loadout/index.vue";
 import StageLayout from "@/frontend/components/StageLayout/index.vue";
 import StagePanel from "@/frontend/components/StagePanel/index.vue";
 import WornStorage from "@/frontend/components/DressingRoom/WornStorage/index.vue";
+import { useCharacterAvatarsStore } from "@/frontend/stores/characterAvatars";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -36,6 +37,7 @@ import {
   getEquipmentItemQueryOptions,
   useCharacterBodies,
   useCharacterFaces,
+  useOutfits,
   useSharedCharacterFace,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -64,6 +66,7 @@ import {
   outfitModel,
   outfitQuery,
   parseOutfitQuery,
+  sameOutfit,
   pieceHolo,
   riggedOutfitModel,
   riggedPieceHolo,
@@ -145,6 +148,9 @@ const bodyKey = computed(() => {
 
 const poseName = computed(() => queryValue("pose"));
 
+// The figure drawn with its helmet off, by the address so a link keeps it.
+const helmetHidden = computed(() => queryValue("bare") === "1");
+
 // The character on the figure, by its token.
 const faceToken = computed(() => queryValue("face"));
 
@@ -158,6 +164,7 @@ const heldWeapon = computed(() => {
 type NavigationState = {
   outfit?: string;
   pose?: string;
+  bare?: string;
   held?: OutfitWeaponSlotEnum;
   body?: OutfitBodyEnum;
   face?: string;
@@ -171,6 +178,7 @@ const navigate = (
   const query: NavigationState = {
     outfit: activeOutfitId.value,
     pose: poseName.value,
+    bare: helmetHidden.value ? "1" : undefined,
     held: heldWeapon.value,
     body: bodyKey.value,
     face: faceToken.value,
@@ -264,7 +272,7 @@ const openFill = (slots: OutfitSlotEnum[]) => {
 const reset = () => {
   void navigate(
     {},
-    { outfit: undefined, pose: undefined, held: undefined },
+    { outfit: undefined, pose: undefined, held: undefined, bare: undefined },
     {},
   );
 };
@@ -784,17 +792,17 @@ const drawnFace = computed(() =>
 );
 
 // The character the address names, when it can be drawn on this body.
-const chosenCharacter = computed(() => {
+const chosenCharacterWith = (headWear: typeof wornHeadWear.value) => {
   const face = drawnFace.value;
   const resolved = face?.character as ResolvedCharacter | null;
   if (!body.value || !face || !resolved) return undefined;
 
-  return characterRig(body.value, resolved, face.token, wornHeadWear.value);
-});
+  return characterRig(body.value, resolved, face.token, headWear);
+};
 
 // Without one, the game's own default character for the body: the head the
 // customizer opens with.
-const defaultCharacter = computed(() => {
+const defaultCharacterWith = (headWear: typeof wornHeadWear.value) => {
   if (!body.value) return undefined;
 
   const fallback = body.value.defaultCharacter as ResolvedCharacter | null;
@@ -804,13 +812,16 @@ const defaultCharacter = computed(() => {
     body.value,
     fallback,
     `default:${body.value.key}`,
-    wornHeadWear.value,
+    headWear,
   );
-});
+};
 
-const character = computed(
-  () => chosenCharacter.value ?? defaultCharacter.value,
-);
+const chosenCharacter = computed(() => chosenCharacterWith(wornHeadWear.value));
+
+const characterWith = (headWear: typeof wornHeadWear.value) =>
+  chosenCharacterWith(headWear) ?? defaultCharacterWith(headWear);
+
+const character = computed(() => characterWith(wornHeadWear.value));
 
 // Once drawn, the figure stays up while another character is fetched.
 const figureDrawn = ref(false);
@@ -850,6 +861,41 @@ const model = computed(() => {
       )
     : outfitModel(pieces.value);
 });
+
+// The figure as it would stand with its helmet off: the head under it comes
+// back, hair and all.
+const bareModel = computed(() => {
+  if (!body.value) return undefined;
+  if (facePending.value && !figureDrawn.value) return undefined;
+
+  const helmet = riggedHolos.value[OutfitSlotEnum.HELMET]?.path;
+
+  return riggedOutfitModel(
+    body.value,
+    pieces.value.filter((piece) => !helmet || piece.path !== helmet),
+    pose.value,
+    attachments.value,
+    OUTFIT_SLOTS.filter(
+      (slot) => slot !== OutfitSlotEnum.HELMET && riggedHolos.value[slot],
+    ),
+    failedPaths.value,
+    characterWith(
+      wornHeadWear.value.filter((worn) => !helmet || worn.path !== helmet),
+    ),
+  );
+});
+
+const helmetWorn = computed(() => !!riggedHolos.value[OutfitSlotEnum.HELMET]);
+
+const shownModel = computed(() =>
+  helmetHidden.value && helmetWorn.value ? bareModel.value : model.value,
+);
+
+const toggleHelmet = () => {
+  void navigate(selection.value, {
+    bare: helmetHidden.value ? undefined : "1",
+  });
+};
 
 // A weapon in hand is held, unless the address picks another pose.
 const pose = computed(() => {
@@ -927,6 +973,96 @@ const piecesPending = computed(
     ) ||
     storedLoading.value ||
     storedMissing.value,
+);
+
+// The default outfit as saved, when it is what stands on the figure. Its
+// avatars are drawn from the figure, so an unsaved edit or another outfit on
+// screen would draw the wrong one.
+const { data: outfits } = useOutfits({
+  query: { enabled: isAuthenticated, retry: false },
+});
+
+const defaultOnFigure = computed(() => {
+  const saved = outfits.value?.find((outfit) => outfit.default);
+  if (!saved || saved.id !== activeOutfitId.value) return undefined;
+
+  const savedSelection = Object.fromEntries(
+    saved.items.map((item) => [item.slot, item.equipment.slug]),
+  );
+
+  return sameOutfit(selection.value, savedSelection) &&
+    saved.body === bodyKey.value &&
+    (saved.heldWeapon ?? undefined) === heldWeapon.value &&
+    (saved.characterFace?.token ?? undefined) === faceToken.value
+    ? saved
+    : undefined;
+});
+
+// Drawn twice off screen, with and without its helmet: when the default is
+// saved, and when it stands on the figure without any yet -- marked while
+// another outfit was on screen, or a drawing that failed.
+const avatarsRequested = ref(false);
+const characterAvatars = useCharacterAvatarsStore();
+const avatarsTriedFor = new Set<string>();
+
+const sessionStore = useSessionStore();
+
+const renderAvatars = (outfit: Outfit) => {
+  if (outfit.id !== activeOutfitId.value) {
+    displaySuccess({ text: t("dressingRoom.messages.openToDraw") });
+    return;
+  }
+
+  avatarsRequested.value = true;
+};
+
+const avatarsMissing = computed(() => {
+  const user = sessionStore.currentUser;
+
+  return (
+    !!user?.defaultOutfitId &&
+    (!user.characterAvatarHelmet?.url || !user.characterAvatarBare?.url)
+  );
+});
+
+watch(
+  () =>
+    !characterAvatars.drawing &&
+    !!defaultOnFigure.value &&
+    (avatarsRequested.value ||
+      (avatarsMissing.value &&
+        !avatarsTriedFor.has(defaultOnFigure.value.id))) &&
+    !piecesPending.value &&
+    !facePending.value &&
+    !!model.value &&
+    !!bareModel.value,
+  (ready) => {
+    if (!ready || !model.value || !bareModel.value || !defaultOnFigure.value) {
+      return;
+    }
+
+    avatarsTriedFor.add(defaultOnFigure.value.id);
+    avatarsRequested.value = false;
+    characterAvatars.draw([model.value, bareModel.value]);
+  },
+);
+
+// A visit with nothing on the figure and nothing remembered opens on the
+// default outfit, once: an emptied figure later stays empty.
+let defaultOpened = !!Object.keys(route.query).length;
+
+watch(
+  outfits,
+  (list) => {
+    if (defaultOpened || !list) return;
+
+    defaultOpened = true;
+    if (Object.keys(route.query).length) return;
+
+    const fallback = list.find((outfit) => outfit.default);
+    if (fallback) loadOutfit(fallback);
+  },
+  { immediate: true },
 );
 
 const storageProblem = computed(
@@ -1017,10 +1153,10 @@ const copyShareLink = () => {
       data-test="dressing-room-stage"
     >
       <HoloViewer
-        v-if="model"
+        v-if="shownModel"
         ref="viewer"
-        :key="model.path"
-        :models="[model]"
+        :key="shownModel.path"
+        :models="[shownModel]"
         :azimuth="HOLO_AZIMUTH"
         :elevation="HOLO_ELEVATION"
         :auto-rotate="false"
@@ -1072,6 +1208,26 @@ const copyShareLink = () => {
           inline
           data-test="dressing-room-pose"
         />
+        <Btn
+          v-if="body"
+          :active="helmetHidden"
+          :aria-pressed="helmetHidden"
+          :aria-label="
+            helmetHidden
+              ? t('dressingRoom.showHelmet')
+              : t('dressingRoom.hideHelmet')
+          "
+          v-tooltip="
+            helmetHidden
+              ? t('dressingRoom.showHelmet')
+              : t('dressingRoom.hideHelmet')
+          "
+          :disabled="!helmetWorn"
+          data-test="dressing-room-helmet"
+          @click="toggleHelmet"
+        >
+          <i :class="slotIcon(OutfitSlotEnum.HELMET)" />
+        </Btn>
         <Btn
           :aria-label="t('actions.reset')"
           v-tooltip="t('actions.reset')"
@@ -1141,6 +1297,8 @@ const copyShareLink = () => {
             :active-id="activeOutfitId"
             @load="loadOutfit"
             @active="setActiveOutfit"
+            :avatars-drawing="characterAvatars.drawing"
+            @default-saved="renderAvatars"
           />
         </StagePanel>
       </template>

@@ -16,7 +16,7 @@ else
   json.username member.user.username
   json.display_name member.user.display_name if member.user.display_name.present?
   json.avatar do
-    json.partial! "api/v1/shared/file", record: member.user, attr: :avatar
+    json.partial! "api/v1/shared/file", record: member.user, attr: :shown_avatar
   end
 end
 

@@ -19,7 +19,7 @@ module Api
         authorize! with: FleetAnnouncementPolicy, context: {fleet: @fleet}
 
         @fleet_announcements = @fleet.fleet_announcements.active
-          .includes(author: {avatar_attachment: :blob})
+          .includes(author: User::AVATAR_PRELOADS)
           .order(created_at: :desc)
       end
 

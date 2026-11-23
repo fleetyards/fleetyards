@@ -3,7 +3,7 @@
 json.username user.username
 json.display_name user.display_name if user.display_name.present?
 json.avatar do
-  json.partial! "api/v1/shared/file", record: user, attr: :avatar
+  json.partial! "api/v1/shared/file", record: user, attr: :shown_avatar
 end
 json.rsi_handle user.rsi_handle
 json.rsi_handle_verified user.rsi_handle_verified

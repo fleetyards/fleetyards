@@ -14,9 +14,9 @@ if payout_participant.user.present?
     json.id payout_participant.user.id
     json.username payout_participant.user.username
 
-    if payout_participant.user.avatar.attached?
+    if payout_participant.user.shown_avatar.attached?
       json.avatar do
-        json.partial! "api/v1/shared/file", record: payout_participant.user, attr: :avatar
+        json.partial! "api/v1/shared/file", record: payout_participant.user, attr: :shown_avatar
       end
     end
   end

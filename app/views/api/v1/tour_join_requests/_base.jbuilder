@@ -8,9 +8,9 @@ json.user do
   json.id tour_join_request.user_id
   json.username tour_join_request.user&.username
 
-  if tour_join_request.user&.avatar&.attached?
+  if tour_join_request.user&.shown_avatar&.attached?
     json.avatar do
-      json.partial! "api/v1/shared/file", record: tour_join_request.user, attr: :avatar
+      json.partial! "api/v1/shared/file", record: tour_join_request.user, attr: :shown_avatar
     end
   end
 end

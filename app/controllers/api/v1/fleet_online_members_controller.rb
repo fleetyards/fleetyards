@@ -29,7 +29,7 @@ module Api
         online = members
           .joins(:user)
           .where(user_id: online_ids.to_a, users: {show_online_status: true})
-          .includes(user: {avatar_attachment: :blob})
+          .includes(user: User::AVATAR_PRELOADS)
           .to_a
 
         # The reader's friends first: the people they would go and find.

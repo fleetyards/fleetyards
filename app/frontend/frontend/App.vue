@@ -51,6 +51,7 @@ import { useFlashNotifications } from "@/shared/composables/useFlashNotification
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { useWebPush } from "@/shared/composables/useWebPush";
+import DressingRoomAvatarDrawing from "@/frontend/components/DressingRoom/AvatarDrawing/index.vue";
 import {
   useModalQuery,
   MODAL_QUERY_PARAM,
@@ -327,6 +328,7 @@ const setLocale = (locale: string) => {
       :disabled="!navCollapsed || overlayVisible"
     />
     <BackgroundImage />
+    <DressingRoomAvatarDrawing v-if="isAuthenticated" />
 
     <div class="app-content">
       <transition name="fade" mode="out-in">

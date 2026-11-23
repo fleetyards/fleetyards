@@ -20,8 +20,16 @@ class Outfit < ApplicationRecord
   validates :held_weapon, inclusion: {in: OutfitItem::WEAPON_SLOTS.keys}, allow_nil: true
   validates :body, inclusion: {in: ItemViews::RIGGED_BODIES}
   validate :outfit_limit, on: :create
+
+  # The key nullifies the user's default on its own, but without touching the
+  # user, whose cached avatar would then outlive the outfit.
+  before_destroy :release_default
   validate :held_weapon_worn
   validate :character_face_fits, if: :character_face_id
+
+  def default?
+    user&.default_outfit_id == id
+  end
 
   # Replaces what the outfit wears with `[{slot:, equipment_id:}]`. A slot left
   # out is emptied; a slot already worn keeps its row, so changing an item never
@@ -67,6 +75,10 @@ class Outfit < ApplicationRecord
     elsif character_face.body != body
       errors.add(:character_face, :other_body)
     end
+  end
+
+  private def release_default
+    user.change_default_outfit(nil) if default?
   end
 
   private def outfit_limit

@@ -119,7 +119,7 @@ module Api
             :model_upgrades,
             :hangar_groups,
             {model: :manufacturer},
-            {user: {avatar_attachment: :blob}}
+            {user: User::AVATAR_PRELOADS}
           )
           .joins(:model)
       end

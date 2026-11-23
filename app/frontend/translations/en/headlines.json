@@ -427,6 +427,7 @@
         "privacySections": {
           "analytics": "Usage analytics",
           "onlineStatus": "Online status",
+          "character": "Character",
           "supporters": "Supporters page"
         },
         "features": "Feature Flags",

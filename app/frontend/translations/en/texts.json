@@ -304,6 +304,7 @@
         "privacy": {
           "tracking": "Counts which pages you visit, anonymised and without storing anything on your device. Visits are deleted after one month.",
           "onlineStatus": "Shows your fleet members and friends a dot next to your name while you have FleetYards open. Your last activity stays visible either way.",
+          "character": "Your default outfit is shown on your public hangar, worn by the game's default face. Showing your own character instead shares your character file: anyone who can see your hangar can then download it and load it in the game's character creator.",
           "supporterListed": "Whether your username — never the name you paid with — appears on the supporters page. Hidden donations still count towards the goal, and Patreon pledges stay hidden unless you show them."
         },
         "notifications": {

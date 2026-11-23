@@ -11,6 +11,18 @@ json.unconfirmed_email user.unconfirmed_email if user.unconfirmed_email.present?
 json.avatar do
   json.partial! "api/v1/shared/file", record: user, attr: :avatar
 end
+json.shown_avatar do
+  json.partial! "api/v1/shared/file", record: user, attr: :shown_avatar
+end
+json.character_avatar_helmet do
+  json.partial! "api/v1/shared/file", record: user, attr: :current_character_avatar_helmet
+end
+json.character_avatar_bare do
+  json.partial! "api/v1/shared/file", record: user, attr: :current_character_avatar_bare
+end
+json.avatar_source user.avatar_source
+json.default_outfit_id user.default_outfit_id
+json.public_character_face user.public_character_face
 
 json.rsi_handle user.rsi_handle if user.rsi_handle.present?
 json.rsi_handle_verified user.rsi_handle_verified

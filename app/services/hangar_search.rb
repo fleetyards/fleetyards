@@ -33,7 +33,7 @@ class HangarSearch
       vehicle_source("WishlistVehicle", @wishlist),
       ScopedSearch::Source.new(
         type: "Friend",
-        scope: @friends.with_attached_avatar.order(:username),
+        scope: @friends.with_avatars.order(:username),
         filter: :username_or_display_name_cont,
         columns: %w[users.username users.display_name],
         item: lambda { |friend|
@@ -42,7 +42,7 @@ class HangarSearch
             name: friend.username,
             slug: friend.username,
             detail: friend.display_name.presence,
-            image: friend.avatar.attached? ? friend.avatar : nil,
+            image: friend.shown_avatar.attached? ? friend.shown_avatar : nil,
             online: @online.call(friend)
           )
         }

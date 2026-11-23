@@ -7,9 +7,9 @@ json.items do
     json.username membership.user.username
     json.nickname membership.nickname
     json.friend @friend_ids.include?(membership.user_id)
-    if membership.user.avatar.attached?
+    if membership.user.shown_avatar.attached?
       json.avatar do
-        json.partial! "api/v1/shared/file", record: membership.user, attr: :avatar
+        json.partial! "api/v1/shared/file", record: membership.user, attr: :shown_avatar
       end
     else
       json.avatar nil

@@ -36,7 +36,7 @@ module Locations
       shown_ids = ranked.first(limit).map(&:id)
 
       fleets = Fleet.where(id: shown_ids.flat_map { Array.wrap(fleet_ids_by_user[it]) }.uniq).index_by(&:id)
-      users = User.where(id: shown_ids).includes({current_location: :parent}, avatar_attachment: :blob).index_by(&:id)
+      users = User.where(id: shown_ids).includes({current_location: :parent}, User::AVATAR_PRELOADS).index_by(&:id)
 
       entries = shown_ids.map do |id|
         Entry.new(users[id], friend_ids.include?(id), Array.wrap(fleet_ids_by_user[id]).filter_map { fleets[it] }.sort_by(&:name))

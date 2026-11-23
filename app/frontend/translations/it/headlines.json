@@ -425,6 +425,7 @@
         "privacySections": {
           "analytics": "Analisi di utilizzo",
           "onlineStatus": "Stato online",
+          "character": "Personaggio",
           "supporters": "Pagina dei sostenitori"
         },
         "features": "Flag funzionalità",

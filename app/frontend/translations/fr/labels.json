@@ -2663,6 +2663,14 @@
       "user": {
         "displayName": "Nom affiché",
         "displayNameInfo": "Affiché à la place de ton nom d'utilisateur dans ton hangar public, sur tes plaques de dédicace et dans les listes de membres des flottes.",
+        "avatarSource": "Avatar affiché",
+        "avatarSourceHint": "Définissez une tenue par défaut dans le vestiaire pour générer des avatars de votre personnage.",
+        "avatarSourcePending": "Ouvrez votre tenue par défaut dans le vestiaire pour générer ses avatars.",
+        "avatarSources": {
+          "uploaded": "Téléversé",
+          "character_helmet": "Avec casque",
+          "character_bare": "Sans casque"
+        },
         "hangarDefaultSort": "Ordre par défaut",
         "hangarDefaultSortInfo": "Faites glisser un vaisseau par sa poignée pour le réordonner. Disponible tant que l'ordre personnalisé est actif et qu'aucun filtre n'est appliqué.",
         "hangarDefaultSortOptions": {
@@ -2723,6 +2731,7 @@
         "newVehiclesPublicDescription": "S'applique aux vaisseaux que vous ajoutez à votre hangar, à la main, par import ou via la synchronisation du hangar RSI. Les vaisseaux déjà présents dans votre hangar conservent leur propre réglage.",
         "tracking": "Autoriser l'analyse d'utilisation anonyme",
         "showOnlineStatus": "Afficher quand je suis en ligne",
+        "publicCharacterFace": "Afficher mon propre personnage avec ma tenue par défaut",
         "supporterListed": "Page des soutiens",
         "supporterListedPlatform": "Comme choisi lors du don",
         "supporterListedShown": "Afficher mon nom d'utilisateur",

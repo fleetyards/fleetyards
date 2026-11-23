@@ -23,7 +23,7 @@ module Fleets
       "inventory_item_withdrawn" => "inventory"
     }.freeze
 
-    AVATAR = {avatar_attachment: :blob}.freeze
+    AVATAR = User::AVATAR_PRELOADS.freeze
 
     DEFAULT_LIMIT = 20
     MAX_LIMIT = 50
