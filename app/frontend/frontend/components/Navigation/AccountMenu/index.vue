@@ -88,8 +88,8 @@ const logout = () => {
     <template #trigger="{ slim }">
       <span class="account-menu__avatar">
         <img
-          v-if="currentUser.avatar?.smallUrl"
-          :src="currentUser.avatar.smallUrl"
+          v-if="currentUser.shownAvatar?.smallUrl"
+          :src="currentUser.shownAvatar.smallUrl"
           alt=""
         />
         <span v-else class="account-menu__initial" aria-hidden="true">

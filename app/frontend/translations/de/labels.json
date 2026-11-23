@@ -2662,6 +2662,13 @@
       "user": {
         "displayName": "Anzeigename",
         "displayNameInfo": "Wird statt deines Benutzernamens in deinem öffentlichen Hangar, auf deinen Widmungstafeln und in Flotten-Mitgliederlisten angezeigt.",
+        "avatarSource": "Angezeigter Avatar",
+        "avatarSourceHint": "Lege in der Umkleide ein Outfit als Standard fest, um Avatare von deinem Charakter zu erstellen.",
+        "avatarSources": {
+          "uploaded": "Hochgeladen",
+          "character_helmet": "Mit Helm",
+          "character_bare": "Ohne Helm"
+        },
         "hangarDefaultSort": "Standard-Reihenfolge",
         "hangarDefaultSortInfo": "Zieh ein Schiff an seinem Griff, um es umzusortieren. Verfügbar, solange die eigene Reihenfolge aktiv und kein Filter gesetzt ist.",
         "hangarDefaultSortOptions": {

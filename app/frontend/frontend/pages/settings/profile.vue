@@ -22,6 +22,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FilterOption,
   type UserUpdateInput,
+  FeatureFlagName,
   OmniauthProviderEnum,
   UserDateFormatEnum,
 } from "@/services/fyApi";
@@ -37,6 +38,8 @@ import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/i
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
+import CharacterAvatarPicker from "@/frontend/components/CharacterAvatarPicker/index.vue";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 const DISPLAY_NAME_LIMIT = 50;
 
@@ -153,6 +156,8 @@ const setupForm = () => {
 
 const comlink = useComlink();
 
+const { isFeatureEnabled } = useFeatures();
+
 const mutation = useUpdateProfileMutation();
 
 const avatarFileInput = ref<InstanceType<typeof FormFileInput>>();
@@ -247,6 +252,13 @@ const onSubmit = handleSubmit(async (values) => {
           :allowed-types="AllowedFileTypes.IMAGE"
           clearable
           avatar
+        />
+        <CharacterAvatarPicker
+          v-if="
+            sessionStore.currentUser &&
+            isFeatureEnabled(FeatureFlagName.DRESSING_ROOM)
+          "
+          :user="sessionStore.currentUser"
         />
       </div>
       <div class="col-12 col-md-6">
