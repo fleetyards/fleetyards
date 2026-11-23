@@ -4987,7 +4987,8 @@
         "fresh": "Nuovi",
         "ambiguous": "Scegli il progetto giusto",
         "owned": "Già posseduti",
-        "unmatched": "Non trovati nel catalogo"
+        "unmatched": "Non trovati nel catalogo",
+        "skipped": "Saltato"
       },
       "blueprint": {
         "anyGrade": "Qualsiasi qualità",

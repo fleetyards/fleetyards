@@ -359,6 +359,11 @@
         "drop": "Drop the LIVE folder or log files here",
         "privacy": "Your logs are read in your browser. Only blueprint names are sent to Fleetyards.",
         "limits": "Only blueprints received in logs the game still keeps can be found. PTU logs are skipped.",
+        "filesFound": {
+          "one": "%{count} log file found. Check the list before it is read.",
+          "other": "%{count} log files found. Check the list before they are read."
+        },
+        "noImportableLogs": "None of these logs come from LIVE, so there is nothing to read.",
         "reading": "Reading log %{read} of %{total}…",
         "nothingFound": "No received blueprints were found in these logs.",
         "found": {

@@ -25,12 +25,13 @@ import {
   isImportableChannel,
   isLogFile,
   readBlueprintLog,
+  readLogChannel,
   uniqueNames,
   type BlueprintReceipt,
 } from "@/frontend/utils/blueprintLog";
 import { reviewMatches, type BlueprintLogReview } from "../review";
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 const comlink = useComlink();
 
@@ -38,10 +39,18 @@ const queryClient = useQueryClient();
 
 const { displayAlert, displaySuccess } = useAppNotifications();
 
-type Step = "pick" | "reading" | "review" | "importing" | "done";
+type Step = "pick" | "files" | "reading" | "review" | "importing" | "done";
+
+interface LogCandidate {
+  file: File;
+  path: string;
+  channel?: string;
+  importable: boolean;
+}
 
 const step = ref<Step>("pick");
 
+const candidates = ref<LogCandidate[]>([]);
 const filesTotal = ref(0);
 const filesRead = ref(0);
 const skippedFiles = ref(0);
@@ -56,6 +65,7 @@ const filesInput = ref<HTMLInputElement>();
 
 const reset = () => {
   step.value = "pick";
+  candidates.value = [];
   review.value = undefined;
   selected.value = new Set();
   result.value = undefined;
@@ -64,7 +74,9 @@ const reset = () => {
   skippedFiles.value = 0;
 };
 
-const readFiles = async (files: File[]) => {
+const filePath = (file: File) => file.webkitRelativePath || file.name;
+
+const collectFiles = async (files: File[]) => {
   const logs = files.filter(isLogFile);
 
   if (!logs.length) {
@@ -72,16 +84,52 @@ const readFiles = async (files: File[]) => {
     return;
   }
 
+  try {
+    const found = await Promise.all(
+      logs.map(async (file) => {
+        const channel = await readLogChannel(file);
+
+        return {
+          file,
+          path: filePath(file),
+          channel,
+          importable: isImportableChannel(channel),
+        };
+      }),
+    );
+
+    candidates.value = found.sort((a, b) => a.path.localeCompare(b.path));
+    step.value = "files";
+  } catch {
+    displayAlert({ text: t("messages.blueprintLogImport.failure") });
+    reset();
+  }
+};
+
+const importableCandidates = computed(() =>
+  candidates.value.filter(({ importable }) => importable),
+);
+
+const fileSize = (bytes: number) =>
+  new Intl.NumberFormat(currentLocale(), {
+    style: "unit",
+    unit: bytes < 1024 * 1024 ? "kilobyte" : "megabyte",
+    maximumFractionDigits: 1,
+  }).format(bytes / (bytes < 1024 * 1024 ? 1024 : 1024 * 1024));
+
+const readFiles = async () => {
+  const logs = importableCandidates.value.map(({ file }) => file);
+
   step.value = "reading";
+  filesRead.value = 0;
   filesTotal.value = logs.length;
+  skippedFiles.value = candidates.value.length - logs.length;
 
   const receipts: BlueprintReceipt[] = [];
 
   try {
     for (const file of logs) {
       const log = await readBlueprintLog(file);
-
-      if (!isImportableChannel(log.channel)) skippedFiles.value += 1;
 
       receipts.push(...log.receipts);
       filesRead.value += 1;
@@ -105,7 +153,7 @@ const onDrop = async (event: DragEvent) => {
 
   if (!event.dataTransfer) return;
 
-  await readFiles(await filesFromDataTransfer(event.dataTransfer));
+  await collectFiles(await filesFromDataTransfer(event.dataTransfer));
 };
 
 const onInputChange = async (event: Event) => {
@@ -114,7 +162,7 @@ const onInputChange = async (event: Event) => {
 
   input.value = "";
 
-  await readFiles(files);
+  await collectFiles(files);
 };
 
 const toggle = (slug: string, checked: boolean) => {
@@ -247,6 +295,48 @@ const close = () => comlink.emit("close-modal");
         <i class="fa-light fa-clock-rotate-left" />
         {{ t("texts.blueprintLogImport.limits") }}
       </p>
+    </div>
+
+    <div
+      v-else-if="step === 'files'"
+      class="blueprint-log-import"
+      data-test="blueprint-log-import-file-list"
+    >
+      <p>
+        {{
+          t("texts.blueprintLogImport.filesFound", {
+            count: candidates.length,
+          })
+        }}
+      </p>
+      <ul class="blueprint-log-import__files">
+        <li
+          v-for="candidate in candidates"
+          :key="candidate.path"
+          class="blueprint-log-import__file"
+          :class="{
+            'blueprint-log-import__file--skipped': !candidate.importable,
+          }"
+          data-test="blueprint-log-import-file"
+        >
+          <i class="fa-light fa-file-lines" />
+          <span class="blueprint-log-import__file-name">
+            {{ candidate.path }}
+          </span>
+          <span class="blueprint-log-import__file-meta">
+            <template v-if="candidate.channel">
+              {{ candidate.channel }} ·
+            </template>
+            {{ fileSize(candidate.file.size) }}
+            <template v-if="!candidate.importable">
+              · {{ t("labels.blueprintLogImport.skipped") }}
+            </template>
+          </span>
+        </li>
+      </ul>
+      <Alert v-if="!importableCandidates.length">
+        {{ t("texts.blueprintLogImport.noImportableLogs") }}
+      </Alert>
     </div>
 
     <div v-else-if="step === 'reading'" class="blueprint-log-import">
@@ -385,7 +475,23 @@ const close = () => comlink.emit("close-modal");
     </div>
 
     <template v-if="step !== 'pick' && step !== 'reading'" #footer>
-      <template v-if="step === 'review' || step === 'importing'">
+      <template v-if="step === 'files'">
+        <Btn :variant="BtnVariantsEnum.BARE" @click="reset">
+          {{ t("actions.blueprintLogImport.startOver") }}
+        </Btn>
+        <Btn
+          :disabled="!importableCandidates.length"
+          data-test="blueprint-log-import-read"
+          @click="readFiles"
+        >
+          {{
+            t("actions.blueprintLogImport.read", {
+              count: importableCandidates.length,
+            })
+          }}
+        </Btn>
+      </template>
+      <template v-else-if="step === 'review' || step === 'importing'">
         <Btn :variant="BtnVariantsEnum.BARE" @click="reset">
           {{ t("actions.blueprintLogImport.startOver") }}
         </Btn>
@@ -485,6 +591,39 @@ const close = () => comlink.emit("close-modal");
   &__count {
     opacity: 0.6;
     font-weight: normal;
+  }
+
+  &__files {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  &__file {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    &--skipped {
+      opacity: 0.5;
+    }
+  }
+
+  &__file-name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__file-meta {
+    flex-shrink: 0;
+    font-size: 0.9em;
+    opacity: 0.75;
   }
 
   &__list {

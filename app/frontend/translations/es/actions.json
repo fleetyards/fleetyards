@@ -153,6 +153,11 @@
           "one": "Importar %{count} plano",
           "other": "Importar %{count} planos"
         },
+        "read": {
+          "zero": "Leer logs",
+          "one": "Leer %{count} log",
+          "other": "Leer %{count} logs"
+        },
         "startOver": "Empezar de nuevo",
         "showImport": "Ver detalles de la importación"
       },

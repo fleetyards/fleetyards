@@ -5001,7 +5001,8 @@
         "fresh": "New",
         "ambiguous": "Pick the right blueprint",
         "owned": "Already owned",
-        "unmatched": "Not found in the catalogue"
+        "unmatched": "Not found in the catalogue",
+        "skipped": "Skipped"
       },
       "blueprint": {
         "anyGrade": "Any grade",

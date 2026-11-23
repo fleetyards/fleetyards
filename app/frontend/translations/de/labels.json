@@ -4987,7 +4987,8 @@
         "fresh": "Neu",
         "ambiguous": "Richtiges Blueprint wählen",
         "owned": "Bereits vorhanden",
-        "unmatched": "Nicht im Katalog gefunden"
+        "unmatched": "Nicht im Katalog gefunden",
+        "skipped": "Übersprungen"
       },
       "blueprint": {
         "anyGrade": "Beliebige Qualität",

@@ -153,6 +153,11 @@
           "one": "导入 %{count} 个蓝图",
           "other": "导入 %{count} 个蓝图"
         },
+        "read": {
+          "zero": "读取日志",
+          "one": "读取 %{count} 个日志",
+          "other": "读取 %{count} 个日志"
+        },
         "startOver": "重新开始",
         "showImport": "查看导入详情"
       },

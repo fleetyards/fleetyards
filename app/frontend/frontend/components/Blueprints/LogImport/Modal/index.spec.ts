@@ -81,6 +81,13 @@ const pick = async (
   await flushPromises();
 };
 
+const read = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
+  await wrapper
+    .find("[data-test='blueprint-log-import-read']")
+    .trigger("click");
+  await flushPromises();
+};
+
 describe("BlueprintLogImportModal", () => {
   beforeEach(() => {
     matchBlueprintLogNames.mockReset();
@@ -108,6 +115,7 @@ describe("BlueprintLogImportModal", () => {
       log("LIVE", ["Aspis", "Held", "Helmet", "Nothing", "Aspis"]),
       log("PTU", ["Ptu Only"], "Game Build(1) 01 Nov 26.log"),
     ]);
+    await read(wrapper);
 
     expect(matchBlueprintLogNames).toHaveBeenCalledWith({
       names: ["Aspis", "Held", "Helmet", "Nothing"],
@@ -139,6 +147,44 @@ describe("BlueprintLogImportModal", () => {
     ).toBe(true);
   });
 
+  it("lists the recognised logs before reading them", async () => {
+    const wrapper = await mount();
+
+    await pick(wrapper, [
+      log("PTU", ["Ptu Only"], "Game Build(1) 01 Nov 26.log"),
+      new File(["x"], "notes.txt"),
+      log("LIVE", ["Aspis"]),
+    ]);
+
+    const files = wrapper.findAll("[data-test='blueprint-log-import-file']");
+
+    expect(files.map((file) => file.text())).toEqual([
+      expect.stringContaining("Game Build(1) 01 Nov 26.log"),
+      expect.stringContaining("Game.log"),
+    ]);
+    expect(files[0].text()).toContain("PTU");
+    expect(files[0].classes()).toContain("blueprint-log-import__file--skipped");
+    expect(files[1].text()).toContain("LIVE");
+    expect(matchBlueprintLogNames).not.toHaveBeenCalled();
+
+    matchBlueprintLogNames.mockResolvedValue([]);
+    await read(wrapper);
+
+    expect(matchBlueprintLogNames).toHaveBeenCalledWith({ names: ["Aspis"] });
+  });
+
+  it("cannot read a pick of PTU logs only", async () => {
+    const wrapper = await mount();
+
+    await pick(wrapper, [log("PTU", ["Ptu Only"])]);
+
+    expect(
+      wrapper
+        .find("[data-test='blueprint-log-import-read']")
+        .attributes("disabled"),
+    ).toBeDefined();
+  });
+
   it("refuses a pick without log files", async () => {
     const wrapper = await mount();
 
@@ -152,6 +198,7 @@ describe("BlueprintLogImportModal", () => {
     const wrapper = await mount();
 
     await pick(wrapper, [log("LIVE", [])]);
+    await read(wrapper);
 
     expect(matchBlueprintLogNames).not.toHaveBeenCalled();
     expect(

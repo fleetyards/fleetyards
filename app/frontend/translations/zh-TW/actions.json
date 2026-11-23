@@ -153,6 +153,11 @@
           "one": "匯入 %{count} 個藍圖",
           "other": "匯入 %{count} 個藍圖"
         },
+        "read": {
+          "zero": "讀取日誌",
+          "one": "讀取 %{count} 個日誌",
+          "other": "讀取 %{count} 個日誌"
+        },
         "startOver": "重新開始",
         "showImport": "檢視匯入詳情"
       },

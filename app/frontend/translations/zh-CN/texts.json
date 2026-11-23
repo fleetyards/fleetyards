@@ -358,6 +358,11 @@
         "drop": "将 LIVE 文件夹或日志文件拖到这里",
         "privacy": "日志在你的浏览器中读取，只有蓝图名称会发送到 Fleetyards。",
         "limits": "只能找到游戏仍保留的日志中获得的蓝图。PTU 日志会被跳过。",
+        "filesFound": {
+          "one": "找到 %{count} 个日志文件。读取前请检查列表。",
+          "other": "找到 %{count} 个日志文件。读取前请检查列表。"
+        },
+        "noImportableLogs": "这些日志都不是来自 LIVE，没有可读取的内容。",
         "reading": "正在读取日志 %{read} / %{total}…",
         "nothingFound": "这些日志中没有找到获得的蓝图。",
         "found": {

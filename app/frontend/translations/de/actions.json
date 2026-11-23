@@ -153,6 +153,11 @@
           "one": "%{count} Blueprint importieren",
           "other": "%{count} Blueprints importieren"
         },
+        "read": {
+          "zero": "Logs lesen",
+          "one": "%{count} Log lesen",
+          "other": "%{count} Logs lesen"
+        },
         "startOver": "Neu beginnen",
         "showImport": "Importdetails anzeigen"
       },

@@ -359,6 +359,11 @@
         "drop": "LIVE-Ordner oder Log-Dateien hier ablegen",
         "privacy": "Deine Logs werden in deinem Browser gelesen. Nur die Namen der Blueprints werden an Fleetyards gesendet.",
         "limits": "Nur Blueprints aus Logs, die das Spiel noch aufbewahrt, können gefunden werden. PTU-Logs werden übersprungen.",
+        "filesFound": {
+          "one": "%{count} Log-Datei gefunden. Prüfe die Liste, bevor sie gelesen wird.",
+          "other": "%{count} Log-Dateien gefunden. Prüfe die Liste, bevor sie gelesen werden."
+        },
+        "noImportableLogs": "Keines dieser Logs stammt aus LIVE, es gibt nichts zu lesen.",
         "reading": "Lese Log %{read} von %{total}…",
         "nothingFound": "In diesen Logs wurden keine erhaltenen Blueprints gefunden.",
         "found": {
