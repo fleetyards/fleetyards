@@ -17,6 +17,9 @@ const { displayAlert, displaySuccess } = useAppNotifications();
 const store = useCharacterAvatarsStore();
 const { upload } = useCharacterAvatarUpload();
 
+// Signed out mid-drawing: the next session starts with nothing in flight.
+onBeforeUnmount(() => store.finish());
+
 const drawn = async (portraits: (Blob | null)[]) => {
   try {
     if (await upload(portraits)) {
