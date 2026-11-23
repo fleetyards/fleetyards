@@ -121,10 +121,13 @@ const readText = async (file: Blob, onLine: (line: string) => void) => {
   if (buffer) onLine(buffer);
 };
 
+export const readLogChannel = async (file: Blob) =>
+  logChannel(await file.slice(0, HEADER_BYTES).text());
+
 export const readBlueprintLog = async (
   file: File,
 ): Promise<BlueprintLogFile> => {
-  const channel = logChannel(await file.slice(0, HEADER_BYTES).text());
+  const channel = await readLogChannel(file);
 
   if (!isImportableChannel(channel)) return { channel, receipts: [] };
 
