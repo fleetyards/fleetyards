@@ -182,4 +182,30 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
       assert_nil parsed_body["character"]["characterToken"]
     end
   end
+
+  test "GET /public/users/:username shows the helmet portrait unless the user shows their own character" do
+    user = create(:user, :public_hangar)
+    user.update!(default_outfit: create(:outfit, user:))
+    user.character_avatar_helmet.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "helmet.png")
+    user.character_avatar_bare.attach(io: Rails.root.join("test/fixtures/files/test.png").open, filename: "bare.png")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "helmet.png", parsed_body["characterPortrait"]["name"]
+    end
+
+    user.update!(public_character_face: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "bare.png", parsed_body["characterPortrait"]["name"]
+    end
+  end
+
+  test "GET /public/users/:username carries the public flagship" do
+    user = create(:user, :public_hangar)
+    vehicle = create(:vehicle, user:, flagship: true, public: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal vehicle.model.slug, parsed_body["flagship"]["modelSlug"]
+    end
+  end
 end

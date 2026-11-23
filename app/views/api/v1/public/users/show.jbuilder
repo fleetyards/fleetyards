@@ -29,3 +29,27 @@ if (outfit = @user.default_outfit)
 else
   json.character nil
 end
+
+# Head and shoulders of the default outfit: the face only when the user shows
+# their own character, the helmet otherwise.
+portrait = @user.public_character_face? ? :current_character_avatar_bare : :current_character_avatar_helmet
+if @user.public_send(portrait)
+  json.character_portrait do
+    json.partial! "api/v1/shared/file", record: @user, attr: portrait
+  end
+else
+  json.character_portrait nil
+end
+
+if (flagship = @user.vehicles.public.purchased.where(flagship: true).includes(:model).first)
+  json.flagship do
+    json.name flagship.name if flagship.name_visible?
+    json.model_name flagship.model.name
+    json.model_slug flagship.model.slug
+    json.angled_view do
+      json.partial! "api/v1/shared/file", record: flagship.model, attr: :angled_view
+    end
+  end
+else
+  json.flagship nil
+end

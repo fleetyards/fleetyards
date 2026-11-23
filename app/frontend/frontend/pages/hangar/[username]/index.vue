@@ -26,15 +26,12 @@ import { HANGAR_GROUPS } from "@/frontend/components/Fleetchart/options";
 import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
-  FeatureFlagName,
   HangarGroup,
   type HangarGroupPublic,
   type UserPublic,
 } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
-import { characterQuery } from "@/frontend/utils/dressingRoomStorage";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -60,8 +57,6 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
-
-const { isFeatureEnabled } = useFeatures();
 
 type Props = {
   user: UserPublic;
@@ -250,15 +245,6 @@ useSubscription({
     </div>
 
     <div class="col-12 col-lg-4 hangar-profile-links">
-      <router-link
-        v-if="user.character && isFeatureEnabled(FeatureFlagName.DRESSING_ROOM)"
-        v-tooltip="t('dressingRoom.openCharacter')"
-        :aria-label="t('dressingRoom.openCharacter')"
-        :to="{ name: 'dressing-room', query: characterQuery(user.character) }"
-        data-test="hangar-public-character"
-      >
-        <i class="fa-light fa-shirt" />
-      </router-link>
       <a
         v-if="user.homepage"
         v-tooltip="t('labels.homepage')"

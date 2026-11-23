@@ -26,3 +26,37 @@
   font-size: 0.4em;
   line-height: 1;
 }
+
+.hangar-public-heading__showcase {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.hangar-public-heading__character img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.hangar-public-heading__flagship {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: inherit;
+  font-size: 0.8125rem;
+  text-decoration: none;
+
+  img {
+    display: block;
+    height: 96px;
+    width: auto;
+    max-width: 240px;
+    object-fit: contain;
+  }
+}

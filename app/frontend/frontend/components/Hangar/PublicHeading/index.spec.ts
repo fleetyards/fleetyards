@@ -3,6 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 import type { UserPublic } from "@/services/fyApi";
 import Component from "./index.vue";
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => false }),
+}));
+
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
@@ -21,7 +25,11 @@ const mountWith = (attributes: Partial<UserPublic>) =>
   mount(Component, {
     props: { user: user(attributes) },
     global: {
-      stubs: { Avatar: true, Heading: { template: "<div><slot /></div>" } },
+      stubs: {
+        Avatar: true,
+        Heading: { template: "<div><slot /></div>" },
+        RouterLink: { props: ["to"], template: "<a><slot /></a>" },
+      },
       directives: { tooltip: () => {} },
     },
   });
@@ -92,5 +100,31 @@ describe("HangarPublicHeading", () => {
 
     expect(pill.find('[data-test="supporter-badge"]').exists()).toBe(false);
     expect(pill.find(".fa-heart").exists()).toBe(true);
+  });
+
+  it("shows the character portrait and the flagship under the name", () => {
+    const wrapper = mountWith({
+      characterPortrait: { smallUrl: "/portrait.png" },
+      flagship: {
+        modelName: "Carrack",
+        modelSlug: "carrack",
+        angledView: { mediumUrl: "/carrack.png" },
+      },
+    } as Partial<UserPublic>);
+
+    expect(
+      wrapper
+        .get('[data-test="hangar-public-character"] img')
+        .attributes("src"),
+    ).toBe("/portrait.png");
+    expect(wrapper.get('[data-test="hangar-public-flagship"]').text()).toBe(
+      "Carrack",
+    );
+  });
+
+  it("leaves the row out with neither a portrait nor a flagship", () => {
+    expect(
+      mountWith({}).find('[data-test="hangar-public-showcase"]').exists(),
+    ).toBe(false);
   });
 });

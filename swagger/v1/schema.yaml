@@ -52032,6 +52032,23 @@ components:
       - items
       - storedItems
       title: PublicCharacter
+    PublicFlagship:
+      type: object
+      description: The ship the user marked as their flagship, when it is public
+      properties:
+        name:
+          type: string
+        modelName:
+          type: string
+        modelSlug:
+          type: string
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - modelName
+      - modelSlug
+      title: PublicFlagship
     PublicFleetSquadron:
       type: object
       properties:
@@ -54834,6 +54851,14 @@ components:
         character:
           anyOf:
           - "$ref": "#/components/schemas/PublicCharacter"
+          - type: 'null'
+        characterPortrait:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        flagship:
+          anyOf:
+          - "$ref": "#/components/schemas/PublicFlagship"
           - type: 'null'
         online:
           type: boolean

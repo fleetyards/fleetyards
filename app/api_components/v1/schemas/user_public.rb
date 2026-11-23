@@ -28,6 +28,8 @@ module V1
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean},
           character: {anyOf: [::V1::Schemas::DressingRoom::PublicCharacter, {type: :null}]},
+          characterPortrait: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
+          flagship: {anyOf: [::V1::Schemas::PublicFlagship, {type: :null}]},
           online: {type: :boolean, description: "Only for the user's friends and fleet mates"}
         },
         additionalProperties: false,
