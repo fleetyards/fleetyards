@@ -9,10 +9,12 @@ type Props = {
   name: string;
   role: string;
   selected?: boolean;
+  behind?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   selected: false,
+  behind: false,
 });
 </script>
 
@@ -21,7 +23,10 @@ withDefaults(defineProps<Props>(), {
     :class="[
       'starmap-label',
       `starmap-label--${role}`,
-      { 'starmap-label--selected': selected },
+      {
+        'starmap-label--selected': selected,
+        'starmap-label--behind': behind,
+      },
     ]"
   >
     {{ name }}
@@ -68,6 +73,12 @@ withDefaults(defineProps<Props>(), {
 
   &--selected {
     color: #fff;
+  }
+
+  // What it names is on the far side of a body, drawn faintly through it.
+  &--behind {
+    opacity: 0.55;
+    font-style: italic;
   }
 
   @media (prefers-reduced-motion: reduce) {
