@@ -1503,13 +1503,19 @@ const occluder = computed(() => {
   return bodyFor(entry);
 });
 
+// Every body that can stand between the camera and something else: a moon
+// behind its planet, or a station on a moon's far side, is out of sight
+// whichever of them is focused.
+const solids = computed(() =>
+  items.value.filter((entry) => entry.radius && entry.role !== "place"),
+);
+
 const toPoint = new Vector3();
 const closest = new Vector3();
 const fromCentre = new Vector3();
 
-const occluded = (point: Vector3) => {
-  const body = occluder.value;
-  if (!body?.radius) return false;
+const behindBody = (point: Vector3, body: StarmapItem) => {
+  if (!body.radius) return false;
 
   fromCentre.copy(cameraWorld).sub(scratchCentre.set(...body.position));
   toPoint.copy(point).sub(cameraWorld);
@@ -1519,6 +1525,12 @@ const occluded = (point: Vector3) => {
   closest.copy(fromCentre).addScaledVector(toPoint, t);
   return closest.length() < body.radius * 0.995;
 };
+
+// A body faded out of the view no longer hides what is behind it.
+const occluded = (point: Vector3) =>
+  solids.value.some(
+    (body) => (fades.get(body.key) ?? 1) > 0.02 && behindBody(point, body),
+  );
 
 const scratchCentre = new Vector3();
 
