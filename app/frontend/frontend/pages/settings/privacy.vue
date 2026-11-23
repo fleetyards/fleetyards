@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
-import { type UserUpdateInput } from "@/services/fyApi";
+import { FeatureFlagName, type UserUpdateInput } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -34,7 +35,10 @@ const comlink = useComlink();
 
 // RadioList speaks strings, and its reset entry is `undefined` -- which is how
 // "as chosen when donating" travels until it is sent as `null`.
-type PrivacyForm = Pick<UserUpdateInput, "tracking" | "showOnlineStatus"> & {
+type PrivacyForm = Pick<
+  UserUpdateInput,
+  "tracking" | "showOnlineStatus" | "publicCharacterFace"
+> & {
   supporterListed?: string;
 };
 
@@ -49,6 +53,7 @@ const fromSupporterListed = (value: string | undefined) =>
 const currentValues = (): PrivacyForm => ({
   tracking: sessionStore.currentUser?.tracking ?? true,
   showOnlineStatus: sessionStore.currentUser?.showOnlineStatus ?? true,
+  publicCharacterFace: sessionStore.currentUser?.publicCharacterFace ?? false,
   supporterListed: toSupporterListed(sessionStore.currentUser?.supporterListed),
 });
 
@@ -85,6 +90,11 @@ const [tracking, trackingProps] = defineField("tracking");
 const [showOnlineStatus, showOnlineStatusProps] =
   defineField("showOnlineStatus");
 const [supporterListed] = defineField("supporterListed");
+const [publicCharacterFace, publicCharacterFaceProps] = defineField(
+  "publicCharacterFace",
+);
+
+const { isFeatureEnabled } = useFeatures();
 
 const isSupporter = computed(() => !!sessionStore.currentUser?.supporter);
 
@@ -103,6 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
       data: {
         tracking: values.tracking,
         showOnlineStatus: values.showOnlineStatus,
+        publicCharacterFace: values.publicCharacterFace,
         ...(isSupporter.value && {
           supporterListed: fromSupporterListed(values.supporterListed),
         }),
@@ -166,6 +177,25 @@ const onSubmit = handleSubmit(async (values) => {
           name="showOnlineStatus"
           :disabled="submitting"
           :label="t('labels.user.showOnlineStatus')"
+        />
+      </PanelBody>
+    </Panel>
+
+    <Panel
+      v-if="isFeatureEnabled(FeatureFlagName.DRESSING_ROOM)"
+      data-test="public-character-face"
+    >
+      <PanelHeading :level="HeadingLevelEnum.H2">
+        {{ t("headlines.settings.privacySections.character") }}
+      </PanelHeading>
+      <PanelBody>
+        <p>{{ t("texts.settings.privacy.character") }}</p>
+        <FormToggle
+          v-model="publicCharacterFace"
+          v-bind="publicCharacterFaceProps"
+          name="publicCharacterFace"
+          :disabled="submitting"
+          :label="t('labels.user.publicCharacterFace')"
         />
       </PanelBody>
     </Panel>

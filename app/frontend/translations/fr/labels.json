@@ -2730,6 +2730,7 @@
         "newVehiclesPublicDescription": "S'applique aux vaisseaux que vous ajoutez à votre hangar, à la main, par import ou via la synchronisation du hangar RSI. Les vaisseaux déjà présents dans votre hangar conservent leur propre réglage.",
         "tracking": "Autoriser l'analyse d'utilisation anonyme",
         "showOnlineStatus": "Afficher quand je suis en ligne",
+        "publicCharacterFace": "Afficher mon propre personnage avec ma tenue par défaut",
         "supporterListed": "Page des soutiens",
         "supporterListedPlatform": "Comme choisi lors du don",
         "supporterListedShown": "Afficher mon nom d'utilisateur",

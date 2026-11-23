@@ -2730,6 +2730,7 @@
         "newVehiclesPublicDescription": "Vale per le navi che aggiungi al tuo hangar, a mano, tramite importazione o con la sincronizzazione dell'hangar RSI. Le navi già presenti nel tuo hangar mantengono la propria impostazione.",
         "tracking": "Consenti analisi di utilizzo anonime",
         "showOnlineStatus": "Mostra quando sono online",
+        "publicCharacterFace": "Mostra il mio personaggio con il mio outfit predefinito",
         "supporterListed": "Pagina dei sostenitori",
         "supporterListedPlatform": "Come scelto alla donazione",
         "supporterListedShown": "Mostra il mio nome utente",

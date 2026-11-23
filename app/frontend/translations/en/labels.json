@@ -2730,6 +2730,7 @@
         "newVehiclesPublicDescription": "Applies to ships you add to your hangar, by hand, by import or through the RSI hangar sync. Ships already in your hangar keep their own setting.",
         "tracking": "Allow anonymous usage analytics",
         "showOnlineStatus": "Show when I am online",
+        "publicCharacterFace": "Show my own character on my default outfit",
         "supporterListed": "Supporters page",
         "supporterListedPlatform": "As chosen when donating",
         "supporterListedShown": "Show my username",

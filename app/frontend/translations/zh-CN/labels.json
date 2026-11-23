@@ -2730,6 +2730,7 @@
         "newVehiclesPublicDescription": "适用于你添加到机库的舰船，无论是手动添加、导入还是通过 RSI 机库同步。已在机库中的舰船保留各自的设置。",
         "tracking": "允许匿名使用情况分析",
         "showOnlineStatus": "显示我的在线状态",
+        "publicCharacterFace": "在默认装扮上显示我自己的角色",
         "supporterListed": "支持者页面",
         "supporterListedPlatform": "按捐赠时的选择",
         "supporterListedShown": "显示我的用户名",

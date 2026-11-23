@@ -425,6 +425,7 @@
         "privacySections": {
           "analytics": "Análisis de uso",
           "onlineStatus": "Estado en línea",
+          "character": "Personaje",
           "supporters": "Página de colaboradores"
         },
         "features": "Indicadores de características",

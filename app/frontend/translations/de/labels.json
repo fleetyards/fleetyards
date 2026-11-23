@@ -2730,6 +2730,7 @@
         "newVehiclesPublicDescription": "Gilt für Schiffe, die du deinem Hangar hinzufügst – von Hand, per Import oder über den RSI-Hangar-Sync. Schiffe, die schon in deinem Hangar sind, behalten ihre eigene Einstellung.",
         "tracking": "Anonyme Nutzungsstatistik erlauben",
         "showOnlineStatus": "Anzeigen, wenn ich online bin",
+        "publicCharacterFace": "Meinen eigenen Charakter im Standard-Outfit zeigen",
         "supporterListed": "Unterstützerseite",
         "supporterListedPlatform": "Wie beim Spenden gewählt",
         "supporterListedShown": "Meinen Benutzernamen zeigen",
