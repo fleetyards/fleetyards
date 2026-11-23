@@ -1269,6 +1269,7 @@ const attachRigNow = async (scene: Group) => {
   next.userData.grafted = [];
   next.userData.attached = [];
   const unplaced: string[] = [];
+  const rims: Mesh[] = [];
 
   pieces.forEach((piece, index) => {
     if (!piece) return;
@@ -1281,6 +1282,7 @@ const attachRigNow = async (scene: Group) => {
     meshes.forEach((mesh) => {
       mesh.userData.textured = piece.textured;
     });
+    if (rig.pieces[index]?.rim) rims.push(...meshes);
     if (meshes.length) next.add(...meshes);
     else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
     next.userData.grafted.push(...grafted);
@@ -1318,13 +1320,7 @@ const attachRigNow = async (scene: Group) => {
   rigClips = clips;
 
   if (rig.collar) {
-    undressNeck = dressNeck(
-      scene,
-      rig.collar === "hood",
-      pieces.flatMap((piece, index) =>
-        piece && rig.pieces[index]?.rim ? [piece.scene] : [],
-      ),
-    );
+    undressNeck = dressNeck(scene, rig.collar === "hood", rims);
   }
 
   // On a painted body too: only the painted pieces keep their own materials.

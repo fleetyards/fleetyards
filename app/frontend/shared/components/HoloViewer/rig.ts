@@ -286,6 +286,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             piece.from ?? "",
             piece.textured ? "textured" : "",
             piece.fallbackPath ?? "",
+            piece.rim ? "rim" : "",
           ].join("|"),
         ),
         // Everything that changes how a part is drawn: a helper that arrives
