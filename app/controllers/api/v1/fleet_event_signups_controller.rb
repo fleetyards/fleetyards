@@ -190,6 +190,12 @@ module Api
 
         @signup = other_kind_signup || @signup
 
+        if leaving_team_seat_beside_another?
+          @signup.withdraw!
+          render :show
+          return
+        end
+
         previous_status = @signup.status
         previous_slot_id = @signup.fleet_event_slot_id
         if @signup.update_without_conflict(admin_signup_attrs)
@@ -256,6 +262,19 @@ module Api
 
         scope.where.not(status: "withdrawn").same_kind_as(slot).first ||
           scope.new(vehicle_id: (@signup.vehicle_id unless FleetEventSignup.team_seat_slot?(slot)))
+      end
+
+      # Taken out of a team seat, a member who also holds a ship seat or waits
+      # in the pool keeps that; the team seat's signup is done, not a second
+      # one for the pool.
+      private def leaving_team_seat_beside_another?
+        return false unless params.key?(:fleet_event_slot_id) && params[:fleet_event_slot_id].blank?
+        return false unless @signup.team_seat && @signup.fleet_event_slot_id.present?
+
+        @signup.fleet_event.fleet_event_signups
+          .where(fleet_membership_id: @signup.fleet_membership_id, occurrence_date: @signup.occurrence_date, team_seat: false)
+          .where.not(status: "withdrawn")
+          .exists?
       end
 
       private def admin_signup_attrs

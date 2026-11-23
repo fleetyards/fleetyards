@@ -24,7 +24,7 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
         {OpenId: ["fleet", "fleet:write"]}
       ]
 
-      response(200, "successful") do
+      response(200, "successful - the signup now in the slot; a member's seat of the other kind stays, so this may be their other signup") do
         schema ::V1::Schemas::Fleets::Events::FleetEventSignup
       end
 
@@ -173,5 +173,20 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal ship_slot.id, @signup.reload.fleet_event_slot_id
+  end
+
+  test "PATCH /fleet-event-signups/:id/assign takes a lead off the lead seat and leaves their ship seat" do
+    sign_in @admin
+    ship_slot = create(:fleet_event_slot, slottable: create(:fleet_event_ship, fleet_event_team: @fleet_event_team))
+    @signup.update!(fleet_event_slot: ship_slot, status: "confirmed")
+    lead = create(:fleet_event_signup, fleet_event: @fleet_event, fleet_event_slot: @fleet_event_slot,
+      fleet_membership: @signup.fleet_membership, status: "confirmed")
+
+    assert_api_response :patch, 200, path_params: {id: lead.id}, body: {fleetEventSlotId: nil} do
+      assert_equal "withdrawn", parsed_body["status"]
+    end
+
+    assert_equal ship_slot.id, @signup.reload.fleet_event_slot_id
+    assert_equal "confirmed", @signup.status
   end
 end
