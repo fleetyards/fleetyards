@@ -47,6 +47,7 @@
         "supplies": "Vorräte",
         "storage": "Stauraum"
       },
+      "tabProblem": "%{tab}: bitte prüfen",
       "hold": "In die Hand nehmen",
       "bodies": {
         "male": "Männlich",
@@ -75,7 +76,6 @@
         "oxypen": "Oxypen %{number}",
         "utility": "Werkzeug %{number}"
       },
-      "saveBlocked": "Behebe die oben markierten Punkte, um dieses Outfit zu speichern.",
       "storage": {
         "title": "Stauraum",
         "hint": "Trage einen Rucksack oder eine Rüstung mit Stauraum, um Gegenstände zu verstauen.",

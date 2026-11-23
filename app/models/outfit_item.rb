@@ -28,16 +28,6 @@ class OutfitItem < ApplicationRecord
     "utility_1" => 160, "utility_2" => 161
   }.freeze
 
-  # The game's port behind each kind of gear slot, numbered as the slot is.
-  GEAR_PORTS = {
-    "grenade" => "grenade_attach",
-    "magazine" => "magazine_attach",
-    "gadget" => "gadget_attach",
-    "medpen" => "medPen_attach",
-    "oxypen" => "oxyPen_attach",
-    "utility" => "utility_attach"
-  }.freeze
-
   # What each kind of gear slot takes. The game lets any pen into either pen
   # port, so both pen kinds take medpens and oxypens alike.
   GEAR_ITEMS = {
@@ -68,16 +58,6 @@ class OutfitItem < ApplicationRecord
 
   def gear_slot?
     GEAR_SLOTS.key?(slot)
-  end
-
-  def gear_port
-    kind, number = slot.split("_")
-
-    "#{GEAR_PORTS.fetch(kind)}_#{number}"
-  end
-
-  def offered_ports
-    Array.wrap(equipment&.fit&.dig("ports")).pluck("name")
   end
 
   private def equipment_fits_slot

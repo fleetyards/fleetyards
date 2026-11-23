@@ -1099,9 +1099,6 @@ describe("ToolsDressingRoomPage", () => {
           .find('[data-test="dressing-room-storage-problem-backpack"]')
           .exists(),
       ).toBe(false);
-      expect(
-        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
-      ).toBe(false);
     });
 
     it("offers every port of what is worn, and hangs gear on its bone", async () => {
@@ -1144,14 +1141,16 @@ describe("ToolsDressingRoomPage", () => {
       expect(viewerModel(wrapper).rig.attachments ?? []).toEqual([]);
     });
 
-    it("reports gear left without a port, and blocks saving it", async () => {
+    it("reports gear left without a port, and marks its tab from the armour one", async () => {
       const { wrapper } = await mount({ grenade_1: "mk-4" });
 
       expect(
         wrapper.find('[data-test="dressing-room-fit-grenade_1"]').exists(),
       ).toBe(true);
       expect(
-        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
+        wrapper
+          .find('[data-test="dressing-room-problem-tab-supplies"]')
+          .exists(),
       ).toBe(true);
     });
   });
@@ -1202,16 +1201,13 @@ describe("ToolsDressingRoomPage", () => {
       expect(router.currentRoute.value.query.stored_backpack).toBe("medpen*4");
     });
 
-    it("keeps items whose piece came off, marked, and blocks saving them", async () => {
+    it("keeps items whose piece came off, marked", async () => {
       const { wrapper } = await mount({ stored_backpack: "medpen" });
 
       expect(
         wrapper
           .find('[data-test="dressing-room-storage-problem-backpack"]')
           .exists(),
-      ).toBe(true);
-      expect(
-        wrapper.findComponent({ name: "DressingRoomOutfits" }).props("blocked"),
       ).toBe(true);
     });
 

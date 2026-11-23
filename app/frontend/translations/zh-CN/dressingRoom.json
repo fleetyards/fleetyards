@@ -47,6 +47,7 @@
         "supplies": "补给",
         "storage": "储物"
       },
+      "tabProblem": "%{tab}：需要处理",
       "hold": "手持",
       "bodies": {
         "male": "男性",
@@ -75,7 +76,6 @@
         "oxypen": "氧气笔 %{number}",
         "utility": "工具 %{number}"
       },
-      "saveBlocked": "请先修正上方标记的问题，再保存此装扮。",
       "storage": {
         "title": "储物",
         "hint": "穿上背包或带储物空间的护甲，即可存放物品。",

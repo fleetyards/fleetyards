@@ -910,6 +910,19 @@ const piecesPending = computed(
     storedMissing.value,
 );
 
+const storageProblem = computed(
+  () =>
+    !wornLoading.value &&
+    HOLDERS.some(
+      (holder) =>
+        !!holderProblem(
+          wornInventory(items.value, holder),
+          stored.value[holder],
+          storedItems.value,
+        ),
+    ),
+);
+
 const storedInputs = computed<OutfitStoredItemInput[]>(() =>
   HOLDERS.flatMap((holder) =>
     (stored.value[holder] ?? []).flatMap((entry) => {
@@ -920,21 +933,6 @@ const storedInputs = computed<OutfitStoredItemInput[]>(() =>
         : [];
     }),
   ),
-);
-
-// What the API would refuse, each already marked where it is on the page.
-const saveBlocked = computed(
-  () =>
-    !wornLoading.value &&
-    (GEAR_SLOTS.some((slot) => !!selection.value[slot] && !!fitNote(slot)) ||
-      HOLDERS.some(
-        (holder) =>
-          !!holderProblem(
-            wornInventory(items.value, holder),
-            stored.value[holder],
-            storedItems.value,
-          ),
-      )),
 );
 
 const outfitItems = computed<OutfitItemInput[]>(() =>
@@ -1081,6 +1079,7 @@ const copyShareLink = () => {
             :tabs="loadoutTabs"
             :supplies="supplies"
             :supplies-hint="suppliesHint"
+            :storage-problem="storageProblem"
             :row="loadoutRow"
             @pick="openSlot"
             @fill="openFill"
@@ -1116,7 +1115,6 @@ const copyShareLink = () => {
           <Outfits
             :items="outfitItems"
             :stored-items="storedInputs"
-            :blocked="saveBlocked"
             :held-weapon="heldWeapon"
             :body="bodyKey"
             :character-face-id="ownFaceId"

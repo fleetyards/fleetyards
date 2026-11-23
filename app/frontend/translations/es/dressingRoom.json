@@ -47,6 +47,7 @@
         "supplies": "Suministros",
         "storage": "Almacenamiento"
       },
+      "tabProblem": "%{tab}: requiere atención",
       "hold": "Empuñar",
       "bodies": {
         "male": "Masculino",
@@ -75,7 +76,6 @@
         "oxypen": "Oxypen %{number}",
         "utility": "Utilidad %{number}"
       },
-      "saveBlocked": "Corrige lo marcado arriba para guardar este atuendo.",
       "storage": {
         "title": "Almacenamiento",
         "hint": "Ponte una mochila o una armadura con espacio para guardar objetos.",

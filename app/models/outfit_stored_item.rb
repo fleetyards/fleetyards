@@ -12,15 +12,4 @@ class OutfitStoredItem < ApplicationRecord
   enum :holder, Equipment.slots.slice(*HOLDER_SLOTS), validate: true
 
   validates :quantity, numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_QUANTITY}
-  validate :equipment_measured
-
-  def micro_scu
-    equipment.volume.to_d * 1_000_000 * quantity
-  end
-
-  private def equipment_measured
-    return if equipment.nil? || equipment.volume.present?
-
-    errors.add(:equipment, :unmeasured)
-  end
 end

@@ -47,6 +47,7 @@
         "supplies": "Supplies",
         "storage": "Storage"
       },
+      "tabProblem": "%{tab}: needs attention",
       "hold": "Hold",
       "bodies": {
         "male": "Male",
@@ -75,7 +76,6 @@
         "oxypen": "Oxypen %{number}",
         "utility": "Utility %{number}"
       },
-      "saveBlocked": "Fix what is marked above to save this outfit.",
       "storage": {
         "title": "Storage",
         "hint": "Wear a backpack, or armour with room in it, to store items.",
