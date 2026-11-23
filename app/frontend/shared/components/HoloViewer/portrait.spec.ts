@@ -12,6 +12,9 @@ import { portraitCamera, portraitFocus } from "./portrait";
 describe("portraitFocus", () => {
   it("looks at the head bone of a rigged figure", () => {
     const root = new Group();
+    const lowPass = new Bone();
+    lowPass.name = "Head_LowPass";
+    root.add(lowPass);
     const spine = new Bone();
     spine.name = "Spine";
     spine.position.set(0, 1.2, 0);

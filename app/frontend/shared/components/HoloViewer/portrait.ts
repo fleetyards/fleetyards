@@ -28,11 +28,12 @@ const PORTRAIT_DROP = 0.14;
 const DEFAULT_BACKGROUND: [string, string] = ["#2a3038", "#0d1013"];
 
 // The head bone of a rigged figure; without one, a point just under the top
-// of what is drawn.
+// of what is drawn. Matched by its whole name: the rig has helpers such as
+// `Head_LowPass` that sit at the root, not on the head.
 export const portraitFocus = (root: Object3D) => {
   let head: Object3D | undefined;
   root.traverse((object) => {
-    if (!head && (object as Bone).isBone && /head/i.test(object.name)) {
+    if (!head && (object as Bone).isBone && /^head$/i.test(object.name)) {
       head = object;
     }
   });
