@@ -79,6 +79,7 @@ import {
   providerNames,
   slotFit,
 } from "@/frontend/utils/dressingRoomFit";
+import { useDressingRoomStore } from "@/frontend/stores/dressingRoom";
 import {
   HOLDERS,
   type StoredSelection,
@@ -106,6 +107,28 @@ const { displayAlert, displaySuccess } = useAppNotifications();
 
 const route = useRoute();
 const router = useRouter();
+
+const dressingRoomStore = useDressingRoomStore();
+
+// A bare address is a fresh visit, not a shared look: it picks up where the
+// last one left off.
+const lastQuery = dressingRoomStore.lastQuery;
+if (
+  !Object.keys(route.query).length &&
+  lastQuery &&
+  Object.keys(lastQuery).length
+) {
+  void router.replace({ name: "dressing-room", query: lastQuery });
+}
+
+watch(
+  () => route.query,
+  (query) => {
+    if (route.name !== "dressing-room") return;
+
+    dressingRoomStore.lastQuery = { ...query };
+  },
+);
 
 const selection = computed<OutfitSelection>(() =>
   parseOutfitQuery(route.query),

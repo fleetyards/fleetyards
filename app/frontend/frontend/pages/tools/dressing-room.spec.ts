@@ -304,10 +304,14 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
 }));
 
 const { default: Component } = await import("./dressing-room.vue");
+const { useDressingRoomStore } = await import("@/frontend/stores/dressingRoom");
 
 const mount = async (
   query: Record<string, string> = {},
-  { settle = true }: { settle?: boolean } = {},
+  {
+    settle = true,
+    initialState,
+  }: { settle?: boolean; initialState?: Record<string, unknown> } = {},
 ) => {
   const router = createRouter({
     history: createWebHashHistory(),
@@ -329,6 +333,7 @@ const mount = async (
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     plugins: [router],
+    initialState,
   });
   if (settle) await flushPromises();
 
@@ -669,6 +674,42 @@ describe("ToolsDressingRoomPage", () => {
     ).toEqual([["/legs.glb", false]]);
 
     bodies.value = [MALE];
+  });
+
+  describe("last visit", () => {
+    const lastVisit = {
+      dressingRoom: {
+        lastQuery: { torso: "adp-core", face: "own-face", body: "female" },
+      },
+    };
+
+    it("puts the last visit back on when opened without an address", async () => {
+      const { router } = await mount({}, { initialState: lastVisit });
+
+      expect(router.currentRoute.value.query).toEqual(
+        lastVisit.dressingRoom.lastQuery,
+      );
+    });
+
+    it("leaves a shared address as it is", async () => {
+      const { router } = await mount(
+        { legs: "adp-legs" },
+        { initialState: lastVisit },
+      );
+
+      expect(router.currentRoute.value.query).toEqual({ legs: "adp-legs" });
+    });
+
+    it("remembers each change for the next visit", async () => {
+      const { wrapper } = await mount({ torso: "adp-core" });
+
+      await wrapper
+        .find('[data-test="dressing-room-clear-torso"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(useDressingRoomStore().lastQuery).toEqual({});
+    });
   });
 
   it("lists a piece without a holo and says it is not drawn", async () => {
