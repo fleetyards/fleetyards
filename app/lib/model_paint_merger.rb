@@ -13,6 +13,8 @@ class ModelPaintMerger
 
   def initialize(kept, duplicate)
     raise ArgumentError, "paints of different ships" if kept.model_id != duplicate.model_id
+    # The store import finds its paints by RSI id and would bring the duplicate back.
+    raise ArgumentError, "two store records" if kept.rsi_id.present? && duplicate.rsi_id.present?
 
     @kept = kept
     @duplicate = duplicate
@@ -32,6 +34,8 @@ class ModelPaintMerger
 
       carried = CARRIED_OVER.select { |attribute| @kept[attribute].blank? && @duplicate[attribute].present? }
         .index_with { |attribute| @duplicate[attribute] }
+      carried[:hidden] = false unless @duplicate.hidden
+      carried[:active] = true if @duplicate.active
 
       @duplicate.reload.destroy!
       @kept.update!(carried)

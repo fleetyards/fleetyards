@@ -57,7 +57,12 @@ class MergeDifferentlySpeltPaints < ActiveRecord::Migration[8.1]
         next if paints.all? { |paint| paint.name == name }
 
         kept, *duplicates = paints.sort_by { |paint| keep_order(paint) }
-        duplicates.each { |duplicate| vehicle_ids.concat(ModelPaintMerger.new(kept, duplicate).run) }
+        duplicates.each do |duplicate|
+          # Two store records stay apart, or the store import brings one back.
+          next if kept.rsi_id.present? && duplicate.rsi_id.present?
+
+          vehicle_ids.concat(ModelPaintMerger.new(kept, duplicate).run)
+        end
         kept.update!(name:, updated_at: Time.current)
         vehicle_ids.concat(kept.vehicle_ids)
       end

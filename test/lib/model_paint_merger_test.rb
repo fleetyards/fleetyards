@@ -69,6 +69,23 @@ class ModelPaintMergerTest < ActiveSupport::TestCase
     assert_equal "kept.png", @kept.store_image.filename.to_s
   end
 
+  test "keeps the paint in the catalogue when the duplicate was" do
+    @kept.update!(hidden: true, active: false)
+    @duplicate.update!(hidden: false, active: true)
+
+    merge
+
+    assert_not @kept.reload.hidden
+    assert @kept.active
+  end
+
+  test "refuses two store records" do
+    @kept.update!(rsi_id: 202)
+    @duplicate.update!(rsi_id: 203)
+
+    assert_raises(ArgumentError) { ModelPaintMerger.new(@kept, @duplicate) }
+  end
+
   test "refuses paints of two different ships" do
     other = create(:model_paint, name: "Skullcrusher")
 

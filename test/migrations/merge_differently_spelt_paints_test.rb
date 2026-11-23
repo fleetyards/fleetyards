@@ -47,6 +47,16 @@ class MergeDifferentlySpeltPaintsTest < ActiveSupport::TestCase
     assert_equal ["2956 Best in Show"], spirit.reload.paints.pluck(:name)
   end
 
+  test "leaves two store records of a paint apart" do
+    mole = create(:model, name: "MOLE")
+    create(:model_paint, model: mole, name: "Mole Carbon Edition", rsi_id: 202)
+    create(:model_paint, model: mole, name: "Carbon", rsi_id: 203)
+
+    MergeDifferentlySpeltPaints.new.up
+
+    assert_equal [202, 203], mole.reload.paints.order(:rsi_id).pluck(:rsi_id)
+  end
+
   test "keeps a visible paint over a hidden one" do
     reclaimer = create(:model, name: "Reclaimer")
     visible = create(:model_paint, model: reclaimer, name: "Hadinite", hidden: false)
