@@ -128,6 +128,17 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles filters by modelInGameEq" do
+    flying = create(:vehicle, user: @member, model: create(:model, :in_game))
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"modelInGameEq" => true}} do
+      assert_equal [flying.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /fleets/:slug/vehicles searches a model, or a serial only where its owner shows it" do
     shown = create(:vehicle, user: @member, serial: "AB-1234-CD", name_visible: true)
     create(:vehicle, user: @member, serial: "AB-1234-EF", name_visible: false)

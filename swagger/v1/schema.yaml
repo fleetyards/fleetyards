@@ -38649,6 +38649,9 @@ components:
           type: array
           items:
             type: string
+        modelInGameEq:
+          type: boolean
+          description: Ships whose model the current build of the game has
         modelNameCont:
           type: string
         modelOrSerialCont:
