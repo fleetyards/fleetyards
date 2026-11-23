@@ -24,6 +24,7 @@ import {
   type UserUpdateInput,
   FeatureFlagName,
   OmniauthProviderEnum,
+  UserAvatarSourceEnum,
   UserDateFormatEnum,
 } from "@/services/fyApi";
 import {
@@ -158,6 +159,21 @@ const comlink = useComlink();
 
 const { isFeatureEnabled } = useFeatures();
 
+// The picture shown wherever the user appears. Clearing only ever removes the
+// upload, so it is offered only while the upload is what is shown.
+const showsUpload = computed(
+  () =>
+    !sessionStore.currentUser?.avatarSource ||
+    sessionStore.currentUser.avatarSource === UserAvatarSourceEnum.UPLOADED,
+);
+
+const shownFile = computed(() =>
+  showsUpload.value
+    ? sessionStore.currentUser?.avatar
+    : (sessionStore.currentUser?.shownAvatar ??
+      sessionStore.currentUser?.avatar),
+);
+
 const mutation = useUpdateProfileMutation();
 
 const avatarFileInput = ref<InstanceType<typeof FormFileInput>>();
@@ -246,19 +262,12 @@ const onSubmit = handleSubmit(async (values) => {
           ref="avatarFileInput"
           v-model="avatar"
           v-bind="avatarProps"
-          :file="sessionStore.currentUser?.avatar"
+          :file="shownFile"
           name="avatar"
           translation-key="user.avatar"
           :allowed-types="AllowedFileTypes.IMAGE"
-          clearable
+          :clearable="showsUpload"
           avatar
-        />
-        <CharacterAvatarPicker
-          v-if="
-            sessionStore.currentUser &&
-            isFeatureEnabled(FeatureFlagName.DRESSING_ROOM)
-          "
-          :user="sessionStore.currentUser"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -272,6 +281,13 @@ const onSubmit = handleSubmit(async (values) => {
           :rules="`max:${DISPLAY_NAME_LIMIT}`"
           clearable
           data-test="settings-display-name"
+        />
+        <CharacterAvatarPicker
+          v-if="
+            sessionStore.currentUser &&
+            isFeatureEnabled(FeatureFlagName.DRESSING_ROOM)
+          "
+          :user="sessionStore.currentUser"
         />
       </div>
     </div>
