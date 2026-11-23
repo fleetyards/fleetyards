@@ -25,6 +25,11 @@
       "makeDefault": "Définir comme tenue par défaut",
       "removeDefault": "Ne plus utiliser comme tenue par défaut",
       "openCharacter": "Personnage",
+      "avatars": {
+        "drawing": "Génération de vos avatars…",
+        "ready": "Avatars prêts.",
+        "choose": "Choisir dans les paramètres"
+      },
       "signInToSave": "Connectez-vous pour enregistrer des tenues.",
       "outfitName": "Nom de la tenue",
       "nameTaken": "Vous avez déjà une tenue portant ce nom.",

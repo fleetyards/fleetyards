@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -46,6 +47,8 @@ type Props = {
   // The viewer's own character on the figure, saved with the outfit; left
   // as saved while it is not known yet.
   characterFaceId?: string | null;
+  // The default outfit's avatars are being drawn off screen.
+  avatarsDrawing?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   heldWeapon: undefined,
   body: undefined,
   characterFaceId: undefined,
+  avatarsDrawing: false,
 });
 
 const emit = defineEmits<{
@@ -199,6 +203,18 @@ const saveChanges = async () => {
 };
 
 const sessionStore = useSessionStore();
+
+const hasDefault = computed(() =>
+  outfits.value?.some((outfit) => outfit.default),
+);
+
+const avatarRenders = computed(() => {
+  const user = sessionStore.currentUser;
+
+  return [user?.characterAvatarHelmet, user?.characterAvatarBare].filter(
+    (file) => !!file?.smallUrl,
+  );
+});
 
 const toggleDefault = async (outfit: Outfit) => {
   try {
@@ -352,6 +368,34 @@ const submit = () => {
           </Btn>
         </li>
       </ul>
+      <div
+        v-if="hasDefault"
+        class="outfits__avatars"
+        role="status"
+        data-test="dressing-room-avatar-status"
+      >
+        <template v-if="avatarsDrawing">
+          <i class="fa-light fa-spinner-third fa-spin" aria-hidden="true" />
+          <span>{{ t("dressingRoom.avatars.drawing") }}</span>
+        </template>
+        <template v-else-if="avatarRenders.length">
+          <Avatar
+            v-for="render in avatarRenders"
+            :key="render?.smallUrl"
+            :avatar="render?.smallUrl"
+            size="xsmall"
+          />
+          <span>
+            {{ t("dressingRoom.avatars.ready") }}
+            <router-link :to="{ name: 'settings-profile' }">
+              {{ t("dressingRoom.avatars.choose") }}
+            </router-link>
+          </span>
+        </template>
+        <span v-else class="outfits__hint">
+          {{ t("labels.user.avatarSourcePending") }}
+        </span>
+      </div>
     </template>
   </section>
 </template>
@@ -413,6 +457,15 @@ const submit = () => {
   gap: 0.5rem;
   border: 1px solid transparent;
   border-radius: 4px;
+}
+
+.outfits__avatars {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: $gray-lighter;
+  font-size: 0.8125rem;
 }
 
 .outfits__entry--active {

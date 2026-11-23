@@ -25,6 +25,11 @@
       "makeDefault": "Make default outfit",
       "removeDefault": "Stop using as default outfit",
       "openCharacter": "Character",
+      "avatars": {
+        "drawing": "Drawing your avatars…",
+        "ready": "Avatars ready.",
+        "choose": "Choose in settings"
+      },
       "signInToSave": "Sign in to save outfits.",
       "outfitName": "Outfit name",
       "nameTaken": "You already have an outfit with this name.",

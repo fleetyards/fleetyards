@@ -25,6 +25,11 @@
       "makeDefault": "Usar como atuendo predeterminado",
       "removeDefault": "Dejar de usar como atuendo predeterminado",
       "openCharacter": "Personaje",
+      "avatars": {
+        "drawing": "Generando tus avatares…",
+        "ready": "Avatares listos.",
+        "choose": "Elegir en los ajustes"
+      },
       "signInToSave": "Inicia sesión para guardar atuendos.",
       "outfitName": "Nombre del atuendo",
       "nameTaken": "Ya tienes un atuendo con este nombre.",

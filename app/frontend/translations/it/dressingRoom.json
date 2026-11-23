@@ -25,6 +25,11 @@
       "makeDefault": "Imposta come outfit predefinito",
       "removeDefault": "Non usare più come outfit predefinito",
       "openCharacter": "Personaggio",
+      "avatars": {
+        "drawing": "Generazione dei tuoi avatar…",
+        "ready": "Avatar pronti.",
+        "choose": "Scegli nelle impostazioni"
+      },
       "signInToSave": "Accedi per salvare gli outfit.",
       "outfitName": "Nome dell'outfit",
       "nameTaken": "Hai già un outfit con questo nome.",

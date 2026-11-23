@@ -25,6 +25,11 @@
       "makeDefault": "設為預設裝扮",
       "removeDefault": "取消預設裝扮",
       "openCharacter": "角色",
+      "avatars": {
+        "drawing": "正在產生你的頭像…",
+        "ready": "頭像已就緒。",
+        "choose": "在設定中選擇"
+      },
       "signInToSave": "登入後即可儲存裝扮。",
       "outfitName": "裝扮名稱",
       "nameTaken": "你已經有一套同名的裝扮。",

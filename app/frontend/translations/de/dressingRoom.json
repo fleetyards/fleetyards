@@ -25,6 +25,11 @@
       "makeDefault": "Als Standard-Outfit festlegen",
       "removeDefault": "Nicht mehr als Standard-Outfit verwenden",
       "openCharacter": "Charakter",
+      "avatars": {
+        "drawing": "Deine Avatare werden erstellt…",
+        "ready": "Avatare fertig.",
+        "choose": "In den Einstellungen auswählen"
+      },
       "signInToSave": "Melde dich an, um Outfits zu speichern.",
       "outfitName": "Name des Outfits",
       "nameTaken": "Du hast bereits ein Outfit mit diesem Namen.",
