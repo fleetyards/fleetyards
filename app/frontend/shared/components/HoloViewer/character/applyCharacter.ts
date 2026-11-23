@@ -1,4 +1,5 @@
 import {
+  Box3,
   BufferAttribute,
   type BufferGeometry,
   CanvasTexture,
@@ -7,8 +8,10 @@ import {
   type Mesh,
   type MeshStandardMaterial,
   type Object3D,
+  type SkinnedMesh,
   SRGBColorSpace,
   type Texture,
+  Vector3,
 } from "three";
 import { loadHolo } from "../mounts";
 import { cloneRigPiece } from "../rig";
@@ -319,46 +322,127 @@ export const dressHead = (
 // How far up the head mesh the neck runs, from its lowest point: the face
 // library's neck region tops out 6 cm up on both bodies, front and back.
 const NECK_HEIGHT = 0.06;
+// How far the collar runs up inside the helmet, so no skin shows at its rim.
+const RIM_OVERLAP = 0.01;
+// The sectors around the neck the helmet's rim is measured in: a rim sits
+// lower at the chin than at the nape.
+const RIM_SECTORS = 32;
 const COLLAR = new Color("#1d2126");
 
-// Under a helmet, the undersuit's collar: the gap between the helmet's rim and
-// the core shows the neck, which is drawn dark, while the face stays as it is
-// and shows through a visor.
-export const dressNeck = (scene: Object3D, hood = false) => {
-  const names = hood ? /_(head|eyes|teeth)$/ : /_head$/;
+const meshesUnder = (root: Object3D) => {
   const meshes: Mesh[] = [];
-  scene.traverse((node) => {
-    const mesh = node as Mesh;
-    if (mesh.isMesh && names.test(mesh.name)) meshes.push(mesh);
+  root.traverse((node) => {
+    if ((node as Mesh).isMesh) meshes.push(node as Mesh);
+  });
+  return meshes;
+};
+
+// Every point of a mesh where it is drawn now, in world space. The stored
+// points of a quantized skin mean nothing on their own: its inverse bind
+// matrices carry the dequantization.
+const drawnPoints = (mesh: Mesh, each: (point: Vector3) => void) => {
+  const position = mesh.geometry.getAttribute("position");
+  const skinned = (mesh as SkinnedMesh).isSkinnedMesh
+    ? (mesh as SkinnedMesh)
+    : undefined;
+  const point = new Vector3();
+  for (let index = 0; index < position.count; index++) {
+    point.fromBufferAttribute(position, index);
+    skinned?.applyBoneTransform(index, point);
+    each(point.applyMatrix4(mesh.matrixWorld));
+  }
+};
+
+// The lowest point of the helmet in each sector around the neck's axis.
+const rimHeights = (rims: Object3D[], axis: Vector3) => {
+  const heights = new Array<number>(RIM_SECTORS).fill(Infinity);
+  rims.flatMap(meshesUnder).forEach((mesh) =>
+    drawnPoints(mesh, (point) => {
+      const sector = sectorOf(point, axis);
+      heights[sector] = Math.min(heights[sector], point.y);
+    }),
+  );
+  return heights;
+};
+
+const sectorOf = (point: Vector3, axis: Vector3) => {
+  const angle = Math.atan2(point.x - axis.x, point.z - axis.z) + Math.PI;
+  return Math.min(
+    RIM_SECTORS - 1,
+    Math.floor((angle / (2 * Math.PI)) * RIM_SECTORS),
+  );
+};
+
+// Under a helmet, the undersuit's collar: the head is drawn dark from the
+// neck up to the helmet's rim, so no skin shows between the rim and the core,
+// while the face above it stays as it is and shows through a visor. A helmet
+// that hides the head draws all of it as the hood. The scene is measured as
+// it stands, with the helmet bound to the body.
+export const dressNeck = (
+  scene: Object3D,
+  hood = false,
+  rims: Object3D[] = [],
+) => {
+  const names = hood ? /_(head|eyes|teeth)$/ : /_head$/;
+  const meshes = meshesUnder(scene).filter((mesh) => names.test(mesh.name));
+  if (!meshes.length) return () => {};
+
+  scene.updateMatrixWorld(true);
+  const drawn = meshes.map((mesh) => {
+    const points: number[] = [];
+    drawnPoints(mesh, (point) => points.push(point.x, point.y, point.z));
+    return points;
   });
 
-  const undo = meshes.map((mesh) => {
+  const bounds = new Box3();
+  const point = new Vector3();
+  drawn.forEach((points) => {
+    for (let index = 0; index < points.length; index += 3) {
+      bounds.expandByPoint(point.fromArray(points, index));
+    }
+  });
+  const axis = bounds.getCenter(new Vector3());
+  const neck = bounds.min.y + NECK_HEIGHT;
+  const rim = hood ? [] : rimHeights(rims, axis);
+
+  const undo = meshes.map((mesh, meshIndex) => {
+    const points = drawn[meshIndex];
+    const depth = new Float32Array(points.length / 3);
+    for (let index = 0; index < depth.length; index++) {
+      point.fromArray(points, index * 3);
+      const top = rim[sectorOf(point, axis)];
+      const cut = Math.max(
+        neck,
+        top === undefined || top === Infinity ? -Infinity : top + RIM_OVERLAP,
+      );
+      depth[index] = hood ? -1 : point.y - cut;
+    }
+
+    const geometry = mesh.geometry;
+    const previous = geometry.getAttribute("collarDepth");
+    geometry.setAttribute("collarDepth", new BufferAttribute(depth, 1));
+
     const current = mesh.material as MeshStandardMaterial;
-    mesh.geometry.computeBoundingBox();
-    const cut = hood
-      ? Number.POSITIVE_INFINITY
-      : (mesh.geometry.boundingBox?.min.z ?? 0) + NECK_HEIGHT;
     const collared = derive(current.clone(), current);
     collared.onBeforeCompile = (shader) => {
-      shader.uniforms.collarCut = { value: cut };
       shader.uniforms.collarColor = { value: COLLAR };
       shader.vertexShader = shader.vertexShader
         .replace(
           "#include <common>",
-          "#include <common>\nvarying float vBindZ;",
+          "#include <common>\nattribute float collarDepth;\nvarying float vCollarDepth;",
         )
         .replace(
           "#include <begin_vertex>",
-          "#include <begin_vertex>\nvBindZ = position.z;",
+          "#include <begin_vertex>\nvCollarDepth = collarDepth;",
         );
       shader.fragmentShader = shader.fragmentShader
         .replace(
           "#include <common>",
-          "#include <common>\nvarying float vBindZ;\nuniform float collarCut;\nuniform vec3 collarColor;",
+          "#include <common>\nvarying float vCollarDepth;\nuniform vec3 collarColor;",
         )
         .replace(
           "#include <map_fragment>",
-          "#include <map_fragment>\nif (vBindZ < collarCut) diffuseColor.rgb = collarColor;",
+          "#include <map_fragment>\nif (vCollarDepth < 0.0) diffuseColor.rgb = collarColor;",
         );
     };
     collared.customProgramCacheKey = () => "character-collar";
@@ -367,6 +451,8 @@ export const dressNeck = (scene: Object3D, hood = false) => {
     return () => {
       collared.dispose();
       if (mesh.material === collared) mesh.material = current;
+      if (previous) geometry.setAttribute("collarDepth", previous);
+      else geometry.deleteAttribute("collarDepth");
     };
   });
 

@@ -367,6 +367,7 @@ export interface PieceHolo {
   fallbackPath?: string;
   hangs?: boolean;
   from?: string;
+  rim?: boolean;
 }
 
 // On a body, the piece's rig for it: only a rig follows the body's pose. The
@@ -546,6 +547,7 @@ export const riggedOutfitModel = (
       ...(piece.fallbackPath ? { fallbackPath: piece.fallbackPath } : {}),
       ...(piece.hangs ? { hangs: true } : {}),
       ...(piece.from ? { from: piece.from } : {}),
+      ...(piece.rim ? { rim: true } : {}),
     })),
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),

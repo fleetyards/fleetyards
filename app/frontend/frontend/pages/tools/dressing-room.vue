@@ -601,6 +601,10 @@ const pieces = computed(() =>
     const holo = body.value ? riggedHolos.value[slot] : holos.value[slot];
     if (!holo) return [];
 
+    if (body.value && slot === OutfitSlotEnum.HELMET) {
+      return [{ ...holo, rim: true }];
+    }
+
     if (!body.value || slot !== OutfitSlotEnum.BACKPACK) return [holo];
 
     const provider = portProvider(slot, items.value);

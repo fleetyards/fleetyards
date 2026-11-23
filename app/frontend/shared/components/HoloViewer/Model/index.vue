@@ -1264,8 +1264,6 @@ const attachRigNow = async (scene: Group) => {
     undressHead = dressHead(scene, character, !!props.model.textured);
   }
 
-  if (rig.collar) undressNeck = dressNeck(scene, rig.collar === "hood");
-
   const bones = bonesByName(scene);
   const next = new Group();
   next.userData.grafted = [];
@@ -1318,6 +1316,16 @@ const attachRigNow = async (scene: Group) => {
   scene.add(next);
   rigRoot = next;
   rigClips = clips;
+
+  if (rig.collar) {
+    undressNeck = dressNeck(
+      scene,
+      rig.collar === "hood",
+      pieces.flatMap((piece, index) =>
+        piece && rig.pieces[index]?.rim ? [piece.scene] : [],
+      ),
+    );
+  }
 
   // On a painted body too: only the painted pieces keep their own materials.
   setMaterials(next);
