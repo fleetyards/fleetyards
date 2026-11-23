@@ -1,6 +1,8 @@
 import { type LocationQuery } from "vue-router";
 import {
   type EquipmentInventory,
+  OutfitBodyEnum,
+  type PublicCharacter,
   OutfitHolderEnum,
   type OutfitSlotEnum,
 } from "@/services/fyApi";
@@ -203,3 +205,21 @@ export const holderProblem = (
 
   return tooLarge ? "tooLarge" : undefined;
 };
+
+// The dressing room's address for a user's default outfit, as their public
+// profile carries it.
+export const characterQuery = (character: PublicCharacter) => ({
+  ...Object.fromEntries(character.items.map(({ slot, slug }) => [slot, slug])),
+  ...storedQuery(
+    character.storedItems.reduce<StoredSelection>(
+      (list, { holder, slug, quantity }) => ({
+        ...list,
+        [holder]: [...(list[holder] ?? []), { slug, quantity }],
+      }),
+      {},
+    ),
+  ),
+  held: character.heldWeapon ?? undefined,
+  body: character.body === OutfitBodyEnum.MALE ? undefined : character.body,
+  face: character.characterToken ?? undefined,
+});

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { OutfitHolderEnum } from "@/services/fyApi";
 import {
+  characterQuery,
   addStored,
   fitsInside,
   holderProblem,
@@ -126,5 +127,46 @@ describe("what fits", () => {
         prop: { volume: null },
       }),
     ).toBe("unmeasured");
+  });
+});
+
+describe("characterQuery", () => {
+  it("opens a public character's default outfit in the dressing room", () => {
+    expect(
+      characterQuery({
+        body: "female",
+        heldWeapon: "primary",
+        characterToken: "token-1",
+        items: [
+          { slot: "torso", slug: "adp-core" },
+          { slot: "primary", slug: "p4-ar" },
+        ],
+        storedItems: [
+          { holder: "torso", slug: "medpen", quantity: 2 },
+          { holder: "torso", slug: "oxypen", quantity: 1 },
+        ],
+      } as never),
+    ).toMatchObject({
+      torso: "adp-core",
+      primary: "p4-ar",
+      stored_torso: "medpen*2,oxypen",
+      held: "primary",
+      body: "female",
+      face: "token-1",
+    });
+  });
+
+  it("leaves the usual body and an empty hand out of the address", () => {
+    const query = characterQuery({
+      body: "male",
+      heldWeapon: null,
+      characterToken: null,
+      items: [],
+      storedItems: [],
+    } as never);
+
+    expect(query.body).toBeUndefined();
+    expect(query.held).toBeUndefined();
+    expect(query.face).toBeUndefined();
   });
 });
