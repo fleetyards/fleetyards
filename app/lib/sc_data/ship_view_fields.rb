@@ -60,9 +60,7 @@ module ScData
 
         variant = holo[2]&.downcase&.sub(/\Atextured[-_ ]?lite\z/, "textured_lite")
 
-        # Only the flying pose is exported without its components, and the
-        # extended one is never exported painted.
-        return if variant == "hull" && prefix
+        # The extended pose is never exported painted.
         return if variant&.start_with?("textured") && prefix == "extended"
 
         return [prefix, "holo", variant].compact.join("_")

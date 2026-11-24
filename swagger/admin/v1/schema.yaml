@@ -11404,6 +11404,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoHull:
           "$ref": "#/components/schemas/MediaFile"
+        extendedHoloHull:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloHull:
+          "$ref": "#/components/schemas/MediaFile"
         rsiStoreImage:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -23044,6 +23048,14 @@ components:
           - string
           - 'null'
         holoHull:
+          type:
+          - string
+          - 'null'
+        extendedHoloHull:
+          type:
+          - string
+          - 'null'
+        landedHoloHull:
           type:
           - string
           - 'null'

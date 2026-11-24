@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "Gelandetes texturiertes Holo",
         "landedHoloTexturedLite": "Gelandetes texturiertes Lite-Holo",
         "holoHull": "Rumpf-Holo",
+        "extendedHoloHull": "Ausgefahrenes Rumpf-Holo",
+        "landedHoloHull": "Gelandetes Rumpf-Holo",
         "holoUsdz": "AR-Holo (USDZ)",
         "state": {
           "flight": "Im Flug",

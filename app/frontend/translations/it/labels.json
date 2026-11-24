@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "Holo con texture atterrato",
         "landedHoloTexturedLite": "Holo leggero con texture atterrato",
         "holoHull": "Holo dello scafo",
+        "extendedHoloHull": "Holo dello scafo esteso",
+        "landedHoloHull": "Holo dello scafo atterrato",
         "holoUsdz": "Holo AR (USDZ)",
         "state": {
           "flight": "In volo",

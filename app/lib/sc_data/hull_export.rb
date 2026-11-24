@@ -4,8 +4,8 @@ module ScData
   # The port list and the doors sc-tools exports beside a hull holo -- a ship's,
   # or a module's beside its item holo -- read and checked as one format.
   module HullExport
-    # Where on the hull holo each item port sits. Only a ship's flying pose is
-    # exported without its components, so there is no landed set.
+    # Where on the hull holo each item port sits. Parts are only mounted on a
+    # ship's flying pose, so there is no landed set.
     HARDPOINT_TRANSFORMS_NAME = /\A(?:flight[-_ ]?)?hardpoints\.json\z/i
     # How the doors of the hull holo open. Older exports have none.
     DOORS_NAME = /\A(?:flight[-_ ]?)?doors\.json\z/i

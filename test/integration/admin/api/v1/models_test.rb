@@ -521,6 +521,19 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /models/:id attaches the extended and landed hull holos" do
+    sign_in @user
+    model = create(:model)
+    extended, landed = %w[extended landed].map do |state|
+      ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "#{state}_holo_hull.glb")
+    end
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {extendedHoloHull: extended.signed_id, landedHoloHull: landed.signed_id} do
+      assert_equal "extended_holo_hull.glb", parsed_body.dig("media", "extendedHoloHull", "name")
+      assert_equal "landed_holo_hull.glb", parsed_body.dig("media", "landedHoloHull", "name")
+    end
+  end
+
   test "PUT /models/:id drops the USDZ built from the lite holo it replaces" do
     sign_in @user
     model = create(:model)

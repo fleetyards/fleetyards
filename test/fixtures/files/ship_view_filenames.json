@@ -90,12 +90,14 @@
     }
   },
   {
-    "name": "maps the hull holo of the flight state alone",
+    "name": "maps the hull holos of every state",
     "cases": {
       "flight_holo_hull.glb": "holoHull",
       "holo-hull.glb": "holoHull",
-      "landed_holo_hull.glb": null,
-      "extended_holo_hull.glb": null,
+      "landed_holo_hull.glb": "landedHoloHull",
+      "extended_holo_hull.glb": "extendedHoloHull",
+      "Extended-Holo-Hull.GLTF": "extendedHoloHull",
+      "landed_holo_hull.usdz": null,
       "flight_hardpoints.json": null,
       "flight_doors.json": null
     }

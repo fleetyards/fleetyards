@@ -37,7 +37,7 @@ module ScData
 
     # What a liveried variant takes from its base ship rather than its own
     # export: the loadout preview mounts its parts on the base ship's hull.
-    BASE_SHIP_FIELDS = (HOLOS.values.flatten + %i[holo_hull]).freeze
+    BASE_SHIP_FIELDS = (HOLOS.values.flatten + Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES).freeze
 
     def initialize(store, logger:)
       @store = store
@@ -195,7 +195,7 @@ module ScData
     # transforms win where it has them: below a stock part they are that part's
     # ports, and the Gladius Pirate's racks carry more missiles.
     private def share_hull(model, variants)
-      share_holos(model, variants, %i[holo_hull])
+      share_holos(model, variants, Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES)
 
       variants.each do |variant|
         variant.update!(hardpoint_transforms: model.hardpoint_transforms) if variant.hardpoint_transforms.nil? && model.hardpoint_transforms

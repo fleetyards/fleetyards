@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "著陸材質 Holo",
         "landedHoloTexturedLite": "著陸材質輕量 Holo",
         "holoHull": "船體 Holo",
+        "extendedHoloHull": "展開船體 Holo",
+        "landedHoloHull": "著陸船體 Holo",
         "holoUsdz": "AR Holo (USDZ)",
         "state": {
           "flight": "飛行中",
