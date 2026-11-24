@@ -216,9 +216,6 @@
         "visualTests": {
           "index": "Test Visivi",
           "notifications": "Notifiche"
-        },
-        "buildCompare": {
-          "index": "Confronto build"
         }
       },
       "welcome": "Benvenuto su",

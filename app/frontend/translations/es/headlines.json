@@ -216,9 +216,6 @@
         "visualTests": {
           "index": "Pruebas Visuales",
           "notifications": "Notificaciones"
-        },
-        "buildCompare": {
-          "index": "Comparar compilaciones"
         }
       },
       "welcome": "Welcome to",

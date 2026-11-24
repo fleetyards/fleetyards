@@ -376,8 +376,7 @@
           "tasks": "Tasks",
           "imports": "Imports",
           "importDetail": "Import Detail",
-          "rsiApiStatus": "RSI API Status",
-          "buildCompare": "Build Compare"
+          "rsiApiStatus": "RSI API Status"
         },
         "modelPaints": {
           "index": "Model Paints",

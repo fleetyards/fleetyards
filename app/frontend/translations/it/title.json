@@ -376,8 +376,7 @@
           "tasks": "Attività",
           "imports": "Importazioni",
           "importDetail": "Dettaglio importazione",
-          "rsiApiStatus": "Stato API RSI",
-          "buildCompare": "Confronto build"
+          "rsiApiStatus": "Stato API RSI"
         },
         "modelPaints": {
           "index": "Verniciature Modelli",
