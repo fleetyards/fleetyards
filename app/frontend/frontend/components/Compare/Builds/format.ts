@@ -70,7 +70,7 @@ export const entryRoute = (
   return name && slug ? { name, params: { slug } } : undefined;
 };
 
-export const release = (version: string) => version.split("-")[0] as string;
+const release = (version: string) => version.split("-")[0] as string;
 
 // `4.10.3-live.13165946` as a reader says it: `LIVE 4.10.3 (13165946)`.
 export const buildLabel = (
