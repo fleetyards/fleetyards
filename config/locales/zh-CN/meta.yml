@@ -6,6 +6,8 @@ zh-CN:
     plaque_tool:
       description: "为任意星际公民舰船制作献词铭牌，就像 CIG 为 The Only Constant 挂上的那块，并以图片形式分享。"
     admin_description: FleetYards.net Command App.
+    compare_builds:
+      description: 查看两个《星际公民》版本之间的变更，包括每项数值的前后对比。
     compare_components:
       description:
         default: 并排比较飞船组件。

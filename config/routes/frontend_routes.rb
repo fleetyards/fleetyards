@@ -108,6 +108,7 @@ namespace :frontend, **frontend_options do
   get "compare", to: "base#compare_models"
   get "compare/components", to: "base#compare_components", as: :compare_components
   get "compare/equipment", to: "base#compare_equipment", as: :compare_equipment
+  get "compare/builds", to: "base#compare_builds", as: :compare_builds
 
   get "fleets/invites", to: "base#index", as: :fleets_invites
   get "fleets/directory", to: "base#index", as: :fleets_directory

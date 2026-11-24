@@ -1,0 +1,40 @@
+.build-diff-group__toggle {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 4px;
+  font: inherit;
+  color: var(--color-text);
+  text-align: left;
+  background: none;
+  border: 0;
+
+  &:hover {
+    color: var(--color-lifted);
+  }
+
+  i {
+    width: 12px;
+    color: var(--color-muted);
+  }
+}
+
+.build-diff-group__label {
+  font-size: 1.25rem;
+  color: var(--color-lifted);
+}
+
+.build-diff-group__count {
+  color: var(--color-text-dim);
+}
+
+.build-diff-group__rows {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  min-height: 48px;
+}
