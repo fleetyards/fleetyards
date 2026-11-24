@@ -57,6 +57,10 @@ module ScData
       end
     end
 
+    # Hetzner takes any region; providers that sign with their own get it from
+    # the settings.
+    DEFAULT_REGION = "unused"
+
     # Configured on its own rather than borrowed from ActiveStorage's store: the
     # uploads and the sc_data trees can live with different providers, and a
     # fallback to the upload settings would then quietly point sc_data at the
@@ -66,7 +70,8 @@ module ScData
         endpoint: Rails.app.creds.option(:sc_data_s3, :endpoint),
         access_key_id: Rails.app.creds.option(:sc_data_s3, :access_key_id),
         secret_access_key: Rails.app.creds.option(:sc_data_s3, :secret_access_key),
-        bucket: Rails.app.creds.option(:sc_data_s3, :bucket)
+        bucket: Rails.app.creds.option(:sc_data_s3, :bucket),
+        region: Rails.app.creds.option(:sc_data_s3, :region).presence || DEFAULT_REGION
       }
     end
 
@@ -211,7 +216,7 @@ module ScData
         endpoint: settings.fetch(:endpoint),
         access_key_id: settings.fetch(:access_key_id),
         secret_access_key: settings.fetch(:secret_access_key),
-        region: "unused",
+        region: settings.fetch(:region, DEFAULT_REGION),
 
         # The SDK classifies better than the retry above can -- throttling, 5xx
         # and networking errors each get their own treatment and a jittered

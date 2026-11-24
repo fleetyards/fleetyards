@@ -73,8 +73,20 @@ module ScData
 
       settings = ::ScData::ObjectStore.settings
 
-      assert_equal({endpoint: nil, access_key_id: nil, secret_access_key: nil, bucket: "fltyrd-sc"}, settings)
+      assert_equal({endpoint: nil, access_key_id: nil, secret_access_key: nil, bucket: "fltyrd-sc", region: "unused"}, settings)
       refute ::ScData::ObjectStore.configured?(settings)
+    end
+
+    test ".settings take the region from the credentials" do
+      Rails.app.creds.stubs(:option).returns(nil)
+      Rails.app.creds.stubs(:option).with(:sc_data_s3, :region).returns("auto")
+
+      assert_equal "auto", ::ScData::ObjectStore.settings[:region]
+    end
+
+    test "the client signs for the configured region, and for a placeholder without one" do
+      assert_equal "auto", ::ScData::ParsedStore.new("live", settings: SETTINGS.merge(region: "auto")).send(:client).config.region
+      assert_equal "unused", ::ScData::ParsedStore.new("live", settings: SETTINGS).send(:client).config.region
     end
 
     # The message names what is missing: this surfaces on a loaders container
