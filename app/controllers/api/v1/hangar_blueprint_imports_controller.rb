@@ -18,7 +18,7 @@ module Api
       def match
         authorize! ::Blueprint, to: :own?
 
-        render json: ::Blueprints::LogNameMatcher.new(current_resource_owner).match(match_params.fetch(:names, []))
+        render json: ::Blueprints::LogNameMatcher.new(current_resource_owner).match(match_params.fetch(:names, []), match_params.fetch(:name_keys, []))
       end
 
       def create
@@ -44,7 +44,7 @@ module Api
       end
 
       private def match_params
-        params.permit(names: [])
+        params.permit(names: [], name_keys: [:name, keys: []])
       end
 
       private def import_params
