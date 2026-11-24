@@ -36,7 +36,8 @@ jobs:
       # Turns a missing tree from a skip into a failure: a pull that quietly
       # fetched nothing must not read as a green contract run.
       SC_DATA_CONTRACT: "1"
-      SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
+      SC_DATA_S3__BUCKET: fltyrd-sc
+      SC_DATA_S3__REGION: auto
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: root
@@ -111,11 +112,13 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
-          SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+          SC_DATA_S3__ENDPOINT=$(op read "op://Fleetyards/R2_SC_DATA_READ/config/endpoint")
+          SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/R2_SC_DATA_READ/username")
+          SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/R2_SC_DATA_READ/password")
+          echo "::add-mask::$SC_DATA_S3__ENDPOINT"
           echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
           echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
-          export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
+          export SC_DATA_S3__ENDPOINT SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
 
           # No environment named: `pull` falls back to the configured one, so
           # renaming or adding a source does not leave this behind.
