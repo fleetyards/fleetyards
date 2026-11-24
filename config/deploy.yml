@@ -167,6 +167,28 @@ accessories:
     options:
       memory: 256m
 
+  # A dump of its own rather than a copy of db-backup's, so it does not depend
+  # on Hetzner's object storage. An hour later, so the two do not overlap.
+  db-backup-r2:
+    image: eeshugerman/postgres-backup-s3:16
+    env:
+      clear:
+        POSTGRES_HOST: fleetyards-db
+        SCHEDULE: "0 4 * * *"
+        S3_REGION: auto
+        S3_PREFIX: db
+        # The bucket refuses deletes for 6 days (lock_days in the
+        # infrastructure repo), so this has to stay above that.
+        BACKUP_KEEP_DAYS: 7
+      secret:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - S3_ENDPOINT:R2_BACKUPS_ENDPOINT
+        - S3_ACCESS_KEY_ID:R2_BACKUPS_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY:R2_BACKUPS_SECRET_ACCESS_KEY
+    options:
+      memory: 256m
+
   # rclone, idle, for copying the uploads between the Hetzner bucket and the
   # Bunny zone and checking they match, through `kamal accessory exec --reuse`.
   # ActiveStorage's mirror keeps new uploads in both; this covers what was
