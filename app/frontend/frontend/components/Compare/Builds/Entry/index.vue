@@ -13,6 +13,7 @@ import {
   entryRoute,
   fieldKey,
   movement,
+  readableField,
   slotPosition,
 } from "@/frontend/components/Compare/Builds/format";
 import {
@@ -60,12 +61,28 @@ const label = ({ field, category }: ScDataDiffField) => {
   return fieldLabel(field);
 };
 
+// Slots of one kind whose keys name no place we know share a label, and the
+// key itself is then what tells them apart.
+const sharedLabels = computed(() => {
+  const labels = fields.value.map(label);
+
+  return new Set(labels.filter((item, index) => labels.indexOf(item) < index));
+});
+
+const labelOf = (item: ScDataDiffField) => {
+  const own = label(item);
+
+  return item.category && sharedLabels.value.has(own)
+    ? `${own} (${readableField(item.field)})`
+    : own;
+};
+
 const isRatio = (field: string) =>
   field.includes(".resistances.") || field.endsWith("_ratio");
 
 const number = (field: string, raw: number, digits?: number) => {
   // `toNumber` reads zero as "not available".
-  if (raw === 0) return "0";
+  if (raw === 0) return fieldKey(field) === "volume" ? "0 SCU" : "0";
   if (isRatio(field)) return `${(raw * 100).toFixed(digits ?? 0)}%`;
   // It also rounds, and states a mass in tonnes, which hides small values.
   if (digits !== undefined || Math.abs(raw) < 1) {
@@ -138,7 +155,7 @@ const pill = computed(() =>
         class="build-diff-entry__fact"
         data-test="build-diff-fact"
       >
-        <dt>{{ label(item) }}</dt>
+        <dt>{{ labelOf(item) }}</dt>
         <dd>
           <span class="build-diff-entry__old">
             {{ values(item)[0] }}

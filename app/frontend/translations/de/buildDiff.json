@@ -193,7 +193,10 @@
           "center": "Mitte",
           "wing": "Flügel",
           "inner": "innen",
-          "outer": "außen"
+          "outer": "außen",
+          "back": "hinten",
+          "aft": "achtern",
+          "middle": "Mitte"
         },
         "unrecorded": "Ausgelassen, weil einer der Builds es nicht erfasst: %{fields}.",
         "code": {

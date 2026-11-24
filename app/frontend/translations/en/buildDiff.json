@@ -193,7 +193,10 @@
           "center": "center",
           "wing": "wing",
           "inner": "inner",
-          "outer": "outer"
+          "outer": "outer",
+          "back": "back",
+          "aft": "aft",
+          "middle": "middle"
         },
         "unrecorded": "Left out because one of the builds does not record it: %{fields}.",
         "code": {

@@ -193,7 +193,10 @@
           "center": "centro",
           "wing": "ala",
           "inner": "interno",
-          "outer": "esterno"
+          "outer": "esterno",
+          "back": "dietro",
+          "aft": "poppa",
+          "middle": "centrale"
         },
         "unrecorded": "Omesso perché una delle build non lo registra: %{fields}.",
         "code": {

@@ -193,7 +193,10 @@
           "center": "中央",
           "wing": "機翼",
           "inner": "內側",
-          "outer": "外側"
+          "outer": "外側",
+          "back": "後部",
+          "aft": "船尾",
+          "middle": "中部"
         },
         "unrecorded": "因其中一個版本未記錄而省略：%{fields}。",
         "code": {

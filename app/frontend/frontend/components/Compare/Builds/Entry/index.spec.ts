@@ -76,6 +76,24 @@ describe("CompareBuildsEntry", () => {
     expect(wrapper.text()).toContain("Turrets · left");
   });
 
+  it("tells slots of one kind apart by their keys", async () => {
+    const slot = (field: string) => ({
+      field,
+      category: "shieldgenerator",
+      from: "A",
+      to: "B",
+    });
+    const wrapper = await render(
+      entry([
+        slot("hardpoint_shield_generator_A"),
+        slot("hardpoint_shield_generator_B"),
+      ]),
+    );
+    const labels = wrapper.findAll("dt").map((item) => item.text());
+
+    expect(new Set(labels).size).toBe(2);
+  });
+
   it("shows one fact where the list is about it", async () => {
     const wrapper = await render(
       entry([

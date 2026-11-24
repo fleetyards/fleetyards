@@ -71,6 +71,17 @@ const grouped = computed(
     props.catalogue !== ScDataDiffCatalogueEnum.loadouts &&
     (diff.value?.counts.changed || 0) > GROUP_FROM,
 );
+
+// Only above the changes: the other lists state no facts to leave out.
+const unrecorded = computed(() => {
+  if (props.kind !== ScDataDiffKindEnum.changed || props.field) return "";
+
+  const labels = (diff.value?.unrecorded || []).map((item) =>
+    fieldLabel(item.field),
+  );
+
+  return [...new Set(labels)].join(", ");
+});
 </script>
 
 <template>
@@ -86,15 +97,13 @@ const grouped = computed(
 
       <div v-else-if="diff" class="build-diff-list">
         <Alert
-          v-if="diff.unrecorded.length"
+          v-if="unrecorded"
           :variant="AlertVariantsEnum.INFO"
           data-test="build-diff-unrecorded"
         >
           {{
             t("labels.buildDiff.unrecorded", {
-              fields: diff.unrecorded
-                .map((item) => fieldLabel(item.field))
-                .join(", "),
+              fields: unrecorded,
             })
           }}
         </Alert>

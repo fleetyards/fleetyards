@@ -193,7 +193,10 @@
           "center": "centre",
           "wing": "aile",
           "inner": "intérieur",
-          "outer": "extérieur"
+          "outer": "extérieur",
+          "back": "arrière",
+          "aft": "poupe",
+          "middle": "milieu"
         },
         "unrecorded": "Omis car l’une des versions ne l’enregistre pas : %{fields}.",
         "code": {
