@@ -194,17 +194,23 @@ const cleared = ref(false);
  */
 const uploadFailed = ref(false);
 
+const readFailed = ref(false);
+
 const onUploadError = () => {
   uploadFailed.value = true;
 };
 
 const hasErrors = computed(() => {
-  return errors.value.length > 0 || uploadFailed.value;
+  return errors.value.length > 0 || uploadFailed.value || readFailed.value;
 });
 
-const shownError = computed(() =>
-  uploadFailed.value ? t("errors.upload.generic") : errorMessage.value,
-);
+const shownError = computed(() => {
+  if (uploadFailed.value) {
+    return t("errors.upload.generic");
+  }
+
+  return readFailed.value ? t("errors.upload.unreadable") : errorMessage.value;
+});
 
 const cssClasses = computed(() => {
   return {
@@ -410,14 +416,22 @@ const allowedTypeList = computed(() => {
     : [props.allowedTypes];
 });
 
+const takesHolo = computed(() =>
+  allowedTypeList.value.includes(AllowedFileTypes.HOLO),
+);
+
+const previewHolo = computed(() =>
+  takesHolo.value ? props.previewFile : undefined,
+);
+
+const previewHoloUrl = ref<string>();
+
 // A holo is drawn by its viewer rather than shown as a picture, so a previewSrc
 // for one is a local file to load, not an image to display.
-const previewFileUrl = ref<string>();
-
 const previewHoloModel = computed(() => {
-  const path = props.previewFile ? previewFileUrl.value : props.previewSrc;
+  const path = previewHolo.value ? previewHoloUrl.value : props.previewSrc;
 
-  if (!path || !allowedTypeList.value.includes(AllowedFileTypes.HOLO)) {
+  if (!path || !takesHolo.value) {
     return undefined;
   }
 
@@ -445,7 +459,7 @@ const currentHolo = computed(() => {
   }
 
   return (
-    props.previewFile ?? previewHoloModel.value?.path ?? holoModel.value?.path
+    previewHolo.value ?? previewHoloModel.value?.path ?? holoModel.value?.path
   );
 });
 
@@ -457,6 +471,7 @@ const showHolo = computed(
 
 // Asking for one holo is not asking for the one that replaces it.
 watch(currentHolo, () => {
+  readFailed.value = false;
   holoRequested.value = false;
 });
 
@@ -473,26 +488,29 @@ const readDataUrl = (file: File) =>
   });
 
 const shownFile = computed(() =>
-  showHolo.value && !uploadedHere.value ? props.previewFile : undefined,
+  showHolo.value && !uploadedHere.value ? previewHolo.value : undefined,
 );
 
 watch(
   shownFile,
   async (file) => {
-    previewFileUrl.value = undefined;
+    previewHoloUrl.value = undefined;
 
     if (!file) {
       return;
     }
 
+    readFailed.value = false;
+
     try {
       const url = await readDataUrl(file);
 
       if (shownFile.value === file) {
-        previewFileUrl.value = url;
+        previewHoloUrl.value = url;
       }
     } catch {
       if (shownFile.value === file) {
+        readFailed.value = true;
         holoRequested.value = false;
       }
     }
@@ -513,7 +531,7 @@ const hasPreview = computed(() => {
   return (
     uploadedHere.value ||
     !!props.previewSrc ||
-    !!props.previewFile ||
+    !!previewHolo.value ||
     !!internalSrc.value ||
     !!presetSrc.value
   );
@@ -579,7 +597,7 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <i
-          v-else-if="processing || shownFile"
+          v-else-if="processing || (shownFile && !readFailed)"
           class="fa-duotone fa-spinner-third fa-spin fa-3x base-image-input__processing"
         />
         <LazyImage
