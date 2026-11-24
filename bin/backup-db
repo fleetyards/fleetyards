@@ -2,16 +2,28 @@
 
 set -euo pipefail
 
+# BACKUP_SOURCE=r2 bin/backup-db writes to the off-provider bucket instead.
+BACKUP_SOURCE="${BACKUP_SOURCE:-hetzner}"
+
+case "$BACKUP_SOURCE" in
+  hetzner) ACCESSORY="db-backup" ;;
+  r2) ACCESSORY="db-backup-r2" ;;
+  *)
+    echo "ERROR: BACKUP_SOURCE must be hetzner or r2, not $BACKUP_SOURCE"
+    exit 1
+    ;;
+esac
+
 HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
 export HCLOUD_TOKEN
 
-echo "Triggering on-demand database backup on live..."
+echo "Triggering on-demand database backup on live to $BACKUP_SOURCE..."
 
 # Through a shell rather than exec'd directly: /backup.sh ships mode 644 in
 # eeshugerman/postgres-backup-s3, and the image's own entrypoint never runs it
 # any other way either -- `go-cron "$SCHEDULE" /bin/sh backup.sh`. Exec'ing the
 # file fails with docker exit status 126 and "permission denied", which reads as
 # a broken container rather than a missing +x bit.
-bundle exec kamal accessory exec db-backup -d live --reuse "sh /backup.sh"
+bundle exec kamal accessory exec "$ACCESSORY" -d live --reuse "sh /backup.sh"
 
 echo "Done!"

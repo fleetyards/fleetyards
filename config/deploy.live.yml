@@ -55,5 +55,11 @@ accessories:
       clear:
         POSTGRES_DATABASE: fleetyards_production
         S3_BUCKET: fltyrd-live-backups
+  db-backup-r2:
+    host: <%= acc_ips.first %>
+    env:
+      clear:
+        POSTGRES_DATABASE: fleetyards_production
+        S3_BUCKET: fltyrd-live-backups
   uploads-copy:
     host: <%= acc_ips.first %>

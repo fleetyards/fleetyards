@@ -11,8 +11,8 @@ production:
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
       # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
-      # nightly db-backup (03:00 UTC) runs on the same host as the Redis
-      # accessory. The timeouts that follow are handled by Sidekiq itself --
+      # nightly db-backups (03:00 and 04:00 UTC) run on the same host as the
+      # Redis accessory. The timeouts that follow are handled by Sidekiq itself --
       # the processor sleeps a second and fetches again, no job is lost -- so
       # they are noise rather than a failure. AppSignal incident #15724.
       - RedisClient::ReadTimeoutError
@@ -31,8 +31,8 @@ staging:
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
       # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
-      # nightly db-backup (03:00 UTC) runs on the same host as the Redis
-      # accessory. The timeouts that follow are handled by Sidekiq itself --
+      # nightly db-backups (03:00 and 04:00 UTC) run on the same host as the
+      # Redis accessory. The timeouts that follow are handled by Sidekiq itself --
       # the processor sleeps a second and fetches again, no job is lost -- so
       # they are noise rather than a failure. AppSignal incident #15724.
       - RedisClient::ReadTimeoutError
