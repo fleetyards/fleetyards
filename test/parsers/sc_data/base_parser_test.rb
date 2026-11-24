@@ -248,6 +248,17 @@ module ScData
         assert_equal "test", manifest["environment"]
         assert_equal ::ScData::ParsedTree.checksum(@export_path), manifest["checksum"]
         assert manifest["parsed_at"].present?
+        assert_equal ::ScData::CodeDigest.parser, manifest["parser"]
+      end
+
+      test ".write_manifest keeps the parser a restamp names" do
+        write_parsed("items", "kept")
+
+        ::ScData::Parser::BaseParser.write_manifest(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test", parser: "earlier"
+        )
+
+        assert_equal "earlier", JSON.parse(File.read("#{@export_path}/version.json"))["parser"]
       end
 
       # Otherwise every parse would look like a change to whoever is deciding

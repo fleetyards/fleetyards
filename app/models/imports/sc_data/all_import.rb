@@ -17,7 +17,9 @@ module Imports
       #
       # Blank on every load recorded before this shipped, which is what makes
       # the first check after it reload once per source.
-      store_accessor :input, :tree_checksum
+      # `code_digest` is which parsers and loaders read the build, blank on every
+      # load recorded before it was kept.
+      store_accessor :input, :tree_checksum, :code_digest
 
       def label
         "sc_data #{version} import"

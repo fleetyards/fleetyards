@@ -295,7 +295,8 @@ when "manifest"
     ScData::Parser::BaseParser.write_manifest(
       base_folder: Rails.root.join(EXPORT_FOLDER),
       sc_version: source.version,
-      sc_environment: source.environment
+      sc_environment: source.environment,
+      parser: (stated || {})["parser"]
     )
     [true, ""]
   end
