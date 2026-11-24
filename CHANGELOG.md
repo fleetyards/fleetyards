@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.67.1](https://github.com/fleetyards/fleetyards/compare/v9.67.0...v9.67.1) (2026-11-24)
+
+
+### Bug Fixes
+
+* **blueprints:** import blueprints from translated game logs ([#6502](https://github.com/fleetyards/fleetyards/issues/6502)) ([65bded4](https://github.com/fleetyards/fleetyards/commit/65bded402ba6a4684fdee4ed6ef824820a18897c))
+
 ## [9.67.0](https://github.com/fleetyards/fleetyards/compare/v9.66.0...v9.67.0) (2026-11-24)
 
 
