@@ -153,6 +153,7 @@ module ScData
           # two "Metamaterial Test" samples and the TH-01 Propulsor -- and
           # without this they would load nameless.
           name: details[:name],
+          name_key: details[:name_key],
           # A carryable that is a commodity does not join on a ref: the column
           # comes from the crate entity and is null for 100 of the 232 rows.
           commodity_key: (details[:commodity_key] if kind == "Commodity")
@@ -313,6 +314,7 @@ module ScData
 
           {
             name: names.lazy.filter_map { |name| localize(name) }.first,
+            name_key: names.find { |name| localize(name) }&.then { |name| localization_key(name) },
             commodity_key: names.lazy.filter_map { |name| commodity_key(name) }.first
           }
         rescue Errno::ENOENT

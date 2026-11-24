@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_23_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_24_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -283,6 +283,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_190000) do
     t.string "version"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name_key"
     t.index ["craftable_type", "craftable_id"], name: "index_blueprints_on_craftable_type_and_craftable_id"
     t.index ["sc_key"], name: "index_blueprints_on_sc_key", unique: true
     t.index ["sc_ref"], name: "index_blueprints_on_sc_ref", unique: true

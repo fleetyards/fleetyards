@@ -56,6 +56,12 @@ module ScData
         assert_equal [component, component], [first.craftable, second.craftable]
       end
 
+      test "#one keeps the localisation key of the output's name" do
+        output = blueprint_data["output"].merge("name_key" => "item_name_example")
+
+        assert_equal "item_name_example", loader.one(blueprint_data.merge("output" => output)).name_key
+      end
+
       test "#all is idempotent" do
         loader.all
 

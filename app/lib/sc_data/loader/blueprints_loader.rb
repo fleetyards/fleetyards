@@ -87,9 +87,9 @@ module ScData
         Blueprint.transaction do
           apply(blueprint, update_params)
 
-          # `sc_ref` and `sc_key` identify the recipe rather than describing a
-          # build, so they stay on the row and are not repeated here.
-          build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
+          # `sc_ref`, `sc_key` and `name_key` identify the recipe rather than
+          # describing a build, so they stay on the row and are not repeated here.
+          build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :name_key, :version))
 
           persist_costs(build, blueprint_data["slots"])
           persist_sources(build, sources_by_blueprint[blueprint_data["ref"]])
@@ -109,6 +109,8 @@ module ScData
           # answers only where that link resolves to nothing -- four mission
           # carryables are in no catalogue at all and would load nameless.
           name: craftable&.name.presence || output["name"],
+          # What a translated game shows in place of the name is found by it.
+          name_key: output["name_key"],
           craftable:,
           category_ref: blueprint_data["category_ref"],
           craft_time: blueprint_data["craft_time"],
