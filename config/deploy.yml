@@ -168,7 +168,7 @@ accessories:
       memory: 256m
 
   # A dump of its own rather than a copy of db-backup's, so it does not depend
-  # on Hetzner's object storage. An hour later, so the two do not overlap.
+  # on Hetzner's object storage. An hour later, to keep the two dumps apart.
   db-backup-r2:
     image: eeshugerman/postgres-backup-s3:16
     env:
