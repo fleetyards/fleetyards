@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.67.0](https://github.com/fleetyards/fleetyards/compare/v9.66.0...v9.67.0) (2026-11-24)
+
+
+### Features
+
+* **compare:** compare two game builds ([#6501](https://github.com/fleetyards/fleetyards/issues/6501)) ([1d23e8b](https://github.com/fleetyards/fleetyards/commit/1d23e8b7ff3891753b4910e00fad537b0cb8e3f4))
+* **deploy:** an rclone container and script for copying the game data to R2 ([#6498](https://github.com/fleetyards/fleetyards/issues/6498)) ([2352ea0](https://github.com/fleetyards/fleetyards/commit/2352ea04fa2abf8ebf5c4dfb655d953d9498d775))
+* **deploy:** back the database up to R2 as well ([#6495](https://github.com/fleetyards/fleetyards/issues/6495)) ([01391e0](https://github.com/fleetyards/fleetyards/commit/01391e0f65a484c08d3eecdfe33e1accd582f4a7))
+* **holo:** save the extended and landed hull holos ([#6493](https://github.com/fleetyards/fleetyards/issues/6493)) ([b3e0d58](https://github.com/fleetyards/fleetyards/commit/b3e0d58e06df92e0d7848b8ec74cf977752aa090))
+* **sc-data:** take the store's region from the settings ([#6496](https://github.com/fleetyards/fleetyards/issues/6496)) ([c8cf49c](https://github.com/fleetyards/fleetyards/commit/c8cf49ced5ab63aadc3a21ae3d2905cedc9966d7))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6490](https://github.com/fleetyards/fleetyards/issues/6490)) ([23a2456](https://github.com/fleetyards/fleetyards/commit/23a2456836b6da9f91359d16223afe8901c7595d))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.45 to 3.5.46 ([#6492](https://github.com/fleetyards/fleetyards/issues/6492)) ([6c6b67c](https://github.com/fleetyards/fleetyards/commit/6c6b67cc78d90b52200795edc2b101d3b9d988ef))
+* **deps-dev:** bump knip from 6.46.1 to 6.47.0 ([#6489](https://github.com/fleetyards/fleetyards/issues/6489)) ([bc90d85](https://github.com/fleetyards/fleetyards/commit/bc90d8565ec248097e89d39647a7a6c6d2852441))
+* **deps-dev:** bump webmock from 3.35.0 to 3.36.0 ([#6485](https://github.com/fleetyards/fleetyards/issues/6485)) ([803ba0d](https://github.com/fleetyards/fleetyards/commit/803ba0dcc32b33b02227c9d2951ccc9cf513e2e1))
+* **deps:** bump @event-calendar/core from 5.21.0 to 5.21.1 ([#6487](https://github.com/fleetyards/fleetyards/issues/6487)) ([a7b94e6](https://github.com/fleetyards/fleetyards/commit/a7b94e62f6e8882d9c1690cbdcde8202666ef4b4))
+* **deps:** bump @tanstack/vue-query from 5.108.1 to 5.108.2 ([#6488](https://github.com/fleetyards/fleetyards/issues/6488)) ([eefe0ee](https://github.com/fleetyards/fleetyards/commit/eefe0ee9ef9961e556eb824696fef22b922ffffb))
+* **deps:** bump aws-sdk-s3 from 1.245.0 to 1.245.1 ([#6484](https://github.com/fleetyards/fleetyards/issues/6484)) ([26b9ef4](https://github.com/fleetyards/fleetyards/commit/26b9ef49a8e84adacd18595ea1d602cb76a8d9d2))
+* **deps:** bump bootsnap from 1.26.1 to 1.26.2 ([#6482](https://github.com/fleetyards/fleetyards/issues/6482)) ([ca644e5](https://github.com/fleetyards/fleetyards/commit/ca644e5df77147f78c970f00f3496efede5c309c))
+* **deps:** bump the tiptap group across 1 directory with 8 updates ([#6486](https://github.com/fleetyards/fleetyards/issues/6486)) ([aa548ac](https://github.com/fleetyards/fleetyards/commit/aa548acd02d4c998c07b82a20f694b0528040979))
+* **deps:** bump typhoeus from 1.7.1 to 1.8.0 ([#6483](https://github.com/fleetyards/fleetyards/issues/6483)) ([d46c0d9](https://github.com/fleetyards/fleetyards/commit/d46c0d9a0a420b1c72358a7e17f92ef288d9b44a))
+* **deps:** bump vue from 3.5.45 to 3.5.46 ([#6491](https://github.com/fleetyards/fleetyards/issues/6491)) ([e2bd158](https://github.com/fleetyards/fleetyards/commit/e2bd158642b877c08172466c4a31df2f7806e7ef))
+* **sc_data:** bump ptu to 5.0.0-ptu.13260598 ([#6500](https://github.com/fleetyards/fleetyards/issues/6500)) ([baa1e86](https://github.com/fleetyards/fleetyards/commit/baa1e8690b41b2d9404e506ba9d8bb0eeb6600f5))
+
 ## [9.66.0](https://github.com/fleetyards/fleetyards/compare/v9.65.0...v9.66.0) (2026-11-23)
 
 
