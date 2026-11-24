@@ -28,7 +28,7 @@ module ScData
 
     # A transfer is thousands of independent round trips, and each one is
     # idempotent: a GET or a PUT of a single key. So a failure is worth another
-    # go rather than failing the whole run -- one object Hetzner did not answer
+    # go rather than failing the whole run -- one object the store did not answer
     # in time used to kill a 15,103-object pull, in CI and in the loaders
     # container alike.
     #
@@ -39,7 +39,7 @@ module ScData
     RETRY_BACKOFF = 0.5
 
     # The retries above ride out one slow object, not a degraded endpoint.
-    # Hetzner's object storage goes through spells of answering 504 for
+    # Object storage can go through spells of answering 504 for
     # minutes at a time, and a load that hit one failed after an hour of work.
     # So whatever is still failing once the rest of the transfer is done gets
     # another round after each of these pauses -- a few minutes of patience at
@@ -57,8 +57,8 @@ module ScData
       end
     end
 
-    # Hetzner takes any region; providers that sign with their own get it from
-    # the settings.
+    # Some stores take any region; those that check it get theirs from the
+    # settings.
     DEFAULT_REGION = "unused"
 
     # Configured on its own rather than borrowed from ActiveStorage's store: the

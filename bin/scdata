@@ -312,7 +312,7 @@ when "manifest"
 # Never fails. The step this replaces was a local YAML read that could not, and
 # it gates every `ruby-tests` run -- including ones whose cache would have hit
 # and needed no network at all. A bucket that cannot be reached falls back to
-# the version, which is what the key held before any of this, so a Hetzner blip
+# the version, which is what the key held before any of this, so a storage blip
 # costs a stale cache entry rather than a red run on every open PR.
 when "cache-key"
   boot_rails
