@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# Copies the game data from Hetzner to R2, inside the sc-data-copy accessory on
+# live. Every part can be run again and only moves what is still different.
+#
+#   bin/sc-data-copy              everything the app reads
+#   bin/sc-data-copy ship-views   one part: renders folder, parsed, or an export
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+BUCKET="fltyrd-sc"
+RENDERS="ship-views item-views characters skyboxes"
+
+EXPORTS=$(ruby -ryaml -e 'puts YAML.load_file("config/app/sc_data.yml").dig("shared", "sources").values')
+
+RCLONE=(rclone --transfers 32 --checkers 64 --retries 5 --stats 60s --stats-one-line --log-level NOTICE)
+
+run() {
+  bundle exec kamal accessory exec sc-data-copy -d live --reuse "${RCLONE[*]} $*"
+}
+
+copy_part() {
+  local part="$1"
+  local from="hetzner:$BUCKET/$part"
+  local to="r2:$BUCKET/$part"
+
+  echo "== $part"
+
+  case "$part" in
+    # Deletes included: the loader reads whether a ship is in game off the
+    # files that exist.
+    parsed) run sync "$from" "$to" --checksum ;;
+    # By upload time: a multipart ETag is no digest to compare, and a render
+    # can change without changing its size. Nothing lists the PNGs.
+    ship-views) run copy "$from" "$to" --update --use-server-modtime '--exclude=*.png' ;;
+    item-views | characters | skyboxes) run copy "$from" "$to" --update --use-server-modtime ;;
+    # An export is immutable once uploaded.
+    *) run copy "$from" "$to" --size-only ;;
+  esac
+}
+
+PARTS=("$@")
+
+if [ "${#PARTS[@]}" -eq 0 ]; then
+  # shellcheck disable=SC2206
+  PARTS=($EXPORTS $RENDERS parsed)
+fi
+
+# A mistyped part would otherwise copy nothing, or a whole export nobody reads.
+for part in "${PARTS[@]}"; do
+  if ! grep -qxF -- "$part" <<< "$(printf '%s\n' $EXPORTS $RENDERS parsed)"; then
+    echo "ERROR: unknown part '$part'. Known: $(echo $EXPORTS) $RENDERS parsed"
+    exit 1
+  fi
+done
+
+HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+export HCLOUD_TOKEN
+
+for part in "${PARTS[@]}"; do
+  copy_part "$part"
+done
+
+echo "Done!"
