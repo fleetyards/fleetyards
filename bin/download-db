@@ -10,6 +10,7 @@ if [ -f .env.local ]; then
   set +a
 fi
 
+DUMP_DIR="./dumps"
 S3_BUCKET="fltyrd-live-backups"
 S3_PREFIX="db"
 
@@ -18,6 +19,7 @@ BACKUP_SOURCE="${BACKUP_SOURCE:-hetzner}"
 
 case "$BACKUP_SOURCE" in
   hetzner)
+    DUMP_FILE="$DUMP_DIR/latest.dump"
     S3_ENDPOINT="fsn1.your-objectstorage.com"
     S3_HOST_BUCKET="%(bucket)s.$S3_ENDPOINT"
     S3_REGION="fsn1"
@@ -25,6 +27,9 @@ case "$BACKUP_SOURCE" in
     S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
     ;;
   r2)
+    # Its own file: the up-to-date check only compares sizes, and would accept
+    # the other provider's dump.
+    DUMP_FILE="$DUMP_DIR/latest-r2.dump"
     S3_ENDPOINT=$(op read "op://Fleetyards/R2_BACKUPS_LIVE/config/endpoint")
     S3_ENDPOINT="${S3_ENDPOINT#https://}"
     S3_HOST_BUCKET="$S3_ENDPOINT"
@@ -38,14 +43,12 @@ case "$BACKUP_SOURCE" in
     ;;
 esac
 
-DUMP_DIR="./dumps"
-DUMP_FILE="$DUMP_DIR/latest.dump"
 LOCK_DIR="$DUMP_DIR/.download-db.lock"
 DB_PORT="${DB_PORT:-8271}"
 DB_NAME="${DB_NAME:-fleetyards_dev${WORKTREE_SUFFIX:-}}"
 DB_USER="${DB_USER:-root}"
 
-S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=$S3_HOST_BUCKET --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
+S3CMD="s3cmd --region=$S3_REGION --host=$S3_ENDPOINT --host-bucket=$S3_HOST_BUCKET --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
 
 PG_RESTORE="pg_restore"
 if [ -x "/opt/homebrew/opt/postgresql@16/bin/pg_restore" ]; then
