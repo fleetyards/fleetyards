@@ -95,7 +95,17 @@ const nameOf = (file: File) => file.webkitRelativePath || file.name;
 const basename = (filename: string) => filename.split("/").pop() || filename;
 
 const publishPreviews = () => {
-  emit("selected", Object.fromEntries(previews));
+  // Only this folder's: the page may have dropped an earlier one's since.
+  emit(
+    "selected",
+    Object.fromEntries(
+      plan.value.flatMap(({ field }) => {
+        const preview = previews.get(field);
+
+        return preview ? [[field, preview]] : [];
+      }),
+    ),
+  );
 };
 
 const forget = (field: FolderField) => {

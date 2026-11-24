@@ -88,7 +88,20 @@ const previewFile = (field: FolderField) => {
 const onFolderSelected = (
   fields: Partial<Record<FolderField, string | File>>,
 ) => {
-  previews.value = fields;
+  previews.value = { ...previews.value, ...fields };
+};
+
+// A field given another file, or none, no longer shows the folder's.
+const dropPreview = (field: FolderField) => {
+  const { [field]: _dropped, ...rest } = previews.value;
+
+  previews.value = rest;
+};
+
+const onFieldUpdate = (field: FolderField, value?: string | null) => {
+  if (value === null) {
+    dropPreview(field);
+  }
 };
 
 const syncMutation = useReloadOneModelShipViews({
@@ -151,6 +164,8 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
         >
           <FormFileInput
             v-model="values[field]"
+            @update:model-value="onFieldUpdate(field, $event)"
+            @uploaded="dropPreview(field)"
             :file="model.media[field]"
             :translation-key="translationKey(field)"
             v-bind="fieldProps[field]"
@@ -172,6 +187,8 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
         <div v-for="field in row" :key="field" class="col-12 col-sm-6 col-md-3">
           <FormFileInput
             v-model="values[field]"
+            @update:model-value="onFieldUpdate(field, $event)"
+            @uploaded="dropPreview(field)"
             :file="model.media[field]"
             :translation-key="translationKey(field)"
             v-bind="fieldProps[field]"
