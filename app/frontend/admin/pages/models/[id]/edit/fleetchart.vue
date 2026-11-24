@@ -71,9 +71,23 @@ const fieldProps = reactive(
 // Kept for as long as the page lives. A save refetches the model, but the trim
 // that follows replaces the blob and purges the one that refetch named, so the
 // local file is the picture that stays true.
-const previews = ref<Partial<Record<FolderField, string>>>({});
+const previews = shallowRef<Partial<Record<FolderField, string | File>>>({});
 
-const onFolderSelected = (fields: Partial<Record<FolderField, string>>) => {
+const previewSrc = (field: FolderField) => {
+  const preview = previews.value[field];
+
+  return typeof preview === "string" ? preview : undefined;
+};
+
+const previewFile = (field: FolderField) => {
+  const preview = previews.value[field];
+
+  return preview instanceof File ? preview : undefined;
+};
+
+const onFolderSelected = (
+  fields: Partial<Record<FolderField, string | File>>,
+) => {
   previews.value = fields;
 };
 
@@ -141,7 +155,7 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
             :translation-key="translationKey(field)"
             v-bind="fieldProps[field]"
             :name="field"
-            :preview-src="previews[field]"
+            :preview-file="previewFile(field)"
             holo-on-demand
             :textured-holo="field.includes('Textured')"
             :allowed-types="
@@ -164,7 +178,7 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
             :allowed-types="AllowedFileTypes.IMAGE"
             :name="field"
             :processing="isProcessing(field)"
-            :preview-src="previews[field]"
+            :preview-src="previewSrc(field)"
             transparent
             clearable
           />

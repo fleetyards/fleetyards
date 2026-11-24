@@ -32,6 +32,8 @@ type Props = {
   icon?: string;
   modelValue?: string | null;
   previewSrc?: string;
+  /** A local holo to draw in place of the attached one, read once it is shown. */
+  previewFile?: File;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -84,6 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   modelValue: undefined,
   previewSrc: undefined,
+  previewFile: undefined,
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
@@ -409,16 +412,17 @@ const allowedTypeList = computed(() => {
 
 // A holo is drawn by its viewer rather than shown as a picture, so a previewSrc
 // for one is a local file to load, not an image to display.
+const previewFileUrl = ref<string>();
+
 const previewHoloModel = computed(() => {
-  if (
-    !props.previewSrc ||
-    !allowedTypeList.value.includes(AllowedFileTypes.HOLO)
-  ) {
+  const path = props.previewFile ? previewFileUrl.value : props.previewSrc;
+
+  if (!path || !allowedTypeList.value.includes(AllowedFileTypes.HOLO)) {
     return undefined;
   }
 
   return {
-    path: props.previewSrc,
+    path,
     textured: props.texturedHolo,
   };
 });
@@ -434,12 +438,15 @@ const holoModel = computed(() => {
   return undefined;
 });
 
-const currentHoloModel = computed(() => {
+// The file rather than what is read from it, which is only there while shown.
+const currentHolo = computed(() => {
   if (uploadedHere.value || cleared.value) {
     return undefined;
   }
 
-  return previewHoloModel.value ?? holoModel.value;
+  return (
+    props.previewFile ?? previewHoloModel.value?.path ?? holoModel.value?.path
+  );
 });
 
 const holoRequested = ref(false);
@@ -449,11 +456,48 @@ const showHolo = computed(
 );
 
 // Asking for one holo is not asking for the one that replaces it.
+watch(currentHolo, () => {
+  holoRequested.value = false;
+});
+
+// A data: URL, which three's FileLoader decodes where it stands: the content
+// security policy keeps it from fetching a blob: one.
+const readDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+
+    reader.readAsDataURL(file);
+  });
+
+const shownFile = computed(() =>
+  showHolo.value && !uploadedHere.value ? props.previewFile : undefined,
+);
+
 watch(
-  () => currentHoloModel.value?.path,
-  () => {
-    holoRequested.value = false;
+  shownFile,
+  async (file) => {
+    previewFileUrl.value = undefined;
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      const url = await readDataUrl(file);
+
+      if (shownFile.value === file) {
+        previewFileUrl.value = url;
+      }
+    } catch {
+      if (shownFile.value === file) {
+        holoRequested.value = false;
+      }
+    }
   },
+  { immediate: true },
 );
 
 const holoToggleLabel = computed(() =>
@@ -469,6 +513,7 @@ const hasPreview = computed(() => {
   return (
     uploadedHere.value ||
     !!props.previewSrc ||
+    !!props.previewFile ||
     !!internalSrc.value ||
     !!presetSrc.value
   );
@@ -534,7 +579,7 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <i
-          v-else-if="processing"
+          v-else-if="processing || shownFile"
           class="fa-duotone fa-spinner-third fa-spin fa-3x base-image-input__processing"
         />
         <LazyImage
@@ -588,7 +633,7 @@ defineExpose({
         <i class="fa-light fa-images" />
       </Btn>
       <Btn
-        v-if="holoOnDemand && currentHoloModel"
+        v-if="holoOnDemand && currentHolo"
         v-tooltip="holoToggleLabel"
         class="base-image-input__holo-toggle"
         variant="bare"

@@ -358,6 +358,29 @@ describe("FormFileInput holos", () => {
     expect(viewer(subject).exists()).toBe(true);
   });
 
+  it("reads a local holo file only while it is shown", async () => {
+    const read = vi.spyOn(FileReader.prototype, "readAsDataURL");
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      previewFile: new File(["glTF"], "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+    const toggle = subject.find("[data-test='toggle-holo-holo']");
+
+    expect(read).not.toHaveBeenCalled();
+
+    await toggle.trigger("click");
+    await vi.waitFor(() => expect(viewer(subject).exists()).toBe(true));
+    expect(viewer(subject).props("models")[0].path).toMatch(/^data:/);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(false);
+    expect(read).toHaveBeenCalledTimes(1);
+    read.mockRestore();
+  });
+
   it("takes a shown holo away when it is cleared", async () => {
     const subject = await mount({
       name: "holo",
