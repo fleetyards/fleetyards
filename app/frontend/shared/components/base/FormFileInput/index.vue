@@ -32,6 +32,8 @@ type Props = {
   icon?: string;
   modelValue?: string | null;
   previewSrc?: string;
+  /** A local holo to draw in place of the attached one, read once it is shown. */
+  previewFile?: File;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -71,6 +73,11 @@ type Props = {
   processing?: boolean;
   /** A textured export: drawn with its own materials, not the blue holo's. */
   texturedHolo?: boolean;
+  /**
+   * Draws the holo only once it is asked for. Every viewer holds a WebGL
+   * context and its whole file, which a page full of them cannot afford.
+   */
+  holoOnDemand?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,6 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   modelValue: undefined,
   previewSrc: undefined,
+  previewFile: undefined,
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
@@ -104,11 +112,16 @@ const props = withDefaults(defineProps<Props>(), {
   presetValue: null,
   presetGroup: undefined,
   processing: false,
+  holoOnDemand: false,
 });
 
 watch(
   () => props.modelValue,
   (newValue) => {
+    if (newValue !== null) {
+      cleared.value = false;
+    }
+
     if (newValue !== inputValue.value) {
       resetField({
         value: newValue,
@@ -167,6 +180,9 @@ const internalSrc = ref<string>();
 // the picture for it left the input blank.
 const uploadedHere = ref(false);
 
+// The attachment is marked for removal: `file` names it until the form is saved.
+const cleared = ref(false);
+
 /*
  * A failed upload used to reach nobody. The uploader caught it, cleared itself
  * and raised a toast, and the only event it emitted afterwards was
@@ -178,17 +194,23 @@ const uploadedHere = ref(false);
  */
 const uploadFailed = ref(false);
 
+const readFailed = ref(false);
+
 const onUploadError = () => {
   uploadFailed.value = true;
 };
 
 const hasErrors = computed(() => {
-  return errors.value.length > 0 || uploadFailed.value;
+  return errors.value.length > 0 || uploadFailed.value || readFailed.value;
 });
 
-const shownError = computed(() =>
-  uploadFailed.value ? t("errors.upload.generic") : errorMessage.value,
-);
+const shownError = computed(() => {
+  if (uploadFailed.value) {
+    return t("errors.upload.generic");
+  }
+
+  return readFailed.value ? t("errors.upload.unreadable") : errorMessage.value;
+});
 
 const cssClasses = computed(() => {
   return {
@@ -221,6 +243,7 @@ const clear = () => {
     directUpload.value?.clear();
   } else {
     handleReset();
+    cleared.value = true;
     internalSrc.value = undefined;
     emit("update:modelValue", null);
   }
@@ -359,6 +382,7 @@ const directUpload = ref<InstanceType<typeof DirectUpload>>();
 
 const setup = () => {
   uploadedHere.value = false;
+  cleared.value = false;
 
   directUpload.value?.clear();
 
@@ -392,18 +416,27 @@ const allowedTypeList = computed(() => {
     : [props.allowedTypes];
 });
 
+const takesHolo = computed(() =>
+  allowedTypeList.value.includes(AllowedFileTypes.HOLO),
+);
+
+const previewHolo = computed(() =>
+  takesHolo.value ? props.previewFile : undefined,
+);
+
+const previewHoloUrl = ref<string>();
+
 // A holo is drawn by its viewer rather than shown as a picture, so a previewSrc
 // for one is a local file to load, not an image to display.
 const previewHoloModel = computed(() => {
-  if (
-    !props.previewSrc ||
-    !allowedTypeList.value.includes(AllowedFileTypes.HOLO)
-  ) {
+  const path = previewHolo.value ? previewHoloUrl.value : props.previewSrc;
+
+  if (!path || !takesHolo.value) {
     return undefined;
   }
 
   return {
-    path: props.previewSrc,
+    path,
     textured: props.texturedHolo,
   };
 });
@@ -419,6 +452,78 @@ const holoModel = computed(() => {
   return undefined;
 });
 
+// The file rather than what is read from it, which is only there while shown.
+const currentHolo = computed(() => {
+  if (uploadedHere.value || cleared.value) {
+    return undefined;
+  }
+
+  return (
+    previewHolo.value ?? previewHoloModel.value?.path ?? holoModel.value?.path
+  );
+});
+
+const holoRequested = ref(false);
+
+const showHolo = computed(
+  () => !cleared.value && (!props.holoOnDemand || holoRequested.value),
+);
+
+// Asking for one holo is not asking for the one that replaces it.
+watch(currentHolo, () => {
+  readFailed.value = false;
+  holoRequested.value = false;
+});
+
+// A data: URL, which three's FileLoader decodes where it stands: the content
+// security policy keeps it from fetching a blob: one.
+const readDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+
+    reader.readAsDataURL(file);
+  });
+
+const shownFile = computed(() =>
+  showHolo.value && !uploadedHere.value ? previewHolo.value : undefined,
+);
+
+watch(
+  shownFile,
+  async (file) => {
+    previewHoloUrl.value = undefined;
+
+    if (!file) {
+      return;
+    }
+
+    readFailed.value = false;
+
+    try {
+      const url = await readDataUrl(file);
+
+      if (shownFile.value === file) {
+        previewHoloUrl.value = url;
+      }
+    } catch {
+      if (shownFile.value === file) {
+        readFailed.value = true;
+        holoRequested.value = false;
+      }
+    }
+  },
+  { immediate: true },
+);
+
+const holoToggleLabel = computed(() =>
+  holoRequested.value
+    ? t("actions.holoViewer.hide")
+    : t("actions.holoViewer.show"),
+);
+
 // The dropzone is only pinned open while there is nothing to look at. A
 // previewSrc counts: the folder upload fills the whole form that way, and
 // forcing the overlay on top of it hid every picture it just set.
@@ -426,6 +531,7 @@ const hasPreview = computed(() => {
   return (
     uploadedHere.value ||
     !!props.previewSrc ||
+    !!previewHolo.value ||
     !!internalSrc.value ||
     !!presetSrc.value
   );
@@ -468,7 +574,7 @@ defineExpose({
         <!-- A value set from outside brings its own file: the upload that
              filled it happened elsewhere, so this input has none to show. -->
         <HoloViewer
-          v-if="previewHoloModel"
+          v-if="previewHoloModel && showHolo"
           :controllable="false"
           :models="[previewHoloModel]"
           inline
@@ -484,14 +590,14 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <LazyImage
-          v-else-if="previewSrc"
+          v-else-if="previewSrc && !previewHoloModel"
           v-tooltip.right="hasErrors && errorMessage"
           :src="previewSrc"
           :transparent="transparent || avatar"
           :shadow="!transparent && !avatar"
         />
         <i
-          v-else-if="processing"
+          v-else-if="processing || (shownFile && !readFailed)"
           class="fa-duotone fa-spinner-third fa-spin fa-3x base-image-input__processing"
         />
         <LazyImage
@@ -502,7 +608,7 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <HoloViewer
-          v-else-if="holoModel"
+          v-else-if="holoModel && showHolo"
           :controllable="false"
           :models="[holoModel]"
           inline
@@ -543,6 +649,20 @@ defineExpose({
         @click="pickerOpen = true"
       >
         <i class="fa-light fa-images" />
+      </Btn>
+      <Btn
+        v-if="holoOnDemand && currentHolo"
+        v-tooltip="holoToggleLabel"
+        class="base-image-input__holo-toggle"
+        variant="bare"
+        :aria-label="holoToggleLabel"
+        :data-test="`toggle-holo-${name}`"
+        @click="holoRequested = !holoRequested"
+      >
+        <i
+          class="fa-light"
+          :class="holoRequested ? 'fa-eye-slash' : 'fa-eye'"
+        />
       </Btn>
       <PresetImagePicker
         v-if="pickerOpen && presetCatalogue"

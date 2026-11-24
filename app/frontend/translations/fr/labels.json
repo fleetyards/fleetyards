@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "Holo texturé posé",
         "landedHoloTexturedLite": "Holo allégé texturé posé",
         "holoHull": "Holo de la coque",
+        "extendedHoloHull": "Holo étendu de la coque",
+        "landedHoloHull": "Holo posé de la coque",
         "holoUsdz": "Holo AR (USDZ)",
         "state": {
           "flight": "En vol",

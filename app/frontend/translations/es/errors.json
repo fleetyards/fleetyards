@@ -6,6 +6,7 @@
       "upload": {
         "oneFile": "Solo se puede subir un archivo a la vez.",
         "generic": "Se produjo un error durante la subida.",
+        "unreadable": "No se pudo leer el archivo.",
         "fileTooLarge": "El archivo \"%{filename}\" supera el tamaño máximo permitido de %{size} MB.",
         "invalidFileType": "El archivo \"%{filename}\" no es de un tipo permitido. Los tipos permitidos son: %{types}."
       }

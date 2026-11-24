@@ -421,6 +421,8 @@
         "generateBackupCodes": "產生備用碼"
       },
       "holoViewer": {
+        "show": "顯示 Holo",
+        "hide": "隱藏 Holo",
         "loadAnyway": "仍要載入",
         "autoRotate": {
           "enable": "Enable auto rotate",

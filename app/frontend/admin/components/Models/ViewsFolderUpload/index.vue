@@ -33,7 +33,8 @@ const { t } = useI18n();
 const { displaySuccess } = useAppNotifications();
 
 const emit = defineEmits<{
-  selected: [previews: Partial<Record<FolderField, string>>];
+  // A picture as a URL; a holo as its file, which is only read once it is shown.
+  selected: [previews: Partial<Record<FolderField, string | File>>];
   mapped: [fields: Partial<Record<FolderField, string>>];
 }>();
 
@@ -41,7 +42,7 @@ const plan = ref<PlannedFile[]>([]);
 const ignored = ref<string[]>([]);
 const uploaded = ref<File[]>([]);
 const uploading = ref(false);
-const previews = new Map<FolderField, string>();
+const previews = new Map<FolderField, string | File>();
 const processed = ref(false);
 
 watch(
@@ -93,27 +94,24 @@ const nameOf = (file: File) => file.webkitRelativePath || file.name;
 
 const basename = (filename: string) => filename.split("/").pop() || filename;
 
-// What the preview beside a single upload has always handed the holo viewer,
-// and what three's FileLoader decodes where it stands rather than fetching. The
-// pictures are happy behind a blob: URL; a model behind one was not.
-const readDataUrl = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(reader.error);
-
-    reader.readAsDataURL(file);
-  });
-
 const publishPreviews = () => {
-  emit("selected", Object.fromEntries(previews));
+  // Only this folder's: the page may have dropped an earlier one's since.
+  emit(
+    "selected",
+    Object.fromEntries(
+      plan.value.flatMap(({ field }) => {
+        const preview = previews.get(field);
+
+        return preview ? [[field, preview]] : [];
+      }),
+    ),
+  );
 };
 
 const forget = (field: FolderField) => {
   const previous = previews.get(field);
 
-  if (previous?.startsWith("blob:")) {
+  if (typeof previous === "string") {
     URL.revokeObjectURL(previous);
   }
 
@@ -136,22 +134,17 @@ const filterFolder = (files: File[]) => {
 
   // A signed id only arrives once the upload finishes, but the file itself can
   // be shown at once -- a picture as a picture, a holo in its viewer -- so no
-  // input sits there empty meanwhile. Reading a holo takes a moment, so it
-  // lands in a second round.
+  // input sits there empty meanwhile.
   plan.value.forEach(({ field, file }) => {
     forget(field);
 
-    // Nothing in the admin draws a USDZ, so reading one would only hold its
-    // megabytes in memory.
+    // Nothing in the admin draws a USDZ.
     if (field === "holoUsdz") {
       return;
     }
 
     if (isHoloField(field)) {
-      void readDataUrl(file).then((url) => {
-        previews.set(field, url);
-        publishPreviews();
-      });
+      previews.set(field, file);
 
       return;
     }

@@ -284,12 +284,20 @@ module ScData
       assert_nil @model.ship_view_md5s["top_view"]
     end
 
-    test "attaches the flight hull holo and stores the hardpoint transforms" do
-      publish({"flight_holo_hull.glb" => HOLO, "landed_holo_hull.glb" => HOLO, "flight_hardpoints.json" => HARDPOINTS})
+    test "attaches the hull holo of every state and stores the hardpoint transforms" do
+      publish({
+        "flight_holo_hull.glb" => HOLO,
+        "extended_holo_hull.glb" => HOLO,
+        "landed_holo_hull.glb" => HOLO,
+        "flight_hardpoints.json" => HARDPOINTS
+      })
 
       perform
 
-      assert @model.holo_hull.attached?
+      assert_equal "flight_holo_hull.glb", @model.holo_hull.filename.to_s
+      assert_equal "extended_holo_hull.glb", @model.extended_holo_hull.filename.to_s
+      assert_equal "landed_holo_hull.glb", @model.landed_holo_hull.filename.to_s
+      assert_not @model.extended_holo.attached?
       assert_not @model.landed_holo.attached?
       assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
       assert_equal Digest::MD5.hexdigest(HARDPOINTS), @model.ship_view_md5s["hardpoint_transforms"]
@@ -691,6 +699,8 @@ module ScData
           "flight_textured.glb" => GLB,
           "landed_textured.glb" => GLB,
           "flight_holo_hull.glb" => GLB,
+          "extended_holo_hull.glb" => GLB,
+          "landed_holo_hull.glb" => GLB,
           "flight_hardpoints.json" => HARDPOINTS,
           "flight_doors.json" => DOORS,
           "flight_textured_gladiusvaliant.webp" => PNG,
@@ -703,7 +713,10 @@ module ScData
       variant.reload
       assert_equal @model.holo_textured.blob, variant.holo_textured.blob
       assert_equal @model.landed_holo_textured.blob, variant.landed_holo_textured.blob
+      assert variant.landed_holo_hull.attached?
       assert_equal @model.holo_hull.blob, variant.holo_hull.blob
+      assert_equal @model.extended_holo_hull.blob, variant.extended_holo_hull.blob
+      assert_equal @model.landed_holo_hull.blob, variant.landed_holo_hull.blob
       assert_equal JSON.parse(HARDPOINTS), variant.hardpoint_transforms
       assert_equal JSON.parse(DOORS), variant.holo_doors
       assert_equal "flight_textured_gladiusvaliant.webp", variant.holo_texture.filename.to_s
@@ -793,7 +806,7 @@ module ScData
       paint = create(:model_paint, model: @model, component:)
       publish_paints(
         {"gladiuspirate" => {items: ["paint_gladius_pirate"], base: "flight_textured_gladiuspirate.webp"}},
-        {"flight_top.png" => PNG, "flight_textured.glb" => GLB, "flight_holo_hull.glb" => GLB, "flight_textured_gladiuspirate.webp" => PNG}
+        {"flight_top.png" => PNG, "flight_textured.glb" => GLB, "flight_holo_hull.glb" => GLB, "landed_holo_hull.glb" => GLB, "flight_textured_gladiuspirate.webp" => PNG}
       )
 
       perform
@@ -801,6 +814,7 @@ module ScData
       assert @model.top_view.attached?
       assert_not @model.holo_textured.attached?
       assert_not @model.holo_hull.attached?
+      assert_not @model.landed_holo_hull.attached?
       assert_not paint.reload.holo_texture.attached?
     end
 

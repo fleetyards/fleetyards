@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { presetImageUrl } from "@/shared/composables/usePresetImages";
 import PresetImagePicker from "@/shared/components/PresetImagePicker/index.vue";
 import Component from "./index.vue";
@@ -35,6 +35,7 @@ let wrapper: VueWrapper | undefined;
 afterEach(() => {
   wrapper?.unmount();
   wrapper = undefined;
+  vi.restoreAllMocks();
   document.body.innerHTML = "";
 });
 
@@ -304,6 +305,205 @@ describe("FormFileInput holos", () => {
     ).toEqual([
       { path: "https://example.test/holo_textured.glb", textured: true },
     ]);
+  });
+
+  const viewer = (subject: VueWrapper) =>
+    subject.findComponent({ name: "HoloViewer" });
+
+  it("draws an on-demand holo only while it is asked for", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+    const toggle = subject.find("[data-test='toggle-holo-holo']");
+
+    expect(viewer(subject).exists()).toBe(false);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(false);
+  });
+
+  it("waits to be asked again for a holo that replaces the shown one", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    await subject.setProps({
+      file: holoFile("model/gltf-binary", "replacement.glb"),
+    });
+
+    expect(viewer(subject).exists()).toBe(false);
+  });
+
+  it("draws a local holo on demand, and never as a picture", async () => {
+    const subject = await mount({
+      name: "holo",
+      previewSrc: "blob:local-holo",
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    expect(viewer(subject).exists()).toBe(false);
+    expect(shownImage(subject).exists()).toBe(false);
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+  });
+
+  it("reads a local holo file only while it is shown", async () => {
+    const read = vi.spyOn(FileReader.prototype, "readAsDataURL");
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      previewFile: new File(["glTF"], "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+    const toggle = subject.find("[data-test='toggle-holo-holo']");
+
+    expect(read).not.toHaveBeenCalled();
+
+    await toggle.trigger("click");
+    await vi.waitFor(() => expect(viewer(subject).exists()).toBe(true));
+    expect(viewer(subject).props("models")[0].path).toMatch(/^data:/);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(false);
+    expect(read).toHaveBeenCalledTimes(1);
+    read.mockRestore();
+  });
+
+  const readers = () => {
+    const pending: FileReader[] = [];
+
+    vi.spyOn(FileReader.prototype, "readAsDataURL").mockImplementation(
+      function (this: FileReader) {
+        pending.push(this);
+      },
+    );
+
+    return {
+      finish: async (index: number, url: string) => {
+        Object.defineProperty(pending[index], "result", { value: url });
+        pending[index].onload?.({} as never);
+        await flushPromises();
+      },
+      fail: async (index: number) => {
+        pending[index].onerror?.({} as never);
+        await flushPromises();
+      },
+    };
+  };
+
+  const mountLocalHolo = (props: Record<string, unknown> = {}) =>
+    mount({
+      name: "holo",
+      previewFile: new File(["glTF"], "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+      ...props,
+    });
+
+  const toggleHolo = (subject: VueWrapper) =>
+    subject.find("[data-test='toggle-holo-holo']").trigger("click");
+
+  it("says so when a local holo cannot be read, until it is tried again", async () => {
+    const reading = readers();
+    const subject = await mountLocalHolo();
+    const error = () => subject.find("[role='alert']").classes();
+
+    await toggleHolo(subject);
+    await reading.fail(0);
+
+    expect(error()).toContain("base-image-input__error--shown");
+    expect(subject.find(".base-image-input__processing").exists()).toBe(false);
+
+    await toggleHolo(subject);
+    await reading.finish(1, "data:holo");
+
+    expect(error()).not.toContain("base-image-input__error--shown");
+    expect(viewer(subject).exists()).toBe(true);
+  });
+
+  it("stops waiting for an unreadable holo it draws unasked", async () => {
+    const reading = readers();
+    const subject = await mountLocalHolo({ holoOnDemand: false });
+
+    expect(subject.find(".base-image-input__processing").exists()).toBe(true);
+    await reading.fail(0);
+    expect(subject.find(".base-image-input__processing").exists()).toBe(false);
+  });
+
+  it("ignores a read that outlives its file", async () => {
+    const reading = readers();
+    const subject = await mountLocalHolo({ holoOnDemand: false });
+
+    await subject.setProps({ previewFile: new File(["new"], "new.glb") });
+    await reading.finish(1, "data:new");
+    await reading.finish(0, "data:old");
+
+    expect(viewer(subject).props("models")[0].path).toBe("data:new");
+  });
+
+  it("draws nothing when hidden before the read is done", async () => {
+    const reading = readers();
+    const subject = await mountLocalHolo();
+
+    await toggleHolo(subject);
+    await toggleHolo(subject);
+    await reading.finish(0, "data:holo");
+
+    expect(viewer(subject).exists()).toBe(false);
+  });
+
+  it("offers no holo on an input that takes none", async () => {
+    const subject = await mountLocalHolo({ allowedTypes: "arHolo" });
+
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(false);
+  });
+
+  it("takes a shown holo away when it is cleared", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      clearable: true,
+      holoOnDemand: true,
+    });
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+
+    await subject.find(".base-image-input__clear").trigger("click");
+    await subject.setProps({ modelValue: null });
+
+    expect(viewer(subject).exists()).toBe(false);
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(false);
+
+    await subject.setProps({
+      file: holoFile("model/gltf-binary", "replacement.glb"),
+    });
+
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(true);
+  });
+
+  it("offers nothing to show while no holo is attached", async () => {
+    const subject = await mount({
+      name: "holo",
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(false);
   });
 
   it("does not hand an attached USDZ to the 3D view, which cannot read it", async () => {

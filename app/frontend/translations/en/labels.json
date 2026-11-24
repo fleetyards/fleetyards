@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "Landed Textured Holo",
         "landedHoloTexturedLite": "Landed Textured Lite Holo",
         "holoHull": "Hull Holo",
+        "extendedHoloHull": "Extended Hull Holo",
+        "landedHoloHull": "Landed Hull Holo",
         "holoUsdz": "AR Holo (USDZ)",
         "state": {
           "flight": "In Flight",

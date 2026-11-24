@@ -63,6 +63,8 @@ export const HOLO_FIELDS = [
   "landedHoloTextured",
   "landedHoloTexturedLite",
   "holoHull",
+  "extendedHoloHull",
+  "landedHoloHull",
   "holoUsdz",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
@@ -116,8 +118,14 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
         "holoHull",
         "holoUsdz",
       ],
-      extended: ["holo", "holoLite"],
-      landed: ["holo", "holoLite", "holoTextured", "holoTexturedLite"],
+      extended: ["holo", "holoLite", "holoHull"],
+      landed: [
+        "holo",
+        "holoLite",
+        "holoTextured",
+        "holoTexturedLite",
+        "holoHull",
+      ],
     } as const
   )[state].map((field) => inState(state, field)),
   views: VIEW_ROWS.map((row) => row.map((field) => inState(state, field))),
@@ -223,12 +231,7 @@ export const fieldFor = (filename: string): FolderField | undefined => {
       ?.toLowerCase()
       .replace(/^textured[-_ ]?lite$/, "texturedLite");
 
-    // Only the flying pose is exported without its components, and the
-    // extended one is never exported painted.
-    if (variant === "hull" && prefix) {
-      return undefined;
-    }
-
+    // The extended pose is never exported painted.
     if (variant?.startsWith("textured") && prefix === "extended") {
       return undefined;
     }

@@ -54,7 +54,7 @@ describe("ViewsFolderUpload", () => {
     expect(displaySuccess).not.toHaveBeenCalled();
   });
 
-  it("previews the views it picked out, but not the USDZ", async () => {
+  it("hands a holo on unread, and previews no USDZ", async () => {
     vi.stubGlobal("URL", { ...URL, createObjectURL: () => "blob:view" });
     const read = vi.spyOn(FileReader.prototype, "readAsDataURL");
     const subject = await mount([]);
@@ -62,19 +62,23 @@ describe("ViewsFolderUpload", () => {
       .findComponent({ name: "DirectUpload" })
       .props("filter") as (files: File[]) => File[];
 
+    const holo = new File(["glTF"], "landed_holo_hull.glb");
     const kept = filter([
       new File(["png"], "flight_top.png", { type: "image/png" }),
       new File(["PK"], "flight_holo.usdz"),
+      holo,
     ]);
     await flushPromises();
 
     expect(kept.map((file) => file.name)).toEqual([
       "flight_holo.usdz",
       "flight_top.png",
+      "landed_holo_hull.glb",
     ]);
     expect(read).not.toHaveBeenCalled();
     expect(subject.emitted("selected")?.at(-1)?.[0]).toEqual({
       topView: "blob:view",
+      landedHoloHull: holo,
     });
     read.mockRestore();
     vi.unstubAllGlobals();

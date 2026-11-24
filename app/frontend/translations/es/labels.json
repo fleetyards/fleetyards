@@ -1579,6 +1579,8 @@
         "landedHoloTextured": "Holo texturizado aterrizado",
         "landedHoloTexturedLite": "Holo ligero texturizado aterrizado",
         "holoHull": "Holo del casco",
+        "extendedHoloHull": "Holo del casco extendido",
+        "landedHoloHull": "Holo del casco aterrizado",
         "holoUsdz": "Holo AR (USDZ)",
         "state": {
           "flight": "En vuelo",

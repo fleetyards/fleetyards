@@ -631,10 +631,10 @@ class Model < ApplicationRecord
 
   (DETAIL_ATTACHMENT_NAMES + LITE_HOLO_ATTACHMENT_NAMES).each { |name| has_one_attached name }
 
-  # The flight holo without the components a player can swap, which the loadout
-  # preview mounts the picked ones on at `hardpoint_transforms`. Served with
-  # those rather than in the media payload.
-  LOADOUT_PREVIEW_ATTACHMENT_NAMES = %i[holo_hull].freeze
+  # The holo of each pose without the components a player can swap. The loadout
+  # preview mounts the picked ones on the flight hull at `hardpoint_transforms`,
+  # and is served that hull with those rather than in the media payload.
+  LOADOUT_PREVIEW_ATTACHMENT_NAMES = %i[holo_hull extended_holo_hull landed_holo_hull].freeze
 
   LOADOUT_PREVIEW_ATTACHMENT_NAMES.each { |name| has_one_attached name }
 

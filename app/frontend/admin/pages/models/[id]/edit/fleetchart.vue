@@ -71,10 +71,37 @@ const fieldProps = reactive(
 // Kept for as long as the page lives. A save refetches the model, but the trim
 // that follows replaces the blob and purges the one that refetch named, so the
 // local file is the picture that stays true.
-const previews = ref<Partial<Record<FolderField, string>>>({});
+const previews = shallowRef<Partial<Record<FolderField, string | File>>>({});
 
-const onFolderSelected = (fields: Partial<Record<FolderField, string>>) => {
-  previews.value = fields;
+const previewSrc = (field: FolderField) => {
+  const preview = previews.value[field];
+
+  return typeof preview === "string" ? preview : undefined;
+};
+
+const previewFile = (field: FolderField) => {
+  const preview = previews.value[field];
+
+  return preview instanceof File ? preview : undefined;
+};
+
+const onFolderSelected = (
+  fields: Partial<Record<FolderField, string | File>>,
+) => {
+  previews.value = { ...previews.value, ...fields };
+};
+
+// A field given another file, or none, no longer shows the folder's.
+const dropPreview = (field: FolderField) => {
+  const { [field]: _dropped, ...rest } = previews.value;
+
+  previews.value = rest;
+};
+
+const onFieldUpdate = (field: FolderField, value?: string | null) => {
+  if (value === null) {
+    dropPreview(field);
+  }
 };
 
 const syncMutation = useReloadOneModelShipViews({
@@ -137,11 +164,14 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
         >
           <FormFileInput
             v-model="values[field]"
+            @update:model-value="onFieldUpdate(field, $event)"
+            @uploaded="dropPreview(field)"
             :file="model.media[field]"
             :translation-key="translationKey(field)"
             v-bind="fieldProps[field]"
             :name="field"
-            :preview-src="previews[field]"
+            :preview-file="previewFile(field)"
+            holo-on-demand
             :textured-holo="field.includes('Textured')"
             :allowed-types="
               field === 'holoUsdz'
@@ -157,13 +187,15 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
         <div v-for="field in row" :key="field" class="col-12 col-sm-6 col-md-3">
           <FormFileInput
             v-model="values[field]"
+            @update:model-value="onFieldUpdate(field, $event)"
+            @uploaded="dropPreview(field)"
             :file="model.media[field]"
             :translation-key="translationKey(field)"
             v-bind="fieldProps[field]"
             :allowed-types="AllowedFileTypes.IMAGE"
             :name="field"
             :processing="isProcessing(field)"
-            :preview-src="previews[field]"
+            :preview-src="previewSrc(field)"
             transparent
             clearable
           />
