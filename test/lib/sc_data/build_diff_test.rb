@@ -176,6 +176,22 @@ module ScData
       assert_equal [["type_data.damage", 5]], result.unrecorded
     end
 
+    test "#call keeps such a fact when the same code read both builds" do
+      5.times { |index| component_pair({name: "Gun #{index}", size: "1"}, {name: "Gun #{index}", size: "1", type_data: {"damage" => index}}) }
+
+      result = ::ScData::BuildDiff.new("components", from: OLD, to: NEW, same_code: true).call
+
+      assert_equal 5, result.entries.size
+      assert_empty result.unrecorded
+    end
+
+    test "#call counts only records both builds show towards a fact never recorded" do
+      component_pair({name: "Gun", size: "1"}, {name: "Gun", size: "1", type_data: {"damage" => 1}})
+      4.times { |index| build_for(:component_build, NEW, component: create(:component, :without_build), name: "New #{index}", type_data: {"damage" => 1}) }
+
+      assert_empty diff("components").unrecorded
+    end
+
     test "#call keeps a fact too few records gained to tell" do
       component_pair({name: "Gun", size: "1"}, {name: "Gun", size: "1", type_data: {"damage" => 1}})
 

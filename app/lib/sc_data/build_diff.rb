@@ -45,12 +45,13 @@ module ScData
       end
     end
 
-    attr_reader :catalogue, :from, :to
+    attr_reader :catalogue, :from, :to, :same_code
 
-    def initialize(catalogue, from:, to:)
+    def initialize(catalogue, from:, to:, same_code: false)
       @catalogue = catalogue
       @from = from
       @to = to
+      @same_code = same_code
     end
 
     def call
@@ -66,12 +67,14 @@ module ScData
     UNRECORDED_FROM = 5
 
     # A fact one build states for no record at all and the other for several was
-    # not read from the first, so no record changed in it. The facts left out
+    # not read from the first, so no record changed in it. The same code reads
+    # the same facts, so there such a fact is the game's own. The facts left out
     # come back with the number of records they would have marked as changed.
     private def without_unrecorded_facts(entries)
-      return [entries, []] if catalogue == "loadouts"
+      return [entries, []] if catalogue == "loadouts" || same_code
 
-      stated = [before, after].map { |rows| rows.values.flat_map { |row| stated_fields(row) }.tally }
+      shared = (before.keys & after.keys).select { |id| shown(id, before[id]) && shown(id, after[id]) }
+      stated = [before, after].map { |rows| rows.values_at(*shared).flat_map { |row| stated_fields(row) }.tally }
       counts = entries.flat_map { |entry| entry.fields.map(&:field) }.tally
       unrecorded = counts.select { |field, _count|
         sides = stated.map { |fields| fields.fetch(field, 0) }

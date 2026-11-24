@@ -95,7 +95,7 @@ module Api
       def diff_summary
         return unless set_diff_builds
 
-        @code = ::ScData::CodeDigest.relation(@from, @to)
+        @code = diff_code
         @results = ::ScData::BuildDiff::CATALOGUES.keys.index_with { |catalogue| diff_of(catalogue) }
       end
 
@@ -147,9 +147,13 @@ module Api
           fingerprint(klass.where(environment: source.environment, version: source.version))
         }
 
-        Rails.cache.fetch(["sc-data/diff/v1", catalogue, @from.version, @to.version, *state, *diff_subject_state], expires_in: 1.day) do
-          ::ScData::BuildDiff.new(catalogue, from: @from, to: @to).call
+        Rails.cache.fetch(["sc-data/diff/v2", catalogue, @from.version, @to.version, diff_code, *state, *diff_subject_state], expires_in: 1.day) do
+          ::ScData::BuildDiff.new(catalogue, from: @from, to: @to, same_code: diff_code == ::ScData::CodeDigest::SAME).call
         end
+      end
+
+      private def diff_code
+        @diff_code ||= ::ScData::CodeDigest.relation(@from, @to)
       end
 
       private def diff_subject_state
