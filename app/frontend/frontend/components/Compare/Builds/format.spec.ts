@@ -5,6 +5,7 @@ import {
   entryRoute,
   fieldKey,
   movement,
+  slotPosition,
 } from "@/frontend/components/Compare/Builds/format";
 
 const build = (environment: string, version: string) => ({
@@ -62,6 +63,15 @@ describe("build diff formatting", () => {
     expect(movement({ field: "a", from: 100, to: 62 })).toBe("−38%");
     expect(movement({ field: "a", from: 0, to: 5 })).toBeUndefined();
     expect(movement({ field: "a", from: "x", to: "y" })).toBeUndefined();
+  });
+
+  it("names where a slot is, in translated words", () => {
+    const upper = (word: string) => word.toUpperCase();
+
+    expect(slotPosition("hardpoint_turret_rear_left_02", upper)).toBe(
+      "REAR LEFT 2",
+    );
+    expect(slotPosition("hardpoint_radar", upper)).toBe("");
   });
 
   it("links a record only with a slug and a page", () => {

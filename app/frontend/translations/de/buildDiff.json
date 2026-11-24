@@ -176,6 +176,24 @@
           "craftable": "Stellt her",
           "craftTime": "Herstellungszeit",
           "slotCount": "Zutatenplätze"
+        },
+        "positions": {
+          "left": "links",
+          "right": "rechts",
+          "front": "vorne",
+          "rear": "hinten",
+          "top": "oben",
+          "bottom": "unten",
+          "upper": "obere",
+          "lower": "untere",
+          "nose": "Bug",
+          "tail": "Heck",
+          "side": "seitlich",
+          "mid": "mittig",
+          "center": "Mitte",
+          "wing": "Flügel",
+          "inner": "innen",
+          "outer": "außen"
         }
       }
     }

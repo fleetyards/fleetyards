@@ -176,6 +176,24 @@
           "craftable": "Produit",
           "craftTime": "Temps de fabrication",
           "slotCount": "Emplacements d’ingrédients"
+        },
+        "positions": {
+          "left": "gauche",
+          "right": "droite",
+          "front": "avant",
+          "rear": "arrière",
+          "top": "dessus",
+          "bottom": "dessous",
+          "upper": "supérieur",
+          "lower": "inférieur",
+          "nose": "nez",
+          "tail": "queue",
+          "side": "côté",
+          "mid": "milieu",
+          "center": "centre",
+          "wing": "aile",
+          "inner": "intérieur",
+          "outer": "extérieur"
         }
       }
     }

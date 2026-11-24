@@ -14,6 +14,7 @@ import {
   fieldKey,
   movement,
   readableField,
+  slotPosition,
 } from "@/frontend/components/Compare/Builds/format";
 import {
   ScDataDiffCatalogueEnum,
@@ -44,7 +45,16 @@ const fields = computed(() =>
     : props.entry.fields,
 );
 
-const label = (field: string) => {
+const label = ({ field, category }: ScDataDiffField) => {
+  const slot = `labels.hardpoint.categories.${category}`;
+  if (category && tExists(slot)) {
+    const position = slotPosition(field, (word) =>
+      t(`labels.buildDiff.positions.${word}`),
+    );
+
+    return [t(slot), position].filter(Boolean).join(" · ");
+  }
+
   const key = `labels.buildDiff.fields.${fieldKey(field)}`;
   if (tExists(key)) return t(key);
 
@@ -60,7 +70,9 @@ const number = (field: string, raw: number, digits?: number) => {
   if (isRatio(field)) return `${(raw * 100).toFixed(digits ?? 0)}%`;
   // It also rounds, and states a mass in tonnes, which hides small values.
   if (digits !== undefined || Math.abs(raw) < 1) {
-    return String(Number(raw.toFixed(digits ?? 6)));
+    const exact = String(Number(raw.toFixed(digits ?? 6)));
+
+    return fieldKey(field) === "volume" ? `${exact} SCU` : exact;
   }
   if (fieldKey(field) === "mass") return `${toNumber(raw)} kg`;
 
@@ -127,7 +139,7 @@ const pill = computed(() =>
         class="build-diff-entry__fact"
         data-test="build-diff-fact"
       >
-        <dt>{{ label(item.field) }}</dt>
+        <dt>{{ label(item) }}</dt>
         <dd>
           <span class="build-diff-entry__old">
             {{ values(item)[0] }}

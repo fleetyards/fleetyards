@@ -29,7 +29,10 @@ module ScData
       ]}
     }.freeze
 
-    Field = Data.define(:field, :from, :to)
+    # `category` is what a slot is for, and nil for any other fact.
+    Field = Data.define(:field, :from, :to, :category) do
+      def initialize(field:, from:, to:, category: nil) = super
+    end
     Entry = Data.define(:id, :kind, :name, :fields)
     Result = Data.define(:recorded, :entries) do
       def counts
@@ -246,7 +249,7 @@ module ScData
         name = described[type][id]
         next if name.blank?
 
-        fields = parent_slots.sort_by { |slot| slot.sc_name.to_s }.filter_map { |slot| slot_field(slot) }
+        fields = parent_slots.sort_by { |slot| slot.sc_name.to_s.gsub(/\d+/) { |digits| digits.rjust(4, "0") } }.filter_map { |slot| slot_field(slot) }
         fields = without_renamed_slots(fields)
         next if fields.empty?
 
@@ -276,7 +279,7 @@ module ScData
       to_name = new && to_component_names[new]
       return if (old && from_name.nil?) || (new && to_name.nil?) || from_name == to_name
 
-      Field.new(field: slot.sc_name.to_s, from: from_name, to: to_name)
+      Field.new(field: slot.sc_name.to_s, from: from_name, to: to_name, category: (after[slot.id] || before[slot.id]).category)
     end
 
     # A slot the export renames leaves one build and enters the other with the

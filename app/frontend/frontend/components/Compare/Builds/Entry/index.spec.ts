@@ -61,6 +61,21 @@ describe("CompareBuildsEntry", () => {
     });
   });
 
+  it("names a slot by its translated category and place", async () => {
+    const wrapper = await render(
+      entry([
+        {
+          field: "hardpoint_turret_left",
+          category: "turret",
+          from: "A",
+          to: "B",
+        },
+      ]),
+    );
+
+    expect(wrapper.text()).toContain("Turrets · left");
+  });
+
   it("shows one fact where the list is about it", async () => {
     const wrapper = await render(
       entry([

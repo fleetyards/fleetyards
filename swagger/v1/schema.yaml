@@ -53290,6 +53290,8 @@ components:
           - string
           - boolean
           - 'null'
+        category:
+          type: string
       additionalProperties: false
       required:
       - field

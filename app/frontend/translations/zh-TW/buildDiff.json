@@ -176,6 +176,24 @@
           "craftable": "產物",
           "craftTime": "製作時間",
           "slotCount": "材料槽數"
+        },
+        "positions": {
+          "left": "左",
+          "right": "右",
+          "front": "前",
+          "rear": "後",
+          "top": "頂部",
+          "bottom": "底部",
+          "upper": "上",
+          "lower": "下",
+          "nose": "機頭",
+          "tail": "尾部",
+          "side": "側面",
+          "mid": "中部",
+          "center": "中央",
+          "wing": "機翼",
+          "inner": "內側",
+          "outer": "外側"
         }
       }
     }

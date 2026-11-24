@@ -98,11 +98,12 @@ module ScData
       hardpoint = create(:hardpoint, parent: model, sc_name: "hardpoint_radar_front")
       HardpointBuild.where(hardpoint:).delete_all
       build_for(:hardpoint_build, OLD, hardpoint:, component: radar)
-      build_for(:hardpoint_build, NEW, hardpoint:, component: newer)
+      build_for(:hardpoint_build, NEW, hardpoint:, component: newer, category: :radar)
 
       entry = diff("loadouts").entries.sole
 
       assert_equal "Ballista", entry.name
+      assert_equal HardpointBuild.find_by(hardpoint:, version: NEW.version).category, entry.fields.sole.category
       assert_equal [["hardpoint_radar_front", "Old Radar", "New Radar"]], entry.fields.map { |f| [f.field, f.from, f.to] }
     end
 

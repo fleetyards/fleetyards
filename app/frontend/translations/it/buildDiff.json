@@ -176,6 +176,24 @@
           "craftable": "Produce",
           "craftTime": "Tempo di fabbricazione",
           "slotCount": "Slot ingredienti"
+        },
+        "positions": {
+          "left": "sinistra",
+          "right": "destra",
+          "front": "anteriore",
+          "rear": "posteriore",
+          "top": "in alto",
+          "bottom": "in basso",
+          "upper": "superiore",
+          "lower": "inferiore",
+          "nose": "muso",
+          "tail": "coda",
+          "side": "laterale",
+          "mid": "mediano",
+          "center": "centro",
+          "wing": "ala",
+          "inner": "interno",
+          "outer": "esterno"
         }
       }
     }

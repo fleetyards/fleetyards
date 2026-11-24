@@ -2,6 +2,7 @@
 
 module V1
   module Schemas
+    # `category` is there for a loadout's slots alone, and says what the slot is for.
     class ScDataDiffField
       include OpenapiRuby::Components::Base
 
@@ -9,7 +10,7 @@ module V1
 
       schema({
         type: :object,
-        properties: {field: {type: :string}, from: VALUE, to: VALUE},
+        properties: {field: {type: :string}, from: VALUE, to: VALUE, category: {type: :string}},
         additionalProperties: false,
         required: %w[field]
       })

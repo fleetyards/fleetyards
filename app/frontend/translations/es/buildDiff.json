@@ -176,6 +176,24 @@
           "craftable": "Fabrica",
           "craftTime": "Tiempo de fabricación",
           "slotCount": "Ranuras de ingredientes"
+        },
+        "positions": {
+          "left": "izquierda",
+          "right": "derecha",
+          "front": "delante",
+          "rear": "detrás",
+          "top": "arriba",
+          "bottom": "abajo",
+          "upper": "superior",
+          "lower": "inferior",
+          "nose": "morro",
+          "tail": "cola",
+          "side": "lateral",
+          "mid": "medio",
+          "center": "centro",
+          "wing": "ala",
+          "inner": "interior",
+          "outer": "exterior"
         }
       }
     }

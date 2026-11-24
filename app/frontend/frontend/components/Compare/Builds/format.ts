@@ -13,6 +13,7 @@ export const fieldKey = (field: string) =>
 // The unit `toNumber` formats a fact with. A fact not listed is a plain count.
 export const FIELD_UNITS: Record<string, string> = {
   cargo: "cargo",
+  volume: "cargo",
   personalInventory: "cargo",
   mainAcceleration: "acceleration",
   retroAcceleration: "acceleration",
@@ -115,3 +116,39 @@ export const readableField = (field: string) => {
 
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
+
+export const SLOT_POSITIONS = [
+  "left",
+  "right",
+  "front",
+  "rear",
+  "top",
+  "bottom",
+  "upper",
+  "lower",
+  "nose",
+  "tail",
+  "side",
+  "mid",
+  "center",
+  "wing",
+  "inner",
+  "outer",
+] as const;
+
+// Where on the ship a slot is: the words of its key that name a place, and its
+// number, which tell apart the slots of one kind.
+export const slotPosition = (
+  field: string,
+  translate: (position: (typeof SLOT_POSITIONS)[number]) => string,
+) =>
+  field
+    .toLowerCase()
+    .split("_")
+    .flatMap((word) => {
+      const position = SLOT_POSITIONS.find((item) => item === word);
+      if (position) return [translate(position)];
+
+      return /^\d+$/.test(word) ? [String(Number(word))] : [];
+    })
+    .join(" ");

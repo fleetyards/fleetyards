@@ -176,6 +176,24 @@
           "craftable": "Makes",
           "craftTime": "Craft time",
           "slotCount": "Ingredient slots"
+        },
+        "positions": {
+          "left": "left",
+          "right": "right",
+          "front": "front",
+          "rear": "rear",
+          "top": "top",
+          "bottom": "bottom",
+          "upper": "upper",
+          "lower": "lower",
+          "nose": "nose",
+          "tail": "tail",
+          "side": "side",
+          "mid": "mid",
+          "center": "center",
+          "wing": "wing",
+          "inner": "inner",
+          "outer": "outer"
         }
       }
     }

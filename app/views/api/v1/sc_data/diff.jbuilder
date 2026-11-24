@@ -22,6 +22,7 @@ json.items do
         json.field field.field
         json.from field.from
         json.to field.to
+        json.category field.category if field.category
       end
     end
   end
