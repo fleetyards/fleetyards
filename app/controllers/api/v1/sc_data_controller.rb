@@ -91,6 +91,88 @@ module Api
         @latest_arrivals_version, @latest_arrivals = latest_arrivals
       end
 
+      # How much each catalogue moved between two builds.
+      def diff_summary
+        return unless set_diff_builds
+
+        @results = ::ScData::BuildDiff::CATALOGUES.keys.index_with { |catalogue| diff_of(catalogue) }
+      end
+
+      # One catalogue's records between two builds, with both values of every
+      # fact that moved. `kind`, `field` and `search` narrow the list, the counts
+      # beside it stay those of the whole comparison.
+      def diff
+        return unless set_diff_builds
+
+        catalogue = params[:catalogue]
+        return not_found unless ::ScData::BuildDiff::CATALOGUES.key?(catalogue)
+
+        @result = diff_of(catalogue)
+        rows = narrow(@result.entries)
+        @entries = Kaminari.paginate_array(rows).page(page_params).per(diff_per_page)
+        @links = ::ScData::BuildDiffLinks.new(catalogue, @entries).call
+        @contexts = ::ScData::BuildDiffContext.new(catalogue, @entries, from: @from, to: @to).call
+      end
+
+      DIFF_PER_PAGE = 48
+      DIFF_PER_PAGE_MAX = 240
+
+      private def diff_per_page
+        size = per_page_params.to_i
+
+        size.positive? ? [size, DIFF_PER_PAGE_MAX].min : DIFF_PER_PAGE
+      end
+
+      private def set_diff_builds
+        @from = recorded_build(params[:from])
+        @to = recorded_build(params[:to])
+        return true if @from && @to
+
+        not_found
+        false
+      end
+
+      # Loadouts name parts and ships out of these as well as reading slots.
+      DIFF_BUILDS = {"loadouts" => [HardpointBuild, ComponentBuild, ModelBuild, ModelModuleBuild]}.freeze
+
+      # Where visibility and the names behind references live.
+      DIFF_SUBJECTS = [Model, ModelModule, Location, Manufacturer].freeze
+
+      # Counted as well as timed: a retired row leaves without moving the newest
+      # timestamp.
+      private def diff_of(catalogue)
+        builds = DIFF_BUILDS.fetch(catalogue) { [::ScData::BuildDiff::CATALOGUES.fetch(catalogue).fetch(:build).constantize] }
+        state = builds.product([@from, @to]).map { |klass, source|
+          fingerprint(klass.where(environment: source.environment, version: source.version))
+        }
+
+        Rails.cache.fetch(["sc-data/diff/v1", catalogue, @from.version, @to.version, *state, *diff_subject_state], expires_in: 1.day) do
+          ::ScData::BuildDiff.new(catalogue, from: @from, to: @to).call
+        end
+      end
+
+      private def diff_subject_state
+        @diff_subject_state ||= DIFF_SUBJECTS.map { |klass| fingerprint(klass.all) }
+      end
+
+      private def fingerprint(scope)
+        count, written = scope.pick(Arel.sql("COUNT(*), MAX(updated_at)"))
+
+        "#{count}-#{written.to_f}"
+      end
+
+      private def narrow(entries)
+        entries = entries.select { |entry| entry.kind == params[:kind] } if params[:kind].present?
+        entries = entries.select { |entry| entry.fields.any? { |field| field.field == params[:field] } } if params[:field].present?
+
+        if params[:search].present?
+          term = params[:search].to_s.downcase
+          entries = entries.select { |entry| entry.name.downcase.include?(term) }
+        end
+
+        entries
+      end
+
       # The ships the most recent patch that brought any brought, for a patch
       # that brought none -- so the section can still say what is newest.
       private def latest_arrivals
