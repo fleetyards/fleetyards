@@ -4977,6 +4977,7 @@
         "friend": "Amis"
       },
       "blueprintLogImport": {
+        "translation": "Traduction",
         "fresh": "Nouveaux",
         "ambiguous": "Choisissez le bon plan",
         "owned": "Déjà possédés",

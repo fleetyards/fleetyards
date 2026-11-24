@@ -4,12 +4,15 @@
 //   <2026-11-02T18:04:11.512Z> [Notice] <SHUDEvent_OnNotification> Added
 //   notification "Received Blueprint: Arbor MH1 Mining Laser: " [12] to queue.
 //
-// Only the name and the timestamp are read; everything else in a log -- account
+// The text is the game's own localisation, so a translated game logs it in that
+// language. Only the name and the timestamp are read; everything else in a log -- account
 // ids, other players' handles, locations -- stays on the player's machine.
 
 export interface BlueprintReceipt {
   name: string;
   receivedAt?: string;
+  // Announced in another language than the game's own English.
+  translated?: boolean;
 }
 
 export interface BlueprintLogFile {
@@ -18,7 +21,24 @@ export interface BlueprintLogFile {
 }
 
 const NOTIFICATION = "<SHUDEvent_OnNotification>";
-const MARKER = "Received Blueprint: ";
+const NOTIFICATION_TEXT = /Added notification "(.*)$/;
+const ENGLISH_MARKER = "Received Blueprint:";
+
+// What the community translations write in its place, for logs read without
+// the translation's own global.ini.
+const TRANSLATED_MARKERS = [
+  "Plano Recibido:",
+  "Planimetría Recibida:",
+  "Plan Reçu :",
+  "Progetto Ricevuto:",
+  "Blueprint Recebido:",
+  "획득한 설계도:",
+];
+
+const DEFAULT_MARKERS = [ENGLISH_MARKER, ...TRANSLATED_MARKERS];
+
+// Text styling such as `<EM4>[BP]</EM4>`, which translations add to names too.
+const MARKUP = /<\/?EM\d*>/gi;
 const TIMESTAMP = /^<([^>]+)>/;
 const QUEUE_SUFFIX = /"\s*\[\d+\]\s*to queue/;
 
@@ -35,14 +55,41 @@ const HEADER_BYTES = 65536;
 export const MAX_NAME_LENGTH = 255;
 export const MAX_NAMES = 5000;
 
-export const parseReceiptLine = (line: string): BlueprintReceipt | null => {
+export const plainText = (text: string) =>
+  text.replace(MARKUP, "").normalize("NFC").replace(/\s+/g, " ").trim();
+
+// Lowercasing can change a string's length, so a marker is found by a pattern
+// on the original text rather than by an offset into a lowercased copy.
+const escapePattern = (text: string) =>
+  text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const markerPattern = (markers: string[]) =>
+  new RegExp(markers.map(escapePattern).join("|"), "iu");
+
+const ENGLISH_PATTERN = markerPattern([ENGLISH_MARKER]);
+const DEFAULT_PATTERN = markerPattern(DEFAULT_MARKERS);
+
+export const receiptPattern = (markers: string[]) =>
+  markers.length
+    ? markerPattern([...markers, ...DEFAULT_MARKERS])
+    : DEFAULT_PATTERN;
+
+export const parseReceiptLine = (
+  line: string,
+  pattern = DEFAULT_PATTERN,
+): BlueprintReceipt | null => {
   if (!line.includes(NOTIFICATION)) return null;
 
-  const start = line.indexOf(MARKER);
+  const raw = NOTIFICATION_TEXT.exec(line)?.[1];
 
-  if (start === -1) return null;
+  if (!raw) return null;
 
-  const rest = line.slice(start + MARKER.length);
+  const text = plainText(raw);
+  const marker = pattern.exec(text);
+
+  if (!marker) return null;
+
+  const rest = text.slice(marker.index + marker[0].length);
   let end = rest.search(QUEUE_SUFFIX);
 
   if (end === -1) end = rest.lastIndexOf('"');
@@ -55,12 +102,19 @@ export const parseReceiptLine = (line: string): BlueprintReceipt | null => {
 
   const receivedAt = TIMESTAMP.exec(line)?.[1];
 
-  return receivedAt ? { name, receivedAt } : { name };
+  return {
+    name,
+    ...(receivedAt && { receivedAt }),
+    ...(!ENGLISH_PATTERN.test(marker[0]) && { translated: true }),
+  };
 };
 
-export const parseReceipts = (text: string): BlueprintReceipt[] =>
+export const parseReceipts = (
+  text: string,
+  pattern?: RegExp,
+): BlueprintReceipt[] =>
   text.split(/\r?\n/).flatMap((line) => {
-    const receipt = parseReceiptLine(line);
+    const receipt = parseReceiptLine(line, pattern);
 
     return receipt ? [receipt] : [];
   });
@@ -91,7 +145,10 @@ export const isImportableChannel = (channel?: string) =>
 export const isLogFile = (file: File) =>
   file.name.toLowerCase().endsWith(".log");
 
-const readText = async (file: Blob, onLine: (line: string) => void) => {
+export const isTranslationFile = (file: File) =>
+  file.name.toLowerCase() === "global.ini";
+
+export const readText = async (file: Blob, onLine: (line: string) => void) => {
   if (
     typeof file.stream !== "function" ||
     typeof TextDecoderStream === "undefined"
@@ -126,6 +183,7 @@ export const readLogChannel = async (file: Blob) =>
 
 export const readBlueprintLog = async (
   file: File,
+  pattern?: RegExp,
 ): Promise<BlueprintLogFile> => {
   const channel = await readLogChannel(file);
 
@@ -134,7 +192,7 @@ export const readBlueprintLog = async (
   const receipts: BlueprintReceipt[] = [];
 
   await readText(file, (line) => {
-    const receipt = parseReceiptLine(line);
+    const receipt = parseReceiptLine(line, pattern);
 
     if (receipt) receipts.push(receipt);
   });

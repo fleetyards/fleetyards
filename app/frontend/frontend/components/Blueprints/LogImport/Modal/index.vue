@@ -24,11 +24,17 @@ import {
 import {
   isImportableChannel,
   isLogFile,
+  isTranslationFile,
   readBlueprintLog,
   readLogChannel,
+  receiptPattern,
   uniqueNames,
   type BlueprintReceipt,
 } from "@/frontend/utils/blueprintLog";
+import {
+  nameKeysFor,
+  readBlueprintTranslations,
+} from "@/frontend/utils/blueprintTranslation";
 import { reviewMatches, type BlueprintLogReview } from "../review";
 
 const { t, currentLocale } = useI18n();
@@ -51,6 +57,8 @@ interface LogCandidate {
 const step = ref<Step>("pick");
 
 const candidates = ref<LogCandidate[]>([]);
+const translationFiles = ref<LogCandidate[]>([]);
+const translatedNames = ref(false);
 const filesTotal = ref(0);
 const filesRead = ref(0);
 const skippedFiles = ref(0);
@@ -66,6 +74,8 @@ const filesInput = ref<HTMLInputElement>();
 const reset = () => {
   step.value = "pick";
   candidates.value = [];
+  translationFiles.value = [];
+  translatedNames.value = false;
   review.value = undefined;
   selected.value = new Set();
   result.value = undefined;
@@ -98,6 +108,11 @@ const collectFiles = async (files: File[]) => {
       }),
     );
 
+    translationFiles.value = files.filter(isTranslationFile).map((file) => ({
+      file,
+      path: filePath(file),
+      importable: true,
+    }));
     candidates.value = found.sort((a, b) => a.path.localeCompare(b.path));
     step.value = "files";
   } catch {
@@ -128,8 +143,13 @@ const readFiles = async () => {
   const receipts: BlueprintReceipt[] = [];
 
   try {
+    const translation = await readBlueprintTranslations(
+      translationFiles.value.map(({ file }) => file),
+    );
+    const pattern = receiptPattern(translation.markers);
+
     for (const file of logs) {
-      const log = await readBlueprintLog(file);
+      const log = await readBlueprintLog(file, pattern);
 
       receipts.push(...log.receipts);
       filesRead.value += 1;
@@ -137,7 +157,16 @@ const readFiles = async () => {
 
     const names = uniqueNames(receipts);
 
-    const matches = names.length ? await matchBlueprintLogNames({ names }) : [];
+    const nameKeys = nameKeysFor(names, translation);
+
+    translatedNames.value = receipts.some(({ translated }) => translated);
+
+    const matches = names.length
+      ? await matchBlueprintLogNames({
+          names,
+          ...(nameKeys.length && { nameKeys }),
+        })
+      : [];
 
     review.value = reviewMatches(matches);
     selected.value = new Set(review.value.fresh.map(({ slug }) => slug));
@@ -164,6 +193,13 @@ const onInputChange = async (event: Event) => {
 
   await collectFiles(files);
 };
+
+const missesTranslation = computed(
+  () =>
+    translatedNames.value &&
+    !translationFiles.value.length &&
+    !!review.value?.unmatched.length,
+);
 
 const toggle = (slug: string, checked: boolean) => {
   const next = new Set(selected.value);
@@ -281,7 +317,7 @@ const close = () => comlink.emit("close-modal");
         ref="filesInput"
         type="file"
         class="blueprint-log-import__input"
-        accept=".log"
+        accept=".log,.ini"
         multiple
         data-test="blueprint-log-import-files-input"
         @change="onInputChange"
@@ -294,6 +330,10 @@ const close = () => comlink.emit("close-modal");
       <p class="blueprint-log-import__hint">
         <i class="fa-light fa-clock-rotate-left" />
         {{ t("texts.blueprintLogImport.limits") }}
+      </p>
+      <p class="blueprint-log-import__hint">
+        <i class="fa-light fa-language" />
+        {{ t("texts.blueprintLogImport.translation") }}
       </p>
     </div>
 
@@ -331,6 +371,21 @@ const close = () => comlink.emit("close-modal");
             <template v-if="!candidate.importable">
               · {{ t("labels.blueprintLogImport.skipped") }}
             </template>
+          </span>
+        </li>
+        <li
+          v-for="translation in translationFiles"
+          :key="translation.path"
+          class="blueprint-log-import__file"
+          data-test="blueprint-log-import-translation"
+        >
+          <i class="fa-light fa-language" />
+          <span class="blueprint-log-import__file-name">
+            {{ translation.path }}
+          </span>
+          <span class="blueprint-log-import__file-meta">
+            {{ t("labels.blueprintLogImport.translation") }} ·
+            {{ fileSize(translation.file.size) }}
           </span>
         </li>
       </ul>
@@ -446,6 +501,13 @@ const close = () => comlink.emit("close-modal");
             {{ review.unmatched.length }}
           </span>
         </h4>
+        <p
+          v-if="missesTranslation"
+          class="blueprint-log-import__hint"
+          data-test="blueprint-log-import-misses-translation"
+        >
+          {{ t("texts.blueprintLogImport.missesTranslation") }}
+        </p>
         <ul class="blueprint-log-import__list">
           <li v-for="name in review.unmatched" :key="name">{{ name }}</li>
         </ul>

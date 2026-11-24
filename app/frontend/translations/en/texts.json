@@ -355,6 +355,8 @@
         "keepsRunning": "It keeps running if you close this window. Keep the tab open until it finishes."
       },
       "blueprintLogImport": {
+        "translation": "Playing with a translation? Keep it installed while you drop the LIVE folder, or add its global.ini, so translated names can be recognised.",
+        "missesTranslation": "These logs were written with a translation. Start over and add that translation's global.ini so its names can be recognised.",
         "intro": "Star Citizen logs every blueprint you receive. Drop your LIVE folder to mark them as owned; Game.log and the logbackups folder are both read.",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "Drop the LIVE folder or log files here",

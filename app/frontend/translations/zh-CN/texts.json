@@ -354,6 +354,8 @@
         "keepsRunning": "关闭此窗口后它仍会继续运行。请保持标签页打开，直到完成。"
       },
       "blueprintLogImport": {
+        "translation": "使用了汉化？拖入 LIVE 文件夹时请保留汉化，或添加其 global.ini，以便识别翻译后的名称。",
+        "missesTranslation": "这些日志是在使用汉化时写入的。请重新开始并添加该汉化的 global.ini，以便识别其中的名称。",
         "intro": "Star Citizen 会记录你获得的每一个蓝图。拖入 LIVE 文件夹即可将它们标记为已拥有；Game.log 和 logbackups 文件夹都会被读取。",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "将 LIVE 文件夹或日志文件拖到这里",

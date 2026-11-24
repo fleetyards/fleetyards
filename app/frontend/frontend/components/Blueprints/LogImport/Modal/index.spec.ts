@@ -194,6 +194,53 @@ describe("BlueprintLogImportModal", () => {
     expect(matchBlueprintLogNames).not.toHaveBeenCalled();
   });
 
+  const translatedLog = () =>
+    new File(
+      [receipt("Casco Argus").replace("Received Blueprint", "Plano Recibido")],
+      "Game.log",
+    );
+
+  it("sends the keys a dropped translation writes the names for", async () => {
+    matchBlueprintLogNames.mockResolvedValue([
+      { name: "Casco Argus", blueprints: [option("argus-helmet")] },
+    ]);
+
+    const wrapper = await mount();
+
+    await pick(wrapper, [
+      translatedLog(),
+      new File(["item_Name_argus=Casco Argus"], "global.ini"),
+    ]);
+
+    expect(
+      wrapper.findAll("[data-test='blueprint-log-import-translation']"),
+    ).toHaveLength(1);
+
+    await read(wrapper);
+
+    expect(matchBlueprintLogNames).toHaveBeenCalledWith({
+      names: ["Casco Argus"],
+      nameKeys: [{ name: "Casco Argus", keys: ["item_name_argus"] }],
+    });
+  });
+
+  it("asks for the translation when translated names match nothing", async () => {
+    matchBlueprintLogNames.mockResolvedValue([
+      { name: "Casco Argus", blueprints: [] },
+    ]);
+
+    const wrapper = await mount();
+
+    await pick(wrapper, [translatedLog()]);
+    await read(wrapper);
+
+    expect(
+      wrapper
+        .find("[data-test='blueprint-log-import-misses-translation']")
+        .exists(),
+    ).toBe(true);
+  });
+
   it("skips the match when the logs hold no receipts", async () => {
     const wrapper = await mount();
 
