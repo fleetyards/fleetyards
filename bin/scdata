@@ -66,10 +66,11 @@ def s3_settings(optional: false)
   return ScData::ObjectStore.settings if ScData::ObjectStore.configured?
 
   {
-    endpoint: "https://fsn1.your-objectstorage.com",
+    endpoint: read_secret("config/endpoint", optional: optional),
     bucket: "fltyrd-sc",
-    access_key_id: read_secret("access_key_id", optional: optional),
-    secret_access_key: read_secret("secret_access_key", optional: optional)
+    region: "auto",
+    access_key_id: read_secret("username", optional: optional),
+    secret_access_key: read_secret("password", optional: optional)
   }
 end
 
@@ -80,7 +81,7 @@ end
 # `ObjectStore` raise `NotConfigured`, which is what that fallback rescues.
 # Every other caller moves data and has nothing to fall back on.
 def read_secret(field, optional: false)
-  value = `op read "op://Fleetyards/HETZNER_S3/#{field}"`.strip
+  value = `op read "op://Fleetyards/R2_SC_DATA_WRITE/#{field}"`.strip
 
   unless $?.success?
     return nil if optional
@@ -312,7 +313,7 @@ when "manifest"
 # Never fails. The step this replaces was a local YAML read that could not, and
 # it gates every `ruby-tests` run -- including ones whose cache would have hit
 # and needed no network at all. A bucket that cannot be reached falls back to
-# the version, which is what the key held before any of this, so a Hetzner blip
+# the version, which is what the key held before any of this, so a storage blip
 # costs a stale cache entry rather than a red run on every open PR.
 when "cache-key"
   boot_rails

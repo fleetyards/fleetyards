@@ -64,7 +64,8 @@ env:
     MAX_THREADS: "5"
     MIN_THREADS: "5"
     ON_SUBDOMAIN: "true"
-    SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
+    SC_DATA_S3__BUCKET: fltyrd-sc
+    SC_DATA_S3__REGION: auto
   secret:
     # Rails core (all other secrets are in Rails credentials)
     - RAILS_MASTER_KEY
@@ -73,6 +74,7 @@ env:
     # Redis
     - REDIS_URL
     # sc_data object store, kept apart from the upload store
+    - SC_DATA_S3__ENDPOINT
     - SC_DATA_S3__ACCESS_KEY_ID
     - SC_DATA_S3__SECRET_ACCESS_KEY
     # Bunny Storage upload store; endpoint, bucket, region and STORAGE_PRIMARY
