@@ -115,6 +115,10 @@ const props = withDefaults(defineProps<Props>(), {
 watch(
   () => props.modelValue,
   (newValue) => {
+    if (newValue !== null) {
+      cleared.value = false;
+    }
+
     if (newValue !== inputValue.value) {
       resetField({
         value: newValue,
@@ -173,6 +177,9 @@ const internalSrc = ref<string>();
 // the picture for it left the input blank.
 const uploadedHere = ref(false);
 
+// The attachment is marked for removal: `file` names it until the form is saved.
+const cleared = ref(false);
+
 /*
  * A failed upload used to reach nobody. The uploader caught it, cleared itself
  * and raised a toast, and the only event it emitted afterwards was
@@ -227,6 +234,7 @@ const clear = () => {
     directUpload.value?.clear();
   } else {
     handleReset();
+    cleared.value = true;
     internalSrc.value = undefined;
     emit("update:modelValue", null);
   }
@@ -365,6 +373,7 @@ const directUpload = ref<InstanceType<typeof DirectUpload>>();
 
 const setup = () => {
   uploadedHere.value = false;
+  cleared.value = false;
 
   directUpload.value?.clear();
 
@@ -426,7 +435,7 @@ const holoModel = computed(() => {
 });
 
 const currentHoloModel = computed(() => {
-  if (uploadedHere.value) {
+  if (uploadedHere.value || cleared.value) {
     return undefined;
   }
 
@@ -435,7 +444,9 @@ const currentHoloModel = computed(() => {
 
 const holoRequested = ref(false);
 
-const showHolo = computed(() => !props.holoOnDemand || holoRequested.value);
+const showHolo = computed(
+  () => !cleared.value && (!props.holoOnDemand || holoRequested.value),
+);
 
 // Asking for one holo is not asking for the one that replaces it.
 watch(

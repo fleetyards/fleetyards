@@ -358,6 +358,31 @@ describe("FormFileInput holos", () => {
     expect(viewer(subject).exists()).toBe(true);
   });
 
+  it("takes a shown holo away when it is cleared", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      clearable: true,
+      holoOnDemand: true,
+    });
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+
+    await subject.find(".base-image-input__clear").trigger("click");
+    await subject.setProps({ modelValue: null });
+
+    expect(viewer(subject).exists()).toBe(false);
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(false);
+
+    await subject.setProps({
+      file: holoFile("model/gltf-binary", "replacement.glb"),
+    });
+
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(true);
+  });
+
   it("offers nothing to show while no holo is attached", async () => {
     const subject = await mount({
       name: "holo",
