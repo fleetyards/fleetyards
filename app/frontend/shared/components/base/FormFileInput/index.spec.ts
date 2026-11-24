@@ -306,6 +306,68 @@ describe("FormFileInput holos", () => {
     ]);
   });
 
+  const viewer = (subject: VueWrapper) =>
+    subject.findComponent({ name: "HoloViewer" });
+
+  it("draws an on-demand holo only while it is asked for", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+    const toggle = subject.find("[data-test='toggle-holo-holo']");
+
+    expect(viewer(subject).exists()).toBe(false);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+
+    await toggle.trigger("click");
+    expect(viewer(subject).exists()).toBe(false);
+  });
+
+  it("waits to be asked again for a holo that replaces the shown one", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    await subject.setProps({
+      file: holoFile("model/gltf-binary", "replacement.glb"),
+    });
+
+    expect(viewer(subject).exists()).toBe(false);
+  });
+
+  it("draws a local holo on demand, and never as a picture", async () => {
+    const subject = await mount({
+      name: "holo",
+      previewSrc: "blob:local-holo",
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    expect(viewer(subject).exists()).toBe(false);
+    expect(shownImage(subject).exists()).toBe(false);
+
+    await subject.find("[data-test='toggle-holo-holo']").trigger("click");
+    expect(viewer(subject).exists()).toBe(true);
+  });
+
+  it("offers nothing to show while no holo is attached", async () => {
+    const subject = await mount({
+      name: "holo",
+      allowedTypes: "holo",
+      holoOnDemand: true,
+    });
+
+    expect(subject.find("[data-test='toggle-holo-holo']").exists()).toBe(false);
+  });
+
   it("does not hand an attached USDZ to the 3D view, which cannot read it", async () => {
     const subject = await mount({
       name: "holoUsdz",

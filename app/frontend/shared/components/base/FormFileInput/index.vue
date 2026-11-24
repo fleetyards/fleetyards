@@ -71,6 +71,11 @@ type Props = {
   processing?: boolean;
   /** A textured export: drawn with its own materials, not the blue holo's. */
   texturedHolo?: boolean;
+  /**
+   * Draws the holo only once it is asked for. Every viewer holds a WebGL
+   * context and its whole file, which a page full of them cannot afford.
+   */
+  holoOnDemand?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -104,6 +109,7 @@ const props = withDefaults(defineProps<Props>(), {
   presetValue: null,
   presetGroup: undefined,
   processing: false,
+  holoOnDemand: false,
 });
 
 watch(
@@ -419,6 +425,32 @@ const holoModel = computed(() => {
   return undefined;
 });
 
+const currentHoloModel = computed(() => {
+  if (uploadedHere.value) {
+    return undefined;
+  }
+
+  return previewHoloModel.value ?? holoModel.value;
+});
+
+const holoRequested = ref(false);
+
+const showHolo = computed(() => !props.holoOnDemand || holoRequested.value);
+
+// Asking for one holo is not asking for the one that replaces it.
+watch(
+  () => currentHoloModel.value?.path,
+  () => {
+    holoRequested.value = false;
+  },
+);
+
+const holoToggleLabel = computed(() =>
+  holoRequested.value
+    ? t("actions.holoViewer.hide")
+    : t("actions.holoViewer.show"),
+);
+
 // The dropzone is only pinned open while there is nothing to look at. A
 // previewSrc counts: the folder upload fills the whole form that way, and
 // forcing the overlay on top of it hid every picture it just set.
@@ -468,7 +500,7 @@ defineExpose({
         <!-- A value set from outside brings its own file: the upload that
              filled it happened elsewhere, so this input has none to show. -->
         <HoloViewer
-          v-if="previewHoloModel"
+          v-if="previewHoloModel && showHolo"
           :controllable="false"
           :models="[previewHoloModel]"
           inline
@@ -484,7 +516,7 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <LazyImage
-          v-else-if="previewSrc"
+          v-else-if="previewSrc && !previewHoloModel"
           v-tooltip.right="hasErrors && errorMessage"
           :src="previewSrc"
           :transparent="transparent || avatar"
@@ -502,7 +534,7 @@ defineExpose({
           :shadow="!transparent && !avatar"
         />
         <HoloViewer
-          v-else-if="holoModel"
+          v-else-if="holoModel && showHolo"
           :controllable="false"
           :models="[holoModel]"
           inline
@@ -543,6 +575,20 @@ defineExpose({
         @click="pickerOpen = true"
       >
         <i class="fa-light fa-images" />
+      </Btn>
+      <Btn
+        v-if="holoOnDemand && currentHoloModel"
+        v-tooltip="holoToggleLabel"
+        class="base-image-input__holo-toggle"
+        variant="bare"
+        :aria-label="holoToggleLabel"
+        :data-test="`toggle-holo-${name}`"
+        @click="holoRequested = !holoRequested"
+      >
+        <i
+          class="fa-light"
+          :class="holoRequested ? 'fa-eye-slash' : 'fa-eye'"
+        />
       </Btn>
       <PresetImagePicker
         v-if="pickerOpen && presetCatalogue"

@@ -421,6 +421,8 @@
         "generateBackupCodes": "Generate Backup Codes"
       },
       "holoViewer": {
+        "show": "Show holo",
+        "hide": "Hide holo",
         "loadAnyway": "Load anyway",
         "autoRotate": {
           "enable": "Enable auto rotate",

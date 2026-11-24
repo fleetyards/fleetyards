@@ -166,7 +166,8 @@
    * and a destructive action should not sit where a hand reaches for the
    * harmless one.
    */
-  &__preset {
+  &__preset,
+  &__holo-toggle {
     position: absolute;
     right: 0;
     bottom: 5px;

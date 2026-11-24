@@ -421,6 +421,8 @@
         "generateBackupCodes": "Generar códigos de respaldo"
       },
       "holoViewer": {
+        "show": "Mostrar holo",
+        "hide": "Ocultar holo",
         "loadAnyway": "Cargar de todos modos",
         "autoRotate": {
           "enable": "Activar rotación automática",
