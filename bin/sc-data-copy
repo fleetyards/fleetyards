@@ -4,21 +4,37 @@
 # live. Every part can be run again and only moves what is still different.
 #
 #   bin/sc-data-copy              everything the app reads
-#   bin/sc-data-copy ship-views   one part: renders folder, parsed, or an export
+#   bin/sc-data-copy ship-views   one part: renders folder, parsed, or an export,
+#                                 also one the config does not name yet
 
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+# Once the app reads R2, Hetzner's copy is the stale one, and mirroring it would
+# put an old parsed tree back.
+if ! grep -q 'SC_DATA_S3__ENDPOINT: https://fsn1' config/deploy.yml; then
+  echo "ERROR: the app no longer reads the game data from Hetzner, so there is nothing to copy from it."
+  exit 1
+fi
+
 BUCKET="fltyrd-sc"
+VERSION_PATTERN='^[0-9.]+-[a-z]+\.[0-9]+$'
 RENDERS="ship-views item-views characters skyboxes"
 
 EXPORTS=$(ruby -ryaml -e 'puts YAML.load_file("config/app/sc_data.yml").dig("shared", "sources").values')
 
-RCLONE=(rclone --transfers 32 --checkers 64 --retries 5 --stats 60s --stats-one-line --log-level NOTICE)
+# No read buffers and one part at a time per file: 32 transfers have to fit the
+# container's memory.
+RCLONE=(rclone --transfers 32 --checkers 64 --buffer-size 0 --s3-upload-concurrency 1 --retries 5
+  --stats 60s --stats-one-line --stats-log-level NOTICE --log-level NOTICE)
+
+# Streams the progress instead of printing it at the end.
+EXEC_FLAGS=(--reuse)
+[ -t 1 ] && EXEC_FLAGS+=(--interactive)
 
 run() {
-  bundle exec kamal accessory exec sc-data-copy -d live --reuse "${RCLONE[*]} $*"
+  bundle exec kamal accessory exec sc-data-copy -d live "${EXEC_FLAGS[@]}" "${RCLONE[*]} $*"
 }
 
 copy_part() {
@@ -48,9 +64,8 @@ if [ "${#PARTS[@]}" -eq 0 ]; then
   PARTS=($EXPORTS $RENDERS parsed)
 fi
 
-# A mistyped part would otherwise copy nothing, or a whole export nobody reads.
 for part in "${PARTS[@]}"; do
-  if ! grep -qxF -- "$part" <<< "$(printf '%s\n' $EXPORTS $RENDERS parsed)"; then
+  if ! grep -qxF -- "$part" <<< "$(printf '%s\n' $EXPORTS $RENDERS parsed)" && ! [[ "$part" =~ $VERSION_PATTERN ]]; then
     echo "ERROR: unknown part '$part'. Known: $(echo $EXPORTS) $RENDERS parsed"
     exit 1
   fi
