@@ -49,6 +49,7 @@ module ScData
         assert_equal 120, recipe[:craft_time]
         assert_equal 3, recipe[:slot_count]
         assert_equal "Yubarev Pistol", recipe.dig(:output, :name)
+        assert_equal "item_name_klwe_smg_energy_01", recipe.dig(:output, :name_key)
         assert_equal "Equipment", recipe.dig(:output, :kind)
         assert_equal 1, recipe[:slots].size
       end

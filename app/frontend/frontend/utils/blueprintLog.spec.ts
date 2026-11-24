@@ -5,6 +5,7 @@ import {
   parseReceiptLine,
   parseReceipts,
   readBlueprintLog,
+  receiptPattern,
   uniqueNames,
 } from "./blueprintLog";
 
@@ -33,6 +34,28 @@ describe("parseReceiptLine", () => {
     expect(parseReceiptLine(receiptLine("5CA 'Akura'"))?.name).toBe(
       "5CA 'Akura'",
     );
+  });
+
+  it.each([
+    ["Plano Recibido: Arbor MH1", "Arbor MH1"],
+    ["Planimetría Recibida: Arbor MH1", "Arbor MH1"],
+    ["<EM4>[BP]</EM4> Plano recibido: <EM4>Arbor</EM4> MH1", "Arbor MH1"],
+    ["Plan Reçu\u00a0: Arbor MH1", "Arbor MH1"],
+    ["획득한 설계도: Arbor MH1", "Arbor MH1"],
+  ])("reads a translated receipt: %s", (text, name) => {
+    const line = receiptLine("X").replace("Received Blueprint: X", text);
+
+    expect(parseReceiptLine(line)).toMatchObject({ name, translated: true });
+  });
+
+  it("reads a receipt announced the way a translation file words it", () => {
+    const line = receiptLine("Aspis").replace("Received Blueprint", "Bauplan");
+
+    expect(parseReceiptLine(line)).toBeNull();
+    expect(parseReceiptLine(line, receiptPattern(["Bauplan:"]))).toMatchObject({
+      name: "Aspis",
+      translated: true,
+    });
   });
 
   it("ignores other notifications", () => {

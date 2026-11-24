@@ -4974,6 +4974,7 @@
         "friend": "已是好友"
       },
       "blueprintLogImport": {
+        "translation": "翻譯檔案",
         "fresh": "新藍圖",
         "ambiguous": "選擇正確的藍圖",
         "owned": "已擁有",

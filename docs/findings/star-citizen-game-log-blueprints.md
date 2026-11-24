@@ -19,3 +19,11 @@ receives. `logbackups/` holds earlier sessions' logs in the same format.
 - Other community tools parse the same line client-side, in the browser,
   because the rest of a log carries account ids, other players' handles and
   locations.
+- The text is localised: it is `crafting_hud_notification_received_blueprint`
+  from the active `global.ini`, so a translated game logs `Plano Recibido: ...`,
+  and the item name in that language. Removing a translation does not change
+  logs already written. The wording differs per translation, some add
+  `<EM4>` markup, and some leave the key out.
+- A translated name resolves through the translation's own `global.ini`, from
+  name to localisation key to `Blueprint#name_key`. The key cannot be derived
+  from the record key: some items borrow another item's entry.

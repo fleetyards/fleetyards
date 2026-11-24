@@ -354,6 +354,8 @@
         "keepsRunning": "Elle continue si vous fermez cette fenêtre. Gardez l'onglet ouvert jusqu'à la fin."
       },
       "blueprintLogImport": {
+        "translation": "Vous jouez avec une traduction ? Laissez-la installée en déposant le dossier LIVE, ou ajoutez son global.ini, pour que les noms traduits soient reconnus.",
+        "missesTranslation": "Ces logs ont été écrits avec une traduction. Recommencez et ajoutez le global.ini de cette traduction pour que ses noms soient reconnus.",
         "intro": "Star Citizen consigne chaque plan que vous recevez. Déposez votre dossier LIVE pour les marquer comme possédés ; Game.log et le dossier logbackups sont tous deux lus.",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "Déposez ici le dossier LIVE ou des fichiers log",

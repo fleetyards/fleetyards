@@ -354,6 +354,8 @@
         "keepsRunning": "關閉此視窗後它仍會繼續執行。請保持分頁開啟，直到完成。"
       },
       "blueprintLogImport": {
+        "translation": "使用了翻譯？拖入 LIVE 資料夾時請保留翻譯，或加入其 global.ini，以便辨識翻譯後的名稱。",
+        "missesTranslation": "這些日誌是在使用翻譯時寫入的。請重新開始並加入該翻譯的 global.ini，以便辨識其中的名稱。",
         "intro": "Star Citizen 會記錄你獲得的每一個藍圖。拖入 LIVE 資料夾即可將它們標記為已擁有；Game.log 與 logbackups 資料夾都會被讀取。",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "將 LIVE 資料夾或日誌檔案拖到這裡",

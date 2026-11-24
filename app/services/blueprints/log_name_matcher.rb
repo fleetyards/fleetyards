@@ -25,12 +25,20 @@ module Blueprints
 
     # Each distinct name once, in the order given, with the blueprints it can
     # mean. An empty list means the catalogue has no such name.
-    def match(names)
+    #
+    # `name_keys` gives, per name, the localisation keys a translated game
+    # writes that name for. They add to what the name itself means rather than
+    # replacing it: logs can mix languages, and one language's name can be
+    # another item's in English.
+    def match(names, name_keys = [])
       candidates = blueprints_by_key
+      keyed = blueprints_by_name_key(name_keys)
       marks = user_marks
 
       unique_names(names).map do |name|
-        options = candidates.fetch(self.class.key(name), []).map do |id, slug, blueprint_name|
+        key = self.class.key(name)
+
+        options = (candidates.fetch(key, []) | keyed.fetch(key, [])).map do |id, slug, blueprint_name|
           {slug:, name: blueprint_name, owned: marks[id] == false, wanted: marks[id] == true}
         end
 
@@ -44,6 +52,20 @@ module Blueprints
 
     private def blueprints_by_key
       Blueprint.where.not(name: nil).order(:name, :slug).pluck(:id, :slug, :name).group_by { |_id, _slug, name| self.class.key(name) }
+    end
+
+    private def blueprints_by_name_key(name_keys)
+      keys_by_name = Array(name_keys).each_with_object({}) do |entry, all|
+        (all[self.class.key(entry[:name])] ||= []).concat(Array(entry[:keys]).map { |key| key.to_s.downcase })
+      end
+
+      return {} if keys_by_name.empty?
+
+      blueprints = Blueprint.where.not(name: nil).where(name_key: keys_by_name.values.flatten.uniq)
+        .order(:name, :slug).pluck(:name_key, :id, :slug, :name)
+        .group_by(&:first).transform_values { |rows| rows.map { |row| row.drop(1) } }
+
+      keys_by_name.transform_values { |keys| keys.flat_map { |key| blueprints.fetch(key, []) }.uniq }
     end
 
     # blueprint id => wanted

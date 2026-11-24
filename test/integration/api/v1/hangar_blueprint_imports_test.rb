@@ -109,6 +109,27 @@ class Api::V1::HangarBlueprintImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT match resolves a translated name through its localisation keys" do
+    @helmet_a.update!(name_key: "item_name_argus_helmet")
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MATCH_PATH,
+      body: {names: ["Casco Argus"], nameKeys: [{name: "Casco Argus", keys: ["item_Name_argus_helmet", "item_name_unrelated"]}]} do
+      assert_equal [@helmet_a.slug], parsed_body.first["blueprints"].pluck("slug")
+    end
+  end
+
+  test "PUT match offers both what a name means in English and what its translation means" do
+    @akura.update!(name_key: "item_name_akura")
+    @rifle.update!(name_key: "item_name_rifle")
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MATCH_PATH,
+      body: {names: ["5CA 'Akura'"], nameKeys: [{name: "5CA 'Akura'", keys: ["item_name_rifle", "item_name_akura"]}]} do
+      assert_equal [@akura.slug, @rifle.slug].sort, parsed_body.first["blueprints"].pluck("slug").sort
+    end
+  end
+
   test "PUT match flags a wanted blueprint" do
     create(:user_blueprint, user: @user, blueprint: @akura, wanted: true)
     sign_in @user

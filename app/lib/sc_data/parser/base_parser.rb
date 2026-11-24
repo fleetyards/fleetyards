@@ -314,10 +314,14 @@ module ScData
         end
       end
 
+      private def localization_key(key)
+        key.to_s.delete("@").sub(/,P\z/, "").downcase
+      end
+
       private def localize(key)
         return if key.blank?
 
-        value = normalized_translations[key.to_s.delete("@").sub(/,P\z/, "").downcase]
+        value = normalized_translations[localization_key(key)]
 
         return if value.blank? || value == "@LOC_EMPTY"
 
@@ -327,7 +331,7 @@ module ScData
       # The key a commodity row carries, read off the display name an entity or
       # a resource states -- nil for anything that is not a commodity.
       private def commodity_key(display_name)
-        key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
+        key = localization_key(display_name)
 
         key if key.start_with?(COMMODITY_PREFIX)
       end

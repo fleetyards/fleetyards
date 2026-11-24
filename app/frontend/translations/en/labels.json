@@ -4991,6 +4991,7 @@
         "friend": "Friends"
       },
       "blueprintLogImport": {
+        "translation": "Translation",
         "fresh": "New",
         "ambiguous": "Pick the right blueprint",
         "owned": "Already owned",
