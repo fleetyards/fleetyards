@@ -6,6 +6,8 @@ fr:
     plaque_tool:
       description: "Donne à n'importe quel vaisseau de Star Citizen une plaque de dédicace, comme celle que CIG a accrochée pour The Only Constant, et partage-la en image."
     admin_description: FleetYards.net Command App.
+    compare_builds:
+      description: Ce qui a changé entre deux versions de Star Citizen, avec chaque valeur avant et après.
     compare_components:
       description:
         default: Comparez les composants de vaisseaux côte à côte.

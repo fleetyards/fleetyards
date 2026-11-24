@@ -35,7 +35,7 @@ module Loaders
           # disk rather than the bucket: this is the tree the loaders are about
           # to read. A load that then fails leaves the checksum on a record that
           # never finished, so `CheckJob` keeps seeing the work as outstanding.
-          import.update!(tree_checksum: tree_checksum(source))
+          import.update!(tree_checksum: tree_checksum(source), code_digest: ::ScData::CodeDigest.current(source))
 
           ::ScData::Loader::BaseLoader.all.to_h
         end

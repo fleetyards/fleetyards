@@ -1,0 +1,74 @@
+.build-diff-entry {
+  padding: 14px 18px;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: var(--radius-surface-slim);
+}
+
+.build-diff-entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+
+.build-diff-entry__name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-lifted);
+}
+
+.build-diff-entry__context {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.8125rem;
+  color: var(--color-text-dim);
+}
+
+.build-diff-entry__kind {
+  margin-left: auto;
+}
+
+.build-diff-entry__facts {
+  margin: 6px 0 0;
+}
+
+.build-diff-entry__fact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 16px;
+  align-items: baseline;
+  padding: 3px 0;
+  font-size: 0.875rem;
+
+  dt {
+    flex: 1 1 180px;
+    font-weight: 400;
+    color: var(--color-text-dim);
+  }
+
+  dd {
+    display: flex;
+    flex: 2 1 260px;
+    gap: 10px;
+    align-items: baseline;
+    margin: 0;
+    color: var(--color-text-dim);
+  }
+}
+
+.build-diff-entry__old,
+.build-diff-entry__new {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.build-diff-entry__new {
+  font-weight: 600;
+  color: var(--color-lifted);
+}
+
+.build-diff-entry__delta {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}

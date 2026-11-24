@@ -221,6 +221,13 @@ module Frontend
       )
     end
 
+    def compare_builds
+      @title = I18n.t("title.frontend.compare_builds")
+      @description = I18n.t("meta.compare_builds.description")
+
+      render_frontend
+    end
+
     def manifest
       respond_to do |format|
         format.json do

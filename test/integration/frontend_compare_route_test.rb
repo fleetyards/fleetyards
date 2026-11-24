@@ -24,4 +24,10 @@ class FrontendCompareRouteTest < ActionDispatch::IntegrationTest
 
     assert_equal "compare_models", recognized[:action]
   end
+
+  test "the build comparison has its own title" do
+    recognized = Rails.application.routes.recognize_path("http://#{Rails.configuration.app.domain}/compare/builds")
+
+    assert_equal "compare_builds", recognized[:action]
+  end
 end

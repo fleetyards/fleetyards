@@ -224,6 +224,7 @@ class ModulesImporter
     return if sc_key.blank?
 
     model_module.update!(sc_key: sc_key)
+    ::ScData::CodeDigest.partial_load!
     ::ScData::Loader::ModelModulesLoader.new.one(model_module)
   end
 end

@@ -96,7 +96,10 @@ module ScData
       # on the way in. The checksum cannot be known until the last file is on
       # disk -- and `parsed_at` now means what it says, rather than when the
       # seventh parser started.
-      def self.write_manifest(base_folder:, sc_version:, sc_environment:)
+      #
+      # `parser` is what a restamp of an unparsed tree hands over: the tree was
+      # written by the parser its manifest names, not by this checkout's.
+      def self.write_manifest(base_folder:, sc_version:, sc_environment:, parser: ::ScData::CodeDigest.parser)
         export_path = "#{base_folder}/parsed/#{sc_environment}"
         files = ::ScData::ParsedTree.files(export_path)
 
@@ -111,7 +114,8 @@ module ScData
           version: sc_version,
           environment: sc_environment,
           parsed_at: Time.now.utc.iso8601,
-          checksum: ::ScData::ParsedTree.checksum(export_path, files)
+          checksum: ::ScData::ParsedTree.checksum(export_path, files),
+          parser:
         }))
       end
 

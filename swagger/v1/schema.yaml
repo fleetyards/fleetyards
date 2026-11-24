@@ -23397,6 +23397,100 @@ paths:
           "$ref": "#/components/responses/SchemaValidationError"
     parameters:
     - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/sc-data/diff":
+    get:
+      summary: How much each catalogue moved between two SC Data builds
+      tags:
+      - Versions
+      operationId: scDataDiffSummary
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: to
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataDiffSummary"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
+  "/sc-data/diff/{catalogue}":
+    get:
+      summary: What changed in one catalogue between two SC Data builds
+      tags:
+      - Versions
+      operationId: scDataDiff
+      parameters:
+      - name: catalogue
+        in: path
+        schema:
+          "$ref": "#/components/schemas/ScDataDiffCatalogueEnum"
+        required: true
+      - name: from
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: to
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: kind
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ScDataDiffKindEnum"
+        required: false
+      - name: field
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: search
+        in: query
+        schema:
+          type: string
+        required: false
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataDiff"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    parameters:
+    - "$ref": "#/components/parameters/ScDataSourceParameter"
   "/sc-data/patch-summary":
     get:
       summary: SC Data patch summary
@@ -53069,6 +53163,190 @@ components:
       - to
       - catalogues
       title: ScDataCompare
+    ScDataDiff:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        recorded:
+          type: boolean
+        counts:
+          "$ref": "#/components/schemas/ScDataDiffCounts"
+        fields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffFieldCount"
+        unrecorded:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffFieldCount"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffEntry"
+      additionalProperties: false
+      required:
+      - meta
+      - recorded
+      - counts
+      - fields
+      - unrecorded
+      - items
+      title: ScDataDiff
+    ScDataDiffBuild:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      title: ScDataDiffBuild
+    ScDataDiffCatalogue:
+      type: object
+      properties:
+        catalogue:
+          "$ref": "#/components/schemas/ScDataDiffCatalogueEnum"
+        recorded:
+          type: boolean
+        counts:
+          "$ref": "#/components/schemas/ScDataDiffCounts"
+      additionalProperties: false
+      required:
+      - catalogue
+      - recorded
+      - counts
+      title: ScDataDiffCatalogue
+    ScDataDiffCatalogueEnum:
+      type: string
+      enum:
+      - models
+      - modules
+      - loadouts
+      - components
+      - equipment
+      - commodities
+      - blueprints
+      - missions
+      - factions
+      - locations
+      title: ScDataDiffCatalogueEnum
+    ScDataDiffCodeEnum:
+      type: string
+      enum:
+      - same
+      - different
+      - unknown
+      title: ScDataDiffCodeEnum
+    ScDataDiffCounts:
+      type: object
+      properties:
+        added:
+          type: integer
+        removed:
+          type: integer
+        changed:
+          type: integer
+      additionalProperties: false
+      required:
+      - added
+      - removed
+      - changed
+      title: ScDataDiffCounts
+    ScDataDiffEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        kind:
+          "$ref": "#/components/schemas/ScDataDiffKindEnum"
+        name:
+          type: string
+        slug:
+          type:
+          - string
+          - 'null'
+        context:
+          type:
+          - string
+          - 'null'
+        fields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffField"
+      additionalProperties: false
+      required:
+      - id
+      - kind
+      - name
+      - fields
+      title: ScDataDiffEntry
+    ScDataDiffField:
+      type: object
+      properties:
+        field:
+          type: string
+        from:
+          type:
+          - number
+          - string
+          - boolean
+          - 'null'
+        to:
+          type:
+          - number
+          - string
+          - boolean
+          - 'null'
+        category:
+          type: string
+      additionalProperties: false
+      required:
+      - field
+      title: ScDataDiffField
+    ScDataDiffFieldCount:
+      type: object
+      properties:
+        field:
+          type: string
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - field
+      - count
+      title: ScDataDiffFieldCount
+    ScDataDiffKindEnum:
+      type: string
+      enum:
+      - added
+      - removed
+      - changed
+      title: ScDataDiffKindEnum
+    ScDataDiffSummary:
+      type: object
+      properties:
+        from:
+          "$ref": "#/components/schemas/ScDataDiffBuild"
+        to:
+          "$ref": "#/components/schemas/ScDataDiffBuild"
+        code:
+          "$ref": "#/components/schemas/ScDataDiffCodeEnum"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffCatalogue"
+      additionalProperties: false
+      required:
+      - from
+      - to
+      - code
+      - items
+      title: ScDataDiffSummary
     ScDataPatchSummary:
       type: object
       properties:

@@ -6,6 +6,8 @@ it:
     plaque_tool:
       description: "Dai a qualsiasi nave di Star Citizen una targa di dedica, come quella che CIG ha appeso per The Only Constant, e condividila come immagine."
     admin_description: FleetYards.net Command App.
+    compare_builds:
+      description: Cosa è cambiato tra due build di Star Citizen, con ogni valore prima e dopo.
     compare_components:
       description:
         default: Confronta i componenti delle navi fianco a fianco.

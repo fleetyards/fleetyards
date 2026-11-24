@@ -342,8 +342,7 @@
           "workers": "工作程序",
           "tasks": "任務",
           "imports": "匯入",
-          "rsiApiStatus": "RSI API 狀態",
-          "buildCompare": "版本比較"
+          "rsiApiStatus": "RSI API 狀態"
         },
         "announcements": {
           "index": "公告",

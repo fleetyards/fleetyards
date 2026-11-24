@@ -51,6 +51,24 @@ module Loaders
         assert_equal "tree-digest", Imports::ScData::AllImport.last.tree_checksum
       end
 
+      test "#perform records which code read the build" do
+        ::ScData::Loader::BaseLoader.stubs(:all)
+        ::ScData::ParsedStore.any_instance.stubs(:local_manifest).returns({"parser" => "parser-digest"})
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_equal "parser-digest-#{::ScData::CodeDigest.loader}", Imports::ScData::AllImport.last.code_digest
+      end
+
+      test "#perform records no code for a tree that does not name its parser" do
+        ::ScData::Loader::BaseLoader.stubs(:all)
+        ::ScData::ParsedStore.any_instance.stubs(:local_manifest).returns({})
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_nil Imports::ScData::AllImport.last.code_digest
+      end
+
       # Recorded before the load rather than after it, so a load that dies part
       # way through leaves the checksum on a record that never finished -- and
       # `CheckJob`, which reads only finished ones, keeps seeing the work as

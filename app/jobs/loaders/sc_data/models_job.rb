@@ -19,6 +19,8 @@ module Loaders
 
         fetch_parsed_tree!(version)
 
+        ::ScData::CodeDigest.partial_load!
+
         loader = ::ScData::Loader::ModelsLoader.new
 
         loader.all

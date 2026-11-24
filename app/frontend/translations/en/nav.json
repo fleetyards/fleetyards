@@ -342,8 +342,7 @@
           "workers": "Workers",
           "tasks": "Tasks",
           "imports": "Imports",
-          "rsiApiStatus": "RSI API Status",
-          "buildCompare": "Build Compare"
+          "rsiApiStatus": "RSI API Status"
         },
         "announcements": {
           "index": "Announcements",

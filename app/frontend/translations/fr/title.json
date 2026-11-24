@@ -376,8 +376,7 @@
           "tasks": "Tâches",
           "imports": "Imports",
           "importDetail": "Détail de l'import",
-          "rsiApiStatus": "Statut de l'API RSI",
-          "buildCompare": "Comparer les builds"
+          "rsiApiStatus": "Statut de l'API RSI"
         },
         "modelPaints": {
           "index": "Peintures de Modèles",

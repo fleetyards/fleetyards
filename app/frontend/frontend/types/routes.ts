@@ -18,6 +18,7 @@ type FrontendSimpleRoutes =
   | "compare"
   | "compare-components"
   | "compare-equipment"
+  | "compare-builds"
   | "stats"
   | "fleets"
   | "images"

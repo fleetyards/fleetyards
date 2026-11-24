@@ -218,9 +218,6 @@
         "visualTests": {
           "index": "Visual Tests",
           "notifications": "Notifications"
-        },
-        "buildCompare": {
-          "index": "Build Compare"
         }
       },
       "welcome": "Welcome to",

@@ -17,6 +17,8 @@ module Loaders
 
         fetch_parsed_tree!
 
+        ::ScData::CodeDigest.partial_load!
+
         loader = ::ScData::Loader::ModelsLoader.new
 
         loader.one(Model.find(model_id))
