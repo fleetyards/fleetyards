@@ -9,10 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Entry from "@/frontend/components/Compare/Builds/Entry/index.vue";
-import {
-  fieldKey,
-  readableField,
-} from "@/frontend/components/Compare/Builds/format";
+import { useFieldLabel } from "@/frontend/components/Compare/Builds/useFieldLabel";
 import {
   ScDataDiffKindEnum,
   useScDataDiff,
@@ -37,7 +34,9 @@ const emit = defineEmits<{
   showAll: [field: string];
 }>();
 
-const { t, tExists, toNumber } = useI18n();
+const { t, toNumber } = useI18n();
+
+const fieldLabel = useFieldLabel();
 
 const PREVIEW = 12;
 
@@ -55,12 +54,7 @@ const { data, isPending } = useScDataDiff(() => props.catalogue, params, {
   query: { enabled: open },
 });
 
-const label = computed(() => {
-  const key = `labels.buildDiff.fields.${fieldKey(props.field)}`;
-  if (tExists(key)) return t(key);
-
-  return readableField(props.field);
-});
+const label = computed(() => fieldLabel(props.field));
 </script>
 
 <template>

@@ -65,6 +65,7 @@ class Api::V1::ScDataDiffTest < ActionDispatch::IntegrationTest
       assert_equal ScData::BuildDiff::CATALOGUES.keys, items.keys
       assert_equal({"added" => 0, "removed" => 0, "changed" => 1}, items["components"]["counts"])
       assert_not items["models"]["recorded"]
+      assert_equal "unknown", parsed_body["code"]
     end
   end
 

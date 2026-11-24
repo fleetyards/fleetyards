@@ -10,6 +10,13 @@ json.fields do
   end
 end
 
+json.unrecorded do
+  json.array! @result.unrecorded do |(field, count)|
+    json.field field
+    json.count count
+  end
+end
+
 json.items do
   json.array! @entries do |entry|
     json.id entry.id

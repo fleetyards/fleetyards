@@ -167,6 +167,30 @@ module ScData
       assert_empty result.entries
     end
 
+    test "#call leaves out a fact one build states for no record" do
+      5.times { |index| component_pair({name: "Gun #{index}", size: "1"}, {name: "Gun #{index}", size: "1", type_data: {"damage" => index}}) }
+
+      result = diff("components")
+
+      assert_empty result.entries
+      assert_equal [["type_data.damage", 5]], result.unrecorded
+    end
+
+    test "#call keeps a fact too few records gained to tell" do
+      component_pair({name: "Gun", size: "1"}, {name: "Gun", size: "1", type_data: {"damage" => 1}})
+
+      result = diff("components")
+
+      assert_equal 1, result.entries.size
+      assert_empty result.unrecorded
+    end
+
+    test "#call keeps a fact both builds state when all its values change" do
+      5.times { |index| component_pair({name: "Gun #{index}", size: "1"}, {name: "Gun #{index}", size: "2"}) }
+
+      assert_equal 5, diff("components").entries.size
+    end
+
     test "#call counts each kind and each fact" do
       component_pair({name: "A", size: "1"}, {name: "A", size: "2"})
       build_for(:component_build, NEW, component: create(:component, :without_build), name: "B")

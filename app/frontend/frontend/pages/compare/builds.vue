@@ -25,6 +25,7 @@ import {
 import copyText from "@/frontend/utils/CopyText";
 import {
   ScDataDiffCatalogueEnum,
+  ScDataDiffCodeEnum,
   ScDataDiffKindEnum,
   useScDataBuilds,
   useScDataDiffSummary,
@@ -260,6 +261,15 @@ const copyLink = () => {
 
         <AsyncData v-else :async-status="summaryStatus">
           <template #resolved>
+            <Alert
+              v-if="summary && summary.code !== ScDataDiffCodeEnum.same"
+              :variant="AlertVariantsEnum.INFO"
+              class="build-diff__code"
+              data-test="build-diff-code"
+            >
+              {{ t(`labels.buildDiff.code.${summary.code}`) }}
+            </Alert>
+
             <div class="build-diff__body">
               <Select
                 v-if="mobile"
@@ -381,6 +391,10 @@ const copyLink = () => {
   @media (min-width: 992px) {
     grid-template-columns: 250px minmax(0, 1fr);
   }
+}
+
+.build-diff__code {
+  margin-bottom: 20px;
 }
 
 .build-diff__catalogues {

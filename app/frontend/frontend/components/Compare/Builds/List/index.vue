@@ -16,6 +16,7 @@ import {
   ScDataDiffKindEnum,
   useScDataDiff,
 } from "@/services/fyApi";
+import { useFieldLabel } from "@/frontend/components/Compare/Builds/useFieldLabel";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 
@@ -40,6 +41,8 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const fieldLabel = useFieldLabel();
 
 const { page, perPage, updatePerPage } = usePagination();
 
@@ -82,6 +85,20 @@ const grouped = computed(
       </Alert>
 
       <div v-else-if="diff" class="build-diff-list">
+        <Alert
+          v-if="diff.unrecorded.length"
+          :variant="AlertVariantsEnum.INFO"
+          data-test="build-diff-unrecorded"
+        >
+          {{
+            t("labels.buildDiff.unrecorded", {
+              fields: diff.unrecorded
+                .map((item) => fieldLabel(item.field))
+                .join(", "),
+            })
+          }}
+        </Alert>
+
         <template v-if="grouped">
           <FieldGroup
             v-for="(item, index) in diff.fields"

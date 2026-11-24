@@ -95,6 +95,7 @@ module Api
       def diff_summary
         return unless set_diff_builds
 
+        @code = ::ScData::CodeDigest.relation(@from, @to)
         @results = ::ScData::BuildDiff::CATALOGUES.keys.index_with { |catalogue| diff_of(catalogue) }
       end
 

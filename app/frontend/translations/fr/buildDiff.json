@@ -194,6 +194,11 @@
           "wing": "aile",
           "inner": "intérieur",
           "outer": "extérieur"
+        },
+        "unrecorded": "Omis car l’une des versions ne l’enregistre pas : %{fields}.",
+        "code": {
+          "different": "Fleetyards a lu ces deux versions avec des versions différentes de son lecteur de fichiers du jeu : certains changements peuvent en venir plutôt que du jeu.",
+          "unknown": "Fleetyards n’a pas enregistré comment ces deux versions ont été lues : certains changements peuvent venir de son lecteur de fichiers plutôt que du jeu."
         }
       }
     }

@@ -194,6 +194,11 @@
           "wing": "ala",
           "inner": "interno",
           "outer": "esterno"
+        },
+        "unrecorded": "Omesso perché una delle build non lo registra: %{fields}.",
+        "code": {
+          "different": "Fleetyards ha letto queste due build con versioni diverse del suo lettore di file di gioco, quindi alcune modifiche possono venire da lì e non dal gioco.",
+          "unknown": "Fleetyards non ha registrato come sono state lette entrambe le build, quindi alcune modifiche possono venire dal suo lettore di file e non dal gioco."
         }
       }
     }

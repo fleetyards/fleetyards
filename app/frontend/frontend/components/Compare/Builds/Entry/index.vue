@@ -13,7 +13,6 @@ import {
   entryRoute,
   fieldKey,
   movement,
-  readableField,
   slotPosition,
 } from "@/frontend/components/Compare/Builds/format";
 import {
@@ -22,6 +21,7 @@ import {
   type ScDataDiffEntry,
   type ScDataDiffField,
 } from "@/services/fyApi";
+import { useFieldLabel } from "@/frontend/components/Compare/Builds/useFieldLabel";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, tExists, toNumber } = useI18n();
+
+const fieldLabel = useFieldLabel();
 
 const to = computed(() => entryRoute(props.catalogue, props.entry.slug));
 
@@ -55,10 +57,7 @@ const label = ({ field, category }: ScDataDiffField) => {
     return [t(slot), position].filter(Boolean).join(" · ");
   }
 
-  const key = `labels.buildDiff.fields.${fieldKey(field)}`;
-  if (tExists(key)) return t(key);
-
-  return readableField(field);
+  return fieldLabel(field);
 };
 
 const isRatio = (field: string) =>

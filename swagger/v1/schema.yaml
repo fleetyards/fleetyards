@@ -53176,6 +53176,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ScDataDiffFieldCount"
+        unrecorded:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataDiffFieldCount"
         items:
           type: array
           items:
@@ -53186,6 +53190,7 @@ components:
       - recorded
       - counts
       - fields
+      - unrecorded
       - items
       title: ScDataDiff
     ScDataDiffBuild:
@@ -53229,6 +53234,13 @@ components:
       - factions
       - locations
       title: ScDataDiffCatalogueEnum
+    ScDataDiffCodeEnum:
+      type: string
+      enum:
+      - same
+      - different
+      - unknown
+      title: ScDataDiffCodeEnum
     ScDataDiffCounts:
       type: object
       properties:
@@ -53322,6 +53334,8 @@ components:
           "$ref": "#/components/schemas/ScDataDiffBuild"
         to:
           "$ref": "#/components/schemas/ScDataDiffBuild"
+        code:
+          "$ref": "#/components/schemas/ScDataDiffCodeEnum"
         items:
           type: array
           items:
@@ -53330,6 +53344,7 @@ components:
       required:
       - from
       - to
+      - code
       - items
       title: ScDataDiffSummary
     ScDataPatchSummary:

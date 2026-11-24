@@ -194,6 +194,11 @@
           "wing": "wing",
           "inner": "inner",
           "outer": "outer"
+        },
+        "unrecorded": "Left out because one of the builds does not record it: %{fields}.",
+        "code": {
+          "different": "Fleetyards read these two builds with different versions of its game file reader, so some changes may come from that rather than from the game.",
+          "unknown": "Fleetyards did not record how both builds were read, so some changes may come from its game file reader rather than from the game."
         }
       }
     }

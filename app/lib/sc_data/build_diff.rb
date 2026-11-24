@@ -34,7 +34,7 @@ module ScData
       def initialize(field:, from:, to:, category: nil) = super
     end
     Entry = Data.define(:id, :kind, :name, :fields)
-    Result = Data.define(:recorded, :entries) do
+    Result = Data.define(:recorded, :entries, :unrecorded) do
       def counts
         KINDS.index_with { |kind| entries.count { |entry| entry.kind == kind } }
       end
@@ -54,11 +54,61 @@ module ScData
     end
 
     def call
-      return Result.new(recorded: false, entries: []) unless before.any? && after.any?
+      return Result.new(recorded: false, entries: [], unrecorded: []) unless before.any? && after.any?
 
       entries = (catalogue == "loadouts") ? loadout_entries : record_entries
+      entries, unrecorded = without_unrecorded_facts(entries)
 
-      Result.new(recorded: true, entries: entries.sort_by { |entry| [entry.name.downcase, entry.id] })
+      Result.new(recorded: true, unrecorded:, entries: entries.sort_by { |entry| [entry.name.downcase, entry.id] })
+    end
+
+    # Fewer records than this could be the game introducing a fact.
+    UNRECORDED_FROM = 5
+
+    # A fact one build states for no record at all and the other for several was
+    # not read from the first, so no record changed in it. The facts left out
+    # come back with the number of records they would have marked as changed.
+    private def without_unrecorded_facts(entries)
+      return [entries, []] if catalogue == "loadouts"
+
+      stated = [before, after].map { |rows| rows.values.flat_map { |row| stated_fields(row) }.tally }
+      counts = entries.flat_map { |entry| entry.fields.map(&:field) }.tally
+      unrecorded = counts.select { |field, _count|
+        sides = stated.map { |fields| fields.fetch(field, 0) }
+
+        sides.min.zero? && sides.max >= UNRECORDED_FROM
+      }
+
+      kept = entries.filter_map do |entry|
+        fields = entry.fields.reject { |field| unrecorded.key?(field.field) }
+        next if fields.empty? && entry.fields.any?
+
+        entry.with(fields:)
+      end
+
+      [kept, unrecorded.sort_by { |field, count| [-count, field] }]
+    end
+
+    private def stated_fields(row)
+      plain = comparable_facts.reject { |fact| unstated?(row.public_send(fact)) }.map { |fact| reader_field(fact).to_s }
+
+      plain + nested_facts(row).reject { |_field, value| unstated?(value) }.keys.map(&:to_s)
+    end
+
+    private def unstated?(value)
+      value.nil? || (value.respond_to?(:empty?) && value.empty?)
+    end
+
+    private def nested_facts(row)
+      case catalogue
+      when "components"
+        ::ComponentBuildChange.metrics(row)
+          .transform_keys { |key| "#{::ComponentBuildChange::METRIC_PREFIX}#{key}" }
+          .merge(::ComponentBuild.durability_figures(row.durability))
+      when "models" then {"cargo" => cargo(row)}
+      when "modules" then {"cargo" => cargo(row), "medical_beds" => medical_beds(row)}
+      else {}
+      end
     end
 
     private def build_class
