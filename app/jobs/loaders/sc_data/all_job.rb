@@ -35,7 +35,7 @@ module Loaders
           # disk rather than the bucket: this is the tree the loaders are about
           # to read. A load that then fails leaves the checksum on a record that
           # never finished, so `CheckJob` keeps seeing the work as outstanding.
-          import.update!(tree_checksum: tree_checksum(source), code_digest: code_digest(source))
+          import.update!(tree_checksum: tree_checksum(source), code_digest: ::ScData::CodeDigest.current(source))
 
           ::ScData::Loader::BaseLoader.all.to_h
         end
@@ -97,13 +97,6 @@ module Loaders
       # configured at all.
       private def tree_checksum(source)
         ::ScData::ParsedStore.new(source.environment).local_checksum
-      end
-
-      # Nil for a tree parsed before its manifest named the parser.
-      private def code_digest(source)
-        parser = ::ScData::ParsedStore.new(source.environment).local_manifest["parser"].presence
-
-        parser && "#{parser}-#{::ScData::CodeDigest.loader}"
       end
 
       # The load only ever iterates models that already exist, so a ship in the
