@@ -51,7 +51,6 @@ type Options = {
   doorsAnimated: MaybeRefOrGetter<boolean>;
   doorsHighlighted: MaybeRefOrGetter<boolean>;
   isOpen: (id: string) => boolean;
-  cargoGrids: MaybeRefOrGetter<boolean>;
   // What a click on a part does, where it does anything.
   partHint?: (slot: PreviewSlot) => string | undefined;
   // What a click on a built-in item does, where it does anything.
@@ -221,11 +220,9 @@ export const useLoadoutHoloCard = (options: Options) => {
       };
     }
 
-    const grid = toValue(options.cargoGrids)
-      ? toValue(options.hull)?.cargoGrids.find(
-          (candidate) => candidate.name === pointedCargoGrid.value,
-        )
-      : undefined;
+    const grid = toValue(options.hull)?.cargoGrids.find(
+      (candidate) => candidate.name === pointedCargoGrid.value,
+    );
 
     if (grid) {
       const [width, height, length] = grid.size;

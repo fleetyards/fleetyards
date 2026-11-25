@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if @loadout_preview_enabled && @model.holo_hull.attached?
+if @model.holo_hull.attached?
   json.holo_hull do
     json.partial! "api/v1/shared/file", record: @model, attr: :holo_hull
   end

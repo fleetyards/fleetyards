@@ -26,8 +26,6 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("loadout_preview")
-
     @model = create(:model, hardpoint_transforms: {
       "entity" => "AEGS_Gladius", "state" => "flight", "frame" => "gltf-y-up", "units" => "m",
       "ports" => [
@@ -215,20 +213,6 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     model = create(:model)
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
-      assert_empty parsed_body["ports"]
-      assert_empty parsed_body["items"]
-      assert_empty parsed_body["servicingAreas"]
-      assert_empty parsed_body["cargoGrids"]
-      assert_empty parsed_body["doors"]
-      assert_empty parsed_body["moduleHulls"]
-      assert_not parsed_body.key?("holoHull")
-    end
-  end
-
-  test "GET /models/:slug/loadout-preview answers as if there were no export while the feature is off" do
-    Flipper.disable("loadout_preview")
-
-    assert_api_response :get, 200, path_params: {slug: @model.slug} do
       assert_empty parsed_body["ports"]
       assert_empty parsed_body["items"]
       assert_empty parsed_body["servicingAreas"]

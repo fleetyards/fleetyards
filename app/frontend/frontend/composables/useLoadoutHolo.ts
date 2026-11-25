@@ -1,5 +1,4 @@
-import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useModelLoadoutPreview } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 
@@ -11,16 +10,10 @@ export const useLoadoutHolo = (
   wanted: MaybeRefOrGetter<boolean>,
   texturedHolo: Ref<boolean>,
 ) => {
-  const { isFeatureEnabled } = useFeatures();
-
   const mobile = useMobile();
 
   const enabled = computed(
-    () =>
-      isFeatureEnabled(FeatureFlagName.LOADOUT_PREVIEW) &&
-      !!toValue(modelSlug) &&
-      !mobile.value &&
-      toValue(wanted),
+    () => !!toValue(modelSlug) && !mobile.value && toValue(wanted),
   );
 
   const { data: preview } = useModelLoadoutPreview(

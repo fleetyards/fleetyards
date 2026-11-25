@@ -111,8 +111,6 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 }));
 
 const ALL_FLAGS = [
-  FeatureFlagName.HOLO_SERVICING_AREAS,
-  FeatureFlagName.HOLO_CARGO_GRIDS,
   FeatureFlagName.HOLO_DOOR_ANIMATION,
   FeatureFlagName.HOLO_DOOR_HIGHLIGHT,
 ];
@@ -301,15 +299,11 @@ describe("ModelLoadoutHolo", () => {
     expect(card().text()).toContain("Click to close");
   });
 
-  it("draws no cargo grids or doors while their flags are off", async () => {
+  it("draws no doors while their flags are off", async () => {
     enabledFlags.clear();
     const { wrapper, model } = await mountHolo();
 
-    expect(model().cargoGrids).toEqual([]);
     expect(model().doors).toEqual([]);
-    expect(
-      wrapper.find('[data-test="model-loadout-holo-cargo-grids"]').exists(),
-    ).toBe(false);
     expect(
       wrapper.find('[data-test="model-loadout-holo-doors"]').exists(),
     ).toBe(false);

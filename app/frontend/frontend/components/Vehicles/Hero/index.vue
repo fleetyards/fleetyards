@@ -432,11 +432,6 @@ const openImageModal = () =>
               @click="toggleLoadoutHolo"
             >
               <i class="fa-duotone fa-crosshairs" />
-              <BetaBadge
-                :feature="FeatureFlagName.LOADOUT_PREVIEW"
-                in-control
-                compact
-              />
             </Btn>
           </BtnGroup>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">

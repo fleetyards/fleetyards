@@ -453,11 +453,6 @@ const adiMap = computed(() => {
                   @click="toggleLoadoutHolo"
                 >
                   <i class="fa-duotone fa-crosshairs" />
-                  <BetaBadge
-                    :feature="FeatureFlagName.LOADOUT_PREVIEW"
-                    in-control
-                    compact
-                  />
                 </Btn>
 
                 <BtnDropdown

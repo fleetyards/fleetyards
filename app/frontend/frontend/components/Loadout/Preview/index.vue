@@ -107,12 +107,7 @@ const { isFeatureEnabled } = useFeatures();
 
 const mobile = useMobile();
 
-const enabled = computed(
-  () =>
-    isFeatureEnabled(FeatureFlagName.LOADOUT_PREVIEW) &&
-    !!props.modelSlug &&
-    !mobile.value,
-);
+const enabled = computed(() => !!props.modelSlug && !mobile.value);
 
 const {
   data: preview,
@@ -127,13 +122,6 @@ const mounts = computed(() =>
   preview.value ? loadoutMounts(preview.value, props.slots) : [],
 );
 
-// Kept while hidden, so turning them off fades them out.
-const servicingAreasEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.HOLO_SERVICING_AREAS),
-);
-const cargoGridsEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.HOLO_CARGO_GRIDS),
-);
 const doorAnimationEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.HOLO_DOOR_ANIMATION),
 );
@@ -141,9 +129,8 @@ const doorHighlightEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.HOLO_DOOR_HIGHLIGHT),
 );
 
-const servicingAreas = computed(() =>
-  servicingAreasEnabled.value ? (preview.value?.servicingAreas ?? []) : [],
-);
+// Kept while hidden, so turning them off fades them out.
+const servicingAreas = computed(() => preview.value?.servicingAreas ?? []);
 
 const boxes = computed(() =>
   servicingAreas.value.map((area) => ({
@@ -156,9 +143,7 @@ const boxes = computed(() =>
 );
 
 const cargoGrids = computed(() =>
-  preview.value && cargoGridsEnabled.value
-    ? loadoutCargoGrids(preview.value, props.slots)
-    : [],
+  preview.value ? loadoutCargoGrids(preview.value, props.slots) : [],
 );
 
 // The hull as fitted: the ship's own ports, grids and doors, and those of the
@@ -199,7 +184,6 @@ const {
   doorsAnimated: doorAnimationEnabled,
   doorsHighlighted: doorHighlightEnabled,
   isOpen,
-  cargoGrids: cargoGridsEnabled,
   partHint: (slot) =>
     props.pickable && slot.changeable
       ? t("actions.holoViewer.part")
