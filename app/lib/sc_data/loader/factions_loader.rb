@@ -2,7 +2,7 @@ module ScData
   module Loader
     class FactionsLoader < ::ScData::Loader::BaseLoader
       def all
-        loaded = load_items("factions").filter_map { |faction_data| one(faction_data)&.id }
+        loaded = tracked(load_items("factions")).filter_map { |faction_data| one(faction_data)&.id }
 
         retire_absent(Faction, loaded)
         retire_absent_builds(FactionBuild, :faction_id, loaded)

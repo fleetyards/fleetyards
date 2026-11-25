@@ -13,14 +13,14 @@ module Loaders
     # by digest -- so running it ahead of every load costs a listing, not a
     # download, once the container is warm.
     module FetchesParsedTree
-      private def fetch_parsed_tree!(version = nil)
+      private def fetch_parsed_tree!(version = nil, progress: nil)
         return unless ::ScData::ParsedStore.configured?
 
         store = ::ScData::ParsedStore.new(::ScData::Source.environment)
 
         store.verify_remote_version!(version) if version.present?
 
-        store.pull
+        store.pull(progress:)
       end
     end
   end

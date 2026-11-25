@@ -190,6 +190,18 @@ module ScData
       assert_equal 1, result[:unchanged]
     end
 
+    test "#pull counts only the files it downloads into the progress" do
+      write_local("models/avenger.json", "same")
+      stub_listing("models/aurora.json" => "fetched", "models/avenger.json" => "same")
+      @client.stub_responses(:get_object, {body: "fetched"})
+
+      progress = mock("progress")
+      progress.expects(:total=).with(1)
+      progress.expects(:advance).once
+
+      store.pull(progress:)
+    end
+
     # `ModelsLoader#update_in_game_flag` reads a ship's in-game-ness off file
     # existence, so a leftover file from an earlier build would keep a retired
     # ship flying.

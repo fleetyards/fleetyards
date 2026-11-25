@@ -2,7 +2,7 @@ module ScData
   module Loader
     class GameMissionsLoader < ::ScData::Loader::BaseLoader
       def all
-        loaded = load_items("game_missions").filter_map { |mission_data| one(mission_data)&.id }
+        loaded = tracked(load_items("game_missions")).filter_map { |mission_data| one(mission_data)&.id }
 
         retire_absent(GameMission, loaded)
         retire_absent_builds(GameMissionBuild, :game_mission_id, loaded)

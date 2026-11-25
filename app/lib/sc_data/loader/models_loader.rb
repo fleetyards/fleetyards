@@ -84,11 +84,11 @@ module ScData
         # Command modules first: a ship takes its module's seats as positions,
         # and a seat not yet in this build reads as one the build dropped.
         command_modules = Model.where(id: Model.select(:command_module_id))
+        @progress&.total = Model.count
         [command_modules, Model.where.not(id: command_modules.select(:id))].each do |scope|
           scope.find_each do |model|
-            next unless parsed?(model)
-
-            loaded << model.id if load_model(model)
+            loaded << model.id if parsed?(model) && load_model(model)
+            @progress&.advance
           end
         end
 

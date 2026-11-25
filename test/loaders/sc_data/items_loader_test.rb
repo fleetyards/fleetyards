@@ -18,6 +18,22 @@ module ScData
         fixture_loader(::ScData::Loader::ItemsLoader)
       end
 
+      test "#all counts both passes over the items into one total" do
+        progress = mock("progress")
+        totals = []
+        done = 0
+        progress.stubs(:total=).with { |total| totals << total }
+        progress.stubs(:advance).with { done += 1 }
+
+        loader = items_loader
+        loader.progress = progress
+        loader.all
+
+        assert_equal 1, totals.size
+        assert_predicate totals.first, :positive?
+        assert_equal totals.first, done
+      end
+
       # A component is the same component across builds. The loader used to key
       # on (sc_key, version) and add a row per import, which is how the table
       # came to hold every patch it had ever seen.
