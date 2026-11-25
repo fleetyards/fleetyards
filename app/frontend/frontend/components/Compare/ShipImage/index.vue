@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "FleetchartListItemImage",
+  name: "CompareShipImage",
 };
 </script>
 
@@ -35,7 +35,6 @@ const internalWidth = computed(() => {
       'max-width': maxWidth,
     }"
     :alt="label"
-    class="fleetchart-item-image"
   />
   <span v-else>
     <i class="fa-light fa-question-circle" />

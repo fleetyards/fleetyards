@@ -572,7 +572,6 @@
       "hangarStats": "統計",
       "wishlist": "願望清單",
       "fleetchart": "艦隊圖表",
-      "fleetchartScale": "艦船比例",
       "fleetchartApp": {
         "screenHeight": "螢幕高度",
         "viewpoint": "視角",
@@ -688,11 +687,6 @@
           "classic": "經典",
           "packed": "緊密",
           "free": "自由"
-        },
-        "mode": "模式",
-        "modeOptions": {
-          "classic": "經典",
-          "panzoom": "v2"
         }
       },
       "fleetStats": "統計",

@@ -28,7 +28,6 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
 
       response(200, "successful") { schema ::V1::Schemas::Hangar::FleetchartLayouts::FleetchartLayoutsList }
       response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
-      response(403, "feature disabled") { schema ::Shared::V1::Schemas::StandardError }
     end
 
     post("Create Fleetchart Layout") do
@@ -121,7 +120,6 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:fleetchart_layouts)
     @user = create(:user)
     @vehicle = create(:vehicle, user: @user, public: true)
   end
@@ -341,13 +339,10 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_not_equal "Mine now", other.reload.name
   end
 
-  test "the feature flag closes the API" do
-    Flipper.disable(:fleetchart_layouts)
-    sign_in @user
+  test "a token without the hangar scope is refused" do
+    get "/api/v1/hangar/fleetchart-layouts", headers: oauth_headers_for(@user, scopes: "fleet")
 
-    get "/api/v1/hangar/fleetchart-layouts"
-
-    assert_response :forbidden
+    assert_response :unauthorized
   end
 
   test "signed out gets a 401" do
@@ -428,15 +423,8 @@ class Api::V1::FleetchartLayoutsTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "an unknown token is not found, and so is one whose owner lost the feature" do
+  test "an unknown token is not found" do
     get "/api/v1/public/fleetchart-layouts/nope"
-    assert_response :not_found
-
-    layout = create(:fleetchart_layout, user: @user)
-    layout.share!
-    Flipper.disable(:fleetchart_layouts)
-
-    get "/api/v1/public/fleetchart-layouts/#{layout.share_token}"
     assert_response :not_found
   end
 end

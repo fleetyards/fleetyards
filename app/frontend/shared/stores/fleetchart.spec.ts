@@ -59,7 +59,7 @@ describe("fleetchart store", () => {
       FleetchartShipStates.FLIGHT,
     );
 
-    store.toggleExtended("hangar");
+    store.$patch({ extended: ["hangar"] });
 
     expect(store.fleetchartOptions("hangar").state).toBe(
       FleetchartShipStates.EXTENDED,
@@ -86,10 +86,6 @@ describe("fleetchart store", () => {
     expect(store.coloredByDefault("fleet")).toBe(true);
   });
 
-  it("leaves the colored setting of the older charts alone", () => {
-    expect(useFleetchartStore().colored("hangar")).toBe(false);
-  });
-
   it("starts packed", () => {
     const store = useFleetchartStore();
 
@@ -98,21 +94,21 @@ describe("fleetchart store", () => {
 
   it("reads a persisted classic mode as the classic layout", () => {
     const store = useFleetchartStore();
-    store.updateMode({ namespace: "hangar", mode: FleetchartModes.CLASSIC });
+    store.$patch({ mode: { hangar: FleetchartModes.CLASSIC } });
 
     expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.CLASSIC);
   });
 
   it("reads a persisted panzoom mode as the columns layout", () => {
     const store = useFleetchartStore();
-    store.updateMode({ namespace: "hangar", mode: FleetchartModes.PANZOOM });
+    store.$patch({ mode: { hangar: FleetchartModes.PANZOOM } });
 
     expect(store.fleetchartLayout("hangar")).toBe(FleetchartLayouts.COLUMNS);
   });
 
   it("prefers a chosen layout over a persisted mode", () => {
     const store = useFleetchartStore();
-    store.updateMode({ namespace: "hangar", mode: FleetchartModes.CLASSIC });
+    store.$patch({ mode: { hangar: FleetchartModes.CLASSIC } });
     store.updateLayout({
       namespace: "hangar",
       layout: FleetchartLayouts.COLUMNS,

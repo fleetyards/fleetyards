@@ -89,10 +89,6 @@
       },
       "showFleetchart": "Flottenübersicht",
       "hideFleetchart": "Standardansicht",
-      "fleetchartApp": {
-        "useExtendedState": "Schiffe ausgefahren anzeigen",
-        "useRetractedState": "Schiffe im Flug anzeigen"
-      },
       "showLabels": "Labels anzeigen",
       "hideLabels": "Labels verbergen",
       "resetZoom": "Zoom zurücksetzen",

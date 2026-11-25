@@ -16,8 +16,6 @@ module Api
 
           authorize! @fleetchart_layout, to: :shared?, with: FleetchartLayoutPolicy
 
-          raise ActiveRecord::RecordNotFound unless Flipper.enabled?(:fleetchart_layouts, @fleetchart_layout.user)
-
           @vehicles = @fleetchart_layout.shared_vehicles
             .includes({model: :manufacturer}, *Vehicle::LOADOUT_PRELOADS, :launch_port_location, :user)
             # What the vehicle partial reads per vehicle, on an endpoint anyone with

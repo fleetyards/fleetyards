@@ -12,14 +12,6 @@ export enum FleetchartViewpoints {
   REAR = "rear",
 }
 
-// What the charts behind the flag know how to draw.
-export const LEGACY_FLEETCHART_VIEWPOINTS = [
-  FleetchartViewpoints.TOP,
-  FleetchartViewpoints.PORT,
-  FleetchartViewpoints.ANGLED,
-  FleetchartViewpoints.FRONT,
-];
-
 export enum FleetchartScreenHeights {
   AUTO = "auto",
   ONE = "1x",
@@ -29,6 +21,7 @@ export enum FleetchartScreenHeights {
   FOUR = "4x",
 }
 
+// How the chart was arranged before it had layouts, as persisted.
 export enum FleetchartModes {
   PANZOOM = "panzoom",
   CLASSIC = "classic",
@@ -169,10 +162,6 @@ type FleetchartState = {
   mode: {
     [key: string]: FleetchartModes;
   };
-  scale: {
-    [key: string]: number;
-  };
-  color: string[];
   plain: string[];
   extended: string[];
   modelGrouped: string[];
@@ -189,8 +178,6 @@ export const useFleetchartStore = defineStore("fleetchart", {
     labelsVisible: [],
     screenHeight: {},
     mode: {},
-    scale: {},
-    color: [],
     plain: [],
     extended: [],
     modelGrouped: [],
@@ -202,22 +189,13 @@ export const useFleetchartStore = defineStore("fleetchart", {
     showLabels: (state) => {
       return (namespace: string) => state.labelsVisible.includes(namespace);
     },
-    colored: (state) => {
-      return (namespace: string) => state.color.includes(namespace);
-    },
-    // Colored unless somebody chose otherwise, which `colored` does not assume.
+    // Colored unless somebody chose otherwise.
     coloredByDefault: (state) => {
       return (namespace: string) => !(state.plain || []).includes(namespace);
-    },
-    extendedState: (state) => {
-      return (namespace: string) => (state.extended || []).includes(namespace);
     },
     groupedByModel: (state) => {
       return (namespace: string) =>
         (state.modelGrouped || []).includes(namespace);
-    },
-    fleetchartMode: (state) => {
-      return (namespace: string) => state.mode[namespace] || "panzoom";
     },
     // Somebody who chose a mode keeps its arrangement. `layout` can also be missing
     // altogether from state persisted before it existed.
@@ -262,9 +240,6 @@ export const useFleetchartStore = defineStore("fleetchart", {
       return (namespace: string) =>
         state.screenHeight[namespace] || FleetchartScreenHeights.AUTO;
     },
-    fleetchartScale: (state) => {
-      return (namespace: string) => state.scale[namespace] || 1;
-    },
     fleetchartViewpoint: (state) => {
       return (namespace: string) => {
         const viewpoint = state.viewpoint[namespace];
@@ -299,27 +274,12 @@ export const useFleetchartStore = defineStore("fleetchart", {
         this.visible.push(namespace);
       }
     },
-    toggleColored(namespace: string) {
-      if (this.color.includes(namespace)) {
-        this.color = this.color.filter((item) => item !== namespace);
-      } else {
-        this.color.push(namespace);
-      }
-    },
     togglePlain(namespace: string) {
       const current = this.plain || [];
 
       this.plain = current.includes(namespace)
         ? current.filter((item) => item !== namespace)
         : [...current, namespace];
-    },
-    toggleExtended(namespace: string) {
-      const current = this.extended || [];
-      if (current.includes(namespace)) {
-        this.extended = current.filter((item) => item !== namespace);
-      } else {
-        this.extended = [...current, namespace];
-      }
     },
     toggleGroupedByModel(namespace: string) {
       const current = this.modelGrouped || [];
@@ -342,9 +302,6 @@ export const useFleetchartStore = defineStore("fleetchart", {
       viewpoint: FleetchartViewpoints;
     }) {
       this.viewpoint[payload.namespace] = payload.viewpoint;
-    },
-    updateMode(payload: { namespace: string; mode: FleetchartModes }) {
-      this.mode[payload.namespace] = payload.mode;
     },
     updateLayout(payload: { namespace: string; layout: FleetchartLayouts }) {
       this.layout = { ...this.layout, [payload.namespace]: payload.layout };
@@ -369,9 +326,6 @@ export const useFleetchartStore = defineStore("fleetchart", {
           ...payload.options,
         },
       };
-    },
-    updateScale(payload: { namespace: string; scale: number }) {
-      this.scale[payload.namespace] = payload.scale;
     },
     updateScreenHeight(payload: {
       namespace: string;
