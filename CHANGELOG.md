@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.68.0](https://github.com/fleetyards/fleetyards/compare/v9.67.1...v9.68.0) (2026-11-25)
+
+
+### Features
+
+* **sc-data:** read the game data from R2 ([#6499](https://github.com/fleetyards/fleetyards/issues/6499)) ([39a3e8b](https://github.com/fleetyards/fleetyards/commit/39a3e8b68e167b7197e168e6f79472e11efb71d5))
+
+
+### Chores
+
+* **deps-dev:** bump webmock from 3.36.0 to 3.38.0 ([#6506](https://github.com/fleetyards/fleetyards/issues/6506)) ([480b784](https://github.com/fleetyards/fleetyards/commit/480b7840b6370dc2f12833759c39b9ec58eaf325))
+* **deps:** bump image_processing from 2.2.0 to 2.2.1 ([#6505](https://github.com/fleetyards/fleetyards/issues/6505)) ([4d4562b](https://github.com/fleetyards/fleetyards/commit/4d4562ba7384db23b5a1f0843ab8c1b6671c0dab))
+
 ## [9.67.1](https://github.com/fleetyards/fleetyards/compare/v9.67.0...v9.67.1) (2026-11-24)
 
 
