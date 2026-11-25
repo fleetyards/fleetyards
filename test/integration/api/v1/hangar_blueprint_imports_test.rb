@@ -32,10 +32,6 @@ class Api::V1::HangarBlueprintImportsTest < ActionDispatch::IntegrationTest
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
-
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
     end
   end
 
@@ -61,15 +57,10 @@ class Api::V1::HangarBlueprintImportsTest < ActionDispatch::IntegrationTest
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
-
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
     end
   end
 
   setup do
-    Flipper.enable(:blueprint_log_import)
     @user = create(:user)
     @akura = create(:blueprint, name: "5CA 'Akura'")
     @rifle = create(:blueprint, name: "Custodian \"Desert Shadow\" SMG")
@@ -197,12 +188,11 @@ class Api::V1::HangarBlueprintImportsTest < ActionDispatch::IntegrationTest
     assert_equal ["5CA 'Akura'"], response.parsed_body.dig("details", "imported")
   end
 
-  test "PUT match and import are refused while the feature is off" do
-    Flipper.disable(:blueprint_log_import)
-    sign_in @user
+  test "PUT match and import refuse a token without the hangar scope" do
+    headers = oauth_headers_for(@user, scopes: "fleet")
 
-    assert_api_response :put, 403, api_path: MATCH_PATH, body: {names: ["5CA 'Akura'"]}
-    assert_api_response :put, 403, api_path: IMPORT_PATH, body: {slugs: [@akura.slug]}
+    assert_api_response :put, 401, api_path: MATCH_PATH, headers: headers, body: {names: ["5CA 'Akura'"]}
+    assert_api_response :put, 401, api_path: IMPORT_PATH, headers: headers, body: {slugs: [@akura.slug]}
 
     assert_empty UserBlueprint.where(user: @user)
   end

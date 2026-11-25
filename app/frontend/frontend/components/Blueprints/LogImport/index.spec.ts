@@ -1,35 +1,21 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { FeatureFlagName } from "@/services/fyApi";
+import Component from "./index.vue";
 
-const enabled = new Set<FeatureFlagName>();
+const emit = vi.hoisted(() => vi.fn());
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: FeatureFlagName) => enabled.has(feature),
-  }),
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit, on: vi.fn() }),
 }));
 
-const Component = (await import("./index.vue")).default;
-
 describe("BlueprintLogImportBtn", () => {
-  it("is hidden while the feature is off", async () => {
-    enabled.clear();
-
+  it("opens the import modal", async () => {
     const wrapper = await mountWithDefaults(Component);
 
-    expect(
-      wrapper.find("[data-test='open-blueprint-log-import']").exists(),
-    ).toBe(false);
-  });
+    await wrapper
+      .find("[data-test='open-blueprint-log-import']")
+      .trigger("click");
 
-  it("is offered once the feature is on", async () => {
-    enabled.add(FeatureFlagName.BLUEPRINT_LOG_IMPORT);
-
-    const wrapper = await mountWithDefaults(Component);
-
-    expect(
-      wrapper.find("[data-test='open-blueprint-log-import']").exists(),
-    ).toBe(true);
+    expect(emit).toHaveBeenCalledWith("open-modal", expect.anything());
   });
 });
