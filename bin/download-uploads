@@ -2,6 +2,32 @@
 
 set -u
 
+# Development fetches missing uploads on demand, so a full download is only
+# needed to work offline.
+#
+#   bin/download-uploads                    fetch every upload
+#   bin/download-uploads --trim             delete local copies of what the bucket holds
+#   bin/download-uploads --trim --dry-run   only report what --trim would delete
+
+TRIM=0
+DRY_RUN=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --trim) TRIM=1 ;;
+    --dry-run) DRY_RUN=1 ;;
+    *)
+      echo "ERROR: unknown option $arg"
+      exit 1
+      ;;
+  esac
+done
+
+if [ "$DRY_RUN" = "1" ] && [ "$TRIM" = "0" ]; then
+  echo "ERROR: --dry-run only works with --trim"
+  exit 1
+fi
+
 # Load .env.local if present (worktree config)
 if [ -f .env.local ]; then
   set -a
@@ -84,6 +110,46 @@ remote_count=$(wc -l < "$REMOTE_LIST" | tr -d ' ')
 if [ "$remote_count" = "0" ]; then
   echo "ERROR: could not list any objects in s3://$S3_BUCKET/"
   exit 1
+fi
+
+# Only a file whose key and size the bucket confirms can be fetched again;
+# everything else may exist nowhere but here.
+trim_uploads() {
+  local removed=0
+  local removed_bytes=0
+  local size path
+
+  while IFS=$'\t' read -r size path; do
+    if [ "$DRY_RUN" = "0" ]; then
+      rm "$path" || continue
+    fi
+
+    removed=$((removed + 1))
+    removed_bytes=$((removed_bytes + size))
+  done < <(
+    find -H "$LOCAL_ROOT" -mindepth 3 -maxdepth 3 -type f ! -name '.*' -exec stat -f '%z%t%N' {} + |
+      awk -F'\t' '
+        NR == FNR { remote[$2] = $1; next }
+        {
+          n = split($2, parts, "/")
+          key = parts[n]
+          if (parts[n - 2] == substr(key, 1, 2) && parts[n - 1] == substr(key, 3, 2) && (key in remote) && remote[key] == $1) print
+        }
+      ' "$REMOTE_LIST" -
+  )
+
+  if [ "$DRY_RUN" = "1" ]; then
+    echo "  Would remove: $removed files ($(human_size "$removed_bytes"))"
+    return
+  fi
+
+  find -H "$LOCAL_ROOT" -mindepth 1 -type d -empty -delete
+  echo "  Removed: $removed files ($(human_size "$removed_bytes"))"
+}
+
+if [ "$TRIM" = "1" ]; then
+  trim_uploads
+  exit 0
 fi
 
 echo "Checking which of the $remote_count objects are already present..."

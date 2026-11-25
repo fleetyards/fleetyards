@@ -19,9 +19,12 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
+# Files missing from storage/ are read from the public storage CDN and kept; an
+# empty STORAGE_ORIGIN turns that off.
 local:
-  service: Disk
+  service: ReadThroughDisk
   root: <%= Rails.root.join("storage") %>
+  origin: <%= ENV.fetch("STORAGE_ORIGIN", "https://storage.fltyrd.net").to_json %>
 
 hetzner: &hetzner
   service: S3
