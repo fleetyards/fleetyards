@@ -18,6 +18,7 @@ module ScData
   # detached in the admin stays detached: only syncing the item restores it.
   class ItemViewsImportJob < ApplicationJob
     include RenderImport
+    include TracksRun
 
     sidekiq_options queue: "loaders"
 
@@ -27,9 +28,15 @@ module ScData
     HULL_FIELDS = %w[holo_hull hardpoint_transforms holo_doors].to_set.freeze
     ATTACH_POINTS_NAME = "attach_points.json"
 
-    def perform(record_type = nil, record_id = nil, force = false)
+    # One item is not a run of its own worth a record.
+    def perform(record_type = nil, record_id = nil, force = false, admin_user_id = nil)
       return unless ::ScData::ItemViewsStore.configured?
+      return sync(record_type, record_id, force) if record_id
 
+      track_run(::Imports::ScData::ItemViewsImport, admin_user_id:) { sync(nil, nil, force) }
+    end
+
+    private def sync(record_type, record_id, force)
       @restore_detached = record_id.present?
       store = ::ScData::ItemViewsStore.new
       items = store.items
@@ -44,6 +51,8 @@ module ScData
       paths_by_key = items.keys.group_by { |path| items[path]["scKey"] }
       attached = {}
       unknown = []
+
+      @progress&.step("item_views", total: items.size)
 
       items.each do |path, entry|
         record = records[path]
@@ -71,11 +80,15 @@ module ScData
         # Left on the old digest, so the next run tries the item again.
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
+      ensure
+        @progress&.advance
       end
 
       log(:info, "no item for #{unknown.size} keys: #{unknown.join(", ")}") if unknown.any?
       attached.each { |sc_key, fields| log(:info, "attached #{sc_key}: #{fields.join(", ")}") }
       log(:info, "attached #{attached.values.sum(&:size)} renders to #{attached.size} items")
+
+      {attached:, unknown:}
     end
 
     # The record of every listed item. The loaders file a game-file key as
@@ -154,9 +167,5 @@ module ScData
     private def render_md5s_column = :item_view_md5s
 
     private def render_digest_column = :item_views_digest
-
-    private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] ItemViewsImportJob #{message}")
-    end
   end
 end

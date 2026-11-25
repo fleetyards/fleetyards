@@ -65,6 +65,28 @@ module ScData
       assert_equal Digest::MD5.hexdigest(PNG), @component.item_view_md5s["angled_view"]
     end
 
+    test "records a run over every item, with the render that did not match" do
+      publish(@component.sc_key, {"angled.png" => PNG})
+      @objects["#{@component.sc_key}/angled.png"] = "not the listed file"
+
+      perform
+
+      import = Imports::ScData::ItemViewsImport.last
+
+      assert_predicate import, :finished?
+      assert_equal ["#{@component.sc_key}/angled.png does not match its listed md5, skipped"], import.output["problems"]
+      assert_equal [1, 1], import.progress.values_at("done", "total")
+    end
+
+    test "records no run for a single item" do
+      publish(@component.sc_key, {"angled.png" => PNG})
+
+      assert_no_difference -> { Import.count } do
+        perform("Component", @component.id)
+      end
+      assert @component.angled_view.attached?
+    end
+
     test "attaches equipment's renders by its game-file key" do
       publish(@equipment.sc_key, {"top.png" => PNG, "starboard.png" => PNG})
 

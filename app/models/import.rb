@@ -251,6 +251,10 @@ class Import < ApplicationRecord
     "Marked as failed by #{admin_user&.username || "an admin"}: the job stopped reporting."
   end
 
+  private def report_severity
+    failed? ? :error : :info
+  end
+
   # The cable broadcast reaches whoever has the imports page open; this is for
   # everyone who does not, which is the point of the notification center.
   private def report_run
@@ -264,7 +268,7 @@ class Import < ApplicationRecord
       type: :import_run,
       title: "#{label} #{aasm_state}",
       body: info.presence,
-      severity: failed? ? :error : :info,
+      severity: report_severity,
       link: "/imports/",
       record: self
     )

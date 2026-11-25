@@ -10,8 +10,9 @@ module ScData
 
     FIELDS = {"index.json" => "face_index", "library.bin" => "face_positions", "normals.bin" => "face_normals"}.freeze
 
-    def initialize(store)
+    def initialize(store, logger:)
       @store = store
+      @logger = logger
     end
 
     # The fields it attached.
@@ -37,7 +38,7 @@ module ScData
     private def render_digest_column = :faces_digest
 
     private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] CharacterFacesImport #{message}")
+      @logger.call(level, message)
     end
   end
 end

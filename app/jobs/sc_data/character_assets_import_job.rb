@@ -10,29 +10,41 @@ module ScData
   # to the hair onto the equipment it names, including equipment imported
   # since the catalogue last changed.
   class CharacterAssetsImportJob < ApplicationJob
+    include TracksRun
+
     sidekiq_options queue: "loaders"
 
     def perform
       return unless ::ScData::CharacterStore.configured?
 
+      track_run(::Imports::ScData::CharacterAssetsImport) { sync }
+    end
+
+    private def sync
       store = ::ScData::CharacterStore.new
       assets = CharacterAsset.with_attached_file.index_by(&:path)
       listed = store.assets
-      attached = 0
+      attached = []
       failed = 0
+
+      @progress&.step("character_assets", total: listed.size)
 
       listed.each do |path, remote|
         asset = assets["#{PREFIX}#{path}"] || CharacterAsset.new(path: "#{PREFIX}#{path}")
         next if asset.etag == remote.etag && asset.file.attached?
 
-        attach(store, asset, path, remote) ? attached += 1 : failed += 1
+        attach(store, asset, path, remote) ? attached << path : failed += 1
+      ensure
+        @progress&.advance
       end
 
-      log(:info, "attached #{attached}, failed #{failed}") if attached.positive? || failed.positive?
+      log(:info, "attached #{attached.size}, failed #{failed}") if attached.any? || failed.positive?
 
-      remove_unlisted(listed.keys.map { |path| "#{PREFIX}#{path}" })
+      removed = remove_unlisted(listed.keys.map { |path| "#{PREFIX}#{path}" })
 
       apply_head_wear
+
+      {attached: attached.index_with { ["file"] }, removed:}
     end
 
     PREFIX = "characters/"
@@ -61,12 +73,14 @@ module ScData
     # taken for a bucket that could not be read rather than an export with
     # nothing in it.
     private def remove_unlisted(paths)
-      return if paths.empty?
+      return 0 if paths.empty?
 
       gone = CharacterAsset.where.not(path: paths)
       count = gone.count
       gone.find_each(&:destroy!)
       log(:info, "removed #{count} no longer exported") if count.positive?
+
+      count
     end
 
     FITS = %w[rigid face_wrap].freeze
@@ -110,10 +124,6 @@ module ScData
       return false if file.size != remote.size
 
       remote.multipart? || Digest::MD5.file(file.path).hexdigest == remote.etag
-    end
-
-    private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] CharacterAssetsImportJob #{message}")
     end
   end
 end

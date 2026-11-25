@@ -12,21 +12,34 @@ module ScData
   # Screens of a build that is neither configured nor recorded any more go
   # with it, so retention pruning a build also frees its images.
   class LoadingScreensImportJob < ApplicationJob
+    include TracksRun
+
     sidekiq_options queue: "loaders"
 
     def perform
       return unless ::ScData::RawStore.configured?
 
+      track_run(::Imports::ScData::LoadingScreensImport) { sync }
+    end
+
+    private def sync
       builds = builds_to_import
 
-      LoadingScreen.where.not(version: builds.map(&:version)).find_each(&:destroy!)
+      removed = LoadingScreen.where.not(version: builds.map(&:version)).to_a.each(&:destroy!).size
+
+      @progress&.step("loading_screens", total: builds.size)
+      attached = {}
 
       builds.each do |build|
-        import(build)
+        import(build) { |name| (attached[build.version] ||= []) << name }
       rescue => e
         log(:error, "#{build.version} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
+      ensure
+        @progress&.advance
       end
+
+      {attached:, removed:}
     end
 
     private def builds_to_import
@@ -55,11 +68,8 @@ module ScData
         end
 
         log(:info, "attached #{build.version}/#{name}")
+        yield name
       end
-    end
-
-    private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] LoadingScreensImportJob #{message}")
     end
   end
 end
