@@ -1,12 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
-
-let dashboardEnabled = false;
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => dashboardEnabled }),
-}));
 
 vi.mock("@/frontend/components/Home/Landing/index.vue", async () => {
   const { defineComponent, h } = await import("vue");
@@ -36,27 +30,11 @@ const shown = (subject: Awaited<ReturnType<typeof mount>>) =>
   );
 
 describe("HomePage", () => {
-  beforeEach(() => {
-    dashboardEnabled = false;
-  });
-
   it("shows a visitor the landing page", async () => {
     expect(shown(await mount(false))).toEqual(["landing"]);
   });
 
-  it("shows a visitor the landing page with the dashboard on", async () => {
-    dashboardEnabled = true;
-
-    expect(shown(await mount(false))).toEqual(["landing"]);
-  });
-
-  it("shows a signed-in pilot the landing page while the dashboard is off", async () => {
-    expect(shown(await mount(true))).toEqual(["landing"]);
-  });
-
-  it("shows a signed-in pilot the dashboard when it is on", async () => {
-    dashboardEnabled = true;
-
+  it("shows a signed-in pilot the dashboard", async () => {
     expect(shown(await mount(true))).toEqual(["dashboard"]);
   });
 });

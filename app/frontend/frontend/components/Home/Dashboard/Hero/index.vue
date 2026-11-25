@@ -11,7 +11,7 @@ import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 import HomeBuildPills from "@/frontend/components/Home/BuildPills/index.vue";
 import DashboardStats from "@/frontend/components/Home/Dashboard/Stats/index.vue";
-import { FeatureFlagName, useHangar } from "@/services/fyApi";
+import { useHangar } from "@/services/fyApi";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -95,11 +95,7 @@ const flagshipTag = computed(() =>
         >
           {{ today }}
         </span>
-        <Heading
-          hero
-          :size="HeadingSizeEnum.HERO_SM"
-          :feature="FeatureFlagName.HOMEPAGE_DASHBOARD"
-        >
+        <Heading hero :size="HeadingSizeEnum.HERO_SM">
           {{
             currentUser
               ? t("home.dashboard.welcome", { name: currentUser.username })

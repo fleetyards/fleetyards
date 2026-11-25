@@ -5,7 +5,6 @@ import { type MediaFile } from "@/services/fyApi";
 const device = vi.hoisted(() => ({
   mobile: false,
   lowPower: false,
-  texturedHolo: true,
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -18,10 +17,6 @@ vi.mock("@/shared/composables/useMobile", () => ({
 
 vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   useLowPowerDevice: () => ref(device.lowPower),
-}));
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => device.texturedHolo }),
 }));
 
 // The real viewer pulls in three.js, which does not load outside a browser.
@@ -41,11 +36,10 @@ const file = (name: string, size = 1000): MediaFile => ({
 
 const mountHero = (
   props: { image?: MediaFile; holo?: MediaFile; holoTextured?: MediaFile },
-  { mobile = false, lowPower = false, texturedHolo = true } = {},
+  { mobile = false, lowPower = false } = {},
 ) => {
   device.mobile = mobile;
   device.lowPower = lowPower;
-  device.texturedHolo = texturedHolo;
 
   return mount(ItemHero, {
     props: {
@@ -216,17 +210,6 @@ describe("ItemHero", () => {
         path: "https://example.test/other_textured.glb",
       }),
     ]);
-  });
-
-  it("shows the plain holo while the flag is off", () => {
-    const wrapper = mountHero(
-      { holo: file("holo.glb"), holoTextured: file("holo_textured.glb") },
-      { texturedHolo: false },
-    );
-
-    expect(
-      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
-    ).toEqual([expect.objectContaining({ textured: false })]);
   });
 
   it("renders nothing without a picture or a holo", () => {

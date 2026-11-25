@@ -588,7 +588,6 @@
       "hangarStats": "Stats",
       "wishlist": "Wishlist",
       "fleetchart": "Fleetchart",
-      "fleetchartScale": "Ship scale",
       "fleetchartApp": {
         "screenHeight": "Screen Height",
         "viewpoint": "Viewpoint",
@@ -704,11 +703,6 @@
           "classic": "Classic",
           "packed": "Packed",
           "free": "Free"
-        },
-        "mode": "Mode",
-        "modeOptions": {
-          "classic": "Classic",
-          "panzoom": "v2"
         }
       },
       "fleetStats": "Stats",

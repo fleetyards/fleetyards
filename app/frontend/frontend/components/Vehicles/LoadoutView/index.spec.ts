@@ -58,10 +58,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 
 const openLoadoutModal = vi.fn();
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => false }),
-}));
-
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
   useVehicleModals: () => ({ openLoadoutModal }),
 }));

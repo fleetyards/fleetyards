@@ -3,8 +3,6 @@
 module Api
   module V1
     class FleetchartLayoutsController < ::Api::BaseController
-      include FleetchartLayoutsFeatureConcern
-
       READ_ACTIONS = %i[index show].freeze
 
       before_action :authenticate_user!, only: []
@@ -15,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         except: READ_ACTIONS
 
-      before_action :check_fleetchart_layouts_feature
       before_action :set_fleetchart_layout, except: %i[index create]
 
       def index

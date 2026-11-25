@@ -1,5 +1,4 @@
-import { FeatureFlagName, type MediaFile } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { type MediaFile } from "@/services/fyApi";
 
 type Holos = {
   holo?: MediaFile | null;
@@ -17,14 +16,11 @@ export const useItemHolo = (
   holos: MaybeRefOrGetter<Holos>,
   { canLoad = () => true }: Options = {},
 ) => {
-  const { isFeatureEnabled } = useFeatures();
-
   const failedTexturedUrl = ref<string>();
 
   const holoModel = computed(() => {
     const { holo, holoTextured } = toValue(holos);
     const isTextured =
-      isFeatureEnabled(FeatureFlagName.ITEM_HOLO_TEXTURED) &&
       !!holo?.url &&
       !!holoTextured?.url &&
       canLoad(holoTextured) &&

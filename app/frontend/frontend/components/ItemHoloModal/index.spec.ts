@@ -8,10 +8,6 @@ vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   useLowPowerDevice: () => ref(device.lowPower),
 }));
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
-}));
-
 vi.mock("@/shared/components/HoloViewer/Modal/index.vue", () => ({
   default: {
     name: "HoloViewerModal",

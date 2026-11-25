@@ -7,7 +7,7 @@ import type {
 // The response sends each model and module package once and points at them, so a
 // fleet of thousands stays small; the chart wants each ship to carry its own.
 // A model is cloned per ship, as the chart merges its pictures into it, and starts
-// with no pictures rather than none at all, as the older charts read them directly.
+// with no pictures.
 export const joinFleetchartShips = (
   data: FleetFleetchart | undefined,
 ): FleetchartShip[] => {

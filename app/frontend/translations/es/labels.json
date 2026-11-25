@@ -588,7 +588,6 @@
       "hangarStats": "Estadísticas",
       "wishlist": "Lista de deseos",
       "fleetchart": "Gráfico de flota",
-      "fleetchartScale": "Escala de naves",
       "fleetchartApp": {
         "screenHeight": "Altura de pantalla",
         "viewpoint": "Punto de vista",
@@ -704,11 +703,6 @@
           "classic": "Clásico",
           "packed": "Compacto",
           "free": "Libre"
-        },
-        "mode": "Modo",
-        "modeOptions": {
-          "classic": "Clásico",
-          "panzoom": "v2"
         }
       },
       "fleetStats": "Estadísticas",

@@ -89,10 +89,6 @@
       },
       "showFleetchart": "Diagrama de flota",
       "hideFleetchart": "Vista predeterminada",
-      "fleetchartApp": {
-        "useExtendedState": "Mostrar naves en estado extendido",
-        "useRetractedState": "Mostrar naves en vuelo"
-      },
       "showLabels": "Mostrar etiquetas",
       "hideLabels": "Ocultar etiquetas",
       "resetZoom": "Restablecer zoom",

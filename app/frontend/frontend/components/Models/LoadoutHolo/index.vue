@@ -91,12 +91,6 @@ const doorsMarked = layer("doorsMarked");
 
 const { isFeatureEnabled } = useFeatures();
 
-const servicingAreasEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.HOLO_SERVICING_AREAS),
-);
-const cargoGridsEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.HOLO_CARGO_GRIDS),
-);
 const doorAnimationEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.HOLO_DOOR_ANIMATION),
 );
@@ -149,9 +143,7 @@ const holoModel = computed(() => {
     path: hull.url,
     size: hull.size ?? undefined,
     mounts: loadoutMounts(preview.value, slots),
-    cargoGrids: cargoGridsEnabled.value
-      ? loadoutCargoGrids(preview.value, slots)
-      : [],
+    cargoGrids: loadoutCargoGrids(preview.value, slots),
     doors: doors.value,
     openDoors: doorAnimationEnabled.value ? openDoors.value : [],
     doorTargets: doorHighlightEnabled.value || doorAnimationEnabled.value,
@@ -162,10 +154,7 @@ const holoModel = computed(() => {
       boxes: servicingAreasShown.value,
       cargo: cargoGridsShown.value,
     },
-    boxes: (servicingAreasEnabled.value
-      ? preview.value.servicingAreas
-      : []
-    ).map((area) => ({
+    boxes: preview.value.servicingAreas.map((area) => ({
       id: area.key,
       position: area.position as [number, number, number],
       rotation: area.rotation as [number, number, number, number],
@@ -193,7 +182,6 @@ const {
   doorsAnimated: doorAnimationEnabled,
   doorsHighlighted: doorHighlightEnabled,
   isOpen,
-  cargoGrids: cargoGridsEnabled,
   builtInHint: t("actions.holoViewer.builtIn"),
   pointedPath,
 });
@@ -264,11 +252,6 @@ const doorsLabel = computed(() =>
         @click="servicingAreasShown = !servicingAreasShown"
       >
         <i class="fa-light fa-screwdriver-wrench" />
-        <BetaBadge
-          :feature="FeatureFlagName.HOLO_SERVICING_AREAS"
-          in-control
-          compact
-        />
       </Btn>
       <Btn
         v-if="holoModel.cargoGrids.length"
@@ -280,11 +263,6 @@ const doorsLabel = computed(() =>
         @click="cargoGridsShown = !cargoGridsShown"
       >
         <i class="fa-light fa-boxes-stacked" />
-        <BetaBadge
-          :feature="FeatureFlagName.HOLO_CARGO_GRIDS"
-          in-control
-          compact
-        />
       </Btn>
       <Btn
         v-if="doorHighlightEnabled && holoModel.doors.length"

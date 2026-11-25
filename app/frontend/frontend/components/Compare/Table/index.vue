@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { ViewImageSizeEnum } from "@/shared/components/ViewImage/types";
-import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
+import CompareShipImage from "@/frontend/components/Compare/ShipImage/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { markExtremes } from "@/frontend/components/Compare/highlights";
 import {
@@ -457,7 +457,7 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
                 <th scope="row" class="compare-table__rail">{{ row.label }}</th>
                 <td v-for="cell in row.cells" :key="cell.key">
                   <div class="compare-table__view">
-                    <FleetchartItemImage
+                    <CompareShipImage
                       v-if="cell.src"
                       :label="cell.alt"
                       :src="cell.src"

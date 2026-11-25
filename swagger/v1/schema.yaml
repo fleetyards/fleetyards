@@ -13502,12 +13502,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
     parameters:
@@ -13541,12 +13535,6 @@ paths:
                 "$ref": "#/components/schemas/BlueprintLogMatchList"
         '401':
           description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
           content:
             application/json:
               schema:
@@ -13851,12 +13839,6 @@ paths:
                 "$ref": "#/components/schemas/FleetchartLayoutsList"
         '401':
           description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: feature disabled
           content:
             application/json:
               schema:

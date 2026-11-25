@@ -89,10 +89,6 @@
       },
       "showFleetchart": "艦隊圖表",
       "hideFleetchart": "預設檢視",
-      "fleetchartApp": {
-        "useExtendedState": "顯示展開狀態的飛船",
-        "useRetractedState": "顯示飛行狀態的飛船"
-      },
       "showLabels": "顯示標籤",
       "hideLabels": "隱藏標籤",
       "resetZoom": "重置縮放",

@@ -5,28 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BetaBadge from "@/shared/components/BetaBadge/index.vue";
-import FleetchartListPanzoom from "@/frontend/components/Fleetchart/ListPanzoom/index.vue";
-import FleetchartList from "@/frontend/components/Fleetchart/List/index.vue";
 import FleetchartCanvas from "@/frontend/components/Fleetchart/Canvas/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import AppModalCloseBtn from "@/shared/components/AppModal/CloseBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import {
-  FeatureFlagName,
-  type Model,
-  type Vehicle,
-  type VehiclePublic,
-} from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useOverlayStore } from "@/shared/stores/overlay";
-import { FleetchartLayouts, FleetchartModes } from "@/shared/stores/fleetchart";
+import { FleetchartLayouts } from "@/shared/stores/fleetchart";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFleetchartViews } from "@/frontend/composables/useFleetchartViews";
@@ -40,7 +30,6 @@ import type { FleetchartGroups } from "@/shared/stores/fleetchart";
 type Props = {
   namespace: string;
   items: FleetchartEntry[];
-  myShip?: boolean;
   downloadName?: string;
   loading?: boolean;
   /** Offers a share control in the chart's own controls. The chart covers the
@@ -59,7 +48,6 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  myShip: false,
   downloadName: undefined,
   loading: false,
   shareUrl: undefined,
@@ -93,18 +81,6 @@ const filterVisible = computed(() => {
 const visible = computed(() => {
   return fleetchartStore.isVisible(props.namespace);
 });
-
-const mode = computed(() => {
-  return fleetchartStore.fleetchartMode(props.namespace);
-});
-
-const { isFeatureEnabled } = useFeatures();
-
-// The flag is the owner's: a shared layout was checked when it was fetched, and the
-// person opening the link does not need it themselves.
-const layoutsEnabled = computed(
-  () => props.readOnly || isFeatureEnabled(FeatureFlagName.FLEETCHART_LAYOUTS),
-);
 
 const layout = computed(() =>
   fleetchartStore.fleetchartLayout(props.namespace, canArrange.value),
@@ -151,36 +127,6 @@ const {
   () => visible.value,
 );
 
-const extended = computed(() => {
-  return fleetchartStore.extendedState(props.namespace);
-});
-
-const toggleExtended = () => {
-  fleetchartStore.toggleExtended(props.namespace);
-};
-
-const extendedTooltip = computed(() => {
-  return extended.value
-    ? t("actions.fleetchartApp.useRetractedState")
-    : t("actions.fleetchartApp.useExtendedState");
-});
-
-const hasExtendedItems = computed(() => {
-  return sourceItems.value.some((item) => {
-    const model = modelOf(item);
-    const media = model.media as Model["media"] | undefined;
-
-    return Boolean(
-      model.metrics?.extendedLength ||
-      media?.extendedHolo ||
-      media?.extendedTopView ||
-      media?.extendedPortView ||
-      media?.extendedAngledView ||
-      media?.extendedFrontView,
-    );
-  });
-});
-
 const { isFilterSelected } = useFilters();
 
 const slots = useSlots();
@@ -196,13 +142,6 @@ const filterTooltip = computed(() => {
 
   return t("filteredList.actions.showFilter");
 });
-
-watch(
-  () => props.items,
-  () => {
-    updateItems();
-  },
-);
 
 // The views arrive after the chart opens, so the copy has to be rebuilt once they
 // land rather than only when the item list changes.
@@ -235,7 +174,7 @@ onMounted(async () => {
   }
 });
 
-watch([layoutsEnabled, sourceItems], () => {
+watch(sourceItems, () => {
   updateItems();
 });
 
@@ -260,28 +199,8 @@ const withViews = (items: FleetchartEntry[]) => {
 
 const updateItems = () => {
   // The renderer sorts by the chosen option, and one option is the list's order.
-  if (layoutsEnabled.value) {
-    innerItems.value = withViews(JSON.parse(JSON.stringify(sourceItems.value)));
-
-    return;
-  }
-
-  innerItems.value = withViews(JSON.parse(JSON.stringify(props.items))).sort(
-    (a: FleetchartEntry, b: FleetchartEntry) => {
-      const lengthA = modelOf(a).metrics?.length;
-      const lengthB = modelOf(b).metrics?.length;
-
-      return lengthA && lengthB ? lengthA - lengthB : 0;
-    },
-  );
+  innerItems.value = withViews(JSON.parse(JSON.stringify(sourceItems.value)));
 };
-
-// The charts behind the flag are typed against full models, but read only what a
-// fleet's slim ships carry as well: names, metrics, status and the merged views,
-// whose `media` starts out empty.
-const legacyItems = computed(
-  () => innerItems.value as (Vehicle | Model | VehiclePublic)[],
-);
 
 const emit = defineEmits(["fleetchart-opened", "fleetchart-closed"]);
 
@@ -324,10 +243,6 @@ const open = async () => {
 
 const hide = () => {
   fleetchartStore.hide(props.namespace);
-};
-
-const setMode = (mode: FleetchartModes) => {
-  fleetchartStore.updateMode({ namespace: props.namespace, mode });
 };
 
 const closeFleetchart = async () => {
@@ -373,19 +288,12 @@ const closeFleetchart = async () => {
       <div class="fleetchart-app-controls">
         <slot name="title" />
 
-        <BtnDropdown
-          v-if="layoutsEnabled && !readOnly"
-          data-test="fleetchart-layout"
-        >
+        <BtnDropdown v-if="!readOnly" data-test="fleetchart-layout">
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.layout") }}:
             </template>
             {{ t(`labels.fleetchartApp.layoutOptions.${layout}`) }}
-            <BetaBadge
-              :feature="FeatureFlagName.FLEETCHART_LAYOUTS"
-              in-control
-            />
           </template>
           <Btn
             v-for="option in layoutOptions"
@@ -398,33 +306,6 @@ const closeFleetchart = async () => {
             {{ t(`labels.fleetchartApp.layoutOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
-
-        <BtnDropdown v-else-if="!readOnly">
-          <template #label>
-            <template v-if="!mobile">
-              {{ t("labels.fleetchartApp.mode") }}:
-            </template>
-            {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
-          </template>
-          <Btn
-            v-for="(option, index) in FleetchartModes"
-            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            :active="mode === option"
-            @click="setMode(option)"
-            variant="bare"
-          >
-            {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
-          </Btn>
-        </BtnDropdown>
-
-        <Btn
-          v-if="hasExtendedItems && !layoutsEnabled"
-          v-tooltip="extendedTooltip"
-          :active="extended"
-          @click="toggleExtended"
-        >
-          <i class="fa-duotone fa-arrows-from-line" />
-        </Btn>
 
         <ShareBtn
           v-if="shareUrl"
@@ -463,32 +344,16 @@ const closeFleetchart = async () => {
       </div>
 
       <!-- A free arrangement can start empty, as ships can be added to it. -->
-      <template v-if="innerItems.length || (layoutsEnabled && arranging)">
-        <FleetchartCanvas
-          v-if="layoutsEnabled"
-          :items="innerItems"
-          :namespace="namespace"
-          :download-name="downloadName"
-          :can-arrange="canArrange"
-          :read-only="readOnly"
-          :arrange-ready="!arranging || arrangeLoaded"
-          :groups="groups"
-        />
-        <FleetchartListPanzoom
-          v-else-if="mode == 'panzoom'"
-          :items="legacyItems"
-          :my-ship="myShip"
-          :namespace="namespace"
-          :download-name="downloadName"
-        />
-        <FleetchartList
-          v-else
-          :items="legacyItems"
-          :my-ship="myShip"
-          :namespace="namespace"
-          :download-name="downloadName"
-        />
-      </template>
+      <FleetchartCanvas
+        v-if="innerItems.length || arranging"
+        :items="innerItems"
+        :namespace="namespace"
+        :download-name="downloadName"
+        :can-arrange="canArrange"
+        :read-only="readOnly"
+        :arrange-ready="!arranging || arrangeLoaded"
+        :groups="groups"
+      />
 
       <Loader :loading="loading || viewsLoading" :fixed="true" />
     </div>
