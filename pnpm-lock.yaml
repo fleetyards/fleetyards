@@ -243,18 +243,12 @@ importers:
       lodash.merge:
         specifier: ^4.6.2
         version: 4.6.2
-      mitt:
-        specifier: ^3.0.1
-        version: 3.0.1
       nanoevents:
         specifier: ^10.0.0
         version: 10.0.0
       panzoom:
         specifier: 9.4.4
         version: 9.4.4
-      papaparse:
-        specifier: 5.7.1
-        version: 5.7.1
       photoswipe:
         specifier: 5.4.4
         version: 5.4.4
@@ -264,12 +258,6 @@ importers:
       pinia-plugin-persistedstate:
         specifier: ^4.7.1
         version: 4.7.1(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.46(typescript@6.0.3)))
-      pnp-webpack-plugin:
-        specifier: 1.7.0
-        version: 1.7.0(typescript@6.0.3)
-      prismjs:
-        specifier: ^1.30.0
-        version: 1.30.0
       qs:
         specifier: ^6.17.1
         version: 6.17.1
@@ -291,12 +279,6 @@ importers:
       vue:
         specifier: ^3.5.46
         version: 3.5.46(typescript@6.0.3)
-      vue-collapsed:
-        specifier: ^1.3.5
-        version: 1.3.5
-      vue-number-animation:
-        specifier: ^2.0.2
-        version: 2.0.2(vue@3.5.46(typescript@6.0.3))
       vue-router:
         specifier: 5.5.1
         version: 5.5.1(@vue/compiler-sfc@3.5.46)(esbuild@0.28.2)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.46(typescript@6.0.3)))(rolldown@1.2.5)(rollup@4.60.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(terser@5.46.2)(yaml@2.9.0))(vue@3.5.46(typescript@6.0.3))
@@ -3718,9 +3700,6 @@ packages:
   amator@1.1.0:
     resolution: {integrity: sha512-V5+aH8pe+Z3u/UG3L3pG3BaFQGXAyXHVQDroRwjPHdh08bcUEchAVsU1MCuJSCaU5o60wTK6KaE6te5memzgYw==}
 
-  animejs@3.2.2:
-    resolution: {integrity: sha512-Ao95qWLpDPXXM+WrmwcKbl6uNlC5tjnowlaRYtuVDHHoygjtIPfDUoK9NthrlZsQSKjZXlmji2TrBUAVbiH0LQ==}
-
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -5703,9 +5682,6 @@ packages:
   panzoom@9.4.4:
     resolution: {integrity: sha512-r1KfkNZvsBw59IPq7Yy+GWZnZE1YCG/t7aG6caSkij/TBqdxTzmxNTm/lHf3h6qlVMFisIGIO+lgS2Ym23PIoA==}
 
-  papaparse@5.7.1:
-    resolution: {integrity: sha512-qOR+UDWv6D3hMxnWWOk0ZpBdCkd+kw5Yh7aXOaNSQU8A+73EA2bhW7EiUix/hY0yulUi5FRvt7PpYSI2VDvY0g==}
-
   param-case@3.0.4:
     resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
 
@@ -5843,10 +5819,6 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  pnp-webpack-plugin@1.7.0:
-    resolution: {integrity: sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg==}
-    engines: {node: '>=6'}
-
   pony-cause@1.1.1:
     resolution: {integrity: sha512-PxkIc/2ZpLiEzQXu5YRDOUgBlfGYBY8156HY5ZcRAwwonMk5W/MrJP2LLkG/hF7GEQzaHo2aS7ho6ZLCOvf+6g==}
     engines: {node: '>=12.0.0'}
@@ -5931,10 +5903,6 @@ packages:
   pretty-ms@9.3.1:
     resolution: {integrity: sha512-HzMy3Geq23nVALD/M2LliU+F+M+gVNsvkQWWqeBZ8HDiCgzo6YPJ/Omrmtq24EFrIsk0a3EkQGEd7bDOo+IhGA==}
     engines: {node: '>=18'}
-
-  prismjs@1.30.0:
-    resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
-    engines: {node: '>=6'}
 
   promise-worker-transferable@1.0.4:
     resolution: {integrity: sha512-bN+0ehEnrXfxV2ZQvU2PetO0n4gqBD4ulq3MI1WOPLgr7/Mg9yRQkX5+0v1vagr74ZTsl7XtzlaYDo2EuCeYJw==}
@@ -6597,15 +6565,6 @@ packages:
       '@swc/wasm':
         optional: true
 
-  ts-pnp@1.2.0:
-    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -7027,22 +6986,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-collapsed@1.3.5:
-    resolution: {integrity: sha512-U6wCa4mFpaX2Fr9BWtGNPte3SAgtpk1NjeS/NRLHDHu2fDs3/MQ3W13pvWXy5BGbtz14HxzSq6efC9WrHblozQ==}
-
   vue-component-type-helpers@3.3.14:
     resolution: {integrity: sha512-Pq3+OnbCiPCHk0R7KSZrx+j/XXaUn2kSQ1epxq60w8CPbByLjC1EJgV51n4WY851sTXUVzsNMuitywdkdVyKjA==}
-
-  vue-demi@0.11.4:
-    resolution: {integrity: sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -7060,15 +7005,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-
-  vue-number-animation@2.0.2:
-    resolution: {integrity: sha512-1YQ1f6SHqQGdrf9/EKykvCa9FlAcUoh7o3c4Fe5Qc0TDbj415brB1lTpuIw6rpkTApLR7APerlZHXjNOWYOA3Q==}
-    peerDependencies:
-      '@vue/composition-api': ^1.3.6
-      vue: ^2.0.0 || >=3.0.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
 
   vue-router@5.5.1:
     resolution: {integrity: sha512-lUENd/QIhKd2HWACnXID3us0GWBnuOi3BwkTUzce2+4nfM/b3seV5saNURM9+wt48/qUxviotpcm7yFxC0U4qA==}
@@ -10622,8 +10558,6 @@ snapshots:
     dependencies:
       bezier-easing: 2.1.0
 
-  animejs@3.2.2: {}
-
   ansi-regex@5.0.1: {}
 
   ansi-regex@6.3.0: {}
@@ -12826,8 +12760,6 @@ snapshots:
       ngraph.events: 1.4.0
       wheel: 1.0.0
 
-  papaparse@5.7.1: {}
-
   param-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
@@ -12945,12 +12877,6 @@ snapshots:
     dependencies:
       playwright-core: 1.65.1
 
-  pnp-webpack-plugin@1.7.0(typescript@6.0.3):
-    dependencies:
-      ts-pnp: 1.2.0(typescript@6.0.3)
-    transitivePeerDependencies:
-      - typescript
-
   pony-cause@1.1.1: {}
 
   possible-typed-array-names@1.1.0: {}
@@ -13021,8 +12947,6 @@ snapshots:
   pretty-ms@9.3.1:
     dependencies:
       parse-ms: 4.0.0
-
-  prismjs@1.30.0: {}
 
   promise-worker-transferable@1.0.4:
     dependencies:
@@ -13860,10 +13784,6 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-pnp@1.2.0(typescript@6.0.3):
-    optionalDependencies:
-      typescript: 6.0.3
-
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -14246,13 +14166,7 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-collapsed@1.3.5: {}
-
   vue-component-type-helpers@3.3.14: {}
-
-  vue-demi@0.11.4(vue@3.5.46(typescript@6.0.3)):
-    dependencies:
-      vue: 3.5.46(typescript@6.0.3)
 
   vue-demi@0.14.10(vue@3.5.46(typescript@6.0.3)):
     dependencies:
@@ -14269,12 +14183,6 @@ snapshots:
       semver: 7.8.5
     transitivePeerDependencies:
       - supports-color
-
-  vue-number-animation@2.0.2(vue@3.5.46(typescript@6.0.3)):
-    dependencies:
-      animejs: 3.2.2
-      vue: 3.5.46(typescript@6.0.3)
-      vue-demi: 0.11.4(vue@3.5.46(typescript@6.0.3))
 
   vue-router@5.5.1(@vue/compiler-sfc@3.5.46)(esbuild@0.28.2)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.46(typescript@6.0.3)))(rolldown@1.2.5)(rollup@4.60.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.108.2)(terser@5.46.2)(yaml@2.9.0))(vue@3.5.46(typescript@6.0.3)):
     dependencies:
