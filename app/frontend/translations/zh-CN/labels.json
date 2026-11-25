@@ -339,7 +339,7 @@
         "requestedBy": "请求者",
         "adminUser": "管理员用户",
         "user": "用户",
-        "includeSystem": "包含系统",
+        "includeSystem": "由系统请求",
         "systemRequester": "系统",
         "progress": {
           "step": "%{step}，第 %{number} 步，共 %{total} 步",

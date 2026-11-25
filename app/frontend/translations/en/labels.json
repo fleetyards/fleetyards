@@ -339,7 +339,7 @@
         "requestedBy": "Requested by",
         "adminUser": "Admin User",
         "user": "User",
-        "includeSystem": "Include system",
+        "includeSystem": "Requested by the system",
         "systemRequester": "system",
         "progress": {
           "step": "%{step}, step %{number} of %{total}",

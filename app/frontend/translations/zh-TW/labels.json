@@ -339,7 +339,7 @@
         "requestedBy": "要求者",
         "adminUser": "管理員使用者",
         "user": "使用者",
-        "includeSystem": "包含系統",
+        "includeSystem": "由系統要求",
         "systemRequester": "系統",
         "progress": {
           "step": "%{step}，第 %{number} 步，共 %{total} 步",
