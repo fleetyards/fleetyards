@@ -63,28 +63,3 @@ accessories:
         S3_BUCKET: fltyrd-live-backups
   uploads-copy:
     host: <%= acc_ips.first %>
-  # rclone, idle, for copying the game data from Hetzner to R2, through
-  # bin/sc-data-copy. Only here: stage reads the same bucket.
-  sc-data-copy:
-    image: rclone/rclone:1.75.2
-    host: <%= acc_ips.first %>
-    cmd: infinity
-    env:
-      clear:
-        RCLONE_CONFIG_HETZNER_TYPE: s3
-        RCLONE_CONFIG_HETZNER_PROVIDER: Other
-        RCLONE_CONFIG_HETZNER_ENDPOINT: https://fsn1.your-objectstorage.com
-        RCLONE_CONFIG_HETZNER_REGION: fsn1
-        RCLONE_CONFIG_R2_TYPE: s3
-        RCLONE_CONFIG_R2_PROVIDER: Cloudflare
-        RCLONE_CONFIG_R2_REGION: auto
-        RCLONE_CONFIG_R2_NO_CHECK_BUCKET: "true"
-      secret:
-        - RCLONE_CONFIG_HETZNER_ACCESS_KEY_ID
-        - RCLONE_CONFIG_HETZNER_SECRET_ACCESS_KEY
-        - RCLONE_CONFIG_R2_ENDPOINT
-        - RCLONE_CONFIG_R2_ACCESS_KEY_ID
-        - RCLONE_CONFIG_R2_SECRET_ACCESS_KEY
-    options:
-      entrypoint: sleep
-      memory: 1g
