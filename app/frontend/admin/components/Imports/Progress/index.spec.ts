@@ -46,6 +46,21 @@ describe("ImportsProgress", () => {
     expect(wrapper.find(bar).attributes("aria-valuenow")).toBe("25");
   });
 
+  it("names the step alone where there is only one", async () => {
+    const wrapper = await mount(
+      anImport({
+        progress: progress({
+          step: ImportProgressStepEnum.SHIP_VIEWS,
+          stepNumber: 1,
+          steps: 1,
+        }),
+      }),
+    );
+
+    expect(wrapper.text()).toContain("Ship views");
+    expect(wrapper.text()).not.toContain("step 1");
+  });
+
   it("follows the broadcast rather than the record the page fetched", async () => {
     const live = anImport({
       updatedAt: "2026-11-25T10:00:03Z",

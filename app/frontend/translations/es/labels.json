@@ -354,7 +354,12 @@
             "blueprints": "Planos",
             "locations": "Ubicaciones",
             "game_missions": "Misiones",
-            "factions": "Facciones"
+            "factions": "Facciones",
+            "ship_views": "Vistas de naves",
+            "item_views": "Vistas de objetos",
+            "character_bodies": "Cuerpos de personajes",
+            "character_assets": "Archivos de personajes",
+            "loading_screens": "Pantallas de carga"
           }
         },
         "statuses": {

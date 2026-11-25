@@ -37,15 +37,19 @@ const progress = computed(() =>
 
 const failed = computed(() => current.value.status === ImportStatusEnum.FAILED);
 
-const label = computed(() =>
-  progress.value
-    ? t("labels.imports.progress.step", {
-        step: t(`labels.imports.progress.steps.${progress.value.step}`),
-        number: progress.value.stepNumber,
-        total: progress.value.steps,
-      })
-    : "",
-);
+const label = computed(() => {
+  if (!progress.value) return "";
+
+  const step = t(`labels.imports.progress.steps.${progress.value.step}`);
+
+  if (progress.value.steps === 1) return step;
+
+  return t("labels.imports.progress.step", {
+    step,
+    number: progress.value.stepNumber,
+    total: progress.value.steps,
+  });
+});
 
 const percent = computed(() => {
   const { done, total } = progress.value ?? {};

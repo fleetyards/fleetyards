@@ -354,7 +354,12 @@
             "blueprints": "藍圖",
             "locations": "地點",
             "game_missions": "任務",
-            "factions": "派系"
+            "factions": "派系",
+            "ship_views": "艦船視圖",
+            "item_views": "物品視圖",
+            "character_bodies": "角色身體",
+            "character_assets": "角色檔案",
+            "loading_screens": "載入畫面"
           }
         },
         "statuses": {
