@@ -3,7 +3,7 @@ module ScData
     class EquipmentLoader < ::ScData::Loader::BaseLoader
       def all
         items = load_items("equipment")
-        loaded = items.filter_map { |equipment_data| one(equipment_data)&.id }
+        loaded = tracked(items).filter_map { |equipment_data| one(equipment_data)&.id }
 
         link_attachments(items)
 

@@ -21,6 +21,8 @@ module Admin
             import: {type: :string},
             importData: {type: :string},
 
+            progress: ::Admin::V1::Schemas::ImportProgress,
+
             adminUser: ::Shared::V1::Schemas::UserRefRequired,
             user: ::Shared::V1::Schemas::UserRefRequired,
 

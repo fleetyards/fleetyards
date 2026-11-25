@@ -60,7 +60,7 @@ module ScData
       end
 
       def all
-        loaded = load_items("blueprints").filter_map { |blueprint_data| one(blueprint_data)&.id }
+        loaded = tracked(load_items("blueprints")).filter_map { |blueprint_data| one(blueprint_data)&.id }
 
         retire_absent(Blueprint, loaded)
         retire_absent_builds(BlueprintBuild, :blueprint_id, loaded)

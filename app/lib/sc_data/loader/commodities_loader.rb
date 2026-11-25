@@ -3,7 +3,7 @@ module ScData
     class CommoditiesLoader < ::ScData::Loader::BaseLoader
       def all
         parsed = load_items("commodities")
-        loaded = parsed.filter_map { |commodity_data| one(commodity_data)&.id }
+        loaded = tracked(parsed).filter_map { |commodity_data| one(commodity_data)&.id }
 
         link_refined_versions(parsed)
 

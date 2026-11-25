@@ -20,6 +20,8 @@ module Loaders
 
         import.start!
 
+        progress = ::Imports::Progress.new(import, steps: ::ScData::Loader::BaseLoader.loaders.size + 1)
+
         # Everything the load touches resolves its build from `ScData::Source`,
         # so the whole of it runs inside the source rather than each loader
         # being handed a version -- `Source.current` is per-job state, and the
@@ -29,7 +31,8 @@ module Loaders
         # `to_h` rather than the bare return: a loader set that produced
         # nothing hands back nil, and the report still has to render.
         stats = ::ScData::Source.with(source) do
-          fetch_parsed_tree!(source.version)
+          progress.step("fetch_tree")
+          fetch_parsed_tree!(source.version, progress:)
 
           # Recorded before the load rather than after it, and from the tree on
           # disk rather than the bucket: this is the tree the loaders are about
@@ -37,7 +40,7 @@ module Loaders
           # never finished, so `CheckJob` keeps seeing the work as outstanding.
           import.update!(tree_checksum: tree_checksum(source), code_digest: ::ScData::CodeDigest.current(source))
 
-          ::ScData::Loader::BaseLoader.all.to_h
+          ::ScData::Loader::BaseLoader.all(progress:).to_h
         end
 
         # Kept on the import so the admin view of a load says what it did.

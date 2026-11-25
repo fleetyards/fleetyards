@@ -2,7 +2,7 @@ module ScData
   module Loader
     class ManufacturersLoader < ::ScData::Loader::BaseLoader
       def all
-        load_items("manufacturers").each do |manufacturer_data|
+        tracked(load_items("manufacturers")).each do |manufacturer_data|
           name = manufacturer_data["name"]
           ref = manufacturer_data["ref"]
           code = manufacturer_data["code"]

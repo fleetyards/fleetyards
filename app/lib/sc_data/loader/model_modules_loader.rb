@@ -6,8 +6,11 @@ module ScData
 
         discover_modules
 
-        ModelModule.where.not(sc_key: nil).find_each do |model_module|
+        modules = ModelModule.where.not(sc_key: nil)
+        @progress&.total = modules.count
+        modules.find_each do |model_module|
           loaded << model_module.id if load_model_module(model_module)
+          @progress&.advance
         end
 
         # A module this build stopped describing keeps its row -- a hangar or a

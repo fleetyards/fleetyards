@@ -12,6 +12,8 @@ if local_assigns.fetch(:extended, false)
   json.import_data import.import_data
 end
 
+json.partial!("api/v1/imports/progress", import:)
+
 json.started_at import.started_at
 json.finished_at import.finished_at
 json.failed_at import.failed_at

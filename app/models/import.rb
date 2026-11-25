@@ -54,9 +54,15 @@ class Import < ApplicationRecord
   #
   # `started_at` rather than `created_at`: an import can sit queued for a while
   # before it runs, and that wait is not the job hanging.
+  #
+  # One that reports its progress is judged by its last report instead: a full
+  # sc_data load takes longer than this and is working the whole time.
   STUCK_AFTER = 1.hour
 
-  scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
+  scope :stuck, -> {
+    where(aasm_state: "started")
+      .where("COALESCE(imports.progressed_at, imports.started_at) < ?", STUCK_AFTER.ago)
+  }
 
   # `stuck`, plus a row that never left `created`: its job was lost before a
   # worker took it (a failed enqueue, an evicted queue), and nothing will start
@@ -196,11 +202,17 @@ class Import < ApplicationRecord
   def notify_admin
     return if skip_admin_notice
 
-    AdminUser.find_each do |admin_user|
-      ::ImportsChannel.broadcast_to(admin_user, to_jbuilder_hash)
-    end
+    broadcast_to_admins
 
     report_run
+  end
+
+  def broadcast_to_admins
+    payload = to_jbuilder_hash
+
+    AdminUser.find_each do |admin_user|
+      ::ImportsChannel.broadcast_to(admin_user, payload)
+    end
   end
 
   def label

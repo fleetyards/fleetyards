@@ -8,6 +8,9 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ImportInput = Record<string, any>;
 
+export const isNewer = (one: Import, other: Import) =>
+  Date.parse(one.updatedAt) > Date.parse(other.updatedAt);
+
 interface ImportsState {
   imports: Record<string, Import>;
 }
@@ -65,6 +68,11 @@ export const useImportsStore = defineStore("adminImports", {
     },
     seedImports(imports: Import[]) {
       for (const imp of imports) {
+        const known = this.imports[imp.id];
+
+        // The list can be older than a broadcast that overtook it.
+        if (known && isNewer(known, imp)) continue;
+
         this.imports[imp.id] = imp;
       }
     },

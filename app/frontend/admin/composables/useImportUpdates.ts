@@ -36,6 +36,9 @@ export const refreshImportedRecords = (
   }
 };
 
+export const isProgressReport = (importData: Import) =>
+  importData.status === ImportStatusEnum.STARTED && !!importData.progress;
+
 const formatImportLabel = (importData: Import): string => {
   return importData.type
     .replace("Imports::", "")
@@ -63,6 +66,9 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
 
     void queryClient.invalidateQueries({ queryKey: ["imports"] });
     refreshImportedRecords(queryClient, importData);
+
+    // A run already under way when this page opened, not one that just began.
+    if (!previousStatus && isProgressReport(importData)) return;
 
     const label = formatImportLabel(importData);
 

@@ -12,9 +12,8 @@ module ScData
 
       attr_accessor :sc_version, :sc_environment, :base_folder
 
-      # Returns what each loader did, so the job that ran it can keep the counts
-      # on its import rather than leaving them only in the log.
-      #
+      attr_writer :progress
+
       # The classes are listed inside the method rather than in a constant: every
       # one of them subclasses BaseLoader, so resolving them while this class
       # body is still being evaluated would be a circular load.
@@ -24,7 +23,7 @@ module ScData
       # resolves against all three of the catalogues a recipe can make or
       # consume. Missions link to the places they take place at, so locations
       # load before them.
-      def self.all
+      def self.loaders
         [
           ::ScData::Loader::ManufacturersLoader,
           ::ScData::Loader::ItemsLoader,
@@ -36,8 +35,17 @@ module ScData
           ::ScData::Loader::LocationsLoader,
           ::ScData::Loader::GameMissionsLoader,
           ::ScData::Loader::FactionsLoader
-        ].to_h do |loader_class|
+        ]
+      end
+
+      # Returns what each loader did, so the job that ran it can keep the counts
+      # on its import rather than leaving them only in the log.
+      def self.all(progress: nil)
+        loaders.to_h do |loader_class|
+          progress&.step(loader_class.name.demodulize.delete_suffix("Loader").underscore)
+
           loader = loader_class.new
+          loader.progress = progress
 
           loader.all
 
@@ -208,6 +216,21 @@ module ScData
       def load_items(path)
         Dir.glob(export_path.join(path, "**", "*.json")).map do |file|
           JSON.parse(File.read(file)).with_indifferent_access
+        end
+      end
+
+      # The records, counted into the progress as the caller gets through them.
+      # Without a total they go on counting towards the one already set.
+      private def tracked(records, total: records.size)
+        return records if @progress.nil?
+
+        @progress.total = total if total
+
+        Enumerator.new do |yielder|
+          records.each do |record|
+            yielder << record
+            @progress.advance
+          end
         end
       end
 

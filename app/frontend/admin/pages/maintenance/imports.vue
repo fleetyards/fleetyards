@@ -27,6 +27,7 @@ import { useImportLoaders } from "@/admin/composables/useImportLoaders";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import FilterForm from "@/admin/components/Imports/FilterForm/index.vue";
+import ImportsProgress from "@/admin/components/Imports/Progress/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { ImportQuery } from "@/services/fyAdminApi";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -256,6 +257,7 @@ const columns: BaseTableCol<Import>[] = [
         </template>
         <template #col-type="{ record }">
           {{ formatType(record.type) }}
+          <ImportsProgress :record="record" />
         </template>
         <template #col-status="{ record }">
           <BasePill :variant="statusVariant(record.status)" uppercase>

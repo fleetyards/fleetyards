@@ -34,7 +34,7 @@ module ScData
         carrying_icon = component_ids_carrying_icon
 
         # Pass 1: create/update all components so they exist for cross-references
-        items.each do |item|
+        tracked(items, total: items.size * 2).each do |item|
           normalized_key = item["key"].downcase
           name = item["name"].presence || MISSING_NAMES[normalized_key]
           component = find_or_create_component(normalized_key, item["key"], item["ref"], name)
@@ -135,7 +135,7 @@ module ScData
         end
 
         # Pass 2: link loadouts (all components now exist for cross-references)
-        items.each do |item|
+        tracked(items, total: nil).each do |item|
           next if item["loadout"].blank?
 
           normalized_key = item["key"].downcase

@@ -6,7 +6,7 @@ module ScData
         @shared_names = items.group_by { |item| item["name"] }.select { |_name, group| group.size > 1 }.keys.to_set
         @by_key = {}
 
-        loaded = parents_first(items).filter_map { |item| one(item)&.id }
+        loaded = tracked(parents_first(items)).filter_map { |item| one(item)&.id }
 
         resolve_map_parents(items)
 

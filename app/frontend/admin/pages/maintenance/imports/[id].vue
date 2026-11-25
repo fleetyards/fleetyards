@@ -8,6 +8,7 @@ export default {
 import Heading from "@/shared/components/base/Heading/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+import ImportsProgress from "@/admin/components/Imports/Progress/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 
 import {
@@ -195,6 +196,7 @@ const headlineTitle = (record: Import) => formatType(record.type);
               <BasePill :variant="statusVariant(importRecord.status)" uppercase>
                 {{ t(`labels.imports.statuses.${importRecord.status}`) }}
               </BasePill>
+              <ImportsProgress :record="importRecord" />
             </div>
             <dl class="import-detail__meta-list">
               <template v-for="row in metaRows" :key="row.label">

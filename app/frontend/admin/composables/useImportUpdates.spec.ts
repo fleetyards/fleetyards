@@ -7,7 +7,7 @@ import {
   getModelQueryKey,
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
-import { refreshImportedRecords } from "./useImportUpdates";
+import { isProgressReport, refreshImportedRecords } from "./useImportUpdates";
 
 const MODEL_ID = "0f2c0f2c-0f2c-0f2c-0f2c-0f2c0f2c0f2c";
 
@@ -79,5 +79,31 @@ describe("refreshImportedRecords", () => {
     );
 
     expect(isStale(getModelQueryKey(MODEL_ID))).toBe(false);
+  });
+});
+
+describe("isProgressReport", () => {
+  const progress = {
+    step: "items",
+    stepNumber: 3,
+    steps: 11,
+    done: 1,
+    progressedAt: "2026-11-25T10:00:00Z",
+  } as const;
+
+  const run = (status: ImportStatusEnum) =>
+    anImport(ImportTypeEnum.IMPORTS_SC_DATA_ALL_IMPORT, status);
+
+  it("tells a run under way from one that just started", () => {
+    expect(isProgressReport(run(ImportStatusEnum.STARTED))).toBe(false);
+    expect(
+      isProgressReport({ ...run(ImportStatusEnum.STARTED), progress }),
+    ).toBe(true);
+  });
+
+  it("leaves the end of a run to be announced", () => {
+    expect(
+      isProgressReport({ ...run(ImportStatusEnum.FINISHED), progress }),
+    ).toBe(false);
   });
 });

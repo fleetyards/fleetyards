@@ -60,7 +60,7 @@ module ScData
     end
 
     # Bucket -> local. Returns the counts of what moved.
-    def pull
+    def pull(progress: nil)
       remote = remote_objects
 
       # An empty listing means a tree that was never pushed, or a wrong prefix.
@@ -75,8 +75,12 @@ module ScData
 
       local = local_files
 
-      downloaded = each_in_parallel(remote.keys.reject { |path| local[path] == remote[path].etag }) do |path|
+      changed = remote.keys.reject { |path| local[path] == remote[path].etag }
+      progress&.total = changed.size
+
+      downloaded = each_in_parallel(changed) do |path|
         download(path)
+        progress&.advance
       end
 
       removed = each_in_parallel(local.keys - remote.keys) do |path|

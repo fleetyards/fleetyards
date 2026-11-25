@@ -139,6 +139,17 @@ module Loaders
           output.dig("EquipmentLoader", "Equipment"))
       end
 
+      test "#perform keeps the step a failed load stopped at" do
+        ::ScData::Loader::ManufacturersLoader.any_instance.stubs(:all)
+        ::ScData::Loader::ItemsLoader.any_instance.stubs(:all).raises("nope")
+
+        assert_raises(RuntimeError) { ::Loaders::ScData::AllJob.new.perform }
+
+        progress = Imports::ScData::AllImport.last.progress
+
+        assert_equal ["items", 3, 11], progress.values_at("step", "step_number", "steps")
+      end
+
       test "#perform reports the counts each loader produced" do
         ::ScData::Loader::BaseLoader.expects(:all).returns({
           "EquipmentLoader" => {"Equipment" => {created: 2, updated: 1, unchanged: 4818}}
