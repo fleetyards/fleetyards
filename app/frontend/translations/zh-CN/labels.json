@@ -341,6 +341,22 @@
         "user": "用户",
         "includeSystem": "包含系统",
         "systemRequester": "系统",
+        "progress": {
+          "step": "%{step}，第 %{number} 步，共 %{total} 步",
+          "steps": {
+            "fetch_tree": "正在获取游戏数据",
+            "manufacturers": "制造商",
+            "items": "物品",
+            "models": "舰船",
+            "model_modules": "舰船模块",
+            "commodities": "商品",
+            "equipment": "装备",
+            "blueprints": "蓝图",
+            "locations": "地点",
+            "game_missions": "任务",
+            "factions": "派系"
+          }
+        },
         "statuses": {
           "created": "排队中",
           "started": "运行中",

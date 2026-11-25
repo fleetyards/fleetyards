@@ -341,6 +341,22 @@
         "user": "User",
         "includeSystem": "Include system",
         "systemRequester": "system",
+        "progress": {
+          "step": "%{step}, step %{number} of %{total}",
+          "steps": {
+            "fetch_tree": "Fetching the game data",
+            "manufacturers": "Manufacturers",
+            "items": "Items",
+            "models": "Ships",
+            "model_modules": "Ship modules",
+            "commodities": "Commodities",
+            "equipment": "Equipment",
+            "blueprints": "Blueprints",
+            "locations": "Locations",
+            "game_missions": "Missions",
+            "factions": "Factions"
+          }
+        },
         "statuses": {
           "created": "Queued",
           "started": "Running",

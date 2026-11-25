@@ -341,6 +341,22 @@
         "user": "Utente",
         "includeSystem": "Includi sistema",
         "systemRequester": "sistema",
+        "progress": {
+          "step": "%{step}, passaggio %{number} di %{total}",
+          "steps": {
+            "fetch_tree": "Recupero dei dati di gioco",
+            "manufacturers": "Produttori",
+            "items": "Oggetti",
+            "models": "Navi",
+            "model_modules": "Moduli nave",
+            "commodities": "Merci",
+            "equipment": "Equipaggiamento",
+            "blueprints": "Progetti",
+            "locations": "Luoghi",
+            "game_missions": "Missioni",
+            "factions": "Fazioni"
+          }
+        },
         "statuses": {
           "created": "In coda",
           "started": "In corso",

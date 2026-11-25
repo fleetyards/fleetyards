@@ -341,6 +341,22 @@
         "user": "Benutzer",
         "includeSystem": "System einschließen",
         "systemRequester": "System",
+        "progress": {
+          "step": "%{step}, Schritt %{number} von %{total}",
+          "steps": {
+            "fetch_tree": "Spieldaten werden geladen",
+            "manufacturers": "Hersteller",
+            "items": "Gegenstände",
+            "models": "Schiffe",
+            "model_modules": "Schiffsmodule",
+            "commodities": "Waren",
+            "equipment": "Ausrüstung",
+            "blueprints": "Baupläne",
+            "locations": "Orte",
+            "game_missions": "Missionen",
+            "factions": "Fraktionen"
+          }
+        },
         "statuses": {
           "created": "Wartend",
           "started": "Läuft",

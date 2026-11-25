@@ -341,6 +341,22 @@
         "user": "Utilisateur",
         "includeSystem": "Inclure le système",
         "systemRequester": "système",
+        "progress": {
+          "step": "%{step}, étape %{number} sur %{total}",
+          "steps": {
+            "fetch_tree": "Récupération des données du jeu",
+            "manufacturers": "Constructeurs",
+            "items": "Objets",
+            "models": "Vaisseaux",
+            "model_modules": "Modules de vaisseau",
+            "commodities": "Marchandises",
+            "equipment": "Équipement",
+            "blueprints": "Plans",
+            "locations": "Lieux",
+            "game_missions": "Missions",
+            "factions": "Factions"
+          }
+        },
         "statuses": {
           "created": "En file d'attente",
           "started": "En cours",
