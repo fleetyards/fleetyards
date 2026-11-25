@@ -15,7 +15,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
       data: ref([
         original.FeatureFlagName.DRESSING_ROOM,
         original.FeatureFlagName.HANGAR_PLANNER,
-        original.FeatureFlagName.HOMEPAGE_DASHBOARD,
+        original.FeatureFlagName.PAINT_BOOTH,
         original.FeatureFlagName.FLEET_LOGISTICS,
       ]),
     }),
