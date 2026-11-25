@@ -2,14 +2,14 @@
 
 set -euo pipefail
 
-# BACKUP_SOURCE=r2 bin/backup-db writes to the off-provider bucket instead.
-BACKUP_SOURCE="${BACKUP_SOURCE:-hetzner}"
+# BACKUP_SOURCE=hetzner bin/backup-db writes to the bucket on Hetzner instead.
+BACKUP_SOURCE="${BACKUP_SOURCE:-r2}"
 
 case "$BACKUP_SOURCE" in
   hetzner) ACCESSORY="db-backup" ;;
   r2) ACCESSORY="db-backup-r2" ;;
   *)
-    echo "ERROR: BACKUP_SOURCE must be hetzner or r2, not $BACKUP_SOURCE"
+    echo "ERROR: BACKUP_SOURCE must be r2 or hetzner, not $BACKUP_SOURCE"
     exit 1
     ;;
 esac

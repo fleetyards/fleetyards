@@ -14,12 +14,14 @@ DUMP_DIR="./dumps"
 S3_BUCKET="fltyrd-live-backups"
 S3_PREFIX="db"
 
-# BACKUP_SOURCE=r2 bin/download-db reads the off-provider copy instead.
-BACKUP_SOURCE="${BACKUP_SOURCE:-hetzner}"
+# BACKUP_SOURCE=hetzner bin/download-db reads the backup on Hetzner instead.
+BACKUP_SOURCE="${BACKUP_SOURCE:-r2}"
 
 case "$BACKUP_SOURCE" in
   hetzner)
-    DUMP_FILE="$DUMP_DIR/latest.dump"
+    # Its own file: the up-to-date check only compares sizes, and would accept
+    # the other provider's dump.
+    DUMP_FILE="$DUMP_DIR/latest-hetzner.dump"
     S3_ENDPOINT="fsn1.your-objectstorage.com"
     S3_HOST_BUCKET="%(bucket)s.$S3_ENDPOINT"
     S3_REGION="fsn1"
@@ -27,9 +29,7 @@ case "$BACKUP_SOURCE" in
     S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
     ;;
   r2)
-    # Its own file: the up-to-date check only compares sizes, and would accept
-    # the other provider's dump.
-    DUMP_FILE="$DUMP_DIR/latest-r2.dump"
+    DUMP_FILE="$DUMP_DIR/latest.dump"
     S3_ENDPOINT=$(op read "op://Fleetyards/R2_BACKUPS_LIVE/config/endpoint")
     S3_ENDPOINT="${S3_ENDPOINT#https://}"
     S3_HOST_BUCKET="$S3_ENDPOINT"
@@ -38,7 +38,7 @@ case "$BACKUP_SOURCE" in
     S3_SECRET_KEY=$(op read "op://Fleetyards/R2_BACKUPS_LIVE/password")
     ;;
   *)
-    echo "ERROR: BACKUP_SOURCE must be hetzner or r2, not $BACKUP_SOURCE"
+    echo "ERROR: BACKUP_SOURCE must be r2 or hetzner, not $BACKUP_SOURCE"
     exit 1
     ;;
 esac
