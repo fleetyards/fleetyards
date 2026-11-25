@@ -32120,7 +32120,6 @@ components:
     FeatureFlagName:
       type: string
       enum:
-      - blueprint_log_import
       - dressing_room
       - fleet_contracts
       - fleet_logistics
@@ -32128,18 +32127,12 @@ components:
       - fleet_squadron_flights
       - fleet_subscriptions
       - fleet_tours
-      - fleetchart_layouts
       - hangar_planner
       - holo_ar
-      - holo_cargo_grids
       - holo_door_animation
       - holo_door_highlight
       - holo_phone
-      - holo_servicing_areas
       - holo_textured
-      - homepage_dashboard
-      - item_holo_textured
-      - loadout_preview
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -32151,7 +32144,6 @@ components:
       - paint_booth
       - starmap
       x-enumNames:
-      - BLUEPRINT_LOG_IMPORT
       - DRESSING_ROOM
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS
@@ -32159,18 +32151,12 @@ components:
       - FLEET_SQUADRON_FLIGHTS
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
-      - FLEETCHART_LAYOUTS
       - HANGAR_PLANNER
       - HOLO_AR
-      - HOLO_CARGO_GRIDS
       - HOLO_DOOR_ANIMATION
       - HOLO_DOOR_HIGHLIGHT
       - HOLO_PHONE
-      - HOLO_SERVICING_AREAS
       - HOLO_TEXTURED
-      - HOMEPAGE_DASHBOARD
-      - ITEM_HOLO_TEXTURED
-      - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID

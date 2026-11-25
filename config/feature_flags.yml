@@ -52,14 +52,6 @@ fleet_subscriptions:
 fleet_tours:
   description: "Fleet tours — a fleet's own tour list and its payouts, with members asking to join"
 
-# A personal dashboard at "/" for signed-in pilots. While this is off they get
-# the landing page visitors see.
-homepage_dashboard:
-  description: "Homepage dashboard — signed-in pilots see their ships, wishlist, fleet and events at /"
-
-# Rides its own gate rather than hangar_inventories: a ship's cargo is a
-# separate surface and rolls out on its own schedule.
-
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true
@@ -101,18 +93,6 @@ holo_phone:
 holo_textured:
   description: "Textured holo — switch the ship page's 3D view to the painted, animated export"
 
-item_holo_textured:
-  description: "Textured item holo — switch a component or equipment page's holo to the painted export"
-
-loadout_preview:
-  description: "Loadout preview — show a ship's 3D holo with the picked components mounted on it"
-
-holo_servicing_areas:
-  description: "Holo service areas — draw a ship's service areas on its hull holo, with a toggle, on the ship page and in the loadout editor"
-
-holo_cargo_grids:
-  description: "Holo cargo grids — draw a ship's cargo grids filled with SCU containers on its hull holo, with a toggle"
-
 holo_door_animation:
   description: "Holo door animation — open and close a ship's doors on its hull holo, one by a click or all from the toolbar"
 
@@ -128,11 +108,5 @@ dressing_room:
 paint_booth:
   description: "Paint booth — a ship's textured holo in every paint it has, on a turntable; the holo also needs holo_textured"
 
-fleetchart_layouts:
-  description: "Rebuilt fleetchart with one renderer, selectable layouts and saved layouts"
-
 starmap:
   description: "Starmap — the in-game systems in 3D at /starmap, from the positions the game files give every place"
-
-blueprint_log_import:
-  description: "Blueprint log import — mark the blueprints received in game as owned by dropping the Star Citizen LIVE folder on the hangar blueprints page"
