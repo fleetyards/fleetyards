@@ -533,6 +533,8 @@ components:
           type: string
         importData:
           type: string
+        progress:
+          "$ref": "#/components/schemas/ImportProgress"
         adminUser:
           "$ref": "#/components/schemas/UserRefRequired"
         user:
@@ -561,6 +563,54 @@ components:
       - status
       - createdAt
       - updatedAt
+    ImportProgress:
+      type: object
+      properties:
+        step:
+          "$ref": "#/components/schemas/ImportProgressStepEnum"
+        stepNumber:
+          type: integer
+        steps:
+          type: integer
+        done:
+          type: integer
+        total:
+          type: integer
+        progressedAt:
+          type: string
+          format: date-time
+      required:
+      - step
+      - stepNumber
+      - steps
+      - done
+      - progressedAt
+    ImportProgressStepEnum:
+      type: string
+      enum:
+      - fetch_tree
+      - manufacturers
+      - items
+      - models
+      - model_modules
+      - commodities
+      - equipment
+      - blueprints
+      - locations
+      - game_missions
+      - factions
+      x-enumNames:
+      - FETCH_TREE
+      - MANUFACTURERS
+      - ITEMS
+      - MODELS
+      - MODEL_MODULES
+      - COMMODITIES
+      - EQUIPMENT
+      - BLUEPRINTS
+      - LOCATIONS
+      - GAME_MISSIONS
+      - FACTIONS
     ImportStatusEnum:
       type: string
       enum:

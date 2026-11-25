@@ -194,4 +194,12 @@ class ImportTest < ActiveSupport::TestCase
 
     assert_equal 0, AdminNotification.where(notification_type: "import_run").count
   end
+
+  test ".stuck judges a run that reports progress by its last report" do
+    moving = create(:import, :modules_import, aasm_state: "started", started_at: 2.hours.ago, progressed_at: 1.minute.ago)
+    stalled = create(:import, :modules_import, aasm_state: "started", started_at: 3.hours.ago, progressed_at: 2.hours.ago)
+    silent = create(:import, :modules_import, aasm_state: "started", started_at: 2.hours.ago)
+
+    assert_equal [stalled, silent].map(&:id).to_set, Import.stuck.where(id: [moving, stalled, silent]).ids.to_set
+  end
 end
