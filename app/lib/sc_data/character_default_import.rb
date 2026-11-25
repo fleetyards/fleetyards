@@ -8,8 +8,9 @@ module ScData
 
     FIELDS = {"default.chf" => "chf"}.freeze
 
-    def initialize(store)
+    def initialize(store, logger:)
       @store = store
+      @logger = logger
     end
 
     # The fields it attached.
@@ -33,7 +34,7 @@ module ScData
     private def render_digest_column = :default_digest
 
     private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] CharacterDefaultImport #{message}")
+      @logger.call(level, message)
     end
   end
 end

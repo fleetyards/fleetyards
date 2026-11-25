@@ -24,12 +24,19 @@ module ScData
   # detached in the admin stays detached: only syncing the ship restores it.
   class ShipViewsImportJob < ApplicationJob
     include RenderImport
+    include TracksRun
 
     sidekiq_options queue: "loaders"
 
-    def perform(model_id = nil, paints_only = false, force = false)
+    # One ship, or the paints alone, is not a run of its own worth a record.
+    def perform(model_id = nil, paints_only = false, force = false, admin_user_id = nil)
       return unless ::ScData::ShipViewsStore.configured?
+      return sync(model_id, paints_only, force) if model_id || paints_only
 
+      track_run(::Imports::ScData::ShipViewsImport, admin_user_id:) { sync(nil, false, force) }
+    end
+
+    private def sync(model_id, paints_only, force)
       @restore_detached = !force || model_id.present?
       store = ::ScData::ShipViewsStore.new
       ships = store.ships
@@ -44,6 +51,8 @@ module ScData
       paths_by_model = ships.keys.group_by { |path| models[path]&.id }
       attached = {}
       unknown = []
+
+      @progress&.step("ship_views", total: ships.size)
 
       ships.each do |path, entry|
         model = models[path]
@@ -78,11 +87,15 @@ module ScData
         model&.update_columns(ship_views_digest: nil)
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
+      ensure
+        @progress&.advance
       end
 
       log(:info, "no model for #{unknown.size} ships: #{unknown.join(", ")}") if unknown.any?
       attached.each { |slug, fields| log(:info, "attached #{slug}: #{fields.join(", ")}") }
       log(:info, "attached #{attached.values.sum(&:size)} renders to #{attached.size} models")
+
+      {attached:, unknown:}
     end
 
     # The path of every ship with a model. The game-file key is the stable
@@ -141,9 +154,5 @@ module ScData
     private def render_md5s_column = :ship_view_md5s
 
     private def render_digest_column = :ship_views_digest
-
-    private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] ShipViewsImportJob #{message}")
-    end
   end
 end

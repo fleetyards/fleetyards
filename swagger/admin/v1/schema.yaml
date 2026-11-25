@@ -19248,6 +19248,11 @@ components:
       - locations
       - game_missions
       - factions
+      - ship_views
+      - item_views
+      - character_bodies
+      - character_assets
+      - loading_screens
       x-enumNames:
       - FETCH_TREE
       - MANUFACTURERS
@@ -19260,6 +19265,11 @@ components:
       - LOCATIONS
       - GAME_MISSIONS
       - FACTIONS
+      - SHIP_VIEWS
+      - ITEM_VIEWS
+      - CHARACTER_BODIES
+      - CHARACTER_ASSETS
+      - LOADING_SCREENS
       title: ImportProgressStepEnum
     ImportQuery:
       type: object
@@ -19327,6 +19337,11 @@ components:
       - Imports::UexCommodityPricesImport
       - Imports::UexComponentPricesImport
       - Imports::UexEquipmentPricesImport
+      - Imports::ScData::ShipViewsImport
+      - Imports::ScData::ItemViewsImport
+      - Imports::ScData::CharacterBodiesImport
+      - Imports::ScData::CharacterAssetsImport
+      - Imports::ScData::LoadingScreensImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -19344,6 +19359,11 @@ components:
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT
       - IMPORTS_UEX_EQUIPMENT_PRICES_IMPORT
+      - IMPORTS_SC_DATA_SHIP_VIEWS_IMPORT
+      - IMPORTS_SC_DATA_ITEM_VIEWS_IMPORT
+      - IMPORTS_SC_DATA_CHARACTER_BODIES_IMPORT
+      - IMPORTS_SC_DATA_CHARACTER_ASSETS_IMPORT
+      - IMPORTS_SC_DATA_LOADING_SCREENS_IMPORT
       title: ImportTypeEnum
     Imports:
       type: object

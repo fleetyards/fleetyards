@@ -13,6 +13,8 @@ module Admin
             Imports::HangarImport Imports::BuybackSync Imports::BlueprintLogImport Imports::ModulesImport Imports::PaintsImport Imports::LoanersImport
             Imports::UexPricesImport Imports::UexCommodityPricesImport
             Imports::UexComponentPricesImport Imports::UexEquipmentPricesImport
+            Imports::ScData::ShipViewsImport Imports::ScData::ItemViewsImport Imports::ScData::CharacterBodiesImport
+            Imports::ScData::CharacterAssetsImport Imports::ScData::LoadingScreensImport
           ].freeze
 
           schema({

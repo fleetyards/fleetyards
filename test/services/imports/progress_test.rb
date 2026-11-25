@@ -89,7 +89,7 @@ module Imports
     test "every loader of a full load is a step the schema knows" do
       steps = ::ScData::Loader::BaseLoader.loaders.map { |loader| loader.name.demodulize.delete_suffix("Loader").underscore }
 
-      assert_equal Imports::Progress::STEPS, ["fetch_tree"] + steps
+      assert_empty ["fetch_tree", *steps] - Imports::Progress::STEPS
     end
   end
 end

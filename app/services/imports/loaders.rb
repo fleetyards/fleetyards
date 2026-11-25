@@ -42,8 +42,8 @@ module Imports
       when "uex_trade_routes" then ::Loaders::UexTradeRoutesJob.perform_async
       # Forced: the daily run already takes in what the index says changed,
       # and one started by hand is for what that run skipped.
-      when "ship_views" then ::ScData::ShipViewsImportJob.perform_async(nil, false, true)
-      when "item_views" then ::ScData::ItemViewsImportJob.perform_async(nil, nil, true)
+      when "ship_views" then ::ScData::ShipViewsImportJob.perform_async(nil, false, true, @admin_user_id)
+      when "item_views" then ::ScData::ItemViewsImportJob.perform_async(nil, nil, true, @admin_user_id)
       else raise ArgumentError, "unknown loader: #{@key}"
       end
     end

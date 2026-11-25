@@ -29,8 +29,8 @@ module Imports
       Imports::Loaders.new("ship_views", admin_user_id: nil).enqueue
       Imports::Loaders.new("item_views", admin_user_id: nil).enqueue
 
-      assert_equal [nil, false, true], ::ScData::ShipViewsImportJob.jobs.first["args"]
-      assert_equal [nil, nil, true], ::ScData::ItemViewsImportJob.jobs.first["args"]
+      assert_equal [nil, false, true, nil], ::ScData::ShipViewsImportJob.jobs.first["args"]
+      assert_equal [nil, nil, true, nil], ::ScData::ItemViewsImportJob.jobs.first["args"]
     end
 
     test "an unknown environment is an error, not the default build" do

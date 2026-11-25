@@ -7,6 +7,7 @@ module ScData
   # that reshapes its head.
   class CharacterBodiesImportJob < ApplicationJob
     include RenderImport
+    include TracksRun
 
     sidekiq_options queue: "loaders"
 
@@ -26,14 +27,21 @@ module ScData
     def perform
       return unless ::ScData::CharacterStore.configured?
 
+      track_run(::Imports::ScData::CharacterBodiesImport) { sync }
+    end
+
+    private def sync
       store = ::ScData::CharacterStore.new
       attached = {}
       manifest = store.manifest
       rigs = lighting_rigs(store, manifest)
-      faces = ::ScData::CharacterFacesImport.new(store)
-      defaults = ::ScData::CharacterDefaultImport.new(store)
+      faces = ::ScData::CharacterFacesImport.new(store, logger: method(:log))
+      defaults = ::ScData::CharacterDefaultImport.new(store, logger: method(:log))
 
-      store.characters(manifest).each do |key, entry|
+      characters = store.characters(manifest)
+      @progress&.step("character_bodies", total: characters.size)
+
+      characters.each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
         clips = entry["clips"].map { |clip| clip.slice("name", "static", "looping") }
         weapon_in_hand = weapon_in_hand(entry["weapon_in_hand"])
@@ -69,9 +77,13 @@ module ScData
       rescue => e
         log(:error, "#{key} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
+      ensure
+        @progress&.advance
       end
 
       attached.each { |key, fields| log(:info, "attached #{key}: #{fields.join(", ")}") }
+
+      {attached:}
     end
 
     # A rig that cannot be read leaves the bodies lit as they were: nil, where
@@ -152,9 +164,5 @@ module ScData
     private def render_md5s_column = :view_md5s
 
     private def render_digest_column = :views_digest
-
-    private def log(level, message)
-      Rails.logger.public_send(level, "[sc_data] CharacterBodiesImportJob #{message}")
-    end
   end
 end

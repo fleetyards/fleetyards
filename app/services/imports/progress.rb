@@ -11,6 +11,7 @@ module Imports
       fetch_tree
       manufacturers items models model_modules commodities
       equipment blueprints locations game_missions factions
+      ship_views item_views character_bodies character_assets loading_screens
     ].freeze
 
     # A load counts tens of thousands of records. Each write is an update and a
