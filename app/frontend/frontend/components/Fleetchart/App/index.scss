@@ -37,8 +37,8 @@
     display: flex;
     position: absolute;
     left: 20px;
-    /* Clear of the viewport edge, matching .fleetchart-grid-label's 20px and the
-       controls opposite. */
+    /* Clear of the viewport edge, matching the 20px of the controls
+       opposite. */
     bottom: 20px;
     z-index: 1000;
     /* The filter toggle and the paginator are two separate controls, and Btn

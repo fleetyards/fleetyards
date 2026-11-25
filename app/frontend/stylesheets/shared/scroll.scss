@@ -30,8 +30,7 @@
 // Long lists inside a fixed shell.
 .base-select-items,
 .app-navigation__wrapper,
-.fleetchart-app__offcanvas,
-.fleetchart-scroll-wrapper {
+.fleetchart-app__offcanvas {
   overscroll-behavior: none;
 }
 

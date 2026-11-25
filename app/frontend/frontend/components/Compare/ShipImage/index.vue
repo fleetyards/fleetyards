@@ -8,36 +8,12 @@ export default {
 type Props = {
   src: string;
   label: string;
-  width?: number;
-  height?: number;
-  maxWidth?: string;
-  maxHeight?: string;
+  maxWidth: string;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  height: undefined,
-  width: undefined,
-  maxWidth: undefined,
-});
-
-const internalWidth = computed(() => {
-  return `${props.width}px` || "auto";
-});
+defineProps<Props>();
 </script>
 
 <template>
-  <img
-    v-if="src"
-    :src="src"
-    :style="{
-      width: internalWidth,
-      'max-height': height ? `${height}px` : undefined,
-      'max-width': maxWidth,
-    }"
-    :alt="label"
-  />
-  <span v-else>
-    <i class="fa-light fa-question-circle" />
-    <p>{{ label }}</p>
-  </span>
+  <img :src="src" :style="{ 'max-width': maxWidth }" :alt="label" />
 </template>
