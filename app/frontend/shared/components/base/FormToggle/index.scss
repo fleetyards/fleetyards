@@ -1,4 +1,11 @@
 .form-toggle {
+  /*
+   * Contains the hidden input. Left to a farther ancestor it escapes the scroll
+   * container it sits in, and focusing it scrolls whatever is behind instead: a
+   * long list in a modal pushed the whole modal out of view.
+   */
+  position: relative;
+
   /* The control and its message are a row and a line under it, not two things
      side by side. */
   flex-wrap: wrap;
