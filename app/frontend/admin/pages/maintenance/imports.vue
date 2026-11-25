@@ -160,12 +160,6 @@ const columns: BaseTableCol<Import>[] = [
     width: "180px",
     mobile: false,
   },
-  {
-    name: "info",
-    label: t("labels.imports.info"),
-    width: "auto",
-    mobile: false,
-  },
 ];
 </script>
 
@@ -288,10 +282,6 @@ const columns: BaseTableCol<Import>[] = [
           <template v-else-if="record.finishedAt">
             {{ l(record.finishedAt, "datetime.formats.short") }}
           </template>
-          <template v-else>-</template>
-        </template>
-        <template #col-info="{ record }">
-          <span v-if="record.info" class="text-muted">{{ record.info }}</span>
           <template v-else>-</template>
         </template>
       </BaseTable>
