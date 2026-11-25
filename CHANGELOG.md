@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.70.0](https://github.com/fleetyards/fleetyards/compare/v9.69.0...v9.70.0) (2026-11-25)
+
+
+### Features
+
+* **blueprints:** hint at an older translation when log names stay unmatched ([ad68e42](https://github.com/fleetyards/fleetyards/commit/ad68e42351d34d4163027725be7a551318d2e5c7))
+* **storage:** fetch missing uploads on demand in development ([#6516](https://github.com/fleetyards/fleetyards/issues/6516)) ([7ae580b](https://github.com/fleetyards/fleetyards/commit/7ae580b86f15222529fc73439d911e6e62ac67a0))
+
+
+### Bug Fixes
+
+* **admin:** name the imports filter after what the system requested ([9acb090](https://github.com/fleetyards/fleetyards/commit/9acb0900b1161884cc7fc2267b47cbf0d59826ce))
+* **backups:** read the dump size from the listing in download-db ([7dec534](https://github.com/fleetyards/fleetyards/commit/7dec5347bed47a9ec5fd2d08230081a999e1265b))
+* **forms:** keep a focused checkbox or toggle from scrolling its modal away ([48d1316](https://github.com/fleetyards/fleetyards/commit/48d1316f5d6a675d23143aee2fec5a40002ff08c))
+
+
+### Refactorings
+
+* **admin:** drop the info column from the imports overview ([be35658](https://github.com/fleetyards/fleetyards/commit/be35658248a3ed7dc8ace055b201458e2fe96df5))
+
+
+### Chores
+
+* **features:** retire the fully rolled out feature flags ([#6512](https://github.com/fleetyards/fleetyards/issues/6512)) ([e0e32a0](https://github.com/fleetyards/fleetyards/commit/e0e32a0c2ad9987a4a5209dcbf9fb684d0db3008))
+
 ## [9.69.0](https://github.com/fleetyards/fleetyards/compare/v9.68.0...v9.69.0) (2026-11-25)
 
 
