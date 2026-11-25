@@ -131,14 +131,15 @@ dump_is_readable() {
 acquire_lock
 
 echo "Fetching latest backup from s3://$S3_BUCKET/$S3_PREFIX/ on $BACKUP_SOURCE..."
-LATEST=$($S3CMD ls "s3://$S3_BUCKET/$S3_PREFIX/" | sort | tail -1 | awk '{print $4}')
+LATEST_ENTRY=$($S3CMD ls "s3://$S3_BUCKET/$S3_PREFIX/" | sort | tail -1)
+LATEST=$(echo "$LATEST_ENTRY" | awk '{print $4}')
 
 if [ -z "$LATEST" ]; then
   echo "ERROR: No backups found in s3://$S3_BUCKET/$S3_PREFIX/"
   exit 1
 fi
 
-REMOTE_SIZE=$($S3CMD info "$LATEST" | grep 'File size' | awk '{print $3}')
+REMOTE_SIZE=$(echo "$LATEST_ENTRY" | awk '{print $3}')
 
 if [ -f "$DUMP_FILE" ] && [ -n "$REMOTE_SIZE" ] && [ "$(wc -c < "$DUMP_FILE" | tr -d ' ')" = "$REMOTE_SIZE" ]; then
   echo "Local dump is already up to date, skipping download."
