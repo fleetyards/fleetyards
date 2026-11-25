@@ -357,6 +357,7 @@
       "blueprintLogImport": {
         "translation": "Spielst du mit einer Übersetzung? Lass sie installiert, während du den LIVE-Ordner ablegst, oder füge ihre global.ini hinzu, damit übersetzte Namen erkannt werden.",
         "missesTranslation": "Diese Logs wurden mit einer Übersetzung geschrieben. Beginne von vorn und füge die global.ini dieser Übersetzung hinzu, damit ihre Namen erkannt werden.",
+        "outdatedTranslation": "Einige Namen stammen möglicherweise aus einer älteren Version deiner Übersetzung. Beginne von vorn und füge die global.ini dieser Version zusätzlich zur aktuellen hinzu, zum Beispiel in einem Unterordner des LIVE-Ordners.",
         "intro": "Star Citizen protokolliert jedes Blueprint, das du erhältst. Zieh deinen LIVE-Ordner hierher, um sie als besessen zu markieren; Game.log und der Ordner logbackups werden beide gelesen.",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "LIVE-Ordner oder Log-Dateien hier ablegen",

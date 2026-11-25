@@ -194,12 +194,17 @@ const onInputChange = async (event: Event) => {
   await collectFiles(files);
 };
 
-const missesTranslation = computed(
-  () =>
-    translatedNames.value &&
-    !translationFiles.value.length &&
-    !!review.value?.unmatched.length,
-);
+const translationHint = computed(() => {
+  if (!translatedNames.value || !review.value?.unmatched.length) {
+    return undefined;
+  }
+
+  // A log keeps the wording of the translation it was written with, which a
+  // newer release of that translation may no longer hold.
+  return translationFiles.value.length
+    ? t("texts.blueprintLogImport.outdatedTranslation")
+    : t("texts.blueprintLogImport.missesTranslation");
+});
 
 const toggle = (slug: string, checked: boolean) => {
   const next = new Set(selected.value);
@@ -502,11 +507,11 @@ const close = () => comlink.emit("close-modal");
           </span>
         </h4>
         <p
-          v-if="missesTranslation"
+          v-if="translationHint"
           class="blueprint-log-import__hint"
-          data-test="blueprint-log-import-misses-translation"
+          data-test="blueprint-log-import-translation-hint"
         >
-          {{ t("texts.blueprintLogImport.missesTranslation") }}
+          {{ translationHint }}
         </p>
         <ul class="blueprint-log-import__list">
           <li v-for="name in review.unmatched" :key="name">{{ name }}</li>

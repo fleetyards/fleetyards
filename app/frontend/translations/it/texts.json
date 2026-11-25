@@ -356,6 +356,7 @@
       "blueprintLogImport": {
         "translation": "Giochi con una traduzione? Lasciala installata quando trascini la cartella LIVE, oppure aggiungi il suo global.ini, così i nomi tradotti vengono riconosciuti.",
         "missesTranslation": "Questi log sono stati scritti con una traduzione. Ricomincia e aggiungi il global.ini di quella traduzione, così i suoi nomi vengono riconosciuti.",
+        "outdatedTranslation": "Alcuni nomi potrebbero provenire da una versione precedente della tua traduzione. Ricomincia e aggiungi il global.ini di quella versione insieme a quello attuale, per esempio in una sottocartella della cartella LIVE.",
         "intro": "Star Citizen registra ogni progetto che ricevi. Trascina qui la cartella LIVE per segnarli come posseduti; vengono letti sia Game.log sia la cartella logbackups.",
         "path": "C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE",
         "drop": "Trascina qui la cartella LIVE o i file di log",

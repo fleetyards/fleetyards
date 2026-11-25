@@ -236,9 +236,29 @@ describe("BlueprintLogImportModal", () => {
 
     expect(
       wrapper
-        .find("[data-test='blueprint-log-import-misses-translation']")
-        .exists(),
-    ).toBe(true);
+        .find("[data-test='blueprint-log-import-translation-hint']")
+        .text(),
+    ).toContain("These logs were written with a translation");
+  });
+
+  it("suggests an older translation when the dropped one misses names", async () => {
+    matchBlueprintLogNames.mockResolvedValue([
+      { name: "Casco Argus", blueprints: [] },
+    ]);
+
+    const wrapper = await mount();
+
+    await pick(wrapper, [
+      translatedLog(),
+      new File(["item_Name_argus=Argus (Casco)"], "global.ini"),
+    ]);
+    await read(wrapper);
+
+    expect(
+      wrapper
+        .find("[data-test='blueprint-log-import-translation-hint']")
+        .text(),
+    ).toContain("older version of your translation");
   });
 
   it("skips the match when the logs hold no receipts", async () => {
