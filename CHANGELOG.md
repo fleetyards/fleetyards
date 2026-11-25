@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.69.0](https://github.com/fleetyards/fleetyards/compare/v9.68.0...v9.69.0) (2026-11-25)
+
+
+### Features
+
+* **backups:** download and trigger backups on R2 by default ([#6510](https://github.com/fleetyards/fleetyards/issues/6510)) ([182006f](https://github.com/fleetyards/fleetyards/commit/182006fdff042bd38aefd8aa8e9d5c0fcc0aa7d3))
+* **imports:** show the progress of the sc_data load ([#6507](https://github.com/fleetyards/fleetyards/issues/6507)) ([e30bb1d](https://github.com/fleetyards/fleetyards/commit/e30bb1dd81ebf1ea80091f4f8bf7157ba585e55f))
+* **sc-data:** show the render imports with their progress and problems ([#6513](https://github.com/fleetyards/fleetyards/issues/6513)) ([9ce6b0f](https://github.com/fleetyards/fleetyards/commit/9ce6b0fe7de1700ab34e5d95e2af4c2652b6e1b1))
+
+
+### Refactorings
+
+* remove the checks on fully rolled out feature flags ([#6509](https://github.com/fleetyards/fleetyards/issues/6509)) ([c911fab](https://github.com/fleetyards/fleetyards/commit/c911fab0ff0d0bb028959886eec01eec3268defa))
+
+
+### Chores
+
+* **deploy:** remove the container that copied the game data to R2 ([#6511](https://github.com/fleetyards/fleetyards/issues/6511)) ([814368c](https://github.com/fleetyards/fleetyards/commit/814368c9fc1844baa8e34b81d6c8be3c07795a17))
+* **frontend:** remove unused files and dependencies ([#6514](https://github.com/fleetyards/fleetyards/issues/6514)) ([7f23b6b](https://github.com/fleetyards/fleetyards/commit/7f23b6b50164765777e6d8fde425c4aa6611309e))
+
 ## [9.68.0](https://github.com/fleetyards/fleetyards/compare/v9.67.1...v9.68.0) (2026-11-25)
 
 
