@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.70.1](https://github.com/fleetyards/fleetyards/compare/v9.70.0...v9.70.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **admin:** show an attached file the upload field cannot preview ([0287cfc](https://github.com/fleetyards/fleetyards/commit/0287cfca212d7fdfba6d78a4161bf7fd70687066))
+* **dressing-room:** measure the collar on the helmet's shell, not its cape ([#6522](https://github.com/fleetyards/fleetyards/issues/6522)) ([1e8b227](https://github.com/fleetyards/fleetyards/commit/1e8b227acc309fd1080ba8fd068312d0c91936df))
+* **holo:** keep the full screen viewer clear of the notch and offer AR there ([#6524](https://github.com/fleetyards/fleetyards/issues/6524)) ([0481115](https://github.com/fleetyards/fleetyards/commit/04811155b0f5d6ba6993ac00bb1786d85e94a7de))
+* **holo:** let AR scale the ship down from true size ([9afcc13](https://github.com/fleetyards/fleetyards/commit/9afcc13506e934e099702c4ef70ef9fd401fcb48))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6518](https://github.com/fleetyards/fleetyards/issues/6518)) ([f73c0b0](https://github.com/fleetyards/fleetyards/commit/f73c0b06e338f9e12bcd496c11003203e93773de))
+* **deps-dev:** bump knip from 6.47.0 to 6.48.0 ([#6519](https://github.com/fleetyards/fleetyards/issues/6519)) ([42a87dd](https://github.com/fleetyards/fleetyards/commit/42a87dd9c1fad5315e5d8a9d8f68d73d0d717de6))
+* **deps-dev:** bump orval from 8.48.0 to 8.49.0 ([#6520](https://github.com/fleetyards/fleetyards/issues/6520)) ([96a682a](https://github.com/fleetyards/fleetyards/commit/96a682a266cf76e901a956b5caaf8586129e14b0))
+* **deps:** bump @tanstack/vue-query from 5.108.2 to 5.108.3 ([#6521](https://github.com/fleetyards/fleetyards/issues/6521)) ([1a55502](https://github.com/fleetyards/fleetyards/commit/1a5550284ec59e9a3a15a45e50f05348f85dcd8c))
+* **deps:** bump image_processing from 2.2.1 to 2.2.2 ([#6517](https://github.com/fleetyards/fleetyards/issues/6517)) ([ec6ec3c](https://github.com/fleetyards/fleetyards/commit/ec6ec3c9c375f851b22354fb8a685e307d62f771))
+
 ## [9.70.0](https://github.com/fleetyards/fleetyards/compare/v9.69.0...v9.70.0) (2026-11-25)
 
 
