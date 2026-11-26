@@ -83,12 +83,16 @@ withDefaults(defineProps<Props>(), {
     );
   }
 
+  // Along the top, where no buttons are, inset past full screen's close
+  // button and clear of the notch.
   &--docked {
-    top: auto;
-    bottom: 12px;
-    left: 50%;
-    max-width: calc(100% - 24px);
-    transform: translateX(-50%);
+    top: calc(12px + env(safe-area-inset-top));
+    right: 56px;
+    left: 56px;
+    width: fit-content;
+    max-width: none;
+    margin-inline: auto;
+    transform: none;
   }
 }
 
