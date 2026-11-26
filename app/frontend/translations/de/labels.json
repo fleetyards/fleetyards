@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "Ausgefahrenes Rumpf-Holo",
         "landedHoloHull": "Gelandetes Rumpf-Holo",
         "holoUsdz": "AR-Holo (USDZ)",
+        "extendedHoloUsdz": "Ausgefahrenes AR-Holo (USDZ)",
+        "landedHoloUsdz": "Gelandetes AR-Holo (USDZ)",
         "state": {
           "flight": "Im Flug",
           "extended": "Ausgefahren",

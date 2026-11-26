@@ -22,6 +22,7 @@ import {
   type FolderField,
   FIELD_ORDER,
   FIELD_SECTIONS,
+  isUsdzField,
 } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useModelMediaUpdates } from "@/admin/composables/useModelMediaUpdates";
@@ -174,7 +175,7 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
             holo-on-demand
             :textured-holo="field.includes('Textured')"
             :allowed-types="
-              field === 'holoUsdz'
+              isUsdzField(field)
                 ? AllowedFileTypes.AR_HOLO
                 : AllowedFileTypes.HOLO
             "

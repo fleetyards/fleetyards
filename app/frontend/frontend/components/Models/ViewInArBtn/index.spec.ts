@@ -56,6 +56,8 @@ const model = (overrides: Partial<Model> = {}): Model =>
 
 const HOLO = "https://fleetyards.test/files/holo.glb";
 const USDZ = "https://fleetyards.test/files/flight_holo.usdz";
+const LANDED = "https://fleetyards.test/files/landed_holo.glb";
+const LANDED_USDZ = "https://fleetyards.test/files/landed_holo.usdz";
 
 const withUsdz = () =>
   model({
@@ -110,13 +112,28 @@ describe("ViewInArBtn", () => {
     expect(button(wrapper).exists()).toBe(true);
   });
 
-  it("hides AR while the 3D view shows another pose's holo", async () => {
+  it("hides AR while the 3D view shows a holo the model does not list", async () => {
     const wrapper = await mount({
       model: model(),
       displayedHoloUrl: "https://fleetyards.test/files/landed.glb",
     });
 
     expect(button(wrapper).exists()).toBe(false);
+  });
+
+  it("offers AR for the landed pose the 3D view shows, and prepares that one", async () => {
+    const { prepareAr } = await import("@/frontend/utils/arViewer");
+    vi.mocked(prepareAr).mockClear();
+
+    const wrapper = await mount({
+      model: model({
+        media: { holo: { url: HOLO }, landedHolo: { url: LANDED } },
+      } as Partial<Model>),
+      displayedHoloUrl: LANDED,
+    });
+
+    expect(button(wrapper).exists()).toBe(true);
+    expect(prepareAr).toHaveBeenLastCalledWith(LANDED);
   });
 
   it("offers AR for the lite holo a phone's 3D view shows, and prepares that one", async () => {
@@ -246,6 +263,64 @@ describe("ViewInArBtn", () => {
 
     it("still converts in the page on an iPad without a USDZ", async () => {
       expect(button(await mount({ model: model() })).exists()).toBe(true);
+    });
+
+    it("opens the USDZ of the pose the 3D view shows", async () => {
+      const wrapper = await mount({
+        model: model({
+          media: {
+            holo: { url: HOLO },
+            holoUsdz: { url: USDZ },
+            landedHolo: { url: LANDED },
+            landedHoloUsdz: { url: LANDED_USDZ },
+          },
+        } as Partial<Model>),
+        displayedHoloUrl: LANDED,
+      });
+
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(ar.openQuickLookFile).toHaveBeenCalledWith(LANDED_USDZ);
+    });
+
+    it("never opens another pose's USDZ for the one on screen", async () => {
+      const wrapper = await mount({
+        model: model({
+          media: {
+            holo: { url: HOLO },
+            holoUsdz: { url: USDZ },
+            landedHolo: { url: LANDED },
+          },
+        } as Partial<Model>),
+        displayedHoloUrl: LANDED,
+      });
+
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(ar.openQuickLookFile).not.toHaveBeenCalled();
+      expect(ar.openQuickLook).toHaveBeenCalledWith(
+        LANDED,
+        expect.any(Function),
+      );
+    });
+
+    it("offers an iPhone no AR for a pose without its own USDZ", async () => {
+      ar.iPhone = true;
+
+      const wrapper = await mount({
+        model: model({
+          media: {
+            holo: { url: HOLO },
+            holoUsdz: { url: USDZ },
+            landedHolo: { url: LANDED },
+          },
+        } as Partial<Model>),
+        displayedHoloUrl: LANDED,
+      });
+
+      expect(button(wrapper).exists()).toBe(false);
     });
 
     it("loads no AR viewer beside the open 3D view", async () => {

@@ -11400,6 +11400,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoUsdz:
           "$ref": "#/components/schemas/MediaFile"
+        landedHoloUsdz:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedHoloUsdz:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
         holoHull:
@@ -23132,6 +23136,14 @@ components:
           - string
           - 'null'
         holoUsdz:
+          type:
+          - string
+          - 'null'
+        landedHoloUsdz:
+          type:
+          - string
+          - 'null'
+        extendedHoloUsdz:
           type:
           - string
           - 'null'

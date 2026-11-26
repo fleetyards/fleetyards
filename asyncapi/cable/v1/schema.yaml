@@ -4169,6 +4169,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoUsdz:
           "$ref": "#/components/schemas/MediaFile"
+        landedHoloUsdz:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedHoloUsdz:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false

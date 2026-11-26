@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "Holo del casco extendido",
         "landedHoloHull": "Holo del casco aterrizado",
         "holoUsdz": "Holo AR (USDZ)",
+        "extendedHoloUsdz": "Holo AR extendido (USDZ)",
+        "landedHoloUsdz": "Holo AR aterrizado (USDZ)",
         "state": {
           "flight": "En vuelo",
           "extended": "Extendido",

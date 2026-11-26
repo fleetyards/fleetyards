@@ -430,4 +430,15 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
       assert_match(/flight_holo\.usdz/, usdz["url"])
     end
   end
+
+  test "GET /models/:slug links the USDZ of each pose" do
+    model = create(:model)
+    model.landed_holo_usdz.attach(io: StringIO.new("PK\x03\x04#{"\0" * 60}".b), filename: "landed_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+    model.extended_holo_usdz.attach(io: StringIO.new("PK\x03\x04#{"\0" * 60}".b), filename: "extended_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal "landed_holo.usdz", parsed_body.dig("media", "landedHoloUsdz", "name")
+      assert_equal "extended_holo.usdz", parsed_body.dig("media", "extendedHoloUsdz", "name")
+    end
+  end
 end

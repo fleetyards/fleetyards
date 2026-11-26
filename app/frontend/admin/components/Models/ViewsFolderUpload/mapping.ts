@@ -66,6 +66,8 @@ export const HOLO_FIELDS = [
   "extendedHoloHull",
   "landedHoloHull",
   "holoUsdz",
+  "extendedHoloUsdz",
+  "landedHoloUsdz",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export type ViewField = (typeof VIEW_FIELDS)[number];
@@ -118,13 +120,14 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
         "holoHull",
         "holoUsdz",
       ],
-      extended: ["holo", "holoLite", "holoHull"],
+      extended: ["holo", "holoLite", "holoHull", "holoUsdz"],
       landed: [
         "holo",
         "holoLite",
         "holoTextured",
         "holoTexturedLite",
         "holoHull",
+        "holoUsdz",
       ],
     } as const
   )[state].map((field) => inState(state, field)),
@@ -138,6 +141,10 @@ export const FIELD_ORDER: readonly FolderField[] = FIELD_SECTIONS.flatMap(
 
 export const isHoloField = (field: FolderField): field is HoloField =>
   (HOLO_FIELDS as readonly string[]).includes(field);
+
+// Nothing in the admin draws a USDZ, and it takes no other file type.
+export const isUsdzField = (field: FolderField): boolean =>
+  field.endsWith("Usdz");
 
 export type MappedFile = {
   field: FolderField;
@@ -172,8 +179,8 @@ const VIEWPOINTS: Record<string, string> = {
 // holo.mtl beside the glTF, and every one of them answers to "holo".
 const VIEW_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "gif"];
 const HOLO_EXTENSIONS = ["gltf", "glb"];
-// Only the flight holo is placed in AR, so only it is exported as USDZ -- from
-// its lite export, and named either way.
+// Every pose is exported as USDZ for AR, named like its holo or its lite
+// export.
 const AR_HOLO_EXTENSION = "usdz";
 
 // The regex accepts any of the three states, so the prefix that matched decides
@@ -220,7 +227,11 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     if (extension === AR_HOLO_EXTENSION) {
       const variant = holo[2]?.toLowerCase();
 
-      return prefix || (variant && variant !== "lite") ? undefined : "holoUsdz";
+      if (variant && variant !== "lite") {
+        return undefined;
+      }
+
+      return prefix ? `${prefix}HoloUsdz` : "holoUsdz";
     }
 
     if (!HOLO_EXTENSIONS.includes(extension)) {

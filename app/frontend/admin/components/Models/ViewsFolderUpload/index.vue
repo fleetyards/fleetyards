@@ -12,6 +12,7 @@ import DirectUpload, {
 } from "@/shared/components/DirectUpload/index.vue";
 import {
   isHoloField,
+  isUsdzField,
   mapFolderFiles,
   type FolderField,
   type MappedFile,
@@ -138,8 +139,7 @@ const filterFolder = (files: File[]) => {
   plan.value.forEach(({ field, file }) => {
     forget(field);
 
-    // Nothing in the admin draws a USDZ.
-    if (field === "holoUsdz") {
+    if (isUsdzField(field)) {
       return;
     }
 

@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "Holo étendu de la coque",
         "landedHoloHull": "Holo posé de la coque",
         "holoUsdz": "Holo AR (USDZ)",
+        "extendedHoloUsdz": "Holo AR étendu (USDZ)",
+        "landedHoloUsdz": "Holo AR posé (USDZ)",
         "state": {
           "flight": "En vol",
           "extended": "Déployé",
