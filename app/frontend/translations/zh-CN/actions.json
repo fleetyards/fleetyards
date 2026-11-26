@@ -450,10 +450,14 @@
         },
         "door": {
           "open": "点击打开",
-          "close": "点击关闭"
+          "close": "点击关闭",
+          "openTap": "轻触打开",
+          "closeTap": "轻触关闭"
         },
         "builtIn": "点击查看物品",
-        "part": "点击更换部件"
+        "builtInTap": "轻触查看物品",
+        "part": "点击更换部件",
+        "partTap": "轻触更换部件"
       },
       "logistics": {
         "addToInventory": "添加到库存",

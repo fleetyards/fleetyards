@@ -25,8 +25,9 @@ withDefaults(defineProps<Props>(), {
   <div
     class="loadout-holo-card"
     :class="{
-      'loadout-holo-card--flip-x': cursor.flipX,
-      'loadout-holo-card--flip-y': cursor.flipY,
+      'loadout-holo-card--docked': cursor.docked,
+      'loadout-holo-card--flip-x': !cursor.docked && cursor.flipX,
+      'loadout-holo-card--flip-y': !cursor.docked && cursor.flipY,
     }"
     :style="{
       '--card-x': `${cursor.x}px`,
@@ -80,6 +81,18 @@ withDefaults(defineProps<Props>(), {
       calc(-100% - var(--card-offset)),
       calc(-100% - var(--card-offset))
     );
+  }
+
+  // Along the top, where no buttons are, inset past full screen's close
+  // button and clear of the notch.
+  &--docked {
+    top: calc(12px + env(safe-area-inset-top));
+    right: 56px;
+    left: 56px;
+    width: fit-content;
+    max-width: none;
+    margin-inline: auto;
+    transform: none;
   }
 }
 

@@ -34,6 +34,8 @@ export type HoloCursor = {
   y: number;
   flipX: boolean;
   flipY: boolean;
+  // Placed by a finger, which would cover a card beside it.
+  docked: boolean;
 };
 
 type FittedHull = {
@@ -52,9 +54,9 @@ type Options = {
   doorsHighlighted: MaybeRefOrGetter<boolean>;
   isOpen: (id: string) => boolean;
   // What a click on a part does, where it does anything.
-  partHint?: (slot: PreviewSlot) => string | undefined;
-  // What a click on a built-in item does, where it does anything.
-  builtInHint?: string;
+  partHint?: (slot: PreviewSlot, tapped: boolean) => string | undefined;
+  // What a click, or a tap, on a built-in item does, where it does anything.
+  builtInHint?: (tapped: boolean) => string;
   // The pointed part's path, where the caller marks that part itself.
   pointedPath?: Ref<string | undefined>;
 };
@@ -82,9 +84,19 @@ export const useLoadoutHoloCard = (options: Options) => {
   const pointedDoor = ref<string>();
   const pointedCargoGrid = ref<string>();
 
-  const cursor = ref<HoloCursor>({ x: 0, y: 0, flipX: false, flipY: false });
+  const cursor = ref<HoloCursor>({
+    x: 0,
+    y: 0,
+    flipX: false,
+    flipY: false,
+    docked: false,
+  });
 
+  // Only the canvas places the card: a press on a button over it is not a
+  // look at the holo.
   const trackPointer = (event: PointerEvent) => {
+    if (!(event.target instanceof HTMLCanvasElement)) return;
+
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -94,7 +106,20 @@ export const useLoadoutHoloCard = (options: Options) => {
       y,
       flipX: x > rect.width - 260,
       flipY: y > rect.height - 120,
+      docked: event.pointerType === "touch",
     };
+  };
+
+  const doorHint = (open: boolean, tapped: boolean) => {
+    if (open) {
+      return tapped
+        ? t("actions.holoViewer.door.closeTap")
+        : t("actions.holoViewer.door.close");
+    }
+
+    return tapped
+      ? t("actions.holoViewer.door.openTap")
+      : t("actions.holoViewer.door.open");
   };
 
   // Every slot by the path its part on the holo is named by.
@@ -169,7 +194,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         part.gradeLabel
           ? `${t("labels.component.grade")} ${part.gradeLabel}`
           : undefined,
-        options.partHint?.(slot),
+        options.partHint?.(slot, cursor.value.docked),
       ].filter((detail): detail is string => !!detail),
     };
   };
@@ -192,7 +217,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         details: [
           part?.size ? `S${part.size}` : undefined,
           t("labels.loadoutHoloBuiltIn"),
-          part?.slug ? options.builtInHint : undefined,
+          part?.slug ? options.builtInHint?.(cursor.value.docked) : undefined,
         ].filter((detail): detail is string => !!detail),
       };
     }
@@ -211,11 +236,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         color: DOOR_COLOR,
         title: t(`labels.loadoutHoloDoorKinds.${kind}`),
         details: toValue(options.doorsAnimated)
-          ? [
-              options.isOpen(door.id)
-                ? t("actions.holoViewer.door.close")
-                : t("actions.holoViewer.door.open"),
-            ]
+          ? [doorHint(options.isOpen(door.id), cursor.value.docked)]
           : [],
       };
     }

@@ -1,4 +1,5 @@
-import { useModelLoadoutPreview } from "@/services/fyApi";
+import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 
@@ -12,8 +13,15 @@ export const useLoadoutHolo = (
 ) => {
   const mobile = useMobile();
 
+  const { isFeatureEnabled } = useFeatures();
+
+  // A phone draws holos only with the phone holo on: three.js crashed phones
+  // on the full exports.
   const enabled = computed(
-    () => !!toValue(modelSlug) && !mobile.value && toValue(wanted),
+    () =>
+      !!toValue(modelSlug) &&
+      toValue(wanted) &&
+      (!mobile.value || isFeatureEnabled(FeatureFlagName.HOLO_PHONE)),
   );
 
   const { data: preview } = useModelLoadoutPreview(

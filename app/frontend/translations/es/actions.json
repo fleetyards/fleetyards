@@ -450,10 +450,14 @@
         },
         "door": {
           "open": "Haz clic para abrir",
-          "close": "Haz clic para cerrar"
+          "close": "Haz clic para cerrar",
+          "openTap": "Toca para abrir",
+          "closeTap": "Toca para cerrar"
         },
         "builtIn": "Haz clic para ver el objeto",
-        "part": "Haz clic para cambiar la pieza"
+        "builtInTap": "Toca para ver el objeto",
+        "part": "Haz clic para cambiar la pieza",
+        "partTap": "Toca para cambiar la pieza"
       },
       "logistics": {
         "addToInventory": "Añadir al inventario",

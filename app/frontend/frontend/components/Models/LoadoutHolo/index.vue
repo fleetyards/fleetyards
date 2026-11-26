@@ -182,7 +182,10 @@ const {
   doorsAnimated: doorAnimationEnabled,
   doorsHighlighted: doorHighlightEnabled,
   isOpen,
-  builtInHint: t("actions.holoViewer.builtIn"),
+  builtInHint: (tapped) =>
+    tapped
+      ? t("actions.holoViewer.builtInTap")
+      : t("actions.holoViewer.builtIn"),
   pointedPath,
 });
 
@@ -232,6 +235,7 @@ const doorsLabel = computed(() =>
     pickable
     :data-test="testId"
     @pointermove="trackPointer"
+    @pointerdown="trackPointer"
     @mount-point="pointedPath = $event"
     @box-point="pointedArea = $event"
     @built-in-point="pointedBuiltIn = $event"

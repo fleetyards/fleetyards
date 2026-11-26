@@ -126,7 +126,7 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
     name: "HoloViewer",
     props: { models: Array },
     emits: ["builtInPoint", "builtInSelect", "doorPoint", "doorSelect"],
-    template: '<div><slot name="actions" /><slot /></div>',
+    template: '<div><canvas /><slot name="actions" /><slot /></div>',
   },
 }));
 
@@ -297,6 +297,51 @@ describe("ModelLoadoutHolo", () => {
 
     expect(model().openDoors).toEqual(["hardpoint_door_rear"]);
     expect(card().text()).toContain("Click to close");
+  });
+
+  it("docks the card after a tap and says to tap", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    await viewer().find("canvas").trigger("pointerdown", {
+      pointerType: "touch",
+    });
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]');
+    expect(card.classes()).toContain("loadout-holo-card--docked");
+    expect(card.text()).toContain("Tap to open");
+  });
+
+  it("keeps the card where it was after a tap on a button", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    await viewer().find("canvas").trigger("pointermove", {
+      pointerType: "mouse",
+    });
+    await viewer().find("button").trigger("pointerdown", {
+      pointerType: "touch",
+    });
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    await nextTick();
+
+    expect(
+      wrapper.find('[data-test="model-loadout-holo-card"]').classes(),
+    ).not.toContain("loadout-holo-card--docked");
+  });
+
+  it("keeps the card beside a mouse pointer", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    await viewer().find("canvas").trigger("pointermove", {
+      pointerType: "mouse",
+    });
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]');
+    expect(card.classes()).not.toContain("loadout-holo-card--docked");
+    expect(card.text()).toContain("Click to open");
   });
 
   it("draws no doors while their flags are off", async () => {
