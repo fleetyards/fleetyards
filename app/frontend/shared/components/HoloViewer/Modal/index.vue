@@ -50,6 +50,7 @@ const close = () => {
       panable
       :grid="grid"
       backgrounds
+      edge-to-edge
       @unavailable="emit('unavailable')"
     />
   </div>

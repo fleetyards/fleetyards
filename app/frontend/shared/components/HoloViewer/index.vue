@@ -178,6 +178,8 @@ type Props = {
   backdrop?: boolean;
   // Its buttons show only in full screen.
   fullscreenActions?: boolean;
+  // Fills the screen without being in full screen itself: a full screen modal.
+  edgeToEdge?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -203,6 +205,7 @@ const props = withDefaults(defineProps<Props>(), {
   containAlign: "center",
   backdrop: false,
   fullscreenActions: false,
+  edgeToEdge: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -1118,6 +1121,7 @@ defineExpose({
     :class="{
       'holo-viewer--inline': inline && !internalFullscreen,
       'holo-viewer--fullscreen': internalFullscreen,
+      'holo-viewer--edge-to-edge': edgeToEdge && !internalFullscreen,
       'holo-viewer--framed': backdrop && !internalFullscreen,
       [`holo-viewer--${background}`]: offersBackgrounds,
     }"
