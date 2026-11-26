@@ -1,4 +1,6 @@
-import { useModelLoadoutPreview } from "@/services/fyApi";
+import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 
 // The 3D view's loadout holo: whether the ship has a hull holo to draw its
@@ -9,7 +11,18 @@ export const useLoadoutHolo = (
   wanted: MaybeRefOrGetter<boolean>,
   texturedHolo: Ref<boolean>,
 ) => {
-  const enabled = computed(() => !!toValue(modelSlug) && toValue(wanted));
+  const mobile = useMobile();
+
+  const { isFeatureEnabled } = useFeatures();
+
+  // A phone draws holos only with the phone holo on: three.js crashed phones
+  // on the full exports.
+  const enabled = computed(
+    () =>
+      !!toValue(modelSlug) &&
+      toValue(wanted) &&
+      (!mobile.value || isFeatureEnabled(FeatureFlagName.HOLO_PHONE)),
+  );
 
   const { data: preview } = useModelLoadoutPreview(
     () => toValue(modelSlug) ?? "",
