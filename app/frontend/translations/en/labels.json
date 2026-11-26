@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "Extended Hull Holo",
         "landedHoloHull": "Landed Hull Holo",
         "holoUsdz": "AR Holo (USDZ)",
+        "extendedHoloUsdz": "Extended AR Holo (USDZ)",
+        "landedHoloUsdz": "Landed AR Holo (USDZ)",
         "state": {
           "flight": "In Flight",
           "extended": "Extended",

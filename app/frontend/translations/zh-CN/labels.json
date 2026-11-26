@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "展开船体全息图",
         "landedHoloHull": "着陆船体全息图",
         "holoUsdz": "AR 全息图 (USDZ)",
+        "extendedHoloUsdz": "展开 AR 全息图 (USDZ)",
+        "landedHoloUsdz": "着陆 AR 全息图 (USDZ)",
         "state": {
           "flight": "飞行中",
           "extended": "展开",

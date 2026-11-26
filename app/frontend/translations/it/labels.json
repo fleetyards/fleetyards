@@ -1597,6 +1597,8 @@
         "extendedHoloHull": "Holo dello scafo esteso",
         "landedHoloHull": "Holo dello scafo atterrato",
         "holoUsdz": "Holo AR (USDZ)",
+        "extendedHoloUsdz": "Holo AR esteso (USDZ)",
+        "landedHoloUsdz": "Holo AR atterrato (USDZ)",
         "state": {
           "flight": "In volo",
           "extended": "Estesa",
