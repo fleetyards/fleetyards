@@ -113,13 +113,13 @@ describe("openQuickLook", () => {
     vi.restoreAllMocks();
   });
 
-  it("hands the converted holo to Quick Look at true size", async () => {
+  it("hands the converted holo to Quick Look, scalable", async () => {
     await openQuickLook("https://fleetyards.test/files/holo.glb");
 
     expect(clicked).toHaveLength(1);
     expect(clicked[0].rel).toBe("ar");
     expect(clicked[0].getAttribute("href")).toBe(
-      "blob:holo#allowsContentScaling=0",
+      "blob:holo#allowsContentScaling=1",
     );
     expect(clicked[0].querySelector("img")).not.toBeNull();
   });
@@ -130,7 +130,7 @@ describe("openQuickLook", () => {
     expect(clicked).toHaveLength(1);
     expect(clicked[0].rel).toBe("ar");
     expect(clicked[0].getAttribute("href")).toBe(
-      "https://fleetyards.test/files/flight_holo.usdz#allowsContentScaling=0",
+      "https://fleetyards.test/files/flight_holo.usdz#allowsContentScaling=1",
     );
     expect(createObjectURL).not.toHaveBeenCalled();
   });

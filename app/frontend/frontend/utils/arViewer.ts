@@ -40,7 +40,8 @@ const nextTask = () => new Promise((resolve) => setTimeout(resolve));
 // Scene Viewer has to be launched from the tap itself: model-viewer only
 // settles on a mode after an update, and a launch that waits for a download
 // loses the gesture, so the element is ready before the tap.
-// `ar-scale="fixed"` keeps it at 1:1: the holo is exported in meters.
+// It opens at true size, since the holo is exported in meters, and can be
+// scaled down: a ship is larger than the room it is viewed in.
 export const prepareAr = async (
   holoUrl: string,
 ): Promise<ModelViewerElement | undefined> => {
@@ -51,7 +52,7 @@ export const prepareAr = async (
   element.setAttribute("src", holoUrl);
   element.setAttribute("ar", "");
   element.setAttribute("ar-modes", "scene-viewer");
-  element.setAttribute("ar-scale", "fixed");
+  element.setAttribute("ar-scale", "auto");
   element.setAttribute("loading", "lazy");
   element.style.display = "none";
   document.body.appendChild(element);
@@ -101,8 +102,9 @@ export const openQuickLookFile = (url: string): void => {
   const anchor = document.createElement("a");
   anchor.setAttribute("rel", "ar");
   anchor.setAttribute("download", "holo.usdz");
-  // The holo is exported in meters: Quick Look places it at true size.
-  anchor.setAttribute("href", `${url}#allowsContentScaling=0`);
+  // The holo is exported in meters: Quick Look opens it at true size, and lets
+  // it be scaled down to fit the room.
+  anchor.setAttribute("href", `${url}#allowsContentScaling=1`);
   // Safari only hands a link to Quick Look when it wraps an image.
   anchor.appendChild(document.createElement("img"));
   anchor.style.display = "none";
