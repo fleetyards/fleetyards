@@ -409,15 +409,45 @@ const sectorOf = (point: Vector3, axis: Vector3) => {
   );
 };
 
-// The lowest point of the helmet in each sector around the neck's axis.
+const hangsFromHead = (bone: Object3D) => {
+  for (let node: Object3D | null = bone; node; node = node.parent) {
+    if (node.name.toLowerCase() === "head") return true;
+  }
+  return false;
+};
+
+// Which of a mesh's points move with the head. A helmet may bring a cape or
+// cowl in the same mesh, which hangs from the spine far below the rim.
+const movesWithHead = (mesh: Mesh) => {
+  const { skinIndex, skinWeight } = mesh.geometry.attributes;
+  if (!(mesh as SkinnedMesh).isSkinnedMesh || !skinIndex || !skinWeight) {
+    return () => true;
+  }
+
+  const onHead = (mesh as SkinnedMesh).skeleton.bones.map(hangsFromHead);
+  return (index: number) => {
+    let weight = 0;
+    for (let slot = 0; slot < skinIndex.itemSize; slot++) {
+      if (onHead[skinIndex.getComponent(index, slot)]) {
+        weight += skinWeight.getComponent(index, slot);
+      }
+    }
+    return weight > 0.5;
+  };
+};
+
+// The lowest point of the helmet's shell in each sector around the neck's
+// axis.
 const rimHeights = (rims: Mesh[], frame: Matrix4, axis: Vector3) => {
   const heights = new Array<number>(RIM_SECTORS).fill(Infinity);
   rims.forEach((mesh) => {
     const count = mesh.geometry.getAttribute("position")?.count ?? 0;
+    const onShell = movesWithHead(mesh);
     drawnPoints(
       mesh,
       frame,
-      (point) => {
+      (point, index) => {
+        if (!onShell(index)) return;
         const sector = sectorOf(point, axis);
         heights[sector] = Math.min(heights[sector], point.y);
       },

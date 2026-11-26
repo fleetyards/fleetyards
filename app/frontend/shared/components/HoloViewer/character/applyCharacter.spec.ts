@@ -166,6 +166,49 @@ describe("dressNeck", () => {
     expect(bone.position.y).toBe(0.3);
   });
 
+  it("leaves out a cape the helmet's mesh hangs from the spine", () => {
+    const scene = new Group();
+    const face = head();
+    const spine = new Bone();
+    spine.name = "Spine3";
+    const headBone = new Bone();
+    headBone.name = "Head";
+    const mount = new Bone();
+    mount.name = "HelmetMount1";
+    const cape = new Bone();
+    cape.name = "Cape";
+    spine.add(headBone, cape);
+    headBone.add(mount);
+    scene.add(spine);
+
+    const points = [...RIM, [0, 0.5, 0.2], [0, 0.5, -0.2]];
+    const geometry = geometryOf(points);
+    geometry.setAttribute(
+      "skinIndex",
+      new BufferAttribute(
+        new Uint16Array(
+          points.flatMap((_, index) => [index < RIM.length ? 0 : 1, 0, 0, 0]),
+        ),
+        4,
+      ),
+    );
+    geometry.setAttribute(
+      "skinWeight",
+      new BufferAttribute(
+        new Float32Array(points.flatMap(() => [1, 0, 0, 0])),
+        4,
+      ),
+    );
+    const helmet = new SkinnedMesh(geometry, new MeshStandardMaterial());
+    scene.add(face, helmet);
+    scene.updateMatrixWorld(true);
+    helmet.bind(new Skeleton([mount, cape]));
+
+    dressNeck(scene, false, [helmet]);
+
+    expect(collared(face)).toEqual(UP_TO_RIM);
+  });
+
   it("draws the whole head as the hood", () => {
     const scene = new Group();
     const face = head();
