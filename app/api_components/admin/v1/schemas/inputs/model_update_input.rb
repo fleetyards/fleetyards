@@ -141,6 +141,8 @@ module Admin
               extendedHoloHull: {type: [:string, :null]},
               landedHoloHull: {type: [:string, :null]},
               holoUsdz: {type: [:string, :null]},
+              landedHoloUsdz: {type: [:string, :null]},
+              extendedHoloUsdz: {type: [:string, :null]},
               brochure: {type: [:string, :null]},
               holo: {type: [:string, :null]}
             },

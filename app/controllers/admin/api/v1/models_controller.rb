@@ -184,12 +184,19 @@ module Admin
           ]).fetch(:q, {})
         end
 
-        # The USDZ is built from one lite export, so a lite holo uploaded
-        # without its USDZ would leave Quick Look showing the old hull.
-        private def update_params
-          return model_params if model_params[:holo_lite].blank? || model_params.key?(:holo_usdz)
+        # A pose's USDZ is built from the same export as its lite holo, so a
+        # lite holo uploaded without its USDZ would leave Quick Look showing the
+        # old hull.
+        USDZ_FOR_LITE_HOLO = {
+          holo_lite: :holo_usdz,
+          landed_holo_lite: :landed_holo_usdz,
+          extended_holo_lite: :extended_holo_usdz
+        }.freeze
 
-          model_params.merge(holo_usdz: nil)
+        private def update_params
+          USDZ_FOR_LITE_HOLO.each_with_object(model_params.dup) do |(lite, usdz), params|
+            params[usdz] = nil if model_params[lite].present? && !model_params.key?(usdz)
+          end
         end
 
         private def model_params

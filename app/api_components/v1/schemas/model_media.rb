@@ -75,6 +75,8 @@ module V1
           holoTextureOrmLite: ::Shared::V1::Schemas::MediaFile,
           holoTextureStencilLite: ::Shared::V1::Schemas::MediaFile,
           holoUsdz: ::Shared::V1::Schemas::MediaFile,
+          landedHoloUsdz: ::Shared::V1::Schemas::MediaFile,
+          extendedHoloUsdz: ::Shared::V1::Schemas::MediaFile,
           brochure: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false
