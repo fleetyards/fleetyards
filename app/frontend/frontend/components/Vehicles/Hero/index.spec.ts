@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { flushPromises } from "@vue/test-utils";
+import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
 import {
   type Vehicle,
@@ -125,6 +126,28 @@ describe("VehicleHero", () => {
       setViewport(false);
 
       expect(await shownHolo()).toBe("https://example.test/holo.glb");
+    });
+
+    it("takes its own holo down while the full screen viewer is open", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { vehicle: { ...vehicle, ...withHolos }, compact: false },
+        plugins: [router],
+        initialState: { vehicleView: { holoVehicleIds: [vehicle.id] } },
+      });
+      await flushPromises();
+
+      await wrapper
+        .find("[data-test='vehicle-hero-holo-viewer']")
+        .trigger("click");
+
+      expect(wrapper.findComponent({ name: "HoloViewer" }).exists()).toBe(
+        false,
+      );
+
+      useComlink().emit("modal-closed");
+      await nextTick();
+
+      expect(wrapper.findComponent({ name: "HoloViewer" }).exists()).toBe(true);
     });
   });
 
