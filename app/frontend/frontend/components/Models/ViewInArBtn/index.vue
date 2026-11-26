@@ -18,7 +18,12 @@ import {
   usesQuickLook,
   type ModelViewerElement,
 } from "@/frontend/utils/arViewer";
-import { FeatureFlagName, type Model, type ModelMedia } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type MediaFile,
+  type Model,
+  type ModelMedia,
+} from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
@@ -54,10 +59,16 @@ const quickLook = usesQuickLook();
 // Quick Look prepares on the tap, so the button stands on the cheap check alone.
 const deferred = ref(false);
 
+type MediaFileKey = {
+  [Key in keyof ModelMedia]-?: NonNullable<ModelMedia[Key]> extends MediaFile
+    ? Key
+    : never;
+}[keyof ModelMedia];
+
 type ArPose = {
-  holo: keyof ModelMedia;
-  holoLite: keyof ModelMedia;
-  usdz: keyof ModelMedia;
+  holo: MediaFileKey;
+  holoLite: MediaFileKey;
+  usdz: MediaFileKey;
 };
 
 // Every pose comes out of one export in the same units, so the flight holo's
