@@ -450,9 +450,12 @@
         },
         "door": {
           "open": "Clicca per aprire",
-          "close": "Clicca per chiudere"
+          "close": "Clicca per chiudere",
+          "openTap": "Tocca per aprire",
+          "closeTap": "Tocca per chiudere"
         },
         "builtIn": "Clicca per vedere l'oggetto",
+        "builtInTap": "Tocca per vedere l'oggetto",
         "part": "Clicca per cambiare il pezzo"
       },
       "logistics": {

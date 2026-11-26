@@ -25,8 +25,9 @@ withDefaults(defineProps<Props>(), {
   <div
     class="loadout-holo-card"
     :class="{
-      'loadout-holo-card--flip-x': cursor.flipX,
-      'loadout-holo-card--flip-y': cursor.flipY,
+      'loadout-holo-card--docked': cursor.docked,
+      'loadout-holo-card--flip-x': !cursor.docked && cursor.flipX,
+      'loadout-holo-card--flip-y': !cursor.docked && cursor.flipY,
     }"
     :style="{
       '--card-x': `${cursor.x}px`,
@@ -80,6 +81,14 @@ withDefaults(defineProps<Props>(), {
       calc(-100% - var(--card-offset)),
       calc(-100% - var(--card-offset))
     );
+  }
+
+  &--docked {
+    top: auto;
+    bottom: 12px;
+    left: 50%;
+    max-width: calc(100% - 24px);
+    transform: translateX(-50%);
   }
 }
 

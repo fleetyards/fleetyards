@@ -295,6 +295,7 @@ onBeforeUnmount(() => {
       @unavailable="unavailable = true"
       @loaded="loaded = true"
       @pointermove="trackPointer"
+      @pointerdown="trackPointer"
       @mount-select="emit('select', $event)"
       @mount-point="onPoint"
       @box-point="pointedArea = $event"

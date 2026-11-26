@@ -34,6 +34,8 @@ export type HoloCursor = {
   y: number;
   flipX: boolean;
   flipY: boolean;
+  // Placed by a finger, which would cover a card beside it.
+  docked: boolean;
 };
 
 type FittedHull = {
@@ -53,8 +55,8 @@ type Options = {
   isOpen: (id: string) => boolean;
   // What a click on a part does, where it does anything.
   partHint?: (slot: PreviewSlot) => string | undefined;
-  // What a click on a built-in item does, where it does anything.
-  builtInHint?: string;
+  // What a click, or a tap, on a built-in item does, where it does anything.
+  builtInHint?: (tapped: boolean) => string;
   // The pointed part's path, where the caller marks that part itself.
   pointedPath?: Ref<string | undefined>;
 };
@@ -82,7 +84,13 @@ export const useLoadoutHoloCard = (options: Options) => {
   const pointedDoor = ref<string>();
   const pointedCargoGrid = ref<string>();
 
-  const cursor = ref<HoloCursor>({ x: 0, y: 0, flipX: false, flipY: false });
+  const cursor = ref<HoloCursor>({
+    x: 0,
+    y: 0,
+    flipX: false,
+    flipY: false,
+    docked: false,
+  });
 
   const trackPointer = (event: PointerEvent) => {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -94,7 +102,20 @@ export const useLoadoutHoloCard = (options: Options) => {
       y,
       flipX: x > rect.width - 260,
       flipY: y > rect.height - 120,
+      docked: event.pointerType === "touch",
     };
+  };
+
+  const doorHint = (open: boolean, tapped: boolean) => {
+    if (open) {
+      return tapped
+        ? t("actions.holoViewer.door.closeTap")
+        : t("actions.holoViewer.door.close");
+    }
+
+    return tapped
+      ? t("actions.holoViewer.door.openTap")
+      : t("actions.holoViewer.door.open");
   };
 
   // Every slot by the path its part on the holo is named by.
@@ -192,7 +213,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         details: [
           part?.size ? `S${part.size}` : undefined,
           t("labels.loadoutHoloBuiltIn"),
-          part?.slug ? options.builtInHint : undefined,
+          part?.slug ? options.builtInHint?.(cursor.value.docked) : undefined,
         ].filter((detail): detail is string => !!detail),
       };
     }
@@ -211,11 +232,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         color: DOOR_COLOR,
         title: t(`labels.loadoutHoloDoorKinds.${kind}`),
         details: toValue(options.doorsAnimated)
-          ? [
-              options.isOpen(door.id)
-                ? t("actions.holoViewer.door.close")
-                : t("actions.holoViewer.door.open"),
-            ]
+          ? [doorHint(options.isOpen(door.id), cursor.value.docked)]
           : [],
       };
     }

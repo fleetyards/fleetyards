@@ -299,6 +299,30 @@ describe("ModelLoadoutHolo", () => {
     expect(card().text()).toContain("Click to close");
   });
 
+  it("docks the card after a tap and says to tap", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    await viewer().trigger("pointerdown", { pointerType: "touch" });
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]');
+    expect(card.classes()).toContain("loadout-holo-card--docked");
+    expect(card.text()).toContain("Tap to open");
+  });
+
+  it("keeps the card beside a mouse pointer", async () => {
+    const { wrapper, viewer } = await mountHolo();
+
+    await viewer().trigger("pointermove", { pointerType: "mouse" });
+    viewer().vm.$emit("doorPoint", "hardpoint_door_rear");
+    await nextTick();
+
+    const card = wrapper.find('[data-test="model-loadout-holo-card"]');
+    expect(card.classes()).not.toContain("loadout-holo-card--docked");
+    expect(card.text()).toContain("Click to open");
+  });
+
   it("draws no doors while their flags are off", async () => {
     enabledFlags.clear();
     const { wrapper, model } = await mountHolo();

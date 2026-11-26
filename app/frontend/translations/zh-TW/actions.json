@@ -450,9 +450,12 @@
         },
         "door": {
           "open": "點擊打開",
-          "close": "點擊關閉"
+          "close": "點擊關閉",
+          "openTap": "輕觸打開",
+          "closeTap": "輕觸關閉"
         },
         "builtIn": "點擊查看物品",
+        "builtInTap": "輕觸查看物品",
         "part": "點擊更換部件"
       },
       "logistics": {
