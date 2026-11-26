@@ -17,10 +17,14 @@ type Props = {
   // Sized for ships: under a component or a piece of equipment its cells
   // dwarf the item.
   grid?: boolean;
+  // The 3D view is taken down while Quick Look converts the holo: a phone
+  // does not hold both copies.
+  suspended?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   grid: true,
+  suspended: false,
 });
 
 const emit = defineEmits<{ unavailable: [] }>();
@@ -44,12 +48,14 @@ const close = () => {
       </BtnGroup>
     </div>
     <HoloViewer
+      v-if="!suspended"
       :models="models"
       :autoRotate="false"
       zoomable
       panable
       :grid="grid"
       backgrounds
+      edge-to-edge
       @unavailable="emit('unavailable')"
     />
   </div>

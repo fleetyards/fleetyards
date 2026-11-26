@@ -47,6 +47,21 @@
     }
   }
 
+  // Edge to edge on a phone, its buttons keep clear of the notch and the home
+  // indicator.
+  &--fullscreen,
+  &--edge-to-edge {
+    .holo-viewer__close {
+      top: calc(15px + env(safe-area-inset-top));
+      right: calc(15px + env(safe-area-inset-right));
+    }
+
+    .holo-viewer__actions {
+      right: calc(15px + env(safe-area-inset-right));
+      bottom: calc(10px + env(safe-area-inset-bottom));
+    }
+  }
+
   // The canvas is transparent, so a backdrop is the element's own.
   &--dark,
   &--stanton,

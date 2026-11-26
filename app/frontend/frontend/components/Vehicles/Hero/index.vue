@@ -120,6 +120,16 @@ const {
 
 const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
 
+// The stage's holo is hidden behind the modal, and a phone does not hold a
+// second copy of it: not with the modal's, nor while Quick Look converts one.
+const holoModalOpen = ref(false);
+
+const offModalClosed = comlink.on("modal-closed", () => {
+  holoModalOpen.value = false;
+});
+
+onBeforeUnmount(offModalClosed);
+
 // Over this page rather than on the ship's viewer page, so closing it lands
 // back on the vehicle.
 const openFullscreenHolo = () => {
@@ -130,6 +140,7 @@ const openFullscreenHolo = () => {
 
   if (!holoModel.value) return;
 
+  holoModalOpen.value = true;
   comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Models/HoloModal/index.vue"),
     fullscreen: true,
@@ -213,7 +224,9 @@ const openImageModal = () =>
         @unavailable="loadoutHolo = false"
       />
       <HoloViewer
-        v-else-if="holoVisible && holoModel && !loadoutHoloShown"
+        v-else-if="
+          holoVisible && holoModel && !loadoutHoloShown && !holoModalOpen
+        "
         :key="holoModel.path"
         :models="[holoModel]"
         class="vehicle-hero__holo"

@@ -11,6 +11,7 @@ import HoloViewerModal from "@/shared/components/HoloViewer/Modal/index.vue";
 import { FeatureFlagName, type Model } from "@/services/fyApi";
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import ViewInArBtn from "@/frontend/components/Models/ViewInArBtn/index.vue";
 import {
   type ModelStateEnum,
   useModelStates,
@@ -75,11 +76,14 @@ if (props.syncQuery) {
 const holoUnavailable = () => {
   if (holoModel.value?.textured) texturedHolo.value = false;
 };
+
+const quickLookOpen = ref(false);
 </script>
 
 <template>
   <HoloViewerModal
     :models="holoModel ? [holoModel] : []"
+    :suspended="quickLookOpen"
     @unavailable="holoUnavailable"
   >
     <template #groups>
@@ -100,6 +104,13 @@ const holoUnavailable = () => {
       </BtnGroup>
     </template>
     <template #controls>
+      <ViewInArBtn
+        :model="model"
+        active
+        :displayed-holo-url="holoModel?.path"
+        @quick-look="quickLookOpen = true"
+        @quick-look-end="quickLookOpen = false"
+      />
       <Btn
         v-if="texturedHoloAvailable"
         :active="texturedHolo"

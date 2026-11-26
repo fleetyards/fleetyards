@@ -3,8 +3,8 @@
   // the scene's own controls are the viewer's, bottom right.
   &__controls {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: calc(15px + env(safe-area-inset-top));
+    right: calc(15px + env(safe-area-inset-right));
     z-index: 1000;
     display: flex;
     flex-wrap: wrap;

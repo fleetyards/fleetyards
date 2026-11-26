@@ -159,6 +159,15 @@ describe("HoloViewer", () => {
     expect(wrapper.find(".holo-viewer--fullscreen").exists()).toBe(false);
   });
 
+  it("keeps its buttons clear of a phone's notch where it fills the screen", async () => {
+    setViewport(false);
+    const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+      props: { models: [{ path: "/holo.gltf" }], edgeToEdge: true },
+    });
+
+    expect(wrapper.find(".holo-viewer--edge-to-edge").exists()).toBe(true);
+  });
+
   it("never asks a desktop", async () => {
     setViewport(false);
 
