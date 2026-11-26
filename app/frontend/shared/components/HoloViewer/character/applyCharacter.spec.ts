@@ -182,22 +182,28 @@ describe("dressNeck", () => {
     expect(bone.position.y).toBe(0.3);
   });
 
-  it("leaves out a cape the helmet's mesh hangs from the spine", () => {
+  // A skinned helmet with the rim on `rimBone` and a cape below on `capeBone`.
+  const capedHelmet = (rimBone: string, capeBone: string, caped = true) => {
     const scene = new Group();
-    const face = head();
     const spine = new Bone();
     spine.name = "Spine3";
+    const neck = new Bone();
+    neck.name = "Neck1";
     const headBone = new Bone();
     headBone.name = "Head";
     const mount = new Bone();
     mount.name = "HelmetMount1";
     const cape = new Bone();
-    cape.name = "Cape";
-    spine.add(headBone, cape);
+    cape.name = capeBone;
+    spine.add(neck, cape);
+    neck.add(headBone);
     headBone.add(mount);
     scene.add(spine);
+    const bones = new Map(
+      [spine, neck, headBone, mount, cape].map((bone) => [bone.name, bone]),
+    );
 
-    const points = [...RIM, [0, 0.5, 0.2], [0, 0.5, -0.2]];
+    const points = caped ? [...RIM, [0, 0.5, 0.2], [0, 0.5, -0.2]] : RIM;
     const geometry = geometryOf(points);
     geometry.setAttribute(
       "skinIndex",
@@ -216,13 +222,22 @@ describe("dressNeck", () => {
       ),
     );
     const helmet = new SkinnedMesh(geometry, new MeshStandardMaterial());
+    const face = head();
     scene.add(face, helmet);
     scene.updateMatrixWorld(true);
-    helmet.bind(new Skeleton([mount, cape]));
+    helmet.bind(new Skeleton([bones.get(rimBone)!, cape]));
 
     dressNeck(scene, false, [helmet]);
 
-    expect(collared(face)).toEqual(UP_TO_RIM);
+    return collared(face);
+  };
+
+  it("leaves out a cape the helmet's mesh hangs from the spine", () => {
+    expect(capedHelmet("HelmetMount1", "Cape")).toEqual(UP_TO_RIM);
+  });
+
+  it("measures every point of a helmet with no head bone", () => {
+    expect(capedHelmet("Spine3", "Cape", false)).toEqual(UP_TO_RIM);
   });
 
   it("draws the whole head as the hood", () => {

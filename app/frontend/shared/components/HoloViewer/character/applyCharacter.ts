@@ -379,14 +379,14 @@ const atRestPose = <T>(root: Object3D, measure: () => T) => {
   }
 };
 
-// Points of a mesh where it is drawn, in the frame of `frame`'s owner, every
-// `stride`th. The stored points of a quantized skin mean nothing on their
-// own: its inverse bind matrices carry the dequantization.
+// Points of a mesh where it is drawn, in the frame of `frame`'s owner: those
+// at `indices`, or all of them. The stored points of a quantized skin mean
+// nothing on their own: its inverse bind matrices carry the dequantization.
 const drawnPoints = (
   mesh: Mesh,
   frame: Matrix4,
   each: (point: Vector3, index: number) => void,
-  stride = 1,
+  indices?: number[],
 ) => {
   const position = mesh.geometry.getAttribute("position");
   const skinned = (mesh as SkinnedMesh).isSkinnedMesh
@@ -394,11 +394,13 @@ const drawnPoints = (
     : undefined;
   const toFrame = new Matrix4().multiplyMatrices(frame, mesh.matrixWorld);
   const point = new Vector3();
-  for (let index = 0; index < position.count; index += stride) {
+  const visit = (index: number) => {
     point.fromBufferAttribute(position, index);
     skinned?.applyBoneTransform(index, point);
     each(point.applyMatrix4(toFrame), index);
-  }
+  };
+  if (indices) indices.forEach(visit);
+  else for (let index = 0; index < position.count; index++) visit(index);
 };
 
 const sectorOf = (point: Vector3, axis: Vector3) => {
@@ -417,23 +419,27 @@ const hangsFromHead = (bone: Object3D) => {
 };
 
 // Which of a mesh's points move with the head. A helmet may bring a cape or
-// cowl in the same mesh, which hangs from the spine far below the rim.
-const movesWithHead = (mesh: Mesh) => {
+// cowl in the same mesh, hung from the spine and the neck far below the rim.
+// A rig without a head bone keeps every point.
+const shellPoints = (mesh: Mesh) => {
+  const count = mesh.geometry.getAttribute("position")?.count ?? 0;
+  const all = Array.from({ length: count }, (_, index) => index);
   const { skinIndex, skinWeight } = mesh.geometry.attributes;
   if (!(mesh as SkinnedMesh).isSkinnedMesh || !skinIndex || !skinWeight) {
-    return () => true;
+    return all;
   }
 
-  const onHead = (mesh as SkinnedMesh).skeleton.bones.map(hangsFromHead);
-  return (index: number) => {
+  const onShell = (mesh as SkinnedMesh).skeleton.bones.map(hangsFromHead);
+  const shell = all.filter((index) => {
     let weight = 0;
     for (let slot = 0; slot < skinIndex.itemSize; slot++) {
-      if (onHead[skinIndex.getComponent(index, slot)]) {
+      if (onShell[skinIndex.getComponent(index, slot)]) {
         weight += skinWeight.getComponent(index, slot);
       }
     }
     return weight > 0.5;
-  };
+  });
+  return shell.length ? shell : all;
 };
 
 // The lowest point of the helmet's shell in each sector around the neck's
@@ -441,17 +447,16 @@ const movesWithHead = (mesh: Mesh) => {
 const rimHeights = (rims: Mesh[], frame: Matrix4, axis: Vector3) => {
   const heights = new Array<number>(RIM_SECTORS).fill(Infinity);
   rims.forEach((mesh) => {
-    const count = mesh.geometry.getAttribute("position")?.count ?? 0;
-    const onShell = movesWithHead(mesh);
+    const shell = shellPoints(mesh);
+    const stride = Math.max(1, Math.ceil(shell.length / RIM_SAMPLES));
     drawnPoints(
       mesh,
       frame,
-      (point, index) => {
-        if (!onShell(index)) return;
+      (point) => {
         const sector = sectorOf(point, axis);
         heights[sector] = Math.min(heights[sector], point.y);
       },
-      Math.max(1, Math.ceil(count / RIM_SAMPLES)),
+      shell.filter((_, position) => position % stride === 0),
     );
   });
   return heights;
