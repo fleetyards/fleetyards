@@ -122,6 +122,22 @@ describe("dressNeck", () => {
     ]);
   });
 
+  it("bridges a single sector the rim has no point in", () => {
+    const scene = new Group();
+    const face = head();
+    // Either side of the front sector, none in it.
+    const helmet = meshOf("helmet", [
+      [-0.02, 1.64, 0.15],
+      [0.045, 1.64, 0.15],
+      [0, 1.58, -0.15],
+    ]);
+    scene.add(face, helmet);
+
+    dressNeck(scene, false, [helmet]);
+
+    expect(collared(face)).toEqual(UP_TO_RIM);
+  });
+
   it("measures a scaled figure in its own lengths", () => {
     const scene = new Group();
     scene.scale.setScalar(0.5);
@@ -164,6 +180,64 @@ describe("dressNeck", () => {
 
     expect(collared(face)).toEqual(UP_TO_RIM);
     expect(bone.position.y).toBe(0.3);
+  });
+
+  // A skinned helmet with the rim on `rimBone` and a cape below on `capeBone`.
+  const capedHelmet = (rimBone: string, capeBone: string, caped = true) => {
+    const scene = new Group();
+    const spine = new Bone();
+    spine.name = "Spine3";
+    const neck = new Bone();
+    neck.name = "Neck1";
+    const headBone = new Bone();
+    headBone.name = "Head";
+    const mount = new Bone();
+    mount.name = "HelmetMount1";
+    const cape = new Bone();
+    cape.name = capeBone;
+    spine.add(neck, cape);
+    neck.add(headBone);
+    headBone.add(mount);
+    scene.add(spine);
+    const bones = new Map(
+      [spine, neck, headBone, mount, cape].map((bone) => [bone.name, bone]),
+    );
+
+    const points = caped ? [...RIM, [0, 0.5, 0.2], [0, 0.5, -0.2]] : RIM;
+    const geometry = geometryOf(points);
+    geometry.setAttribute(
+      "skinIndex",
+      new BufferAttribute(
+        new Uint16Array(
+          points.flatMap((_, index) => [index < RIM.length ? 0 : 1, 0, 0, 0]),
+        ),
+        4,
+      ),
+    );
+    geometry.setAttribute(
+      "skinWeight",
+      new BufferAttribute(
+        new Float32Array(points.flatMap(() => [1, 0, 0, 0])),
+        4,
+      ),
+    );
+    const helmet = new SkinnedMesh(geometry, new MeshStandardMaterial());
+    const face = head();
+    scene.add(face, helmet);
+    scene.updateMatrixWorld(true);
+    helmet.bind(new Skeleton([bones.get(rimBone)!, cape]));
+
+    dressNeck(scene, false, [helmet]);
+
+    return collared(face);
+  };
+
+  it("leaves out a cape the helmet's mesh hangs from the spine", () => {
+    expect(capedHelmet("HelmetMount1", "Cape")).toEqual(UP_TO_RIM);
+  });
+
+  it("measures every point of a helmet with no head bone", () => {
+    expect(capedHelmet("Spine3", "Cape", false)).toEqual(UP_TO_RIM);
   });
 
   it("draws the whole head as the hood", () => {
