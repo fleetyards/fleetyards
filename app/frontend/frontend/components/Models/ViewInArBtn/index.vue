@@ -18,7 +18,7 @@ import {
   usesQuickLook,
   type ModelViewerElement,
 } from "@/frontend/utils/arViewer";
-import { FeatureFlagName, type Model } from "@/services/fyApi";
+import { FeatureFlagName, type Model, type ModelMedia } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
@@ -26,9 +26,7 @@ type Props = {
   // The 3D view is open. Only then is the viewer fetched: the holo is being
   // downloaded for it anyway, and a page view costs nothing extra.
   active?: boolean;
-  // The holo the 3D view is showing. Only the flight holo carries the
-  // measurement that vouches for its scale, so a landed or extended pose gets
-  // no AR rather than a different pose than the one on screen.
+  // The holo the 3D view is showing, so AR places the same pose.
   displayedHoloUrl?: string;
 };
 
@@ -56,20 +54,43 @@ const quickLook = usesQuickLook();
 // Quick Look prepares on the tap, so the button stands on the cheap check alone.
 const deferred = ref(false);
 
-// The flight holo, or its lite export where the 3D view shows that one: the
-// same hull in the same units, minus the interior, so the measurement of the
-// one vouches for the other -- and a phone converts the lighter file.
-const holoUrl = computed(() => {
-  const { holo, holoLite } = props.model.media;
+type ArPose = {
+  holo: keyof ModelMedia;
+  holoLite: keyof ModelMedia;
+  usdz: keyof ModelMedia;
+};
 
-  return [holo?.url, holoLite?.url].find(
-    (url) => !!url && url === props.displayedHoloUrl,
-  );
-});
+// Every pose comes out of one export in the same units, so the flight holo's
+// measurement vouches for all of them. A lite holo is the same hull minus the
+// interior, and a phone converts the lighter file.
+const AR_POSES: ArPose[] = [
+  { holo: "holo", holoLite: "holoLite", usdz: "holoUsdz" },
+  { holo: "landedHolo", holoLite: "landedHoloLite", usdz: "landedHoloUsdz" },
+  {
+    holo: "extendedHolo",
+    holoLite: "extendedHoloLite",
+    usdz: "extendedHoloUsdz",
+  },
+];
 
-// Built from the flight holo's lite export, so it stands for whichever of the
-// two the 3D view shows.
-const usdzUrl = computed(() => props.model.media.holoUsdz?.url);
+const shownPose = computed(() =>
+  AR_POSES.find((pose) =>
+    [pose.holo, pose.holoLite].some((key) => {
+      const url = props.model.media[key]?.url;
+
+      return !!url && url === props.displayedHoloUrl;
+    }),
+  ),
+);
+
+const holoUrl = computed(() =>
+  shownPose.value ? props.displayedHoloUrl : undefined,
+);
+
+// Built for the pose, so it stands for its holo and its lite export alike.
+const usdzUrl = computed(() =>
+  shownPose.value ? props.model.media[shownPose.value.usdz]?.url : undefined,
+);
 
 // Without a USDZ built ahead of time the page would convert the holo, which an
 // iPhone cannot hold, so there it offers no Quick Look at all.
