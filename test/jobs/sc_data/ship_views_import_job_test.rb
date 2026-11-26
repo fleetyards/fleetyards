@@ -305,14 +305,16 @@ module ScData
       assert_empty MeasureHoloJob.jobs
     end
 
-    test "attaches the flight holo's USDZ under the type AR Quick Look opens" do
-      publish({"flight_holo.usdz" => USDZ, "landed_holo.usdz" => USDZ})
+    test "attaches each pose's USDZ under the type AR Quick Look opens" do
+      publish({"flight_holo.usdz" => USDZ, "landed_holo.usdz" => USDZ, "extended_holo.usdz" => USDZ})
 
       perform
 
-      assert @model.holo_usdz.attached?
-      assert_equal "model/vnd.usdz+zip", @model.holo_usdz.content_type
-      assert_equal ["holo_usdz"], @model.ship_view_md5s.keys
+      %i[holo_usdz landed_holo_usdz extended_holo_usdz].each do |name|
+        assert @model.public_send(name).attached?, name
+        assert_equal "model/vnd.usdz+zip", @model.public_send(name).content_type
+      end
+      assert_equal %w[extended_holo_usdz holo_usdz landed_holo_usdz], @model.ship_view_md5s.keys.sort
       assert_empty MeasureHoloJob.jobs
     end
 

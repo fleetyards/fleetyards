@@ -29,8 +29,8 @@ module ScData
     # A Blender export drops holo.blend, holo.obj and holo.mtl beside the glTF.
     VIEW_EXTENSIONS = %w[png jpg jpeg webp gif].freeze
     HOLO_EXTENSIONS = %w[gltf glb].freeze
-    # Only the flight holo is placed in AR, so only it is exported as USDZ --
-    # from its lite export, and named either way.
+    # Every pose is exported as USDZ for AR, named like its holo or its lite
+    # export.
     AR_HOLO_EXTENSION = "usdz"
 
     module_function
@@ -51,9 +51,9 @@ module ScData
         prefix = prefix_for(holo[1])
 
         if extension == AR_HOLO_EXTENSION
-          return if prefix || (holo[2] && holo[2].downcase != "lite")
+          return if holo[2] && holo[2].downcase != "lite"
 
-          return "holo_usdz"
+          return [prefix, "holo_usdz"].compact.join("_")
         end
 
         return unless HOLO_EXTENSIONS.include?(extension)
