@@ -1,5 +1,4 @@
 import { useModelLoadoutPreview } from "@/services/fyApi";
-import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 
 // The 3D view's loadout holo: whether the ship has a hull holo to draw its
@@ -10,11 +9,7 @@ export const useLoadoutHolo = (
   wanted: MaybeRefOrGetter<boolean>,
   texturedHolo: Ref<boolean>,
 ) => {
-  const mobile = useMobile();
-
-  const enabled = computed(
-    () => !!toValue(modelSlug) && !mobile.value && toValue(wanted),
-  );
+  const enabled = computed(() => !!toValue(modelSlug) && toValue(wanted));
 
   const { data: preview } = useModelLoadoutPreview(
     () => toValue(modelSlug) ?? "",
