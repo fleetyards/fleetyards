@@ -119,6 +119,7 @@ import {
   unmarkBuiltIns,
 } from "../builtIns";
 import { retarget, stepTween, type Tween } from "../reveal";
+import { type Pointed, type TapKind, tapActs } from "../tap";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -1516,17 +1517,7 @@ const pointAt = (event: PointerEvent | MouseEvent) => {
   emit("mountPoint", mountId);
 };
 
-// A finger has no hover: moving it turns the holo, and lifting it leaves the
-// canvas. A tap points instead, and what it pointed at stays until the next.
-const onPointerMove = (event: PointerEvent) => {
-  if (event.pointerType === "touch") return;
-
-  pointAt(event);
-};
-
-const onPointerLeave = (event: PointerEvent) => {
-  if (event.pointerType === "touch") return;
-
+const clearPointed = () => {
   renderer.domElement.style.cursor = "";
 
   pointBuiltIn(undefined);
@@ -1549,42 +1540,68 @@ const DRAG_TOLERANCE = 4;
 let pressedAt: [number, number] | undefined;
 let pressedByTouch = false;
 
+const dragged = (event: PointerEvent | MouseEvent) =>
+  !pressedAt ||
+  Math.hypot(event.clientX - pressedAt[0], event.clientY - pressedAt[1]) >
+    DRAG_TOLERANCE;
+
+// A finger has no hover: lifting it leaves the canvas, and moving it turns the
+// holo, which takes what was pointed out of place. A tap points instead, and
+// what it pointed at stays until the next tap or drag.
+const onPointerMove = (event: PointerEvent) => {
+  if (event.pointerType !== "touch") {
+    pointAt(event);
+    return;
+  }
+
+  if (event.buttons && dragged(event)) clearPointed();
+};
+
+const onPointerLeave = (event: PointerEvent) => {
+  if (event.pointerType === "touch") return;
+
+  clearPointed();
+};
+
 const onPointerDown = (event: PointerEvent) => {
   pressedAt = [event.clientX, event.clientY];
   pressedByTouch = event.pointerType === "touch";
 };
 
 const onClick = (event: MouseEvent) => {
-  if (
-    !pressedAt ||
-    Math.hypot(event.clientX - pressedAt[0], event.clientY - pressedAt[1]) >
-      DRAG_TOLERANCE
-  ) {
-    return;
-  }
+  if (dragged(event)) return;
+
+  // Read before the tap points, which would make it what was pointed.
+  const before: Pointed = {
+    mount: pointed,
+    builtIn: pointedBuiltIn,
+    door: pointedDoor,
+  };
+  const acts = (kind: TapKind, id: string) =>
+    tapActs(pressedByTouch, kind, id, before);
 
   if (pressedByTouch) pointAt(event);
 
   const id = mountAt(event);
   if (id) {
-    emit("mountSelect", id);
+    if (acts("mount", id)) emit("mountSelect", id);
     return;
   }
 
   const builtInId = builtInAt(event);
   if (builtInId) {
-    emit("builtInSelect", builtInId);
+    if (acts("builtIn", builtInId)) emit("builtInSelect", builtInId);
     return;
   }
 
   const doorId = doorAt(event);
   if (doorId) {
-    emit("doorSelect", doorId);
+    if (acts("door", doorId)) emit("doorSelect", doorId);
     return;
   }
 
   const moduleId = mountAt(event, true);
-  if (moduleId) emit("mountSelect", moduleId);
+  if (moduleId && acts("mount", moduleId)) emit("mountSelect", moduleId);
 };
 
 if (props.pickable) {
