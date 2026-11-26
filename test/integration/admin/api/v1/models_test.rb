@@ -572,6 +572,17 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     assert model.holo_usdz.attached?
   end
 
+  test "PUT /models/:id drops the USDZ of a pose whose full holo it replaces" do
+    sign_in @user
+    model = create(:model)
+    model.extended_holo_usdz.attach(io: StringIO.new(USDZ_BYTES), filename: "extended_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+    holo = ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "extended_holo.glb")
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {extendedHolo: holo.signed_id}
+
+    assert_not model.reload.extended_holo_usdz.attached?
+  end
+
   test "PUT /models/:id leaves the USDZ alone when the lite holo is untouched" do
     sign_in @user
     model = create(:model)
