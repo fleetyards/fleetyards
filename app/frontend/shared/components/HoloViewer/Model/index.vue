@@ -1480,7 +1480,9 @@ const pointDoor = (id: string | undefined) => {
   emit("doorPoint", id);
 };
 
-const onPointerMove = (event: PointerEvent) => {
+// What is under the pointer, pointed at: the part, item, door, cargo grid or
+// servicing area the card names.
+const pointAt = (event: PointerEvent | MouseEvent) => {
   const id = event.buttons ? undefined : mountAt(event);
   const builtInId = event.buttons || id ? undefined : builtInAt(event);
   const doorId = event.buttons || id || builtInId ? undefined : doorAt(event);
@@ -1514,7 +1516,17 @@ const onPointerMove = (event: PointerEvent) => {
   emit("mountPoint", mountId);
 };
 
-const onPointerLeave = () => {
+// A finger has no hover: moving it turns the holo, and lifting it leaves the
+// canvas. A tap points instead, and what it pointed at stays until the next.
+const onPointerMove = (event: PointerEvent) => {
+  if (event.pointerType === "touch") return;
+
+  pointAt(event);
+};
+
+const onPointerLeave = (event: PointerEvent) => {
+  if (event.pointerType === "touch") return;
+
   renderer.domElement.style.cursor = "";
 
   pointBuiltIn(undefined);
@@ -1535,9 +1547,11 @@ const onPointerLeave = () => {
 // A drag turns the holo; only a press released where it began is a click.
 const DRAG_TOLERANCE = 4;
 let pressedAt: [number, number] | undefined;
+let pressedByTouch = false;
 
 const onPointerDown = (event: PointerEvent) => {
   pressedAt = [event.clientX, event.clientY];
+  pressedByTouch = event.pointerType === "touch";
 };
 
 const onClick = (event: MouseEvent) => {
@@ -1548,6 +1562,8 @@ const onClick = (event: MouseEvent) => {
   ) {
     return;
   }
+
+  if (pressedByTouch) pointAt(event);
 
   const id = mountAt(event);
   if (id) {
