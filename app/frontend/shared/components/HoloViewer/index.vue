@@ -1002,12 +1002,17 @@ const handleRenderError = (error: Error) => {
 // The holos that did not load, by path: those with a fallback are drawn by it.
 const failedPaths = ref<string[]>([]);
 
+// None while the phone is asked: the canvas contents render in a renderer of
+// their own, which follows this list by itself and would start the download
+// before the question takes the canvas away.
 const shownModels = computed(() =>
-  props.models.map((model) =>
-    model.fallback && failedPaths.value.includes(model.path)
-      ? { ...model, ...model.fallback, fallback: undefined }
-      : model,
-  ),
+  awaitingConfirmation.value
+    ? []
+    : props.models.map((model) =>
+        model.fallback && failedPaths.value.includes(model.path)
+          ? { ...model, ...model.fallback, fallback: undefined }
+          : model,
+      ),
 );
 
 // `model` as the caller gave it, so a failed fallback is reported by the path
