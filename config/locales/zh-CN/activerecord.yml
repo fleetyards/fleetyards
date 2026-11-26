@@ -313,6 +313,7 @@ zh-CN:
         already_passed: "已经过去"
         blank: 不能为空字符
         record_invalid: 错误的数据信息
+        not_a_usdz: 必须是 USDZ 文件
       models:
         fleetchart_layout:
           attributes:

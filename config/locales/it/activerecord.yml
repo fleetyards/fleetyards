@@ -313,6 +313,7 @@ it:
         already_passed: "è già passata"
         blank: non può essere vuoto
         record_invalid: Dati non validi
+        not_a_usdz: deve essere un file USDZ
       models:
         fleetchart_layout:
           attributes:

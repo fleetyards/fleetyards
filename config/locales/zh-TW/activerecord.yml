@@ -313,6 +313,7 @@ zh-TW:
         already_passed: "已經過去"
         blank: 不能為空
         record_invalid: 無效資料
+        not_a_usdz: 必須是 USDZ 檔案
       models:
         fleetchart_layout:
           attributes:
