@@ -456,7 +456,8 @@
         },
         "builtIn": "點擊查看物品",
         "builtInTap": "輕觸查看物品",
-        "part": "點擊更換部件"
+        "part": "點擊更換部件",
+        "partTap": "輕觸更換部件"
       },
       "logistics": {
         "addToInventory": "加入庫存",

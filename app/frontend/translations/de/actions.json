@@ -456,7 +456,8 @@
         },
         "builtIn": "Klicken, um das Item anzuzeigen",
         "builtInTap": "Tippen, um das Item anzuzeigen",
-        "part": "Klicken, um das Teil zu ändern"
+        "part": "Klicken, um das Teil zu ändern",
+        "partTap": "Tippen, um das Teil zu ändern"
       },
       "logistics": {
         "addToInventory": "Zum Inventar hinzufügen",

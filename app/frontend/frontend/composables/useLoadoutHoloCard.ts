@@ -54,7 +54,7 @@ type Options = {
   doorsHighlighted: MaybeRefOrGetter<boolean>;
   isOpen: (id: string) => boolean;
   // What a click on a part does, where it does anything.
-  partHint?: (slot: PreviewSlot) => string | undefined;
+  partHint?: (slot: PreviewSlot, tapped: boolean) => string | undefined;
   // What a click, or a tap, on a built-in item does, where it does anything.
   builtInHint?: (tapped: boolean) => string;
   // The pointed part's path, where the caller marks that part itself.
@@ -92,7 +92,11 @@ export const useLoadoutHoloCard = (options: Options) => {
     docked: false,
   });
 
+  // Only the canvas places the card: a press on a button over it is not a
+  // look at the holo.
   const trackPointer = (event: PointerEvent) => {
+    if (!(event.target instanceof HTMLCanvasElement)) return;
+
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -190,7 +194,7 @@ export const useLoadoutHoloCard = (options: Options) => {
         part.gradeLabel
           ? `${t("labels.component.grade")} ${part.gradeLabel}`
           : undefined,
-        options.partHint?.(slot),
+        options.partHint?.(slot, cursor.value.docked),
       ].filter((detail): detail is string => !!detail),
     };
   };

@@ -184,10 +184,13 @@ const {
   doorsAnimated: doorAnimationEnabled,
   doorsHighlighted: doorHighlightEnabled,
   isOpen,
-  partHint: (slot) =>
-    props.pickable && slot.changeable
-      ? t("actions.holoViewer.part")
-      : undefined,
+  partHint: (slot, tapped) => {
+    if (!props.pickable || !slot.changeable) return undefined;
+
+    return tapped
+      ? t("actions.holoViewer.partTap")
+      : t("actions.holoViewer.part");
+  },
 });
 
 const onPoint = (path: string | undefined) => {

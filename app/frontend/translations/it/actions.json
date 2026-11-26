@@ -456,7 +456,8 @@
         },
         "builtIn": "Clicca per vedere l'oggetto",
         "builtInTap": "Tocca per vedere l'oggetto",
-        "part": "Clicca per cambiare il pezzo"
+        "part": "Clicca per cambiare il pezzo",
+        "partTap": "Tocca per cambiare il pezzo"
       },
       "logistics": {
         "addToInventory": "Aggiungi all'inventario",
