@@ -122,6 +122,22 @@ describe("dressNeck", () => {
     ]);
   });
 
+  it("bridges a single sector the rim has no point in", () => {
+    const scene = new Group();
+    const face = head();
+    // Either side of the front sector, none in it.
+    const helmet = meshOf("helmet", [
+      [-0.02, 1.64, 0.15],
+      [0.045, 1.64, 0.15],
+      [0, 1.58, -0.15],
+    ]);
+    scene.add(face, helmet);
+
+    dressNeck(scene, false, [helmet]);
+
+    expect(collared(face)).toEqual(UP_TO_RIM);
+  });
+
   it("measures a scaled figure in its own lengths", () => {
     const scene = new Group();
     scene.scale.setScalar(0.5);

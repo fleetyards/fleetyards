@@ -540,9 +540,16 @@ const collarDepths = (scene: Object3D, meshes: Mesh[], rims: Mesh[]) => {
   const axis = bounds.getCenter(new Vector3());
   const neck = bounds.min.y + NECK_HEIGHT;
   const ceiling = bounds.min.y + RIM_CEILING;
-  const rim = rimHeights(rims, frame, axis).map((height) =>
-    height <= ceiling ? height + RIM_OVERLAP : -Infinity,
-  );
+  const heights = rimHeights(rims, frame, axis);
+  const rim = heights.map((height, sector) => {
+    // A lone high sector is a gap between the rim's points, not an opening.
+    const beside = Math.max(
+      heights[(sector + RIM_SECTORS - 1) % RIM_SECTORS],
+      heights[(sector + 1) % RIM_SECTORS],
+    );
+    const edge = height <= ceiling ? height : beside;
+    return edge <= ceiling ? edge + RIM_OVERLAP : -Infinity;
+  });
 
   return drawn.map((points) => {
     const depth = new Float32Array(points.length / 3);
