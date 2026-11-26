@@ -515,4 +515,47 @@ describe("FormFileInput holos", () => {
 
     expect(subject.findComponent({ name: "HoloViewer" }).exists()).toBe(false);
   });
+
+  it("shows an attached USDZ as attached, with its name and a clear", async () => {
+    const subject = await mount({
+      name: "holoUsdz",
+      file: holoFile("model/vnd.usdz+zip", "flight_holo.usdz"),
+      allowedTypes: "arHolo",
+      clearable: true,
+    });
+
+    expect(subject.find("[data-test='attached-file-holoUsdz']").text()).toBe(
+      "flight_holo.usdz",
+    );
+    expect(subject.find(".base-image-input__clear").exists()).toBe(true);
+  });
+
+  it("shows no USDZ once the attached one is cleared", async () => {
+    const subject = await mount({
+      name: "holoUsdz",
+      file: holoFile("model/vnd.usdz+zip", "flight_holo.usdz"),
+      allowedTypes: "arHolo",
+      clearable: true,
+    });
+
+    await subject.find(".base-image-input__clear").trigger("click");
+
+    expect(subject.find("[data-test='attached-file-holoUsdz']").exists()).toBe(
+      false,
+    );
+    expect(subject.emitted("update:modelValue")?.at(-1)).toEqual([null]);
+  });
+
+  it("shows no file while no USDZ is attached", async () => {
+    const subject = await mount({
+      name: "holoUsdz",
+      allowedTypes: "arHolo",
+      clearable: true,
+    });
+
+    expect(subject.find("[data-test='attached-file-holoUsdz']").exists()).toBe(
+      false,
+    );
+    expect(subject.find(".base-image-input__clear").exists()).toBe(false);
+  });
 });

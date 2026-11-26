@@ -175,6 +175,17 @@ const isHolo = computed(() => {
 
 const internalSrc = ref<string>();
 
+// An attachment with no preview, like a USDZ, drawn as the empty field's icon
+// read as no file at all.
+const attachedWithoutPreview = computed(
+  () =>
+    !!props.file?.url &&
+    !cleared.value &&
+    !isImage.value &&
+    !isPdf.value &&
+    !isHolo.value,
+);
+
 // Whether this input's own upload is showing what it uploaded. A value set from
 // outside -- the views folder filling the whole form -- is not that, and hiding
 // the picture for it left the input blank.
@@ -613,6 +624,14 @@ defineExpose({
           :models="[holoModel]"
           inline
         />
+        <div
+          v-else-if="attachedWithoutPreview"
+          class="base-image-input__attached"
+          :data-test="`attached-file-${name}`"
+        >
+          <i class="fa-solid fa-4x" :class="fileTypeIconClass" />
+          <span>{{ file?.name }}</span>
+        </div>
         <i v-else class="fa-solid fa-7x" :class="fileTypeIconClass" />
       </template>
       <DirectUpload
@@ -675,7 +694,10 @@ defineExpose({
       <!-- A preset counts: it is a picture in the frame like any other, and
            while it did not the only way back to none was through the picker. -->
       <Btn
-        v-if="clearable && (internalSrc || inputValue || presetSrc)"
+        v-if="
+          clearable &&
+          (internalSrc || inputValue || presetSrc || attachedWithoutPreview)
+        "
         v-tooltip="clearLabel"
         :aria-label="clearLabel"
         @click="clear"
