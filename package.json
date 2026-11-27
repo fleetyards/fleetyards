@@ -56,7 +56,7 @@
     "@tresjs/cientos": "^5.13.0",
     "@tresjs/core": "^5.12.0",
     "@vee-validate/rules": "^4.15.1",
-    "@vuepic/vue-datepicker": "^14.0.0",
+    "@vuepic/vue-datepicker": "^14.1.0",
     "@vueuse/core": "^15.0.0",
     "ahoy.js": "0.4.5",
     "axios": "1.21.1",
