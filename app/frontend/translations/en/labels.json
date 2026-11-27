@@ -419,7 +419,17 @@
         "stateApproved": "Approved",
         "stateRejected": "Refused",
         "reviewedBy": "Reviewed by",
-        "owner": "Registered by"
+        "owner": "Registered by",
+        "search": "Filter by name",
+        "authorizedUsers": "Authorized users",
+        "authorizedUsersCount": {
+          "one": "%{count} authorized user",
+          "other": "%{count} authorized users"
+        },
+        "reviewedByOn": "%{name}, %{date}",
+        "moreRedirectUris": "+%{count} more",
+        "filterByOwner": "Show applications registered by %{name}",
+        "clearOwner": "Show every owner"
       },
       "fleetInviteToken": "Fleet Invite",
       "inviteToken": "Invite code",

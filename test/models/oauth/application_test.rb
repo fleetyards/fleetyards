@@ -94,6 +94,26 @@ module Oauth
       end
     end
 
+    test "the review notification opens the list filtered to pending applications" do
+      admin_user = create(:admin_user, :super_admin)
+
+      create(:oauth_application, :pending)
+
+      notification = AdminNotification.find_by!(admin_user:, notification_type: "oauth_application_review")
+      assert_equal "/oauth-applications/?aasmStateEq=pending", notification.link
+    end
+
+    test "counts each person holding an unrevoked token once" do
+      application = create(:oauth_application)
+      person = create(:user)
+      create_list(:oauth_access_token, 2, application:, resource_owner_id: person.id)
+      create(:oauth_access_token, application:, resource_owner_id: create(:user).id)
+      create(:oauth_access_token, application:, resource_owner_id: create(:user).id, revoked_at: 1.day.ago)
+
+      assert_equal 2, application.authorized_users_count
+      assert_equal 2, Oauth::Application.with_authorized_users_count.find(application.id).authorized_users_count
+    end
+
     test "an approved application reports nothing" do
       create(:admin_user, :super_admin)
 

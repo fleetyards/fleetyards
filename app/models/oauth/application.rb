@@ -22,6 +22,32 @@ module Oauth
 
     scope :pending_review, -> { where(aasm_state: "pending") }
 
+    DEFAULT_SORTING_PARAMS = "created_at desc"
+    ADMIN_SORTING_PARAMS = [
+      "name asc", "name desc", "aasmState asc", "aasmState desc",
+      "authorizedUsersCount asc", "authorizedUsersCount desc",
+      "createdAt asc", "createdAt desc", "updatedAt asc", "updatedAt desc"
+    ]
+
+    # People, not tokens: every refresh mints a new token, so a token count
+    # grows with how long someone stays connected rather than with how many
+    # connected.
+    def self.authorized_users_count_sql
+      <<~SQL.squish
+        (SELECT COUNT(DISTINCT oauth_access_tokens.resource_owner_id) FROM oauth_access_tokens
+          WHERE oauth_access_tokens.application_id = oauth_applications.id
+            AND oauth_access_tokens.revoked_at IS NULL)
+      SQL
+    end
+
+    def self.with_authorized_users_count
+      select(arel_table[Arel.star], Arel.sql("#{authorized_users_count_sql} AS authorized_users_count"))
+    end
+
+    ransacker :authorized_users_count, type: :integer do
+      Arel.sql(authorized_users_count_sql)
+    end
+
     # Approval is granted for one redirect target and one set of scopes. Without
     # this, an application could be approved while harmless and then be pointed
     # somewhere else, carrying a review nobody performed. Model-level rather than
@@ -53,11 +79,17 @@ module Oauth
     # columns the admin list actually filters on: the list took `q` before this
     # existed, so any real filter raised.
     def self.ransackable_attributes(auth_object = nil)
-      %w[aasm_state created_at name owner_id updated_at]
+      %w[aasm_state authorized_users_count created_at id name owner_id updated_at]
     end
 
     def self.policy_class
       OauthApplicationPolicy
+    end
+
+    def authorized_users_count
+      return self[:authorized_users_count] if has_attribute?(:authorized_users_count)
+
+      access_tokens.where(revoked_at: nil).distinct.count(:resource_owner_id)
     end
 
     # What `allow_grant_flow_for_client` asks. Kept as a predicate rather than a
@@ -93,7 +125,7 @@ module Oauth
         title: "#{waiting} OAuth #{"application".pluralize(waiting)} awaiting review",
         body: owner.is_a?(User) ? "Most recent: #{name}, registered by #{owner.username}" : "Most recent: #{name}",
         severity: :info,
-        link: "/oauth-applications?q[aasm_state_eq]=pending",
+        link: "/oauth-applications/?aasmStateEq=pending",
         record: self,
         dedupe_key: "oauth_application_review"
       )

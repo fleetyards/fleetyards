@@ -23541,6 +23541,9 @@ components:
           type:
           - string
           - 'null'
+        authorizedUsersCount:
+          type: integer
+          description: People holding an unrevoked access token
         logo:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -23559,6 +23562,7 @@ components:
       - redirectUri
       - scopes
       - state
+      - authorizedUsersCount
       - createdAt
       - updatedAt
       title: OauthApplication
@@ -23603,6 +23607,18 @@ components:
           - pending
           - approved
           - rejected
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/OauthApplicationSortEnum"
+          - "$ref": "#/components/schemas/OauthApplicationSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/OauthApplicationSortEnum"
+          - "$ref": "#/components/schemas/OauthApplicationSortEnum"
       additionalProperties: false
       example: {}
       title: OauthApplicationQuery
@@ -23636,6 +23652,31 @@ components:
       required:
       - rejectionReason
       title: OauthApplicationRejectInput
+    OauthApplicationSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - aasmState asc
+      - aasmState desc
+      - authorizedUsersCount asc
+      - authorizedUsersCount desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - AASM_STATE_ASC
+      - AASM_STATE_DESC
+      - AUTHORIZED_USERS_COUNT_ASC
+      - AUTHORIZED_USERS_COUNT_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: OauthApplicationSortEnum
     OauthApplicationUpdateInput:
       type: object
       properties:

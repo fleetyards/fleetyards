@@ -355,6 +355,59 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200
   end
 
+  test "GET /oauth-applications filters by state" do
+    pending_application = create(:oauth_application, :pending)
+    create(:oauth_application)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {aasmStateEq: "pending"}} do
+      assert_equal [pending_application.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /oauth-applications filters by owner" do
+    owner = create(:user)
+    owned = create(:oauth_application, owner:)
+    create(:oauth_application)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {ownerIdEq: owner.id}} do
+      assert_equal [owned.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /oauth-applications sorts by authorized users" do
+    quiet = create(:oauth_application, name: "Quiet")
+    busy = create(:oauth_application, name: "Busy")
+    2.times { create(:oauth_access_token, application: busy, resource_owner_id: create(:user).id) }
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {sorts: "authorizedUsersCount desc"}} do
+      assert_equal [busy.id, quiet.id], parsed_body["items"].pluck("id")
+      assert_equal [2, 0], parsed_body["items"].pluck("authorizedUsersCount")
+    end
+  end
+
+  test "GET /oauth-applications lists the newest first when no sort is asked for" do
+    older = create(:oauth_application, created_at: 2.days.ago)
+    newer = create(:oauth_application, created_at: 1.day.ago)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal [newer.id, older.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /oauth-applications sorts by name" do
+    create(:oauth_application, name: "Bravo")
+    create(:oauth_application, name: "Alpha")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {sorts: "name asc"}} do
+      assert_equal %w[Alpha Bravo], parsed_body["items"].pluck("name")
+    end
+  end
+
   test "GET /oauth-applications returns 401 when not signed in" do
     assert_api_response :get, 401
   end

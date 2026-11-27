@@ -419,7 +419,17 @@
         "stateApproved": "已核准",
         "stateRejected": "已拒絕",
         "reviewedBy": "審核者",
-        "owner": "註冊者"
+        "owner": "註冊者",
+        "search": "依名稱篩選",
+        "authorizedUsers": "已授權使用者",
+        "authorizedUsersCount": {
+          "one": "%{count} 位已授權使用者",
+          "other": "%{count} 位已授權使用者"
+        },
+        "reviewedByOn": "%{name}，%{date}",
+        "moreRedirectUris": "另有 %{count} 個",
+        "filterByOwner": "顯示 %{name} 註冊的應用程式",
+        "clearOwner": "顯示所有註冊者"
       },
       "fleetInviteToken": "艦隊邀請",
       "inviteToken": "邀請碼",
