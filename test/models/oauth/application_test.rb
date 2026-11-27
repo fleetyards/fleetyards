@@ -94,6 +94,15 @@ module Oauth
       end
     end
 
+    test "the review notification opens the list filtered to pending applications" do
+      admin_user = create(:admin_user, :super_admin)
+
+      create(:oauth_application, :pending)
+
+      notification = AdminNotification.find_by!(admin_user:, notification_type: "oauth_application_review")
+      assert_equal "/oauth-applications/?aasmStateEq=pending", notification.link
+    end
+
     test "an approved application reports nothing" do
       create(:admin_user, :super_admin)
 

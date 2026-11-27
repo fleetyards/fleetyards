@@ -93,7 +93,7 @@ module Oauth
         title: "#{waiting} OAuth #{"application".pluralize(waiting)} awaiting review",
         body: owner.is_a?(User) ? "Most recent: #{name}, registered by #{owner.username}" : "Most recent: #{name}",
         severity: :info,
-        link: "/oauth-applications?q[aasm_state_eq]=pending",
+        link: "/oauth-applications/?aasmStateEq=pending",
         record: self,
         dedupe_key: "oauth_application_review"
       )
