@@ -135,7 +135,9 @@ useSubscription({
             : t("feedback.admin.general")
         }}
       </span>
-      <span v-if="feedback.pagePath">{{ feedback.pagePath }}</span>
+      <span v-if="feedback.pagePath" class="admin-feedback-show__path">
+        {{ feedback.pagePath }}
+      </span>
       <FeedbackActions :feedback="feedback" />
     </div>
 
@@ -167,5 +169,21 @@ useSubscription({
   align-items: center;
   gap: 12px;
   color: var(--color-text-dim);
+}
+
+.admin-feedback-show__path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .admin-feedback-show__meta > :last-child {
+    margin-left: auto;
+  }
+
+  .admin-feedback-show__path {
+    flex-basis: 100%;
+    order: 1;
+  }
 }
 </style>
