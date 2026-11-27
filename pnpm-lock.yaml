@@ -139,8 +139,8 @@ importers:
         specifier: 1.5.0
         version: 1.5.0
       '@event-calendar/core':
-        specifier: ^5.21.1
-        version: 5.21.1(@typescript-eslint/types@8.70.0)
+        specifier: ^5.21.2
+        version: 5.21.2(@typescript-eslint/types@8.70.0)
       '@floating-ui/dom':
         specifier: ^1.8.0
         version: 1.8.0
@@ -1464,8 +1464,8 @@ packages:
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@event-calendar/core@5.21.1':
-    resolution: {integrity: sha512-j/ndLgBFORMDkiqQpw+TfkXVGsgSOD+uVLey2+qlJpR+7eHEWavRe8TCU5letijz8rl1eeidmGJPXiMTBiwfwQ==}
+  '@event-calendar/core@5.21.2':
+    resolution: {integrity: sha512-Sp49sbB9VDzIgKsJzaG+fCNudkUV7sD94lnB2qZS//h47E/SXIA2CLkwyOf1vA9PEEfOTTyU1eKQMw+LzdEWGA==}
 
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
@@ -4625,6 +4625,14 @@ packages:
       '@typescript-eslint/types':
         optional: true
 
+  esrap@2.4.2:
+    resolution: {integrity: sha512-WpVZsWnSheHBy+fGrO/0duwnbe6ODZH1QyBbjupreSCJGojaBWRncrq+HVeIJ8eHQjEwSJg9hC4yPJyNVOrpqg==}
+    peerDependencies:
+      '@typescript-eslint/types': ^8.2.0
+    peerDependenciesMeta:
+      '@typescript-eslint/types':
+        optional: true
+
   esrecurse@4.3.0:
     resolution: {integrity: sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag==}
     engines: {node: '>=4.0'}
@@ -6594,8 +6602,8 @@ packages:
     resolution: {integrity: sha512-NdbDn7fl4be1ViUG0oq/lvG6OZy3oENolV2ONjiqqsfVoeAfzaQAKUcEX3MrQod/Bebv1PgwET9rfXhgn9s4Kg==}
     engines: {node: '>=18'}
 
-  svelte@5.57.3:
-    resolution: {integrity: sha512-5mAftM3SoDV9X0zdF386F9p2pv8iKOwi/KfBS1XnBAkVCKFzVOLHUoa8iGWAt4buoicLmyWVRpuuD5wplXOQsg==}
+  svelte@5.59.1:
+    resolution: {integrity: sha512-ADG20W/jYSQut/79AavRRfbXQYebFKMVWT/xAbjVVZfZA4XzIoFfcpanEfYTyN+uWQUaPP+nstFx4qVKwEVnQQ==}
     engines: {node: '>=18'}
 
   svg-tags@1.0.0:
@@ -8579,9 +8587,9 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@event-calendar/core@5.21.1(@typescript-eslint/types@8.70.0)':
+  '@event-calendar/core@5.21.2(@typescript-eslint/types@8.70.0)':
     dependencies:
-      svelte: 5.57.3(@typescript-eslint/types@8.70.0)
+      svelte: 5.59.1(@typescript-eslint/types@8.70.0)
     transitivePeerDependencies:
       - '@typescript-eslint/types'
 
@@ -11748,6 +11756,13 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.6.0
     optionalDependencies:
       '@typescript-eslint/types': 8.70.0
+    optional: true
+
+  esrap@2.4.2(@typescript-eslint/types@8.70.0):
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.6.0
+    optionalDependencies:
+      '@typescript-eslint/types': 8.70.0
 
   esrecurse@4.3.0:
     dependencies:
@@ -13918,7 +13933,7 @@ snapshots:
       - '@typescript-eslint/types'
     optional: true
 
-  svelte@5.57.3(@typescript-eslint/types@8.70.0):
+  svelte@5.59.1(@typescript-eslint/types@8.70.0):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
@@ -13930,7 +13945,7 @@ snapshots:
       clsx: 2.1.1
       devalue: 5.9.4
       esm-env: 1.2.2
-      esrap: 2.3.7(@typescript-eslint/types@8.70.0)
+      esrap: 2.4.2(@typescript-eslint/types@8.70.0)
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
