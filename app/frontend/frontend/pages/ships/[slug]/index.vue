@@ -44,6 +44,7 @@ import { useModelsStore } from "@/frontend/stores/models";
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
 import { useLoadoutHolo } from "@/frontend/composables/useLoadoutHolo";
 import ModelLoadoutHolo from "@/frontend/components/Models/LoadoutHolo/index.vue";
+import ModelHoloPaintMenu from "@/frontend/components/Models/HoloPaintMenu/index.vue";
 import {
   ModelStateEnum,
   useModelStates,
@@ -321,7 +322,6 @@ const {
   toggleTexturedHolo,
   holoPaints,
   holoPaintId,
-  holoPaint,
   holoModel,
 } = useModelHolo(() => props.model, activeState, {
   // Back from full screen, it shows the holo and paint left on there.
@@ -470,29 +470,12 @@ const adiMap = computed(() => {
                     <i class="fa-duotone fa-crosshairs" />
                   </Btn>
 
-                  <BtnDropdown
+                  <ModelHoloPaintMenu
                     v-if="paintsOffered"
-                    expand-bottom
+                    v-model="holoPaintId"
+                    :paints="holoPaints"
                     data-test="model-holo-paint"
-                  >
-                    <template #label>
-                      <span>{{
-                        holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
-                      }}</span>
-                      <i class="fa-light fa-chevron-down" />
-                    </template>
-                    <Btn :active="!holoPaint" @click="holoPaintId = undefined">
-                      {{ t("labels.texturedHoloOwnPaint") }}
-                    </Btn>
-                    <Btn
-                      v-for="paint in holoPaints"
-                      :key="paint.id"
-                      :active="holoPaint?.id === paint.id"
-                      @click="holoPaintId = paint.id"
-                    >
-                      {{ paint.name }}
-                    </Btn>
-                  </BtnDropdown>
+                  />
 
                   <Btn v-if="adiMap" :href="adiMap">
                     <img :src="adiIcon" class="adi-icon" />
@@ -578,30 +561,13 @@ const adiMap = computed(() => {
 
               <!-- A paint list runs to a dozen entries and more, longer than a
                    phone's menu has room for, so it keeps a menu of its own. -->
-              <BtnDropdown
+              <ModelHoloPaintMenu
                 v-if="compactHoloToolbar && paintsOffered"
-                expand-bottom
+                v-model="holoPaintId"
+                :paints="holoPaints"
                 expand-left
                 data-test="model-holo-paint"
-              >
-                <template #label>
-                  <span>{{
-                    holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
-                  }}</span>
-                  <i class="fa-light fa-chevron-down" />
-                </template>
-                <Btn :active="!holoPaint" @click="holoPaintId = undefined">
-                  {{ t("labels.texturedHoloOwnPaint") }}
-                </Btn>
-                <Btn
-                  v-for="paint in holoPaints"
-                  :key="paint.id"
-                  :active="holoPaint?.id === paint.id"
-                  @click="holoPaintId = paint.id"
-                >
-                  {{ paint.name }}
-                </Btn>
-              </BtnDropdown>
+              />
 
               <!-- Earned by a second holo: a state that differs in the views
                    alone is switched where the views are. Once the switch is
