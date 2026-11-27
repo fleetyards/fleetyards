@@ -6,12 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import HoloViewerModal from "@/shared/components/HoloViewer/Modal/index.vue";
 import { FeatureFlagName, type Model } from "@/services/fyApi";
 import BetaBadge from "@/shared/components/BetaBadge/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import ViewInArBtn from "@/frontend/components/Models/ViewInArBtn/index.vue";
+import ModelHoloPaintMenu from "@/frontend/components/Models/HoloPaintMenu/index.vue";
 import {
   type ModelStateEnum,
   useModelStates,
@@ -56,7 +56,6 @@ const {
   toggleTexturedHolo,
   holoPaints,
   holoPaintId,
-  holoPaint,
   holoModel,
 } = useModelHolo(
   () => props.model,
@@ -126,28 +125,13 @@ const quickLookOpen = ref(false);
           compact
         />
       </Btn>
-      <BtnDropdown
+      <ModelHoloPaintMenu
         v-if="texturedHoloAvailable && texturedHolo && holoPaints.length"
-        expand-bottom
         expand-left
         data-test="model-holo-modal-paint"
-      >
-        <template #label>
-          <span>{{ holoPaint?.name ?? t("labels.texturedHoloOwnPaint") }}</span>
-          <i class="fa-light fa-chevron-down" />
-        </template>
-        <Btn :active="!holoPaint" @click="holoPaintId = undefined">
-          {{ t("labels.texturedHoloOwnPaint") }}
-        </Btn>
-        <Btn
-          v-for="paint in holoPaints"
-          :key="paint.id"
-          :active="holoPaint?.id === paint.id"
-          @click="holoPaintId = paint.id"
-        >
-          {{ paint.name }}
-        </Btn>
-      </BtnDropdown>
+        v-model="holoPaintId"
+        :paints="holoPaints"
+      />
     </template>
   </HoloViewerModal>
 </template>

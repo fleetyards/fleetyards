@@ -180,6 +180,9 @@ type Props = {
   fullscreenActions?: boolean;
   // Fills the screen without being in full screen itself: a full screen modal.
   edgeToEdge?: boolean;
+  // Every button but the turn in one menu, for a frame a row of them would
+  // cross. Full screen has the room and keeps the row.
+  collapseActions?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -206,6 +209,7 @@ const props = withDefaults(defineProps<Props>(), {
   backdrop: false,
   fullscreenActions: false,
   edgeToEdge: false,
+  collapseActions: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -419,6 +423,10 @@ const autoRotateTooltip = computed(() => {
 
   return t("actions.holoViewer.autoRotate.enable");
 });
+
+const actionsCollapsed = computed(
+  () => props.collapseActions && !internalFullscreen.value,
+);
 
 const zoomTooltip = computed(() => {
   if (zoom.value) {
@@ -1144,36 +1152,75 @@ defineExpose({
       <Btn
         v-tooltip="autoRotateTooltip"
         :active="internalAutoRotate"
+        data-test="holo-viewer-auto-rotate"
         @click="toggleAutoRotate"
       >
         <i class="fa-light fa-planet-ringed" />
       </Btn>
-      <Btn
-        v-if="!turntableLocked"
-        v-tooltip="zoomTooltip"
-        :active="zoom"
-        @click="toggleZoom"
+      <BtnDropdown
+        v-if="actionsCollapsed"
+        expand-top
+        expand-left
+        data-test="holo-viewer-menu"
       >
-        <i class="fa-light fa-search-plus" />
-      </Btn>
-      <Btn
-        v-if="colored"
-        v-tooltip="colorTooltip"
-        :active="color"
-        @click="toggleColor"
-      >
-        <i class="fa-duotone fa-fill-drip" />
-      </Btn>
-      <Btn
-        v-if="grid"
-        v-tooltip="gridTooltip"
-        :active="gridVisible"
-        data-test="holo-viewer-grid"
-        @click="toggleGrid"
-      >
-        <i class="fa-light fa-grid" />
-      </Btn>
-      <slot name="actions" />
+        <Btn
+          v-if="!turntableLocked"
+          :active="zoom"
+          :aria-pressed="zoom"
+          @click="toggleZoom"
+        >
+          <i class="fa-light fa-search-plus" />
+          <span>{{ zoomTooltip }}</span>
+        </Btn>
+        <Btn
+          v-if="colored"
+          :active="color"
+          :aria-pressed="color"
+          @click="toggleColor"
+        >
+          <i class="fa-duotone fa-fill-drip" />
+          <span>{{ colorTooltip }}</span>
+        </Btn>
+        <Btn
+          v-if="grid"
+          :active="gridVisible"
+          :aria-pressed="gridVisible"
+          data-test="holo-viewer-grid"
+          @click="toggleGrid"
+        >
+          <i class="fa-light fa-grid" />
+          <span>{{ gridTooltip }}</span>
+        </Btn>
+        <slot name="actions" :in-menu="true" />
+      </BtnDropdown>
+      <template v-else>
+        <Btn
+          v-if="!turntableLocked"
+          v-tooltip="zoomTooltip"
+          :active="zoom"
+          @click="toggleZoom"
+        >
+          <i class="fa-light fa-search-plus" />
+        </Btn>
+        <Btn
+          v-if="colored"
+          v-tooltip="colorTooltip"
+          :active="color"
+          @click="toggleColor"
+        >
+          <i class="fa-duotone fa-fill-drip" />
+        </Btn>
+        <Btn
+          v-if="grid"
+          v-tooltip="gridTooltip"
+          :active="gridVisible"
+          data-test="holo-viewer-grid"
+          @click="toggleGrid"
+        >
+          <i class="fa-light fa-grid" />
+        </Btn>
+        <slot name="actions" :in-menu="false" />
+      </template>
       <BtnDropdown
         v-if="offersBackgrounds"
         expand-top

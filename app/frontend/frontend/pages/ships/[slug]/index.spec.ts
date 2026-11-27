@@ -164,14 +164,16 @@ describe("ShipPage", () => {
       expect(holoPath(wrapper)).toEqual(["https://example.test/holo_lite.glb"]);
     });
 
-    it("folds the state switch into a menu beside the open holo", async () => {
+    it("folds the holo controls and the state switch into one menu", async () => {
       flags.enabled = [FeatureFlagName.HOLO_PHONE];
 
       const wrapper = await mountPage();
+      const menu = wrapper.find("[data-test='model-holo-menu']");
 
-      expect(
-        wrapper.find("[data-test='model-holo-states-menu']").exists(),
-      ).toBe(true);
+      expect(menu.exists()).toBe(true);
+      expect(menu.find("[data-test='model-holo-state-flight']").exists()).toBe(
+        true,
+      );
       expect(wrapper.find("[data-test='model-holo-states']").exists()).toBe(
         false,
       );
