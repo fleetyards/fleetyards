@@ -419,7 +419,17 @@
         "stateApproved": "Approvata",
         "stateRejected": "Rifiutata",
         "reviewedBy": "Revisionata da",
-        "owner": "Registrata da"
+        "owner": "Registrata da",
+        "search": "Filtra per nome",
+        "authorizedUsers": "Utenti autorizzati",
+        "authorizedUsersCount": {
+          "one": "%{count} utente autorizzato",
+          "other": "%{count} utenti autorizzati"
+        },
+        "reviewedByOn": "%{name}, %{date}",
+        "moreRedirectUris": "+%{count} altri",
+        "filterByOwner": "Mostra le applicazioni registrate da %{name}",
+        "clearOwner": "Mostra tutti i proprietari"
       },
       "fleetInviteToken": "Inviti Alla Flotta",
       "inviteToken": "Codice di invito",

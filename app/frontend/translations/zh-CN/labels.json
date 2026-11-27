@@ -419,7 +419,17 @@
         "stateApproved": "已批准",
         "stateRejected": "已拒绝",
         "reviewedBy": "审核人",
-        "owner": "注册者"
+        "owner": "注册者",
+        "search": "按名称筛选",
+        "authorizedUsers": "已授权用户",
+        "authorizedUsersCount": {
+          "one": "%{count} 位已授权用户",
+          "other": "%{count} 位已授权用户"
+        },
+        "reviewedByOn": "%{name}，%{date}",
+        "moreRedirectUris": "另有 %{count} 个",
+        "filterByOwner": "显示 %{name} 注册的应用",
+        "clearOwner": "显示所有注册者"
       },
       "fleetInviteToken": "舰队邀请",
       "inviteToken": "邀请码",

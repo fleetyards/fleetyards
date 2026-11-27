@@ -48,9 +48,11 @@ An admin can find, judge and act on OAuth applications from the list alone, on d
 
 ## Discovery Log
 
+- **2026-11-27** Authorised-users count rendered outside the jbuilder cache fragment: tokens change without touching the application.
 - **2026-11-27** Initial research. List sent `q: {}`; notification used a snake_case `q[...]` link no list reads; `perPage` never reached the query.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [ ] Visual check, desktop and 390px, on the worktree dev server (port 8300)
