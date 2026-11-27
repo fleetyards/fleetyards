@@ -133,7 +133,10 @@ useSubscription({
       <span v-if="feedback.pagePath" class="admin-feedback-show__path">
         {{ feedback.pagePath }}
       </span>
-      <FeedbackActions :feedback="feedback" />
+      <FeedbackActions
+        :feedback="feedback"
+        class="admin-feedback-show__actions"
+      />
     </div>
 
     <FeedbackConversation :entries="entries" />
@@ -172,7 +175,7 @@ useSubscription({
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .admin-feedback-show__meta > :last-child {
+  .admin-feedback-show__actions {
     margin-left: auto;
   }
 
