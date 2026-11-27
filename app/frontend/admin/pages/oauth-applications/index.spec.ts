@@ -190,5 +190,6 @@ describe("AdminOauthApplicationsPage", () => {
     );
     expect(rejected.find("[data-test='mobile-scopes']").text()).not.toBe("");
     expect(rejected.find("[data-test='rejection-reason']").exists()).toBe(true);
+    expect(rejected.find("[data-test='mobile-state']").exists()).toBe(true);
   });
 });

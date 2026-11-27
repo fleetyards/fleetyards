@@ -106,6 +106,7 @@ const columns: BaseTableCol<OauthApplication>[] = [
     name: "aasmState",
     label: t("labels.oauthApplications.state"),
     sortable: true,
+    mobile: false,
     flexGrow: 1,
   },
   {
@@ -275,6 +276,11 @@ const ownerFilter = (record: OauthApplication) => ({
                 </template>
               </small>
               <template v-if="mobile">
+                <OauthApplicationState
+                  class="app-state"
+                  :state="record.state"
+                  data-test="mobile-state"
+                />
                 <small class="app-detail" data-test="mobile-owner">
                   <i class="fa-duotone fa-user" aria-hidden="true" />
                   {{ record.ownerName || "-" }}
@@ -285,6 +291,21 @@ const ownerFilter = (record: OauthApplication) => ({
                     })
                   }}
                 </small>
+                <small
+                  v-if="record.state === 'rejected' && record.rejectionReason"
+                  class="app-detail app-reason"
+                  :title="record.rejectionReason"
+                  data-test="rejection-reason"
+                >
+                  {{ record.rejectionReason }}
+                </small>
+                <small
+                  v-if="reviewSummary(record)"
+                  class="app-detail"
+                  data-test="review-summary"
+                >
+                  {{ reviewSummary(record) }}
+                </small>
                 <small class="app-detail" data-test="mobile-scopes">
                   <i class="fa-duotone fa-shield-keyhole" aria-hidden="true" />
                   {{
@@ -293,7 +314,9 @@ const ownerFilter = (record: OauthApplication) => ({
                   }}
                 </small>
               </template>
-              <code v-else class="app-detail app-uid">{{ record.uid }}</code>
+              <code v-else class="app-detail app-uid" :title="record.uid">
+                {{ record.uid }}
+              </code>
             </div>
           </div>
         </template>
@@ -333,21 +356,23 @@ const ownerFilter = (record: OauthApplication) => ({
           <span v-else>-</span>
         </template>
         <template #col-scopes="{ record }">
-          <div v-if="scopeList(record).length" class="app-scopes">
-            <code v-for="scope in scopeList(record)" :key="scope">
-              {{ scope }}
-            </code>
+          <div class="app-access">
+            <div v-if="scopeList(record).length" class="app-scopes">
+              <code v-for="scope in scopeList(record)" :key="scope">
+                {{ scope }}
+              </code>
+            </div>
+            <em v-else class="app-detail">
+              {{ t("labels.oauthApplications.defaultScopes") }}
+            </em>
+            <small class="app-detail">
+              {{
+                record.confidential
+                  ? t("labels.oauthApplications.confidentialShort")
+                  : t("labels.oauthApplications.publicShort")
+              }}
+            </small>
           </div>
-          <em v-else class="app-detail">
-            {{ t("labels.oauthApplications.defaultScopes") }}
-          </em>
-          <small class="app-detail">
-            {{
-              record.confidential
-                ? t("labels.oauthApplications.confidentialShort")
-                : t("labels.oauthApplications.publicShort")
-            }}
-          </small>
         </template>
         <template #col-authorizedUsersCount="{ record }">
           {{ record.authorizedUsersCount }}
@@ -402,8 +427,19 @@ const ownerFilter = (record: OauthApplication) => ({
 }
 
 .app-text,
-.app-review {
+.app-review,
+.app-access {
   min-width: 0;
+}
+
+.app-text {
+  flex: 1;
+}
+
+.app-access {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .app-name {
@@ -417,8 +453,16 @@ const ownerFilter = (record: OauthApplication) => ({
   overflow-wrap: anywhere;
 }
 
+.app-state {
+  margin: 0.25rem 0;
+}
+
 .app-uid {
+  overflow: hidden;
   font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 .app-reason {
@@ -438,6 +482,7 @@ const ownerFilter = (record: OauthApplication) => ({
 .app-scopes {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.25rem 0.5rem;
+  font-size: 0.8rem;
 }
 </style>
