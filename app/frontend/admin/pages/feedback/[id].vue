@@ -18,7 +18,7 @@ import FeedbackConversation, {
 } from "@/shared/components/FeedbackConversation/index.vue";
 import FeedbackReplyForm from "@/shared/components/FeedbackReplyForm/index.vue";
 import FeedbackActions from "@/admin/components/Feedback/Actions/index.vue";
-import { featureLabel } from "@/shared/utils/BetaFeatures";
+import { useFeedbackFeatureLabel } from "@/admin/composables/useFeedbackFeatureLabel";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { ApiError } from "@/shared/types/api-error";
@@ -37,6 +37,7 @@ import {
 import { FeedbackLimits } from "@/services/fyApi";
 
 const { t } = useI18n();
+const feature = useFeedbackFeatureLabel();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 const route = useRoute();
@@ -128,15 +129,14 @@ useSubscription({
       >
         {{ t(`feedback.states.${feedback.state}`) }}
       </Pill>
-      <span>
-        {{
-          feedback.featureName
-            ? featureLabel(feedback.featureName)
-            : t("feedback.admin.general")
-        }}
+      <span>{{ feature(feedback) }}</span>
+      <span v-if="feedback.pagePath" class="admin-feedback-show__path">
+        {{ feedback.pagePath }}
       </span>
-      <span v-if="feedback.pagePath">{{ feedback.pagePath }}</span>
-      <FeedbackActions :feedback="feedback" />
+      <FeedbackActions
+        :feedback="feedback"
+        class="admin-feedback-show__actions"
+      />
     </div>
 
     <FeedbackConversation :entries="entries" />
@@ -167,5 +167,21 @@ useSubscription({
   align-items: center;
   gap: 12px;
   color: var(--color-text-dim);
+}
+
+.admin-feedback-show__path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .admin-feedback-show__actions {
+    margin-left: auto;
+  }
+
+  .admin-feedback-show__path {
+    flex-basis: 100%;
+    order: 1;
+  }
 }
 </style>

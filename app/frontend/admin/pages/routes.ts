@@ -294,6 +294,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.feedback.index",
       needsAuthentication: true,
       icon: "fa-duotone fa-comment-lines",
+      mobileBack: true,
       access: ["feedback"],
     },
   },
