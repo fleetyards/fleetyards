@@ -1152,6 +1152,7 @@ defineExpose({
       <Btn
         v-tooltip="autoRotateTooltip"
         :active="internalAutoRotate"
+        data-test="holo-viewer-auto-rotate"
         @click="toggleAutoRotate"
       >
         <i class="fa-light fa-planet-ringed" />
