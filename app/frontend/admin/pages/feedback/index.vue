@@ -39,9 +39,14 @@ const queryParams = computed(() => ({
 
 const { data: feedbacks, ...asyncStatus } = useFeedbacks(queryParams);
 
+const feature = (record: Feedback) =>
+  record.featureName
+    ? featureLabel(record.featureName)
+    : t("feedback.admin.general");
+
 const columns: BaseTableCol<Feedback>[] = [
   { name: "message", label: t("feedback.admin.message") },
-  { name: "featureName", label: t("feedback.admin.feature") },
+  { name: "featureName", label: t("feedback.admin.feature"), mobile: false },
   { name: "state", label: t("feedback.admin.state") },
   { name: "repliesCount", label: t("feedback.mine.replies"), mobile: false },
   { name: "username", label: t("feedback.admin.user"), mobile: false },
@@ -82,23 +87,27 @@ const columns: BaseTableCol<Feedback>[] = [
         :empty-visible="emptyVisible"
         data-test="feedback-list"
       >
-        <template #col-message="{ record }">
-          <router-link
-            :to="{ name: 'admin-feedback-show', params: { id: record.id } }"
-            class="feedback-message"
-          >
-            {{ record.message }}
-          </router-link>
-          <small v-if="record.pagePath" class="feedback-page">
-            {{ record.pagePath }}
-          </small>
+        <template #col-message="{ record, mobile }">
+          <div class="feedback-summary">
+            <router-link
+              :to="{ name: 'admin-feedback-show', params: { id: record.id } }"
+              class="feedback-message"
+            >
+              {{ record.message }}
+            </router-link>
+            <small v-if="mobile" class="feedback-detail">
+              {{ feature(record) }}
+            </small>
+            <small
+              v-if="record.pagePath"
+              class="feedback-detail feedback-detail--path"
+            >
+              {{ record.pagePath }}
+            </small>
+          </div>
         </template>
         <template #col-featureName="{ record }">
-          {{
-            record.featureName
-              ? featureLabel(record.featureName)
-              : t("feedback.admin.general")
-          }}
+          {{ feature(record) }}
         </template>
         <template #col-state="{ record }">
           <BasePill
@@ -144,13 +153,35 @@ const columns: BaseTableCol<Feedback>[] = [
 </template>
 
 <style lang="scss" scoped>
+.feedback-summary {
+  min-width: 0;
+}
+
 .feedback-message {
   display: block;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-.feedback-page {
+.feedback-detail {
   display: block;
   color: var(--color-text-dim);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .feedback-message {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .feedback-detail--path {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
 }
 </style>
