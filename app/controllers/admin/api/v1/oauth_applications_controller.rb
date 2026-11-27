@@ -9,11 +9,13 @@ module Admin
         def index
           authorize! with: ::Admin::OauthApplicationPolicy
 
-          @oauth_applications = Oauth::Application.all
-            .includes(:owner)
+          normalize_sort_params(oauth_application_query_params)
+          oauth_application_query_params["sorts"] = sorting_params(Oauth::Application, oauth_application_query_params[:sorts], allowed: Oauth::Application::ADMIN_SORTING_PARAMS)
+
+          @oauth_applications = Oauth::Application.with_authorized_users_count
+            .includes(:owner, :reviewed_by, logo_attachment: :blob)
             .ransack(oauth_application_query_params)
             .result
-            .order(created_at: :desc)
             .page(page_params)
             .per(per_page(Oauth::Application))
         end
@@ -110,7 +112,7 @@ module Admin
         # The list the index would return, without paging and without ordering --
         # PostgreSQL refuses an ORDER BY in an UPDATE.
         private def filtered_scope
-          Oauth::Application.ransack(oauth_application_query_params.except("sorts")).result.reorder(nil)
+          Oauth::Application.ransack(oauth_application_query_params.except("s", "sorts")).result.reorder(nil)
         end
 
         private def set_application
@@ -125,10 +127,11 @@ module Admin
         end
 
         private def oauth_application_query_params
-          params.fetch(:q, {}).permit(
+          @oauth_application_query_params ||= params.fetch(:q, {}).permit(
             :name_cont,
             :owner_id_eq,
-            :aasm_state_eq
+            :aasm_state_eq,
+            :s, :sorts, s: [], sorts: []
           )
         end
       end

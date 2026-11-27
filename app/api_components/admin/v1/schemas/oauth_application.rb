@@ -23,12 +23,13 @@ module Admin
             approvedAt: {type: [:string, :null], format: "date-time"},
             rejectedAt: {type: [:string, :null], format: "date-time"},
             reviewedByName: {type: [:string, :null]},
+            authorizedUsersCount: {type: :integer, description: "People holding an unrevoked access token"},
             logo: ::Shared::V1::Schemas::MediaFile,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name uid secret confidential redirectUri scopes state createdAt updatedAt]
+          required: %w[id name uid secret confidential redirectUri scopes state authorizedUsersCount createdAt updatedAt]
         })
       end
     end
