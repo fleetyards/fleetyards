@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.71.0](https://github.com/fleetyards/fleetyards/compare/v9.70.1...v9.71.0) (2026-11-27)
+
+
+### Features
+
+* a USDZ for every holo pose ([#6525](https://github.com/fleetyards/fleetyards/issues/6525)) ([d06a58c](https://github.com/fleetyards/fleetyards/commit/d06a58c69594e90585d1e35fccf6071d3168acb1))
+* the loadout holo on phones ([#6527](https://github.com/fleetyards/fleetyards/issues/6527)) ([b7046c2](https://github.com/fleetyards/fleetyards/commit/b7046c202f4c9def7048e0eafc8fcc90716e77bb))
+
+
+### Bug Fixes
+
+* **admin:** mobile pass for the feedback pages ([#6539](https://github.com/fleetyards/fleetyards/issues/6539)) ([8b5b75c](https://github.com/fleetyards/fleetyards/commit/8b5b75c3c95fce51750a1b6e86fd6fe9b63c068b))
+* **holo:** fold the 3D controls into menus on phones ([#6540](https://github.com/fleetyards/fleetyards/issues/6540)) ([4c1d73c](https://github.com/fleetyards/fleetyards/commit/4c1d73cf90e1e949e8fdc024870496e4e6996856))
+* **holo:** load nothing while a phone is asked about a large holo ([8a5831d](https://github.com/fleetyards/fleetyards/commit/8a5831d87bd14eef65a4202d4f6d8ce06d7570e5))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6530](https://github.com/fleetyards/fleetyards/issues/6530)) ([bd9db62](https://github.com/fleetyards/fleetyards/commit/bd9db6294ac586116e34d86968fdfb6f29826669))
+* **deps-dev:** bump @typescript-eslint/parser from 8.73.0 to 8.74.0 ([#6528](https://github.com/fleetyards/fleetyards/issues/6528)) ([36db3d7](https://github.com/fleetyards/fleetyards/commit/36db3d7b22a70c6cf6a8d7aabda59db29321cd67))
+* **deps-dev:** bump webmock from 3.38.0 to 3.40.0 ([#6532](https://github.com/fleetyards/fleetyards/issues/6532)) ([ddbb2f4](https://github.com/fleetyards/fleetyards/commit/ddbb2f4aebf4accdc41b14436adbe87c2b37252f))
+* **deps:** bump @event-calendar/core from 5.21.1 to 5.21.2 ([#6536](https://github.com/fleetyards/fleetyards/issues/6536)) ([77f6e71](https://github.com/fleetyards/fleetyards/commit/77f6e7163eb9d4b2158b5194699860c803c86628))
+* **deps:** bump @tanstack/vue-query from 5.108.3 to 5.108.4 ([#6537](https://github.com/fleetyards/fleetyards/issues/6537)) ([94e5e94](https://github.com/fleetyards/fleetyards/commit/94e5e94eb2839cb01907b4fa95459a1185cdee2c))
+* **deps:** bump @tresjs/cientos from 5.12.0 to 5.13.0 ([#6531](https://github.com/fleetyards/fleetyards/issues/6531)) ([34e6a5c](https://github.com/fleetyards/fleetyards/commit/34e6a5c0c889124660e2e6a44c68d44938cbe0fa))
+* **deps:** bump @vuepic/vue-datepicker from 14.0.0 to 14.1.0 ([#6535](https://github.com/fleetyards/fleetyards/issues/6535)) ([914ceff](https://github.com/fleetyards/fleetyards/commit/914ceff49b18c6b30b36f9cb8590ea3d675791dd))
+* **deps:** bump @vueuse/core from 15.0.0 to 15.1.0 ([#6538](https://github.com/fleetyards/fleetyards/issues/6538)) ([fd5d585](https://github.com/fleetyards/fleetyards/commit/fd5d5850b047e492c625058684c400c5d790b157))
+* **deps:** bump aws-sdk-s3 from 1.245.1 to 1.245.2 ([#6529](https://github.com/fleetyards/fleetyards/issues/6529)) ([7b41ea5](https://github.com/fleetyards/fleetyards/commit/7b41ea5378c9d8be9e19db2f343ee166ad06e987))
+* **deps:** bump doorkeeper from 5.9.9 to 5.9.10 ([#6533](https://github.com/fleetyards/fleetyards/issues/6533)) ([dc1e689](https://github.com/fleetyards/fleetyards/commit/dc1e6894a88121f906ff63a23c4a24cf38156d5b))
+* **deps:** bump swagger-ui-dist from 5.35.1 to 5.36.0 ([#6534](https://github.com/fleetyards/fleetyards/issues/6534)) ([102a5c8](https://github.com/fleetyards/fleetyards/commit/102a5c877fe4c986da3853acf88ca3f77dbcf043))
+
 ## [9.70.1](https://github.com/fleetyards/fleetyards/compare/v9.70.0...v9.70.1) (2026-11-26)
 
 
