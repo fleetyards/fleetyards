@@ -10,7 +10,12 @@ module Admin
           authorize! with: ::Admin::OauthApplicationPolicy
 
           normalize_sort_params(oauth_application_query_params)
-          oauth_application_query_params["sorts"] = sorting_params(Oauth::Application, oauth_application_query_params[:sorts], allowed: Oauth::Application::ADMIN_SORTING_PARAMS)
+          # State and user count tie on most rows, and without a unique last
+          # key PostgreSQL may order the ties differently on every page.
+          oauth_application_query_params["sorts"] = [
+            *sorting_params(Oauth::Application, oauth_application_query_params[:sorts], allowed: Oauth::Application::ADMIN_SORTING_PARAMS),
+            "id asc"
+          ]
 
           @oauth_applications = Oauth::Application.with_authorized_users_count
             .includes(:owner, :reviewed_by, logo_attachment: :blob)

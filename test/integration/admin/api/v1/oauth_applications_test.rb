@@ -388,6 +388,16 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /oauth-applications lists the newest first when no sort is asked for" do
+    older = create(:oauth_application, created_at: 2.days.ago)
+    newer = create(:oauth_application, created_at: 1.day.ago)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal [newer.id, older.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /oauth-applications sorts by name" do
     create(:oauth_application, name: "Bravo")
     create(:oauth_application, name: "Alpha")

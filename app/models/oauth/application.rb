@@ -22,7 +22,7 @@ module Oauth
 
     scope :pending_review, -> { where(aasm_state: "pending") }
 
-    DEFAULT_SORTING_PARAMS = "createdAt desc"
+    DEFAULT_SORTING_PARAMS = "created_at desc"
     ADMIN_SORTING_PARAMS = [
       "name asc", "name desc", "aasmState asc", "aasmState desc",
       "authorizedUsersCount asc", "authorizedUsersCount desc",
@@ -79,22 +79,22 @@ module Oauth
     # columns the admin list actually filters on: the list took `q` before this
     # existed, so any real filter raised.
     def self.ransackable_attributes(auth_object = nil)
-      %w[aasm_state authorized_users_count created_at name owner_id updated_at]
+      %w[aasm_state authorized_users_count created_at id name owner_id updated_at]
     end
 
     def self.policy_class
       OauthApplicationPolicy
     end
 
-    # What `allow_grant_flow_for_client` asks. Kept as a predicate rather than a
-    # bare state comparison because the initializer is the one place a wrong
-    # answer hands a stranger a working client.
     def authorized_users_count
       return self[:authorized_users_count] if has_attribute?(:authorized_users_count)
 
       access_tokens.where(revoked_at: nil).distinct.count(:resource_owner_id)
     end
 
+    # What `allow_grant_flow_for_client` asks. Kept as a predicate rather than a
+    # bare state comparison because the initializer is the one place a wrong
+    # answer hands a stranger a working client.
     def usable_as_client?
       approved?
     end
