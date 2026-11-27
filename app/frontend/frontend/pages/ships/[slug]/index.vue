@@ -305,6 +305,10 @@ const holoAvailable = computed(
 
 const holoOpen = computed(() => holoviewerVisible.value && holoAvailable.value);
 
+// Every holo control beside the 3D toggle is more than a phone row holds, so
+// there they share one menu.
+const compactHoloToolbar = computed(() => mobile.value && holoOpen.value);
+
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
@@ -334,6 +338,22 @@ const {
 } = useLoadoutHolo(() => props.model.slug, holoOpen, texturedHolo);
 
 const loadoutHoloViewer = ref<InstanceType<typeof ModelLoadoutHolo>>();
+
+const fullscreenRoute = computed(() => ({
+  name: "ship-viewer",
+  params: { slug: props.model.slug },
+  query: holoModel.value?.textured
+    ? { textured: "1", paint: holoPaintId.value }
+    : undefined,
+}));
+
+const paintsOffered = computed(
+  () =>
+    holoOpen.value &&
+    texturedHoloAvailable.value &&
+    texturedHolo.value &&
+    holoPaints.value.length > 0,
+);
 
 // The side preview cannot ask before loading a holo too large for the device,
 // so on such a device it stays the store image; the main 3D view still asks.
@@ -389,30 +409,24 @@ const adiMap = computed(() => {
               class="image-toolbar"
             >
               <BtnGroup>
-                <Btn
-                  v-if="holoOpen && loadoutHoloShown"
-                  v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
-                  :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
-                  @click="loadoutHoloViewer?.enableFullscreen()"
-                >
-                  <i class="fa-light fa-expand" />
-                </Btn>
-                <Btn
-                  v-else-if="holoOpen"
-                  :to="{
-                    name: 'ship-viewer',
-                    params: {
-                      slug: model.slug,
-                    },
-                    query: holoModel?.textured
-                      ? { textured: '1', paint: holoPaintId }
-                      : undefined,
-                  }"
-                  v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
-                  :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
-                >
-                  <i class="fa-light fa-expand" />
-                </Btn>
+                <template v-if="!compactHoloToolbar">
+                  <Btn
+                    v-if="holoOpen && loadoutHoloShown"
+                    v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+                    :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+                    @click="loadoutHoloViewer?.enableFullscreen()"
+                  >
+                    <i class="fa-light fa-expand" />
+                  </Btn>
+                  <Btn
+                    v-else-if="holoOpen"
+                    :to="fullscreenRoute"
+                    v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+                    :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+                  >
+                    <i class="fa-light fa-expand" />
+                  </Btn>
+                </template>
                 <Btn
                   v-if="holoAvailable"
                   :active="holoOpen"
@@ -427,67 +441,64 @@ const adiMap = computed(() => {
                   />
                 </Btn>
 
-                <Btn
-                  v-if="holoOpen && texturedHoloAvailable"
-                  :active="texturedHolo"
-                  v-tooltip="t('labels.texturedHolo')"
-                  :aria-label="t('labels.texturedHolo')"
-                  data-test="model-holo-textured"
-                  @click="toggleTexturedHolo"
-                >
-                  <i class="fa-duotone fa-palette" />
-                  <BetaBadge
-                    :feature="FeatureFlagName.HOLO_TEXTURED"
-                    in-control
-                    compact
-                  />
-                </Btn>
-
-                <Btn
-                  v-if="holoOpen && loadoutHoloAvailable"
-                  :active="loadoutHoloShown"
-                  v-tooltip="t('labels.loadoutHolo')"
-                  :aria-label="t('labels.loadoutHolo')"
-                  :aria-pressed="loadoutHoloShown"
-                  data-test="model-holo-loadout"
-                  @click="toggleLoadoutHolo"
-                >
-                  <i class="fa-duotone fa-crosshairs" />
-                </Btn>
-
-                <BtnDropdown
-                  v-if="
-                    holoOpen &&
-                    texturedHoloAvailable &&
-                    texturedHolo &&
-                    holoPaints.length
-                  "
-                  expand-bottom
-                  data-test="model-holo-paint"
-                >
-                  <template #label>
-                    <span>{{
-                      holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
-                    }}</span>
-                    <i class="fa-light fa-chevron-down" />
-                  </template>
-                  <Btn :active="!holoPaint" @click="holoPaintId = undefined">
-                    {{ t("labels.texturedHoloOwnPaint") }}
-                  </Btn>
+                <template v-if="!compactHoloToolbar">
                   <Btn
-                    v-for="paint in holoPaints"
-                    :key="paint.id"
-                    :active="holoPaint?.id === paint.id"
-                    @click="holoPaintId = paint.id"
+                    v-if="holoOpen && texturedHoloAvailable"
+                    :active="texturedHolo"
+                    v-tooltip="t('labels.texturedHolo')"
+                    :aria-label="t('labels.texturedHolo')"
+                    data-test="model-holo-textured"
+                    @click="toggleTexturedHolo"
                   >
-                    {{ paint.name }}
+                    <i class="fa-duotone fa-palette" />
+                    <BetaBadge
+                      :feature="FeatureFlagName.HOLO_TEXTURED"
+                      in-control
+                      compact
+                    />
                   </Btn>
-                </BtnDropdown>
 
-                <Btn v-if="adiMap" :href="adiMap">
-                  <img :src="adiIcon" class="adi-icon" />
-                  {{ t("labels.3dMap") }}
-                </Btn>
+                  <Btn
+                    v-if="holoOpen && loadoutHoloAvailable"
+                    :active="loadoutHoloShown"
+                    v-tooltip="t('labels.loadoutHolo')"
+                    :aria-label="t('labels.loadoutHolo')"
+                    :aria-pressed="loadoutHoloShown"
+                    data-test="model-holo-loadout"
+                    @click="toggleLoadoutHolo"
+                  >
+                    <i class="fa-duotone fa-crosshairs" />
+                  </Btn>
+
+                  <BtnDropdown
+                    v-if="paintsOffered"
+                    expand-bottom
+                    data-test="model-holo-paint"
+                  >
+                    <template #label>
+                      <span>{{
+                        holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
+                      }}</span>
+                      <i class="fa-light fa-chevron-down" />
+                    </template>
+                    <Btn :active="!holoPaint" @click="holoPaintId = undefined">
+                      {{ t("labels.texturedHoloOwnPaint") }}
+                    </Btn>
+                    <Btn
+                      v-for="paint in holoPaints"
+                      :key="paint.id"
+                      :active="holoPaint?.id === paint.id"
+                      @click="holoPaintId = paint.id"
+                    >
+                      {{ paint.name }}
+                    </Btn>
+                  </BtnDropdown>
+
+                  <Btn v-if="adiMap" :href="adiMap">
+                    <img :src="adiIcon" class="adi-icon" />
+                    {{ t("labels.3dMap") }}
+                  </Btn>
+                </template>
 
                 <ViewInArBtn
                   v-if="holoAvailable"
@@ -497,7 +508,100 @@ const adiMap = computed(() => {
                   @quick-look="openingQuickLook"
                   @quick-look-end="closedQuickLook"
                 />
+
+                <BtnDropdown
+                  v-if="compactHoloToolbar"
+                  expand-left
+                  data-test="model-holo-menu"
+                >
+                  <Btn
+                    v-if="loadoutHoloShown"
+                    @click="loadoutHoloViewer?.enableFullscreen()"
+                  >
+                    <i class="fa-light fa-expand" />
+                    <span>{{
+                      t("actions.vehicleOverview.fullscreenHolo")
+                    }}</span>
+                  </Btn>
+                  <Btn v-else :to="fullscreenRoute">
+                    <i class="fa-light fa-expand" />
+                    <span>{{
+                      t("actions.vehicleOverview.fullscreenHolo")
+                    }}</span>
+                  </Btn>
+                  <Btn
+                    v-if="texturedHoloAvailable"
+                    :active="texturedHolo"
+                    :aria-pressed="texturedHolo"
+                    data-test="model-holo-textured"
+                    @click="toggleTexturedHolo"
+                  >
+                    <i class="fa-duotone fa-palette" />
+                    <span>{{ t("labels.texturedHolo") }}</span>
+                    <BetaBadge
+                      :feature="FeatureFlagName.HOLO_TEXTURED"
+                      in-control
+                      compact
+                    />
+                  </Btn>
+                  <Btn
+                    v-if="loadoutHoloAvailable"
+                    :active="loadoutHoloShown"
+                    :aria-pressed="loadoutHoloShown"
+                    data-test="model-holo-loadout"
+                    @click="toggleLoadoutHolo"
+                  >
+                    <i class="fa-duotone fa-crosshairs" />
+                    <span>{{ t("labels.loadoutHolo") }}</span>
+                  </Btn>
+                  <template v-if="holoStates.length > 1">
+                    <hr />
+                    <Btn
+                      v-for="holoState in availableStates"
+                      :key="holoState"
+                      :active="activeState === holoState"
+                      :data-test="`model-holo-state-${holoState}`"
+                      @click="setModelState(holoState)"
+                    >
+                      {{ t(`labels.model.state.${holoState}`) }}
+                    </Btn>
+                  </template>
+                  <template v-if="adiMap">
+                    <hr />
+                    <Btn :href="adiMap">
+                      <img :src="adiIcon" class="adi-icon" />
+                      <span>{{ t("labels.3dMap") }}</span>
+                    </Btn>
+                  </template>
+                </BtnDropdown>
               </BtnGroup>
+
+              <!-- A paint list runs to a dozen entries and more, longer than a
+                   phone's menu has room for, so it keeps a menu of its own. -->
+              <BtnDropdown
+                v-if="compactHoloToolbar && paintsOffered"
+                expand-bottom
+                expand-left
+                data-test="model-holo-paint"
+              >
+                <template #label>
+                  <span>{{
+                    holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
+                  }}</span>
+                  <i class="fa-light fa-chevron-down" />
+                </template>
+                <Btn :active="!holoPaint" @click="holoPaintId = undefined">
+                  {{ t("labels.texturedHoloOwnPaint") }}
+                </Btn>
+                <Btn
+                  v-for="paint in holoPaints"
+                  :key="paint.id"
+                  :active="holoPaint?.id === paint.id"
+                  @click="holoPaintId = paint.id"
+                >
+                  {{ paint.name }}
+                </Btn>
+              </BtnDropdown>
 
               <!-- Earned by a second holo: a state that differs in the views
                    alone is switched where the views are. Once the switch is
@@ -506,27 +610,9 @@ const adiMap = computed(() => {
                    because the chosen state has no holo of its own is worse than
                    a segment that only moves the dimensions.
                    A phone has no inline preview, so there the switch waits for
-                   the holo to open and folds into a menu beside the 3D group. -->
-              <BtnDropdown
-                v-if="holoStates.length > 1 && mobile && holoOpen"
-                data-test="model-holo-states-menu"
-              >
-                <template #label>
-                  <span>{{ t(`labels.model.state.${activeState}`) }}</span>
-                  <i class="fa-light fa-chevron-down" />
-                </template>
-                <Btn
-                  v-for="holoState in availableStates"
-                  :key="holoState"
-                  :active="activeState === holoState"
-                  :data-test="`model-holo-state-${holoState}`"
-                  @click="setModelState(holoState)"
-                >
-                  {{ t(`labels.model.state.${holoState}`) }}
-                </Btn>
-              </BtnDropdown>
+                   the holo to open, inside the holo's menu. -->
               <BtnGroup
-                v-else-if="holoStates.length > 1 && !mobile"
+                v-if="holoStates.length > 1 && !mobile"
                 segmented
                 data-test="model-holo-states"
               >
