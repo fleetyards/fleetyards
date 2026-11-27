@@ -18,7 +18,7 @@ import FeedbackConversation, {
 } from "@/shared/components/FeedbackConversation/index.vue";
 import FeedbackReplyForm from "@/shared/components/FeedbackReplyForm/index.vue";
 import FeedbackActions from "@/admin/components/Feedback/Actions/index.vue";
-import { featureLabel } from "@/shared/utils/BetaFeatures";
+import { useFeedbackFeatureLabel } from "@/admin/composables/useFeedbackFeatureLabel";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { ApiError } from "@/shared/types/api-error";
@@ -37,6 +37,7 @@ import {
 import { FeedbackLimits } from "@/services/fyApi";
 
 const { t } = useI18n();
+const feature = useFeedbackFeatureLabel();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 const route = useRoute();
@@ -128,13 +129,7 @@ useSubscription({
       >
         {{ t(`feedback.states.${feedback.state}`) }}
       </Pill>
-      <span>
-        {{
-          feedback.featureName
-            ? featureLabel(feedback.featureName)
-            : t("feedback.admin.general")
-        }}
-      </span>
+      <span>{{ feature(feedback) }}</span>
       <span v-if="feedback.pagePath" class="admin-feedback-show__path">
         {{ feedback.pagePath }}
       </span>

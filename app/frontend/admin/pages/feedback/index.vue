@@ -16,7 +16,7 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
-import { featureLabel } from "@/shared/utils/BetaFeatures";
+import { useFeedbackFeatureLabel } from "@/admin/composables/useFeedbackFeatureLabel";
 import FilterForm from "@/admin/components/Feedback/FilterForm/index.vue";
 import FeedbackActions from "@/admin/components/Feedback/Actions/index.vue";
 import {
@@ -39,10 +39,7 @@ const queryParams = computed(() => ({
 
 const { data: feedbacks, ...asyncStatus } = useFeedbacks(queryParams);
 
-const feature = (record: Feedback) =>
-  record.featureName
-    ? featureLabel(record.featureName)
-    : t("feedback.admin.general");
+const feature = useFeedbackFeatureLabel();
 
 const columns: BaseTableCol<Feedback>[] = [
   { name: "message", label: t("feedback.admin.message") },
