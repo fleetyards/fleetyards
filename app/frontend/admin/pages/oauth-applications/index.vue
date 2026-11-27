@@ -36,7 +36,7 @@ const { t, l } = useI18n();
 const route = useRoute();
 
 const sorts = computed((): OauthApplicationSortEnum[] => {
-  return route.query.s ? [route.query.s as OauthApplicationSortEnum] : [];
+  return [route.query.s].flat().filter(Boolean) as OauthApplicationSortEnum[];
 });
 
 const { perPage, page, updatePerPage } = usePagination();
