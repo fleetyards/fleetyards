@@ -31,6 +31,7 @@ import {
 import { useLoadoutHoloCard } from "@/frontend/composables/useLoadoutHoloCard";
 import LoadoutHoloCard from "@/frontend/components/Loadout/HoloCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   modelSlug: string;
@@ -200,6 +201,8 @@ watch(holoModel, (model) => {
   if (!model) reset();
 });
 
+const mobile = useMobile();
+
 const servicingAreasLabel = computed(() =>
   servicingAreasShown.value
     ? t("actions.vehicleLoadout.hideServicingAreas")
@@ -233,6 +236,7 @@ const doorsLabel = computed(() =>
     :auto-rotate="false"
     hologram
     pickable
+    :collapse-actions="mobile"
     :data-test="testId"
     @pointermove="trackPointer"
     @pointerdown="trackPointer"
@@ -245,10 +249,10 @@ const doorsLabel = computed(() =>
     @door-select="doorAnimationEnabled && toggleDoor($event)"
     @unavailable="emit('unavailable')"
   >
-    <template #actions>
+    <template #actions="{ inMenu }">
       <Btn
         v-if="holoModel.boxes.length"
-        v-tooltip="servicingAreasLabel"
+        v-tooltip="inMenu ? undefined : servicingAreasLabel"
         :aria-label="servicingAreasLabel"
         :aria-pressed="servicingAreasShown"
         :active="servicingAreasShown"
@@ -256,10 +260,11 @@ const doorsLabel = computed(() =>
         @click="servicingAreasShown = !servicingAreasShown"
       >
         <i class="fa-light fa-screwdriver-wrench" />
+        <span v-if="inMenu">{{ servicingAreasLabel }}</span>
       </Btn>
       <Btn
         v-if="holoModel.cargoGrids.length"
-        v-tooltip="cargoGridsLabel"
+        v-tooltip="inMenu ? undefined : cargoGridsLabel"
         :aria-label="cargoGridsLabel"
         :aria-pressed="cargoGridsShown"
         :active="cargoGridsShown"
@@ -267,10 +272,11 @@ const doorsLabel = computed(() =>
         @click="cargoGridsShown = !cargoGridsShown"
       >
         <i class="fa-light fa-boxes-stacked" />
+        <span v-if="inMenu">{{ cargoGridsLabel }}</span>
       </Btn>
       <Btn
         v-if="doorHighlightEnabled && holoModel.doors.length"
-        v-tooltip="doorsMarkedLabel"
+        v-tooltip="inMenu ? undefined : doorsMarkedLabel"
         :aria-label="doorsMarkedLabel"
         :aria-pressed="doorsMarked"
         :active="doorsMarked"
@@ -278,6 +284,7 @@ const doorsLabel = computed(() =>
         @click="doorsMarked = !doorsMarked"
       >
         <i class="fa-light fa-door-closed" />
+        <span v-if="inMenu">{{ doorsMarkedLabel }}</span>
         <BetaBadge
           :feature="FeatureFlagName.HOLO_DOOR_HIGHLIGHT"
           in-control
@@ -286,7 +293,7 @@ const doorsLabel = computed(() =>
       </Btn>
       <Btn
         v-if="doorAnimationEnabled && holoModel.doors.length"
-        v-tooltip="doorsLabel"
+        v-tooltip="inMenu ? undefined : doorsLabel"
         :aria-label="doorsLabel"
         :aria-pressed="doorsOpen"
         :active="doorsOpen"
@@ -294,6 +301,7 @@ const doorsLabel = computed(() =>
         @click="doorsOpen = !doorsOpen"
       >
         <i class="fa-light fa-arrows-left-right" />
+        <span v-if="inMenu">{{ doorsLabel }}</span>
         <BetaBadge
           :feature="FeatureFlagName.HOLO_DOOR_ANIMATION"
           in-control

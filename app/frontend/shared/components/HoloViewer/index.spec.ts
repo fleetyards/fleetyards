@@ -1,5 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { h } from "vue";
 
 const webglAvailable = vi.hoisted(() => vi.fn(() => true));
 
@@ -157,6 +158,56 @@ describe("HoloViewer", () => {
     await close.trigger("click");
 
     expect(wrapper.find(".holo-viewer--fullscreen").exists()).toBe(false);
+  });
+
+  describe("with its actions collapsed", () => {
+    const mountCollapsed = (fullscreen = false) =>
+      mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+        props: {
+          models: [{ path: "/holo.gltf" }],
+          collapseActions: true,
+          grid: true,
+          fullscreen,
+        },
+        slots: {
+          actions: ({ inMenu }: { inMenu: boolean }) => [
+            h(
+              "button",
+              { "data-test": "slot-action" },
+              inMenu ? "in menu" : "in row",
+            ),
+          ],
+        },
+      });
+
+    it("keeps the turn in the row and the rest in a menu", async () => {
+      setViewport(false);
+      const wrapper = await mountCollapsed();
+      const menu = wrapper.find("[data-test='holo-viewer-menu']");
+
+      // The menu is teleported to the body.
+      const list = document.body.querySelector("[data-test='dropdown-list']");
+
+      expect(menu.exists()).toBe(true);
+      expect(list?.querySelector("[data-test='holo-viewer-grid']")).not.toBe(
+        null,
+      );
+      expect(
+        list?.querySelector("[data-test='slot-action']")?.textContent,
+      ).toBe("in menu");
+
+      wrapper.unmount();
+    });
+
+    it("lays the row out again in full screen", async () => {
+      setViewport(false);
+      const wrapper = await mountCollapsed(true);
+
+      expect(wrapper.find("[data-test='holo-viewer-menu']").exists()).toBe(
+        false,
+      );
+      expect(wrapper.find("[data-test='slot-action']").text()).toBe("in row");
+    });
   });
 
   it("keeps its buttons clear of a phone's notch where it fills the screen", async () => {
