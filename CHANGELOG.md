@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.72.0](https://github.com/fleetyards/fleetyards/compare/v9.71.0...v9.72.0) (2026-11-28)
+
+
+### Features
+
+* **admin:** rework the OAuth applications list ([#6542](https://github.com/fleetyards/fleetyards/issues/6542)) ([422218f](https://github.com/fleetyards/fleetyards/commit/422218f319ccdd05e67aae1aed3c8c564191c073))
+
+
+### Bug Fixes
+
+* **sc-data:** give the F7C Hornet Mk II its centre module slot ([#6544](https://github.com/fleetyards/fleetyards/issues/6544)) ([0f46cf9](https://github.com/fleetyards/fleetyards/commit/0f46cf920e01dcbcf539db2912677e57f5fdc02e))
+
 ## [9.71.0](https://github.com/fleetyards/fleetyards/compare/v9.70.1...v9.71.0) (2026-11-27)
 
 
