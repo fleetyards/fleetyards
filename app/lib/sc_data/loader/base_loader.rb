@@ -425,13 +425,17 @@ module ScData
 
         component = resolve_component(item)
 
-        return flatten_hidden(item, component) if component&.hidden?
+        if component&.hidden?
+          return flatten_hidden(item, component) unless module_port?(item)
+
+          children = promoted_slots(item, component, prefix: nil)
+        end
 
         [
           Slot.new(
             name: item["name"].downcase,
             component:,
-            children: nested_slots(item, component),
+            children: children || nested_slots(item, component),
             min_size: item["min_size"],
             max_size: item["max_size"],
             types: item["types"],
@@ -450,12 +454,30 @@ module ScData
       # Cyclone's turret module is one, its gun port left without types took any
       # weapon, and the MT's racks came without their missiles.
       private def flatten_hidden(item, component)
+        # Carried over deliberately: the hardpoint under the hidden component's
+        # own name used to be looked up before the code knew the component was
+        # hidden, and the id that collected protected the row from cleanup. So a
+        # row left from a build where the component was not hidden survives,
+        # still naming the component the flattening was meant to replace.
+        promoted_slots(item, component, prefix: item["name"]) +
+          [Slot.new(name: item["name"].downcase, retain_only: true, children: [])]
+      end
+
+      # A module slot is kept even when the part it ships with is hidden: the
+      # F7C Hornet Mk II's centre bay comes with a cargo door the game files
+      # file under doors, and flattening it took the slot every other centre
+      # module fits into along with it. The door's grid sits below the slot.
+      private def module_port?(item)
+        Array(item["types"]).include?("Module")
+      end
+
+      private def promoted_slots(item, component, prefix:)
         nested_loadout = item["loadout"] || item["default_loadout"]
         # Read under this load's build rather than the ambient one: a loader can
         # be pointed at an environment without `ScData::Source.with` around it.
         declared = HardpointBuild.current(source).where(hardpoint_id: component.hardpoints.select(:id)).index_by(&:hardpoint_id)
 
-        promoted = component.hardpoints.includes(:component).filter_map do |sub_hardpoint|
+        component.hardpoints.includes(:component).filter_map do |sub_hardpoint|
           nested = nested_entry(nested_loadout, sub_hardpoint)
           sub_component = sub_hardpoint.component || (resolve_component(nested) if nested)
 
@@ -468,7 +490,7 @@ module ScData
           below = (nested if nested && resolve_component(nested) == sub_component) || {}
 
           Slot.new(
-            name: "#{item["name"]}-#{sub_hardpoint.sc_name}".downcase,
+            name: [prefix, sub_hardpoint.sc_name].compact.join("-").downcase,
             component: sub_component,
             children: nested_slots(below, sub_component),
             min_size: facts.min_size,
@@ -480,13 +502,6 @@ module ScData
             flags: facts.flags
           )
         end
-
-        # Carried over deliberately: the hardpoint under the hidden component's
-        # own name used to be looked up before the code knew the component was
-        # hidden, and the id that collected protected the row from cleanup. So a
-        # row left from a build where the component was not hidden survives,
-        # still naming the component the flattening was meant to replace.
-        promoted + [Slot.new(name: item["name"].downcase, retain_only: true, children: [])]
       end
 
       # The items loader cannot always resolve a hidden component's own

@@ -75,8 +75,9 @@ module ScData
         other_kinds = Array(facts.required_tags).compact_blank.any?
 
         candidates[types].select do |component|
-          next false unless offered_module?(component)
-          next true if component.id == stock&.id
+          stock_part = component.id == stock&.id
+          next false unless offered_module?(component, stock: stock_part)
+          next true if stock_part
           next false unless component.component_type == "Module" || other_kinds
 
           size = Integer(component.size, exception: false)
@@ -94,13 +95,16 @@ module ScData
       # each family of modules is cloned from -- named after the slot tag it
       # carries, `RSI_Galaxy_Module` -- and stubs whose ports are all size 0,
       # left behind when CIG rebuilt a module under another key (the MPUV's
-      # pods under `aegs/` beside the real ones under `argo/`).
+      # pods under `aegs/` beside the real ones under `argo/`). A part a ship
+      # comes with is no stub, whatever its ports: the F7C Hornet Mk II's cargo
+      # door holds its grid on a size 0 port.
       NOT_OFFERED_KEY = /_(base|template|temp)(_|\z)/i
 
-      private def offered_module?(component)
+      private def offered_module?(component, stock: false)
         key = component.sc_key.to_s
         return false if key.match?(NOT_OFFERED_KEY)
         return false if Array(component.tags).any? { |tag| tag.casecmp?(key) }
+        return true if stock
 
         ports = component.hardpoints.in_build(source).to_a
         ports.empty? || ports.any? { |port| port.facts.max_size.to_i.positive? }

@@ -142,6 +142,24 @@ module ScData
         assert_equal [nil, true], slots.map(&:retain_only)
       end
 
+      test "keeps a module slot whose part is hidden, with the part's ports below it" do
+        cargo_grid = create(:component, sc_key: "cargo_grid_s1")
+        door = create(:component, :hidden, sc_key: "anvl_hornet_f7c_mk2_cargo_door")
+        create(:hardpoint, parent: door, sc_name: "hardpoint_scu", component: cargo_grid, source: :game_files)
+
+        slots = resolve({"loadout" => [{
+          "name" => "hardpoint_weapon_center", "key" => "ANVL_Hornet_F7C_Mk2_Cargo_Door",
+          "types" => %w[Turret Module], "min_size" => "5", "max_size" => "5"
+        }]})
+
+        slot = slots.sole
+        assert_equal "hardpoint_weapon_center", slot.name
+        assert_equal door, slot.component
+        assert_equal %w[Turret Module], slot.types
+        assert_equal ["hardpoint_scu"], slot.children.map(&:name)
+        assert_equal [cargo_grid], slot.children.map(&:component)
+      end
+
       test "carries what a hidden component's port declares onto the slot it promotes" do
         gun = create(:component, sc_key: "gats_ballisticgatling_s1", size: "1")
         turret = create(:component, :hidden, sc_key: "tmbl_cyclone_module_turret")

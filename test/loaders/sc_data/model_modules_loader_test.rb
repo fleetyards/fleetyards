@@ -387,6 +387,17 @@ module ScData
         assert_equal %w[TEST_Ship_Module_Stock], model.modules.pluck(:sc_key)
       end
 
+      test "#discover_modules offers the part a slot comes with even when its ports take nothing" do
+        model = create(:model)
+        door = module_part("TEST_Ship_Module_Cargo_Door", category: "doors")
+        create(:hardpoint, parent: door, source: :game_files, sc_name: "hardpoint_scu", min_size: 0, max_size: 0)
+        module_slot(model, stock: door)
+
+        discover
+
+        assert_equal %w[TEST_Ship_Module_Cargo_Door], model.modules.pluck(:sc_key)
+      end
+
       test "#discover_modules leaves a slot that takes no module alone" do
         model = create(:model)
         module_slot(model, name: "hardpoint_turret", types: ["Turret"], tag: "TEST_Center")
